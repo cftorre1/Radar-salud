@@ -7,6 +7,7 @@ from typing import Dict, List, Optional
 from urllib.parse import urljoin
 
 from .models import RawItem
+from .quality import clean_technical_text
 
 
 DATE_RE = re.compile(r"Fecha de publicación:\s*(\d{1,2}\s+de\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]+\s+de\s+\d{4})", re.I)
@@ -109,6 +110,7 @@ def extract_superintendencia_detail(raw: RawItem, html: str) -> RawItem:
     # use a bounded text excerpt.
     desc_match = re.search(r"(Contiene\s+.+?)(?=Información actualizada|Fecha de publicación|Descargar|$)", evidence_text, re.I)
     description = " ".join(desc_match.group(1).split()) if desc_match else evidence_text[:1500]
+    description = clean_technical_text(description)
 
     numbers = []
     for match in NUMBER_RE.findall(description):

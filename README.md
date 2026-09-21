@@ -277,3 +277,16 @@ BENCHMARK now has its own structured-data layer instead of forcing statistics in
 - `Signal` remains the event layer; CONNECT/TREND provide context around metric changes.
 
 See `config/benchmark_metrics_v1.json` and `docs/BENCHMARK_V2.md`.
+
+## Editorial Quality V0.2
+
+The public briefing is now curated rather than a raw dump of collected items:
+
+- technical JSON-LD/schema.org contamination is cleaned and can trigger human review;
+- repetitive monthly Isapre releases are grouped into one connected update on the homepage;
+- stale items discovered during the first backfill are kept out of the daily front page;
+- `what_happened` and `why_it_matters` are specific by release type (cartera, movilidad, FEFI/financial, GES, etc.);
+- Radar Score is user-facing as `Esencial`, `Relevante` or `Contexto`;
+- dates are humanized and empty Radar Mundo is hidden.
+
+The next structured-data milestone is attachment ingestion into `MetricObservation` so BENCHMARK can say what changed, not only that a statistical release exists.

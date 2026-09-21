@@ -7,6 +7,7 @@ from .extraction import extract_superintendencia_detail
 from .models import RawItem, Signal
 from .pipeline import build_signal
 from .validation import validate_official_item
+from .quality import publication_ready
 
 
 def process_superintendencia_detail(raw: RawItem, html: str, source_cfg: Dict[str, Any]) -> Signal:
@@ -30,4 +31,8 @@ def process_superintendencia_detail(raw: RawItem, html: str, source_cfg: Dict[st
     signal = build_signal(enriched, source_cfg)
     signal.confidence_score = validation.confidence_score
     signal.validation_status = validation.status
+    if not publication_ready([signal.title, signal.what_happened, signal.why_it_matters]):
+        signal.validation_status = "human_review_required"
+        signal.distribution = "archive"
+        signal.confidence_score = min(signal.confidence_score, 74)
     return signal
