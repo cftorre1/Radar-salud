@@ -1,0 +1,78 @@
+{
+  "principle": "BENCHMARK combines sourced structured metrics, historical observations and visible market signals. Metrics are comparable only when definition, unit, period and population are compatible.",
+  "institution_catalogs": {
+    "ISAPRE": {
+      "families": {
+        "CARTERA_Y_DEMOGRAFIA": ["beneficiarios", "cotizantes", "cargas", "participacion", "movilidad", "edad", "sexo", "region", "tipo_trabajador"],
+        "INGRESOS_Y_PRIMAS": ["ingresos_cotizaciones", "ingreso_per_capita", "ges_y_no_ges_cuando_exista", "precio_o_prima_promedio"],
+        "PRESTACIONES_Y_USO": ["gasto_total_prestaciones", "gasto_per_capita", "frecuencia", "ambulatorio_vs_hospitalario", "tipo_prestacion", "tipo_prestador"],
+        "COBERTURA_FINANCIERA": ["bonificacion_promedio", "cobertura_ambulatoria", "cobertura_hospitalaria", "cobertura_por_edad", "cobertura_por_sexo"],
+        "LICENCIAS_MEDICAS": ["gasto_sil", "gasto_sil_per_capita", "frecuencia", "dias", "peso_sobre_costos"],
+        "GES": ["ingresos_ges", "gasto_ges", "prima_ges", "uso_ges", "peso_relativo"],
+        "FINANZAS": ["resultado_operacional", "resultado_final", "costos_sobre_ingresos", "gastos_administracion", "solvencia_y_garantias_cuando_exista"],
+        "PLANES_Y_PRECIOS": ["numero_planes", "cartera_por_plan", "precio_base", "adecuaciones", "nuevos_planes"],
+        "GENERO_Y_EQUIDAD": ["uso_por_sexo", "gasto_per_capita_por_sexo", "cobertura_por_sexo", "precios_por_sexo_si_aplica_historicamente"],
+        "PREVENCION_Y_ACCESO": ["emp", "cobertura_preventiva", "acceso", "reclamos_o_tiempos_publicos_si_existen"],
+        "JUDICIAL_Y_REGULATORIO": ["causas_relevantes", "reclamaciones_regulatorias", "fallos", "sanciones", "materias"],
+        "ACTIVIDAD_ESTRATEGICA": ["inversion", "expansion", "alianzas", "ia_y_digital", "talento", "innovacion"]
+      }
+    },
+    "MUTUAL": {
+      "families": {
+        "COBERTURA": ["trabajadores_protegidos", "empresas_adheridas", "participacion", "region", "sector_economico"],
+        "SINIESTRALIDAD": ["tasa_accidentes_trabajo", "tasa_trayecto", "mortalidad", "gravedad", "dias_perdidos"],
+        "ENFERMEDAD_PROFESIONAL": ["casos", "tasas", "tipos", "sector", "evolucion"],
+        "PREVENCION": ["actividades_preventivas", "cobertura_preventiva", "foco_sectorial"],
+        "PRESTACIONES_MEDICAS": ["atenciones", "rehabilitacion", "tratamientos", "tiempos_publicos_si_existen"],
+        "PRESTACIONES_ECONOMICAS": ["subsidios", "indemnizaciones", "pensiones", "gasto"],
+        "FINANZAS": ["cotizaciones", "ingresos", "costos", "resultado", "reservas_o_inversiones_si_publicas"],
+        "EFICIENCIA": ["gasto_por_trabajador", "costo_por_accidente", "prevencion_vs_siniestralidad"],
+        "JUDICIAL_Y_REGULATORIO": ["dictamenes", "sanciones", "causas", "materias"],
+        "ACTIVIDAD_ESTRATEGICA": ["inversion", "expansion", "alianzas", "digitalizacion", "talento"]
+      }
+    },
+    "PRIVATE_PROVIDER": {
+      "families": {
+        "PRECIOS_Y_TARIFAS": ["arancel_publico", "precio_promedio_facturado_cuando_disponible", "laboratorio", "imagenologia", "otras_prestaciones_comparables"],
+        "CAPACIDAD_E_INFRAESTRUCTURA": ["camas", "pabellones", "boxes", "centros", "equipamiento", "ubicaciones"],
+        "OFERTA_CLINICA": ["especialidades", "servicios", "alta_complejidad", "nuevas_unidades"],
+        "ACTIVIDAD_Y_VOLUMEN": ["prestaciones_o_egresos_cuando_publicos", "ocupacion_cuando_publica", "crecimiento"],
+        "FINANZAS": ["ingresos", "ebitda_cuando_publico", "deuda", "capex", "margen_cuando_comparable"],
+        "EXPANSION_Y_MERCADO": ["inversion_anunciada", "aperturas", "adquisiciones", "expansion_geografica"],
+        "TALENTO_Y_CAPACIDADES": ["vacantes", "clusters_contratacion", "perfiles_digitales", "especialidades"],
+        "COMPRAS_Y_TECNOLOGIA": ["licitaciones", "adjudicaciones", "equipamiento", "adopcion_tecnologica"],
+        "LEGAL_Y_REGULATORIO": ["sanciones", "causas", "resoluciones", "controversias_relevantes"],
+        "INNOVACION": ["ia", "interoperabilidad", "telemedicina", "automatizacion", "alianzas_startup"]
+      }
+    },
+    "PUBLIC_PROVIDER": {
+      "families": {
+        "CAPACIDAD_E_INFRAESTRUCTURA": ["camas", "pabellones", "centros", "equipamiento", "proyectos"],
+        "ACCESO_Y_PRODUCCION": ["listas_espera", "consultas", "egresos", "cirugias", "produccion_cuando_publica"],
+        "COMPRAS": ["licitaciones", "adjudicaciones", "categorias_gasto"],
+        "CALIDAD_Y_RESULTADOS": ["indicadores_publicos_disponibles"],
+        "TERRITORIO": ["cobertura_poblacional", "region", "red_asistencial"]
+      }
+    },
+    "SYSTEM_OR_REGION": {
+      "families": {
+        "COBERTURA_Y_POBLACION": ["fonasa_vs_isapre", "edad", "sexo", "region", "poblacion_objetivo"],
+        "OFERTA": ["capacidad_publica_y_privada", "camas", "centros", "especialistas_si_disponibles"],
+        "GASTO_Y_FINANCIAMIENTO": ["gasto_per_capita", "gasto_bolsillo", "financiamiento"],
+        "ACCESO": ["brechas_territoriales", "listas_espera", "cobertura"],
+        "TENDENCIAS": ["inversion", "licitaciones", "expansion", "innovacion"]
+      }
+    }
+  },
+  "cross_cutting_dimensions": ["TIME", "GEOGRAPHY", "SEX", "AGE_BAND", "WORKER_TYPE", "INSTITUTION_TYPE", "OWNERSHIP", "SUBSECTOR", "CARE_SETTING"],
+  "comparison_modes": ["ENTITY_VS_ENTITY", "ENTITY_VS_COHORT", "ENTITY_OVER_TIME", "COHORT_VS_COHORT", "REGION_VS_REGION", "COUNTRY_VS_COUNTRY"],
+  "data_quality_rules": [
+    "Do not compare different metric definitions under the same label.",
+    "Do not mix periods without making the temporal difference explicit.",
+    "Per-capita denominators must be defined and compatible.",
+    "Public listed prices are not equivalent to negotiated prices.",
+    "Visible signal activity is not a quality ranking.",
+    "Missing data is shown as missing, never imputed silently.",
+    "Every observation must retain source, period, population/segment and confidence."
+  ]
+}
