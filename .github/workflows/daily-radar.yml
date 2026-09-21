@@ -1,0 +1,32 @@
+name: Daily Radar pilot
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 09:30 UTC = 06:30 in Santiago while UTC-3. Chile DST means this shifts by 1h in winter.
+    - cron: '30 9 * * 1-5'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install package
+        run: pip install -e .
+      - name: Run Superintendencia pilot collector
+        run: python -m radar_salud.engine_cli --limit 10
+      - name: Export public snapshot
+        run: python scripts/export_web_snapshot.py --input data/outbox/superintendencia_signals.json --profile "Ejecutivo Isapre"
+      - name: Commit refreshed snapshot
+        run: |
+          git config user.name "radar-salud-bot"
+          git config user.email "radar-salud-bot@users.noreply.github.com"
+          git add data/state web/data data/inbox data/outbox || true
+          git diff --cached --quiet || git commit -m "chore: refresh daily radar"
+          git push
