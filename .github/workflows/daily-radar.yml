@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       rebuild:
-        description: 'Reprocesar historial visible para reconstruir la portada'
+        description: 'Reconstruir fuentes sin volver a pagar análisis Terra ya guardados'
         required: false
         default: false
         type: boolean
@@ -19,7 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      RADAR_LLM_MODEL: gpt-5.6-terra
+      RADAR_FAST_MODEL: gpt-5.6-luna
+      RADAR_DEEP_MODEL: gpt-5.6-terra
+      RADAR_DEEP_PER_RUN: 5
+      RADAR_FAST_PER_RUN: 40
+      RADAR_DEEP_PER_MONTH: 60
+      RADAR_FAST_PER_MONTH: 400
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -27,18 +32,20 @@ jobs:
           python-version: '3.11'
       - name: Install package
         run: pip install -e .
-      - name: Run Radar collectors
+      - name: Preserve paid Terra analyses
+        run: python scripts/seed_analysis_cache.py
+      - name: Run incremental collectors
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
         run: python -m radar_salud.engine_cli --limit 20
-      - name: Rebuild Radar history
+      - name: Rebuild source discovery using analysis cache
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
         run: python -m radar_salud.engine_cli --limit 40 --reset-state
       - name: Export public snapshot
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
-      - name: Commit refreshed snapshot
+      - name: Commit refreshed snapshot and cache
         run: |
-          git config user.name "radar-salud-bot"
-          git config user.email "radar-salud-bot@users.noreply.github.com"
-          git add data/state data/history web/data data/inbox data/outbox || true
-          git diff --cached --quiet || git commit -m "chore: refresh daily radar"
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/state data/history data/analysis_cache data/ai_usage web/data data/inbox data/outbox || true
+          git diff --cached --quiet || git commit -m "chore: refresh Alicanto Salud"
           git push
