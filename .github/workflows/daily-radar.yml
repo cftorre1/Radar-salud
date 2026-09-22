@@ -17,6 +17,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      RADAR_LLM_MODEL: gpt-5.6-terra
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -26,11 +29,11 @@ jobs:
         run: pip install -e .
       - name: Run Radar collectors
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
-        run: python -m radar_salud.engine_cli --limit 10
+        run: python -m radar_salud.engine_cli --limit 20
       - name: Rebuild Radar history
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
-        run: python -m radar_salud.engine_cli --limit 50 --reset-state
-      - name: Export public snapshot from persistent history
+        run: python -m radar_salud.engine_cli --limit 40 --reset-state
+      - name: Export public snapshot
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
       - name: Commit refreshed snapshot
         run: |
