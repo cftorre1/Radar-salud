@@ -6,46 +6,32 @@
   <title>Radar Salud · Piloto</title>
   <style>
     :root{color-scheme:light;--ink:#132238;--muted:#667085;--line:#e4e9ef;--bg:#f7f9fb;--card:#fff;--teal:#006b76;--teal-soft:#eaf7f7}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
     main{max-width:980px;margin:0 auto;padding:40px 20px 72px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--teal);font-weight:800}
-    h1{font-size:40px;letter-spacing:-.035em;margin:8px 0 4px}.sub{font-size:21px;line-height:1.35;color:var(--ink);margin:0 0 5px;font-weight:700}
-    .descriptor{font-size:15px;color:var(--muted);margin:0 0 18px}.meta{display:flex;gap:10px 18px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-bottom:16px}
-    .toolbar{display:grid;gap:12px;margin:14px 0 18px}.facet{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.facet-label{font-size:12px;font-weight:800;color:var(--ink);min-width:58px}
-    .chip{border:1px solid var(--line);background:#fff;color:#475467;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer}
-    .chip.active{background:var(--teal-soft);border-color:#b7dddd;color:var(--teal)}
+    h1{font-size:40px;letter-spacing:-.035em;margin:8px 0 4px}.sub{font-size:21px;line-height:1.35;margin:0 0 5px;font-weight:700}.descriptor{font-size:15px;color:var(--muted);margin:0 0 18px}
+    .meta{display:flex;gap:10px 18px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-bottom:16px}.toolbar{display:grid;gap:12px;margin:14px 0 18px}.facet{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.facet-label{font-size:12px;font-weight:800;min-width:58px}
+    .chip{border:1px solid var(--line);background:#fff;color:#475467;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer}.chip.active{background:var(--teal-soft);border-color:#b7dddd;color:var(--teal)}
     .sortrow{display:flex;justify-content:flex-end;align-items:center;gap:8px;color:var(--muted);font-size:12px}.sortrow select{border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);padding:8px 28px 8px 10px;font-weight:700}
     .count{font-size:13px;color:var(--teal);font-weight:700;margin:0 0 16px}.signal{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin:12px 0;box-shadow:0 2px 9px rgba(16,24,40,.035)}
     .top{display:flex;gap:14px;align-items:flex-start}.body{min-width:0;flex:1}.priority{font-weight:800;font-size:11px;border-radius:999px;padding:6px 9px;white-space:nowrap;text-transform:uppercase;letter-spacing:.03em}
     .priority.essential{background:#e9f7f1;color:#166b4d}.priority.relevant{background:#edf4ff;color:#285f9e}.priority.context{background:#f3f4f6;color:#5f6672}
-    .tagrow{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 7px}.tag{font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:4px 7px;background:#fbfcfd;color:#52606d}
-    .tag.scope{background:#f1f8f8;color:#0a6570;border-color:#d3ebec}.meta-tags{font-size:11px;color:var(--muted);font-weight:750;margin-bottom:5px}.grouped{color:var(--teal)}
-    .signal h2{font-size:20px;line-height:1.3;letter-spacing:-.015em;margin:0 0 10px}.signal p{line-height:1.58;margin:8px 0;color:#26364a}.label{font-weight:750;color:var(--ink)}
+    .tagrow{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 7px}.tag{font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:4px 7px;background:#fbfcfd;color:#52606d}.tag.scope{background:#f1f8f8;color:#0a6570;border-color:#d3ebec}
+    .meta-tags{font-size:11px;color:var(--muted);font-weight:750;margin-bottom:5px}.grouped{color:var(--teal)}.signal h2{font-size:20px;line-height:1.3;letter-spacing:-.015em;margin:0 0 10px}.signal p{line-height:1.58;margin:8px 0;color:#26364a}.label{font-weight:750}
+    .intel{margin:12px 0;padding:11px 13px;background:#f9fbfc;border:1px solid var(--line);border-radius:12px}.intel-title{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:5px}.intel ul{margin:0;padding-left:18px}.intel li{font-size:13px;line-height:1.48;color:#344054;margin:3px 0}
     .source{font-size:13px;color:var(--muted);margin-top:14px}.source a,.related a{color:var(--teal);font-weight:650;text-decoration:none}.source a:hover,.related a:hover{text-decoration:underline}
-    details.related{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}details.related summary{cursor:pointer;font-size:13px;font-weight:800;color:var(--teal)}
-    .related-list{display:grid;gap:10px;margin-top:12px}.related-item{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fbfcfd}.related-title{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:3px}
-    .related-desc{font-size:12px;line-height:1.45;color:var(--muted);margin-bottom:5px}.recency{display:inline-flex;margin-left:6px;font-size:10px;border-radius:999px;padding:3px 6px;background:#f3f4f6;color:#667085}
-    .empty{padding:28px;background:#fff;border:1px dashed var(--line);border-radius:16px;color:var(--muted)}
+    details.related{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}details.related summary{cursor:pointer;font-size:13px;font-weight:800;color:var(--teal)}.related-list{display:grid;gap:10px;margin-top:12px}.related-item{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fbfcfd}.related-title{font-size:13px;font-weight:800;margin-bottom:3px}.related-desc{font-size:12px;line-height:1.45;color:var(--muted);margin-bottom:5px}.recency{display:inline-flex;margin-left:6px;font-size:10px;border-radius:999px;padding:3px 6px;background:#f3f4f6;color:#667085}.empty{padding:28px;background:#fff;border:1px dashed var(--line);border-radius:16px;color:var(--muted)}
     @media(max-width:640px){main{padding:28px 14px 56px}h1{font-size:33px}.sub{font-size:18px}.top{gap:10px}.priority{font-size:10px;padding:5px 7px}.signal{padding:16px}.signal h2{font-size:18px}.sortrow{justify-content:stretch}.sortrow select{flex:1}}
   </style>
 </head>
 <body><main>
-  <div class="eyebrow">Piloto V0</div>
-  <h1>Radar Salud</h1>
+  <div class="eyebrow">Piloto V0</div><h1>Radar Salud</h1>
   <p class="sub">Lo importante, para que no se te pase.</p>
   <p class="descriptor">Señales, conexiones y cambios relevantes para entender hacia dónde se mueve la salud.</p>
   <div class="meta" id="meta"></div>
-
   <div class="toolbar">
     <div class="facet"><span class="facet-label">Tipo</span><div id="typeFilters"></div></div>
     <div class="facet"><span class="facet-label">Ámbito</span><div id="scopeFilters"></div></div>
-    <div class="sortrow">Ordenar por
-      <select id="sort">
-        <option value="date">Más recientes</option>
-        <option value="relevance">Más relevantes</option>
-      </select>
-    </div>
+    <div class="sortrow">Ordenar por <select id="sort"><option value="date">Más recientes</option><option value="relevance">Más relevantes</option></select></div>
   </div>
-
-  <div class="count" id="count"></div>
-  <div id="local"></div>
+  <div class="count" id="count"></div><div id="local"></div>
 </main><script src="app.js"></script></body></html>
