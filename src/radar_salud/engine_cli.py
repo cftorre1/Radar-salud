@@ -8,6 +8,7 @@ from .scouts import SeenStore, SuperintendenciaStatsScout, fetch_html, save_raw_
 from .sources import load_sources, source_index
 from .superintendencia_pipeline import process_superintendencia_detail
 from .distribution import UserPlan, choose_distribution
+from .history import load_history, merge_history, save_history
 
 
 def main():
@@ -21,6 +22,7 @@ def main():
     state_path = root / "data" / "state" / "superintendencia_seen.json"
     inbox_path = root / "data" / "inbox" / "superintendencia_new.json"
     signals_path = root / "data" / "outbox" / "superintendencia_signals.json"
+    history_path = root / "data" / "history" / "superintendencia_signals.json"
 
     if args.reset_state and state_path.exists():
         state_path.unlink()
@@ -48,11 +50,15 @@ def main():
     signals_path.parent.mkdir(parents=True, exist_ok=True)
     signals_path.write_text(json.dumps({"signals": signals, "errors": errors}, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    history = merge_history(load_history(history_path), signals)
+    save_history(history_path, history)
+
     print("RADAR ENGINE V0 — Superintendencia")
     print(f"New discovered: {len(items)}")
     print(f"Processed:      {len(signals)}")
     print(f"Errors:         {len(errors)}")
     print(f"Output:         {signals_path}")
+    print(f"History:        {history_path} ({len(history)} signals)")
     for s in signals:
         print(f"[{s['radar_score']}] {s['title']}")
         print(f"    confidence={s['confidence_score']} validation={s['validation_status']}")
