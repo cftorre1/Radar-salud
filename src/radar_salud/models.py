@@ -71,14 +71,14 @@ class Signal:
     risk_notes: List[str] = field(default_factory=list)
     data_insights: List[str] = field(default_factory=list)
     validity_text: Optional[str] = None
+    related_reference_ids: List[str] = field(default_factory=list)
     original_language: str = "es"
     display_language: str = "es"
     translation_status: str = "not_required"
     original_title: Optional[str] = None
     original_what_happened: Optional[str] = None
     original_why_it_matters: Optional[str] = None
-    def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
+    def to_dict(self) -> Dict[str, Any]:return asdict(self)
 
 @dataclass
 class SignalConnection:
@@ -111,43 +111,17 @@ class Trend:
 
 @dataclass
 class MetricDefinition:
-    metric_id: str
-    name: str
-    family: str
-    institution_types: List[str]
-    unit: str
-    description: str
-    directionality: str = "neutral"
-    aggregation: str = "latest"
-    denominator_definition: Optional[str] = None
-    numerator_definition: Optional[str] = None
-    time_granularity: str = "periodic"
-    comparable_across_entities: bool = True
-    segment_dimensions: List[str] = field(default_factory=list)
-    geography_levels: List[str] = field(default_factory=list)
-    source_preferences: List[str] = field(default_factory=list)
-    caveats: List[str] = field(default_factory=list)
-    def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
+    metric_id: str; name: str; family: str; institution_types: List[str]; unit: str; description: str
+    directionality: str="neutral"; aggregation: str="latest"; denominator_definition: Optional[str]=None
+    numerator_definition: Optional[str]=None; time_granularity: str="periodic"; comparable_across_entities: bool=True
+    segment_dimensions: List[str]=field(default_factory=list); geography_levels: List[str]=field(default_factory=list)
+    source_preferences: List[str]=field(default_factory=list); caveats: List[str]=field(default_factory=list)
+    def to_dict(self):return asdict(self)
 
 @dataclass
 class MetricObservation:
-    entity_id: str
-    metric_id: str
-    value: float
-    unit: str
-    period_start: str
-    period_end: str
-    source_name: str
-    source_url: str
-    country: str = "CL"
-    institution_type: Optional[str] = None
-    geography: Optional[str] = None
-    population: Optional[str] = None
-    segment: Dict[str, Any] = field(default_factory=dict)
-    confidence_score: int = 100
-    is_estimated: bool = False
-    methodology_note: Optional[str] = None
-    retrieved_at: Optional[str] = None
-    def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
+    entity_id: str; metric_id: str; value: float; unit: str; period_start: str; period_end: str
+    source_name: str; source_url: str; country: str="CL"; institution_type: Optional[str]=None
+    geography: Optional[str]=None; population: Optional[str]=None; segment: Dict[str,Any]=field(default_factory=dict)
+    confidence_score: int=100; is_estimated: bool=False; methodology_note: Optional[str]=None; retrieved_at: Optional[str]=None
+    def to_dict(self):return asdict(self)
