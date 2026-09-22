@@ -7,6 +7,10 @@ name = "radar-salud"
 version = "0.1.0"
 description = "Radar Salud V0 intelligence engine"
 requires-python = ">=3.11"
+dependencies = [
+  "pypdf>=5.0.0",
+  "openpyxl>=3.1.0"
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
