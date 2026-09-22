@@ -18,6 +18,7 @@ def extract_pdf_text(url: str, max_pages: int=24) -> str:
         text="\n".join(pages)
     except Exception:
         return ""
+    # Remove common OCR/layout garbage without altering substantive language.
     text=text.replace("\x00"," ")
     lines=[]
     for line in text.splitlines():
@@ -61,6 +62,7 @@ def extract_references(text: str):
 def fallback_normative_analysis(text: str, title: str, summary: str):
     clean=" ".join((text or "").split())
     validity=extract_validity(clean)
+    # Candidate sentences: substantive verbs, excluding validity and boilerplate.
     sents=[s.strip() for s in re.split(r"(?<=[\.\!\?])\s+",clean) if 35<=len(s.strip())<=520]
     keywords=("modifica","complementa","instruye","prohíbe","establece","autoriza","rechaza","acoge","suspende","deberá","deberán","exige","incorpora","elimina","reemplaza")
     cands=[]
@@ -99,6 +101,7 @@ def spreadsheet_insights(url: str) -> list[str]:
         from openpyxl import load_workbook
         wb=load_workbook(io.BytesIO(_download(url)),read_only=True,data_only=True)
     except Exception:return []
+    # Conservative V0: only report clear adjacent-period percentage changes.
     out=[]
     period_re=re.compile(r"(20\d{2}|ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)",re.I)
     for ws in wb.worksheets[:4]:
@@ -123,38 +126,3 @@ def spreadsheet_insights(url: str) -> list[str]:
             break
         if len(out)>=3:break
     return out[:3]
-
-def analyze_attachments(attachments: list[dict]) -> dict[str, Any]:
-    """Compatibility helper for SuperSalud statistics pipeline."""
-    out = {
-        "key_points": [],
-        "risk_notes": [],
-        "data_insights": [],
-        "validity_text": None,
-    }
-    for a in (attachments or [])[:8]:
-        url = (a or {}).get("url") or ""
-        if not url:
-            continue
-        low = url.lower()
-        if any(ext in low for ext in (".xlsx", ".xls", ".csv")):
-            for x in spreadsheet_insights(url):
-                if x not in out["data_insights"]:
-                    out["data_insights"].append(x)
-        elif ".pdf" in low:
-            text = extract_pdf_text(url)
-            if text:
-                analysis = fallback_normative_analysis(text, "", "")
-                if not out["validity_text"]:
-                    out["validity_text"] = analysis.get("validity_text")
-                for x in analysis.get("key_points", []):
-                    if x and x not in out["key_points"]:
-                        out["key_points"].append(x)
-                for x in analysis.get("review_points", []):
-                    if x and x not in out["risk_notes"]:
-                        out["risk_notes"].append(x)
-
-    out["key_points"] = out["key_points"][:3]
-    out["risk_notes"] = out["risk_notes"][:3]
-    out["data_insights"] = out["data_insights"][:3]
-    return out

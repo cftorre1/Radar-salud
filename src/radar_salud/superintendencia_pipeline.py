@@ -12,6 +12,7 @@ def process_superintendencia_detail(raw: RawItem, html: str, source_cfg: Dict[st
     enriched=extract_superintendencia_detail(raw,html)
     validation=validate_official_item(enriched,source_cfg.get("base_confidence",95))
     analysis=analyze_superintendencia(enriched)
+    # Keep attachment discovery, but do NOT publish generic spreadsheet insights in Beta.
     intel=analyze_attachments(enriched.metadata.get("attachments",[]))
     enriched.metadata.update({
         "what_happened":analysis.what_happened,"key_facts":analysis.key_facts,
@@ -19,8 +20,7 @@ def process_superintendencia_detail(raw: RawItem, html: str, source_cfg: Dict[st
         "who_cares":analysis.who_cares,"watch_tags":analysis.watch_tags,"scores":analysis.scores,
         "subcategory":analysis.subcategory,
         "confidence_adjustment":validation.confidence_score-source_cfg.get("base_confidence",95),
-        "key_points":intel.get("key_points",[]),"risk_notes":intel.get("risk_notes",[]),
-        "data_insights":intel.get("data_insights",[]),"validity_text":intel.get("validity_text"),
+        "key_points":[],"risk_notes":[],"data_insights":[],"validity_text":None,
     })
     signal=build_signal(enriched,source_cfg);signal.confidence_score=validation.confidence_score;signal.validation_status=validation.status
     if not publication_ready([signal.title,signal.what_happened,signal.why_it_matters]):

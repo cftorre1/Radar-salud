@@ -1,128 +1,89 @@
 from __future__ import annotations
 import json, os, re
 from typing import Any, Dict, Optional
+from .ai_budget import allow_call
 
 def _client():
-    if not os.getenv("OPENAI_API_KEY"):
-        return None
+    if not os.getenv("OPENAI_API_KEY"):return None
     try:
         from openai import OpenAI
         return OpenAI()
-    except Exception:
-        return None
+    except Exception:return None
 
 def _parse_json(text: str) -> Optional[Dict[str, Any]]:
-    try:
-        return json.loads(text)
+    try:return json.loads(text)
     except Exception:
-        m=re.search(r"\{.*\}", text or "", re.S)
-        if not m:
-            return None
+        m=re.search(r"\{.*\}",text or "",re.S)
+        if not m:return None
         try:return json.loads(m.group(0))
         except Exception:return None
 
-NORM_SCHEMA = {
-  "type":"object",
-  "properties":{
-    "what_happened":{"type":"string"},
-    "why_it_matters":{"type":"string"},
-    "validity_text":{"type":["string","null"]},
-    "key_points":{"type":"array","items":{"type":"string"},"maxItems":3},
-    "review_points":{"type":"array","items":{"type":"string"},"maxItems":3},
-    "references":{"type":"array","items":{"type":"string"},"maxItems":6},
-  },
-  "required":["what_happened","why_it_matters","validity_text","key_points","review_points","references"],
-  "additionalProperties":False
-}
+NORM_SCHEMA={"type":"object","properties":{
+ "what_happened":{"type":"string"},"why_it_matters":{"type":"string"},
+ "validity_text":{"type":["string","null"]},
+ "key_points":{"type":"array","items":{"type":"string"},"maxItems":3},
+ "review_points":{"type":"array","items":{"type":"string"},"maxItems":3},
+ "references":{"type":"array","items":{"type":"string"},"maxItems":8}},
+ "required":["what_happened","why_it_matters","validity_text","key_points","review_points","references"],
+ "additionalProperties":False}
+NEWS_SCHEMA={"type":"object","properties":{
+ "relevance_score":{"type":"integer","minimum":0,"maximum":100},
+ "what_happened":{"type":"string"},"why_it_matters":{"type":"string"},"reason":{"type":"string"}},
+ "required":["relevance_score","what_happened","why_it_matters","reason"],"additionalProperties":False}
 
-NEWS_SCHEMA = {
-  "type":"object",
-  "properties":{
-    "relevance_score":{"type":"integer","minimum":0,"maximum":100},
-    "what_happened":{"type":"string"},
-    "why_it_matters":{"type":"string"},
-    "reason":{"type":"string"},
-  },
-  "required":["relevance_score","what_happened","why_it_matters","reason"],
-  "additionalProperties":False
-}
+def analyze_normative_pdf(*,title,pdf_url,source_name,scope,fallback_summary=""):
+    c=_client()
+    if not c or not pdf_url or not allow_call("deep"):return None
+    model=os.getenv("RADAR_DEEP_MODEL","gpt-5.6-terra")
+    instructions="""Eres el analista documental senior de Alicanto Salud Chile. Analiza SOLO el PDF y sé neutral.
+No inventes datos, fechas, obligaciones, riesgos, actores ni vigencias.
 
-def analyze_normative_pdf(*, title: str, pdf_url: str, source_name: str, scope: str, fallback_summary: str="") -> Optional[Dict[str, Any]]:
-    client=_client()
-    if not client or not pdf_url:
-        return None
-    model=os.getenv("RADAR_LLM_MODEL","gpt-5.6-terra")
-    instructions="""Eres el analista documental de Radar Salud Chile.
-Analiza SOLO el documento adjunto y no uses conocimiento externo.
-Escribe en español, de forma neutral, precisa y ejecutiva.
-
-Reglas:
-- No inventes datos, fechas, obligaciones, riesgos ni vigencias.
-- "Qué pasó": 1-2 frases que expliquen el cambio concreto; evita copiar títulos o encabezados.
-- "Por qué importa": explica el efecto potencial para el sistema o actores alcanzados, sin adoptar la perspectiva de una Isapre, prestador, autoridad u otro actor.
-- "Vigencia": transcribe o parafrasea únicamente la regla de vigencia del documento. Si no es inequívoca, null.
-- "Puntos clave": máximo 3. Deben ser cambios sustantivos, obligaciones, alcance, excepciones o efectos. NO incluir vigencia aquí.
-- "Aspectos a revisar": máximo 3. Deben ser chequeos concretos derivados del documento; no uses frases genéricas del tipo 'revisar obligaciones' si puedes especificar qué obligación/plazo/sistema/proceso debe revisarse.
-- No copies membretes, nombres de autoridades, pies de página ni antecedentes irrelevantes.
-- Si el documento resuelve, modifica, complementa o cita una Circular, Oficio, Resolución, Ley o Decreto previo, incluye su identificador en references.
-- Si una resolución trata un recurso contra una circular, explica qué resuelve y qué efecto tiene sobre esa circular; no repitas los considerandos como si fueran cambios nuevos."""
-    prompt=f"""Documento: {title}
-Fuente: {source_name}
-Ámbito: {scope}
-Resumen de la ficha oficial, solo como contexto secundario:
-{fallback_summary[:1600]}"""
+Qué pasó: 1-2 frases con el cambio o decisión concreta, no el encabezado.
+Por qué importa: 1-2 frases MUY específicas. Identifica qué actor(es) quedan afectados y cuál es
+el efecto práctico más plausible: cumplimiento, operación, reportabilidad, acceso/cobertura,
+financiamiento/costos o gestión. Evita frases genéricas como 'puede requerir ajustes'.
+Si el efecto no puede concluirse del documento, dilo explícitamente.
+Vigencia: solo la regla inequívoca de vigencia; si no existe, null.
+Puntos clave: máximo 3; obligaciones, alcance, excepciones o efectos materiales. No repetir vigencia.
+Aspectos a revisar: máximo 3; chequeos concretos derivados del texto.
+Ignora membretes, firmas, autoridades, pies de página y antecedentes no sustantivos.
+Si modifica, resuelve, suspende o cita otra Circular/Oficio/Resolución/Ley/Decreto, incluye su identificador."""
     try:
-        r=client.responses.create(
-            model=model,
-            instructions=instructions,
-            input=[{
-                "role":"user",
-                "content":[
-                    {"type":"input_text","text":prompt},
-                    {"type":"input_file","file_url":pdf_url},
-                ],
-            }],
-            text={"format":{
-                "type":"json_schema",
-                "name":"radar_normative_analysis",
-                "strict":True,
-                "schema":NORM_SCHEMA,
-            }},
-        )
+        r=c.responses.create(
+          model=model,instructions=instructions,
+          input=[{"role":"user","content":[
+            {"type":"input_text","text":f"Documento: {title}\nFuente: {source_name}\nÁmbito: {scope}\nFicha oficial: {fallback_summary[:1400]}"},
+            {"type":"input_file","file_url":pdf_url}]}],
+          text={"format":{"type":"json_schema","name":"alicanto_normative","strict":True,"schema":NORM_SCHEMA}})
         return _parse_json(r.output_text)
-    except Exception:
-        return None
+    except Exception as e:
+        print(f"deep model error: {e}");return None
 
-def analyze_official_news(*, title: str, text: str, source_name: str) -> Optional[Dict[str, Any]]:
-    client=_client()
-    if not client:
-        return None
-    model=os.getenv("RADAR_LLM_MODEL","gpt-5.6-terra")
-    instructions="""Eres editor de Radar Salud Chile.
-Evalúa una publicación oficial para decidir si merece aparecer en un radar estratégico del sector salud.
-Sé neutral y usa SOLO la información entregada.
+def analyze_news(*,title,text,source_name,kind="sector"):
+    c=_client()
+    if not c or not allow_call("fast"):return None
+    model=os.getenv("RADAR_FAST_MODEL","gpt-5.6-luna")
+    instructions=f"""Eres editor senior de Alicanto Salud Chile. Usa SOLO el texto recibido.
+Evalúa si merece aparecer en un radar estratégico del sector salud. Tipo de fuente: {kind}.
 
-Puntaje:
-90-100 cambio nacional/sectorial muy relevante: regulación, financiamiento, cobertura, red asistencial, política pública, alerta sanitaria de alto alcance, reforma, inversión/capacidad material.
-70-89 cambio relevante para una parte importante del sistema.
-55-69 contexto útil pero no prioritario.
-0-54 ceremonial, visita de autoridad, nombramiento/renuncia local, historia institucional, campaña rutinaria, actividad protocolar o contenido sin cambio material.
+90-100: cambio nacional/sectorial material: regulación, financiamiento, cobertura, capacidad,
+inversión, M&A, estrategia competitiva, resultados relevantes, acceso, política pública.
+75-89: cambio relevante para actores importantes.
+65-74: contexto útil pero secundario.
+0-64: ceremonial, visita de autoridad, nombramiento/renuncia, campaña rutinaria, hito local,
+historia institucional o contenido sin cambio material.
 
-"Qué pasó": 1-2 frases concretas.
-"Por qué importa": efecto específico; evita la frase genérica 'aporta información oficial reciente'.
-No inventes implicancias."""
+Qué pasó: concreto y verificable.
+Por qué importa: explica el efecto ESPECÍFICO para mercado/sistema/actores y por qué merece atención.
+No uses frases genéricas. Si aún faltan datos para evaluar impacto, dilo."""
     try:
-        r=client.responses.create(
-            model=model,
-            instructions=instructions,
-            input=f"Fuente: {source_name}\nTítulo: {title}\nContenido:\n{text[:7000]}",
-            text={"format":{
-                "type":"json_schema",
-                "name":"radar_official_news",
-                "strict":True,
-                "schema":NEWS_SCHEMA,
-            }},
-        )
+        r=c.responses.create(
+          model=model,instructions=instructions,
+          input=f"Fuente: {source_name}\nTítulo: {title}\nContenido:\n{text[:5500]}",
+          text={"format":{"type":"json_schema","name":"alicanto_news","strict":True,"schema":NEWS_SCHEMA}})
         return _parse_json(r.output_text)
-    except Exception:
-        return None
+    except Exception as e:
+        print(f"fast model error: {e}");return None
+
+def analyze_official_news(*,title,text,source_name):
+    return analyze_news(title=title,text=text,source_name=source_name,kind="fuente oficial")
