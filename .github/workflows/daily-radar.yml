@@ -24,14 +24,14 @@ jobs:
           python-version: '3.11'
       - name: Install package
         run: pip install -e .
-      - name: Run Superintendencia pilot collector
+      - name: Run Radar collectors
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
         run: python -m radar_salud.engine_cli --limit 10
-      - name: Rebuild Superintendencia history
+      - name: Rebuild Radar history
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
         run: python -m radar_salud.engine_cli --limit 50 --reset-state
       - name: Export public snapshot from persistent history
-        run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --profile "Ejecutivo Isapre"
+        run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
       - name: Commit refreshed snapshot
         run: |
           git config user.name "radar-salud-bot"
