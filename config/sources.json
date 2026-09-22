@@ -13,10 +13,10 @@
     "slug": "superintendencia_normativa",
     "name": "Superintendencia de Salud",
     "source_type": "official",
-    "system_domain": "HEALTH_INSURANCE",
+    "system_domain": "HEALTH",
     "base_confidence": 100,
     "cadence": "daily",
-    "method": "regulatory_pages",
+    "method": "regulatory_hubs",
     "default_category": "Regulación & Legal",
     "force_category": true
   },
@@ -27,7 +27,7 @@
     "system_domain": "PUBLIC_HEALTH",
     "base_confidence": 100,
     "cadence": "daily",
-    "method": "web",
+    "method": "news",
     "default_category": "Mercado"
   },
   {
@@ -37,39 +37,9 @@
     "system_domain": "OCCUPATIONAL_HEALTH",
     "base_confidence": 100,
     "cadence": "daily",
-    "method": "web/data",
+    "method": "normative",
     "default_category": "Salud Laboral & Seguridad Social",
     "force_category": true
-  },
-  {
-    "slug": "compin",
-    "name": "COMPIN / MINSAL",
-    "source_type": "official",
-    "system_domain": "SOCIAL_SECURITY",
-    "base_confidence": 100,
-    "cadence": "daily",
-    "method": "publications",
-    "default_category": "Salud Laboral & Seguridad Social"
-  },
-  {
-    "slug": "mercado_publico",
-    "name": "Mercado Público",
-    "source_type": "official_api",
-    "system_domain": "HEALTH",
-    "base_confidence": 100,
-    "cadence": "daily",
-    "method": "api",
-    "default_category": "Oportunidades & Licitaciones"
-  },
-  {
-    "slug": "pjud",
-    "name": "Poder Judicial",
-    "source_type": "official",
-    "system_domain": "LEGAL",
-    "base_confidence": 100,
-    "cadence": "daily",
-    "method": "public_pages",
-    "default_category": "Regulación & Legal"
   },
   {
     "slug": "diario_financiero",
@@ -78,48 +48,8 @@
     "system_domain": "HEALTH",
     "base_confidence": 93,
     "cadence": "multiple_daily",
-    "method": "web",
+    "method": "public_health_pages",
     "default_category": "Mercado"
-  },
-  {
-    "slug": "startup_chile",
-    "name": "Start-Up Chile",
-    "source_type": "ecosystem",
-    "system_domain": "INNOVATION",
-    "base_confidence": 95,
-    "cadence": "weekly",
-    "method": "portfolio/news",
-    "default_category": "Innovación & Startups"
-  },
-  {
-    "slug": "latamlist",
-    "name": "LatamList",
-    "source_type": "press_startups",
-    "system_domain": "INNOVATION",
-    "base_confidence": 85,
-    "cadence": "daily",
-    "method": "web",
-    "default_category": "Innovación & Startups"
-  },
-  {
-    "slug": "lavca",
-    "name": "LAVCA",
-    "source_type": "industry_research",
-    "system_domain": "INNOVATION",
-    "base_confidence": 95,
-    "cadence": "weekly",
-    "method": "research",
-    "default_category": "Innovación & Startups"
-  },
-  {
-    "slug": "dealroom",
-    "name": "Dealroom",
-    "source_type": "startup_database",
-    "system_domain": "INNOVATION",
-    "base_confidence": 90,
-    "cadence": "weekly",
-    "method": "public_profiles",
-    "default_category": "Innovación & Startups"
   },
   {
     "slug": "reuters",
