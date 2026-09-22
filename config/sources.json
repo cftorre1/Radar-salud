@@ -52,13 +52,14 @@
     "default_category": "Mercado"
   },
   {
-    "slug": "reuters",
-    "name": "Reuters",
-    "source_type": "press_high_trust",
-    "system_domain": "GLOBAL_HEALTH",
-    "base_confidence": 96,
-    "cadence": "multiple_daily",
-    "method": "web/news",
-    "default_category": "Radar Mundo"
+    "slug": "diario_oficial",
+    "name": "Diario Oficial",
+    "source_type": "official",
+    "system_domain": "HEALTH",
+    "base_confidence": 100,
+    "cadence": "daily",
+    "method": "official_gazette",
+    "default_category": "Regulación & Legal",
+    "force_category": true
   }
 ]
