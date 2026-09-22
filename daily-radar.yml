@@ -1,0 +1,41 @@
+name: Daily Radar pilot
+
+on:
+  workflow_dispatch:
+    inputs:
+      rebuild:
+        description: 'Reprocesar historial visible para reconstruir la portada'
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: '30 9 * * 1-5'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install package
+        run: pip install -e .
+      - name: Run Superintendencia pilot collector
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
+        run: python -m radar_salud.engine_cli --limit 10
+      - name: Rebuild Superintendencia history
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
+        run: python -m radar_salud.engine_cli --limit 50 --reset-state
+      - name: Export public snapshot from persistent history
+        run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --profile "Ejecutivo Isapre"
+      - name: Commit refreshed snapshot
+        run: |
+          git config user.name "radar-salud-bot"
+          git config user.email "radar-salud-bot@users.noreply.github.com"
+          git add data/state data/history web/data data/inbox data/outbox || true
+          git diff --cached --quiet || git commit -m "chore: refresh daily radar"
+          git push

@@ -290,3 +290,10 @@ The public briefing is now curated rather than a raw dump of collected items:
 - dates are humanized and empty Radar Mundo is hidden.
 
 The next structured-data milestone is attachment ingestion into `MetricObservation` so BENCHMARK can say what changed, not only that a statistical release exists.
+
+## V0.2.1 — historial persistente y rebuild editorial
+
+- Las corridas LIVE guardan Signals en `data/history/superintendencia_signals.json`.
+- La portada se reconstruye desde el historial persistente, no solo desde los ítems nuevos del día.
+- Una corrida sin novedades ya no vacía la portada.
+- El workflow manual incluye `rebuild=true` para reprocesar el historial visible después de cambios editoriales; las corridas programadas siguen siendo incrementales.
