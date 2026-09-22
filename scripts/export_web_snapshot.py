@@ -46,14 +46,22 @@ def _is_monthly_isapre_stats(s):
     )
 
 
+def _normalize_period(value):
+    if not value:
+        return None
+    value=' '.join(str(value).strip(' .').lower().split())
+    value=re.sub(r'\s+de\s+(20\d{2})$', r' \1', value)
+    return value
+
+
 def _updated_period(s):
     for fact in s.get('key_facts', []) or []:
         m = re.search(r'actualizada? a\s+(.+?)[\.]?$', fact, re.I)
         if m:
-            return m.group(1).strip(' .')
+            return _normalize_period(m.group(1))
     title = s.get('title','')
-    m = re.search(r'[-–]\s*(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+20\d{2}', title, re.I)
-    return m.group(0).lstrip('-– ').strip() if m else None
+    m = re.search(r'[-–]\s*(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)(?:\s+de)?\s+20\d{2}', title, re.I)
+    return _normalize_period(m.group(0).lstrip('-– ').strip()) if m else None
 
 
 def _group_monthly_package(items):
