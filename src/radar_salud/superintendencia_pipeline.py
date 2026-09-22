@@ -6,23 +6,36 @@ from .models import RawItem, Signal
 from .pipeline import build_signal
 from .validation import validate_official_item
 from .quality import publication_ready
-from .document_intelligence import analyze_attachments
 
 def process_superintendencia_detail(raw: RawItem, html: str, source_cfg: Dict[str, Any]) -> Signal:
     enriched=extract_superintendencia_detail(raw,html)
     validation=validate_official_item(enriched,source_cfg.get("base_confidence",95))
     analysis=analyze_superintendencia(enriched)
-    # Keep attachment discovery, but do NOT publish generic spreadsheet insights in Beta.
-    intel=analyze_attachments(enriched.metadata.get("attachments",[]))
+
+    # Beta policy:
+    # - Keep SuperSalud statistics descriptive and deterministic.
+    # - Do NOT run generic attachment/Excel inference here.
+    # - Numeric insights return only after source-specific parsers are built.
     enriched.metadata.update({
-        "what_happened":analysis.what_happened,"key_facts":analysis.key_facts,
-        "key_numbers":analysis.key_numbers,"why_it_matters":analysis.why_it_matters,
-        "who_cares":analysis.who_cares,"watch_tags":analysis.watch_tags,"scores":analysis.scores,
+        "what_happened":analysis.what_happened,
+        "key_facts":analysis.key_facts,
+        "key_numbers":analysis.key_numbers,
+        "why_it_matters":analysis.why_it_matters,
+        "who_cares":analysis.who_cares,
+        "watch_tags":analysis.watch_tags,
+        "scores":analysis.scores,
         "subcategory":analysis.subcategory,
         "confidence_adjustment":validation.confidence_score-source_cfg.get("base_confidence",95),
-        "key_points":[],"risk_notes":[],"data_insights":[],"validity_text":None,
+        "key_points":[],
+        "risk_notes":[],
+        "data_insights":[],
+        "validity_text":None,
     })
-    signal=build_signal(enriched,source_cfg);signal.confidence_score=validation.confidence_score;signal.validation_status=validation.status
+    signal=build_signal(enriched,source_cfg)
+    signal.confidence_score=validation.confidence_score
+    signal.validation_status=validation.status
     if not publication_ready([signal.title,signal.what_happened,signal.why_it_matters]):
-        signal.validation_status="human_review_required";signal.distribution="archive";signal.confidence_score=min(signal.confidence_score,74)
+        signal.validation_status="human_review_required"
+        signal.distribution="archive"
+        signal.confidence_score=min(signal.confidence_score,74)
     return signal
