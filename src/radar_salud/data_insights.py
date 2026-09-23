@@ -42,7 +42,7 @@ def _isapre_label(row)->str|None:
 def _safe_numeric(v):
     return float(v) if isinstance(v,(int,float)) and not isinstance(v,bool) else None
 
-def source_specific_insights(url:str,title:str)->dict:
+def source_specific_insights(url:str,title:str,validated_schemas:dict|None=None)->dict:
     """Fail-closed parser for three known SuperSalud statistical families.
 
     It only produces insights if a worksheet contains:
@@ -88,6 +88,11 @@ def source_specific_insights(url:str,title:str)->dict:
     if not candidates:return {"family":fam,"status":"schema_not_validated","insights":[]}
 
     sheet,p1,p2,obs=candidates[0]
+    # Generic period/Isapre columns do not prove the metric, unit or denominator.
+    # Require a reviewed, family-specific worksheet signature before publishing claims.
+    if not validated_schemas or validated_schemas.get(fam)!=sheet:
+        return {"family":fam,"status":"schema_not_validated","sheet":sheet,
+                "period":f"{p2[0]}-{p2[1]:02d}","insights":[]}
     changes=[]
     for label,a,b in obs:
         if a==0:continue
