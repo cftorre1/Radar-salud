@@ -4,6 +4,8 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Actualizado');
  await expect(page.locator('#period')).toHaveValue('7');await expect(page.locator('#sort')).toHaveValue('date');
+ await expect(page.locator('#coverage-title')).toHaveText('Cómo seleccionamos lo que importa');
+ await expect(page.locator('#coverageCounts')).toContainText('pendientes');
  await page.locator('#period').selectOption('90');
  await expect(page.locator('article').first()).toBeVisible();
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);

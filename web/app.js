@@ -1,6 +1,14 @@
 // Preferences stay on this device. No personal usage data is transmitted.
 function stored(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 function saveLocal(key,value){try{localStorage.setItem(key,value)}catch{}}
+function coverageText(d){
+ const sources=Object.values(d.sources||{});
+ const measured=d.queue_status==='measured'&&d.queue;
+ const format=n=>new Intl.NumberFormat('es-CL').format(n);
+ return measured
+  ?`${format(sources.length)} fuentes registradas · ${format(d.queue.live_pending)} LIVE pendientes · ${format(d.queue.backfill_pending)} históricos pendientes · ${format(d.queue.rejected)} descartados en la cola global.`
+  :`${format(sources.length)} fuentes registradas · LIVE y BACKFILL: aún sin medición global. Los pendientes del sistema anterior no se clasifican retroactivamente.`;
+}
 const esc=(s='')=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 let allSignals=[],activeType='Todos',activeScope='Todos',sortMode='date';
 let previousVisit;try{previousVisit=localStorage.getItem('alicanto_last_visit')}catch{}
@@ -45,3 +53,8 @@ function chips(id,values,current,setter){document.getElementById(id).innerHTML=v
 function renderFilters(){const types=['Todos',...['Normativa','Legal','Noticias','Datos','Fiscalización'].filter(x=>allSignals.some(s=>typeTags(s).includes(x)))];const scopes=['Todos',...new Set(allSignals.flatMap(scopeTags))];chips('typeFilters',types,activeType,v=>activeType=v);chips('scopeFilters',scopes,activeScope,v=>activeScope=v)}
 function renderInterests(){const types=['Normativa','Legal','Noticias','Datos','Fiscalización'];const scopes=[...new Set(allSignals.flatMap(scopeTags))].filter(Boolean);const make=(kind,vals)=>vals.map(v=>`<label class="interestchip"><input type="checkbox" data-interest="${kind}" value="${esc(v)}" ${interestState[kind].includes(v)?'checked':''}>${esc(v)}</label>`).join('');document.getElementById('interestTypes').innerHTML=make('types',types);document.getElementById('interestScopes').innerHTML=make('scopes',scopes);document.getElementById('hiddenTypes').innerHTML=make('hiddenTypes',types);document.getElementById('hiddenScopes').innerHTML=make('hiddenScopes',scopes);document.querySelectorAll('[data-interest]').forEach(el=>el.onchange=()=>{const k=el.dataset.interest,v=el.value;if(el.checked&&!interestState[k].includes(v))interestState[k].push(v);if(!el.checked)interestState[k]=interestState[k].filter(x=>x!==v);saveLocal('alicanto_interests',JSON.stringify(interestState));draw()})}
 fetch('data/radar_today.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('snapshot');return r.json()}).then(d=>{document.getElementById('meta').textContent=fmtUpdated(d.generated_at);allSignals=d.signals||[];migrateReads();document.getElementById('sort').value=sortMode;const period=document.getElementById('period');period.value=periodMode;renderFilters();renderInterests();draw();period.onchange=e=>{periodMode=e.target.value;draw()};document.getElementById('sort').onchange=e=>{sortMode=e.target.value;draw()};document.getElementById('interestToggle').onclick=()=>document.getElementById('interests').classList.toggle('open');saveLocal('alicanto_last_visit',new Date().toISOString())}).catch(()=>document.getElementById('local').innerHTML='<div>No se pudo cargar Alicanto.</div>');
+
+fetch('data/product.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('coverage');return r.json()}).then(d=>{
+ const el=document.getElementById('coverageCounts');if(!el)return;
+ el.textContent=coverageText(d);
+}).catch(()=>{});
