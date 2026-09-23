@@ -3,6 +3,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from .pending_queue import atomic_json
 
 def _path(root:Path)->Path:return root/"data"/"source_health.json"
 def _load(root:Path)->dict[str,Any]:
@@ -25,5 +26,4 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         "status":status,"error":error,
     }
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
-    p=_path(root);p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text(json.dumps(d,ensure_ascii=False,indent=2),encoding="utf-8")
+    atomic_json(_path(root),d)

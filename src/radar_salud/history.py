@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Iterable, Dict, Any
+from .pending_queue import atomic_json
 
 
 def load_history(path: Path) -> list[dict]:
@@ -25,5 +26,4 @@ def merge_history(existing: Iterable[dict], new_signals: Iterable[dict]) -> list
 
 
 def save_history(path: Path, signals: Iterable[dict]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps({'signals': list(signals)}, ensure_ascii=False, indent=2), encoding='utf-8')
+    atomic_json(path, {'signals': list(signals)})
