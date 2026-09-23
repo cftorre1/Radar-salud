@@ -22,10 +22,13 @@ def atomic_json(path, value):
     temp.write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
     temp.replace(path)
 
-def lane(raw, now):
+def lane(raw, now, last_discovered_at=None):
+    if not last_discovered_at:
+        return "BACKFILL"
     try:
         published = datetime.fromisoformat(raw.event_date[:10]).date()
-        return "LIVE" if 0 <= (now.date() - published).days <= 7 else "BACKFILL"
+        watermark = datetime.fromisoformat(last_discovered_at.replace("Z", "+00:00")).date()
+        return "LIVE" if watermark <= published <= now.date() and (now.date() - published).days <= 7 else "BACKFILL"
     except (TypeError, ValueError):
         return "BACKFILL"
 
@@ -39,14 +42,14 @@ class PendingQueue:
     def save(self):
         atomic_json(self.path, self.items)
 
-    def discover(self, source, items, seen=(), now=None):
+    def discover(self, source, items, seen=(), now=None, last_discovered_at=None):
         now = now or now_utc()
         added = 0
         for raw in items:
             key = fingerprint(raw)
             if key in self.items or key in seen:
                 continue
-            self.items[key] = dict(raw=asdict(raw), source=source, lane=lane(raw, now),
+            self.items[key] = dict(raw=asdict(raw), source=source, lane=lane(raw, now, last_discovered_at),
                 status="pending", detected_at=now.isoformat(), attempts=0, reason=None)
             added += 1
         self.save()

@@ -35,7 +35,7 @@ def test_feedback_consolidates_without_losing_critical():
 def test_global_live_priority_and_crash_recovery(tmp_path):
     path=tmp_path/"queue.json";queue=PendingQueue(path)
     queue.discover("first",[raw("old","2020-01-01")],now=NOW)
-    queue.discover("second",[raw("live","2026-09-23")],now=NOW)
+    queue.discover("second",[raw("live","2026-09-23")],now=NOW,last_discovered_at="2026-09-22T10:00:00+00:00")
     key,item=queue.ready(NOW)[0]
     assert item["source"]=="second"
     queue.start(key)
@@ -48,9 +48,18 @@ def test_global_live_priority_and_crash_recovery(tmp_path):
 def test_discovery_is_durable_and_deduplicated(tmp_path):
     queue=PendingQueue(tmp_path/"q.json")
     items=[raw(str(i),"2026-09-23") for i in range(100)]
-    assert queue.discover("s",items,now=NOW)==100
+    assert queue.discover("s",items,now=NOW,last_discovered_at="2026-09-22T10:00:00+00:00")==100
     assert PendingQueue(queue.path).discover("s",items,now=NOW)==0
     assert queue.counts()["live_pending"]==100
+
+def test_first_discovery_is_backfill_even_when_item_is_recent(tmp_path):
+    queue=PendingQueue(tmp_path/"q.json")
+    queue.discover("source",[raw("recent","2026-09-23")],now=NOW)
+    assert queue.counts()["live_pending"]==0
+    assert queue.counts()["backfill_pending"]==1
+    queue.discover("source",[raw("next","2026-09-23")],now=NOW+timedelta(hours=2),last_discovered_at=NOW.isoformat())
+    assert queue.counts()["live_pending"]==1
+    assert queue.counts()["backfill_pending"]==1
 
 def test_scheduled_cycle_skips_unchanged_reviewed_candidate():
     ledger={}

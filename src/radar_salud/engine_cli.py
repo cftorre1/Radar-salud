@@ -1,5 +1,6 @@
 from __future__ import annotations
 import argparse,hashlib,json
+from datetime import datetime, timezone
 from pathlib import Path
 from .scouts import SeenStore,SuperintendenciaStatsScout,fetch_html,save_raw_items,MinsalNewsScout
 from .sources import load_sources,source_index
@@ -19,7 +20,7 @@ from .processing import DeferredProcessing
 
 def main():
     from .models import RawItem
-    from .pending_queue import PendingQueue, fingerprint
+    from .pending_queue import PendingQueue, fingerprint, atomic_json
     from .paths import project_root
     ap=argparse.ArgumentParser()
     ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
@@ -30,6 +31,10 @@ def main():
     root=project_root()
     cfgs=source_index(load_sources(root/"config"/"sources.json"))
     queue=PendingQueue(root/"data/state/pending_queue.json")
+    watermark_path=root/"data/state/discovery_watermarks.json"
+    watermarks=json.loads(watermark_path.read_text()) if watermark_path.exists() else {}
+    if not isinstance(watermarks,dict):
+        raise ValueError("Invalid discovery watermarks; refusing to classify LIVE")
     history_path=root/"data/history/superintendencia_signals.json"
     history=load_history(history_path)
     seed_from_history(root)
@@ -56,7 +61,10 @@ def main():
             items=discover()
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
             seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw))}
-            added=queue.discover(name,items,seen)
+            checked_at=datetime.now(timezone.utc).isoformat()
+            added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name))
+            watermarks[name]=checked_at
+            atomic_json(watermark_path,watermarks)
             discoveries[name]=(len(items),added,None)
         except Exception as exc:
             discoveries[name]=(0,0,type(exc).__name__)
