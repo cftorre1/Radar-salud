@@ -29,10 +29,20 @@ def build(root, output):
             "sheet": meta.get("sheet"), "period": meta.get("period"),
             "insights": len(row.get("data_insights") or [])})
     ledger = read(root / "data/autopilot/ledger.json", {"iterations": []})
+    live = [item for item in queue.items.values() if item.get("lane") == "LIVE"]
+    selected_urls = {row.get("source_url") for row in snapshot.get("signals", [])
+                     if row.get("ingestion_mode") == "LIVE" and row.get("source_url")}
+    coverage_live = dict(
+        detected=len(live),
+        evaluated=sum(item.get("status") in ("published", "rejected") for item in live),
+        selected=sum(item.get("status") == "published" and item.get("raw", {}).get("url") in selected_urls
+                     for item in live),
+    ) if queue_path.exists() else None
     report = dict(version="0.9.0", generated_at=datetime.now(timezone.utc).isoformat(),
         snapshot_at=snapshot.get("generated_at"), published=len(snapshot.get("signals", [])),
         queue=queue.counts() if queue_path.exists() else None,
         queue_status="measured" if queue_path.exists() else "awaiting_first_global_discovery",
+        coverage_live=coverage_live,
         legacy_pending=sum(x.get("pending", 0) for x in health.get("sources", {}).values()),
         sources=health.get("sources", {}), iterations=ledger["iterations"],
         usage=dict(calls=usage, measured_responses=len(responses),

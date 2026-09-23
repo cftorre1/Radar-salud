@@ -1,0 +1,32 @@
+import importlib.util
+import json
+from pathlib import Path
+
+from radar_salud.models import RawItem
+from radar_salud.pending_queue import PendingQueue
+
+
+def test_coverage_live_funnel_excludes_backfill(tmp_path):
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("product_report", root / "scripts/product_report.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    queue = PendingQueue(tmp_path / "data/state/pending_queue.json")
+    def raw(name):
+        return RawItem("source", name, f"https://example.org/{name}", "Source", "official", "2026-09-23")
+    queue.discover("source", [raw("visible"), raw("rejected")], last_discovered_at="2026-09-22T12:00:00+00:00")
+    queue.discover("source", [raw("historical")])
+    for key, item in queue.items.items():
+        if item["raw"]["title"] == "visible":
+            queue.finish(key, "published")
+        elif item["raw"]["title"] == "rejected":
+            queue.finish(key, "rejected")
+    snapshot = tmp_path / "web/data/radar_today.json"
+    snapshot.parent.mkdir(parents=True)
+    snapshot.write_text(json.dumps({"signals": [
+        {"source_url": "https://example.org/visible", "ingestion_mode": "LIVE"},
+        {"source_url": "https://example.org/historical", "ingestion_mode": "BACKFILL"},
+    ]}))
+    result = module.build(tmp_path, tmp_path / "web/data")
+    assert result["coverage_live"] == {"detected": 2, "evaluated": 2, "selected": 1}
+    assert result["queue"]["backfill_pending"] == 1

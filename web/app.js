@@ -5,8 +5,9 @@ function coverageText(d){
  const sources=Object.values(d.sources||{});
  const measured=d.queue_status==='measured'&&d.queue;
  const format=n=>new Intl.NumberFormat('es-CL').format(n);
+ const live=d.coverage_live;
  return measured
-  ?`${format(sources.length)} fuentes registradas · ${format(d.queue.live_pending)} LIVE pendientes · ${format(d.queue.backfill_pending)} históricos pendientes · ${format(d.queue.rejected)} descartados en la cola global.`
+  ?`${format(sources.filter(s=>s.status==='ok').length)} fuentes activas de ${format(sources.length)} registradas · LIVE: ${live?`${format(live.detected)} detectadas · ${format(live.evaluated)} evaluadas · ${format(live.selected)} seleccionadas para la portada actual · `:''}${format(d.queue.live_pending)} pendientes · BACKFILL: ${format(d.queue.backfill_pending)} pendientes históricos. Detectada ≠ evaluada ≠ seleccionada.`
   :`${format(sources.length)} fuentes registradas · LIVE y BACKFILL: aún sin medición global. Los pendientes del sistema anterior no se clasifican retroactivamente.`;
 }
 const esc=(s='')=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
