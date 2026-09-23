@@ -69,6 +69,7 @@ def main():
         except Exception as exc:
             discoveries[name]=(0,0,type(exc).__name__)
     produced={name:[] for name in processors}
+    queue.enforce_backfill_horizon()
     for index,(key,item) in enumerate(queue.ready()):
         if args.limit and index>=args.limit:break
         if not has_capacity("fast") and not has_capacity("deep"):break

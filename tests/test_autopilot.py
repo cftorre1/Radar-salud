@@ -34,7 +34,7 @@ def test_feedback_consolidates_without_losing_critical():
 
 def test_global_live_priority_and_crash_recovery(tmp_path):
     path=tmp_path/"queue.json";queue=PendingQueue(path)
-    queue.discover("first",[raw("old","2020-01-01")],now=NOW)
+    queue.discover("first",[raw("old","2026-08-01")],now=NOW)
     queue.discover("second",[raw("live","2026-09-23")],now=NOW,last_discovered_at="2026-09-22T10:00:00+00:00")
     key,item=queue.ready(NOW)[0]
     assert item["source"]=="second"
@@ -68,3 +68,14 @@ def test_scheduled_cycle_skips_unchanged_reviewed_candidate():
     entry["state"]="blocked"
     assert not should_attempt(ledger,"abc")
     assert should_attempt(ledger,"new")
+
+def test_backfill_over_90_days_is_retained_but_never_processes(tmp_path):
+    queue=PendingQueue(tmp_path/"q.json")
+    queue.discover("source",[raw("old","2026-06-01"),raw("recent","2026-09-01")],now=NOW)
+    assert len(queue.items)==2
+    assert len(queue.ready(NOW))==1
+    old=next(x for x in queue.items.values() if x["raw"]["title"]=="old")
+    assert old["status"]=="archived" and old["reason"]=="outside_90_day_backfill"
+    assert queue.counts()["backfill_pending"]==1
+    assert queue.enforce_backfill_horizon(NOW+timedelta(days=100))==1
+    assert queue.ready(NOW+timedelta(days=100))==[]

@@ -32,6 +32,13 @@ def lane(raw, now, last_discovered_at=None):
     except (TypeError, ValueError):
         return "BACKFILL"
 
+def beyond_backfill_horizon(raw, now, days=90):
+    try:
+        published = datetime.fromisoformat(raw.event_date[:10]).date()
+        return published > now.date() or (now.date() - published).days > days
+    except (TypeError, ValueError):
+        return False
+
 class PendingQueue:
     def __init__(self, path):
         self.path = Path(path)
@@ -49,11 +56,30 @@ class PendingQueue:
             key = fingerprint(raw)
             if key in self.items or key in seen:
                 continue
-            self.items[key] = dict(raw=asdict(raw), source=source, lane=lane(raw, now, last_discovered_at),
-                status="pending", detected_at=now.isoformat(), attempts=0, reason=None)
+            item_lane = lane(raw, now, last_discovered_at)
+            archived = item_lane == "BACKFILL" and beyond_backfill_horizon(raw, now)
+            self.items[key] = dict(raw=asdict(raw), source=source, lane=item_lane,
+                status="archived" if archived else "pending", detected_at=now.isoformat(),
+                attempts=0, reason="outside_90_day_backfill" if archived else None)
             added += 1
         self.save()
         return added
+
+    def enforce_backfill_horizon(self, now=None):
+        now = now or now_utc()
+        changed = 0
+        for item in self.items.values():
+            if item.get("lane") == "BACKFILL" and item.get("status") in ("pending", "retry", "processing"):
+                raw = item.get("raw", {})
+                try:
+                    published = datetime.fromisoformat(str(raw.get("event_date"))[:10]).date()
+                except (TypeError, ValueError):
+                    continue
+                if published > now.date() or (now.date() - published).days > 90:
+                    item.update(status="archived", reason="outside_90_day_backfill")
+                    changed += 1
+        if changed:self.save()
+        return changed
 
     def ready(self, now=None):
         now = now or now_utc()
