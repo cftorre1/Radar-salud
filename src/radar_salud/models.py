@@ -70,6 +70,7 @@ class Signal:
     key_points: List[str] = field(default_factory=list)
     risk_notes: List[str] = field(default_factory=list)
     data_insights: List[str] = field(default_factory=list)
+    data_insight_meta: Dict[str, Any] = field(default_factory=dict)
     validity_text: Optional[str] = None
     related_reference_ids: List[str] = field(default_factory=list)
     original_language: str = "es"

@@ -1,0 +1,70 @@
+name: Alicanto Autopilot
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 10,12,14,16,18 * * *'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: alicanto-staging-writer
+  cancel-in-progress: false
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci && npx playwright install --with-deps chromium
+      - name: Reserve persistent daily slot before execution
+        id: reserve
+        run: |
+          git config user.name alicanto-autopilot
+          git config user.email alicanto-autopilot@users.noreply.github.com
+          git worktree add /tmp/autopilot-state origin/autopilot-state
+          CANDIDATE_SHA=$(git rev-parse HEAD)
+          echo "sha=$CANDIDATE_SHA" >> "$GITHUB_OUTPUT"
+          python scripts/autopilot_cycle.py reserve --ledger /tmp/autopilot-state/data/autopilot/ledger.json --sha "$CANDIDATE_SHA"
+          git -C /tmp/autopilot-state add data/autopilot/ledger.json
+          git -C /tmp/autopilot-state commit -m "chore: reserve Autopilot attempt"
+          git -C /tmp/autopilot-state push origin HEAD:autopilot-state
+      - name: Builder, isolated staging, Reviewer and QA
+        id: cycle
+        run: python scripts/autopilot_cycle.py execute --ledger /tmp/autopilot-state/data/autopilot/ledger.json --sha '${{ steps.reserve.outputs.sha }}'
+      - name: Persist outcome even when candidate is blocked
+        if: ${{ always() && steps.reserve.outcome == 'success' }}
+        run: |
+          git -C /tmp/autopilot-state add data/autopilot/ledger.json
+          git -C /tmp/autopilot-state diff --cached --quiet || git -C /tmp/autopilot-state commit -m "chore: record Autopilot result"
+          git -C /tmp/autopilot-state push origin HEAD:autopilot-state
+          cp web/data/product.json /tmp/autopilot-state/data/autopilot/product.json
+          git -C /tmp/autopilot-state add data/autopilot/product.json
+          git -C /tmp/autopilot-state diff --cached --quiet || git -C /tmp/autopilot-state commit -m "chore: preserve product diagnostics"
+          git -C /tmp/autopilot-state push origin HEAD:autopilot-state
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autopilot-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            artifacts/
+            test-results/
+            data/autopilot/
+      - name: Dispatch staged preview with critical checks
+        if: steps.cycle.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run staging-preview.yml --ref staging
+      # Promotion is deliberately unavailable until the initial remote staging
+      # acceptance and full Signal Density contract have been verified.
+      # Do not turn a Boolean into an unchecked release authorization.

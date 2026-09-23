@@ -11,9 +11,14 @@ on:
     - cron: '30 9 * * 1-5'
 permissions:
   contents: write
+  actions: write
+concurrency:
+  group: alicanto-staging-writer
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       RADAR_FAST_MODEL: gpt-5.6-luna
@@ -24,25 +29,35 @@ jobs:
       RADAR_FAST_PER_MONTH: 1500
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: staging
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Install package
-        run: pip install -e .
+        run: pip install -e . pytest
+      - name: Tests before collection
+        run: python -m pytest -q
       - name: Preserve paid Terra analyses
         run: python scripts/seed_analysis_cache.py
       - name: Run incremental collectors
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
-        run: python -m radar_salud.engine_cli --limit 30
+        run: timeout --signal=TERM 20m python -m radar_salud.engine_cli
       - name: Controlled rebuild using cache and persistent pending queue
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
-        run: python -m radar_salud.engine_cli --limit 40 --reset-state
+        run: timeout --signal=TERM 20m python -m radar_salud.engine_cli
       - name: Export public snapshot and source health
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
-      - name: Commit refreshed snapshot, cache and health
+      - name: Preserve queue, paid usage and checkpoints on failure
+        if: always()
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"
-          git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json web/data data/inbox data/outbox || true
+          git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json data/inbox data/outbox
+          if [ "${{ job.status }}" = success ]; then git add web/data; fi
           git diff --cached --quiet || git commit -m "chore: refresh Alicanto Salud"
-          git push
+          git push origin HEAD:staging
+      - name: Request checked staging preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run staging-preview.yml --ref staging

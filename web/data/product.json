@@ -1,0 +1,578 @@
+{
+  "version": "0.9.0",
+  "generated_at": "2026-09-23T13:17:53.189479+00:00",
+  "snapshot_at": "2026-09-23T10:37:33.436409+00:00",
+  "published": 64,
+  "queue": null,
+  "queue_status": "awaiting_first_global_discovery",
+  "legacy_pending": 2605,
+  "sources": {
+    "superintendencia_stats": {
+      "name": "Superintendencia estadísticas",
+      "checked_at": "2026-09-23T10:31:19.965076+00:00",
+      "last_signal_at": "2026-09-07",
+      "discovered": 739,
+      "new": 0,
+      "published": 0,
+      "pending": 0,
+      "deferred": 0,
+      "rejected": 0,
+      "status": "ok",
+      "error": null
+    },
+    "superintendencia_normativa": {
+      "name": "Superintendencia Normativa",
+      "checked_at": "2026-09-23T10:36:21.973766+00:00",
+      "last_signal_at": "2026-07-09",
+      "discovered": 4266,
+      "new": 61,
+      "published": 61,
+      "pending": 0,
+      "deferred": 0,
+      "rejected": 0,
+      "status": "ok",
+      "error": null
+    },
+    "minsal": {
+      "name": "Minsal",
+      "checked_at": "2026-09-23T10:36:24.671108+00:00",
+      "last_signal_at": null,
+      "discovered": 53,
+      "new": 0,
+      "published": 0,
+      "pending": 0,
+      "deferred": 0,
+      "rejected": 0,
+      "status": "ok",
+      "error": null
+    },
+    "suseso": {
+      "name": "Suseso",
+      "checked_at": "2026-09-23T10:36:32.764434+00:00",
+      "last_signal_at": "2026-01-13",
+      "discovered": 7602,
+      "new": 0,
+      "published": 0,
+      "pending": 0,
+      "deferred": 0,
+      "rejected": 0,
+      "status": "ok",
+      "error": null
+    },
+    "diario_financiero": {
+      "name": "Diario Financiero",
+      "checked_at": "2026-09-23T10:36:37.424021+00:00",
+      "last_signal_at": "2026-09-22",
+      "discovered": 71,
+      "new": 2,
+      "published": 0,
+      "pending": 0,
+      "deferred": 0,
+      "rejected": 2,
+      "status": "warning",
+      "error": null
+    },
+    "diario_oficial": {
+      "name": "Diario Oficial",
+      "checked_at": "2026-09-23T10:37:33.204920+00:00",
+      "last_signal_at": "2026-09-22",
+      "discovered": 2,
+      "new": 0,
+      "published": 0,
+      "pending": 0,
+      "deferred": 0,
+      "rejected": 0,
+      "status": "ok",
+      "error": null
+    },
+    "superintendencia_fiscalizacion": {
+      "name": "Superintendencia Fiscalizacion",
+      "checked_at": "2026-09-23T10:36:23.565947+00:00",
+      "last_signal_at": "2026-09-15",
+      "discovered": 2695,
+      "new": 2695,
+      "published": 90,
+      "pending": 2605,
+      "deferred": 0,
+      "rejected": 0,
+      "status": "ok",
+      "error": null
+    }
+  },
+  "iterations": [],
+  "usage": {
+    "calls": {
+      "2026-09": {
+        "deep": {
+          "attempted": 20,
+          "successful": 20,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 82,
+          "successful": 40,
+          "failed": 42
+        }
+      }
+    },
+    "measured_responses": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cost_usd": null,
+    "cost_status": "unavailable_without_approved_rates",
+    "historical_tokens_status": "not_measured_before_0.9.0"
+  },
+  "excel": [
+    {
+      "title": "Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-suscripciones-y-desahucios-del-sistema-isapre-ano-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-movilidad-de-cartera-de-cotizantes-del-sistema-isapre-a-nivel-regional-ano-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional – Julio 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-julio-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional – Junio 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-junio-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Boletín Estadístico Informativo IP – Junio 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a marzo 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-marzo-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Series Estadísticas del Sistema ISAPRE 1990-2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/series-estadisticas-del-sistema-isapre-1990-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadísticas Financieras del Sistema ISAPRE a marzo 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional – Mayo 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-mayo-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Anual de Egresos Hospitalarios del Sistema ISAPRE año 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-anual-de-egresos-hospitalarios-del-sistema-isapre-ano-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional – Abril 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-abril-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Marzo 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-marzo-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Anual de la Cobertura Adicional para Enfermedades Catastróficas (CAEC) del Sistema ISAPRE – año 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-anual-de-la-cobertura-adicional-para-enfermedades-catastroficas-caec-del-sistema-isapre-ano-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Boletín Estadístico Informativo IP – Marzo 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-marzo-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadísticas Financieras del Sistema Isapre a diciembre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-diciembre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Febrero 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-febrero-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Anual de Prestaciones de Salud del Sistema ISAPRE Año 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-anual-de-prestaciones-de-salud-del-sistema-isapre-ano-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a diciembre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-diciembre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Anual de Planes de Salud del Sistema Isapre a Enero 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-anual-de-planes-de-salud-del-sistema-isapre-a-enero-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Enero 2026",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-enero-2026/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadísticas Consolidadas de Licencias Médicas Curativas de Origen Común y SIL 2024 – FONASA e ISAPRES",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-consolidadas-de-licencias-medicas-curativas-de-origen-comun-y-sil-2024-fonasa-e-isapres/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Anual de Licencias Médicas y SIL del Sistema Isapre – año 2024",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-anual-de-licencias-medicas-y-sil-del-sistema-isapre-ano-2024/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Boletín Estadístico Informativo IP – Diciembre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-diciembre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Anual de Egresos Hospitalarios del Sistema Isapre año 2024",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-anual-de-egresos-hospitalarios-del-sistema-isapre-ano-2024/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Anual de Cartera de Beneficiarios del Sistema Isapre a Nivel Comunal – Diciembre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-anual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-comunal-diciembre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Diciembre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-diciembre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Noviembre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-noviembre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Suscripciones y Desahucios del Sistema Isapre – año 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-suscripciones-y-desahucios-del-sistema-isapre-ano-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre – año 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema Isapre a Nivel Regional – Año 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/__trashed/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema Isapre – a septiembre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-septiembre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadísticas Financieras del Sistema Isapre a septiembre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-septiembre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Anual de la Cobertura Adicional para Enfermedades Catastróficas (CAEC) del Sistema Isapre – año 2024",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-anual-de-la-cobertura-adicional-para-enfermedades-catastroficas-caec-del-sistema-isapre-ano-2024/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Series Estadísticas del Sistema Isapre 1990-2024",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/series-estadisticas-del-sistema-isapre-1990-2024/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Anual de Planes de Salud del Sistema Isapre a Enero 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-anual-de-planes-de-salud-del-sistema-isapre-a-enero-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Octubre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-octubre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Boletín Estadístico Informativo IP – Septiembre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-septiembre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Septiembre 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-septiembre-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema Isapre a Nivel Regional – Año 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-movilidad-de-cartera-de-cotizantes-del-sistema-isapre-a-nivel-regional-ano-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema Isapre – a junio 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 2
+    },
+    {
+      "title": "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema Isapre – a marzo 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-marzo-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 2
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Agosto 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-agosto-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadísticas Financieras del Sistema Isapre a junio 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-junio-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Julio 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-julio-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Boletín Estadístico Informativo IP – Junio 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Junio 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-junio-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Mayo 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-mayo-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadísticas Financieras del Sistema Isapre a marzo 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    },
+    {
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema Isapre a Nivel Regional – Abril 2025",
+      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-abril-2025/",
+      "status": "not_recorded_legacy",
+      "family": null,
+      "sheet": null,
+      "period": null,
+      "insights": 0
+    }
+  ],
+  "user_telemetry": "local_preferences_only_no_central_collector"
+}

@@ -1,0 +1,29 @@
+const {test,expect}=require('@playwright/test');
+test('Signal Density loads, filters, interests and read state remain stable',async({page})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Actualizado');
+ await expect(page.locator('#period')).toHaveValue('7');await expect(page.locator('#sort')).toHaveValue('date');
+ await page.locator('#period').selectOption('90');
+ await expect(page.locator('article').first()).toBeVisible();
+ const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
+ await page.locator('article').first().getByRole('button').click();
+ expect(await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id))).toEqual(ids);
+ await page.getByRole('button',{name:'Personalizar mi radar'}).click();
+ await page.locator('#hiddenTypes input[value="Fiscalización"]').check();
+ expect(await page.locator('article .tag').allTextContents()).not.toContain('Fiscalización');
+ await page.locator('#hiddenTypes input[value="Fiscalización"]').uncheck();
+ await page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true}).click();
+ await expect(page.locator('article').first()).toBeVisible();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+ expect(errors).toEqual([]);
+ await page.screenshot({path:`artifacts/${test.info().project.name}-radar.png`,fullPage:true});
+});
+test('operations dashboard loads without inventing measurements',async({page})=>{
+ await page.goto('/admin/product.html');await expect(page.locator('#status')).toContainText('Actualizado:');
+ await expect(page.getByRole('heading',{name:'Control de producto'})).toBeVisible();
+ await expect(page.locator('#metrics')).toContainText('LIVE pending');
+ await expect(page.locator('#usage')).toContainText('Costo USD: no disponible');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+ const response=await page.request.get('/data/excel_diagnostics.csv');expect(response.ok()).toBeTruthy();
+ await page.screenshot({path:`artifacts/${test.info().project.name}-product.png`,fullPage:true});
+});

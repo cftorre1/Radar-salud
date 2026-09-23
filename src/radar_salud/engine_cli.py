@@ -12,76 +12,79 @@ from .source_scouts import SusesoNormativeScout,DfHealthScout
 from .diario_oficial import DiarioOficialHealthScout
 from .public_source_pipeline import process_suseso,process_minsal,process_df,process_diario_oficial
 from .analysis_cache import seed_from_history
-from .ai_budget import status as ai_budget_status
+from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
 from .processing import DeferredProcessing
 
-def _fp(raw):
-    return hashlib.sha256(f"{raw.source_slug}|{raw.url}|{raw.title}".encode()).hexdigest()
-
-def _fresh(items,store):
-    return [raw for raw in items if not store.is_seen(_fp(raw))]
-
-def _collect(root,name,items,processor,cfg,reset,limit):
-    state=root/"data"/"state"/f"{name}_seen.json"
-    if reset and state.exists():state.unlink()
-    store=SeenStore(state)
-    fresh=_fresh(items,store)
-    fresh.sort(key=lambda x:x.event_date or "",reverse=True)  # LIVE first
-    rows=[];deferred=0;rejected=0;attempted=0
-    for raw in fresh[:limit]:
-        attempted+=1
-        try:
-            row=processor(raw,cfg)
-            store.add_many([_fp(raw)])
-            if row:rows.append(row)
-            else:rejected+=1
-        except DeferredProcessing as e:
-            deferred+=1
-            print(f"{name}: deferred :: {raw.title[:70]} :: {e}")
-        except Exception as e:
-            # Technical errors are retryable: do not mark seen.
-            deferred+=1;print(f"{name}: retryable error :: {raw.title[:70]} :: {e}")
-    pending=max(0,len(fresh)-attempted)+deferred
-    (root/"data"/"outbox"/f"{name}_signals.json").write_text(json.dumps({"signals":rows},ensure_ascii=False,indent=2),encoding="utf-8")
-    health_record(root,name,name=name.replace("_"," ").title(),discovered=len(items),new=len(fresh),published=len(rows),
-                  pending=pending,deferred=deferred,rejected=rejected,rows=rows)
-    print(f"{name}: discovered={len(items)} new={len(fresh)} published={len(rows)} pending={pending} deferred={deferred} rejected={rejected}")
-    return rows
-
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument("--limit",type=int,default=20);ap.add_argument("--reset-state",action="store_true");args=ap.parse_args()
-    root=Path(__file__).resolve().parents[2];cfgs=source_index(load_sources(root/"config"/"sources.json"));(root/"data"/"outbox").mkdir(parents=True,exist_ok=True)
-    history_path=root/"data"/"history"/"superintendencia_signals.json";history=load_history(history_path);all_new=[]
-    print(f"analysis cache seeded from history: {seed_from_history(root)}")
-
-    state=root/"data"/"state"/"superintendencia_seen.json"
-    if args.reset_state and state.exists():state.unlink()
-    stats_store=SeenStore(state);items=SuperintendenciaStatsScout().discover();fresh=_fresh(items,stats_store)
-    fresh.sort(key=lambda x:x.event_date or "",reverse=True);save_raw_items(fresh,root/"data"/"inbox"/"superintendencia_new.json")
-    stats=[];stats_rejected=0
-    for raw in fresh[:args.limit]:
+    from .models import RawItem
+    from .pending_queue import PendingQueue, fingerprint
+    from .paths import project_root
+    ap=argparse.ArgumentParser()
+    ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
+    ap.add_argument("--reset-state",action="store_true")
+    args=ap.parse_args()
+    if args.reset_state:
+        ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
+    root=project_root()
+    cfgs=source_index(load_sources(root/"config"/"sources.json"))
+    queue=PendingQueue(root/"data/state/pending_queue.json")
+    history_path=root/"data/history/superintendencia_signals.json"
+    history=load_history(history_path)
+    seed_from_history(root)
+    def stats(raw,cfg):
+        signal=process_superintendencia_detail(raw,fetch_html(raw.url),cfg)
+        row=signal.to_dict()
+        for plan in ("free","pro"):
+            row["distribution_"+plan]=choose_distribution(signal.radar_score,signal.confidence_score,UserPlan(plan),signal.watch_tags,())
+        row.update(signal_types=["Datos"],scopes=["Isapres"])
+        return row
+    specs=[
+      ("superintendencia","superintendencia_salud",SuperintendenciaStatsScout().discover,stats),
+      ("superintendencia_normativa","superintendencia_normativa",SuperintendenciaNormativaScout().discover,process_superintendencia_normativa),
+      ("superintendencia_fiscalizacion","superintendencia_fiscalizacion",SuperintendenciaFiscalizacionScout().discover,process_fiscalizacion),
+      ("minsal","minsal",MinsalNewsScout().discover,process_minsal),
+      ("suseso","suseso",SusesoNormativeScout().discover,process_suseso),
+      ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
+      ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
+    processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
+    discoveries={}
+    # Complete discovery for every source before any budget-consuming processing.
+    for name,_,discover,_ in specs:
         try:
-            s=process_superintendencia_detail(raw,fetch_html(raw.url),cfgs["superintendencia_salud"])
-            row=s.to_dict();row["distribution_free"]=choose_distribution(s.radar_score,s.confidence_score,UserPlan("free"),s.watch_tags,())
-            row["distribution_pro"]=choose_distribution(s.radar_score,s.confidence_score,UserPlan("pro"),s.watch_tags,())
-            row["signal_types"]=["Datos"];row["scopes"]=["Isapres"];stats.append(row);stats_store.add_many([_fp(raw)])
-        except Exception as e:print("stats retryable:",e)
-    health_record(root,"superintendencia_stats",name="Superintendencia estadísticas",discovered=len(items),new=len(fresh),
-                  published=len(stats),pending=max(0,len(fresh)-len(stats)),rows=stats);all_new+=stats
+            items=discover()
+            store=SeenStore(root/"data/state"/f"{name}_seen.json")
+            seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw))}
+            added=queue.discover(name,items,seen)
+            discoveries[name]=(len(items),added,None)
+        except Exception as exc:
+            discoveries[name]=(0,0,type(exc).__name__)
+    produced={name:[] for name in processors}
+    for index,(key,item) in enumerate(queue.ready()):
+        if args.limit and index>=args.limit:break
+        if not has_capacity("fast") and not has_capacity("deep"):break
+        queue.start(key)
+        try:
+            cfg,processor=processors[item["source"]]
+            row=processor(RawItem(**item["raw"]),cfg)
+            if row:
+                row.update(detected_at=item["detected_at"],ingestion_mode=item["lane"])
+                # Save output before terminal queue acknowledgement (crash safe replay).
+                history=merge_history(history,[row]);save_history(history_path,history)
+                produced[item["source"]].append(row)
+            queue.finish(key,"published" if row else "rejected",None if row else "processor_rejected")
+            SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
+        except DeferredProcessing:
+            queue.finish(key,"retry","budget_or_analysis_deferred")
+        except Exception as exc:
+            queue.finish(key,"retry",type(exc).__name__)
+    for name,(discovered,new,error) in discoveries.items():
+        counts=queue.counts(name)
+        health_record(root,name,name=name.replace("_"," ").title(),discovered=discovered,new=new,
+            published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
+            rejected=counts["rejected"],rows=produced[name],error=error,
+            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"])
+    print({"queue":queue.counts(),"budget":ai_budget_status()})
 
-    reg=_collect(root,"superintendencia_normativa",SuperintendenciaNormativaScout().discover(),
-                 process_superintendencia_normativa,cfgs["superintendencia_normativa"],False,args.limit*3);all_new+=reg
-    fis=_collect(root,"superintendencia_fiscalizacion",SuperintendenciaFiscalizacionScout().discover(),
-                 process_fiscalizacion,cfgs["superintendencia_fiscalizacion"],False,args.limit*3);all_new+=fis
-    mi=_collect(root,"minsal",MinsalNewsScout().discover(),process_minsal,cfgs["minsal"],False,args.limit*2);all_new+=mi
-    su=_collect(root,"suseso",SusesoNormativeScout().discover(),process_suseso,cfgs["suseso"],False,args.limit*2);all_new+=su
-    df=_collect(root,"diario_financiero",DfHealthScout().discover(),process_df,cfgs["diario_financiero"],False,args.limit*3);all_new+=df
-    do=_collect(root,"diario_oficial",DiarioOficialHealthScout().discover(days_back=90 if args.reset_state else 10),
-                process_diario_oficial,cfgs["diario_oficial"],False,args.limit*3);all_new+=do
-
-    history=merge_history(history,all_new);save_history(history_path,history)
-    print(f"FINAL Stats={len(stats)} SuperNorm={len(reg)} Fiscalizacion={len(fis)} MINSAL={len(mi)} SUSESO={len(su)} DF={len(df)} DO={len(do)} History={len(history)}")
-    print(f"AI budget status: {ai_budget_status()}")
 if __name__=="__main__":main()

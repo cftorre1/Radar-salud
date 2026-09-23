@@ -25,7 +25,7 @@ def _month_key(v:Any):
     if isinstance(v,datetime):return (v.year,v.month)
     s=_norm(v).lower()
     m=re.search(r"(20\d{2})[-/](\d{1,2})",s)
-    if m:return (int(m.group(1)),int(m.group(2)))
+    if m and 1<=int(m.group(2))<=12:return (int(m.group(1)),int(m.group(2)))
     m=re.search(r"([a-záéíóú]{3,})[^\d]*(20\d{2})",s)
     if m:
         k=m.group(1)[:3]
@@ -65,7 +65,7 @@ def source_specific_insights(url:str,title:str)->dict:
         rows=[r for r in rows if any(v not in (None,"") for v in r)]
         for hi,h in enumerate(rows[:35]):
             periods=[(j,_month_key(v)) for j,v in enumerate(h) if _month_key(v)]
-            if len(periods)<2:continue
+            if len(periods)<2 or len({period for _,period in periods})!=len(periods):continue
             periods=sorted(periods,key=lambda x:x[1])
             j1,p1=periods[-2];j2,p2=periods[-1]
             obs=[]
@@ -101,12 +101,12 @@ def source_specific_insights(url:str,title:str)->dict:
     period=f"{p2[0]}-{p2[1]:02d}"
     insights=[]
     if fam=="movilidad":
-        insights.append(f"{high[1]} registra la mayor variación positiva entre los dos últimos períodos comparables ({high[0]:+.1f}%).")
-        insights.append(f"{low[1]} registra la mayor variación negativa entre los dos últimos períodos comparables ({low[0]:+.1f}%).")
+        insights.append(f"{high[1]} registra la mayor variación entre los dos últimos períodos comparables ({high[0]:+.1f}%).")
+        insights.append(f"{low[1]} registra la menor variación entre los dos últimos períodos comparables ({low[0]:+.1f}%).")
     elif fam=="cartera":
-        insights.append(f"{high[1]} muestra el mayor crecimiento de la métrica comparable de cartera en el último período ({high[0]:+.1f}%).")
-        insights.append(f"{low[1]} muestra la mayor caída de la métrica comparable de cartera en el último período ({low[0]:+.1f}%).")
+        insights.append(f"{high[1]} muestra el mayor variación de la métrica comparable de cartera en el último período ({high[0]:+.1f}%).")
+        insights.append(f"{low[1]} muestra la menor variación de la métrica comparable de cartera en el último período ({low[0]:+.1f}%).")
     elif fam=="suscripciones":
-        insights.append(f"{high[1]} presenta la mayor variación positiva en la métrica comparable de suscripciones/desahucios ({high[0]:+.1f}%).")
-        insights.append(f"{low[1]} presenta la mayor variación negativa en la métrica comparable de suscripciones/desahucios ({low[0]:+.1f}%).")
+        insights.append(f"{high[1]} presenta la mayor variación en la métrica comparable de suscripciones/desahucios ({high[0]:+.1f}%).")
+        insights.append(f"{low[1]} presenta la menor variación en la métrica comparable de suscripciones/desahucios ({low[0]:+.1f}%).")
     return {"family":fam,"status":"validated","sheet":sheet,"period":period,"insights":insights[:3]}

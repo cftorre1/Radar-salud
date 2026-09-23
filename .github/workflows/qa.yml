@@ -1,0 +1,76 @@
+name: Alicanto critical QA
+on:
+  pull_request:
+    branches: [main, staging]
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - run: python -m pytest -q
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci && npm test
+  staging:
+    needs: tests
+    environment: staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - name: Load durable iteration ledger
+        run: |
+          git fetch origin autopilot-state
+          mkdir -p data/autopilot
+          if git cat-file -e FETCH_HEAD:data/autopilot/ledger.json 2>/dev/null; then
+            git show FETCH_HEAD:data/autopilot/ledger.json > data/autopilot/ledger.json
+          fi
+      - run: python scripts/product_report.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci && npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: staging-evidence-${{ github.sha }}
+          path: |
+            artifacts/
+            test-results/
+            web/
+  reviewer:
+    needs: staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - uses: actions/download-artifact@v4
+        with:
+          name: staging-evidence-${{ github.sha }}
+          path: reviewed
+      - run: python scripts/review_candidate.py --web reviewed/web --sha "$GITHUB_SHA"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reviewer-${{ github.sha }}
+          path: artifacts/review.json

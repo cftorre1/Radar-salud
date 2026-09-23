@@ -21,10 +21,11 @@ def test_jsonld_is_cleaned():
 def test_financial_why_it_matters_is_specific():
     r=analyze_superintendencia(item('Estadísticas Financieras del Sistema ISAPRE a marzo 2026','Resultados financieros comparados IFRS', 'marzo 2026'))
     assert 'sostenibilidad financiera' in r.why_it_matters
-    assert 'BENCHMARK' in r.why_it_matters
+    assert 'entre Isapres' in r.why_it_matters
+    assert 'base oficial comparable' in r.why_it_matters
 
 
 def test_ges_editorial_copy_is_specific():
     r=analyze_superintendencia(item('Estadística Trimestral de Casos GES (AUGE)','Casos GES y tasas de uso', 'marzo 2026'))
-    assert 'utilización GES' in r.why_it_matters
+    assert 'utilización por patología' in r.why_it_matters
     assert 'casos y tasas de uso GES' in r.what_happened

@@ -47,6 +47,7 @@ def process_superintendencia_detail(raw: RawItem, html: str, source_cfg: Dict[st
     signal.confidence_score=validation.confidence_score
     signal.validation_status=validation.status
     signal.data_insights=data_insights
+    signal.data_insight_meta=insight_meta
     if not publication_ready([signal.title,signal.what_happened,signal.why_it_matters]):
         signal.validation_status="human_review_required"
         signal.distribution="archive"

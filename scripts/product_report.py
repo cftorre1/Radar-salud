@@ -1,0 +1,57 @@
+"""Generate a public, read-only operations dashboard with no credentials/PII."""
+import argparse
+import csv
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from radar_salud.pending_queue import PendingQueue, atomic_json
+
+def read(path, fallback):
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else fallback
+
+def build(root, output):
+    queue_path = root / "data/state/pending_queue.json"
+    queue = PendingQueue(queue_path)
+    health = read(root / "data/source_health.json", {"sources": {}})
+    snapshot = read(root / "web/data/radar_today.json", {"signals": []})
+    history = read(root / "data/history/superintendencia_signals.json", {"signals": []})
+    history = history.get("signals", []) if isinstance(history, dict) else history
+    responses_path = root / "data/ai_usage/responses.jsonl"
+    responses = [json.loads(line) for line in responses_path.read_text().splitlines() if line] if responses_path.exists() else []
+    usage = {p.stem: read(p, {}) for p in (root / "data/ai_usage").glob("*.json")}
+    diagnostics = []
+    for row in history:
+        if "Datos" not in row.get("signal_types", []) and not row.get("data_insight_meta"):
+            continue
+        meta = row.get("data_insight_meta") or {}
+        diagnostics.append({"title": row.get("title"), "source_url": row.get("source_url"),
+            "status": meta.get("status", "not_recorded_legacy"), "family": meta.get("family"),
+            "sheet": meta.get("sheet"), "period": meta.get("period"),
+            "insights": len(row.get("data_insights") or [])})
+    ledger = read(root / "data/autopilot/ledger.json", {"iterations": []})
+    report = dict(version="0.9.0", generated_at=datetime.now(timezone.utc).isoformat(),
+        snapshot_at=snapshot.get("generated_at"), published=len(snapshot.get("signals", [])),
+        queue=queue.counts() if queue_path.exists() else None,
+        queue_status="measured" if queue_path.exists() else "awaiting_first_global_discovery",
+        legacy_pending=sum(x.get("pending", 0) for x in health.get("sources", {}).values()),
+        sources=health.get("sources", {}), iterations=ledger["iterations"],
+        usage=dict(calls=usage, measured_responses=len(responses),
+            input_tokens=sum(x.get("input_tokens") or 0 for x in responses),
+            output_tokens=sum(x.get("output_tokens") or 0 for x in responses),
+            cost_usd=None, cost_status="unavailable_without_approved_rates",
+            historical_tokens_status="not_measured_before_0.9.0"),
+        excel=diagnostics, user_telemetry="local_preferences_only_no_central_collector")
+    output.mkdir(parents=True, exist_ok=True)
+    atomic_json(output / "product.json", report)
+    # Plain tabular diagnostic importable by Excel. No workbook is fabricated.
+    with (output / "excel_diagnostics.csv").open("w", encoding="utf-8-sig", newline="") as stream:
+        cols=["title", "source_url", "status", "family", "sheet", "period", "insights"]
+        writer=csv.DictWriter(stream, fieldnames=cols)
+        writer.writeheader()
+        for row in diagnostics:
+            writer.writerow({k: "'"+v if isinstance(v,str) and v.startswith(("=","+","-","@")) else v for k,v in row.items()})
+    return report
+
+if __name__ == "__main__":
+    parser=argparse.ArgumentParser();parser.add_argument("--root",default=".");parser.add_argument("--output",default="web/data")
+    args=parser.parse_args();build(Path(args.root),Path(args.output))

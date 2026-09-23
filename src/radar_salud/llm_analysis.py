@@ -2,12 +2,13 @@ from __future__ import annotations
 import json, os, re
 from typing import Any, Dict, Optional
 from .ai_budget import allow_call, record_result
+from .telemetry import record_response
 
 def _client():
     if not os.getenv("OPENAI_API_KEY"):return None
     try:
         from openai import OpenAI
-        return OpenAI()
+        return OpenAI(max_retries=0)
     except Exception:return None
 
 def _parse_json(text:str)->Optional[Dict[str,Any]]:
@@ -52,7 +53,7 @@ No incluyas la propia norma como referencia a sí misma."""
         r=c.responses.create(model=model,instructions=instructions,input=[{"role":"user","content":[
           {"type":"input_text","text":f"Documento: {title}\nFuente: {source_name}\nÁmbito de origen (NO implica actor afectado): {scope}\nFicha oficial: {fallback_summary[:1400]}"},
           {"type":"input_file","file_url":pdf_url}]}],text={"format":{"type":"json_schema","name":"alicanto_normative_v3","strict":True,"schema":NORM_SCHEMA}})
-        parsed=_parse_json(r.output_text);record_result("deep",bool(parsed));return parsed
+        parsed=_parse_json(r.output_text);record_response("deep",model,r,bool(parsed));record_result("deep",bool(parsed));return parsed
     except Exception as e:
         record_result("deep",False);print(f"deep model error: {e}");return None
 
@@ -70,7 +71,7 @@ Qué pasó: concreto y verificable. Por qué importa: actor afectado + efecto es
 Evita frases genéricas reutilizables. No inventes implicancias."""
     try:
         r=c.responses.create(model=model,instructions=instructions,input=f"Fuente: {source_name}\nTítulo: {title}\nContenido:\n{text[:5500]}",text={"format":{"type":"json_schema","name":"alicanto_news_v3","strict":True,"schema":NEWS_SCHEMA}})
-        parsed=_parse_json(r.output_text);record_result("fast",bool(parsed));return parsed
+        parsed=_parse_json(r.output_text);record_response("fast",model,r,bool(parsed));record_result("fast",bool(parsed));return parsed
     except Exception as e:
         record_result("fast",False);print(f"fast model error: {e}");return None
 
