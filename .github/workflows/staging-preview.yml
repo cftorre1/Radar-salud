@@ -1,0 +1,92 @@
+name: Alicanto staging preview
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  bootstrap:
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create auxiliary branches from verified production
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/bootstrap_autopilot.py
+  qa:
+    needs: bootstrap
+    if: github.ref == 'refs/heads/staging'
+    uses: ./.github/workflows/qa.yml
+  preview:
+    needs: qa
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}staging/
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: staging-evidence-${{ github.sha }}
+          path: checked
+      - name: Keep production bytes from last accepted release
+        run: |
+          mkdir -p stable
+          git archive origin/production-stable web | tar -x -C stable
+          cp -R stable/web /tmp/preview-rollback
+          python scripts/package_pages.py staging --accepted stable/web --checked checked/web --output packaged --sha "$GITHUB_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preview-rollback-${{ github.sha }}
+          path: /tmp/preview-rollback
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: packaged
+      - uses: actions/deploy-pages@v5
+        id: deploy
+      - run: python scripts/smoke_release.py '${{ steps.deploy.outputs.page_url }}staging/' "$GITHUB_SHA"
+  rollback:
+    needs: preview
+    if: ${{ failure() && needs.preview.result == 'failure' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment: github-pages
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: preview-rollback-${{ github.sha }}
+          path: rollback
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages-preview-rollback
+          path: rollback
+      - uses: actions/deploy-pages@v5
+        id: restored
+        with:
+          artifact_name: github-pages-preview-rollback
+      - run: python scripts/smoke_release.py '${{ steps.restored.outputs.page_url }}' --expected-dir rollback
