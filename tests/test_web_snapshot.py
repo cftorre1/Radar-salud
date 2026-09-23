@@ -31,8 +31,14 @@ def test_sanctions_become_two_rolling_pulses_without_losing_individual_sources()
     rows.append(dict(rows[0],title="Resolución antigua",source_url="https://x/old",event_date="2026-08-01"))
     pulses=m._sanction_pulses(rows,date(2026,9,23))
     assert sorted(x["sanction_count"] for x in pulses if x.get("sanction_count"))==[2,3]
-    assert len([x for x in pulses if x["source_url"]=="https://x/old"])==1
+    assert not [x for x in pulses if x["source_url"]=="https://x/old"]
     assert {x["source_url"] for x in pulses if x.get("sanction_count")} <= {r["source_url"] for r in rows}
     assert all(len(x["source_alternatives"])==x["sanction_count"]-1 for x in pulses if x.get("sanction_count"))
     assert all(x["ingestion_mode"]=="LIVE" for x in pulses if x.get("sanction_count"))
     assert "1 incorporadas desde el histórico" in next(x["what_happened"] for x in pulses if x.get("sanction_count")==3)
+
+def test_offline_recuration_keeps_local_context_without_fetching(monkeypatch):
+    row=sig("Circular IF/N°535",event="2026-09-23",cat="Regulación & Legal")
+    row.update(signal_types=["Normativa"],related_reference_ids=["Circular IF/N°529"])
+    monkeypatch.setattr(m,"resolve_reference",lambda *args: (_ for _ in ()).throw(AssertionError("network")))
+    assert m.curate([row],resolve_external=False)[0]["related_context"]==[]
