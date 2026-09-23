@@ -1,4 +1,5 @@
 const {test,expect}=require('@playwright/test');
+require('node:fs').mkdirSync('artifacts',{recursive:true});
 test('Signal Density loads, filters, interests and read state remain stable',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Actualizado');
