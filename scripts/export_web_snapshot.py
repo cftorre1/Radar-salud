@@ -71,7 +71,7 @@ def _ref_key(text):
     m=re.search(r"circular\s+(?:if\s*[/\-]?\s*)?n?[°º]?\s*(\d+)",text or "",re.I)
     return "circular-"+m.group(1) if m else None
 
-def _related_context(signals):
+def _related_context(signals,resolve_external=True):
     idx={_doc_key(s):s for s in signals if _doc_key(s)};out=[]
     for s in signals:
         r=dict(s);rels=[];seen=set();relmap=_relmap(r)
@@ -81,7 +81,7 @@ def _related_context(signals):
             if target and target.get("source_url")!=r.get("source_url"):
                 item={"title":target.get("title"),"summary":target.get("what_happened"),"relationship":relationship,
                       "url":target.get("source_url"),"event_date":target.get("event_date"),"verified":True}
-            else:item=resolve_reference(ref,relationship)
+            else:item=resolve_reference(ref,relationship) if resolve_external else None
             if not item:continue
             identity=item.get("url") or item.get("title")
             if not identity or identity in seen or item.get("url")==r.get("source_url"):continue
@@ -121,9 +121,11 @@ def _sanction_pulses(signals, today=None):
         scopes=s.get("scopes") or []
         sector=next((x for x in ("Isapres","Prestadores") if x in scopes),None)
         age=(today-_d(s.get("event_date"))).days if _d(s.get("event_date")) else 999
-        if s.get("event_type")=="SANCTION" and sector and 0<=age<=30:
-            groups[sector].append(s)
-        else:other.append(s)
+        if s.get("event_type")=="SANCTION" and sector:
+            if 0<=age<=30:groups[sector].append(s)
+            # Individual and older resolutions stay in durable history.
+            continue
+        other.append(s)
     for sector,items in groups.items():
         items.sort(key=lambda x:_d(x.get("event_date")) or date.min,reverse=True)
         live=[s for s in items if s.get("ingestion_mode")=="LIVE"]
@@ -143,7 +145,7 @@ def _sanction_pulses(signals, today=None):
         other.append(pulse)
     return other
 
-def curate(signals):
+def curate(signals,resolve_external=True):
     normalized=[]
     for s in signals:
         r=_normalize_scopes(_normalize_type(s))
@@ -152,13 +154,13 @@ def curate(signals):
     if not normalized:return []
     latest=max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
     recent=[s for s in normalized if _d(s.get("event_date")) and (latest-_d(s.get("event_date"))).days<=90]
-    recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent)
+    recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument("--input",required=True);ap.add_argument("--output",default="web/data/radar_today.json");args=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument("--input",required=True);ap.add_argument("--output",default="web/data/radar_today.json");ap.add_argument("--offline",action="store_true",help="Rebuild only from recorded evidence");args=ap.parse_args()
     raw=json.loads(Path(args.input).read_text(encoding="utf-8"));signals=raw.get("signals",raw) if isinstance(raw,dict) else raw
-    payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":curate(signals)}
+    payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":curate(signals,resolve_external=not args.offline)}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
