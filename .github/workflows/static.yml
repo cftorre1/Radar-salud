@@ -60,16 +60,12 @@ jobs:
         with:
           name: staging-evidence-${{ github.sha }}
           path: checked
-      - run: rsync -a --delete checked/web/ web/
       - name: Stamp exact candidate and preserve staging preview
-        run: |
-          python -c 'import json,os;open("web/release.json","w").write(json.dumps({"sha":os.environ["GITHUB_SHA"]}))'
-          cp -R checked/web web/staging
-          cp web/release.json web/staging/release.json
+        run: python scripts/package_pages.py production --accepted rollback/web --checked checked/web --output packaged --sha "$GITHUB_SHA"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: web
+          path: packaged
       - uses: actions/deploy-pages@v5
         id: deployment
       - name: Verify deployed production
@@ -78,7 +74,7 @@ jobs:
         run: |
           git config user.name alicanto-autopilot
           git config user.email alicanto-autopilot@users.noreply.github.com
-          cp -R web /tmp/accepted-web
+          cp -R packaged /tmp/accepted-web
           git worktree add /tmp/accepted-production origin/production-stable
           rsync -a --delete /tmp/accepted-web/ /tmp/accepted-production/web/
           git -C /tmp/accepted-production add web

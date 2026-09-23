@@ -34,16 +34,12 @@ jobs:
         with:
           name: staging-evidence-${{ github.sha }}
           path: checked
-      - run: rsync -a --delete checked/web/ web/
       - name: Keep production bytes from last accepted release
         run: |
           mkdir -p stable
           git archive origin/production-stable web | tar -x -C stable
           cp -R stable/web /tmp/preview-rollback
-          cp -R web stable/web/staging-new
-          rm -rf stable/web/staging
-          mv stable/web/staging-new stable/web/staging
-          python -c 'import json,os;open("stable/web/staging/release.json","w").write(json.dumps({"sha":os.environ["GITHUB_SHA"]}))'
+          python scripts/package_pages.py staging --accepted stable/web --checked checked/web --output packaged --sha "$GITHUB_SHA"
       - uses: actions/upload-artifact@v4
         with:
           name: preview-rollback-${{ github.sha }}
@@ -51,7 +47,7 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: stable/web
+          path: packaged
       - uses: actions/deploy-pages@v5
         id: deploy
       - run: python scripts/smoke_release.py '${{ steps.deploy.outputs.page_url }}staging/' "$GITHUB_SHA"
