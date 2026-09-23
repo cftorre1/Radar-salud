@@ -9,7 +9,22 @@ concurrency:
   group: pages
   cancel-in-progress: false
 jobs:
+  bootstrap:
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create auxiliary branches from verified production
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/bootstrap_autopilot.py
   qa:
+    needs: bootstrap
     if: github.ref == 'refs/heads/staging'
     uses: ./.github/workflows/qa.yml
   preview:

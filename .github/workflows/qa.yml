@@ -34,10 +34,12 @@ jobs:
       - run: pip install -e .
       - name: Load durable iteration ledger
         run: |
-          git fetch origin autopilot-state
           mkdir -p data/autopilot
-          if git cat-file -e FETCH_HEAD:data/autopilot/ledger.json 2>/dev/null; then
-            git show FETCH_HEAD:data/autopilot/ledger.json > data/autopilot/ledger.json
+          if git ls-remote --exit-code --heads origin autopilot-state >/dev/null; then
+            git fetch origin autopilot-state
+            if git cat-file -e FETCH_HEAD:data/autopilot/ledger.json 2>/dev/null; then
+              git show FETCH_HEAD:data/autopilot/ledger.json > data/autopilot/ledger.json
+            fi
           fi
       - run: python scripts/product_report.py
       - uses: actions/setup-node@v4
