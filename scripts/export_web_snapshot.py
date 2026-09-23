@@ -113,6 +113,31 @@ def _latest_stats(signals):
     for items in fam.values():other.append(max(items,key=lambda x:(_d(x.get("event_date")) or date.min,x.get("radar_score",0))))
     return other
 
+def _sanction_pulses(signals, today=None):
+    """Keep individual records in history, show one rolling pulse per sector."""
+    today=today or date.today()
+    groups=defaultdict(list);other=[]
+    for s in signals:
+        scopes=s.get("scopes") or []
+        sector=next((x for x in ("Isapres","Prestadores") if x in scopes),None)
+        age=(today-_d(s.get("event_date"))).days if _d(s.get("event_date")) else 999
+        if s.get("event_type")=="SANCTION" and sector and 0<=age<=30:
+            groups[sector].append(s)
+        else:other.append(s)
+    for sector,items in groups.items():
+        items.sort(key=lambda x:_d(x.get("event_date")) or date.min,reverse=True)
+        latest=items[0]
+        urls=list(dict.fromkeys(s.get("source_url") for s in items if s.get("source_url")))
+        pulse=dict(latest,title=f"Pulso de sanciones a {sector} · últimos 30 días",
+            what_happened=f"{len(items)} {'sanción registrada' if len(items)==1 else 'sanciones registradas'} en los últimos 30 días.",
+            why_it_matters="Permite observar focos recientes de fiscalización y revisar cada resolución en su fuente original.",
+            source_alternatives=[{"title":s.get("title"),"source_name":s.get("source_name"),
+                "url":s.get("source_url"),"event_date":s.get("event_date")} for s in items if s.get("source_url")!=latest.get("source_url")],
+            sanction_count=len(items),source_documents=[],key_points=[],risk_notes=[],
+            ingestion_mode="LIVE" if all(s.get("ingestion_mode")=="LIVE" for s in items) else "BACKFILL")
+        other.append(pulse)
+    return other
+
 def curate(signals):
     normalized=[]
     for s in signals:
@@ -122,7 +147,7 @@ def curate(signals):
     if not normalized:return []
     latest=max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
     recent=[s for s in normalized if _d(s.get("event_date")) and (latest-_d(s.get("event_date"))).days<=90]
-    recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_related_context(recent)
+    recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 
 def main():

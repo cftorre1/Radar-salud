@@ -18,3 +18,18 @@ def test_regulation_survives_and_is_recent():
     r=sig("Circular IF/N°535",event="2026-09-14",score=82,cat="Regulación & Legal");r["signal_types"]=["Normativa"];r["scopes"]=["Isapres"]
     out=m.curate([r])
     assert out[0]["signal_types"]==["Normativa"]
+
+def test_sanctions_become_two_rolling_pulses_without_losing_individual_sources():
+    from datetime import date
+    rows=[]
+    for sector in ("Isapres", "Prestadores"):
+        for n in (1,2):
+            row=sig(f"Resolución sancionatoria {sector} {n}",event="2026-09-22",url=f"https://x/{sector}/{n}")
+            row.update(event_type="SANCTION",signal_types=["Fiscalización"],scopes=[sector],ingestion_mode="LIVE")
+            rows.append(row)
+    rows.append(dict(rows[0],title="Resolución antigua",source_url="https://x/old",event_date="2026-08-01"))
+    pulses=m._sanction_pulses(rows,date(2026,9,23))
+    assert len([x for x in pulses if x.get("sanction_count")==2])==2
+    assert len([x for x in pulses if x["source_url"]=="https://x/old"])==1
+    assert {x["source_url"] for x in pulses if x.get("sanction_count")==2} <= {r["source_url"] for r in rows}
+    assert all(len(x["source_alternatives"])==1 for x in pulses if x.get("sanction_count")==2)
