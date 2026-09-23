@@ -1,6 +1,6 @@
 from datetime import datetime, timezone, timedelta
 import pytest
-from radar_salud.autopilot import reserve, approve, consolidate, CRITICAL
+from radar_salud.autopilot import reserve, approve, consolidate, should_attempt, CRITICAL
 from radar_salud.pending_queue import PendingQueue
 from radar_salud.models import RawItem
 
@@ -51,3 +51,11 @@ def test_discovery_is_durable_and_deduplicated(tmp_path):
     assert queue.discover("s",items,now=NOW)==100
     assert PendingQueue(queue.path).discover("s",items,now=NOW)==0
     assert queue.counts()["live_pending"]==100
+
+def test_scheduled_cycle_skips_unchanged_reviewed_candidate():
+    ledger={}
+    entry=reserve(ledger,"abc","builder",NOW)
+    assert should_attempt(ledger,"abc")
+    entry["state"]="blocked"
+    assert not should_attempt(ledger,"abc")
+    assert should_attempt(ledger,"new")

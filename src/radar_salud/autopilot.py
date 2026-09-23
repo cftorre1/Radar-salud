@@ -9,6 +9,12 @@ from .pending_queue import atomic_json
 
 CRITICAL = {"tests", "editorial", "data", "desktop", "mobile", "reviewer"}
 
+def should_attempt(ledger, candidate_sha):
+    """Retry interrupted attempts; wait for a changed candidate after review."""
+    return not any(x.get("candidate_sha") == candidate_sha
+                   and x.get("state") in ("ready", "blocked")
+                   for x in ledger.get("iterations", []))
+
 def reserve(ledger, candidate_sha, builder, now=None):
     now = now or datetime.now(timezone.utc)
     day = now.astimezone(timezone.utc).date().isoformat()

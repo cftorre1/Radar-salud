@@ -8,7 +8,7 @@ import json
 import os
 import subprocess
 from pathlib import Path
-from radar_salud.autopilot import reserve, approve, save_ledger
+from radar_salud.autopilot import reserve, approve, save_ledger, should_attempt
 
 def run(command):
     return subprocess.run(command, check=False).returncode == 0
@@ -18,8 +18,16 @@ def main():
     args=p.parse_args();path=Path(args.ledger)
     ledger=json.loads(path.read_text()) if path.exists() else {"iterations":[]}
     if args.action=="reserve":
+        if not should_attempt(ledger,args.sha):
+            if os.environ.get("GITHUB_OUTPUT"):
+                with open(os.environ["GITHUB_OUTPUT"],"a") as out:out.write("reserved=false\n")
+            print("Already reviewed this candidate; waiting for a new SHA")
+            return
         entry=reserve(ledger,args.sha,"deterministic-builder")
-        save_ledger(path,ledger);print(entry["id"]);return
+        save_ledger(path,ledger)
+        if os.environ.get("GITHUB_OUTPUT"):
+            with open(os.environ["GITHUB_OUTPUT"],"a") as out:out.write("reserved=true\n")
+        print(entry["id"]);return
     entry=ledger["iterations"][-1]
     if entry["state"]!="reserved" or entry["candidate_sha"]!=args.sha:
         raise RuntimeError("Missing matching reservation")
