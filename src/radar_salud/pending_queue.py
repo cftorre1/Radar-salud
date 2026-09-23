@@ -35,7 +35,7 @@ def lane(raw, now, last_discovered_at=None):
 def beyond_backfill_horizon(raw, now, days=90):
     try:
         published = datetime.fromisoformat(raw.event_date[:10]).date()
-        return published > now.date() or (now.date() - published).days > days
+        return (now.date() - published).days > days
     except (TypeError, ValueError):
         return False
 
@@ -75,7 +75,7 @@ class PendingQueue:
                     published = datetime.fromisoformat(str(raw.get("event_date"))[:10]).date()
                 except (TypeError, ValueError):
                     continue
-                if published > now.date() or (now.date() - published).days > 90:
+                if (now.date() - published).days > 90:
                     item.update(status="archived", reason="outside_90_day_backfill")
                     changed += 1
         if changed:self.save()
@@ -85,6 +85,8 @@ class PendingQueue:
         now = now or now_utc()
         items = [(key, item) for key, item in self.items.items()
                  if item["status"] in ("pending", "retry", "processing")
+                 and not (item.get("lane") == "BACKFILL" and item.get("raw", {}).get("event_date")
+                          and str(item["raw"]["event_date"])[:10] > now.date().isoformat())
                  and (not item.get("retry_at") or item["retry_at"] <= now.isoformat())]
         return sorted(items, key=lambda pair: (
             pair[1]["lane"] != "LIVE", pair[1]["attempts"], pair[1]["detected_at"]))

@@ -126,15 +126,20 @@ def _sanction_pulses(signals, today=None):
         else:other.append(s)
     for sector,items in groups.items():
         items.sort(key=lambda x:_d(x.get("event_date")) or date.min,reverse=True)
-        latest=items[0]
-        urls=list(dict.fromkeys(s.get("source_url") for s in items if s.get("source_url")))
+        live=[s for s in items if s.get("ingestion_mode")=="LIVE"]
+        latest=live[0] if live else items[0]
         pulse=dict(latest,title=f"Pulso de sanciones a {sector} · últimos 30 días",
-            what_happened=f"{len(items)} {'sanción registrada' if len(items)==1 else 'sanciones registradas'} en los últimos 30 días.",
+            what_happened=f"{len(items)} {'sanción registrada' if len(items)==1 else 'sanciones registradas'} en los últimos 30 días. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico.",
             why_it_matters="Permite observar focos recientes de fiscalización y revisar cada resolución en su fuente original.",
             source_alternatives=[{"title":s.get("title"),"source_name":s.get("source_name"),
                 "url":s.get("source_url"),"event_date":s.get("event_date")} for s in items if s.get("source_url")!=latest.get("source_url")],
-            sanction_count=len(items),source_documents=[],key_points=[],risk_notes=[],
-            ingestion_mode="LIVE" if all(s.get("ingestion_mode")=="LIVE" for s in items) else "BACKFILL")
+            sanction_count=len(items),source_documents=[],key_points=[],risk_notes=[],key_facts=[],
+            related_reference_ids=[],related_reference_contexts=[],affected_processes=[],
+            regulated_entity=None,sanction_amount=None,sanction_unit=None,fiscalization_topic=None,
+            radar_score=max(s.get("radar_score") or 0 for s in items),
+            confidence_score=min(s.get("confidence_score") or 0 for s in items),
+            detected_at=max((s.get("detected_at") or "" for s in live),default=latest.get("detected_at")),
+            ingestion_mode="LIVE" if live else "BACKFILL")
         other.append(pulse)
     return other
 

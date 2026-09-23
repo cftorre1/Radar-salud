@@ -79,3 +79,10 @@ def test_backfill_over_90_days_is_retained_but_never_processes(tmp_path):
     assert queue.counts()["backfill_pending"]==1
     assert queue.enforce_backfill_horizon(NOW+timedelta(days=100))==1
     assert queue.ready(NOW+timedelta(days=100))==[]
+
+def test_future_dated_backfill_waits_and_is_not_archived(tmp_path):
+    queue=PendingQueue(tmp_path/"q.json")
+    queue.discover("s",[raw("future","2026-09-24")],now=NOW)
+    assert queue.ready(NOW)==[]
+    assert queue.counts()["backfill_pending"]==1
+    assert len(queue.ready(NOW+timedelta(days=1)))==1

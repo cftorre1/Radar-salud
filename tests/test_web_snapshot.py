@@ -27,9 +27,12 @@ def test_sanctions_become_two_rolling_pulses_without_losing_individual_sources()
             row=sig(f"Resolución sancionatoria {sector} {n}",event="2026-09-22",url=f"https://x/{sector}/{n}")
             row.update(event_type="SANCTION",signal_types=["Fiscalización"],scopes=[sector],ingestion_mode="LIVE")
             rows.append(row)
+    rows.append(dict(rows[0],title="Resolución backfill",source_url="https://x/backfill",event_date="2026-09-21",ingestion_mode="BACKFILL"))
     rows.append(dict(rows[0],title="Resolución antigua",source_url="https://x/old",event_date="2026-08-01"))
     pulses=m._sanction_pulses(rows,date(2026,9,23))
-    assert len([x for x in pulses if x.get("sanction_count")==2])==2
+    assert sorted(x["sanction_count"] for x in pulses if x.get("sanction_count"))==[2,3]
     assert len([x for x in pulses if x["source_url"]=="https://x/old"])==1
-    assert {x["source_url"] for x in pulses if x.get("sanction_count")==2} <= {r["source_url"] for r in rows}
-    assert all(len(x["source_alternatives"])==1 for x in pulses if x.get("sanction_count")==2)
+    assert {x["source_url"] for x in pulses if x.get("sanction_count")} <= {r["source_url"] for r in rows}
+    assert all(len(x["source_alternatives"])==x["sanction_count"]-1 for x in pulses if x.get("sanction_count"))
+    assert all(x["ingestion_mode"]=="LIVE" for x in pulses if x.get("sanction_count"))
+    assert "1 incorporadas desde el histórico" in next(x["what_happened"] for x in pulses if x.get("sanction_count")==3)

@@ -3,7 +3,7 @@ require('node:fs').mkdirSync('artifacts',{recursive:true});
 test('Signal Density loads, filters, interests and read state remain stable',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Actualizado');
- await expect(page.locator('#period')).toHaveValue('7');await expect(page.locator('#sort')).toHaveValue('date');
+ await expect(page.locator('#period')).toHaveValue('14');await expect(page.locator('#sort')).toHaveValue('date');
  await expect(page.locator('#coverage-title')).toHaveText('Cómo seleccionamos lo que importa');
  await expect(page.locator('#coverageCounts')).toContainText('pendientes');
  await page.locator('#period').selectOption('90');

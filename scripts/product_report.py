@@ -30,8 +30,13 @@ def build(root, output):
             "insights": len(row.get("data_insights") or [])})
     ledger = read(root / "data/autopilot/ledger.json", {"iterations": []})
     live = [item for item in queue.items.values() if item.get("lane") == "LIVE"]
-    selected_urls = {row.get("source_url") for row in snapshot.get("signals", [])
-                     if row.get("ingestion_mode") == "LIVE" and row.get("source_url")}
+    selected_urls = set()
+    for row in snapshot.get("signals", []):
+        if row.get("ingestion_mode") != "LIVE":
+            continue
+        selected_urls.add(row.get("source_url"))
+        if row.get("sanction_count"):
+            selected_urls.update(x.get("url") for x in row.get("source_alternatives", []))
     coverage_live = dict(
         detected=len(live),
         evaluated=sum(item.get("status") in ("published", "rejected") for item in live),
