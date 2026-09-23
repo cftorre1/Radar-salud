@@ -1,0 +1,22 @@
+import importlib.util
+from pathlib import Path
+
+spec = importlib.util.spec_from_file_location("bootstrap", Path("scripts/bootstrap_autopilot.py"))
+bootstrap = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(bootstrap)
+SHA = "a" * 40
+
+
+def test_initialization_requires_success_on_current_main():
+    runs = {"workflow_runs": [
+        {"head_sha": "b" * 40, "head_branch": "main", "conclusion": "success"},
+        {"head_sha": SHA, "head_branch": "staging", "conclusion": "success"},
+        {"head_sha": SHA, "head_branch": "main", "conclusion": "failure"},
+    ]}
+    assert not bootstrap.is_accepted_main(SHA, runs)
+    runs["workflow_runs"].append({"head_sha": SHA, "head_branch": "main", "conclusion": "success"})
+    assert bootstrap.is_accepted_main(SHA, runs)
+
+
+def test_no_arbitrary_ref_is_accepted():
+    assert not bootstrap.is_accepted_main("main", {"workflow_runs": []})
