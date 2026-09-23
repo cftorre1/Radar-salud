@@ -35,17 +35,17 @@ def enrich(raw):
     try:
         p=_Meta();p.feed(fetch_html(raw.url));body=" ".join(p.text)
         if p.ogtitle and len(raw.title)<18:raw.title=p.ogtitle
-        raw.raw_text=p.description or body[:1400];raw.event_date=raw.event_date or _date(p.published) or _date(body[:7000]);raw.metadata["page_text"]=body[:12000]
+        raw.raw_text=p.description or body[:1400];raw.event_date=raw.event_date or _date(p.published) or _date(body[:10000]);raw.metadata["page_text"]=body[:16000]
     except Exception as e:print("enrich:",e)
     return raw
 
 def _noise(title):
-    t=(title or "").lower()
-    return any(x in t for x in ("renuncia","designa nueva","designa nuevo","nombramiento","asume como","nuevo subsecretario","nueva subsecretaria","seremi","continúa recorrido","continua recorrido","visita nuevo","visita el","visita la","conmemora","participa en"))
+    t=(title or "").lower();terms=("renuncia","nombramiento","nombra,","nombra a","nombra mediante","designa","designación","designacion","asume como","alta dirección pública","alta direccion publica","nuevo subsecretario","nueva subsecretaria","seremi","director del servicio de salud","directora del servicio de salud","continúa recorrido","continua recorrido","visita nuevo","visita el","visita la","conmemora","participa en","trayectoria")
+    return any(x in t for x in terms)
 
 def _fallback_minsal_score(title,text):
     t=f"{title} {text}".lower()
-    if _noise(title):return 20
+    if _noise(title):return 0
     if any(x in t for x in ("alerta alimentaria","retiro de producto","lote de")):return 45
     if any(x in t for x in ("ley","decreto","reglamento","plan nacional","estrategia nacional","listas de espera","ges","fonasa","financiamiento","presupuesto","red asistencial","inversión","inversion")):return 80
     if any(x in t for x in ("programa","medida","fiscalización","fiscalizacion","hospital","eleam","medicamentos","alerta sanitaria")):return 66
@@ -61,18 +61,25 @@ def process_minsal(raw,cfg):
     raw.metadata.update({"what_happened":(ai.get("what_happened") if ai else raw.raw_text) or raw.title,"why_it_matters":(ai.get("why_it_matters") if ai else "La publicación contiene un cambio oficial con efectos relevantes para una parte del sistema de salud."),"signal_types":["Noticias"],"scopes":["Salud pública"],"watch_tags":["minsal","salud pública"],"scores":{"economic":45,"regulatory":55,"scope":score,"novelty":score,"actionability":60}})
     s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Noticias"];row["scopes"]=["Salud pública"];row["editorial_relevance"]=score;return row
 
+def _clean_validity(text):
+    if not text:return None
+    flat=" ".join(text.split());m=re.search(r"\bVigencia\s*:?\s*(.{1,220}?)(?=\s+(?:Acci[oó]n|Fuentes|Entidades Fiscalizadas|Tipo Contenido Normativo|Departamento|Materia)\b|$)",flat,re.I)
+    if not m:return None
+    v=m.group(1).strip(" :-")
+    if not v or any(x in v.lower() for x in ('nj:','"529"','"535"','propertyvalue','javascript')):return None
+    return v[:180]
+
 def process_suseso(raw,cfg):
     raw=enrich(raw)
     if not raw.event_date:return None
-    text=raw.metadata.get("page_text") or raw.raw_text;vig=None;m=re.search(r"(Vigencia[^.]{0,180})",text,re.I)
-    if m:vig=m.group(1).strip()
+    text=raw.metadata.get("page_text") or raw.raw_text;vig=_clean_validity(text)
     raw.metadata.update({"what_happened":raw.raw_text or raw.title,"why_it_matters":"La instrucción modifica o precisa criterios aplicables a salud laboral, organismos administradores o empleadores y puede exigir cambios de cumplimiento u operación.","signal_types":["Normativa"],"scopes":["Salud laboral"],"watch_tags":["suseso","salud laboral","normativa"],"event_type":"REGULATION","validity_text":vig,"scores":{"economic":50,"regulatory":90,"scope":75,"novelty":75,"actionability":82}})
     s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Normativa"];row["scopes"]=["Salud laboral"];return row
 
 def _scopes(text):
     t=text.lower();out=[]
-    if "isapre" in t:out.append("Isapres")
-    if "fonasa" in t:out.append("Fonasa")
+    if re.search(r"\bisapre(?:s)?\b",t):out.append("Isapres")
+    if re.search(r"\bfonasa\b|fondo nacional de salud",t):out.append("Fonasa")
     if any(x in t for x in ("clínica","clinica","hospital","prestador","centro médico","centro medico")):out.append("Prestadores")
     if any(x in t for x in ("farmac","medicamento","laboratorio","novo nordisk","moderna")):out.append("Farma / medicamentos")
     if any(x in t for x in ("healthtech","salud digital","telemedicina")):out.append("Healthtech")
@@ -82,19 +89,20 @@ def process_df(raw,cfg):
     raw=enrich(raw)
     if not raw.event_date:return None
     body=raw.metadata.get("page_text") or raw.raw_text;ai=analyze_news(title=raw.title,text=body,source_name=raw.source_name,kind="prensa económica especializada en salud")
-    if ai and int(ai.get("relevance_score",0))<65:return None
-    score=int(ai.get("relevance_score",75)) if ai else 75;sc=_scopes(f"{raw.title} {raw.raw_text}")
-    raw.metadata.update({"what_happened":(ai.get("what_happened") if ai else raw.raw_text) or raw.title,"why_it_matters":(ai.get("why_it_matters") if ai else "La noticia describe un movimiento competitivo, financiero, de inversión o estrategia con relevancia para el sector salud."),"signal_types":["Noticias"],"scopes":sc,"watch_tags":["df","noticias"]+[x.lower() for x in sc],"scores":{"economic":min(95,max(65,score)),"regulatory":30,"scope":70,"novelty":score,"actionability":70}})
+    if not ai:return None
+    if int(ai.get("relevance_score",0))<65:return None
+    score=int(ai.get("relevance_score",0));sc=_scopes(f"{raw.title} {raw.raw_text}")
+    raw.metadata.update({"what_happened":ai.get("what_happened") or raw.title,"why_it_matters":ai.get("why_it_matters") or "","signal_types":["Noticias"],"scopes":sc,"watch_tags":["df","noticias"]+[x.lower() for x in sc],"scores":{"economic":min(95,max(65,score)),"regulatory":30,"scope":70,"novelty":score,"actionability":70}})
     s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Noticias"];row["scopes"]=sc;row["editorial_relevance"]=score;return row
 
 def process_diario_oficial(raw,cfg):
     text=extract_pdf_text(raw.url,max_pages=10)
     if not text or text.startswith("%PDF"):return None
     issuer=raw.metadata.get("issuer","Diario Oficial");ai=analyze_news(title=raw.title,text=text[:7000],source_name=f"Diario Oficial / {issuer}",kind="publicación legal oficial")
-    score=int(ai.get("relevance_score",0)) if ai else 70
+    if not ai:return None
+    score=int(ai.get("relevance_score",0))
     if score<68:return None
-    what=(ai.get("what_happened") if ai else raw.title);why=(ai.get("why_it_matters") if ai else "")
-    t=f"{raw.title} {text[:2500]}".lower();stype="Legal" if re.search(r"\bley\b",t) else "Normativa";sc=_scopes(t)
+    what=ai.get("what_happened") or raw.title;why=ai.get("why_it_matters") or "";t=f"{raw.title} {text[:2500]}".lower();stype="Legal" if re.search(r"\bley\b",t) else "Normativa";sc=_scopes(t)
     if sc==["Sistema de salud"]:sc=["Salud laboral"] if issuer=="SUSESO" else (["Fonasa"] if issuer=="FONASA" else ["Salud pública"])
     raw.metadata.update({"what_happened":what,"why_it_matters":why,"signal_types":[stype],"scopes":sc,"watch_tags":["diario oficial",stype.lower(),issuer.lower()]+[x.lower() for x in sc],"event_type":"LEGAL" if stype=="Legal" else "REGULATION","scores":{"economic":55,"regulatory":95,"scope":max(72,score),"novelty":score,"actionability":82}})
     s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=[stype];row["scopes"]=sc;row["editorial_relevance"]=score;row["issuer"]=issuer;return row

@@ -19,7 +19,7 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         "name":name,"checked_at":datetime.now(timezone.utc).isoformat(),
         "last_signal_at":max(dates) if dates else prev.get("last_signal_at"),
         "discovered":discovered,"new":new,"published":published,
-        "status":"error" if error else ("warning" if discovered and not published else "ok"),
+        "status":"error" if error else ("warning" if new>0 and published==0 else "ok"),
         "error":error,
     }
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
