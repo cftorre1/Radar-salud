@@ -40,19 +40,27 @@ class _TableParser(HTMLParser):
 
 class SuperintendenciaNormativaScout:
     SOURCE_SLUG="superintendencia_normativa";SOURCE_NAME="Superintendencia de Salud";SOURCE_TYPE="official"
-    # Aggregate hubs expose Circulares, Oficios/Ordinarios Circulares, Resoluciones and related instructions.
     PAGES=[
       ("Para ISAPREs y FONASA","https://www.superdesalud.gob.cl/tax-instrucciones-dictadas-por-la-superintendencia/para-aseguradoras-4097/","Isapres / Fonasa"),
       ("Para Prestadores Institucionales","https://www.superdesalud.gob.cl/tax-instrucciones-dictadas-por-la-superintendencia/para-prestadores-institucionales-6256/","Prestadores"),
-      ("Para Entidades Acreditadoras","https://www.superdesalud.gob.cl/tax-instrucciones-dictadas-por-la-superintendencia/para-entidades-acreditadoras-6266/","Acreditación"),
+      ("Para Entidades Acreditadoras","https://www.superdesalud.gob.cl/tax-instrucciones-dictadas-por-la-superintendencia/para-entidades-acreditadoras-6266/","Prestadores"),
+      ("Para Entidades Certificadoras","https://www.superdesalud.gob.cl/tax-instrucciones-dictadas-por-la-superintendencia/para-entidades-certificadoras-6271/","Prestadores"),
+      ("Para Prestadores Individuales","https://www.superdesalud.gob.cl/tax-instrucciones-dictadas-por-la-superintendencia/para-prestadores-individuales-6261/","Prestadores"),
+      ("Para otros destinatarios","https://www.superdesalud.gob.cl/tax-instrucciones-dictadas-por-la-superintendencia/para-otros-destinatarios-7926/","Sistema de salud"),
     ]
     TITLE_RE=re.compile(r"(Circular|Oficio(?:\s+Circular)?|Ordinario(?:\s+Circular)?|Resoluci[oó]n(?:\s+Exenta)?)",re.I)
+    ADMIN_NOISE=("licitación","licitacion","comisión evaluadora","comision evaluadora","aseo","fumigación","fumigacion",
+                 "mantenciones","mantenimiento","licencias hcl","tableau","data center","monitoreo de medios",
+                 "concurso de personal","designa miembros")
     def discover(self)->List[RawItem]:
         out=[];seen=set()
         for page_name,page_url,scope in self.PAGES:
-            p=_TableParser();p.feed(fetch_html(page_url))
+            try:html=fetch_html(page_url)
+            except Exception as e:print("SuperSalud regulatory fetch:",page_name,e);continue
+            p=_TableParser();p.feed(html)
             for row in p.rows:
                 row_text=" ".join(c["text"] for c in row if c.get("text"))
+                if page_name=="Para otros destinatarios" and any(x in row_text.lower() for x in self.ADMIN_NOISE):continue
                 if not self.TITLE_RE.search(row_text):continue
                 event_date=_date(row_text);title=None;detail=None;pdf=None
                 for c in row:
@@ -60,23 +68,19 @@ class SuperintendenciaNormativaScout:
                         absolute=urljoin(page_url,href)
                         if self.TITLE_RE.search(label) and "descargar" not in label.lower():
                             title=label;detail=absolute
-                        if ".pdf" in absolute.lower() or "pdf" in label.lower():
-                            pdf=absolute
+                        if ".pdf" in absolute.lower() or "pdf" in label.lower():pdf=absolute
                 if not title:
-                    # Capture the document identifier from the row text.
                     m=re.search(r"((?:Resoluci[oó]n(?:\s+Exenta)?|Oficio(?:\s+Circular)?|Ordinario(?:\s+Circular)?|Circular)\s+[A-Z/°Nºn°\-\d\s]+)",row_text,re.I)
                     if m:title=" ".join(m.group(1).split())
                 if not title:continue
-                url=detail or pdf or page_url
-                key=(title,url,scope)
+                url=detail or pdf or page_url;key=(title,url,scope)
                 if key in seen:continue
                 seen.add(key)
                 summary=row[-1]["text"] if row else row_text
                 if len(summary)<15:summary=row_text
-                out.append(RawItem(
-                    source_slug=self.SOURCE_SLUG,title=title,url=url,source_name=self.SOURCE_NAME,source_type=self.SOURCE_TYPE,
+                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
                     event_date=event_date,raw_text=summary,
                     metadata={"listing_url":page_url,"listing_name":page_name,"scope":scope,"pdf_url":pdf,
-                              "attachments":[{"url":pdf,"label":"PDF"}] if pdf else []}
-                ))
+                              "attachments":[{"url":pdf,"label":"PDF"}] if pdf else []}))
+        out.sort(key=lambda x:x.event_date or "",reverse=True)
         return out
