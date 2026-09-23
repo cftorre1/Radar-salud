@@ -1,0 +1,13 @@
+{
+  "version": "0.9.0",
+  "max_iterations_per_day": 5,
+  "day_timezone": "UTC",
+  "builder_mode": "deterministic_snapshot",
+  "ai_builder_enabled": false,
+  "auto_promote": false,
+  "promotion_status": "blocked_until_remote_staging_acceptance",
+  "stop_on_critical": true,
+  "protected_paths": ["config/", "sql/", ".github/", "src/radar_salud/editorial_gate.py", "src/radar_salud/llm_analysis.py", "src/radar_salud/scoring.py", "src/radar_salud/distribution.py"],
+  "critical_checks": ["tests", "editorial", "data", "desktop", "mobile", "reviewer"],
+  "notes": "Initial release requires complete Signal Density requirements and staged evidence. No additional paid AI calls."
+}
