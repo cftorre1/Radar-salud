@@ -12,7 +12,7 @@ function coverageText(d){
 const esc=(s='')=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 let allSignals=[],activeType='Todos',activeScope='Todos',sortMode='date';
 let previousVisit;try{previousVisit=localStorage.getItem('alicanto_last_visit')}catch{}
-let periodMode='7';
+let periodMode='14';
 const readStored=stored('alicanto_read',stored('radar_read',[]));
 const readSet=new Set(Array.isArray(readStored)?readStored:[]);
 const interestStored=stored('alicanto_interests',{});
