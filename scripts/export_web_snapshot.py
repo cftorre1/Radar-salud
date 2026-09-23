@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse,json,re
+import argparse,json,re,shutil
 from collections import defaultdict
 from datetime import datetime,timezone,date
 from pathlib import Path
@@ -23,21 +23,23 @@ def _normalize_type(s):
     r["signal_types"]=types;return r
 
 def _normalize_scopes(s):
-    r=dict(s);out=[]
+    r=dict(s);out=[];text=" ".join(str(r.get(k,"") or "") for k in ("title","what_happened","why_it_matters")).lower()
     for scope in r.get("scopes",[]) or []:
         x=str(scope).strip();low=x.lower()
-        if "isapre" in low and "fonasa" in low:out += ["Isapres","Fonasa"]
+        if "isapre" in low and "fonasa" in low:
+            if re.search(r"\bisapre(?:s)?\b|instituciones? de salud previsional",text):out.append("Isapres")
+            if re.search(r"\bfonasa\b|fondo nacional de salud",text):out.append("Fonasa")
         elif low in ("isapre","isapres"):out.append("Isapres")
         elif low=="fonasa":out.append("Fonasa")
         else:out.append(x)
     r["scopes"]=list(dict.fromkeys(out)) or ["Sistema de salud"];return r
 
 def _doc_key(s):
-    t=f"{s.get('title','')} {s.get('what_happened','')}"
-    m=re.search(r"circular\s+(?:n[uú]mero\s+)?(?:if\s*[/\-]?\s*)?n?[°º]?\s*(\d+)",t,re.I)
-    if m:return "circular-if-"+m.group(1)
-    m=re.search(r"resoluci[oó]n(?:\s+exenta)?\s+(?:n[uú]mero\s+)?(?:if\s*[/\-]?\s*)?n?[°º]?\s*([\d\.]+)",t,re.I)
+    title=s.get("title","") or ""
+    m=re.search(r"resoluci[oó]n(?:\s+exenta)?\s+(?:n[uú]mero\s+)?(?:if\s*[/\-]?\s*)?n?[°º]?\s*([\d\.]+)",title,re.I)
     if m:return "res-"+re.sub(r"\D","",m.group(1))
+    m=re.search(r"circular\s+(?:n[uú]mero\s+)?(?:if\s*[/\-]?\s*)?n?[°º]?\s*(\d+)",title,re.I)
+    if m:return "circular-if-"+m.group(1)
     return None
 
 def _merge_duplicates(signals):
@@ -54,8 +56,7 @@ def _merge_duplicates(signals):
         for x in items:
             if x is base:continue
             u=x.get("source_url")
-            if u and u not in seen:
-                alts.append({"title":x.get("title"),"source_name":x.get("source_name"),"url":u,"event_date":x.get("event_date")});seen.add(u)
+            if u and u not in seen:alts.append({"title":x.get("title"),"source_name":x.get("source_name"),"url":u,"event_date":x.get("event_date")});seen.add(u)
         r["source_alternatives"]=alts;merged.append(r)
     return other+merged
 
@@ -74,15 +75,18 @@ def _related_context(signals):
     for s in signals:
         r=dict(s);rels=[];seen=set();relmap=_relmap(r)
         for ref in r.get("related_reference_ids",[]) or []:
-            k=_ref_key(ref)
-            if not k:continue
-            target=idx.get(k);relationship=relmap.get(ref) or "Antecedente normativo citado por el documento actual."
+            k=_ref_key(ref);relationship=relmap.get(ref) or "Antecedente normativo citado por el documento actual.";target=idx.get(k) if k else None
             if target and target.get("source_url")!=r.get("source_url"):
-                item={"title":target.get("title"),"summary":target.get("what_happened"),"relationship":relationship,"url":target.get("source_url"),"event_date":target.get("event_date")}
+                item={"title":target.get("title"),"summary":target.get("what_happened"),"relationship":relationship,"url":target.get("source_url"),"event_date":target.get("event_date"),"verified":True}
             else:item=resolve_reference(ref,relationship)
-            if not item or not item.get("url") or item["url"] in seen or item["url"]==r.get("source_url"):continue
-            seen.add(item["url"]);rels.append(item)
-        r["related_context"]=rels[:5];r.pop("related_norms",None);r.pop("related_sources",None);out.append(r)
+            if not item:continue
+            identity=item.get("url") or item.get("title")
+            if not identity or identity in seen or item.get("url")==r.get("source_url"):continue
+            seen.add(identity);rels.append(item)
+        r["related_context"]=rels[:5]
+        related_keys={_doc_key({"title":x.get("title","")}) for x in rels};related_urls={x.get("url") for x in rels if x.get("url")}
+        r["source_alternatives"]=[x for x in (r.get("source_alternatives") or []) if _doc_key(x) not in related_keys and x.get("url") not in related_urls]
+        r.pop("related_norms",None);r.pop("related_sources",None);out.append(r)
     return out
 
 def _stat_family(s):
@@ -123,5 +127,7 @@ def main():
     raw=json.loads(Path(args.input).read_text(encoding="utf-8"));signals=raw.get("signals",raw) if isinstance(raw,dict) else raw
     payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":curate(signals)}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
+    health=Path("data/source_health.json")
+    if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
     print(f"snapshot={out} signals={len(payload['signals'])}")
 if __name__=="__main__":main()
