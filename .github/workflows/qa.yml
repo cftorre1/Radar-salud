@@ -41,6 +41,8 @@ jobs:
               git show FETCH_HEAD:data/autopilot/ledger.json > data/autopilot/ledger.json
             fi
           fi
+      - name: Recurate current history without external lookups
+        run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline
       - run: python scripts/product_report.py
       - uses: actions/setup-node@v4
         with:
