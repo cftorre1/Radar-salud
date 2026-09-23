@@ -3,6 +3,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from .pending_queue import atomic_json
 
 def _path(root:Path)->Path:return root/"data"/"source_health.json"
 def _load(root:Path)->dict[str,Any]:
@@ -12,18 +13,17 @@ def _load(root:Path)->dict[str,Any]:
     except Exception:return {"sources":{}}
 
 def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,rows:list[dict]|None=None,
-           pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None)->None:
+           pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None)->None:
     d=_load(root);src=d.setdefault("sources",{});rows=rows or []
     dates=[x.get("event_date") for x in rows if x.get("event_date")]
     prev=src.get(slug,{})
     status="error" if error else ("warning" if (new>0 and published==0 and pending==0) else "ok")
     src[slug]={
         "name":name,"checked_at":datetime.now(timezone.utc).isoformat(),
-        "last_signal_at":max(dates) if dates else prev.get("last_signal_at"),
+        "last_signal_at":max(dates+[prev.get("last_signal_at") or ""]) if dates else prev.get("last_signal_at"),
         "discovered":discovered,"new":new,"published":published,
-        "pending":pending,"deferred":deferred,"rejected":rejected,
+        "live_pending":live_pending,"backfill_pending":backfill_pending,"pending":pending,"deferred":deferred,"rejected":rejected,
         "status":status,"error":error,
     }
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
-    p=_path(root);p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text(json.dumps(d,ensure_ascii=False,indent=2),encoding="utf-8")
+    atomic_json(_path(root),d)

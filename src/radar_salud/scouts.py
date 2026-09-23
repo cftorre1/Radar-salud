@@ -65,7 +65,8 @@ class SeenStore:
 
     def add_many(self, fps: Iterable[str]) -> None:
         self._seen.update(fps)
-        self.path.write_text(json.dumps(sorted(self._seen), ensure_ascii=False, indent=2), encoding="utf-8")
+        from .pending_queue import atomic_json
+        atomic_json(self.path, sorted(self._seen))
 
 
 class SuperintendenciaStatsScout:

@@ -2,6 +2,7 @@ from __future__ import annotations
 import hashlib, json
 from pathlib import Path
 from typing import Any, Optional
+from .pending_queue import atomic_json
 
 CURRENT_ANALYSIS_VERSION=3
 
@@ -19,8 +20,7 @@ def load_cache(root: Path) -> dict[str, dict[str, Any]]:
     except Exception:return {}
 
 def save_cache(root: Path, cache: dict[str,dict[str,Any]]) -> None:
-    p=_cache_path(root);p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text(json.dumps(cache,ensure_ascii=False,indent=2),encoding="utf-8")
+    atomic_json(_cache_path(root),cache)
 
 def get_cached(root: Path, document_url: str) -> Optional[dict[str,Any]]:
     return load_cache(root).get(_key(document_url))

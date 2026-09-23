@@ -2,6 +2,8 @@ from __future__ import annotations
 import json, os
 from datetime import datetime, timezone
 from pathlib import Path
+from .paths import project_root
+from .pending_queue import atomic_json
 
 _RUN = {
     "deep": {"attempted": 0, "successful": 0, "failed": 0},
@@ -9,7 +11,7 @@ _RUN = {
 }
 
 def _root() -> Path:
-    return Path(__file__).resolve().parents[2]
+    return project_root()
 
 def _path() -> Path:
     month=datetime.now(timezone.utc).strftime("%Y-%m")
@@ -25,7 +27,7 @@ def _load():
     p=_path()
     if not p.exists(): return _blank()
     try: raw=json.loads(p.read_text(encoding="utf-8"))
-    except Exception: return _blank()
+    except Exception as exc: raise RuntimeError("AI usage ledger unreadable; calls blocked") from exc
     if isinstance(raw.get("deep"),int) or isinstance(raw.get("fast"),int):
         out=_blank()
         for k in ("deep","fast"):
@@ -41,7 +43,7 @@ def _load():
 
 def _save(d):
     p=_path();p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text(json.dumps(d,ensure_ascii=False,indent=2),encoding="utf-8")
+    atomic_json(p,d)
 
 def allow_call(kind: str) -> bool:
     if kind not in ("deep","fast"): return False
@@ -60,3 +62,10 @@ def record_result(kind:str, success:bool)->None:
 
 def status():
     return {"run":_RUN,"month":_load()}
+
+def has_capacity(kind):
+    if kind not in ("fast","deep"): return False
+    prefix="RADAR_DEEP" if kind=="deep" else "RADAR_FAST"
+    run_limit=int(os.getenv(prefix+"_PER_RUN", "5" if kind=="deep" else "40"))
+    month_limit=int(os.getenv(prefix+"_PER_MONTH", "60" if kind=="deep" else "400"))
+    return _RUN[kind]["attempted"] < run_limit and _load()[kind]["attempted"] < month_limit
