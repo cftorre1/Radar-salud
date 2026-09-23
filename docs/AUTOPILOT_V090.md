@@ -6,7 +6,7 @@ Estado al 23 de septiembre de 2026: implementación parcial, sin despliegue. Bas
 
 Producción usa GitHub Pages y publica `web/`. Solo existía `main`, sin protección, y el workflow de publicación no ejecutaba tests. La corrida diaria escribía directamente en producción. El snapshot contenía 64 señales; la UI omitía Fiscalización de filtros e intereses. El conjunto inicial tenía 41 tests aprobados y 3 fallidos por expectativas antiguas de textos y agrupación.
 
-Se verificaron una colisión real en IDs de lectura truncados, un desplazamiento de fecha por zona horaria y una comparación incorrecta de novedades contra la fecha de publicación. La cola existente estaba distribuida por fuente y no conservaba todos los RawItems pendientes de modo independiente del descubrimiento siguiente.
+Se verificaron una colisión real en IDs de lectura truncados, un desplazamiento de fecha por zona horaria y una comparación incorrecta de novedades contra la fecha de publicación. La cola existente estaba distribuida por fuente y no conservaba todos los RawItems pendientes de modo independiente del descubrimiento siguiente. También confundía publicaciones recientes halladas en el primer barrido con novedades LIVE.
 
 El conector de GitHub devolvió `403 Resource not accessible by integration` al crear ramas. El navegador mostró GitHub sin sesión. No se inició autenticación, no se cambiaron permisos ni secretos y no hubo escrituras remotas exitosas.
 
@@ -23,9 +23,9 @@ El conector de GitHub devolvió `403 Resource not accessible by integration` al 
 
 ## Funcionalidad incorporada localmente
 
-Cola global persistente, deduplicación, prioridad LIVE, reintentos con espera, estados terminales, checkpoints por ítem, límites AI compartidos y corte al agotar ambos presupuestos. Fechas desconocidas se clasifican conservadoramente como BACKFILL: no se presentan como novedades LIVE. El descubrimiento de cada scout conserva su alcance existente; no se afirma cobertura exhaustiva de todo el sitio del proveedor.
+Cola global persistente, deduplicación, prioridad LIVE, reintentos con espera, estados terminales, checkpoints atómicos por ítem, límites AI compartidos y corte al agotar ambos presupuestos. La primera exploración exitosa de cada fuente es BACKFILL; un marcador de exploración permite clasificar novedades LIVE desde la siguiente corrida. Fechas desconocidas se clasifican conservadoramente como BACKFILL: no se presentan como novedades LIVE. El descubrimiento de cada scout conserva su alcance existente; no se afirma cobertura exhaustiva de todo el sitio del proveedor.
 
-Interfaz: siete días y orden reciente por defecto, cuatro señales no leídas en el resumen sin penalización por repetir fuente/tipo, ocultar tipos/ámbitos, Fiscalización, lectura sin salto, IDs completos, migración de IDs antiguos solo si no hay ambigüedad, calendario correcto en Chile, tolerancia a preferencias corruptas, foco y controles táctiles.
+Interfaz: siete días y orden reciente por defecto, cuatro señales no leídas en el resumen sin penalización por repetir fuente/tipo, ocultar tipos/ámbitos, Fiscalización, lectura sin salto, IDs completos, migración de IDs antiguos solo si no hay ambigüedad, calendario correcto en Chile, tolerancia a preferencias corruptas, foco y controles táctiles. Se añadió una sección pública sobre cobertura medida, selección y pendientes, con invitación a sugerir una fuente mediante GitHub Issues (requiere cuenta GitHub).
 
 Dashboard de solo lectura en `web/admin/product.html`: señales, pendientes LIVE/BACKFILL, fuentes, iteraciones, tokens y diagnóstico Excel. Los datos desconocidos se muestran como no medidos. No hay autenticación administrativa ni controles de escritura en esta página pública.
 
@@ -52,9 +52,9 @@ Excel: se conserva metadata de validación del parser en Signal, se rechazan mes
 
 ## QA realizado y pendiente
 
-Resultado local final: **57 tests Python y 4 tests Node aprobados**. Los seis workflows pasaron parseo YAML y `git diff --check` no detectó errores de whitespace.
+Resultado local al cierre de este bloque: **66 tests Python y 6 tests Node aprobados**. Los seis workflows pasaron parseo YAML y `git diff --check` no detectó errores de whitespace.
 
-La revisión independiente del código detectó y permitió corregir accesos por rama incorrecta, rollback de preview, conservación exacta de archivos y discrepancias entre SHA revisado y persistencia del ledger. Tests locales cubren límite5 persistente, fallos, cambio de día, identidad del Reviewer, SHA, checks incompletos, consolidación, prioridad/recuperación de cola, consumo, metadata y frontend.
+La revisión independiente del código detectó y permitió corregir accesos por rama incorrecta, rollback de preview, conservación exacta de archivos y discrepancias entre SHA revisado y persistencia del ledger. La publicación se empaqueta exclusivamente con los archivos que pasaron QA; se omitieron reintentos inútiles del mismo SHA tras una decisión del Reviewer. Tests locales cubren límite5 persistente, fallos, cambio de día, identidad del Reviewer, SHA, checks incompletos, consolidación, prioridad/recuperación de cola, consumo, metadata y frontend.
 
 Las pruebas de navegador quedaron escritas para 1440×900 y 390×844. No se ejecutaron en staging remoto debido al bloqueo de escritura. Se inspeccionó la producción actual en navegador y se verificó su despliegue exitoso en GitHub; esa observación no acredita la versión candidata.
 
@@ -63,7 +63,7 @@ No se ejecutó rollback real, no se generaron llamadas OpenAI pagas y no se ejec
 ## Próximos pasos cuando exista acceso
 
 1. Habilitar escritura de Contents y Workflows para la integración sobre este repositorio, o autorizar una sesión GitHub del navegador. No compartir tokens en el chat.
-2. Crear `production-stable` desde la base realmente desplegada y `autopilot-state` desde la base; nunca sobrescribir ramas preexistentes. Verificar que Pages admite despliegues desde staging antes de usar el preview.
+2. La primera ejecución de staging crea `production-stable` y `autopilot-state` solo si la punta de `main` coincide con un despliegue exitoso. Verificar que Pages admite despliegues desde staging antes de usar el preview.
 3. Publicar el candidato en `staging`; ejecutar QA y preview, examinar desktop/mobile y feedback, corregir y repetir dentro del límite.
 4. Completar/reconciliar el acuerdo íntegro V0.8.5.2. Resolver hallazgos editoriales estructurales con el usuario.
 5. Promover el SHA exacto de staging mediante fast-forward a main. Un squash/merge que produzca otro SHA exige revisar y previsualizar ese SHA antes de publicar.
