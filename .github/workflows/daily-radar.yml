@@ -18,10 +18,10 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       RADAR_FAST_MODEL: gpt-5.6-luna
       RADAR_DEEP_MODEL: gpt-5.6-terra
-      RADAR_DEEP_PER_RUN: 5
-      RADAR_FAST_PER_RUN: 40
-      RADAR_DEEP_PER_MONTH: 60
-      RADAR_FAST_PER_MONTH: 400
+      RADAR_DEEP_PER_RUN: 15
+      RADAR_FAST_PER_RUN: 120
+      RADAR_DEEP_PER_MONTH: 180
+      RADAR_FAST_PER_MONTH: 1500
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -33,11 +33,11 @@ jobs:
         run: python scripts/seed_analysis_cache.py
       - name: Run incremental collectors
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
-        run: python -m radar_salud.engine_cli --limit 20
-      - name: Rebuild source discovery using analysis cache
+        run: python -m radar_salud.engine_cli --limit 30
+      - name: Controlled rebuild using cache and persistent pending queue
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
         run: python -m radar_salud.engine_cli --limit 40 --reset-state
-      - name: Export public snapshot
+      - name: Export public snapshot and source health
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
       - name: Commit refreshed snapshot, cache and health
         run: |
