@@ -603,7 +603,7 @@
     },
     {
       "id": "free_value_features_and_model_cost_observability_2026_09_24",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -639,6 +639,20 @@
         "prueba de diversidad/repetición",
         "panel de gasto por feature/modelo",
         "telemetría de tokens/modelo/costo fail-closed"
+      ],
+      "completed_at": "2026-09-24",
+      "implementation_sha": "d0bbf442441bb454eddae9f8e56ef39e0cf9a9f6",
+      "progress": "Teaser Global FREE e Insight Alicanto semanal publicados en staging con evidencia verificable y selección fail-closed. El panel separa Global Intelligence e Insight semanal por modelo y período mensual/acumulado; no atribuye costos o tokens inexistentes. La corrida actual es determinística, sin llamada API ni gasto. Reviewer independiente rechazó gates editoriales y observabilidad incompletos; ambos se corrigieron y revalidaron antes de publicar.",
+      "evidence": [
+        "staging d0bbf442441bb454eddae9f8e56ef39e0cf9a9f6",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36072405695 — bootstrap, tests, QA staging desktop/mobile, Reviewer y preview PASS",
+        "155 tests Python, 23 tests web y 18 browser desktop/mobile PASS",
+        "Insight semanal 2026-09-21 trazado a Resolución Exenta IF/N°11156; fecha, URL HTTPS, puntajes y recencia validados; historial bloquea reutilización seis semanas y penaliza repetición de arquetipo, ámbito y fuente",
+        "Teaser Global derivado únicamente de global_theme canónico; exige hipótesis Chile explícita y fuentes con publisher/título/evidencia/URL/fechas coherentes",
+        "Panel admin desglosa Global Intelligence e Insight semanal por Luna/Terra/Astra, mensual y acumulado; usa modelo real cuando existe y muestra No disponible para costos/tasas no medidos",
+        "Telemetría exige feature/output_id/run_id atómicos para atribución; las piezas actuales declaran api_call=false, model=null y costo no disponible",
+        "Reviewer independiente: FAIL inicial por selección y teaser fail-open y observabilidad incompleta; correcciones verificadas; veredicto final APPROVE",
+        "Sin cambios en main/producción, secretos, pagos, privacidad, auth, pricing ni criterios editoriales"
       ]
     },
     {

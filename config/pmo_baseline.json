@@ -431,6 +431,29 @@
         "Personalización persistente y suscripción colapsadas",
         "Global Intelligence sin los dos párrafos redundantes"
       ]
+    },
+    "free_value_features_observability_qa": {
+      "kind": "github_actions",
+      "sha": "d0bbf442441bb454eddae9f8e56ef39e0cf9a9f6",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36072405695",
+      "checks": [
+        "155 tests Python",
+        "23 tests web",
+        "18 browser desktop/mobile",
+        "reviewer independiente",
+        "reviewer CI",
+        "preview",
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer"
+      ],
+      "result": "success",
+      "scope": "Teaser Global FREE e Insight Alicanto semanal visibles y trazables; gates de recencia, fuente, diversidad y repetición fail-closed. Panel admin separado por feature/modelo y período mensual/acumulado. Sin llamadas API ni gasto: modelo, tokens y costo permanecen no disponibles en vez de inventarse. Reviewer rechazó la primera versión y aprobó las correcciones antes del preview final.",
+      "validated_requirements": [
+        "Teaser Global FREE e Insight Alicanto semanal trazables",
+        "Observabilidad costo/modelo fail-closed"
+      ]
     }
   },
   "blocks": [
@@ -722,6 +745,16 @@
       ],
       "requirements": [
         {
+          "label": "Teaser Global FREE e Insight Alicanto semanal trazables",
+          "status": "Validado",
+          "evidence": "free_value_features_observability_qa"
+        },
+        {
+          "label": "Observabilidad costo/modelo fail-closed",
+          "status": "Validado",
+          "evidence": "free_value_features_observability_qa"
+        },
+        {
           "label": "FREE y PREMIUM coherentes en producto",
           "status": "Pendiente"
         },
@@ -839,6 +872,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Features FREE y observabilidad validadas en d0bbf44: teaser Global autosuficiente con CTA Premium, Insight Alicanto semanal trazado a evidencia y gates fail-closed de recencia/diversidad/repetición. Panel admin separa ambas features por Luna/Terra/Astra y período mensual/acumulado; la corrida actual no usó API y costo/tokens permanecen No disponible. Reviewer rechazó gates y atribución incompletos, se corrigieron y QA #159 pasó 155 Python, 23 web, 18 browser desktop/mobile, Reviewer CI y preview. El experimento de modelos continúa pendiente y no se activó gasto.",
+      "evidence": [
+        "free_value_features_observability_qa",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36072405695"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Home responsive validada en 5eb09d7: jerarquía compacta Header/Global PREMIUM → H1 monolínea → Personalizar/Suscríbete → unidad única de radar con métricas, acordeón e inbox. La primera card sube 410 px (34%) en desktop y 715 px (49%) en mobile, sin overflow. Preferencias persisten y suscripción sigue fail-closed. Se eliminaron los dos párrafos Global aprobados. QA #157 pasó 146 Python, 23 web, 16 browser desktop/mobile, Reviewer independiente/CI y preview. Con esta unidad, mvp_product_refinements queda cerrado.",
@@ -1451,7 +1492,7 @@
     }
   ],
   "current_main_workflows_sha": "28be310808fffbe5c3212e75ddda2057ed635ca0",
-  "current_staging_candidate_sha": "5eb09d7259999874ed380662ad9f95ad1b00a2a8",
+  "current_staging_candidate_sha": "d0bbf442441bb454eddae9f8e56ef39e0cf9a9f6",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -1555,7 +1596,7 @@
     },
     {
       "id": "free_value_features_and_model_cost_observability_2026_09_24",
-      "status": "Aprobado",
+      "status": "Validado",
       "priority": "Alta",
       "horizon": "MVP antes de release",
       "decisions": [
@@ -1563,7 +1604,10 @@
         "Insight Alicanto de la semana será una pieza FREE fija de alto valor y baja frecuencia.",
         "La selección semanal debe usar diversidad editorial y un universo amplio de candidatos para evitar repetición; si no hay cruce sólido, se permite deep dive de una sola señal excepcional.",
         "El panel de control incorporará gasto separado por feature (Global Intelligence / Insight semanal) y por modelo (Luna/Terra/Astra), con tokens y costo real cuando sea medible."
-      ]
+      ],
+      "validation_evidence": "free_value_features_observability_qa",
+      "implementation_sha": "d0bbf442441bb454eddae9f8e56ef39e0cf9a9f6",
+      "validation_note": "Validado en staging con contenido factual, selección semanal fail-closed, diversidad/repetición probadas y observabilidad sin atribuir gasto inexistente. El experimento Luna/Terra/Astra y su decisión de routing permanecen separados y pendientes."
     },
     {
       "id": "anonymous_source_suggestion_ux_2026_09_24",
