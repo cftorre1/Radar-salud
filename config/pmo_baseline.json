@@ -63,6 +63,27 @@
         "Cobertura LIVE/BACKFILL medida y separada en staging"
       ]
     },
+    "global_intelligence_lite_qa": {
+      "kind": "github_actions_and_independent_review",
+      "sha": "c0a1ef73fd247c227ff9bb9dea72e93856ea7db2",
+      "implementation_sha": "34f41894507e5323804a75439f854f8a5658ed33",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561",
+      "checks": [
+        "125_python",
+        "18_node",
+        "10_playwright_desktop_mobile",
+        "reviewer_ci",
+        "independent_reviewer",
+        "preview"
+      ],
+      "result": "success_after_mobile_backfill_correction",
+      "validated_requirements": [
+        "Tres Global Themes reales y trazables",
+        "Qué mirar en Chile separado como hipótesis sin evidencia local",
+        "Capa PREMIUM distinguible de Trend Chile",
+        "Promoción candidate/established bloqueada en Lite"
+      ]
+    },
     "rollback": {
       "kind": "github_actions",
       "sha": "3edb6e3a4c92787e0076491490283124cf4ff7d4",
@@ -352,30 +373,28 @@
     {
       "id": "global",
       "title": "Global Intelligence Lite",
-      "status": "Pendiente",
+      "status": "Validado",
       "critical": true,
-      "evidence": [],
+      "evidence": [
+        "global_intelligence_lite_qa"
+      ],
       "dependencies": [
         "fuentes internacionales con acceso público",
         "separación Global Theme/Trend Chile"
       ],
-      "missing": [
-        "captura de research material",
-        "Qué mirar en Chile trazable",
-        "clasificación PREMIUM sin transferencia automática"
-      ],
+      "missing": [],
       "requirements": [
         {
           "label": "Research material de fuentes internacionales aprobadas",
-          "status": "Pendiente"
+          "status": "Validado"
         },
         {
           "label": "Qué mirar en Chile con hipótesis y evidencia separadas",
-          "status": "Pendiente"
+          "status": "Validado"
         },
         {
           "label": "Capa PREMIUM distinguible de Trend Chile",
-          "status": "Pendiente"
+          "status": "Validado"
         }
       ]
     },
@@ -563,6 +582,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Global Intelligence Lite Validado en staging: tres muestras reales Reuters/Deloitte/McKinsey, Global Themes estructurados y capa PREMIUM. Reviewer independiente rechazó el primer corte por cronología y promoción local permisiva; el corte corregido valida fechas y bloquea toda transferencia a Trend Chile sin pipeline chileno canónico. El primer preview detectó una regresión móvil de un backfill RedSalud concurrente; el candidato integrado corrigió la tarjeta y pasó tests, QA desktop/mobile, Reviewer y preview.",
+      "evidence": [
+        "global_intelligence_lite_qa",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36038053040"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Fuentes Chile: newsrooms prioritarios Implementado, con Bupa BACKFILL real; RedSalud validado técnicamente con fixtures de tarjetas/listado y cruce de fechas, pero captura editorial real pendiente tras RuntimeError piloto #24. Fuentes Chile permanece approved.",

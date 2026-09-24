@@ -178,7 +178,7 @@
     },
     {
       "id": "global_intelligence_lite",
-      "status": "approved",
+      "status": "validated",
       "priority": "high",
       "owner": "Work",
       "source": "Dirección",
@@ -205,6 +205,15 @@
         "QA editorial",
         "Reviewer",
         "staging evidence"
+      ],
+      "progress": "Global Intelligence Lite publicado como superficie PREMIUM con tres Global Themes reales y trazables. Cada tema separa hallazgo global, relevancia e hipótesis Qué mirar en Chile; Lite rechaza señales locales y estados candidate/established hasta que exista el pipeline chileno canónico.",
+      "completed_at": "2026-09-24",
+      "evidence": [
+        "34f41894507e5323804a75439f854f8a5658ed33 — implementación Global Themes, export determinístico, página PREMIUM, validación fail-closed y pruebas adversariales",
+        "Reuters 2026-09-18, Deloitte 2025-12-11 y McKinsey 2025-05-29: muestras reales con fecha, URL original, hallazgo y captura trazables",
+        "Reviewer independiente: primer corte FAIL por cronología/promoción indebida; corrección revisada PASS con 125 Python, 18 Node y 10 Playwright desktop/mobile",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36038053040 — tests PASS; staging detectó regresión móvil causada por backfill concurrente y no desplegó preview",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561 — candidato integrado c0a1ef73fd247c227ff9bb9dea72e93856ea7db2; tests, QA staging desktop/mobile, Reviewer y preview PASS"
       ]
     },
     {
