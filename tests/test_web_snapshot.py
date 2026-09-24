@@ -42,3 +42,11 @@ def test_offline_recuration_keeps_local_context_without_fetching(monkeypatch):
     row.update(signal_types=["Normativa"],related_reference_ids=["Circular IF/N°529"])
     monkeypatch.setattr(m,"resolve_reference",lambda *args: (_ for _ in ()).throw(AssertionError("network")))
     assert m.curate([row],resolve_external=False)[0]["related_context"]==[]
+
+def test_df_headline_keeps_teaser_out_of_title():
+    row=sig("Bupa acelera inversiones en Santiago con tres proyectos por US$ 15 millones El plan incluye una clínica y un centro de salud mental.")
+    row.update(source_name="Diario Financiero",what_happened="Bupa anunció inversiones y nuevos centros médicos.",why_it_matters="Amplía la red asistencial y modifica capacidad competitiva de prestadores.")
+    row["title"] += " La publicación describe además la estrategia para ampliar la red en el sector oriente."
+    out=m.curate([row],resolve_external=False)
+    assert out[0]["title"].endswith("US$ 15 millones")
+    assert "El plan incluye" in out[0]["source_title_full"]

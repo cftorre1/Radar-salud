@@ -37,6 +37,18 @@ def _normalize_scopes(s):
         else:out.append(x)
     r["scopes"]=list(dict.fromkeys(out)) or ["Sistema de salud"];return r
 
+def _separate_df_deck(s):
+    r=dict(s)
+    title=str(r.get("title") or "")
+    # The DF listing sometimes concatenates its headline with a full teaser.
+    # Keep the original in history; the public card needs the headline only.
+    if r.get("source_name")=="Diario Financiero" and len(title)>180:
+        match=re.search(r"\s+El\s+(?=(?:plan|alcalde|principal ejecutivo)\b)",title)
+        if match and match.start()>=60:
+            r["source_title_full"]=title
+            r["title"]=title[:match.start()].strip()
+    return r
+
 def _doc_key(s):
     title=s.get("title","") or ""
     m=re.search(r"resoluci[oó]n(?:\s+exenta)?\s+(?:n[uú]mero\s+)?(?:if|ip)?\s*[/\-]?\s*n?[°º]?\s*([\d\.]+)",title,re.I)
@@ -148,7 +160,7 @@ def _sanction_pulses(signals, today=None):
 def curate(signals,resolve_external=True):
     normalized=[]
     for s in signals:
-        r=_normalize_scopes(_normalize_type(s))
+        r=_separate_df_deck(_normalize_scopes(_normalize_type(s)))
         ok,reason,q=publication_ready(r);r["publication_ready_score"]=q;r["publication_gate_reason"]=reason
         if ok:normalized.append(r)
     if not normalized:return []
