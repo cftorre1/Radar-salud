@@ -1,4 +1,4 @@
-"""Create auxiliary branches only from a verified production main commit."""
+"""Create missing auxiliary branches only from a verified production main commit."""
 import json
 import os
 import subprocess
@@ -17,18 +17,27 @@ def command(*args):
 
 
 def ensure_branches():
+    branches = ("production-stable", "autopilot-state")
+    presence = {}
+    for branch in branches:
+        status = subprocess.run(["git", "ls-remote", "--exit-code", "--heads", "origin", branch],
+                                stdout=subprocess.DEVNULL, check=False).returncode
+        if status not in (0, 2):
+            raise RuntimeError(f"Unable to check remote branch: {branch}")
+        presence[branch] = status == 0
+    # An isolation-only main commit need not itself be deployed to keep using
+    # the existing, previously accepted production backup and state branches.
+    if all(presence.values()):
+        return
+
     main_sha = command("git", "rev-parse", "origin/main")
     repo = os.environ["GITHUB_REPOSITORY"]
     runs = json.loads(command("gh", "api", f"repos/{repo}/actions/workflows/static.yml/runs?branch=main&status=success&per_page=30"))
     if not is_accepted_main(main_sha, runs):
         raise RuntimeError("Current main is not a successfully deployed production commit")
-    for branch in ("production-stable", "autopilot-state"):
-        exists = subprocess.run(["git", "ls-remote", "--exit-code", "--heads", "origin", branch],
-                                stdout=subprocess.DEVNULL, check=False).returncode
-        if exists == 0:
+    for branch in branches:
+        if presence[branch]:
             continue
-        if exists != 2:
-            raise RuntimeError(f"Unable to check remote branch: {branch}")
         # Fetch once more to refuse creation if production changed during setup.
         command("git", "fetch", "origin", "main")
         if command("git", "rev-parse", "FETCH_HEAD") != main_sha:
