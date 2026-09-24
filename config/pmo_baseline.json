@@ -344,6 +344,21 @@
       "validated_requirements": [
         "Favicon y metadata/Open Graph"
       ]
+    },
+    "mvp_product_refinements_ui_qa": {
+      "kind": "github_actions",
+      "sha": "354febf1e642e6b603faf7aea0dbb6c17c42735c",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36061320126",
+      "checks": [
+        "142 tests Python",
+        "22 tests web",
+        "16 browser desktop/mobile",
+        "reviewer independiente",
+        "reviewer CI",
+        "preview"
+      ],
+      "result": "success",
+      "scope": "Unidad UI del paquete MVP: navegación Volver arriba; preferencias persistentes fuera de Explorar; fecha simple; cobertura global fail-closed; CTA semanal independiente con copy exacto. Reviewer corrigió omisión de «en tu correo» antes de publicar. Evidencia parcial: no valida todavía Pulso Isapre, multiserie ni enriquecimiento editorial."
     }
   },
   "blocks": [
@@ -708,6 +723,13 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Paquete de refinamientos MVP avanza con unidad UI en 354febf: Volver arriba semántico, personalización persistente separada de Explorar, fecha simplificada, cobertura global sin ventana inventada y CTA semanal independiente. Reviewer marcó copy incompleto y se corrigió a «Recibe lo importante de la semana en tu correo». QA #133 PASS en tests, desktop/mobile, Reviewer CI y preview. Tarea sigue approved por unidades de datos/editorial pendientes.",
+      "evidence": [
+        "mvp_product_refinements_ui_qa"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Dirección fija dos features FREE independientemente del experimento de modelos: teaser de Global Intelligence y Insight Alicanto de la semana. Se agrega diversidad editorial para evitar repetición y observabilidad de gasto/modelo por feature en panel de control.",
