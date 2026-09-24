@@ -102,6 +102,20 @@
         "queue_persistence"
       ],
       "result": "success_no_new_publications"
+    },
+    "cards_v2_qa": {
+      "kind": "github_actions",
+      "sha": "af28c50230b9ca9fc7a249c1215a0ab79b7fdc69",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35998052315",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "result": "success",
+      "independent_reviewer": "PASS en e0499e6: preferencias, Bupa, tres sanciones, relación normativa; revisión interactiva IF/N°77 en staging y browser QA #34 la abre."
     }
   },
   "blocks": [
@@ -301,6 +315,18 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Cards V2 gap closure PASS: #33 tests/desktop/mobile/Reviewer/preview, independiente PASS; #34 agrega browser QA que abre IF/N°77, todos checks y smoke PASS. Muestras Bupa/Eleam/Luksic/sanciones compactas sin truncamiento. Addendum Validado; Signal Density completo sigue Implementado. Deuda prioritaria handoff Dirección→PMO→Work registrada.",
+      "evidence": [
+        "cards_v2_qa"
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Dirección detectó cuatro gaps Cards V2. Preview #32 falló QA desktop/mobile, sin deploy; addendum vuelve a Implementado. Candidato e0499e6 incluye modelo único de preferencias, micro síntesis sin corte, sanciones materiales y referencia IF/N°77 sin URL inventada; #33 pendiente. Deuda prioritaria: handoff Dirección→PMO→Work.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Preview #30 PASS: PMO actualizado y Pulso factual visible en staging; QA tests, desktop/mobile, Reviewer, preview y smoke. Dashboard muestra SHA de último QA registrado, distinto del SHA candidato de cada preview. Evento LIVE genuino permanece sin observación.",
       "evidence": [
         "staging_qa"
@@ -438,12 +464,26 @@
         "profundidad real sin invención"
       ],
       "evidence": [
-        "staging_qa"
+        "cards_v2_qa"
       ],
       "implementation_status": "Validado",
       "limitations": [
-        "QA de altura cubre primeras tres tarjetas mobile, no todos los textos posibles",
-        "Síntesis editorial no certificada semánticamente para cada señal"
+        "QA semántico y de altura abarca muestras reales Bupa, Eleam, Luksic, sanciones Prestadores e IF/N°535, no todas las señales futuras.",
+        "Signal Density completo permanece Implementado hasta cerrar sus demás requisitos."
+      ]
+    }
+  ],
+  "infrastructure_debt": [
+    {
+      "id": "direction_pmo_work_handoff",
+      "priority": "Alta",
+      "horizon": "después del MVP viernes",
+      "status": "Pendiente",
+      "description": "Handoff automático Dirección → baseline/PMO → Work, con registro de decisiones aprobado y sincronización verificable para evitar retransmisión manual.",
+      "constraints": [
+        "no aplicar decisiones sin aprobación",
+        "no sustituir QA ni Reviewer",
+        "sin acceso a secretos o pricing"
       ]
     }
   ]
