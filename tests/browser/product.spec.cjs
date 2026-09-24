@@ -5,6 +5,8 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Portada generada');
  await expect(page.locator('#period')).toHaveValue('14');await expect(page.locator('#sort')).toHaveValue('date');
  await expect(page.locator('#coverage-title')).toHaveText('Miramos mucho para mostrarte poco.');
+ const order=await page.locator('main > .coverage,main > .toolbar,main > #brief,main > #local').evaluateAll(xs=>xs.map(x=>x.id||x.classList[0]));
+ expect(order).toEqual(['coverage','toolbar','brief','local']);
  await expect(page.getByRole('link',{name:'Cómo seleccionamos lo que importa →'})).toHaveAttribute('href','coverage.html');
  const coverage=await (await page.request.get('/data/product.json')).json();
  if(coverage.queue_status==='measured'){
@@ -20,6 +22,8 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await page.screenshot({path:`artifacts/${test.info().project.name}-browse.png`,fullPage:true});
  await page.locator('.briefitem').first().click();
  await expect(page.locator('article.read').first()).toBeVisible();
+ await expect(page.locator('article.read').first().getByRole('button',{name:'Volver a 30 segundos'})).toBeVisible();
+ await page.locator('article.read').first().getByRole('button',{name:'Volver a 30 segundos'}).click();
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
  await page.locator('article').first().getByRole('button',{name:/Marcar/}).click();
  expect(await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id))).toEqual(ids);
@@ -36,11 +40,25 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await page.getByRole('button',{name:'Personalizar mi radar'}).click();
  await expect(page.locator('#interestTypes input[value="Fiscalización"]')).not.toBeChecked();
  await page.locator('#interestTypes input[value="Fiscalización"]').check();
+ await page.getByText('Filtrar tipo y ámbito').click();
  await page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true}).click();
  await expect(page.locator('article').first()).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  expect(errors).toEqual([]);
  await page.screenshot({path:`artifacts/${test.info().project.name}-radar.png`,fullPage:true});
+});
+test('Inbox shows every unread signal, supports direct read and persists it',async({page})=>{
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Portada generada');
+ const initial=await page.locator('.briefitem').count();
+ const expected=await page.locator('article:not(.read)').count();
+ expect(initial).toBe(expected);expect(initial).toBeGreaterThan(4);
+ const first=await page.locator('.briefitem').first().getAttribute('data-brief');
+ await page.locator('[data-brief-read]').first().click();
+ await expect(page.locator('.briefitem')).toHaveCount(initial-1);
+ await expect(page.locator(`article[data-card="${first}"]`)).toHaveClass(/read/);
+ await page.reload();await expect(page.locator('#meta')).toContainText('Portada generada');
+ await expect(page.locator('.briefitem')).toHaveCount(initial-1);
+ await expect(page.locator(`article[data-card="${first}"]`)).toHaveClass(/read/);
 });
 test('operations dashboard loads without inventing measurements',async({page})=>{
  await page.goto('/admin/product.html');await expect(page.locator('#status')).toContainText('Actualizado:');
@@ -69,9 +87,13 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
  const bupa=page.locator('article').filter({has:page.getByRole('heading',{name:/Bupa acelera inversiones/})});
  await expect(bupa).toContainText('La Dehesa');await expect(bupa).toContainText('Clínicas Huinganal');await expect(bupa).toContainText('Mindplace en San Damián.');
  await expect(bupa).not.toContainText('…');
+ await expect(bupa.locator('.card-meta')).toContainText('Publicado');
+ await expect(bupa.locator('.card-meta')).not.toBeEmpty();
  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});
  await expect(pulse).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');
  await pulse.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');
+ const sourceBeforeDetails=await page.locator('#detailBody').evaluate(el=>el.querySelector('.sourceverify').compareDocumentPosition(el.querySelector('.intel'))&Node.DOCUMENT_POSITION_FOLLOWING);
+ expect(sourceBeforeDetails).toBeTruthy();
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
