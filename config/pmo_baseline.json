@@ -710,6 +710,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Dirección aprueba experimento controlado Luna/Terra/Astra para Global Intelligence y una pieza FREE de alto impacto, con corpus complejo incluso >90 días como stress test, scoring ciego, costo real, edición humana y caso de negocio antes de decidir routing.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Global Intelligence incorpora acceso destacado, copy PREMIUM, inbox propio y estado leído/no leído persistente con profundización y retorno accesible. Reviewer independiente rechazó el primer corte por pérdida de foco; se corrigió con actualización incremental. #128 registró selector QA ambiguo sin preview; b071d49/#129 pasó 142 Python, 20 Node, 16 browser desktop/mobile, Reviewer y preview. El bloque permanece Implementado/approved: faltan monitoreo recurrente y acceso exclusivo.",
       "evidence": [
         "global_intelligence_lite_qa",
@@ -1369,6 +1374,19 @@
         }
       ],
       "evidence_context": "Dirección considera Global Intelligence una capacidad wow/Premium; necesita más profundidad, mejor descubribilidad y patrón de inbox propio. Digest semanal debe ser CTA de adquisición, no parte de transparencia/cobertura."
+    },
+    {
+      "id": "model_quality_and_free_halo_experiment_2026_09_24",
+      "status": "Aprobado_para_experimento",
+      "priority": "Alta",
+      "horizon": "Antes de fijar routing de modelos / antes de release comercial",
+      "decisions": [
+        "Evaluar Luna vs Terra vs Astra con corpus exigente y scoring ciego propio de Alicanto.",
+        "Se permiten documentos >90 días solo como stress test; no cambian la política de recencia del producto.",
+        "Evaluar teaser de Global Intelligence en feed FREE como gancho útil hacia Premium.",
+        "Evaluar una pieza FREE de alta inteligencia y baja frecuencia para fidelización/halo de calidad, sin degradar artificialmente el resto del producto.",
+        "No activar gasto recurrente de Terra/Astra en producción hasta decisión posterior basada en resultados."
+      ]
     }
   ]
 }
