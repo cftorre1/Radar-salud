@@ -133,8 +133,7 @@
       "missing": [
         "validar dos pulsos Isapres y Prestadores en ventana real",
         "consolidación rutinaria sin borrar eventos estratégicos",
-        "guard de repetición y filtro de ruido con muestras adversarias",
-        "validar exclusión del feed de registros/acreditaciones rutinarias detectadas en backfill sin borrar histórico"
+        "guard de repetición y filtro de ruido con muestras adversarias"
       ]
     },
     {
@@ -149,8 +148,7 @@
         "Live Evidence Integrity: intervalos y fallos visibles; validación editorial de insights"
       ],
       "missing": [
-        "validar intervalo completo y motivo de rechazo en CSV corregido",
-        "Pulso Isapre únicamente desde insights validados"
+        "validación editorial de insights analíticos adicionales antes de publicar conclusiones o tendencias; Pulso factual ya validado en #29"
       ]
     },
     {
@@ -301,6 +299,13 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Preview #28 PASS: dos actos rutinarios salieron del feed (38→36) y permanecen en histórico de 678; normativa estratégica conservada. Preview #29 PASS de Pulso Isapre factual derivado de las tres familias Excel canónicas reconciliadas (37 señales), QA 1440×900/390×844, Reviewer independiente y smoke. LIVE genuino sigue sin evento observado.",
+      "evidence": [
+        "staging_qa"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Run #26 validó con QA desktop/mobile, Reviewer y preview el primer discovery: 7 fuentes técnicas, LIVE 0/0/0, BACKFILL separado; panel mobile390px. Segunda captura incremental #18 encontró 0 publicaciones nuevas reales, 5 backfill pendientes y ninguna llamada OpenAI. LIVE no puede certificarse con evento no observado.",
