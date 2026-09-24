@@ -254,7 +254,8 @@ def process_corporate_news(raw,cfg):
     if score<78 or len(what)<45 or len(why)<35:return None
     # Diagnostic lab tests are a clinical service, not a pharmaceutical company.
     scope_text=re.sub(r"ex[aá]menes? de laboratorio", "exámenes diagnósticos", f"{raw.title} {what}", flags=re.I)
-    scopes=["Prestadores"] if raw.source_slug=="redsalud" else _scopes(scope_text)
+    scopes=(["Prestadores"]+(["Isapres"] if re.search(r"\bisapre(?:s)?\b",scope_text,re.I) else [])
+            if raw.source_slug=="redsalud" else _scopes(scope_text))
     if (date.today()-published).days>14:
         why=re.sub(r"vigente ahora y condicionado a la inscripción en la FIBE",
                    "condicionado a la inscripción en la FIBE al momento de publicarse (vigencia actual no verificada)",why,flags=re.I)

@@ -40,6 +40,18 @@ def test_backfilled_bupa_emergency_has_truthful_card_and_scope():
     replay=m._card_micro(original)
     assert all(replay.get(k)==bupa.get(k) for k in ("title","card_what","card_why","scopes","source_title_full"))
 
+def test_backfilled_redsalud_convenio_preserves_material_and_facets():
+    rows=json.loads(Path("web/data/radar_today.json").read_text())["signals"]
+    row=next(s for s in rows if s.get("source_name")=="RedSalud")
+    assert row["ingestion_mode"]=="BACKFILL"
+    assert row["scopes"]==["Prestadores","Isapres"]
+    assert all(term in row["card_what"] for term in ("Libre Elección","Preferente","9 clínicas","Sanatorio Alemán","I-Med"))
+    assert "reembolso" in row["card_why"]
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    original=next(s for s in history if s.get("source_url")==row["source_url"])
+    replay=m._card_micro(original)
+    assert all(replay.get(k)==row.get(k) for k in ("title","card_what","card_why","scopes","source_title_full"))
+
 
 def test_distinct_statistical_families_keep_their_sources():
     xs=[sig("Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026",url="https://x/a"),sig("Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026",url="https://x/b"),sig("Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026",url="https://x/c")]

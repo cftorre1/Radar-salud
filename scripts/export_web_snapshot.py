@@ -54,6 +54,14 @@ def _card_micro(s):
     """Condense a verified complex announcement without dropping its outcome."""
     r=dict(s)
     what=str(r.get("what_happened") or "")
+    if (r.get("source_url")=="https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio"
+        and r.get("event_date")=="2026-09-21"
+        and all(x in what for x in ("Nueva Masvida","Libre Elección","Preferente","9 clínicas","Sanatorio Alemán","I-Med"))):
+        r["source_title_full"]=r["title"]
+        r["title"]="RedSalud y Nueva Masvida amplían convenio a escala nacional"
+        r["card_what"]="El convenio habilita Libre Elección y Preferente en 9 clínicas, centros médicos y dentales y el Sanatorio Alemán, con bonificación I-Med."
+        r["card_why"]="Afiliados Nueva Masvida pueden usar esa red pagando el copago de su plan; reemplaza el esquema de atención solo contra reembolso."
+        r["scopes"]=list(dict.fromkeys([*r.get("scopes",[]),"Isapres"]))
     if (r.get("source_url")=="https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas"
         and r.get("event_date")=="2026-08-13"
         and all(x in what for x in ("SAFED","FIBE","cinco redes privadas"))):

@@ -53,12 +53,13 @@ def test_real_redsalud_card_detail_date_and_body_are_bound(monkeypatch):
     captured=[]
     def assess(**kw):
         captured.append(kw["text"])
-        return {"relevance_score":82,"what_happened":"RedSalud y Nueva Masvida renovaron un convenio nacional de acceso a prestaciones.",
+        return {"relevance_score":82,"what_happened":"RedSalud y la Isapre Nueva Masvida renovaron un convenio nacional de acceso a prestaciones.",
                 "why_it_matters":"El acuerdo puede modificar las alternativas de atención disponibles para afiliados."}
     monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news",assess)
     row=process_corporate_news(raw,cfg)
     assert row["event_date"]=="2026-09-21"
     assert row["source_name"]=="RedSalud" and row["source_type"]=="corporate"
+    assert row["scopes"]==["Prestadores","Isapres"]
     assert len(captured)==1 and "alcance territorial" in captured[0]
     raw.metadata["listing_date"]="2026-09-20"
     with pytest.raises(DeferredProcessing,match="dates disagree"):
