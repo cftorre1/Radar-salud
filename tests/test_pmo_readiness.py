@@ -1,7 +1,18 @@
 import json
 from pathlib import Path
 
-from radar_salud.pmo import project
+from radar_salud.pmo import full_qa,project
+
+
+def test_every_declared_validated_requirement_has_matching_successful_qa():
+    baseline=json.loads(Path('config/pmo_baseline.json').read_text())
+    for block in baseline['blocks']:
+        for requirement in block.get('requirements',[]):
+            if requirement['status']!='Validado':
+                continue
+            proof=baseline['evidence_catalog'].get(requirement.get('evidence'),{})
+            assert full_qa(proof), (block['id'],requirement['label'],'missing full QA')
+            assert requirement['label'] in proof.get('validated_requirements',[]), (block['id'],requirement['label'],'missing explicit match')
 
 
 def test_validated_requires_full_evidence_for_exact_candidate(tmp_path):
