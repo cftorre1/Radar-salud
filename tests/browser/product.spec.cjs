@@ -140,7 +140,8 @@ test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM disti
  await expect(page.locator('.theme').first()).toContainText('Qué mirar en Chile · hipótesis, no evidencia local');
  await expect(page.locator('.theme').first()).toContainText('Trend Chile: no establecido');
  await expect(page.locator('.theme').first()).toContainText('señales locales compatibles verificadas: 0');
- await expect(page.locator('.source a')).toHaveCount(3);
+ await expect(page.locator('.source a')).toHaveCount(4);
+ await expect(page.locator('.source a').filter({hasText:'PwC'})).toHaveAttribute('href',/^https:\/\/www\.pwc\.com\//);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
  await page.screenshot({path:`artifacts/${test.info().project.name}-global-intelligence.png`,fullPage:true});
 });

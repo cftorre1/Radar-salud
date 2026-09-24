@@ -16,6 +16,15 @@ def test_public_global_sample_matches_canonical_checked_research():
     assert public == canonical
 
 
+def test_pwc_research_is_publicly_traceable_without_chile_trend_transfer():
+    themes = load(SOURCE)['themes']
+    ai = next(t for t in themes if t['id'] == 'global-health-ai-operating-model-2026')
+    report = next(s for s in ai['sources'] if s['publisher'] == 'PwC')
+    assert report['published_at'] == '2026-05-04'
+    assert report['url'].startswith('https://www.pwc.com/')
+    assert ai['chile_watch']['trend_chile_status'] == 'not_established'
+
+
 def test_real_global_themes_are_premium_traceable_and_not_chile_trends(tmp_path):
     payload = load(SOURCE)
     assert payload["access_tier"] == "PREMIUM"
