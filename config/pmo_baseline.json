@@ -46,6 +46,26 @@
     "price_clp": null
   },
   "evidence_catalog": {
+    "corporate_newsrooms_qa": {
+      "kind": "github_actions",
+      "sha": "6eabf235ca9ddaff9841ee3aa0f554243e7d84d5",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36055804692",
+      "checks": [
+        "142 tests Python",
+        "20 tests web",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "result": "success",
+      "scope": "Integración técnica Pfizer Chile y guard fail-closed sobre HTML real. Piloto: 3 publicaciones históricas; tarjeta healthtech mal enlazada quedó retry y 0 señales publicadas. No valida frescura ni cobertura completa farma/healthtech.",
+      "additional_runs": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36035724259",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561"
+      ],
+      "validated_requirements": []
+    },
     "orchestrator_condition_watch_observed": {
       "kind": "condition_watch_polling",
       "automation_id": "6ab54815a3848191a08a6c15532d4951",
@@ -428,8 +448,8 @@
       "missing": [
         "FONASA directo HTTPError e ISP/ANAMED URLError: pendientes capturas reales.",
         "DEIS: guard de fecha validado técnicamente; primera publicación externa elegible pendiente.",
-        "RedSalud: parser corregido; pendiente captura real tras RuntimeError piloto #24.",
-        "Bupa: una publicación BACKFILL real; pendientes newsrooms prioritarios farma y healthtech verificados."
+        "Bupa y RedSalud: una publicación BACKFILL real por fuente; no equivalen a cobertura vigente.",
+        "Pfizer Chile: parser y guard validados; 3 publicaciones de 2023, tarjeta healthtech mal enlazada y 0 señales publicadas. Pendiente captura farma/healthtech vigente y correctamente enlazada."
       ],
       "requirements": [
         {
@@ -958,6 +978,14 @@
         "orchestrator_condition_watch_observed",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36048885296"
       ]
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Fuentes Chile incorpora Pfizer Chile con binding fecha-titular-URL y guard fail-closed. Piloto real descubrió 3 publicaciones de 2023; la tarjeta healthtech oficial apunta al artículo de depresión y quedó retry por mismatch, con 0 señales. 6eabf23 y QA #118 PASS; bloque permanece Implementado/approved hasta evidencia vigente y accesos externos.",
+      "evidence": [
+        "corporate_newsrooms_qa",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36055804692"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -991,6 +1019,12 @@
       "severity": "warning",
       "description": "ISP/ANAMED responde URLError desde GitHub Actions piloto #23: 0 descubierto, 0 publicado, sin evaluación editorial. Conector técnico fail-closed y QA #74 no equivalen a fuente validada.",
       "source": "data/state/discovery_run.json; data/source_health.json; piloto #23"
+    },
+    {
+      "id": "pfizer_newsroom_misroute",
+      "severity": "warning",
+      "description": "La tarjeta oficial Pfizer Chile «Empresas healthtech…» (08/06/2023) enlaza al artículo de depresión. El pipeline detecta headline mismatch, deja retry/BACKFILL y publica 0 señales.",
+      "source": "https://www.pfizer.cl/news; piloto controlado 2026-09-24; staging 6eabf235ca9ddaff9841ee3aa0f554243e7d84d5"
     }
   ],
   "approved_addenda": [
