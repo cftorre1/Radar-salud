@@ -128,3 +128,18 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
  expect(await ref.locator('a').count()===1||await ref.getByText('enlace pendiente de verificación',{exact:false}).count()===1).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-cards-v2.png`,fullPage:true});
 });
+test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM distinct',async({page})=>{
+ await page.goto('/');
+ await expect(page.getByRole('link',{name:/Global Intelligence PREMIUM/})).toBeVisible();
+ await page.getByRole('link',{name:/Global Intelligence PREMIUM/}).click();
+ await expect(page.getByRole('heading',{name:'Global Intelligence'})).toBeVisible();
+ await expect(page.locator('.premium-badge')).toHaveText('PREMIUM');
+ await expect(page.locator('.theme')).toHaveCount(3);
+ await expect(page.locator('.theme').first()).toContainText('Global Theme · research internacional');
+ await expect(page.locator('.theme').first()).toContainText('Qué mirar en Chile · hipótesis, no evidencia local');
+ await expect(page.locator('.theme').first()).toContainText('Trend Chile: no establecido');
+ await expect(page.locator('.theme').first()).toContainText('señales locales compatibles verificadas: 0');
+ await expect(page.locator('.source a')).toHaveCount(3);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
+ await page.screenshot({path:`artifacts/${test.info().project.name}-global-intelligence.png`,fullPage:true});
+});
