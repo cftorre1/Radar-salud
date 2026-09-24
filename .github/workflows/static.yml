@@ -2,12 +2,7 @@
 name: Deploy static content to Pages
 
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Daily Radar pilot"]
-    types: [completed]
 
 permissions:
   contents: read
@@ -20,7 +15,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
