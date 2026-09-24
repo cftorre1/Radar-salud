@@ -116,6 +116,16 @@
       ],
       "result": "success",
       "independent_reviewer": "PASS en e0499e6: preferencias, Bupa, tres sanciones, relación normativa; revisión interactiva IF/N°77 en staging y browser QA #34 la abre."
+    },
+    "incremental_discovery_19": {
+      "kind": "github_actions",
+      "sha": "0110e3881965b940f63b89838e45ee915ec1c300",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35998824088",
+      "checks": [
+        "incremental_discovery",
+        "queue_persistence"
+      ],
+      "result": "success_one_undated_backfill_no_live"
     }
   },
   "blocks": [
@@ -313,6 +323,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Daily Radar pilot #19 sobre staging: 7 fuentes técnicas OK, un enlace DF nuevo sobre minería sin fecha verificable → BACKFILL pendiente; LIVE 0, cola 5 BACKFILL pendientes, 13 rechazados, 1 publicado. Preview automático #36 PASS tests, QA desktop/mobile, Reviewer, deploy y smoke. No inferir evento LIVE ni habilitar cobertura completa.",
+      "evidence": [
+        "incremental_discovery_19",
+        "cards_v2_qa"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Cards V2 gap closure PASS: #33 tests/desktop/mobile/Reviewer/preview, independiente PASS; #34 agrega browser QA que abre IF/N°77, todos checks y smoke PASS. Muestras Bupa/Eleam/Luksic/sanciones compactas sin truncamiento. Addendum Validado; Signal Density completo sigue Implementado. Deuda prioritaria handoff Dirección→PMO→Work registrada.",
