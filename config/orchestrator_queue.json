@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "updated_at": "2026-09-24",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
@@ -18,7 +18,7 @@
         "Aplicar después configuración compatible en staging.",
         "Ejecutar prueba controlada: piloto escribe en staging, main no cambia, producción no despliega, staging sí regenera/despliega, QA/rollback continúan funcionando.",
         "Registrar evidencia y resultado en PMO.",
-        "Tras PASS, reanudar capturas LIVE y continuar baseline MVP."
+        "Tras PASS, continuar automáticamente con las siguientes tareas approved del MVP."
       ],
       "constraints": [
         "No tocar otros archivos de main.",
@@ -31,7 +31,295 @@
         "workflow run controlado",
         "evidencia de no deploy de producción",
         "QA/Reviewer/preview staging PASS"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "intelligence_inbox_cards_v22",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Cerrar la UX principal del MVP: Intelligence Inbox + Cards V2.2.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Implementar Cards V2.1 / Intelligence Inbox ya aprobado en baseline.",
+        "Orden de home: Header → Miramos mucho para mostrarte poco → Explorar compacto → Qué debes saber en 30 segundos → feed.",
+        "Convertir 30 segundos en bandeja compacta de todas las señales no leídas del período.",
+        "Permitir marcar Leído directamente; al hacerlo desaparece solo de la bandeja y permanece en feed como leído.",
+        "Permitir navegar 30 segundos → card y acción visible Volver a 30 segundos.",
+        "Sincronizar leído/no leído y persistir preferencias.",
+        "Compactar Explorar materialmente, especialmente mobile.",
+        "Cards V2.2: restaurar metadata compacta fecha de publicación + fuente al pie.",
+        "Mantener Fuente original visible cuando exista URL verificada.",
+        "Mostrar Ver resumen solo con profundidad sustentada y Ver contexto disponible cuando corresponda.",
+        "Mover fuentes relacionadas, normativa relacionada y documentos de respaldo arriba en la segunda capa, después del resumen/qué ocurrió y antes de detalles extensos."
+      ],
+      "constraints": [
+        "No reabrir Cards V2 ya validadas salvo regresión.",
+        "No inventar profundidad o referencias.",
+        "No tocar main/producción."
+      ],
+      "evidence_required": [
+        "QA desktop",
+        "QA mobile",
+        "Reviewer",
+        "staging evidence",
+        "persistencia leído/no leído",
+        "navegación ida/vuelta",
+        "metadata card visible",
+        "fuentes/referencias visibles arriba en resumen"
+      ]
+    },
+    {
+      "id": "excel_insights_v1",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Publicar Insights Excel V1 determinísticos sobre las tres familias ya validadas.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Generar insights determinísticos para cartera y suscripciones/desahucios usando series canónicas validadas.",
+        "Usar movilidad solo en comparaciones compatibles con el intervalo validado disponible.",
+        "Calcular variación mensual, acumulada, rachas y anomalías solo cuando esquema y denominador estén validados.",
+        "Cada insight debe exponer período, fórmula/evidencia y fuente.",
+        "Mantener fail-closed ante ambigüedad.",
+        "No usar LLM para inventar hallazgo estadístico; LLM solo puede explicar implicancias de un insight determinístico ya validado.",
+        "Alimentar Pulso Isapre solo con insights validados y períodos comparables."
+      ],
+      "constraints": [
+        "No inferir causalidad.",
+        "No mezclar períodos incompatibles.",
+        "No publicar insights sin reconciliación."
+      ],
+      "evidence_required": [
+        "tests de fórmulas",
+        "reconciliación",
+        "QA editorial",
+        "Reviewer cifras/períodos",
+        "staging evidence",
+        "fail-closed adversarial tests"
+      ]
+    },
+    {
+      "id": "sources_chile_mvp",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Baseline MVP",
+      "objective": "Cerrar Fuentes MVP Chile.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Resolver/validar FONASA directo sin rebajar verificación.",
+        "Integrar y validar ISP/ANAMED.",
+        "Integrar y validar DEIS.",
+        "Integrar newsrooms corporativos prioritarios verificados.",
+        "Separar salud técnica, frescura y resultado editorial en source health."
+      ],
+      "constraints": [
+        "Fuente primaria > secundaria.",
+        "No atribuir señales cuando la fuente falla.",
+        "No introducir volumen sin valor editorial."
+      ],
+      "evidence_required": [
+        "captura real por fuente o evidencia explícita de bloqueo externo",
+        "source health facets",
+        "QA/Reviewer",
+        "staging evidence"
+      ]
+    },
+    {
+      "id": "global_intelligence_lite",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Implementar Global Intelligence Lite como capa PREMIUM separada de Trend Chile.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Integrar research material de Reuters, CB Insights, McKinsey, Deloitte, PwC, WHO/OMS, PAHO/OPS y BCG cuando aporte.",
+        "Capturar solo estudios/outlooks/research/señales materiales.",
+        "Estructura: Qué encontró → Por qué importa → Qué mirar en Chile.",
+        "Guardar Global Themes estructurados.",
+        "Separar Global Theme → hipótesis → señales locales compatibles → Trend Chile.",
+        "No presentar una tendencia global como tendencia chilena."
+      ],
+      "constraints": [
+        "PREMIUM.",
+        "No transferencia automática a Chile.",
+        "No scraping prohibido ni bypass de paywalls."
+      ],
+      "evidence_required": [
+        "muestras reales",
+        "trazabilidad de fuente",
+        "QA editorial",
+        "Reviewer",
+        "staging evidence"
+      ]
+    },
+    {
+      "id": "email_subscription_mvp",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Baseline MVP",
+      "objective": "Dejar email/suscripción del MVP técnicamente cerrado hasta donde no requiera cuentas humanas.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Implementar captura consentida desde web.",
+        "Preparar gestión básica de suscriptores.",
+        "Generar digest semanal FREE resumido y estructura PREMIUM completa/personalizada.",
+        "Enviar solo cuando exista material relevante.",
+        "Si proveedor/dominio/secretos requieren humano, registrar bloqueo exacto y continuar otros bloques."
+      ],
+      "constraints": [
+        "No comprar servicios.",
+        "No exponer secretos.",
+        "Privacidad/minimización."
+      ],
+      "evidence_required": [
+        "flujo UI",
+        "tests",
+        "QA",
+        "provider-ready integration or explicit human blocker",
+        "staging evidence"
+      ]
+    },
+    {
+      "id": "analytics_behavior_mvp",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Baseline MVP",
+      "objective": "Instrumentar analytics/comportamiento con minimización.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Medir visitas, recurrencia, cards/30 segundos, clicks a fuentes, filtros, preferencias, ocultamientos y conversión email.",
+        "Si proveedor requiere cuenta/id humano, dejar integración preparada y bloqueo explícito.",
+        "No almacenar datos innecesarios."
+      ],
+      "constraints": [
+        "Privacidad y minimización.",
+        "No activar proveedor sin decisión humana si requiere cuenta/consentimiento."
+      ],
+      "evidence_required": [
+        "event map",
+        "QA",
+        "staging evidence",
+        "human blocker if external provider needed"
+      ]
+    },
+    {
+      "id": "free_premium_mvp",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Representar de forma coherente FREE vs PREMIUM en producto sin pagos.",
+      "depends_on": [
+        "intelligence_inbox_cards_v22",
+        "global_intelligence_lite",
+        "excel_insights_v1"
+      ],
+      "instructions": [
+        "Mantener promesas: FREE te mantiene al día; PREMIUM te ayuda a entender, conectar y anticipar.",
+        "Implementar representación/teasers/límites aprobados en baseline.",
+        "No implementar checkout ni fijar precio definitivo."
+      ],
+      "constraints": [
+        "No pagos.",
+        "No precio definitivo.",
+        "No cambiar matriz comercial aprobada sin Dirección."
+      ],
+      "evidence_required": [
+        "QA de límites FREE/PREMIUM",
+        "Reviewer",
+        "staging evidence"
+      ]
+    },
+    {
+      "id": "presence_trust_technical",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Baseline MVP",
+      "objective": "Preparar toda la presencia/confianza que no requiera acción humana.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Preparar custom domain, SSL/CNAME requirements, favicon, canonical URLs, metadata/Open Graph.",
+        "Preparar páginas Privacidad, Términos, Cobertura/criterios y contacto en estado draft cuando falten aprobaciones humanas.",
+        "Preparar integración de correo/DNS para hola@ y radar@ una vez Dirección entregue dominio/proveedor.",
+        "Registrar bloqueos humanos concretos sin detener otros bloques."
+      ],
+      "constraints": [
+        "No comprar dominio ni Workspace.",
+        "No publicar textos legales como definitivos sin aprobación.",
+        "No tocar DNS sin datos/proveedor aprobados."
+      ],
+      "evidence_required": [
+        "technical readiness",
+        "QA",
+        "explicit blockers",
+        "staging evidence"
+      ]
+    },
+    {
+      "id": "live_evidence_parallel",
+      "status": "approved",
+      "priority": "continuous",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Mantener captura LIVE en paralelo sin bloquear el resto del MVP.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Mantener capturas incrementales reales.",
+        "Registrar primer evento LIVE genuino cuando ocurra.",
+        "Conservar distinción pipeline técnicamente validado vs evento externo observado.",
+        "Nunca mezclar BACKFILL con LIVE.",
+        "No bloquear otros bloques por ausencia de publicación externa."
+      ],
+      "constraints": [
+        "No simular evidencia LIVE real.",
+        "No degradar gates para obtener PASS."
+      ],
+      "evidence_required": [
+        "first genuine LIVE event when externally available",
+        "queue/coverage/feed trace",
+        "QA/Reviewer"
       ]
     }
-  ]
+  ],
+  "execution_policy": {
+    "scope_end": "mvp_complete",
+    "default_branch": "staging",
+    "production_requires_explicit_release": true,
+    "continue_without_human_confirmation": true,
+    "recheck_queue_before_idle": true,
+    "recheck_baseline_before_idle": true,
+    "stop_conditions": [
+      "human_or_external_blocker",
+      "three_consecutive_cycles_without_measurable_progress",
+      "change_would_reduce_QA_or_protection",
+      "pricing_privacy_auth_payments_secrets_or_fundamental_editorial_decision_required",
+      "MVP baseline fully validated except explicitly external-observation items"
+    ],
+    "note": "A queue update does not itself wake a stopped Work session. While Work is active it must re-fetch this file and the PMO baseline before declaring idle."
+  }
 }
