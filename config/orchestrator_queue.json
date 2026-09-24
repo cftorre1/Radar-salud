@@ -657,7 +657,7 @@
     },
     {
       "id": "anonymous_source_suggestions_2026_09_24",
-      "status": "approved",
+      "status": "blocked",
       "priority": "high",
       "owner": "Work",
       "source": "Dirección",
@@ -691,6 +691,19 @@
         "persistencia trazable de una sugerencia de prueba",
         "notificación interna de prueba o bloqueo humano explícito",
         "prueba de anti-spam/fail-closed"
+      ],
+      "progress": "Implementación provider-ready publicada en staging: CTA visible, formulario anónimo de campos mínimos, almacenamiento SQLite trazable, estados de gestión separados de publicación, notificador SMTP interno y protección honeypot/tiempo/rate gate. GitHub Pages no ejecuta el adaptador y la UI solo confirma ante contrato 201 + id + status; por tanto el preview permanece fail-closed y no simula persistencia real. La persistencia y notificación se probaron con SQLite y notificador controlado, pero su activación real requiere decisiones humanas externas.",
+      "blocked_by": [
+        "Definir y autorizar hosting con proceso backend y volumen durable para /api/source-suggestions; GitHub Pages es estático.",
+        "Definir destinatario interno y autorizar proveedor/credenciales SMTP mediante secretos; no se creó proveedor ni se cambiaron secretos."
+      ],
+      "implementation_sha": "e525634979e469655ca9459f609d64f8067688c4",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36074838481 — bootstrap, 161 tests Python, 23 tests web, 22 browser desktop/mobile, Reviewer CI y preview PASS",
+        "Reviewer independiente: primer corte FAIL por éxito 2xx ambiguo, fallback sin JS y color de foco indefinido; correcciones verificadas y veredicto final APPROVE",
+        "SQLite local: sugerencia de prueba con id, timestamp, status y notification_status; schema sin email, nombre personal, IP, user-agent, cookie ni referrer",
+        "Notificador controlado: envío interno PASS; fallo SMTP conserva registro durable en pending sin afirmar entrega",
+        "Preview estático: 200 vacío y 204 se rechazan; sin backend habilitado muestra «No guardamos tu sugerencia»"
       ]
     },
     {

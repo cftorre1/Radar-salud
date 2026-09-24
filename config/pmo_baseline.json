@@ -46,6 +46,25 @@
     "price_clp": null
   },
   "evidence_catalog": {
+    "anonymous_source_suggestions_provider_ready_qa": {
+      "kind": "github_actions",
+      "sha": "e525634979e469655ca9459f609d64f8067688c4",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36074838481",
+      "checks": [
+        "161 tests Python",
+        "23 tests web",
+        "22 browser desktop/mobile",
+        "Reviewer independiente",
+        "Reviewer CI",
+        "preview",
+        "persistencia SQLite controlada",
+        "notificación controlada y fallo pending",
+        "anti-spam y fail-closed"
+      ],
+      "result": "success",
+      "scope": "Valida CTA, anonimato, minimización, almacenamiento/notificador provider-ready y comportamiento fail-closed. No valida recepción ni correo reales en staging: GitHub Pages es estático y faltan hosting durable, destinatario y credenciales/proveedor autorizados.",
+      "validated_requirements": []
+    },
     "corporate_newsrooms_qa": {
       "kind": "github_actions",
       "sha": "6eabf235ca9ddaff9841ee3aa0f554243e7d84d5",
@@ -869,9 +888,25 @@
       "required_data": "titular, contacto, finalidad, retención y jurisdicción",
       "estimated_time": "según revisión legal",
       "beta_impact": "Bloquea la suscripción pública definitiva."
+    },
+    {
+      "id": "source_suggestions_backend_and_mail",
+      "action": "Autorizar hosting con proceso backend y volumen durable para el endpoint de sugerencias; definir destinatario interno y proveedor SMTP, entregando credenciales solo mediante secretos.",
+      "provider": "hosting y correo a definir por Dirección",
+      "required_data": "hosting aprobado, volumen durable, remitente, destinatario interno y credenciales seguras",
+      "estimated_time": "según decisión y aprovisionamiento del proveedor",
+      "beta_impact": "El CTA es visible y fail-closed, pero no recibe ni notifica sugerencias reales hasta activar infraestructura autorizada."
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Sugerencias anónimas quedaron provider-ready en e525634: CTA visible, formulario mínimo sin identidad, SQLite trazable, estados separados de publicación, SMTP interno configurable y anti-spam sin identificador. Reviewer bloqueó el primer corte por confirmar 2xx ambiguo, fallback sin JS y foco indefinido; se corrigió y QA #161 pasó 161 Python, 23 web, 22 browser desktop/mobile, Reviewer CI y preview. GitHub Pages sigue fail-closed: no se simula recepción. Activación real espera hosting durable, destinatario y proveedor/credenciales autorizados.",
+      "evidence": [
+        "anonymous_source_suggestions_provider_ready_qa",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36074838481"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Features FREE y observabilidad validadas en d0bbf44: teaser Global autosuficiente con CTA Premium, Insight Alicanto semanal trazado a evidencia y gates fail-closed de recencia/diversidad/repetición. Panel admin separa ambas features por Luna/Terra/Astra y período mensual/acumulado; la corrida actual no usó API y costo/tokens permanecen No disponible. Reviewer rechazó gates y atribución incompletos, se corrigieron y QA #159 pasó 155 Python, 23 web, 18 browser desktop/mobile, Reviewer CI y preview. El experimento de modelos continúa pendiente y no se activó gasto.",
@@ -1492,7 +1527,7 @@
     }
   ],
   "current_main_workflows_sha": "28be310808fffbe5c3212e75ddda2057ed635ca0",
-  "current_staging_candidate_sha": "d0bbf442441bb454eddae9f8e56ef39e0cf9a9f6",
+  "current_staging_candidate_sha": "e525634979e469655ca9459f609d64f8067688c4",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -1611,7 +1646,7 @@
     },
     {
       "id": "anonymous_source_suggestion_ux_2026_09_24",
-      "status": "Aprobado_para_proxima_iteracion",
+      "status": "Bloqueado",
       "priority": "Alta",
       "horizon": "MVP antes de release",
       "items": [
@@ -1639,7 +1674,10 @@
         "persistencia anónima",
         "notificación interna o bloqueo externo explícito",
         "sin PII obligatoria"
-      ]
+      ],
+      "implementation_sha": "e525634979e469655ca9459f609d64f8067688c4",
+      "validation_evidence": "anonymous_source_suggestions_provider_ready_qa",
+      "validation_note": "El corte provider-ready y fail-closed pasó QA y Reviewer. No se marca Validado porque staging está sobre GitHub Pages estático: persistencia y correo reales requieren hosting durable, destinatario y proveedor/credenciales aprobados."
     },
     {
       "id": "home_compaction_responsive_and_global_copy_2026_09_24",
