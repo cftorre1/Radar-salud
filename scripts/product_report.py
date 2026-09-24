@@ -67,14 +67,18 @@ def build(root, output):
     # publication diagnostics live in product.json and must not masquerade as
     # the current workbook validation in this CSV.
     with (output / "excel_diagnostics.csv").open("w", encoding="utf-8-sig", newline="") as stream:
-        cols=["family", "status", "source_url", "sha256", "periods", "latest_period", "reason"]
+        cols=["family", "status", "source_url", "sha256", "periods", "period_start", "period_end", "period_type", "error"]
         writer=csv.DictWriter(stream, fieldnames=cols)
         writer.writeheader()
         for family, row in sorted(excel_validation.get("families", {}).items()):
+            series=row.get("series") or []
+            last=series[-1] if series else {}
             entry={"family":family,"status":row.get("status"),"source_url":row.get("source_url"),
-                   "sha256":row.get("sha256"),"periods":len(row.get("series") or []),
-                   "latest_period":(row.get("series") or [{}])[-1].get("period") or
-                       (row.get("series") or [{}])[-1].get("period_end"),"reason":row.get("reason")}
+                   "sha256":row.get("sha256"),"periods":len(series),
+                   "period_start":last.get("period_start") or (series[0].get("period") if series else None),
+                   "period_end":last.get("period_end") or last.get("period"),
+                   "period_type":last.get("period_type") or ("monthly_series" if series else None),
+                   "error":row.get("error")}
             writer.writerow({k: "'"+v if isinstance(v,str) and v.startswith(("=","+","-","@")) else v for k,v in entry.items()})
     return report
 

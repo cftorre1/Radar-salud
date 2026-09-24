@@ -1,0 +1,26 @@
+import csv
+import importlib.util
+import json
+from pathlib import Path
+
+
+def test_excel_csv_uses_canonical_validation_and_preserves_comparison_interval(tmp_path):
+    spec = importlib.util.spec_from_file_location("product_report", Path("scripts/product_report.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    root = tmp_path / "root"
+    (root / "data/excel").mkdir(parents=True)
+    canonical = {"families": {
+        "movilidad": {"status": "validated", "sha256": "a" * 64,
+                      "series": [{"period_start": "2025-07", "period_end": "2026-07",
+                                  "period_type": "comparison_between_july_cuts"}]},
+        "cartera": {"status": "schema_not_validated", "error": "Unknown header", "series": []},
+    }}
+    (root / "data/excel/validated_series.json").write_text(json.dumps(canonical))
+    module.build(root, tmp_path / "out")
+    with (tmp_path / "out/excel_diagnostics.csv").open(encoding="utf-8-sig", newline="") as stream:
+        rows = {row["family"]: row for row in csv.DictReader(stream)}
+    assert rows["movilidad"]["period_start"] == "2025-07"
+    assert rows["movilidad"]["period_end"] == "2026-07"
+    assert rows["movilidad"]["period_type"] == "comparison_between_july_cuts"
+    assert rows["cartera"]["error"] == "Unknown header"
