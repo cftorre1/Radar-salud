@@ -170,3 +170,23 @@ test('analytics never sends without explicit privacy approval even if a key is p
  await expect(page.locator('#count')).toContainText('hallazgos');
  expect(attempts).toBe(0);
 });
+test('authorized analytics fixture emits only anonymous event fields',async({page})=>{
+ const payloads=[];
+ await page.route('**/data/analytics.json',route=>route.fulfill({status:200,contentType:'application/json',
+   body:JSON.stringify({enabled:true,privacy_approved:true,provider:'posthog',
+     project_key:'public-test-key',host:'https://us.i.posthog.com'})}));
+ await page.route('https://us.i.posthog.com/capture/',route=>{
+   payloads.push(JSON.parse(route.request().postData()));
+   return route.fulfill({status:200,body:'{}'});
+ });
+ await page.goto('/');
+ await page.getByRole('button',{name:'Personalizar mi radar'}).click();
+ await expect.poll(()=>payloads.some(p=>p.event==='preferences_open')).toBe(true);
+ expect(new Set(payloads.map(p=>p.distinct_id)).size).toBe(payloads.length);
+ for(const payload of payloads){
+   expect(payload.api_key).toBe('public-test-key');
+   expect(Object.keys(payload).sort()).toEqual(['api_key','distinct_id','event','properties']);
+   expect(Object.keys(payload.properties).every(key=>['returning','$geoip_disable','$process_person_profile','dimension','hidden'].includes(key))).toBe(true);
+   expect(JSON.stringify(payload)).not.toMatch(/source_url|email|title|https:\/\/cftorre1/);
+ }
+});
