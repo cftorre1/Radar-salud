@@ -1,0 +1,177 @@
+{
+  "validated_at": "2026-09-24T03:43:04.280594+00:00",
+  "families": {
+    "cartera": {
+      "family": "cartera",
+      "status": "validated",
+      "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+      "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+      "bytes": 3558853,
+      "schema": "monthly_isapre_totals_v1",
+      "series": [
+        {
+          "period": "2026-01",
+          "sheet": "Enero",
+          "isapres": 10,
+          "metrics": {
+            "cotizantes": 1557064,
+            "cargas": 956974,
+            "beneficiarios": 2514038
+          }
+        },
+        {
+          "period": "2026-02",
+          "sheet": "Febrero",
+          "isapres": 10,
+          "metrics": {
+            "cotizantes": 1555751,
+            "cargas": 954634,
+            "beneficiarios": 2510385
+          }
+        },
+        {
+          "period": "2026-03",
+          "sheet": "Marzo",
+          "isapres": 10,
+          "metrics": {
+            "cotizantes": 1553560,
+            "cargas": 951277,
+            "beneficiarios": 2504837
+          }
+        },
+        {
+          "period": "2026-04",
+          "sheet": "Abril",
+          "isapres": 10,
+          "metrics": {
+            "cotizantes": 1550891,
+            "cargas": 947758,
+            "beneficiarios": 2498649
+          }
+        },
+        {
+          "period": "2026-05",
+          "sheet": "Mayo",
+          "isapres": 10,
+          "metrics": {
+            "cotizantes": 1549840,
+            "cargas": 943844,
+            "beneficiarios": 2493684
+          }
+        },
+        {
+          "period": "2026-06",
+          "sheet": "Junio",
+          "isapres": 10,
+          "metrics": {
+            "cotizantes": 1549398,
+            "cargas": 939860,
+            "beneficiarios": 2489258
+          }
+        },
+        {
+          "period": "2026-07",
+          "sheet": "Julio",
+          "isapres": 10,
+          "metrics": {
+            "cotizantes": 1549873,
+            "cargas": 937624,
+            "beneficiarios": 2487497
+          }
+        }
+      ]
+    },
+    "suscripciones": {
+      "family": "suscripciones",
+      "status": "validated",
+      "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
+      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+      "bytes": 242120,
+      "schema": "monthly_isapre_totals_v1",
+      "series": [
+        {
+          "period": "2026-01",
+          "sheet": "Enero",
+          "isapres": 10,
+          "metrics": {
+            "contratos_suscritos": 22619,
+            "desahucios_voluntarios": 21322
+          }
+        },
+        {
+          "period": "2026-02",
+          "sheet": "Febrero",
+          "isapres": 10,
+          "metrics": {
+            "contratos_suscritos": 19452,
+            "desahucios_voluntarios": 18230
+          }
+        },
+        {
+          "period": "2026-03",
+          "sheet": "Marzo",
+          "isapres": 10,
+          "metrics": {
+            "contratos_suscritos": 18274,
+            "desahucios_voluntarios": 16140
+          }
+        },
+        {
+          "period": "2026-04",
+          "sheet": "Abril",
+          "isapres": 10,
+          "metrics": {
+            "contratos_suscritos": 18994,
+            "desahucios_voluntarios": 16305
+          }
+        },
+        {
+          "period": "2026-05",
+          "sheet": "Mayo",
+          "isapres": 10,
+          "metrics": {
+            "contratos_suscritos": 17557,
+            "desahucios_voluntarios": 13948
+          }
+        },
+        {
+          "period": "2026-06",
+          "sheet": "Junio",
+          "isapres": 10,
+          "metrics": {
+            "contratos_suscritos": 18331,
+            "desahucios_voluntarios": 14726
+          }
+        },
+        {
+          "period": "2026-07",
+          "sheet": "Julio",
+          "isapres": 10,
+          "metrics": {
+            "contratos_suscritos": 19716,
+            "desahucios_voluntarios": 15172
+          }
+        }
+      ]
+    },
+    "movilidad": {
+      "family": "movilidad",
+      "status": "validated",
+      "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
+      "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
+      "bytes": 393047,
+      "schema": "national_age_totals_v1",
+      "series": [
+        {
+          "period": "2026-07",
+          "sheet": "Nacional",
+          "metrics": {
+            "salidas": 109663,
+            "entradas": 91963,
+            "diferencia": -17700
+          }
+        }
+      ]
+    }
+  }
+}

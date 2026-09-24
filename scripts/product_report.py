@@ -22,6 +22,7 @@ def build(root, output):
     responses = [json.loads(line) for line in responses_path.read_text().splitlines() if line] if responses_path.exists() else []
     usage = {p.stem: read(p, {}) for p in (root / "data/ai_usage").glob("*.json")}
     diagnostics = []
+    excel_validation = read(root / "data/excel/validated_series.json", {"families": {}})
     for row in history:
         if "Datos" not in row.get("signal_types", []) and not row.get("data_insight_meta"):
             continue
@@ -58,7 +59,7 @@ def build(root, output):
             output_tokens=sum(x.get("output_tokens") or 0 for x in responses),
             cost_usd=None, cost_status="unavailable_without_approved_rates",
             historical_tokens_status="not_measured_before_0.9.0"),
-        excel=diagnostics, user_telemetry="local_preferences_only_no_central_collector",
+        excel=diagnostics, excel_validation=excel_validation, user_telemetry="local_preferences_only_no_central_collector",
         pmo=project_pmo(baseline_path, os.environ.get("ALICANTO_CANDIDATE_SHA") or os.environ.get("GITHUB_SHA")) if baseline_path.exists() else None)
     output.mkdir(parents=True, exist_ok=True)
     atomic_json(output / "product.json", report)

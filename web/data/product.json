@@ -1,15 +1,16 @@
 {
   "version": "0.9.0",
-  "generated_at": "2026-09-23T13:17:53.189479+00:00",
-  "snapshot_at": "2026-09-23T10:37:33.436409+00:00",
-  "published": 64,
+  "generated_at": "2026-09-24T03:45:42.155320+00:00",
+  "snapshot_at": "2026-09-24T03:25:28.709239+00:00",
+  "published": 37,
   "queue": null,
   "queue_status": "awaiting_first_global_discovery",
-  "legacy_pending": 2605,
+  "coverage_live": null,
+  "legacy_pending": 2515,
   "sources": {
     "superintendencia_stats": {
       "name": "Superintendencia estadísticas",
-      "checked_at": "2026-09-23T10:31:19.965076+00:00",
+      "checked_at": "2026-09-23T14:18:11.153945+00:00",
       "last_signal_at": "2026-09-07",
       "discovered": 739,
       "new": 0,
@@ -22,11 +23,11 @@
     },
     "superintendencia_normativa": {
       "name": "Superintendencia Normativa",
-      "checked_at": "2026-09-23T10:36:21.973766+00:00",
+      "checked_at": "2026-09-23T14:18:15.427721+00:00",
       "last_signal_at": "2026-07-09",
       "discovered": 4266,
-      "new": 61,
-      "published": 61,
+      "new": 0,
+      "published": 0,
       "pending": 0,
       "deferred": 0,
       "rejected": 0,
@@ -35,7 +36,7 @@
     },
     "minsal": {
       "name": "Minsal",
-      "checked_at": "2026-09-23T10:36:24.671108+00:00",
+      "checked_at": "2026-09-23T14:18:18.988773+00:00",
       "last_signal_at": null,
       "discovered": 53,
       "new": 0,
@@ -48,7 +49,7 @@
     },
     "suseso": {
       "name": "Suseso",
-      "checked_at": "2026-09-23T10:36:32.764434+00:00",
+      "checked_at": "2026-09-23T14:18:30.043820+00:00",
       "last_signal_at": "2026-01-13",
       "discovered": 7602,
       "new": 0,
@@ -61,20 +62,20 @@
     },
     "diario_financiero": {
       "name": "Diario Financiero",
-      "checked_at": "2026-09-23T10:36:37.424021+00:00",
+      "checked_at": "2026-09-23T14:18:40.277933+00:00",
       "last_signal_at": "2026-09-22",
-      "discovered": 71,
-      "new": 2,
+      "discovered": 70,
+      "new": 7,
       "published": 0,
       "pending": 0,
       "deferred": 0,
-      "rejected": 2,
+      "rejected": 7,
       "status": "warning",
       "error": null
     },
     "diario_oficial": {
       "name": "Diario Oficial",
-      "checked_at": "2026-09-23T10:37:33.204920+00:00",
+      "checked_at": "2026-09-23T14:19:35.186096+00:00",
       "last_signal_at": "2026-09-22",
       "discovered": 2,
       "new": 0,
@@ -87,12 +88,12 @@
     },
     "superintendencia_fiscalizacion": {
       "name": "Superintendencia Fiscalizacion",
-      "checked_at": "2026-09-23T10:36:23.565947+00:00",
-      "last_signal_at": "2026-09-15",
+      "checked_at": "2026-09-23T14:18:17.540997+00:00",
+      "last_signal_at": "2025-10-24",
       "discovered": 2695,
-      "new": 2695,
+      "new": 2605,
       "published": 90,
-      "pending": 2605,
+      "pending": 2515,
       "deferred": 0,
       "rejected": 0,
       "status": "ok",
@@ -574,5 +575,502 @@
       "insights": 0
     }
   ],
-  "user_telemetry": "local_preferences_only_no_central_collector"
+  "excel_validation": {
+    "validated_at": "2026-09-24T03:43:04.280594+00:00",
+    "families": {
+      "cartera": {
+        "family": "cartera",
+        "status": "validated",
+        "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+        "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+        "bytes": 3558853,
+        "schema": "monthly_isapre_totals_v1",
+        "series": [
+          {
+            "period": "2026-01",
+            "sheet": "Enero",
+            "isapres": 10,
+            "metrics": {
+              "cotizantes": 1557064,
+              "cargas": 956974,
+              "beneficiarios": 2514038
+            }
+          },
+          {
+            "period": "2026-02",
+            "sheet": "Febrero",
+            "isapres": 10,
+            "metrics": {
+              "cotizantes": 1555751,
+              "cargas": 954634,
+              "beneficiarios": 2510385
+            }
+          },
+          {
+            "period": "2026-03",
+            "sheet": "Marzo",
+            "isapres": 10,
+            "metrics": {
+              "cotizantes": 1553560,
+              "cargas": 951277,
+              "beneficiarios": 2504837
+            }
+          },
+          {
+            "period": "2026-04",
+            "sheet": "Abril",
+            "isapres": 10,
+            "metrics": {
+              "cotizantes": 1550891,
+              "cargas": 947758,
+              "beneficiarios": 2498649
+            }
+          },
+          {
+            "period": "2026-05",
+            "sheet": "Mayo",
+            "isapres": 10,
+            "metrics": {
+              "cotizantes": 1549840,
+              "cargas": 943844,
+              "beneficiarios": 2493684
+            }
+          },
+          {
+            "period": "2026-06",
+            "sheet": "Junio",
+            "isapres": 10,
+            "metrics": {
+              "cotizantes": 1549398,
+              "cargas": 939860,
+              "beneficiarios": 2489258
+            }
+          },
+          {
+            "period": "2026-07",
+            "sheet": "Julio",
+            "isapres": 10,
+            "metrics": {
+              "cotizantes": 1549873,
+              "cargas": 937624,
+              "beneficiarios": 2487497
+            }
+          }
+        ]
+      },
+      "suscripciones": {
+        "family": "suscripciones",
+        "status": "validated",
+        "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
+        "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+        "bytes": 242120,
+        "schema": "monthly_isapre_totals_v1",
+        "series": [
+          {
+            "period": "2026-01",
+            "sheet": "Enero",
+            "isapres": 10,
+            "metrics": {
+              "contratos_suscritos": 22619,
+              "desahucios_voluntarios": 21322
+            }
+          },
+          {
+            "period": "2026-02",
+            "sheet": "Febrero",
+            "isapres": 10,
+            "metrics": {
+              "contratos_suscritos": 19452,
+              "desahucios_voluntarios": 18230
+            }
+          },
+          {
+            "period": "2026-03",
+            "sheet": "Marzo",
+            "isapres": 10,
+            "metrics": {
+              "contratos_suscritos": 18274,
+              "desahucios_voluntarios": 16140
+            }
+          },
+          {
+            "period": "2026-04",
+            "sheet": "Abril",
+            "isapres": 10,
+            "metrics": {
+              "contratos_suscritos": 18994,
+              "desahucios_voluntarios": 16305
+            }
+          },
+          {
+            "period": "2026-05",
+            "sheet": "Mayo",
+            "isapres": 10,
+            "metrics": {
+              "contratos_suscritos": 17557,
+              "desahucios_voluntarios": 13948
+            }
+          },
+          {
+            "period": "2026-06",
+            "sheet": "Junio",
+            "isapres": 10,
+            "metrics": {
+              "contratos_suscritos": 18331,
+              "desahucios_voluntarios": 14726
+            }
+          },
+          {
+            "period": "2026-07",
+            "sheet": "Julio",
+            "isapres": 10,
+            "metrics": {
+              "contratos_suscritos": 19716,
+              "desahucios_voluntarios": 15172
+            }
+          }
+        ]
+      },
+      "movilidad": {
+        "family": "movilidad",
+        "status": "validated",
+        "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
+        "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
+        "bytes": 393047,
+        "schema": "national_age_totals_v1",
+        "series": [
+          {
+            "period": "2026-07",
+            "sheet": "Nacional",
+            "metrics": {
+              "salidas": 109663,
+              "entradas": 91963,
+              "diferencia": -17700
+            }
+          }
+        ]
+      }
+    }
+  },
+  "user_telemetry": "local_preferences_only_no_central_collector",
+  "pmo": {
+    "version": "beta-friday-2026-09-25",
+    "target_date": "2026-09-25",
+    "candidate_sha": null,
+    "reference_staging_sha": "ff4023f453819cc9208da6df3ac291ad4b9cadc5",
+    "production_reference_sha": "06831243d83705777f6a916fcc86a7896d6522da",
+    "reference_deploy": {
+      "kind": "github_actions",
+      "sha": "ff4023f453819cc9208da6df3ac291ad4b9cadc5",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35952381817",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "result": "success"
+    },
+    "release_rule": "Ningún bloque crítico pasa a Validado sin evidencia de tests, QA staging y Reviewer para el commit candidato; producción exige autorización explícita.",
+    "readiness": {
+      "ready": false,
+      "label": "No lista para Beta",
+      "validated": 0,
+      "total": 10
+    },
+    "blocks": [
+      {
+        "id": "pmo",
+        "title": "PMO baseline y panel",
+        "status": "Implementado",
+        "critical": true,
+        "evidence": [],
+        "dependencies": [
+          "QA y Reviewer de este cambio"
+        ],
+        "missing": [
+          "validar panel y estados contra el baseline en staging"
+        ],
+        "evidence_links": []
+      },
+      {
+        "id": "signal_density",
+        "title": "Signal Density",
+        "status": "Implementado",
+        "critical": true,
+        "evidence": [
+          "staging_qa"
+        ],
+        "dependencies": [
+          "recuración histórica",
+          "QA editorial con muestras reales"
+        ],
+        "missing": [
+          "validar dos pulsos Isapres y Prestadores en ventana real",
+          "consolidación rutinaria sin borrar eventos estratégicos",
+          "guard de repetición y filtro de ruido con muestras adversarias"
+        ],
+        "evidence_links": [
+          {
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35952381817",
+            "sha": "ff4023f453819cc9208da6df3ac291ad4b9cadc5",
+            "result": "success"
+          }
+        ]
+      },
+      {
+        "id": "excel",
+        "title": "Datos y Excel",
+        "status": "Implementado",
+        "critical": true,
+        "evidence": [],
+        "dependencies": [
+          "QA remoto y Reviewer del diagnóstico de workbooks originales"
+        ],
+        "missing": [
+          "verificar diagnóstico de las tres familias en staging",
+          "Pulso Isapre solo con insights validados y lectura editorial"
+        ],
+        "evidence_links": []
+      },
+      {
+        "id": "sources_chile",
+        "title": "Fuentes MVP Chile",
+        "status": "Pendiente",
+        "critical": true,
+        "evidence": [],
+        "dependencies": [
+          "endpoints públicos oficiales",
+          "monitoreo de fuentes"
+        ],
+        "missing": [
+          "FONASA directo",
+          "ISP/ANAMED",
+          "DEIS",
+          "newsrooms prioritarios verificados"
+        ],
+        "evidence_links": []
+      },
+      {
+        "id": "global",
+        "title": "Global Intelligence Lite",
+        "status": "Pendiente",
+        "critical": true,
+        "evidence": [],
+        "dependencies": [
+          "fuentes internacionales con acceso público",
+          "separación Global Theme/Trend Chile"
+        ],
+        "missing": [
+          "captura de research material",
+          "Qué mirar en Chile trazable",
+          "clasificación PREMIUM sin transferencia automática"
+        ],
+        "evidence_links": []
+      },
+      {
+        "id": "coverage",
+        "title": "Cobertura y transparencia",
+        "status": "Implementado",
+        "critical": true,
+        "evidence": [
+          "staging_qa"
+        ],
+        "dependencies": [
+          "primera exploración global LIVE/BACKFILL"
+        ],
+        "missing": [
+          "medición LIVE real auditable de detectadas, evaluadas y seleccionadas",
+          "estado de cobertura histórica"
+        ],
+        "evidence_links": [
+          {
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35952381817",
+            "sha": "ff4023f453819cc9208da6df3ac291ad4b9cadc5",
+            "result": "success"
+          }
+        ]
+      },
+      {
+        "id": "email",
+        "title": "Email y suscripción",
+        "status": "Pendiente",
+        "critical": true,
+        "evidence": [],
+        "dependencies": [
+          "proveedor de email y configuración de dominio"
+        ],
+        "missing": [
+          "captura consentida",
+          "gestión de suscriptores",
+          "digest FREE resumido",
+          "envío real condicionado a material relevante"
+        ],
+        "evidence_links": []
+      },
+      {
+        "id": "analytics",
+        "title": "Analytics y comportamiento",
+        "status": "Pendiente",
+        "critical": true,
+        "evidence": [],
+        "dependencies": [
+          "decisión de privacidad y proveedor"
+        ],
+        "missing": [
+          "visitas y recurrencia",
+          "interacciones con cards y fuentes",
+          "filtros e intereses",
+          "conversión email con minimización"
+        ],
+        "evidence_links": []
+      },
+      {
+        "id": "commercial",
+        "title": "FREE vs PREMIUM",
+        "status": "Aprobado",
+        "critical": true,
+        "evidence": [],
+        "dependencies": [
+          "separación de acceso sin auth ni pagos"
+        ],
+        "missing": [
+          "representación coherente en producto",
+          "QA de límites FREE/PREMIUM"
+        ],
+        "evidence_links": []
+      },
+      {
+        "id": "presence",
+        "title": "Presencia y confianza",
+        "status": "Bloqueado",
+        "critical": true,
+        "evidence": [],
+        "dependencies": [
+          "decisión humana sobre dominio y cuentas"
+        ],
+        "missing": [
+          "dominio y SSL propios",
+          "correo corporativo y SPF/DKIM/DMARC",
+          "políticas legales aprobadas",
+          "página de cobertura y contacto"
+        ],
+        "evidence_links": []
+      }
+    ],
+    "open_failures": [
+      {
+        "id": "autopilot_preview_not_verified",
+        "severity": "critical",
+        "description": "Autopilot distingue QA aprobado, pero aún no verifica el resultado del preview remoto ni registra su fallo para retry.",
+        "source": "src/radar_salud/autopilot.py; .github/workflows/autopilot.yml"
+      },
+      {
+        "id": "beta_contract_not_gated",
+        "severity": "critical",
+        "description": "El Reviewer actual no cubre aún todas las condiciones funcionales del baseline Beta.",
+        "source": "scripts/review_candidate.py"
+      }
+    ],
+    "human_blockers": [
+      {
+        "id": "domain",
+        "action": "Confirmar disponibilidad y autorizar registro de alicanto.cl; proporcionar acceso DNS para SSL y correo.",
+        "provider": "NIC Chile y proveedor DNS/hosting a elegir",
+        "required_data": "titular, contacto administrativo y acceso DNS",
+        "estimated_time": "30–60 min de configuración; propagación variable",
+        "beta_impact": "Impide URL y correo institucionales definitivos."
+      },
+      {
+        "id": "email_provider",
+        "action": "Crear o autorizar cuenta de envío y entregar credenciales mediante secretos de GitHub; aprobar identidad remitente.",
+        "provider": "Buttondown u otro proveedor aprobado",
+        "required_data": "cuenta, remitente y secreto API",
+        "estimated_time": "30–90 min más verificación del dominio",
+        "beta_impact": "Impide envío real y gestión remota de suscriptores."
+      },
+      {
+        "id": "analytics_provider",
+        "action": "Aprobar tratamiento de datos y proveedor; entregar identificador público si se decide activar.",
+        "provider": "PostHog u otro proveedor aprobado",
+        "required_data": "decisión de privacidad e identificador de proyecto",
+        "estimated_time": "30–60 min",
+        "beta_impact": "Impide telemetría centralizada de comportamiento."
+      },
+      {
+        "id": "legal",
+        "action": "Aprobar textos de Política de Privacidad y Términos de Uso antes de publicarlos como definitivos.",
+        "provider": "responsable legal del producto",
+        "required_data": "titular, contacto, finalidad, retención y jurisdicción",
+        "estimated_time": "según revisión legal",
+        "beta_impact": "Bloquea la suscripción pública definitiva."
+      }
+    ],
+    "scope_deviations": [],
+    "changes_since_yesterday": [
+      {
+        "date": "2026-09-24",
+        "change": "Run #13 validó corrección editorial, navegación del resumen, QA desktop/mobile y panel de última consulta; tres workbooks reales pasaron validación controlada de agregados, pendiente QA de su diagnóstico en staging.",
+        "evidence": [
+          "staging_qa"
+        ]
+      },
+      {
+        "date": "2026-09-24",
+        "change": "Run #12 falló el test de encabezado de tabla en desktop/mobile y no desplegó; se corrigió con scope de columna sin reducir la aserción.",
+        "evidence": []
+      },
+      {
+        "date": "2026-09-24",
+        "change": "Staging remoto, QA desktop/mobile, Reviewer y rollback real comprobados; producción/main conservados.",
+        "evidence": [
+          "staging_qa",
+          "rollback"
+        ]
+      },
+      {
+        "date": "2026-09-24",
+        "change": "Baseline Beta del viernes recibido; estados iniciales conservadores hasta nueva evidencia.",
+        "evidence": []
+      },
+      {
+        "date": "2026-09-24",
+        "change": "Autopilot distingue QA local de preview remoto y ya no impone cinco intentos; falta validación del flujo completo en staging.",
+        "evidence": []
+      }
+    ],
+    "missing_for_beta": [
+      "PMO baseline y panel: validar panel y estados contra el baseline en staging",
+      "Signal Density: validar dos pulsos Isapres y Prestadores en ventana real",
+      "Signal Density: consolidación rutinaria sin borrar eventos estratégicos",
+      "Signal Density: guard de repetición y filtro de ruido con muestras adversarias",
+      "Datos y Excel: verificar diagnóstico de las tres familias en staging",
+      "Datos y Excel: Pulso Isapre solo con insights validados y lectura editorial",
+      "Fuentes MVP Chile: FONASA directo",
+      "Fuentes MVP Chile: ISP/ANAMED",
+      "Fuentes MVP Chile: DEIS",
+      "Fuentes MVP Chile: newsrooms prioritarios verificados",
+      "Global Intelligence Lite: captura de research material",
+      "Global Intelligence Lite: Qué mirar en Chile trazable",
+      "Global Intelligence Lite: clasificación PREMIUM sin transferencia automática",
+      "Cobertura y transparencia: medición LIVE real auditable de detectadas, evaluadas y seleccionadas",
+      "Cobertura y transparencia: estado de cobertura histórica",
+      "Email y suscripción: captura consentida",
+      "Email y suscripción: gestión de suscriptores",
+      "Email y suscripción: digest FREE resumido",
+      "Email y suscripción: envío real condicionado a material relevante",
+      "Analytics y comportamiento: visitas y recurrencia",
+      "Analytics y comportamiento: interacciones con cards y fuentes",
+      "Analytics y comportamiento: filtros e intereses",
+      "Analytics y comportamiento: conversión email con minimización",
+      "FREE vs PREMIUM: representación coherente en producto",
+      "FREE vs PREMIUM: QA de límites FREE/PREMIUM",
+      "Presencia y confianza: dominio y SSL propios",
+      "Presencia y confianza: correo corporativo y SPF/DKIM/DMARC",
+      "Presencia y confianza: políticas legales aprobadas",
+      "Presencia y confianza: página de cobertura y contacto"
+    ],
+    "next_action": "PMO baseline y panel: validar panel y estados contra el baseline en staging"
+  }
 }

@@ -1,7 +1,7 @@
 {
   "version": "beta-friday-2026-09-25",
   "target_date": "2026-09-25",
-  "reference_staging_sha": "62111e3a2c7cd805338ea5101bb40082172f537f",
+  "reference_staging_sha": "ff4023f453819cc9208da6df3ac291ad4b9cadc5",
   "production_reference_sha": "06831243d83705777f6a916fcc86a7896d6522da",
   "statuses": ["Aprobado", "Implementado", "Validado", "Bloqueado", "Pendiente", "Fuera de alcance"],
   "release_rule": "Ningún bloque crítico pasa a Validado sin evidencia de tests, QA staging y Reviewer para el commit candidato; producción exige autorización explícita.",
@@ -14,13 +14,13 @@
     "price_clp": null
   },
   "evidence_catalog": {
-    "staging_qa": {"kind": "github_actions", "sha": "62111e3a2c7cd805338ea5101bb40082172f537f", "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35939727172", "checks": ["tests", "desktop", "mobile", "reviewer", "preview"], "result": "success"},
+    "staging_qa": {"kind": "github_actions", "sha": "ff4023f453819cc9208da6df3ac291ad4b9cadc5", "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35952381817", "checks": ["tests", "desktop", "mobile", "reviewer", "preview"], "result": "success"},
     "rollback": {"kind": "github_actions", "sha": "3edb6e3a4c92787e0076491490283124cf4ff7d4", "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35939432026", "checks": ["rollback"], "result": "success_after_expected_preview_failure"}
   },
   "blocks": [
     {"id": "pmo", "title": "PMO baseline y panel", "status": "Implementado", "critical": true, "evidence": [], "dependencies": ["QA y Reviewer de este cambio"], "missing": ["validar panel y estados contra el baseline en staging"]},
     {"id": "signal_density", "title": "Signal Density", "status": "Implementado", "critical": true, "evidence": ["staging_qa"], "dependencies": ["recuración histórica", "QA editorial con muestras reales"], "missing": ["validar dos pulsos Isapres y Prestadores en ventana real", "consolidación rutinaria sin borrar eventos estratégicos", "guard de repetición y filtro de ruido con muestras adversarias"]},
-    {"id": "excel", "title": "Datos y Excel", "status": "Pendiente", "critical": true, "evidence": [], "dependencies": ["workbooks originales de movilidad, cartera y suscripciones"], "missing": ["schema real de cada familia", "series y métricas comparables", "diagnóstico fail-closed", "Pulso Isapre solo con insights validados"]},
+    {"id": "excel", "title": "Datos y Excel", "status": "Implementado", "critical": true, "evidence": [], "dependencies": ["QA remoto y Reviewer del diagnóstico de workbooks originales"], "missing": ["verificar diagnóstico de las tres familias en staging", "Pulso Isapre solo con insights validados y lectura editorial"]},
     {"id": "sources_chile", "title": "Fuentes MVP Chile", "status": "Pendiente", "critical": true, "evidence": [], "dependencies": ["endpoints públicos oficiales", "monitoreo de fuentes"], "missing": ["FONASA directo", "ISP/ANAMED", "DEIS", "newsrooms prioritarios verificados"]},
     {"id": "global", "title": "Global Intelligence Lite", "status": "Pendiente", "critical": true, "evidence": [], "dependencies": ["fuentes internacionales con acceso público", "separación Global Theme/Trend Chile"], "missing": ["captura de research material", "Qué mirar en Chile trazable", "clasificación PREMIUM sin transferencia automática"]},
     {"id": "coverage", "title": "Cobertura y transparencia", "status": "Implementado", "critical": true, "evidence": ["staging_qa"], "dependencies": ["primera exploración global LIVE/BACKFILL"], "missing": ["medición LIVE real auditable de detectadas, evaluadas y seleccionadas", "estado de cobertura histórica"]},
@@ -36,6 +36,8 @@
     {"id": "legal", "action": "Aprobar textos de Política de Privacidad y Términos de Uso antes de publicarlos como definitivos.", "provider": "responsable legal del producto", "required_data": "titular, contacto, finalidad, retención y jurisdicción", "estimated_time": "según revisión legal", "beta_impact": "Bloquea la suscripción pública definitiva."}
   ],
   "changelog": [
+    {"date": "2026-09-24", "change": "Run #13 validó corrección editorial, navegación del resumen, QA desktop/mobile y panel de última consulta; tres workbooks reales pasaron validación controlada de agregados, pendiente QA de su diagnóstico en staging.", "evidence": ["staging_qa"]},
+    {"date": "2026-09-24", "change": "Run #12 falló el test de encabezado de tabla en desktop/mobile y no desplegó; se corrigió con scope de columna sin reducir la aserción.", "evidence": []},
     {"date": "2026-09-24", "change": "Staging remoto, QA desktop/mobile, Reviewer y rollback real comprobados; producción/main conservados.", "evidence": ["staging_qa", "rollback"]},
     {"date": "2026-09-24", "change": "Baseline Beta del viernes recibido; estados iniciales conservadores hasta nueva evidencia.", "evidence": []},
     {"date": "2026-09-24", "change": "Autopilot distingue QA local de preview remoto y ya no impone cinco intentos; falta validación del flujo completo en staging.", "evidence": []}
