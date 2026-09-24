@@ -88,21 +88,22 @@
       "parity_preview": "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641"
     },
     "email_subscription_technical_qa": {
-      "kind": "github_actions_and_independent_review",
-      "sha": "0c9e781c81eca5a5e7e24aef4433dc306c23160f",
+      "kind": "github_actions",
+      "sha": "be1e988153db46c7e57bf802c386a75eaa020219",
       "implementation_sha": "3cf095594641812c8ac0d46d94b74f475ffce909",
-      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36040638118",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36041103869",
       "checks": [
-        "python",
-        "node",
-        "playwright_desktop_mobile",
-        "reviewer_ci",
-        "independent_reviewer",
-        "preview",
-        "api_key_cannot_bypass_disabled_send"
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
       ],
-      "result": "technical_success_external_activation_blocked",
-      "scope": "Captura y envío preparados pero deshabilitados; sin proveedor, PII, secreto ni aprobación legal en el repositorio."
+      "result": "success",
+      "scope": "Selección/renderizado condicional y UI deshabilitada; no valida entrega, captura ni aprobación legal.",
+      "validated_requirements": [
+        "Digest semanal condicional FREE"
+      ]
     },
     "rollback": {
       "kind": "github_actions",
@@ -474,7 +475,8 @@
         },
         {
           "label": "Digest semanal condicional FREE",
-          "status": "Validado"
+          "status": "Validado",
+          "evidence": "email_subscription_technical_qa"
         },
         {
           "label": "Preparación PREMIUM con envío real cuando exista proveedor",
@@ -852,6 +854,14 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36037182719",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561"
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Email: #101 FAIL incompatibilidad de tests; #102/#103 PASS; #104 cancelado por candidato posterior; #105 candidato de integración, evidencias finales verificadas en Actions. Entrega real, gestión y legal siguen bloqueadas sin proveedor/autorización.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36041103869",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36040290271"
       ]
     }
   ],
