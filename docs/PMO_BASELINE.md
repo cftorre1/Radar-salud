@@ -134,3 +134,5 @@ Principio: **Dato → Insight determinístico → Señal**, con comportamiento f
 - Cada insight debe exponer período, evidencia/fórmula y fuente.
 - El LLM no inventa el hallazgo estadístico; puede explicar implicancias una vez validado el insight.
 - Pulso Isapre puede incorporar únicamente insights validados y comparables.
+
+El preview [#48](https://github.com/cftorre1/Radar-salud/actions/runs/36019691556) confirmó QA desktop/mobile, Reviewer y publicación del diagnóstico. Referencias del panel: staging `8db66b6`, producción observada [#90](https://github.com/cftorre1/Radar-salud/actions/runs/36018933311) desde main `ea55bc7`. Son mediciones distintas; no hubo promoción del candidato.

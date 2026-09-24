@@ -1,8 +1,8 @@
 {
   "version": "beta-friday-2026-09-25",
   "target_date": "2026-09-25",
-  "reference_staging_sha": "d2b63c2b4bee036556e1d24db660c22e10b911b3",
-  "production_reference_sha": "06831243d83705777f6a916fcc86a7896d6522da",
+  "reference_staging_sha": "8db66b691135c8616120154b7253f9342ee5f93f",
+  "production_reference_sha": "ea55bc7e084b54ff07cb25ea50e211186dfb1c63",
   "statuses": [
     "Aprobado",
     "Implementado",
@@ -48,8 +48,8 @@
   "evidence_catalog": {
     "staging_qa": {
       "kind": "github_actions",
-      "sha": "d2b63c2b4bee036556e1d24db660c22e10b911b3",
-      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35999421639",
+      "sha": "8db66b691135c8616120154b7253f9342ee5f93f",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36019691556",
       "checks": [
         "tests",
         "desktop",
@@ -182,6 +182,16 @@
       "validated_requirements": [
         "Replay técnico discovery → cola → selección con fallos ante mezcla"
       ]
+    },
+    "production_observed_90": {
+      "kind": "github_actions",
+      "sha": "ea55bc7e084b54ff07cb25ea50e211186dfb1c63",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36018933311",
+      "checks": [
+        "deploy_main_checkout"
+      ],
+      "result": "success_unplanned_workflow_run",
+      "note": "Despliegue automático heredado de main; no promueve el candidato staging."
     }
   },
   "blocks": [
@@ -539,6 +549,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "PMO referencia QA staging #48 SHA 8db66b6 (tests, desktop/mobile, Reviewer, preview PASS) y producción observada #90 SHA main ea55bc7. El despliegue #90 se originó en workflow_run del piloto, no en una decisión de release. Bloqueo de aislamiento permanece.",
+      "evidence": [
+        "staging_qa",
+        "production_observed_90"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Dirección aprueba para la siguiente iteración MVP: Cards V2.2 con metadata compacta (fecha/fuente), acciones coherentes y fuentes/referencias visibles arriba en la segunda capa; además Insights Excel V1 determinísticos para cartera, suscripciones/desahucios y movilidad compatible. Prioridad alta/crítica para cierre de MVP.",
