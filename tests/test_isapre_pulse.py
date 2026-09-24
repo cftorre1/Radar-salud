@@ -18,7 +18,10 @@ def test_pulse_reconciles_real_three_family_series():
     assert "2.487.497" in pulse["what_happened"]
     assert "-17.700" in " ".join(pulse["key_points"])
     assert pulse["ingestion_mode"] == "BACKFILL"
-    assert pulse["data_insights"] == []
+    assert len(pulse["data_insights"]) == 1
+    assert len(pulse["data_insight_evidence"]) == 1
+    assert "Datos" not in pulse["data_insights"][0]
+    assert pulse["data_insight_evidence"][0]["period"] == "2026-06 → 2026-07"
 
 
 def test_pulse_fails_closed_for_missing_unvalidated_or_unreconciled_family():
@@ -31,6 +34,10 @@ def test_pulse_fails_closed_for_missing_unvalidated_or_unreconciled_family():
         lambda v: v["families"]["cartera"]["series"][-1]["metrics"].update(beneficiarios=1),
         lambda v: v["families"]["cartera"].update(sha256="0" * 63 + "z"),
         lambda v: v["families"]["cartera"].update(source_url="https://example.org/file.xlsx"),
+        lambda v: v["families"]["cartera"]["series"][1]["metrics"].update(beneficiarios=1),
+        lambda v: v["families"]["cartera"]["series"][0].update(period="2026-07"),
+        lambda v: v["families"]["suscripciones"]["series"][5]["metrics"].update(contratos_suscritos=0),
+        lambda v: v["families"]["movilidad"]["series"][0].update(period_start="2026-06"),
     ):
         altered = copy.deepcopy(base)
         change(altered)

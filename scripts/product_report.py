@@ -7,6 +7,7 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from radar_salud.pending_queue import PendingQueue, atomic_json
+from radar_salud.isapre_insights import derive as derive_isapre_insights
 from radar_salud.pmo import project as project_pmo
 
 def read(path, fallback):
@@ -41,6 +42,9 @@ def build(root, output):
     error_counts=dict(Counter(x.get("error_type") or "unknown" for x in failure_rows))
     diagnostics = []
     excel_validation = read(root / "data/excel/validated_series.json", {"families": {}})
+    insight_result = derive_isapre_insights(excel_validation)
+    insight_summary = {"status": insight_result["status"], "count": len(insight_result["insights"]),
+                       "period": insight_result.get("period"), "anomaly_checks": insight_result["anomaly_checks"]}
     for row in history:
         if "Datos" not in row.get("signal_types", []) and not row.get("data_insight_meta"):
             continue
@@ -83,7 +87,8 @@ def build(root, output):
             fast_unclassified=max(0,fast_failed-len(failure_rows)),
             cost_usd=None, cost_status="unavailable_without_approved_rates",
             historical_tokens_status="not_measured_before_0.9.0"),
-        excel=diagnostics, excel_validation=excel_validation, user_telemetry="local_preferences_only_no_central_collector",
+        excel=diagnostics, excel_validation=excel_validation, excel_insights_v1=insight_summary,
+        user_telemetry="local_preferences_only_no_central_collector",
         pmo=project_pmo(baseline_path, os.environ.get("ALICANTO_CANDIDATE_SHA") or os.environ.get("GITHUB_SHA")) if baseline_path.exists() else None)
     output.mkdir(parents=True, exist_ok=True)
     atomic_json(output / "product.json", report)

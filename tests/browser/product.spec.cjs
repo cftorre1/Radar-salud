@@ -104,6 +104,12 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
  const isapre=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso Isapre · datos/})});
  await expect(isapre.locator('.card-meta')).toContainText('Datos a 2026-07');
  await expect(isapre.locator('.card-meta')).not.toContainText('Publicado');
+ await isapre.locator('[data-detail]').click();
+ await expect(page.locator('#detailBody .intel').filter({hasText:'Muestra de datos validada'}).locator('li')).toHaveCount(1);
+ await expect(page.locator('#detailBody')).toContainText('2026-06 → 2026-07');
+ await expect(page.locator('#detailBody')).not.toContainText('No es variación mensual');
+ await expect(page.locator('#detailBody .intel a').first()).toHaveAttribute('href',/superdesalud\.gob\.cl/);
+ await page.getByRole('button',{name:'Cerrar resumen'}).click();
  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});
  await expect(pulse).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');
  await pulse.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');
