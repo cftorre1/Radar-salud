@@ -403,6 +403,34 @@
       "result": "success",
       "scope": "Unidad editorial Global/DF: análisis estructurado y cruzado sin convertir hipótesis en Trend Chile; enriquecimiento Bupa separado de corroboración, fecha DF 2026-09-21 y contexto IntegraMédica atribuido al mismo artículo. Reviewer rechazó 1–2 hallazgos admitidos, fecha 2026-09-22 y ausencia de historia; todo se corrigió antes del preview final.",
       "validated_requirements": []
+    },
+    "home_compaction_responsive_qa": {
+      "kind": "github_actions",
+      "sha": "5eb09d7259999874ed380662ad9f95ad1b00a2a8",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36069824580",
+      "checks": [
+        "146 tests Python",
+        "23 tests web",
+        "16 browser desktop/mobile",
+        "reviewer independiente",
+        "reviewer CI",
+        "preview",
+        "capturas before/after",
+        "sin overflow",
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer"
+      ],
+      "result": "success",
+      "scope": "Home responsive compactada en una unidad de radar. Primera card: desktop 1206→796 px (−410; 34%) y mobile 1462→747 px (−715; 49%). H1 monolínea; CTAs y Período/Orden horizontales; viewport mobile 390/390 sin overflow. Preferencias persistentes y suscripción fail-closed; copy Global retirado sin cambiar la regla editorial.",
+      "validated_requirements": [
+        "Home responsive compacta con unidad única de radar y métricas auditables",
+        "Compresión responsive desktop/mobile",
+        "Métricas dinámicas, filtros e inbox en unidad única",
+        "Personalización persistente y suscripción colapsadas",
+        "Global Intelligence sin los dos párrafos redundantes"
+      ]
     }
   },
   "blocks": [
@@ -440,7 +468,8 @@
       "status": "Implementado",
       "critical": true,
       "evidence": [
-        "staging_qa"
+        "staging_qa",
+        "home_compaction_responsive_qa"
       ],
       "dependencies": [
         "recuración histórica",
@@ -461,6 +490,11 @@
           "label": "Pulso Prestadores con tres resoluciones materiales",
           "status": "Validado",
           "evidence": "cards_v2_qa"
+        },
+        {
+          "label": "Home responsive compacta con unidad única de radar y métricas auditables",
+          "status": "Validado",
+          "evidence": "home_compaction_responsive_qa"
         },
         {
           "label": "Dos pulsos y consolidación estratégica comprobados en ventana real",
@@ -805,6 +839,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Home responsive validada en 5eb09d7: jerarquía compacta Header/Global PREMIUM → H1 monolínea → Personalizar/Suscríbete → unidad única de radar con métricas, acordeón e inbox. La primera card sube 410 px (34%) en desktop y 715 px (49%) en mobile, sin overflow. Preferencias persisten y suscripción sigue fail-closed. Se eliminaron los dos párrafos Global aprobados. QA #157 pasó 146 Python, 23 web, 16 browser desktop/mobile, Reviewer independiente/CI y preview. Con esta unidad, mvp_product_refinements queda cerrado.",
+      "evidence": [
+        "home_compaction_responsive_qa",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36069824580"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Paquete de refinamientos MVP completa su unidad editorial Global/DF en 68563df: informes extensos con profundidad estructurada y lectura cruzada; Bupa/DF con fecha primaria 2026-09-21, enriquecimiento del mismo emisor/corporativo segregado y contexto IntegraMédica atribuido sin fingir corroboración. Reviewer bloqueó profundidad, fecha e historia en el primer corte; se corrigió y el QA final 36067186012 pasó 146 Python, 23 web, 16 browser desktop/mobile, Reviewer CI y preview. La tarea sigue approved por compresión responsive y limpieza de copy Global aprobadas después.",
@@ -1409,7 +1451,7 @@
     }
   ],
   "current_main_workflows_sha": "28be310808fffbe5c3212e75ddda2057ed635ca0",
-  "current_staging_candidate_sha": "49d1d8d9391af7270d7c7b5f5aae7603c9ee6115",
+  "current_staging_candidate_sha": "5eb09d7259999874ed380662ad9f95ad1b00a2a8",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -1557,7 +1599,7 @@
     },
     {
       "id": "home_compaction_responsive_and_global_copy_2026_09_24",
-      "status": "Aprobado_para_proxima_iteracion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Antes de retomar Fuentes Chile",
       "principle": "Primero valor, después explicación",
@@ -1605,7 +1647,8 @@
         "Período y Orden visibles al expandir el acordeón",
         "Período y Orden lado a lado cuando el ancho lo permita",
         "estado colapsado reduce materialmente la altura antes de la bandeja"
-      ]
+      ],
+      "validation_evidence": "home_compaction_responsive_qa"
     }
   ],
   "updated_at": "2026-09-24"

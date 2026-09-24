@@ -482,7 +482,7 @@
     },
     {
       "id": "mvp_product_refinements_2026_09_24",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -524,7 +524,7 @@
         "CTA email independiente",
         "prueba de filtros temporales vs personalización persistente"
       ],
-      "progress": "Unidades UI, datos y editorial Global completadas en staging. Global: informes extensos con resumen ejecutivo, 3–5 hallazgos, cifras, implicancias, metodología y lectura cruzada; Trend Chile permanece no establecido sin señales locales. Editorial: Bupa/DF usa fecha primaria 2026-09-21, separa canales del mismo emisor y fuentes corporativas de la corroboración, y atribuye la conexión histórica IntegraMédica al mismo artículo. Reviewer rechazó profundidad insuficiente, fecha incorrecta y ausencia de historia; todo fue corregido. La tarea permanece approved solo por compresión responsive de home y limpieza de copy Global aprobadas posteriormente.",
+      "progress": "Paquete cerrado en staging. La última unidad compactó home desktop/mobile, integró métricas + controles + bandeja, preservó persistencia y gates fail-closed, y eliminó el copy Global aprobado. Reviewer independiente, QA remoto y preview PASS.",
       "completed_items": [
         "Volver arriba con foco y scroll al inicio",
         "Personalización persistente separada de filtros temporales",
@@ -535,17 +535,17 @@
         "Pulso Isapre con período, publicación y validación separados y tres fuentes oficiales fechadas",
         "Insights determinísticos multiserie reconciliados y fail-closed",
         "Profundidad estructurada y lectura cruzada de Global Intelligence",
-        "Enriquecimiento DF/mismo emisor segregado e historia IntegraMédica atribuida"
+        "Enriquecimiento DF/mismo emisor segregado e historia IntegraMédica atribuida",
+        "Compresión responsive y unidad única de radar",
+        "Copy introductorio redundante de Global Intelligence eliminado"
       ],
-      "remaining_items": [
-        "Compresión responsive de home aprobada en home_compaction_responsive_2026_09_24",
-        "Eliminar copy introductorio redundante de Global Intelligence según decisión de Dirección"
-      ],
+      "remaining_items": [],
       "implementation_shas": [
         "b071d4960953bf25124690162552745d76062834",
         "354febf1e642e6b603faf7aea0dbb6c17c42735c",
         "e05ad331b7e7a639e026f4e9ad0cb04378211b5d",
-        "68563df79928370cb553cd6fc0ba1955f0c5677a"
+        "68563df79928370cb553cd6fc0ba1955f0c5677a",
+        "5eb09d7259999874ed380662ad9f95ad1b00a2a8"
       ],
       "evidence": [
         "mvp_product_refinements_ui_qa",
@@ -553,8 +553,11 @@
         "mvp_product_refinements_data_qa",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36063340101",
         "mvp_product_refinements_global_editorial_qa",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36067186012"
-      ]
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36067186012",
+        "home_compaction_responsive_qa",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36069824580"
+      ],
+      "completed_at": "2026-09-24"
     },
     {
       "id": "model_quality_experiment_global_free_2026_09_24",
@@ -678,7 +681,7 @@
     },
     {
       "id": "home_compaction_responsive_2026_09_24",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -743,6 +746,17 @@
         "Período y Orden visibles al expandir el acordeón",
         "Período y Orden lado a lado cuando el ancho lo permita",
         "estado colapsado reduce materialmente la altura antes de la bandeja"
+      ],
+      "completed_at": "2026-09-24",
+      "implementation_sha": "5eb09d7259999874ed380662ad9f95ad1b00a2a8",
+      "progress": "Home compactada en desktop y mobile: primera card sube de 1206 a 796 px en desktop (−410 px; 34%) y de 1462 a 747 px en mobile (−715 px; 49%). H1 queda en una línea; CTAs y Período/Orden usan composición horizontal; ancho móvil 390/390 sin overflow. Personalización persiste; suscripción permanece deshabilitada/fail-closed. Unidad única integra título, métricas dinámicas, acordeón de controles e inbox. Los dos párrafos Global fueron eliminados sin cambiar Global Theme ≠ Trend Chile.",
+      "evidence": [
+        "home_compaction_responsive_qa",
+        "staging 5eb09d7259999874ed380662ad9f95ad1b00a2a8",
+        "146 tests Python, 23 tests web y 16 browser desktop/mobile PASS",
+        "Reviewer independiente APPROVE; Reviewer CI PASS",
+        "Capturas before/after desktop/mobile y mediciones controladas registradas; artefacto staging-evidence-5eb09d7",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36069824580"
       ]
     }
   ],
