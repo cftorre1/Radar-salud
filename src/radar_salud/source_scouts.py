@@ -151,7 +151,8 @@ class CorporateNewsroomScout:
         self.SOURCE_SLUG=slug
         self.SOURCE_NAME,self.PAGE,self.hosts,self.pattern=self.SOURCES[slug]
     def discover_from_html(self,html):
-        parser=_A();parser.feed(html);out=[];seen=set()
+        parser=_BupaCards() if self.SOURCE_SLUG=="bupa_chile" else _A()
+        parser.feed(html);out=[];seen=set()
         for href,title in parser.links:
             if not href or len(title)<28:continue
             url=urljoin(self.PAGE,href);parsed=urlparse(url)
@@ -163,6 +164,30 @@ class CorporateNewsroomScout:
         if not out:raise RuntimeError(f"{self.SOURCE_NAME} newsroom structure unrecognized")
         return out[:15]
     def discover(self):return self.discover_from_html(fetch_html(self.PAGE))
+
+
+class _BupaCards(HTMLParser):
+    """Bind a card title to its own URL; anchors themselves say 'Ver más'."""
+    def __init__(self):
+        super().__init__();self.links=[];self.card=None;self.title_parts=None
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs);classes=(attrs.get("class") or "").split()
+        if tag.lower()=="article" and "card" in classes:
+            self.card={"href":None,"title":None}
+        elif self.card is not None and tag.lower()=="h3" and "card__title" in classes:
+            self.title_parts=[]
+        elif self.card is not None and tag.lower()=="a" and not self.card["href"]:
+            self.card["href"]=attrs.get("href")
+    def handle_data(self,data):
+        if self.title_parts is not None:self.title_parts.append(data)
+    def handle_endtag(self,tag):
+        if tag.lower()=="h3" and self.title_parts is not None:
+            if self.card is not None:self.card["title"]=" ".join(" ".join(self.title_parts).split())
+            self.title_parts=None
+        elif tag.lower()=="article" and self.card is not None:
+            if self.card["href"] and self.card["title"]:
+                self.links.append((self.card["href"],self.card["title"]))
+            self.card=None
 
 
 class DeisResourceScout:

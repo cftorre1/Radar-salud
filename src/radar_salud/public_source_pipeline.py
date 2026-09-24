@@ -201,7 +201,21 @@ def process_corporate_news(raw,cfg):
     """Company announcements are signals only when independently legible and material."""
     if raw.source_slug not in ("redsalud","bupa_chile"):
         raise ValueError("Unreviewed corporate source")
-    raw=enrich(raw)
+    if raw.source_slug=="bupa_chile":
+        try:
+            page=fetch_html(raw.url)
+        except Exception as exc:
+            raise DeferredProcessing("Bupa article temporarily unavailable") from exc
+        article=_BupaArticle();article.feed(page)
+        if not article.title or (raw.title.lower() not in article.title.lower()
+                                 and article.title.lower() not in raw.title.lower()):
+            raise DeferredProcessing("Bupa headline mismatch between listing and article")
+        raw.event_date=_date(article.published)
+        if not raw.event_date:raise DeferredProcessing("Bupa article publication date unavailable")
+        raw.raw_text=" ".join(article.body.split())[:9000]
+        raw.metadata["page_text"]=raw.raw_text
+    else:
+        raw=enrich(raw)
     if raw.metadata.get("fetch_error"):
         raise DeferredProcessing("Newsroom detail temporarily unavailable")
     body=raw.metadata.get("page_text") or raw.raw_text
@@ -225,6 +239,24 @@ def process_corporate_news(raw,cfg):
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Noticias"],scopes=scopes,editorial_relevance=score)
     return row
+
+
+class _BupaArticle(HTMLParser):
+    def __init__(self):
+        super().__init__();self.title="";self.published="";self.body="";self._field=None;self._parts=[];self._body_depth=0
+    def handle_starttag(self,tag,attrs):
+        classes=(dict(attrs).get("class") or "").split()
+        if tag.lower()=="div" and "CUERPO" in classes:self._body_depth=1
+        elif self._body_depth and tag.lower()=="div":self._body_depth+=1
+        if tag.lower()=="h1" and "enc-main__title" in classes:self._field="title";self._parts=[]
+        elif tag.lower()=="p" and "tools__date" in classes:self._field="published";self._parts=[]
+    def handle_data(self,data):
+        if self._field:self._parts.append(data)
+        if self._body_depth:self.body+=data+" "
+    def handle_endtag(self,tag):
+        if tag.lower()=="h1" and self._field=="title":self.title=" ".join(" ".join(self._parts).split());self._field=None
+        elif tag.lower()=="p" and self._field=="published":self.published=" ".join(" ".join(self._parts).split());self._field=None
+        if tag.lower()=="div" and self._body_depth:self._body_depth-=1
 
 
 def process_deis(raw,cfg):
