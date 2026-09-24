@@ -12,6 +12,8 @@ def test_coverage_live_funnel_excludes_backfill(tmp_path):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     queue = PendingQueue(tmp_path / "data/state/pending_queue.json")
+    (tmp_path / "data/state").mkdir(parents=True,exist_ok=True)
+    (tmp_path / "data/state/discovery_run.json").write_text('{"successful_sources":1,"failed_sources":0}')
     def raw(name):
         return RawItem("source", name, f"https://example.org/{name}", "Source", "official", "2026-09-23")
     queue.discover("source", [raw("visible"), raw("rejected")], last_discovered_at="2026-09-22T12:00:00+00:00")
@@ -37,6 +39,8 @@ def test_coverage_counts_live_resolutions_inside_pulse(tmp_path):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     queue = PendingQueue(tmp_path / "data/state/pending_queue.json")
+    (tmp_path / "data/state").mkdir(parents=True,exist_ok=True)
+    (tmp_path / "data/state/discovery_run.json").write_text('{"successful_sources":1,"failed_sources":0}')
     queue.discover("s",[RawItem("s",name,f"https://example.org/{name}","Source","official","2026-09-23") for name in ("a","b")],last_discovered_at="2026-09-22T12:00:00+00:00")
     for key in queue.items:queue.finish(key,"published")
     snapshot=tmp_path/"web/data/radar_today.json";snapshot.parent.mkdir(parents=True)

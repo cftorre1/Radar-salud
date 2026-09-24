@@ -7,6 +7,11 @@ on:
         required: false
         default: false
         type: boolean
+      processing_limit:
+        description: 'Máximo de elementos procesados en este run; 0 usa límites existentes'
+        required: false
+        default: 0
+        type: number
   schedule:
     - cron: '30 9 * * 1-5'
 permissions:
@@ -42,10 +47,10 @@ jobs:
         run: python scripts/seed_analysis_cache.py
       - name: Run incremental collectors
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
-        run: timeout --signal=TERM 20m python -m radar_salud.engine_cli
+        run: timeout --signal=TERM 20m python -m radar_salud.engine_cli --limit "${{ inputs.processing_limit || 0 }}"
       - name: Controlled rebuild using cache and persistent pending queue
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
-        run: timeout --signal=TERM 20m python -m radar_salud.engine_cli
+        run: timeout --signal=TERM 20m python -m radar_salud.engine_cli --limit "${{ inputs.processing_limit || 0 }}"
       - name: Export public snapshot and source health
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
       - name: Preserve queue, paid usage and checkpoints on failure

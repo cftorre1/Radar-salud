@@ -68,6 +68,13 @@ def main():
             discoveries[name]=(len(items),added,None)
         except Exception as exc:
             discoveries[name]=(0,0,type(exc).__name__)
+    atomic_json(root/"data/state/discovery_run.json",{
+        "at":datetime.now(timezone.utc).isoformat(),
+        "sources":{name:{"discovered":found,"new":added,"technical_status":"error" if error else "ok","error_type":error}
+                   for name,(found,added,error) in discoveries.items()},
+        "successful_sources":sum(error is None for _,_,error in discoveries.values()),
+        "failed_sources":sum(error is not None for _,_,error in discoveries.values()),
+    })
     produced={name:[] for name in processors}
     queue.enforce_backfill_horizon()
     for index,(key,item) in enumerate(queue.ready()):
