@@ -57,7 +57,11 @@
         "reviewer",
         "preview"
       ],
-      "result": "success"
+      "result": "success",
+      "validated_requirements": [
+        "Baseline versionado y panel operativo",
+        "Cobertura LIVE/BACKFILL medida y separada en staging"
+      ]
     },
     "rollback": {
       "kind": "github_actions",
@@ -115,7 +119,11 @@
         "preview"
       ],
       "result": "success",
-      "independent_reviewer": "PASS en e0499e6: preferencias, Bupa, tres sanciones, relación normativa; revisión interactiva IF/N°77 en staging y browser QA #34 la abre."
+      "independent_reviewer": "PASS en e0499e6: preferencias, Bupa, tres sanciones, relación normativa; revisión interactiva IF/N°77 en staging y browser QA #34 la abre.",
+      "validated_requirements": [
+        "Cards V2 y preferencias sin duplicidad",
+        "Pulso Prestadores con tres resoluciones materiales"
+      ]
     },
     "incremental_discovery_19": {
       "kind": "github_actions",
@@ -138,7 +146,10 @@
         "reviewer",
         "preview"
       ],
-      "result": "success"
+      "result": "success",
+      "validated_requirements": [
+        "Tres familias Excel, esquema, series y diagnóstico canónico"
+      ]
     },
     "isapre_pulse_qa": {
       "kind": "github_actions",
@@ -151,7 +162,26 @@
         "reviewer",
         "preview"
       ],
-      "result": "success"
+      "result": "success",
+      "validated_requirements": [
+        "Pulso Isapre factual reconciliado y fail-closed"
+      ]
+    },
+    "live_replay_qa": {
+      "kind": "github_actions",
+      "sha": "b4475e9241e5f21e5cd0acc78c1c95f30e4f59fb",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36016370144",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "result": "success",
+      "validated_requirements": [
+        "Replay técnico discovery → cola → selección con fallos ante mezcla"
+      ]
     }
   },
   "blocks": [
@@ -165,7 +195,7 @@
         "QA y Reviewer de este cambio"
       ],
       "missing": [
-        "validar panel y estados contra el baseline con datos LIVE reales en staging"
+        "completar gates de baseline y decisión de release mediante QA/Reviewer en staging"
       ],
       "requirements": [
         {
@@ -338,7 +368,8 @@
         },
         {
           "label": "Replay técnico discovery → cola → selección con fallos ante mezcla",
-          "status": "Pendiente"
+          "status": "Validado",
+          "evidence": "live_replay_qa"
         },
         {
           "label": "Cobertura histórica progresiva con límites visibles",
@@ -500,6 +531,13 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Preview #39 del replay técnico LIVE PASS tests, QA desktop/mobile, Reviewer, preview; falso LIVE desde BACKFILL y timestamp inconsistente no suman selección. Reviewer independiente exigió evidencia de requisito ligada a SHA y run verificable; se añadió guard fail-closed. Primera publicación LIVE real sigue pendiente sin bloquear otros MVP.",
+      "evidence": [
+        "live_replay_qa"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Dirección aprobó separar validación técnica LIVE de observación externa. Se agrega desglose auditable de requisitos y porcentaje de cumplimiento sin alterar el conteo estricto de bloques. Replay en candidato, pendiente QA remoto. Captura incremental real continúa.",
@@ -690,7 +728,7 @@
   "external_observations": [
     {
       "id": "first_genuine_live",
-      "status": "Pendiente de observación externa",
+      "status": "Validado técnicamente / pendiente observación externa",
       "description": "El pipeline LIVE se valida técnicamente por replay controlado; todavía no se observó una publicación real, pertinente y fechada después del watermark. No bloquea los demás bloques MVP.",
       "next_check": "Mantener captura incremental; adjuntar primer evento real con URL, fecha, cola, cobertura y feed."
     }

@@ -1,10 +1,21 @@
 """Conservative PMO projection. Source status never becomes Validado by file presence."""
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 
 REQUIRED_CHECKS = {"tests", "desktop", "mobile", "reviewer", "preview"}
+RUN_URL = re.compile(r"https://github\.com/cftorre1/Radar-salud/actions/runs/[0-9]+/?\Z")
+SHA = re.compile(r"[0-9a-f]{40}\Z")
+
+
+def full_qa(proof: dict) -> bool:
+    return (proof.get("kind") == "github_actions"
+            and proof.get("result") == "success"
+            and REQUIRED_CHECKS <= set(proof.get("checks", []))
+            and isinstance(proof.get("sha"), str) and SHA.fullmatch(proof["sha"]) is not None
+            and isinstance(proof.get("url"), str) and RUN_URL.fullmatch(proof["url"]) is not None)
 
 
 def project(path: Path, candidate_sha: str | None = None, now: datetime | None = None) -> dict:
@@ -20,19 +31,17 @@ def project(path: Path, candidate_sha: str | None = None, now: datetime | None =
         # Every validated block must carry a successful full QA record. The
         # previous release's QA is not proof of a newer candidate's changes.
         if block["status"] == "Validado" and (block.get("missing") or not any(
-            e.get("result") == "success" and REQUIRED_CHECKS <= set(e.get("checks", []))
-            and e.get("sha") == candidate_sha and block["id"] in e.get("validated_blocks", [])
-            and e.get("url", "").startswith("https://") for e in links
+            full_qa(e) and e.get("sha") == candidate_sha
+            and block["id"] in e.get("validated_blocks", []) for e in links
         )):
             block["status"] = "Implementado"
             block["validation_note"] = "Falta evidencia completa del commit candidato."
-        block["evidence_links"] = [{"url": e["url"], "sha": e["sha"], "result": e["result"]} for e in links]
+        block["evidence_links"] = [{"url": e.get("url"), "sha": e.get("sha"), "result": e.get("result")} for e in links]
         requirements=[]
         for entry in source.get("requirements", []):
             requirement=dict(entry)
             proof=evidence.get(requirement.get("evidence"), {})
-            supported=(proof.get("result")=="success" and REQUIRED_CHECKS <= set(proof.get("checks",[]))
-                       and str(proof.get("url","")).startswith("https://"))
+            supported=(full_qa(proof) and requirement["label"] in proof.get("validated_requirements", []))
             if requirement.get("status")=="Validado" and not supported:
                 requirement["status"]="Implementado"
                 requirement["validation_note"]="Falta evidencia completa de QA/Reviewer."

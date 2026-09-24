@@ -45,3 +45,18 @@ def test_subrequirement_without_successful_full_evidence_never_counts(tmp_path):
     result=project(path,baseline["reference_staging_sha"])
     assert result["blocks"][0]["requirements"][0]["status"]=="Implementado"
     assert result["readiness"]["validated_requirements"]==project(Path("config/pmo_baseline.json"),baseline["reference_staging_sha"])["readiness"]["validated_requirements"]-1
+
+
+def test_requirement_rejects_missing_sha_foreign_url_and_unlinked_proof(tmp_path):
+    baseline=json.loads(Path('config/pmo_baseline.json').read_text())
+    path=tmp_path/'baseline.json'
+    for mutation in ('sha', 'url', 'validated_requirements'):
+        changed=json.loads(json.dumps(baseline))
+        evidence=changed['evidence_catalog']['staging_qa']
+        if mutation=='sha': evidence.pop('sha')
+        elif mutation=='url': evidence['url']='https://example.org/not-evidence'
+        else: evidence['validated_requirements']=[]
+        path.write_text(json.dumps(changed))
+        result=project(path,changed['reference_staging_sha'])
+        assert result['blocks'][0]['requirements'][0]['status']=='Implementado'
+        assert result['readiness']['validated_requirements'] < project(Path('config/pmo_baseline.json'), changed['reference_staging_sha'])['readiness']['validated_requirements']
