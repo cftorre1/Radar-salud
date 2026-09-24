@@ -123,7 +123,6 @@ def _health_relevance(title,text):
 
 def process_df(raw,cfg):
     raw=enrich(raw)
-    if raw.metadata.get("fetch_error"):raise DeferredProcessing("FONASA detalle temporalmente inaccesible")
     if not raw.event_date:return None
     body=raw.metadata.get("page_text") or raw.raw_text
     if not _health_relevance(raw.title,body):return None
