@@ -1545,7 +1545,11 @@
         "Usar «Qué debes saber en 30 segundos» como título principal. Debajo, mostrar «<N> señales detectadas · <N> seleccionadas» dinámicamente según el período activo.",
         "Integrar Tipo y Ámbito dentro de la misma unidad y lado a lado cuando el ancho lo permita.",
         "Eliminar el título independiente «Filtros» si los labels de los controles hacen evidente su uso.",
-        "«Cómo seleccionamos lo que importa» queda como acceso secundario discreto, no como bloque."
+        "«Cómo seleccionamos lo que importa» queda como acceso secundario discreto, no como bloque.",
+        "«Filtrar tipo y ámbito» se mantiene como acordeón colapsado por defecto; es el control que contiene los filtros, no una descripción de los combo box.",
+        "Al abrir el acordeón aparecen «Período» y «Orden», conservando sus labels actuales.",
+        "Período y Orden se disponen lado a lado cuando el ancho lo permita para reducir altura; en mobile se prioriza densidad sin comprometer usabilidad.",
+        "El acordeón cerrado debe ocupar solo una fila compacta."
       ],
       "validation_required": [
         "QA desktop/mobile",
@@ -1562,7 +1566,10 @@
         "accesibilidad",
         "unidad única métricas + filtros + 30 segundos",
         "métricas dinámicas por período",
-        "reducción medible de altura respecto de tres secciones separadas"
+        "reducción medible de altura respecto de tres secciones separadas",
+        "acordeón Filtrar tipo y ámbito colapsado/expandido",
+        "Período y Orden correctos dentro del acordeón",
+        "reducción de altura con acordeón cerrado"
       ]
     }
   ],
