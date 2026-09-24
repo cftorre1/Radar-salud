@@ -8,6 +8,8 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await expect(page.locator('#coverageCounts')).toContainText('pendientes');
  await page.locator('#period').selectOption('90');
  await expect(page.locator('article').first()).toBeVisible();
+ await page.locator('.briefitem').first().click();
+ await expect(page.locator('article.read').first()).toBeVisible();
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
  await page.locator('article').first().getByRole('button').click();
  expect(await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id))).toEqual(ids);

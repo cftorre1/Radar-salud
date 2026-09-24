@@ -52,3 +52,13 @@ def test_incomplete_candidate_never_removes_existing_output(tmp_path):
     with pytest.raises(ValueError, match="Incomplete"):
         pages.assemble("production", accepted, checked, output, SHA)
     assert (output / "index.html").read_text() == "existing"
+
+def test_preview_pins_scripts_to_the_deployed_commit(tmp_path):
+    accepted,checked,output=(tmp_path/x for x in ("accepted","checked","output"))
+    site(accepted,"previous")
+    site(checked,'<script src="app.js"></script>',checked=True)
+    (checked/"admin/product.html").write_text('<script src="product.js"></script>')
+    pages.assemble("staging",accepted,checked,output,SHA)
+    assert f'app.js?v={SHA}' in (output/"staging/index.html").read_text()
+    assert f'product.js?v={SHA}' in (output/"staging/admin/product.html").read_text()
+    assert (output/"index.html").read_text()=="previous"
