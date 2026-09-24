@@ -29,9 +29,12 @@ def weekly_material(
             continue
         if signal.get("ingestion_mode") != "LIVE":
             continue
-        if int(signal.get("radar_score") or 0) < 70:
+        try:
+            score = int(signal.get("radar_score") or 0)
+            confidence = int(signal.get("confidence_score") or 0)
+        except (TypeError, ValueError, OverflowError):
             continue
-        if int(signal.get("confidence_score") or 0) < 75:
+        if score < 70 or confidence < 75:
             continue
         source = urlparse(str(signal.get("source_url") or ""))
         if source.scheme != "https" or not source.netloc:
