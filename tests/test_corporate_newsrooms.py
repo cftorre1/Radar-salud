@@ -55,6 +55,8 @@ def test_pfizer_misrouted_listing_fails_closed_and_valid_detail_is_backfill(monk
     assert row["event_date"]=="2023-06-08"
     assert row["source_name"]=="Pfizer Chile"
     assert row["scopes"]==["Farma / medicamentos","Healthtech"]
+    assert len(raw.raw_text)>350 and raw.raw_text.startswith("Las principales start-up")
+    assert "WELCOME" not in raw.raw_text and "Términos y condiciones" not in raw.raw_text
 
 
 def test_undated_or_unassessed_press_never_reaches_feed(monkeypatch):

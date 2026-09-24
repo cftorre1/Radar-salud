@@ -345,29 +345,24 @@ class _RedSaludArticle(HTMLParser):
 class _PfizerArticle(HTMLParser):
     """Read the visible Pfizer web-component headline and its following body."""
     def __init__(self):
-        super().__init__();self.title="";self.body="";self._heading=0;self._heading_parts=[];self._body=0;self._body_parts=[];self._ready=False;self._complete=False
+        super().__init__();self.title="";self.body="";self._heading=False;self._heading_parts=[];self._body=False;self._body_parts=[];self._ready=False;self._complete=False
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs);lower=tag.lower()
         if lower=="helix-core-heading" and attrs.get("variant")=="h1":
-            self._heading=1;self._heading_parts=[]
-        elif self._heading:self._heading+=1
+            self._heading=True;self._heading_parts=[];self._ready=False;self._complete=False;self.body=""
         elif self._ready and not self._complete and lower=="helix-core-content":
-            self._body=1;self._body_parts=[]
-        elif self._body:self._body+=1
+            self._body=True;self._body_parts=[]
     def handle_data(self,data):
         if self._heading:self._heading_parts.append(data)
         elif self._body:self._body_parts.append(data)
     def handle_endtag(self,tag):
         lower=tag.lower()
-        if self._heading:
-            self._heading-=1
-            if not self._heading and lower=="helix-core-heading":
-                candidate=" ".join(" ".join(self._heading_parts).split())
-                if candidate:self.title=candidate;self._ready=True
-        elif self._body:
-            self._body-=1
-            if not self._body and lower=="helix-core-content":
-                self.body=" ".join(" ".join(self._body_parts).split());self._complete=True
+        if self._heading and lower=="helix-core-heading":
+            self._heading=False
+            candidate=" ".join(" ".join(self._heading_parts).split())
+            if candidate:self.title=candidate;self._ready=True
+        elif self._body and lower=="helix-core-content":
+            self._body=False;self.body=" ".join(" ".join(self._body_parts).split());self._complete=True
     def finish(self):
         self.title=" ".join(self.title.split());self.body=" ".join(self.body.split())
 
