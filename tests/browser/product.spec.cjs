@@ -9,6 +9,11 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await expect(page.locator('#coverageCounts')).toContainText('sin medición global');
  await page.locator('#period').selectOption('90');
  await expect(page.locator('article').first()).toBeVisible();
+ if(test.info().project.name==='mobile'){
+  const heights=await page.locator('article').evaluateAll(xs=>xs.slice(0,3).map(x=>Math.round(x.getBoundingClientRect().height)));
+  expect(heights.length).toBe(3);expect(Math.max(...heights)).toBeLessThan(420);
+ }
+ await page.screenshot({path:`artifacts/${test.info().project.name}-browse.png`,fullPage:true});
  await page.locator('.briefitem').first().click();
  await expect(page.locator('article.read').first()).toBeVisible();
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
