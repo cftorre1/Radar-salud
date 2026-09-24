@@ -268,6 +268,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Complemento de Dirección para Cards V2: barrido ejecutivo, síntesis sustentada en segunda capa, fuente original y QA explícito de densidad y repetición. Sigue Aprobado hasta evidencia remota del candidato corregido.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Dirección aprobó addendum Cards V2 / Progressive Disclosure para MVP viernes, prioridad alta. Implementación en candidato; aún sin QA y Reviewer remoto propios.",
       "evidence": []
     },
@@ -336,13 +341,20 @@
         "tarjeta breve con título, tipo/ámbito, síntesis y por qué importa",
         "segunda capa solo cuando existe profundidad sustentada",
         "home con transparencia compacta y métricas LIVE auditables",
-        "metodología y sugerencia de fuentes en vista secundaria"
+        "metodología y sugerencia de fuentes en vista secundaria",
+        "objetivo de barrido ejecutivo de 5–10 segundos y jerarquía título → síntesis → por qué importa → acciones",
+        "segunda capa debe aportar comprensión editorial sustentada, no solo expandir texto",
+        "fuentes superficiales sin resumen aparente ni repetición de título",
+        "QA de altura de tarjetas, densidad mobile, duplicaciones y valor incremental del resumen"
       ],
       "validation_required": [
         "QA desktop",
         "QA mobile",
         "Reviewer",
-        "evidencia en staging"
+        "evidencia en staging",
+        "revisión de altura y barrido mobile",
+        "guard de duplicación",
+        "profundidad real sin invención"
       ],
       "evidence": []
     }
