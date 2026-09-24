@@ -697,14 +697,21 @@
         "Usar «Qué debes saber en 30 segundos» como título principal de la unidad. Debajo, mostrar una línea compacta y dinámica del período activo: «<N> señales detectadas · <N> seleccionadas». Esta línea reemplaza al bloque independiente «Miramos mucho para mostrarte poco».",
         "Dentro de la misma unidad, ubicar los filtros Tipo y Ámbito junto a la cabecera/metricas, preferentemente en la misma fila o una fila compacta contigua según breakpoint. Los filtros deben operar directamente sobre la bandeja visible.",
         "Eliminar el título independiente «Filtros» si la jerarquía visual deja claro el uso de los controles; conservar labels Tipo y Ámbito.",
-        "Mantener «Cómo seleccionamos lo que importa» como enlace secundario discreto dentro de esta unidad o en su detalle, sin crear otra sección de altura relevante.",
         "La métrica detectadas/seleccionadas debe recalcularse dinámicamente según el horizonte temporal activo. No mostrar incidencias técnicas ni etapas internas.",
         "Reducir padding, gaps y altura de contenedores en desktop y mobile. Usar composición horizontal para CTAs y controles compatibles (por ejemplo Personalizar mi radar / Suscríbete, o filtros) cuando mejore densidad, jerarquía y elegancia; evitar apilar elementos por defecto.",
         "Objetivo de responsive layout: en desktop debe verse con holgura «Qué debes saber en 30 segundos» dentro de la primera vista; en mobile debe aparecer o asomar materialmente con scroll mínimo. Validar ambos y ser más estricto en mobile.",
         "En Global Intelligence eliminar el texto introductorio «Selección curada de research internacional, separada de la evidencia chilena. Cada tema muestra qué encontró la fuente, por qué importa y qué observar en Chile como hipótesis — nunca como tendencia local automática.»",
         "En Global Intelligence eliminar el texto «Vista pública de la experiencia. El acceso exclusivo se habilitará solo cuando exista autorización.»",
         "La separación conceptual Global Theme ≠ Trend Chile se mantiene como regla editorial y de datos, aunque ya no se explique mediante esos párrafos visibles.",
-        "No agregar nuevas bajadas explicativas para reemplazar textos eliminados salvo que QA demuestre una ambigüedad real."
+        "No agregar nuevas bajadas explicativas para reemplazar textos eliminados salvo que QA demuestre una ambigüedad real.",
+        "Unificar «Miramos mucho para mostrarte poco», filtros y «Qué debes saber en 30 segundos» en una sola unidad visual/funcional de radar; no presentarlos como tres secciones independientes.",
+        "Usar «Qué debes saber en 30 segundos» como título principal de esa unidad.",
+        "Mostrar bajo el título una línea compacta y dinámica según el período activo: «<N> señales detectadas · <N> seleccionadas». Esta línea reemplaza al bloque independiente «Miramos mucho para mostrarte poco».",
+        "Integrar Tipo y Ámbito dentro de la misma unidad, junto a la cabecera o en una fila compacta contigua; ubicarlos lado a lado cuando el ancho lo permita.",
+        "Los filtros deben operar directamente sobre la bandeja de señales visible.",
+        "Eliminar el título independiente «Filtros» si los labels Tipo y Ámbito hacen evidente su función.",
+        "«Cómo seleccionamos lo que importa» debe quedar como acceso secundario discreto dentro de esta unidad o su detalle, sin crear otro bloque alto.",
+        "Las métricas detectadas/seleccionadas deben recalcularse dinámicamente según el filtro temporal activo y no mostrar incidencias técnicas."
       ],
       "constraints": [
         "No tocar main/producción.",
@@ -727,7 +734,10 @@
         "unidad única de radar que integra métricas + filtros + bandeja 30 segundos",
         "Tipo y Ámbito dispuestos horizontalmente cuando el ancho lo permita",
         "métricas detectadas/seleccionadas recalculadas al cambiar período",
-        "reducción adicional de altura frente a tres secciones separadas"
+        "reducción adicional de altura frente a tres secciones separadas",
+        "unidad única que integra métricas + filtros + bandeja 30 segundos",
+        "métricas detectadas/seleccionadas dinámicas por período",
+        "reducción medible de altura frente a tres secciones separadas"
       ]
     }
   ],
