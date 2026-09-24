@@ -105,3 +105,9 @@ Alcance aprobado:
 - No reabrir Cards V2 ya validadas salvo regresión.
 
 Validación requerida: QA desktop/mobile, Reviewer, evidencia en staging, persistencia leído/no leído, navegación ida/vuelta, sincronización de estados y comprobación de barrido con scroll mínimo.
+
+## Hallazgo crítico de aislamiento · 24 septiembre
+
+[Daily Radar pilot #21](https://github.com/cftorre1/Radar-salud/actions/runs/36018677014), ejecutado en staging con límite de un elemento, consultó siete fuentes existentes y registró FONASA `HTTPError` (0 descubrimientos, salud técnica `error`, resultado editorial `not_evaluated`). LIVE sigue 0/0/0; BACKFILL pending pasó a 15 por descubrimientos DF sin fecha verificable. No hubo llamadas OpenAI en este piloto. FONASA continúa **Implementado**, no Validado. El preview automático de la captura quedó cancelado; los nuevos datos requieren QA separado.
+
+El workflow heredado de `main` (`static.yml`) escucha la finalización de cualquier `Daily Radar pilot`; [producción #90](https://github.com/cftorre1/Radar-salud/actions/runs/36018933311) se ejecutó por `workflow_run` al terminar #21 y desplegó un checkout de `main` en `ea55bc7`, no el código de staging. El cron heredado de `main` también escribe en `main` (último commit `ea55bc7`, creado antes de este ciclo). **No se ejecutarán más pilotos** mientras este disparador exista. Se requiere autorización explícita para corregir solo dos workflows de `main`: hacer que el cron escriba a staging y eliminar el despliegue por finalización de piloto. No se promovió código MVP a main ni se modificaron esos workflows en este ciclo.

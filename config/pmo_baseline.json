@@ -293,7 +293,7 @@
         "monitoreo de fuentes"
       ],
       "missing": [
-        "FONASA directo: verificar disponibilidad y capturas reales en staging",
+        "FONASA directo: HTTPError en discovery real #21; resolver acceso sin rebajar verificación ni atribuir señales",
         "ISP/ANAMED",
         "DEIS",
         "newsrooms prioritarios verificados"
@@ -498,6 +498,14 @@
   ],
   "human_blockers": [
     {
+      "id": "production_workflow_guard",
+      "action": "Autorizar una excepción acotada para corregir en main los workflows heredados: cron de Daily Radar debe operar exclusivamente en staging y static.yml no debe desplegar por la finalización de un piloto staging. Revisar el diff exacto y validar protección de producción antes de aplicarlo.",
+      "provider": "GitHub Actions / cftorre1/Radar-salud",
+      "required_data": "autorización explícita para modificar solo los disparadores y destino de estos dos workflows en main",
+      "estimated_time": "30–60 min más validación de workflows",
+      "beta_impact": "Mientras persista, una captura de staging puede volver a desplegar producción y el cron puede modificar main automáticamente."
+    },
+    {
       "id": "domain",
       "action": "Confirmar disponibilidad y autorizar registro de alicanto.cl; proporcionar acceso DNS para SSL y correo.",
       "provider": "NIC Chile y proveedor DNS/hosting a elegir",
@@ -531,6 +539,11 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Pilot staging #21 (límite 1) confirmó FONASA HTTPError, 0 descubiertas; siete fuentes anteriores OK, LIVE 0/0/0, BACKFILL pending 15 (diez DF sin fecha), cero llamadas OpenAI. Descubierto disparador heredado de main: piloto staging completado lanzó deploy producción #90 del checkout main ea55bc7. Se suspenden más pilotos; requiere aprobación de corrección de workflows en main. Preview automático del piloto fue cancelado, sin validar nuevos datos en staging.",
+      "evidence": []
+    },
     {
       "date": "2026-09-24",
       "change": "Dirección aprobó Cards V2.1 / Intelligence Inbox para MVP: home reordenado, Explorar compacto y 30 segundos convertido en bandeja de triage con leído/no leído, navegación a card y retorno al resumen. Pendiente implementación/QA; no reabre Cards V2 salvo regresión.",
@@ -670,6 +683,18 @@
   ],
   "scope_deviations": [],
   "open_failures": [
+    {
+      "id": "legacy_production_workflow_trigger",
+      "severity": "critical",
+      "description": "El workflow heredado en main actualiza main en el cron y despliega producción al finalizar cualquier Daily Radar pilot, incluso si el piloto partió de staging. El piloto staging #21 activó producción #90, que publicó el checkout de main ea55bc7; no promover ni ejecutar otro piloto hasta aislar los disparadores con autorización específica.",
+      "source": ".github/workflows/static.yml y daily-radar.yml en main; Actions #21 36018677014 y producción #90 36018933311"
+    },
+    {
+      "id": "fonasa_unavailable",
+      "severity": "warning",
+      "description": "FONASA oficial discovery 0, technical_status error HTTPError; no es fuente activa ni validada. Siete fuentes previas consultadas; LIVE 0/0/0 y 15 BACKFILL pendientes.",
+      "source": "Daily Radar pilot #21; data/state/discovery_run.json y data/source_health.json"
+    },
     {
       "id": "autopilot_preview_not_verified",
       "severity": "critical",
