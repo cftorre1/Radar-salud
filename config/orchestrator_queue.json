@@ -159,11 +159,14 @@
         "QA/Reviewer",
         "staging evidence"
       ],
-      "progress": "ISP/ANAMED implementado fail-closed y QA técnico #74; piloto #23 encontró URLError ISP y HTTPError FONASA, ambos 0 descubrimientos, editorial no evaluado. Fuente ISP no validada; DEIS y newsrooms pendientes.",
+      "progress": "DEIS integrado fail-closed y validado técnicamente contra el hub oficial real: acceso HTTP correcto, estructura reconocida y 0 publicaciones fechadas elegibles, sin inventar señales. ISP/ANAMED y FONASA siguen bloqueados externamente en piloto #23; newsrooms prioritarios implementados y en cierre de evidencia.",
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36029771353 — piloto #23 limitado a 1, 7 fuentes exitosas y 2 errores; staging datos 83f55e36c464972c2e8eee7763f5a7699a644cb1",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36030110235 — preview #74 059447995561647bcb814e15430ed1ae744ddcc2, tests/QA desktop-mobile/Reviewer/preview PASS; Reviewer independiente corrigió atribución de fecha/PDF y estructura, pero sin fixture real",
-        "data/state/discovery_run.json y data/source_health.json: isp_anamed URLError, fonasa HTTPError; 0 capturas y 0 publicados"
+        "data/state/discovery_run.json y data/source_health.json: isp_anamed URLError, fonasa HTTPError; 0 capturas y 0 publicados",
+        "staging aecc73a476e9b0d00c4c9ae18f22bade18cbfd4e — conector DEIS exige dominio oficial, identidad/config canónica y señal explícita de publicación/actualización junto a la fecha; una fecha de período no se publica",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36031877346 — 114 Python, 17 Node, QA navegador desktop/mobile, Reviewer CI y preview PASS; Reviewer independiente FAIL inicial, corrección y PASS",
+        "https://deis.minsal.cl/ — captura real 2026-09-24: hub accesible, estructura DEIS reconocida; 0 releases fechados elegibles, por lo que la salida correcta fue 0 señales"
       ]
     },
     {
