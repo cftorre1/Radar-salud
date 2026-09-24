@@ -1541,11 +1541,12 @@
         "Comprimir padding/gaps y priorizar que «Qué debes saber en 30 segundos» quede visible dentro de la primera vista en desktop y aparezca/asome materialmente en mobile.",
         "Eliminar en Global Intelligence los dos párrafos de explicación sobre selección curada/separación Chile y vista pública/autorización.",
         "La separación Global Theme ≠ Trend Chile sigue vigente como regla interna aunque no se explique en copy visible.",
-        "Unificar «Miramos mucho», Tipo/Ámbito y «Qué debes saber en 30 segundos» en una sola unidad de radar; no mantener tres secciones separadas.",
-        "Usar «Qué debes saber en 30 segundos» como título principal. Debajo, mostrar «<N> señales detectadas · <N> seleccionadas» dinámicamente según el período activo.",
-        "Integrar Tipo y Ámbito dentro de la misma unidad y lado a lado cuando el ancho lo permita.",
-        "Eliminar el título independiente «Filtros» si los labels de los controles hacen evidente su uso.",
-        "«Cómo seleccionamos lo que importa» queda como acceso secundario discreto, no como bloque."
+        "Jerarquía final de la unidad: «Qué debes saber en 30 segundos» → «<N> señales detectadas · <N> seleccionadas · <N> no leídas» → controles → bandeja.",
+        "Eliminar completamente el título «Filtros».",
+        "El conteo no leído debe estar sincronizado con el estado persistente leído/no leído.",
+        "Los controles deben ir lado a lado cuando el ancho lo permita.",
+        "El texto que los anteceda debe coincidir con su función real; no mezclar «tipo y ámbito» con controles «Período/Orden».",
+        "La bandeja debe comenzar inmediatamente después de los controles, sin bloques intermedios."
       ],
       "validation_required": [
         "QA desktop/mobile",
@@ -1562,7 +1563,11 @@
         "accesibilidad",
         "unidad única métricas + filtros + 30 segundos",
         "métricas dinámicas por período",
-        "reducción medible de altura respecto de tres secciones separadas"
+        "reducción medible de altura respecto de tres secciones separadas",
+        "conteo no leído correcto y persistente",
+        "labels de controles semánticamente coherentes",
+        "sin título Filtros",
+        "bandeja inmediatamente después de controles"
       ]
     }
   ],
