@@ -63,13 +63,19 @@ def build(root, output):
         pmo=project_pmo(baseline_path, os.environ.get("ALICANTO_CANDIDATE_SHA") or os.environ.get("GITHUB_SHA")) if baseline_path.exists() else None)
     output.mkdir(parents=True, exist_ok=True)
     atomic_json(output / "product.json", report)
-    # Plain tabular diagnostic importable by Excel. No workbook is fabricated.
+    # Same canonical validation records shown in the dashboard. Historical
+    # publication diagnostics live in product.json and must not masquerade as
+    # the current workbook validation in this CSV.
     with (output / "excel_diagnostics.csv").open("w", encoding="utf-8-sig", newline="") as stream:
-        cols=["title", "source_url", "status", "family", "sheet", "period", "insights"]
+        cols=["family", "status", "source_url", "sha256", "periods", "latest_period", "reason"]
         writer=csv.DictWriter(stream, fieldnames=cols)
         writer.writeheader()
-        for row in diagnostics:
-            writer.writerow({k: "'"+v if isinstance(v,str) and v.startswith(("=","+","-","@")) else v for k,v in row.items()})
+        for family, row in sorted(excel_validation.get("families", {}).items()):
+            entry={"family":family,"status":row.get("status"),"source_url":row.get("source_url"),
+                   "sha256":row.get("sha256"),"periods":len(row.get("series") or []),
+                   "latest_period":(row.get("series") or [{}])[-1].get("period") or
+                       (row.get("series") or [{}])[-1].get("period_end"),"reason":row.get("reason")}
+            writer.writerow({k: "'"+v if isinstance(v,str) and v.startswith(("=","+","-","@")) else v for k,v in entry.items()})
     return report
 
 if __name__ == "__main__":

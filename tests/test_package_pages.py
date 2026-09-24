@@ -16,7 +16,7 @@ def site(path, title, *, checked=False):
     (path / "app.js").write_text(title)
     if checked:
         (path / "admin/product.html").write_text(title)
-        (path / "data/product.json").write_text('{"published": 1}')
+        (path / "data/product.json").write_text('{"version": "0.9.0", "published": 1}')
 
 
 def test_preview_preserves_production_and_replaces_old_preview(tmp_path):
@@ -30,6 +30,7 @@ def test_preview_preserves_production_and_replaces_old_preview(tmp_path):
     assert (output / "staging/index.html").read_bytes() == (checked / "index.html").read_bytes()
     assert not (output / "staging/old.html").exists()
     assert json.loads((output / "staging/release.json").read_text())["sha"] == SHA
+    assert json.loads((output / "staging/release.json").read_text())["version"] == "0.9.0"
 
 
 def test_release_contains_exact_checked_files_and_two_stamps(tmp_path):

@@ -14,7 +14,11 @@ def _copy_clean(source: Path, target: Path) -> None:
 
 
 def _stamp(directory: Path, sha: str) -> None:
-    (directory / "release.json").write_text(json.dumps({"sha": sha}), encoding="utf-8")
+    product = json.loads((directory / "data/product.json").read_text(encoding="utf-8"))
+    version = product.get("version")
+    if not isinstance(version, str) or not version:
+        raise ValueError("Checked product version is missing")
+    (directory / "release.json").write_text(json.dumps({"version": version, "sha": sha}), encoding="utf-8")
     # Pages and browsers can cache JavaScript across a deploy. Pin assets to
     # this release so a new HTML document loads its matching code.
     for name,asset in (("index.html","app.js"),("admin/product.html","product.js")):
