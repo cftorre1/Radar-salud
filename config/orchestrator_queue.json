@@ -430,7 +430,7 @@
     },
     {
       "id": "orchestrator_event_trigger",
-      "status": "approved",
+      "status": "validated",
       "priority": "high",
       "owner": "Work",
       "source": "Dirección",
@@ -456,7 +456,20 @@
         "QA del flujo",
         "registro PMO"
       ],
-      "progress": "Automatización Work condition_watch horaria creada y habilitada; GitHub webhook disponible solo para pull_request, no para cambios JSON. Aún no hay last_run_time ni evidencia de wake-up por nueva tarea; permanece approved hasta observación real."
+      "progress": "Fallback autorizado condition_watch observado en ejecución real: reactivó Work y este ciclo leyó la cola approved de staging sin retransmisión humana. Es sondeo periódico, no webhook instantáneo; el conector GitHub no ofrece evento por cambio de JSON.",
+      "completed_at": "2026-09-24",
+      "trigger_evidence": {
+        "kind": "condition_watch_polling",
+        "automation_id": "6ab54815a3848191a08a6c15532d4951",
+        "enabled": true,
+        "observed_run_at": "2026-09-24T18:34:50.581880Z",
+        "observed_behavior": "Work fue activado y consultó config/orchestrator_queue.json y config/pmo_baseline.json en staging sin retransmisión humana.",
+        "limitation": "Sondeo periódico de Work; no es un webhook instantáneo de cambios en orchestrator_queue.json. Los eventos GitHub disponibles no incluyen cambios arbitrarios de archivo JSON."
+      },
+      "evidence": [
+        "Automatización 6ab54815a3848191a08a6c15532d4951 habilitada; ejecución observada 2026-09-24T18:34:50.581880Z inició el consumidor y detectó esta tarea approved sin retransmisión humana.",
+        "Fallback documentado: condition_watch_polling, sin secretos, sin cambios en main y sin auto-promoción a producción."
+      ]
     }
   ],
   "execution_policy": {

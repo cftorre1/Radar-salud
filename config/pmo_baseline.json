@@ -46,6 +46,16 @@
     "price_clp": null
   },
   "evidence_catalog": {
+    "orchestrator_condition_watch_observed": {
+      "kind": "condition_watch_polling",
+      "automation_id": "6ab54815a3848191a08a6c15532d4951",
+      "enabled": true,
+      "observed_run_at": "2026-09-24T18:34:50.581880Z",
+      "observed_behavior": "Work fue activado y consultó la cola y el baseline en staging sin retransmisión humana.",
+      "limitation": "Sondeo periódico; no es un webhook instantáneo de cambios en orchestrator_queue.json porque los eventos GitHub disponibles no cubren cambios arbitrarios de archivo JSON.",
+      "result": "success",
+      "scope": "Solo cola approved en staging; sin secretos, main, producción ni cambios sensibles."
+    },
     "staging_qa": {
       "kind": "github_actions",
       "sha": "8db66b691135c8616120154b7253f9342ee5f93f",
@@ -925,6 +935,13 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36043956593",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36044320155"
       ]
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Gatillante de orquestación observado en operación real: condition_watch reactivó Work, que leyó cola/PMO de staging sin retransmisión humana. Se valida como fallback de sondeo periódico y se documenta que no existe webhook instantáneo para cambios arbitrarios del JSON; no tocó main ni producción.",
+      "evidence": [
+        "orchestrator_condition_watch_observed"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1129,13 +1146,15 @@
       "id": "orchestrator_event_trigger",
       "priority": "Alta",
       "horizon": "Antes de versión comercializable",
-      "status": "Aprobado",
+      "status": "Validado",
       "description": "Implementar un gatillante event-driven que detecte nuevas tareas approved en la cola y active/reanude al ejecutor sin depender de que Cristóbal abra Work o retransmita instrucciones. Si Work no admite wake-up directo, implementar runner equivalente autorizado (p.ej. GitHub Actions/dispatcher) y documentar la limitación.",
       "constraints": [
         "sin bypass de permisos",
         "sin auto-promoción a producción",
         "sin secretos en repo"
-      ]
+      ],
+      "implementation": "Fallback autorizado condition_watch_polling habilitado y observado en una reactivación real de Work; no se presenta como webhook instantáneo.",
+      "evidence": "orchestrator_condition_watch_observed"
     }
   ],
   "external_observations": [
