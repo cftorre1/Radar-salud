@@ -629,6 +629,44 @@
         "panel de gasto por feature/modelo",
         "telemetría de tokens/modelo/costo fail-closed"
       ]
+    },
+    {
+      "id": "anonymous_source_suggestions_2026_09_24",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Hacer visible y sin fricción la colaboración de usuarios para sugerir nuevas fuentes al radar, de forma anónima y gestionable internamente.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Reubicar el CTA de sugerencia de fuentes a una zona claramente visible del producto; no debe quedar escondido en contenido secundario ni requerir recorrer la página completa.",
+        "Acortar el copy. Usar como base: «¿Nos falta alguna fuente? Sugiere una y ayúdanos a mejorar Alicanto.» con CTA «Sugerir una fuente». Ajustes menores de redacción son válidos si preservan brevedad, colaboración y tono no intrusivo.",
+        "El formulario debe ser anónimo: no solicitar correo, nombre, cuenta ni ningún identificador personal.",
+        "Capturar solo datos necesarios para gestionar la sugerencia: nombre de la fuente y/o URL; comentario opcional breve cuando aporte contexto.",
+        "Registrar cada sugerencia en almacenamiento propio y trazable con timestamp, estado de gestión y campos mínimos; no almacenar PII deliberadamente.",
+        "Generar una notificación interna automática por correo para que el equipo gestione nuevas sugerencias, sin enviar correo al usuario.",
+        "Aplicar protección razonable contra spam/abuso sin introducir login ni identificación obligatoria.",
+        "Mostrar confirmación simple tras enviar, sin prometer incorporación de la fuente.",
+        "Mantener la sugerencia separada de la lógica editorial: recibir una fuente no implica aprobarla ni publicarla."
+      ],
+      "constraints": [
+        "No exigir correo, nombre, login ni cuenta.",
+        "No recolectar PII innecesaria.",
+        "No activar servicios pagos, cambiar secretos o definir un proveedor nuevo sin autorización.",
+        "Si almacenamiento o correo real requieren credenciales/decisiones humanas, implementar hasta estado provider-ready/fail-closed y registrar el bloqueo exacto.",
+        "No tocar main/producción."
+      ],
+      "evidence_required": [
+        "QA desktop/mobile",
+        "Reviewer independiente",
+        "CTA visible en staging",
+        "envío anónimo sin campos de identidad",
+        "persistencia trazable de una sugerencia de prueba",
+        "notificación interna de prueba o bloqueo humano explícito",
+        "prueba de anti-spam/fail-closed"
+      ]
     }
   ],
   "execution_policy": {
