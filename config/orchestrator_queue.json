@@ -209,7 +209,7 @@
         "Reviewer",
         "staging evidence"
       ],
-      "progress": "Tres muestras primarias verificadas Reuters/Deloitte/McKinsey y separación de hipótesis Chile; preview #96 y QA desktop/mobile PASS. Integración restante de fuentes aprobadas, monitoreo y acceso PREMIUM efectivo no demostrados. No declarar bloque completo validado.",
+      "progress": "Muestra pública PREMIUM: 3 temas, 5 referencias de cinco editores (Reuters, Deloitte, McKinsey, PwC y WHO/OMS), con fuentes primarias contrastadas y Trend Chile no establecido. #109 PwC PASS; #110 WHO FAIL QA selector ambiguo y sin deploy; #111 WHO PASS. No monitoreo recurrente ni control de acceso exclusivo; CB Insights/PAHO inaccesibles 403 en lectura pública y BCG revisado tiene restricciones de uso comercial. Sigue approved/Implementado.",
       "evidence": [
         "34f41894507e5323804a75439f854f8a5658ed33 — implementación Global Themes, export determinístico, página PREMIUM, validación fail-closed y pruebas adversariales",
         "Reuters 2026-09-18, Deloitte 2025-12-11 y McKinsey 2025-05-29: muestras reales con fecha, URL original, hallazgo y captura trazables",
@@ -217,7 +217,10 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038053040 — tests PASS; staging detectó regresión móvil causada por backfill concurrente y no desplegó preview",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561 — candidato integrado c0a1ef73fd247c227ff9bb9dea72e93856ea7db2; tests, QA staging desktop/mobile, Reviewer y preview PASS",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641 — #96: paridad canónica/pública y aviso muestra pública; gates QA/Reviewer CI/preview PASS",
-        "Pendiente: CB Insights, PwC, OMS/WHO, OPS/PAHO y BCG cuando exista material relevante verificable; no hay evidencia de captura directa ni monitoreo recurrente."
+        "Pendiente: CB Insights, PwC, OMS/WHO, OPS/PAHO y BCG cuando exista material relevante verificable; no hay evidencia de captura directa ni monitoreo recurrente.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36042555130 — 26e54ac PwC; QA desktop/mobile Reviewer y preview PASS, fuente primaria 2026-05-04, 24%/19% encuesta 2025 sin atribución Chile.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36042938827 — #110 FAIL QA selector WHO ambiguo; sin deploy.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36043375959 — abae512 WHO NHWA 2026 primario; QA desktop/mobile, Reviewer y preview PASS, 5 referencias, hipótesis Chile."
       ]
     },
     {
@@ -264,7 +267,7 @@
     },
     {
       "id": "analytics_behavior_mvp",
-      "status": "approved",
+      "status": "blocked",
       "priority": "high",
       "owner": "Work",
       "source": "Baseline MVP",
@@ -286,6 +289,16 @@
         "QA",
         "staging evidence",
         "human blocker if external provider needed"
+      ],
+      "progress": "Mapa de eventos y código provider-ready con flags enabled/privacy_approved falsos y project_key vacío. #112 tests/QA/Reviewer/preview PASS; #113 fixture autorizada interceptada verifica payload mínimo/UUID por evento, QA/Reviewer/preview PASS. Sin recolección ni conversión real; requiere autorización humana de tratamiento y proveedor.",
+      "blocked_by": [
+        "Aprobar tratamiento/aviso de privacidad para telemetría y metadatos de transporte (IP/origen).",
+        "Crear/aprobar cuenta de proveedor y aportar clave pública de proyecto, luego habilitar explícitamente la captura; no inferir consentimiento por despliegue."
+      ],
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36043956593 — ecd8663, 14/14 browser desktop/mobile, tests/Reviewer/preview PASS; flags falsas.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36044320155 — f13d46d fixture consentida interceptada; 16/16 browser desktop/mobile, Reviewer/preview PASS; sin llamadas reales al proveedor.",
+        "docs/ANALYTICS_EVENT_MAP.md; web/data/analytics.json enabled=false, privacy_approved=false, project_key vacío."
       ]
     },
     {

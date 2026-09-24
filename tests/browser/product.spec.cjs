@@ -182,6 +182,7 @@ test('authorized analytics fixture emits only anonymous event fields',async({pag
  await page.goto('/');
  await page.getByRole('button',{name:'Personalizar mi radar'}).click();
  await expect.poll(()=>payloads.some(p=>p.event==='preferences_open')).toBe(true);
+ expect(payloads.some(p=>p.event==='visit'&&typeof p.properties.returning==='boolean')).toBe(true);
  expect(new Set(payloads.map(p=>p.distinct_id)).size).toBe(payloads.length);
  for(const payload of payloads){
    expect(payload.api_key).toBe('public-test-key');

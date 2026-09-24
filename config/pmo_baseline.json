@@ -81,7 +81,19 @@
       ],
       "scope": "Muestra verificable de tres publicaciones; evidencia parcial, no validación completa de fuentes o control PREMIUM.",
       "parity_sha": "2ab6a33744fc36562f7844d81680b75c1a9c0d2b",
-      "parity_preview": "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641"
+      "parity_preview": "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641",
+      "additional_validated_samples": [
+        {
+          "sha": "26e54ac46e1500aed97b3e7d4476d3ad1968f486",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36042555130",
+          "publisher": "PwC"
+        },
+        {
+          "sha": "abae512b3e44b911231f9d08eb7eef31ad7bd054",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36043375959",
+          "publisher": "WHO"
+        }
+      ]
     },
     "email_subscription_technical_qa": {
       "kind": "github_actions",
@@ -246,6 +258,21 @@
       "validated_requirements": [
         "Insights analíticos adicionales con validación editorial"
       ]
+    },
+    "analytics_technical_qa": {
+      "kind": "github_actions",
+      "sha": "f13d46d9783a4c4652b2d4d92f6de9c62f24d0c6",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36044320155",
+      "result": "success",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "validated_requirements": [],
+      "scope": "QA de instrumentación apagada y proveedor simulado interceptado; sin medición ni aprobación de privacidad real."
     }
   },
   "blocks": [
@@ -400,8 +427,8 @@
         "separación Global Theme/Trend Chile"
       ],
       "missing": [
-        "Verificar otras fuentes internacionales aprobadas cuando haya research material público y relevante; sin transferencia automática a Chile.",
-        "No hay evidencia de monitoreo recurrente ni exclusividad PREMIUM efectiva; la muestra está declarada pública."
+        "Research adicional de editores aprobados según disponibilidad pública y permisos de uso; CB Insights/PAHO respondieron 403 y no se integró BCG por restricciones de uso comercial.",
+        "Faltan monitoreo recurrente y acceso PREMIUM exclusivo; las cinco referencias son muestras curadas públicas."
       ],
       "requirements": [
         {
@@ -484,30 +511,31 @@
     {
       "id": "analytics",
       "title": "Analytics y comportamiento",
-      "status": "Pendiente",
+      "status": "Bloqueado",
       "critical": true,
-      "evidence": [],
+      "evidence": [
+        "analytics_technical_qa"
+      ],
       "dependencies": [
         "decisión de privacidad y proveedor"
       ],
       "missing": [
-        "visitas y recurrencia",
-        "interacciones con cards y fuentes",
-        "filtros e intereses",
-        "conversión email con minimización"
+        "Aprobación humana de tratamiento y metadatos de transporte, cuenta/clave pública de proveedor; flags continúan falsas.",
+        "No hay medición real de visitas, recurrencia ni interacción; fixture interceptada no es evidencia de uso real.",
+        "Conversión email confirmada requiere callback o datos del proveedor, no basta el intento de envío."
       ],
       "requirements": [
         {
           "label": "Visitas y recurrencia con minimización",
-          "status": "Pendiente"
+          "status": "Implementado"
         },
         {
           "label": "Interacciones y filtros medidos",
-          "status": "Pendiente"
+          "status": "Implementado"
         },
         {
           "label": "Conversión email medible",
-          "status": "Pendiente"
+          "status": "Bloqueado"
         }
       ]
     },
@@ -589,7 +617,7 @@
     },
     {
       "id": "analytics_provider",
-      "action": "Aprobar tratamiento de datos y proveedor; entregar identificador público si se decide activar.",
+      "action": "Aprobar proveedor y tratamiento/aviso de privacidad, incluidos IP/origen de transporte; entregar identificador público de proyecto y autorizar activación explícita.",
       "provider": "PostHog u otro proveedor aprobado",
       "required_data": "decisión de privacidad e identificador de proyecto",
       "estimated_time": "30–60 min",
@@ -859,6 +887,16 @@
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36041103869"
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Global Lite incorpora PwC/WHO como muestras verificadas: #109/#111 PASS, #110 bloqueó selector ambiguo. Analytics preparado con captura apagada: #112/#113 PASS con fixture interceptada, sin telemetría real; bloqueado por autorización de privacidad y proveedor.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36042555130",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36043375959",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36043956593",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36044320155"
       ]
     }
   ],
