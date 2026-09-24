@@ -1,5 +1,5 @@
 {
-  "validated_at": "2026-09-24T03:43:04.280594+00:00",
+  "validated_at": "2026-09-24T03:49:04.189181+00:00",
   "families": {
     "cartera": {
       "family": "cartera",
@@ -7,7 +7,7 @@
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
       "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
       "bytes": 3558853,
-      "schema": "monthly_isapre_totals_v1",
+      "schema": "monthly_isapre_totals_v2",
       "series": [
         {
           "period": "2026-01",
@@ -87,7 +87,7 @@
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
       "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
       "bytes": 242120,
-      "schema": "monthly_isapre_totals_v1",
+      "schema": "monthly_isapre_totals_v2",
       "series": [
         {
           "period": "2026-01",
@@ -160,15 +160,17 @@
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
       "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
       "bytes": 393047,
-      "schema": "national_age_totals_v1",
+      "schema": "national_comparison_totals_v2",
       "series": [
         {
-          "period": "2026-07",
+          "period_start": "2025-07",
+          "period_end": "2026-07",
+          "period_type": "comparison_between_july_cuts",
           "sheet": "Nacional",
           "metrics": {
-            "salidas": 109663,
-            "entradas": 91963,
-            "diferencia": -17700
+            "salidas_intervalo": 109663,
+            "entradas_intervalo": 91963,
+            "diferencia_intervalo": -17700
           }
         }
       ]

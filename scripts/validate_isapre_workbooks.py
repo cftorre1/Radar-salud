@@ -25,6 +25,13 @@ def _number(value):
     return int(value) if int(value) == value else value
 
 
+def _count(value):
+    number = _number(value)
+    if not isinstance(number, int) or number < 0:
+        raise ValueError("Required count is fractional or negative")
+    return number
+
+
 def _monthly(book, family):
     result = []
     for index, month in enumerate(MONTHS, 1):
@@ -34,8 +41,8 @@ def _monthly(book, family):
         if sheet["A4"].value != f"{month.upper()} 2026":
             raise ValueError(f"Unexpected reporting period in {month}")
         headers = [sheet.cell(6, col).value for col in range(1, 6)]
-        expected = ("N° Cotizantes (1)", "N° Beneficiarios (1) + (2)") if family == "cartera" else ("N° Contratos Suscritos", "N°\nDesahucios Voluntarios")
-        if not all(any(h and phrase in str(h) for h in headers) for phrase in expected):
+        expected = {2: "N° Cotizantes (1)", 3: "N°\nCargas\n(2)", 4: "N° Beneficiarios (1) + (2)"} if family == "cartera" else {2: "N° Contratos Suscritos", 3: "N°\nDesahucios Voluntarios"}
+        if any(headers[col] != label for col,label in expected.items()):
             raise ValueError(f"Unknown {family} schema in {month}")
         rows = [list(r) for r in sheet.iter_rows(min_row=8, max_row=20, max_col=5, values_only=True)]
         members = [r for r in rows if isinstance(r[0], int) and r[1]]
@@ -44,14 +51,14 @@ def _monthly(book, family):
             raise ValueError(f"Missing or duplicate Isapre rows in {month}")
         total = totals[0]
         for col in (2, 3, 4) if family == "cartera" else (2, 3):
-            if sum(_number(r[col]) for r in members) != _number(total[col]):
+            if sum(_count(r[col]) for r in members) != _count(total[col]):
                 raise ValueError(f"Total does not reconcile in {month} column {col+1}")
         if family == "cartera":
-            if any(_number(r[2]) + _number(r[3]) != _number(r[4]) for r in members):
+            if any(_count(r[2]) + _count(r[3]) != _count(r[4]) for r in members):
                 raise ValueError(f"Cotizantes plus cargas differs from beneficiaries in {month}")
-            metrics = {"cotizantes": _number(total[2]), "cargas": _number(total[3]), "beneficiarios": _number(total[4])}
+            metrics = {"cotizantes": _count(total[2]), "cargas": _count(total[3]), "beneficiarios": _count(total[4])}
         else:
-            metrics = {"contratos_suscritos": _number(total[2]), "desahucios_voluntarios": _number(total[3])}
+            metrics = {"contratos_suscritos": _count(total[2]), "desahucios_voluntarios": _count(total[3])}
         result.append({"period": f"2026-{index:02d}", "sheet": month, "isapres": len(members), "metrics": metrics})
     return result
 
@@ -75,7 +82,9 @@ def _mobility(book):
             raise ValueError(f"Mobility age rows do not reconcile: {label}")
     if values[20] - values[8] != values[32]:
         raise ValueError("Mobility net differs from entries minus exits")
-    return [{"period": "2026-07", "sheet": "Nacional", "metrics": {"salidas": values[8], "entradas": values[20], "diferencia": values[32]}}]
+    _count(values[8]);_count(values[20])
+    return [{"period_start": "2025-07", "period_end": "2026-07", "period_type": "comparison_between_july_cuts", "sheet": "Nacional",
+             "metrics": {"salidas_intervalo": values[8], "entradas_intervalo": values[20], "diferencia_intervalo": values[32]}}]
 
 
 def validate(path: Path, family: str):
@@ -85,7 +94,7 @@ def validate(path: Path, family: str):
     try:
         series = _mobility(book) if family == "movilidad" else _monthly(book, family)
         return {"family": family, "status": "validated", "source_url": URLS[family], "sha256": sha,
-                "bytes": len(data), "schema": "national_age_totals_v1" if family == "movilidad" else "monthly_isapre_totals_v1",
+                "bytes": len(data), "schema": "national_comparison_totals_v2" if family == "movilidad" else "monthly_isapre_totals_v2",
                 "series": series}
     finally:
         book.close()
