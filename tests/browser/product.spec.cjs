@@ -130,6 +130,56 @@ test('FREE value shows one verified weekly insight and a bounded Global teaser',
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-free-value.png`,fullPage:true});
 });
+test('source suggestion is visible, anonymous and fail-closed without provider',async({page})=>{
+ let captured;
+ await page.route('**/api/source-suggestions',async route=>{
+  captured=route.request().postDataJSON();
+  await route.fulfill({status:201,contentType:'application/json',body:JSON.stringify({id:`src_${'a'.repeat(32)}`,status:'received',message:'Gracias. Guardamos tu sugerencia para revisión.'})});
+ });
+ await page.goto('/');
+ const cta=page.locator('#source-suggestion');
+ await expect(cta).toBeVisible();
+ expect(await cta.evaluate(el=>el.getBoundingClientRect().top)).toBeLessThan(test.info().project.use.viewport.height);
+ await expect(cta).toContainText('¿Nos falta alguna fuente?');
+ const open=page.getByRole('button',{name:'Sugerir una fuente'});
+ await open.focus();
+ expect(await open.evaluate(el=>getComputedStyle(el).outlineStyle)).toBe('solid');
+ await open.click();
+ const dialog=page.locator('#sourceSuggestionDialog');
+ await expect(dialog).toBeVisible();
+ await expect(dialog.locator('input[type="email"],input[name="name"],input[name="user_id"]')).toHaveCount(0);
+ await dialog.locator('[name="source_name"]').fill('Observatorio de Salud');
+ await dialog.locator('[name="source_url"]').fill('https://example.org/publicaciones');
+ await dialog.locator('[name="comment"]').fill('Revisar los informes trimestrales.');
+ await dialog.getByRole('button',{name:'Enviar sugerencia'}).click();
+ await expect(dialog.locator('#sourceSuggestionFeedback')).toContainText('Guardamos tu sugerencia para revisión');
+ expect(Object.keys(captured).sort()).toEqual(['comment','source_name','source_url','started_at','website']);
+ expect(captured.website).toBe('');
+
+ await page.unroute('**/api/source-suggestions');
+ await page.route('**/api/source-suggestions',route=>route.fulfill({status:200,contentType:'application/json',body:'{}'}));
+ await dialog.locator('[name="source_name"]').fill('Otra fuente');
+ await dialog.getByRole('button',{name:'Enviar sugerencia'}).click();
+ await expect(dialog.locator('#sourceSuggestionFeedback')).toContainText('El envío aún no está habilitado. No guardamos tu sugerencia.');
+ await page.unroute('**/api/source-suggestions');
+ await page.route('**/api/source-suggestions',route=>route.fulfill({status:204,body:''}));
+ await dialog.getByRole('button',{name:'Enviar sugerencia'}).click();
+ await expect(dialog.locator('#sourceSuggestionFeedback')).toContainText('El envío aún no está habilitado. No guardamos tu sugerencia.');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+ await page.screenshot({path:`artifacts/${test.info().project.name}-source-suggestion.png`,fullPage:true});
+});
+test('source suggestion never falls back to URL serialization without JavaScript',async({browser})=>{
+ const context=await browser.newContext({javaScriptEnabled:false});
+ const page=await context.newPage();
+ await page.goto('/');
+ const form=page.locator('#sourceSuggestionForm');
+ await expect(form).toHaveAttribute('method','post');
+ await expect(form).toHaveAttribute('action','/api/source-suggestions');
+ await expect(form.locator('button[type="submit"]')).toBeDisabled();
+ expect(await page.content()).toContain('El envío requiere JavaScript y todavía no está habilitado en este navegador. No se enviaron datos.');
+ expect(page.url()).not.toContain('source_name=');
+ await context.close();
+});
 test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();
