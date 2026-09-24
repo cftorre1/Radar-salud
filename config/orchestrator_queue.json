@@ -566,6 +566,46 @@
         "resultado teaser Global FREE y pieza FREE destacada",
         "QA/Reviewer independiente"
       ]
+    },
+    {
+      "id": "free_value_features_and_model_cost_observability_2026_09_24",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Implementar como decisiones de producto firmes el teaser FREE de Global Intelligence, el Insight Alicanto de la semana y observabilidad separada de costo/modelo; usar el experimento Luna/Terra/Astra solo para optimizar routing.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Implementar un teaser muy acotado de Global Intelligence dentro de la experiencia FREE. Debe ser útil por sí mismo, mostrar una fracción real del análisis y derivar a Premium para profundizar; no etiquetar como contenido degradado ni usar dark patterns.",
+        "Implementar 'Insight Alicanto de la semana' como pieza FREE de alto impacto y baja frecuencia. Puede basarse en una señal local, cruce de señales, dato validado, cambio regulatorio/material, patrón operativo o vínculo global-local, siempre con evidencia suficiente.",
+        "El Insight semanal no debe quedarse pegado a una sola tesis. Generar candidatos desde un universo amplio: señales locales seleccionadas, normativa/legal/fiscalización material, pulsos/datos, movimientos de mercado, conexiones históricas, Global Intelligence relacionado y combinaciones compatibles.",
+        "Aplicar diversidad editorial: penalizar repetición de tema/entidad/arquetipo de semanas recientes; no repetir una tesis sin evidencia nueva material. Permitir excepciones si hay un cambio verdaderamente importante.",
+        "Usar arquetipos alternables para sostener variedad: conexión entre señales, dato contraintuitivo, cambio regulatorio con implicancia, movimiento competitivo, señal temprana, global→qué mirar en Chile, o deep dive de una sola señal excepcional.",
+        "Si no existe cruce multiseñal sólido, usar el mejor single-signal deep dive sustentado. Nunca inventar una conexión solo para cumplir frecuencia.",
+        "Separar decisión editorial de routing de modelo: las dos features FREE se implementan sí o sí; el experimento Luna/Terra/Astra define qué modelo conviene usar en cada etapa.",
+        "Agregar al panel de control una sección de gasto por feature y modelo. Debe mostrar al menos Global Intelligence e Insight Alicanto de la semana, con llamadas, input tokens, output tokens, costo USD medido, modelo usado y período.",
+        "Dentro de cada feature, desglosar Luna/Terra/Astra y total acumulado/mensual. No inventar tasas ni costos históricos no medidos; si falta medición, mostrar estado no disponible.",
+        "Permitir comparar costo por output y, cuando exista evaluación, costo por punto incremental de calidad o costo por pieza publicable.",
+        "Mantener trazabilidad desde cada output al modelo y corrida que lo produjo."
+      ],
+      "constraints": [
+        "No activar gasto recurrente de Terra/Astra fuera del experimento o routing aprobado posteriormente.",
+        "No bajar calidad para asegurar una publicación semanal.",
+        "No repetir contenido sin novedad material.",
+        "No inventar costos, tokens o tasas.",
+        "No tocar main/producción."
+      ],
+      "evidence_required": [
+        "QA desktop/mobile",
+        "Reviewer independiente",
+        "teaser FREE Global Intelligence visible en staging",
+        "Insight Alicanto semanal visible con fuente/evidencia",
+        "prueba de diversidad/repetición",
+        "panel de gasto por feature/modelo",
+        "telemetría de tokens/modelo/costo fail-closed"
+      ]
     }
   ],
   "execution_policy": {
