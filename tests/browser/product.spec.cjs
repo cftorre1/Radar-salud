@@ -22,8 +22,10 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await page.screenshot({path:`artifacts/${test.info().project.name}-browse.png`,fullPage:true});
  await page.locator('.briefitem').first().click();
  await expect(page.locator('article.read').first()).toBeVisible();
+ expect(await page.evaluate(()=>document.activeElement?.tagName)).toBe('ARTICLE');
  await expect(page.locator('article.read').first().getByRole('button',{name:'Volver a 30 segundos'})).toBeVisible();
  await page.locator('article.read').first().getByRole('button',{name:'Volver a 30 segundos'}).click();
+ expect(await page.evaluate(()=>document.activeElement?.id)).toBe('brief');
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
  await page.locator('article').first().getByRole('button',{name:/Marcar/}).click();
  expect(await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id))).toEqual(ids);
@@ -54,11 +56,21 @@ test('Inbox shows every unread signal, supports direct read and persists it',asy
  expect(initial).toBe(expected);expect(initial).toBeGreaterThan(4);
  const first=await page.locator('.briefitem').first().getAttribute('data-brief');
  await page.locator('[data-brief-read]').first().click();
+ expect(await page.evaluate(()=>document.activeElement?.hasAttribute('data-brief-read'))).toBeTruthy();
  await expect(page.locator('.briefitem')).toHaveCount(initial-1);
  await expect(page.locator(`article[data-card="${first}"]`)).toHaveClass(/read/);
  await page.reload();await expect(page.locator('#meta')).toContainText('Portada generada');
  await expect(page.locator('.briefitem')).toHaveCount(initial-1);
  await expect(page.locator(`article[data-card="${first}"]`)).toHaveClass(/read/);
+ await page.locator('#period').selectOption('90');
+ const inbox=page.locator('.brief-list');
+ const deepCount=await page.locator('[data-brief-read]').count();
+ expect(deepCount).toBeGreaterThan(4);
+ await inbox.evaluate(el=>el.scrollTop=el.scrollHeight);
+ expect(await inbox.evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
+ await page.locator('[data-brief-read]').last().click();
+ expect(await inbox.evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
+ expect(await page.evaluate(()=>document.activeElement?.hasAttribute('data-brief-read'))).toBeTruthy();
 });
 test('operations dashboard loads without inventing measurements',async({page})=>{
  await page.goto('/admin/product.html');await expect(page.locator('#status')).toContainText('Actualizado:');
@@ -89,6 +101,9 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
  await expect(bupa).not.toContainText('…');
  await expect(bupa.locator('.card-meta')).toContainText('Publicado');
  await expect(bupa.locator('.card-meta')).not.toBeEmpty();
+ const isapre=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso Isapre · datos/})});
+ await expect(isapre.locator('.card-meta')).toContainText('Datos a 2026-07');
+ await expect(isapre.locator('.card-meta')).not.toContainText('Publicado');
  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});
  await expect(pulse).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');
  await pulse.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');
