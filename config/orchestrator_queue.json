@@ -158,6 +158,12 @@
         "source health facets",
         "QA/Reviewer",
         "staging evidence"
+      ],
+      "progress": "ISP/ANAMED implementado fail-closed y QA técnico #74; piloto #23 encontró URLError ISP y HTTPError FONASA, ambos 0 descubrimientos, editorial no evaluado. Fuente ISP no validada; DEIS y newsrooms pendientes.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36029771353 — piloto #23 limitado a 1, 7 fuentes exitosas y 2 errores; staging datos 83f55e36c464972c2e8eee7763f5a7699a644cb1",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36030110235 — preview #74 059447995561647bcb814e15430ed1ae744ddcc2, tests/QA desktop-mobile/Reviewer/preview PASS; Reviewer independiente corrigió atribución de fecha/PDF y estructura, pero sin fixture real",
+        "data/state/discovery_run.json y data/source_health.json: isp_anamed URLError, fonasa HTTPError; 0 capturas y 0 publicados"
       ]
     },
     {

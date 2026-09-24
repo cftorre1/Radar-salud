@@ -317,8 +317,8 @@
         "monitoreo de fuentes"
       ],
       "missing": [
-        "FONASA directo: HTTPError en discovery real #21; resolver acceso sin rebajar verificación ni atribuir señales",
-        "ISP/ANAMED",
+        "FONASA directo: HTTPError persistente piloto #23; 0 capturas, pendiente acceso/captura real",
+        "ISP/ANAMED: conector fail-closed implementado y QA #74; URLError en piloto #23, sin fixture/captura real",
         "DEIS",
         "newsrooms prioritarios verificados"
       ],
@@ -329,7 +329,7 @@
         },
         {
           "label": "ISP/ANAMED",
-          "status": "Pendiente"
+          "status": "Implementado"
         },
         {
           "label": "DEIS",
@@ -748,6 +748,14 @@
       "evidence": [
         "excel_insights_v1_qa"
       ]
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Primer ciclo Fuentes Chile: conector ISP/ANAMED fail-closed y tests adversarios; Reviewer detectó tres fallos de atribución que se corrigieron. Preview #74 PASS técnico. Piloto real #23 limit=1 mostró FONASA HTTPError e ISP URLError, 0 descubrimientos; ambas fuentes siguen pendientes de captura real. DEIS y newsrooms continúan.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36029771353",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36030110235"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -755,7 +763,7 @@
     {
       "id": "fonasa_unavailable",
       "severity": "warning",
-      "description": "FONASA oficial discovery 0, technical_status error HTTPError; no es fuente activa ni validada. Siete fuentes previas consultadas; LIVE 0/0/0 y 15 BACKFILL pendientes.",
+      "description": "FONASA oficial discovery 0, technical_status error HTTPError en piloto #23; no validada como fuente activa.",
       "source": "Daily Radar pilot #21; data/state/discovery_run.json y data/source_health.json"
     },
     {
@@ -775,6 +783,12 @@
       "severity": "warning",
       "description": "40 de 42 fallos fast históricos fueron 429 por saldo de crédito agotado; la disponibilidad fast actual no está verificada y dos fallos carecen de causa. No cambiar billing automáticamente.",
       "source": "Daily Radar pilot #13 logs; data/ai_usage/2026-09.json"
+    },
+    {
+      "id": "isp_anamed_unavailable",
+      "severity": "warning",
+      "description": "ISP/ANAMED responde URLError desde GitHub Actions piloto #23: 0 descubierto, 0 publicado, sin evaluación editorial. Conector técnico fail-closed y QA #74 no equivalen a fuente validada.",
+      "source": "data/state/discovery_run.json; data/source_health.json; piloto #23"
     }
   ],
   "approved_addenda": [
