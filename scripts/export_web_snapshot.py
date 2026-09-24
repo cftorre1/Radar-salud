@@ -54,6 +54,17 @@ def _card_micro(s):
     """Condense a verified complex announcement without dropping its outcome."""
     r=dict(s)
     what=str(r.get("what_happened") or "")
+    if (r.get("source_url")=="https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas"
+        and r.get("event_date")=="2026-08-13"
+        and all(x in what for x in ("SAFED","FIBE","cinco redes privadas"))):
+        r["source_title_full"]=r["title"]
+        r["title"]="Fonasa activa SAFED para atención gratuita en clínicas privadas tras temporal"
+        r["card_what"]="Damnificados inscritos en FIBE pueden recibir consultas, exámenes y salud mental sin costo en cinco redes privadas; las hospitalizaciones siguen en la red pública."
+        r["card_why"]="La medida de agosto desplazó atención ambulatoria hacia clínicas en convenio para aliviar la red pública afectada."
+        why=str(r.get("why_it_matters") or "")
+        r["why_it_matters"]=why.replace("vigente ahora y condicionado a la inscripción en la FIBE",
+            "condicionado a la inscripción en la FIBE al momento de publicarse (vigencia actual no verificada)")
+        r["scopes"]=[x for x in r.get("scopes",[]) if x!="Farma / medicamentos"]
     if (str(r.get("title") or "").startswith("Bupa acelera inversiones")
         and all(token in what for token in ("US$15 millones","La Dehesa","Huinganal","Mindplace","San Damián"))):
         r["card_what"]="Bupa anunció US$15 millones: centro médico en La Dehesa, compra de Clínicas Huinganal y centro Mindplace en San Damián."

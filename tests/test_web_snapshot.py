@@ -35,6 +35,10 @@ def test_backfilled_bupa_emergency_has_truthful_card_and_scope():
     assert "Farma / medicamentos" not in bupa["scopes"]
     assert "vigente ahora" not in bupa["why_it_matters"].lower()
     assert all(bupa.get(k) for k in ("card_what","card_why","source_title_full"))
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    original=next(s for s in history if s.get("source_url")==bupa["source_url"])
+    replay=m._card_micro(original)
+    assert all(replay.get(k)==bupa.get(k) for k in ("title","card_what","card_why","scopes","source_title_full"))
 
 
 def test_distinct_statistical_families_keep_their_sources():
