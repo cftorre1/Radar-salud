@@ -32,6 +32,8 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  await expect(page.locator('#blocks .block')).toHaveCount(10);
  await expect(page.locator('#failures')).toContainText('Autopilot distingue QA aprobado');
  await expect(page.locator('#deployments')).toContainText('Producción: último SHA comprobado');
+ await expect(page.getByRole('columnheader',{name:'Última consulta'})).toBeVisible();
+ await expect(page.locator('#sources tr').first()).toContainText('2026');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  const response=await page.request.get('/data/excel_diagnostics.csv');expect(response.ok()).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-product.png`,fullPage:true});
