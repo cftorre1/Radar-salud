@@ -508,14 +508,6 @@
   ],
   "human_blockers": [
     {
-      "id": "production_workflow_guard",
-      "action": "Autorizar una excepción acotada para corregir en main los workflows heredados: cron de Daily Radar debe operar exclusivamente en staging y static.yml no debe desplegar por la finalización de un piloto staging. Revisar el diff exacto y validar protección de producción antes de aplicarlo.",
-      "provider": "GitHub Actions / cftorre1/Radar-salud",
-      "required_data": "autorización explícita para modificar solo los disparadores y destino de estos dos workflows en main",
-      "estimated_time": "30–60 min más validación de workflows",
-      "beta_impact": "Mientras persista, una captura de staging puede volver a desplegar producción y el cron puede modificar main automáticamente."
-    },
-    {
       "id": "domain",
       "action": "Confirmar disponibilidad y autorizar registro de alicanto.cl; proporcionar acceso DNS para SSL y correo.",
       "provider": "NIC Chile y proveedor DNS/hosting a elegir",
@@ -725,12 +717,6 @@
   ],
   "scope_deviations": [],
   "open_failures": [
-    {
-      "id": "legacy_production_workflow_trigger",
-      "severity": "critical",
-      "description": "El workflow heredado en main actualiza main en el cron y despliega producción al finalizar cualquier Daily Radar pilot, incluso si el piloto partió de staging. El piloto staging #21 activó producción #90, que publicó el checkout de main ea55bc7; no promover ni ejecutar otro piloto hasta aislar los disparadores con autorización específica.",
-      "source": ".github/workflows/static.yml y daily-radar.yml en main; Actions #21 36018677014 y producción #90 36018933311"
-    },
     {
       "id": "fonasa_unavailable",
       "severity": "warning",
