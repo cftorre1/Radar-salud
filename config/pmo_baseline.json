@@ -98,7 +98,8 @@
       "missing": [
         "validar dos pulsos Isapres y Prestadores en ventana real",
         "consolidación rutinaria sin borrar eventos estratégicos",
-        "guard de repetición y filtro de ruido con muestras adversarias"
+        "guard de repetición y filtro de ruido con muestras adversarias",
+        "Validar Cards V2 / Progressive Disclosure en staging desktop/mobile con Reviewer"
       ]
     },
     {
@@ -163,7 +164,8 @@
       ],
       "missing": [
         "medición LIVE real auditable de detectadas, evaluadas y seleccionadas",
-        "estado de cobertura histórica"
+        "estado de cobertura histórica",
+        "Validar transparencia compacta y vista de metodología en staging"
       ]
     },
     {
@@ -266,6 +268,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Dirección aprobó addendum Cards V2 / Progressive Disclosure para MVP viernes, prioridad alta. Implementación en candidato; aún sin QA y Reviewer remoto propios.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Run #17 pasó tests, QA desktop/mobile, Reviewer y preview remoto; release.json ahora identifica versión y SHA; CSV usa validación canónica, pero el Reviewer detectó que debe conservar el intervalo de movilidad y motivo de rechazo. Corrección en siguiente candidato. LIVE real aún no medido.",
       "evidence": [
         "staging_qa"
@@ -315,6 +322,29 @@
       "severity": "critical",
       "description": "El Reviewer actual no cubre aún todas las condiciones funcionales del baseline Beta.",
       "source": "scripts/review_candidate.py"
+    }
+  ],
+  "approved_addenda": [
+    {
+      "id": "cards_v2",
+      "title": "Cards V2 / Progressive Disclosure",
+      "status": "Aprobado",
+      "horizon": "MVP viernes",
+      "priority": "Alta",
+      "principle": "Barrido → Entiendo → Profundizo",
+      "scope": [
+        "tarjeta breve con título, tipo/ámbito, síntesis y por qué importa",
+        "segunda capa solo cuando existe profundidad sustentada",
+        "home con transparencia compacta y métricas LIVE auditables",
+        "metodología y sugerencia de fuentes en vista secundaria"
+      ],
+      "validation_required": [
+        "QA desktop",
+        "QA mobile",
+        "Reviewer",
+        "evidencia en staging"
+      ],
+      "evidence": []
     }
   ]
 }

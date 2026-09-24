@@ -31,3 +31,11 @@ El panel calcula el readiness desde el estado de cada bloque y conserva un enlac
 ## Registro y bloqueos
 
 El JSON registra por bloque estado, evidencia, dependencias y lo que falta; además enumera bloqueos humanos con acción, proveedor, datos, tiempo estimado e impacto. No se activan AI Builder, pagos ni promoción automática. Un ciclo se detiene ante un bloqueo sensible real, tres ciclos consecutivos sin progreso medible o una corrección que reduciría protecciones/evidencia. No se impone un límite rígido de cinco iteraciones.
+
+## Addendum aprobado · Cards V2 / Progressive Disclosure
+
+**Estado:** Aprobado. **Horizonte:** MVP viernes. **Prioridad:** Alta. **Principio:** Barrido → Entiendo → Profundizo. No se declara Validado antes de QA desktop y mobile, Reviewer independiente y evidencia remota de staging.
+
+La tarjeta conserva título, tipo/ámbito, síntesis breve, una línea de por qué importa, acceso a resumen cuando la evidencia ofrece profundidad y fuente original. La segunda capa contiene solamente los campos respaldados por la fuente: resumen ejecutivo, hallazgos, cifras, actores, vigencia, puntos clave, aspectos a revisar, contexto y fuentes. Si el material es limitado se ofrece «Ver contexto disponible» o solo la fuente original; nunca se inventa profundidad.
+
+Home muestra transparencia compacta antes de Explorar: «Miramos mucho para mostrarte poco» con fuentes activas y señales detectadas, evaluadas y seleccionadas LIVE derivadas de medición real. Si no hay medición, lo declara. La explicación, cobertura, límites, LIVE/BACKFILL, fuentes monitoreadas y sugerencia de nuevas fuentes pasan a la vista secundaria.
