@@ -1,0 +1,33 @@
+# Alicanto Salud · baseline Beta del viernes
+
+Versión: `beta-friday-2026-09-25`. Fuente estructurada: `config/pmo_baseline.json`. El baseline aprobado por el usuario tiene prioridad sobre documentos antiguos y el README. El objetivo es una Beta verificable en staging; `main` y producción requieren una decisión explícita de release.
+
+## Regla de avance
+
+`Aprobado` describe una decisión funcional aceptada. `Implementado` describe código existente sin prueba completa. `Validado` exige evidencia exitosa de tests, QA desktop y mobile, Reviewer independiente y URL de staging para el commit candidato. `Bloqueado` requiere una dependencia humana o externa concreta; `Pendiente` identifica trabajo por hacer; `Fuera de alcance` excluye pagos, precio definitivo y funciones no aprobadas. La existencia de un archivo o un test unitario aislado no certifica Beta.
+
+El panel calcula el readiness desde el estado de cada bloque y conserva un enlace a la evidencia. No se reemplazan mediciones ausentes por cero. Tras cada ciclo se actualizan estados, fallos, cambios, desviaciones y siguiente acción en la fuente estructurada y el panel.
+
+## Alcance comprometido
+
+1. PMO versionado y panel de operación/readiness trazable.
+2. Signal Density: 14 días, más recientes, nuevo/no leído, preferencias de ocultación, dos pulsos de sanciones móviles a 30 días, histórico íntegro, consolidación rutinaria, DF compacto, guard editorial, recuración y ruido SuperSalud.
+3. Excel real de movilidad, cartera y suscripciones/desahucios con esquema validado, series, métricas, diagnóstico y Pulso Isapre solo con insights comprobados.
+4. Chile: FONASA directo, ISP/ANAMED, DEIS y newsrooms prioritarios con monitoreo de fuente.
+5. Global Intelligence Lite: Reuters, CB Insights, McKinsey, Deloitte, PwC, WHO, PAHO y BCG cuando aporten research material; hechos globales separados de hipótesis y señales chilenas.
+6. Cobertura: fuentes activas y funnel LIVE auditable; detectada ≠ evaluada ≠ seleccionada; backfill separado y límites declarados.
+7. Suscripción consentida y digest semanal FREE resumido, con envío real solo si existe material relevante; preparar PREMIUM sin pagos.
+8. Analytics de visitas, recurrencia, lecturas, interacciones y conversión con minimización de datos.
+9. FREE te mantiene al día. PREMIUM te ayuda a entender, conectar y anticipar. El detalle completo de cada nivel está en JSON; no existe precio definitivo ni checkout.
+10. Presencia: preparación técnica de dominio, SSL, favicon, metadata, correo, DNS y páginas institucionales; compra, cuentas y textos legales definitivos requieren intervención humana.
+
+## Evidencia inicial y límites
+
+- Preview final [run #8](https://github.com/cftorre1/Radar-salud/actions/runs/35939727172) para `62111e3`: bootstrap, tests, QA 1440×900/390×844, Reviewer y deploy pasaron.
+- Ensayo [run #7](https://github.com/cftorre1/Radar-salud/actions/runs/35939432026): fallo deliberado del preview, rollback con comparación de bytes y job de restauración exitoso.
+- LIVE/BACKFILL globales aún carecen de primera medición. Los 2.515 pendientes legados no se reclasifican artificialmente. Excel legado figura como `not_recorded_legacy`; ninguna validación nueva puede inferirse de esos registros.
+- El despliegue de staging comparte el sitio GitHub Pages, pero empaqueta la raíz desde `production-stable`. `github-pages` admite solo `main`; `staging-pages` solo `staging`.
+
+## Registro y bloqueos
+
+El JSON registra por bloque estado, evidencia, dependencias y lo que falta; además enumera bloqueos humanos con acción, proveedor, datos, tiempo estimado e impacto. No se activan AI Builder, pagos ni promoción automática. Un ciclo se detiene ante un bloqueo sensible real, tres ciclos consecutivos sin progreso medible o una corrección que reduciría protecciones/evidencia. No se impone un límite rígido de cinco iteraciones.
