@@ -45,7 +45,7 @@
     },
     {
       "id": "intelligence_inbox_cards_v22",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -80,6 +80,15 @@
         "navegación ida/vuelta",
         "metadata card visible",
         "fuentes/referencias visibles arriba en resumen"
+      ],
+      "completed_at": "2026-09-24",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36025340784",
+        "staging ea2dffae9b186ffa1247fa82da71915562ae674e (primer candidato; Reviewer detectó tres gaps)",
+        "staging ea7e5d9febdbf12d7fe5b48832299d18389fdd0e (corrección); 104 Python, 16 Node, 8 browser desktop/mobile, QA, Reviewer y preview PASS",
+        "capturas desktop/mobile en staging-evidence-ea7e5d9 del run #63",
+        "staging 49d1d8d9391af7270d7c7b5f5aae7603c9ee6115: metadata factual adicional; preview #64 PASS",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36025870200"
       ]
     },
     {
@@ -316,7 +325,7 @@
     },
     {
       "id": "orchestrator_continuous_consumer",
-      "status": "approved",
+      "status": "validated",
       "priority": "high",
       "owner": "Work",
       "source": "Dirección",
@@ -340,7 +349,13 @@
         "registro PMO de transición de estados",
         "sin intervención humana entre tareas"
       ],
-      "progress": "En esta sesión Work leyó la cola al inicio y al cierre del ciclo de aislamiento y continúa con tareas approved. La transición validated de aislamiento habilita dependientes. Prueba de dos tareas secuenciales pendiente."
+      "progress": "En esta sesión Work leyó la cola al inicio y al cierre del ciclo de aislamiento y continúa con tareas approved. La transición validated de aislamiento habilita dependientes. Prueba de dos tareas secuenciales pendiente.",
+      "completed_at": "2026-09-24",
+      "evidence": [
+        "Dos tareas approved ejecutadas secuencialmente: workflow_isolation_2026_09_24 → intelligence_inbox_cards_v22; consulta de cola/PMO entre tareas, transición de estado/evidencia publicada sin retransmisión manual para pasar a la siguiente.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36025340784",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36023632007"
+      ]
     },
     {
       "id": "orchestrator_event_trigger",
@@ -370,7 +385,7 @@
         "QA del flujo",
         "registro PMO"
       ],
-      "progress": "Vigilancia Work horaria activa desde 2026-09-24 15:57 UTC; GitHub webhook disponible aquí solo para pull requests, no para push de este JSON. Primer wake-up y ejecución posterior aún sin observar; permanece approved."
+      "progress": "Automatización Work condition_watch horaria creada y habilitada; GitHub webhook disponible solo para pull_request, no para cambios JSON. Aún no hay last_run_time ni evidencia de wake-up por nueva tarea; permanece approved hasta observación real."
     }
   ],
   "execution_policy": {

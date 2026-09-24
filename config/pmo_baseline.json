@@ -713,6 +713,15 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36023632007",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36018933311"
       ]
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Intelligence Inbox / Cards V2.2: primera versión ea2dffa falló Reviewer editorial y foco; corrección ea7e5d9 pasó QA 1440×900 y 390×844, Reviewer y preview. Las dos tareas approved se consumieron secuencialmente. LIVE genuino aún pendiente sin bloquear MVP. El ajuste de metadatos factual 49d1d8d pasó preview #64 sin cambiar el alcance.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36025340784",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36024956489",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36025870200"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -807,8 +816,13 @@
         "Explorar reduce de forma material su altura en mobile",
         "barrido de múltiples señales con scroll mínimo"
       ],
-      "evidence": [],
-      "implementation_status": "Pendiente",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36025340784",
+        "ea7e5d9febdbf12d7fe5b48832299d18389fdd0e",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36025870200",
+        "49d1d8d9391af7270d7c7b5f5aae7603c9ee6115"
+      ],
+      "implementation_status": "Validado",
       "limitations": [
         "No reabrir Cards V2 ya validadas salvo regresión.",
         "La bandeja 30 segundos resume para triage; no sustituye la card ni la segunda capa."
@@ -839,8 +853,13 @@
         "botones Fuente original y Ver resumen/contexto coherentes con profundidad real",
         "Fuentes y referencias visibles en la parte superior del resumen profundo"
       ],
-      "evidence": [],
-      "implementation_status": "Pendiente"
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36025340784",
+        "ea7e5d9febdbf12d7fe5b48832299d18389fdd0e",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36025870200",
+        "49d1d8d9391af7270d7c7b5f5aae7603c9ee6115"
+      ],
+      "implementation_status": "Validado"
     },
     {
       "id": "data_insights_v1",
@@ -945,5 +964,5 @@
     }
   ],
   "current_main_workflows_sha": "28be310808fffbe5c3212e75ddda2057ed635ca0",
-  "current_staging_isolation_sha": "1d1f1d3f64b78856f78f07eb77ab0d75cfbc0514"
+  "current_staging_candidate_sha": "49d1d8d9391af7270d7c7b5f5aae7603c9ee6115"
 }
