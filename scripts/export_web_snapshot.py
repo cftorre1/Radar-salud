@@ -67,10 +67,12 @@ def _card_micro(s):
         r["card_what"]="El alcalde de Huechuraba propuso una alianza municipal para mejorar la atención primaria; afirmó que ahora ejecuta $300 millones antes devueltos al Minsal."
         r["card_why"]="Plantea mejorar la ejecución de recursos de APS sin aumentar presupuesto; aún no es una medida sectorial adoptada."
     why=str(r.get("why_it_matters") or "")
+    support=" ".join([why, *map(str, r.get("key_points") or [])])
     if (str(r.get("title") or "").startswith("Resolución Exenta IF/N°11156")
+        and r.get("source_name")=="Superintendencia de Salud"
+        and str(r.get("source_url") or "").startswith("https://www.superdesalud.gob.cl/")
         and all(token in what for token in ("Circular IF/Nº528","eliminación de esos topes","mecanismo de registro"))
-        and "bonificación sin tope anual" in why and "compra directa de bonos" in why
-        and any("1 de noviembre de 2026" in str(fact) for fact in s.get("key_points",[]))):
+        and all(token in support for token in ("bonificación sin tope anual","1 de noviembre de 2026","compra directa de bonos"))):
         r["card_what"]="La Superintendencia confirmó la cobertura sin tope anual para cinco prestaciones vinculadas a TEA y añadió requisitos de acreditación y registro."
         r["card_why"]="Las isapres deben habilitar el registro y la compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026."
     return r

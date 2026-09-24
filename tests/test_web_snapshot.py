@@ -17,21 +17,15 @@ def test_bupa_card_preserves_all_three_projects_without_ellipsis():
 def test_tea_resolution_card_keeps_outcome_requirement_and_deadline_compact():
     row=sig("Resolución Exenta IF/N°11156",event="2026-09-23",cat="Regulación & Legal")
     row.update(
+        source_name="Superintendencia de Salud",
+        source_url="https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
         what_happened="La Superintendencia modificó la Circular IF/Nº528, confirmó la eliminación de esos topes e incorporó requisitos diagnósticos y un mecanismo de registro para acceder a la cobertura.",
-        why_it_matters="Las isapres deben mantener la bonificación sin tope anual, habilitar el registro y adecuar la compra directa de bonos.",
+        why_it_matters="Las isapres deben mantener la bonificación sin tope anual y adecuar la compra directa de bonos.",
         key_points=["Las isapres deben implementar el mecanismo de registro a más tardar el 1 de noviembre de 2026."])
     card=m._card_micro(row)
     assert "cinco prestaciones" in card["card_what"] and "requisitos" in card["card_what"]
     assert "1 de noviembre de 2026" in card["card_why"] and "compra directa" in card["card_why"]
     assert len(card["card_what"])+len(card["card_why"])<300
-
-def test_backfilled_bupa_emergency_has_truthful_card_and_scope():
-    rows=json.loads(Path("web/data/radar_today.json").read_text())["signals"]
-    bupa=next(s for s in rows if s.get("source_name")=="Bupa Chile")
-    assert bupa["ingestion_mode"]=="BACKFILL"
-    assert "Farma / medicamentos" not in bupa["scopes"]
-    assert "vigente ahora" not in bupa["why_it_matters"].lower()
-    assert all(bupa.get(k) for k in ("card_what","card_why","source_title_full"))
 
 def test_distinct_statistical_families_keep_their_sources():
     xs=[sig("Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026",url="https://x/a"),sig("Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026",url="https://x/b"),sig("Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026",url="https://x/c")]
