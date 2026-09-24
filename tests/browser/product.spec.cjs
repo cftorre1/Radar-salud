@@ -142,7 +142,7 @@ test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM disti
  await expect(page.locator('.theme').first()).toContainText('señales locales compatibles verificadas: 0');
  await expect(page.locator('.source a')).toHaveCount(5);
  await expect(page.locator('.source a').filter({hasText:'PwC'})).toHaveAttribute('href',/^https:\/\/www\.pwc\.com\//);
- await expect(page.locator('.source a').filter({hasText:'WHO'})).toHaveAttribute('href',/^https:\/\/www\.who\.int\//);
+ await expect(page.locator('.source a[href="https://www.who.int/publications/i/item/9789240122925"]')).toContainText(/^WHO ·/);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
  await page.screenshot({path:`artifacts/${test.info().project.name}-global-intelligence.png`,fullPage:true});
 });
