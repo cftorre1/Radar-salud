@@ -28,3 +28,12 @@ def test_new_export_timestamp_cannot_mask_stale_source_poll(tmp_path):
     (tmp_path/"data/source_health.json").write_text(json.dumps({"sources":{"sample":{"status":"ok","checked_at":"2020-01-01T00:00:00+00:00"}}}),encoding="utf-8")
     result=reviewer.review(tmp_path,"sha")
     assert any(x["code"]=="stale_source_check" for x in result["findings"])
+
+def test_reviewer_rejects_all_failed_or_future_source_polls(tmp_path):
+    (tmp_path/"data").mkdir()
+    (tmp_path/"data/radar_today.json").write_text(json.dumps({"generated_at":datetime.now(timezone.utc).isoformat(),"signals":[]}),encoding="utf-8")
+    path=tmp_path/"data/source_health.json"
+    path.write_text(json.dumps({"sources":{"official":{"status":"error"}}}),encoding="utf-8")
+    assert any(x["code"]=="no_healthy_sources" for x in reviewer.review(tmp_path,"sha")["findings"])
+    path.write_text(json.dumps({"sources":{"official":{"status":"ok","checked_at":"2099-01-01T00:00:00+00:00"}}}),encoding="utf-8")
+    assert any(x["code"]=="future_source_check" for x in reviewer.review(tmp_path,"sha")["findings"])

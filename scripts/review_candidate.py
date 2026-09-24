@@ -27,10 +27,15 @@ def review(web, sha):
     try:
         health=json.loads((web/"data/source_health.json").read_text())["sources"]
         if not health:raise ValueError("No monitored sources")
+        if not any(source.get("status") in ("ok","warning") for source in health.values()):
+            fail("data","no_healthy_sources","data/source_health.json","No source has a successful or partial poll")
         for slug,source in health.items():
             if source.get("status") not in ("ok","warning"):continue
             checked=datetime.fromisoformat(source["checked_at"].replace("Z","+00:00"))
-            if checked.tzinfo is None or (datetime.now(timezone.utc)-checked).total_seconds()>7*86400:
+            age=(datetime.now(timezone.utc)-checked).total_seconds() if checked.tzinfo else float("inf")
+            if age < -300:
+                fail("data","future_source_check",f"data/source_health.json#sources/{slug}","Source poll timestamp is in the future")
+            elif age>7*86400:
                 fail("data","stale_source_check",f"data/source_health.json#sources/{slug}","Source was not polled within seven days")
     except (OSError,KeyError,TypeError,ValueError) as exc:
         fail("data","unverified_source_checks","data/source_health.json",str(exc))
