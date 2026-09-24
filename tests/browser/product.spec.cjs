@@ -47,7 +47,7 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  await expect(page.locator('#sources tr').first()).toContainText('2026');
  await expect(page.locator('#excelValidation')).toContainText('2025-07 → 2026-07');
  await expect(page.locator('#excelValidation')).toContainText('desahucios voluntarios');
- expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
  const response=await page.request.get('/data/excel_diagnostics.csv');expect(response.ok()).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-product.png`,fullPage:true});
 });
