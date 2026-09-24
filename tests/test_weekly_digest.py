@@ -1,4 +1,5 @@
 from src.radar_salud.newsletter import render_free_weekly,weekly_material
+from scripts.send_weekly_digest import select_weekly_signals
 
 
 def signal(**changes):
@@ -30,3 +31,8 @@ def test_scores_from_json_are_ordered_numerically():
     candidates=[signal(title='Bajo',radar_score='75'),signal(title='Alto',radar_score=80)]
     selected=weekly_material(candidates,'2026-09-24')
     assert [row['title'] for row in selected]==['Alto','Bajo']
+
+
+def test_compatibility_wrapper_never_promotes_unknown_mode_to_live():
+    assert select_weekly_signals([signal(ingestion_mode=None)],'2026-09-24')==[]
+    assert select_weekly_signals([signal(ingestion_mode='BACKFILL')],'2026-09-24')==[]
