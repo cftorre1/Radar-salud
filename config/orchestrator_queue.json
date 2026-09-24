@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "updated_at": "2026-09-24",
+  "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
+  "tasks": [
+    {
+      "id": "workflow_isolation_2026_09_24",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Aislar completamente staging de producción antes de reanudar pilotos LIVE.",
+      "instructions": [
+        "Modificar en main únicamente .github/workflows/daily-radar.yml y .github/workflows/static.yml.",
+        "Hacer que Daily Radar programado/manual de desarrollo opere y escriba explícitamente en staging, nunca en main.",
+        "Quitar del deploy de producción cualquier trigger workflow_run proveniente de Daily Radar.",
+        "Permitir producción solo por promoción explícita a main o workflow_dispatch explícitamente autorizado.",
+        "Aplicar después configuración compatible en staging.",
+        "Ejecutar prueba controlada: piloto escribe en staging, main no cambia, producción no despliega, staging sí regenera/despliega, QA/rollback continúan funcionando.",
+        "Registrar evidencia y resultado en PMO.",
+        "Tras PASS, reanudar capturas LIVE y continuar baseline MVP."
+      ],
+      "constraints": [
+        "No tocar otros archivos de main.",
+        "No promover funcionalidades de staging.",
+        "No cambiar secretos, presupuestos, pricing ni criterios editoriales."
+      ],
+      "evidence_required": [
+        "SHA main antes/después",
+        "SHA staging antes/después",
+        "workflow run controlado",
+        "evidencia de no deploy de producción",
+        "QA/Reviewer/preview staging PASS"
+      ]
+    }
+  ]
+}
