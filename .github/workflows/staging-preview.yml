@@ -77,7 +77,7 @@ jobs:
         id: deploy
       - run: python scripts/smoke_release.py '${{ steps.deploy.outputs.page_url }}staging/' "$GITHUB_SHA"
       - name: Trigger rollback drill
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.rollback_drill }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.rollback_drill) || contains(github.event.head_commit.message, '[staging-rollback-drill]') }}
         run: exit 1
   rollback:
     needs: preview
