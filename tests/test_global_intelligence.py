@@ -25,6 +25,15 @@ def test_pwc_research_is_publicly_traceable_without_chile_trend_transfer():
     assert ai['chile_watch']['trend_chile_status'] == 'not_established'
 
 
+def test_direct_who_report_preserves_reuters_attribution():
+    workforce=next(t for t in load(SOURCE)['themes'] if t['id']=='global-workforce-pressure-2026')
+    who=next(s for s in workforce['sources'] if s['publisher']=='WHO')
+    assert who['published_at']=='2026-06-22'
+    assert who['url']=='https://www.who.int/publications/i/item/9789240122925'
+    assert '11,1 millones' not in who['evidence']
+    assert workforce['chile_watch']['trend_chile_status']=='not_established'
+
+
 def test_real_global_themes_are_premium_traceable_and_not_chile_trends(tmp_path):
     payload = load(SOURCE)
     assert payload["access_tier"] == "PREMIUM"
