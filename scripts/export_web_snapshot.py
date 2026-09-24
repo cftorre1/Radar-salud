@@ -69,7 +69,8 @@ def _card_micro(s):
     why=str(r.get("why_it_matters") or "")
     if (str(r.get("title") or "").startswith("Resolución Exenta IF/N°11156")
         and all(token in what for token in ("Circular IF/Nº528","eliminación de esos topes","mecanismo de registro"))
-        and all(token in why for token in ("bonificación sin tope anual","1 de noviembre de 2026","compra directa de bonos"))):
+        and "bonificación sin tope anual" in why and "compra directa de bonos" in why
+        and any("1 de noviembre de 2026" in str(fact) for fact in s.get("key_points",[]))):
         r["card_what"]="La Superintendencia confirmó la cobertura sin tope anual para cinco prestaciones vinculadas a TEA y añadió requisitos de acreditación y registro."
         r["card_why"]="Las isapres deben habilitar el registro y la compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026."
     return r

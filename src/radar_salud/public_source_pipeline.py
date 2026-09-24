@@ -252,12 +252,23 @@ def process_corporate_news(raw,cfg):
     score=int(ai.get("relevance_score",0))
     what=(ai.get("what_happened") or "").strip();why=(ai.get("why_it_matters") or "").strip()
     if score<78 or len(what)<45 or len(why)<35:return None
-    scopes=["Prestadores"] if raw.source_slug=="redsalud" else _scopes(f"{raw.title} {what}")
+    # Diagnostic lab tests are a clinical service, not a pharmaceutical company.
+    scope_text=re.sub(r"ex[aá]menes? de laboratorio", "exámenes diagnósticos", f"{raw.title} {what}", flags=re.I)
+    scopes=["Prestadores"] if raw.source_slug=="redsalud" else _scopes(scope_text)
+    if (date.today()-published).days>14:
+        why=re.sub(r"vigente ahora y condicionado a la inscripción en la FIBE",
+                   "condicionado a la inscripción en la FIBE al momento de publicarse (vigencia actual no verificada)",why,flags=re.I)
+        why=re.sub(r"\bvigente ahora\b",f"vigente al publicarse el {raw.event_date} (vigencia actual no verificada)",why,flags=re.I)
     raw.metadata.update({"what_happened":what,"why_it_matters":why,
         "signal_types":["Noticias"],"scopes":scopes,"watch_tags":[raw.source_slug,"mercado"],
         "scores":{"economic":score,"regulatory":30,"scope":score,"novelty":score,"actionability":65}})
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Noticias"],scopes=scopes,editorial_relevance=score)
+    if raw.url.rstrip('/').endswith('/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas'):
+        row.update(source_title_full=raw.title,
+                   title="Fonasa activa SAFED para atención gratuita en clínicas privadas tras temporal",
+                   card_what="Damnificados inscritos en FIBE pueden recibir consultas, exámenes y salud mental sin costo en cinco redes privadas; las hospitalizaciones siguen en la red pública.",
+                   card_why="La medida de agosto desplazó atención ambulatoria hacia clínicas en convenio para aliviar la red pública afectada.")
     return row
 
 
