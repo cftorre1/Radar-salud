@@ -7,7 +7,7 @@ function renderPMO(pmo){
   if(!pmo){text('readiness','Sin baseline PMO verificado. No se puede determinar Beta Readiness.');return}
   text('readiness',`${pmo.readiness.label} · ${pmo.readiness.validated}/${pmo.readiness.total} bloques críticos validados`);
   text('releaseRule',pmo.release_rule);
-  text('deployments',`Staging candidato: ${pmo.candidate_sha||'Sin SHA de CI'} · Último deploy staging validado: ${pmo.reference_staging_sha.slice(0,8)} · Producción: último SHA comprobado ${pmo.production_reference_sha.slice(0,8)} (estado actual no medido en este reporte).`);
+  text('deployments',`Staging candidato: ${pmo.candidate_sha||'Sin SHA de CI'} · Último QA staging registrado: ${pmo.reference_staging_sha.slice(0,8)} · Producción: último SHA comprobado ${pmo.production_reference_sha.slice(0,8)} (estado actual no medido en este reporte).`);
   const deployment=document.getElementById('deployments');deployment.append(document.createTextNode(' Evidencia: '));link(deployment,pmo.reference_deploy.url,'run de staging validado');
   text('qa',`QA de referencia: ${pmo.reference_deploy.checks.join(', ')} · ${pmo.reference_deploy.result}. Los cambios del candidato requieren su propia evidencia.`);
   for(const block of pmo.blocks){

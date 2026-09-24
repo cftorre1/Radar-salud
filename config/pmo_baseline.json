@@ -1,7 +1,7 @@
 {
   "version": "beta-friday-2026-09-25",
   "target_date": "2026-09-25",
-  "reference_staging_sha": "46ff03a885d20c4648214cb2e9b515f959781a35",
+  "reference_staging_sha": "c8f68529e10654e043779c57bd7a225ee8d360f5",
   "production_reference_sha": "06831243d83705777f6a916fcc86a7896d6522da",
   "statuses": [
     "Aprobado",
@@ -48,8 +48,8 @@
   "evidence_catalog": {
     "staging_qa": {
       "kind": "github_actions",
-      "sha": "46ff03a885d20c4648214cb2e9b515f959781a35",
-      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35990692761",
+      "sha": "c8f68529e10654e043779c57bd7a225ee8d360f5",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35992527418",
       "checks": [
         "tests",
         "desktop",
@@ -299,6 +299,13 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Preview #30 PASS: PMO actualizado y Pulso factual visible en staging; QA tests, desktop/mobile, Reviewer, preview y smoke. Dashboard muestra SHA de último QA registrado, distinto del SHA candidato de cada preview. Evento LIVE genuino permanece sin observación.",
+      "evidence": [
+        "staging_qa"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Preview #28 PASS: dos actos rutinarios salieron del feed (38→36) y permanecen en histórico de 678; normativa estratégica conservada. Preview #29 PASS de Pulso Isapre factual derivado de las tres familias Excel canónicas reconciliadas (37 señales), QA 1440×900/390×844, Reviewer independiente y smoke. LIVE genuino sigue sin evento observado.",
