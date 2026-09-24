@@ -551,6 +551,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Dirección autoriza excepción limitada para aislar staging de producción: solo workflows daily-radar.yml y static.yml en main; Daily Radar debe escribir en staging y producción no puede desplegarse por workflow_run. Requiere prueba controlada antes de reanudar pilotos.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "PMO referencia QA staging #48 SHA 8db66b6 (tests, desktop/mobile, Reviewer, preview PASS) y producción observada #90 SHA main ea55bc7. El despliegue #90 se originó en workflow_run del piloto, no en una decisión de release. Bloqueo de aislamiento permanece.",
       "evidence": [
         "staging_qa",
@@ -883,6 +888,28 @@
       "status": "Validado técnicamente / pendiente observación externa",
       "description": "El pipeline LIVE se valida técnicamente por replay controlado; todavía no se observó una publicación real, pertinente y fechada después del watermark. No bloquea los demás bloques MVP.",
       "next_check": "Mantener captura incremental; adjuntar primer evento real con URL, fecha, cola, cobertura y feed."
+    }
+  ],
+  "approved_infrastructure_changes": [
+    {
+      "id": "staging_production_workflow_isolation",
+      "title": "Aislamiento staging / producción en workflows",
+      "status": "Aprobado",
+      "priority": "Crítica",
+      "scope": [
+        "Modificar en main únicamente .github/workflows/daily-radar.yml y .github/workflows/static.yml",
+        "Daily Radar de desarrollo debe operar y escribir explícitamente en staging",
+        "Eliminar despliegue de producción disparado por workflow_run de Daily Radar",
+        "Producción solo puede desplegarse por promoción explícita a main o workflow_dispatch explícitamente autorizado",
+        "Replicar configuración compatible en staging después del cambio",
+        "Validar con prueba controlada que piloto staging no cambia main ni despliega producción"
+      ],
+      "constraints": [
+        "No modificar otros archivos de main",
+        "No promover funcionalidades de staging",
+        "No cambiar secretos, presupuestos, pricing ni criterios editoriales",
+        "Registrar evidencia en PMO antes de reanudar pilotos"
+      ]
     }
   ]
 }
