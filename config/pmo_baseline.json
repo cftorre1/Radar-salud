@@ -533,6 +533,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Dirección aprobó Cards V2.1 / Intelligence Inbox para MVP: home reordenado, Explorar compacto y 30 segundos convertido en bandeja de triage con leído/no leído, navegación a card y retorno al resumen. Pendiente implementación/QA; no reabre Cards V2 salvo regresión.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Reviewer independiente detectó fallo temporal de detalle FONASA confundido con publicación sin fecha. Scout ahora aborta la ronda y reporta error técnico si falla un detalle; procesamiento reintenta si falla la recuperación, sin rechazo editorial definitivo. Pendiente QA del commit corregido.",
       "evidence": []
     },
@@ -718,6 +723,42 @@
       "limitations": [
         "QA semántico y de altura abarca muestras reales Bupa, Eleam, Luksic, sanciones Prestadores e IF/N°535, no todas las señales futuras.",
         "Signal Density completo permanece Implementado hasta cerrar sus demás requisitos."
+      ]
+    },
+    {
+      "id": "cards_v21_intelligence_inbox",
+      "title": "Cards V2.1 / Intelligence Inbox",
+      "status": "Aprobado",
+      "horizon": "MVP viernes",
+      "priority": "Alta",
+      "principle": "Descarto → Selecciono → Entiendo → Profundizo",
+      "scope": [
+        "reordenar home como Header → Miramos mucho para mostrarte poco → Explorar compacto → Qué debes saber en 30 segundos → feed",
+        "convertir Qué debes saber en 30 segundos en una bandeja compacta de señales no leídas del período",
+        "permitir marcar Leído directamente desde la bandeja y retirar inmediatamente la señal de esa bandeja sin eliminarla del feed",
+        "permitir abrir una señal desde 30 segundos y navegar a su card correspondiente",
+        "incorporar acción visible para volver desde la card a la sección 30 segundos",
+        "sincronizar leído/no leído entre bandeja y card con persistencia",
+        "mantener en la bandeja todas las clases de señal relevantes: normativa, legal, fiscalización, datos, noticias y pulsos",
+        "hacer Explorar mucho más compacto para minimizar scroll antes del triage",
+        "preservar progressive disclosure: 30 segundos → card → Ver resumen/Ver contexto → Fuente original"
+      ],
+      "validation_required": [
+        "QA desktop",
+        "QA mobile",
+        "Reviewer",
+        "evidencia en staging",
+        "marcar leído desde 30 segundos elimina solo de la bandeja y persiste",
+        "navegación 30 segundos → card → volver a 30 segundos",
+        "sincronización leído/no leído entre bandeja y card",
+        "Explorar reduce de forma material su altura en mobile",
+        "barrido de múltiples señales con scroll mínimo"
+      ],
+      "evidence": [],
+      "implementation_status": "Pendiente",
+      "limitations": [
+        "No reabrir Cards V2 ya validadas salvo regresión.",
+        "La bandeja 30 segundos resume para triage; no sustituye la card ni la segunda capa."
       ]
     }
   ],
