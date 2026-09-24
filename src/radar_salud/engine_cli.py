@@ -9,9 +9,9 @@ from .distribution import UserPlan,choose_distribution
 from .history import load_history,merge_history,save_history
 from .regulatory import SuperintendenciaNormativaScout
 from .regulatory_pipeline import process_superintendencia_normativa
-from .source_scouts import SusesoNormativeScout,DfHealthScout,FonasaNewsScout,IspAnamedAlertScout,CorporateNewsroomScout
+from .source_scouts import SusesoNormativeScout,DfHealthScout,FonasaNewsScout,IspAnamedAlertScout,CorporateNewsroomScout,DeisResourceScout
 from .diario_oficial import DiarioOficialHealthScout
-from .public_source_pipeline import process_suseso,process_minsal,process_df,process_diario_oficial,process_fonasa,process_isp_anamed,process_corporate_news
+from .public_source_pipeline import process_suseso,process_minsal,process_df,process_diario_oficial,process_fonasa,process_isp_anamed,process_corporate_news,process_deis
 from .analysis_cache import seed_from_history
 from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
@@ -52,6 +52,7 @@ def main():
       ("minsal","minsal",MinsalNewsScout().discover,process_minsal),
       ("fonasa","fonasa",FonasaNewsScout().discover,process_fonasa),
       ("isp_anamed","isp_anamed",IspAnamedAlertScout().discover,process_isp_anamed),
+      ("deis","deis",DeisResourceScout().discover,process_deis),
       ("redsalud","redsalud",CorporateNewsroomScout("redsalud").discover,process_corporate_news),
       ("bupa_chile","bupa_chile",CorporateNewsroomScout("bupa_chile").discover,process_corporate_news),
       ("suseso","suseso",SusesoNormativeScout().discover,process_suseso),

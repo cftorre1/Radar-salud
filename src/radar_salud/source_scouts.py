@@ -163,3 +163,35 @@ class CorporateNewsroomScout:
         if not out:raise RuntimeError(f"{self.SOURCE_NAME} newsroom structure unrecognized")
         return out[:15]
     def discover(self):return self.discover_from_html(fetch_html(self.PAGE))
+
+
+class DeisResourceScout:
+    """Official DEIS data releases; a healthy hub may legitimately yield no signal."""
+    SOURCE_SLUG="deis";SOURCE_NAME="DEIS";SOURCE_TYPE="official"
+    PAGE="https://deis.minsal.cl/"
+    _MATERIAL=re.compile(
+        r"estad[ií]stic|datos abiertos|publicaci[oó]n|infograf[ií]a|tablero|mortalidad|"
+        r"natalidad|egresos hospitalarios|inmunizaci[oó]n|vacunaci[oó]n",re.I)
+    _RELEASE=re.compile(r"publicaci[oó]n|publicad[oa]|actualizaci[oó]n|actualizad[oa]|lanzamiento|nuevo conjunto",re.I)
+    _HUBS={"/estadisticas","/datos-abiertos","/publicaciones-e-infografias","/tableros-deis"}
+    def discover_from_html(self,html):
+        plain=" ".join(re.sub(r"<[^>]+>"," ",html).split())
+        if (not re.search(r"Departamento de Estad[ií]sticas",plain,re.I)
+                or not any(marker in plain for marker in ("Datos Abiertos","Tableros DEIS","Indicadores Sanitarios"))):
+            raise RuntimeError("DEIS official hub structure unrecognized")
+        from .public_source_pipeline import _date
+        parser=_A();parser.feed(html);out=[];seen=set()
+        for href,title in parser.links:
+            if (not href or len(title)<18 or not self._MATERIAL.search(title)
+                    or not self._RELEASE.search(title)):continue
+            url=urljoin(self.PAGE,href);parsed=urlparse(url);path=parsed.path.rstrip("/")
+            if parsed.scheme!="https" or parsed.netloc!="deis.minsal.cl" or path in self._HUBS or not path:continue
+            published=_date(title)
+            try:
+                if not published or date.fromisoformat(published)>date.today():continue
+            except ValueError:continue
+            if url in seen:continue
+            seen.add(url);out.append(RawItem(self.SOURCE_SLUG,title[:300],url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                event_date=published,metadata={"discovered_from":self.PAGE,"resource_kind":"dated_data_release"}))
+        return out[:20]
+    def discover(self):return self.discover_from_html(fetch_html(self.PAGE))

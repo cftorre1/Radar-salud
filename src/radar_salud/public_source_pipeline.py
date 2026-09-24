@@ -225,3 +225,33 @@ def process_corporate_news(raw,cfg):
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Noticias"],scopes=scopes,editorial_relevance=score)
     return row
+
+
+def process_deis(raw,cfg):
+    """Publish only a dated, material release from the verified DEIS domain."""
+    from urllib.parse import urlparse
+    from datetime import date
+    parsed=urlparse(raw.url)
+    if (raw.source_slug!="deis" or raw.source_name!="DEIS" or raw.source_type!="official"
+            or cfg.get("slug")!="deis" or cfg.get("source_type")!="official"
+            or parsed.scheme!="https" or parsed.netloc!="deis.minsal.cl"
+            or raw.metadata.get("resource_kind")!="dated_data_release" or not raw.event_date):
+        return None
+    try:
+        if date.fromisoformat(raw.event_date)>date.today():return None
+    except ValueError:return None
+    raw=enrich(raw)
+    if raw.metadata.get("fetch_error"):
+        raise DeferredProcessing("DEIS detail temporarily unavailable")
+    body=raw.metadata.get("page_text") or raw.raw_text
+    if len(body)<350:return None
+    ai=analyze_official_news(title=raw.title,text=body[:9000],source_name="DEIS")
+    if not ai:raise DeferredProcessing("DEIS release pending assessment")
+    score=int(ai.get("relevance_score",0));what=(ai.get("what_happened") or "").strip();why=(ai.get("why_it_matters") or "").strip()
+    if score<70 or len(what)<45 or len(why)<35:return None
+    raw.metadata.update({"what_happened":what,"why_it_matters":why,
+        "signal_types":["Datos"],"scopes":["Salud pública"],"watch_tags":["deis","datos públicos"],
+        "scores":{"economic":40,"regulatory":35,"scope":score,"novelty":score,"actionability":65}})
+    row=build_signal(raw,cfg).to_dict()
+    row.update(signal_types=["Datos"],scopes=["Salud pública"],editorial_relevance=score)
+    return row
