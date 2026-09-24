@@ -3,11 +3,6 @@ on:
   push:
     branches: [staging]
   workflow_dispatch:
-    inputs:
-      rollback_drill:
-        description: Verify staging rollback after a successful preview smoke check
-        type: boolean
-        default: false
 permissions:
   contents: read
 concurrency:
@@ -76,9 +71,6 @@ jobs:
       - uses: actions/deploy-pages@v5
         id: deploy
       - run: python scripts/smoke_release.py '${{ steps.deploy.outputs.page_url }}staging/' "$GITHUB_SHA"
-      - name: Trigger rollback drill
-        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.rollback_drill) || contains(github.event.head_commit.message, '[staging-rollback-drill]') }}
-        run: exit 1
   rollback:
     needs: preview
     if: ${{ failure() && needs.preview.result == 'failure' && needs.preview.outputs.backup_ready == 'true' }}
