@@ -19,11 +19,17 @@ def _count(value):
     return value
 
 
+def _signed_count(value):
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise ValueError("Non-integer mobility net")
+    return value
+
+
 def _family(families, name):
     item = families[name]
     schema = "national_comparison_totals_v2" if name == "movilidad" else "monthly_isapre_totals_v2"
     source = urlparse(item["source_url"])
-    if (item["status"] != "validated" or item["schema"] != schema
+    if (item["family"] != name or item["status"] != "validated" or item["schema"] != schema
             or not re.fullmatch(r"[0-9a-f]{64}", item["sha256"])
             or source.scheme != "https" or source.netloc != "www.superdesalud.gob.cl"
             or not source.path.endswith(".xlsx")):
@@ -33,7 +39,8 @@ def _family(families, name):
         if len(series) != 1 or series[0]["period_type"] != "comparison_between_july_cuts" or series[0]["period_start"] != "2025-07" or series[0]["period_end"] != PERIODS[-1]:
             raise ValueError("Incomparable mobility interval")
         measures = series[0]["metrics"]
-        if _count(measures["entradas_intervalo"]) - _count(measures["salidas_intervalo"]) != measures["diferencia_intervalo"]:
+        net = _count(measures["entradas_intervalo"]) - _count(measures["salidas_intervalo"])
+        if net != _signed_count(measures["diferencia_intervalo"]):
             raise ValueError("Mobility totals do not reconcile")
     else:
         if len(series) != len(PERIODS) or [row["period"] for row in series] != PERIODS:

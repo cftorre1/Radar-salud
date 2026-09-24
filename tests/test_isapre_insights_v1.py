@@ -32,7 +32,9 @@ def test_adversarial_period_schema_and_denominators_fail_closed():
         lambda x: x["families"]["cartera"]["series"][2]["metrics"].update(beneficiarios=0),
         lambda x: x["families"]["suscripciones"]["series"][5]["metrics"].update(contratos_suscritos=0),
         lambda x: x["families"]["movilidad"]["series"][0].update(period_start="2026-06"),
+        lambda x: x["families"]["movilidad"]["series"][0]["metrics"].update(diferencia_intervalo=-17700.0),
         lambda x: x["families"]["cartera"].update(schema="unknown"),
+        lambda x: x["families"]["cartera"].update(family="movilidad"),
         lambda x: x["families"]["cartera"].update(sha256="bad"),
     )
     for change in changes:
