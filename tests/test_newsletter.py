@@ -11,6 +11,7 @@ def signal(title="Cambio", **values):
         "ingestion_mode": "LIVE",
         "radar_score": 85,
         "confidence_score": 90,
+        "validation_status": "validated",
         "source_url": "https://example.org/source",
         "source_name": "Fuente oficial",
         "what_happened": "Se publicó un cambio material y verificable.",

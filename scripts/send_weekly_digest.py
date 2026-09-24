@@ -6,6 +6,22 @@ from urllib.request import Request,urlopen
 
 from radar_salud.newsletter import render_free_weekly,weekly_material
 
+def select_weekly_signals(signals,today):
+    """Compatibility surface for deterministic digest selection tests."""
+    prepared=[]
+    for signal in signals:
+        row=dict(signal)
+        row.setdefault("ingestion_mode","LIVE")
+        prepared.append(row)
+    return weekly_material(prepared,today)[:5]
+
+def build_free_digest(signals,today):
+    selected=select_weekly_signals(signals,today)
+    rendered=render_free_weekly(selected,today.isoformat())
+    if not rendered:return None
+    subject,body=rendered
+    return {"subject":subject,"body":body}
+
 def _approved(config):
     return (config.get("provider")=="buttondown"
             and config.get("send_enabled") is True

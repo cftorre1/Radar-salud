@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime, timedelta
 from typing import Iterable, Mapping, Sequence
+from urllib.parse import urlparse
 
 
 def _date(value: object) -> date | None:
@@ -32,7 +33,12 @@ def weekly_material(
             continue
         if int(signal.get("confidence_score") or 0) < 75:
             continue
-        if not signal.get("source_url"):
+        source = urlparse(str(signal.get("source_url") or ""))
+        if source.scheme != "https" or not source.netloc:
+            continue
+        if signal.get("validation_status") not in ("automatic", "cross_checked", "validated"):
+            continue
+        if not signal.get("title") or not (signal.get("card_what") or signal.get("what_happened")):
             continue
         eligible.append(signal)
     return sorted(
@@ -61,7 +67,7 @@ def render_free_weekly(signals: Sequence[Mapping[str, object]], as_of: str) -> t
     for index, signal in enumerate(selected, 1):
         lines += [
             f"**{index}. {signal.get('title', '')}**",
-            str(signal.get("what_happened") or "").strip(),
+            str(signal.get("card_what") or signal.get("what_happened") or "").strip(),
             f"[Fuente original]({signal['source_url']})",
             "",
         ]
