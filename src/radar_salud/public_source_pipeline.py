@@ -267,7 +267,8 @@ def process_deis(raw,cfg):
     if (raw.source_slug!="deis" or raw.source_name!="DEIS" or raw.source_type!="official"
             or cfg.get("slug")!="deis" or cfg.get("source_type")!="official"
             or parsed.scheme!="https" or parsed.netloc!="deis.minsal.cl"
-            or raw.metadata.get("resource_kind")!="dated_data_release" or not raw.event_date):
+            or raw.metadata.get("resource_kind")!="dated_data_release"
+            or raw.metadata.get("publication_date_source")!="article:published_time" or not raw.event_date):
         return None
     try:
         if date.fromisoformat(raw.event_date)>date.today():return None

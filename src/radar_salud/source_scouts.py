@@ -204,19 +204,35 @@ class DeisResourceScout:
         if (not re.search(r"Departamento de Estad[ií]sticas",plain,re.I)
                 or not any(marker in plain for marker in ("Datos Abiertos","Tableros DEIS","Indicadores Sanitarios"))):
             raise RuntimeError("DEIS official hub structure unrecognized")
-        from .public_source_pipeline import _date
         parser=_A();parser.feed(html);out=[];seen=set()
         for href,title in parser.links:
             if (not href or len(title)<18 or not self._MATERIAL.search(title)
                     or not self._RELEASE.search(title)):continue
             url=urljoin(self.PAGE,href);parsed=urlparse(url);path=parsed.path.rstrip("/")
             if parsed.scheme!="https" or parsed.netloc!="deis.minsal.cl" or path in self._HUBS or not path:continue
-            published=_date(title)
+            if url in seen:continue
+            seen.add(url);out.append(RawItem(self.SOURCE_SLUG,title[:300],url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                metadata={"discovered_from":self.PAGE,"resource_kind":"candidate_data_release"}))
+        return out[:20]
+    def discover(self):
+        from .public_source_pipeline import _date
+        candidates=self.discover_from_html(fetch_html(self.PAGE));out=[]
+        for raw in candidates[:10]:
+            detail=_PublishedMeta();detail.feed(fetch_html(raw.url))
+            published=_date(detail.published)
             try:
                 if not published or date.fromisoformat(published)>date.today():continue
             except ValueError:continue
-            if url in seen:continue
-            seen.add(url);out.append(RawItem(self.SOURCE_SLUG,title[:300],url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                event_date=published,metadata={"discovered_from":self.PAGE,"resource_kind":"dated_data_release"}))
-        return out[:20]
-    def discover(self):return self.discover_from_html(fetch_html(self.PAGE))
+            raw.event_date=published
+            raw.metadata.update(resource_kind="dated_data_release",publication_date_source="article:published_time")
+            out.append(raw)
+        return out
+
+
+class _PublishedMeta(HTMLParser):
+    """Only the article publication property, never a dataset coverage date."""
+    def __init__(self):super().__init__();self.published=""
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs)
+        if tag.lower()=="meta" and attrs.get("property","").lower()=="article:published_time":
+            self.published=attrs.get("content","")
