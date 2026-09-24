@@ -304,6 +304,62 @@
         "queue/coverage/feed trace",
         "QA/Reviewer"
       ]
+    },
+    {
+      "id": "orchestrator_continuous_consumer",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Eliminar la necesidad de retransmisión manual mientras Work esté activo.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Al inicio y cierre de cada ciclo releer config/orchestrator_queue.json y config/pmo_baseline.json desde staging.",
+        "Continuar con la siguiente tarea status=approved dentro del scope MVP mientras exista progreso y no se cumpla una stop condition.",
+        "Actualizar estado/evidencia de la tarea consumida antes de pasar a la siguiente.",
+        "No declararse idle mientras existan tareas approved ejecutables."
+      ],
+      "constraints": [
+        "No ejecutar tareas no aprobadas.",
+        "No tocar producción salvo autorización explícita.",
+        "Respetar bloqueos humanos y stop conditions."
+      ],
+      "evidence_required": [
+        "test de consumo secuencial de dos tareas approved",
+        "registro PMO de transición de estados",
+        "sin intervención humana entre tareas"
+      ]
+    },
+    {
+      "id": "orchestrator_event_trigger",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Activar o reanudar el ejecutor cuando aparezca una nueva tarea approved después de quedar idle.",
+      "depends_on": [
+        "orchestrator_continuous_consumer"
+      ],
+      "instructions": [
+        "Investigar y usar la vía autorizada más simple para detectar cambios en config/orchestrator_queue.json.",
+        "Si Work puede ser activado por evento, configurar ese trigger.",
+        "Si Work no puede ser despertado directamente, implementar un runner/dispatcher equivalente autorizado (por ejemplo GitHub Actions) que procese tareas aprobadas o deje una señal accionable automática.",
+        "Documentar claramente cualquier limitación del producto y no simular wake-up si no existe."
+      ],
+      "constraints": [
+        "Sin bypass de permisos.",
+        "Sin secretos en repo.",
+        "Sin auto-promoción a producción.",
+        "No ejecutar cambios sensibles sin aprobación."
+      ],
+      "evidence_required": [
+        "cambio approved detectado sin retransmisión manual",
+        "ejecutor/runner activado o limitación documentada",
+        "QA del flujo",
+        "registro PMO"
+      ]
     }
   ],
   "execution_policy": {
