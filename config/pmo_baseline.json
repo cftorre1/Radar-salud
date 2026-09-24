@@ -359,6 +359,29 @@
       ],
       "result": "success",
       "scope": "Unidad UI del paquete MVP: navegación Volver arriba; preferencias persistentes fuera de Explorar; fecha simple; cobertura global fail-closed; CTA semanal independiente con copy exacto. Reviewer corrigió omisión de «en tu correo» antes de publicar. Evidencia parcial: no valida todavía Pulso Isapre, multiserie ni enriquecimiento editorial."
+    },
+    "mvp_product_refinements_data_qa": {
+      "kind": "github_actions",
+      "sha": "e05ad331b7e7a639e026f4e9ad0cb04378211b5d",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36063340101",
+      "checks": [
+        "144 tests Python",
+        "22 tests web",
+        "16 browser desktop/mobile",
+        "reviewer independiente",
+        "reviewer CI",
+        "preview",
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer"
+      ],
+      "result": "success",
+      "scope": "Unidad de datos del paquete MVP: Pulso Isapre con período de datos, publicación y validación separados; tres landing pages oficiales canónicas, únicas y fechadas; cinco insights multiserie reconciliados con fórmula, período, XLSX/hash y guards fail-closed. Reviewer rechazó URLs no canónicas/duplicadas, fechas futuras y puntuación corrupta; todo fue corregido y revalidado antes de publicar.",
+      "validated_requirements": [
+        "Pulso Isapre factual reconciliado y fail-closed",
+        "Insights analíticos adicionales con validación editorial"
+      ]
     }
   },
   "blocks": [
@@ -435,7 +458,8 @@
       "critical": true,
       "evidence": [
         "staging_qa",
-        "excel_insights_v1_qa"
+        "excel_insights_v1_qa",
+        "mvp_product_refinements_data_qa"
       ],
       "dependencies": [],
       "missing": [],
@@ -448,12 +472,12 @@
         {
           "label": "Pulso Isapre factual reconciliado y fail-closed",
           "status": "Validado",
-          "evidence": "isapre_pulse_qa"
+          "evidence": "mvp_product_refinements_data_qa"
         },
         {
           "label": "Insights analíticos adicionales con validación editorial",
           "status": "Validado",
-          "evidence": "excel_insights_v1_qa"
+          "evidence": "mvp_product_refinements_data_qa"
         }
       ]
     },
@@ -723,6 +747,13 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Paquete de refinamientos MVP completa su unidad de datos en e05ad33: Pulso Isapre usa data_period 2026-07, publicación 2026-09-07 y validación 2026-09-24; muestra tres fuentes oficiales canónicas y cinco insights multiserie reconciliados. Reviewer rechazó URLs cruzadas/duplicadas, fechas futuras y puntuación incorrecta; se corrigieron antes del QA #139, que pasó tests, desktop/mobile, Reviewer CI y preview. Tarea sigue approved solo por profundidad Global y enriquecimiento editorial pendientes.",
+      "evidence": [
+        "mvp_product_refinements_data_qa"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Paquete de refinamientos MVP avanza con unidad UI en 354febf: Volver arriba semántico, personalización persistente separada de Explorar, fecha simplificada, cobertura global sin ventana inventada y CTA semanal independiente. Reviewer marcó copy incompleto y se corrigió a «Recibe lo importante de la semana en tu correo». QA #133 PASS en tests, desktop/mobile, Reviewer CI y preview. Tarea sigue approved por unidades de datos/editorial pendientes.",
