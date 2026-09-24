@@ -37,3 +37,18 @@ def test_scout_dates_only_from_detail_metadata(monkeypatch):
     assert FonasaNewsScout().discover()[0].event_date=='2026-09-24'
     monkeypatch.setattr(source_scouts,'fetch_html',lambda url: fetch(url) if url.endswith('/noticias/') else '<title>Sin fecha verificable</title>')
     assert FonasaNewsScout().discover()[0].event_date is None
+
+
+def test_detail_fetch_failure_is_not_technical_success_or_editorial_rejection(monkeypatch):
+    from radar_salud import source_scouts
+    monkeypatch.setattr(source_scouts,'fetch_html',lambda url: '<a href="/noticias/cobertura/">Fonasa informa nuevas coberturas verificables</a>' if url.endswith('/noticias/') else (_ for _ in ()).throw(TimeoutError()))
+    try:FonasaNewsScout().discover()
+    except RuntimeError:pass
+    else:raise AssertionError('partial fetch cannot be healthy discovery')
+    raw=FonasaNewsScout().discover_from_html('<a href="/noticias/cobertura/">Fonasa informa nuevas coberturas verificables</a>')[0]
+    raw.event_date='2026-09-24'
+    monkeypatch.setattr(pipeline,'fetch_html',lambda _: (_ for _ in ()).throw(TimeoutError()))
+    cfg=source_index(load_sources(Path('config/sources.json')))['fonasa']
+    try:pipeline.process_fonasa(raw,cfg)
+    except DeferredProcessing:pass
+    else:raise AssertionError('transient fetch must retry')

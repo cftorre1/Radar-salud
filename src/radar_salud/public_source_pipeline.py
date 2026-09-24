@@ -38,13 +38,16 @@ def _field(text,label):
     return m.group(1).strip(" :-") if m else None
 
 def enrich(raw):
+    raw.metadata.pop("fetch_error",None)
     try:
         p=_Meta();p.feed(fetch_html(raw.url));body=" ".join(p.text)
         if p.ogtitle and len(raw.title)<18:raw.title=p.ogtitle
         raw.raw_text=p.description or body[:1400]
         raw.event_date=raw.event_date or _date(p.published)
         raw.metadata["page_text"]=body[:18000]
-    except Exception as e:print("enrich:",e)
+    except Exception as e:
+        raw.metadata["fetch_error"]=type(e).__name__
+        print("enrich:",e)
     return raw
 
 def _noise(title):
@@ -120,6 +123,7 @@ def _health_relevance(title,text):
 
 def process_df(raw,cfg):
     raw=enrich(raw)
+    if raw.metadata.get("fetch_error"):raise DeferredProcessing("FONASA detalle temporalmente inaccesible")
     if not raw.event_date:return None
     body=raw.metadata.get("page_text") or raw.raw_text
     if not _health_relevance(raw.title,body):return None
@@ -154,6 +158,7 @@ def process_diario_oficial(raw,cfg):
 def process_fonasa(raw,cfg):
     """Only dated, substantive official evidence may reach the feed."""
     raw=enrich(raw)
+    if raw.metadata.get("fetch_error"):raise DeferredProcessing("FONASA detalle temporalmente inaccesible")
     if not raw.event_date:return None
     body=raw.metadata.get("page_text") or raw.raw_text
     if len(body)<180:return None

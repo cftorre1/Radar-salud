@@ -81,3 +81,5 @@ El indicador `0/10` conserva su significado estricto: bloques críticos completa
 ## Fuentes Chile · primer conector
 
 La ruta oficial de noticias FONASA `https://www.fonasa.gob.cl/noticias/` está identificada. El scout consulta detalles y toma la fecha únicamente de metadata publicada; un elemento sin fecha queda BACKFILL y el procesador lo descarta. El análisis ausente queda diferido, sin resumen inventado. Su sitio respondió 403 desde este entorno, por lo que el conector está **Implementado**, pendiente prueba de discovery real en staging y revisión editorial. ISP/ANAMED presentó un error de certificado y DEIS expiró en esta inspección; ninguno se presenta como fuente validada.
+
+Reviewer del conector FONASA detectó que un timeout de detalle no debía parecer una publicación sin fecha. La ronda ahora registra fallo técnico y no mueve watermark; un error posterior de enriquecimiento deja el ítem pendiente de reintento. Continúa pendiente comprobar acceso efectivo desde Actions.

@@ -533,6 +533,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Reviewer independiente detectó fallo temporal de detalle FONASA confundido con publicación sin fecha. Scout ahora aborta la ronda y reporta error técnico si falla un detalle; procesamiento reintenta si falla la recuperación, sin rechazo editorial definitivo. Pendiente QA del commit corregido.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Conector FONASA oficial directo implementado con URL canónica, fecha desde metadata del detalle y rechazo seguro si no hay fecha o evaluación editorial. Pendiente validación remota: el sitio respondió 403 en este entorno; ISP/ANAMED tuvo error de certificado y DEIS expiró. No se marcaron fuentes como validadas.",
       "evidence": []
     },

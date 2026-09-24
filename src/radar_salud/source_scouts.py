@@ -73,7 +73,7 @@ class FonasaNewsScout:
             try:
                 meta=_Meta();meta.feed(fetch_html(item.url))
                 item.event_date=_date(meta.published)
-            except Exception:
-                # Keep the item but classify it as BACKFILL until verified.
-                item.event_date=None
+            except Exception as exc:
+                # A failed detail request is technical failure, not an undated publication.
+                raise RuntimeError(f"FONASA detail unavailable: {type(exc).__name__}") from exc
         return items[:15]
