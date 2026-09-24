@@ -53,7 +53,7 @@ def test_sanctions_become_two_rolling_pulses_without_losing_individual_sources()
     assert sorted(x["sanction_count"] for x in pulses if x.get("sanction_count"))==[2,3]
     assert not [x for x in pulses if x["source_url"]=="https://x/old"]
     assert {x["source_url"] for x in pulses if x.get("sanction_count")} <= {r["source_url"] for r in rows}
-    assert all(len(x["source_alternatives"])==x["sanction_count"]-1 for x in pulses if x.get("sanction_count"))
+    assert all(len(x["source_alternatives"])==x["sanction_count"] for x in pulses if x.get("sanction_count"))
     assert all(x["ingestion_mode"]=="LIVE" for x in pulses if x.get("sanction_count"))
     assert "1 incorporadas desde el histórico" in next(x["what_happened"] for x in pulses if x.get("sanction_count")==3)
 
@@ -61,7 +61,21 @@ def test_offline_recuration_keeps_local_context_without_fetching(monkeypatch):
     row=sig("Circular IF/N°535",event="2026-09-23",cat="Regulación & Legal")
     row.update(signal_types=["Normativa"],related_reference_ids=["Circular IF/N°529"])
     monkeypatch.setattr(m,"resolve_reference",lambda *args: (_ for _ in ()).throw(AssertionError("network")))
-    assert m.curate([row],resolve_external=False)[0]["related_context"]==[]
+    refs=m.curate([row],resolve_external=False)[0]["related_context"]
+    assert refs[0]["title"]=="Circular IF/N°529" and refs[0]["url"] is None and refs[0]["verified"] is False
+
+def test_real_prestador_pulse_keeps_material_and_all_three_resolutions():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    pulse=next(s for s in m.curate(history,resolve_external=False) if s.get("sanction_count") and "Prestadores" in s["title"])
+    assert pulse["sanction_count"]==len(pulse["source_alternatives"])==3
+    assert "Clínica Los Carrera · 70 UF · cheque en garantía" in pulse["card_what"]
+    assert all("UF" in x["material"] and x["title"] and x["url"] for x in pulse["source_alternatives"])
+
+def test_real_circular_535_keeps_unverified_77_relationship():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    row=next(s for s in m.curate(history,resolve_external=False) if s.get("title")=="Circular IF/N°535")
+    ref=next(x for x in row["related_context"] if "IF/N°77" in x["title"])
+    assert ref["verified"] is False and ref["url"] is None and "Norma modificada" in ref["relationship"]
 
 def test_df_headline_keeps_teaser_out_of_title():
     row=sig("Bupa acelera inversiones en Santiago con tres proyectos por US$ 15 millones El plan incluye una clínica y un centro de salud mental.")

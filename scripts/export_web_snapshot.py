@@ -56,8 +56,16 @@ def _card_micro(s):
     what=str(r.get("what_happened") or "")
     if (str(r.get("title") or "").startswith("Bupa acelera inversiones")
         and all(token in what for token in ("US$15 millones","La Dehesa","Huinganal","Mindplace","San Damián"))):
-        r["card_what"]="Bupa anunció US$15 millones en tres proyectos: centro médico en La Dehesa, compra de Clínicas Huinganal y centro de salud mental Mindplace en San Damián."
-        r["card_why"]="Amplía su red ambulatoria y de salud mental en el sector oriente y suma clínicas mediante una adquisición."
+        r["card_what"]="Bupa anunció US$15 millones: centro médico en La Dehesa, compra de Clínicas Huinganal y centro Mindplace en San Damián."
+        r["card_why"]="Amplía red ambulatoria y de salud mental en el sector oriente mediante inversión y compra de clínicas."
+    if (str(r.get("title") or "").startswith("Ministerio de Salud publica listado de Eleam")
+        and all(token in what for token in ("Ministerio de Salud","Eleam","autorización sanitaria"))):
+        r["card_what"]="El Minsal publicó un listado de Eleam con autorización sanitaria."
+        r["card_why"]="Permite identificar establecimientos autorizados para usuarios, familias y supervisión de cuidados de larga estadía."
+    if (str(r.get("title") or "").startswith("Max Luksic propone alianza entre municipalidades")
+        and all(token in what for token in ("alianza entre municipalidades","$300 millones","Huechuraba"))):
+        r["card_what"]="El alcalde de Huechuraba propuso una alianza municipal para mejorar la atención primaria; afirmó que ahora ejecuta $300 millones antes devueltos al Minsal."
+        r["card_why"]="Plantea mejorar la ejecución de recursos de APS sin aumentar presupuesto; aún no es una medida sectorial adoptada."
     return r
 
 def _doc_key(s):
@@ -105,7 +113,7 @@ def _related_context(signals,resolve_external=True):
                 item={"title":target.get("title"),"summary":target.get("what_happened"),"relationship":relationship,
                       "url":target.get("source_url"),"event_date":target.get("event_date"),"verified":True}
             else:item=resolve_reference(ref,relationship) if resolve_external else None
-            if not item:continue
+            if not item:item={"title":ref,"summary":None,"relationship":relationship,"url":None,"event_date":None,"verified":False}
             identity=item.get("url") or item.get("title")
             if not identity or identity in seen or item.get("url")==r.get("source_url"):continue
             seen.add(identity);rels.append(item)
@@ -164,12 +172,32 @@ def _sanction_pulses(signals, today=None):
         items.sort(key=lambda x:_d(x.get("event_date")) or date.min,reverse=True)
         live=[s for s in items if s.get("ingestion_mode")=="LIVE"]
         latest=live[0] if live else items[0]
+        def material(s):
+            parts=[str(s.get("regulated_entity") or "").strip()]
+            amount=s.get("sanction_amount")
+            unit=str(s.get("sanction_unit") or "").strip()
+            if isinstance(amount,(int,float)) and not isinstance(amount,bool) and amount>=0 and unit:
+                parts.append(f"{amount:g} {unit}")
+            topic=str(s.get("fiscalization_topic") or "").strip()
+            if topic:parts.append(topic)
+            return " · ".join(x for x in parts if x)
+        resolutions=[{"title":s.get("title"),"source_name":s.get("source_name"),
+            "url":s.get("source_url"),"event_date":s.get("event_date"),"material":material(s)}
+            for s in items if s.get("source_url")]
+        lead=material(items[0])
+        brief_topic=str(items[0].get("fiscalization_topic") or "")
+        if "cheque en garantía" in brief_topic.lower():brief_topic="cheque en garantía"
+        brief_parts=[str(items[0].get("regulated_entity") or "").strip()]
+        amount=items[0].get("sanction_amount");unit=str(items[0].get("sanction_unit") or "").strip()
+        if isinstance(amount,(int,float)) and not isinstance(amount,bool) and amount>=0 and unit:brief_parts.append(f"{amount:g} {unit}")
+        if brief_topic:brief_parts.append(brief_topic)
+        brief_material=" · ".join(x for x in brief_parts if x)
         pulse=dict(latest,title=f"Pulso de sanciones a {sector} · últimos 30 días",
-            what_happened=f"{len(items)} {'sanción registrada' if len(items)==1 else 'sanciones registradas'} en los últimos 30 días. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico.",
+            what_happened=f"{len(items)} {'sanción registrada' if len(items)==1 else 'sanciones registradas'} en los últimos 30 días. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico."+(f" Entre ellas: {lead}." if lead else ""),
             why_it_matters="Permite observar focos recientes de fiscalización y revisar cada resolución en su fuente original.",
-            source_alternatives=[{"title":s.get("title"),"source_name":s.get("source_name"),
-                "url":s.get("source_url"),"event_date":s.get("event_date")} for s in items if s.get("source_url")!=latest.get("source_url")],
-            sanction_count=len(items),source_documents=[],key_points=[],risk_notes=[],key_facts=[],
+            source_alternatives=resolutions,
+            card_what=f"{len(items)} sanciones a {sector} en 30 días."+(f" Entre ellas: {brief_material}." if brief_material else ""),
+            sanction_count=len(items),source_documents=[],key_points=[f"{x['material']} · {x['title']}" for x in resolutions if x['material']],risk_notes=[],key_facts=[],
             related_reference_ids=[],related_reference_contexts=[],affected_processes=[],
             regulated_entity=None,sanction_amount=None,sanction_unit=None,fiscalization_topic=None,
             radar_score=max(s.get("radar_score") or 0 for s in items),
