@@ -1426,6 +1426,39 @@
         "La selección semanal debe usar diversidad editorial y un universo amplio de candidatos para evitar repetición; si no hay cruce sólido, se permite deep dive de una sola señal excepcional.",
         "El panel de control incorporará gasto separado por feature (Global Intelligence / Insight semanal) y por modelo (Luna/Terra/Astra), con tokens y costo real cuando sea medible."
       ]
+    },
+    {
+      "id": "anonymous_source_suggestion_ux_2026_09_24",
+      "status": "Aprobado_para_proxima_iteracion",
+      "priority": "Alta",
+      "horizon": "MVP antes de release",
+      "items": [
+        {
+          "issue": "source_suggestion_visibility",
+          "decision": "La invitación a sugerir fuentes debe ser claramente visible y no quedar escondida en contenido secundario. Debe integrarse como CTA colaborativo breve y fácil de descubrir."
+        },
+        {
+          "issue": "source_suggestion_copy",
+          "decision": "Acortar el mensaje. Base aprobada: «¿Nos falta alguna fuente? Sugiere una y ayúdanos a mejorar Alicanto.» CTA: «Sugerir una fuente»."
+        },
+        {
+          "issue": "anonymous_submission",
+          "decision": "La sugerencia será anónima: no pedir correo, nombre, login ni identificadores personales. Recoger solo fuente/URL y comentario opcional."
+        },
+        {
+          "issue": "internal_management",
+          "decision": "Cada sugerencia debe quedar registrada en almacenamiento propio y generar una notificación interna automática por correo para su gestión. La recepción no implica aprobación editorial."
+        }
+      ],
+      "validation_required": [
+        "QA desktop/mobile",
+        "Reviewer",
+        "staging evidence",
+        "persistencia anónima",
+        "notificación interna o bloqueo externo explícito",
+        "sin PII obligatoria"
+      ]
     }
-  ]
+  ],
+  "updated_at": "2026-09-24"
 }
