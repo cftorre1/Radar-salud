@@ -3,13 +3,15 @@ import json
 from datetime import datetime, timezone
 from .paths import project_root
 
-def record_response(kind, model, response, success):
+def record_response(kind, model, response, success, error_type=None):
     usage = getattr(response, "usage", None)
     details = getattr(usage, "input_tokens_details", None)
     row = {
         "at": datetime.now(timezone.utc).isoformat(), "kind": kind,
-        "model": model, "response_id": getattr(response, "id", None),
+        "model": getattr(response, "model", None) or model,
+        "requested_model": model, "response_id": getattr(response, "id", None),
         "success": bool(success),
+        "error_type": error_type,
         "input_tokens": getattr(usage, "input_tokens", None),
         "cached_input_tokens": getattr(details, "cached_tokens", None),
         "output_tokens": getattr(usage, "output_tokens", None),

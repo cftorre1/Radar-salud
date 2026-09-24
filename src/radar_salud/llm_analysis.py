@@ -53,9 +53,10 @@ No incluyas la propia norma como referencia a sí misma."""
         r=c.responses.create(model=model,instructions=instructions,input=[{"role":"user","content":[
           {"type":"input_text","text":f"Documento: {title}\nFuente: {source_name}\nÁmbito de origen (NO implica actor afectado): {scope}\nFicha oficial: {fallback_summary[:1400]}"},
           {"type":"input_file","file_url":pdf_url}]}],text={"format":{"type":"json_schema","name":"alicanto_normative_v3","strict":True,"schema":NORM_SCHEMA}})
-        parsed=_parse_json(r.output_text);record_response("deep",model,r,bool(parsed));record_result("deep",bool(parsed));return parsed
+        parsed=_parse_json(r.output_text);record_response("deep",model,r,bool(parsed),None if parsed else "invalid_json");record_result("deep",bool(parsed));return parsed
     except Exception as e:
-        record_result("deep",False);print(f"deep model error: {e}");return None
+        record_response("deep",model,None,False,type(e).__name__)
+        record_result("deep",False);print(f"deep model error: {type(e).__name__}");return None
 
 def analyze_news(*,title,text,source_name,kind="sector"):
     c=_client()
@@ -71,9 +72,10 @@ Qué pasó: concreto y verificable. Por qué importa: actor afectado + efecto es
 Evita frases genéricas reutilizables. No inventes implicancias."""
     try:
         r=c.responses.create(model=model,instructions=instructions,input=f"Fuente: {source_name}\nTítulo: {title}\nContenido:\n{text[:5500]}",text={"format":{"type":"json_schema","name":"alicanto_news_v3","strict":True,"schema":NEWS_SCHEMA}})
-        parsed=_parse_json(r.output_text);record_response("fast",model,r,bool(parsed));record_result("fast",bool(parsed));return parsed
+        parsed=_parse_json(r.output_text);record_response("fast",model,r,bool(parsed),None if parsed else "invalid_json");record_result("fast",bool(parsed));return parsed
     except Exception as e:
-        record_result("fast",False);print(f"fast model error: {e}");return None
+        record_response("fast",model,None,False,type(e).__name__)
+        record_result("fast",False);print(f"fast model error: {type(e).__name__}");return None
 
 def analyze_official_news(*,title,text,source_name):
     return analyze_news(title=title,text=text,source_name=source_name,kind="fuente oficial")

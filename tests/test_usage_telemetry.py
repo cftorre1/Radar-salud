@@ -17,6 +17,13 @@ def test_response_records_actual_tokens_not_prompts_or_invented_cost(tmp_path,mo
     assert data["cost_usd"] is None and data["cached_input_tokens"]==12
     assert not ({"prompt","api_key","document"}&data.keys())
 
+def test_failed_call_records_error_class_without_sensitive_text(tmp_path,monkeypatch):
+    monkeypatch.setenv("RADAR_ROOT",str(tmp_path))
+    telemetry.record_response("fast","configured-model",None,False,"TimeoutError")
+    row=json.loads((tmp_path/"data/ai_usage/responses.jsonl").read_text())
+    assert row["error_type"]=="TimeoutError" and row["model"]=="configured-model"
+    assert row["input_tokens"] is None and row["cost_usd"] is None
+
 def test_global_run_budget_cannot_exceed_attempts(tmp_path,monkeypatch):
     monkeypatch.setenv("RADAR_ROOT",str(tmp_path))
     monkeypatch.setenv("RADAR_FAST_PER_RUN","2")

@@ -43,3 +43,5 @@ Home muestra transparencia compacta antes de Explorar: «Miramos mucho para most
 ### Complemento de Dirección · criterio de experiencia
 
 La tarjeta responde en 5–10 segundos de qué trata, qué cambió, por qué importa y si merece profundidad. Jerarquía: título → síntesis → por qué importa → acciones. Solo se agrega una cifra excepcional si determina la relevancia. La segunda capa debe aportar comprensión ejecutiva sustentada en evidencia: hechos, hallazgos, cifras, actores, implicancias, vigencia, atención y contexto útil; no basta con duplicar la tarjeta. Si solo hay título o metadata, se ofrece la fuente original. «Ver contexto disponible» exige contenido adicional real. El QA verifica altura y barrido de varias señales mobile, ausencia de duplicados, valor incremental y métricas compactas.
+
+**Evidencia Cards V2:** [run #21](https://github.com/cftorre1/Radar-salud/actions/runs/35988742995), commit `292d3318f550e56d62109b192442b87da5c65567`: tests, QA desktop/mobile, Reviewer y preview PASS. Addendum implementado y validado con alcance de muestra; el bloque Signal Density completo sigue Implementado.

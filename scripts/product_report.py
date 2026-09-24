@@ -3,6 +3,7 @@ import argparse
 import csv
 import json
 import os
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from radar_salud.pending_queue import PendingQueue, atomic_json
@@ -21,6 +22,10 @@ def build(root, output):
     responses_path = root / "data/ai_usage/responses.jsonl"
     responses = [json.loads(line) for line in responses_path.read_text().splitlines() if line] if responses_path.exists() else []
     usage = {p.stem: read(p, {}) for p in (root / "data/ai_usage").glob("*.json")}
+    current_month=datetime.now(timezone.utc).strftime("%Y-%m")
+    fast_failed=usage.get(current_month,{}).get("fast",{}).get("failed",0)
+    failure_rows=[x for x in responses if x.get("kind")=="fast" and x.get("success") is False and str(x.get("at","")).startswith(current_month)]
+    error_counts=dict(Counter(x.get("error_type") or "unknown" for x in failure_rows))
     diagnostics = []
     excel_validation = read(root / "data/excel/validated_series.json", {"families": {}})
     for row in history:
@@ -57,6 +62,9 @@ def build(root, output):
         usage=dict(calls=usage, measured_responses=len(responses),
             input_tokens=sum(x.get("input_tokens") or 0 for x in responses),
             output_tokens=sum(x.get("output_tokens") or 0 for x in responses),
+            models=dict(Counter(x.get("model") or "unknown" for x in responses)),
+            errors=error_counts, fast_failed=fast_failed,
+            fast_unclassified=max(0,fast_failed-len(failure_rows)),
             cost_usd=None, cost_status="unavailable_without_approved_rates",
             historical_tokens_status="not_measured_before_0.9.0"),
         excel=diagnostics, excel_validation=excel_validation, user_telemetry="local_preferences_only_no_central_collector",
