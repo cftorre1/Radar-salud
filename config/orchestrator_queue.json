@@ -222,7 +222,7 @@
     },
     {
       "id": "email_subscription_mvp",
-      "status": "approved",
+      "status": "blocked",
       "priority": "high",
       "owner": "Work",
       "source": "Baseline MVP",
@@ -248,6 +248,18 @@
         "QA",
         "provider-ready integration or explicit human blocker",
         "staging evidence"
+      ],
+      "progress": "Cierre técnico implementado: UI consentida fail-closed, selección semanal solo LIVE reciente/relevante/trazable, digest FREE resumido, estructura PREMIUM personalizada y permisos separados de captura/envío. Reviewer detectó que una API key podía omitir el estado deshabilitado; corregido con gate server-side previo a datos/red y prueba adversarial. Envío y captura reales bloqueados por decisiones humanas.",
+      "blocked_by": [
+        "Aprobar proveedor y crear cuenta Buttondown u otro proveedor",
+        "Aprobar finalidad, retención, textos de privacidad y doble opt-in",
+        "Aprobar identidad remitente/dominio y entregar credencial vía GitHub secret"
+      ],
+      "evidence": [
+        "3cf095594641812c8ac0d46d94b74f475ffce909 — implementación UI/digest; run 36040290271 FAIL por incompatibilidad concurrente detectada antes de preview",
+        "20d1d143abd69a79d21491297bf6220dd867cae2 y 0c9e781c81eca5a5e7e24aef4433dc306c23160f — corrección compatible y salvaguardas numéricas fail-closed",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36040638118 — 134 Python, 19 Node, 12 Playwright desktop/mobile, Reviewer CI y preview PASS",
+        "Reviewer independiente: primer corte FAIL por bypass de envío con API key; corrección PASS, cero llamadas de red con send_enabled/privacy no aprobados"
       ]
     },
     {

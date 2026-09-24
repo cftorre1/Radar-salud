@@ -87,6 +87,23 @@
       "parity_sha": "2ab6a33744fc36562f7844d81680b75c1a9c0d2b",
       "parity_preview": "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641"
     },
+    "email_subscription_technical_qa": {
+      "kind": "github_actions_and_independent_review",
+      "sha": "0c9e781c81eca5a5e7e24aef4433dc306c23160f",
+      "implementation_sha": "3cf095594641812c8ac0d46d94b74f475ffce909",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36040638118",
+      "checks": [
+        "python",
+        "node",
+        "playwright_desktop_mobile",
+        "reviewer_ci",
+        "independent_reviewer",
+        "preview",
+        "api_key_cannot_bypass_disabled_send"
+      ],
+      "result": "technical_success_external_activation_blocked",
+      "scope": "Captura y envío preparados pero deshabilitados; sin proveedor, PII, secreto ni aprobación legal en el repositorio."
+    },
     "rollback": {
       "kind": "github_actions",
       "sha": "3edb6e3a4c92787e0076491490283124cf4ff7d4",
@@ -437,30 +454,31 @@
     {
       "id": "email",
       "title": "Email y suscripción",
-      "status": "Pendiente",
+      "status": "Bloqueado",
       "critical": true,
-      "evidence": [],
+      "evidence": [
+        "email_subscription_technical_qa"
+      ],
       "dependencies": [
         "proveedor de email y configuración de dominio"
       ],
       "missing": [
-        "captura consentida",
-        "gestión de suscriptores",
-        "digest FREE resumido",
-        "envío real condicionado a material relevante"
+        "Aprobación legal/privacidad de finalidad, retención y textos de consentimiento",
+        "Cuenta/proveedor, identidad remitente y gestión remota de suscriptores",
+        "Credencial entregada solo mediante GitHub secret y activación explícita de capture_enabled/send_enabled"
       ],
       "requirements": [
         {
           "label": "Captura consentida y gestión básica",
-          "status": "Pendiente"
+          "status": "Bloqueado"
         },
         {
           "label": "Digest semanal condicional FREE",
-          "status": "Pendiente"
+          "status": "Validado"
         },
         {
           "label": "Preparación PREMIUM con envío real cuando exista proveedor",
-          "status": "Pendiente"
+          "status": "Implementado"
         }
       ]
     },
@@ -588,6 +606,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Email/suscripción técnicamente preparado y bloqueado de forma segura: captura con consentimiento y doble opt-in, digest FREE condicional y estructura PREMIUM personalizada. Reviewer independiente detectó bypass de aprobación cuando existía API key; corregido con permisos separados y gate server-side previo a datos/red. Envío real no activado: requiere proveedor, aprobación legal/privacidad, remitente/dominio y secreto.",
+      "evidence": [
+        "email_subscription_technical_qa",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36040290271"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Global Intelligence Lite Validado en staging: tres muestras reales Reuters/Deloitte/McKinsey, Global Themes estructurados y capa PREMIUM. Reviewer independiente rechazó el primer corte por cronología y promoción local permisiva; el corte corregido valida fechas y bloquea toda transferencia a Trend Chile sin pipeline chileno canónico. El primer preview detectó una regresión móvil de un backfill RedSalud concurrente; el candidato integrado corrigió la tarjeta y pasó tests, QA desktop/mobile, Reviewer y preview.",
