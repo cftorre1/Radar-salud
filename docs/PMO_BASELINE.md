@@ -83,3 +83,25 @@ El indicador `0/10` conserva su significado estricto: bloques críticos completa
 La ruta oficial de noticias FONASA `https://www.fonasa.gob.cl/noticias/` está identificada. El scout consulta detalles y toma la fecha únicamente de metadata publicada; un elemento sin fecha queda BACKFILL y el procesador lo descarta. El análisis ausente queda diferido, sin resumen inventado. Su sitio respondió 403 desde este entorno, por lo que el conector está **Implementado**, pendiente prueba de discovery real en staging y revisión editorial. ISP/ANAMED presentó un error de certificado y DEIS expiró en esta inspección; ninguno se presenta como fuente validada.
 
 Reviewer del conector FONASA detectó que un timeout de detalle no debía parecer una publicación sin fecha. La ronda ahora registra fallo técnico y no mueve watermark; un error posterior de enriquecimiento deja el ítem pendiente de reintento. Continúa pendiente comprobar acceso efectivo desde Actions.
+
+
+## Addendum aprobado — Cards V2.1 / Intelligence Inbox
+
+**Estado:** Aprobado · **Horizonte:** MVP viernes · **Prioridad:** Alta
+
+**Principio:** **Descarto → Selecciono → Entiendo → Profundizo**
+
+Objetivo: convertir “Qué debes saber en 30 segundos” en la bandeja principal de triage diario, para barrer señales con scroll mínimo, marcar descartes como leídos y profundizar solo cuando algo interese.
+
+Alcance aprobado:
+- Orden de home: Header → “Miramos mucho para mostrarte poco” → Explorar compacto → “Qué debes saber en 30 segundos” → feed.
+- Explorar debe reducir materialmente su altura, especialmente en mobile.
+- “30 segundos” muestra de forma compacta las señales no leídas del período, incluyendo normativa, legal, fiscalización, datos, noticias y pulsos.
+- Cada fila permite **Marcar leído** sin ir a la card; al hacerlo desaparece de la bandeja, pero permanece en el feed como leído.
+- Cada fila permite **Ver** y navegar a la card correspondiente.
+- Desde la card debe existir una acción clara **Volver a 30 segundos** para continuar el barrido.
+- Estado leído/no leído sincronizado entre bandeja y card, con persistencia.
+- Jerarquía de profundidad: **30 segundos → card → Ver resumen/Ver contexto → Fuente original**.
+- No reabrir Cards V2 ya validadas salvo regresión.
+
+Validación requerida: QA desktop/mobile, Reviewer, evidencia en staging, persistencia leído/no leído, navegación ida/vuelta, sincronización de estados y comprobación de barrido con scroll mínimo.
