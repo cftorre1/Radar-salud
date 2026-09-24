@@ -27,6 +27,16 @@ def test_tea_resolution_card_keeps_outcome_requirement_and_deadline_compact():
     assert "1 de noviembre de 2026" in card["card_why"] and "compra directa" in card["card_why"]
     assert len(card["card_what"])+len(card["card_why"])<300
 
+
+def test_backfilled_bupa_emergency_has_truthful_card_and_scope():
+    rows=json.loads(Path("web/data/radar_today.json").read_text())["signals"]
+    bupa=next(s for s in rows if s.get("source_name")=="Bupa Chile")
+    assert bupa["ingestion_mode"]=="BACKFILL"
+    assert "Farma / medicamentos" not in bupa["scopes"]
+    assert "vigente ahora" not in bupa["why_it_matters"].lower()
+    assert all(bupa.get(k) for k in ("card_what","card_why","source_title_full"))
+
+
 def test_distinct_statistical_families_keep_their_sources():
     xs=[sig("Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026",url="https://x/a"),sig("Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026",url="https://x/b"),sig("Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026",url="https://x/c")]
     for row in xs:
