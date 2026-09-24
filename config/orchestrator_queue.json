@@ -331,7 +331,7 @@
     },
     {
       "id": "presence_trust_technical",
-      "status": "approved",
+      "status": "blocked",
       "priority": "high",
       "owner": "Work",
       "source": "Baseline MVP",
@@ -355,6 +355,16 @@
         "QA",
         "explicit blockers",
         "staging evidence"
+      ],
+      "progress": "Favicon, Open Graph y cobertura publicados y verificados en staging; drafts legales visibles en GitHub público, sin vigencia y no publicados como páginas legales; CNAME/canonical, dominio y correo esperan decisión humana. #115 PASS 16/16 desktop/mobile y Reviewer independiente.",
+      "blocked_by": [
+        "Aprobar y registrar alicanto.cl y facilitar proveedor/acceso DNS para SSL, canonical y CNAME.",
+        "Aprobar proveedor de correo, identidad y configuración SPF/DKIM/DMARC para hola@ y radar@.",
+        "Responsable legal debe aprobar textos de Privacidad y Términos y contacto operativo antes de páginas legales definitivas."
+      ],
+      "evidence": [
+        "92effcfeebb4bb312e578475a911ec0d1f5792e0 — https://github.com/cftorre1/Radar-salud/actions/runs/36045338679; tests, 16/16 browser 1440×900 y 390×844, QA/Reviewer y preview PASS; icono PNG 1637×757 HTTP 200.",
+        "docs/PRESENCE_SETUP.md; docs/legal/PRIVACY_DRAFT.md y TERMS_DRAFT.md sin vigencia; página Cobertura ya publicada."
       ]
     },
     {

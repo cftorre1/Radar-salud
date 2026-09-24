@@ -273,6 +273,23 @@
       ],
       "validated_requirements": [],
       "scope": "QA de instrumentación apagada y proveedor simulado interceptado; sin medición ni aprobación de privacidad real."
+    },
+    "presence_metadata_qa": {
+      "kind": "github_actions",
+      "sha": "92effcfeebb4bb312e578475a911ec0d1f5792e0",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36045338679",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "result": "success",
+      "scope": "Metadatos Open Graph verificados en cuatro vistas y favicon existente; sin dominio propio, canonical ni textos legales vigentes.",
+      "validated_requirements": [
+        "Favicon y metadata/Open Graph"
+      ]
     }
   },
   "blocks": [
@@ -568,15 +585,16 @@
       "title": "Presencia y confianza",
       "status": "Bloqueado",
       "critical": true,
-      "evidence": [],
+      "evidence": [
+        "presence_metadata_qa"
+      ],
       "dependencies": [
         "decisión humana sobre dominio y cuentas"
       ],
       "missing": [
-        "dominio y SSL propios",
+        "dominio propio, DNS y SSL verificables",
         "correo corporativo y SPF/DKIM/DMARC",
-        "políticas legales aprobadas",
-        "página de cobertura y contacto"
+        "aprobación legal de textos y contacto institucional operativo"
       ],
       "requirements": [
         {
@@ -585,7 +603,8 @@
         },
         {
           "label": "Favicon y metadata/Open Graph",
-          "status": "Pendiente"
+          "status": "Validado",
+          "evidence": "presence_metadata_qa"
         },
         {
           "label": "Correo institucional y DNS",
@@ -633,6 +652,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Presencia: favicon y metadata Open Graph validados en staging para vistas principales; cobertura disponible. Borradores legales sin vigencia son visibles en GitHub público pero no son páginas legales en Pages. Dominio, correo, canonical, DNS y aprobación legal permanecen bloqueados por decisiones humanas; tarea presence_trust_technical bloqueada después de agotar preparación segura.",
+      "evidence": [
+        "presence_metadata_qa",
+        "docs/PRESENCE_SETUP.md"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Email/suscripción técnicamente preparado y bloqueado de forma segura: captura con consentimiento y doble opt-in, digest FREE condicional y estructura PREMIUM personalizada. Reviewer independiente detectó bypass de aprobación cuando existía API key; corregido con permisos separados y gate server-side previo a datos/red. Envío real no activado: requiere proveedor, aprobación legal/privacidad, remitente/dominio y secreto.",
