@@ -674,6 +674,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Dirección aprueba para próxima iteración: Global Intelligence destacado fuera de «Miramos mucho…», copy Premium menos devaluador, inbox propio, mayor profundidad para informes extensos y mayor densidad de valor; resumen semanal pasa a CTA independiente sin etiqueta FREE.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Presencia: favicon y metadata Open Graph validados en staging para vistas principales; cobertura disponible. Borradores legales sin vigencia son visibles en GitHub público pero no son páginas legales en Pages. Dominio, correo, canonical, DNS y aprobación legal permanecen bloqueados por decisiones humanas; tarea presence_trust_technical bloqueada después de agotar preparación segura.",
       "evidence": [
         "presence_metadata_qa",
@@ -1262,6 +1267,39 @@
         }
       ],
       "evidence_context": "Staging actual: Pulso Isapre usa data_period=2026-07 y event_date=2026-07-31; source_alternatives lista solo 2 porque cartera es source_url principal; data_insights publica una única muestra beneficiarios jun→jul -0,07%."
+    },
+    {
+      "id": "global_intelligence_ux_email_cta_2026_09_24",
+      "status": "Aprobado_para_proxima_iteracion",
+      "priority": "Alta",
+      "horizon": "MVP antes de release",
+      "items": [
+        {
+          "issue": "global_access_placement",
+          "decision": "Mover el acceso a Global Intelligence a una posición destacada de cabecera/navegación superior, fuera del bloque «Miramos mucho…», porque es una capacidad Premium estratégica y debe ser descubrible."
+        },
+        {
+          "issue": "global_section_label",
+          "decision": "Revisar el copy «Premium - Muestra pública». Evitar lenguaje que devalúe la experiencia. Usar un posicionamiento más aspiracional/funcional, por ejemplo «Global Intelligence» con una indicación discreta de acceso Premium cuando corresponda."
+        },
+        {
+          "issue": "global_intelligence_inbox",
+          "decision": "Replicar la lógica de Intelligence Inbox dentro de Global Intelligence: bandeja compacta de señales/informes globales, estado leído/no leído, selección para profundizar y retorno a la bandeja. No hace falta replicar todos los filtros del feed nacional."
+        },
+        {
+          "issue": "global_card_depth",
+          "decision": "Permitir cards globales más densas que las cards nacionales. Para noticias tipo Reuters, resumen breve; para informes/estudios extensos, resumen ejecutivo ampliado en card o segunda capa con hallazgos clave, cifras, implicancias, qué mirar en Chile y metodología/fuente."
+        },
+        {
+          "issue": "global_value_density",
+          "decision": "Global Intelligence no debe limitarse a tres informes con resumen. Aumentar valor mediante mayor cobertura de fuentes y/o mayor análisis por informe: múltiples hallazgos, comparativa entre fuentes, themes recurrentes y vínculos con señales chilenas. Mantener separación Global Theme vs Trend Chile."
+        },
+        {
+          "issue": "weekly_digest_cta",
+          "decision": "Sacar el resumen semanal del bloque «Miramos mucho…» y tratarlo como CTA independiente de suscripción. No usar «FREE» en el copy público; enfocarlo en valor: p.ej. «Recibe lo importante de la semana en tu correo»."
+        }
+      ],
+      "evidence_context": "Dirección considera Global Intelligence una capacidad wow/Premium; necesita más profundidad, mejor descubribilidad y patrón de inbox propio. Digest semanal debe ser CTA de adquisición, no parte de transparencia/cobertura."
     }
   ]
 }
