@@ -710,6 +710,27 @@
           "status": "Pendiente"
         }
       ]
+    },
+    {
+      "id": "pre_sources_chile_bundle_2026_09_24",
+      "title": "Paquete previo a reanudar Fuentes Chile",
+      "status": "Aprobado",
+      "priority": "Crítica",
+      "horizon": "Antes de retomar Fuentes Chile",
+      "scope": [
+        "cerrar refinamientos MVP restantes: profundidad/densidad Global Intelligence y enriquecimiento editorial correctamente etiquetado",
+        "validar compresión mobile/home y limpieza de copy Global Intelligence",
+        "cerrar representación FREE/PREMIUM sin pagos",
+        "ejecutar experimento Luna/Terra/Astra con scoring ciego y caso de negocio",
+        "implementar teaser FREE de Global Intelligence, Insight Alicanto semanal y observabilidad de costo/modelo",
+        "implementar sugerencia anónima de fuentes visible, persistente y gestionable; correo interno provider-ready o bloqueo explícito",
+        "mantener Fuentes Chile pausado hasta completar el paquete o nueva decisión de Dirección"
+      ],
+      "validation_required": [
+        "cada tarea hija debe respetar su propio Builder → tests → staging QA desktop/mobile → Reviewer → corrección",
+        "no promover a main/producción",
+        "actualizar cola y PMO con evidencia y estados reales"
+      ]
     }
   ],
   "human_blockers": [
@@ -1488,6 +1509,37 @@
         "persistencia anónima",
         "notificación interna o bloqueo externo explícito",
         "sin PII obligatoria"
+      ]
+    },
+    {
+      "id": "mobile_home_compression_and_global_copy_2026_09_24",
+      "status": "Aprobado_para_proxima_iteracion",
+      "priority": "Crítica",
+      "horizon": "Antes de retomar Fuentes Chile",
+      "principle": "Primero valor, después explicación",
+      "decisions": [
+        "Orden superior: Header → Global Intelligence PREMIUM → Personalizar mi radar compacto → Suscríbete compacto → hero → transparencia compacta → Filtros → Qué debes saber en 30 segundos.",
+        "Personalizar mi radar será una fila/botón compacto; opciones y microcopy de persistencia aparecen solo al abrir.",
+        "Suscríbete será una fila/botón compacto; correo y descripción del resumen semanal aparecen solo al abrir.",
+        "«Encuentra lo que importa» debe caber en una línea en mobile mediante reducción tipográfica responsiva.",
+        "Eliminar la bajada larga bajo «Encuentra lo que importa».",
+        "«Miramos mucho para mostrarte poco» debe ocupar una línea de métricas simples/auditables y detalle opcional colapsado.",
+        "Renombrar Explorar a «Filtros» y eliminar bajadas obvias; mostrar directamente Tipo y Ámbito.",
+        "Comprimir padding/gaps para que «Qué debes saber en 30 segundos» aparezca o asome materialmente en la primera vista mobile.",
+        "Eliminar en Global Intelligence los dos párrafos de explicación sobre selección curada/separación Chile y vista pública/autorización.",
+        "La separación Global Theme ≠ Trend Chile sigue vigente como regla interna aunque no se explique en copy visible."
+      ],
+      "validation_required": [
+        "QA desktop/mobile",
+        "Reviewer",
+        "evidencia staging",
+        "captura before/after mobile",
+        "medición de altura/scroll antes de 30 segundos",
+        "persistencia personalización",
+        "suscripción colapsada",
+        "filtros compactos",
+        "Global copy eliminado",
+        "accesibilidad"
       ]
     }
   ],
