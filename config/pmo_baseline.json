@@ -541,6 +541,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Dirección aprueba para la siguiente iteración MVP: Cards V2.2 con metadata compacta (fecha/fuente), acciones coherentes y fuentes/referencias visibles arriba en la segunda capa; además Insights Excel V1 determinísticos para cartera, suscripciones/desahucios y movilidad compatible. Prioridad alta/crítica para cierre de MVP.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Pilot staging #21 (límite 1) confirmó FONASA HTTPError, 0 descubiertas; siete fuentes anteriores OK, LIVE 0/0/0, BACKFILL pending 15 (diez DF sin fecha), cero llamadas OpenAI. Descubierto disparador heredado de main: piloto staging completado lanzó deploy producción #90 del checkout main ea55bc7. Se suspenden más pilotos; requiere aprobación de corrección de workflows en main. Preview automático del piloto fue cancelado, sin validar nuevos datos en staging.",
       "evidence": []
     },
@@ -785,6 +790,59 @@
         "No reabrir Cards V2 ya validadas salvo regresión.",
         "La bandeja 30 segundos resume para triage; no sustituye la card ni la segunda capa."
       ]
+    },
+    {
+      "id": "cards_v22_metadata_summary_sources",
+      "title": "Cards V2.2 / metadata compacta y fuentes en resumen",
+      "status": "Aprobado",
+      "horizon": "MVP viernes",
+      "priority": "Alta",
+      "principle": "La card permite decidir; el resumen concentra contexto y evidencia",
+      "scope": [
+        "restaurar al pie de cada card una línea compacta con fecha de publicación y fuente",
+        "mantener Fuente original siempre visible cuando exista URL verificada",
+        "mostrar Ver resumen solo cuando exista profundidad sustentada; usar Ver contexto disponible cuando corresponda",
+        "mover fuentes relacionadas, normativa relacionada y documentos de respaldo a la segunda capa",
+        "en la segunda capa ubicar Fuentes y referencias cerca del inicio, después del resumen ejecutivo/qué ocurrió y antes de detalles extensos",
+        "no esconder referencias críticas al final del modal",
+        "mantener las cards compactas sin perder frescura ni credibilidad de la fuente"
+      ],
+      "validation_required": [
+        "QA desktop",
+        "QA mobile",
+        "Reviewer",
+        "evidencia en staging",
+        "fecha y fuente visibles en todas las cards con datos disponibles",
+        "botones Fuente original y Ver resumen/contexto coherentes con profundidad real",
+        "Fuentes y referencias visibles en la parte superior del resumen profundo"
+      ],
+      "evidence": [],
+      "implementation_status": "Pendiente"
+    },
+    {
+      "id": "data_insights_v1",
+      "title": "Insights Excel V1",
+      "status": "Aprobado",
+      "horizon": "MVP viernes",
+      "priority": "Crítica",
+      "principle": "Dato → Insight determinístico → Señal; fail-closed",
+      "scope": [
+        "generar insights determinísticos para cartera y suscripciones/desahucios usando series ya validadas",
+        "usar movilidad solo en comparaciones compatibles con el intervalo validado disponible",
+        "calcular variación mensual, acumulada y rachas/anomalías solo cuando el esquema y denominador estén validados",
+        "publicar período, fórmula/evidencia y fuente de cada insight",
+        "no usar LLM para inventar el hallazgo estadístico; el LLM puede explicar implicancias sobre un insight determinístico",
+        "alimentar Pulso Isapre con insights validados sin mezclar períodos incompatibles"
+      ],
+      "validation_required": [
+        "tests de reconciliación y fórmulas",
+        "QA editorial de cada insight publicado",
+        "Reviewer de cifras/períodos",
+        "evidencia en staging",
+        "fail-closed ante esquema o denominador ambiguo"
+      ],
+      "evidence": [],
+      "implementation_status": "Pendiente"
     }
   ],
   "infrastructure_debt": [
