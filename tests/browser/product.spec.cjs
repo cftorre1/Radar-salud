@@ -4,21 +4,29 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(page.locator('#period')).toHaveValue('14');await expect(page.locator('#sort')).toHaveValue('date');
- await expect(page.locator('#coverage-title')).toHaveText('Miramos mucho para mostrarte poco.');
- const order=await page.locator('main > .preferences-panel,main > .coverage,main > .weekly-cta,main > .toolbar,main > #brief,main > #local').evaluateAll(xs=>xs.map(x=>x.id||x.classList[0]));
- expect(order).toEqual(['preferences-panel','coverage','weekly-cta','toolbar','brief','local']);
- await expect(page.locator('.toolbar #interestToggle')).toHaveCount(0);
- await expect(page.locator('.preferences-panel #interestToggle')).toBeVisible();
- await expect(page.locator('.preferences-panel')).toContainText('se guardan en este dispositivo y se mantienen entre visitas');
- await expect(page.locator('.coverage').getByRole('link',{name:'Recibe lo importante de la semana en tu correo →'})).toHaveCount(0);
- await expect(page.locator('.weekly-cta').getByRole('link',{name:'Recibe lo importante de la semana en tu correo →'})).toBeVisible();
- await expect(page.getByRole('link',{name:'Cómo seleccionamos lo que importa →'})).toHaveAttribute('href','coverage.html');
- const coverage=await (await page.request.get('/data/product.json')).json();
- if(coverage.queue_status==='measured'){
-  await expect(page.locator('#coverageCounts')).toContainText(`${new Intl.NumberFormat('es-CL').format(coverage.coverage_live.detected)} señales detectadas`);
-  await expect(page.locator('#coverageCounts')).toContainText(`${Object.values(coverage.sources).filter(x=>x.technical_status==='ok'||(!x.technical_status&&['ok','warning'].includes(x.status))).length} fuentes activas`);
- }else await expect(page.locator('#coverageCounts')).toContainText('sin medición global');
+ await expect(page.getByRole('heading',{name:'Encuentra lo que importa',exact:true})).toBeVisible();
+ expect(await page.getByRole('heading',{name:'Encuentra lo que importa',exact:true}).evaluate(el=>el.getBoundingClientRect().height/parseFloat(getComputedStyle(el).lineHeight))).toBeLessThan(1.1);
+ await expect(page.locator('#preferenceDetails')).not.toHaveAttribute('open','');
+ await expect(page.locator('#subscriptionDetails')).not.toHaveAttribute('open','');
+ await expect(page.locator('#filterDetails')).not.toHaveAttribute('open','');
+ await expect(page.locator('.coverage,.toolbar,.weekly-cta,.preferences-panel')).toHaveCount(0);
+ await expect(page.locator('#radarTitle')).toHaveText('Qué debes saber en 30 segundos');
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ señales detectadas · \d+ seleccionadas · \d+ no leídas$/);
+ const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
+ await expect(page.locator('.radar-unit .method-link')).toHaveAttribute('href','coverage.html');
+ const positions=await page.locator('#preferenceDetails,#subscriptionDetails').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().top)));
+ expect(new Set(positions).size).toBe(1);
+ await page.locator('#subscriptionDetails summary').click();
+ await expect(page.locator('#homeEmail')).toBeVisible();await expect(page.locator('#homeEmail')).toBeDisabled();
+ await expect(page.locator('#subscriptionDetails')).toContainText('La suscripción aún no está habilitada.');
+ await page.locator('#subscriptionDetails summary').click();
+ await page.locator('#filterDetails summary').click();
+ await expect(page.locator('#period')).toBeVisible();await expect(page.locator('#sort')).toBeVisible();
+ const selectTops=await page.locator('.select-grid label').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().top)));
+ expect(new Set(selectTops).size).toBe(1);
  await page.locator('#period').selectOption('90');
+ const extendedMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
+ expect(extendedMetrics[0]).toBeGreaterThanOrEqual(initialMetrics[0]);
  await expect(page.locator('article').first()).toBeVisible();
  if(test.info().project.name==='mobile'){
   const cards=await page.locator('article').evaluateAll(xs=>xs.slice(0,3).map(x=>({height:Math.round(x.getBoundingClientRect().height),title:x.querySelector('h2')?.textContent||''})));
@@ -37,19 +45,22 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await expect(page.locator('article').first().locator('.intel,.related')).toHaveCount(0);
  const withDepth=page.locator('article:has([data-detail])').first();await withDepth.locator('[data-detail]').click();
  await expect(page.locator('#signalDetail')).toBeVisible();await page.getByRole('button',{name:'Cerrar resumen'}).click();
- await page.getByRole('link',{name:'Cómo seleccionamos lo que importa →'}).click();await expect(page.getByRole('heading',{name:'Qué significan las cifras'})).toBeVisible();await page.goBack();
- await page.getByRole('button',{name:'Personalizar mi radar'}).click();
- await expect(page.locator('#interests')).toContainText('Todo viene incluido. Desmarca lo que no quieras ver.');
+ await page.getByRole('link',{name:'Metodología'}).click();await expect(page.getByRole('heading',{name:'Qué significan las cifras'})).toBeVisible();await page.goBack();
+ await page.locator('#preferenceDetails summary').click();
+ await expect(page.locator('#preferenceDetails')).toContainText('Guardaremos tus preferencias en este dispositivo para tu próximo ingreso.');
  await expect(page.locator('#interestTypes input[value="Fiscalización"]')).toBeChecked();
  await page.locator('#interestTypes input[value="Fiscalización"]').uncheck();
  expect(await page.locator('article .tag').allTextContents()).not.toContain('Fiscalización');
  await page.reload();
- await page.getByRole('button',{name:'Personalizar mi radar'}).click();
+ await page.locator('#preferenceDetails summary').click();
  await expect(page.locator('#interestTypes input[value="Fiscalización"]')).not.toBeChecked();
  await page.locator('#interestTypes input[value="Fiscalización"]').check();
- await page.getByText('Filtrar tipo y ámbito').click();
+ await page.locator('#filterDetails summary').click();
  await page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true}).click();
  await expect(page.locator('article').first()).toBeVisible();
+ const filteredMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
+ expect(filteredMetrics[1]).toBe(await page.locator('article').count());
+ expect(filteredMetrics[2]).toBe(await page.locator('article:not(.read)').count());
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  expect(errors).toEqual([]);
  await page.screenshot({path:`artifacts/${test.info().project.name}-radar.png`,fullPage:true});
@@ -67,6 +78,7 @@ test('Inbox shows every unread signal, supports direct read and persists it',asy
  await page.reload();await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(page.locator('.briefitem')).toHaveCount(initial-1);
  await expect(page.locator(`article[data-card="${first}"]`)).toHaveClass(/read/);
+ await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('90');
  const inbox=page.locator('.brief-list');
  const deepCount=await page.locator('[data-brief-read]').count();
@@ -101,6 +113,7 @@ test('operations dashboard loads without inventing measurements',async({page})=>
 });
 test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
+ await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('90');
  const bupa=page.locator('article').filter({has:page.getByRole('heading',{name:/Bupa acelera inversiones/})});
  await expect(bupa).toContainText('La Dehesa');await expect(bupa).toContainText('Clínicas Huinganal');await expect(bupa).toContainText('Mindplace en San Damián.');
@@ -155,7 +168,7 @@ test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM disti
  await page.getByRole('link',{name:/Global Intelligence PREMIUM/}).click();
  await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();
  await expect(page.locator('.premium-badge')).toHaveText('Acceso PREMIUM');
- await expect(page.getByText('Vista pública de la experiencia.',{exact:false})).toBeVisible();
+ await expect(page.getByText('Vista pública de la experiencia.',{exact:false})).toHaveCount(0);
  await expect(page.locator('.global-inbox')).toContainText('3 temas no leídos');
  await expect(page.locator('.theme')).toHaveCount(3);
  await expect(page.locator('.theme').first()).toContainText('Global Theme · research internacional');
@@ -193,7 +206,8 @@ test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM disti
 });
 test('Weekly email capture requires consent and stays closed without approved provider',async({page})=>{
  await page.goto('/');
- await page.getByRole('link',{name:'Recibe lo importante de la semana en tu correo →'}).click();
+ await page.locator('#subscriptionDetails summary').click();
+ await page.getByRole('link',{name:'Ver condiciones de suscripción →'}).click();
  await expect(page.getByRole('heading',{name:'Recibe lo importante, una vez por semana.'})).toBeVisible();
  await expect(page.locator('#email')).toBeDisabled();
  await expect(page.locator('#consent')).toBeDisabled();
@@ -210,9 +224,10 @@ test('analytics never sends without explicit privacy approval even if a key is p
      project_key:'public-test-key',host:'https://us.i.posthog.com'})}));
  await page.route('https://us.i.posthog.com/**',route=>{attempts++;return route.abort()});
  await page.goto('/');
- await page.getByRole('button',{name:'Personalizar mi radar'}).click();
+ await page.locator('#preferenceDetails summary').click();
+ await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('7');
- await expect(page.locator('#count')).toContainText('hallazgos');
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ señales detectadas · \d+ seleccionadas · \d+ no leídas$/);
  expect(attempts).toBe(0);
 });
 test('authorized analytics fixture emits only anonymous event fields',async({page})=>{
@@ -225,7 +240,7 @@ test('authorized analytics fixture emits only anonymous event fields',async({pag
    return route.fulfill({status:200,body:'{}'});
  });
  await page.goto('/');
- await page.getByRole('button',{name:'Personalizar mi radar'}).click();
+ await page.locator('#preferenceDetails summary').click();
  await expect.poll(()=>payloads.some(p=>p.event==='preferences_open')).toBe(true);
  expect(payloads.some(p=>p.event==='visit'&&typeof p.properties.returning==='boolean')).toBe(true);
  expect(new Set(payloads.map(p=>p.distinct_id)).size).toBe(payloads.length);

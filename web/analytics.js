@@ -22,7 +22,7 @@
   };
   send('visit',{returning});
   document.addEventListener('click',event=>{
-    const target=event.target.closest('button,a');
+    const target=event.target.closest('button,a,summary');
     if(!target)return;
     if(target.matches('[data-brief]'))send('brief_open');
     else if(target.matches('[data-brief-read]'))send('brief_mark_read');
@@ -30,7 +30,7 @@
     else if(target.matches('[data-read]'))send('card_read_toggle');
     else if(target.matches('#typeFilters .chip,#scopeFilters .chip'))send('facet_change');
     else if(target.matches('.signal a[target="_blank"],#signalDetail a[target="_blank"]'))send('source_click');
-    else if(target.matches('#interestToggle'))send('preferences_open');
+    else if(target.matches('#preferenceDetails summary'))send('preferences_open');
   },true);
   document.addEventListener('change',event=>{
     const input=event.target;
