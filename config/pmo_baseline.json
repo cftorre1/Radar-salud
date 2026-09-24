@@ -551,6 +551,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Dirección aprueba completar el orquestador con dos piezas: consumo continuo de cola mientras el ejecutor esté activo y gatillante event-driven para nuevas tareas approved cuando el ejecutor esté idle. Prioridad alta; no bloquear el aislamiento actual ni reducir protecciones.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Dirección autoriza excepción limitada para aislar staging de producción: solo workflows daily-radar.yml y static.yml en main; Daily Radar debe escribir en staging y producción no puede desplegarse por workflow_run. Requiere prueba controlada antes de reanudar pilotos.",
       "evidence": []
     },
@@ -879,6 +884,30 @@
         "no aplicar decisiones sin aprobación",
         "no sustituir QA ni Reviewer",
         "sin acceso a secretos o pricing"
+      ]
+    },
+    {
+      "id": "orchestrator_continuous_queue_consumption",
+      "priority": "Alta",
+      "horizon": "MVP / inmediatamente después del aislamiento staging-producción",
+      "status": "Aprobado",
+      "description": "Mientras el ejecutor esté activo, debe releer orchestrator_queue.json y pmo_baseline.json al inicio y cierre de cada ciclo y continuar con tareas approved sin requerir retransmisión humana.",
+      "constraints": [
+        "respetar stop conditions",
+        "no ejecutar tareas no aprobadas",
+        "producción sigue requiriendo release explícito"
+      ]
+    },
+    {
+      "id": "orchestrator_event_trigger",
+      "priority": "Alta",
+      "horizon": "Antes de versión comercializable",
+      "status": "Aprobado",
+      "description": "Implementar un gatillante event-driven que detecte nuevas tareas approved en la cola y active/reanude al ejecutor sin depender de que Cristóbal abra Work o retransmita instrucciones. Si Work no admite wake-up directo, implementar runner equivalente autorizado (p.ej. GitHub Actions/dispatcher) y documentar la limitación.",
+      "constraints": [
+        "sin bypass de permisos",
+        "sin auto-promoción a producción",
+        "sin secretos en repo"
       ]
     }
   ],
