@@ -21,8 +21,8 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await page.locator('#period').selectOption('90');
  await expect(page.locator('article').first()).toBeVisible();
  if(test.info().project.name==='mobile'){
-  const heights=await page.locator('article').evaluateAll(xs=>xs.slice(0,3).map(x=>Math.round(x.getBoundingClientRect().height)));
-  expect(heights.length).toBe(3);expect(Math.max(...heights)).toBeLessThan(420);
+  const cards=await page.locator('article').evaluateAll(xs=>xs.slice(0,3).map(x=>({height:Math.round(x.getBoundingClientRect().height),title:x.querySelector('h2')?.textContent||''})));
+  expect(cards.length).toBe(3);expect(Math.max(...cards.map(x=>x.height)),JSON.stringify(cards)).toBeLessThan(420);
  }
  await page.screenshot({path:`artifacts/${test.info().project.name}-browse.png`,fullPage:true});
  await page.locator('.briefitem').first().click();
@@ -106,6 +106,13 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
  await expect(bupa).not.toContainText('…');
  await expect(bupa.locator('.card-meta')).toContainText('Publicado');
  await expect(bupa.locator('.card-meta')).not.toBeEmpty();
+ await bupa.locator('[data-detail]').click();
+ await expect(page.locator('#detailBody')).toContainText('Enriquecimiento editorial · 3');
+ await expect(page.locator('#detailBody')).toContainText('Mismo emisor · no es corroboración independiente');
+ await expect(page.locator('#detailBody')).toContainText('Conexiones históricas');
+ await expect(page.locator('#detailBody')).toContainText('Expansión previa de la red ambulatoria IntegraMédica');
+ await expect(page.locator('#detailBody')).toContainText('Contexto histórico: Conexión histórica disponible y atribuida al mismo artículo DF.');
+ await page.getByRole('button',{name:'Cerrar resumen'}).click();
  const isapre=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso Isapre · datos/})});
  await expect(isapre.locator('.card-meta')).toContainText('Datos a 2026-07');
  await expect(isapre.locator('.card-meta')).toContainText('Publicado 07 sept 2026');
@@ -155,6 +162,10 @@ test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM disti
  await expect(page.locator('.global-inbox')).toContainText('2 temas no leídos');
  const opened=page.locator('.theme').filter({has:page.locator('details[open]')});
  await expect(opened).toContainText('Qué mirar en Chile · hipótesis, no evidencia local');
+ await expect(opened).toContainText('Lectura cruzada');
+ await expect(opened).toContainText('Resumen ejecutivo');
+ await expect(opened).toContainText('Hallazgos clave');
+ await expect(opened).toContainText('Metodología y alcance');
  await expect(opened).toContainText('Trend Chile: no establecido');
  await expect(opened).toContainText('señales locales compatibles verificadas: 0');
  await expect(opened.getByRole('button',{name:'Volver a Global Intelligence'})).toBeVisible();

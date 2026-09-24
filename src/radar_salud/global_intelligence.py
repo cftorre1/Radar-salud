@@ -18,6 +18,7 @@ ALLOWED_PUBLISHERS = {
 }
 MATERIAL_TYPES = {"research", "outlook", "report", "high_trust_press"}
 TREND_STATES = {"not_established", "candidate", "established"}
+ANALYSIS_LISTS = ("key_findings", "figures", "implications")
 
 
 def _required(value, label: str) -> str:
@@ -53,6 +54,17 @@ def _trusted_source(source: dict, generated_day: date) -> None:
         raise ValueError("source dates must satisfy published_at <= captured_at <= generated_at")
     if source.get("material_type") not in MATERIAL_TYPES:
         raise ValueError("source is not approved research/outlook/report material")
+    if source.get("material_type") != "high_trust_press":
+        analysis = source.get("analysis")
+        if not isinstance(analysis, dict):
+            raise ValueError("long-form source requires structured analysis")
+        _required(analysis.get("executive_summary"), "executive summary")
+        _required(analysis.get("methodology"), "methodology")
+        for key in ANALYSIS_LISTS:
+            values = analysis.get(key)
+            minimum = 3 if key == "key_findings" else 1
+            if not isinstance(values, list) or not minimum <= len(values) <= 5 or not all(str(x).strip() for x in values):
+                raise ValueError(f"invalid {key}")
 
 
 def validate(payload: dict) -> dict:
@@ -78,6 +90,9 @@ def validate(payload: dict) -> dict:
             raise ValueError("global finding must be labelled global_theme")
         for key in ("title", "global_finding", "why_it_matters"):
             _required(theme.get(key), key)
+        cross = theme.get("cross_analysis") or {}
+        for key in ("recurring_pattern", "tensions", "decision_use"):
+            _required(cross.get(key), f"cross analysis {key}")
         sources = theme.get("sources")
         if not isinstance(sources, list) or not sources:
             raise ValueError("Global Theme requires traceable sources")

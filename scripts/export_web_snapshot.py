@@ -75,8 +75,10 @@ def _card_micro(s):
         r["scopes"]=[x for x in r.get("scopes",[]) if x!="Farma / medicamentos"]
     if (str(r.get("title") or "").startswith("Bupa acelera inversiones")
         and all(token in what for token in ("US$15 millones","La Dehesa","Huinganal","Mindplace","San Damián"))):
-        r["card_what"]="Bupa anunció US$15 millones: centro médico en La Dehesa, compra de Clínicas Huinganal y centro Mindplace en San Damián."
-        r["card_why"]="Amplía red ambulatoria y de salud mental en el sector oriente mediante inversión y compra de clínicas."
+        r["source_title_full"]=r.get("source_title_full") or r["title"]
+        r["title"]="Bupa acelera inversiones con tres proyectos por US$15 millones"
+        r["card_what"]="Bupa anunció US$15 millones para La Dehesa, Clínicas Huinganal y Mindplace en San Damián."
+        r["card_why"]="Amplía oferta ambulatoria y de salud mental mediante inversión y compra."
     if (str(r.get("title") or "").startswith("Ministerio de Salud publica listado de Eleam")
         and all(token in what for token in ("Ministerio de Salud","Eleam","autorización sanitaria"))):
         r["card_what"]="El Minsal publicó un listado de Eleam con autorización sanitaria."
@@ -94,6 +96,30 @@ def _card_micro(s):
         and all(token in support for token in ("bonificación sin tope anual","1 de noviembre de 2026","compra directa de bonos"))):
         r["card_what"]="La Superintendencia confirmó la cobertura sin tope anual para cinco prestaciones vinculadas a TEA y añadió requisitos de acreditación y registro."
         r["card_why"]="Las isapres deben habilitar el registro y la compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026."
+    return r
+
+def _editorial_enrichment(s):
+    """Attach bounded context without presenting same-emitter channels as corroboration."""
+    r=dict(s)
+    if r.get("source_url")=="https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos":
+        r["editorial_enrichment"]=[
+            {"kind":"same_emitter_channel","label":"Mismo emisor · no es corroboración independiente",
+             "title":"Diario Financiero en LinkedIn","url":"https://www.linkedin.com/company/diario-financiero-2/",
+             "note":"Canal oficial del mismo medio para seguimiento; no sustenta hechos adicionales de esta señal."},
+            {"kind":"primary_corporate","label":"Fuente corporativa · alcance limitado",
+             "title":"Bupa Chile · contacto de su red","url":"https://www.bupa.cl/contacto",
+             "note":"La página corporativa identifica Centro Médico Bupa La Dehesa e IntegraMédica; no acredita por sí sola monto, compra ni fecha del anuncio."},
+            {"kind":"primary_corporate","label":"Fuente corporativa · alcance limitado",
+             "title":"Bupa Group · Mindplace","url":"https://www.bupa.com/impact/action/mindplace",
+             "note":"Describe el concepto global Mindplace; no prueba por sí sola la apertura chilena ni su inversión."},
+        ]
+        r["historical_connections"]=[
+            {"kind":"same_source_context","label":"Contexto del mismo artículo · no es corroboración independiente",
+             "title":"Expansión previa de la red ambulatoria IntegraMédica","url":r["source_url"],
+             "event_date":"2026-09-21",
+             "note":"El artículo DF enmarca los tres proyectos después de un período centrado en expandir la red ambulatoria IntegraMédica en Chile; es contexto del mismo artículo, no una segunda fuente."}
+        ]
+        r["historical_context_status"]="Conexión histórica disponible y atribuida al mismo artículo DF."
     return r
 
 def _doc_key(s):
@@ -239,7 +265,7 @@ def _sanction_pulses(signals, today=None):
 def curate(signals,resolve_external=True):
     normalized=[]
     for s in signals:
-        r=_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s))))
+        r=_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s)))))
         ok,reason,q=publication_ready(r);r["publication_ready_score"]=q;r["publication_gate_reason"]=reason
         if ok:normalized.append(r)
     if not normalized:return []

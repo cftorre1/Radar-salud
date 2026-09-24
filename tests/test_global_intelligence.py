@@ -44,6 +44,13 @@ def test_real_global_themes_are_premium_traceable_and_not_chile_trends(tmp_path)
         assert theme["chile_watch"]["trend_chile_status"] == "not_established"
         assert theme["chile_watch"]["compatible_local_signals"] == []
         assert all(s["url"].startswith("https://") and s["evidence"] for s in theme["sources"])
+        assert set(theme["cross_analysis"]) == {"recurring_pattern", "tensions", "decision_use"}
+        for source in theme["sources"]:
+            if source["material_type"] != "high_trust_press":
+                assert 3 <= len(source["analysis"]["key_findings"]) <= 5
+                assert source["analysis"]["figures"]
+                assert source["analysis"]["implications"]
+                assert source["analysis"]["methodology"]
     target = tmp_path / "global.json"
     export(SOURCE, target)
     assert json.loads(target.read_text()) == payload
@@ -111,3 +118,16 @@ def test_global_theme_rejects_unapproved_material():
     bad["themes"][0]["sources"][0]["material_type"] = "marketing"
     with pytest.raises(ValueError, match="research/outlook/report"):
         validate(bad)
+
+
+def test_long_form_sources_fail_closed_without_structured_depth():
+    payload = load(SOURCE)
+    missing = copy.deepcopy(payload)
+    next(s for t in missing["themes"] for s in t["sources"] if s["material_type"] != "high_trust_press").pop("analysis")
+    with pytest.raises(ValueError, match="structured analysis"):
+        validate(missing)
+    for findings in ([], ["uno"], ["uno", "dos"]):
+        shallow = copy.deepcopy(payload)
+        next(s for t in shallow["themes"] for s in t["sources"] if s["material_type"] != "high_trust_press")["analysis"]["key_findings"] = findings
+        with pytest.raises(ValueError, match="invalid key_findings"):
+            validate(shallow)
