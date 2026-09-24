@@ -53,7 +53,7 @@ def _label(value):
 
 
 def _record(text, formula, family, period, sheet):
-    return {"text": text, "formula": formula, "family": family, "period": period,
+    return {"text": text, "formula": formula, "family": family["family"], "period": period,
             "sheet": sheet["sheet"], "source_url": family["source_url"],
             "sha256": family["sha256"]}
 

@@ -14,6 +14,7 @@ def test_real_series_have_reconciled_periods_formulas_and_official_sources():
     assert result["status"] == "validated"
     assert len(result["insights"]) == 8
     for item in result["insights"]:
+        assert item["family"] in {"cartera", "suscripciones", "movilidad"}
         assert item["period"] and item["formula"] and item["sheet"]
         assert item["source_url"].startswith("https://www.superdesalud.gob.cl/")
         assert len(item["sha256"]) == 64
