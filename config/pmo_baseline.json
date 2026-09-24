@@ -716,7 +716,16 @@
       "title": "Paquete previo a reanudar Fuentes Chile",
       "status": "Aprobado",
       "priority": "Crítica",
+      "critical": true,
       "horizon": "Antes de retomar Fuentes Chile",
+      "dependencies": [
+        "mvp_product_refinements_2026_09_24",
+        "home_compaction_responsive_2026_09_24",
+        "free_premium_mvp",
+        "model_quality_experiment_global_free_2026_09_24",
+        "free_value_features_and_model_cost_observability_2026_09_24",
+        "anonymous_source_suggestions_2026_09_24"
+      ],
       "scope": [
         "cerrar refinamientos MVP restantes: profundidad/densidad Global Intelligence y enriquecimiento editorial correctamente etiquetado",
         "validar compresión responsive de home (desktop/mobile) y limpieza de copy Global Intelligence",
@@ -727,6 +736,11 @@
         "mantener Fuentes Chile pausado hasta completar el paquete o nueva decisión de Dirección",
         "integrar métricas de cobertura, filtros y bandeja «Qué debes saber en 30 segundos» en una única unidad compacta"
       ],
+      "evidence": [],
+      "missing": [
+        "completar y validar las tareas hijas aprobadas antes de reanudar Fuentes Chile"
+      ],
+      "requirements": [],
       "validation_required": [
         "cada tarea hija debe respetar su propio Builder → tests → staging QA desktop/mobile → Reviewer → corrección",
         "no promover a main/producción",
