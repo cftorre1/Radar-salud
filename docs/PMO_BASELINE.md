@@ -111,3 +111,26 @@ Validación requerida: QA desktop/mobile, Reviewer, evidencia en staging, persis
 [Daily Radar pilot #21](https://github.com/cftorre1/Radar-salud/actions/runs/36018677014), ejecutado en staging con límite de un elemento, consultó siete fuentes existentes y registró FONASA `HTTPError` (0 descubrimientos, salud técnica `error`, resultado editorial `not_evaluated`). LIVE sigue 0/0/0; BACKFILL pending pasó a 15 por descubrimientos DF sin fecha verificable. No hubo llamadas OpenAI en este piloto. FONASA continúa **Implementado**, no Validado. El preview automático de la captura quedó cancelado; los nuevos datos requieren QA separado.
 
 El workflow heredado de `main` (`static.yml`) escucha la finalización de cualquier `Daily Radar pilot`; [producción #90](https://github.com/cftorre1/Radar-salud/actions/runs/36018933311) se ejecutó por `workflow_run` al terminar #21 y desplegó un checkout de `main` en `ea55bc7`, no el código de staging. El cron heredado de `main` también escribe en `main` (último commit `ea55bc7`, creado antes de este ciclo). **No se ejecutarán más pilotos** mientras este disparador exista. Se requiere autorización explícita para corregir solo dos workflows de `main`: hacer que el cron escriba a staging y eliminar el despliegue por finalización de piloto. No se promovió código MVP a main ni se modificaron esos workflows en este ciclo.
+
+
+## Addenda aprobados — cierre MVP
+
+### Cards V2.2 / metadata compacta y fuentes en resumen
+**Estado:** Aprobado · **Horizonte:** MVP viernes · **Prioridad:** Alta
+
+- Card: fecha de publicación + fuente en línea compacta al pie.
+- Acciones: **Fuente original ↗** siempre que exista URL verificada; **Ver resumen →** solo con profundidad sustentada; **Ver contexto disponible →** cuando corresponda.
+- La segunda capa concentra contexto y evidencia. **Fuentes y referencias** deben aparecer arriba, después del resumen ejecutivo/qué ocurrió y antes de bloques extensos, no escondidas al final.
+- Mantener cards compactas sin perder frescura, credibilidad ni contexto mínimo.
+
+### Insights Excel V1
+**Estado:** Aprobado · **Horizonte:** MVP viernes · **Prioridad:** Crítica
+
+Principio: **Dato → Insight determinístico → Señal**, con comportamiento fail-closed.
+
+- Cartera: variaciones mensuales/acumuladas, rachas/anomalías y desagregación solo con esquema/denominador validados.
+- Suscripciones/desahucios: saldo, cambios mensuales/acumulados y anomalías cuando sean comparables.
+- Movilidad: solo comparaciones compatibles con el intervalo validado disponible.
+- Cada insight debe exponer período, evidencia/fórmula y fuente.
+- El LLM no inventa el hallazgo estadístico; puede explicar implicancias una vez validado el insight.
+- Pulso Isapre puede incorporar únicamente insights validados y comparables.
