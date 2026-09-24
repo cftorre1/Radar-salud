@@ -43,6 +43,8 @@ jobs:
           fi
       - name: Recurate current history without external lookups
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline
+      - name: Validate and export the canonical Global Intelligence sample
+        run: python scripts/export_global_intelligence.py
       - run: python scripts/product_report.py
       - uses: actions/setup-node@v4
         with:

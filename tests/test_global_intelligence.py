@@ -10,6 +10,12 @@ from radar_salud.global_intelligence import export, load, validate
 SOURCE = Path("data/global/themes.json")
 
 
+def test_public_global_sample_matches_canonical_checked_research():
+    canonical = load(SOURCE)
+    public = json.loads(Path("web/data/global_themes.json").read_text(encoding="utf-8"))
+    assert public == canonical
+
+
 def test_real_global_themes_are_premium_traceable_and_not_chile_trends(tmp_path):
     payload = load(SOURCE)
     assert payload["access_tier"] == "PREMIUM"

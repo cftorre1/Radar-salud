@@ -133,7 +133,8 @@ test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM disti
  await expect(page.getByRole('link',{name:/Global Intelligence PREMIUM/})).toBeVisible();
  await page.getByRole('link',{name:/Global Intelligence PREMIUM/}).click();
  await expect(page.getByRole('heading',{name:'Global Intelligence'})).toBeVisible();
- await expect(page.locator('.premium-badge')).toHaveText('PREMIUM');
+ await expect(page.locator('.premium-badge')).toHaveText('PREMIUM · muestra pública');
+ await expect(page.getByText('El acceso exclusivo a PREMIUM aún no está activado.',{exact:false})).toBeVisible();
  await expect(page.locator('.theme')).toHaveCount(3);
  await expect(page.locator('.theme').first()).toContainText('Global Theme · research internacional');
  await expect(page.locator('.theme').first()).toContainText('Qué mirar en Chile · hipótesis, no evidencia local');
