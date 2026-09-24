@@ -144,3 +144,15 @@ test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM disti
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
  await page.screenshot({path:`artifacts/${test.info().project.name}-global-intelligence.png`,fullPage:true});
 });
+test('Weekly email capture requires consent and stays closed without approved provider',async({page})=>{
+ await page.goto('/');
+ await page.getByRole('link',{name:'Resumen semanal FREE →'}).click();
+ await expect(page.getByRole('heading',{name:'Recibe lo importante, una vez por semana.'})).toBeVisible();
+ await expect(page.locator('#email')).toBeDisabled();
+ await expect(page.locator('#consent')).toBeDisabled();
+ await expect(page.getByRole('button',{name:'Suscribirme'})).toBeDisabled();
+ await expect(page.locator('#status')).toContainText('espera proveedor e información de privacidad aprobados');
+ await expect(page.getByText('Si no hay material suficiente, no enviamos correo.')).toBeVisible();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
+ await page.screenshot({path:`artifacts/${test.info().project.name}-subscription.png`,fullPage:true});
+});

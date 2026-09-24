@@ -75,4 +75,4 @@ fetch('data/product.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('cov
 document.getElementById('closeDetail').onclick=()=>document.getElementById('signalDetail').close();
 document.getElementById('signalDetail').onclick=e=>{if(e.target.id==='signalDetail')e.target.close()};
 const coverageLink=document.querySelector('.coverage a');
-if(coverageLink)coverageLink.insertAdjacentHTML('afterend',' · <a href="global.html">Global Intelligence <strong>PREMIUM</strong> →</a>');
+if(coverageLink)coverageLink.insertAdjacentHTML('afterend',' · <a href="global.html">Global Intelligence <strong>PREMIUM</strong> →</a> · <a href="subscription.html">Resumen semanal FREE →</a>');
