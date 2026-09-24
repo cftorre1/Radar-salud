@@ -126,6 +126,32 @@
         "queue_persistence"
       ],
       "result": "success_one_undated_backfill_no_live"
+    },
+    "excel_canonical_qa": {
+      "kind": "github_actions",
+      "sha": "0a4071c94eba54a41837e86855d6f0240f749cc7",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35986870242",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "result": "success"
+    },
+    "isapre_pulse_qa": {
+      "kind": "github_actions",
+      "sha": "7fbf5c7ab8cff0e572625cc95cb93f89da75ed14",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35992139203",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "result": "success"
     }
   },
   "blocks": [
@@ -140,6 +166,21 @@
       ],
       "missing": [
         "validar panel y estados contra el baseline con datos LIVE reales en staging"
+      ],
+      "requirements": [
+        {
+          "label": "Baseline versionado y panel operativo",
+          "status": "Validado",
+          "evidence": "staging_qa"
+        },
+        {
+          "label": "Gates de todos los bloques Beta derivados de evidencia",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Registro completo de decisiones de release",
+          "status": "Pendiente"
+        }
       ]
     },
     {
@@ -158,6 +199,26 @@
         "validar dos pulsos Isapres y Prestadores en ventana real",
         "consolidación rutinaria sin borrar eventos estratégicos",
         "guard de repetición y filtro de ruido con muestras adversarias"
+      ],
+      "requirements": [
+        {
+          "label": "Cards V2 y preferencias sin duplicidad",
+          "status": "Validado",
+          "evidence": "cards_v2_qa"
+        },
+        {
+          "label": "Pulso Prestadores con tres resoluciones materiales",
+          "status": "Validado",
+          "evidence": "cards_v2_qa"
+        },
+        {
+          "label": "Dos pulsos y consolidación estratégica comprobados en ventana real",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Recuración histórica y cobertura completa del ruido administrativo",
+          "status": "Pendiente"
+        }
       ]
     },
     {
@@ -173,6 +234,22 @@
       ],
       "missing": [
         "validación editorial de insights analíticos adicionales antes de publicar conclusiones o tendencias; Pulso factual ya validado en #29"
+      ],
+      "requirements": [
+        {
+          "label": "Tres familias Excel, esquema, series y diagnóstico canónico",
+          "status": "Validado",
+          "evidence": "excel_canonical_qa"
+        },
+        {
+          "label": "Pulso Isapre factual reconciliado y fail-closed",
+          "status": "Validado",
+          "evidence": "isapre_pulse_qa"
+        },
+        {
+          "label": "Insights analíticos adicionales con validación editorial",
+          "status": "Pendiente"
+        }
       ]
     },
     {
@@ -190,6 +267,24 @@
         "ISP/ANAMED",
         "DEIS",
         "newsrooms prioritarios verificados"
+      ],
+      "requirements": [
+        {
+          "label": "FONASA directo",
+          "status": "Pendiente"
+        },
+        {
+          "label": "ISP/ANAMED",
+          "status": "Pendiente"
+        },
+        {
+          "label": "DEIS",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Newsrooms prioritarios verificados",
+          "status": "Pendiente"
+        }
       ]
     },
     {
@@ -206,6 +301,20 @@
         "captura de research material",
         "Qué mirar en Chile trazable",
         "clasificación PREMIUM sin transferencia automática"
+      ],
+      "requirements": [
+        {
+          "label": "Research material de fuentes internacionales aprobadas",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Qué mirar en Chile con hipótesis y evidencia separadas",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Capa PREMIUM distinguible de Trend Chile",
+          "status": "Pendiente"
+        }
       ]
     },
     {
@@ -217,12 +326,24 @@
         "staging_qa",
         "live_discovery"
       ],
-      "dependencies": [
-        "fuente publique una señal nueva elegible LIVE; workflow incremental"
-      ],
+      "dependencies": [],
       "missing": [
-        "observar y validar una publicación genuina LIVE en captura incremental",
         "estado de cobertura histórica progresiva"
+      ],
+      "requirements": [
+        {
+          "label": "Cobertura LIVE/BACKFILL medida y separada en staging",
+          "status": "Validado",
+          "evidence": "staging_qa"
+        },
+        {
+          "label": "Replay técnico discovery → cola → selección con fallos ante mezcla",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Cobertura histórica progresiva con límites visibles",
+          "status": "Pendiente"
+        }
       ]
     },
     {
@@ -239,6 +360,20 @@
         "gestión de suscriptores",
         "digest FREE resumido",
         "envío real condicionado a material relevante"
+      ],
+      "requirements": [
+        {
+          "label": "Captura consentida y gestión básica",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Digest semanal condicional FREE",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Preparación PREMIUM con envío real cuando exista proveedor",
+          "status": "Pendiente"
+        }
       ]
     },
     {
@@ -255,6 +390,20 @@
         "interacciones con cards y fuentes",
         "filtros e intereses",
         "conversión email con minimización"
+      ],
+      "requirements": [
+        {
+          "label": "Visitas y recurrencia con minimización",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Interacciones y filtros medidos",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Conversión email medible",
+          "status": "Pendiente"
+        }
       ]
     },
     {
@@ -269,6 +418,16 @@
       "missing": [
         "representación coherente en producto",
         "QA de límites FREE/PREMIUM"
+      ],
+      "requirements": [
+        {
+          "label": "FREE y PREMIUM coherentes en producto",
+          "status": "Pendiente"
+        },
+        {
+          "label": "QA de límites sin pagos ni precio definitivo",
+          "status": "Pendiente"
+        }
       ]
     },
     {
@@ -285,6 +444,24 @@
         "correo corporativo y SPF/DKIM/DMARC",
         "políticas legales aprobadas",
         "página de cobertura y contacto"
+      ],
+      "requirements": [
+        {
+          "label": "Dominio y SSL técnicos",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Favicon y metadata/Open Graph",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Correo institucional y DNS",
+          "status": "Pendiente"
+        },
+        {
+          "label": "Privacidad, términos, cobertura y contacto institucional",
+          "status": "Pendiente"
+        }
       ]
     }
   ],
@@ -323,6 +500,11 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Dirección aprobó separar validación técnica LIVE de observación externa. Se agrega desglose auditable de requisitos y porcentaje de cumplimiento sin alterar el conteo estricto de bloques. Replay en candidato, pendiente QA remoto. Captura incremental real continúa.",
+      "evidence": []
+    },
     {
       "date": "2026-09-24",
       "change": "Daily Radar pilot #19 sobre staging: 7 fuentes técnicas OK, un enlace DF nuevo sobre minería sin fecha verificable → BACKFILL pendiente; LIVE 0, cola 5 BACKFILL pendientes, 13 rechazados, 1 publicado. Preview automático #36 PASS tests, QA desktop/mobile, Reviewer, deploy y smoke. No inferir evento LIVE ni habilitar cobertura completa.",
@@ -503,6 +685,14 @@
         "no sustituir QA ni Reviewer",
         "sin acceso a secretos o pricing"
       ]
+    }
+  ],
+  "external_observations": [
+    {
+      "id": "first_genuine_live",
+      "status": "Pendiente de observación externa",
+      "description": "El pipeline LIVE se valida técnicamente por replay controlado; todavía no se observó una publicación real, pertinente y fechada después del watermark. No bloquea los demás bloques MVP.",
+      "next_check": "Mantener captura incremental; adjuntar primer evento real con URL, fecha, cola, cobertura y feed."
     }
   ]
 }

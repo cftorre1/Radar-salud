@@ -32,3 +32,16 @@ def test_source_baseline_has_no_unproven_validation():
     assert report["open_failures"]
     assert report["human_blockers"]
     assert any("Excel" in x for x in report["missing_for_beta"])
+    assert 0 < report["readiness"]["validated_requirements"] < report["readiness"]["total_requirements"]
+    assert report["readiness"]["requirement_percent"] == round(100*report["readiness"]["validated_requirements"]/report["readiness"]["total_requirements"])
+    assert report["external_observations"][0]["id"]=="first_genuine_live"
+    assert all("publicación genuina LIVE" not in x for x in report["missing_for_beta"])
+
+def test_subrequirement_without_successful_full_evidence_never_counts(tmp_path):
+    baseline=json.loads(Path("config/pmo_baseline.json").read_text())
+    first=baseline["blocks"][0]["requirements"][0]
+    first.update(status="Validado",evidence="live_discovery")
+    path=tmp_path/"baseline.json";path.write_text(json.dumps(baseline))
+    result=project(path,baseline["reference_staging_sha"])
+    assert result["blocks"][0]["requirements"][0]["status"]=="Implementado"
+    assert result["readiness"]["validated_requirements"]==project(Path("config/pmo_baseline.json"),baseline["reference_staging_sha"])["readiness"]["validated_requirements"]-1

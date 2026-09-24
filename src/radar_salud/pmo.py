@@ -12,6 +12,8 @@ def project(path: Path, candidate_sha: str | None = None, now: datetime | None =
     now = now or datetime.now(timezone.utc)
     evidence = baseline["evidence_catalog"]
     blocks = []
+    completed_requirements=0
+    total_requirements=0
     for source in baseline["blocks"]:
         block = dict(source)
         links = [evidence[key] for key in block["evidence"] if key in evidence]
@@ -25,6 +27,21 @@ def project(path: Path, candidate_sha: str | None = None, now: datetime | None =
             block["status"] = "Implementado"
             block["validation_note"] = "Falta evidencia completa del commit candidato."
         block["evidence_links"] = [{"url": e["url"], "sha": e["sha"], "result": e["result"]} for e in links]
+        requirements=[]
+        for entry in source.get("requirements", []):
+            requirement=dict(entry)
+            proof=evidence.get(requirement.get("evidence"), {})
+            supported=(proof.get("result")=="success" and REQUIRED_CHECKS <= set(proof.get("checks",[]))
+                       and str(proof.get("url","")).startswith("https://"))
+            if requirement.get("status")=="Validado" and not supported:
+                requirement["status"]="Implementado"
+                requirement["validation_note"]="Falta evidencia completa de QA/Reviewer."
+            if supported and requirement["status"]=="Validado":
+                requirement["evidence_url"]=proof["url"]
+                completed_requirements+=1
+            requirements.append(requirement)
+            total_requirements+=1
+        block["requirements"]=requirements
         blocks.append(block)
     critical = [b for b in blocks if b["critical"]]
     validated = [b for b in critical if b["status"] == "Validado"]
@@ -34,6 +51,7 @@ def project(path: Path, candidate_sha: str | None = None, now: datetime | None =
     yesterday = now.date().toordinal() - 1
     changes = [c for c in baseline["changelog"] if datetime.fromisoformat(c["date"]).date().toordinal() >= yesterday]
     missing = [f"{b['title']}: {item}" for b in critical if b["status"] != "Validado" for item in b["missing"]]
+    external_observations=baseline.get("external_observations",[])
     return {
         "version": baseline["version"], "target_date": baseline["target_date"],
         "candidate_sha": candidate_sha, "reference_staging_sha": baseline["reference_staging_sha"],
@@ -41,8 +59,11 @@ def project(path: Path, candidate_sha: str | None = None, now: datetime | None =
         "reference_deploy": evidence["staging_qa"],
         "release_rule": baseline["release_rule"],
         "readiness": {"ready": ready, "label": "Lista para decisión de release" if ready else "No lista para Beta",
-                      "validated": len(validated), "total": len(critical)},
+                      "validated": len(validated), "total": len(critical),
+                      "validated_requirements":completed_requirements,"total_requirements":total_requirements,
+                      "requirement_percent":round(100*completed_requirements/total_requirements) if total_requirements else None},
         "blocks": blocks, "open_failures": failures, "human_blockers": blockers,
+        "external_observations":external_observations,
         "scope_deviations": baseline["scope_deviations"], "changes_since_yesterday": changes,
         "missing_for_beta": missing, "next_action": missing[0] if missing else "Solicitar decisión explícita de release."
     }

@@ -69,3 +69,9 @@ Deuda de infraestructura prioritaria, posterior al MVP viernes: handoff automát
 ## Live Evidence Integrity · tercera captura incremental
 
 [Daily Radar pilot #19](https://github.com/cftorre1/Radar-salud/actions/runs/35998824088) consultó siete fuentes exitosamente. Encontró un enlace nuevo de DF sobre minería sin fecha verificable; se clasificó BACKFILL pendiente y no entró a LIVE ni al feed. La cola quedó con 5 BACKFILL pendientes, 13 rechazados y 1 publicado. LIVE permanece 0/0/0. [Preview #36](https://github.com/cftorre1/Radar-salud/actions/runs/35999033456) pasó tests, QA desktop/mobile, Reviewer y smoke de estos datos. La validación de una publicación LIVE genuina depende de que una fuente activa publique un ítem nuevo, pertinente y fechado; no se genera evidencia artificial.
+
+## Regla de avance revisada · replay y observación externa
+
+El recorrido discovery → LIVE → cola → histórico/feed → cobertura se prueba con fixtures controlados, incluido un evento fechado, uno histórico y otro sin fecha, repetición idempotente y un ataque de mezcla BACKFILL/LIVE. Esta prueba certifica la **capacidad técnica**, nunca la observación de una noticia real. El primer evento LIVE genuino queda en un registro independiente «Pendiente de observación externa» y se seguirá buscando en capturas incrementales; su espera no bloquea otros bloques del MVP.
+
+El indicador `0/10` conserva su significado estricto: bloques críticos completamente Validados. El panel agrega requisitos explícitos por bloque y porcentaje de requisitos respaldados por evidencias de tests, desktop, mobile, Reviewer y preview. Un requisito sin evidencia completa se degrada a Implementado; el porcentaje no estima calidad editorial ni equivale a autorización de release. Los bloqueos humanos y las observaciones externas se muestran por separado.

@@ -52,17 +52,19 @@ def build(root, output):
     ledger = read(root / "data/autopilot/ledger.json", {"iterations": []})
     baseline_path = root / "config/pmo_baseline.json"
     live = [item for item in queue.items.values() if item.get("lane") == "LIVE"]
-    selected_urls = set()
+    selected_evidence = set()
     for row in snapshot.get("signals", []):
-        if row.get("ingestion_mode") != "LIVE":
+        if row.get("ingestion_mode") != "LIVE" or not row.get("detected_at"):
             continue
-        selected_urls.add(row.get("source_url"))
+        selected_evidence.add((row.get("source_url"), row["detected_at"]))
         if row.get("sanction_count"):
-            selected_urls.update(x.get("url") for x in row.get("source_alternatives", []))
+            selected_evidence.update((x.get("url"), x.get("detected_at")) for x in row.get("source_alternatives", [])
+                if x.get("ingestion_mode") == "LIVE" and x.get("detected_at"))
     coverage_live = dict(
         detected=len(live),
         evaluated=sum(item.get("status") in ("published", "rejected") for item in live),
-        selected=sum(item.get("status") == "published" and item.get("raw", {}).get("url") in selected_urls
+        selected=sum(item.get("status") == "published" and
+                     (item.get("raw", {}).get("url"), item.get("detected_at")) in selected_evidence
                      for item in live),
     ) if measured else None
     report = dict(version="0.9.0", generated_at=datetime.now(timezone.utc).isoformat(),

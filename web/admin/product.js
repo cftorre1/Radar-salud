@@ -6,6 +6,7 @@ function link(parent,url,label){const a=node('a',label);a.href=url;parent.append
 function renderPMO(pmo){
   if(!pmo){text('readiness','Sin baseline PMO verificado. No se puede determinar Beta Readiness.');return}
   text('readiness',`${pmo.readiness.label} · ${pmo.readiness.validated}/${pmo.readiness.total} bloques críticos validados`);
+  text('requirementProgress',pmo.readiness.total_requirements?`${pmo.readiness.validated_requirements}/${pmo.readiness.total_requirements} requisitos validados con evidencia · ${pmo.readiness.requirement_percent}% del baseline desglosado.`:'Requisitos aún sin desglose verificable.');
   text('releaseRule',pmo.release_rule);
   text('deployments',`Staging candidato: ${pmo.candidate_sha||'Sin SHA de CI'} · Último QA staging registrado: ${pmo.reference_staging_sha.slice(0,8)} · Producción: último SHA comprobado ${pmo.production_reference_sha.slice(0,8)} (estado actual no medido en este reporte).`);
   const deployment=document.getElementById('deployments');deployment.append(document.createTextNode(' Evidencia: '));link(deployment,pmo.reference_deploy.url,'run de staging validado');
@@ -16,10 +17,14 @@ function renderPMO(pmo){
     if(block.validation_note)line(box,block.validation_note);
     if(block.missing.length)line(box,`Falta: ${block.missing.join('; ')}`,'p');
     if(block.dependencies.length)line(box,`Depende de: ${block.dependencies.join('; ')}`,'p');
+    for(const requirement of block.requirements||[]){const item=node('p',`${requirement.status}: ${requirement.label}`);if(requirement.evidence_url){item.append(document.createTextNode(' · '));link(item,requirement.evidence_url,'evidencia')}box.append(item)}
     for(const evidence of block.evidence_links){const p=node('p','Evidencia de referencia: ');link(p,evidence.url,`${evidence.sha.slice(0,8)} · ${evidence.result}`);box.append(p)}
     document.getElementById('blocks').append(box);
   }
   const failures=document.getElementById('failures');
+  const external=document.getElementById('externalObservations');
+  for(const observation of pmo.external_observations||[])line(external,`${observation.status}: ${observation.description} ${observation.next_check||''}`);
+  if(!(pmo.external_observations||[]).length)line(external,'Sin observaciones externas pendientes.');
   if(!pmo.open_failures.length&&!pmo.human_blockers.length)line(failures,'Sin bloqueos abiertos.');
   for(const x of pmo.open_failures)line(failures,`${x.severity}: ${x.description} (${x.source})`);
   for(const x of pmo.human_blockers)line(failures,`${x.action} Proveedor: ${x.provider}. Datos: ${x.required_data}. Tiempo: ${x.estimated_time}. Impacto: ${x.beta_impact}`);

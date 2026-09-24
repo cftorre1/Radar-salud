@@ -182,7 +182,8 @@ def _sanction_pulses(signals, today=None):
             if topic:parts.append(topic)
             return " · ".join(x for x in parts if x)
         resolutions=[{"title":s.get("title"),"source_name":s.get("source_name"),
-            "url":s.get("source_url"),"event_date":s.get("event_date"),"material":material(s)}
+            "url":s.get("source_url"),"event_date":s.get("event_date"),"material":material(s),
+            "ingestion_mode":s.get("ingestion_mode"),"detected_at":s.get("detected_at")}
             for s in items if s.get("source_url")]
         lead=material(items[0])
         brief_topic=str(items[0].get("fiscalization_topic") or "")

@@ -48,6 +48,9 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  await expect(page.locator('#metrics')).toContainText('LIVE pending');
  await expect(page.locator('#usage')).toContainText('Costo USD: no disponible');
  await expect(page.locator('#readiness')).toContainText('No lista para Beta');
+ await expect(page.locator('#requirementProgress')).toContainText('requisitos validados con evidencia');
+ await expect(page.locator('#externalObservations')).toContainText('Pendiente de observación externa');
+ await expect(page.locator('#externalObservations')).toContainText('No bloquea los demás bloques MVP');
  await expect(page.locator('#blocks .block')).toHaveCount(10);
  await expect(page.locator('#failures')).toContainText('Autopilot distingue QA aprobado');
  await expect(page.locator('#deployments')).toContainText('Producción: último SHA comprobado');
