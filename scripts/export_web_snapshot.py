@@ -125,6 +125,17 @@ def _latest_stats(signals):
     for items in fam.values():other.append(max(items,key=lambda x:(_d(x.get("event_date")) or date.min,x.get("radar_score",0))))
     return other
 
+def _routine_accreditation(s):
+    """Retain individual acts in history, omit routine institutional entries from feed."""
+    if s.get("source_name")!="Superintendencia de Salud" or s.get("distribution")!="archive":return False
+    text=str(s.get("what_happened") or "").lower()
+    individual=("registro público de prestadores institucionales de salud acreditados" in text
+                and re.search(r"\binscribi[oó]\s+al?\b",text) is not None)
+    programs=("registro de entidades certificadoras" in text
+              and "programas acreditados" in text and "inscribir" in text)
+    strategic=re.search(r"\b(modific[oó]|sustituy[oó]|derog[oó])\s+(?:el|la|los|las)\s+(?:reglamento|est[aá]ndar|norma|circular)",text)
+    return bool((individual or programs) and not strategic)
+
 def _sanction_pulses(signals, today=None):
     """Keep individual records in history, show one rolling pulse per sector."""
     today=today or date.today()
@@ -165,7 +176,7 @@ def curate(signals,resolve_external=True):
         if ok:normalized.append(r)
     if not normalized:return []
     latest=max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
-    recent=[s for s in normalized if _d(s.get("event_date")) and (latest-_d(s.get("event_date"))).days<=90]
+    recent=[s for s in normalized if _d(s.get("event_date")) and (latest-_d(s.get("event_date"))).days<=90 and not _routine_accreditation(s)]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 

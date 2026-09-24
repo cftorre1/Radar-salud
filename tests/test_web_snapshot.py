@@ -19,6 +19,18 @@ def test_regulation_survives_and_is_recent():
     out=m.curate([r])
     assert out[0]["signal_types"]==["Normativa"]
 
+def test_individual_routine_accreditation_stays_in_history_but_not_feed():
+    routine=sig("Resolución Exenta IP/N°5024",event="2026-07-23",score=82,cat="Regulación & Legal")
+    routine.update(distribution="archive",signal_types=["Normativa"],scopes=["Prestadores"],
+        what_happened="La Superintendencia de Salud inscribió al Centro de Salud Familiar X en el Registro Público de Prestadores Institucionales de Salud Acreditados.")
+    strategic=dict(routine,title="Cambio del estándar de acreditación",source_url="https://x/strategic",
+        what_happened="La Superintendencia modificó el estándar de acreditación y sus requisitos para los prestadores.")
+    assert m._routine_accreditation(routine) and not m._routine_accreditation(strategic)
+    assert [x["title"] for x in m.curate([routine,strategic],resolve_external=False)]==["Cambio del estándar de acreditación"]
+    registry=dict(routine,title="Resolución Exenta IP/N°4417",source_url="https://x/registry",
+        what_happened="La resolución ordena inscribir en el Registro de Entidades Certificadoras 79 programas acreditados de formación de especialistas.")
+    assert m._routine_accreditation(registry)
+
 def test_sanctions_become_two_rolling_pulses_without_losing_individual_sources():
     from datetime import date
     rows=[]
