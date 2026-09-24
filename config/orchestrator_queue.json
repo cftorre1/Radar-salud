@@ -181,7 +181,7 @@
         "staging 6eabf235ca9ddaff9841ee3aa0f554243e7d84d5 — parser verificado contra HTML vivo: cuerpo material 5.950 caracteres, sin header señuelo ni footer; 142 tests Python y 20 Node PASS.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36055804692 — tests, QA desktop/mobile, Reviewer CI e independiente y preview PASS; Pfizer sigue BACKFILL/bloqueo externo, nunca LIVE."
       ],
-      "resume_condition": "Retomar después de actualizar UX/Global/FREE-PREMIUM y desbloqueos humanos, o si aparece una vía clara de acceso/captura real."
+      "resume_condition": "Retomar solo después de validar el paquete previo a Fuentes Chile: refinamientos MVP pendientes, compresión mobile/home, Global Intelligence, FREE/PREMIUM, experimento Luna/Terra/Astra, teaser Global + Insight Alicanto/costos y sugerencia anónima de fuentes; o si Dirección cambia explícitamente esta prioridad."
     },
     {
       "id": "global_intelligence_lite",
@@ -537,7 +537,9 @@
       ],
       "remaining_items": [
         "Mayor profundidad y densidad de Global Intelligence según evidencia disponible",
-        "Enriquecimiento DF/mismo emisor correctamente etiquetado e historia relevante"
+        "Enriquecimiento DF/mismo emisor correctamente etiquetado e historia relevante",
+        "Compresión mobile/home aprobada en mobile_home_compression_2026_09_24",
+        "Eliminar copy introductorio redundante de Global Intelligence según decisión de Dirección"
       ],
       "implementation_shas": [
         "b071d4960953bf25124690162552745d76062834",
@@ -669,6 +671,58 @@
         "persistencia trazable de una sugerencia de prueba",
         "notificación interna de prueba o bloqueo humano explícito",
         "prueba de anti-spam/fail-closed"
+      ]
+    },
+    {
+      "id": "mobile_home_compression_2026_09_24",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Comprimir la portada mobile para que el valor principal («Qué debes saber en 30 segundos») aparezca lo antes posible, eliminando explicaciones obvias y colapsando controles secundarios sin perder funcionalidad.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Antes de modificar, revisar staging y preservar cualquier cambio ya validado; no duplicar implementaciones.",
+        "Mantener el orden superior: Header → acceso Global Intelligence PREMIUM.",
+        "Reemplazar el bloque visible «Tu radar» por una fila/botón compacto «Personalizar mi radar». No mostrar tarjeta, título ni explicación persistente en home.",
+        "Al activar «Personalizar mi radar», abrir opciones mediante drawer/modal/acordeón accesible. Mostrar allí microcopy breve equivalente a «Guardaremos tus preferencias para tu próximo ingreso.» y conservar persistencia entre visitas.",
+        "Reemplazar el CTA visible del resumen semanal por una fila/botón compacto «Suscríbete». No mostrar la explicación semanal en home.",
+        "Al activar «Suscríbete», mostrar el campo de correo y una explicación breve equivalente a «Recibe un resumen semanal para no perderte lo importante.» Mantener consentimientos y gates ya aprobados; no habilitar envío real si siguen existiendo bloqueos humanos.",
+        "Reducir el tamaño tipográfico de «Encuentra lo que importa» en mobile para que se muestre en una sola línea en el viewport objetivo, sin comprometer legibilidad ni provocar overflow.",
+        "Eliminar de la home el texto «Alicanto Salud monitorea fuentes oficiales y verificadas para separar lo importante del ruido y mostrarte con claridad qué cambió y por qué importa.»",
+        "Mantener «Última actualización: <fecha y hora>» como información compacta.",
+        "Comprimir «Miramos mucho para mostrarte poco»: conservar el título, reemplazar el detalle técnico por una sola línea comprensible y auditable, preferentemente formato «<N> fuentes activas · <N> señales clave hoy · <N> incidencias técnicas». Evitar términos internos como detectadas/evaluadas/seleccionadas si no aportan comprensión.",
+        "Mantener «Cómo seleccionamos lo que importa» como acceso secundario compacto; el detalle metodológico debe vivir fuera de la home.",
+        "Renombrar «Explorar» a «Filtros» y eliminar la frase explicativa sobre qué cambian los controles. Mostrar directamente los controles Tipo y Ámbito (o equivalentes mínimos) sin bajada redundante.",
+        "Reducir padding vertical, gaps y altura de contenedores en mobile. «Personalizar mi radar» y «Suscríbete» deben comportarse visualmente como filas/CTAs compactos, no como cards altas.",
+        "Permitir que «Miramos mucho…» pueda expandirse para ver detalle si es útil, pero mantenerlo colapsado/compacto por defecto en mobile.",
+        "Objetivo de viewport mobile: sin interacción y con scroll mínimo, debe verse al menos el inicio de «Qué debes saber en 30 segundos» en la primera pantalla o quedar claramente asomando; medirlo en QA con viewport iPhone representativo.",
+        "En Global Intelligence eliminar el texto introductorio «Selección curada de research internacional, separada de la evidencia chilena. Cada tema muestra qué encontró la fuente, por qué importa y qué observar en Chile como hipótesis — nunca como tendencia local automática.»",
+        "En Global Intelligence eliminar el texto «Vista pública de la experiencia. El acceso exclusivo se habilitará solo cuando exista autorización.»",
+        "La separación conceptual Global Theme ≠ Trend Chile se mantiene como regla editorial y de datos, aunque ya no se explique mediante esos párrafos visibles.",
+        "No agregar nuevas bajadas explicativas para reemplazar textos eliminados salvo que QA demuestre una ambigüedad real."
+      ],
+      "constraints": [
+        "No tocar main/producción.",
+        "No eliminar funcionalidad ni persistencia ya validada al compactar la UI.",
+        "No inventar métricas de cobertura; toda cifra visible debe ser auditable.",
+        "No cambiar pricing, pagos, secretos, privacidad, proveedores ni criterios editoriales.",
+        "No reintroducir textos explicativos redundantes por defecto.",
+        "Mantener accesibilidad de controles colapsados, foco, teclado y retorno."
+      ],
+      "evidence_required": [
+        "QA desktop/mobile",
+        "Reviewer independiente",
+        "captura mobile antes/después",
+        "evidencia de viewport donde «Qué debes saber en 30 segundos» aparece o asoma materialmente antes que en la versión actual",
+        "prueba de Personalizar mi radar colapsado/expandido y persistencia",
+        "prueba de Suscríbete colapsado/expandido",
+        "Filtros sin bajada redundante",
+        "Miramos mucho compacto con cifras auditables/fail-closed",
+        "Global Intelligence sin los dos párrafos eliminados",
+        "sin regresiones de accesibilidad"
       ]
     }
   ],
