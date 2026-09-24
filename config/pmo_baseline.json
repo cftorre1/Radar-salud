@@ -710,6 +710,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Dirección fija dos features FREE independientemente del experimento de modelos: teaser de Global Intelligence y Insight Alicanto de la semana. Se agrega diversidad editorial para evitar repetición y observabilidad de gasto/modelo por feature en panel de control.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Dirección aprueba experimento controlado Luna/Terra/Astra para Global Intelligence y una pieza FREE de alto impacto, con corpus complejo incluso >90 días como stress test, scoring ciego, costo real, edición humana y caso de negocio antes de decidir routing.",
       "evidence": []
     },
@@ -1386,6 +1391,18 @@
         "Evaluar teaser de Global Intelligence en feed FREE como gancho útil hacia Premium.",
         "Evaluar una pieza FREE de alta inteligencia y baja frecuencia para fidelización/halo de calidad, sin degradar artificialmente el resto del producto.",
         "No activar gasto recurrente de Terra/Astra en producción hasta decisión posterior basada en resultados."
+      ]
+    },
+    {
+      "id": "free_value_features_and_model_cost_observability_2026_09_24",
+      "status": "Aprobado",
+      "priority": "Alta",
+      "horizon": "MVP antes de release",
+      "decisions": [
+        "Global Intelligence tendrá teaser acotado en FREE sí o sí; el experimento solo optimiza el modelo.",
+        "Insight Alicanto de la semana será una pieza FREE fija de alto valor y baja frecuencia.",
+        "La selección semanal debe usar diversidad editorial y un universo amplio de candidatos para evitar repetición; si no hay cruce sólido, se permite deep dive de una sola señal excepcional.",
+        "El panel de control incorporará gasto separado por feature (Global Intelligence / Insight semanal) y por modelo (Luna/Terra/Astra), con tokens y costo real cuando sea medible."
       ]
     }
   ]
