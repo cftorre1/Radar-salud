@@ -382,6 +382,27 @@
         "Pulso Isapre factual reconciliado y fail-closed",
         "Insights analíticos adicionales con validación editorial"
       ]
+    },
+    "mvp_product_refinements_global_editorial_qa": {
+      "kind": "github_actions",
+      "sha": "234e8445e7d99066e9a72af563280ead98457347",
+      "implementation_sha": "68563df79928370cb553cd6fc0ba1955f0c5677a",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36067186012",
+      "checks": [
+        "146 tests Python",
+        "23 tests web",
+        "16 browser desktop/mobile",
+        "reviewer independiente",
+        "reviewer CI",
+        "preview",
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer"
+      ],
+      "result": "success",
+      "scope": "Unidad editorial Global/DF: análisis estructurado y cruzado sin convertir hipótesis en Trend Chile; enriquecimiento Bupa separado de corroboración, fecha DF 2026-09-21 y contexto IntegraMédica atribuido al mismo artículo. Reviewer rechazó 1–2 hallazgos admitidos, fecha 2026-09-22 y ausencia de historia; todo se corrigió antes del preview final.",
+      "validated_requirements": []
     }
   },
   "blocks": [
@@ -532,7 +553,8 @@
       "status": "Implementado",
       "critical": true,
       "evidence": [
-        "global_intelligence_lite_qa"
+        "global_intelligence_lite_qa",
+        "mvp_product_refinements_global_editorial_qa"
       ],
       "dependencies": [
         "fuentes internacionales con acceso público",
@@ -783,6 +805,13 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Paquete de refinamientos MVP completa su unidad editorial Global/DF en 68563df: informes extensos con profundidad estructurada y lectura cruzada; Bupa/DF con fecha primaria 2026-09-21, enriquecimiento del mismo emisor/corporativo segregado y contexto IntegraMédica atribuido sin fingir corroboración. Reviewer bloqueó profundidad, fecha e historia en el primer corte; se corrigió y el QA final 36067186012 pasó 146 Python, 23 web, 16 browser desktop/mobile, Reviewer CI y preview. La tarea sigue approved por compresión responsive y limpieza de copy Global aprobadas después.",
+      "evidence": [
+        "mvp_product_refinements_global_editorial_qa"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Paquete de refinamientos MVP completa su unidad de datos en e05ad33: Pulso Isapre usa data_period 2026-07, publicación 2026-09-07 y validación 2026-09-24; muestra tres fuentes oficiales canónicas y cinco insights multiserie reconciliados. Reviewer rechazó URLs cruzadas/duplicadas, fechas futuras y puntuación incorrecta; se corrigieron antes del QA #139, que pasó tests, desktop/mobile, Reviewer CI y preview. Tarea sigue approved solo por profundidad Global y enriquecimiento editorial pendientes.",
