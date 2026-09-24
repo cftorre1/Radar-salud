@@ -5,7 +5,7 @@
   "tasks": [
     {
       "id": "workflow_isolation_2026_09_24",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -32,7 +32,16 @@
         "evidencia de no deploy de producción",
         "QA/Reviewer/preview staging PASS"
       ],
-      "depends_on": []
+      "depends_on": [],
+      "completed_at": "2026-09-24",
+      "evidence": [
+        "main ea55bc7e084b54ff07cb25ea50e211186dfb1c63 → 28be310808fffbe5c3212e75ddda2057ed635ca0; únicamente .github/workflows/daily-radar.yml y static.yml",
+        "staging 7f1dd05c9df46bff71e08d44f2d8546579d37117 → piloto d698f72556d7f2dddf7b523472c0edbb9d90712a → fix 1d1f1d3f64b78856f78f07eb77ab0d75cfbc0514",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36023129314 — piloto #22; 102 tests; límite 1; push HEAD:staging; solicita preview",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36023632007 — preview #59; bootstrap, 104 tests, 16 Node, QA desktop/mobile, Reviewer y preview PASS; artefacto de rollback creado",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/35939432026 — rollback real previo; mismo mecanismo conservado; no se indujo un fallo en este ciclo",
+        "Producción: último deploy #90, https://github.com/cftorre1/Radar-salud/actions/runs/36018933311; no apareció un run #91 durante piloto y preview; main 28be310 no desplegado."
+      ]
     },
     {
       "id": "intelligence_inbox_cards_v22",
@@ -330,7 +339,8 @@
         "test de consumo secuencial de dos tareas approved",
         "registro PMO de transición de estados",
         "sin intervención humana entre tareas"
-      ]
+      ],
+      "progress": "En esta sesión Work leyó la cola al inicio y al cierre del ciclo de aislamiento y continúa con tareas approved. La transición validated de aislamiento habilita dependientes. Prueba de dos tareas secuenciales pendiente."
     },
     {
       "id": "orchestrator_event_trigger",
@@ -359,7 +369,8 @@
         "ejecutor/runner activado o limitación documentada",
         "QA del flujo",
         "registro PMO"
-      ]
+      ],
+      "progress": "Vigilancia Work horaria activa desde 2026-09-24 15:57 UTC; GitHub webhook disponible aquí solo para pull requests, no para push de este JSON. Primer wake-up y ejecución posterior aún sin observar; permanece approved."
     }
   ],
   "execution_policy": {

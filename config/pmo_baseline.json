@@ -712,6 +712,15 @@
       "date": "2026-09-24",
       "change": "Autopilot distingue QA local de preview remoto y ya no impone cinco intentos; falta validación del flujo completo en staging.",
       "evidence": []
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Aislamiento de piloto y deploy: main solo dos workflows; piloto #22 limit=1 escribe staging; preview #59 pasa tests, browser QA desktop/mobile y Reviewer; producción #90 sin nuevo deploy. Bootstrap corregido al respetar respaldo de producción existente. Vigilancia de cola horaria activa; primera reactivación automática pendiente.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36023129314",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36023632007",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36018933311"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -923,7 +932,7 @@
     {
       "id": "staging_production_workflow_isolation",
       "title": "Aislamiento staging / producción en workflows",
-      "status": "Aprobado",
+      "status": "Validado",
       "priority": "Crítica",
       "scope": [
         "Modificar en main únicamente .github/workflows/daily-radar.yml y .github/workflows/static.yml",
@@ -938,7 +947,17 @@
         "No promover funcionalidades de staging",
         "No cambiar secretos, presupuestos, pricing ni criterios editoriales",
         "Registrar evidencia en PMO antes de reanudar pilotos"
+      ],
+      "evidence": [
+        "main ea55bc7e084b54ff07cb25ea50e211186dfb1c63 → 28be310808fffbe5c3212e75ddda2057ed635ca0; únicamente .github/workflows/daily-radar.yml y static.yml",
+        "staging 7f1dd05c9df46bff71e08d44f2d8546579d37117 → piloto d698f72556d7f2dddf7b523472c0edbb9d90712a → fix 1d1f1d3f64b78856f78f07eb77ab0d75cfbc0514",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36023129314 — piloto #22; 102 tests; límite 1; push HEAD:staging; solicita preview",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36023632007 — preview #59; bootstrap, 104 tests, 16 Node, QA desktop/mobile, Reviewer y preview PASS; artefacto de rollback creado",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/35939432026 — rollback real previo; mismo mecanismo conservado; no se indujo un fallo en este ciclo",
+        "Producción: último deploy #90, https://github.com/cftorre1/Radar-salud/actions/runs/36018933311; no apareció un run #91 durante piloto y preview; main 28be310 no desplegado."
       ]
     }
-  ]
+  ],
+  "current_main_workflows_sha": "28be310808fffbe5c3212e75ddda2057ed635ca0",
+  "current_staging_isolation_sha": "1d1f1d3f64b78856f78f07eb77ab0d75cfbc0514"
 }

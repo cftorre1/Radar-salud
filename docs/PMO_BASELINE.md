@@ -23,6 +23,14 @@ El panel calcula el readiness desde el estado de cada bloque y conserva un enlac
 
 ## Evidencia inicial y límites
 
+### Aislamiento staging / producción · 24 septiembre
+
+`main` pasó de `ea55bc7e` a `28be3108` modificando exclusivamente `daily-radar.yml` y `static.yml`: el piloto programado o manual consulta y escribe en `staging`; producción solo admite `workflow_dispatch` explícito sobre `main`. La configuración compatible llegó a staging en `7f1dd05c`. El [piloto #22](https://github.com/cftorre1/Radar-salud/actions/runs/36023129314), limitado a un elemento, pasó 102 tests y escribió `d698f725` solo en staging. `main` permaneció en `28be3108` y el último deploy de producción continuó siendo [#90](https://github.com/cftorre1/Radar-salud/actions/runs/36018933311); no hubo #91.
+
+El primer preview falló porque el bootstrap exigía que el nuevo HEAD de `main` ya estuviera desplegado. El fix `1d1f1d3f` admite las ramas auxiliares existentes sin modificarlas y conserva la exigencia de deploy aceptado si falta alguna. [Preview #59](https://github.com/cftorre1/Radar-salud/actions/runs/36023632007): bootstrap, 104 tests Python, 16 Node, QA browser desktop 1440×900 y mobile 390×844, Reviewer y deploy staging PASS. Generó artefacto de rollback; la restauración real ya se [ensayó en #7](https://github.com/cftorre1/Radar-salud/actions/runs/35939432026) y no se provocó de nuevo un fallo de staging en este ciclo. Capturas en el artefacto `staging-evidence-1d1f1d3` del run #59.
+
+Work consulta la cola y el PMO al iniciar y cerrar cada ciclo activo. Una vigilancia horaria de Work quedó habilitada para retomar tareas `approved` después de inactividad; el disparador GitHub disponible no admite push a un JSON (solo eventos de pull request). Falta observar la primera ejecución automática para marcar validada esa mejora. Las tareas no aprobadas y cualquier cambio de producción fuera de una excepción explícita permanecen excluidos.
+
 - Preview final [run #8](https://github.com/cftorre1/Radar-salud/actions/runs/35939727172) para `62111e3`: bootstrap, tests, QA 1440×900/390×844, Reviewer y deploy pasaron.
 - Ensayo [run #7](https://github.com/cftorre1/Radar-salud/actions/runs/35939432026): fallo deliberado del preview, rollback con comparación de bytes y job de restauración exitoso.
 - LIVE/BACKFILL globales aún carecen de primera medición. Los 2.515 pendientes legados no se reclasifican artificialmente. Excel legado figura como `not_recorded_legacy`; ninguna validación nueva puede inferirse de esos registros.
