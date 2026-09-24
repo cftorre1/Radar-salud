@@ -8,7 +8,7 @@ on:
         default: false
         type: boolean
       processing_limit:
-        description: 'Máximo de elementos procesados en este run; 0 usa límites existentes'
+        description: 'Máximo procesado; 0 usa 30 normal o 40 reconstrucción'
         required: false
         default: 0
         type: number
@@ -47,10 +47,18 @@ jobs:
         run: python scripts/seed_analysis_cache.py
       - name: Run incremental collectors
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
-        run: timeout --signal=TERM 20m python -m radar_salud.engine_cli --limit "${{ inputs.processing_limit || 0 }}"
+        env:
+          REQUESTED_LIMIT: ${{ inputs.processing_limit || 30 }}
+        run: |
+          limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 30 else 30)')
+          timeout --signal=TERM 20m python -m radar_salud.engine_cli --limit "$limit"
       - name: Controlled rebuild using cache and persistent pending queue
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
-        run: timeout --signal=TERM 20m python -m radar_salud.engine_cli --limit "${{ inputs.processing_limit || 0 }}"
+        env:
+          REQUESTED_LIMIT: ${{ inputs.processing_limit || 40 }}
+        run: |
+          limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 40 else 40)')
+          timeout --signal=TERM 20m python -m radar_salud.engine_cli --limit "$limit"
       - name: Export public snapshot and source health
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
       - name: Preserve queue, paid usage and checkpoints on failure
