@@ -1,7 +1,7 @@
 {
   "version": "beta-friday-2026-09-25",
   "target_date": "2026-09-25",
-  "reference_staging_sha": "292d3318f550e56d62109b192442b87da5c65567",
+  "reference_staging_sha": "46ff03a885d20c4648214cb2e9b515f959781a35",
   "production_reference_sha": "06831243d83705777f6a916fcc86a7896d6522da",
   "statuses": [
     "Aprobado",
@@ -48,8 +48,8 @@
   "evidence_catalog": {
     "staging_qa": {
       "kind": "github_actions",
-      "sha": "292d3318f550e56d62109b192442b87da5c65567",
-      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35988742995",
+      "sha": "46ff03a885d20c4648214cb2e9b515f959781a35",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35990692761",
       "checks": [
         "tests",
         "desktop",
@@ -91,6 +91,17 @@
         "preview"
       ],
       "result": "qa_failed_no_deploy"
+    },
+    "incremental_discovery": {
+      "kind": "github_actions",
+      "sha": "46ff03a885d20c4648214cb2e9b515f959781a35",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35991071881",
+      "checks": [
+        "tests",
+        "incremental_discovery",
+        "queue_persistence"
+      ],
+      "result": "success_no_new_publications"
     }
   },
   "blocks": [
@@ -122,7 +133,8 @@
       "missing": [
         "validar dos pulsos Isapres y Prestadores en ventana real",
         "consolidación rutinaria sin borrar eventos estratégicos",
-        "guard de repetición y filtro de ruido con muestras adversarias"
+        "guard de repetición y filtro de ruido con muestras adversarias",
+        "validar exclusión del feed de registros/acreditaciones rutinarias detectadas en backfill sin borrar histórico"
       ]
     },
     {
@@ -184,11 +196,10 @@
         "live_discovery"
       ],
       "dependencies": [
-        "discovery LIVE real y cola persistente"
+        "fuente publique una señal nueva elegible LIVE; workflow incremental"
       ],
       "missing": [
-        "publicar y validar cobertura real en staging tras corrección QA",
-        "verificar discovery incremental LIVE con una señal genuina si aparece",
+        "observar y validar una publicación genuina LIVE en captura incremental",
         "estado de cobertura histórica progresiva"
       ]
     },
@@ -290,6 +301,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Run #26 validó con QA desktop/mobile, Reviewer y preview el primer discovery: 7 fuentes técnicas, LIVE 0/0/0, BACKFILL separado; panel mobile390px. Segunda captura incremental #18 encontró 0 publicaciones nuevas reales, 5 backfill pendientes y ninguna llamada OpenAI. LIVE no puede certificarse con evento no observado.",
+      "evidence": [
+        "staging_qa",
+        "incremental_discovery"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Primera exploración real #17: siete fuentes consultadas, 2.533 ítems BACKFILL en cola (2.515 archivados por 90 días, 6 pendientes, 11 rechazados, 1 publicado), sin watermark previo ni LIVE aún. Una respuesta deep midió 9.268 tokens de entrada y 923 de salida. Run preview #25 falló aserción obsoleta de cobertura y no desplegó; corrección en siguiente candidato.",
