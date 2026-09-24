@@ -93,7 +93,7 @@
     },
     {
       "id": "excel_insights_v1",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -122,6 +122,13 @@
         "Reviewer cifras/períodos",
         "staging evidence",
         "fail-closed adversarial tests"
+      ],
+      "completed_at": "2026-09-24",
+      "evidence": [
+        "staging e9ff4d0599b64fafc0d93291757316b86954bddd → 945a4e57c57df35582cafa6007e5d7e8b4dd17d3 → 08b14dcc027ac98b348dd1ac49f43d0ef5275cfb → 4a88aa6d870768b49d994c140a55b41174e306ed",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36028404964 — bootstrap, 106 Python, 17 Node, 8 browser desktop/mobile, Reviewer y preview PASS",
+        "8 cálculos internos reconciliados con las tres series canónicas; una muestra FREE con período/fórmula/hoja/URL/hash; suma de eventos no se presenta como variación de stock ni se infiere causalidad",
+        "Tests adversarios para meses, denominadores, población, intervalo, hash, familia discordante y neto decimal; todos fail-closed; Reviewer independiente verificó cifras y períodos"
       ]
     },
     {

@@ -59,7 +59,8 @@ def project(path: Path, candidate_sha: str | None = None, now: datetime | None =
     ready = len(validated) == len(critical) and not failures and not blockers
     yesterday = now.date().toordinal() - 1
     changes = [c for c in baseline["changelog"] if datetime.fromisoformat(c["date"]).date().toordinal() >= yesterday]
-    missing = [f"{b['title']}: {item}" for b in critical if b["status"] != "Validado" for item in b["missing"]]
+    missing = [f"{b['title']}: {item}" for b in critical if b["status"] != "Validado"
+               for item in (b["missing"] or [b.get("validation_note", "Falta evidencia completa del commit candidato.")])]
     external_observations=baseline.get("external_observations",[])
     return {
         "version": baseline["version"], "target_date": baseline["target_date"],

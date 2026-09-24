@@ -192,6 +192,22 @@
       ],
       "result": "success_unplanned_workflow_run",
       "note": "Despliegue automático heredado de main; no promueve el candidato staging."
+    },
+    "excel_insights_v1_qa": {
+      "kind": "github_actions",
+      "sha": "4a88aa6d870768b49d994c140a55b41174e306ed",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36028404964",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "result": "success",
+      "validated_requirements": [
+        "Insights analíticos adicionales con validación editorial"
+      ]
     }
   },
   "blocks": [
@@ -267,14 +283,11 @@
       "status": "Implementado",
       "critical": true,
       "evidence": [
-        "staging_qa"
+        "staging_qa",
+        "excel_insights_v1_qa"
       ],
-      "dependencies": [
-        "Live Evidence Integrity: intervalos y fallos visibles; validación editorial de insights"
-      ],
-      "missing": [
-        "validación editorial de insights analíticos adicionales antes de publicar conclusiones o tendencias; Pulso factual ya validado en #29"
-      ],
+      "dependencies": [],
+      "missing": [],
       "requirements": [
         {
           "label": "Tres familias Excel, esquema, series y diagnóstico canónico",
@@ -288,7 +301,8 @@
         },
         {
           "label": "Insights analíticos adicionales con validación editorial",
-          "status": "Pendiente"
+          "status": "Validado",
+          "evidence": "excel_insights_v1_qa"
         }
       ]
     },
@@ -722,6 +736,13 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36024956489",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36025870200"
       ]
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Insights Excel V1 en staging: ocho registros determinísticos reconciliados de las tres familias, muestra FREE trazable y reporte admin; guards fail-closed de esquema, población, período, familia, hash y neto entero. Preview #69 con tests, browser desktop/mobile, Reviewer y despliegue PASS. No se interpreta como gating PREMIUM ni evidencia LIVE externa.",
+      "evidence": [
+        "excel_insights_v1_qa"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -883,8 +904,12 @@
         "evidencia en staging",
         "fail-closed ante esquema o denominador ambiguo"
       ],
-      "evidence": [],
-      "implementation_status": "Pendiente"
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36028404964",
+        "4a88aa6d870768b49d994c140a55b41174e306ed",
+        "data/excel/insights_v1.json — 8 cálculos; muestra FREE en web/data generada, no gating PREMIUM"
+      ],
+      "implementation_status": "Validado"
     }
   ],
   "infrastructure_debt": [

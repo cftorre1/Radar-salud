@@ -148,3 +148,9 @@ Principio: **Dato → Insight determinístico → Señal**, con comportamiento f
 - Pulso Isapre puede incorporar únicamente insights validados y comparables.
 
 El preview [#48](https://github.com/cftorre1/Radar-salud/actions/runs/36019691556) confirmó QA desktop/mobile, Reviewer y publicación del diagnóstico. Referencias del panel: staging `8db66b6`, producción observada [#90](https://github.com/cftorre1/Radar-salud/actions/runs/36018933311) desde main `ea55bc7`. Son mediciones distintas; no hubo promoción del candidato.
+
+### Cierre de Insights Excel V1 · 24 septiembre
+
+El candidato final `4a88aa6d870768b49d994c140a55b41174e306ed` deriva ocho cálculos determinísticos de las series canónicas reconciliadas de cartera, suscripciones/desahucios y movilidad. El Pulso público muestra **una muestra FREE** con período, fórmula, hoja, URL oficial y hash; el reporte interno conserva los ocho. Los acumulados de contratos y desahucios se describen como eventos y no como cambio neto de stock. Movilidad compara solo los cortes de julio 2025 y julio 2026; no se infieren causas. No existe aún control de acceso PREMIUM.
+
+El [preview #69](https://github.com/cftorre1/Radar-salud/actions/runs/36028404964) pasó tests Python/Node, QA de navegador desktop 1440×900 y mobile 390×844, Reviewer y despliegue. Tests adversarios rechazan meses faltantes, denominador cero, familias discordantes, hash inválido, población inconsistente, intervalo no comparable y neto decimal. El Reviewer independiente cotejó las ocho cifras, períodos, fórmula y la muestra publicada. La observación externa de un evento LIVE sigue pendiente y no forma parte de esta validación de Excel.
