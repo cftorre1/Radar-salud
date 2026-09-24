@@ -77,3 +77,7 @@ El recorrido discovery → LIVE → cola → histórico/feed → cobertura se pr
 El indicador `0/10` conserva su significado estricto: bloques críticos completamente Validados. El panel agrega requisitos explícitos por bloque y porcentaje de requisitos respaldados por evidencias de tests, desktop, mobile, Reviewer y preview. Un requisito sin evidencia completa se degrada a Implementado; el porcentaje no estima calidad editorial ni equivale a autorización de release. Los bloqueos humanos y las observaciones externas se muestran por separado.
 
 [Preview #39](https://github.com/cftorre1/Radar-salud/actions/runs/36016370144) validó técnicamente el replay (tests, QA desktop/mobile, Reviewer y despliegue); la observación LIVE real sigue pendiente. El guard PMO exige SHA, run GitHub y asociación expresa de cada requisito con la evidencia. La captura incremental permanece activa.
+
+## Fuentes Chile · primer conector
+
+La ruta oficial de noticias FONASA `https://www.fonasa.gob.cl/noticias/` está identificada. El scout consulta detalles y toma la fecha únicamente de metadata publicada; un elemento sin fecha queda BACKFILL y el procesador lo descarta. El análisis ausente queda diferido, sin resumen inventado. Su sitio respondió 403 desde este entorno, por lo que el conector está **Implementado**, pendiente prueba de discovery real en staging y revisión editorial. ISP/ANAMED presentó un error de certificado y DEIS expiró en esta inspección; ninguno se presenta como fuente validada.

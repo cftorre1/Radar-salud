@@ -285,7 +285,7 @@
     {
       "id": "sources_chile",
       "title": "Fuentes MVP Chile",
-      "status": "Pendiente",
+      "status": "Implementado",
       "critical": true,
       "evidence": [],
       "dependencies": [
@@ -293,7 +293,7 @@
         "monitoreo de fuentes"
       ],
       "missing": [
-        "FONASA directo",
+        "FONASA directo: verificar disponibilidad y capturas reales en staging",
         "ISP/ANAMED",
         "DEIS",
         "newsrooms prioritarios verificados"
@@ -301,7 +301,7 @@
       "requirements": [
         {
           "label": "FONASA directo",
-          "status": "Pendiente"
+          "status": "Implementado"
         },
         {
           "label": "ISP/ANAMED",
@@ -531,6 +531,11 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Conector FONASA oficial directo implementado con URL canónica, fecha desde metadata del detalle y rechazo seguro si no hay fecha o evaluación editorial. Pendiente validación remota: el sitio respondió 403 en este entorno; ISP/ANAMED tuvo error de certificado y DEIS expiró. No se marcaron fuentes como validadas.",
+      "evidence": []
+    },
     {
       "date": "2026-09-24",
       "change": "Preview #39 del replay técnico LIVE PASS tests, QA desktop/mobile, Reviewer, preview; falso LIVE desde BACKFILL y timestamp inconsistente no suman selección. Reviewer independiente exigió evidencia de requisito ligada a SHA y run verificable; se añadió guard fail-closed. Primera publicación LIVE real sigue pendiente sin bloquear otros MVP.",

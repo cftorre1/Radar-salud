@@ -149,3 +149,23 @@ def process_diario_oficial(raw,cfg):
       "event_type":"LEGAL" if stype=="Legal" else "REGULATION",
       "scores":{"economic":55,"regulatory":95,"scope":max(72,score),"novelty":score,"actionability":82}})
     s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=[stype];row["scopes"]=sc;row["editorial_relevance"]=score;row["issuer"]=issuer;return row
+
+
+def process_fonasa(raw,cfg):
+    """Only dated, substantive official evidence may reach the feed."""
+    raw=enrich(raw)
+    if not raw.event_date:return None
+    body=raw.metadata.get("page_text") or raw.raw_text
+    if len(body)<180:return None
+    ai=analyze_official_news(title=raw.title,text=body,source_name="FONASA")
+    if not ai:raise DeferredProcessing("FONASA pendiente de evaluación IA")
+    score=int(ai.get("relevance_score",0))
+    what=(ai.get("what_happened") or "").strip()
+    why=(ai.get("why_it_matters") or "").strip()
+    if score<65 or len(what)<45 or len(why)<35:return None
+    raw.metadata.update({"what_happened":what,"why_it_matters":why,
+      "signal_types":["Noticias"],"scopes":["Fonasa"],"watch_tags":["fonasa","aseguramiento público"],
+      "scores":{"economic":55,"regulatory":50,"scope":score,"novelty":score,"actionability":65}})
+    row=build_signal(raw,cfg).to_dict()
+    row.update(signal_types=["Noticias"],scopes=["Fonasa"],editorial_relevance=score)
+    return row
