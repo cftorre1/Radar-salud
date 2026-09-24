@@ -151,16 +151,21 @@ class CorporateNewsroomScout:
         self.SOURCE_SLUG=slug
         self.SOURCE_NAME,self.PAGE,self.hosts,self.pattern=self.SOURCES[slug]
     def discover_from_html(self,html):
-        parser=_BupaCards() if self.SOURCE_SLUG=="bupa_chile" else _A()
+        parser=_BupaCards() if self.SOURCE_SLUG=="bupa_chile" else _RedSaludCards()
         parser.feed(html);out=[];seen=set()
         for href,title in parser.links:
             if not href or len(title)<28:continue
             url=urljoin(self.PAGE,href);parsed=urlparse(url)
             if parsed.scheme!="https" or parsed.netloc not in self.hosts or not re.fullmatch(self.pattern,parsed.path):continue
             if url in seen:continue
+            published=None
+            if self.SOURCE_SLUG=="redsalud":
+                from .public_source_pipeline import _date
+                published=_date(parser.dates.get(href))
+                if not published:continue
             seen.add(url)
             out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                               metadata={"discovered_from":self.PAGE}))
+                               event_date=published,metadata={"discovered_from":self.PAGE,"listing_date":published}))
         if not out:raise RuntimeError(f"{self.SOURCE_NAME} newsroom structure unrecognized")
         return out[:15]
     def discover(self):return self.discover_from_html(fetch_html(self.PAGE))
@@ -188,6 +193,28 @@ class _BupaCards(HTMLParser):
             if self.card["href"] and self.card["title"]:
                 self.links.append((self.card["href"],self.card["title"]))
             self.card=None
+
+
+class _RedSaludCards(HTMLParser):
+    """Bind the empty story anchor to sibling headline and date in one card."""
+    def __init__(self):
+        super().__init__();self.links=[];self.dates={};self.card=None;self._field=None;self._parts=[]
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs)
+        if tag.lower()=="article":self.card={"href":None,"title":None,"date":None}
+        elif self.card is not None and tag.lower()=="a" and not self.card["href"]:
+            self.card["href"]=attrs.get("href")
+        elif self.card is not None and tag.lower() in ("h3","p"):
+            self._field="title" if tag.lower()=="h3" else "date";self._parts=[]
+    def handle_data(self,data):
+        if self._field:self._parts.append(data)
+    def handle_endtag(self,tag):
+        if self.card is not None and ((tag.lower()=="h3" and self._field=="title") or (tag.lower()=="p" and self._field=="date")):
+            self.card[self._field]=" ".join(" ".join(self._parts).split());self._field=None
+        elif tag.lower()=="article" and self.card is not None:
+            if self.card["href"] and self.card["title"] and self.card["date"]:
+                self.links.append((self.card["href"],self.card["title"]));self.dates[self.card["href"]]=self.card["date"]
+            self.card=None;self._field=None
 
 
 class DeisResourceScout:

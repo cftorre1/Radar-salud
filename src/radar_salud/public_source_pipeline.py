@@ -1,5 +1,5 @@
 from __future__ import annotations
-import re
+import json,re
 from html.parser import HTMLParser
 from .models import RawItem
 from .pipeline import build_signal
@@ -9,6 +9,7 @@ from .llm_analysis import analyze_official_news, analyze_news
 from .processing import DeferredProcessing
 
 MONTHS={"enero":"01","febrero":"02","marzo":"03","abril":"04","mayo":"05","junio":"06","julio":"07","agosto":"08","septiembre":"09","octubre":"10","noviembre":"11","diciembre":"12"}
+MONTHS.update({"ene":"01","feb":"02","mar":"03","abr":"04","may":"05","jun":"06","jul":"07","ago":"08","sep":"09","oct":"10","nov":"11","dic":"12"})
 
 class _Meta(HTMLParser):
     def __init__(self):super().__init__();self.description="";self.published="";self.text=[];self.ogtitle=""
@@ -29,6 +30,8 @@ def _date(text):
     m=re.search(r"(\d{1,2})[/-](\d{1,2})[/-](20\d{2})",text)
     if m:return f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}"
     m=re.search(r"(\d{1,2})\s+de\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+de\s+(20\d{2})",text,re.I)
+    if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
+    m=re.search(r"(\d{1,2})\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+(20\d{2})",text,re.I)
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
     return None
 
@@ -199,8 +202,16 @@ def process_isp_anamed(raw,cfg):
 
 def process_corporate_news(raw,cfg):
     """Company announcements are signals only when independently legible and material."""
-    if raw.source_slug not in ("redsalud","bupa_chile"):
-        raise ValueError("Unreviewed corporate source")
+    from urllib.parse import urlparse
+    canonical={
+        "redsalud":("RedSalud",("www.redsalud.cl","redsalud.cl"),r"/noticias/[^/]+/?"),
+        "bupa_chile":("Bupa Chile",("www.bupa.cl","bupa.cl"),r"/(?:somos-bupa/)?sala-de-prensa/[^/]+/?"),
+    }
+    expected=canonical.get(raw.source_slug);parsed=urlparse(raw.url)
+    if (not expected or raw.source_name!=expected[0] or raw.source_type!="corporate"
+            or cfg.get("slug")!=raw.source_slug or cfg.get("source_type")!="corporate"
+            or parsed.scheme!="https" or parsed.netloc not in expected[1] or not re.fullmatch(expected[2],parsed.path)):
+        return None
     if raw.source_slug=="bupa_chile":
         try:
             page=fetch_html(raw.url)
@@ -215,11 +226,20 @@ def process_corporate_news(raw,cfg):
         raw.raw_text=" ".join(article.body.split())[:9000]
         raw.metadata["page_text"]=raw.raw_text
     else:
-        raw=enrich(raw)
-    if raw.metadata.get("fetch_error"):
-        raise DeferredProcessing("Newsroom detail temporarily unavailable")
+        try:page=fetch_html(raw.url)
+        except Exception as exc:raise DeferredProcessing("RedSalud article temporarily unavailable") from exc
+        article=_RedSaludArticle();article.feed(page);article.finish()
+        if not article.title or (raw.title.lower() not in article.title.lower()
+                                 and article.title.lower() not in raw.title.lower()):
+            raise DeferredProcessing("RedSalud headline mismatch between listing and article")
+        detail_date=_date(article.published)
+        if not detail_date:raise DeferredProcessing("RedSalud article publication date unavailable")
+        if raw.metadata.get("listing_date") and raw.metadata["listing_date"]!=detail_date:
+            raise DeferredProcessing("RedSalud listing and article dates disagree")
+        raw.event_date=detail_date;raw.raw_text=" ".join(article.body.split())[:9000];raw.metadata["page_text"]=raw.raw_text
     body=raw.metadata.get("page_text") or raw.raw_text
-    if not raw.event_date or len(body)<350:return None
+    if not raw.event_date:return None
+    if len(body)<350:raise DeferredProcessing("Corporate article body unavailable or incomplete")
     from datetime import date
     try:
         published=date.fromisoformat(raw.event_date)
@@ -257,6 +277,46 @@ class _BupaArticle(HTMLParser):
         if tag.lower()=="h1" and self._field=="title":self.title=" ".join(" ".join(self._parts).split());self._field=None
         elif tag.lower()=="p" and self._field=="published":self.published=" ".join(" ".join(self._parts).split());self._field=None
         if tag.lower()=="div" and self._body_depth:self._body_depth-=1
+
+
+class _RedSaludArticle(HTMLParser):
+    def __init__(self):
+        super().__init__();self.title="";self.published="";self.body="";self._script=False;self._json=[];self._after_h1=False;self._field=None;self._parts=[]
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs);lower=tag.lower()
+        if lower=="script" and attrs.get("type")=="application/ld+json":self._script=True;self._json=[]
+        elif lower=="h1":self._field="h1";self._parts=[]
+        elif self._after_h1 and lower in ("h2","p"):self._field="body";self._parts=[]
+    def handle_data(self,data):
+        if self._script:self._json.append(data)
+        if self._field:self._parts.append(data)
+    def handle_endtag(self,tag):
+        lower=tag.lower()
+        if lower=="script" and self._script:
+            self._consume_json("".join(self._json));self._script=False
+        elif lower=="h1" and self._field=="h1":
+            visible=" ".join(" ".join(self._parts).split());self.title=self.title or visible;self._after_h1=True;self._field=None
+        elif lower in ("h2","p") and self._field=="body":
+            self.body+=" "+" ".join(" ".join(self._parts).split());self._field=None
+        elif lower=="footer":self._after_h1=False
+    def _consume_json(self,text):
+        try:data=json.loads(text)
+        except (json.JSONDecodeError,TypeError):return
+        stack=data if isinstance(data,list) else [data]
+        while stack:
+            item=stack.pop()
+            if isinstance(item,list):stack.extend(item);continue
+            if not isinstance(item,dict):continue
+            graph=item.get("@graph")
+            if isinstance(graph,list):stack.extend(graph)
+            kind=item.get("@type") or []
+            kinds={kind} if isinstance(kind,str) else set(kind)
+            if "NewsArticle" in kinds or "Article" in kinds:
+                self.title=str(item.get("headline") or item.get("name") or self.title)
+                self.published=str(item.get("datePublished") or self.published)
+                if item.get("articleBody"):self.body=str(item["articleBody"])
+    def finish(self):
+        self.title=" ".join(self.title.split());self.body=" ".join(self.body.split())
 
 
 def process_deis(raw,cfg):
