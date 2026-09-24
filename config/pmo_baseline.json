@@ -314,7 +314,10 @@
       "evidence": [
         "aecc73a476e9b0d00c4c9ae18f22bade18cbfd4e — DEIS oficial integrado con procedencia estricta y fecha ligada a señal explícita de publicación/actualización",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36031877346 — tests, QA desktop/mobile, Reviewer y preview PASS",
-        "https://deis.minsal.cl/ — hub oficial accesible y reconocido el 2026-09-24; no expuso una publicación material fechada elegible, por lo que no se generó señal"
+        "https://deis.minsal.cl/ — hub oficial accesible y reconocido el 2026-09-24; no expuso una publicación material fechada elegible, por lo que no se generó señal",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36033189069 — piloto #24: Bupa 15 descubiertas/1 publicada; FONASA e ISP/ANAMED registrados como errores técnicos externos; facetas técnica, frescura y editorial separadas",
+        "11f0afe73ef28d2df1df2534513071b1f44e1373 — RedSalud/Bupa canónicos con fechas verificadas, replay Bupa desde historial íntegro y curación compacta sin atribución farmacéutica falsa",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36035724259 — 119 Python, 17 Node, 8 browser desktop/mobile, Reviewer CI y preview PASS"
       ],
       "dependencies": [
         "endpoints públicos oficiales",
@@ -323,8 +326,7 @@
       "missing": [
         "FONASA directo: HTTPError persistente piloto #23; 0 capturas, pendiente acceso/captura real",
         "ISP/ANAMED: conector fail-closed implementado y QA #74; URLError en piloto #23, sin fixture/captura real",
-        "DEIS: acceso y estructura real validados; pendiente primera publicación material fechada para validar captura extremo a extremo",
-        "newsrooms prioritarios verificados"
+        "DEIS: acceso y estructura real validados; pendiente primera publicación material fechada para validar captura extremo a extremo"
       ],
       "requirements": [
         {
@@ -341,7 +343,8 @@
         },
         {
           "label": "Newsrooms prioritarios verificados",
-          "status": "Pendiente"
+          "status": "Validado",
+          "evidence": "corporate_newsrooms_qa"
         }
       ]
     },
@@ -559,6 +562,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Fuentes Chile: newsrooms prioritarios pasan de Pendiente a Validado. Bupa produjo captura real en piloto #24; RedSalud fue corregido contra su estructura real y cruza fecha de listado/detalle. La tarea global sigue approved por bloqueos externos explícitos de FONASA e ISP/ANAMED y por la primera publicación DEIS elegible.",
+      "evidence": [
+        "corporate_newsrooms_qa",
+        "source_health_facets"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Dirección aprueba para próxima iteración: separar filtros temporales de personalización persistente; corregir semántica de fecha/fuentes del Pulso Isapre; y elevar Insights Excel desde delta simple a lectura multiserie determinística y comparable.",
