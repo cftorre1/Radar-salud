@@ -16,7 +16,7 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
            pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None)->None:
     d=_load(root);src=d.setdefault("sources",{});rows=rows or []
     dates=[x.get("event_date") for x in rows if x.get("event_date")]
-    prev=src.get(slug,{})
+    prev=src.get(slug) or (src.get("superintendencia_stats",{}) if slug=="superintendencia" else {})
     status="error" if error else ("warning" if (new>0 and published==0 and pending==0) else "ok")
     last_signal=max(dates+[prev.get("last_signal_at") or ""]) if dates else prev.get("last_signal_at")
     try:

@@ -16,8 +16,19 @@ def build(root, output):
     queue_path = root / "data/state/pending_queue.json"
     queue = PendingQueue(queue_path)
     discovery = read(root / "data/state/discovery_run.json", {})
-    measured=queue_path.exists() and discovery.get("successful_sources",0)>0
+    try:
+        discovered_at=datetime.fromisoformat(discovery["at"].replace("Z","+00:00"))
+        age=(datetime.now(timezone.utc)-discovered_at).total_seconds()
+        current=discovered_at.tzinfo is not None and -300<=age<=36*3600
+    except (KeyError,TypeError,ValueError):
+        current=False
+    measured=queue_path.exists() and current and discovery.get("successful_sources",0)>0
     health = read(root / "data/source_health.json", {"sources": {}})
+    sources=dict(health.get("sources", {}))
+    # Retain the legacy poll in raw evidence, but never count the renamed
+    # statistics collector twice once the global collector has run.
+    if "superintendencia" in sources:
+        sources.pop("superintendencia_stats", None)
     snapshot = read(root / "web/data/radar_today.json", {"signals": []})
     history = read(root / "data/history/superintendencia_signals.json", {"signals": []})
     history = history.get("signals", []) if isinstance(history, dict) else history
@@ -60,8 +71,8 @@ def build(root, output):
         queue_status="measured" if measured else "awaiting_successful_global_discovery",
         discovery=discovery,
         coverage_live=coverage_live,
-        legacy_pending=sum(x.get("pending", 0) for x in health.get("sources", {}).values()),
-        sources=health.get("sources", {}), iterations=ledger["iterations"],
+        legacy_pending=sum(x.get("pending", 0) for x in sources.values()),
+        sources=sources, iterations=ledger["iterations"],
         usage=dict(calls=usage, measured_responses=len(responses),
             input_tokens=sum(x.get("input_tokens") or 0 for x in responses),
             output_tokens=sum(x.get("output_tokens") or 0 for x in responses),

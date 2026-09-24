@@ -37,3 +37,17 @@ def test_queue_exists_but_no_successful_discovery_does_not_claim_live_measuremen
     report=module.build(root,tmp_path / "out")
     assert report["queue_status"] == "awaiting_successful_global_discovery"
     assert report["coverage_live"] is None and report["queue"] is None
+
+
+def test_old_discovery_and_renamed_statistics_source_do_not_inflate_coverage(tmp_path):
+    spec = importlib.util.spec_from_file_location("product_report", Path("scripts/product_report.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    root=tmp_path / "root"
+    (root / "data/state").mkdir(parents=True)
+    (root / "data/state/pending_queue.json").write_text("{}")
+    (root / "data/state/discovery_run.json").write_text('{"at":"2020-01-01T00:00:00+00:00","successful_sources":1}')
+    (root / "data/source_health.json").write_text(json.dumps({"sources":{"superintendencia_stats":{"status":"ok"},"superintendencia":{"status":"ok"}}}))
+    report=module.build(root,tmp_path / "out")
+    assert report["queue_status"]=="awaiting_successful_global_discovery"
+    assert list(report["sources"])==["superintendencia"]
