@@ -136,3 +136,30 @@ class IspAnamedAlertScout:
         if not items:raise RuntimeError("ANAMED alert listing has no verified publication rows")
         return items[:20]
     def discover(self):return self.discover_from_html(fetch_html(self.PAGE))
+
+
+class CorporateNewsroomScout:
+    """Monitor two verified corporate newsrooms; details require editorial review."""
+    SOURCES={
+        "redsalud":("RedSalud","https://www.redsalud.cl/noticias",("www.redsalud.cl","redsalud.cl"),r"/noticias/[^/]+/?"),
+        "bupa_chile":("Bupa Chile","https://www.bupa.cl/somos-bupa/sala-de-prensa",("www.bupa.cl","bupa.cl"),
+                      r"/(?:somos-bupa/)?sala-de-prensa/[^/]+/?"),
+    }
+    SOURCE_TYPE="corporate"
+    def __init__(self,slug):
+        if slug not in self.SOURCES:raise ValueError("Unreviewed newsroom")
+        self.SOURCE_SLUG=slug
+        self.SOURCE_NAME,self.PAGE,self.hosts,self.pattern=self.SOURCES[slug]
+    def discover_from_html(self,html):
+        parser=_A();parser.feed(html);out=[];seen=set()
+        for href,title in parser.links:
+            if not href or len(title)<28:continue
+            url=urljoin(self.PAGE,href);parsed=urlparse(url)
+            if parsed.scheme!="https" or parsed.netloc not in self.hosts or not re.fullmatch(self.pattern,parsed.path):continue
+            if url in seen:continue
+            seen.add(url)
+            out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                               metadata={"discovered_from":self.PAGE}))
+        if not out:raise RuntimeError(f"{self.SOURCE_NAME} newsroom structure unrecognized")
+        return out[:15]
+    def discover(self):return self.discover_from_html(fetch_html(self.PAGE))

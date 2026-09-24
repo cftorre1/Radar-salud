@@ -195,3 +195,33 @@ def process_isp_anamed(raw,cfg):
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Noticias"],scopes=["Farma / medicamentos"],editorial_relevance=score)
     return row
+
+
+def process_corporate_news(raw,cfg):
+    """Company announcements are signals only when independently legible and material."""
+    if raw.source_slug not in ("redsalud","bupa_chile"):
+        raise ValueError("Unreviewed corporate source")
+    raw=enrich(raw)
+    if raw.metadata.get("fetch_error"):
+        raise DeferredProcessing("Newsroom detail temporarily unavailable")
+    body=raw.metadata.get("page_text") or raw.raw_text
+    if not raw.event_date or len(body)<350:return None
+    from datetime import date
+    try:
+        published=date.fromisoformat(raw.event_date)
+    except ValueError:
+        return None
+    if published>date.today():return None
+    ai=analyze_news(title=raw.title,text=body[:9000],source_name=raw.source_name,
+                    kind="comunicado corporativo; verificar alcance y evitar tono promocional")
+    if not ai:raise DeferredProcessing("Corporate announcement pending assessment")
+    score=int(ai.get("relevance_score",0))
+    what=(ai.get("what_happened") or "").strip();why=(ai.get("why_it_matters") or "").strip()
+    if score<78 or len(what)<45 or len(why)<35:return None
+    scopes=["Prestadores"] if raw.source_slug=="redsalud" else _scopes(f"{raw.title} {what}")
+    raw.metadata.update({"what_happened":what,"why_it_matters":why,
+        "signal_types":["Noticias"],"scopes":scopes,"watch_tags":[raw.source_slug,"mercado"],
+        "scores":{"economic":score,"regulatory":30,"scope":score,"novelty":score,"actionability":65}})
+    row=build_signal(raw,cfg).to_dict()
+    row.update(signal_types=["Noticias"],scopes=scopes,editorial_relevance=score)
+    return row
