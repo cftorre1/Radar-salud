@@ -724,7 +724,8 @@
         "ejecutar experimento Luna/Terra/Astra con scoring ciego y caso de negocio",
         "implementar teaser FREE de Global Intelligence, Insight Alicanto semanal y observabilidad de costo/modelo",
         "implementar sugerencia anónima de fuentes visible, persistente y gestionable; correo interno provider-ready o bloqueo explícito",
-        "mantener Fuentes Chile pausado hasta completar el paquete o nueva decisión de Dirección"
+        "mantener Fuentes Chile pausado hasta completar el paquete o nueva decisión de Dirección",
+        "integrar métricas de cobertura, filtros y bandeja «Qué debes saber en 30 segundos» en una única unidad compacta"
       ],
       "validation_required": [
         "cada tarea hija debe respetar su propio Builder → tests → staging QA desktop/mobile → Reviewer → corrección",
@@ -1523,11 +1524,14 @@
         "Personalizar mi radar y Suscríbete deben resolverse como controles compactos; pueden convivir en la misma fila cuando el breakpoint y la jerarquía visual lo permitan.",
         "«Encuentra lo que importa» debe mantenerse en una sola línea mediante tipografía responsiva en los viewports objetivo.",
         "Eliminar la bajada larga bajo «Encuentra lo que importa».",
-        "«Miramos mucho para mostrarte poco» debe mostrar solo dos métricas dinámicas y sensibles al filtro temporal: señales detectadas y señales seleccionadas. No mostrar incidencias técnicas en esta vista.",
-        "Renombrar Explorar a «Filtros», sin bajada explicativa. Tipo y Ámbito deben ir lado a lado cuando el ancho lo permita para reducir scroll.",
         "Comprimir padding/gaps y priorizar que «Qué debes saber en 30 segundos» quede visible dentro de la primera vista en desktop y aparezca/asome materialmente en mobile.",
         "Eliminar en Global Intelligence los dos párrafos de explicación sobre selección curada/separación Chile y vista pública/autorización.",
-        "La separación Global Theme ≠ Trend Chile sigue vigente como regla interna aunque no se explique en copy visible."
+        "La separación Global Theme ≠ Trend Chile sigue vigente como regla interna aunque no se explique en copy visible.",
+        "Unificar «Miramos mucho», Tipo/Ámbito y «Qué debes saber en 30 segundos» en una sola unidad de radar; no mantener tres secciones separadas.",
+        "Usar «Qué debes saber en 30 segundos» como título principal. Debajo, mostrar «<N> señales detectadas · <N> seleccionadas» dinámicamente según el período activo.",
+        "Integrar Tipo y Ámbito dentro de la misma unidad y lado a lado cuando el ancho lo permita.",
+        "Eliminar el título independiente «Filtros» si los labels de los controles hacen evidente su uso.",
+        "«Cómo seleccionamos lo que importa» queda como acceso secundario discreto, no como bloque."
       ],
       "validation_required": [
         "QA desktop/mobile",
@@ -1541,7 +1545,10 @@
         "Filtros Tipo/Ámbito compactos y lado a lado cuando proceda",
         "métricas detectadas/seleccionadas dinámicas por período",
         "Global copy eliminado",
-        "accesibilidad"
+        "accesibilidad",
+        "unidad única métricas + filtros + 30 segundos",
+        "métricas dinámicas por período",
+        "reducción medible de altura respecto de tres secciones separadas"
       ]
     }
   ],
