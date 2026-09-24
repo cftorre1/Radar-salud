@@ -158,3 +158,15 @@ test('Weekly email capture requires consent and stays closed without approved pr
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
  await page.screenshot({path:`artifacts/${test.info().project.name}-subscription.png`,fullPage:true});
 });
+test('analytics never sends without explicit privacy approval even if a key is present',async({page})=>{
+ let attempts=0;
+ await page.route('**/data/analytics.json',route=>route.fulfill({status:200,contentType:'application/json',
+   body:JSON.stringify({enabled:true,privacy_approved:false,provider:'posthog',
+     project_key:'public-test-key',host:'https://us.i.posthog.com'})}));
+ await page.route('https://us.i.posthog.com/**',route=>{attempts++;return route.abort()});
+ await page.goto('/');
+ await page.getByRole('button',{name:'Personalizar mi radar'}).click();
+ await page.locator('#period').selectOption('7');
+ await expect(page.locator('#count')).toContainText('hallazgos');
+ expect(attempts).toBe(0);
+});
