@@ -9,14 +9,14 @@ NOW=datetime(2026,9,23,12,tzinfo=timezone.utc)
 def raw(title,date):
     return RawItem("source",title,"https://example.org/"+title,"Source","official",date)
 
-def test_five_attempts_survive_reload_and_count_failures(tmp_path):
+def test_attempts_survive_reload_without_daily_cap(tmp_path):
     import json
     from radar_salud.autopilot import save_ledger
     path=tmp_path/"ledger.json";ledger={}
     for _ in range(5):
         reserve(ledger,"abc","builder",NOW)["state"]="failed"
         save_ledger(path,ledger);ledger=json.loads(path.read_text())
-    with pytest.raises(RuntimeError):reserve(ledger,"abc","builder",NOW)
+    assert reserve(ledger,"abc","builder",NOW)["id"].endswith("-6")
     assert reserve(ledger,"def","builder",NOW+timedelta(days=1))["state"]=="reserved"
 
 def test_reviewer_sha_and_independence_fail_closed():
@@ -25,6 +25,7 @@ def test_reviewer_sha_and_independence_fail_closed():
     with pytest.raises(ValueError):approve(entry,[dict(reviewer="reviewer",candidate_sha="other")],checks)
     assert not approve(entry,[dict(reviewer="reviewer",candidate_sha="abc")],{"tests":True})
     assert approve(entry,[dict(reviewer="reviewer",candidate_sha="abc")],checks)
+    assert entry["state"] == "qa_passed"
 
 def test_feedback_consolidates_without_losing_critical():
     common=dict(category="data",path="a",code="bad")

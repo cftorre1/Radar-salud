@@ -1,4 +1,4 @@
-"""Bounded state machine and independent feedback consolidation.
+"""State machine and independent feedback consolidation.
 
 CI serializes all writers and commits reservations before doing work. The ledger
 counts failed/abandoned attempts, including a re-run of the same workflow.
@@ -12,15 +12,13 @@ CRITICAL = {"tests", "editorial", "data", "desktop", "mobile", "reviewer"}
 def should_attempt(ledger, candidate_sha):
     """Retry interrupted attempts; wait for a changed candidate after review."""
     return not any(x.get("candidate_sha") == candidate_sha
-                   and x.get("state") in ("ready", "blocked")
+                   and x.get("state") in ("qa_passed", "staging_verified", "blocked")
                    for x in ledger.get("iterations", []))
 
 def reserve(ledger, candidate_sha, builder, now=None):
     now = now or datetime.now(timezone.utc)
     day = now.astimezone(timezone.utc).date().isoformat()
     entries = ledger.setdefault("iterations", [])
-    if sum(x["day"] == day for x in entries) >= 5:
-        raise RuntimeError("Daily limit of 5 attempts reached")
     entry = dict(id=f"{day}-{sum(x['day']==day for x in entries)+1}",
         day=day, started_at=now.isoformat(), candidate_sha=candidate_sha,
         builder=builder, state="reserved", checks={}, feedback=[])
@@ -49,7 +47,7 @@ def approve(entry, reports, checks):
     entry["checks"] = checks
     passed = all(checks.get(k) is True for k in CRITICAL)
     passed = passed and not any(x.get("severity") == "critical" for x in entry["feedback"])
-    entry["state"] = "ready" if passed else "blocked"
+    entry["state"] = "qa_passed" if passed else "blocked"
     return passed
 
 def save_ledger(path, ledger):

@@ -46,7 +46,7 @@ def main():
             "data":bool(reports and reports[0]["checks"]["data"])}
         passed=approve(entry,reports,checks)
         entry["changes"]=["Rebuilt derived product report and Excel diagnostic CSV"]
-        entry["promotion"]="eligible" if passed else "blocked"
+        entry["promotion"]="blocked_until_remote_preview" if passed else "blocked"
         if not passed:entry["next_action"]="next scheduled attempt may rebuild reports; code/editorial findings require review"
     except Exception as exc:
         entry.update(state="failed",error=type(exc).__name__)
@@ -56,6 +56,6 @@ def main():
         target=Path("data/autopilot/ledger.json");save_ledger(target,ledger)
         run(["python","scripts/product_report.py"])
     if os.environ.get("GITHUB_OUTPUT"):
-        with open(os.environ["GITHUB_OUTPUT"],"a") as out:out.write("ready="+str(entry["state"]=="ready").lower()+"\n")
+        with open(os.environ["GITHUB_OUTPUT"],"a") as out:out.write("qa_passed="+str(entry["state"]=="qa_passed").lower()+"\n")
 
 if __name__=="__main__":main()

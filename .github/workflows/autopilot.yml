@@ -64,7 +64,7 @@ jobs:
             test-results/
             data/autopilot/
       - name: Dispatch staged preview with critical checks
-        if: steps.cycle.outputs.ready == 'true'
+        if: steps.cycle.outputs.qa_passed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run staging-preview.yml --ref staging
