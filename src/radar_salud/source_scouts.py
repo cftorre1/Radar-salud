@@ -110,7 +110,7 @@ class IspAnamedAlertScout:
         # Capture hrefs only within rows; a date on an unrelated page element
         # must never be attributed to an alert.
         from .public_source_pipeline import _date
-        parser=_TableRows();parser.feed(html);items=[];seen=set();dated_rows=0
+        parser=_TableRows();parser.feed(html);items=[];seen=set()
         for row in parser.rows:
             body=" ".join(" ".join(row["text"]).split())
             # Only a standalone date cell is a publication date. A date in the
@@ -121,7 +121,6 @@ class IspAnamedAlertScout:
                 if day:day=date.fromisoformat(day).isoformat()
                 if day and day>date.today().isoformat():day=None
             except ValueError:day=None
-            if day:dated_rows+=1
             if not day or not re.search(r"retiro del mercado|nota informativa|falsificad|seguridad",body,re.I):continue
             titles=[cell for cell in row["cells"] if len(cell)>25 and not cell.lower().startswith("publicación isp")]
             if not titles:continue
@@ -134,6 +133,6 @@ class IspAnamedAlertScout:
                 items.append(RawItem(self.SOURCE_SLUG,title[:300],url,self.SOURCE_NAME,self.SOURCE_TYPE,
                                      event_date=day,metadata={"discovered_from":self.PAGE,"listing_text":body}))
                 break
-        if not dated_rows:raise RuntimeError("ANAMED alert listing has no verified publication-date rows")
+        if not items:raise RuntimeError("ANAMED alert listing has no verified publication rows")
         return items[:20]
     def discover(self):return self.discover_from_html(fetch_html(self.PAGE))
