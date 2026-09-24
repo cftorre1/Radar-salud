@@ -77,3 +77,54 @@ class FonasaNewsScout:
                 # A failed detail request is technical failure, not an undated publication.
                 raise RuntimeError(f"FONASA detail unavailable: {type(exc).__name__}") from exc
         return items[:15]
+
+
+class _TableRows(HTMLParser):
+    def __init__(self):
+        super().__init__(); self.rows=[]; self.row=None; self.cell=None
+    def handle_starttag(self,tag,attrs):
+        if tag.lower()=="tr":self.row={"text":[],"links":[],"cells":[]}
+        if self.row is not None and tag.lower() in ("td","th"):self.cell=[]
+    def handle_data(self,data):
+        if self.row is not None:
+            self.row["text"].append(data)
+            if self.cell is not None:self.cell.append(data)
+    def handle_endtag(self,tag):
+        if tag.lower() in ("td","th") and self.cell is not None:
+            self.row["cells"].append(" ".join(" ".join(self.cell).split()));self.cell=None
+        if tag.lower()=="tr" and self.row is not None:
+            self.rows.append(self.row);self.row=None
+
+
+class IspAnamedAlertScout:
+    """Official ANAMED alerts with a verified date in the listing row."""
+    SOURCE_SLUG="isp_anamed";SOURCE_NAME="ISP / ANAMED";SOURCE_TYPE="official"
+    PAGE="https://www.ispch.gob.cl/categorias-alertas/anamed/"
+    def discover_from_html(self,html):
+        # Capture hrefs only within rows; a date on an unrelated page element
+        # must never be attributed to an alert.
+        class Rows(_TableRows):
+            def handle_starttag(self,tag,attrs):
+                super().handle_starttag(tag,attrs)
+                if tag.lower()=="a" and self.row is not None:
+                    href=dict(attrs).get("href")
+                    if href:self.row["links"].append(href)
+        from .public_source_pipeline import _date
+        parser=Rows();parser.feed(html);items=[];seen=set()
+        for row in parser.rows:
+            body=" ".join(" ".join(row["text"]).split())
+            match=re.search(r"\b\d{1,2}[/-]\d{1,2}[/-]20\d{2}\b",body)
+            day=_date(match.group()) if match else None
+            if not day or not re.search(r"retiro del mercado|nota informativa|falsificad|seguridad",body,re.I):continue
+            titles=[cell for cell in row["cells"] if len(cell)>25 and not cell.lower().startswith("publicación isp")]
+            if not titles:continue
+            title=max(titles,key=len)
+            for href in row["links"]:
+                url=urljoin(self.PAGE,href);parsed=urlparse(url)
+                if parsed.netloc not in ("www.ispch.gob.cl","ispch.gob.cl") or not parsed.path.lower().endswith(".pdf") or url in seen:continue
+                seen.add(url)
+                items.append(RawItem(self.SOURCE_SLUG,title[:300],url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                                     event_date=day,metadata={"discovered_from":self.PAGE,"listing_text":body}))
+                break
+        return items[:20]
+    def discover(self):return self.discover_from_html(fetch_html(self.PAGE))

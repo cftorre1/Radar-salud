@@ -173,3 +173,25 @@ def process_fonasa(raw,cfg):
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Noticias"],scopes=["Fonasa"],editorial_relevance=score)
     return row
+
+
+def process_isp_anamed(raw,cfg):
+    """Publish an official alert only with dated, readable PDF and assessed implications."""
+    if not raw.event_date or not raw.url.lower().endswith(".pdf"):
+        return None
+    text=extract_pdf_text(raw.url,max_pages=5)
+    if not text or len(text)<350 or text.startswith("%PDF"):
+        raise DeferredProcessing("ANAMED documento no legible; pendiente de revisión")
+    ai=analyze_official_news(title=raw.title,text=text[:9000],source_name="ISP / ANAMED")
+    if not ai:raise DeferredProcessing("ANAMED pendiente de evaluación")
+    score=int(ai.get("relevance_score",0))
+    what=(ai.get("what_happened") or "").strip();why=(ai.get("why_it_matters") or "").strip()
+    if score<65 or len(what)<45 or len(why)<35:return None
+    raw.raw_text=text[:9000]
+    raw.metadata.update({"what_happened":what,"why_it_matters":why,
+        "signal_types":["Noticias"],"scopes":["Farma / medicamentos"],
+        "watch_tags":["isp","anamed","medicamentos"],
+        "scores":{"economic":45,"regulatory":90,"scope":score,"novelty":score,"actionability":85}})
+    row=build_signal(raw,cfg).to_dict()
+    row.update(signal_types=["Noticias"],scopes=["Farma / medicamentos"],editorial_relevance=score)
+    return row

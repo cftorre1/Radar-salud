@@ -9,9 +9,9 @@ from .distribution import UserPlan,choose_distribution
 from .history import load_history,merge_history,save_history
 from .regulatory import SuperintendenciaNormativaScout
 from .regulatory_pipeline import process_superintendencia_normativa
-from .source_scouts import SusesoNormativeScout,DfHealthScout,FonasaNewsScout
+from .source_scouts import SusesoNormativeScout,DfHealthScout,FonasaNewsScout,IspAnamedAlertScout
 from .diario_oficial import DiarioOficialHealthScout
-from .public_source_pipeline import process_suseso,process_minsal,process_df,process_diario_oficial,process_fonasa
+from .public_source_pipeline import process_suseso,process_minsal,process_df,process_diario_oficial,process_fonasa,process_isp_anamed
 from .analysis_cache import seed_from_history
 from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
@@ -51,6 +51,7 @@ def main():
       ("superintendencia_fiscalizacion","superintendencia_fiscalizacion",SuperintendenciaFiscalizacionScout().discover,process_fiscalizacion),
       ("minsal","minsal",MinsalNewsScout().discover,process_minsal),
       ("fonasa","fonasa",FonasaNewsScout().discover,process_fonasa),
+      ("isp_anamed","isp_anamed",IspAnamedAlertScout().discover,process_isp_anamed),
       ("suseso","suseso",SusesoNormativeScout().discover,process_suseso),
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
