@@ -5,6 +5,7 @@ from datetime import datetime,timezone,date
 from pathlib import Path
 from radar_salud.reference_resolver import resolve_reference
 from radar_salud.editorial_gate import publication_ready
+from radar_salud.isapre_pulse import build_pulse
 
 TYPES=("Normativa","Legal","Noticias","Datos","Fiscalización")
 
@@ -183,6 +184,12 @@ def curate(signals,resolve_external=True):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--input",required=True);ap.add_argument("--output",default="web/data/radar_today.json");ap.add_argument("--offline",action="store_true",help="Rebuild only from recorded evidence");args=ap.parse_args()
     raw=json.loads(Path(args.input).read_text(encoding="utf-8"));signals=raw.get("signals",raw) if isinstance(raw,dict) else raw
+    signals=list(signals)
+    canonical=Path("data/excel/validated_series.json")
+    if canonical.exists():
+        try:pulse=build_pulse(json.loads(canonical.read_text(encoding="utf-8")))
+        except (OSError,ValueError,TypeError):pulse=None
+        if pulse:signals.append(pulse)
     payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":curate(signals,resolve_external=not args.offline)}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")
