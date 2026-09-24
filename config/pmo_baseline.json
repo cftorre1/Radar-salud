@@ -67,6 +67,30 @@
         "rollback"
       ],
       "result": "success_after_expected_preview_failure"
+    },
+    "live_discovery": {
+      "kind": "github_actions",
+      "sha": "3cbcd3334048de52f37d462cbde9107a973b671b",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35989996109",
+      "checks": [
+        "tests",
+        "discovery",
+        "queue_persistence"
+      ],
+      "result": "success"
+    },
+    "live_preview_failed": {
+      "kind": "github_actions",
+      "sha": "55b5d19546804a1f21a5ed60918c19844db0b1f6",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/35990231987",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "result": "qa_failed_no_deploy"
     }
   },
   "blocks": [
@@ -80,7 +104,7 @@
         "QA y Reviewer de este cambio"
       ],
       "missing": [
-        "validar panel y estados contra el baseline en staging"
+        "validar panel y estados contra el baseline con datos LIVE reales en staging"
       ]
     },
     {
@@ -156,14 +180,16 @@
       "status": "Implementado",
       "critical": true,
       "evidence": [
-        "staging_qa"
+        "staging_qa",
+        "live_discovery"
       ],
       "dependencies": [
         "discovery LIVE real y cola persistente"
       ],
       "missing": [
-        "medición LIVE real auditable de detectadas, evaluadas y seleccionadas",
-        "estado de cobertura histórica"
+        "publicar y validar cobertura real en staging tras corrección QA",
+        "verificar discovery incremental LIVE con una señal genuina si aparece",
+        "estado de cobertura histórica progresiva"
       ]
     },
     {
@@ -266,6 +292,19 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Primera exploración real #17: siete fuentes consultadas, 2.533 ítems BACKFILL en cola (2.515 archivados por 90 días, 6 pendientes, 11 rechazados, 1 publicado), sin watermark previo ni LIVE aún. Una respuesta deep midió 9.268 tokens de entrada y 923 de salida. Run preview #25 falló aserción obsoleta de cobertura y no desplegó; corrección en siguiente candidato.",
+      "evidence": [
+        "live_discovery",
+        "live_preview_failed"
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Investigación de 42/82 fallos fast históricos: logs del Daily Radar #13 muestran 40 errores 429 insufficient_quota/credit_balance_exhausted. Dos fallos restantes no tienen causa registrada. No se modificaron billing ni presupuestos; fast actual no fue invocado en la prueba acotada.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Cards V2 completó run #21 con tests, QA desktop/mobile, Reviewer y preview; reviewer independiente verificó barrido multi-card y ausencia de falsa profundidad en muestras reales/adversarias. Addendum validado con límites declarados; Signal Density completo sigue Implementado.",
       "evidence": [
         "staging_qa"
@@ -332,6 +371,12 @@
       "severity": "critical",
       "description": "El Reviewer actual no cubre aún todas las condiciones funcionales del baseline Beta.",
       "source": "scripts/review_candidate.py"
+    },
+    {
+      "id": "fast_quota_historical",
+      "severity": "warning",
+      "description": "40 de 42 fallos fast históricos fueron 429 por saldo de crédito agotado; la disponibilidad fast actual no está verificada y dos fallos carecen de causa. No cambiar billing automáticamente.",
+      "source": "Daily Radar pilot #13 logs; data/ai_usage/2026-09.json"
     }
   ],
   "approved_addenda": [
