@@ -3,6 +3,7 @@ from radar_salud.public_source_pipeline import process_isp_anamed
 from radar_salud.processing import DeferredProcessing
 from radar_salud.sources import load_sources, source_index
 from pathlib import Path
+import pytest
 
 
 LISTING = """
@@ -25,6 +26,21 @@ def test_anamed_requires_date_same_row_and_official_pdf():
     assert "KETOROLACO" in row.title
     assert row.url == "https://www.ispch.gob.cl/wp-content/uploads/2026/08/alerta-25.pdf"
     assert not IspAnamedAlertScout().discover_from_html("<tr><td>20-08-2026</td></tr>" + LISTING.replace("20-08-2026", ""))
+
+
+def test_anamed_rejects_title_date_impossible_calendar_and_wrong_pdf():
+    scout=IspAnamedAlertScout()
+    with pytest.raises(RuntimeError, match="verified publication-date"):
+        scout.discover_from_html('<tr><td>Sin fecha</td><td>Nota informativa estudio realizado el 20-08-2026</td>'
+                                 '<td><a href="/wp-content/uploads/note.pdf">Publicación ISP</a></td></tr>')
+    with pytest.raises(RuntimeError, match="verified publication-date"):
+        scout.discover_from_html(LISTING.replace("20-08-2026","31-02-2026").replace("21-08-2026","31-02-2026"))
+    with pytest.raises(RuntimeError, match="verified publication-date"):
+        scout.discover_from_html("<html>Unexpected empty template</html>")
+    listing=LISTING.replace('<td><a href="https://www.ispch.gob.cl/wp-content/uploads/2026/08/alerta-25.pdf">',
+      '<td><a href="https://www.ispch.gob.cl/wp-content/uploads/antecedente.pdf">Antecedente</a>'
+      '<a href="https://www.ispch.gob.cl/wp-content/uploads/2026/08/alerta-25.pdf">')
+    assert scout.discover_from_html(listing)[0].url.endswith("alerta-25.pdf")
 
 
 def test_anamed_pdf_and_assessment_fail_closed(monkeypatch):

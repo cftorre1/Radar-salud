@@ -2,6 +2,7 @@ from __future__ import annotations
 import re
 from html.parser import HTMLParser
 from urllib.parse import urljoin,urlparse
+from datetime import date
 from .models import RawItem
 from .scouts import fetch_html
 
@@ -81,15 +82,20 @@ class FonasaNewsScout:
 
 class _TableRows(HTMLParser):
     def __init__(self):
-        super().__init__(); self.rows=[]; self.row=None; self.cell=None
+        super().__init__(); self.rows=[]; self.row=None; self.cell=None; self.anchor=None
     def handle_starttag(self,tag,attrs):
         if tag.lower()=="tr":self.row={"text":[],"links":[],"cells":[]}
         if self.row is not None and tag.lower() in ("td","th"):self.cell=[]
+        if self.row is not None and tag.lower()=="a":self.anchor=[dict(attrs).get("href"),[]]
     def handle_data(self,data):
         if self.row is not None:
             self.row["text"].append(data)
             if self.cell is not None:self.cell.append(data)
+            if self.anchor is not None:self.anchor[1].append(data)
     def handle_endtag(self,tag):
+        if tag.lower()=="a" and self.anchor is not None:
+            self.row["links"].append((self.anchor[0]," ".join(" ".join(self.anchor[1]).split())))
+            self.anchor=None
         if tag.lower() in ("td","th") and self.cell is not None:
             self.row["cells"].append(" ".join(" ".join(self.cell).split()));self.cell=None
         if tag.lower()=="tr" and self.row is not None:
@@ -103,28 +109,31 @@ class IspAnamedAlertScout:
     def discover_from_html(self,html):
         # Capture hrefs only within rows; a date on an unrelated page element
         # must never be attributed to an alert.
-        class Rows(_TableRows):
-            def handle_starttag(self,tag,attrs):
-                super().handle_starttag(tag,attrs)
-                if tag.lower()=="a" and self.row is not None:
-                    href=dict(attrs).get("href")
-                    if href:self.row["links"].append(href)
         from .public_source_pipeline import _date
-        parser=Rows();parser.feed(html);items=[];seen=set()
+        parser=_TableRows();parser.feed(html);items=[];seen=set();dated_rows=0
         for row in parser.rows:
             body=" ".join(" ".join(row["text"]).split())
-            match=re.search(r"\b\d{1,2}[/-]\d{1,2}[/-]20\d{2}\b",body)
-            day=_date(match.group()) if match else None
+            # Only a standalone date cell is a publication date. A date in the
+            # alert description or another document is never a publication date.
+            dates=[c for c in row["cells"] if re.fullmatch(r"\d{1,2}[/-]\d{1,2}[/-]20\d{2}",c)]
+            day=_date(dates[0]) if len(dates)==1 else None
+            try:
+                if day:day=date.fromisoformat(day).isoformat()
+                if day and day>date.today().isoformat():day=None
+            except ValueError:day=None
+            if day:dated_rows+=1
             if not day or not re.search(r"retiro del mercado|nota informativa|falsificad|seguridad",body,re.I):continue
             titles=[cell for cell in row["cells"] if len(cell)>25 and not cell.lower().startswith("publicación isp")]
             if not titles:continue
             title=max(titles,key=len)
-            for href in row["links"]:
+            for href,label in row["links"]:
+                if not href or label.lower()!="publicación isp":continue
                 url=urljoin(self.PAGE,href);parsed=urlparse(url)
                 if parsed.netloc not in ("www.ispch.gob.cl","ispch.gob.cl") or not parsed.path.lower().endswith(".pdf") or url in seen:continue
                 seen.add(url)
                 items.append(RawItem(self.SOURCE_SLUG,title[:300],url,self.SOURCE_NAME,self.SOURCE_TYPE,
                                      event_date=day,metadata={"discovered_from":self.PAGE,"listing_text":body}))
                 break
+        if not dated_rows:raise RuntimeError("ANAMED alert listing has no verified publication-date rows")
         return items[:20]
     def discover(self):return self.discover_from_html(fetch_html(self.PAGE))
