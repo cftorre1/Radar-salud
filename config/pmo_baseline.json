@@ -561,6 +561,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Dirección aprueba para próxima iteración: separar filtros temporales de personalización persistente; corregir semántica de fecha/fuentes del Pulso Isapre; y elevar Insights Excel desde delta simple a lectura multiserie determinística y comparable.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Dirección registra para próxima iteración MVP cinco ajustes: «Volver arriba»; distinguir filtros temporales vs personalización persistente; cobertura/copy dependiente del horizonte cuando sea auditable; «Última actualización»; y corregir recencia/visibilidad de Pulso Isapre para separar período de datos de fecha de publicación/detección.",
       "evidence": []
     },
@@ -1042,6 +1047,31 @@
         }
       ],
       "evidence_context": "Staging 2026-09-24: app.js todavía usa «Volver a 30 segundos», filtros temporales + personalización persistente, coverage global no window-aware y «Portada generada…». Pulso Isapre tiene data_period 2026-07, event_date 2026-07-31 y un insight validado, por lo que queda fuera del default 14 días."
+    },
+    {
+      "id": "filters_personalization_pulse_semantics_insights_2026_09_24",
+      "status": "Aprobado_para_proxima_iteracion",
+      "priority": "Alta",
+      "horizon": "MVP antes de release",
+      "items": [
+        {
+          "issue": "filter_vs_personalization_placement",
+          "decision": "Mantener Filtrar tipo/ámbito dentro de Explorar como control temporal de la vista actual. Mover Personalizar mi radar fuera de Explorar, hacia header/perfil/configuración persistente, con microcopy que explique que define preferencias que se conservan entre visitas."
+        },
+        {
+          "issue": "isapre_pulse_publication_date",
+          "decision": "Separar data_period de publication_date/event_date. La recencia del Pulso Isapre debe basarse en la fecha real de publicación/detección/validación de los insumos, no en el cierre del período estadístico. Si las tres fuentes fueron publicadas el 07-09-2026, el pulso debe reflejar 07-09-2026 como fecha de publicación del pulso y conservar data_period=2026-07."
+        },
+        {
+          "issue": "isapre_pulse_sources",
+          "decision": "El Pulso Isapre debe consolidar las tres publicaciones oficiales (cartera, suscripciones/desahucios y movilidad) como Fuentes del pulso, cada una con título, fecha y enlace. No contar solo dos porque una opere como source_url principal."
+        },
+        {
+          "issue": "insights_need_more_intelligence",
+          "decision": "Evolucionar Insights Excel V1 desde una muestra de delta simple hacia lectura determinística multiserie: tendencia de cartera, cambio mensual/acumulado, cotizantes vs cargas, gap suscripciones-desahucios y movilidad compatible; combinar señales solo cuando períodos/denominadores sean comparables y explicitar cuando no lo sean."
+        }
+      ],
+      "evidence_context": "Staging actual: Pulso Isapre usa data_period=2026-07 y event_date=2026-07-31; source_alternatives lista solo 2 porque cartera es source_url principal; data_insights publica una única muestra beneficiarios jun→jul -0,07%."
     }
   ]
 }
