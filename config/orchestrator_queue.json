@@ -524,6 +524,48 @@
         "CTA email independiente",
         "prueba de filtros temporales vs personalización persistente"
       ]
+    },
+    {
+      "id": "model_quality_experiment_global_free_2026_09_24",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Medir con evidencia propia el valor incremental de Luna vs Terra vs Astra en Global Intelligence y en una experiencia FREE de alto impacto, antes de fijar el routing de modelos.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Construir un corpus exigente de 6-8 piezas: incluir materiales ya usados y, si ayuda a discriminar calidad, informes complejos fuera del umbral operativo de 90 días. El corpus experimental no altera reglas de recencia del producto.",
+        "Priorizar documentos extensos y distintos: outlook/strategy, workforce, digital/AI, health-system performance, payer/provider/pharma cuando haya acceso público y uso permitido. Candidatos de referencia: OECD Health at a Glance 2025, McKinsey Heartbeat of health 2025, WHO digital technologies 2025/2026, Deloitte 2026 Global Health Care Outlook, PwC health-industry material.",
+        "Ejecutar el mismo input estructurado y el mismo output contract con Luna, Terra y Astra. No revelar el modelo al evaluador.",
+        "Evaluar a ciegas con Alicanto Intelligence Quality Score 0-100: fidelidad 25, selección/priorización 20, síntesis/conexión 20, valor específico para Chile 20, utilidad ejecutiva 15.",
+        "Registrar además: errores factuales, afirmaciones no sustentadas, omisiones materiales, minutos estimados de edición humana, publicable-sin-edición sí/no, tokens de entrada/salida, costo real API y latencia.",
+        "Separar al menos tres tipos de tarea: resumen de noticia simple; análisis de informe complejo; síntesis multifuente/Qué mirar en Chile.",
+        "Probar también una experiencia FREE limitada de alto impacto. Candidato principal: una sola 'Señal Alicanto' o 'Insight destacado' por semana, elaborada sobre una señal local o cruce de señales ya verificadas, con profundidad superior al feed normal y CTA Premium cuando exista Global Intelligence relacionado.",
+        "Probar un teaser de Global Intelligence dentro del feed FREE: muy acotado, autosuficiente y útil, pero que muestre solo una fracción del análisis y derive a Premium para profundizar. No degradar artificialmente el contenido FREE ni usar dark patterns.",
+        "Comparar al menos tres routers: Luna-only; Terra para deep analysis; Terra por defecto + Astra solo para documentos/temas de alta complejidad o para la pieza FREE destacada.",
+        "Entregar caso de negocio con costo mensual para 10 y 15 informes, costo por pieza FREE destacada, calidad observada, costo por punto incremental de calidad, edición humana evitada y recomendación de routing basada en evidencia.",
+        "No desplegar routing de pago ni subir gasto recurrente hasta registrar resultados y decisión de Dirección."
+      ],
+      "constraints": [
+        "No modificar reglas editoriales ni de recencia del producto por usar documentos antiguos en el experimento.",
+        "No introducir modelos más caros en producción sin decisión posterior de Dirección.",
+        "No inventar ground truth: toda evaluación factual debe contrastarse contra la fuente.",
+        "No usar contenido detrás de paywall ni material con restricciones incompatibles.",
+        "No tocar main/producción."
+      ],
+      "evidence_required": [
+        "corpus y fuentes",
+        "outputs anonimizados por modelo",
+        "rubric y scoring ciego",
+        "tokens/costo/latencia reales",
+        "errores y edición necesaria por output",
+        "comparación Luna/Terra/Astra por tipo de tarea",
+        "caso de negocio 10 y 15 informes/mes",
+        "resultado teaser Global FREE y pieza FREE destacada",
+        "QA/Reviewer independiente"
+      ]
     }
   ],
   "execution_policy": {
