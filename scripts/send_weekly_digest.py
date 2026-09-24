@@ -22,7 +22,7 @@ def select_weekly_signals(signals, today):
         if not s.get('title') or not (s.get('card_what') or s.get('what_happened')):
             continue
         eligible.append(s)
-    return sorted(eligible,key=lambda s:(s['event_date'],s['radar_score']),reverse=True)[:5]
+    return sorted(eligible,key=lambda s:(s['event_date'],int(s['radar_score'])),reverse=True)[:5]
 
 def build_free_digest(signals,today):
     selected=select_weekly_signals(signals,today)

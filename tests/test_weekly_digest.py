@@ -28,3 +28,9 @@ def test_weekly_digest_keeps_full_evidence_and_caps_items():
     assert full in digest['body']
     assert 'Señal 6' not in digest['body']
     assert 'Señal 0' in digest['body']
+
+
+def test_scores_from_json_are_ordered_numerically():
+    candidates=[signal(title='Bajo',radar_score='75'),signal(title='Alto',radar_score=80)]
+    selected=select_weekly_signals(candidates,date(2026,9,24))
+    assert [row['title'] for row in selected]==['Alto','Bajo']
