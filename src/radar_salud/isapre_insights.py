@@ -64,10 +64,14 @@ def _label(value):
     return f"{value:,}".replace(",", ".")
 
 
-def _record(text, formula, family, period, sheet):
+def _signed_label(value):
+    return f"{value:+,}".replace(",", ".")
+
+
+def _record(text, formula, family, period, sheet, analysis_kind):
     return {"text": text, "formula": formula, "family": family["family"], "period": period,
             "sheet": sheet["sheet"], "source_url": family["source_url"],
-            "sha256": family["sha256"]}
+            "sha256": family["sha256"], "analysis_kind": analysis_kind}
 
 
 def _anomaly_check(values):
@@ -102,19 +106,34 @@ def derive(validation):
             difference = current - previous
             pct = difference / previous * 100
             records.append(_record(
-                f"{label.capitalize()}: {_label(previous)} en junio y {_label(current)} en julio de 2026; variación {difference:+,} ({pct:+.2f}%).".replace(",", "."),
+                f"{label.capitalize()}: {_label(previous)} en junio y {_label(current)} en julio de 2026; variación {_signed_label(difference)} ({pct:+.2f}%).",
                 f"({current} - {previous}) / {previous} * 100 = {pct:+.4f}%",
-                family, "2026-06 → 2026-07", series[-1]))
+                family, "2026-06 → 2026-07", series[-1], f"monthly_change_{metric}"))
         first, last = c[0]["metrics"]["beneficiarios"], c[-1]["metrics"]["beneficiarios"]
         records.append(_record(
-            f"La cartera registra {_label(last - first)} beneficiarios entre enero y julio de 2026 (diferencia de stock, no suma mensual).",
-            f"{last} - {first} = {last - first}", car, "2026-01 → 2026-07", c[-1]))
+            f"La cartera pasó de {_label(first)} a {_label(last)} beneficiarios entre enero y julio de 2026; variación {_label(last - first)} (diferencia de stock, no suma mensual).",
+            f"{last} - {first} = {last - first}", car, "2026-01 → 2026-07", c[-1], "beneficiary_stock_change"))
+
+        cot_first, cot_last = c[0]["metrics"]["cotizantes"], c[-1]["metrics"]["cotizantes"]
+        cargas_first, cargas_last = c[0]["metrics"]["cargas"], c[-1]["metrics"]["cargas"]
+        records.append(_record(
+            f"Composición de cartera entre enero y julio de 2026: cotizantes {_label(cot_first)} → {_label(cot_last)} ({_signed_label(cot_last-cot_first)}); cargas {_label(cargas_first)} → {_label(cargas_last)} ({_signed_label(cargas_last-cargas_first)}).",
+            f"cotizantes: {cot_last} - {cot_first} = {cot_last-cot_first}; cargas: {cargas_last} - {cargas_first} = {cargas_last-cargas_first}",
+            car, "2026-01 → 2026-07", c[-1], "cotizantes_vs_cargas"))
         for metric, label in (("contratos_suscritos", "contratos suscritos"), ("desahucios_voluntarios", "desahucios voluntarios")):
             values = [row["metrics"][metric] for row in s]
             total = sum(values)
             records.append(_record(
                 f"Enero–julio 2026: {_label(total)} {label} acumulados como eventos mensuales; no equivalen a cambio neto de cartera.",
-                " + ".join(map(str, values)) + f" = {total}", sub, "2026-01 → 2026-07", s[-1]))
+                " + ".join(map(str, values)) + f" = {total}", sub, "2026-01 → 2026-07", s[-1], f"cumulative_{metric}"))
+        contracts = [row["metrics"]["contratos_suscritos"] for row in s]
+        voluntary = [row["metrics"]["desahucios_voluntarios"] for row in s]
+        monthly_gap = contracts[-1] - voluntary[-1]
+        cumulative_gap = sum(contracts) - sum(voluntary)
+        records.append(_record(
+            f"Suscripciones y desahucios voluntarios: en julio hubo {_label(contracts[-1])} y {_label(voluntary[-1])}, brecha {_signed_label(monthly_gap)}; enero–julio, brecha acumulada {_signed_label(cumulative_gap)} eventos. No equivale a variación neta de cartera.",
+            f"julio: {contracts[-1]} - {voluntary[-1]} = {monthly_gap}; acumulado: {sum(contracts)} - {sum(voluntary)} = {cumulative_gap}",
+            sub, "2026-01 → 2026-07", s[-1], "subscriptions_voluntary_gap"))
         values = [row["metrics"]["beneficiarios"] for row in c]
         streak = 0
         for previous, current in reversed(list(zip(values, values[1:]))):
@@ -126,12 +145,12 @@ def derive(validation):
             records.append(_record(
                 f"La cartera de beneficiarios cae en {streak} comparaciones mensuales consecutivas hasta julio de 2026; no se infiere causa.",
                 " and ".join(f"{a}>{b}" for a, b in list(zip(values, values[1:]))[-streak:]),
-                car, f"{PERIODS[-streak-1]} → 2026-07", c[-1]))
+                car, f"{PERIODS[-streak-1]} → 2026-07", c[-1], "beneficiary_streak"))
         movement = mob["series"][0]["metrics"]
         records.append(_record(
             f"Movilidad entre cortes julio 2025 y julio 2026: {_label(movement['entradas_intervalo'])} entradas y {_label(movement['salidas_intervalo'])} salidas; diferencia {_label(movement['diferencia_intervalo'])}. No es variación mensual.",
             f"{movement['entradas_intervalo']} - {movement['salidas_intervalo']} = {movement['diferencia_intervalo']}",
-            mob, "2025-07 → 2026-07", mob["series"][0]))
+            mob, "2025-07 → 2026-07", mob["series"][0], "mobility_interval"))
         checks = {metric: _anomaly_check([row["metrics"][metric] for row in series])
                   for series, metric in ((c, "beneficiarios"), (s, "contratos_suscritos"), (s, "desahucios_voluntarios"))}
         return {"status": "validated", "period": PERIODS[-1], "insights": records, "anomaly_checks": checks,

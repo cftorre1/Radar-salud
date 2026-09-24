@@ -254,7 +254,7 @@ def main():
     signals=list(signals)
     canonical=Path("data/excel/validated_series.json")
     if canonical.exists():
-        try:pulse=build_pulse(json.loads(canonical.read_text(encoding="utf-8")))
+        try:pulse=build_pulse(json.loads(canonical.read_text(encoding="utf-8")),signals)
         except (OSError,ValueError,TypeError):pulse=None
         if pulse:signals.append(pulse)
     payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":curate(signals,resolve_external=not args.offline)}

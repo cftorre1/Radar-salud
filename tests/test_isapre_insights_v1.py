@@ -12,14 +12,17 @@ def canonical():
 def test_real_series_have_reconciled_periods_formulas_and_official_sources():
     result = derive(canonical())
     assert result["status"] == "validated"
-    assert len(result["insights"]) == 8
+    assert len(result["insights"]) == 10
     for item in result["insights"]:
         assert item["family"] in {"cartera", "suscripciones", "movilidad"}
         assert item["period"] and item["formula"] and item["sheet"]
         assert item["source_url"].startswith("https://www.superdesalud.gob.cl/")
         assert len(item["sha256"]) == 64
     assert "-1.761" in result["insights"][0]["text"]
-    assert "no equivalen a cambio neto" in result["insights"][4]["text"]
+    assert "no equivalen a cambio neto" in " ".join(x["text"] for x in result["insights"])
+    assert {x["analysis_kind"] for x in result["insights"]} >= {"cotizantes_vs_cargas", "subscriptions_voluntary_gap"}
+    gap = next(x for x in result["insights"] if x["analysis_kind"] == "subscriptions_voluntary_gap")
+    assert "15.172, brecha +4.544; enero–julio, brecha" in gap["text"]
     assert result["insights"][-1]["period"] == "2025-07 → 2026-07"
     assert "No es variación mensual" in result["insights"][-1]["text"]
     assert all(x["observations"] == 6 for x in result["anomaly_checks"].values())
