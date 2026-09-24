@@ -719,7 +719,7 @@
       "horizon": "Antes de retomar Fuentes Chile",
       "scope": [
         "cerrar refinamientos MVP restantes: profundidad/densidad Global Intelligence y enriquecimiento editorial correctamente etiquetado",
-        "validar compresión mobile/home y limpieza de copy Global Intelligence",
+        "validar compresión responsive de home (desktop/mobile) y limpieza de copy Global Intelligence",
         "cerrar representación FREE/PREMIUM sin pagos",
         "ejecutar experimento Luna/Terra/Astra con scoring ciego y caso de negocio",
         "implementar teaser FREE de Global Intelligence, Insight Alicanto semanal y observabilidad de costo/modelo",
@@ -1512,20 +1512,20 @@
       ]
     },
     {
-      "id": "mobile_home_compression_and_global_copy_2026_09_24",
+      "id": "home_compaction_responsive_and_global_copy_2026_09_24",
       "status": "Aprobado_para_proxima_iteracion",
       "priority": "Crítica",
       "horizon": "Antes de retomar Fuentes Chile",
       "principle": "Primero valor, después explicación",
       "decisions": [
-        "Orden superior: Header → Global Intelligence PREMIUM → Personalizar mi radar compacto → Suscríbete compacto → hero → transparencia compacta → Filtros → Qué debes saber en 30 segundos.",
-        "Personalizar mi radar será una fila/botón compacto; opciones y microcopy de persistencia aparecen solo al abrir.",
-        "Suscríbete será una fila/botón compacto; correo y descripción del resumen semanal aparecen solo al abrir.",
-        "«Encuentra lo que importa» debe caber en una línea en mobile mediante reducción tipográfica responsiva.",
+        "La compresión aplica a toda la home responsive, tanto desktop como mobile; mobile tiene el criterio de densidad más exigente.",
+        "No construir la interfaz solo en vertical: usar composición horizontal para botones, CTAs y filtros cuando el ancho lo permita y mantenga una estética limpia/elegante.",
+        "Personalizar mi radar y Suscríbete deben resolverse como controles compactos; pueden convivir en la misma fila cuando el breakpoint y la jerarquía visual lo permitan.",
+        "«Encuentra lo que importa» debe mantenerse en una sola línea mediante tipografía responsiva en los viewports objetivo.",
         "Eliminar la bajada larga bajo «Encuentra lo que importa».",
-        "«Miramos mucho para mostrarte poco» debe ocupar una línea de métricas simples/auditables y detalle opcional colapsado.",
-        "Renombrar Explorar a «Filtros» y eliminar bajadas obvias; mostrar directamente Tipo y Ámbito.",
-        "Comprimir padding/gaps para que «Qué debes saber en 30 segundos» aparezca o asome materialmente en la primera vista mobile.",
+        "«Miramos mucho para mostrarte poco» debe mostrar solo dos métricas dinámicas y sensibles al filtro temporal: señales detectadas y señales seleccionadas. No mostrar incidencias técnicas en esta vista.",
+        "Renombrar Explorar a «Filtros», sin bajada explicativa. Tipo y Ámbito deben ir lado a lado cuando el ancho lo permita para reducir scroll.",
+        "Comprimir padding/gaps y priorizar que «Qué debes saber en 30 segundos» quede visible dentro de la primera vista en desktop y aparezca/asome materialmente en mobile.",
         "Eliminar en Global Intelligence los dos párrafos de explicación sobre selección curada/separación Chile y vista pública/autorización.",
         "La separación Global Theme ≠ Trend Chile sigue vigente como regla interna aunque no se explique en copy visible."
       ],
@@ -1533,11 +1533,13 @@
         "QA desktop/mobile",
         "Reviewer",
         "evidencia staging",
-        "captura before/after mobile",
+        "capturas before/after desktop y mobile",
         "medición de altura/scroll antes de 30 segundos",
+        "layout horizontal responsive donde corresponda",
         "persistencia personalización",
         "suscripción colapsada",
-        "filtros compactos",
+        "Filtros Tipo/Ámbito compactos y lado a lado cuando proceda",
+        "métricas detectadas/seleccionadas dinámicas por período",
         "Global copy eliminado",
         "accesibilidad"
       ]
