@@ -26,6 +26,10 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  await expect(page.getByRole('heading',{name:'Control de producto'})).toBeVisible();
  await expect(page.locator('#metrics')).toContainText('LIVE pending');
  await expect(page.locator('#usage')).toContainText('Costo USD: no disponible');
+ await expect(page.locator('#readiness')).toContainText('No lista para Beta');
+ await expect(page.locator('#blocks .block')).toHaveCount(10);
+ await expect(page.locator('#failures')).toContainText('Autopilot registra ready antes de confirmar preview remoto');
+ await expect(page.locator('#deployments')).toContainText('Producción: último SHA comprobado');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  const response=await page.request.get('/data/excel_diagnostics.csv');expect(response.ok()).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-product.png`,fullPage:true});

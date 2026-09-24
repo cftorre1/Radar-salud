@@ -2,9 +2,11 @@
 import argparse
 import csv
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from radar_salud.pending_queue import PendingQueue, atomic_json
+from radar_salud.pmo import project as project_pmo
 
 def read(path, fallback):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else fallback
@@ -29,6 +31,7 @@ def build(root, output):
             "sheet": meta.get("sheet"), "period": meta.get("period"),
             "insights": len(row.get("data_insights") or [])})
     ledger = read(root / "data/autopilot/ledger.json", {"iterations": []})
+    baseline_path = root / "config/pmo_baseline.json"
     live = [item for item in queue.items.values() if item.get("lane") == "LIVE"]
     selected_urls = set()
     for row in snapshot.get("signals", []):
@@ -55,7 +58,8 @@ def build(root, output):
             output_tokens=sum(x.get("output_tokens") or 0 for x in responses),
             cost_usd=None, cost_status="unavailable_without_approved_rates",
             historical_tokens_status="not_measured_before_0.9.0"),
-        excel=diagnostics, user_telemetry="local_preferences_only_no_central_collector")
+        excel=diagnostics, user_telemetry="local_preferences_only_no_central_collector",
+        pmo=project_pmo(baseline_path, os.environ.get("GITHUB_SHA")) if baseline_path.exists() else None)
     output.mkdir(parents=True, exist_ok=True)
     atomic_json(output / "product.json", report)
     # Plain tabular diagnostic importable by Excel. No workbook is fabricated.
