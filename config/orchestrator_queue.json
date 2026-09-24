@@ -702,11 +702,12 @@
         "La unidad principal de radar debe tener esta jerarquía compacta: «Qué debes saber en 30 segundos» → «<N> señales detectadas · <N> seleccionadas · <N> no leídas» → controles de filtrado/orden → bandeja de señales.",
         "Eliminar por completo el título independiente «Filtros».",
         "Las tres métricas deben ser dinámicas y auditables: detectadas y seleccionadas cambian con el período activo; no leídas refleja el estado persistente del usuario para las señales visibles/pertinentes.",
-        "Los controles deben disponerse en una fila compacta cuando el ancho lo permita y colapsar responsivamente solo cuando sea necesario.",
-        "El microcopy que anteceda a los controles debe corresponder exactamente a su función real. No mostrar «Filtrar tipo y ámbito» si los controles visibles son Período/Orden; no mostrar labels que no coincidan con los controles.",
-        "Si la implementación final usa Período y Orden como controles visibles, presentarlos como «Período» y «Orden». Si usa Tipo y Ámbito, mantener esos labels. No mezclar nomenclaturas.",
         "La bandeja de señales aparece inmediatamente debajo de los controles, sin otra sección intermedia.",
-        "«Cómo seleccionamos lo que importa» permanece como acceso secundario discreto dentro de esta unidad, sin ocupar altura propia relevante."
+        "«Cómo seleccionamos lo que importa» permanece como acceso secundario discreto dentro de esta unidad, sin ocupar altura propia relevante.",
+        "Mantener «Filtrar tipo y ámbito» como acordeón colapsado por defecto dentro de la unidad «Qué debes saber en 30 segundos». No es el título de los combo box sino el control que abre/cierra el conjunto de filtros.",
+        "Al expandir «Filtrar tipo y ámbito», mostrar los combo box existentes «Período» y «Orden». Conservar sus labels y semántica actuales.",
+        "Dentro del acordeón expandido, disponer «Período» y «Orden» lado a lado cuando el ancho lo permita; en viewports estrechos usar el layout responsive más compacto que preserve legibilidad y targets táctiles.",
+        "Al estar colapsado, el acordeón debe ocupar una sola fila compacta y no reservar altura para sus controles internos."
       ],
       "constraints": [
         "No tocar main/producción.",
@@ -734,7 +735,11 @@
         "conteo no leído sincronizado con estado leído/no leído persistente",
         "controles compactos con labels coherentes con su función real",
         "sin título independiente «Filtros»",
-        "bandeja inmediatamente debajo de controles"
+        "bandeja inmediatamente debajo de controles",
+        "acordeón «Filtrar tipo y ámbito» colapsado por defecto",
+        "Período y Orden visibles al expandir el acordeón",
+        "Período y Orden lado a lado cuando el ancho lo permita",
+        "estado colapsado reduce materialmente la altura antes de la bandeja"
       ]
     }
   ],
