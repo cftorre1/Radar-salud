@@ -66,6 +66,12 @@ def _card_micro(s):
         and all(token in what for token in ("alianza entre municipalidades","$300 millones","Huechuraba"))):
         r["card_what"]="El alcalde de Huechuraba propuso una alianza municipal para mejorar la atención primaria; afirmó que ahora ejecuta $300 millones antes devueltos al Minsal."
         r["card_why"]="Plantea mejorar la ejecución de recursos de APS sin aumentar presupuesto; aún no es una medida sectorial adoptada."
+    why=str(r.get("why_it_matters") or "")
+    if (str(r.get("title") or "").startswith("Resolución Exenta IF/N°11156")
+        and all(token in what for token in ("Circular IF/Nº528","eliminación de esos topes","mecanismo de registro"))
+        and all(token in why for token in ("bonificación sin tope anual","1 de noviembre de 2026","compra directa de bonos"))):
+        r["card_what"]="La Superintendencia confirmó la cobertura sin tope anual para cinco prestaciones vinculadas a TEA y añadió requisitos de acreditación y registro."
+        r["card_why"]="Las isapres deben habilitar el registro y la compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026."
     return r
 
 def _doc_key(s):

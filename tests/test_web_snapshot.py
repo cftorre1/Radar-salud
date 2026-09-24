@@ -13,6 +13,17 @@ def test_bupa_card_preserves_all_three_projects_without_ellipsis():
     assert all(x in card["card_what"] for x in ("La Dehesa","Huinganal","Mindplace","San Damián"))
     assert "…" not in card["card_what"]
 
+
+def test_tea_resolution_card_keeps_outcome_requirement_and_deadline_compact():
+    row=sig("Resolución Exenta IF/N°11156",event="2026-09-23",cat="Regulación & Legal")
+    row.update(
+        what_happened="La Superintendencia modificó la Circular IF/Nº528, confirmó la eliminación de esos topes e incorporó requisitos diagnósticos y un mecanismo de registro para acceder a la cobertura.",
+        why_it_matters="Las isapres deben mantener la bonificación sin tope anual, habilitar el registro y adecuar la compra directa de bonos a más tardar el 1 de noviembre de 2026.")
+    card=m._card_micro(row)
+    assert "cinco prestaciones" in card["card_what"] and "requisitos" in card["card_what"]
+    assert "1 de noviembre de 2026" in card["card_why"] and "compra directa" in card["card_why"]
+    assert len(card["card_what"])+len(card["card_why"])<300
+
 def test_distinct_statistical_families_keep_their_sources():
     xs=[sig("Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026",url="https://x/a"),sig("Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026",url="https://x/b"),sig("Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026",url="https://x/c")]
     for row in xs:
