@@ -74,8 +74,11 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
  const circular=page.locator('article').filter({has:page.getByRole('heading',{name:'Circular IF/N°535'})});
  await circular.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Circular IF/N°77');
+ await page.locator('#detailBody .related').getByText('Normativa relacionada',{exact:false}).click();
  await expect(page.locator('#detailBody')).toContainText('Norma modificada');
  const ref=page.locator('#detailBody .related-item').filter({hasText:'Circular IF/N°77'});
+ await expect(ref).toBeVisible();
+ await expect(ref.getByText('Norma modificada',{exact:false})).toBeVisible();
  expect(await ref.locator('a').count()===1||await ref.getByText('enlace pendiente de verificación',{exact:false}).count()===1).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-cards-v2.png`,fullPage:true});
 });
