@@ -21,3 +21,12 @@ test('card metadata does not confuse resolution, data period and publication dat
 test('unverified Circular 77 relation remains visible without invented URL',()=>{const c=context();const html=c.contextBlock([{title:'Circular IF/N°77',relationship:'Norma modificada',url:null,verified:false}]);assert.match(html,/Normativa relacionada/);assert.match(html,/Circular IF\/N°77/);assert.match(html,/Norma modificada/);assert.match(html,/enlace pendiente de verificación/);assert.doesNotMatch(html,/href=/)});
 test('Global Intelligence is a separate PREMIUM surface with explicit Chile hypothesis',()=>{const html=fs.readFileSync('web/global.html','utf8'),js=fs.readFileSync('web/global.js','utf8'),data=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8'));assert.match(html,/PREMIUM/);assert.match(js,/hipótesis, no evidencia local/);assert.match(fs.readFileSync('web/app.js','utf8'),/Global Intelligence <strong>PREMIUM/);assert.ok(data.themes.every(t=>t.kind==='global_theme'&&t.chile_watch.kind==='hypothesis'&&t.chile_watch.trend_chile_status==='not_established'))});
 test('subscription capture is consented and fail-closed until provider and privacy approval',()=>{const html=fs.readFileSync('web/subscription.html','utf8'),js=fs.readFileSync('web/subscription.js','utf8'),cfg=JSON.parse(fs.readFileSync('web/data/subscription.json','utf8'));assert.match(html,/type="email"[^>]*required disabled/);assert.match(html,/id="consent"[^>]*required disabled/);assert.match(js,/confirmar la suscripción/);assert.match(js,/capture_enabled===true/);assert.match(js,/privacy_approved===true/);assert.match(js,/double_opt_in===true/);assert.match(js,/https:/);assert.equal(cfg.capture_enabled,false);assert.equal(cfg.send_enabled,false);assert.equal(cfg.form_action,null)});
+test('public pages carry consistent social metadata without unapproved canonical domain',()=>{
+ for(const page of ['index','coverage','global','subscription']){
+  const html=fs.readFileSync(`web/${page}.html`,'utf8');
+  assert.match(html,/<meta property="og:title" content="[^"]+"\/>/);
+  assert.match(html,/<meta property="og:description" content="[^"]+"\/>/);
+  assert.match(html,/og:image" content="https:\/\/cftorre1\.github\.io\/Radar-salud\/assets\/alicanto-logo-header\.png/);
+  assert.doesNotMatch(html,/alicanto\.cl|rel="canonical"/);
+ }
+});
