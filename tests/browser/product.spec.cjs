@@ -132,7 +132,7 @@ test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM disti
  await page.goto('/');
  await expect(page.getByRole('link',{name:/Global Intelligence PREMIUM/})).toBeVisible();
  await page.getByRole('link',{name:/Global Intelligence PREMIUM/}).click();
- await expect(page.getByRole('heading',{name:'Global Intelligence'})).toBeVisible();
+ await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();
  await expect(page.locator('.premium-badge')).toHaveText('Acceso PREMIUM');
  await expect(page.getByText('Vista pública de la experiencia.',{exact:false})).toBeVisible();
  await expect(page.locator('.global-inbox')).toContainText('3 temas no leídos');
