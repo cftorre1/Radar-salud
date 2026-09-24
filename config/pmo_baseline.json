@@ -133,7 +133,21 @@
           "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36043375959",
           "publisher": "WHO"
         }
-      ]
+      ],
+      "ux_iteration": {
+        "sha": "b071d4960953bf25124690162552745d76062834",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36059505522",
+        "failed_run": "https://github.com/cftorre1/Radar-salud/actions/runs/36059112878",
+        "checks": [
+          "142 tests Python",
+          "20 tests web",
+          "16 browser desktop/mobile",
+          "reviewer",
+          "preview"
+        ],
+        "result": "success",
+        "scope": "Acceso destacado, copy PREMIUM, inbox Global con leído/no leído persistente, profundización y retorno accesible. No valida monitoreo recurrente ni control de acceso exclusivo."
+      }
     },
     "email_subscription_technical_qa": {
       "kind": "github_actions",
@@ -694,6 +708,15 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-24",
+      "change": "Global Intelligence incorpora acceso destacado, copy PREMIUM, inbox propio y estado leído/no leído persistente con profundización y retorno accesible. Reviewer independiente rechazó el primer corte por pérdida de foco; se corrigió con actualización incremental. #128 registró selector QA ambiguo sin preview; b071d49/#129 pasó 142 Python, 20 Node, 16 browser desktop/mobile, Reviewer y preview. El bloque permanece Implementado/approved: faltan monitoreo recurrente y acceso exclusivo.",
+      "evidence": [
+        "global_intelligence_lite_qa",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36059112878",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36059505522"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Dirección consolida y prioriza antes de retomar Fuentes Chile todos los refinamientos MVP recientes: navegación/Personalización, copy de cobertura/actualización, semántica y fuentes del Pulso Isapre, insights multiserie, Global Intelligence destacado/inbox/profundidad, CTA semanal y enriquecimiento editorial del mismo emisor.",

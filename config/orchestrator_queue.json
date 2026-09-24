@@ -213,7 +213,7 @@
         "Reviewer",
         "staging evidence"
       ],
-      "progress": "Muestra pública PREMIUM: 3 temas, 5 referencias de cinco editores (Reuters, Deloitte, McKinsey, PwC y WHO/OMS), con fuentes primarias contrastadas y Trend Chile no establecido. #109 PwC PASS; #110 WHO FAIL QA selector ambiguo y sin deploy; #111 WHO PASS. No monitoreo recurrente ni control de acceso exclusivo; CB Insights/PAHO inaccesibles 403 en lectura pública y BCG revisado tiene restricciones de uso comercial. Sigue approved/Implementado.",
+      "progress": "Muestra pública PREMIUM: 3 temas, 5 referencias de Reuters, Deloitte, McKinsey, PwC y WHO/OMS, con fuentes primarias contrastadas y Trend Chile no establecido. UX aprobada implementada: acceso destacado, copy PREMIUM, inbox propio, leído/no leído persistente, profundización y retorno con foco accesible. b071d49/#129 PASS. No hay monitoreo recurrente ni control de acceso exclusivo; CB Insights/PAHO inaccesibles 403 y BCG tiene restricciones de uso comercial. Sigue approved/Implementado.",
       "evidence": [
         "34f41894507e5323804a75439f854f8a5658ed33 — implementación Global Themes, export determinístico, página PREMIUM, validación fail-closed y pruebas adversariales",
         "Reuters 2026-09-18, Deloitte 2025-12-11 y McKinsey 2025-05-29: muestras reales con fecha, URL original, hallazgo y captura trazables",
@@ -221,10 +221,13 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038053040 — tests PASS; staging detectó regresión móvil causada por backfill concurrente y no desplegó preview",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561 — candidato integrado c0a1ef73fd247c227ff9bb9dea72e93856ea7db2; tests, QA staging desktop/mobile, Reviewer y preview PASS",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641 — #96: paridad canónica/pública y aviso muestra pública; gates QA/Reviewer CI/preview PASS",
-        "Pendiente: CB Insights, PwC, OMS/WHO, OPS/PAHO y BCG cuando exista material relevante verificable; no hay evidencia de captura directa ni monitoreo recurrente.",
+        "Pendiente: CB Insights, OPS/PAHO y BCG cuando exista material relevante y uso permitido; no hay monitoreo recurrente.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36042555130 — 26e54ac PwC; QA desktop/mobile Reviewer y preview PASS, fuente primaria 2026-05-04, 24%/19% encuesta 2025 sin atribución Chile.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36042938827 — #110 FAIL QA selector WHO ambiguo; sin deploy.",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36043375959 — abae512 WHO NHWA 2026 primario; QA desktop/mobile, Reviewer y preview PASS, 5 referencias, hipótesis Chile."
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36043375959 — abae512 WHO NHWA 2026 primario; QA desktop/mobile, Reviewer y preview PASS, 5 referencias, hipótesis Chile.",
+        "Reviewer independiente UX: primer corte FAIL por pérdida de foco/contexto al marcar leído; corrección incremental preserva details abierto, foco del toggle, siguiente fila y retorno a la bandeja; segundo corte APPROVE.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36059112878 — 103eac2 #128: tests PASS; 14/16 browser PASS, FAIL por selector de heading ambiguo; Reviewer CI/preview omitidos.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36059505522 — b071d49 #129: 142 Python, 20 Node, 16 browser desktop/mobile, Reviewer y preview PASS; Global Theme/hipótesis/Trend Chile intactos."
       ]
     },
     {
