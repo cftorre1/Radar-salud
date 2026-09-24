@@ -159,7 +159,7 @@
         "QA/Reviewer",
         "staging evidence"
       ],
-      "progress": "Piloto #24: Bupa 15 detectadas, 1 BACKFILL publicada, 2 BACKFILL pendientes; LIVE 0. DEIS 0 elegibles, FONASA HTTPError, ISP URLError, RedSalud RuntimeError. #82 FAIL UX, #85 FAIL integridad; #89 PASS tras restaurar historia completa. Pendiente observación externa de fuentes restantes.",
+      "progress": "Pilotos #24/#25: Bupa y RedSalud aportaron una señal BACKFILL real cada uno; LIVE 0; FONASA HTTPError, ISP URLError, DEIS técnico OK sin publicación elegible. RedSalud #93 FAIL por altura móvil; corrección #95 PASS. Falta validar acceso externo restante y newsrooms farma/healthtech.",
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36029771353 — piloto #23 limitado a 1, 7 fuentes exitosas y 2 errores; staging datos 83f55e36c464972c2e8eee7763f5a7699a644cb1",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36030110235 — preview #74 059447995561647bcb814e15430ed1ae744ddcc2, tests/QA desktop-mobile/Reviewer/preview PASS; Reviewer independiente corrigió atribución de fecha/PDF y estructura, pero sin fixture real",
@@ -173,12 +173,15 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36033189069 — piloto #24: Bupa 15 detectadas, 1 BACKFILL publicada, 2 pendientes BACKFILL, 12 descartadas; DEIS 0; FONASA HTTPError, ISP URLError, RedSalud RuntimeError.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36033669663 — #82 FAIL card móvil 544 px (<420 requerido), sin deploy.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36034992656 — #85 FAIL JSON histórico truncado por publicación API, sin deploy.",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36035724259 — 11f0afe #89 PASS tests, QA desktop/mobile, Reviewer CI y preview; historial restaurado blob 840a1887 (680 señales) y Bupa reproducible desde historia."
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36035724259 — 11f0afe #89 PASS tests, QA desktop/mobile, Reviewer CI y preview; historial restaurado blob 840a1887 (680 señales) y Bupa reproducible desde historia.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36037182719 — piloto #25, ac941ced: RedSalud 9 detectadas, 1 BACKFILL publicada, 2 BACKFILL pendientes, 6 rechazadas; FONASA HTTPError, ISP URLError, DEIS 0 elegibles.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36037499154 — preview #93 FAIL QA mobile por altura 496px; sin despliegue.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561 — c0a1ef7 preview #95 PASS tests, QA desktop/mobile y Reviewer; RedSalud fecha, motivos, 9 clínicas, Isapres/Prestadores contrastados; LIVE 0, BACKFILL pendiente 4."
       ]
     },
     {
       "id": "global_intelligence_lite",
-      "status": "validated",
+      "status": "approved",
       "priority": "high",
       "owner": "Work",
       "source": "Dirección",
@@ -206,14 +209,15 @@
         "Reviewer",
         "staging evidence"
       ],
-      "progress": "Global Intelligence Lite publicado como superficie PREMIUM con tres Global Themes reales y trazables. Cada tema separa hallazgo global, relevancia e hipótesis Qué mirar en Chile; Lite rechaza señales locales y estados candidate/established hasta que exista el pipeline chileno canónico.",
-      "completed_at": "2026-09-24",
+      "progress": "Tres muestras primarias verificadas Reuters/Deloitte/McKinsey y separación de hipótesis Chile; preview #96 y QA desktop/mobile PASS. Integración restante de fuentes aprobadas, monitoreo y acceso PREMIUM efectivo no demostrados. No declarar bloque completo validado.",
       "evidence": [
         "34f41894507e5323804a75439f854f8a5658ed33 — implementación Global Themes, export determinístico, página PREMIUM, validación fail-closed y pruebas adversariales",
         "Reuters 2026-09-18, Deloitte 2025-12-11 y McKinsey 2025-05-29: muestras reales con fecha, URL original, hallazgo y captura trazables",
         "Reviewer independiente: primer corte FAIL por cronología/promoción indebida; corrección revisada PASS con 125 Python, 18 Node y 10 Playwright desktop/mobile",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038053040 — tests PASS; staging detectó regresión móvil causada por backfill concurrente y no desplegó preview",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561 — candidato integrado c0a1ef73fd247c227ff9bb9dea72e93856ea7db2; tests, QA staging desktop/mobile, Reviewer y preview PASS"
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561 — candidato integrado c0a1ef73fd247c227ff9bb9dea72e93856ea7db2; tests, QA staging desktop/mobile, Reviewer y preview PASS",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641 — #96: paridad canónica/pública y aviso muestra pública; gates QA/Reviewer CI/preview PASS",
+        "Pendiente: CB Insights, PwC, OMS/WHO, OPS/PAHO y BCG cuando exista material relevante verificable; no hay evidencia de captura directa ni monitoreo recurrente."
       ]
     },
     {

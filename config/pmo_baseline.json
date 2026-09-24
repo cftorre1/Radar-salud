@@ -78,11 +78,14 @@
       ],
       "result": "success_after_mobile_backfill_correction",
       "validated_requirements": [
-        "Tres Global Themes reales y trazables",
-        "Qué mirar en Chile separado como hipótesis sin evidencia local",
-        "Capa PREMIUM distinguible de Trend Chile",
-        "Promoción candidate/established bloqueada en Lite"
-      ]
+        "Tres Global Themes reales y trazables en la muestra",
+        "Qué mirar en Chile separado como hipótesis sin evidencia local en la muestra",
+        "Promoción candidate/established bloqueada en Lite",
+        "Paridad muestra canónica/pública verificada en QA #96"
+      ],
+      "scope": "Muestra verificable de tres publicaciones; evidencia parcial, no validación completa de fuentes o control PREMIUM.",
+      "parity_sha": "2ab6a33744fc36562f7844d81680b75c1a9c0d2b",
+      "parity_preview": "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641"
     },
     "rollback": {
       "kind": "github_actions",
@@ -373,7 +376,7 @@
     {
       "id": "global",
       "title": "Global Intelligence Lite",
-      "status": "Validado",
+      "status": "Implementado",
       "critical": true,
       "evidence": [
         "global_intelligence_lite_qa"
@@ -382,11 +385,14 @@
         "fuentes internacionales con acceso público",
         "separación Global Theme/Trend Chile"
       ],
-      "missing": [],
+      "missing": [
+        "Verificar otras fuentes internacionales aprobadas cuando haya research material público y relevante; sin transferencia automática a Chile.",
+        "No hay evidencia de monitoreo recurrente ni exclusividad PREMIUM efectiva; la muestra está declarada pública."
+      ],
       "requirements": [
         {
           "label": "Research material de fuentes internacionales aprobadas",
-          "status": "Validado"
+          "status": "Implementado"
         },
         {
           "label": "Qué mirar en Chile con hipótesis y evidencia separadas",
@@ -394,7 +400,7 @@
         },
         {
           "label": "Capa PREMIUM distinguible de Trend Chile",
-          "status": "Validado"
+          "status": "Implementado"
         }
       ]
     },
@@ -811,6 +817,15 @@
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36033189069",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36035724259"
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "change": "Corregida sobrevalidación Global Lite: #96 pasa QA desktop/mobile, Reviewer CI y preview para tres muestras; bloque general Implementado hasta probar alcance de fuentes, monitoreo y control PREMIUM. Fuentes Chile #25 produjo RedSalud BACKFILL factual; #93 FAIL móvil, #95 PASS tras corrección. LIVE sigue 0.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36037182719",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561"
       ]
     }
   ],
