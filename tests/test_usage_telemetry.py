@@ -24,6 +24,25 @@ def test_failed_call_records_error_class_without_sensitive_text(tmp_path,monkeyp
     assert row["error_type"]=="TimeoutError" and row["model"]=="configured-model"
     assert row["input_tokens"] is None and row["cost_usd"] is None
 
+
+def test_response_can_be_traced_to_feature_output_and_run(tmp_path, monkeypatch):
+    monkeypatch.setattr(telemetry, "project_root", lambda: tmp_path)
+    response = SimpleNamespace(id="resp-1", model="gpt-5.6-terra", usage=SimpleNamespace(
+        input_tokens=10, output_tokens=4, total_tokens=14, input_tokens_details=None))
+    telemetry.record_response("deep", "gpt-5.6-terra", response, True,
+                              feature="global_intelligence", output_id="theme-1", run_id="experiment-1")
+    row = json.loads((tmp_path / "data/ai_usage/responses.jsonl").read_text())
+    assert (row["feature"], row["output_id"], row["run_id"]) == (
+        "global_intelligence", "theme-1", "experiment-1")
+    assert row["cost_status"] == "pricing_not_configured" and row["cost_usd"] is None
+
+
+def test_partial_feature_trace_is_rejected(tmp_path, monkeypatch):
+    monkeypatch.setattr(telemetry, "project_root", lambda: tmp_path)
+    with pytest.raises(ValueError, match="feature, output_id and run_id"):
+        telemetry.record_response("deep", "gpt-5.6-terra", None, False,
+                                  feature="global_intelligence", output_id="theme-1")
+
 def test_global_run_budget_cannot_exceed_attempts(tmp_path,monkeypatch):
     monkeypatch.setenv("RADAR_ROOT",str(tmp_path))
     monkeypatch.setenv("RADAR_FAST_PER_RUN","2")

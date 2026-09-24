@@ -3,7 +3,11 @@ import json
 from datetime import datetime, timezone
 from .paths import project_root
 
-def record_response(kind, model, response, success, error_type=None):
+def record_response(kind, model, response, success, error_type=None, *, feature=None, output_id=None, run_id=None,
+                    publishable=None, incremental_quality_points=None):
+    trace = (feature, output_id, run_id)
+    if any(value is not None for value in trace) and not all(value is not None for value in trace):
+        raise ValueError("feature telemetry requires feature, output_id and run_id together")
     usage = getattr(response, "usage", None)
     details = getattr(usage, "input_tokens_details", None)
     row = {
@@ -17,6 +21,8 @@ def record_response(kind, model, response, success, error_type=None):
         "output_tokens": getattr(usage, "output_tokens", None),
         "total_tokens": getattr(usage, "total_tokens", None),
         "cost_usd": None, "cost_status": "pricing_not_configured",
+        "feature": feature, "output_id": output_id, "run_id": run_id,
+        "publishable": publishable, "incremental_quality_points": incremental_quality_points,
     }
     # Rates are deliberately not invented or changed by Autopilot.
     path = project_root() / "data/ai_usage/responses.jsonl"

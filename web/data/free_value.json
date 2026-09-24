@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-09-24T23:13:59.072275+00:00",
+  "status": "available",
+  "global_teaser": {
+    "theme_id": "global-workforce-pressure-2026",
+    "title": "La brecha de personal sanitario se vuelve estructural",
+    "excerpt": "La presión combina envejecimiento de la población y de la fuerza laboral. Para prestadores y aseguradores, el riesgo no es solo contratar más: también afecta capacidad, continuidad, productividad clínica y dependencia de profesionales formados en otros países.",
+    "source_count": 2,
+    "publishers": [
+      "Reuters",
+      "WHO"
+    ],
+    "premium_href": "global.html#theme-global-workforce-pressure-2026",
+    "evidence_status": "verified_sources",
+    "model_trace": {
+      "mode": "deterministic_existing_evidence",
+      "api_call": false,
+      "model": null,
+      "output_id": "global-workforce-pressure-2026"
+    }
+  },
+  "weekly_insight": {
+    "id": "2026-09-21-regulation",
+    "week_start": "2026-09-21",
+    "archetype": "cambio_regulatorio",
+    "title": "Resolución Exenta IF/N°11156",
+    "summary": "La Superintendencia confirmó la cobertura sin tope anual para cinco prestaciones vinculadas a TEA y añadió requisitos de acreditación y registro.",
+    "why_it_matters": "Las isapres deben habilitar el registro y la compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026.",
+    "source_name": "Superintendencia de Salud",
+    "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+    "event_date": "2026-09-23",
+    "scope": "Isapres",
+    "evidence_status": "verified_source",
+    "model_trace": {
+      "mode": "deterministic_existing_evidence",
+      "api_call": false,
+      "model": null,
+      "output_id": "2026-09-21-regulation"
+    },
+    "selection": {
+      "base_score": 87.4,
+      "diversity_penalties": {
+        "same_archetype": 0,
+        "same_scope": 0,
+        "same_source": 0
+      },
+      "selection_score": 87.4,
+      "eligible_candidates": 16
+    }
+  },
+  "selection_policy": {
+    "window_weeks": 6,
+    "recent_history_count": 0,
+    "current_week_locked": true,
+    "penalizes": [
+      "archetype",
+      "scope",
+      "source"
+    ],
+    "fallback": "best_verified_single_signal",
+    "no_forced_frequency": true
+  }
+}

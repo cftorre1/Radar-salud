@@ -9,9 +9,63 @@ from pathlib import Path
 from radar_salud.pending_queue import PendingQueue, atomic_json
 from radar_salud.isapre_insights import derive as derive_isapre_insights
 from radar_salud.pmo import project as project_pmo
+from radar_salud.free_value import build_free_value
 
 def read(path, fallback):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else fallback
+
+FEATURE_LABELS = {
+    "global_intelligence": "Global Intelligence",
+    "weekly_insight": "Insight Alicanto de la semana",
+}
+MODELS = ("gpt-5.6-luna", "gpt-5.6-terra", "gpt-6-astra")
+
+def aggregate_usage(rows):
+    costs=[x.get("cost_usd") for x in rows if x.get("cost_usd") is not None]
+    output_ids={x.get("output_id") for x in rows if x.get("output_id")}
+    publishable=sum(x.get("publishable") is True for x in rows)
+    quality_points=sum(float(x.get("incremental_quality_points") or 0) for x in rows)
+    cost=round(sum(costs),6) if rows and len(costs)==len(rows) else None
+    return {
+        "calls":len(rows) if rows else None,
+        "input_tokens":sum(x.get("input_tokens") or 0 for x in rows) if rows else None,
+        "output_tokens":sum(x.get("output_tokens") or 0 for x in rows) if rows else None,
+        "cost_usd":cost,
+        "cost_status":"measured" if cost is not None else "unavailable",
+        "traceable_outputs":len(output_ids),
+        "cost_per_output":round(cost/len(output_ids),6) if cost is not None and output_ids else None,
+        "cost_per_publishable":round(cost/publishable,6) if cost is not None and publishable else None,
+        "cost_per_incremental_quality_point":round(cost/quality_points,6) if cost is not None and quality_points else None,
+    }
+
+def feature_observability(responses, month, free_value):
+    deterministic={
+        "global_intelligence":free_value.get("global_teaser"),
+        "weekly_insight":free_value.get("weekly_insight"),
+    }
+    result={}
+    for feature,label in FEATURE_LABELS.items():
+        rows=[x for x in responses if x.get("feature")==feature]
+        monthly=[x for x in rows if str(x.get("at","")).startswith(month)]
+        periods={}
+        for key,period_rows in (("monthly",monthly),("accumulated",rows)):
+            models={}
+            for model in MODELS:
+                # Attribute once to the actual model, falling back to requested_model.
+                model_rows=[x for x in period_rows if (x.get("model") or x.get("requested_model"))==model]
+                models[model]=aggregate_usage(model_rows)
+            periods[key]={"label":month if key=="monthly" else "Total acumulado",
+                          **aggregate_usage(period_rows),"models":models}
+        trace=(deterministic.get(feature) or {}).get("model_trace") or {}
+        deterministic_output=bool(trace.get("api_call") is False and trace.get("output_id"))
+        result[feature]={
+            "label":label,"status":"measured" if rows else ("deterministic_no_api_call" if deterministic_output else "not_measured"),
+            "periods":periods,"deterministic_outputs":1 if deterministic_output else 0,
+            "deterministic_output_id":trace.get("output_id") if deterministic_output else None,
+            "model_used":trace.get("model") if rows else None,
+            "model_status":"not_applicable_deterministic" if deterministic_output and not rows else ("measured" if rows else "unavailable"),
+        }
+    return result
 
 def build(root, output):
     queue_path = root / "data/state/pending_queue.json"
@@ -37,6 +91,9 @@ def build(root, output):
     responses = [json.loads(line) for line in responses_path.read_text().splitlines() if line] if responses_path.exists() else []
     usage = {p.stem: read(p, {}) for p in (root / "data/ai_usage").glob("*.json")}
     current_month=datetime.now(timezone.utc).strftime("%Y-%m")
+    free_value = build_free_value(snapshot, read(root / "web/data/global_themes.json", {"themes": []}),
+                                  read(root / "data/free_value/history.json", []))
+    feature_usage = feature_observability(responses,current_month,free_value)
     fast_failed=usage.get(current_month,{}).get("fast",{}).get("failed",0)
     failure_rows=[x for x in responses if x.get("kind")=="fast" and x.get("success") is False and str(x.get("at","")).startswith(current_month)]
     error_counts=dict(Counter(x.get("error_type") or "unknown" for x in failure_rows))
@@ -86,11 +143,13 @@ def build(root, output):
             errors=error_counts, fast_failed=fast_failed,
             fast_unclassified=max(0,fast_failed-len(failure_rows)),
             cost_usd=None, cost_status="unavailable_without_approved_rates",
-            historical_tokens_status="not_measured_before_0.9.0"),
+            historical_tokens_status="not_measured_before_0.9.0", features=feature_usage,
+            unassigned_responses=sum(not x.get("feature") for x in responses)),
         excel=diagnostics, excel_validation=excel_validation, excel_insights_v1=insight_summary,
         user_telemetry="local_preferences_only_no_central_collector",
         pmo=project_pmo(baseline_path, os.environ.get("ALICANTO_CANDIDATE_SHA") or os.environ.get("GITHUB_SHA")) if baseline_path.exists() else None)
     output.mkdir(parents=True, exist_ok=True)
+    atomic_json(output / "free_value.json", free_value)
     atomic_json(output / "product.json", report)
     # Same canonical validation records shown in the dashboard. Historical
     # publication diagnostics live in product.json and must not masquerade as

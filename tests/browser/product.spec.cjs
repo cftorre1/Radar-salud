@@ -94,6 +94,13 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  await expect(page.getByRole('heading',{name:'Control de producto'})).toBeVisible();
  await expect(page.locator('#metrics')).toContainText('LIVE pending');
  await expect(page.locator('#usage')).toContainText('Costo USD: no disponible');
+ await expect(page.locator('#featureUsage tr')).toHaveCount(12);
+ await expect(page.locator('#featureUsage')).toContainText('Global Intelligence');
+ await expect(page.locator('#featureUsage')).toContainText('Insight Alicanto de la semana');
+ await expect(page.locator('#featureUsage')).toContainText('No disponible');
+ await expect(page.locator('#featureUsage')).toContainText('Total acumulado');
+ await expect(page.locator('#featureSummary')).toContainText('output determinístico trazable');
+ await expect(page.locator('#featureSummary')).toContainText('costo/output No disponible');
  await expect(page.locator('#readiness')).toContainText('No lista para Beta');
  await expect(page.locator('#requirementProgress')).toContainText('requisitos validados con evidencia');
  await expect(page.locator('#externalObservations')).toContainText('Validado técnicamente / pendiente observación externa');
@@ -110,6 +117,18 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
  const response=await page.request.get('/data/excel_diagnostics.csv');expect(response.ok()).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-product.png`,fullPage:true});
+});
+test('FREE value shows one verified weekly insight and a bounded Global teaser',async({page})=>{
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
+ const weekly=page.locator('.weekly-insight'),teaser=page.locator('.global-teaser');
+ await expect(weekly).toContainText('Insight Alicanto de la semana · FREE');
+ await expect(weekly).toContainText('fuente verificada');
+ await expect(weekly.getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);
+ await expect(teaser).toContainText('Una mirada Global Intelligence · FREE');
+ await expect(teaser).toContainText('Vista acotada');
+ await expect(teaser.getByRole('link',{name:/Profundizar en PREMIUM/})).toHaveAttribute('href',/^global\.html#theme-/);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+ await page.screenshot({path:`artifacts/${test.info().project.name}-free-value.png`,fullPage:true});
 });
 test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');

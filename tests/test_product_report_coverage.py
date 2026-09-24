@@ -7,6 +7,32 @@ from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue
 
 
+def load_report_module():
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("product_report", root / "scripts/product_report.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_feature_observability_separates_monthly_accumulated_and_actual_model():
+    module = load_report_module()
+    rows = [
+        {"at": "2026-08-20T00:00:00Z", "feature": "global_intelligence", "model": "gpt-5.6-terra",
+         "requested_model": "gpt-5.6-luna", "input_tokens": 10, "output_tokens": 5, "cost_usd": None,
+         "output_id": "old", "run_id": "r1"},
+        {"at": "2026-09-20T00:00:00Z", "feature": "global_intelligence", "model": "gpt-5.6-terra",
+         "requested_model": "gpt-5.6-luna", "input_tokens": 20, "output_tokens": 8, "cost_usd": None,
+         "output_id": "new", "run_id": "r2"},
+    ]
+    free = {"global_teaser": {"model_trace": {"api_call": False, "output_id": "teaser"}}, "weekly_insight": None}
+    result = module.feature_observability(rows, "2026-09", free)["global_intelligence"]
+    assert result["periods"]["monthly"]["models"]["gpt-5.6-terra"]["calls"] == 1
+    assert result["periods"]["accumulated"]["models"]["gpt-5.6-terra"]["calls"] == 2
+    assert result["periods"]["accumulated"]["models"]["gpt-5.6-luna"]["calls"] is None
+    assert result["periods"]["accumulated"]["cost_per_output"] is None
+
+
 def test_coverage_live_funnel_excludes_backfill(tmp_path):
     root = Path(__file__).resolve().parents[1]
     spec = importlib.util.spec_from_file_location("product_report", root / "scripts/product_report.py")
