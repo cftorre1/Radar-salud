@@ -5,7 +5,7 @@ function coverageText(d){
  const sources=Object.values(d.sources||{}),live=d.coverage_live;
  const fmt=n=>new Intl.NumberFormat('es-CL').format(n);
  return d.queue_status==='measured'&&d.queue&&live
-  ?`Hoy tenemos: ${fmt(sources.filter(s=>s.status==='ok').length)} fuentes activas · ${fmt(live.detected)} señales detectadas · ${fmt(live.evaluated)} evaluadas · ${fmt(live.selected)} seleccionadas (LIVE, portada actual).${d.discovery?.failed_sources?` Medición parcial: ${fmt(d.discovery.failed_sources)} fuentes con error.`:''}`
+  ?`Hoy tenemos: ${fmt(sources.filter(s=>s.technical_status==='ok'||(!s.technical_status&&['ok','warning'].includes(s.status))).length)} fuentes activas · ${fmt(live.detected)} señales detectadas · ${fmt(live.evaluated)} evaluadas · ${fmt(live.selected)} seleccionadas (LIVE, portada actual).${d.discovery?.failed_sources?` Medición parcial: ${fmt(d.discovery.failed_sources)} fuentes con error.`:''}`
   :`${fmt(sources.length)} fuentes registradas · señales LIVE: aún sin medición global.`;
 }
 const esc=(s='')=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));

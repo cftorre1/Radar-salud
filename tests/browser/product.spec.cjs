@@ -6,7 +6,11 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await expect(page.locator('#period')).toHaveValue('14');await expect(page.locator('#sort')).toHaveValue('date');
  await expect(page.locator('#coverage-title')).toHaveText('Miramos mucho para mostrarte poco.');
  await expect(page.getByRole('link',{name:'Cómo seleccionamos lo que importa →'})).toHaveAttribute('href','coverage.html');
- await expect(page.locator('#coverageCounts')).toContainText('sin medición global');
+ const coverage=await (await page.request.get('/data/product.json')).json();
+ if(coverage.queue_status==='measured'){
+  await expect(page.locator('#coverageCounts')).toContainText(`${new Intl.NumberFormat('es-CL').format(coverage.coverage_live.detected)} señales detectadas`);
+  await expect(page.locator('#coverageCounts')).toContainText(`${Object.values(coverage.sources).filter(x=>x.technical_status==='ok'||(!x.technical_status&&['ok','warning'].includes(x.status))).length} fuentes activas`);
+ }else await expect(page.locator('#coverageCounts')).toContainText('sin medición global');
  await page.locator('#period').selectOption('90');
  await expect(page.locator('article').first()).toBeVisible();
  if(test.info().project.name==='mobile'){
