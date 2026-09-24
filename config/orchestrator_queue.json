@@ -476,6 +476,51 @@
         "Candidato 0e4410654fb17cbd74b0ba460fc2a4c158db2f32; 140 tests Python, 20 tests web, QA Playwright desktop/mobile, Reviewer y preview PASS.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36048885296"
       ]
+    },
+    {
+      "id": "mvp_product_refinements_2026_09_24",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Aplicar los refinamientos de producto aprobados por Dirección antes de retomar Fuentes Chile pausadas.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Antes de modificar, revisar staging y no duplicar cambios ya resueltos.",
+        "Cambiar «Volver a 30 segundos» por «Volver arriba».",
+        "Mantener Filtrar tipo/ámbito dentro de Explorar como control temporal de la vista actual; mover Personalizar mi radar a header/perfil/configuración persistente con microcopy claro.",
+        "Simplificar el copy de actualización a «Última actualización: <fecha y hora>».",
+        "Reformular el bloque «Miramos mucho…» para evitar jerga interna y hacerlo dependiente del horizonte seleccionado cuando las métricas por ventana sean auditables; no inventar cifras si no hay soporte backend.",
+        "Corregir semántica del Pulso Isapre: separar data_period de fecha de publicación/detección/validación; usar para recencia la fecha real de publicación de los insumos.",
+        "Consolidar en el Pulso Isapre las tres publicaciones oficiales como fuentes del pulso, cada una con título, fecha y enlace; no omitir la fuente principal.",
+        "Elevar los Insights Excel desde delta simple a lectura determinística multiserie: tendencia de cartera, mensual/acumulado, cotizantes vs cargas, gap suscripciones-desahucios y movilidad compatible, solo con períodos/denominadores comparables.",
+        "Mover el acceso a Global Intelligence a cabecera/navegación superior, fuera del bloque de transparencia.",
+        "Revisar el copy «Premium - Muestra pública»: usar «Global Intelligence» como título y una indicación Premium discreta, sin devaluar la experiencia.",
+        "Crear inbox propio en Global Intelligence con leído/no leído, barrido, profundización y retorno al inbox; no replicar filtros innecesarios.",
+        "Dar más profundidad a informes extensos (Deloitte/McKinsey/PwC/WHO, etc.): resumen ejecutivo, 3–5 hallazgos, cifras, implicancias, Qué mirar en Chile, metodología/fuente; Reuters/noticia puede ser más breve.",
+        "Aumentar densidad de valor de Global Intelligence mediante más fuentes cuando estén disponibles y/o análisis cruzado de temas recurrentes y vínculos con señales chilenas, manteniendo Global Theme ≠ Trend Chile.",
+        "Sacar el resumen semanal del bloque «Miramos mucho…» y convertirlo en CTA independiente: «Recibe lo importante de la semana en tu correo», sin etiqueta FREE.",
+        "Para fuentes editoriales como Diario Financiero, permitir enriquecimiento con canales oficiales del mismo emisor (p. ej. LinkedIn/newsletter) etiquetado como enriquecimiento, no como corroboración independiente; buscar fuente primaria/corporativa cuando exista y guardar conexiones históricas relevantes (p. ej. expansión previa IntegraMédica → nuevos proyectos Bupa)."
+      ],
+      "constraints": [
+        "No retomar Fuentes Chile hasta cerrar este paquete o encontrar un bloqueo real.",
+        "No inventar métricas, fechas, vínculos ni corroboración.",
+        "No tratar canales del mismo emisor como fuente independiente.",
+        "No cambiar pricing, pagos, secretos, privacidad ni presupuestos.",
+        "No tocar main/producción."
+      ],
+      "evidence_required": [
+        "QA desktop/mobile",
+        "Reviewer",
+        "evidencia staging",
+        "Pulso Isapre con tres fuentes y fechas correctas",
+        "insights multiserie reconciliados/fail-closed",
+        "Global Intelligence UX revisada",
+        "CTA email independiente",
+        "prueba de filtros temporales vs personalización persistente"
+      ]
     }
   ],
   "execution_policy": {
