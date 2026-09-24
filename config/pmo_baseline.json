@@ -54,7 +54,17 @@
       "observed_behavior": "Work fue activado y consultó la cola y el baseline en staging sin retransmisión humana.",
       "limitation": "Sondeo periódico; no es un webhook instantáneo de cambios en orchestrator_queue.json porque los eventos GitHub disponibles no cubren cambios arbitrarios de archivo JSON.",
       "result": "success",
-      "scope": "Solo cola approved en staging; sin secretos, main, producción ni cambios sensibles."
+      "scope": "Solo cola approved en staging; sin secretos, main, producción ni cambios sensibles.",
+      "qa_sha": "0e4410654fb17cbd74b0ba460fc2a4c158db2f32",
+      "qa_url": "https://github.com/cftorre1/Radar-salud/actions/runs/36048885296",
+      "checks": [
+        "140 tests Python",
+        "20 tests web",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ]
     },
     "staging_qa": {
       "kind": "github_actions",
@@ -940,7 +950,8 @@
       "date": "2026-09-24",
       "change": "Gatillante de orquestación observado en operación real: condition_watch reactivó Work, que leyó cola/PMO de staging sin retransmisión humana. Se valida como fallback de sondeo periódico y se documenta que no existe webhook instantáneo para cambios arbitrarios del JSON; no tocó main ni producción.",
       "evidence": [
-        "orchestrator_condition_watch_observed"
+        "orchestrator_condition_watch_observed",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36048885296"
       ]
     }
   ],
