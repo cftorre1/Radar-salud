@@ -113,7 +113,7 @@ def _scopes(text):
     if re.search(r"\bisapre(?:s)?\b",t):out.append("Isapres")
     if re.search(r"\bfonasa\b|fondo nacional de salud",t):out.append("Fonasa")
     if any(x in t for x in ("clínica","clinica","hospital","prestador","centro médico","centro medico")):out.append("Prestadores")
-    if any(x in t for x in ("farmac","medicamento","laboratorio","novo nordisk","moderna")):out.append("Farma / medicamentos")
+    if any(x in t for x in ("farmac","medicamento","laboratorio","novo nordisk","moderna","pfizer")):out.append("Farma / medicamentos")
     if any(x in t for x in ("healthtech","salud digital","telemedicina")):out.append("Healthtech")
     return out or ["Sistema de salud"]
 
@@ -206,6 +206,7 @@ def process_corporate_news(raw,cfg):
     canonical={
         "redsalud":("RedSalud",("www.redsalud.cl","redsalud.cl"),r"/noticias/[^/]+/?"),
         "bupa_chile":("Bupa Chile",("www.bupa.cl","bupa.cl"),r"/(?:somos-bupa/)?sala-de-prensa/[^/]+/?"),
+        "pfizer_chile":("Pfizer Chile",("www.pfizer.cl","pfizer.cl"),r"/news/[^/]+/?"),
     }
     expected=canonical.get(raw.source_slug);parsed=urlparse(raw.url)
     if (not expected or raw.source_name!=expected[0] or raw.source_type!="corporate"
@@ -225,6 +226,16 @@ def process_corporate_news(raw,cfg):
         if not raw.event_date:raise DeferredProcessing("Bupa article publication date unavailable")
         raw.raw_text=" ".join(article.body.split())[:9000]
         raw.metadata["page_text"]=raw.raw_text
+    elif raw.source_slug=="pfizer_chile":
+        try:page=fetch_html(raw.url)
+        except Exception as exc:raise DeferredProcessing("Pfizer article temporarily unavailable") from exc
+        article=_PfizerArticle();article.feed(page);article.finish()
+        if not article.title or (raw.title.lower() not in article.title.lower()
+                                 and article.title.lower() not in raw.title.lower()):
+            raise DeferredProcessing("Pfizer headline mismatch between listing and article")
+        raw.event_date=_date(raw.metadata.get("listing_date"))
+        if not raw.event_date:raise DeferredProcessing("Pfizer listing publication date unavailable")
+        raw.raw_text=article.body[:9000];raw.metadata["page_text"]=raw.raw_text
     else:
         try:page=fetch_html(raw.url)
         except Exception as exc:raise DeferredProcessing("RedSalud article temporarily unavailable") from exc
@@ -327,6 +338,36 @@ class _RedSaludArticle(HTMLParser):
                 self.title=str(item.get("headline") or item.get("name") or self.title)
                 self.published=str(item.get("datePublished") or self.published)
                 if item.get("articleBody"):self.body=str(item["articleBody"])
+    def finish(self):
+        self.title=" ".join(self.title.split());self.body=" ".join(self.body.split())
+
+
+class _PfizerArticle(HTMLParser):
+    """Read the visible Pfizer web-component headline and its following body."""
+    def __init__(self):
+        super().__init__();self.title="";self.body="";self._heading=0;self._heading_parts=[];self._body=0;self._body_parts=[];self._ready=False;self._complete=False
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs);lower=tag.lower()
+        if lower=="helix-core-heading" and attrs.get("variant")=="h1":
+            self._heading=1;self._heading_parts=[]
+        elif self._heading:self._heading+=1
+        elif self._ready and not self._complete and lower=="helix-core-content":
+            self._body=1;self._body_parts=[]
+        elif self._body:self._body+=1
+    def handle_data(self,data):
+        if self._heading:self._heading_parts.append(data)
+        elif self._body:self._body_parts.append(data)
+    def handle_endtag(self,tag):
+        lower=tag.lower()
+        if self._heading:
+            self._heading-=1
+            if not self._heading and lower=="helix-core-heading":
+                candidate=" ".join(" ".join(self._heading_parts).split())
+                if candidate:self.title=candidate;self._ready=True
+        elif self._body:
+            self._body-=1
+            if not self._body and lower=="helix-core-content":
+                self.body=" ".join(" ".join(self._body_parts).split());self._complete=True
     def finish(self):
         self.title=" ".join(self.title.split());self.body=" ".join(self.body.split())
 

@@ -139,11 +139,12 @@ class IspAnamedAlertScout:
 
 
 class CorporateNewsroomScout:
-    """Monitor two verified corporate newsrooms; details require editorial review."""
+    """Monitor verified corporate newsrooms; details require editorial review."""
     SOURCES={
         "redsalud":("RedSalud","https://www.redsalud.cl/noticias",("www.redsalud.cl","redsalud.cl"),r"/noticias/[^/]+/?"),
         "bupa_chile":("Bupa Chile","https://www.bupa.cl/somos-bupa/sala-de-prensa",("www.bupa.cl","bupa.cl"),
                       r"/(?:somos-bupa/)?sala-de-prensa/[^/]+/?"),
+        "pfizer_chile":("Pfizer Chile","https://www.pfizer.cl/news",("www.pfizer.cl","pfizer.cl"),r"/news/[^/]+/?"),
     }
     SOURCE_TYPE="corporate"
     def __init__(self,slug):
@@ -151,7 +152,8 @@ class CorporateNewsroomScout:
         self.SOURCE_SLUG=slug
         self.SOURCE_NAME,self.PAGE,self.hosts,self.pattern=self.SOURCES[slug]
     def discover_from_html(self,html):
-        parser=_BupaCards() if self.SOURCE_SLUG=="bupa_chile" else _RedSaludCards()
+        parser=(_BupaCards() if self.SOURCE_SLUG=="bupa_chile" else
+                _PfizerCards() if self.SOURCE_SLUG=="pfizer_chile" else _RedSaludCards())
         parser.feed(html);out=[];seen=set()
         for href,title in parser.links:
             if not href or len(title)<28:continue
@@ -159,9 +161,9 @@ class CorporateNewsroomScout:
             if parsed.scheme!="https" or parsed.netloc not in self.hosts or not re.fullmatch(self.pattern,parsed.path):continue
             if url in seen:continue
             published=None
-            if self.SOURCE_SLUG=="redsalud":
+            if self.SOURCE_SLUG in ("redsalud","pfizer_chile"):
                 from .public_source_pipeline import _date
-                published=_date(parser.dates.get(href))
+                published=_date(parser.dates.get((href,title)) or parser.dates.get(href))
                 if not published:continue
             seen.add(url)
             out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
@@ -213,7 +215,34 @@ class _RedSaludCards(HTMLParser):
             self.card[self._field]=" ".join(" ".join(self._parts).split());self._field=None
         elif tag.lower()=="article" and self.card is not None:
             if self.card["href"] and self.card["title"] and self.card["date"]:
-                self.links.append((self.card["href"],self.card["title"]));self.dates[self.card["href"]]=self.card["date"]
+                self.links.append((self.card["href"],self.card["title"]));self.dates[(self.card["href"],self.card["title"])]=self.card["date"]
+            self.card=None;self._field=None
+
+
+class _PfizerCards(HTMLParser):
+    """Bind each Pfizer web-component card's date, headline and detail URL."""
+    def __init__(self):
+        super().__init__();self.links=[];self.dates={};self.card=None;self._field=None;self._parts=[]
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs);lower=tag.lower()
+        if lower=="corporate-article-listing":self.card={"href":None,"title":None,"date":None}
+        elif self.card is not None and lower=="helix-core-content" and attrs.get("slot")=="header":
+            self._field="date";self._parts=[]
+        elif self.card is not None and lower=="helix-core-heading" and attrs.get("variant")=="h4":
+            self._field="title";self._parts=[]
+        elif self.card is not None and self._field=="title" and lower=="a" and not self.card["href"]:
+            self.card["href"]=attrs.get("href")
+    def handle_data(self,data):
+        if self._field:self._parts.append(data)
+    def handle_endtag(self,tag):
+        lower=tag.lower()
+        if lower=="helix-core-content" and self._field=="date":
+            self.card["date"]=" ".join(" ".join(self._parts).split());self._field=None
+        elif lower=="helix-core-heading" and self._field=="title":
+            self.card["title"]=" ".join(" ".join(self._parts).split());self._field=None
+        elif lower=="corporate-article-listing" and self.card is not None:
+            if all(self.card.values()):
+                self.links.append((self.card["href"],self.card["title"]));self.dates[(self.card["href"],self.card["title"])]=self.card["date"]
             self.card=None;self._field=None
 
 

@@ -28,6 +28,35 @@ def test_only_verified_newsroom_detail_links_are_discovered():
     else:raise AssertionError("Unexpected markup must be a technical failure")
 
 
+def test_pfizer_listing_binds_card_date_and_exposes_current_misroute():
+    rows=CorporateNewsroomScout("pfizer_chile").discover_from_html(
+        Path("tests/fixtures/pfizer_real_listing_excerpt.html").read_text())
+    assert len(rows)==1
+    assert rows[0].title.startswith("Empresas healthtech")
+    assert rows[0].event_date=="2023-06-08"
+    assert rows[0].url.endswith("/news/depresion-clinica-que-es-y-cuales-son-sus-sintomas")
+
+
+def test_pfizer_misrouted_listing_fails_closed_and_valid_detail_is_backfill(monkeypatch):
+    cfg=source_index(load_sources(Path("config/sources.json")))["pfizer_chile"]
+    raw=CorporateNewsroomScout("pfizer_chile").discover_from_html(
+        Path("tests/fixtures/pfizer_real_listing_excerpt.html").read_text())[0]
+    depression='<helix-core-heading variant="h1"><div>Depresión clínica: qué es y cuáles son sus síntomas</div></helix-core-heading><helix-core-content><p>'+'Contenido médico histórico. '*30+'</p></helix-core-content>'
+    monkeypatch.setattr("radar_salud.public_source_pipeline.fetch_html",lambda _:depression)
+    with pytest.raises(DeferredProcessing,match="headline mismatch"):
+        process_corporate_news(raw,cfg)
+    raw.url="https://www.pfizer.cl/news/empresas-healthtech-se-reunieron-a-hablar-sobre-nuevas-tendencias-en-salud-digital"
+    monkeypatch.setattr("radar_salud.public_source_pipeline.fetch_html",lambda _:Path("tests/fixtures/pfizer_healthtech_article_excerpt.html").read_text())
+    monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news",lambda **kw:{
+        "relevance_score":82,
+        "what_happened":"Pfizer y actores públicos y privados reunieron soluciones chilenas de salud digital en un encuentro sectorial.",
+        "why_it_matters":"La muestra permite identificar casos de uso locales sin establecer una tendencia de adopción general."})
+    row=process_corporate_news(raw,cfg)
+    assert row["event_date"]=="2023-06-08"
+    assert row["source_name"]=="Pfizer Chile"
+    assert row["scopes"]==["Farma / medicamentos","Healthtech"]
+
+
 def test_undated_or_unassessed_press_never_reaches_feed(monkeypatch):
     raw=CorporateNewsroomScout("redsalud").discover_from_html(
         '<article><a href="/noticias/redsalud-y-nueva-masvida-convenio"></a><h3>RedSalud y Nueva Masvida activan convenio nacional</h3><p>21 Sep 2026</p></article>')[0]

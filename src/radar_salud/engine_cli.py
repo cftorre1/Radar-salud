@@ -52,6 +52,7 @@ def main():
       ("minsal","minsal",MinsalNewsScout().discover,process_minsal),
       ("fonasa","fonasa",FonasaNewsScout().discover,process_fonasa),
       ("isp_anamed","isp_anamed",IspAnamedAlertScout().discover,process_isp_anamed),
+      ("pfizer_chile","pfizer_chile",CorporateNewsroomScout("pfizer_chile").discover,process_corporate_news),
       ("deis","deis",DeisResourceScout().discover,process_deis),
       ("redsalud","redsalud",CorporateNewsroomScout("redsalud").discover,process_corporate_news),
       ("bupa_chile","bupa_chile",CorporateNewsroomScout("bupa_chile").discover,process_corporate_news),
