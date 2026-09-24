@@ -159,17 +159,21 @@
         "QA/Reviewer",
         "staging evidence"
       ],
-      "progress": "DEIS integrado fail-closed y validado técnicamente contra el hub oficial real. Newsrooms prioritarios validados: Bupa produjo captura real y RedSalud fue verificado contra nueve tarjetas reales con cruce de fecha listado/detalle. ISP/ANAMED y FONASA siguen bloqueados externamente; la tarea permanece approved hasta obtener evidencia externa sin rebajar verificación.",
+      "progress": "Piloto #24: Bupa 15 detectadas, 1 BACKFILL publicada, 2 BACKFILL pendientes; LIVE 0. DEIS 0 elegibles, FONASA HTTPError, ISP URLError, RedSalud RuntimeError. #82 FAIL UX, #85 FAIL integridad; #89 PASS tras restaurar historia completa. Pendiente observación externa de fuentes restantes.",
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36029771353 — piloto #23 limitado a 1, 7 fuentes exitosas y 2 errores; staging datos 83f55e36c464972c2e8eee7763f5a7699a644cb1",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36030110235 — preview #74 059447995561647bcb814e15430ed1ae744ddcc2, tests/QA desktop-mobile/Reviewer/preview PASS; Reviewer independiente corrigió atribución de fecha/PDF y estructura, pero sin fixture real",
         "data/state/discovery_run.json y data/source_health.json: isp_anamed URLError, fonasa HTTPError; 0 capturas y 0 publicados",
-        "staging aecc73a476e9b0d00c4c9ae18f22bade18cbfd4e — conector DEIS exige dominio oficial, identidad/config canónica y señal explícita de publicación/actualización junto a la fecha; una fecha de período no se publica",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36031877346 — 114 Python, 17 Node, QA navegador desktop/mobile, Reviewer CI y preview PASS; Reviewer independiente FAIL inicial, corrección y PASS",
         "https://deis.minsal.cl/ — captura real 2026-09-24: hub accesible, estructura DEIS reconocida; 0 releases fechados elegibles, por lo que la salida correcta fue 0 señales",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36033189069 — piloto #24 en staging: Bupa Chile 15 descubiertas, 1 publicada, 2 pendientes y 12 rechazadas; DEIS técnico OK sin señal; FONASA HTTPError e ISP/ANAMED URLError registrados como fallos técnicos, no como rechazo editorial",
         "staging 9eed3d37d63b32f943ec59092b894062a36e2a25 → 7bd2a531be4a805cc9b5d50c93e3cdb5daae7a14 → 11f0afe73ef28d2df1df2534513071b1f44e1373 — RedSalud/Bupa ligados a identidad, host, URL y fecha canónicos; historial íntegro y replay determinista de la curación Bupa",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36035724259 — 119 Python, 17 Node, 8 browser desktop/mobile, Reviewer CI y preview PASS; Reviewer independiente verificó nueve tarjetas RedSalud reales, cruce de fechas y fail-closed ante discrepancia"
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36035724259 — 119 Python, 17 Node, 8 browser desktop/mobile, Reviewer CI y preview PASS; Reviewer independiente verificó nueve tarjetas RedSalud reales, cruce de fechas y fail-closed ante discrepancia",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36031877346 — aecc73a: CI PASS, Reviewer independiente FAIL por confundir período con fecha DEIS.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36032622335 — de059bb: tests, browser desktop/mobile, Reviewer CI e independiente PASS técnico; exige article:published_time; 0 publicaciones elegibles.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36033189069 — piloto #24: Bupa 15 detectadas, 1 BACKFILL publicada, 2 pendientes BACKFILL, 12 descartadas; DEIS 0; FONASA HTTPError, ISP URLError, RedSalud RuntimeError.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36033669663 — #82 FAIL card móvil 544 px (<420 requerido), sin deploy.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36034992656 — #85 FAIL JSON histórico truncado por publicación API, sin deploy.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36035724259 — 11f0afe #89 PASS tests, QA desktop/mobile, Reviewer CI y preview; historial restaurado blob 840a1887 (680 señales) y Bupa reproducible desde historia."
       ]
     },
     {
