@@ -159,7 +159,7 @@
         "QA/Reviewer",
         "staging evidence"
       ],
-      "progress": "Pilotos #24/#25: Bupa y RedSalud aportaron una señal BACKFILL real cada uno; LIVE 0; FONASA HTTPError, ISP URLError, DEIS técnico OK sin publicación elegible. RedSalud #93 FAIL por altura móvil; corrección #95 PASS. Falta validar acceso externo restante y newsrooms farma/healthtech.",
+      "progress": "Pilotos #24/#25: Bupa y RedSalud aportaron una señal BACKFILL real cada uno; LIVE 0; FONASA HTTPError, ISP URLError, DEIS técnico OK sin publicación elegible. Pfizer Chile quedó integrado con parser y guard fail-closed: piloto real descubrió 3 publicaciones de 2023; la tarjeta healthtech enlaza al artículo de depresión y quedó retry por headline mismatch, sin publicación. QA 6eabf23 PASS. Faltan accesos externos y una captura farma/healthtech vigente y correctamente enlazada.",
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36029771353 — piloto #23 limitado a 1, 7 fuentes exitosas y 2 errores; staging datos 83f55e36c464972c2e8eee7763f5a7699a644cb1",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36030110235 — preview #74 059447995561647bcb814e15430ed1ae744ddcc2, tests/QA desktop-mobile/Reviewer/preview PASS; Reviewer independiente corrigió atribución de fecha/PDF y estructura, pero sin fixture real",
@@ -176,7 +176,10 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36035724259 — 11f0afe #89 PASS tests, QA desktop/mobile, Reviewer CI y preview; historial restaurado blob 840a1887 (680 señales) y Bupa reproducible desde historia.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36037182719 — piloto #25, ac941ced: RedSalud 9 detectadas, 1 BACKFILL publicada, 2 BACKFILL pendientes, 6 rechazadas; FONASA HTTPError, ISP URLError, DEIS 0 elegibles.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36037499154 — preview #93 FAIL QA mobile por altura 496px; sin despliegue.",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561 — c0a1ef7 preview #95 PASS tests, QA desktop/mobile y Reviewer; RedSalud fecha, motivos, 9 clínicas, Isapres/Prestadores contrastados; LIVE 0, BACKFILL pendiente 4."
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561 — c0a1ef7 preview #95 PASS tests, QA desktop/mobile y Reviewer; RedSalud fecha, motivos, 9 clínicas, Isapres/Prestadores contrastados; LIVE 0, BACKFILL pendiente 4.",
+        "Pfizer Chile 2026-09-24: 3 publicaciones oficiales descubiertas, todas de 2023. La tarjeta «Empresas healthtech…» enlaza al detalle de depresión; el guard headline↔H1 devolvió retry y publicó 0 señales.",
+        "staging 6eabf235ca9ddaff9841ee3aa0f554243e7d84d5 — parser verificado contra HTML vivo: cuerpo material 5.950 caracteres, sin header señuelo ni footer; 142 tests Python y 20 Node PASS.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36055804692 — tests, QA desktop/mobile, Reviewer CI e independiente y preview PASS; Pfizer sigue BACKFILL/bloqueo externo, nunca LIVE."
       ]
     },
     {
