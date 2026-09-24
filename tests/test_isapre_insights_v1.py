@@ -36,6 +36,8 @@ def test_adversarial_period_schema_and_denominators_fail_closed():
         lambda x: x["families"]["cartera"].update(schema="unknown"),
         lambda x: x["families"]["cartera"].update(family="movilidad"),
         lambda x: x["families"]["cartera"].update(sha256="bad"),
+        lambda x: x["families"]["cartera"].update(source_url=x["families"]["suscripciones"]["source_url"]),
+        lambda x: x["families"]["cartera"].update(source_url="https://www.superdesalud.gob.cl/unreviewed.xlsx"),
     )
     for change in changes:
         altered = copy.deepcopy(canonical())

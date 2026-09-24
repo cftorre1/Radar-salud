@@ -1,6 +1,6 @@
 {
   "date": "2026-09-24",
-  "generated_at": "2026-09-24T15:51:58.349114+00:00",
+  "generated_at": "2026-09-24T16:29:31.808773+00:00",
   "signals": [
     {
       "title": "Bupa acelera inversiones en sector oriente de Santiago con tres proyectos por US$ 15 millones",
@@ -2773,7 +2773,20 @@
         "En 2026-07 se registraron 19.716 contratos suscritos y 15.172 desahucios voluntarios; estos últimos no representan todas las terminaciones.",
         "Entre los cortes 07-2025 y 07-2026 se registraron 109.663 salidas y 91.963 entradas por movilidad; diferencia entradas menos salidas: -17.700."
       ],
-      "data_insights": [],
+      "data_insights": [
+        "Beneficiarios: 2.489.258 en junio y 2.487.497 en julio de 2026; variación -1.761 (-0.07%)."
+      ],
+      "data_insight_evidence": [
+        {
+          "text": "Beneficiarios: 2.489.258 en junio y 2.487.497 en julio de 2026; variación -1.761 (-0.07%).",
+          "formula": "(2487497 - 2489258) / 2489258 * 100 = -0.0707%",
+          "family": "cartera",
+          "period": "2026-06 → 2026-07",
+          "sheet": "Julio",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+          "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec"
+        }
+      ],
       "data_insight_meta": {
         "status": "validated",
         "families": [
@@ -2788,7 +2801,29 @@
           "cartera": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
           "suscripciones": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
           "movilidad": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7"
-        }
+        },
+        "anomaly_checks": {
+          "beneficiarios": {
+            "status": "evaluated",
+            "formula": "abs(delta - median(delta)) * 0.6745 / MAD(delta) > 3.5",
+            "observations": 6,
+            "flagged_periods": []
+          },
+          "contratos_suscritos": {
+            "status": "evaluated",
+            "formula": "abs(delta - median(delta)) * 0.6745 / MAD(delta) > 3.5",
+            "observations": 6,
+            "flagged_periods": []
+          },
+          "desahucios_voluntarios": {
+            "status": "evaluated",
+            "formula": "abs(delta - median(delta)) * 0.6745 / MAD(delta) > 3.5",
+            "observations": 6,
+            "flagged_periods": []
+          }
+        },
+        "validated_insight_count": 8,
+        "published_sample_count": 1
       },
       "source_alternatives": [
         {

@@ -11,6 +11,11 @@ METRICS = {
     "cartera": ("cotizantes", "cargas", "beneficiarios"),
     "suscripciones": ("contratos_suscritos", "desahucios_voluntarios"),
 }
+SOURCE_URLS = {
+    "cartera": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+    "suscripciones": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
+    "movilidad": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
+}
 
 
 def _count(value):
@@ -32,7 +37,7 @@ def _family(families, name):
     if (item["family"] != name or item["status"] != "validated" or item["schema"] != schema
             or not re.fullmatch(r"[0-9a-f]{64}", item["sha256"])
             or source.scheme != "https" or source.netloc != "www.superdesalud.gob.cl"
-            or not source.path.endswith(".xlsx")):
+            or item["source_url"] != SOURCE_URLS[name]):
         raise ValueError("Unvalidated workbook evidence")
     series = item["series"]
     if name == "movilidad":
