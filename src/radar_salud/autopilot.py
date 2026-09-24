@@ -12,16 +12,18 @@ CRITICAL = {"tests", "editorial", "data", "desktop", "mobile", "reviewer"}
 def should_attempt(ledger, candidate_sha):
     """Retry interrupted attempts; wait for a changed candidate after review."""
     return not any(x.get("candidate_sha") == candidate_sha
-                   and x.get("state") in ("qa_passed", "staging_verified", "blocked")
+                   and x.get("state") in ("staging_verified", "blocked")
                    for x in ledger.get("iterations", []))
 
 def reserve(ledger, candidate_sha, builder, now=None):
     now = now or datetime.now(timezone.utc)
     day = now.astimezone(timezone.utc).date().isoformat()
     entries = ledger.setdefault("iterations", [])
+    if len(entries) >= 3 and all(x.get("progress") is False and x.get("state") in ("blocked", "failed") for x in entries[-3:]):
+        raise RuntimeError("Three consecutive cycles without measurable progress")
     entry = dict(id=f"{day}-{sum(x['day']==day for x in entries)+1}",
         day=day, started_at=now.isoformat(), candidate_sha=candidate_sha,
-        builder=builder, state="reserved", checks={}, feedback=[])
+        builder=builder, state="reserved", checks={}, feedback=[], progress=False)
     entries.append(entry)
     return entry
 
@@ -48,6 +50,7 @@ def approve(entry, reports, checks):
     passed = all(checks.get(k) is True for k in CRITICAL)
     passed = passed and not any(x.get("severity") == "critical" for x in entry["feedback"])
     entry["state"] = "qa_passed" if passed else "blocked"
+    entry["progress"] = passed
     return passed
 
 def save_ledger(path, ledger):

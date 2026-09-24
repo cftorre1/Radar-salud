@@ -37,11 +37,12 @@
   ],
   "changelog": [
     {"date": "2026-09-24", "change": "Staging remoto, QA desktop/mobile, Reviewer y rollback real comprobados; producción/main conservados.", "evidence": ["staging_qa", "rollback"]},
-    {"date": "2026-09-24", "change": "Baseline Beta del viernes recibido; estados iniciales conservadores hasta nueva evidencia.", "evidence": []}
+    {"date": "2026-09-24", "change": "Baseline Beta del viernes recibido; estados iniciales conservadores hasta nueva evidencia.", "evidence": []},
+    {"date": "2026-09-24", "change": "Autopilot distingue QA local de preview remoto y ya no impone cinco intentos; falta validación del flujo completo en staging.", "evidence": []}
   ],
   "scope_deviations": [],
   "open_failures": [
-    {"id": "autopilot_ready_before_preview", "severity": "critical", "description": "Autopilot registra ready antes de confirmar preview remoto; un fallo de deploy deja el mismo SHA bloqueado.", "source": "src/radar_salud/autopilot.py; scripts/autopilot_cycle.py"},
+    {"id": "autopilot_preview_not_verified", "severity": "critical", "description": "Autopilot distingue QA aprobado, pero aún no verifica el resultado del preview remoto ni registra su fallo para retry.", "source": "src/radar_salud/autopilot.py; .github/workflows/autopilot.yml"},
     {"id": "beta_contract_not_gated", "severity": "critical", "description": "El Reviewer actual no cubre aún todas las condiciones funcionales del baseline Beta.", "source": "scripts/review_candidate.py"}
   ]
 }

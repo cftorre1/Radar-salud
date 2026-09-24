@@ -44,6 +44,8 @@ jobs:
       - name: Builder, isolated staging, Reviewer and QA
         id: cycle
         if: steps.reserve.outputs.reserved == 'true'
+        env:
+          ALICANTO_CANDIDATE_SHA: ${{ steps.reserve.outputs.sha }}
         run: python scripts/autopilot_cycle.py execute --ledger /tmp/autopilot-state/data/autopilot/ledger.json --sha '${{ steps.reserve.outputs.sha }}'
       - name: Persist outcome even when candidate is blocked
         if: ${{ always() && steps.reserve.outputs.reserved == 'true' }}

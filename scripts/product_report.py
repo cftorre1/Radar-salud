@@ -59,7 +59,7 @@ def build(root, output):
             cost_usd=None, cost_status="unavailable_without_approved_rates",
             historical_tokens_status="not_measured_before_0.9.0"),
         excel=diagnostics, user_telemetry="local_preferences_only_no_central_collector",
-        pmo=project_pmo(baseline_path, os.environ.get("GITHUB_SHA")) if baseline_path.exists() else None)
+        pmo=project_pmo(baseline_path, os.environ.get("ALICANTO_CANDIDATE_SHA") or os.environ.get("GITHUB_SHA")) if baseline_path.exists() else None)
     output.mkdir(parents=True, exist_ok=True)
     atomic_json(output / "product.json", report)
     # Plain tabular diagnostic importable by Excel. No workbook is fabricated.

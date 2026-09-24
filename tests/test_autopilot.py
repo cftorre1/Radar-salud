@@ -14,7 +14,8 @@ def test_attempts_survive_reload_without_daily_cap(tmp_path):
     from radar_salud.autopilot import save_ledger
     path=tmp_path/"ledger.json";ledger={}
     for _ in range(5):
-        reserve(ledger,"abc","builder",NOW)["state"]="failed"
+        attempt=reserve(ledger,"abc","builder",NOW)
+        attempt.update(state="failed", progress=True)
         save_ledger(path,ledger);ledger=json.loads(path.read_text())
     assert reserve(ledger,"abc","builder",NOW)["id"].endswith("-6")
     assert reserve(ledger,"def","builder",NOW+timedelta(days=1))["state"]=="reserved"
@@ -26,6 +27,14 @@ def test_reviewer_sha_and_independence_fail_closed():
     assert not approve(entry,[dict(reviewer="reviewer",candidate_sha="abc")],{"tests":True})
     assert approve(entry,[dict(reviewer="reviewer",candidate_sha="abc")],checks)
     assert entry["state"] == "qa_passed"
+    assert should_attempt({"iterations":[entry]},"abc")  # remote preview may fail
+
+def test_three_unproductive_cycles_stop():
+    ledger={}
+    for _ in range(3):
+        reserve(ledger,"abc","builder",NOW)["state"]="failed"
+    with pytest.raises(RuntimeError,match="Three consecutive"):
+        reserve(ledger,"abc","builder",NOW)
 
 def test_feedback_consolidates_without_losing_critical():
     common=dict(category="data",path="a",code="bad")

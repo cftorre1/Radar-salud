@@ -17,10 +17,11 @@ def project(path: Path, candidate_sha: str | None = None, now: datetime | None =
         links = [evidence[key] for key in block["evidence"] if key in evidence]
         # Every validated block must carry a successful full QA record. The
         # previous release's QA is not proof of a newer candidate's changes.
-        if block["status"] == "Validado" and not any(
+        if block["status"] == "Validado" and (block.get("missing") or not any(
             e.get("result") == "success" and REQUIRED_CHECKS <= set(e.get("checks", []))
-            and e.get("sha") == candidate_sha for e in links
-        ):
+            and e.get("sha") == candidate_sha and block["id"] in e.get("validated_blocks", [])
+            and e.get("url", "").startswith("https://") for e in links
+        )):
             block["status"] = "Implementado"
             block["validation_note"] = "Falta evidencia completa del commit candidato."
         block["evidence_links"] = [{"url": e["url"], "sha": e["sha"], "result": e["result"]} for e in links]

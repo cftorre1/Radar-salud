@@ -9,11 +9,16 @@ def test_validated_requires_full_evidence_for_exact_candidate(tmp_path):
     block = baseline["blocks"][0]
     block["status"] = "Validado"
     block["evidence"] = ["staging_qa"]
+    block["missing"] = []
     path = tmp_path / "baseline.json"
     path.write_text(json.dumps(baseline))
     old = project(path, "a" * 40)
     assert old["blocks"][0]["status"] == "Implementado"
     assert not old["readiness"]["ready"]
+    current = project(path, baseline["reference_staging_sha"])
+    assert current["blocks"][0]["status"] == "Implementado"
+    baseline["evidence_catalog"]["staging_qa"]["validated_blocks"] = ["pmo"]
+    path.write_text(json.dumps(baseline))
     current = project(path, baseline["reference_staging_sha"])
     assert current["blocks"][0]["status"] == "Validado"
     baseline["evidence_catalog"]["staging_qa"]["checks"].remove("reviewer")
