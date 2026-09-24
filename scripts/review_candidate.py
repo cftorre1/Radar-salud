@@ -22,6 +22,18 @@ def review(web, sha):
     except Exception as exc:
         fail("data","invalid_snapshot","data/radar_today.json",str(exc))
         signals=[]
+    # Rebuilding a snapshot changes generated_at even when no source was
+    # checked. Source health is separate evidence of the last actual poll.
+    try:
+        health=json.loads((web/"data/source_health.json").read_text())["sources"]
+        if not health:raise ValueError("No monitored sources")
+        for slug,source in health.items():
+            if source.get("status") not in ("ok","warning"):continue
+            checked=datetime.fromisoformat(source["checked_at"].replace("Z","+00:00"))
+            if checked.tzinfo is None or (datetime.now(timezone.utc)-checked).total_seconds()>7*86400:
+                fail("data","stale_source_check",f"data/source_health.json#sources/{slug}","Source was not polled within seven days")
+    except (OSError,KeyError,TypeError,ValueError) as exc:
+        fail("data","unverified_source_checks","data/source_health.json",str(exc))
     identities=set()
     for index,signal in enumerate(signals):
         path=f"data/radar_today.json#signals/{index}"
