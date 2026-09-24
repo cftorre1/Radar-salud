@@ -557,6 +557,11 @@
   "changelog": [
     {
       "date": "2026-09-24",
+      "change": "Dirección registra para próxima iteración MVP cinco ajustes: «Volver arriba»; distinguir filtros temporales vs personalización persistente; cobertura/copy dependiente del horizonte cuando sea auditable; «Última actualización»; y corregir recencia/visibilidad de Pulso Isapre para separar período de datos de fecha de publicación/detección.",
+      "evidence": []
+    },
+    {
+      "date": "2026-09-24",
       "change": "Dirección aprueba completar el orquestador con dos piezas: consumo continuo de cola mientras el ejecutor esté activo y gatillante event-driven para nuevas tareas approved cuando el ejecutor esté idle. Prioridad alta; no bloquear el aislamiento actual ni reducir protecciones.",
       "evidence": []
     },
@@ -989,5 +994,36 @@
     }
   ],
   "current_main_workflows_sha": "28be310808fffbe5c3212e75ddda2057ed635ca0",
-  "current_staging_candidate_sha": "49d1d8d9391af7270d7c7b5f5aae7603c9ee6115"
+  "current_staging_candidate_sha": "49d1d8d9391af7270d7c7b5f5aae7603c9ee6115",
+  "product_qa_notes": [
+    {
+      "id": "home_ux_data_visibility_followup_2026_09_24",
+      "status": "Aprobado_para_proxima_iteracion",
+      "priority": "Alta",
+      "horizon": "MVP antes de release",
+      "items": [
+        {
+          "issue": "copy_back_to_top",
+          "decision": "Cambiar «Volver a 30 segundos» por «Volver arriba»."
+        },
+        {
+          "issue": "filter_vs_personalization",
+          "decision": "Aclarar en UI que Filtrar tipo/ámbito afecta solo la vista actual, mientras Personalizar mi radar define preferencias persistentes; revisar si se puede compactar/renombrar para evitar duplicidad percibida."
+        },
+        {
+          "issue": "coverage_copy_window",
+          "decision": "El bloque «Miramos mucho…» debe evitar jerga interna y, cuando exista evidencia temporal suficiente, responder al período seleccionado: p.ej. «En los últimos 14 días…». No mostrar cifras de ventana si el backend no puede auditarlas."
+        },
+        {
+          "issue": "last_updated_copy",
+          "decision": "Reemplazar «Portada generada…» por copy simple «Última actualización: <fecha y hora>»; cualquier precisión técnica secundaria va fuera del mensaje principal."
+        },
+        {
+          "issue": "data_pulse_visibility",
+          "decision": "El Pulso Isapre/insights validados no debe desaparecer del horizonte por usar data_period como event_date. Separar período de datos de fecha de publicación/detección/validación y asegurar visibilidad razonable del último pulso validado."
+        }
+      ],
+      "evidence_context": "Staging 2026-09-24: app.js todavía usa «Volver a 30 segundos», filtros temporales + personalización persistente, coverage global no window-aware y «Portada generada…». Pulso Isapre tiene data_period 2026-07, event_date 2026-07-31 y un insight validado, por lo que queda fuera del default 14 días."
+    }
+  ]
 }
