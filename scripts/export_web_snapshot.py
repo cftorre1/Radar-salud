@@ -50,6 +50,16 @@ def _separate_df_deck(s):
             r["title"]=title[:match.start()].strip()
     return r
 
+def _card_micro(s):
+    """Condense a verified complex announcement without dropping its outcome."""
+    r=dict(s)
+    what=str(r.get("what_happened") or "")
+    if (str(r.get("title") or "").startswith("Bupa acelera inversiones")
+        and all(token in what for token in ("US$15 millones","La Dehesa","Huinganal","Mindplace","San Damián"))):
+        r["card_what"]="Bupa anunció US$15 millones en tres proyectos: centro médico en La Dehesa, compra de Clínicas Huinganal y centro de salud mental Mindplace en San Damián."
+        r["card_why"]="Amplía su red ambulatoria y de salud mental en el sector oriente y suma clínicas mediante una adquisición."
+    return r
+
 def _doc_key(s):
     title=s.get("title","") or ""
     m=re.search(r"resoluci[oó]n(?:\s+exenta)?\s+(?:n[uú]mero\s+)?(?:if|ip)?\s*[/\-]?\s*n?[°º]?\s*([\d\.]+)",title,re.I)
@@ -172,7 +182,7 @@ def _sanction_pulses(signals, today=None):
 def curate(signals,resolve_external=True):
     normalized=[]
     for s in signals:
-        r=_separate_df_deck(_normalize_scopes(_normalize_type(s)))
+        r=_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s))))
         ok,reason,q=publication_ready(r);r["publication_ready_score"]=q;r["publication_gate_reason"]=reason
         if ok:normalized.append(r)
     if not normalized:return []

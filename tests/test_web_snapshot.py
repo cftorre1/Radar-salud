@@ -1,9 +1,17 @@
 import importlib.util
+import json
 from pathlib import Path
 spec=importlib.util.spec_from_file_location("snap",Path("scripts/export_web_snapshot.py"));m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 
 def sig(title,event="2026-09-14",score=70,url=None,cat="Aseguramiento"):
     return {"title":title,"source_name":"Superintendencia de Salud","source_url":url or "https://x/"+str(abs(hash(title))),"category":cat,"event_date":event,"radar_score":score,"confidence_score":100,"validation_status":"automatic","what_happened":"x","why_it_matters":"y","key_facts":["Información actualizada a julio 2026."],"system_domain":"HEALTH_INSURANCE"}
+
+def test_bupa_card_preserves_all_three_projects_without_ellipsis():
+    rows=json.loads(Path("web/data/radar_today.json").read_text())["signals"]
+    bupa=next(s for s in rows if s["title"].startswith("Bupa acelera inversiones"))
+    card=m._card_micro(bupa)
+    assert all(x in card["card_what"] for x in ("La Dehesa","Huinganal","Mindplace","San Damián"))
+    assert "…" not in card["card_what"]
 
 def test_distinct_statistical_families_keep_their_sources():
     xs=[sig("Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026",url="https://x/a"),sig("Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026",url="https://x/b"),sig("Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026",url="https://x/c")]
