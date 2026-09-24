@@ -2,11 +2,16 @@ const {test,expect}=require('@playwright/test');
 require('node:fs').mkdirSync('artifacts',{recursive:true});
 test('Signal Density loads, filters, interests and read state remain stable',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto('/');await expect(page.locator('#meta')).toContainText('Portada generada');
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(page.locator('#period')).toHaveValue('14');await expect(page.locator('#sort')).toHaveValue('date');
  await expect(page.locator('#coverage-title')).toHaveText('Miramos mucho para mostrarte poco.');
- const order=await page.locator('main > .coverage,main > .toolbar,main > #brief,main > #local').evaluateAll(xs=>xs.map(x=>x.id||x.classList[0]));
- expect(order).toEqual(['coverage','toolbar','brief','local']);
+ const order=await page.locator('main > .preferences-panel,main > .coverage,main > .weekly-cta,main > .toolbar,main > #brief,main > #local').evaluateAll(xs=>xs.map(x=>x.id||x.classList[0]));
+ expect(order).toEqual(['preferences-panel','coverage','weekly-cta','toolbar','brief','local']);
+ await expect(page.locator('.toolbar #interestToggle')).toHaveCount(0);
+ await expect(page.locator('.preferences-panel #interestToggle')).toBeVisible();
+ await expect(page.locator('.preferences-panel')).toContainText('se guardan en este dispositivo y se mantienen entre visitas');
+ await expect(page.locator('.coverage').getByRole('link',{name:'Recibe lo importante de la semana en tu correo →'})).toHaveCount(0);
+ await expect(page.locator('.weekly-cta').getByRole('link',{name:'Recibe lo importante de la semana en tu correo →'})).toBeVisible();
  await expect(page.getByRole('link',{name:'Cómo seleccionamos lo que importa →'})).toHaveAttribute('href','coverage.html');
  const coverage=await (await page.request.get('/data/product.json')).json();
  if(coverage.queue_status==='measured'){
@@ -23,9 +28,9 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await page.locator('.briefitem').first().click();
  await expect(page.locator('article.read').first()).toBeVisible();
  expect(await page.evaluate(()=>document.activeElement?.tagName)).toBe('ARTICLE');
- await expect(page.locator('article.read').first().getByRole('button',{name:'Volver a 30 segundos'})).toBeVisible();
- await page.locator('article.read').first().getByRole('button',{name:'Volver a 30 segundos'}).click();
- expect(await page.evaluate(()=>document.activeElement?.id)).toBe('brief');
+ await expect(page.locator('article.read').first().getByRole('button',{name:'Volver arriba'})).toBeVisible();
+ await page.locator('article.read').first().getByRole('button',{name:'Volver arriba'}).click();
+ expect(await page.evaluate(()=>document.activeElement?.tagName)).toBe('MAIN');
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
  await page.locator('article').first().getByRole('button',{name:/Marcar/}).click();
  expect(await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id))).toEqual(ids);
@@ -50,7 +55,7 @@ test('Signal Density loads, filters, interests and read state remain stable',asy
  await page.screenshot({path:`artifacts/${test.info().project.name}-radar.png`,fullPage:true});
 });
 test('Inbox shows every unread signal, supports direct read and persists it',async({page})=>{
- await page.goto('/');await expect(page.locator('#meta')).toContainText('Portada generada');
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  const initial=await page.locator('.briefitem').count();
  const expected=await page.locator('article:not(.read)').count();
  expect(initial).toBe(expected);expect(initial).toBeGreaterThan(4);
@@ -59,7 +64,7 @@ test('Inbox shows every unread signal, supports direct read and persists it',asy
  expect(await page.evaluate(()=>document.activeElement?.hasAttribute('data-brief-read'))).toBeTruthy();
  await expect(page.locator('.briefitem')).toHaveCount(initial-1);
  await expect(page.locator(`article[data-card="${first}"]`)).toHaveClass(/read/);
- await page.reload();await expect(page.locator('#meta')).toContainText('Portada generada');
+ await page.reload();await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(page.locator('.briefitem')).toHaveCount(initial-1);
  await expect(page.locator(`article[data-card="${first}"]`)).toHaveClass(/read/);
  await page.locator('#period').selectOption('90');
@@ -94,7 +99,7 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  await page.screenshot({path:`artifacts/${test.info().project.name}-product.png`,fullPage:true});
 });
 test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page})=>{
- await page.goto('/');await expect(page.locator('#meta')).toContainText('Portada generada');
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#period').selectOption('90');
  const bupa=page.locator('article').filter({has:page.getByRole('heading',{name:/Bupa acelera inversiones/})});
  await expect(bupa).toContainText('La Dehesa');await expect(bupa).toContainText('Clínicas Huinganal');await expect(bupa).toContainText('Mindplace en San Damián.');
@@ -168,7 +173,7 @@ test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM disti
 });
 test('Weekly email capture requires consent and stays closed without approved provider',async({page})=>{
  await page.goto('/');
- await page.getByRole('link',{name:'Recibe lo importante de la semana →'}).click();
+ await page.getByRole('link',{name:'Recibe lo importante de la semana en tu correo →'}).click();
  await expect(page.getByRole('heading',{name:'Recibe lo importante, una vez por semana.'})).toBeVisible();
  await expect(page.locator('#email')).toBeDisabled();
  await expect(page.locator('#consent')).toBeDisabled();
