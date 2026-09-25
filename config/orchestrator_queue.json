@@ -185,7 +185,7 @@
     },
     {
       "id": "global_intelligence_lite",
-      "status": "approved",
+      "status": "blocked",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -213,7 +213,12 @@
         "Reviewer",
         "staging evidence"
       ],
-      "progress": "Muestra pública PREMIUM: 3 temas, 5 referencias de Reuters, Deloitte, McKinsey, PwC y WHO/OMS, con fuentes primarias contrastadas y Trend Chile no establecido. UX aprobada implementada: acceso destacado, copy PREMIUM, inbox propio, leído/no leído persistente, profundización y retorno con foco accesible. b071d49/#129 PASS. No hay monitoreo recurrente ni control de acceso exclusivo; CB Insights/PAHO inaccesibles 403 y BCG tiene restricciones de uso comercial. Sigue approved/Implementado.",
+      "progress": "Muestra pública PREMIUM: 3 temas, 5 referencias de Reuters, Deloitte, McKinsey, PwC y WHO/OMS, con fuentes primarias contrastadas y Trend Chile no establecido. UX aprobada implementada: acceso destacado, copy PREMIUM, inbox propio, leído/no leído persistente, profundización y retorno con foco accesible. b071d49/#129 PASS. El cierre queda bloqueado por accesos/permisos externos y por la decisión de acceso PREMIUM; no se hará bypass de paywall ni cambio de auth.",
+      "blocked_by": [
+        "CB Insights y PAHO/OPS respondieron 403; BCG presenta restricciones de uso comercial. Requiere acceso público permitido o autorización explícita, sin scraping prohibido ni bypass.",
+        "Definir y autorizar el mecanismo de acceso PREMIUM exclusivo; cambiar auth está fuera del alcance autorizado.",
+        "Aprobar la operación de monitoreo recurrente de fuentes internacionales permitidas antes de considerarlo completo."
+      ],
       "evidence": [
         "34f41894507e5323804a75439f854f8a5658ed33 — implementación Global Themes, export determinístico, página PREMIUM, validación fail-closed y pruebas adversariales",
         "Reuters 2026-09-18, Deloitte 2025-12-11 y McKinsey 2025-05-29: muestras reales con fecha, URL original, hallazgo y captura trazables",
@@ -310,7 +315,7 @@
     },
     {
       "id": "free_premium_mvp",
-      "status": "approved",
+      "status": "blocked",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -334,6 +339,11 @@
         "QA de límites FREE/PREMIUM",
         "Reviewer",
         "staging evidence"
+      ],
+      "progress": "Teaser Global FREE e Insight Alicanto semanal ya están validados; la representación completa FREE/PREMIUM no puede cerrar mientras Global Intelligence Lite siga bloqueado y no exista una decisión autorizada sobre acceso PREMIUM.",
+      "blocked_by": [
+        "Dependencia global_intelligence_lite no validada: accesos/permisos externos, monitoreo recurrente y mecanismo PREMIUM pendientes.",
+        "No se implementará auth, pagos ni precio definitivo sin autorización expresa."
       ]
     },
     {
@@ -376,7 +386,7 @@
     },
     {
       "id": "live_evidence_parallel",
-      "status": "approved",
+      "status": "blocked",
       "priority": "continuous",
       "owner": "Work",
       "source": "Dirección",
@@ -399,6 +409,10 @@
         "first genuine LIVE event when externally available",
         "queue/coverage/feed trace",
         "QA/Reviewer"
+      ],
+      "progress": "Pipeline LIVE validado técnicamente por replay controlado; todavía no apareció una publicación real, pertinente y posterior al watermark. Se conserva la captura incremental y la separación LIVE/BACKFILL.",
+      "blocked_by": [
+        "Esperar un evento LIVE externo genuino; no se simulará ni se degradarán gates para producir evidencia."
       ]
     },
     {
@@ -561,7 +575,7 @@
     },
     {
       "id": "model_quality_experiment_global_free_2026_09_24",
-      "status": "approved",
+      "status": "blocked",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -599,6 +613,11 @@
         "caso de negocio 10 y 15 informes/mes",
         "resultado teaser Global FREE y pieza FREE destacada",
         "QA/Reviewer independiente"
+      ],
+      "progress": "El corpus, scoring ciego y caso de negocio requieren ejecuciones reales Luna/Terra/Astra con tokens, costo y latencia observados. No hay credenciales ni autorización de gasto para producir esa evidencia sin simularla.",
+      "blocked_by": [
+        "Autorizar presupuesto acotado y credenciales API para ejecuciones reales Luna/Terra/Astra, entregadas mediante secretos.",
+        "Confirmar disponibilidad de los tres modelos/rutas y límites de costo del experimento; no activar gasto recurrente ni producción."
       ]
     },
     {
