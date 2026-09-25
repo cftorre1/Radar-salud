@@ -247,7 +247,7 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
- const circular=page.locator('article').filter({has:page.getByRole('heading',{name:'Circular IF/N°535'})});
+ const circular=page.locator('article').filter({has:page.getByRole('heading',{name:/Isapres: reembolsos públicos sin compensación/})});
  await circular.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Circular IF/N°77');
  await page.locator('#detailBody .related').getByText('Normativa relacionada',{exact:false}).click();
  await expect(page.locator('#detailBody')).toContainText('Norma modificada');
