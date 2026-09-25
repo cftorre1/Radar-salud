@@ -1085,6 +1085,55 @@
         "muestra representativa de títulos regulatorios/noticias reescritos para triage",
         "sin regresiones de accesibilidad, overflow ni trazabilidad"
       ]
+    },
+    {
+      "id": "workspace_domain_home_execution_2026_09_25",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Cerrar en paralelo los frentes humanos/técnicos desbloqueados por alicantosalud.cl y Google Workspace, priorizando acciones que puedan requerir intervención humana inmediata y continuando automáticamente con Home V2 y demás tareas ejecutables si aparece un bloqueo.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Al iniciar, releer config/orchestrator_queue.json y config/pmo_baseline.json en staging y tomar esos archivos como fuente de verdad.",
+        "PRIORIDAD 1 — Google Workspace/Gmail: continuar la configuración de la cuenta principal hola@alicantosalud.cl con una sola licencia. No crear usuarios adicionales.",
+        "Configurar/validar Gmail para alicantosalud.cl: registros MX en Cloudflare, SPF, DKIM y DMARC compatibles con Google Workspace y con los registros web existentes de GitHub Pages. No romper A/CNAME actuales.",
+        "Crear radar@alicantosalud.cl como alias de hola@alicantosalud.cl, no como usuario/licencia separada.",
+        "Verificar envío y recepción reales de hola@alicantosalud.cl y, si es posible, recepción del alias radar@alicantosalud.cl.",
+        "No cambiar facturación, RUT/datos fiscales, contraseña, 2FA ni aceptar cambios sensibles sin intervención humana explícita.",
+        "Si Google Admin o Cloudflare requieren una acción humana que Work no pueda completar, detener SOLO ese subpaso, registrar exactamente qué pantalla/acción falta y notificar de inmediato a Dirección con instrucciones mínimas. Luego continuar con las demás prioridades sin esperar respuesta.",
+        "PRIORIDAD 2 — dominio web: verificar estado actual de alicantosalud.cl en GitHub Pages. El Custom domain ya fue guardado y DNS check fue successful. Esperar/verificar certificado; cuando esté disponible activar Enforce HTTPS dentro del alcance ya autorizado; validar apex, www, HTTP→HTTPS, canonical y ausencia de loops.",
+        "No promover ninguna funcionalidad de staging al cerrar dominio; la excepción de producción se limita a dominio/HTTPS/canonical/redirecciones ya autorizada por Dirección.",
+        "PRIORIDAD 3 — Home V2 experta: ejecutar home_v2_expert_recommendations_implementation_2026_09_25 completa en staging usando Builder → tests → QA desktop/mobile → Reviewer independiente → corrección → nueva QA hasta PASS.",
+        "La implementación Home V2 debe incluir todas las recomendaciones aprobadas: arquitectura híbrida Global Intelligence + Insight semanal dentro de Ponte al día mientras estén no leídos; colores diferenciados; desaparición de Ponte al día al leerse; persistencia atenuada en feed general; orden por recencia; estado leído unificado entre Ponte al día/feed/Global; deduplicación Insight/señal base; frase funcional breve en hero; acciones Marcar leído claras; mejora editorial de títulos regulatorios/noticiosos; preservación de estética y trazabilidad.",
+        "PRIORIDAD 4 — Email/newsletter provider-ready: una vez Google Workspace esté validado, preparar la integración con MailerLite (proveedor ya elegido por Dirección) hasta el punto previo a cualquier credencial/alta/consentimiento que requiera humano. No activar envíos reales ni crear secretos sin autorización/entrega humana.",
+        "Mantener separados newsletter y acceso anticipado como funnels/listas/consentimientos distintos.",
+        "Preparar la coexistencia DNS Google Workspace + MailerLite sin duplicar SPF; documentar qué registros deberá añadir Work cuando MailerLite entregue sus valores exactos.",
+        "PRIORIDAD 5 — presencia/confianza: actualizar canonical, Open Graph/URLs absolutas y documentación técnica al dominio alicantosalud.cl cuando corresponda; no publicar Privacidad/Términos como definitivos hasta aprobación humana.",
+        "PRIORIDAD 6 — sugerencia anónima de fuentes: no quedarse bloqueado por hosting/SMTP. Mantener provider-ready y registrar qué decisión de backend/hosting queda pendiente.",
+        "Analytics permanece provider-ready y bloqueado hasta decisión explícita de proveedor/privacidad; no activarlo por cuenta propia.",
+        "No ejecutar experimento Luna/Terra/Astra ni retomar Fuentes Chile.",
+        "No tocar auth real, pagos, pricing, secretos, privacidad, legal ni criterios editoriales fuera de lo ya aprobado.",
+        "Después de cada subciclo completado o bloqueado, actualizar cola y PMO con estado real, SHA, evidencia, blocker exacto y siguiente tarea; releer cola y continuar automáticamente mientras exista progreso posible.",
+        "No quedarse esperando a Dirección: ante un blocker humano, notificar y pasar a la siguiente prioridad ejecutable."
+      ],
+      "constraints": [
+        "main/producción protegidos salvo excepción de dominio/HTTPS/canonical/redirecciones ya autorizada.",
+        "No crear segunda licencia Google Workspace.",
+        "No cambiar facturación, datos fiscales, contraseñas, 2FA ni secretos.",
+        "No activar MailerLite/analytics/envíos reales sin autorización y credenciales.",
+        "No simular éxito ante accesos administrativos o externos no disponibles."
+      ],
+      "evidence_required": [
+        "Google Workspace: MX/SPF/DKIM/DMARC y alias radar@ verificados",
+        "prueba real de envío/recepción o blocker humano exacto",
+        "dominio/HTTPS/www/canonical QA",
+        "Home V2 final: SHA + tests + QA desktop/mobile + Reviewer + preview PASS",
+        "MailerLite provider-ready con DNS coexistence documentada",
+        "cola/PMO actualizados tras cada ciclo"
+      ]
     }
   ],
   "execution_policy": {
