@@ -1,15 +1,17 @@
 {
-  "generated_at": "2026-09-24T23:13:59.072275+00:00",
+  "generated_at": "2026-09-25T02:42:54.124561+00:00",
   "status": "available",
   "global_teaser": {
     "theme_id": "global-workforce-pressure-2026",
     "title": "La brecha de personal sanitario se vuelve estructural",
-    "excerpt": "La presión combina envejecimiento de la población y de la fuerza laboral. Para prestadores y aseguradores, el riesgo no es solo contratar más: también afecta capacidad, continuidad, productividad clínica y dependencia de profesionales formados en otros países.",
+    "excerpt": "La presión combina envejecimiento de la población y de la fuerza laboral.",
     "source_count": 2,
     "publishers": [
       "Reuters",
       "WHO"
     ],
+    "source_label": "Reuters · WHO",
+    "published_at": "2026-09-18",
     "premium_href": "global.html#theme-global-workforce-pressure-2026",
     "evidence_status": "verified_sources",
     "model_trace": {
@@ -24,8 +26,21 @@
     "week_start": "2026-09-21",
     "archetype": "cambio_regulatorio",
     "title": "Resolución Exenta IF/N°11156",
+    "insight_title": "TEA: la cobertura sin tope depende de un flujo operativo completo",
+    "insight_teaser": "Cobertura, registro y compra de bonos no son cambios separados: convergen en un único hito operativo el 1 de noviembre.",
     "summary": "La Superintendencia confirmó la cobertura sin tope anual para cinco prestaciones vinculadas a TEA y añadió requisitos de acreditación y registro.",
     "why_it_matters": "Las isapres deben habilitar el registro y la compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026.",
+    "insight_reading": "La conexión ejecutiva une la regla de cobertura con su implementación: acreditación y registro alimentan la validación, y esa validación debe habilitar la compra directa de bonos sin tope. La fecha común —1 de noviembre— convierte beneficios, canales y operaciones en un solo hito de cumplimiento.",
+    "insight_basis": {
+      "kind": "cambio_regulatorio",
+      "connection_type": "cross_process_implementation",
+      "affected_processes": [
+        "Beneficios / Cobertura",
+        "Tecnología / Canales",
+        "Operaciones"
+      ],
+      "is_single_signal": true
+    },
     "source_name": "Superintendencia de Salud",
     "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
     "event_date": "2026-09-23",
@@ -57,7 +72,7 @@
       "scope",
       "source"
     ],
-    "fallback": "best_verified_single_signal",
+    "fallback": "hide_without_curated_evidence_tied_insight",
     "no_forced_frequency": true
   }
 }

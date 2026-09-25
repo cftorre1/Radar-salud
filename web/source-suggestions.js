@@ -13,6 +13,8 @@ const setFeedback=(message,state='')=>{
   feedback.dataset.state=state;
 };
 trigger.addEventListener('click',()=>{
+  const sources=document.getElementById('sourcesDialog');
+  if(sources?.open)sources.close();
   form.elements.started_at.value=new Date().toISOString();
   setFeedback('');
   dialog.showModal();

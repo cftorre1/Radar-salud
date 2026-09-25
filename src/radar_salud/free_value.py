@@ -58,6 +58,34 @@ def _verified_theme(theme: dict[str, Any], today: date) -> tuple[dict[str, Any],
     return (theme, valid) if valid else None
 
 
+def _curated_weekly(signal: dict[str, Any], processes: list[str]) -> dict[str, str] | None:
+    """Return an evidence-tied analytical reading, or fail closed."""
+    expected_url = "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156"
+    evidence = " ".join(str(signal.get(key) or "") for key in
+                        ("card_what", "card_why", "what_happened", "why_it_matters")).lower()
+    evidence += " " + " ".join(str(x) for key in ("key_points", "risk_notes")
+                                 for x in (signal.get(key) or [])).lower()
+    required = ("acredit", "registro", "bono", "1 de noviembre")
+    required_processes = {"Beneficios / Cobertura", "Tecnología / Canales", "Operaciones"}
+    if (signal.get("title") != "Resolución Exenta IF/N°11156"
+            or str(signal.get("source_url") or "").rstrip("/") != expected_url
+            or not all(token in evidence for token in required)
+            or not required_processes.issubset(set(processes))):
+        return None
+    return {
+        "title": "TEA: la cobertura sin tope depende de un flujo operativo completo",
+        "teaser": ("Cobertura, registro y compra de bonos no son cambios separados: "
+                   "convergen en un único hito operativo el 1 de noviembre."),
+        "reading": (
+            "La conexión ejecutiva une la regla de cobertura con su implementación: "
+            "acreditación y registro alimentan la validación, y esa validación debe habilitar "
+            "la compra directa de bonos sin tope. La fecha común —1 de noviembre— convierte "
+            "beneficios, canales y operaciones en un solo hito de cumplimiento."
+        ),
+        "connection_type": "cross_process_implementation",
+    }
+
+
 def rank_weekly_candidates(signals: list[dict[str, Any]], history: list[dict[str, Any]],
                            as_of: date | None = None) -> list[dict[str, Any]]:
     """Rank publishable signals while making recent repetition explicit and testable."""
@@ -119,12 +147,16 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
     theme, verified_sources = theme_rows[0] if theme_rows else (None, [])
     teaser = None
     if theme:
+        latest_source = max(verified_sources, key=lambda x: str(x.get("published_at") or ""))
+        teaser_finding = str(theme["why_it_matters"]).split(". ", 1)[0].rstrip(".") + "."
         teaser = {
             "theme_id": theme["id"],
             "title": theme["title"],
-            "excerpt": theme["why_it_matters"],
+            "excerpt": teaser_finding,
             "source_count": len(verified_sources),
             "publishers": sorted({x["publisher"] for x in verified_sources}),
+            "source_label": " · ".join(sorted({x["publisher"] for x in verified_sources})),
+            "published_at": latest_source["published_at"],
             "premium_href": f"global.html#theme-{theme['id']}",
             "evidence_status": "verified_sources",
             "model_trace": {"mode": "deterministic_existing_evidence", "api_call": False,
@@ -138,27 +170,40 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
     if candidates:
         selected = candidates[0]
         signal = selected["signal"]
-        weekly = {
-            "id": f"{monday.isoformat()}-{signal.get('event_type', 'signal').lower()}",
-            "week_start": week_start,
-            "archetype": selected["archetype"],
-            "title": signal["title"],
-            "summary": signal.get("card_what") or signal.get("what_happened"),
-            "why_it_matters": signal.get("card_why") or signal.get("why_it_matters"),
-            "source_name": signal.get("source_name"),
-            "source_url": signal["source_url"],
-            "event_date": signal["event_date"],
-            "scope": selected["scope"],
-            "evidence_status": "verified_source",
-            "model_trace": {"mode": "deterministic_existing_evidence", "api_call": False,
-                            "model": None, "output_id": f"{week_start}-{signal.get('event_type', 'signal').lower()}"},
-            "selection": {
-                "base_score": selected["base_score"],
-                "diversity_penalties": selected["penalties"],
-                "selection_score": selected["selection_score"],
-                "eligible_candidates": len(candidates),
-            },
-        }
+        processes = [str(x).strip() for x in signal.get("affected_processes") or [] if str(x).strip()]
+        curated = _curated_weekly(signal, processes)
+        importance = signal.get("card_why") or signal.get("why_it_matters")
+        if curated:
+            weekly = {
+                "id": f"{monday.isoformat()}-{signal.get('event_type', 'signal').lower()}",
+                "week_start": week_start,
+                "archetype": selected["archetype"],
+                "title": signal["title"],
+                "insight_title": curated["title"],
+                "insight_teaser": curated["teaser"],
+                "summary": signal.get("card_what") or signal.get("what_happened"),
+                "why_it_matters": importance,
+                "insight_reading": curated["reading"],
+                "insight_basis": {
+                    "kind": selected["archetype"],
+                    "connection_type": curated["connection_type"],
+                    "affected_processes": processes,
+                    "is_single_signal": True,
+                },
+                "source_name": signal.get("source_name"),
+                "source_url": signal["source_url"],
+                "event_date": signal["event_date"],
+                "scope": selected["scope"],
+                "evidence_status": "verified_source",
+                "model_trace": {"mode": "deterministic_existing_evidence", "api_call": False,
+                                "model": None, "output_id": f"{week_start}-{signal.get('event_type', 'signal').lower()}"},
+                "selection": {
+                    "base_score": selected["base_score"],
+                    "diversity_penalties": selected["penalties"],
+                    "selection_score": selected["selection_score"],
+                    "eligible_candidates": len(candidates),
+                },
+            }
     return {
         "generated_at": snapshot.get("generated_at"),
         "status": "available" if teaser and weekly else "partial",
@@ -169,7 +214,7 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
             "recent_history_count": len(prior_history[-6:]),
             "current_week_locked": bool(current),
             "penalizes": ["archetype", "scope", "source"],
-            "fallback": "best_verified_single_signal",
+            "fallback": "hide_without_curated_evidence_tied_insight",
             "no_forced_frequency": True,
         },
     }

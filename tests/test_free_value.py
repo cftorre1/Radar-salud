@@ -13,6 +13,17 @@ def signal(title, event, score=90, scope="Isapres", source="Fuente oficial"):
     }
 
 
+def tea_signal():
+    row = signal("Resolución Exenta IF/N°11156", "REGULATION", 96)
+    row.update(
+        source_url="https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+        card_what="La Superintendencia confirmó cobertura TEA sin tope y añadió acreditación y registro.",
+        card_why="Las isapres deben habilitar registro y compra directa de bonos antes del 1 de noviembre.",
+        affected_processes=["Beneficios / Cobertura", "Tecnología / Canales", "Operaciones"],
+    )
+    return row
+
+
 def test_repetition_penalties_change_weekly_ranking():
     regulation = signal("regulación", "REGULATION", 96)
     investment = signal("inversión", "INVESTMENT", 82, "Prestadores", "Fuente económica")
@@ -25,7 +36,7 @@ def test_repetition_penalties_change_weekly_ranking():
 
 
 def test_free_value_is_evidence_backed_and_teaser_is_fractional():
-    snapshot = {"generated_at": "2026-09-24T18:00:00Z", "signals": [signal("regulación", "REGULATION")]}
+    snapshot = {"generated_at": "2026-09-24T18:00:00Z", "signals": [tea_signal()]}
     themes = {"themes": [{"id": "theme-1", "kind": "global_theme", "title": "Tema global", "global_finding": "Análisis extenso",
                            "why_it_matters": "Una fracción útil y autosuficiente.",
                            "chile_watch": {"kind": "hypothesis", "trend_chile_status": "not_established"},
@@ -40,6 +51,11 @@ def test_free_value_is_evidence_backed_and_teaser_is_fractional():
     assert "global_finding" not in result["global_teaser"]
     assert result["selection_policy"]["no_forced_frequency"] is True
     assert result["weekly_insight"]["model_trace"]["api_call"] is False
+    assert result["weekly_insight"]["insight_title"] == "TEA: la cobertura sin tope depende de un flujo operativo completo"
+    assert result["weekly_insight"]["insight_basis"]["is_single_signal"] is True
+    assert result["global_teaser"]["published_at"] == "2026-09-18"
+    assert result["global_teaser"]["source_label"] == "Reuters · WHO"
+    assert result["global_teaser"]["excerpt"] == "Una fracción útil y autosuficiente."
 
 
 def test_no_verified_signal_does_not_force_weekly_content():
@@ -48,16 +64,32 @@ def test_no_verified_signal_does_not_force_weekly_content():
     assert result["status"] == "partial"
 
 
+def test_tea_weekly_insight_connects_coverage_channels_and_operations():
+    row = tea_signal()
+    insight = build_free_value({"signals": [row]}, {"themes": []}, today=date(2026, 9, 24))["weekly_insight"]
+    assert insight["insight_title"] == "TEA: la cobertura sin tope depende de un flujo operativo completo"
+    assert "acreditación y registro alimentan la validación" in insight["insight_reading"]
+    assert "compra directa de bonos sin tope" in insight["insight_reading"]
+    assert insight["insight_basis"]["connection_type"] == "cross_process_implementation"
+    assert insight["insight_reading"] != row["card_why"]
+
+
 def test_current_week_is_locked_and_next_week_penalizes_repetition():
-    regulation = signal("regulación", "REGULATION", 96)
+    regulation = tea_signal()
     investment = signal("inversión", "INVESTMENT", 82, "Prestadores", "Fuente económica")
     history = [{"week_start": "2026-09-21", "source_url": regulation["source_url"],
                 "archetype": "cambio_regulatorio", "scope": "Isapres", "source_name": "Fuente oficial"}]
     current = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 24))
-    assert current["weekly_insight"]["title"] == "regulación"
+    assert current["weekly_insight"]["title"] == "Resolución Exenta IF/N°11156"
     assert current["selection_policy"]["current_week_locked"] is True
     following = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 28))
-    assert following["weekly_insight"]["title"] == "inversión"
+    assert following["weekly_insight"] is None
+
+
+def test_uncurated_candidate_is_hidden_instead_of_relabeled_as_insight():
+    result = build_free_value({"signals": [signal("noticia", "OTHER")]}, {"themes": []}, today=date(2026, 9, 24))
+    assert result["weekly_insight"] is None
+    assert result["selection_policy"]["fallback"] == "hide_without_curated_evidence_tied_insight"
 
 
 def test_old_unsafe_or_repeated_signal_fails_closed():

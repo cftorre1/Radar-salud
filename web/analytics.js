@@ -30,15 +30,12 @@
     else if(target.matches('[data-read]'))send('card_read_toggle');
     else if(target.matches('#typeFilters .chip,#scopeFilters .chip'))send('facet_change');
     else if(target.matches('.signal a[target="_blank"],#signalDetail a[target="_blank"]'))send('source_click');
-    else if(target.matches('#preferenceDetails summary'))send('preferences_open');
+    else if(target.matches('#filterDetails summary'))send('filters_open');
   },true);
   document.addEventListener('change',event=>{
     const input=event.target;
     if(input.matches('#period'))send('period_change');
     else if(input.matches('#sort'))send('sort_change');
-    else if(input.matches('[data-interest]'))send('preference_change',{
-      dimension:input.dataset.interest==='hiddenTypes'?'type':'scope',
-      hidden:!input.checked});
   },true);
   document.addEventListener('submit',event=>{
     if(event.target.matches('#subscriptionForm'))send('email_signup_intent');
