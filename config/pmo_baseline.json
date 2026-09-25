@@ -1310,6 +1310,13 @@
         "corporate_newsrooms_qa",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36055804692"
       ]
+    },
+    {
+      "date": "2026-09-25",
+      "change": "Solicitud Google Workspace para alicantosalud.cl: cuenta hola@ y alias radar@ con una licencia. Acceso administrativo a Google y Cloudflare no disponible en este entorno; ninguna configuración ni prueba de correo fue simulada. MailerLite permanece sin configurar.",
+      "evidence": [
+        "google_workspace_alicantosalud_setup_2026_09_25"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1537,6 +1544,12 @@
       "status": "Validado técnicamente / pendiente observación externa",
       "description": "El pipeline LIVE se valida técnicamente por replay controlado; todavía no se observó una publicación real, pertinente y fechada después del watermark. No bloquea los demás bloques MVP.",
       "next_check": "Mantener captura incremental; adjuntar primer evento real con URL, fecha, cola, cobertura y feed."
+    },
+    {
+      "id": "google_workspace_alicantosalud_setup_2026_09_25",
+      "status": "Bloqueado por acceso administrativo; sin validación de correo",
+      "description": "Dirección autorizó una sola licencia para hola@alicantosalud.cl y radar@alicantosalud.cl como alias. El 2026-09-25, admin.google.com redirigió a accounts.google.com/ServiceLogin y devolvió 502 Bad Gateway (Connection refused) tras un reintento. dash.cloudflare.com presentó verificación humana persistente (Ray ID a40c8ff67ee9aef8). Este entorno tampoco resolvió el DNS público del dominio. No se creó cuenta/licencia/alias, no se modificó ningún registro DNS, no se verificó envío ni recepción y no se configuró MailerLite.",
+      "next_check": "Con acceso administrativo operativo: comprobar una sola licencia y usuario hola@; crear radar@ como alias; confirmar MX y registros web existentes antes de cambios; activar Gmail; generar DKIM en Google Admin, publicar MX/SPF/DKIM/DMARC en Cloudflare preservando A/CNAME de GitHub Pages; verificar DNS, autenticación y envío/recepción bidireccional. Facturación, contraseña, 2FA y datos fiscales requieren intervención de Dirección."
     }
   ],
   "approved_infrastructure_changes": [
