@@ -2003,7 +2003,35 @@
       ]
     },
     "Home V2 final: Builder 7499554a; 26 web tests locales PASS; Reviewer independiente PASS provisional tras correcciones. Preview #192 falló en Python (159 PASS, 4 FAIL) porque el bloque PMO nuevo carecía de evidence; esquema corregido en este ciclo. QA desktop/mobile pendiente, sin simular PASS.",
-    "2026-09-25 Home V2 final 64e7f2c58123564154b4903e9b0a46d17d200d5d: 24 Playwright desktop/mobile PASS, 0 unexpected/flaky; Reviewer independiente PASS, CI reviewer y preview PASS, https://github.com/cftorre1/Radar-salud/actions/runs/36194485996."
+    "2026-09-25 Home V2 final 64e7f2c58123564154b4903e9b0a46d17d200d5d: 24 Playwright desktop/mobile PASS, 0 unexpected/flaky; Reviewer independiente PASS, CI reviewer y preview PASS, https://github.com/cftorre1/Radar-salud/actions/runs/36194485996.",
+    {
+      "id": "home_v2_special_cards_refinement_2026_09_25",
+      "status": "Aprobado_para_ejecucion",
+      "priority": "Crítica",
+      "horizon": "Antes de beta",
+      "decisions": [
+        "Insight semanal y Global Intelligence primero en Ponte al día mientras estén no leídos.",
+        "Usar fondo sutil + acento cromático, no solo borde, en Ponte al día y feed.",
+        "Mostrar fecha y fuente compactas.",
+        "Compactar Marcar leído.",
+        "Corregir semántica de detectadas/seleccionadas/no leídas.",
+        "Al leerse, desaparecen de Ponte al día y permanecen atenuadas en feed ordenadas por fecha."
+      ],
+      "orchestration_rule": "Toda decisión aprobada en chat debe registrarse en PMO/cola y gatillar automáticamente a Work cuando sus dependencias estén satisfechas; Dirección no debe retransmitir instrucciones."
+    },
+    {
+      "id": "orchestrator_auto_dispatch_rule_2026_09_25",
+      "status": "Aprobado",
+      "priority": "Crítica",
+      "horizon": "Operación permanente",
+      "decisions": [
+        "El Orquestador es responsable de registrar decisiones aprobadas y despacharlas a Work sin retransmisión humana.",
+        "Toda tarea approved con dependencias satisfechas debe ser recogida automáticamente por el consumidor.",
+        "Los estados deben distinguir approved, en ejecución, QA/Reviewer y validated/bloqueado.",
+        "Un bloqueo humano en un subfrente no detiene las demás tareas ejecutables.",
+        "Dirección solo interviene en decisiones humanas reales: secretos, pagos, 2FA, privacidad/legal y autorizaciones explícitas."
+      ]
+    }
   ],
   "updated_at": "2026-09-25"
 }
