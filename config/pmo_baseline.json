@@ -473,6 +473,25 @@
         "Teaser Global FREE e Insight Alicanto semanal trazables",
         "Observabilidad costo/modelo fail-closed"
       ]
+    },
+    "home_v2_expert_final_qa_2026_09_25": {
+      "kind": "github_actions",
+      "sha": "64e7f2c58123564154b4903e9b0a46d17d200d5d",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36194485996",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview",
+        "24 browser PASS",
+        "Reviewer independiente PASS"
+      ],
+      "result": "success",
+      "scope": "Home V2 híbrida: especiales no leídos en Ponte al día, memoria única, feed histórico atenuado por recencia, deduplicación, hero, acciones y títulos con trazabilidad; responsive mobile corregido.",
+      "validated_requirements": [
+        "Home V2 — iteración experta final"
+      ]
     }
   },
   "blocks": [
@@ -863,7 +882,7 @@
     {
       "id": "home_v2_expert_iteration_2026_09_25",
       "title": "Home V2 — iteración experta final",
-      "status": "Implementado",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Antes de beta",
       "scope": [
@@ -883,11 +902,12 @@
       "dependencies": [
         "home_v2_expert_audit_2026_09_25"
       ],
-      "evidence": [],
-      "missing": [
-        "QA desktop/mobile y Reviewer final del commit 7499554a; staging preview #192 falló por esquema PMO incompleto, no por tests Home V2"
+      "evidence": [
+        "home_v2_expert_final_qa_2026_09_25"
       ],
-      "requirements": []
+      "missing": [],
+      "requirements": [],
+      "implementation_sha": "64e7f2c58123564154b4903e9b0a46d17d200d5d"
     }
   ],
   "human_blockers": [
@@ -1329,6 +1349,16 @@
       "evidence": [
         "google_workspace_alicantosalud_setup_2026_09_25"
       ]
+    },
+    {
+      "date": "2026-09-25",
+      "change": "Home V2 final validada en staging 64e7f2c58123564154b4903e9b0a46d17d200d5d con tests, 24 browser desktop/mobile PASS, Reviewer independiente PASS, reviewer CI y preview #198. Pages HTTPS activo; canonical solo preparado en main 083d2f761e829de49ddd5ef9bc41bbeb494aaad4, release retenido por datos ajenos al dominio. Gmail pendiente de sign-in Admin y verificación Cloudflare; MailerLite sin configurar.",
+      "evidence": [
+        "home_v2_expert_final_qa_2026_09_25",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36194485996",
+        "alicantosalud_domain_https_canonical_2026_09_25",
+        "google_workspace_alicantosalud_setup_2026_09_25"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1562,6 +1592,12 @@
       "status": "Cuenta y dominio confirmados por Dirección; Gmail pendiente de acceso administrativo",
       "description": "Dirección confirmó Business Starter activo, una licencia, hola@alicantosalud.cl creada y dominio verificado. El 2026-09-25 Google Admin abrió pero presentó inicio de sesión; Cloudflare mostró verificación humana Ray ID a40d287e4a24a8aa. No se cambió DNS, no se generó DKIM, no se creó alias ni se probó correo. El reporte previo de cuenta/licencia no creada queda superado por confirmación manual de Dirección.",
       "next_check": "Dirección debe completar inicio de sesión de admin.google.com y la verificación de dash.cloudflare.com en una sesión utilizable; luego Work verificará Gmail, MX/SPF/DKIM/DMARC, creará radar@ como alias y hará pruebas reales. No tocar facturación, RUT, contraseña o 2FA."
+    },
+    {
+      "id": "alicantosalud_domain_https_canonical_2026_09_25",
+      "status": "HTTPS operativo; canonical preparado, publicación retenida",
+      "description": "Pages Enforce HTTPS activo; apex y www redirigen por HTTP a https://alicantosalud.cl/ sin loop observado. Canonical en main 083d2f761e829de49ddd5ef9bc41bbeb494aaad4 sin release. El empaquetado actual ./web incluiría además web/data/radar_today.json y web/data/source_health.json distintos de production-stable, fuera de la excepción de dominio. Reviewer independiente aprobó diff, no release.",
+      "next_check": "Preparar publicación aislada del canonical sin datos ajenos; ejecutar QA desktop/mobile del sitio público, comprobar canonical/OG y Reviewer antes de validar dominio."
     }
   ],
   "approved_infrastructure_changes": [
@@ -1594,7 +1630,7 @@
       ]
     }
   ],
-  "current_main_workflows_sha": "28be310808fffbe5c3212e75ddda2057ed635ca0",
+  "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
   "current_staging_candidate_sha": "7499554a1abe72c45700209e41fee893ca57584e",
   "product_qa_notes": [
     {
@@ -1940,7 +1976,8 @@
         "No ejecutar experimentos de modelos ni Fuentes Chile."
       ]
     },
-    "Home V2 final: Builder 7499554a; 26 web tests locales PASS; Reviewer independiente PASS provisional tras correcciones. Preview #192 falló en Python (159 PASS, 4 FAIL) porque el bloque PMO nuevo carecía de evidence; esquema corregido en este ciclo. QA desktop/mobile pendiente, sin simular PASS."
+    "Home V2 final: Builder 7499554a; 26 web tests locales PASS; Reviewer independiente PASS provisional tras correcciones. Preview #192 falló en Python (159 PASS, 4 FAIL) porque el bloque PMO nuevo carecía de evidence; esquema corregido en este ciclo. QA desktop/mobile pendiente, sin simular PASS.",
+    "2026-09-25 Home V2 final 64e7f2c58123564154b4903e9b0a46d17d200d5d: 24 Playwright desktop/mobile PASS, 0 unexpected/flaky; Reviewer independiente PASS, CI reviewer y preview PASS, https://github.com/cftorre1/Radar-salud/actions/runs/36194485996."
   ],
-  "updated_at": "2026-09-25T21:43:08.404377Z"
+  "updated_at": "2026-09-25"
 }

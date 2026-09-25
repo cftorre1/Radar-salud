@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-09-25T21:43:08.404377Z",
+  "updated_at": "2026-09-25",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -915,7 +915,7 @@
     },
     {
       "id": "alicantosalud_domain_cutover_2026_09_24",
-      "status": "approved",
+      "status": "blocked",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -949,13 +949,14 @@
         "Reviewer independiente"
       ],
       "authorization": "Dirección 2026-09-24: «Autorizo conectar alicantosalud.cl a la producción actual de Alicanto Salud y hacer únicamente los cambios técnicos necesarios de dominio, HTTPS, canonical y redirecciones, sin promover funcionalidades nuevas.»",
-      "progress": "2026-09-25: certificado HTTPS operativo, DNS check successful, Enforce HTTPS activado en Pages. http://alicantosalud.cl y http://www.alicantosalud.cl redirigen a https://alicantosalud.cl sin loop observado. Canonical HTML aún ausente; falta corregirlo dentro de excepción de dominio y QA final.",
+      "progress": "2026-09-25: Pages DNS check successful; Enforce HTTPS activado y persistente. Apex y www en HTTP redirigen a https://alicantosalud.cl/ sin loop observado. Canonical preparado en main 083d2f761e829de49ddd5ef9bc41bbeb494aaad4 (solo web/index.html), pero no publicado en producción. Reviewer independiente PASS al diff; release retenido porque el workflow static.yml empaqueta ./web completo y main difiere de production-stable también en web/data/radar_today.json y web/data/source_health.json. Publicar main actual promovería esos datos fuera del alcance autorizado.",
       "blocked_by": [
-        "Esperar emisión del certificado TLS de GitHub Pages y activar Enforce HTTPS cuando quede disponible.",
-        "Verificar www.alicantosalud.cl, canonical/redirecciones y QA final de producción."
+        "Publicación aislada del canonical sin incluir los dos archivos de datos ajenos al cambio de dominio; requiere empaquetado acotado y QA producción desktop/mobile antes de cerrar."
       ],
       "evidence": [
-        "GitHub Pages settings: Enforce HTTPS seleccionado; navegación browser apex/www HTTP→HTTPS el 2026-09-25"
+        "GitHub Pages settings: Enforce HTTPS activado; apex/www HTTP→HTTPS comprobado en browser 2026-09-25",
+        "main antes 28be310808fffbe5c3212e75ddda2057ed635ca0; canonical preparado 083d2f761e829de49ddd5ef9bc41bbeb494aaad4; production-stable 06831243d83705777f6a916fcc86a7896d6522da",
+        "Reviewer independiente: diff canonical PASS, release no aprobado por dos cambios de datos fuera de alcance"
       ]
     },
     {
@@ -1035,7 +1036,7 @@
     },
     {
       "id": "home_v2_expert_recommendations_implementation_2026_09_25",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1083,10 +1084,12 @@
         "muestra representativa de títulos regulatorios/noticias reescritos para triage",
         "sin regresiones de accesibilidad, overflow ni trazabilidad"
       ],
-      "progress": "Builder 7499554a publicado en staging; 26 web tests locales PASS y Reviewer independiente PASS provisional tras correcciones. Preview #192 falló en tests Python por campo evidence ausente en bloque PMO recién añadido; QA desktop/mobile aún no ejecutado. Se corrige esquema y se reintentará.",
-      "implementation_sha": "7499554a1abe72c45700209e41fee893ca57584e",
+      "progress": "2026-09-25: Home V2 final en staging 64e7f2c58123564154b4903e9b0a46d17d200d5d. Builder, tests Python/web, QA Playwright desktop/mobile (24/24), Reviewer independiente PASS, reviewer CI y preview PASS en Actions #198. Correcciones de mobile, títulos, estado leído y tests revalidadas.",
+      "implementation_sha": "64e7f2c58123564154b4903e9b0a46d17d200d5d",
       "evidence": [
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36192843333 — 159 Python PASS, 4 fallos de esquema PMO; no QA browser"
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36194485996",
+        "GitHub Actions artifact staging-evidence-64e7f2c58123564154b4903e9b0a46d17d200d5d (ID 10889323868): 24 browser PASS, 0 unexpected/flaky",
+        "Reviewer independiente FINAL PASS para 64e7f2c58123564154b4903e9b0a46d17d200d5d"
       ]
     },
     {
@@ -1137,8 +1140,8 @@
         "MailerLite provider-ready con DNS coexistence documentada",
         "cola/PMO actualizados tras cada ciclo"
       ],
-      "progress": "Dirección confirmó una licencia Business Starter, usuario hola@ y dominio verificado. Google Admin requiere inicio de sesión, Cloudflare verificación humana; pendiente Gmail/MX/SPF/DKIM/DMARC/alias/pruebas reales. Home V2 en staging 7499554a con QA remoto pendiente; HTTPS activo, canonical pendiente. MailerLite sin configurar hasta correo validado.",
-      "blocker": "Subpaso Gmail: Dirección debe completar acceso admin.google.com y desafío Cloudflare en sesión utilizable; no faltan cuenta/licencia/dominio."
+      "progress": "2026-09-25: Dirección confirmó Business Starter, una licencia, hola@ y dominio verificado. Google Admin pide inicio de sesión y Cloudflare verificación humana; Gmail/MX/SPF/DKIM/DMARC/alias/envío-recepción pendientes sin simular. Home V2 validada en staging 64e7f2c58123564154b4903e9b0a46d17d200d5d con QA #198 y Reviewer PASS. HTTPS apex/www activo. Canonical preparado en main 083d2f761e829de49ddd5ef9bc41bbeb494aaad4 sin publicar: release de ./web incluiría dos datos ajenos al dominio. MailerLite sin configurar hasta validar Gmail.",
+      "blocker": "Gmail: Dirección debe completar inicio de sesión admin.google.com y desafío dash.cloudflare.com en sesión utilizable; DKIM exacto debe generarse allí. Dominio: publicación aislada del canonical sin web/data/radar_today.json ni web/data/source_health.json; no ejecutar release main completo. MailerLite depende de Gmail validado."
     }
   ],
   "execution_policy": {
