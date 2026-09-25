@@ -126,7 +126,7 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  const global=page.locator('.signal.special.global'),weekly=page.locator('.signal.special.weekly');
  await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(1);
- await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(1);
+ await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(1);\n await expect(page.locator('.briefrow').nth(0)).toHaveClass(/brief-weekly/);await expect(page.locator('.briefrow').nth(1)).toHaveClass(/brief-global/);\n await expect(page.locator('.brief-weekly .brief-meta')).toContainText('·');await expect(page.locator('.brief-global .brief-meta')).toContainText('·');
  const firstKinds=await page.locator('.briefrow').evaluateAll(rows=>rows.slice(0,2).map(row=>row.classList.contains('brief-weekly')?'weekly':row.classList.contains('brief-global')?'global':'ordinary'));expect(firstKinds).toEqual(['weekly','global']);
  await expect(page.locator('.brief-weekly .brief-source')).toContainText('23 sept · SIS');await expect(page.locator('.brief-global .brief-source')).toContainText('18 sept · Reuters + WHO');
  const fills=await page.locator('.signal.special').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(2);
