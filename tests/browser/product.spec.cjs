@@ -325,7 +325,7 @@ test('analytics never sends without explicit privacy approval even if a key is p
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('7');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ piezas publicadas en el período · \d+ visibles tras filtros · \d+ no leídas$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ señales seleccionadas · \d+ no leídas$/);
  expect(attempts).toBe(0);
 });
 test('authorized analytics fixture emits only anonymous event fields',async({page})=>{
