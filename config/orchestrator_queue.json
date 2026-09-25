@@ -992,7 +992,10 @@
         "En la variante integrada, evaluar diferenciación visual consistente dentro de «Ponte al día»: Global Intelligence con acento dorado de marca (inspirado en el punto de la i) e Insight semanal con gris elegante u otro neutro de marca; mantener suficiente contraste y no convertir color en único indicador.",
         "Evaluar si esas piezas especiales deben permanecer fijadas arriba de la bandeja, entrar cronológicamente, o usar una lógica híbrida (destacadas pero no eternamente ancladas).",
         "Evaluar comportamiento cuando la pieza Global/Insight ya fue leída: si debe permanecer destacada, colapsarse, moverse, o reducir prominencia para no restar espacio al valor diario.",
-        "Recomendar una única arquitectura final entre: bloques independientes, integración total en Ponte al día, o híbrido; justificarla desde UX, estrategia y editorial antes de cualquier implementación."
+        "Recomendar una única arquitectura final entre: bloques independientes, integración total en Ponte al día, o híbrido; justificarla desde UX, estrategia y editorial antes de cualquier implementación.",
+        "Evaluar explícitamente que, cuando Global Intelligence o Insight semanal pasen a estado leído, pierdan prominencia igual que el resto de las cards pero conserven su identidad cromática distintiva de forma atenuada para poder reconocerse dentro del feed leído/histórico.",
+        "Comparar al menos tres tratamientos de estado leído para estas piezas especiales: (a) color distintivo atenuado + menor contraste general; (b) borde/acento de color preservado con fondo neutro; (c) pérdida casi total de color. Recomendar uno según reconocimiento, elegancia y consistencia visual.",
+        "Verificar que el estado leído siga siendo inequívoco y que el color especial no haga parecer la tarjeta activa/no leída."
       ],
       "constraints": [
         "No modificar staging, main ni producción durante la auditoría.",
@@ -1013,7 +1016,8 @@
         "Reviewer independiente sin implementación",
         "comparativa arquitectura actual vs Global/Insight integrados en Ponte al día",
         "recomendación sobre color/acento y persistencia de piezas especiales",
-        "recomendación sobre comportamiento leído/no leído de Global e Insight"
+        "recomendación sobre comportamiento leído/no leído de Global e Insight",
+        "recomendación específica para estado leído de Global Intelligence e Insight semanal manteniendo identificación visual"
       ]
     }
   ],
