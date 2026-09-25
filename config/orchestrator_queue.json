@@ -1146,7 +1146,7 @@
     },
     {
       "id": "home_v2_special_cards_refinement_2026_09_25",
-      "status": "approved",
+      "status": "implemented",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1180,6 +1180,14 @@
         "CTA marcar leído compactado",
         "métricas detectadas/seleccionadas/no leídas reconciliadas y auditables",
         "QA/Reviewer PASS"
+      ],
+      "progress": "Builder implementado en staging: piezas especiales primero en Ponte al día, fondos/acento diferenciados en Ponte al día y feed, metadata fecha/fuente compacta, controles de leído compactos y métricas fail-closed sin total detectado no auditable. QA/Reviewer en curso en Actions #207.",
+      "implementation_sha": "49126414bf55d33549c0b83fb6f9ccadc48b1953",
+      "evidence": [
+        "web/index.html 7669f882df7b8ce04575fa2bd0baa9650b223353",
+        "web/app.js 0bea1a13c94977de55572a583dd3f1e6161515cb",
+        "tests/browser/product.spec.cjs 49126414bf55d33549c0b83fb6f9ccadc48b1953",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36202951179 — QA/Reviewer en curso"
       ]
     }
   ],
