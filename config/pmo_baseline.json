@@ -695,12 +695,15 @@
         "email_subscription_technical_qa"
       ],
       "dependencies": [
-        "proveedor de email y configuración de dominio"
+        "Google Workspace Gmail/DNS",
+        "MailerLite",
+        "privacidad/doble opt-in"
       ],
       "missing": [
-        "Aprobación legal/privacidad de finalidad, retención y textos de consentimiento",
-        "Cuenta/proveedor, identidad remitente y gestión remota de suscriptores",
-        "Credencial entregada solo mediante GitHub secret y activación explícita de capture_enabled/send_enabled"
+        "Completar Gmail/MX/SPF/DKIM/DMARC y alias radar@alicantosalud.cl.",
+        "Crear/configurar MailerLite.",
+        "Aprobar finalidad, retención, textos de consentimiento y doble opt-in.",
+        "Credenciales vía GitHub secret y activación explícita de captura/envío."
       ],
       "requirements": [
         {
@@ -797,14 +800,14 @@
         "aprobación legal"
       ],
       "missing": [
-        "Completar custom domain alicantosalud.cl en GitHub Pages y validar HTTPS/www/canonical.",
-        "Correo corporativo y SPF/DKIM/DMARC.",
+        "GitHub Pages: esperar certificado y activar Enforce HTTPS; verificar www/canonical/redirecciones.",
+        "Google Workspace: completar MX/SPF/DKIM/DMARC y alias radar@.",
         "Aprobación legal de textos y contacto institucional operativo."
       ],
       "requirements": [
         {
           "label": "Dominio y SSL técnicos",
-          "status": "Bloqueado por acción administrativa externa"
+          "status": "Implementado / pendiente certificado HTTPS"
         },
         {
           "label": "Favicon y metadata/Open Graph",
@@ -813,7 +816,7 @@
         },
         {
           "label": "Correo institucional y DNS",
-          "status": "Pendiente"
+          "status": "En configuración"
         },
         {
           "label": "Privacidad, términos, cobertura y contacto institucional",
@@ -1898,6 +1901,20 @@
         "Dirección aprueba el dictamen completo y autoriza implementar la arquitectura híbrida y las recomendaciones priorizadas.",
         "Global Intelligence e Insight semanal se integrarán en Ponte al día mientras estén no leídos y mantendrán persistencia atenuada en el feed general después de leídos.",
         "Se unifica el estado leído entre Ponte al día, feed y Global Intelligence."
+      ]
+    },
+    {
+      "id": "workspace_and_domain_manual_progress_2026_09_25",
+      "status": "Implementado_parcial",
+      "priority": "Alta",
+      "horizon": "MVP",
+      "decisions": [
+        "Google Workspace Starter creado con una sola licencia.",
+        "Cuenta principal: hola@alicantosalud.cl.",
+        "Dominio Google verificado/conectado.",
+        "No crear segundo usuario; radar@alicantosalud.cl será alias.",
+        "Proveedor newsletter elegido: MailerLite.",
+        "GitHub Pages custom domain alicantosalud.cl guardado con DNS check successful; HTTPS pendiente de certificado."
       ]
     }
   ],
