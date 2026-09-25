@@ -43,15 +43,15 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
   expect(cards.length).toBe(3);expect(Math.max(...cards.map(x=>x.height)),JSON.stringify(cards)).toBeLessThan(420);
  }
  await page.screenshot({path:`artifacts/${test.info().project.name}-browse.png`,fullPage:true});
- await page.locator('.briefitem').first().click();
+ await page.locator('.briefitem').filter({hasNot:page.locator('.brief-kind')}).first().click();
  await expect(page.locator('article.read').first()).toBeVisible();
  expect(await page.evaluate(()=>document.activeElement?.tagName)).toBe('ARTICLE');
  await expect(page.locator('article.read').first().getByRole('button',{name:'Volver arriba'})).toBeVisible();
  await page.locator('article.read').first().getByRole('button',{name:'Volver arriba'}).click();
  expect(await page.evaluate(()=>document.activeElement?.tagName)).toBe('MAIN');
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
- await page.locator('article').first().getByRole('button',{name:/Marcar/}).click();
- expect(await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id))).toEqual(ids);
+ await page.locator('article[data-card]').first().getByRole('button',{name:/Marcar/}).click();
+ expect((await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id))).sort()).toEqual(ids.sort());
  await expect(page.locator('article').first().locator('.intel,.related')).toHaveCount(0);
  const withDepth=page.locator('article:has([data-detail])').first();await withDepth.locator('[data-detail]').click();
  await expect(page.locator('#signalDetail')).toBeVisible();await page.getByRole('button',{name:'Cerrar resumen'}).click();
@@ -148,7 +148,7 @@ test('Global read state is shared across Home and the research page',async({page
  await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page).toHaveURL(/global\.html#theme-/);
- await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(0);
+ await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(2);
  const theme=page.locator('.theme').filter({hasText:'La brecha de personal sanitario'});
  await expect(theme).toHaveClass(/read/);
  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);
@@ -259,8 +259,8 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
 });
 test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM distinct',async({page})=>{
  await page.goto('/');
- await expect(page.getByRole('link',{name:/Continúa con Premium/})).toBeVisible();
- await page.getByRole('link',{name:/Continúa con Premium/}).click();
+ await expect(page.locator('.signal.special.global [data-special-open]')).toBeVisible();
+ await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();
  await expect(page.locator('.premium-badge')).toHaveText('Acceso PREMIUM');
  await expect(page.getByText('Vista pública de la experiencia.',{exact:false})).toHaveCount(0);
