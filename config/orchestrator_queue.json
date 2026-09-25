@@ -804,6 +804,45 @@
         "Capturas before/after desktop/mobile y mediciones controladas registradas; artefacto staging-evidence-5eb09d7",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36069824580"
       ]
+    },
+    {
+      "id": "home_architecture_v2_prototype_2026_09_24",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Definir y prototipar una arquitectura de home más simple antes de volver a desarrollar, eliminando la duplicidad Personalizar mi radar vs filtros y reforzando el CTA Premium.",
+      "depends_on": [
+        "home_compaction_responsive_2026_09_24"
+      ],
+      "instructions": [
+        "No implementar todavía en producción ni reabrir main; primero producir boceto/prototipo responsive desktop+mobile para validación de Dirección.",
+        "Eliminar «Personalizar mi radar» como control separado de la arquitectura propuesta.",
+        "Convertir los filtros de la unidad «Ponte al día en 30 segundos» en la única configuración de intereses/orden visible. La selección debe persistir automáticamente entre sesiones en el dispositivo.",
+        "Si el usuario cambia filtros/intereses, guardar la nueva configuración y reutilizarla en el próximo ingreso; evitar una segunda capa de preferencias que pueda contradecir los filtros.",
+        "Diseñar la lógica para que no existan opciones imposibles: si una categoría/ámbito está disponible en el radar debe ser filtrable; no exigir habilitarla previamente en otra pantalla.",
+        "En el header, ubicar a la derecha dos acciones compactas: «Iniciar sesión» y «Suscribirse». Para el prototipo son elementos visuales/CTA; no implementar auth, pagos ni checkout sin autorización separada.",
+        "Global Intelligence debe aparecer como pieza destacada antes de «Ponte al día en 30 segundos», con tratamiento visual premium, fecha y fuente visibles, hallazgo concreto y CTA para profundizar.",
+        "El CTA de Global Intelligence debe entregar valor antes del límite y usar un mensaje tipo «Continúa con Premium» para invitar a profundizar, sin dark patterns.",
+        "Mantener también visible el Insight Alicanto de la semana como pieza compacta independiente, orientada a fidelización del usuario FREE.",
+        "El prototipo debe priorizar jerarquía, densidad, elegancia y comprensión inmediata en desktop y mobile antes de escribir código."
+      ],
+      "constraints": [
+        "No tocar main/producción.",
+        "No implementar auth real, pagos ni precio definitivo.",
+        "No crear una segunda capa de preferencias separada de filtros.",
+        "Persistencia local debe ser coherente y reversible por el usuario al cambiar filtros.",
+        "No degradar artificialmente FREE para promover Premium."
+      ],
+      "evidence_required": [
+        "boceto desktop",
+        "boceto mobile",
+        "flujo de filtros persistentes entre sesiones",
+        "header con Iniciar sesión + Suscribirse",
+        "Global Intelligence destacado con fecha/fuente/CTA Premium",
+        "Insight semanal visible",
+        "revisión de Dirección antes de implementación"
+      ]
     }
   ],
   "execution_policy": {
