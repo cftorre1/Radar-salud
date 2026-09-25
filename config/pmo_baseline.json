@@ -863,7 +863,7 @@
     {
       "id": "home_v2_expert_iteration_2026_09_25",
       "title": "Home V2 — iteración experta final",
-      "status": "Aprobado",
+      "status": "Implementado",
       "priority": "Crítica",
       "horizon": "Antes de beta",
       "scope": [
@@ -878,7 +878,16 @@
       "validation_required": [
         "Builder → tests → QA desktop/mobile → Reviewer → corrección",
         "evidencia staging antes/después"
-      ]
+      ],
+      "critical": true,
+      "dependencies": [
+        "home_v2_expert_audit_2026_09_25"
+      ],
+      "evidence": [],
+      "missing": [
+        "QA desktop/mobile y Reviewer final del commit 7499554a; staging preview #192 falló por esquema PMO incompleto, no por tests Home V2"
+      ],
+      "requirements": []
     }
   ],
   "human_blockers": [
@@ -1550,9 +1559,9 @@
     },
     {
       "id": "google_workspace_alicantosalud_setup_2026_09_25",
-      "status": "Bloqueado por acceso administrativo; sin validación de correo",
-      "description": "Dirección autorizó una sola licencia para hola@alicantosalud.cl y radar@alicantosalud.cl como alias. El 2026-09-25, admin.google.com redirigió a accounts.google.com/ServiceLogin y devolvió 502 Bad Gateway (Connection refused) tras un reintento. dash.cloudflare.com presentó verificación humana persistente (Ray ID a40c8ff67ee9aef8). Este entorno tampoco resolvió el DNS público del dominio. No se creó cuenta/licencia/alias, no se modificó ningún registro DNS, no se verificó envío ni recepción y no se configuró MailerLite.",
-      "next_check": "Con acceso administrativo operativo: comprobar una sola licencia y usuario hola@; crear radar@ como alias; confirmar MX y registros web existentes antes de cambios; activar Gmail; generar DKIM en Google Admin, publicar MX/SPF/DKIM/DMARC en Cloudflare preservando A/CNAME de GitHub Pages; verificar DNS, autenticación y envío/recepción bidireccional. Facturación, contraseña, 2FA y datos fiscales requieren intervención de Dirección."
+      "status": "Cuenta y dominio confirmados por Dirección; Gmail pendiente de acceso administrativo",
+      "description": "Dirección confirmó Business Starter activo, una licencia, hola@alicantosalud.cl creada y dominio verificado. El 2026-09-25 Google Admin abrió pero presentó inicio de sesión; Cloudflare mostró verificación humana Ray ID a40d287e4a24a8aa. No se cambió DNS, no se generó DKIM, no se creó alias ni se probó correo. El reporte previo de cuenta/licencia no creada queda superado por confirmación manual de Dirección.",
+      "next_check": "Dirección debe completar inicio de sesión de admin.google.com y la verificación de dash.cloudflare.com en una sesión utilizable; luego Work verificará Gmail, MX/SPF/DKIM/DMARC, creará radar@ como alias y hará pruebas reales. No tocar facturación, RUT, contraseña o 2FA."
     }
   ],
   "approved_infrastructure_changes": [
@@ -1586,7 +1595,7 @@
     }
   ],
   "current_main_workflows_sha": "28be310808fffbe5c3212e75ddda2057ed635ca0",
-  "current_staging_candidate_sha": "e525634979e469655ca9459f609d64f8067688c4",
+  "current_staging_candidate_sha": "7499554a1abe72c45700209e41fee893ca57584e",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -1930,7 +1939,8 @@
         "Home V2 experta sigue siendo prioridad crítica en paralelo.",
         "No ejecutar experimentos de modelos ni Fuentes Chile."
       ]
-    }
+    },
+    "Home V2 final: Builder 7499554a; 26 web tests locales PASS; Reviewer independiente PASS provisional tras correcciones. Preview #192 falló en Python (159 PASS, 4 FAIL) porque el bloque PMO nuevo carecía de evidence; esquema corregido en este ciclo. QA desktop/mobile pendiente, sin simular PASS."
   ],
-  "updated_at": "2026-09-25"
+  "updated_at": "2026-09-25T21:43:08.404377Z"
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-09-25",
+  "updated_at": "2026-09-25T21:43:08.404377Z",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -949,15 +949,13 @@
         "Reviewer independiente"
       ],
       "authorization": "Dirección 2026-09-24: «Autorizo conectar alicantosalud.cl a la producción actual de Alicanto Salud y hacer únicamente los cambios técnicos necesarios de dominio, HTTPS, canonical y redirecciones, sin promover funcionalidades nuevas.»",
-      "progress": "Dirección completó manualmente el Custom domain en GitHub Pages: alicantosalud.cl guardado y DNS check successful. Falta emisión del certificado para habilitar Enforce HTTPS, verificar www/canonical/redirecciones y ejecutar QA final.",
+      "progress": "2026-09-25: certificado HTTPS operativo, DNS check successful, Enforce HTTPS activado en Pages. http://alicantosalud.cl y http://www.alicantosalud.cl redirigen a https://alicantosalud.cl sin loop observado. Canonical HTML aún ausente; falta corregirlo dentro de excepción de dominio y QA final.",
       "blocked_by": [
         "Esperar emisión del certificado TLS de GitHub Pages y activar Enforce HTTPS cuando quede disponible.",
         "Verificar www.alicantosalud.cl, canonical/redirecciones y QA final de producción."
       ],
       "evidence": [
-        "Cloudflare mostrado activo por Dirección el 2026-09-24.",
-        "main sin cambios en esta ejecución: 28be310808fffbe5c3212e75ddda2057ed635ca0.",
-        "Dirección 2026-09-25: captura GitHub Pages con custom domain alicantosalud.cl y DNS check successful; Enforce HTTPS aún no disponible por certificado pendiente."
+        "GitHub Pages settings: Enforce HTTPS seleccionado; navegación browser apex/www HTTP→HTTPS el 2026-09-25"
       ]
     },
     {
@@ -1084,6 +1082,11 @@
         "acciones Marcar leído inequívocas",
         "muestra representativa de títulos regulatorios/noticias reescritos para triage",
         "sin regresiones de accesibilidad, overflow ni trazabilidad"
+      ],
+      "progress": "Builder 7499554a publicado en staging; 26 web tests locales PASS y Reviewer independiente PASS provisional tras correcciones. Preview #192 falló en tests Python por campo evidence ausente en bloque PMO recién añadido; QA desktop/mobile aún no ejecutado. Se corrige esquema y se reintentará.",
+      "implementation_sha": "7499554a1abe72c45700209e41fee893ca57584e",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36192843333 — 159 Python PASS, 4 fallos de esquema PMO; no QA browser"
       ]
     },
     {
@@ -1133,7 +1136,9 @@
         "Home V2 final: SHA + tests + QA desktop/mobile + Reviewer + preview PASS",
         "MailerLite provider-ready con DNS coexistence documentada",
         "cola/PMO actualizados tras cada ciclo"
-      ]
+      ],
+      "progress": "Dirección confirmó una licencia Business Starter, usuario hola@ y dominio verificado. Google Admin requiere inicio de sesión, Cloudflare verificación humana; pendiente Gmail/MX/SPF/DKIM/DMARC/alias/pruebas reales. Home V2 en staging 7499554a con QA remoto pendiente; HTTPS activo, canonical pendiente. MailerLite sin configurar hasta correo validado.",
+      "blocker": "Subpaso Gmail: Dirección debe completar acceso admin.google.com y desafío Cloudflare en sesión utilizable; no faltan cuenta/licencia/dominio."
     }
   ],
   "execution_policy": {
