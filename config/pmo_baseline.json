@@ -786,23 +786,25 @@
     {
       "id": "presence",
       "title": "Presencia y confianza",
-      "status": "Bloqueado",
+      "status": "Implementado",
       "critical": true,
       "evidence": [
         "presence_metadata_qa"
       ],
       "dependencies": [
-        "decisión humana sobre dominio y cuentas"
+        "cutover dominio/SSL en curso",
+        "correo corporativo",
+        "aprobación legal"
       ],
       "missing": [
-        "dominio propio, DNS y SSL verificables",
-        "correo corporativo y SPF/DKIM/DMARC",
-        "aprobación legal de textos y contacto institucional operativo"
+        "Completar y validar cutover alicantosalud.cl + HTTPS/canonical/redirecciones.",
+        "Correo corporativo y SPF/DKIM/DMARC.",
+        "Aprobación legal de textos y contacto institucional operativo."
       ],
       "requirements": [
         {
           "label": "Dominio y SSL técnicos",
-          "status": "Pendiente"
+          "status": "Aprobado / en ejecución"
         },
         {
           "label": "Favicon y metadata/Open Graph",
@@ -1814,6 +1816,19 @@
         "Builder → tests → QA desktop/mobile → Reviewer → corrección",
         "capturas antes/después",
         "aprobación final de Dirección"
+      ]
+    },
+    {
+      "id": "domain_cutover_and_remaining_human_gates_2026_09_24",
+      "status": "Aprobado_para_ejecucion",
+      "priority": "Crítica",
+      "horizon": "MVP",
+      "decisions": [
+        "Autorizar cutover de alicantosalud.cl a producción únicamente para dominio/HTTPS/canonical/redirecciones.",
+        "No promover funcionalidades nuevas con el cutover.",
+        "El dominio desbloquea identidad técnica, pero correo sigue requiriendo proveedor + privacidad/doble opt-in + credenciales.",
+        "Analytics sigue requiriendo proveedor + aprobación de tratamiento/privacidad.",
+        "Legal/contacto institucional permanece pendiente de aprobación humana."
       ]
     }
   ],
