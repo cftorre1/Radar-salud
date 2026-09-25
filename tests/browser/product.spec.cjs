@@ -19,7 +19,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#newsletterDialog')).toContainText('proveedor y privacidad aprobados');
  await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
  await expect(page.locator('#radarTitle')).toHaveText('Ponte al día en 30 segundos');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ señales detectadas · \d+ seleccionadas · \d+ no leídas$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ piezas publicadas en el período · \d+ visibles tras filtros · \d+ no leídas$/);
  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();
  await expect(page.locator('#sourcesList .source-row')).toHaveCount(10);
@@ -78,10 +78,10 @@ test('Inbox shows every unread signal, supports direct read and persists it',asy
  await page.locator('[data-brief-read]').first().click();
  expect(await page.evaluate(()=>document.activeElement?.hasAttribute('data-brief-read'))).toBeTruthy();
  await expect(page.locator('.briefitem')).toHaveCount(initial-1);
- await expect(page.locator(`article[data-card="${first}"],article[data-special="${first}"]`)).toHaveClass(/read/);
+ expect(await page.locator(`article[data-card="${first}"],article[data-special="${first}"]`).count()).toBeGreaterThan(0);expect(await page.locator(`article[data-card="${first}"],article[data-special="${first}"]`).evaluateAll(xs=>xs.every(x=>x.classList.contains('read')))).toBeTruthy();
  await page.reload();await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(page.locator('.briefitem')).toHaveCount(initial-1);
- await expect(page.locator(`article[data-card="${first}"],article[data-special="${first}"]`)).toHaveClass(/read/);
+ expect(await page.locator(`article[data-card="${first}"],article[data-special="${first}"]`).count()).toBeGreaterThan(0);expect(await page.locator(`article[data-card="${first}"],article[data-special="${first}"]`).evaluateAll(xs=>xs.every(x=>x.classList.contains('read')))).toBeTruthy();
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('90');
  const inbox=page.locator('.brief-list');
@@ -127,6 +127,9 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  const global=page.locator('.signal.special.global'),weekly=page.locator('.signal.special.weekly');
  await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(1);
  await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(1);
+ const firstKinds=await page.locator('.briefrow').evaluateAll(rows=>rows.slice(0,2).map(row=>row.classList.contains('brief-weekly')?'weekly':row.classList.contains('brief-global')?'global':'ordinary'));expect(firstKinds).toEqual(['weekly','global']);
+ await expect(page.locator('.brief-weekly .brief-source')).toContainText('23 sept · SIS');await expect(page.locator('.brief-global .brief-source')).toContainText('18 sept · Reuters + WHO');
+ const fills=await page.locator('.signal.special').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(2);
  await expect(page.locator('.hero-purpose')).toContainText('Monitoreamos fuentes');
  const source=(await page.request.get('/data/free_value.json'));const data=await source.json();
  await expect(weekly).toContainText(data.weekly_insight.insight_title);
@@ -321,7 +324,7 @@ test('analytics never sends without explicit privacy approval even if a key is p
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('7');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ señales detectadas · \d+ seleccionadas · \d+ no leídas$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ piezas publicadas en el período · \d+ visibles tras filtros · \d+ no leídas$/);
  expect(attempts).toBe(0);
 });
 test('authorized analytics fixture emits only anonymous event fields',async({page})=>{
