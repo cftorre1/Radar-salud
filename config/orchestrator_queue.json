@@ -961,7 +961,7 @@
     },
     {
       "id": "home_v2_expert_audit_2026_09_25",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Reviewer",
       "source": "Dirección",
@@ -1026,6 +1026,63 @@
         "recomendación específica para estado leído de Global Intelligence e Insight semanal manteniendo identificación visual",
         "comparativa explícita de comportamiento de Global/Insight en Ponte al día vs feed general",
         "reglas recomendadas de desaparición, persistencia, orden y color tras lectura"
+      ],
+      "completed_at": "2026-09-25",
+      "progress": "Auditoría experta independiente completada y aprobada por Dirección. Recomendación principal: arquitectura híbrida con Global Intelligence e Insight semanal integrados en «Ponte al día», estado de lectura unificado entre superficies y persistencia en feed general con identidad cromática atenuada.",
+      "evidence": [
+        "Dirección 2026-09-25: aprueba el dictamen experto completo y autoriza implementar todas las recomendaciones priorizadas.",
+        "Diagnóstico: no rediseño total; ajustes de arquitectura, jerarquía, content design y estado leído/no leído."
+      ]
+    },
+    {
+      "id": "home_v2_expert_recommendations_implementation_2026_09_25",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Implementar en staging la iteración final de Home V2 derivada de la auditoría experta aprobada, preservando la base visual y mejorando jerarquía, triage, consistencia de lectura y propuesta de valor.",
+      "depends_on": [
+        "home_v2_expert_audit_2026_09_25"
+      ],
+      "instructions": [
+        "Implementar únicamente en staging mediante Builder → tests → QA desktop/mobile → Reviewer independiente → corrección.",
+        "Adoptar arquitectura híbrida: Global Intelligence e Insight Alicanto semanal viven dentro de «Ponte al día en 30 segundos» como cards especiales destacadas mientras estén vigentes y no leídas; no mantenerlos como bloques altos independientes antes de la bandeja.",
+        "Global Intelligence usa identidad visual dorada/cobre de marca inspirada en el punto de la i; Insight semanal usa un gris/slate elegante de marca. El color no puede ser el único indicador: conservar label/tipo explícito.",
+        "Cuando Global Intelligence o Insight semanal se marquen como leídos, deben desaparecer de «Ponte al día» igual que el resto de señales no leídas.",
+        "En el feed general/histórico, Global Intelligence e Insight semanal deben permanecer visibles después de leídos, conservar su identidad mediante borde/acento cromático atenuado sobre fondo neutro y estado leído inequívoco.",
+        "En el feed general/histórico, las piezas especiales no quedan fijadas arriba después de leídas; descienden de forma natural según fecha/recencia y filtros.",
+        "Unificar el estado leído/no leído de una misma pieza entre «Ponte al día», feed general y sección Global Intelligence. Leerla en una superficie debe reflejarse en las demás.",
+        "Mantener la sección/página Global Intelligence como biblioteca/profundización Premium, pero no como una segunda inbox con memoria independiente.",
+        "Mientras un Insight semanal especial esté no leído en «Ponte al día», evitar que su señal base compita inmediatamente con él dentro de esa misma bandeja. La señal original sí puede existir en el feed general/histórico.",
+        "Añadir una sola frase funcional muy breve bajo «Encuentra lo que importa» que explique qué hace Alicanto: monitorea fuentes, selecciona lo relevante y explica qué cambió/por qué importa. Debe caber en una línea desktop y máximo dos en mobile.",
+        "Cambiar acciones ambiguas tipo «Leído ✓» por copy inequívoco como «Marcar leído» cuando represente una acción; mantener estado visual distinto cuando ya esté leído.",
+        "Reescribir títulos de triage de normativa/circulares para priorizar qué cambió/impacto y dejar el identificador regulatorio (p.ej. IF/N°535) como metadata/etiqueta secundaria.",
+        "Reescribir títulos de noticias/citas largas con patrón actor + acción/cambio + implicancia; conservar titular/cita original en profundidad/fuente.",
+        "No reducir legibilidad mobile para ganar densidad. Recuperar espacio principalmente mediante arquitectura y eliminación de redundancias, no mediante texto ilegible o truncamiento mecánico.",
+        "Rebajar temporalmente la prominencia de Acceso anticipado y Resumen semanal mientras sus flujos sigan provider-ready/deshabilitados; no prometer una acción que todavía no puede completarse.",
+        "Preservar estética marfil/azul, serif de títulos, acento cobre/dorado, progressive disclosure, filtros persistentes/colapsados, trazabilidad, fechas/fuentes y separación Global Theme ≠ hipótesis Chile ≠ Trend Chile.",
+        "Mantener sin cambios main/producción, auth, pagos, pricing, secretos, proveedores y decisiones de privacidad."
+      ],
+      "constraints": [
+        "No tocar main/producción.",
+        "No implementar auth real ni pagos.",
+        "No degradar FREE para promover Premium.",
+        "No inventar causalidad, métricas, fuentes, fechas o conexiones.",
+        "No reabrir decisiones preservadas por la auditoría salvo regresión demostrable."
+      ],
+      "evidence_required": [
+        "QA desktop/mobile",
+        "Reviewer independiente",
+        "capturas staging before/after",
+        "Global/Insight integrados dentro de Ponte al día",
+        "estado leído sincronizado entre Ponte al día, feed y Global Intelligence",
+        "Global/Insight desaparecen de Ponte al día al leerse",
+        "Global/Insight persisten atenuados y ordenados por recencia en feed general",
+        "deduplicación Insight vs señal base dentro de Ponte al día",
+        "frase funcional del hero validada en desktop/mobile",
+        "acciones Marcar leído inequívocas",
+        "muestra representativa de títulos regulatorios/noticias reescritos para triage",
+        "sin regresiones de accesibilidad, overflow ni trazabilidad"
       ]
     }
   ],
