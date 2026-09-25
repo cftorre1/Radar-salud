@@ -477,7 +477,7 @@
         "QA del flujo",
         "registro PMO"
       ],
-      "progress": "Fallback autorizado condition_watch observado en ejecución real: reactivó Work y este ciclo leyó la cola approved de staging sin retransmisión humana. Es sondeo periódico, no webhook instantáneo; el conector GitHub no ofrece evento por cambio de JSON.",
+      "progress": "Trigger automático validado técnicamente y reactivado el 2026-09-25 para consumir toda tarea approved con dependencias satisfechas sin retransmisión humana. Debe distinguir approved vs en ejecución y registrar avance; un bloqueo de subfrente no paraliza otros frentes ejecutables.",
       "completed_at": "2026-09-24",
       "trigger_evidence": {
         "kind": "condition_watch_polling",
@@ -1143,6 +1143,44 @@
       ],
       "progress": "2026-09-25: Dirección confirmó Business Starter, una licencia, hola@ y dominio verificado. Google Admin pide inicio de sesión y Cloudflare verificación humana; Gmail/MX/SPF/DKIM/DMARC/alias/envío-recepción pendientes sin simular. Home V2 validada en staging 64e7f2c58123564154b4903e9b0a46d17d200d5d con QA #198 y Reviewer PASS. HTTPS apex/www activo. Canonical preparado en main 083d2f761e829de49ddd5ef9bc41bbeb494aaad4 sin publicar: release de ./web incluiría dos datos ajenos al dominio. MailerLite sin configurar hasta validar Gmail. El registro PMO originó overflow móvil corregido en 1b3ae0b374251c0d294a3cd0653a34634b9c1f40; QA #200 PASS.",
       "blocker": "Gmail: Dirección debe completar inicio de sesión admin.google.com y desafío dash.cloudflare.com en sesión utilizable; DKIM exacto debe generarse allí. Dominio: publicación aislada del canonical sin web/data/radar_today.json ni web/data/source_health.json; no ejecutar release main completo. MailerLite depende de Gmail validado."
+    },
+    {
+      "id": "home_v2_special_cards_refinement_2026_09_25",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Refinar Global Intelligence e Insight semanal dentro de Ponte al día y feed general para mejorar jerarquía visual, contexto, densidad y semántica de métricas.",
+      "depends_on": [
+        "home_v2_expert_recommendations_implementation_2026_09_25"
+      ],
+      "instructions": [
+        "Antes de modificar, releer staging y reconciliar cualquier avance ya iniciado por Work tras instrucción directa de Dirección; no duplicar trabajo.",
+        "En «Ponte al día», Insight semanal y Global Intelligence deben aparecer primero mientras estén vigentes y no leídos.",
+        "Al leerse, deben desaparecer de «Ponte al día» pero permanecer en el feed general, con identidad visual atenuada y ordenadas por fecha/criterio activo.",
+        "Cambiar el tratamiento visual de ambas piezas para que no sea solo borde: usar fondo sutil diferenciado + acento cromático consistente con su identidad, tanto en Ponte al día como en sus tarjetas del feed. Mantener contraste y elegancia.",
+        "Mostrar fecha y fuente en formato compacto dentro de Ponte al día (ej. «23 sep · SIS» / «18 sep · Reuters + WHO»).",
+        "Compactar «Marcar leído» para reducir altura y ancho, especialmente en mobile, sin comprometer target táctil ni claridad.",
+        "Corregir la semántica de métricas: detectadas = total de señales descubiertas en el período; seleccionadas = subconjunto que supera curación/filtros y entra al producto; no leídas = subconjunto pendiente. No mostrar igualdad artificial salvo que sea real y auditable.",
+        "Si backend actual no puede calcular detectadas/seleccionadas correctamente por ventana, usar temporalmente copy honesto y fail-closed en vez de inventar cifras.",
+        "Ejecutar Builder → tests → QA desktop/mobile → Reviewer independiente → corrección → QA final y registrar evidencia en cola/PMO."
+      ],
+      "constraints": [
+        "No tocar main/producción.",
+        "No cambiar auth, pagos, pricing, proveedores, privacidad, legal ni criterios editoriales ajenos a este refinement.",
+        "No reducir legibilidad para ganar densidad.",
+        "No duplicar trabajo ya realizado por Work tras handoff directo."
+      ],
+      "evidence_required": [
+        "capturas desktop/mobile before/after",
+        "orden de piezas especiales verificado",
+        "estado leído y persistencia en feed verificados",
+        "fondo/acento cromático consistente en ambas superficies",
+        "fecha/fuente compactas",
+        "CTA marcar leído compactado",
+        "métricas detectadas/seleccionadas/no leídas reconciliadas y auditables",
+        "QA/Reviewer PASS"
+      ]
     }
   ],
   "execution_policy": {
