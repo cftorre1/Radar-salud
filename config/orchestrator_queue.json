@@ -995,7 +995,13 @@
         "Recomendar una única arquitectura final entre: bloques independientes, integración total en Ponte al día, o híbrido; justificarla desde UX, estrategia y editorial antes de cualquier implementación.",
         "Evaluar explícitamente que, cuando Global Intelligence o Insight semanal pasen a estado leído, pierdan prominencia igual que el resto de las cards pero conserven su identidad cromática distintiva de forma atenuada para poder reconocerse dentro del feed leído/histórico.",
         "Comparar al menos tres tratamientos de estado leído para estas piezas especiales: (a) color distintivo atenuado + menor contraste general; (b) borde/acento de color preservado con fondo neutro; (c) pérdida casi total de color. Recomendar uno según reconocimiento, elegancia y consistencia visual.",
-        "Verificar que el estado leído siga siendo inequívoco y que el color especial no haga parecer la tarjeta activa/no leída."
+        "Verificar que el estado leído siga siendo inequívoco y que el color especial no haga parecer la tarjeta activa/no leída.",
+        "Distinguir dos superficies para Global Intelligence e Insight semanal: (1) «Ponte al día en 30 segundos» y (2) feed general/histórico de noticias.",
+        "En «Ponte al día», ambas piezas especiales deben aparecer destacadas con su identidad cromática mientras estén vigentes y no leídas. Al marcarse como leídas, deben desaparecer de «Ponte al día» igual que el resto de señales no leídas.",
+        "En el feed general/histórico, ambas piezas deben permanecer visibles después de leídas, conservar su identidad cromática de forma atenuada y pasar a estado leído inequívoco.",
+        "En el feed general/histórico, las piezas especiales no deben quedar fijadas permanentemente arriba una vez leídas: deben perder prioridad y descender de forma natural conforme aparecen contenidos más recientes, respetando orden/recencia y filtros.",
+        "Evaluar cómo mantener reconocimiento visual consistente entre ambas superficies sin confundir prioridad activa con identidad de tipo.",
+        "La auditoría debe recomendar reglas exactas de ordenamiento, persistencia, estado leído y tratamiento cromático para Global Intelligence e Insight semanal en ambas superficies."
       ],
       "constraints": [
         "No modificar staging, main ni producción durante la auditoría.",
@@ -1017,7 +1023,9 @@
         "comparativa arquitectura actual vs Global/Insight integrados en Ponte al día",
         "recomendación sobre color/acento y persistencia de piezas especiales",
         "recomendación sobre comportamiento leído/no leído de Global e Insight",
-        "recomendación específica para estado leído de Global Intelligence e Insight semanal manteniendo identificación visual"
+        "recomendación específica para estado leído de Global Intelligence e Insight semanal manteniendo identificación visual",
+        "comparativa explícita de comportamiento de Global/Insight en Ponte al día vs feed general",
+        "reglas recomendadas de desaparición, persistencia, orden y color tras lectura"
       ]
     }
   ],
