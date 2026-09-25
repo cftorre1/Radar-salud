@@ -821,11 +821,16 @@
         "Convertir los filtros de la unidad «Ponte al día en 30 segundos» en la única configuración de intereses/orden visible. La selección debe persistir automáticamente entre sesiones en el dispositivo.",
         "Si el usuario cambia filtros/intereses, guardar la nueva configuración y reutilizarla en el próximo ingreso; evitar una segunda capa de preferencias que pueda contradecir los filtros.",
         "Diseñar la lógica para que no existan opciones imposibles: si una categoría/ámbito está disponible en el radar debe ser filtrable; no exigir habilitarla previamente en otra pantalla.",
-        "En el header, ubicar a la derecha dos acciones compactas: «Iniciar sesión» y «Suscribirse». Para el prototipo son elementos visuales/CTA; no implementar auth, pagos ni checkout sin autorización separada.",
         "Global Intelligence debe aparecer como pieza destacada antes de «Ponte al día en 30 segundos», con tratamiento visual premium, fecha y fuente visibles, hallazgo concreto y CTA para profundizar.",
         "El CTA de Global Intelligence debe entregar valor antes del límite y usar un mensaje tipo «Continúa con Premium» para invitar a profundizar, sin dark patterns.",
         "Mantener también visible el Insight Alicanto de la semana como pieza compacta independiente, orientada a fidelización del usuario FREE.",
-        "El prototipo debe priorizar jerarquía, densidad, elegancia y comprensión inmediata en desktop y mobile antes de escribir código."
+        "El prototipo debe priorizar jerarquía, densidad, elegancia y comprensión inmediata en desktop y mobile antes de escribir código.",
+        "Durante beta, mostrar en el header solo una acción de cuenta: «Acceso anticipado». No mostrar «Iniciar sesión» ni «Registrarse» mientras no existan cuentas/sesiones reales.",
+        "Cuando exista auth real, la arquitectura futura del header será «Ingresar» + «Registrarse»; esta transición debe quedar prevista en el diseño, pero no implementada ahora.",
+        "Separar claramente «Acceso anticipado» de la suscripción al newsletter. «Acceso anticipado» expresa interés en usar Alicanto/cuentas/Premium; el newsletter sigue siendo una acción independiente.",
+        "Ubicar la suscripción al newsletter cerca del hero/«Encuentra lo que importa» mediante un CTA compacto tipo «Resumen semanal por correo», sin competir visualmente con «Acceso anticipado».",
+        "Diseñar dos prototipos en paralelo: visual responsive (desktop/mobile) y editorial real (Global Intelligence teaser, Insight Alicanto semanal y 5–8 señales compactas de «Ponte al día»).",
+        "No pasar a Builder hasta validación de Dirección del prototipo visual y del estándar editorial."
       ],
       "constraints": [
         "No tocar main/producción.",
@@ -838,10 +843,13 @@
         "boceto desktop",
         "boceto mobile",
         "flujo de filtros persistentes entre sesiones",
-        "header con Iniciar sesión + Suscribirse",
         "Global Intelligence destacado con fecha/fuente/CTA Premium",
         "Insight semanal visible",
-        "revisión de Dirección antes de implementación"
+        "revisión de Dirección antes de implementación",
+        "header beta con solo «Acceso anticipado»",
+        "newsletter separado del acceso anticipado",
+        "boceto editorial con teaser Global, Insight semanal y señales compactas",
+        "validación Dirección visual + editorial antes de implementación"
       ]
     }
   ],
