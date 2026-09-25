@@ -786,25 +786,25 @@
     {
       "id": "presence",
       "title": "Presencia y confianza",
-      "status": "Implementado",
+      "status": "Bloqueado",
       "critical": true,
       "evidence": [
         "presence_metadata_qa"
       ],
       "dependencies": [
-        "cutover dominio/SSL en curso",
+        "GitHub Pages custom domain/SSL",
         "correo corporativo",
         "aprobación legal"
       ],
       "missing": [
-        "Completar y validar cutover alicantosalud.cl + HTTPS/canonical/redirecciones.",
+        "Completar custom domain alicantosalud.cl en GitHub Pages y validar HTTPS/www/canonical.",
         "Correo corporativo y SPF/DKIM/DMARC.",
         "Aprobación legal de textos y contacto institucional operativo."
       ],
       "requirements": [
         {
           "label": "Dominio y SSL técnicos",
-          "status": "Aprobado / en ejecución"
+          "status": "Bloqueado por acción administrativa externa"
         },
         {
           "label": "Favicon y metadata/Open Graph",
@@ -1829,6 +1829,17 @@
         "El dominio desbloquea identidad técnica, pero correo sigue requiriendo proveedor + privacidad/doble opt-in + credenciales.",
         "Analytics sigue requiriendo proveedor + aprobación de tratamiento/privacidad.",
         "Legal/contacto institucional permanece pendiente de aprobación humana."
+      ]
+    },
+    {
+      "id": "home_v2_implementation_validation_2026_09_24",
+      "status": "Validado",
+      "priority": "Crítica",
+      "horizon": "MVP",
+      "decisions": [
+        "Home V2 validado en staging en 9edcf60ab4f08aad2a48226a15f46eeee1cf3fda.",
+        "Run 36088303702 PASS: tests, QA desktop/mobile, Reviewer y preview.",
+        "No se promovieron funcionalidades a producción."
       ]
     }
   ],

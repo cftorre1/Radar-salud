@@ -859,7 +859,7 @@
     },
     {
       "id": "home_architecture_v2_implementation_2026_09_24",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -905,11 +905,16 @@
         "Fuentes con lista, Ver más y CTA pedir fuente",
         "Insight semanal validado como insight y no mera noticia",
         "sin regresiones de accesibilidad ni overflow"
+      ],
+      "progress": "Home V2 implementado en staging y validado mediante tests, QA desktop/mobile, Reviewer independiente y preview.",
+      "evidence": [
+        "9edcf60ab4f08aad2a48226a15f46eeee1cf3fda",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36088303702 — PASS completo"
       ]
     },
     {
       "id": "alicantosalud_domain_cutover_2026_09_24",
-      "status": "approved",
+      "status": "blocked",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -942,7 +947,17 @@
         "main SHA before/after",
         "Reviewer independiente"
       ],
-      "authorization": "Dirección 2026-09-24: «Autorizo conectar alicantosalud.cl a la producción actual de Alicanto Salud y hacer únicamente los cambios técnicos necesarios de dominio, HTTPS, canonical y redirecciones, sin promover funcionalidades nuevas.»"
+      "authorization": "Dirección 2026-09-24: «Autorizo conectar alicantosalud.cl a la producción actual de Alicanto Salud y hacer únicamente los cambios técnicos necesarios de dominio, HTTPS, canonical y redirecciones, sin promover funcionalidades nuevas.»",
+      "progress": "Delegación Cloudflare confirmada por Dirección. Cutover pendiente de configuración administrativa de GitHub Pages y verificación final DNS/HTTPS; este entorno no expone esa acción de Pages y no se modificó producción.",
+      "blocked_by": [
+        "Configurar alicantosalud.cl como Custom domain en GitHub Pages con acceso administrativo.",
+        "Verificar www y DNS web en Cloudflare.",
+        "Activar Enforce HTTPS cuando el certificado esté disponible y ejecutar QA final."
+      ],
+      "evidence": [
+        "Cloudflare mostrado activo por Dirección el 2026-09-24.",
+        "main sin cambios en esta ejecución: 28be310808fffbe5c3212e75ddda2057ed635ca0."
+      ]
     }
   ],
   "execution_policy": {
