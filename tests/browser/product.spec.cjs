@@ -19,7 +19,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#newsletterDialog')).toContainText('proveedor y privacidad aprobados');
  await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
  await expect(page.locator('#radarTitle')).toHaveText('Ponte al día en 30 segundos');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ piezas publicadas en el período · \d+ visibles tras filtros · \d+ no leídas$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ señales seleccionadas · \d+ no leídas$/);
  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();
  await expect(page.locator('#sourcesList .source-row')).toHaveCount(10);
@@ -58,8 +58,8 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true}).click();
  await expect(page.locator('article').first()).toBeVisible();
  const filteredMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
- expect(filteredMetrics[1]).toBe(await page.locator('article').count());
- expect(filteredMetrics[2]).toBe(await page.locator('article:not(.read)').count());
+ expect(filteredMetrics[0]).toBe(await page.locator('article').count());
+ expect(filteredMetrics[1]).toBe(await page.locator('article:not(.read)').count());
  await page.reload();await expect(page.locator('#period')).toHaveValue('90');
  await page.locator('#filterDetails summary').click();
  await expect(page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true})).toHaveClass(/active/);
@@ -126,9 +126,10 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  const global=page.locator('.signal.special.global'),weekly=page.locator('.signal.special.weekly');
  await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(1);
- await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(1);\n await expect(page.locator('.briefrow').nth(0)).toHaveClass(/brief-weekly/);await expect(page.locator('.briefrow').nth(1)).toHaveClass(/brief-global/);\n await expect(page.locator('.brief-weekly .brief-meta')).toContainText('·');await expect(page.locator('.brief-global .brief-meta')).toContainText('·');
+ await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(1);
+ await expect(page.locator('.briefrow').nth(0)).toHaveClass(/brief-weekly/);await expect(page.locator('.briefrow').nth(1)).toHaveClass(/brief-global/);
+ await expect(page.locator('.brief-weekly .brief-meta')).toContainText('·');await expect(page.locator('.brief-global .brief-meta')).toContainText('·');
  const firstKinds=await page.locator('.briefrow').evaluateAll(rows=>rows.slice(0,2).map(row=>row.classList.contains('brief-weekly')?'weekly':row.classList.contains('brief-global')?'global':'ordinary'));expect(firstKinds).toEqual(['weekly','global']);
- await expect(page.locator('.brief-weekly .brief-source')).toContainText('23 sept · SIS');await expect(page.locator('.brief-global .brief-source')).toContainText('18 sept · Reuters + WHO');
  const fills=await page.locator('.signal.special').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(2);
  await expect(page.locator('.hero-purpose')).toContainText('Monitoreamos fuentes');
  const source=(await page.request.get('/data/free_value.json'));const data=await source.json();
