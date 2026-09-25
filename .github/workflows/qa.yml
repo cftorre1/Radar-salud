@@ -1,5 +1,7 @@
 name: Alicanto critical QA
 on:
+  push:
+    branches: [work/home-v2-qa-2026-09-24]
   pull_request:
     branches: [main, staging]
   workflow_call:
