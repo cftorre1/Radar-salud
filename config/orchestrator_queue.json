@@ -264,11 +264,11 @@
         "provider-ready integration or explicit human blocker",
         "staging evidence"
       ],
-      "progress": "Cierre técnico implementado: UI consentida fail-closed, selección semanal solo LIVE reciente/relevante/trazable, digest FREE resumido, estructura PREMIUM personalizada y permisos separados de captura/envío. Reviewer detectó que una API key podía omitir el estado deshabilitado; corregido con gate server-side previo a datos/red y prueba adversarial. Envío y captura reales bloqueados por decisiones humanas.",
+      "progress": "Dominio alicantosalud.cl ya disponible para identidad remitente/DNS, pero captura/envío real siguen bloqueados por proveedor, privacidad/doble opt-in y credenciales. La parte técnica continúa provider-ready.",
       "blocked_by": [
-        "Aprobar proveedor y crear cuenta Buttondown u otro proveedor",
-        "Aprobar finalidad, retención, textos de privacidad y doble opt-in",
-        "Aprobar identidad remitente/dominio y entregar credencial vía GitHub secret"
+        "Aprobar proveedor y crear cuenta de email/newsletter.",
+        "Aprobar finalidad, retención, textos de privacidad y doble opt-in.",
+        "Definir identidad remitente (p.ej. hola@alicantosalud.cl / radar@alicantosalud.cl) y entregar credenciales vía secrets."
       ],
       "evidence": [
         "3cf095594641812c8ac0d46d94b74f475ffce909 — implementación UI/digest; run 36040290271 FAIL por incompatibilidad concurrente detectada antes de preview",
@@ -302,7 +302,7 @@
         "staging evidence",
         "human blocker if external provider needed"
       ],
-      "progress": "Mapa de eventos y código provider-ready con flags enabled/privacy_approved falsos y project_key vacío. #112 tests/QA/Reviewer/preview PASS; #113 fixture autorizada interceptada verifica payload mínimo/UUID por evento, QA/Reviewer/preview PASS. Sin recolección ni conversión real; requiere autorización humana de tratamiento y proveedor.",
+      "progress": "Dominio no elimina el bloqueo de analytics. Event map e integración provider-ready siguen validados, pero captura real requiere decisión de privacidad/tratamiento y proveedor/clave pública.",
       "blocked_by": [
         "Aprobar tratamiento/aviso de privacidad para telemetría y metadatos de transporte (IP/origen).",
         "Crear/aprobar cuenta de proveedor y aportar clave pública de proyecto, luego habilitar explícitamente la captura; no inferir consentimiento por despliegue."
@@ -373,9 +373,8 @@
         "explicit blockers",
         "staging evidence"
       ],
-      "progress": "Favicon, Open Graph y cobertura publicados y verificados en staging; drafts legales visibles en GitHub público, sin vigencia y no publicados como páginas legales; CNAME/canonical, dominio y correo esperan decisión humana. #115 PASS 16/16 desktop/mobile y Reviewer independiente.",
+      "progress": "Dominio alicantosalud.cl registrado y delegado a Cloudflare; Dirección autorizó cutover acotado de producción para dominio/HTTPS/canonical/redirecciones. Favicon, Open Graph y cobertura ya validados. Presencia total sigue bloqueada solo por correo corporativo y aprobación legal/contacto.",
       "blocked_by": [
-        "Aprobar y registrar alicanto.cl y facilitar proveedor/acceso DNS para SSL, canonical y CNAME.",
         "Aprobar proveedor de correo, identidad y configuración SPF/DKIM/DMARC para hola@ y radar@.",
         "Responsable legal debe aprobar textos de Privacidad y Términos y contacto operativo antes de páginas legales definitivas."
       ],
@@ -907,6 +906,43 @@
         "Insight semanal validado como insight y no mera noticia",
         "sin regresiones de accesibilidad ni overflow"
       ]
+    },
+    {
+      "id": "alicantosalud_domain_cutover_2026_09_24",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Conectar alicantosalud.cl a la producción actual de Alicanto Salud y cerrar dominio/HTTPS/canonical/redirecciones sin promover funcionalidades nuevas.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Verificar públicamente que la delegación DNS de alicantosalud.cl a Cloudflare esté activa y que los registros apex/www apunten a GitHub Pages.",
+        "Configurar alicantosalud.cl como custom domain de la producción actual de GitHub Pages.",
+        "Configurar/validar www.alicantosalud.cl y redirección canónica consistente hacia el dominio principal aprobado.",
+        "Actualizar canonical, Open Graph/url absolutas y cualquier referencia técnica necesaria al dominio público.",
+        "Esperar/empujar la emisión del certificado y activar HTTPS obligatorio cuando GitHub Pages lo permita.",
+        "Validar alicantosalud.cl y www.alicantosalud.cl en desktop/mobile, HTTP→HTTPS, canonical y ausencia de loops.",
+        "Registrar SHA main antes/después y evidencia de DNS/SSL/Pages.",
+        "No promover funcionalidades desde staging ni mezclar este cambio con Home V2 u otros features."
+      ],
+      "constraints": [
+        "Excepción de producción limitada exclusivamente a dominio, HTTPS, canonical y redirecciones.",
+        "No cambiar features, contenido editorial, auth, pagos, pricing, secretos ni proveedores.",
+        "No cambiar DNS ajeno a lo estrictamente necesario para el sitio web.",
+        "No activar correo ni analytics como parte de esta tarea."
+      ],
+      "evidence_required": [
+        "DNS delegation active",
+        "GitHub Pages custom domain verified",
+        "alicantosalud.cl HTTPS PASS",
+        "www redirect/canonical PASS",
+        "desktop/mobile production QA",
+        "main SHA before/after",
+        "Reviewer independiente"
+      ],
+      "authorization": "Dirección 2026-09-24: «Autorizo conectar alicantosalud.cl a la producción actual de Alicanto Salud y hacer únicamente los cambios técnicos necesarios de dominio, HTTPS, canonical y redirecciones, sin promover funcionalidades nuevas.»"
     }
   ],
   "execution_policy": {
