@@ -264,11 +264,11 @@
         "provider-ready integration or explicit human blocker",
         "staging evidence"
       ],
-      "progress": "Dominio alicantosalud.cl ya disponible para identidad remitente/DNS, pero captura/envío real siguen bloqueados por proveedor, privacidad/doble opt-in y credenciales. La parte técnica continúa provider-ready.",
+      "progress": "Proveedor newsletter elegido por Dirección: MailerLite. Google Workspace Starter creado con una sola licencia y cuenta principal hola@alicantosalud.cl; dominio verificado. Falta completar Gmail/MX/SPF/DKIM/DMARC, crear radar@ como alias, aprobar privacidad/doble opt-in y luego conectar MailerLite.",
       "blocked_by": [
-        "Aprobar proveedor y crear cuenta de email/newsletter.",
+        "Completar Gmail y autenticación de dominio (MX/SPF/DKIM/DMARC) y crear radar@alicantosalud.cl como alias.",
         "Aprobar finalidad, retención, textos de privacidad y doble opt-in.",
-        "Definir identidad remitente (p.ej. hola@alicantosalud.cl / radar@alicantosalud.cl) y entregar credenciales vía secrets."
+        "Crear/configurar cuenta MailerLite y entregar credenciales mediante secrets cuando corresponda."
       ],
       "evidence": [
         "3cf095594641812c8ac0d46d94b74f475ffce909 — implementación UI/digest; run 36040290271 FAIL por incompatibilidad concurrente detectada antes de preview",
@@ -373,10 +373,11 @@
         "explicit blockers",
         "staging evidence"
       ],
-      "progress": "Dominio alicantosalud.cl registrado y delegado a Cloudflare; Dirección autorizó cutover acotado de producción para dominio/HTTPS/canonical/redirecciones. Favicon, Open Graph y cobertura ya validados. Presencia total sigue bloqueada solo por correo corporativo y aprobación legal/contacto.",
+      "progress": "alicantosalud.cl registrado, delegado a Cloudflare y configurado como Custom domain en GitHub Pages con DNS check successful; certificado HTTPS pendiente de emisión. Google Workspace Starter creado con una sola cuenta hola@alicantosalud.cl y dominio verificado. Correo institucional aún requiere Gmail/MX/SPF/DKIM/DMARC y alias radar@; legal/contacto sigue pendiente.",
       "blocked_by": [
-        "Aprobar proveedor de correo, identidad y configuración SPF/DKIM/DMARC para hola@ y radar@.",
-        "Responsable legal debe aprobar textos de Privacidad y Términos y contacto operativo antes de páginas legales definitivas."
+        "Esperar/activar certificado HTTPS y cerrar QA www/canonical.",
+        "Completar configuración Gmail: MX, SPF, DKIM, DMARC y alias radar@alicantosalud.cl.",
+        "Responsable legal debe aprobar textos de Privacidad y Términos y contacto operativo."
       ],
       "evidence": [
         "92effcfeebb4bb312e578475a911ec0d1f5792e0 — https://github.com/cftorre1/Radar-salud/actions/runs/36045338679; tests, 16/16 browser 1440×900 y 390×844, QA/Reviewer y preview PASS; icono PNG 1637×757 HTTP 200.",
@@ -914,7 +915,7 @@
     },
     {
       "id": "alicantosalud_domain_cutover_2026_09_24",
-      "status": "blocked",
+      "status": "approved",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -948,15 +949,15 @@
         "Reviewer independiente"
       ],
       "authorization": "Dirección 2026-09-24: «Autorizo conectar alicantosalud.cl a la producción actual de Alicanto Salud y hacer únicamente los cambios técnicos necesarios de dominio, HTTPS, canonical y redirecciones, sin promover funcionalidades nuevas.»",
-      "progress": "Delegación Cloudflare confirmada por Dirección. Cutover pendiente de configuración administrativa de GitHub Pages y verificación final DNS/HTTPS; este entorno no expone esa acción de Pages y no se modificó producción.",
+      "progress": "Dirección completó manualmente el Custom domain en GitHub Pages: alicantosalud.cl guardado y DNS check successful. Falta emisión del certificado para habilitar Enforce HTTPS, verificar www/canonical/redirecciones y ejecutar QA final.",
       "blocked_by": [
-        "Configurar alicantosalud.cl como Custom domain en GitHub Pages con acceso administrativo.",
-        "Verificar www y DNS web en Cloudflare.",
-        "Activar Enforce HTTPS cuando el certificado esté disponible y ejecutar QA final."
+        "Esperar emisión del certificado TLS de GitHub Pages y activar Enforce HTTPS cuando quede disponible.",
+        "Verificar www.alicantosalud.cl, canonical/redirecciones y QA final de producción."
       ],
       "evidence": [
         "Cloudflare mostrado activo por Dirección el 2026-09-24.",
-        "main sin cambios en esta ejecución: 28be310808fffbe5c3212e75ddda2057ed635ca0."
+        "main sin cambios en esta ejecución: 28be310808fffbe5c3212e75ddda2057ed635ca0.",
+        "Dirección 2026-09-25: captura GitHub Pages con custom domain alicantosalud.cl y DNS check successful; Enforce HTTPS aún no disponible por certificado pendiente."
       ]
     },
     {
