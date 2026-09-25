@@ -492,6 +492,23 @@
       "validated_requirements": [
         "Home V2 — iteración experta final"
       ]
+    },
+    "home_v2_expert_pmo_mobile_qa_2026_09_25": {
+      "kind": "github_actions",
+      "sha": "1b3ae0b374251c0d294a3cd0653a34634b9c1f40",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36195280822",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview",
+        "24 browser PASS",
+        "Reviewer independiente PASS"
+      ],
+      "result": "success",
+      "scope": "Corrección CSS del panel PMO mobile al registrar observaciones largas. Contenido intacto; scrollWidth dentro de viewport en QA.",
+      "validated_requirements": []
     }
   },
   "blocks": [
@@ -903,7 +920,8 @@
         "home_v2_expert_audit_2026_09_25"
       ],
       "evidence": [
-        "home_v2_expert_final_qa_2026_09_25"
+        "home_v2_expert_final_qa_2026_09_25",
+        "home_v2_expert_pmo_mobile_qa_2026_09_25"
       ],
       "missing": [],
       "requirements": [],
@@ -1358,6 +1376,14 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36194485996",
         "alicantosalud_domain_https_canonical_2026_09_25",
         "google_workspace_alicantosalud_setup_2026_09_25"
+      ]
+    },
+    {
+      "date": "2026-09-25",
+      "change": "Corrección del overflow móvil del panel PMO tras registrar Home V2: CSS 1b3ae0b374251c0d294a3cd0653a34634b9c1f40, 24/24 browser, tests, Reviewer independiente/CI y preview #200 PASS. No se promovieron funcionalidades a producción.",
+      "evidence": [
+        "home_v2_expert_pmo_mobile_qa_2026_09_25",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36195280822"
       ]
     }
   ],

@@ -1084,12 +1084,13 @@
         "muestra representativa de títulos regulatorios/noticias reescritos para triage",
         "sin regresiones de accesibilidad, overflow ni trazabilidad"
       ],
-      "progress": "2026-09-25: Home V2 final en staging 64e7f2c58123564154b4903e9b0a46d17d200d5d. Builder, tests Python/web, QA Playwright desktop/mobile (24/24), Reviewer independiente PASS, reviewer CI y preview PASS en Actions #198. Correcciones de mobile, títulos, estado leído y tests revalidadas.",
+      "progress": "2026-09-25: Home V2 final en staging 64e7f2c58123564154b4903e9b0a46d17d200d5d. Builder, tests Python/web, QA Playwright desktop/mobile (24/24), Reviewer independiente PASS, reviewer CI y preview PASS en Actions #198. Correcciones de mobile, títulos, estado leído y tests revalidadas. QA de cierre PMO #199 detectó overflow móvil en observaciones largas; CSS 1b3ae0b374251c0d294a3cd0653a34634b9c1f40 y nueva QA #200 íntegra PASS (24/24), Reviewer independiente PASS.",
       "implementation_sha": "64e7f2c58123564154b4903e9b0a46d17d200d5d",
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36194485996",
         "GitHub Actions artifact staging-evidence-64e7f2c58123564154b4903e9b0a46d17d200d5d (ID 10889323868): 24 browser PASS, 0 unexpected/flaky",
-        "Reviewer independiente FINAL PASS para 64e7f2c58123564154b4903e9b0a46d17d200d5d"
+        "Reviewer independiente FINAL PASS para 64e7f2c58123564154b4903e9b0a46d17d200d5d",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36195280822 — CSS PMO mobile 24/24, tests, reviewer CI, preview y Reviewer independiente PASS; SHA 1b3ae0b374251c0d294a3cd0653a34634b9c1f40"
       ]
     },
     {
@@ -1140,7 +1141,7 @@
         "MailerLite provider-ready con DNS coexistence documentada",
         "cola/PMO actualizados tras cada ciclo"
       ],
-      "progress": "2026-09-25: Dirección confirmó Business Starter, una licencia, hola@ y dominio verificado. Google Admin pide inicio de sesión y Cloudflare verificación humana; Gmail/MX/SPF/DKIM/DMARC/alias/envío-recepción pendientes sin simular. Home V2 validada en staging 64e7f2c58123564154b4903e9b0a46d17d200d5d con QA #198 y Reviewer PASS. HTTPS apex/www activo. Canonical preparado en main 083d2f761e829de49ddd5ef9bc41bbeb494aaad4 sin publicar: release de ./web incluiría dos datos ajenos al dominio. MailerLite sin configurar hasta validar Gmail.",
+      "progress": "2026-09-25: Dirección confirmó Business Starter, una licencia, hola@ y dominio verificado. Google Admin pide inicio de sesión y Cloudflare verificación humana; Gmail/MX/SPF/DKIM/DMARC/alias/envío-recepción pendientes sin simular. Home V2 validada en staging 64e7f2c58123564154b4903e9b0a46d17d200d5d con QA #198 y Reviewer PASS. HTTPS apex/www activo. Canonical preparado en main 083d2f761e829de49ddd5ef9bc41bbeb494aaad4 sin publicar: release de ./web incluiría dos datos ajenos al dominio. MailerLite sin configurar hasta validar Gmail. El registro PMO originó overflow móvil corregido en 1b3ae0b374251c0d294a3cd0653a34634b9c1f40; QA #200 PASS.",
       "blocker": "Gmail: Dirección debe completar inicio de sesión admin.google.com y desafío dash.cloudflare.com en sesión utilizable; DKIM exacto debe generarse allí. Dominio: publicación aislada del canonical sin web/data/radar_today.json ni web/data/source_health.json; no ejecutar release main completo. MailerLite depende de Gmail validado."
     }
   ],
