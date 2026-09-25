@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-09-24",
+  "updated_at": "2026-09-25",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -957,6 +957,54 @@
       "evidence": [
         "Cloudflare mostrado activo por Dirección el 2026-09-24.",
         "main sin cambios en esta ejecución: 28be310808fffbe5c3212e75ddda2057ed635ca0."
+      ]
+    },
+    {
+      "id": "home_v2_expert_audit_2026_09_25",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Reviewer",
+      "source": "Dirección",
+      "objective": "Realizar una auditoría independiente y minuciosa de Home V2 en staging antes de nuevas iteraciones, evaluando sección por sección y tarjeta por tarjeta desde usabilidad/UX, estrategia de producto/conversión y content design/editorial.",
+      "depends_on": [
+        "home_architecture_v2_implementation_2026_09_24"
+      ],
+      "instructions": [
+        "No implementar cambios durante esta tarea. Primero auditar y entregar diagnóstico para decisión de Dirección.",
+        "Revisar la Home V2 real en staging en desktop 1440x900 y mobile 390x844, incluyendo estados cerrados/abiertos de modales, acordeones, Global Intelligence, Insight semanal, Ponte al día, cards, Fuentes, acceso anticipado y newsletter.",
+        "Primera pasada a ciegas: no usar las observaciones recientes de Dirección como guía inicial. Registrar hallazgos independientes; solo después contrastarlos con decisiones existentes del PMO.",
+        "Evaluar cada sección y cada tipo de tarjeta con tres lentes independientes: (1) UX/usabilidad y carga cognitiva, (2) estrategia/producto, propuesta de valor, hábito y conversión, (3) content design/editorial, claridad, jerarquía y autosuficiencia.",
+        "Aplicar test de primera impresión: en 5 segundos, ¿se entiende qué es Alicanto, para quién es, qué valor entrega, qué es FREE/PREMIUM y cuál es la siguiente acción?",
+        "Evaluar arquitectura de información y secuencia narrativa: marca/hero → Global Intelligence → Insight semanal → Ponte al día → Fuentes/CTAs. Detectar competencia entre bloques, redundancias, jerarquías débiles o elementos que distraigan del valor principal.",
+        "Auditar cada CTA: Acceso anticipado, newsletter, Continúa con Premium, Ver insight, Filtrar u ordenar, Ver resumen/contexto/fuente, Fuentes/Ver más/Pedir fuente. Evaluar claridad de promesa, prioridad, discoverability y riesgo de confusión.",
+        "Auditar densidad y scroll: cuánto valor útil aparece antes del primer scroll y antes de la primera señal; número de señales visibles; altura relativa de Global/Insight/Ponte al día; uso horizontal vs vertical; comportamiento responsive.",
+        "Auditar cards una por una en una muestra representativa: normativa, legal, datos/Pulso, fiscalización, noticia, Global Intelligence, Insight semanal. Verificar que título + síntesis permitan decidir interés sin abrir profundidad, sin perder sujetos, contrapartes, cambio material, fecha o fuente.",
+        "Auditar consistencia visual y semántica: tamaños, pesos, espacios, chips, labels, estados leído/no leído, Premium/Free, fechas, fuentes, botones y affordances.",
+        "Auditar accesibilidad práctica: foco, targets táctiles, contraste, lectura móvil, jerarquía semántica, scroll/retorno y modal/bottom sheet.",
+        "Auditar estrategia de conversión sin dark patterns: si el teaser Global produce deseo de Premium después de entregar valor; si el Insight semanal genera motivo de retorno; si acceso anticipado y newsletter están claramente separados.",
+        "Auditar confianza: visibilidad de fuentes, fechas, actualización, cobertura y trazabilidad; evitar que transparencia técnica compita con la propuesta de valor.",
+        "Entregar hallazgos con evidencia concreta y ubicación exacta: sección/tarjeta, problema, por qué importa, severidad, recomendación específica y esfuerzo estimado.",
+        "Clasificar recomendaciones en: imprescindible antes de beta, mejora de alto impacto, refinamiento posterior. Evitar rediseño total si una corrección incremental resuelve el problema.",
+        "Proponer una versión objetivo de la jerarquía de Home V2 después de los ajustes, sin implementarla.",
+        "Cerrar con 5-10 cambios de mayor impacto, ordenados por impacto en comprensión/uso/conversión y esfuerzo, y señalar qué elementos actuales conviene NO tocar."
+      ],
+      "constraints": [
+        "No modificar staging, main ni producción durante la auditoría.",
+        "No reabrir decisiones ya validadas sin evidencia observable de problema.",
+        "No asumir que más explicación mejora UX; penalizar copy redundante.",
+        "No optimizar solo para conversión a costa de utilidad FREE o confianza.",
+        "No inventar datos de usuario; distinguir heurística experta de evidencia conductual real."
+      ],
+      "evidence_required": [
+        "capturas anotadas desktop/mobile",
+        "matriz sección por sección",
+        "matriz tarjeta por tarjeta",
+        "test de primera impresión",
+        "mapa de arquitectura/funnel",
+        "hallazgos priorizados por severidad e impacto",
+        "top 5-10 recomendaciones",
+        "lista explícita de elementos a preservar",
+        "Reviewer independiente sin implementación"
       ]
     }
   ],
