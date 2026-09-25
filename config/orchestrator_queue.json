@@ -986,7 +986,13 @@
         "Entregar hallazgos con evidencia concreta y ubicación exacta: sección/tarjeta, problema, por qué importa, severidad, recomendación específica y esfuerzo estimado.",
         "Clasificar recomendaciones en: imprescindible antes de beta, mejora de alto impacto, refinamiento posterior. Evitar rediseño total si una corrección incremental resuelve el problema.",
         "Proponer una versión objetivo de la jerarquía de Home V2 después de los ajustes, sin implementarla.",
-        "Cerrar con 5-10 cambios de mayor impacto, ordenados por impacto en comprensión/uso/conversión y esfuerzo, y señalar qué elementos actuales conviene NO tocar."
+        "Cerrar con 5-10 cambios de mayor impacto, ordenados por impacto en comprensión/uso/conversión y esfuerzo, y señalar qué elementos actuales conviene NO tocar.",
+        "Evaluar explícitamente una variante arquitectónica alternativa: integrar Global Intelligence e Insight Alicanto de la semana dentro de la unidad «Ponte al día en 30 segundos», como tarjetas especiales destacadas en la misma bandeja en lugar de bloques independientes superiores.",
+        "Comparar arquitectura actual vs variante integrada en: altura/scroll, visibilidad del valor diario, jerarquía, descubribilidad Premium, hábito semanal, riesgo de que piezas persistentes se vuelvan visualmente estáticas y coherencia del modelo mental.",
+        "En la variante integrada, evaluar diferenciación visual consistente dentro de «Ponte al día»: Global Intelligence con acento dorado de marca (inspirado en el punto de la i) e Insight semanal con gris elegante u otro neutro de marca; mantener suficiente contraste y no convertir color en único indicador.",
+        "Evaluar si esas piezas especiales deben permanecer fijadas arriba de la bandeja, entrar cronológicamente, o usar una lógica híbrida (destacadas pero no eternamente ancladas).",
+        "Evaluar comportamiento cuando la pieza Global/Insight ya fue leída: si debe permanecer destacada, colapsarse, moverse, o reducir prominencia para no restar espacio al valor diario.",
+        "Recomendar una única arquitectura final entre: bloques independientes, integración total en Ponte al día, o híbrido; justificarla desde UX, estrategia y editorial antes de cualquier implementación."
       ],
       "constraints": [
         "No modificar staging, main ni producción durante la auditoría.",
@@ -1004,7 +1010,10 @@
         "hallazgos priorizados por severidad e impacto",
         "top 5-10 recomendaciones",
         "lista explícita de elementos a preservar",
-        "Reviewer independiente sin implementación"
+        "Reviewer independiente sin implementación",
+        "comparativa arquitectura actual vs Global/Insight integrados en Ponte al día",
+        "recomendación sobre color/acento y persistencia de piezas especiales",
+        "recomendación sobre comportamiento leído/no leído de Global e Insight"
       ]
     }
   ],
