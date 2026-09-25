@@ -807,7 +807,7 @@
     },
     {
       "id": "home_architecture_v2_prototype_2026_09_24",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -850,6 +850,62 @@
         "newsletter separado del acceso anticipado",
         "boceto editorial con teaser Global, Insight semanal y señales compactas",
         "validación Dirección visual + editorial antes de implementación"
+      ],
+      "completed_at": "2026-09-24",
+      "progress": "Dirección aprobó el boceto visual/editorial como base para Builder, con un ajuste final: reducir la altura de Global Intelligence manteniendo su tratamiento Premium para dejar más presencia visible a «Ponte al día en 30 segundos».",
+      "evidence": [
+        "Dirección 2026-09-24: aprobación explícita del boceto responsive y estándar editorial para pasar a Work/Builder.",
+        "Ajuste previo a implementación: Global Intelligence debe conservar prominencia visual pero consumir menos altura vertical."
+      ]
+    },
+    {
+      "id": "home_architecture_v2_implementation_2026_09_24",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Implementar en staging la arquitectura Home V2 aprobada, priorizando Global Intelligence/Insight semanal como ganchos de valor y «Ponte al día en 30 segundos» como núcleo operativo visible.",
+      "depends_on": [
+        "home_architecture_v2_prototype_2026_09_24"
+      ],
+      "instructions": [
+        "Implementar únicamente en staging siguiendo Builder → tests → QA desktop/mobile → Reviewer independiente → corrección.",
+        "Eliminar «Personalizar mi radar». Los filtros/intereses de «Ponte al día» son la única configuración visible y deben persistir automáticamente entre sesiones en el dispositivo.",
+        "Durante beta, mostrar en header solo «Acceso anticipado» como CTA de cuenta/producto; no mostrar Ingresar/Registrarse hasta que exista auth real.",
+        "Mantener newsletter separado del acceso anticipado. Ubicar CTA compacto «Resumen semanal por correo» cerca del hero; al activarlo abrir modal/bottom sheet sin expandir la home.",
+        "Mantener «Encuentra lo que importa» compacto y la última actualización visible.",
+        "Ubicar Global Intelligence antes de «Ponte al día en 30 segundos» con tratamiento visual inequívocamente PREMIUM, fecha y fuente visibles, un hallazgo/cifra material, valor autosuficiente y CTA «Continúa con Premium» o equivalente.",
+        "Reducir la altura vertical de Global Intelligence respecto del boceto aprobado: debe llamar la atención sin dominar el primer viewport ni desplazar excesivamente «Ponte al día». Preferir densidad editorial, composición horizontal y progressive disclosure.",
+        "Mantener Insight Alicanto de la semana siempre visible y compacto antes de «Ponte al día». Debe mostrar un insight real/patrón/conexión, no una noticia rebautizada; CTA «Ver insight» o equivalente abre profundidad sin consumir altura por defecto.",
+        "Renombrar la bandeja principal a «Ponte al día en 30 segundos». Mostrar detectadas · seleccionadas · no leídas.",
+        "Mantener acordeón «Filtrar u ordenar» colapsado por defecto. Al abrir, Período y Orden deben ir en disposición vertical en mobile y adaptarse limpiamente en desktop; no forzar composición horizontal si se percibe artificial.",
+        "Compactar cada señal de triage para que puedan verse más de tres simultáneamente cuando el viewport lo permita. La síntesis debe ser autosuficiente y comprensible, idealmente título + hasta dos líneas útiles; nunca truncamiento mecánico que elimine sujeto, contraparte o cambio material.",
+        "Usar títulos de triage con sujeto/contraparte/cambio material cuando corresponda, p. ej. «RedSalud y Nueva Masvida firman nuevo convenio», en vez de frases dependientes de contexto como «El convenio habilita…».",
+        "Reemplazar «Metodología» en la unidad principal por «Fuentes». La vista Fuentes debe listar las fuentes monitoreadas, mostrar inicialmente ~10 cuando sean muchas, permitir «Ver más» y mantener visible al final «¿Te falta alguna? Pídela» o equivalente.",
+        "El CTA para sugerir fuente debe abrir un cuadro/modal mínimo con fuente/URL y comentario opcional, sin nombre, correo ni login; respetar la implementación provider-ready/fail-closed ya existente.",
+        "Preservar separación Global Theme ≠ Trend Chile y todos los guards editoriales/datos ya validados.",
+        "No tocar main/producción, auth, pagos, pricing, secretos ni activar proveedores externos."
+      ],
+      "constraints": [
+        "No implementar auth real ni checkout.",
+        "No degradar FREE artificialmente para promover Premium.",
+        "No presentar una noticia como Insight Alicanto si no aporta conexión, patrón, implicancia o lectura de negocio adicional.",
+        "No inventar fuente, fecha, métrica, causalidad o vínculo.",
+        "No tocar main/producción."
+      ],
+      "evidence_required": [
+        "QA desktop/mobile",
+        "Reviewer independiente",
+        "capturas staging desktop/mobile",
+        "Global Intelligence más bajo que el boceto sin perder jerarquía Premium",
+        "Ponte al día visible materialmente más arriba",
+        "filtros persistentes entre sesiones",
+        "acordeón Filtrar u ordenar",
+        "5+ señales compactas visibles en desktop cuando el contenido/viewport lo permitan y mejora material en mobile",
+        "títulos de triage autosuficientes",
+        "Fuentes con lista, Ver más y CTA pedir fuente",
+        "Insight semanal validado como insight y no mera noticia",
+        "sin regresiones de accesibilidad ni overflow"
       ]
     }
   ],
