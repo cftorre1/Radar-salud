@@ -856,6 +856,26 @@
         "no promover a main/producción",
         "actualizar cola y PMO con evidencia y estados reales"
       ]
+    },
+    {
+      "id": "home_v2_expert_iteration_2026_09_25",
+      "title": "Home V2 — iteración experta final",
+      "status": "Aprobado",
+      "priority": "Crítica",
+      "horizon": "Antes de beta",
+      "scope": [
+        "arquitectura híbrida Global/Insight dentro de Ponte al día",
+        "estado leído unificado",
+        "persistencia atenuada en feed general",
+        "deduplicación Insight/señal base",
+        "hero con propuesta funcional breve",
+        "content design de títulos y acciones",
+        "preservar estética y patrones validados"
+      ],
+      "validation_required": [
+        "Builder → tests → QA desktop/mobile → Reviewer → corrección",
+        "evidencia staging antes/después"
+      ]
     }
   ],
   "human_blockers": [
@@ -1844,7 +1864,7 @@
     },
     {
       "id": "home_v2_expert_audit_2026_09_25",
-      "status": "Aprobado_para_auditoria",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Antes de nuevas iteraciones Home V2",
       "principle": "Auditar antes de volver a construir",
@@ -1861,7 +1881,10 @@
         "El estado leído debe seguir siendo inequívoco; el color distintivo no puede confundirse con prioridad activa.",
         "Global Intelligence e Insight semanal deben evaluarse en dos superficies: destacados en «Ponte al día» mientras estén no leídos y persistentes en el feed general.",
         "Al leerse, desaparecen de «Ponte al día», pero permanecen en el feed general con color distintivo atenuado y menor prioridad.",
-        "En el feed general, después de leídas deben descender naturalmente con la recencia y no quedar ancladas arriba."
+        "En el feed general, después de leídas deben descender naturalmente con la recencia y no quedar ancladas arriba.",
+        "Dirección aprueba el dictamen completo y autoriza implementar la arquitectura híbrida y las recomendaciones priorizadas.",
+        "Global Intelligence e Insight semanal se integrarán en Ponte al día mientras estén no leídos y mantendrán persistencia atenuada en el feed general después de leídos.",
+        "Se unifica el estado leído entre Ponte al día, feed y Global Intelligence."
       ]
     }
   ],
