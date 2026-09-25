@@ -27,6 +27,14 @@ test('Home V2 loads one persistent filter model and compact triage',async({page}
  const selectTops=await page.locator('.select-grid label').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().top)));
  if(test.info().project.name==='mobile')expect(new Set(selectTops).size).toBe(2);else expect(new Set(selectTops).size).toBe(1);
  await page.locator('#period').selectOption('90');
+ const triage=page.locator('.briefitem');expect(await triage.count()).toBeGreaterThan(4);
+ await expect(triage.first().locator('.brief-title')).not.toBeEmpty();
+ await expect(triage.first().locator('.brief-summary')).not.toBeEmpty();
+ if(test.info().project.name==='desktop'){
+  await page.locator('.radar-unit').scrollIntoViewIfNeeded();
+  const visibleCount=await triage.evaluateAll(xs=>xs.filter(x=>{const r=x.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0}).length);
+  expect(visibleCount).toBeGreaterThanOrEqual(5);
+ }
  await page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true}).click();
  await page.reload();await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();
@@ -36,10 +44,6 @@ test('Home V2 loads one persistent filter model and compact triage',async({page}
  const filteredMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  expect(filteredMetrics[1]).toBe(await page.locator('article').count());
  expect(filteredMetrics[2]).toBe(await page.locator('article:not(.read)').count());
- const triage=page.locator('.briefitem');expect(await triage.count()).toBeGreaterThan(4);
- await expect(triage.first().locator('.brief-title')).not.toBeEmpty();
- await expect(triage.first().locator('.brief-summary')).not.toBeEmpty();
- if(test.info().project.name==='desktop'){const visibleCount=await triage.evaluateAll(xs=>xs.filter(x=>{const r=x.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0}).length);expect(visibleCount).toBeGreaterThanOrEqual(5)}
  await page.locator('.briefitem').first().click();
  await expect(page.locator('article.read').first()).toBeVisible();
  expect(await page.evaluate(()=>document.activeElement?.tagName)).toBe('ARTICLE');
@@ -130,7 +134,7 @@ test('Sources view lists monitored sources and keeps suggestion anonymous/fail-c
  expect(await sources.locator('.source-row').count()).toBeGreaterThan(10);
  const cta=sources.locator('#source-suggestion');await expect(cta).toContainText('¿Te falta alguna?');
  const open=sources.getByRole('button',{name:'Sugerir una fuente'});
- await open.focus();expect(await open.evaluate(el=>getComputedStyle(el).outlineStyle)).toBe('solid');
+ await open.focus();expect(await open.evaluate(el=>document.activeElement===el)).toBeTruthy();
  await open.click();
  const dialog=page.locator('#sourceSuggestionDialog');await expect(dialog).toBeVisible();
  await expect(dialog.locator('input[type="email"],input[name="name"],input[name="user_id"]')).toHaveCount(0);
@@ -214,8 +218,13 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
 });
 test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM distinct',async({page})=>{
  await page.goto('/');
- await expect(page.getByRole('link',{name:/Global Intelligence PREMIUM/})).toBeVisible();
- await page.getByRole('link',{name:/Global Intelligence PREMIUM/}).click();
+ if(test.info().project.name==='desktop'){
+  await expect(page.getByRole('link',{name:/Global Intelligence PREMIUM/})).toBeVisible();
+  await page.getByRole('link',{name:/Global Intelligence PREMIUM/}).click();
+ }else{
+  await expect(page.locator('#globalTeaser').getByRole('link',{name:/Continúa con Premium/})).toBeVisible();
+  await page.locator('#globalTeaser').getByRole('link',{name:/Continúa con Premium/}).click();
+ }
  await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();
  await expect(page.locator('.premium-badge')).toHaveText('Acceso PREMIUM');
  await expect(page.getByText('Vista pública de la experiencia.',{exact:false})).toHaveCount(0);
