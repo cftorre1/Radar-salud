@@ -1753,6 +1753,30 @@
         "estado colapsado reduce materialmente la altura antes de la bandeja"
       ],
       "validation_evidence": "home_compaction_responsive_qa"
+    },
+    {
+      "id": "home_architecture_v2_persistent_filters_2026_09_24",
+      "status": "Aprobado_para_boceto",
+      "priority": "Crítica",
+      "horizon": "Antes de nueva implementación home",
+      "principle": "Un solo modelo mental para intereses: filtrar y recordar",
+      "decisions": [
+        "Eliminar «Personalizar mi radar» como función separada.",
+        "Los filtros pasan a ser la única configuración visible de intereses/orden y se guardan automáticamente para la próxima sesión.",
+        "Cambiar un filtro actualiza la preferencia persistente; no hay que ir a otra pantalla para habilitar previamente una categoría.",
+        "Header: logo a la izquierda; «Iniciar sesión» y «Suscribirse» como acciones compactas a la derecha.",
+        "Los botones de header son parte del prototipo; auth/pagos reales requieren autorización separada.",
+        "Global Intelligence debe ir antes de «Ponte al día en 30 segundos», con apariencia claramente premium, fecha/fuente, insight concreto y CTA «Continúa con Premium» o equivalente.",
+        "Insight Alicanto semanal permanece visible como recordatorio de valor recurrente para FREE.",
+        "Primero validar boceto responsive; después convertirlo en tarea de implementación."
+      ],
+      "validation_required": [
+        "validación visual desktop/mobile",
+        "consistencia filtros↔preferencias",
+        "persistencia entre sesiones",
+        "jerarquía Premium clara sin degradar FREE",
+        "aprobación Dirección antes de Builder"
+      ]
     }
   ],
   "updated_at": "2026-09-24"
