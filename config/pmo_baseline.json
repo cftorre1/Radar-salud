@@ -2436,6 +2436,30 @@
         "Implementar auditoría editorial+negocio estructurada y bucle REVISE/REJECT.",
         "Validar end-to-end una publicación semanal con TERRA antes de reemplazar el fallback actual."
       ]
+    },
+    {
+      "id": "statistics_analysis_expansion_ges_series_ip_2026_09_26",
+      "status": "Pendiente_interno",
+      "priority": "Alta",
+      "horizon": "Antes de volver a publicar estas familias en feed",
+      "decisions": [
+        "GES, Series Estadísticas históricas y Boletín IP no deben publicarse como cards genéricas sin análisis.",
+        "Construir proveedores analíticos determinísticos/fail-closed para cada familia con período, comparación, evidencia y utilidad de decisión.",
+        "Mantener las publicaciones detectadas en histórico/cola analítica mientras no exista insight reproducible.",
+        "Pulso Isapre conserva tabla ejecutiva y evidencia detallada como patrón de producto para futuras familias estadísticas."
+      ],
+      "progress": "Se corrigió el comportamiento visible: las publicaciones sin análisis quedan fuera del feed y Resonancia Magnética del Biobío se clasifica como acreditación individual rutinaria. Falta implementar parsers/analítica estructurada de GES, Series históricas y Boletín IP para reintroducirlas con valor.",
+      "evidence": [
+        "scripts/export_web_snapshot.py",
+        "config/editorial_rules_v2.json",
+        "src/radar_salud/isapre_pulse.py"
+      ],
+      "missing": [
+        "Parser/validador GES trimestral.",
+        "Proveedor analítico de Series Estadísticas ISAPRE con selección de cambios materiales.",
+        "Parser de Boletín IP (acreditación, mediación, reclamos y RNPI) y criterio de materialidad.",
+        "QA editorial/negocio de los hallazgos antes de publicación."
+      ]
     }
   ],
   "updated_at": "2026-09-26"
