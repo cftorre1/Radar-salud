@@ -1668,7 +1668,8 @@
         "Seleccionar cada semana primero la señal/dataset más material según editorial_rules_v2; luego buscar contexto/corroboración relacionada. Si existe, enriquecer. Si no existe, publicar análisis profundo basado en la evidencia primaria, con límites explícitos.",
         "Evaluar el actual Pulso Isapre como candidato al primer «Análisis de la semana»: tendencias de beneficiarios/cotizantes/cargas, composición, movilidad y ranking por Isapre; no inferir causas sin corroboración.",
         "Actualizar reglas editoriales v2, fixtures y tests de regresión para reflejar este nuevo contrato y los dos modos semanales.",
-        "QA desktop/mobile + Reviewer independiente, staging solamente. No tocar producción."
+        "QA desktop/mobile + Reviewer independiente, staging solamente. No tocar producción.",
+        "Bupa US$15m: eliminar fuentes/contextos adicionales que no agreguen valor material. Mantener solo referencias que prueben, corroboren o expliquen efectivamente una afirmación relevante; no conservar páginas genéricas por completitud."
       ],
       "constraints": [
         "No usar contexto genérico como corroboración.",
@@ -1717,6 +1718,46 @@
         "freshness/not_available verificados",
         "deep-links a evidencia",
         "QA + Reviewer PASS"
+      ]
+    },
+    {
+      "id": "preproduction_consolidation_2026_09_26",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Builder+Work+Reviewer",
+      "source": "Dirección",
+      "objective": "Consolidar en staging todos los acuerdos recientes y auditorías en un candidato único de preproducción, sin reabrir decisiones ya validadas salvo regresión.",
+      "depends_on": [
+        "content_contract_pulso_normative_weekly_analysis_2026_09_26",
+        "admin_dashboard_read_model_v1_2026_09_26"
+      ],
+      "instructions": [
+        "Preservar todo Home V2 y polish previamente validados: arquitectura, Ponte al día, leído/no leído, deep-links, compartir, mobile, fuentes/fecha, especiales Global/Insight y estética aprobada.",
+        "Aplicar completamente las reglas editoriales v2 y el contrato de contenido uniforme en señales visibles y futuras.",
+        "Corregir Bupa: fuente original clara, suficiente profundidad y eliminar referencias/contextos que no agreguen valor material.",
+        "Normativa: mantener tipo de acto, número exacto y relaciones regulatorias relevantes en Ponte al día, card y detalle.",
+        "Pulso Isapre: consolidar estadísticas periódicas como módulos del Pulso, con conclusiones separadas, tabla ejecutiva/ranking cuando sea trazable y sin causalidad forzada.",
+        "Análisis de la semana: soportar modo A multievidencia y modo B análisis profundo single-source reproducible; escoger la pieza más material y enriquecer con fuentes relacionadas cuando existan.",
+        "Global Intelligence: preservar mejoras de valor de negocio, separar hecho internacional e hipótesis Chile y eliminar comentarios genéricos.",
+        "Epidemiología: preservar integración provider-ready y trazabilidad, sin publicar nada no validado.",
+        "Implementar P0 del dashboard PMO/BI: read-model observacional, freshness, available/stale/not_available, evidencia y drill-down; sin métricas inventadas.",
+        "Incorporar todos los acuerdos recientes de auditorías UX, editorial, negocio salud, PMO/BI, control de gestión y FinOps que estén aprobados en queue/PMO; no reabrir bloques validados si no hay regresión.",
+        "Ejecutar Builder para cambios acotados/rutinarios y Work para cambios complejos/multietapa. Reviewer independiente debe revisar el candidato completo.",
+        "Cerrar con tests, QA desktop/mobile, Reviewer independiente y evidencia PMO. No tocar main/producción."
+      ],
+      "constraints": [
+        "No depender de automatizaciones programadas con escritura como único ejecutor.",
+        "No tocar main/producción.",
+        "No activar analytics, auth, pagos, pricing, secretos, privacidad ni proveedores externos.",
+        "No inventar contenido, métricas, corroboración ni causalidad."
+      ],
+      "evidence_required": [
+        "SHAs de implementación por lane",
+        "tests y QA desktop/mobile",
+        "Reviewer independiente PASS",
+        "capturas/evidencia staging",
+        "checklist de acuerdos previos preservados",
+        "lista explícita de blockers humanos/external-only restantes"
       ]
     }
   ],
