@@ -656,15 +656,15 @@
           "evidence": "corporate_newsrooms_qa"
         }
       ],
-  "paused": false,
-  "pause_reason": null,
-  "progress": "Reanudado por Dirección. Revalidación real 2026-09-26: FONASA HTTP 403, ISP/ANAMED HTTP 502, DEIS accesible sin publicaciones fechadas elegibles y Diario Oficial sin respuesta dentro del ciclo. Se mantuvo fail-closed y se continuó con otros frentes.",
-  "current_blockers": [
-    "FONASA: acceso público directo devuelve HTTP 403.",
-    "ISP/ANAMED: endpoint oficial devuelve HTTP 502.",
-    "DEIS: disponibilidad técnica sin publicación fechada elegible en la captura.",
-    "Diario Oficial: solicitud no completó respuesta dentro del ciclo; requiere reintento externo."
-  ]
+      "paused": false,
+      "pause_reason": null,
+      "progress": "Reanudado por Dirección. Revalidación real 2026-09-26: FONASA HTTP 403, ISP/ANAMED HTTP 502, DEIS accesible sin publicaciones fechadas elegibles y Diario Oficial sin respuesta dentro del ciclo. Se mantuvo fail-closed y se continuó con otros frentes.",
+      "current_blockers": [
+        "FONASA: acceso público directo devuelve HTTP 403.",
+        "ISP/ANAMED: endpoint oficial devuelve HTTP 502.",
+        "DEIS: disponibilidad técnica sin publicación fechada elegible en la captura.",
+        "Diario Oficial: solicitud no completó respuesta dentro del ciclo; requiere reintento externo."
+      ]
     },
     {
       "id": "global",
@@ -2231,6 +2231,19 @@
         "Diff limitado a Home V2 y tests; main/producción no modificados"
       ],
       "completed_at": "2026-09-26"
+    },
+    {
+      "id": "editorial_90d_learning_rules_2026_09_26",
+      "status": "Aprobado_para_ejecucion",
+      "priority": "Crítica",
+      "horizon": "Iteración actual",
+      "decisions": [
+        "Extender auditoría a las 29 señales históricas adicionales de 90 días; total esperado: 43 señales del snapshot auditadas.",
+        "El experto de negocio de salud debe ser especialmente crítico y evaluar materialidad, impacto, accionabilidad y decisión afectada.",
+        "El objetivo principal no es corregir una vez el feed: es convertir la auditoría en reglas persistentes de admisión, selección, priorización, redacción y creación de señales futuras.",
+        "Crear taxonomía, score de materialidad, gates fail-closed, fixtures positivos/negativos y tests de regresión editorial.",
+        "No tocar producción hasta revisión de Dirección."
+      ]
     }
   ],
   "updated_at": "2026-09-26"
