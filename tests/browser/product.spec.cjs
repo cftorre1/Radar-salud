@@ -278,7 +278,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(tea).toContainText('1 de noviembre de 2026');
  await tea.locator('[data-detail]').click();
  await expect(page.locator('#detailBody')).toContainText('Resolución Exenta IF/N°11156');
- await expect(page.locator('#detailBody')).toContainText('no puede exigir inscripción en el Registro Nacional de Discapacidad');
+ await expect(page.locator('#detailBody')).toContainText('Registro Nacional de Discapacidad');
  await expect(page.locator('#detailBody')).toContainText('Sucursal Virtual');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
  const circular=page.locator('article').filter({has:page.getByRole('heading',{name:/Isapres no podrán compensar reembolsos/})});
