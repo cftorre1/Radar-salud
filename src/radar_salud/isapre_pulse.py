@@ -113,6 +113,24 @@ def build_pulse(validation, releases=None):
             "why_it_matters":f"La cartera acumula {streak} bajas mensuales y {label(decline)} beneficiarios menos entre enero y julio; {share_label}% de esa disminución aritmética corresponde a cargas. Para gestión comercial y financiera, es una alerta de composición y base de ingresos, no una explicación causal: la brecha entre contratos y desahucios voluntarios omite otras terminaciones, y la movilidad usa otro intervalo. Conviene seguir terminaciones completas, mezcla de cartera y próximas publicaciones antes de atribuir desempeño.",
             "key_points":[f"En {period} se registraron {label(contracts)} contratos suscritos y {label(voluntary)} desahucios voluntarios; estos últimos no representan todas las terminaciones.",
                 f"Entre los cortes {start_label} y {end_label} se registraron {label(exits)} salidas y {label(entries)} entradas por movilidad; diferencia entradas menos salidas: {label(net)}."],
+            "summary_table":{
+                "title":"Resumen ejecutivo Isapre",
+                "columns":["Indicador","Período","Valor","Lectura"],
+                "rows":[
+                    {"indicator":"Beneficiarios","period":period,"value":label(benef),
+                     "reading":f"{label(decline)} menos que enero; {streak} bajas mensuales consecutivas."},
+                    {"indicator":"Cotizantes","period":period,"value":label(cot),
+                     "reading":"Base principal de cotizantes al cierre del período."},
+                    {"indicator":"Cargas","period":period,"value":label(cargas),
+                     "reading":f"{share_label}% de la caída aritmética enero–julio corresponde a cargas."},
+                    {"indicator":"Suscripciones","period":period,"value":label(contracts),
+                     "reading":f"{label(contracts-voluntary)} más que desahucios voluntarios en el mes; no equivale a cambio neto."},
+                    {"indicator":"Desahucios voluntarios","period":period,"value":label(voluntary),
+                     "reading":"No representan todas las terminaciones de contrato."},
+                    {"indicator":"Movilidad","period":f"{m['period_start']} → {period}","value":label(net),
+                     "reading":f"{label(entries)} entradas y {label(exits)} salidas entre cortes; no es variación mensual."}
+                ]
+            },
             "data_insights":[item["text"] for item in published_insights],
             "data_insight_evidence":published_insights,
             "data_insight_meta":{"status":"validated","families":["cartera","suscripciones","movilidad"],"period":period,"mobility_start":m["period_start"],"mobility_end":m["period_end"],
