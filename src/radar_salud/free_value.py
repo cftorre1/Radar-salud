@@ -44,7 +44,8 @@ def _day(value: Any) -> date | None:
 def _verified_theme(theme: dict[str, Any], today: date) -> tuple[dict[str, Any], list[dict[str, Any]]] | None:
     watch = theme.get("chile_watch") or {}
     if (theme.get("kind") != "global_theme" or not theme.get("id") or not theme.get("title")
-            or not theme.get("why_it_matters") or watch.get("kind") != "hypothesis"
+            or not theme.get("global_finding") or not theme.get("why_it_matters")
+            or watch.get("kind") != "hypothesis"
             or watch.get("trend_chile_status") not in {"not_established", "candidate", "established"}):
         return None
     valid = []
@@ -120,11 +121,18 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
     teaser = None
     if theme:
         latest_source = max(verified_sources, key=lambda x: str(x.get("published_at") or ""))
-        teaser_finding = str(theme["why_it_matters"]).split(". ", 1)[0].rstrip(".") + "."
+        teaser_finding = str(theme.get("global_finding") or "").split(". ", 1)[0].rstrip(".") + "."
+        cross_analysis = theme.get("cross_analysis") or {}
+        chile_watch = theme.get("chile_watch") or {}
         teaser = {
             "theme_id": theme["id"],
             "title": theme["title"],
             "excerpt": teaser_finding,
+            "what_changed": teaser_finding,
+            "why_it_matters": theme["why_it_matters"],
+            "what_to_watch": cross_analysis.get("decision_use"),
+            "chile_hypothesis": chile_watch.get("text"),
+            "chile_hypothesis_status": chile_watch.get("trend_chile_status"),
             "source_count": len(verified_sources),
             "publishers": sorted({x["publisher"] for x in verified_sources}),
             "source_label": " · ".join(sorted({x["publisher"] for x in verified_sources})),
