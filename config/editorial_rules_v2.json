@@ -106,5 +106,97 @@
     "aggregation": [
       "¿Existe una pieza agregada o Pulso que ya cubra la misma familia, período y hallazgo? Si existe, ¿la señal individual aporta valor decisional distinto y trazable suficiente para publicarse por separado?"
     ]
+  },
+  "weekly_insight_pipeline_v2": {
+    "status": "approved_for_implementation",
+    "principle": "Seleccionar primero la señal de mayor relevancia estratégica, enriquecer evidencia, aplicar deep intelligence, auditar y solo publicar si supera el gate final.",
+    "selection": {
+      "window_days": 14,
+      "dimensions": {
+        "financial_impact": 0.16,
+        "operational_impact": 0.14,
+        "regulatory_or_competitive_shift": 0.14,
+        "affected_scope": 0.1,
+        "urgency_time_horizon": 0.1,
+        "actionability": 0.14,
+        "evidence_strength": 0.12,
+        "novelty_non_repetition": 0.1
+      },
+      "minimum_candidate_score": 70,
+      "choose_highest_score": true,
+      "tie_breakers": [
+        "evidence_strength",
+        "actionability",
+        "event_date"
+      ]
+    },
+    "enrichment": {
+      "order": [
+        "alicanto_existing_evidence",
+        "alicanto_historical_signals",
+        "approved_web_research"
+      ],
+      "objective": "Encontrar evidencia complementaria, antecedentes, datos o señales relacionadas que aumenten profundidad sin forzar corroboración.",
+      "minimum_sources_preferred": 2,
+      "single_source_allowed_if": "La fuente primaria es suficientemente rica y el análisis es reproducible.",
+      "fail_closed_on_unverified_claims": true
+    },
+    "deep_intelligence": {
+      "preferred_engine": "TERRA",
+      "required": true,
+      "current_runtime_status": "not_integrated_in_repository",
+      "output_requirements": [
+        "executive_thesis",
+        "what_changed",
+        "why_it_matters",
+        "cross_signal_connections",
+        "business_implications",
+        "decision_use",
+        "what_to_watch",
+        "uncertainties_and_limits",
+        "evidence_map"
+      ],
+      "no_model_output_without_evidence": true
+    },
+    "expert_audit": {
+      "lenses": [
+        "editorial",
+        "health_business"
+      ],
+      "required_questions": [
+        "¿La señal elegida es efectivamente la de mayor relevancia estratégica del período según el scoring y la evidencia disponible?",
+        "¿El análisis aporta un insight no obvio y no se limita a resumir la noticia?",
+        "¿La tesis está respaldada por evidencia identificable y separa hechos, inferencias e hipótesis?",
+        "¿La implicancia para isapres, prestadores u otros actores es material y útil para una decisión?",
+        "¿El texto es claro, ejecutivo, preciso y evita exageración o causalidad no demostrada?",
+        "¿Qué información, fuente, conexión o reformulación concreta mejoraría el análisis?",
+        "¿El Insight merece publicación esta semana o debería revisarse, sustituirse por el siguiente candidato o no publicarse?"
+      ],
+      "verdicts": [
+        "PASS",
+        "REVISE",
+        "REJECT"
+      ]
+    },
+    "revision": {
+      "on_revise": "Aplicar sugerencias específicas de auditoría y ejecutar una nueva auditoría.",
+      "max_revision_cycles": 2,
+      "on_reject": "Evaluar el siguiente candidato del ranking.",
+      "if_all_candidates_fail": "No publicar Insight semanal; registrar fail-closed."
+    },
+    "publication": {
+      "requires": [
+        "strategic_score_pass",
+        "evidence_enrichment_complete",
+        "terra_complete",
+        "editorial_business_audit_pass"
+      ],
+      "surfaces": [
+        "Ponte al día",
+        "feed",
+        "detalle Insight semanal"
+      ],
+      "never_force_weekly_frequency": true
+    }
   }
 }
