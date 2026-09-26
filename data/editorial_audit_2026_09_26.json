@@ -1,0 +1,315 @@
+{
+  "audit_id": "news_content_expert_audit_2026_09_25",
+  "audited_at": "2026-09-26",
+  "snapshot_generated_at": "2026-09-25T22:27:48Z",
+  "scope": {
+    "default_period_days": 14,
+    "visible_base_signals": 14,
+    "special_pieces": 2,
+    "dataset_signals_not_visible_in_default_period": 29,
+    "note": "La auditoría cubre todas las piezas visibles con los filtros iniciales de Home V2: 14 señales del período y las dos piezas especiales. Las otras 29 señales del snapshot permanecen fuera del período inicial y no se presentan como auditadas."
+  },
+  "lenses": [
+    "editor/jornalista senior de noticias",
+    "analista de negocios y salud",
+    "editor de producto digital"
+  ],
+  "summary": {
+    "conservar": 4,
+    "ajustar_titulo": 10,
+    "ajustar_resumen": 1,
+    "ajustar_por_que_importa": 1,
+    "requiere_evidencia_adicional": 2,
+    "descartar": 0
+  },
+  "items": [
+    {
+      "id": "https://www.minsal.cl/ministra-de-salud-presenta-piloto-para-que-pacientes-del-hospital-barros-luco-retiren-sus-medicamentos-en-farmacias-cercanas-a-sus-hogares-adheridas-a-ley-cenabast/",
+      "kind": "noticia",
+      "source": "Ministerio de Salud",
+      "event_date": "2026-09-24",
+      "verdict": ["ajustar_titulo"],
+      "current": {
+        "title": "Minsal prueba retiro de medicamentos del Barros Luco en farmacias Cenabast",
+        "summary": "El Ministerio de Salud presentó un piloto para que pacientes del Hospital Barros Luco retiren sus medicamentos en farmacias cercanas a sus hogares que estén adheridas a la Ley Cenabast, en lugar de hacerlo necesariamente en el hospital.",
+        "why": "El piloto afecta directamente a los pacientes del Hospital Barros Luco y a las farmacias participantes, al probar un modelo de dispensación más cercano al domicilio dentro de la red de farmacias adheridas a Cenabast."
+      },
+      "proposed": {
+        "title": "Minsal prueba retiro de medicamentos del Barros Luco cerca del domicilio en farmacias Cenabast",
+        "summary": null,
+        "why": null
+      },
+      "rationale": "Conserva actor, acción, población y mecanismo; elimina ceremonial y reduce longitud sin perder alcance.",
+      "evidence_flag": null
+    },
+    {
+      "id": "https://www.minsal.cl/consejo-para-mejorar-eficiencia-y-reducir-deficit-estructural-en-salud-incorpora-mirada-de-servicios-de-salud-y-hospitales-en-su-segunda-sesion/",
+      "kind": "noticia",
+      "source": "Ministerio de Salud",
+      "event_date": "2026-09-24",
+      "verdict": ["ajustar_titulo", "requiere_evidencia_adicional"],
+      "current": {
+        "title": "Minsal suma hospitales y Servicios de Salud al consejo sobre eficiencia y déficit",
+        "summary": "El Ministerio de Salud informó que el consejo creado para mejorar la eficiencia y reducir el déficit estructural del sector realizó su segunda sesión, incorporando la perspectiva de los Servicios de Salud y los hospitales.",
+        "why": "La participación de la red asistencial incorpora la experiencia operativa de Servicios de Salud y hospitales a una instancia que aborda la eficiencia y el déficit del sistema."
+      },
+      "proposed": {
+        "title": "Consejo de eficiencia incorpora a Servicios de Salud y hospitales, sin medidas anunciadas",
+        "summary": null,
+        "why": null
+      },
+      "rationale": "La pieza debe explicitar que se trata de una instancia deliberativa y evitar sugerir resultados que la evidencia no contiene.",
+      "evidence_flag": "Faltan medidas, metas, presupuesto y decisiones implementadas; no elevar a insight ni afirmar impacto material."
+    },
+    {
+      "id": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+      "kind": "normativa",
+      "source": "Superintendencia de Salud",
+      "event_date": "2026-09-23",
+      "verdict": ["conservar"],
+      "current": {
+        "title": "La Superintendencia confirmó la cobertura sin tope anual para cinco prestaciones vinculadas a TEA y añadió requisitos de acreditación y registro.",
+        "summary": "Las isapres deben habilitar el registro y la compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026.",
+        "why": "Las isapres deben habilitar el registro y la compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026."
+      },
+      "proposed": {"title": null, "summary": null, "why": null},
+      "rationale": "La versión de triage ya reemplaza el rótulo opaco, conecta regla y operación e incluye un hito accionable.",
+      "evidence_flag": null
+    },
+    {
+      "id": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n7458/",
+      "kind": "fiscalizacion",
+      "source": "Superintendencia de Salud",
+      "event_date": "2026-09-23",
+      "verdict": ["ajustar_titulo"],
+      "current": {
+        "title": "Resolución Exenta IP/N°7458",
+        "summary": "La Superintendencia declara acreditado a Resonancia Magnética del Biobío, tras verificar el cumplimiento íntegro de su Plan de Corrección, y mantiene su inscripción N°1.014 en el Registro Público de Prestadores Institucionales de Salud Acreditados.",
+        "why": "Resonancia Magnética del Biobío consolida su condición de prestador acreditado al alcanzar el 100% de las características obligatorias y el 79% de las características totales aplicables evaluadas."
+      },
+      "proposed": {
+        "title": "Resonancia Magnética del Biobío mantiene su acreditación tras cumplir el plan de corrección",
+        "summary": null,
+        "why": null
+      },
+      "rationale": "El número de resolución no permite triage; el título propuesto identifica actor, resultado y causa comprobada.",
+      "evidence_flag": null
+    },
+    {
+      "id": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+      "kind": "noticia",
+      "source": "Diario Financiero",
+      "event_date": "2026-09-21",
+      "verdict": ["conservar"],
+      "current": {
+        "title": "Bupa acelera inversiones con tres proyectos por US$15 millones",
+        "summary": "Bupa anunció US$15 millones para La Dehesa, Clínicas Huinganal y Mindplace en San Damián.",
+        "why": "Amplía oferta ambulatoria y de salud mental mediante inversión y compra."
+      },
+      "proposed": {"title": null, "summary": null, "why": null},
+      "rationale": "La pieza conserva monto, actor y las tres operaciones sin truncar su significado.",
+      "evidence_flag": null
+    },
+    {
+      "id": "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio",
+      "kind": "noticia",
+      "source": "RedSalud",
+      "event_date": "2026-09-21",
+      "verdict": ["conservar"],
+      "current": {
+        "title": "RedSalud y Nueva Masvida amplían convenio a escala nacional",
+        "summary": "El convenio habilita Libre Elección y Preferente en 9 clínicas, centros médicos y dentales y el Sanatorio Alemán, con bonificación I-Med.",
+        "why": "Afiliados Nueva Masvida pueden usar esa red pagando el copago de su plan; reemplaza el esquema de atención solo contra reembolso."
+      },
+      "proposed": {"title": null, "summary": null, "why": null},
+      "rationale": "Actor, escala, red, modalidad y consecuencia para afiliados quedan claros en lectura rápida.",
+      "evidence_flag": "Fuente corporativa; atribuir el alcance al anuncio de RedSalud y no presentarlo como corroboración independiente."
+    },
+    {
+      "id": "https://www.minsal.cl/ministerio-de-salud-publica-listado-de-eleam-que-cuentan-con-autorizacion-sanitaria/",
+      "kind": "datos",
+      "source": "Ministerio de Salud",
+      "event_date": "2026-09-17",
+      "verdict": ["ajustar_titulo"],
+      "current": {
+        "title": "Ministerio de Salud publica listado de Eleam que cuentan con autorización sanitaria",
+        "summary": "El Minsal publicó un listado de Eleam con autorización sanitaria.",
+        "why": "Permite identificar establecimientos autorizados para usuarios, familias y supervisión de cuidados de larga estadía."
+      },
+      "proposed": {
+        "title": "Minsal publica el listado de Eleam con autorización sanitaria",
+        "summary": null,
+        "why": null
+      },
+      "rationale": "Ajuste de economía verbal; la pieza es una referencia de datos, no un insight ni un cambio regulatorio.",
+      "evidence_flag": null
+    },
+    {
+      "id": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n6836-emision-08-09-2026/",
+      "kind": "fiscalizacion",
+      "source": "Superintendencia de Salud",
+      "event_date": "2026-09-15",
+      "verdict": ["ajustar_por_que_importa"],
+      "current": {
+        "title": "Pulso de sanciones a Prestadores · últimos 30 días",
+        "summary": "3 sanciones a Prestadores en 30 días. Entre ellas: Clínica Los Carrera · 70 UF · cheque en garantía.",
+        "why": "Permite observar focos recientes de fiscalización y revisar cada resolución en su fuente original."
+      },
+      "proposed": {
+        "title": null,
+        "summary": null,
+        "why": "Resume tres resoluciones históricas incorporadas al período; no representa sanciones detectadas en LIVE."
+      },
+      "rationale": "La utilidad ejecutiva debe distinguir el backfill documental de una alerta nueva para evitar una falsa sensación de inmediatez.",
+      "evidence_flag": "0 sanciones LIVE y 3 BACKFILL; mantener esta procedencia visible."
+    },
+    {
+      "id": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion",
+      "kind": "noticia",
+      "source": "Diario Financiero",
+      "event_date": "2026-09-15",
+      "verdict": ["ajustar_titulo"],
+      "current": {
+        "title": "Max Luksic propone alianza municipal para ejecutar recursos de atención primaria",
+        "summary": "El alcalde de Huechuraba propuso una alianza municipal para mejorar la atención primaria; afirmó que ahora ejecuta $300 millones antes devueltos al Minsal.",
+        "why": "Plantea mejorar la ejecución de recursos de APS sin aumentar presupuesto; aún no es una medida sectorial adoptada."
+      },
+      "proposed": {
+        "title": "Alcalde de Huechuraba propone alianza municipal para mejorar la ejecución de recursos de APS",
+        "summary": null,
+        "why": null
+      },
+      "rationale": "Prioriza cargo, propuesta y objetivo sobre una cita promocional; conserva la cautela de que no es una política adoptada.",
+      "evidence_flag": null
+    },
+    {
+      "id": "https://www.minsal.cl/gobierno-anuncia-plan-para-reforzar-la-seguridad-y-ampliar-la-oferta-de-cuidados-para-personas-mayores/",
+      "kind": "noticia",
+      "source": "Ministerio de Salud",
+      "event_date": "2026-09-15",
+      "verdict": ["ajustar_titulo", "requiere_evidencia_adicional"],
+      "current": {
+        "title": "Gobierno anuncia plan para reforzar la seguridad y ampliar la oferta de cuidados para personas mayores",
+        "summary": "El Gobierno anunció un plan para reforzar la seguridad y ampliar la oferta de cuidados para personas mayores.",
+        "why": "El anuncio se vincula con la oferta de cuidados para personas mayores, un ámbito relevante para el sistema de salud y protección social."
+      },
+      "proposed": {
+        "title": "Gobierno anuncia plan de cuidados para personas mayores, sin detallar medidas ni plazos",
+        "summary": null,
+        "why": null
+      },
+      "rationale": "La limitación probatoria debe aparecer desde el triage y no quedar escondida en el cuerpo.",
+      "evidence_flag": "Faltan medidas, cobertura, financiamiento y plazos; no usar como señal accionable hasta completar evidencia."
+    },
+    {
+      "id": "https://www.superdesalud.gob.cl/normativa/circular-if-n535/",
+      "kind": "normativa",
+      "source": "Superintendencia de Salud",
+      "event_date": "2026-09-14",
+      "verdict": ["ajustar_titulo"],
+      "current": {
+        "title": "Isapres: reembolsos públicos sin compensación de deudas · IF/N°535",
+        "summary": "La Circular IF/N°535 modifica la Circular IF/N°77, que contiene el Compendio de Normas Administrativas en Materia de Beneficios y regula, entre otras materias, el pago a empleadores públicos de la suma equivalente al mínimo de los subsidios por incapacidad laboral.",
+        "why": "Las isapres deben pagar los reembolsos adeudados a empleadores del sector público sin imputarlos contra obligaciones de dichos órganos, salvo que exista habilitación legal expresa."
+      },
+      "proposed": {
+        "title": "Isapres no podrán compensar reembolsos a empleadores públicos sin habilitación legal",
+        "summary": null,
+        "why": null
+      },
+      "rationale": "Reemplaza el identificador normativo opaco por obligación, sujetos y excepción legal.",
+      "evidence_flag": null
+    },
+    {
+      "id": "https://www.superdesalud.gob.cl/normativa/circular-if-n534/",
+      "kind": "normativa",
+      "source": "Superintendencia de Salud",
+      "event_date": "2026-09-14",
+      "verdict": ["ajustar_titulo"],
+      "current": {
+        "title": "Isapres: bonos electrónicos con cédula si falla la biometría · IF/N°534",
+        "summary": "La Circular IF/N°534 modifica el Compendio de Normas Administrativas en Materia de Beneficios para establecer un procedimiento de respaldo cuando la biometría dactilar y el mecanismo auxiliar no permitan validar la identidad al emitir bonos electrónicos.",
+        "why": "Afecta a las isapres y a sus proveedores tecnológicos: deben adecuar la emisión de bonos para habilitar una vía inmediata con cédula de identidad, aplicar eventuales regularizaciones solo después de la atención, mantener registros de los casos y formalizar un protocolo disponible para fiscalización."
+      },
+      "proposed": {
+        "title": "Isapres deberán emitir bonos con cédula cuando falle la validación biométrica",
+        "summary": null,
+        "why": null
+      },
+      "rationale": "Expone obligación, contingencia y resultado operativo en una sola línea.",
+      "evidence_flag": null
+    },
+    {
+      "id": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras",
+      "kind": "noticia",
+      "source": "Diario Financiero",
+      "event_date": "2026-09-14",
+      "verdict": ["ajustar_titulo"],
+      "current": {
+        "title": "Pablo Yarmuch, gerente general de Clínica Las Condes:“Todas nuestras credenciales del pasado las hemos recuperado (...) Estamos saneados financieramente”",
+        "summary": "El gerente general de Clínica Las Condes afirmó que la institución está financieramente saneada, que ya no requeriría nuevas inyecciones de capital y que se recuperó desde un nivel equivalente al 15% de 2019 hasta el 65% de sus credenciales de ese año.",
+        "why": "La señal afecta a Clínica Las Condes y a sus competidores y financiadores: según su principal ejecutivo, la clínica busca completar su recuperación sin nuevo capital externo, lo que podría modificar su posición competitiva y sus necesidades de financiamiento."
+      },
+      "proposed": {
+        "title": "Clínica Las Condes afirma estar saneada y proyecta completar su recuperación",
+        "summary": null,
+        "why": null
+      },
+      "rationale": "Reduce una cita extensa y conserva la atribución; evita convertir declaraciones del ejecutivo en hechos corroborados.",
+      "evidence_flag": "Desempeño y necesidad de capital son declaraciones de la administración en una fuente periodística; mantener atribución."
+    },
+    {
+      "id": "https://www.minsal.cl/chile-se-convierte-en-el-primer-pais-de-sudamerica-en-erradicar-la-transmision-de-rabia-de-perros-a-humanos/",
+      "kind": "noticia",
+      "source": "Ministerio de Salud",
+      "event_date": "2026-09-14",
+      "verdict": ["ajustar_titulo"],
+      "current": {
+        "title": "Chile se convierte en el primer país de Sudamérica en erradicar la transmisión de rabia de perros a humanos",
+        "summary": "El Ministerio de Salud informó que Chile erradicó la transmisión de rabia desde perros a humanos, convirtiéndose —según la publicación— en el primer país de Sudamérica en alcanzar este hito.",
+        "why": "Consolida un resultado de alcance nacional en control de zoonosis y elimina la transmisión canina de una enfermedad potencialmente mortal hacia las personas."
+      },
+      "proposed": {
+        "title": "Minsal informa que Chile erradicó la transmisión de rabia canina a humanos",
+        "summary": null,
+        "why": null
+      },
+      "rationale": "Mantiene el hecho principal y atribuye la afirmación; el hito comparativo regional queda en el resumen con su fuente.",
+      "evidence_flag": "La primacía sudamericana proviene del comunicado del Minsal; no presentarla como corroboración independiente."
+    },
+    {
+      "id": "weekly:2026-09-21-regulation",
+      "kind": "insight_semanal",
+      "source": "Superintendencia de Salud",
+      "event_date": "2026-09-23",
+      "verdict": ["conservar"],
+      "current": {
+        "title": "TEA: la cobertura sin tope depende de un flujo operativo completo",
+        "summary": "Cobertura, registro y compra de bonos no son cambios separados: convergen en un único hito operativo el 1 de noviembre.",
+        "why": "La conexión ejecutiva une la regla de cobertura con su implementación: acreditación y registro alimentan la validación, y esa validación debe habilitar la compra directa de bonos sin tope. La fecha común —1 de noviembre— convierte beneficios, canales y operaciones en un solo hito de cumplimiento."
+      },
+      "proposed": {"title": null, "summary": null, "why": null},
+      "rationale": "Sí es insight: conecta procesos de una misma evidencia y deriva una lectura ejecutiva trazable sin sumar hechos externos.",
+      "evidence_flag": "Insight de una sola señal; conservar explícita esa base y no presentarlo como síntesis multifuente."
+    },
+    {
+      "id": "global:global-workforce-pressure-2026",
+      "kind": "global_intelligence",
+      "source": "Reuters + WHO",
+      "event_date": "2026-09-18",
+      "verdict": ["ajustar_resumen"],
+      "current": {
+        "title": "La brecha de personal sanitario se vuelve estructural",
+        "summary": "La presión combina envejecimiento de la población y de la fuerza laboral.",
+        "why": null
+      },
+      "proposed": {
+        "title": null,
+        "summary": "Reuters y WHO describen una presión estructural que combina envejecimiento de la población y de la fuerza laboral sanitaria.",
+        "why": null
+      },
+      "rationale": "La versión breve necesita conservar el carácter multifuente y el objeto preciso de la presión para decidir si abrir el análisis.",
+      "evidence_flag": "La implicancia para Chile sigue siendo hipótesis, no evidencia local."
+    }
+  ]
+}
