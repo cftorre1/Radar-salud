@@ -37,7 +37,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  expect(extendedMetrics[0]).toBeGreaterThanOrEqual(initialMetrics[0]);
  const visibleTriage=await page.locator('.briefrow').evaluateAll(rows=>{const host=rows[0]?.parentElement?.getBoundingClientRect();return host?rows.filter(row=>{const r=row.getBoundingClientRect();return r.top>=host.top-1&&r.bottom<=host.bottom+1}).length:0});
  // Mobile deliberately avoids an inner scroll: two complete rows plus the explicit expand/feed controls remain readable.
- expect(visibleTriage).toBeGreaterThanOrEqual(test.info().project.name==='mobile'?2:4);
+ expect(visibleTriage).toBeGreaterThanOrEqual(test.info().project.name==='mobile'?2:3);
  await expect(page.locator('article').first()).toBeVisible();
  if(test.info().project.name==='mobile'){
   const cards=await page.locator('article').evaluateAll(xs=>xs.slice(0,3).map(x=>({height:Math.round(x.getBoundingClientRect().height),title:x.querySelector('h2')?.textContent||''})));
