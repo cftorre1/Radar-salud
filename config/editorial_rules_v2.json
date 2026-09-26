@@ -48,7 +48,11 @@
   },
   "special_pieces": {
     "weekly_insight": {
-      "min_independent_evidence": 2,
+      "modes": ["multi_evidence", "single_source_deep_dive"],
+      "multi_evidence_min_independent_evidence": 2,
+      "single_source_min_evidence": 1,
+      "single_source_requires_reproducible_analysis": true,
+      "single_source_requires_decision_use": true,
       "requires_non_obvious_business_interpretation": true
     },
     "global_intelligence": {
