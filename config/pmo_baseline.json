@@ -2439,26 +2439,26 @@
     },
     {
       "id": "statistics_analysis_expansion_ges_series_ip_2026_09_26",
-      "status": "Pendiente_interno",
+      "status": "Implementado_parcial",
       "priority": "Alta",
       "horizon": "Antes de volver a publicar estas familias en feed",
       "decisions": [
-        "GES, Series Estadísticas históricas y Boletín IP no deben publicarse como cards genéricas sin análisis.",
-        "Construir proveedores analíticos determinísticos/fail-closed para cada familia con período, comparación, evidencia y utilidad de decisión.",
-        "Mantener las publicaciones detectadas en histórico/cola analítica mientras no exista insight reproducible.",
-        "Pulso Isapre conserva tabla ejecutiva y evidencia detallada como patrón de producto para futuras familias estadísticas."
+        "Toda publicación estadística pública material permanece visible en Alicanto.",
+        "Aplicar escalera de valor: insight conectado → análisis profundo → hallazgo/dato central → ficha útil de publicación.",
+        "Construir proveedores analíticos determinísticos/fail-closed para GES, Series históricas y Boletín IP para elevarlas progresivamente en esa escalera.",
+        "Pulso Isapre conserva tabla ejecutiva y evidencia detallada como patrón de producto."
       ],
-      "progress": "Se corrigió el comportamiento visible: las publicaciones sin análisis quedan fuera del feed y Resonancia Magnética del Biobío se clasifica como acreditación individual rutinaria. Falta implementar parsers/analítica estructurada de GES, Series históricas y Boletín IP para reintroducirlas con valor.",
+      "progress": "Se reemplazó la regla de ocultamiento por una escalera de valor. GES/Series/Boletín permanecen visibles aun sin parser profundo, con ficha enriquecida de contenido y período. Resonancia Magnética del Biobío permanece fuera por ser acreditación individual rutinaria. Falta elevar esas familias con parsers/analítica reproducible.",
       "evidence": [
         "scripts/export_web_snapshot.py",
         "config/editorial_rules_v2.json",
         "src/radar_salud/isapre_pulse.py"
       ],
       "missing": [
-        "Parser/validador GES trimestral.",
+        "Parser/validador GES trimestral para comparaciones entre períodos y patologías.",
         "Proveedor analítico de Series Estadísticas ISAPRE con selección de cambios materiales.",
-        "Parser de Boletín IP (acreditación, mediación, reclamos y RNPI) y criterio de materialidad.",
-        "QA editorial/negocio de los hallazgos antes de publicación."
+        "Parser de Boletín IP (acreditación, mediación, reclamos y RNPI) y comparación temporal.",
+        "QA editorial/negocio de los hallazgos analíticos antes de elevar el nivel de cada ficha."
       ]
     }
   ],
