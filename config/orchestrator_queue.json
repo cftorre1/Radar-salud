@@ -264,17 +264,21 @@
         "provider-ready integration or explicit human blocker",
         "staging evidence"
       ],
-      "progress": "Proveedor newsletter elegido por Dirección: MailerLite. Google Workspace Starter creado con una sola licencia y cuenta principal hola@alicantosalud.cl; dominio verificado. Falta completar Gmail/MX/SPF/DKIM/DMARC, crear radar@ como alias, aprobar privacidad/doble opt-in y luego conectar MailerLite.",
+      "progress": "Google Workspace operativo: hola@alicantosalud.cl envía y recibe correo; DKIM activado; SPF presente; DMARC creado en modo p=none; alias radar@alicantosalud.cl creado y recepción confirmada en la misma bandeja. Falta validar encabezados SPF/DKIM/DMARC en un mensaje real y luego conectar MailerLite, manteniendo newsletter y acceso anticipado separados.",
       "blocked_by": [
-        "Completar Gmail y autenticación de dominio (MX/SPF/DKIM/DMARC) y crear radar@alicantosalud.cl como alias.",
-        "Aprobar finalidad, retención, textos de privacidad y doble opt-in.",
-        "Crear/configurar cuenta MailerLite y entregar credenciales mediante secrets cuando corresponda."
+        "Validar en un correo real los resultados SPF/DKIM/DMARC (Authentication-Results) y que DKIM quede PASS.",
+        "Crear/configurar MailerLite y autenticar dominio sin duplicar SPF.",
+        "Aprobar finalidad, retención, textos de privacidad y doble opt-in antes de activar capturas/envíos reales."
       ],
       "evidence": [
         "3cf095594641812c8ac0d46d94b74f475ffce909 — implementación UI/digest; run 36040290271 FAIL por incompatibilidad concurrente detectada antes de preview",
         "20d1d143abd69a79d21491297bf6220dd867cae2 y 0c9e781c81eca5a5e7e24aef4433dc306c23160f — corrección compatible y salvaguardas numéricas fail-closed",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36040800917 — candidato final 0c9e781: 134 Python, 19 Node, 12 Playwright desktop/mobile, Reviewer CI y preview PASS",
-        "Reviewer independiente: primer corte FAIL por bypass de envío con API key; corrección PASS, cero llamadas de red con send_enabled/privacy no aprobados"
+        "Reviewer independiente: primer corte FAIL por bypass de envío con API key; corrección PASS, cero llamadas de red con send_enabled/privacy no aprobados",
+        "Dirección 2026-09-25: Gmail de hola@alicantosalud.cl operativo; correo de prueba enviado y recibido.",
+        "Dirección 2026-09-25: DKIM Google generado 2048 bits y estado «Autenticando el correo electrónico con DKIM».",
+        "Cloudflare: SPF v=spf1 include:_spf.google.com ~all; DMARC creado con p=none.",
+        "Dirección 2026-09-25: alias radar@alicantosalud.cl creado y correo a radar@ recibido en la bandeja de hola@."
       ]
     },
     {
@@ -1145,12 +1149,12 @@
         "MailerLite provider-ready con DNS coexistence documentada",
         "cola/PMO actualizados tras cada ciclo"
       ],
-      "progress": "Ciclo ejecutado hasta blockers humanos reales. Home V2 expert + refinement especial completados y validados en staging; dominio HTTPS operativo y main aislado para release canonical-only. Google Workspace existe con una licencia hola@ y dominio verificado, pero Gmail/MX/SPF/DKIM/DMARC/alias requieren sesión administrativa Google + Cloudflare que este entorno no puede completar. MailerLite permanece correctamente pospuesto hasta validar Gmail.",
+      "progress": "Google Workspace prácticamente cerrado: cuenta hola@ operativa, envío/recepción confirmados, alias radar@ confirmado, DKIM activado, SPF configurado y DMARC p=none creado. Falta una validación final de Authentication-Results y luego MailerLite. Home V2 sigue en polish final aprobado.",
       "blocker": "Gmail: Dirección debe completar inicio de sesión admin.google.com y desafío dash.cloudflare.com en sesión utilizable; DKIM exacto debe generarse allí. Dominio: publicación aislada del canonical sin web/data/radar_today.json ni web/data/source_health.json; no ejecutar release main completo. MailerLite depende de Gmail validado.",
       "blocked_by": [
-        "Google Workspace/Cloudflare: completar activación Gmail, MX, SPF, generar/publicar DKIM, DMARC, alias radar@ y prueba envío/recepción con acceso administrativo interactivo.",
-        "GitHub Actions: disparar manualmente workflow «Deploy static content to Pages» sobre main; el artefacto quedó aislado al canonical.",
-        "MailerLite queda en espera hasta cerrar Gmail; privacidad/doble opt-in y credenciales siguen siendo decisiones humanas."
+        "Validación final de SPF/DKIM/DMARC en encabezados reales y, si PASS, cerrar Google Workspace.",
+        "MailerLite: configuración/autenticación posterior, sujeta a privacidad/doble opt-in y credenciales.",
+        "Home V2 final polish: approved y pendiente de ser tomado por Work."
       ],
       "evidence": [
         "Home V2 special refinement validated: https://github.com/cftorre1/Radar-salud/actions/runs/36203582698",
