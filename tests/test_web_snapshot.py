@@ -216,3 +216,11 @@ def test_pulso_suppresses_routine_component_statistics_including_regional_carter
     distinct=dict(rows[2],source_url="https://x/regional-insight",distinct_decision_value=True,data_insights=["Región X cambia materialmente."])
     out=m._latest_stats([pulse,distinct])
     assert {x["source_url"] for x in out}=={"https://x/pulse","https://x/regional-insight"}
+
+
+def test_opaque_resolution_title_exposes_parent_act_and_topic_when_available():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    row=next(x for x in m.curate(history,resolve_external=False) if x.get("source_url")=="https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10670/")
+    assert row["display_title"].startswith("Resolución Exenta IF/N°10670 sobre Circular IF/N°531")
+    assert len(row["display_title"]) > len("Resolución Exenta IF/N°10670 sobre Circular IF/N°531: ")+10
+    assert any("Circular IF/N°531" in x["title"] for x in row["related_context"])
