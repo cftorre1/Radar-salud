@@ -1770,7 +1770,10 @@
         "Evaluar una pieza FREE de alta inteligencia y baja frecuencia para fidelización/halo de calidad, sin degradar artificialmente el resto del producto.",
         "No activar gasto recurrente de Terra/Astra en producción hasta decisión posterior basada en resultados."
       ],
-      "validation_note": "Sin credenciales, disponibilidad confirmada de los tres modelos ni presupuesto autorizado no es posible registrar tokens, costo, latencia u outputs reales. El experimento permanece sin ejecutar; no se sustituyó por resultados simulados."
+      "validation_note": "Preflight reproducible validado en staging 80a749e26eedd6c11bd0b221af4fa7ba53e0b640: 7 casos públicos, snapshots fijados por SHA-256, contratos comunes, rúbrica ciega y plantilla de medición. 170 tests Python, 28 web y 26 browser desktop/mobile PASS; Reviewer independiente FINAL PASS. Sin credenciales, disponibilidad confirmada de los tres modelos ni costo máximo autorizado no es posible registrar tokens, costo, latencia u outputs reales. El experimento real permanece sin ejecutar; api_calls_made=0, outputs_generated=0 y no se sustituyó por resultados simulados.",
+      "preflight_status": "Validado",
+      "preflight_sha": "80a749e26eedd6c11bd0b221af4fa7ba53e0b640",
+      "blocker_exact": "Dirección debe autorizar costo máximo USD, confirmar gpt-5.6-luna/gpt-5.6-terra/gpt-6-astra y aprovisionar OPENAI_API_KEY mediante secreto para ejecutar la comparación real."
     },
     {
       "id": "free_value_features_and_model_cost_observability_2026_09_24",
@@ -1939,7 +1942,7 @@
     },
     {
       "id": "domain_cutover_and_remaining_human_gates_2026_09_24",
-      "status": "Aprobado_para_ejecucion",
+      "status": "Validado_con_blockers_externos",
       "priority": "Crítica",
       "horizon": "MVP",
       "decisions": [
@@ -2145,6 +2148,13 @@
         "Reanudar Fuentes Chile.",
         "Preparar completamente el experimento Luna/Terra/Astra sin gasto; ejecución real sigue requiriendo presupuesto/credenciales.",
         "Bloqueos externos no detienen otras tareas."
+      ],
+      "progress": "Fuentes Chile revalidadas con blockers externos exactos y 0 señales simuladas. Preflight Luna/Terra/Astra validado en 80a749e26eedd6c11bd0b221af4fa7ba53e0b640 sin llamadas ni gasto; ejecución real pendiente de credencial/modelos/tope USD autorizados.",
+      "validation_evidence": [
+        "170 tests Python, 28 web y 26 browser desktop/mobile PASS",
+        "Reviewer independiente FINAL PASS",
+        "Corpus de 7 casos y snapshots SHA-256 reproducibles",
+        "api_calls_made=0; outputs_generated=0; max_cost_usd=null"
       ]
     },
     {
@@ -2161,9 +2171,10 @@
         "Retomar experimento de modelos sin gasto no autorizado.",
         "Promover a producción antes de 08:00 solo con QA/Reviewer final PASS; autorización de release explícita."
       ],
-      "progress": "2026-09-26: Insight semanal fail-closed y MailerLite provider-ready cerrados en staging (e55120b, 87e64b0) con QA/Reviewer PASS. Fuentes revalidadas con blockers externos exactos: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta. Release retenido por gates restantes de fuentes, Excel y experimento/preflight.",
+      "progress": "2026-09-26: Insight semanal fail-closed, MailerLite provider-ready y preflight de modelos cerrados en staging (e55120b, 87e64b0, 80a749e) con QA/Reviewer PASS. Fuentes revalidadas con blockers externos exactos: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta. Release retenido por gates restantes de fuentes, Excel y ejecución real del experimento sin credencial/tope USD.",
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/commit/e55120ba5ed05226ca99484b07e8e53d1aea95c4",
+        "https://github.com/cftorre1/Radar-salud/commit/80a749e26eedd6c11bd0b221af4fa7ba53e0b640",
         "Auditoría editorial: 16 piezas históricamente revisadas; 15 visibles tras ocultar Insight insuficiente",
         "Producción sin cambios; promoción condicionada sigue cerrada"
       ]
