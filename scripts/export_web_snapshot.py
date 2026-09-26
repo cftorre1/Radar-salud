@@ -266,7 +266,7 @@ def _routine_accreditation(s):
     registry=("registro público de prestadores institucionales de salud acreditados" in text)
     individual=registry and any(x in text for x in (
         "inscripción n°","inscripción nº","mantiene su inscripción","mantener su inscripción",
-        "declara acreditado","declaró acreditado","plan de corrección","certificado de acreditación"
+        "inscribió al","inscribio al","declara acreditado","declaró acreditado","plan de corrección","certificado de acreditación"
     ))
     programs=("registro de entidades certificadoras" in text
               and "programas acreditados" in text and "inscribir" in text)
