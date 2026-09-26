@@ -1672,7 +1672,7 @@
     }
   ],
   "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
-  "current_staging_candidate_sha": "7fa4dcb1b0c70170e7621abd836d06b1424c6c35",
+  "current_staging_candidate_sha": "0fdd11d39c364ee1cda35750a5f195228b63f338",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -2258,7 +2258,7 @@
     },
     {
       "id": "content_value_epidemiology_admin_iteration_2026_09_26",
-      "status": "En_ejecucion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Iteración actual",
       "decisions": [
@@ -2267,7 +2267,22 @@
         "Abrir vigilancia epidemiológica separada de ISP/ANAMED.",
         "Diagnóstico PMO/BI sin rediseñar portal ni tocar producción."
       ],
-      "progress": "2026-09-26: ejecución iniciada en staging tras satisfacer sus tres dependencias; sin cambios en main/producción."
+      "progress": "2026-09-26: paquete de contenido, epidemiología y auditoría PMO/BI validado en staging 0fdd11d39c364ee1cda35750a5f195228b63f338. El copy P0/P1 quedó trazable y consistente; Insight permanece oculto por evidencia no independiente; Global y Pulso conservan límites de atribución; la señal epidemiológica queda provider-ready sin promoción automática. QA local/remoto y Reviewer independiente PASS. Sin cambios en main/producción.",
+      "implementation_sha": "0fdd11d39c364ee1cda35750a5f195228b63f338",
+      "queue_transition_sha": "67cd8411f0915d2a1deab0c91f14c311130e0676",
+      "validation_evidence": [
+        "11 revisiones editoriales P0/P1 aplicadas; auditoría 43/43; snapshot SHA-256 6a1f92e06f6d5a1aef6d5d179ecae1886b40bdc5be3e9a03df47eac61bdd2506",
+        "Consistencia Ponte al día ↔ card/detail y migración exacta de 10 títulos previos, sin fallback por URL",
+        "Insight semanal oculto: un único origen institucional no satisface independencia",
+        "Global: qué cambió, por qué importa, qué observar e hipótesis Chile; Pulso stock/flujo/movilidad preservado",
+        "MINSAL Campaña de Invierno SE37 integrado como provider_ready_not_promoted, con fecha, cifras, dirección y riesgo de inconsistencia PDF explícitos",
+        "Auditoría PMO/BI: diagnóstico, arquitectura, scorecard y backlog; no se rediseñó el portal",
+        "188 tests Python + 31 web + 26 Playwright desktop/mobile PASS",
+        "Reviewer independiente FINAL PASS",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36250846142 — QA staging y preview PASS",
+        "0 llamadas de modelos; 0 gasto; main/producción intactos"
+      ],
+      "completed_at": "2026-09-26"
     },
     {
       "id": "automation_write_boundary_2026_09_26",
@@ -2281,5 +2296,5 @@
       ]
     }
   ],
-  "updated_at": "2026-09-26"
+  "updated_at": "2026-09-26T15:12:44.855Z"
 }
