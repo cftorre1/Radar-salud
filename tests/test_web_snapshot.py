@@ -251,22 +251,23 @@ def test_resonancia_biobio_routine_accreditation_is_not_executive_feed_material(
     assert not any(x.get("source_url")==row["source_url"] for x in curated)
 
 
-def test_material_statistical_releases_fail_closed_without_analysis():
-    titles=[
-        "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a marzo 2026",
-        "Series Estadísticas del Sistema ISAPRE 1990-2025",
-        "Boletín Estadístico Informativo IP – Junio 2026",
-    ]
-    rows=[]
-    for i,title in enumerate(titles):
-        row=sig(title,event="2026-08-03",url=f"https://x/stat/{i}")
-        row.update(signal_types=["Datos"],scopes=["Isapres"],source_name="Superintendencia de Salud",
-                   source_type="official",what_happened="Se publicó una actualización estadística oficial.",
-                   why_it_matters="Permite observar cambios relevantes del sistema.")
-        rows.append(row)
-        assert m._statistical_release_requires_analysis(row)
-        assert not m._has_statistical_analysis(row)
-    assert m.curate(rows,resolve_external=False)==[]
-    rows[0]["data_insights"]=["La utilización GES cambió materialmente en una patología validada."]
-    out=m.curate(rows,resolve_external=False)
-    assert [x["title"] for x in out]==[titles[0]]
+def test_material_statistical_releases_use_value_ladder_instead_of_disappearing():
+    ges=sig("Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a marzo 2026",event="2026-08-03",url="https://x/ges")
+    ges.update(signal_types=["Datos"],scopes=["Isapres"],source_name="Superintendencia de Salud",source_type="official",
+               key_facts=["Contiene casos y tasas de uso GES por problema de salud y seguro.","Información actualizada a marzo 2026."],
+               source_documents=[{"url":"https://x/ges.xlsx","label":"Descargar XLSX"}])
+    series=sig("Series Estadísticas del Sistema ISAPRE 1990-2025",event="2026-08-03",url="https://x/series")
+    series.update(signal_types=["Datos"],scopes=["Isapres"],source_name="Superintendencia de Salud",source_type="official",
+                  key_facts=[],source_documents=[
+                      {"url":"https://x/cartera.xlsx","label":"Cartera"},
+                      {"url":"https://x/ges.xlsx","label":"Casos GES"},
+                      {"url":"https://x/planes.xlsx","label":"Planes de salud"}])
+    out=m.curate([ges,series],resolve_external=False)
+    by={x["source_url"]:x for x in out}
+    assert by["https://x/ges"]["statistical_value_level"]=="central_finding"
+    assert "casos y tasas de uso GES" in by["https://x/ges"]["card_what"]
+    assert by["https://x/series"]["statistical_value_level"]=="publication_inventory"
+    assert "archivos oficiales" in by["https://x/series"]["card_what"]
+    ges["data_insights"]=["La utilización GES aumentó frente al período anterior."]
+    enriched=m._statistical_value_ladder(ges)
+    assert enriched["statistical_value_level"]=="deep_analysis"
