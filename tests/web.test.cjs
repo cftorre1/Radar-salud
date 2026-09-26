@@ -41,3 +41,6 @@ test('public pages carry consistent social metadata without unapproved canonical
   assert.doesNotMatch(html,/alicanto\.cl|rel="canonical"/);
  }
 });
+
+test('normative detail keeps act identity visible even with descriptive triage title',()=>{const c=context();const html=c.detailHtml({title:'Circular IF/N°535',card_what:'La Superintendencia ajustó una obligación material.',why_it_matters:'Las isapres deben adecuar su operación.',event_type:'REGULATION',normative_document_label:'Circular IF/N°535',source_name:'Superintendencia de Salud',source_url:'https://example.org/c535'});assert.match(html,/Documento:<\/strong> Circular IF\/N°535/);});
+test('admin P0 scorecard is fail-closed and never fabricates unavailable beta metrics',()=>{const html=fs.readFileSync('web/admin/product.html','utf8'),js=fs.readFileSync('web/admin/product.js','utf8'),cfg=JSON.parse(fs.readFileSync('config/admin_scorecard_v1.json','utf8'));assert.match(html,/Scorecard ejecutivo/);assert.match(html,/id="scorecard"/);assert.match(js,/renderScorecard/);assert.match(js,/No disponible/);assert.equal(cfg.status,'p0_read_model');for(const id of ['beta_usage','conversion','finops'])assert.match(cfg.dimensions.find(x=>x.id===id).availability,/blocked_until/);});
