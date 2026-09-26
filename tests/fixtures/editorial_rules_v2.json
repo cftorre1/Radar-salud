@@ -1,0 +1,123 @@
+{
+  "cases": [
+    {
+      "id": "positive_regulatory_obligation",
+      "expected": "accept",
+      "candidate": {
+        "editorial_v2": {
+          "actor": "Isapres",
+          "action": "deben habilitar compra directa de bonos",
+          "consequence": "adecuación operativa antes del plazo regulatorio",
+          "value_category": "regulatory_obligation",
+          "evidence_refs": [{"url": "https://example.org/resolution", "source": "Superintendencia de Salud"}],
+          "materiality": {
+            "financial_impact": 70,
+            "operational_impact": 90,
+            "affected_scope": 80,
+            "magnitude": 70,
+            "time_horizon": 90,
+            "actionability": 95,
+            "evidence_strength": 95
+          }
+        }
+      }
+    },
+    {
+      "id": "negative_ceremonial_announcement",
+      "expected": "reject",
+      "candidate": {
+        "editorial_v2": {
+          "actor": "Consejo sectorial",
+          "action": "realizó una sesión",
+          "consequence": "",
+          "value_category": "context_without_action",
+          "evidence_refs": [{"url": "https://example.org/announcement", "source": "Consejo sectorial"}],
+          "materiality": {
+            "financial_impact": 10,
+            "operational_impact": 10,
+            "affected_scope": 20,
+            "magnitude": 0,
+            "time_horizon": 10,
+            "actionability": 5,
+            "evidence_strength": 40
+          }
+        }
+      }
+    },
+    {
+      "id": "negative_routine_monthly_file",
+      "expected": "group",
+      "candidate": {
+        "editorial_v2": {
+          "actor": "Superintendencia",
+          "action": "actualizó una serie mensual",
+          "consequence": "sirve como insumo de seguimiento",
+          "value_category": "portfolio_competition",
+          "routine_repeated": true,
+          "evidence_refs": [{"url": "https://example.org/monthly", "source": "Superintendencia de Salud"}],
+          "materiality": {
+            "financial_impact": 45,
+            "operational_impact": 35,
+            "affected_scope": 70,
+            "magnitude": 30,
+            "time_horizon": 40,
+            "actionability": 45,
+            "evidence_strength": 85
+          }
+        }
+      }
+    },
+    {
+      "id": "negative_single_source_weekly",
+      "expected": "degrade",
+      "candidate": {
+        "editorial_v2": {
+          "actor": "Prestadores privados",
+          "action": "amplían capacidad",
+          "consequence": "puede alterar oferta regional",
+          "value_category": "capacity_supply",
+          "special_piece": "weekly_insight",
+          "non_obvious_business_interpretation": true,
+          "evidence_refs": [{"url": "https://example.org/one-source", "source": "Fuente única"}],
+          "materiality": {
+            "financial_impact": 80,
+            "operational_impact": 80,
+            "affected_scope": 75,
+            "magnitude": 75,
+            "time_horizon": 75,
+            "actionability": 80,
+            "evidence_strength": 80
+          }
+        }
+      }
+    },
+    {
+      "id": "positive_global_intelligence",
+      "expected": "accept",
+      "candidate": {
+        "editorial_v2": {
+          "actor": "Sistemas de salud comparados",
+          "action": "enfrentan presión de workforce",
+          "consequence": "cambia decisiones de capacidad y automatización",
+          "value_category": "workforce_capacity",
+          "special_piece": "global_intelligence",
+          "global_facts_separate_from_chile_hypothesis": true,
+          "actionable_strategic_reading": true,
+          "evidence_refs": [
+            {"url": "https://example.org/a", "source": "WHO"},
+            {"url": "https://example.org/b", "source": "Reuters"}
+          ],
+          "materiality": {
+            "financial_impact": 80,
+            "operational_impact": 90,
+            "affected_scope": 85,
+            "magnitude": 80,
+            "time_horizon": 75,
+            "actionability": 80,
+            "evidence_strength": 90
+          }
+        }
+      }
+    }
+  ]
+}
