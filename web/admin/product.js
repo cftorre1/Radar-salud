@@ -3,6 +3,25 @@ function node(tag,value){const n=document.createElement(tag);n.textContent=value
 const number=v=>v==null?'Sin medir':new Intl.NumberFormat('es-CL').format(v);
 function line(parent,value,tag='p'){parent.append(node(tag,value))}
 function link(parent,url,label){const a=node('a',label);a.href=url;parent.append(a)}
+function renderScorecard(scorecard){
+  const host=document.getElementById('scorecard');if(!host||!scorecard)return;
+  const observed=scorecard.observed||{};
+  for(const dimension of scorecard.dimensions||[]){
+    const card=node('article','');card.className='scorecard-card';
+    line(card,dimension.label,'h3');
+    const values=observed[dimension.id]||{};
+    for(const metric of dimension.metrics||[]){
+      const row=node('div','');row.className='score-row';
+      const label=node('span',metric.replaceAll('_',' '));label.className='score-label';
+      let value=values[metric];
+      if(dimension.availability||value==null)value='No disponible';
+      else if(typeof value==='number')value=number(value);
+      const strong=node('strong',String(value));row.append(label,strong);card.append(row);
+    }
+    if(dimension.availability){const note=node('p','Telemetría no autorizada o no disponible; no se infieren ceros.');note.className='muted';card.append(note)}
+    host.append(card);
+  }
+}
 function renderPMO(pmo){
   if(!pmo){text('readiness','Sin baseline PMO verificado. No se puede determinar Beta Readiness.');return}
   text('readiness',`${pmo.readiness.label} · ${pmo.readiness.validated}/${pmo.readiness.total} bloques críticos validados`);
@@ -41,6 +60,7 @@ fetch('../data/product.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Err
   }
   const iterations=document.getElementById('iterations');
   renderPMO(d.pmo);
+  renderScorecard(d.scorecard);
   text('coverage',d.coverage_live?`Cobertura LIVE: ${number(d.coverage_live.detected)} detectadas · ${number(d.coverage_live.evaluated)} evaluadas · ${number(d.coverage_live.selected)} seleccionadas. BACKFILL separado.${d.discovery?.failed_sources?` Medición parcial: ${number(d.discovery.failed_sources)} fuentes con error.`:''}`:'Cobertura LIVE aún sin medición global; no se mezcla con BACKFILL.');
   if(!d.iterations.length)iterations.append(node('p','Sin iteraciones automáticas registradas. La habilitación de producción exige evidencia de todos los checks.'));
   for(const item of d.iterations.slice(-10).reverse())iterations.append(node('p',`${item.id} · ${item.state} · ${item.candidate_sha?.slice(0,8)} · checks: ${Object.entries(item.checks||{}).map(([k,v])=>`${k}=${v}`).join(', ')||'sin medir'} · feedback: ${(item.feedback||[]).map(x=>x.detail||x.code).join('; ')||'sin hallazgos'}`));
