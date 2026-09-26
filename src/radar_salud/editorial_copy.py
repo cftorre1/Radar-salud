@@ -50,8 +50,17 @@ def apply_reviewed_copy(
                         row["source_title_full"] = legacy_title or row.get("title")
                     row[signal_field] = value.strip()
             # Human-reviewed copy is subordinate to persistent presentation
-            # contracts. display_title/normative_subject/aggregate decisions are
-            # produced upstream and intentionally survive reviewed overrides.
+            # contracts, but can improve the subject wording. For normative acts
+            # preserve the canonical act identity and combine it with the reviewed
+            # descriptive title instead of keeping a mechanically generated subject.
+            label = row.get("normative_document_label")
+            proposed_title = proposed.get("title")
+            if label and isinstance(proposed_title, str) and proposed_title.strip():
+                descriptive = proposed_title.strip()
+                # Avoid duplicating an act identifier already carried by the label.
+                descriptive = descriptive.replace(f" · {row.get('normative_document_number')}", "").strip()
+                if descriptive != label:
+                    row["display_title"] = f"{label} · {descriptive}"
             row["editorial_review_id"] = cfg["audit_id"]
         output.append(row)
     return output
