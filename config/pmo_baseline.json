@@ -2234,7 +2234,7 @@
     },
     {
       "id": "editorial_90d_learning_rules_2026_09_26",
-      "status": "En_ejecucion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Iteración actual",
       "decisions": [
@@ -2244,7 +2244,17 @@
         "Crear taxonomía, score de materialidad, gates fail-closed, fixtures positivos/negativos y tests de regresión editorial.",
         "No tocar producción hasta revisión de Dirección."
       ],
-      "progress": "2026-09-26: auditoría de 29 señales históricas adicionales y reglas persistentes v2 en construcción; Builder iniciado en staging, sin tocar producción."
+      "progress": "2026-09-26: reglas editoriales v2 validadas en staging 51013de96c94729ff08c2849255206c8778adc26. Se auditaron las 29 señales históricas adicionales y se consolidaron 43/43. El contrafactual manual arroja 23 accept, 11 degrade, 8 group y 1 reject. Motor fail-closed integrado con taxonomía, score, gates de evidencia y reglas especiales para Insight/Global. QA final: 180 Python, 28 web, 26 browser desktop/mobile y Reviewer independiente PASS. Sin cambios en producción.",
+      "implementation_sha": "51013de96c94729ff08c2849255206c8778adc26",
+      "validation_evidence": [
+        "Transición de cola: 24eaa8a4fe262505395685bfb9d2553829cf3131",
+        "Matriz: data/editorial_audit_90d_2026_09_26.json",
+        "Especificación: docs/EDITORIAL_RULES_V2_2026_09_26.md",
+        "180 Python + 28 web + 26 Playwright desktop/mobile PASS",
+        "Reviewer independiente FINAL PASS después de corregir bypasses, referencias y manejo de inputs malformados",
+        "La verificación factual sigue a cargo del collector/revisor; el gate valida estructura declarada sin simular corroboración"
+      ],
+      "completed_at": "2026-09-26"
     }
   ],
   "updated_at": "2026-09-26"
