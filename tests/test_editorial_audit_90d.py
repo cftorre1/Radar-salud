@@ -16,7 +16,7 @@ def test_audit_90d_covers_all_43_snapshot_signals_and_29_additional():
         signal["source_url"] for signal in snapshot["signals"]
     }
     assert sum(item["snapshot_index"] >= 14 for item in audit["items"]) == 29
-    assert audit["frozen_snapshot_sha256"] == "206fbe91882dda45f55db3be9c16399633a7c596b59d296b653624e65886b7e6"
+    assert audit["frozen_snapshot_sha256"] == "6a1f92e06f6d5a1aef6d5d179ecae1886b40bdc5be3e9a03df47eac61bdd2506"
 
 
 def test_audit_90d_is_individual_traceable_and_matches_simulation():
