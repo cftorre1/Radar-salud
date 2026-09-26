@@ -163,3 +163,27 @@ def test_normative_contract_preserves_act_type_and_number():
     assert out["normative_document_type"]=="Circular"
     assert out["normative_document_number"]=="IF/N°535"
     assert out["normative_document_label"]=="Circular IF/N°535"
+
+
+def test_bupa_preproduction_copy_recovers_decision_depth_without_extra_sources():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    original=next(s for s in history if s.get("source_url")=="https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos")
+    row=m._editorial_enrichment(m._card_micro(original))
+    assert row["title"].startswith("Bupa refuerza su red")
+    assert all(x in row["card_what"] for x in ("US$15 millones","La Dehesa","Huinganal","Mindplace"))
+    assert "No es solo expansión física" in row["card_why"]
+    assert len(row["key_points"]) == 4
+    assert "diversificación" in row["key_points"][-1]
+    assert not row.get("editorial_enrichment")
+    assert not row.get("historical_connections")
+
+
+def test_tea_preproduction_copy_is_descriptive_and_operationally_complete():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    original=next(s for s in history if s.get("source_url")=="https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/")
+    row=m._normative_contract(m._card_micro(original))
+    assert row["title"].startswith("Isapres: cobertura TEA sin tope anual")
+    assert "RND" in row["card_what"] and "evaluaciones repetidas" in row["card_what"]
+    assert "15 días hábiles" in row["card_why"]
+    assert "1 de noviembre de 2026" in row["card_why"]
+    assert row["normative_document_label"]=="Resolución Exenta IF/N°11156"
