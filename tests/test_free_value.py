@@ -91,10 +91,12 @@ def test_current_week_is_locked_and_next_week_penalizes_repetition():
     history = [{"week_start": "2026-09-21", "source_url": regulation["source_url"],
                 "archetype": "cambio_regulatorio", "scope": "Isapres", "source_name": "Fuente oficial"}]
     current = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 24))
-    assert current["weekly_insight"] is None
+    assert current["weekly_insight"] is not None
+    assert current["weekly_insight"]["source_url"] == regulation["source_url"]
     assert current["selection_policy"]["current_week_locked"] is True
     following = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 28))
-    assert following["weekly_insight"] is None
+    assert following["weekly_insight"] is not None
+    assert following["weekly_insight"]["source_url"] == investment["source_url"]
 
 
 def test_uncurated_candidate_is_hidden_instead_of_relabeled_as_insight():
