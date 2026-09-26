@@ -1566,7 +1566,7 @@
     },
     {
       "id": "editorial_90d_learning_rules_2026_09_26",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1607,7 +1607,17 @@
         "simulación before/after del snapshot bajo las nuevas reglas",
         "Reviewer independiente PASS o blockers explícitos"
       ],
-      "progress": "2026-09-26: tarea crítica recogida automáticamente; iniciada auditoría de las 29 señales históricas adicionales y especificación revisable de reglas editoriales v2. Sin cambios en main/producción."
+      "progress": "2026-09-26: auditoría 90 días y reglas editoriales v2 validadas en staging 51013de96c94729ff08c2849255206c8778adc26. Matriz consolidada 43/43 (29 históricas adicionales), contrafactual manual 23 accept / 11 degrade / 8 group / 1 reject, taxonomía y score configurables, gates fail-closed, fixtures y pipeline integrado. Reviewer bloqueó el primer corte; se corrigieron anclaje por SHA, rotulación de simulación, independencia/validez de referencias y entradas malformadas. QA final PASS; producción intacta.",
+      "evidence": [
+        "51013de96c94729ff08c2849255206c8778adc26 — implementación y evidencia editorial v2 en staging",
+        "data/editorial_audit_90d_2026_09_26.json — 43 señales auditadas; 14 previas + 29 adicionales; snapshot SHA-256 206fbe91882dda45f55db3be9c16399633a7c596b59d296b653624e65886b7e6",
+        "docs/EDITORIAL_RULES_V2_2026_09_26.md y config/editorial_rules_v2.json — especificación, taxonomía, score, plantillas por tipo y gates",
+        "Simulación contrafactual manual: 23 aceptadas, 11 degradadas, 8 agrupadas y 1 rechazada; no se presenta como salida automática del motor",
+        "180 tests Python, 28 web y 26 Playwright desktop/mobile PASS; git diff --check PASS",
+        "Reviewer independiente FINAL PASS tras dos rondas de correcciones fail-closed",
+        "main/producción no modificados"
+      ],
+      "completed_at": "2026-09-26"
     }
   ],
   "execution_policy": {
