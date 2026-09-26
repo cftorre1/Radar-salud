@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOT = ROOT / "web" / "data" / "radar_today.json"
 OUTPUT = ROOT / "data" / "editorial_audit_90d_2026_09_26.json"
-FROZEN_SNAPSHOT_SHA256 = "206fbe91882dda45f55db3be9c16399633a7c596b59d296b653624e65886b7e6"
+FROZEN_SNAPSHOT_SHA256 = "6a1f92e06f6d5a1aef6d5d179ecae1886b40bdc5be3e9a03df47eac61bdd2506"
 
 # Deliberately human-reviewed decisions. The script joins them to the frozen
 # snapshot; it does not infer value from URLs, source prestige or persuasive copy.
