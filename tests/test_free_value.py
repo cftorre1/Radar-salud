@@ -37,9 +37,10 @@ def test_repetition_penalties_change_weekly_ranking():
 
 def test_free_value_hides_single_signal_weekly_and_keeps_verified_global_teaser():
     snapshot = {"generated_at": "2026-09-24T18:00:00Z", "signals": [tea_signal()]}
-    themes = {"themes": [{"id": "theme-1", "kind": "global_theme", "title": "Tema global", "global_finding": "Análisis extenso",
+    themes = {"themes": [{"id": "theme-1", "kind": "global_theme", "title": "Tema global", "global_finding": "Cambió la presión de dotación. Análisis extenso.",
                            "why_it_matters": "Una fracción útil y autosuficiente.",
-                           "chile_watch": {"kind": "hypothesis", "trend_chile_status": "not_established"},
+                           "cross_analysis": {"decision_use": "Vigilar capacidad y rotación."},
+                           "chile_watch": {"kind": "hypothesis", "trend_chile_status": "not_established", "text": "Hipótesis para Chile, aún no establecida."},
                            "sources": [{"publisher": "WHO", "title": "Informe", "url": "https://who.int/report",
                                         "published_at": "2026-06-01", "captured_at": "2026-09-24", "evidence": "Hallazgo explícito"},
                                        {"publisher": "Reuters", "title": "Nota", "url": "https://reuters.com/note",
@@ -47,13 +48,17 @@ def test_free_value_hides_single_signal_weekly_and_keeps_verified_global_teaser(
     result = build_free_value(snapshot, themes, today=date(2026, 9, 24))
     assert result["weekly_insight"] is None
     assert result["global_teaser"]["premium_href"] == "global.html#theme-theme-1"
-    assert "global_finding" not in result["global_teaser"]
+    assert result["global_teaser"]["what_changed"] == "Cambió la presión de dotación."
+    assert result["global_teaser"]["why_it_matters"] == "Una fracción útil y autosuficiente."
+    assert result["global_teaser"]["what_to_watch"] == "Vigilar capacidad y rotación."
+    assert result["global_teaser"]["chile_hypothesis"] == "Hipótesis para Chile, aún no establecida."
+    assert result["global_teaser"]["chile_hypothesis_status"] == "not_established"
     assert result["selection_policy"]["no_forced_frequency"] is True
     assert result["selection_policy"]["weekly_insight_status"] == "disabled_pending_verified_multi_evidence_builder"
     assert result["selection_policy"]["minimum_insight_evidence"] == "two_verified_signals_or_one_verified_signal_plus_one_verified_indicator"
     assert result["global_teaser"]["published_at"] == "2026-09-18"
     assert result["global_teaser"]["source_label"] == "Reuters · WHO"
-    assert result["global_teaser"]["excerpt"] == "Una fracción útil y autosuficiente."
+    assert result["global_teaser"]["excerpt"] == "Cambió la presión de dotación."
 
 
 def test_no_verified_signal_does_not_force_weekly_content():
