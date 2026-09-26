@@ -100,27 +100,29 @@ def _card_micro(s):
     return r
 
 def _editorial_enrichment(s):
-    """Attach bounded context without presenting same-emitter channels as corroboration."""
+    """Attach only context that adds material evidence or decision value."""
     r=dict(s)
     if r.get("source_url")=="https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos":
-        r["editorial_enrichment"]=[
-            {"kind":"same_emitter_channel","label":"Mismo emisor · no es corroboración independiente",
-             "title":"Diario Financiero en LinkedIn","url":"https://www.linkedin.com/company/diario-financiero-2/",
-             "note":"Canal oficial del mismo medio para seguimiento; no sustenta hechos adicionales de esta señal."},
-            {"kind":"primary_corporate","label":"Fuente corporativa · alcance limitado",
-             "title":"Bupa Chile · contacto de su red","url":"https://www.bupa.cl/contacto",
-             "note":"La página corporativa identifica Centro Médico Bupa La Dehesa e IntegraMédica; no acredita por sí sola monto, compra ni fecha del anuncio."},
-            {"kind":"primary_corporate","label":"Fuente corporativa · alcance limitado",
-             "title":"Bupa Group · Mindplace","url":"https://www.bupa.com/impact/action/mindplace",
-             "note":"Describe el concepto global Mindplace; no prueba por sí sola la apertura chilena ni su inversión."},
-        ]
-        r["historical_connections"]=[
-            {"kind":"same_source_context","label":"Contexto del mismo artículo · no es corroboración independiente",
-             "title":"Expansión previa de la red ambulatoria IntegraMédica","url":r["source_url"],
-             "event_date":"2026-09-21",
-             "note":"El artículo DF enmarca los tres proyectos después de un período centrado en expandir la red ambulatoria IntegraMédica en Chile; es contexto del mismo artículo, no una segunda fuente."}
-        ]
-        r["historical_context_status"]="Conexión histórica disponible y atribuida al mismo artículo DF."
+        # Pre-production review: extra links that do not prove an additional
+        # material fact are noise. Keep the original DF evidence only.
+        r.pop("editorial_enrichment",None)
+        r.pop("historical_connections",None)
+        r.pop("historical_context_status",None)
+    return r
+
+def _normative_contract(s):
+    r=dict(s)
+    if r.get("event_type")!="REGULATION":
+        return r
+    title=str(r.get("source_title_full") or r.get("title") or "").strip()
+    m=re.search(r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)",title,re.I)
+    if m:
+        kind=" ".join(m.group(1).split())
+        prefix=(m.group(2) or "").upper()
+        number=m.group(3)
+        r["normative_document_type"]=kind
+        r["normative_document_number"]=f"{prefix+'/' if prefix else ''}N°{number}"
+        r["normative_document_label"]=f"{kind} {prefix+'/' if prefix else ''}N°{number}"
     return r
 
 def _doc_key(s):
@@ -192,11 +194,15 @@ def _stat_family(s):
 
 def _latest_stats(signals):
     fam=defaultdict(list);other=[]
+    pulse_present=any(s.get("event_type")=="DATA_PULSE" and str(s.get("title") or "").startswith("Pulso Isapre") for s in signals)
     for s in signals:
         f=_stat_family(s)
         if f:fam[f].append(s)
         else:other.append(s)
-    for items in fam.values():other.append(max(items,key=lambda x:(_d(x.get("event_date")) or date.min,x.get("radar_score",0))))
+    for family,items in fam.items():
+        if pulse_present and family in {"cartera_total","suscripciones","movilidad"}:
+            continue
+        other.append(max(items,key=lambda x:(_d(x.get("event_date")) or date.min,x.get("radar_score",0))))
     return other
 
 def _routine_accreditation(s):
@@ -266,7 +272,7 @@ def _sanction_pulses(signals, today=None):
 def curate(signals,resolve_external=True):
     normalized=[]
     for s in signals:
-        r=_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s)))))
+        r=_normative_contract(_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s))))))
         ok,reason,q=publication_ready(r);r["publication_ready_score"]=q;r["publication_gate_reason"]=reason
         if ok:normalized.append(r)
     if not normalized:return []
