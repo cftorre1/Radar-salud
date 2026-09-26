@@ -57,13 +57,26 @@ def test_present_api_key_cannot_bypass_disabled_delivery(tmp_path, monkeypatch):
     spec.loader.exec_module(sender)
     config = tmp_path / "subscription.json"
     config.write_text(json.dumps({
-        "provider": "buttondown", "capture_enabled": False, "send_enabled": False,
+        "provider": "mailerlite", "capture_enabled": False, "send_enabled": False,
         "privacy_approved": False, "double_opt_in": True,
+        "api_html_content_supported": False,
+        "sender": {"verified": False}, "groups": {"newsletter_weekly": None},
     }))
     data = tmp_path / "radar.json"
     data.write_text(json.dumps({"signals": [signal()]}))
     calls = []
-    monkeypatch.setenv("BUTTONDOWN_API_KEY", "present-but-must-not-be-used")
+    monkeypatch.setenv("MAILERLITE_API_KEY", "present-but-must-not-be-used")
     monkeypatch.setattr(sender, "urlopen", lambda *args, **kwargs: calls.append(args))
     assert sender.main(config, data) == 0
     assert calls == []
+
+
+def test_mailerlite_provider_ready_config_keeps_funnels_separate_and_closed():
+    config = json.loads(open("web/data/subscription.json", encoding="utf-8").read())
+    assert config["provider"] == "mailerlite"
+    assert config["groups"] == {"newsletter_weekly": None, "early_access": None}
+    assert config["capture_enabled"] is config["send_enabled"] is False
+    assert config["privacy_approved"] is False
+    assert config["api_html_content_supported"] is False
+    assert config["sender"]["email"] == "hola@alicantosalud.cl"
+    assert config["sender"]["verified"] is False
