@@ -145,9 +145,14 @@ def _normative_contract(s):
         subject=_compact_subject(r.get("card_why") or r.get("why_it_matters") or r.get("card_what") or r.get("what_happened"))
         if subject:
             r["normative_subject"]=subject
-            # Persistent presentation contract: document identity is preserved,
-            # but a bare act number is never the public-facing headline.
-            r["display_title"]=f"{label} sobre {subject[0].lower()+subject[1:] if len(subject)>1 else subject.lower()}"
+            current=str(r.get("title") or "").strip()
+            opaque=bool(re.fullmatch(r"(?:Resolución(?:\s+Exenta)?|Circular|Oficio|Decreto)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",current,re.I))
+            # Preserve an already descriptive editorial title. Generate the
+            # identity+subject form only when the source headline is just an act number.
+            r["display_title"]=(
+                f"{label} sobre {subject[0].lower()+subject[1:] if len(subject)>1 else subject.lower()}"
+                if opaque else current
+            )
     return r
 
 def _doc_key(s):
