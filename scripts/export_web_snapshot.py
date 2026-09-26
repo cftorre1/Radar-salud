@@ -210,6 +210,24 @@ def _related_context(signals,resolve_external=True):
         r.pop("related_norms",None);r.pop("related_sources",None);out.append(r)
     return out
 
+def _resolution_relation_titles(signals):
+    """For opaque resolutions, expose the principal referenced act plus the topic."""
+    out=[]
+    for s in signals:
+        r=dict(s)
+        kind=str(r.get("normative_document_type") or "")
+        source_title=str(r.get("source_title_full") or r.get("title") or "")
+        opaque=bool(re.fullmatch(r"(?:Resolución(?:\s+Exenta)?)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",source_title,re.I))
+        if kind.lower().startswith("resolución") and opaque:
+            rels=r.get("related_context") or []
+            parent=next((x for x in rels if re.search(r"^(Circular|Oficio|Resolución|Decreto)\b",str(x.get("title") or ""),re.I)),None)
+            subject=_compact_subject(r.get("normative_subject") or r.get("card_why") or r.get("why_it_matters") or r.get("card_what") or r.get("what_happened"),78)
+            if parent and subject:
+                parent_title=" ".join(str(parent.get("title") or "").split())
+                r["display_title"]=f"{r['normative_document_label']} sobre {parent_title}: {subject[0].lower()+subject[1:] if len(subject)>1 else subject.lower()}"
+        out.append(r)
+    return out
+
 def _stat_family(s):
     if s.get("source_name")!="Superintendencia de Salud" or "Datos" not in (s.get("signal_types") or []):return None
     t=(s.get("title") or "").lower()
@@ -314,7 +332,7 @@ def curate(signals,resolve_external=True):
     if not normalized:return []
     latest=max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
     recent=[s for s in normalized if _d(s.get("event_date")) and (latest-_d(s.get("event_date"))).days<=90 and not _routine_accreditation(s)]
-    recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external)
+    recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 
 def main():
