@@ -1729,7 +1729,8 @@
       "objective": "Consolidar en staging todos los acuerdos recientes y auditorías en un candidato único de preproducción, sin reabrir decisiones ya validadas salvo regresión.",
       "depends_on": [
         "content_contract_pulso_normative_weekly_analysis_2026_09_26",
-        "admin_dashboard_read_model_v1_2026_09_26"
+        "admin_dashboard_read_model_v1_2026_09_26",
+        "editorial_committee_insight_sitewide_v3_2026_09_26"
       ],
       "instructions": [
         "Preservar todo Home V2 y polish previamente validados: arquitectura, Ponte al día, leído/no leído, deep-links, compartir, mobile, fuentes/fecha, especiales Global/Insight y estética aprobada.",
@@ -1758,7 +1759,8 @@
         "capturas/evidencia staging",
         "checklist de acuerdos previos preservados",
         "lista explícita de blockers humanos/external-only restantes"
-      ]
+      ],
+      "progress": " Dirección agrega gate: no cerrar consolidación hasta completar comité permanente + reglas site-wide + Insight Pipeline V2 con Luna fallback/Terra si disponible."
     },
     {
       "id": "editorial_committee_insight_sitewide_v3_2026_09_26",
@@ -1792,7 +1794,11 @@
         "Aplicar desde esta iteración el ranking real sobre el período actual y dejar identificado el candidato #1, #2 y #3 con desglose de score y paquete de evidencia. Si existe una ruta autorizada a TERRA, completar el Insight; si no, dejar listo para ejecución en cuanto se habilite.",
         "Revisar toda la web/staging para asegurar que Ponte al día, feed, detalle, Pulso, Global y Análisis de la semana respeten las reglas editoriales persistentes, especialmente normativa y fuentes/contexto.",
         "Mantener learning loop: toda corrección aprobada del comité debe poder convertirse en regla/config/test sin hardcode por URL.",
-        "QA desktop/mobile + Reviewer independiente del candidato completo antes de producción."
+        "QA desktop/mobile + Reviewer independiente del candidato completo antes de producción.",
+        "Fallback inmediato de Deep Intelligence: mientras TERRA no esté disponible en runtime, ejecutar el mismo paquete curado con GPT-5.6 Luna como best-effort, marcar explícitamente engine=luna_fallback y mantener la auditoría editorial+negocio. No presentar el resultado como equivalente a Terra ni cerrar el experimento comparativo.",
+        "Aplicar las reglas editoriales/Comité no solo a nuevas señales: reprocesar el stock completo de 43 señales auditadas y actualizar su clasificación/presentación según accept/degrade/group/reject, preservando histórico y trazabilidad.",
+        "Para las 43 señales existentes, producir reporte before/after y asegurar que feed/Ponte al día/detalle solo expongan como tarjetas individuales las piezas que sobreviven al contrato; degradadas/agrupadas deben migrar a contexto/Pulso/Trend/Benchmark sin pérdida de trazabilidad.",
+        "Ejecutar desde ya el Weekly Insight Pipeline V2 sobre el período actual. Si Terra no está habilitado, completar ranking→enrichment→Luna fallback→auditoría→revisión y publicar en staging solo si PASS. Si Luna falla el estándar, probar siguiente candidato; si todos fallan, fail-closed."
       ],
       "constraints": [
         "No inventar corroboración, causalidad, impacto o relación normativa.",
@@ -1810,7 +1816,8 @@
         "fixtures/tests de regresión del comité y del Insight",
         "auditoría site-wide de normativa/fuentes/contexto",
         "QA desktop/mobile + Reviewer PASS"
-      ]
+      ],
+      "progress": "Dirección 2026-09-26 amplía alcance: Luna será fallback operativo mientras Terra no esté habilitado; las reglas se aplicarán retroactivamente al stock de 43 señales; el pipeline semanal debe ejecutarse ahora con ranking real, enrichment y auditoría."
     }
   ],
   "execution_policy": {
