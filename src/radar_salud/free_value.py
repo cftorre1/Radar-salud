@@ -59,6 +59,70 @@ def _verified_theme(theme: dict[str, Any], today: date) -> tuple[dict[str, Any],
     return (theme, valid) if valid else None
 
 
+def _score01(value: Any, fallback: float = 0.0) -> float:
+    try:
+        return max(0.0, min(100.0, float(value)))
+    except (TypeError, ValueError):
+        return fallback
+
+
+def strategic_weekly_score(signal: dict[str, Any], recent: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    """Quantitative business-first score for weekly insight selection.
+
+    Uses structured editorial materiality when present and falls back to existing
+    product scores without inventing missing dimensions.
+    """
+    recent = recent or []
+    ev = signal.get("editorial_v2") or {}
+    mat = ev.get("materiality") if isinstance(ev, dict) else {}
+    if not isinstance(mat, dict):
+        mat = {}
+    financial = _score01(mat.get("financial_impact"), _score01(signal.get("economic_impact_score")))
+    operational = _score01(mat.get("operational_impact"), _score01(signal.get("operational_impact_score"), _score01(signal.get("radar_score"))))
+    scope = _score01(mat.get("affected_scope"), _score01(signal.get("scope_score"), _score01(signal.get("radar_score"))))
+    urgency = _score01(mat.get("time_horizon"), _score01(signal.get("actionability_score"), _score01(signal.get("radar_score"))))
+    actionability = _score01(mat.get("actionability"), _score01(signal.get("actionability_score"), _score01(signal.get("radar_score"))))
+    evidence = _score01(mat.get("evidence_strength"), _score01(signal.get("source_quality_score")))
+    event = str(signal.get("event_type") or "").upper()
+    category = str(ev.get("value_category") or "")
+    shift = max(
+        _score01(signal.get("regulatory_impact_score")),
+        _score01(signal.get("economic_impact_score")),
+        92.0 if event in {"REGULATION", "M&A"} else 85.0 if event == "INVESTMENT" else 75.0 if event == "SANCTION" else 0.0,
+        90.0 if category in {"regulatory_obligation","portfolio_competition","investment_ma","financial_impact"} else 0.0,
+    )
+    url = signal.get("source_url")
+    archetype = _archetype(signal)
+    scope_name = (signal.get("scopes") or [None])[0]
+    source = signal.get("source_name")
+    repetition_hits = sum(1 for x in recent if x.get("source_url")==url)
+    repetition_hits += sum(0.35 for x in recent if x.get("archetype")==archetype)
+    repetition_hits += sum(0.20 for x in recent if scope_name and x.get("scope")==scope_name)
+    repetition_hits += sum(0.15 for x in recent if source and x.get("source_name")==source)
+    novelty = max(0.0, 100.0 - min(100.0, repetition_hits * 35.0))
+    dims = {
+        "financial_impact": financial,
+        "operational_impact": operational,
+        "regulatory_or_competitive_shift": shift,
+        "affected_scope": scope,
+        "urgency_time_horizon": urgency,
+        "actionability": actionability,
+        "evidence_strength": evidence,
+        "novelty_non_repetition": novelty,
+    }
+    weights = {
+        "financial_impact": .16,
+        "operational_impact": .14,
+        "regulatory_or_competitive_shift": .14,
+        "affected_scope": .10,
+        "urgency_time_horizon": .10,
+        "actionability": .14,
+        "evidence_strength": .12,
+        "novelty_non_repetition": .10,
+    }
+    return {"score": round(sum(dims[k]*weights[k] for k in weights),2), "dimensions": {k: round(v,2) for k,v in dims.items()}}
+
+
 def rank_weekly_candidates(signals: list[dict[str, Any]], history: list[dict[str, Any]],
                            as_of: date | None = None) -> list[dict[str, Any]]:
     """Rank publishable signals while making recent repetition explicit and testable."""
@@ -85,24 +149,24 @@ def rank_weekly_candidates(signals: list[dict[str, Any]], history: list[dict[str
             continue
         archetype = _archetype(signal)
         scope = (signal.get("scopes") or [None])[0]
-        base = float(signal.get("radar_score") or signal.get("editorial_relevance") or 0)
         quality = min(100.0, float(signal.get("source_quality_score") or 0))
-        if base < 65 or quality < 80:
+        if quality < 80:
             continue
-        penalties = {
-            "same_archetype": 24 if archetype in recent_archetypes else 0,
-            "same_scope": 14 if scope and scope in recent_scopes else 0,
-            "same_source": 10 if signal.get("source_name") in recent_sources else 0,
-        }
-        selection_score = round(base * .7 + quality * .3 - sum(penalties.values()), 2)
-        if selection_score < 65:
+        strategic = strategic_weekly_score(signal, recent)
+        selection_score = strategic["score"]
+        if selection_score < 70:
             continue
         ranked.append({
             "signal": signal,
             "archetype": archetype,
             "scope": scope,
-            "base_score": round(base * .7 + quality * .3, 2),
-            "penalties": penalties,
+            "base_score": selection_score,
+            "strategic_dimensions": strategic["dimensions"],
+            "penalties": {
+                "same_archetype": 0,
+                "same_scope": 0,
+                "same_source": 0,
+            },
             "selection_score": selection_score,
         })
     return sorted(ranked, key=lambda x: (x["selection_score"], x["signal"].get("event_date", "")), reverse=True)
@@ -192,7 +256,9 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
             "window_weeks": 6,
             "recent_history_count": len(prior_history[-6:]),
             "current_week_locked": bool(current),
-            "penalizes": ["archetype", "scope", "source"],
+            "selection_method": "quantitative_strategic_score_v2",
+            "strategic_dimensions": ["financial_impact","operational_impact","regulatory_or_competitive_shift","affected_scope","urgency_time_horizon","actionability","evidence_strength","novelty_non_repetition"],
+            "penalizes": ["repetition_in_novelty_dimension"],
             "fallback": "hide_without_reproducible_evidence_tied_insight",
             "weekly_insight_status": "published_single_source_deep_dive" if weekly else "hidden_fail_closed",
             "minimum_insight_evidence": "two independent sources, or one high-quality source with reproducible deep analysis and explicit decision use",
