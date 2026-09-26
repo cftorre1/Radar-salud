@@ -1,0 +1,41 @@
+{
+  "dataset_id": "minsal-campana-invierno-se37-2026",
+  "status": "validated_provider_ready",
+  "report_date": "2026-09-24",
+  "epidemiological_week": 37,
+  "period_start": "2026-09-13",
+  "period_end": "2026-09-19",
+  "source": {
+    "publisher": "Ministerio de Salud de Chile",
+    "title": "Reporte semanal Campaña de Invierno 2026 · 24 de septiembre",
+    "url": "https://www.minsal.cl/wp-content/uploads/2026/09/26-Reporte-Semanal-Campana-de-Invierno-24-09-2026_.pdf",
+    "material_type": "official_weekly_report",
+    "integrates_isp_surveillance": true
+  },
+  "virus_surveillance": {
+    "positivity_pct": 53.7,
+    "previous_positivity_pct": 56.7,
+    "distribution_pct": {
+      "rhinovirus": 35.3,
+      "respiratory_syncytial_virus": 21.3,
+      "metapneumovirus": 18.9
+    }
+  },
+  "care_pressure": {
+    "respiratory_emergency_share_pct": 29.2,
+    "previous_respiratory_emergency_share_pct": 31.8,
+    "lower_respiratory_emergency_visits_weekly_change_pct": -16.9,
+    "respiratory_hospitalizations_weekly_change_pct": -7.8,
+    "pediatric_critical_beds": 746,
+    "pediatric_critical_bed_occupancy_pct": 80.6,
+    "pediatric_respiratory_share_pct": 34.8,
+    "adult_critical_beds": 4616,
+    "adult_critical_bed_occupancy_pct": 93.1,
+    "adult_respiratory_share_pct": 11.8
+  },
+  "risk_notes": [
+    "El resumen ejecutivo informa positividad de 53,7% y la compara con 56,7% en la semana previa; una línea interior del PDF repite 56,7% para la semana actual. Se conserva 53,7% con una alerta explícita y sin ocultar la inconsistencia.",
+    "Los porcentajes de circulación viral y presión asistencial describen dimensiones distintas; no deben sumarse ni interpretarse como causalidad.",
+    "ISP/ANAMED no se usa como requisito de esta señal: la fuente MINSAL integra vigilancia ISP y presión asistencial en un mismo reporte oficial fechado."
+  ]
+}
