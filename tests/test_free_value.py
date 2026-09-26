@@ -95,8 +95,7 @@ def test_current_week_is_locked_and_next_week_penalizes_repetition():
     assert current["weekly_insight"]["source_url"] == regulation["source_url"]
     assert current["selection_policy"]["current_week_locked"] is True
     following = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 28))
-    assert following["weekly_insight"] is not None
-    assert following["weekly_insight"]["source_url"] == investment["source_url"]
+    assert following["weekly_insight"] is None  # no reproducible support: do not force a new week
 
 
 def test_uncurated_candidate_is_hidden_instead_of_relabeled_as_insight():
