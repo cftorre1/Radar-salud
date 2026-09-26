@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-09-26T15:12:30.203Z",
+  "updated_at": "2026-09-26",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -1464,7 +1464,7 @@
     },
     {
       "id": "admin_portal_expert_audit_2026_09_26",
-      "status": "approved",
+      "status": "validated",
       "priority": "high",
       "owner": "Work",
       "source": "Dirección",
@@ -1498,7 +1498,15 @@
         "arquitectura de dashboard recomendada",
         "backlog P0/P1/P2 de mejoras",
         "elementos explícitos a preservar"
-      ]
+      ],
+      "progress": "2026-09-26: auditoría experta del portal PMO/BI completada como parte de content_value_epidemiology_admin_iteration_2026_09_26. Entregados diagnóstico, arquitectura, scorecard y backlog en docs/ADMIN_PORTAL_EXPERT_AUDIT_2026_09_26.md y config/admin_scorecard_v1.json, sin rediseño/implementación visual todavía.",
+      "completed_at": "2026-09-26",
+      "evidence": [
+        "docs/ADMIN_PORTAL_EXPERT_AUDIT_2026_09_26.md — diagnóstico y arquitectura",
+        "config/admin_scorecard_v1.json — scorecard propuesto",
+        "Cierre validado dentro de content_value_epidemiology_admin_iteration_2026_09_26; QA/Reviewer PASS"
+      ],
+      "blocked_by": null
     },
     {
       "id": "product_risk_gap_audit_2026_09_26",
@@ -1579,7 +1587,7 @@
     },
     {
       "id": "editorial_90d_learning_rules_2026_09_26",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1620,7 +1628,7 @@
         "simulación before/after del snapshot bajo las nuevas reglas",
         "Reviewer independiente PASS o blockers explícitos"
       ],
-      "progress": "Toma interactiva 2026-09-26 tras confirmar que el entorno de automatización puede leer pero no escribir GitHub. Análisis preliminar de las 29 señales históricas: 13 mantener como señales, 6 degradar a contexto, 8 convertir en insumos agregados de Pulso/Trend/Benchmark, 1 mover a Global Intelligence y 1 rechazar por efecto no demostrado. Se materializan ahora reglas editoriales persistentes v2; falta matriz item-a-item completa, fixtures/tests, simulación before/after y Reviewer.",
+      "progress": "2026-09-26: auditoría editorial 90d cerrada y validada. 43 señales auditadas (14 previas + 29 adicionales), reglas editoriales/materialidad v2, taxonomía, score, templates y gates fail-closed documentados; simulación contrafactual manual 23 aceptadas, 11 degradadas, 8 agrupadas y 1 rechazada; 180 Python, 28 web y 26 Playwright PASS; Reviewer independiente FINAL PASS. Pendiente solo aplicar/operacionalizar reglas en iteraciones futuras y mantener tests de regresión.",
       "evidence": [
         "51013de96c94729ff08c2849255206c8778adc26 — implementación y evidencia editorial v2 en staging",
         "data/editorial_audit_90d_2026_09_26.json — 43 señales auditadas; 14 previas + 29 adicionales; snapshot SHA-256 206fbe91882dda45f55db3be9c16399633a7c596b59d296b653624e65886b7e6",
