@@ -35,7 +35,7 @@ def test_repetition_penalties_change_weekly_ranking():
     assert all(x["signal"]["title"] != "regulación" for x in diverse)
 
 
-def test_free_value_is_evidence_backed_and_teaser_is_fractional():
+def test_free_value_hides_single_signal_weekly_and_keeps_verified_global_teaser():
     snapshot = {"generated_at": "2026-09-24T18:00:00Z", "signals": [tea_signal()]}
     themes = {"themes": [{"id": "theme-1", "kind": "global_theme", "title": "Tema global", "global_finding": "Análisis extenso",
                            "why_it_matters": "Una fracción útil y autosuficiente.",
@@ -45,14 +45,12 @@ def test_free_value_is_evidence_backed_and_teaser_is_fractional():
                                        {"publisher": "Reuters", "title": "Nota", "url": "https://reuters.com/note",
                                         "published_at": "2026-09-18", "captured_at": "2026-09-24", "evidence": "Hallazgo contrastado"}]}]}
     result = build_free_value(snapshot, themes, today=date(2026, 9, 24))
-    assert result["weekly_insight"]["evidence_status"] == "verified_source"
-    assert result["weekly_insight"]["week_start"] == "2026-09-21"
+    assert result["weekly_insight"] is None
     assert result["global_teaser"]["premium_href"] == "global.html#theme-theme-1"
     assert "global_finding" not in result["global_teaser"]
     assert result["selection_policy"]["no_forced_frequency"] is True
-    assert result["weekly_insight"]["model_trace"]["api_call"] is False
-    assert result["weekly_insight"]["insight_title"] == "TEA: la cobertura sin tope depende de un flujo operativo completo"
-    assert result["weekly_insight"]["insight_basis"]["is_single_signal"] is True
+    assert result["selection_policy"]["weekly_insight_status"] == "disabled_pending_verified_multi_evidence_builder"
+    assert result["selection_policy"]["minimum_insight_evidence"] == "two_verified_signals_or_one_verified_signal_plus_one_verified_indicator"
     assert result["global_teaser"]["published_at"] == "2026-09-18"
     assert result["global_teaser"]["source_label"] == "Reuters · WHO"
     assert result["global_teaser"]["excerpt"] == "Una fracción útil y autosuficiente."
@@ -64,14 +62,17 @@ def test_no_verified_signal_does_not_force_weekly_content():
     assert result["status"] == "partial"
 
 
-def test_tea_weekly_insight_connects_coverage_channels_and_operations():
+def test_tea_single_signal_reading_fails_closed_instead_of_becoming_an_insight():
     row = tea_signal()
     insight = build_free_value({"signals": [row]}, {"themes": []}, today=date(2026, 9, 24))["weekly_insight"]
-    assert insight["insight_title"] == "TEA: la cobertura sin tope depende de un flujo operativo completo"
-    assert "acreditación y registro alimentan la validación" in insight["insight_reading"]
-    assert "compra directa de bonos sin tope" in insight["insight_reading"]
-    assert insight["insight_basis"]["connection_type"] == "cross_process_implementation"
-    assert insight["insight_reading"] != row["card_why"]
+    assert insight is None
+
+
+def test_weekly_stays_disabled_even_with_multiple_candidates_until_builder_verifies_relationship():
+    rows = [tea_signal(), signal("Indicador independiente", "DATA_PULSE", 92)]
+    result = build_free_value({"signals": rows}, {"themes": []}, today=date(2026, 9, 24))
+    assert result["weekly_insight"] is None
+    assert result["selection_policy"]["weekly_insight_status"] == "disabled_pending_verified_multi_evidence_builder"
 
 
 def test_current_week_is_locked_and_next_week_penalizes_repetition():
@@ -80,7 +81,7 @@ def test_current_week_is_locked_and_next_week_penalizes_repetition():
     history = [{"week_start": "2026-09-21", "source_url": regulation["source_url"],
                 "archetype": "cambio_regulatorio", "scope": "Isapres", "source_name": "Fuente oficial"}]
     current = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 24))
-    assert current["weekly_insight"]["title"] == "Resolución Exenta IF/N°11156"
+    assert current["weekly_insight"] is None
     assert current["selection_policy"]["current_week_locked"] is True
     following = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 28))
     assert following["weekly_insight"] is None

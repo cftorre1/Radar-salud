@@ -12,8 +12,11 @@ def test_expert_editorial_audit_covers_every_default_home_piece():
     }
     audited = {row["id"] for row in audit["items"] if row["id"].startswith("https://")}
     assert audit["scope"]["visible_base_signals"] == len(expected) == 14
+    assert audit["scope"]["special_pieces_audited"] == 2
+    assert audit["scope"]["special_pieces_currently_visible"] == 1
+    assert audit["scope"]["historical_items_audited"] == len(audit["items"]) == 16
+    assert audit["scope"]["current_home_items_visible"] == 15
     assert audited == expected
-    assert len(audit["items"]) == 16
 
 
 def test_expert_editorial_audit_is_traceable_and_fail_closed():
@@ -34,7 +37,7 @@ def test_expert_editorial_audit_is_traceable_and_fail_closed():
     insufficient = [
         row for row in audit["items"] if "requiere_evidencia_adicional" in row["verdict"]
     ]
-    assert len(insufficient) == 2
+    assert len(insufficient) == 3
     assert all(row["evidence_flag"] for row in insufficient)
     for verdict, expected in audit["summary"].items():
         assert sum(verdict in row["verdict"] for row in audit["items"]) == expected

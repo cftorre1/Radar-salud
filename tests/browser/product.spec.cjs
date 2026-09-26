@@ -73,7 +73,9 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
 test('Inbox shows every unread signal, supports direct read and persists it',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  const initial=await page.locator('.briefitem').count();
- const expected=await page.locator('article[data-card]:not(.read)').count()+await page.locator('article[data-special]:not(.read)').count()-1;
+ const freeValue=await (await page.request.get('/data/free_value.json')).json();
+ const dedupedInsightBase=freeValue.weekly_insight?1:0;
+ const expected=await page.locator('article[data-card]:not(.read)').count()+await page.locator('article[data-special]:not(.read)').count()-dedupedInsightBase;
  expect(initial).toBe(expected);expect(initial).toBeGreaterThan(4);
  const first=await page.locator('.briefitem').first().getAttribute('data-brief');
  await page.locator('[data-brief-read]').first().click();
@@ -132,29 +134,22 @@ test('operations dashboard loads without inventing measurements',async({page})=>
 });
 test('Home V2 places unread Global and Insight in the brief, then retains subdued feed cards',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
+ const source=await page.request.get('/data/free_value.json'),data=await source.json(),hasWeekly=Boolean(data.weekly_insight);
  const global=page.locator('.signal.special.global'),weekly=page.locator('.signal.special.weekly');
- await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(1);
- await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(1);
- await expect(page.locator('.briefrow').nth(0)).toHaveClass(/brief-global/);await expect(page.locator('.briefrow').nth(1)).toHaveClass(/brief-weekly/);
- await expect(page.locator('.brief-weekly .brief-meta')).toContainText('·');await expect(page.locator('.brief-global .brief-meta')).toContainText('·');
- const firstKinds=await page.locator('.briefrow').evaluateAll(rows=>rows.slice(0,2).map(row=>row.classList.contains('brief-weekly')?'weekly':row.classList.contains('brief-global')?'global':'ordinary'));expect(firstKinds).toEqual(['global','weekly']);
+ await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(hasWeekly?1:0);
+ await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(hasWeekly?1:0);
+ await expect(page.locator('.briefrow').nth(0)).toHaveClass(/brief-global/);if(hasWeekly){await expect(page.locator('.briefrow').nth(1)).toHaveClass(/brief-weekly/);await expect(page.locator('.brief-weekly .brief-meta')).toContainText('·')}
+ await expect(page.locator('.brief-global .brief-meta')).toContainText('·');
+ const firstKinds=await page.locator('.briefrow').evaluateAll((rows,count)=>rows.slice(0,count).map(row=>row.classList.contains('brief-weekly')?'weekly':row.classList.contains('brief-global')?'global':'ordinary'),hasWeekly?2:1);expect(firstKinds).toEqual(hasWeekly?['global','weekly']:['global']);
  await expect(page.locator('.briefrow .brief-meta')).toHaveCount(await page.locator('.briefrow').count());
- const fills=await page.locator('.signal.special').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(2);
- const readTargets=await page.locator('.briefread').evaluateAll(buttons=>buttons.slice(0,2).map(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height})));expect(readTargets.every(({width,height})=>width>=44&&height>=44)).toBeTruthy();
+ const fills=await page.locator('.signal.special').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(hasWeekly?2:1);
+ const readTargets=await page.locator('.briefread').evaluateAll((buttons,count)=>buttons.slice(0,count).map(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height})),hasWeekly?2:1);expect(readTargets.every(({width,height})=>width>=44&&height>=44)).toBeTruthy();
  await expect(page.locator('.hero-purpose')).toContainText('Monitoreamos fuentes');
- const source=(await page.request.get('/data/free_value.json'));const data=await source.json();
- await expect(weekly).toContainText(data.weekly_insight.insight_title);
- await expect(page.locator('.signal[data-card]').filter({hasText:data.weekly_insight.title})).toHaveCount(1);
- await page.locator('.brief-weekly [data-brief-read]').click();
- await expect(page.locator('.brief-weekly')).toHaveCount(0);await expect(weekly).toHaveClass(/read/);
- await weekly.getByRole('button',{name:/Ver insight/}).click();
- await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto:');
- await expect(page.locator('#weeklyInsightDialog').getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);
- await page.getByRole('button',{name:'Cerrar insight'}).click();
+ if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await expect(page.locator('.signal[data-card]').filter({hasText:data.weekly_insight.title})).toHaveCount(1);await page.locator('.brief-weekly [data-brief-read]').click();await expect(page.locator('.brief-weekly')).toHaveCount(0);await expect(weekly).toHaveClass(/read/);await weekly.getByRole('button',{name:/Ver insight/}).click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto:');await expect(page.locator('#weeklyInsightDialog').getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
  await page.locator('.brief-global [data-brief-read]').click();
  await expect(page.locator('.brief-global')).toHaveCount(0);await expect(global).toHaveClass(/read/);
  await page.reload();await expect(page.locator('.brief-global,.brief-weekly')).toHaveCount(0);
- await expect(page.locator('.signal.special.read')).toHaveCount(2);
+ await expect(page.locator('.signal.special.read')).toHaveCount(hasWeekly?2:1);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-home-v2-final.png`,fullPage:true});
 });

@@ -5,9 +5,12 @@
   "scope": {
     "default_period_days": 14,
     "visible_base_signals": 14,
-    "special_pieces": 2,
+    "special_pieces_audited": 2,
+    "special_pieces_currently_visible": 1,
+    "historical_items_audited": 16,
+    "current_home_items_visible": 15,
     "dataset_signals_not_visible_in_default_period": 29,
-    "note": "La auditoría cubre todas las piezas visibles con los filtros iniciales de Home V2: 14 señales del período y las dos piezas especiales. Las otras 29 señales del snapshot permanecen fuera del período inicial y no se presentan como auditadas."
+    "note": "La auditoría cubrió 16 piezas que estaban visibles al iniciar el ciclo: 14 señales del período y dos piezas especiales. Después del control fail-closed, Insight semanal quedó oculto por evidencia insuficiente; actualmente Home muestra 14 señales y una pieza especial. Las otras 29 señales del snapshot permanecen fuera del período inicial y no se presentan como auditadas."
   },
   "lenses": [
     "editor/jornalista senior de noticias",
@@ -15,11 +18,11 @@
     "editor de producto digital"
   ],
   "summary": {
-    "conservar": 4,
+    "conservar": 3,
     "ajustar_titulo": 10,
     "ajustar_resumen": 1,
     "ajustar_por_que_importa": 1,
-    "requiere_evidencia_adicional": 2,
+    "requiere_evidencia_adicional": 3,
     "descartar": 0
   },
   "items": [
@@ -282,15 +285,16 @@
       "kind": "insight_semanal",
       "source": "Superintendencia de Salud",
       "event_date": "2026-09-23",
-      "verdict": ["conservar"],
+      "verdict": ["requiere_evidencia_adicional"],
       "current": {
         "title": "TEA: la cobertura sin tope depende de un flujo operativo completo",
         "summary": "Cobertura, registro y compra de bonos no son cambios separados: convergen en un único hito operativo el 1 de noviembre.",
         "why": "La conexión ejecutiva une la regla de cobertura con su implementación: acreditación y registro alimentan la validación, y esa validación debe habilitar la compra directa de bonos sin tope. La fecha común —1 de noviembre— convierte beneficios, canales y operaciones en un solo hito de cumplimiento."
       },
       "proposed": {"title": null, "summary": null, "why": null},
-      "rationale": "Sí es insight: conecta procesos de una misma evidencia y deriva una lectura ejecutiva trazable sin sumar hechos externos.",
-      "evidence_flag": "Insight de una sola señal; conservar explícita esa base y no presentarlo como síntesis multifuente."
+      "rationale": "La lectura conecta procesos, pero una única señal no satisface el umbral multiseñal aprobado para llamarla Insight semanal.",
+      "evidence_flag": "La lectura usa una sola señal y no alcanza el umbral de dos señales/datos o señal + indicador.",
+      "post_audit_state": "hidden_fail_closed"
     },
     {
       "id": "global:global-workforce-pressure-2026",

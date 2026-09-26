@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-25T02:42:54.124561+00:00",
-  "status": "available",
+  "generated_at": "2026-09-26T10:30:20.511799+00:00",
+  "status": "partial",
   "global_teaser": {
     "theme_id": "global-workforce-pressure-2026",
     "title": "La brecha de personal sanitario se vuelve estructural",
@@ -21,48 +21,7 @@
       "output_id": "global-workforce-pressure-2026"
     }
   },
-  "weekly_insight": {
-    "id": "2026-09-21-regulation",
-    "week_start": "2026-09-21",
-    "archetype": "cambio_regulatorio",
-    "title": "Resolución Exenta IF/N°11156",
-    "insight_title": "TEA: la cobertura sin tope depende de un flujo operativo completo",
-    "insight_teaser": "Cobertura, registro y compra de bonos no son cambios separados: convergen en un único hito operativo el 1 de noviembre.",
-    "summary": "La Superintendencia confirmó la cobertura sin tope anual para cinco prestaciones vinculadas a TEA y añadió requisitos de acreditación y registro.",
-    "why_it_matters": "Las isapres deben habilitar el registro y la compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026.",
-    "insight_reading": "La conexión ejecutiva une la regla de cobertura con su implementación: acreditación y registro alimentan la validación, y esa validación debe habilitar la compra directa de bonos sin tope. La fecha común —1 de noviembre— convierte beneficios, canales y operaciones en un solo hito de cumplimiento.",
-    "insight_basis": {
-      "kind": "cambio_regulatorio",
-      "connection_type": "cross_process_implementation",
-      "affected_processes": [
-        "Beneficios / Cobertura",
-        "Tecnología / Canales",
-        "Operaciones"
-      ],
-      "is_single_signal": true
-    },
-    "source_name": "Superintendencia de Salud",
-    "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
-    "event_date": "2026-09-23",
-    "scope": "Isapres",
-    "evidence_status": "verified_source",
-    "model_trace": {
-      "mode": "deterministic_existing_evidence",
-      "api_call": false,
-      "model": null,
-      "output_id": "2026-09-21-regulation"
-    },
-    "selection": {
-      "base_score": 87.4,
-      "diversity_penalties": {
-        "same_archetype": 0,
-        "same_scope": 0,
-        "same_source": 0
-      },
-      "selection_score": 87.4,
-      "eligible_candidates": 16
-    }
-  },
+  "weekly_insight": null,
   "selection_policy": {
     "window_weeks": 6,
     "recent_history_count": 0,
@@ -73,6 +32,8 @@
       "source"
     ],
     "fallback": "hide_without_curated_evidence_tied_insight",
+    "weekly_insight_status": "disabled_pending_verified_multi_evidence_builder",
+    "minimum_insight_evidence": "two_verified_signals_or_one_verified_signal_plus_one_verified_indicator",
     "no_forced_frequency": true
   }
 }

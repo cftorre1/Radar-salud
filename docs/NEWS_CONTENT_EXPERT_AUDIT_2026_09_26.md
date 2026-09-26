@@ -5,7 +5,7 @@ Snapshot: `web/data/radar_today.json` vigente en `staging` al iniciar el ciclo.
 
 ## Alcance y método
 
-Se revisaron las 14 señales visibles en el período inicial de 14 días y las dos piezas especiales visibles en Home V2. Las otras 29 señales del snapshot están fuera del período inicial y no se presentan como auditadas. La matriz estructurada y el copy actual/propuesto están en `data/editorial_audit_2026_09_26.json`.
+Se revisaron 16 piezas que estaban visibles al iniciar el ciclo: las 14 señales del período inicial de 14 días y dos piezas especiales. Después del control fail-closed, Insight semanal quedó oculto por evidencia insuficiente; Home muestra actualmente 15 piezas (14 señales y Global Intelligence). Las otras 29 señales del snapshot están fuera del período inicial y no se presentan como auditadas. La matriz estructurada y el copy actual/propuesto están en `data/editorial_audit_2026_09_26.json`.
 
 Cada pieza se evaluó con tres lentes coordinados:
 
@@ -17,12 +17,12 @@ No se consultaron fuentes externas nuevas, no se modificó el feed y no se cambi
 
 ## Resultado ejecutivo
 
-- 4 piezas se conservan sin cambios: TEA/resolución 11156, Bupa, RedSalud e Insight semanal. Global Intelligence conserva su título, pero requiere ajustar el resumen.
+- 3 piezas se conservan sin cambios: TEA/resolución 11156, Bupa y RedSalud. Global Intelligence conserva su título, pero requiere ajustar el resumen.
 - 10 necesitan un título más informativo: piloto Barros Luco, consejo de eficiencia, acreditación Biobío, Eleam, propuesta APS, plan de cuidados, circulares 535/534, CLC y rabia. Algunas piezas acumulan más de una acción, por eso los totales de acciones no equivalen al total de piezas.
 - 1 requiere ajustar el resumen: Global Intelligence debe mantener visible su carácter multifuente.
 - 1 requiere ajustar “por qué importa”: el pulso sancionatorio debe explicitar que sus tres casos son históricos/BACKFILL y no detecciones LIVE.
-- 2 requieren evidencia adicional antes de presentarse como accionables: consejo de eficiencia y plan de cuidados para personas mayores.
-- 0 piezas se descartan con la evidencia actual; las dos insuficientes deben permanecer cautelosas y no elevarse a insight.
+- 3 requieren evidencia adicional antes de presentarse como accionables: consejo de eficiencia, plan de cuidados para personas mayores y la lectura semanal basada en una sola señal.
+- 0 piezas se descartan con la evidencia actual; las tres insuficientes deben permanecer cautelosas y no elevarse a insight.
 
 ## Hallazgos prioritarios
 
@@ -44,7 +44,7 @@ Las declaraciones sobre saneamiento de Clínica Las Condes, la primacía regiona
 
 ### P1 — preservar categorías
 
-El Insight semanal sí contiene una lectura ejecutiva trazable, pero nace de una sola señal y debe decirlo. Global Intelligence es multifuente e internacional; cualquier implicancia chilena continúa siendo hipótesis. Las noticias comunes no se renombran como insight.
+La lectura semanal anterior contenía una conexión ejecutiva trazable, pero nacía de una sola señal y no alcanzaba el umbral multiseñal aprobado; queda oculta en modo fail-closed. El generador de Insight semanal permanece deshabilitado hasta implementar y probar una ruta que verifique dos señales independientes o una señal más un indicador independiente. Global Intelligence es multifuente e internacional; cualquier implicancia chilena continúa siendo hipótesis. Las noticias comunes no se renombran como insight.
 
 ## Recomendación de implementación
 
