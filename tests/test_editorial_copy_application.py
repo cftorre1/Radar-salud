@@ -68,3 +68,24 @@ def test_legacy_read_title_does_not_replace_long_source_headline():
     applied = apply_reviewed_copy([signal], cfg)[0]
     assert applied["source_title_full"] == signal["source_title_full"]
     assert applied["legacy_read_title"] == "Titular anterior"
+
+
+def test_reviewed_normative_copy_improves_subject_but_keeps_act_identity():
+    signal = {
+        "source_url": "https://example.org/circular",
+        "event_date": "2026-09-26",
+        "title": "Circular IF/N°999",
+        "what_happened": "Hecho normativo",
+        "normative_document_label": "Circular IF/N°999",
+        "normative_document_number": "IF/N°999",
+        "display_title": "Circular IF/N°999 sobre una redacción mecánica",
+    }
+    cfg = {"audit_id": "x", "items": [{
+        "source_url": signal["source_url"],
+        "event_date": signal["event_date"],
+        "signal_fingerprint_sha256": signal_fingerprint(signal),
+        "legacy_title": "Circular IF/N°999",
+        "proposed": {"title": "Isapres deberán ajustar su proceso de reembolso", "summary": None, "why": None},
+    }]}
+    applied = apply_reviewed_copy([signal], cfg)[0]
+    assert applied["display_title"] == "Circular IF/N°999 · Isapres deberán ajustar su proceso de reembolso"
