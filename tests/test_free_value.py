@@ -35,7 +35,7 @@ def test_repetition_penalties_change_weekly_ranking():
     assert all(x["signal"]["title"] != "regulación" for x in diverse)
 
 
-def test_free_value_hides_single_signal_weekly_and_keeps_verified_global_teaser():
+def test_free_value_builds_reproducible_single_source_weekly_and_keeps_verified_global_teaser():
     snapshot = {"generated_at": "2026-09-24T18:00:00Z", "signals": [tea_signal()]}
     themes = {"themes": [{"id": "theme-1", "kind": "global_theme", "title": "Tema global", "global_finding": "Cambió la presión de dotación. Análisis extenso.",
                            "why_it_matters": "Una fracción útil y autosuficiente.",
@@ -46,7 +46,8 @@ def test_free_value_hides_single_signal_weekly_and_keeps_verified_global_teaser(
                                        {"publisher": "Reuters", "title": "Nota", "url": "https://reuters.com/note",
                                         "published_at": "2026-09-18", "captured_at": "2026-09-24", "evidence": "Hallazgo contrastado"}]}]}
     result = build_free_value(snapshot, themes, today=date(2026, 9, 24))
-    assert result["weekly_insight"] is None
+    assert result["weekly_insight"]["weekly_mode"] == "single_source_deep_dive"
+    assert result["weekly_insight"]["reproducible_analysis"] is True
     assert result["global_teaser"]["premium_href"] == "global.html#theme-theme-1"
     assert result["global_teaser"]["what_changed"] == "Cambió la presión de dotación."
     assert result["global_teaser"]["why_it_matters"] == "Una fracción útil y autosuficiente."
@@ -54,8 +55,8 @@ def test_free_value_hides_single_signal_weekly_and_keeps_verified_global_teaser(
     assert result["global_teaser"]["chile_hypothesis"] == "Hipótesis para Chile, aún no establecida."
     assert result["global_teaser"]["chile_hypothesis_status"] == "not_established"
     assert result["selection_policy"]["no_forced_frequency"] is True
-    assert result["selection_policy"]["weekly_insight_status"] == "disabled_pending_verified_multi_evidence_builder"
-    assert result["selection_policy"]["minimum_insight_evidence"] == "two_verified_signals_or_one_verified_signal_plus_one_verified_indicator"
+    assert result["selection_policy"]["weekly_insight_status"] == "published_single_source_deep_dive"
+    assert "reproducible deep analysis" in result["selection_policy"]["minimum_insight_evidence"]
     assert result["global_teaser"]["published_at"] == "2026-09-18"
     assert result["global_teaser"]["source_label"] == "Reuters · WHO"
     assert result["global_teaser"]["excerpt"] == "Cambió la presión de dotación."
@@ -67,17 +68,21 @@ def test_no_verified_signal_does_not_force_weekly_content():
     assert result["status"] == "partial"
 
 
-def test_tea_single_signal_reading_fails_closed_instead_of_becoming_an_insight():
+def test_tea_single_source_becomes_insight_only_with_reproducible_support():
     row = tea_signal()
     insight = build_free_value({"signals": [row]}, {"themes": []}, today=date(2026, 9, 24))["weekly_insight"]
-    assert insight is None
+    assert insight is not None
+    assert insight["source_url"] == row["source_url"]
+    assert insight["supporting_elements"]
+    weak = signal("noticia", "OTHER")
+    assert build_free_value({"signals": [weak]}, {"themes": []}, today=date(2026, 9, 24))["weekly_insight"] is None
 
 
-def test_weekly_stays_disabled_even_with_multiple_candidates_until_builder_verifies_relationship():
+def test_weekly_selects_best_reproducible_candidate_without_forcing_relationship():
     rows = [tea_signal(), signal("Indicador independiente", "DATA_PULSE", 92)]
     result = build_free_value({"signals": rows}, {"themes": []}, today=date(2026, 9, 24))
-    assert result["weekly_insight"] is None
-    assert result["selection_policy"]["weekly_insight_status"] == "disabled_pending_verified_multi_evidence_builder"
+    assert result["weekly_insight"] is not None
+    assert result["weekly_insight"]["source_url"] == tea_signal()["source_url"]
 
 
 def test_current_week_is_locked_and_next_week_penalizes_repetition():
@@ -95,7 +100,7 @@ def test_current_week_is_locked_and_next_week_penalizes_repetition():
 def test_uncurated_candidate_is_hidden_instead_of_relabeled_as_insight():
     result = build_free_value({"signals": [signal("noticia", "OTHER")]}, {"themes": []}, today=date(2026, 9, 24))
     assert result["weekly_insight"] is None
-    assert result["selection_policy"]["fallback"] == "hide_without_curated_evidence_tied_insight"
+    assert result["selection_policy"]["fallback"] == "hide_without_reproducible_evidence_tied_insight"
 
 
 def test_old_unsafe_or_repeated_signal_fails_closed():
