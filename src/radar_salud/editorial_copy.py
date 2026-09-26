@@ -49,6 +49,9 @@ def apply_reviewed_copy(
                     if signal_field == "title" and not row.get("source_title_full"):
                         row["source_title_full"] = legacy_title or row.get("title")
                     row[signal_field] = value.strip()
+            # Human-reviewed copy is subordinate to persistent presentation
+            # contracts. display_title/normative_subject/aggregate decisions are
+            # produced upstream and intentionally survive reviewed overrides.
             row["editorial_review_id"] = cfg["audit_id"]
         output.append(row)
     return output
