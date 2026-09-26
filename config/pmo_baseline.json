@@ -2034,6 +2034,22 @@
         "Un bloqueo humano en un subfrente no detiene las demás tareas ejecutables.",
         "Dirección solo interviene en decisiones humanas reales: secretos, pagos, 2FA, privacidad/legal y autorizaciones explícitas."
       ]
+    },
+    {
+      "id": "execution_cycle_close_2026_09_25",
+      "status": "Bloqueado_por_acciones_humanas",
+      "priority": "Crítica",
+      "horizon": "MVP inmediato",
+      "decisions": [
+        "Home V2 special-card refinement validated in staging with run #218 PASS.",
+        "Production main isolated for canonical-only deployment: production web data restored to production-stable; only web/index.html differs under web/.",
+        "Google Workspace requires interactive admin/Cloudflare steps for Gmail auth; no simulated success.",
+        "MailerLite remains deferred until Gmail is operational."
+      ],
+      "next_human_actions": [
+        "GitHub Actions: run Deploy static content to Pages on main.",
+        "Google Admin/Cloudflare: complete Gmail MX/SPF/DKIM/DMARC and radar@ alias."
+      ]
     }
   ],
   "updated_at": "2026-09-25"
