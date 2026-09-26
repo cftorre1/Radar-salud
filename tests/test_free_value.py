@@ -24,15 +24,16 @@ def tea_signal():
     return row
 
 
-def test_repetition_penalties_change_weekly_ranking():
+def test_repetition_is_one_dimension_but_does_not_override_strategic_importance():
     regulation = signal("regulación", "REGULATION", 96)
     investment = signal("inversión", "INVESTMENT", 82, "Prestadores", "Fuente económica")
     first = rank_weekly_candidates([regulation, investment], [])
     assert first[0]["signal"]["title"] == "regulación"
     history = [{"archetype": "cambio_regulatorio", "scope": "Isapres", "source_name": "Fuente oficial"}]
-    diverse = rank_weekly_candidates([regulation, investment], history)
-    assert diverse[0]["signal"]["title"] == "inversión"
-    assert all(x["signal"]["title"] != "regulación" for x in diverse)
+    ranked = rank_weekly_candidates([regulation, investment], history)
+    assert ranked[0]["signal"]["title"] == "regulación"
+    assert ranked[0]["strategic_dimensions"]["novelty_non_repetition"] < first[0]["strategic_dimensions"]["novelty_non_repetition"]
+    assert ranked[0]["selection_score"] <= first[0]["selection_score"]
 
 
 def test_free_value_builds_reproducible_single_source_weekly_and_keeps_verified_global_teaser():
