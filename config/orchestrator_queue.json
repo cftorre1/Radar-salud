@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-09-26",
+  "updated_at": "2026-09-26T15:12:30.203Z",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -1527,7 +1527,7 @@
     },
     {
       "id": "content_value_epidemiology_admin_iteration_2026_09_26",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1562,7 +1562,20 @@
         "auditoría PMO/BI con scorecard y backlog",
         "tests + QA desktop/mobile + Reviewer independiente PASS"
       ],
-      "progress": "2026-09-26: tarea crítica recogida tras validar reglas editoriales 90d. Iniciado lote P0/P1, evaluación fail-closed de Insight, revisión Global/Pulso, frente epidemiológico separado y diagnóstico PMO/BI; staging solamente. Toma interactiva activa: no esperar al consumidor automático para materializar reglas/editorial; seguir después con Insight, Global, epidemiología y auditoría PMO."
+      "progress": "2026-09-26: iteración crítica validada en staging 0fdd11d39c364ee1cda35750a5f195228b63f338. Se aplicaron 11 revisiones P0/P1 y se auditó el snapshot completo de 43 señales; copy consistente entre Ponte al día, card y detalle, con identidad de lectura estable y migración exacta de los 10 títulos previos. Insight semanal permanece oculto por no alcanzar independencia de evidencia. Global Intelligence incorpora qué cambió, por qué importa, qué observar e hipótesis Chile separada. Pulso preserva stock/flujo/movilidad. Vigilancia epidemiológica MINSAL queda provider-ready, trazable y no promovida. Auditoría PMO/BI entrega diagnóstico, arquitectura, scorecard y backlog sin rediseño. QA: 188 Python, 31 web, 26 browser desktop/mobile y Reviewer independiente PASS; workflow remoto PASS. Sin cambios en main/producción.",
+      "evidence": [
+        "staging 0fdd11d39c364ee1cda35750a5f195228b63f338 — implementación final",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36250846142 — tests, staging QA desktop/mobile, reviewer workflow y preview PASS",
+        "188 tests Python, 31 tests web y 26 recorridos Playwright desktop/mobile PASS",
+        "Reviewer independiente FINAL PASS tras corregir identidad/migración de lectura, consistencia de detail y derivación epidemiológica",
+        "11 overrides P0/P1; 43/43 señales auditadas; snapshot SHA-256 6a1f92e06f6d5a1aef6d5d179ecae1886b40bdc5be3e9a03df47eac61bdd2506",
+        "Insight semanal hidden_fail_closed: los workbooks disponibles comparten un único origen institucional y no satisfacen independencia",
+        "Global Intelligence separa hechos internacionales de hipótesis Chile; Pulso mantiene reconciliación stock/flujo/movilidad",
+        "MINSAL Campaña de Invierno, SE37, integrado como provider_ready_not_promoted; ISP/ANAMED 502 no bloquea el frente visible",
+        "docs/ADMIN_PORTAL_EXPERT_AUDIT_2026_09_26.md + config/admin_scorecard_v1.json — diagnóstico/arquitectura/scorecard/backlog, sin rediseño",
+        "main/producción no modificados; 0 llamadas de modelos y 0 gasto"
+      ],
+      "completed_at": "2026-09-26"
     },
     {
       "id": "editorial_90d_learning_rules_2026_09_26",
