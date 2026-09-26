@@ -2294,7 +2294,21 @@
         "Para tareas que requieren commits, queue/PMO, QA y Reviewer, usar contexto interactivo/Work con escritura comprobada.",
         "No interpretar una automatización habilitada como evidencia de ejecución; exigir commit/progress real."
       ]
+    },
+    {
+      "id": "execution_operating_model_2026_09_26",
+      "status": "Aprobado_para_operacion",
+      "priority": "Crítica",
+      "horizon": "Desde ahora",
+      "decisions": [
+        "Dirección/Orquestador permanece libre para conversación, decisiones y diseño del producto; no debe ser la vía normal de implementación.",
+        "Ejecución se separa en lane Builder para cambios rutinarios/repetibles y lane Work para tareas complejas/multietapa.",
+        "Ningún agente se considera trabajando por estar habilitado: solo commit/progress real cuenta como ejecución.",
+        "Automatizaciones de solo lectura pueden monitorear; automatizaciones con escritura no se usarán como único mecanismo hasta demostrar permiso de escritura.",
+        "Cada paquete se cierra con Builder/Work → tests → QA desktop/mobile → Reviewer → corrección → evidencia PMO.",
+        "Ante fallo de escritura de un ejecutor, fallback inmediato a otro lane con escritura comprobada; no esperar ciclos sucesivos."
+      ]
     }
   ],
-  "updated_at": "2026-09-26T15:12:44.855Z"
+  "updated_at": "2026-09-26"
 }
