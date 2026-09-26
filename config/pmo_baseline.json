@@ -2162,7 +2162,7 @@
     },
     {
       "id": "overnight_direction_2026_09_25",
-      "status": "En_ejecucion",
+      "status": "Bloqueado_por_gates_externos",
       "priority": "Crítica",
       "horizon": "Antes de 08:00 26-sep-2026",
       "decisions": [
@@ -2174,7 +2174,12 @@
         "Retomar experimento de modelos sin gasto no autorizado.",
         "Promover a producción antes de 08:00 solo con QA/Reviewer final PASS; autorización de release explícita."
       ],
-      "progress": "2026-09-26: Insight semanal fail-closed, MailerLite provider-ready, preflight de modelos y Pulso Excel cerrados en staging (e55120b, 87e64b0, 80a749e, 6be8780) con QA/Reviewer PASS. Fuentes revalidadas con blockers externos exactos: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta. Release retenido por gates restantes de fuentes y ejecución real del experimento sin credencial/tope USD.",
+      "progress": "2026-09-26: Insight semanal fail-closed, MailerLite provider-ready, preflight de modelos y Pulso Excel cerrados en staging (e55120b, 87e64b0, 80a749e, 6be8780) con QA/Reviewer PASS. Fuentes revalidadas con blockers externos exactos: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta. No quedan acciones internas seguras; release retenido y producción sin cambios.",
+      "blockers": [
+        "Fuentes oficiales: recuperar acceso público FONASA/ISP o indicar endpoint oficial permitido; esperar publicación DEIS genuina y respuesta de Diario Oficial.",
+        "Experimento real: OPENAI_API_KEY vía secreto, modelos disponibles y costo máximo USD autorizado por Dirección.",
+        "Release no permitido hasta que los gates críticos anteriores tengan evidencia real y QA/Reviewer PASS."
+      ],
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/commit/e55120ba5ed05226ca99484b07e8e53d1aea95c4",
         "https://github.com/cftorre1/Radar-salud/commit/80a749e26eedd6c11bd0b221af4fa7ba53e0b640",

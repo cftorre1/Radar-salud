@@ -133,7 +133,7 @@
     },
     {
       "id": "sources_chile_mvp",
-      "status": "in_progress",
+      "status": "blocked",
       "priority": "high",
       "owner": "Work",
       "source": "Baseline MVP",
@@ -161,7 +161,13 @@
         "QA/Reviewer",
         "staging evidence"
       ],
-      "progress": "Pilotos #24/#25: Bupa y RedSalud aportaron una señal BACKFILL real cada uno; LIVE 0. Pfizer Chile quedó integrado con parser y guard fail-closed, sin señal vigente. Dirección reanudó Fuentes Chile el 2026-09-25. Revalidación real 2026-09-26: FONASA HTTP 403; ISP/ANAMED HTTP 502; DEIS técnicamente accesible con 0 publicaciones fechadas elegibles; Diario Oficial no completó respuesta y el intento se interrumpió para no detener otros frentes. Subfrente permanece en ejecución con blockers externos exactos; no se atribuyeron señales ni se rebajó verificación.",
+      "progress": "Pilotos #24/#25: Bupa y RedSalud aportaron una señal BACKFILL real cada uno; LIVE 0. Pfizer Chile quedó integrado con parser y guard fail-closed, sin señal vigente. Dirección reanudó Fuentes Chile el 2026-09-25. Revalidación real 2026-09-26: FONASA HTTP 403; ISP/ANAMED HTTP 502; DEIS técnicamente accesible con 0 publicaciones fechadas elegibles; Diario Oficial no completó respuesta y el intento se interrumpió para no detener otros frentes. No quedan acciones internas seguras: subfrente bloqueado externamente, sin señales atribuidas ni verificación rebajada.",
+      "blocked_by": [
+        "FONASA oficial: HTTP 403. Acción mínima: restablecer acceso público o indicar un endpoint oficial público permitido equivalente.",
+        "ISP/ANAMED oficial: HTTP 502. Acción mínima: esperar recuperación del servicio o indicar un endpoint oficial público permitido equivalente.",
+        "DEIS: acceso técnico con 0 publicaciones fechadas elegibles; requiere una publicación oficial genuina nueva, no simulada.",
+        "Diario Oficial: la solicitud no completó respuesta dentro del ciclo; requiere recuperación/reintento externo, sin bypass."
+      ],
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36029771353 — piloto #23 limitado a 1, 7 fuentes exitosas y 2 errores; staging datos 83f55e36c464972c2e8eee7763f5a7699a644cb1",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36030110235 — preview #74 059447995561647bcb814e15430ed1ae744ddcc2, tests/QA desktop-mobile/Reviewer/preview PASS; Reviewer independiente corrigió atribución de fecha/PDF y estructura, pero sin fixture real",
@@ -1399,7 +1405,7 @@
     },
     {
       "id": "overnight_content_sources_experiments_release_2026_09_25",
-      "status": "in_progress",
+      "status": "blocked",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1438,7 +1444,12 @@
         "tests + QA desktop/mobile + Reviewer PASS",
         "SHA de producción y QA post-deploy en alicantosalud.cl antes de 08:00 o blocker explícito"
       ],
-      "progress": "2026-09-26: share, auditoría editorial, Insight semanal fail-closed, MailerLite provider-ready, preflight Luna/Terra/Astra y Pulso Excel cerrados con QA/Reviewer PASS. Fuentes Chile se revalidó: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta; blockers externos exactos, sin señales simuladas. Gate de release sigue cerrado por fuentes epidemiológicas y ejecución real del experimento sin credencial/tope de gasto; producción no fue modificada.",
+      "progress": "2026-09-26: share, auditoría editorial, Insight semanal fail-closed, MailerLite provider-ready, preflight Luna/Terra/Astra y Pulso Excel cerrados con QA/Reviewer PASS. Fuentes Chile se revalidó: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta; blockers externos exactos, sin señales simuladas. No quedan acciones internas seguras. Gate de release cerrado; producción no fue modificada.",
+      "blocked_by": [
+        "Fuentes epidemiológicas oficiales no integrables con evidencia actual: FONASA 403, ISP/ANAMED 502, DEIS sin publicación elegible y Diario Oficial sin respuesta.",
+        "Experimento real Luna/Terra/Astra: falta OPENAI_API_KEY vía secreto, confirmación de modelos disponibles y costo máximo USD autorizado por Dirección.",
+        "La instrucción de release exige todos los gates críticos PASS; con estos blockers la promoción a main/producción está expresamente prohibida."
+      ],
       "evidence": [
         "e55120ba5ed05226ca99484b07e8e53d1aea95c4 — implementación fail-closed y auditoría reconciliada en staging",
         "166 tests Python PASS; 28 tests web PASS; 26 Playwright desktop/mobile PASS",
