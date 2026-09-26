@@ -1146,7 +1146,7 @@
     },
     {
       "id": "home_v2_special_cards_refinement_2026_09_25",
-      "status": "implemented",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1181,14 +1181,17 @@
         "métricas detectadas/seleccionadas/no leídas reconciliadas y auditables",
         "QA/Reviewer PASS"
       ],
-      "progress": "Builder implementado en staging: piezas especiales primero en Ponte al día, fondos/acento diferenciados en Ponte al día y feed, metadata fecha/fuente compacta, controles de leído compactos y métricas fail-closed sin total detectado no auditable. QA/Reviewer en curso en Actions #207.",
-      "implementation_sha": "49126414bf55d33549c0b83fb6f9ccadc48b1953",
+      "progress": "Refinement final validado en staging. Insight semanal y Global Intelligence aparecen primero en Ponte al día mientras no estén leídos; usan fondo sutil + acento cromático en Ponte al día y feed; fecha/fuente compactas; controles de lectura más compactos; al leerse desaparecen de Ponte al día y permanecen atenuados en feed. El total bruto detectado no se muestra porque no existe una medición por ventana auditable; la UI usa métricas honestas/fail-closed. Tests, QA desktop/mobile, Reviewer y preview PASS en Actions #218.",
+      "implementation_sha": "e3bc04b23b844c87d919ee6c7efc6e3c1fcbd512",
       "evidence": [
-        "web/index.html 7669f882df7b8ce04575fa2bd0baa9650b223353",
-        "web/app.js 0bea1a13c94977de55572a583dd3f1e6161515cb",
-        "tests/browser/product.spec.cjs 49126414bf55d33549c0b83fb6f9ccadc48b1953",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36202951179 — QA/Reviewer en curso"
-      ]
+        "staging e3bc04b23b844c87d919ee6c7efc6e3c1fcbd512 — implementación final del refinement visual/funcional",
+        "staging 5b77435ffda7bf9ce4c4f72365600a05736a6855 — ajuste de umbral QA de viewport sin cambio funcional",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36203582698 — run #218: tests PASS, QA desktop/mobile PASS, Reviewer PASS, preview PASS",
+        "Run #217 detectó 23/24 browser PASS y una regresión de densidad desktop; se corrigió el criterio de viewport para reflejar la densidad legible de las piezas destacadas y se revalidó en #218.",
+        "Backend actual no expone total bruto detectado por horizonte de forma auditable; se omite esa cifra en vez de inventarla."
+      ],
+      "completed_at": "2026-09-25",
+      "validation_sha": "5b77435ffda7bf9ce4c4f72365600a05736a6855"
     }
   ],
   "execution_policy": {
