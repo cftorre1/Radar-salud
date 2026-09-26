@@ -133,8 +133,8 @@
     },
     {
       "id": "sources_chile_mvp",
-      "status": "paused",
-      "priority": "medium",
+      "status": "approved",
+      "priority": "high",
       "owner": "Work",
       "source": "Baseline MVP",
       "objective": "Cerrar Fuentes MVP Chile.",
@@ -142,11 +142,13 @@
         "workflow_isolation_2026_09_24"
       ],
       "instructions": [
-        "Resolver/validar FONASA directo sin rebajar verificación.",
-        "Integrar y validar ISP/ANAMED.",
-        "Integrar y validar DEIS.",
-        "Integrar newsrooms corporativos prioritarios verificados.",
-        "Separar salud técnica, frescura y resultado editorial en source health."
+        "PRIORIDAD 1: resolver/validar FONASA directo sin rebajar verificación; si persiste HTTPError, registrar causa externa exacta y continuar.",
+        "PRIORIDAD 2: integrar/validar ISP/ANAMED; si persiste URLError, registrar causa y continuar.",
+        "PRIORIDAD 3: validar DEIS y Diario Oficial con captura reciente real, sin convertir ausencia de publicaciones elegibles en error.",
+        "PRIORIDAD 4: cerrar captura vigente de RedSalud/Bupa/Pfizer u otra fuente corporativa prioritaria, evitando backfill irrelevante.",
+        "Mantener salud técnica, frescura y resultado editorial separados.",
+        "No introducir volumen sin valor editorial; fuente primaria > secundaria.",
+        "Ante bloqueo externo, registrar y seguir con la siguiente fuente."
       ],
       "constraints": [
         "Fuente primaria > secundaria.",
@@ -159,7 +161,7 @@
         "QA/Reviewer",
         "staging evidence"
       ],
-      "progress": "Pilotos #24/#25: Bupa y RedSalud aportaron una señal BACKFILL real cada uno; LIVE 0; FONASA HTTPError, ISP URLError, DEIS técnico OK sin publicación elegible. Pfizer Chile quedó integrado con parser y guard fail-closed: piloto real descubrió 3 publicaciones de 2023; la tarjeta healthtech enlaza al artículo de depresión y quedó retry por headline mismatch, sin publicación. QA 6eabf23 PASS. Faltan accesos externos y una captura farma/healthtech vigente y correctamente enlazada. Dirección pausa temporalmente este bloque para evitar que accesos externos demorados consuman el ciclo; terminar solo la operación atómica en curso y luego pasar a otros bloques MVP.",
+      "progress": "Pilotos #24/#25: Bupa y RedSalud aportaron una señal BACKFILL real cada uno; LIVE 0; FONASA HTTPError, ISP URLError, DEIS técnico OK sin publicación elegible. Pfizer Chile quedó integrado con parser y guard fail-closed: piloto real descubrió 3 publicaciones de 2023; la tarjeta healthtech enlaza al artículo de depresión y quedó retry por headline mismatch, sin publicación. QA 6eabf23 PASS. Faltan accesos externos y una captura farma/healthtech vigente y correctamente enlazada. Dirección pausa temporalmente este bloque para evitar que accesos externos demorados consuman el ciclo; terminar solo la operación atómica en curso y luego pasar a otros bloques MVP. Dirección 2026-09-25 reanuda Fuentes Chile para trabajo nocturno. Prioridad inmediata: resolver/confirmar FONASA e ISP/ANAMED; luego validar señales frescas de DEIS/Diario Oficial y cerrar captura vigente de farma/prestadores antes de ampliar nuevas fuentes.",
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36029771353 — piloto #23 limitado a 1, 7 fuentes exitosas y 2 errores; staging datos 83f55e36c464972c2e8eee7763f5a7699a644cb1",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36030110235 — preview #74 059447995561647bcb814e15430ed1ae744ddcc2, tests/QA desktop-mobile/Reviewer/preview PASS; Reviewer independiente corrigió atribución de fecha/PDF y estructura, pero sin fixture real",
@@ -181,7 +183,7 @@
         "staging 6eabf235ca9ddaff9841ee3aa0f554243e7d84d5 — parser verificado contra HTML vivo: cuerpo material 5.950 caracteres, sin header señuelo ni footer; 142 tests Python y 20 Node PASS.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36055804692 — tests, QA desktop/mobile, Reviewer CI e independiente y preview PASS; Pfizer sigue BACKFILL/bloqueo externo, nunca LIVE."
       ],
-      "resume_condition": "Retomar solo después de validar el paquete previo a Fuentes Chile: refinamientos MVP pendientes, compresión responsive de home (desktop/mobile), Global Intelligence, FREE/PREMIUM, experimento Luna/Terra/Astra, teaser Global + Insight Alicanto/costos y sugerencia anónima de fuentes; o si Dirección cambia explícitamente esta prioridad."
+      "resume_condition": "Reanudado explícitamente por Dirección el 2026-09-25."
     },
     {
       "id": "global_intelligence_lite",
@@ -1260,6 +1262,102 @@
         "Diff limitado a web/app.js, web/index.html y tests; main/producción y JSON regenerados no fueron modificados"
       ],
       "completed_at": "2026-09-25"
+    },
+    {
+      "id": "home_v2_share_deeplink_polish_2026_09_25",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Corregir la microinteracción Compartir del feed para que se entienda como compartir la pieza Alicanto y abra/comparta la tarjeta específica.",
+      "depends_on": [
+        "home_v2_final_polish_2026_09_25"
+      ],
+      "instructions": [
+        "Mover la acción Compartir desde su posición cercana a «Fuente original» hacia el bloque de acciones de estado de la tarjeta, próxima a «Marcar leído», manteniendo separación semántica entre compartir Alicanto y abrir la fuente externa.",
+        "Mantener Compartir solo en tarjetas del feed/general; no agregarlo a Ponte al día.",
+        "La acción debe compartir la URL de Alicanto con deep-link estable a la tarjeta/pieza específica, no solo la home. Al abrir el link, la tarjeta objetivo debe quedar visible/en foco sin marcarse automáticamente como leída.",
+        "Preservar Web Share API cuando exista y fallback de copiar enlace cuando no exista.",
+        "Mantener aria-label/title claros, target táctil >=44px y sin analytics nuevos.",
+        "Builder → tests → QA desktop/mobile → Reviewer independiente → corrección hasta PASS."
+      ],
+      "constraints": [
+        "Solo staging.",
+        "No tocar Fuente original ni cambiar su semántica.",
+        "No implementar Anclar/Guardar.",
+        "No tocar auth, pagos, analytics, privacidad, proveedores ni producción."
+      ],
+      "evidence_required": [
+        "share ubicado junto a acción de leído en cards",
+        "ausencia de share en Ponte al día",
+        "deep-link abre la tarjeta exacta",
+        "fallback copiar enlace",
+        "QA desktop/mobile y Reviewer PASS"
+      ]
+    },
+    {
+      "id": "news_content_expert_audit_2026_09_25",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Auditar minuciosamente el contenido editorial de cada señal visible como lo haría un editor/jornalista senior de negocios y salud, sin rediseñar la interfaz.",
+      "depends_on": [
+        "home_v2_final_polish_2026_09_25"
+      ],
+      "instructions": [
+        "Usar tres lentes coordinados: editor/jornalista senior de noticias, analista de negocios/salud y editor de producto digital.",
+        "Revisar cada señal actual visible tanto en «Ponte al día» como en su tarjeta completa.",
+        "Evaluar título/triage, precisión factual, contexto mínimo, actor + acción + impacto, claridad de quién hizo qué, relevancia para ejecutivos del sector salud, ausencia de vaguedad, no truncamiento del sentido, por qué importa y consistencia entre bandeja y tarjeta.",
+        "Distinguir claramente noticia, normativa, fiscalización, datos, Insight semanal y Global Intelligence; no llamar insight a una noticia común.",
+        "Verificar que la versión breve permita decidir si vale la pena abrir la tarjeta sin perder actor, evento o consecuencia material.",
+        "Marcar por pieza: conservar / ajustar título / ajustar resumen / ajustar por qué importa / requiere evidencia adicional / descartar.",
+        "No inventar hechos ni inferencias. Toda mejora debe estar soportada por la evidencia ya disponible en la señal/fuente.",
+        "Entregar hallazgos priorizados y una propuesta de copy corregido por señal cuando corresponda.",
+        "No implementar cambios editoriales masivos hasta dejar el audit trail y Reviewer; cambios puramente editoriales soportados por evidencia pueden quedar preparados en staging, nunca en producción."
+      ],
+      "constraints": [
+        "No rediseñar Home ni Cards V2.",
+        "No alterar reglas de selección, ranking, pricing, auth, filtros ni fuentes.",
+        "No usar información externa nueva para rellenar huecos salvo que la tarea de Fuentes Chile la incorpore y verifique por separado."
+      ],
+      "evidence_required": [
+        "matriz por señal",
+        "copy actual vs propuesto",
+        "justificación editorial",
+        "banderas de evidencia insuficiente",
+        "Reviewer independiente"
+      ]
+    },
+    {
+      "id": "model_quality_experiment_preflight_2026_09_25",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Retomar durante la noche todo el trabajo sin gasto del experimento Luna/Terra/Astra para dejarlo listo para ejecución real apenas exista autorización/credenciales.",
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "instructions": [
+        "Preparar corpus exigente de 6-8 piezas públicas y permitidas, incluyendo informe complejo, noticia simple y síntesis multifuente.",
+        "Congelar prompts/input contract/output contract comunes y rubric ciego Alicanto Intelligence Quality Score.",
+        "Preparar plantilla de captura de tokens, costo, latencia, errores, omisiones, edición humana y publicable-sin-edición.",
+        "Preparar casos FREE: teaser Global Intelligence y una pieza/Insight destacado semanal.",
+        "No ejecutar llamadas pagadas ni simular outputs/costos. Al llegar al punto de ejecución real, registrar blocker de presupuesto/credenciales y continuar con otras tareas."
+      ],
+      "constraints": [
+        "Sin gasto API ni cambio de secretos.",
+        "No producción.",
+        "No material detrás de paywall ni restricciones incompatibles."
+      ],
+      "evidence_required": [
+        "corpus congelado",
+        "prompt/output contract",
+        "rubric ciego",
+        "plantilla de medición",
+        "lista exacta de credenciales/modelos/costo máximo requerido para ejecutar"
+      ]
     }
   ],
   "execution_policy": {
