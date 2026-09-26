@@ -229,7 +229,7 @@ test('source suggestion never falls back to URL serialization without JavaScript
  expect(page.url()).not.toContain('source_name=');
  await context.close();
 });
-test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page})=>{
+test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('90');
@@ -272,7 +272,7 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
- const circular=page.locator('article').filter({has:page.getByRole('heading',{name:/Isapres: reembolsos públicos sin compensación/})});
+ const circular=page.locator('article').filter({has:page.getByRole('heading',{name:/Isapres no podrán compensar reembolsos/})});
  await circular.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Circular IF/N°77');
  await page.locator('#detailBody .related').getByText('Normativa relacionada',{exact:false}).click();
  await expect(page.locator('#detailBody')).toContainText('Norma modificada');
