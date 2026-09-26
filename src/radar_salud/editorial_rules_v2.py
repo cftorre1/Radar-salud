@@ -90,10 +90,24 @@ def evaluate_editorial_v2(
         special_cfg = cfg["special_pieces"].get(special)
         if special_cfg is None:
             return EditorialDecision("reject", score, ("unknown_special_piece",), category)
-        if len(independent_sources) < special_cfg["min_independent_evidence"]:
+        if special == "weekly_insight":
+            mode = str(evidence.get("weekly_mode") or "multi_evidence")
+            if mode not in special_cfg["modes"]:
+                reasons.append("invalid_weekly_mode")
+            elif mode == "multi_evidence":
+                if len(independent_sources) < special_cfg["multi_evidence_min_independent_evidence"]:
+                    reasons.append("insufficient_independent_evidence")
+            else:
+                if len(evidence_refs) < special_cfg["single_source_min_evidence"]:
+                    reasons.append("missing_impact_evidence")
+                if not evidence.get("reproducible_analysis"):
+                    reasons.append("missing_reproducible_analysis")
+                if not str(evidence.get("decision_use") or "").strip():
+                    reasons.append("missing_decision_use")
+            if not evidence.get("non_obvious_business_interpretation"):
+                reasons.append("missing_non_obvious_business_interpretation")
+        elif len(independent_sources) < special_cfg["min_independent_evidence"]:
             reasons.append("insufficient_independent_evidence")
-        if special == "weekly_insight" and not evidence.get("non_obvious_business_interpretation"):
-            reasons.append("missing_non_obvious_business_interpretation")
         if special == "global_intelligence":
             if not evidence.get("global_facts_separate_from_chile_hypothesis"):
                 reasons.append("global_chile_boundary_missing")
