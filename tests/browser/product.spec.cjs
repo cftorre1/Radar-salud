@@ -238,13 +238,9 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(bupa).not.toContainText('…');
  await expect(bupa.locator('.card-meta')).toContainText('Publicado');
  await expect(bupa.locator('.card-meta')).not.toBeEmpty();
- await bupa.locator('[data-detail]').click();
- await expect(page.locator('#detailBody')).toContainText('Enriquecimiento editorial · 3');
- await expect(page.locator('#detailBody')).toContainText('Mismo emisor · no es corroboración independiente');
- await expect(page.locator('#detailBody')).toContainText('Conexiones históricas');
- await expect(page.locator('#detailBody')).toContainText('Expansión previa de la red ambulatoria IntegraMédica');
- await expect(page.locator('#detailBody')).toContainText('Contexto histórico: Conexión histórica disponible y atribuida al mismo artículo DF.');
- await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ await expect(bupa.locator('[data-detail]')).toHaveCount(0);
+ await expect(bupa).not.toContainText('Enriquecimiento editorial');
+ await expect(bupa.getByRole('link',{name:/Fuente original/})).toHaveAttribute('href',/df\.cl\/empresas\/salud\/bupa-acelera-inversiones/);
  const isapre=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso Isapre · datos/})});
  await expect(isapre.locator('.card-meta')).toContainText('Datos a 2026-07');
  await expect(isapre.locator('.card-meta')).toContainText('Publicado 07 sept 2026');
