@@ -260,15 +260,33 @@ def _latest_stats(signals):
     return other
 
 def _routine_accreditation(s):
-    """Retain individual acts in history, omit routine institutional entries from feed."""
+    """Retain individual accreditation acts in history, omit them from executive feed."""
     if s.get("source_name")!="Superintendencia de Salud" or s.get("distribution")!="archive":return False
-    text=str(s.get("what_happened") or "").lower()
-    individual=("registro público de prestadores institucionales de salud acreditados" in text
-                and re.search(r"\binscribi[oó]\s+al?\b",text) is not None)
+    text=" ".join(str(s.get(k) or "") for k in ("title","what_happened","why_it_matters")).lower()
+    registry=("registro público de prestadores institucionales de salud acreditados" in text)
+    individual=registry and any(x in text for x in (
+        "inscripción n°","inscripción nº","mantiene su inscripción","mantener su inscripción",
+        "declara acreditado","declaró acreditado","plan de corrección","certificado de acreditación"
+    ))
     programs=("registro de entidades certificadoras" in text
               and "programas acreditados" in text and "inscribir" in text)
-    strategic=re.search(r"\b(modific[oó]|sustituy[oó]|derog[oó])\s+(?:el|la|los|las)\s+(?:reglamento|est[aá]ndar|norma|circular)",text)
-    return bool((individual or programs) and not strategic)
+    strategic=bool(re.search(r"\b(modific[oó]|sustituy[oó]|derog[oó])\s+(?:el|la|los|las)\s+(?:reglamento|est[aá]ndar|norma|circular)",text))
+    system_wide=bool(re.search(r"\b(todos los prestadores|prestadores institucionales en general|nuevo estándar|cambia el estándar|modifica el sistema de acreditación)\b",text))
+    return bool((individual or programs) and not strategic and not system_wide)
+
+def _statistical_release_requires_analysis(s):
+    """Material statistical releases cannot occupy feed with publication-only copy."""
+    if s.get("source_name")!="Superintendencia de Salud" or "Datos" not in (s.get("signal_types") or []):
+        return False
+    t=(s.get("title") or "").lower()
+    material=("ges" in t or "auge" in t or "series estadísticas" in t or "series estadisticas" in t
+              or "boletín estadístico" in t or "boletin estadistico" in t
+              or "financier" in t or "prestaciones de salud" in t or "egresos hospitalarios" in t)
+    return material
+
+def _has_statistical_analysis(s):
+    return bool(s.get("data_insights") or s.get("data_insight_evidence") or s.get("summary_table")
+                or s.get("distinct_decision_value") is True)
 
 def _sanction_pulses(signals, today=None):
     """Keep individual records in history, show one rolling pulse per sector."""
@@ -332,6 +350,9 @@ def curate(signals,resolve_external=True):
     if not normalized:return []
     latest=max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
     recent=[s for s in normalized if _d(s.get("event_date")) and (latest-_d(s.get("event_date"))).days<=90 and not _routine_accreditation(s)]
+    # A material statistical release must add an evidenced finding, not merely announce a file.
+    # Keep unanalyzed releases in durable history until an analytic provider enriches them.
+    recent=[s for s in recent if not (_statistical_release_requires_analysis(s) and not _has_statistical_analysis(s))]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 
