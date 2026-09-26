@@ -77,7 +77,10 @@
           "consequence": "puede alterar oferta regional",
           "value_category": "capacity_supply",
           "special_piece": "weekly_insight",
+          "weekly_mode": "single_source_deep_dive",
           "non_obvious_business_interpretation": true,
+          "reproducible_analysis": false,
+          "decision_use": "",
           "evidence_refs": [{"url": "https://example.org/one-source", "source": "Fuente única"}],
           "materiality": {
             "financial_impact": 80,
@@ -87,6 +90,33 @@
             "time_horizon": 75,
             "actionability": 80,
             "evidence_strength": 80
+          }
+        }
+      }
+    },
+    {
+      "id": "positive_single_source_weekly",
+      "expected": "accept",
+      "candidate": {
+        "editorial_v2": {
+          "actor": "Superintendencia de Salud",
+          "action": "modifica una obligación operacional",
+          "consequence": "cambia un flujo verificable de isapres",
+          "value_category": "regulatory_obligation",
+          "special_piece": "weekly_insight",
+          "weekly_mode": "single_source_deep_dive",
+          "non_obvious_business_interpretation": true,
+          "reproducible_analysis": true,
+          "decision_use": "Revisar implementación, plazo y exposición operacional.",
+          "evidence_refs": [{"url": "https://example.org/resolution", "source": "Superintendencia de Salud"}],
+          "materiality": {
+            "financial_impact": 80,
+            "operational_impact": 90,
+            "affected_scope": 85,
+            "magnitude": 80,
+            "time_horizon": 90,
+            "actionability": 90,
+            "evidence_strength": 95
           }
         }
       }
