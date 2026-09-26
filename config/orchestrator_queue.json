@@ -949,14 +949,18 @@
         "Reviewer independiente"
       ],
       "authorization": "Dirección 2026-09-24: «Autorizo conectar alicantosalud.cl a la producción actual de Alicanto Salud y hacer únicamente los cambios técnicos necesarios de dominio, HTTPS, canonical y redirecciones, sin promover funcionalidades nuevas.»",
-      "progress": "2026-09-25: Pages DNS check successful; Enforce HTTPS activado y persistente. Apex y www en HTTP redirigen a https://alicantosalud.cl/ sin loop observado. Canonical preparado en main 083d2f761e829de49ddd5ef9bc41bbeb494aaad4 (solo web/index.html), pero no publicado en producción. Reviewer independiente PASS al diff; release retenido porque el workflow static.yml empaqueta ./web completo y main difiere de production-stable también en web/data/radar_today.json y web/data/source_health.json. Publicar main actual promovería esos datos fuera del alcance autorizado.",
+      "progress": "HTTPS apex/www ya activo. Canonical https://alicantosalud.cl/ está preparado en main y main quedó aislado para un release de dominio: web/data/radar_today.json y web/data/source_health.json fueron restaurados exactamente a production-stable, por lo que el único diff bajo web/ frente a production-stable es web/index.html (canonical). Falta despachar manualmente el workflow de producción y hacer QA final.",
       "blocked_by": [
-        "Publicación aislada del canonical sin incluir los dos archivos de datos ajenos al cambio de dominio; requiere empaquetado acotado y QA producción desktop/mobile antes de cerrar."
+        "Acción administrativa mínima: ejecutar GitHub Actions → «Deploy static content to Pages» → Run workflow sobre main. El conector disponible no expone workflow_dispatch.",
+        "Después del deploy, verificar producción desktop/mobile, canonical, apex/www y HTTP→HTTPS."
       ],
       "evidence": [
         "GitHub Pages settings: Enforce HTTPS activado; apex/www HTTP→HTTPS comprobado en browser 2026-09-25",
         "main antes 28be310808fffbe5c3212e75ddda2057ed635ca0; canonical preparado 083d2f761e829de49ddd5ef9bc41bbeb494aaad4; production-stable 06831243d83705777f6a916fcc86a7896d6522da",
-        "Reviewer independiente: diff canonical PASS, release no aprobado por dos cambios de datos fuera de alcance"
+        "Reviewer independiente: diff canonical PASS, release no aprobado por dos cambios de datos fuera de alcance",
+        "main 619c3ff4b7aa57c15c410eecfea2ca741eca042c — radar_today restaurado a production-stable",
+        "main 2d23f6e5ec3426954c80596fe87da43d32f4da5f — source_health restaurado a production-stable",
+        "Comparación production-stable→main: único diff bajo web/ = web/index.html canonical a https://alicantosalud.cl/"
       ]
     },
     {
@@ -1095,7 +1099,7 @@
     },
     {
       "id": "workspace_domain_home_execution_2026_09_25",
-      "status": "approved",
+      "status": "blocked",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1141,8 +1145,18 @@
         "MailerLite provider-ready con DNS coexistence documentada",
         "cola/PMO actualizados tras cada ciclo"
       ],
-      "progress": "2026-09-25: Dirección confirmó Business Starter, una licencia, hola@ y dominio verificado. Google Admin pide inicio de sesión y Cloudflare verificación humana; Gmail/MX/SPF/DKIM/DMARC/alias/envío-recepción pendientes sin simular. Home V2 validada en staging 64e7f2c58123564154b4903e9b0a46d17d200d5d con QA #198 y Reviewer PASS. HTTPS apex/www activo. Canonical preparado en main 083d2f761e829de49ddd5ef9bc41bbeb494aaad4 sin publicar: release de ./web incluiría dos datos ajenos al dominio. MailerLite sin configurar hasta validar Gmail. El registro PMO originó overflow móvil corregido en 1b3ae0b374251c0d294a3cd0653a34634b9c1f40; QA #200 PASS.",
-      "blocker": "Gmail: Dirección debe completar inicio de sesión admin.google.com y desafío dash.cloudflare.com en sesión utilizable; DKIM exacto debe generarse allí. Dominio: publicación aislada del canonical sin web/data/radar_today.json ni web/data/source_health.json; no ejecutar release main completo. MailerLite depende de Gmail validado."
+      "progress": "Ciclo ejecutado hasta blockers humanos reales. Home V2 expert + refinement especial completados y validados en staging; dominio HTTPS operativo y main aislado para release canonical-only. Google Workspace existe con una licencia hola@ y dominio verificado, pero Gmail/MX/SPF/DKIM/DMARC/alias requieren sesión administrativa Google + Cloudflare que este entorno no puede completar. MailerLite permanece correctamente pospuesto hasta validar Gmail.",
+      "blocker": "Gmail: Dirección debe completar inicio de sesión admin.google.com y desafío dash.cloudflare.com en sesión utilizable; DKIM exacto debe generarse allí. Dominio: publicación aislada del canonical sin web/data/radar_today.json ni web/data/source_health.json; no ejecutar release main completo. MailerLite depende de Gmail validado.",
+      "blocked_by": [
+        "Google Workspace/Cloudflare: completar activación Gmail, MX, SPF, generar/publicar DKIM, DMARC, alias radar@ y prueba envío/recepción con acceso administrativo interactivo.",
+        "GitHub Actions: disparar manualmente workflow «Deploy static content to Pages» sobre main; el artefacto quedó aislado al canonical.",
+        "MailerLite queda en espera hasta cerrar Gmail; privacidad/doble opt-in y credenciales siguen siendo decisiones humanas."
+      ],
+      "evidence": [
+        "Home V2 special refinement validated: https://github.com/cftorre1/Radar-salud/actions/runs/36203582698",
+        "Domain release isolation: production-stable vs main only web/index.html differs under web/",
+        "Google Workspace state confirmed by Dirección: Business Starter, una licencia, hola@ existente, dominio verificado."
+      ]
     },
     {
       "id": "home_v2_special_cards_refinement_2026_09_25",
