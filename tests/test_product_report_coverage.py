@@ -93,3 +93,20 @@ def test_published_backfill_cannot_be_selected_by_fake_live_snapshot(tmp_path):
         {"source_url":"https://example.org/live","ingestion_mode":"LIVE","detected_at":"forged"}]}))
     result=module.build(tmp_path,web)
     assert result["coverage_live"]=={"detected":1,"evaluated":1,"selected":0}
+
+
+def test_statistics_parser_backlog_auto_registers_new_unparsed_data_sources():
+    module = load_report_module()
+    history = [
+        {"title":"Nueva Estadística de Salud 2026","source_url":"https://example.org/new","event_date":"2026-09-26",
+         "signal_types":["Datos"],"source_documents":[{"url":"https://example.org/new.xlsx"}]},
+        {"title":"Estadística de cartera","source_url":"https://example.org/parsed","event_date":"2026-09-25",
+         "signal_types":["Datos"],"data_insights":["Hallazgo reproducible"]},
+        {"title":"Noticia común","source_url":"https://example.org/news","signal_types":["Noticias"]},
+    ]
+    rows = module.statistics_parser_backlog(history)
+    by = {x["source_url"]:x for x in rows}
+    assert by["https://example.org/new"]["status"] == "parser_pending"
+    assert by["https://example.org/new"]["documents"] == 1
+    assert by["https://example.org/parsed"]["status"] == "covered"
+    assert "https://example.org/news" not in by
