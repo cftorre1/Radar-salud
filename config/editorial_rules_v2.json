@@ -48,7 +48,10 @@
   },
   "special_pieces": {
     "weekly_insight": {
-      "modes": ["multi_evidence", "single_source_deep_dive"],
+      "modes": [
+        "multi_evidence",
+        "single_source_deep_dive"
+      ],
       "multi_evidence_min_independent_evidence": 2,
       "single_source_min_evidence": 1,
       "single_source_requires_reproducible_analysis": true,
@@ -68,5 +71,23 @@
     "Datos": "Indicador + período + variación comparable + límite causal + decisión de seguimiento.",
     "Fiscalización": "Fiscalizador + conducta + sanción/magnitud + patrón, separando LIVE e histórico.",
     "Pieza especial": "Evidencias independientes + síntesis no obvia + implicancia accionable + incertidumbre."
+  },
+  "presentation_contract": {
+    "normative_identity_and_subject": {
+      "required": true,
+      "rule": "Toda Circular, Resolución, Oficio o Decreto debe conservar tipo y número y, además, expresar en el título público de qué trata. Un número de acto sin tema es un título inválido para feed y Ponte al día."
+    },
+    "aggregate_over_components": {
+      "required": true,
+      "rule": "Si un Pulso o pieza agregada cubre las mismas familias y período, las actualizaciones rutinarias componentes no se publican por separado salvo que aporten un insight distinto, trazable y accionable."
+    },
+    "surface_consistency": {
+      "required": true,
+      "rule": "Ponte al día, card y detalle deben compartir la misma identidad editorial y no pueden perder tema, acto normativo, período ni consecuencia material entre superficies."
+    },
+    "precedence": {
+      "persistent_rules_override_human_copy": true,
+      "rule": "La revisión editorial humana puede mejorar el copy, pero no puede degradar ni revertir estas reglas persistentes. Si existe conflicto, prevalece el contrato editorial y el Reviewer debe fallar."
+    }
   }
 }
