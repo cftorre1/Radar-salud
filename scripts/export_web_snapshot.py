@@ -5,6 +5,7 @@ from datetime import datetime,timezone,date
 from pathlib import Path
 from radar_salud.reference_resolver import resolve_reference
 from radar_salud.editorial_gate import publication_ready
+from radar_salud.editorial_copy import apply_reviewed_copy
 from radar_salud.isapre_pulse import build_pulse
 
 TYPES=("Normativa","Legal","Noticias","Datos","Fiscalización")
@@ -283,7 +284,7 @@ def main():
         try:pulse=build_pulse(json.loads(canonical.read_text(encoding="utf-8")),signals)
         except (OSError,ValueError,TypeError):pulse=None
         if pulse:signals.append(pulse)
-    payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":curate(signals,resolve_external=not args.offline)}
+    payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":apply_reviewed_copy(curate(signals,resolve_external=not args.offline))}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
