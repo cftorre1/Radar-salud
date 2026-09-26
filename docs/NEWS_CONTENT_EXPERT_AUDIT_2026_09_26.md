@@ -1,7 +1,9 @@
 # Auditoría experta de contenido — Home V2
 
 Fecha: 26 de septiembre de 2026  
-Snapshot: `web/data/radar_today.json` vigente en `staging` al iniciar el ciclo.
+Snapshot inicial: `web/data/radar_today.json` vigente en `staging` al iniciar el ciclo.
+
+> Actualización de cierre: la observación inicial sobre 29 señales históricas no auditadas quedó superada por `data/editorial_audit_90d_2026_09_26.json`. Ese segundo control cubre las 43 señales del snapshot, está unido a su SHA-256 y conserva decisiones manuales `accept/degrade/group/reject`. Ya no corresponde tratar esas 29 piezas como pendientes de auditoría.
 
 ## Alcance y método
 
