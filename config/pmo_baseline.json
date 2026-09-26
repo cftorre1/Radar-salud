@@ -2411,6 +2411,31 @@
         "Reviewer independiente PASS"
       ],
       "completed_at": "2026-09-26"
+    },
+    {
+      "id": "weekly_insight_strategic_terra_v2_2026_09_26",
+      "status": "Implementado_parcial",
+      "priority": "Crítica",
+      "horizon": "Antes de siguiente publicación semanal",
+      "decisions": [
+        "Seleccionar la señal semanal mediante scoring cuantitativo de relevancia estratégica sobre todas las señales elegibles del período.",
+        "Enriquecer primero con evidencia Alicanto, luego histórico Alicanto y finalmente web aprobada.",
+        "Aplicar Deep Intelligence con TERRA antes de auditoría.",
+        "Auditar con lentes editorial y negocio salud; PASS/REVISE/REJECT con sugerencias concretas.",
+        "Aplicar hasta dos ciclos de revisión; si falla, evaluar siguiente candidato; nunca forzar publicación semanal."
+      ],
+      "progress": "Scoring estratégico v2, contrato de enriquecimiento, auditoría, revisión y publicación fail-closed ya definidos y versionados. La integración ejecutable de TERRA no existe aún en el repositorio y permanece como dependencia técnica abierta; el Insight actual no debe presentarse como TERRA hasta conectarla.",
+      "evidence": [
+        "config/editorial_rules_v2.json",
+        "src/radar_salud/free_value.py",
+        "docs/WEEKLY_INSIGHT_PIPELINE_V2_2026_09_26.md"
+      ],
+      "missing": [
+        "Integrar runtime TERRA o un ejecutor Work autorizado que genere artefacto estructurado y trazable.",
+        "Implementar enriquecimiento web reproducible y persistir mapa de evidencia.",
+        "Implementar auditoría editorial+negocio estructurada y bucle REVISE/REJECT.",
+        "Validar end-to-end una publicación semanal con TERRA antes de reemplazar el fallback actual."
+      ]
     }
   ],
   "updated_at": "2026-09-26"
