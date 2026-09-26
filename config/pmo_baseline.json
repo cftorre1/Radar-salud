@@ -2460,6 +2460,33 @@
         "Parser de Boletín IP (acreditación, mediación, reclamos y RNPI) y comparación temporal.",
         "QA editorial/negocio de los hallazgos analíticos antes de elevar el nivel de cada ficha."
       ]
+    },
+    {
+      "id": "editorial_intelligence_committee_operating_model_2026_09_26",
+      "status": "Implementado",
+      "priority": "Crítica",
+      "horizon": "Permanente",
+      "decisions": [
+        "Reemplazar el consejo editorial reactivo por un Comité de Inteligencia Editorial integrado antes de publicación.",
+        "Núcleo permanente: Editorial, Negocio Salud, Data Analytics, BI/Decision Intelligence, Regulación/Legal y Evidence & Research.",
+        "Activar especialistas condicionales por tipo de señal; UX visual deja de ser miembro permanente.",
+        "Cada señal usa un panel distinto según su tipo y no obtiene PASS con objeciones críticas abiertas.",
+        "Toda nueva estadística sin parser genera deuda analítica automática visible en PMO/BI.",
+        "Todo aprendizaje aprobado debe versionarse, probarse y protegerse contra regresión."
+      ],
+      "progress": "Modelo del comité, charter, paneles por tipo y learning loop versionados. Product report registra automáticamente deuda de parsers para nuevas estadísticas y el portal Admin la muestra como backlog.",
+      "evidence": [
+        "config/editorial_intelligence_committee_v1.json",
+        "docs/EDITORIAL_INTELLIGENCE_COMMITTEE_CHARTER_2026_09_26.md",
+        "scripts/product_report.py",
+        "web/admin/product.html",
+        "web/admin/product.js"
+      ],
+      "missing": [
+        "Integrar la ejecución del panel experto como artefacto estructurado obligatorio por señal antes de publicación.",
+        "Definir runtimes/modelos concretos por rol experto y política de costo/latencia.",
+        "Validar end-to-end una nueva fuente usando el comité desde descubrimiento hasta publicación."
+      ]
     }
   ],
   "updated_at": "2026-09-26"
