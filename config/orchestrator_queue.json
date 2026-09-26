@@ -1534,7 +1534,8 @@
       "objective": "Aplicar auditoría editorial validada y elevar Insight semanal, Global Intelligence, Pulso/lectura de datos, nueva vigilancia epidemiológica y portal PMO/BI antes de reconsiderar producción.",
       "depends_on": [
         "news_content_expert_audit_2026_09_25",
-        "home_v2_final_polish_2026_09_25"
+        "home_v2_final_polish_2026_09_25",
+        "editorial_90d_learning_rules_2026_09_26"
       ],
       "instructions": [
         "Aplicar en staging el lote editorial P0/P1 respaldado por data/editorial_audit_2026_09_26.json, preservando hechos, atribución y trazabilidad. Revisar consistencia del copy corto de «Ponte al día» y del contenido de la tarjeta/detalle para cada señal visible.",
@@ -1560,6 +1561,51 @@
         "resultado técnico/editorial del nuevo frente epidemiológico",
         "auditoría PMO/BI con scorecard y backlog",
         "tests + QA desktop/mobile + Reviewer independiente PASS"
+      ],
+      "progress": " Dirección amplía alcance 2026-09-26: antes de cerrar reglas editoriales, auditar las 29 señales históricas adicionales de 90 días y derivar reglas persistentes de selección/redacción con fuerte lente de negocio de salud."
+    },
+    {
+      "id": "editorial_90d_learning_rules_2026_09_26",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Ampliar la auditoría editorial a las 29 señales históricas adicionales del snapshot de 90 días y convertir los hallazgos en reglas persistentes de selección, redacción, relevancia y generación de nuevas señales.",
+      "depends_on": [
+        "news_content_expert_audit_2026_09_25"
+      ],
+      "instructions": [
+        "Auditar las 29 señales adicionales fuera del período inicial de 14 días. No volver a contar como nuevas las 14 ya auditadas; al cierre deben existir 43 señales auditadas del snapshot, más las piezas especiales cuando corresponda.",
+        "Usar los mismos tres lentes previos, reforzando de forma deliberadamente crítica el lente de negocio/financiamiento de salud: materialidad, impacto económico/operacional, actor afectado, magnitud, horizonte, accionabilidad y qué decisión podría cambiar.",
+        "Para cada señal, evaluar por separado: si merece existir como señal; prioridad/relevancia; título; resumen/qué pasó; por qué importa; cifras clave; vigencia; atribución; riesgo de sobreinterpretación; relación con señales/datos previos.",
+        "Clasificar explícitamente señales débiles o rutinarias que deberían ser rechazadas, degradadas, agrupadas o convertidas en dato de contexto, aunque la fuente sea válida.",
+        "Distinguir reglas por tipo: Normativa, Legal, Noticias, Datos, Fiscalización y piezas especiales.",
+        "Derivar una taxonomía de valor de negocio basada en la auditoría: cambio regulatorio/obligación, impacto financiero, cartera/competencia, capacidad/oferta, operaciones/red asistencial, riesgo/fiscalización, inversión/M&A, innovación/tecnología, epidemiología/presión asistencial, workforce/capacidad, y contexto sin acción.",
+        "Convertir los patrones aprendidos en reglas ejecutables para el pipeline futuro: criterios de admisión/rechazo, score de materialidad, gates de evidencia, plantillas de redacción y reglas de por qué importa. No depender de listas manuales de URLs.",
+        "Definir umbrales fail-closed: si no hay actor+acción+consecuencia o materialidad suficiente, no elevar la pieza; si falta evidencia de impacto, explicitar la incertidumbre; si es rutina repetitiva, agrupar o degradar.",
+        "Definir reglas específicas para Insight semanal: requiere conexión entre al menos dos evidencias independientes o señal + indicador independiente y una interpretación de negocio no obvia.",
+        "Definir reglas específicas para Global Intelligence: evidencia internacional separada de hipótesis Chile, diferenciación clara y lectura estratégica accionable.",
+        "Crear un set de ejemplos positivos/negativos a partir de las 43 señales auditadas para usar como fixtures/tests de regresión editorial.",
+        "Implementar las reglas en configuración/código del pipeline solo después de generar una especificación revisable y pasar Reviewer independiente; evitar hardcode frágil o sobreajuste a estos ejemplos.",
+        "Medir el efecto contra el snapshot actual: cuántas señales quedarían aceptadas, degradadas, agrupadas o rechazadas bajo las nuevas reglas y por qué.",
+        "No tocar producción. Validar en staging con tests automáticos, fixtures editoriales y Reviewer independiente."
+      ],
+      "constraints": [
+        "No inventar valor de negocio cuando la evidencia no lo soporta.",
+        "No optimizar solo para brevedad; priorizar comprensión y decisión.",
+        "No asumir que toda publicación oficial merece convertirse en señal.",
+        "No entrenar o ajustar modelos externos; el aprendizaje aquí significa reglas, prompts, scoring, fixtures y tests persistentes en el producto.",
+        "No promover a producción sin revisión de Dirección."
+      ],
+      "evidence_required": [
+        "matriz de las 29 señales adicionales",
+        "consolidado de 43 señales auditadas",
+        "hallazgos del experto de negocio de salud con criterios críticos",
+        "especificación de reglas editoriales/selección v2",
+        "taxonomía y score de materialidad",
+        "fixtures positivos/negativos y tests de regresión",
+        "simulación before/after del snapshot bajo las nuevas reglas",
+        "Reviewer independiente PASS o blockers explícitos"
       ]
     }
   ],
