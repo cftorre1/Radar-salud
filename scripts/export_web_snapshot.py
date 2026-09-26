@@ -274,19 +274,75 @@ def _routine_accreditation(s):
     system_wide=bool(re.search(r"\b(todos los prestadores|prestadores institucionales en general|nuevo estándar|cambia el estándar|modifica el sistema de acreditación)\b",text))
     return bool((individual or programs) and not strategic and not system_wide)
 
-def _statistical_release_requires_analysis(s):
-    """Material statistical releases cannot occupy feed with publication-only copy."""
+def _is_material_statistical_release(s):
     if s.get("source_name")!="Superintendencia de Salud" or "Datos" not in (s.get("signal_types") or []):
         return False
     t=(s.get("title") or "").lower()
-    material=("ges" in t or "auge" in t or "series estadísticas" in t or "series estadisticas" in t
-              or "boletín estadístico" in t or "boletin estadistico" in t
-              or "financier" in t or "prestaciones de salud" in t or "egresos hospitalarios" in t)
-    return material
+    return bool("estadíst" in t or "estadist" in t or "boletín" in t or "boletin" in t
+                or "ges" in t or "auge" in t or "cartera" in t or "movilidad" in t
+                or "suscripciones" in t or "desahucios" in t)
 
-def _has_statistical_analysis(s):
-    return bool(s.get("data_insights") or s.get("data_insight_evidence") or s.get("summary_table")
-                or s.get("distinct_decision_value") is True)
+def _document_inventory(s):
+    docs=s.get("source_documents") or []
+    names=[]
+    for d in docs:
+        text=(" ".join([str(d.get("label") or ""),str(d.get("url") or "")])).lower()
+        for key,label in (
+            ("financier","finanzas"),("cartera","cartera"),("prestaciones","prestaciones"),
+            ("licencias","licencias médicas"),("egresos","egresos hospitalarios"),
+            ("planes","planes de salud"),("ges","GES"),("auge","GES"),
+            ("acreditacion","acreditación"),("mediacion","mediación"),
+            ("reclamos","reclamos"),("rnpi","registro de prestadores")
+        ):
+            if key in text and label not in names:names.append(label)
+    return names
+
+def _statistical_value_ladder(s):
+    """Always publish material public statistics at the highest supported value level."""
+    r=dict(s)
+    if not _is_material_statistical_release(r):
+        return r
+    connected=bool(r.get("historical_connections") or r.get("related_context") or r.get("distinct_decision_value") is True)
+    deep=bool(r.get("data_insights") or r.get("data_insight_evidence") or r.get("summary_table") or r.get("key_points"))
+    central=bool(r.get("key_numbers") or r.get("key_facts"))
+    if connected and deep:
+        level="connected_insight"
+    elif deep:
+        level="deep_analysis"
+    elif central:
+        level="central_finding"
+    else:
+        level="publication_inventory"
+    r["statistical_value_level"]=level
+
+    title=str(r.get("title") or "")
+    facts=[str(x).strip() for x in (r.get("key_facts") or []) if str(x).strip()]
+    inventory=_document_inventory(r)
+    docs=r.get("source_documents") or []
+
+    if level=="central_finding":
+        if "ges" in title.lower() or "auge" in title.lower():
+            period=next((x for x in facts if "actualiz" in x.lower()),"")
+            r["card_what"]="La publicación reúne casos y tasas de uso GES por problema de salud y seguro (Fonasa e Isapres)."+(f" {period}" if period else "")
+            r["card_why"]="Permite saber qué patologías y tasas pueden compararse entre seguros; Alicanto aún no ha calculado variaciones entre períodos para esta entrega."
+        elif facts:
+            r["card_what"]=facts[0]
+            r["card_why"]="Alicanto identificó el contenido central del documento; el análisis comparativo aún no está disponible."
+    elif level=="publication_inventory":
+        if inventory:
+            r["card_what"]=f"La publicación reúne {len(docs)} archivos oficiales sobre "+", ".join(inventory)+"."
+            r["card_why"]="Aunque aún no exista un insight calculado, permite conocer qué estadísticas públicas están disponibles y decidir qué serie revisar."
+        elif docs:
+            r["card_what"]=f"La publicación incorpora {len(docs)} archivos estadísticos oficiales."
+            r["card_why"]="Alicanto la mantiene visible para que puedas saber qué información pública existe sin abrir cada archivo."
+        else:
+            r["card_what"]=r.get("what_happened") or f"Se publicó {title}."
+            r["card_why"]="Alicanto la mantiene visible como fuente estadística pública; aún no existe un análisis reproducible para esta entrega."
+    elif level=="deep_analysis" and not r.get("card_what"):
+        r["card_what"]=r.get("what_happened")
+        r["card_why"]=r.get("why_it_matters")
+
+    return r
 
 def _sanction_pulses(signals, today=None):
     """Keep individual records in history, show one rolling pulse per sector."""
@@ -350,9 +406,10 @@ def curate(signals,resolve_external=True):
     if not normalized:return []
     latest=max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
     recent=[s for s in normalized if _d(s.get("event_date")) and (latest-_d(s.get("event_date"))).days<=90 and not _routine_accreditation(s)]
-    # A material statistical release must add an evidenced finding, not merely announce a file.
-    # Keep unanalyzed releases in durable history until an analytic provider enriches them.
-    recent=[s for s in recent if not (_statistical_release_requires_analysis(s) and not _has_statistical_analysis(s))]
+    # Public statistics remain visible even when deep analysis is unavailable.
+    # Enrich each one to the highest supported level: connected insight -> deep analysis
+    # -> central finding -> useful publication inventory.
+    recent=[_statistical_value_ladder(s) for s in recent]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 
