@@ -1562,11 +1562,11 @@
         "auditoría PMO/BI con scorecard y backlog",
         "tests + QA desktop/mobile + Reviewer independiente PASS"
       ],
-      "progress": "2026-09-26: tarea crítica recogida tras validar reglas editoriales 90d. Iniciado lote P0/P1, evaluación fail-closed de Insight, revisión Global/Pulso, frente epidemiológico separado y diagnóstico PMO/BI; staging solamente."
+      "progress": "2026-09-26: tarea crítica recogida tras validar reglas editoriales 90d. Iniciado lote P0/P1, evaluación fail-closed de Insight, revisión Global/Pulso, frente epidemiológico separado y diagnóstico PMO/BI; staging solamente. Toma interactiva activa: no esperar al consumidor automático para materializar reglas/editorial; seguir después con Insight, Global, epidemiología y auditoría PMO."
     },
     {
       "id": "editorial_90d_learning_rules_2026_09_26",
-      "status": "validated",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1607,7 +1607,7 @@
         "simulación before/after del snapshot bajo las nuevas reglas",
         "Reviewer independiente PASS o blockers explícitos"
       ],
-      "progress": "2026-09-26: auditoría 90 días y reglas editoriales v2 validadas en staging 51013de96c94729ff08c2849255206c8778adc26. Matriz consolidada 43/43 (29 históricas adicionales), contrafactual manual 23 accept / 11 degrade / 8 group / 1 reject, taxonomía y score configurables, gates fail-closed, fixtures y pipeline integrado. Reviewer bloqueó el primer corte; se corrigieron anclaje por SHA, rotulación de simulación, independencia/validez de referencias y entradas malformadas. QA final PASS; producción intacta.",
+      "progress": "Toma interactiva 2026-09-26 tras confirmar que el entorno de automatización puede leer pero no escribir GitHub. Análisis preliminar de las 29 señales históricas: 13 mantener como señales, 6 degradar a contexto, 8 convertir en insumos agregados de Pulso/Trend/Benchmark, 1 mover a Global Intelligence y 1 rechazar por efecto no demostrado. Se materializan ahora reglas editoriales persistentes v2; falta matriz item-a-item completa, fixtures/tests, simulación before/after y Reviewer.",
       "evidence": [
         "51013de96c94729ff08c2849255206c8778adc26 — implementación y evidencia editorial v2 en staging",
         "data/editorial_audit_90d_2026_09_26.json — 43 señales auditadas; 14 previas + 29 adicionales; snapshot SHA-256 206fbe91882dda45f55db3be9c16399633a7c596b59d296b653624e65886b7e6",
@@ -1615,9 +1615,12 @@
         "Simulación contrafactual manual: 23 aceptadas, 11 degradadas, 8 agrupadas y 1 rechazada; no se presenta como salida automática del motor",
         "180 tests Python, 28 web y 26 Playwright desktop/mobile PASS; git diff --check PASS",
         "Reviewer independiente FINAL PASS tras dos rondas de correcciones fail-closed",
-        "main/producción no modificados"
+        "main/producción no modificados",
+        "Automatización 2026-09-26: análisis read-only completado; escrituras GitHub rechazadas por protecciones del entorno programado.",
+        "Toma interactiva 2026-09-26: GitHub write disponible; continuidad trasladada al contexto interactivo."
       ],
-      "completed_at": "2026-09-26"
+      "completed_at": "2026-09-26",
+      "blocked_by": null
     }
   ],
   "execution_policy": {
