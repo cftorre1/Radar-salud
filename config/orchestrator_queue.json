@@ -1306,7 +1306,7 @@
     },
     {
       "id": "news_content_expert_audit_2026_09_25",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1337,7 +1337,15 @@
         "banderas de evidencia insuficiente",
         "Reviewer independiente"
       ],
-      "progress": "2026-09-26: tarea crítica recogida automáticamente tras validar Home share/deep-link. Builder inició auditoría editorial de las 43 señales visibles y las piezas especiales con los tres lentes aprobados; sin rediseño ni cambios de fuentes/ranking."
+      "progress": "2026-09-26: auditoría editorial validada en staging 6bd0e8598b2c6cbe9d909901f046e4c4ab290ecb. Matriz cubre 16/16 piezas visibles iniciales (14 señales + Insight semanal + Global Intelligence), con copy actual verificado contra render, propuesta, justificación y banderas de evidencia. Resultado: 4 conservar, 10 ajustar título, 1 ajustar resumen, 1 ajustar por qué importa y 2 requieren evidencia adicional; 0 descartes. Builder, 165 tests Python, 28 web, 26 browser desktop/mobile y Reviewer independiente PASS tras dos correcciones de trazabilidad. No se aplicaron cambios editoriales masivos ni se tocó main/producción.",
+      "evidence": [
+        "staging 6bd0e8598b2c6cbe9d909901f046e4c4ab290ecb — matriz, informe y pruebas de auditoría",
+        "data/editorial_audit_2026_09_26.json — 16/16 piezas visibles, copy actual/propuesto y evidencia",
+        "docs/NEWS_CONTENT_EXPERT_AUDIT_2026_09_26.md — hallazgos P0/P1 y recomendación de implementación separada",
+        "165 tests Python, 28 tests web y 26 browser desktop/mobile PASS",
+        "Reviewer independiente FINAL PASS tras alinear copy actual con Home/free_value y corregir conteos/mecanismo Cenabast"
+      ],
+      "completed_at": "2026-09-26"
     },
     {
       "id": "model_quality_experiment_preflight_2026_09_25",

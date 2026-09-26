@@ -2106,14 +2106,23 @@
     },
     {
       "id": "news_content_expert_audit_2026_09_25",
-      "status": "En_ejecucion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Overnight",
       "decisions": [
         "Auditar contenido de cada señal en Ponte al día y tarjeta con lente periodístico, negocio salud y producto digital.",
         "No rediseñar UI."
       ],
-      "progress": "2026-09-26: Work inició auditoría editorial trazable de las 43 señales visibles y piezas especiales; alcance limitado a matriz, copy propuesto y evidencia disponible."
+      "progress": "2026-09-26: auditoría editorial validada en staging 6bd0e8598b2c6cbe9d909901f046e4c4ab290ecb. Cobertura 16/16 piezas visibles iniciales; matriz actual/propuesto verificada contra el render de Home y free_value, con flags de evidencia insuficiente y sin aplicar cambios masivos.",
+      "implementation_sha": "6bd0e8598b2c6cbe9d909901f046e4c4ab290ecb",
+      "validation_evidence": [
+        "Matriz estructurada: data/editorial_audit_2026_09_26.json",
+        "Informe ejecutivo: docs/NEWS_CONTENT_EXPERT_AUDIT_2026_09_26.md",
+        "165 tests Python, 28 web y 26 browser desktop/mobile PASS",
+        "Reviewer independiente FINAL PASS tras dos rondas de corrección",
+        "No se modificó UI, selección, ranking, fuentes, main ni producción"
+      ],
+      "completed_at": "2026-09-26"
     },
     {
       "id": "overnight_resume_experiment_sources_2026_09_25",
