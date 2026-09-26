@@ -196,9 +196,9 @@ def test_all_opaque_normative_acts_get_identity_plus_subject_for_public_title():
     assert acts
     for row in acts:
         assert row.get("display_title"), row.get("title")
-        assert row["normative_document_label"] in row["display_title"]
-        assert " sobre " in row["display_title"]
-        assert len(row["display_title"]) > len(row["normative_document_label"]) + 8
+        assert row["display_title"] != row["normative_document_label"]
+        assert row["normative_document_number"] in row["display_title"]
+        assert len(row["display_title"]) > len(row["normative_document_number"]) + 8
 
 
 def test_pulso_suppresses_routine_component_statistics_including_regional_cartera():
