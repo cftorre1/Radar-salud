@@ -51,3 +51,17 @@ La lectura semanal anterior contenía una conexión ejecutiva trazable, pero nac
 ## Recomendación de implementación
 
 Preparar los cambios P0/P1 como un lote editorial separado y revisable en `staging`, usando únicamente los campos `card_what`, `card_why` y títulos derivados ya respaldados por la señal. No promover el lote a producción ni modificar reglas de selección hasta una tarea explícita de implementación.
+
+
+## Regla para la próxima ejecución del consejo editorial
+
+La siguiente auditoría experta debe incorporar como preguntas obligatorias, para cada documento normativo:
+
+- ¿Se identifica claramente en el título el tipo de acto y número?
+- ¿Queda claro en el título el tema central?
+- Si es una resolución, ¿se entiende a qué Circular, Oficio, Resolución, norma o antecedente responde, modifica, confirma, ejecuta o aplica, cuando esa relación está respaldada por evidencia?
+- ¿Se conserva esa información en Ponte al día, card y detalle?
+- ¿La propuesta del experto respeta el contrato editorial persistente en vez de reemplazarlo por un título más opaco?
+- ¿Una pieza individual está duplicando un Pulso o agregado sin aportar un hallazgo decisional distinto?
+
+Estas preguntas prevalecen sobre decisiones históricas de copy de esta auditoría. El hecho de que una pieza haya sido aceptada anteriormente no autoriza a degradar identidad normativa, tema, relación documental o reglas de agrupación introducidas después.
