@@ -394,3 +394,20 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  const briefOpaque=page.locator('.briefitem strong').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
  await expect(briefOpaque).toHaveCount(0);
 });
+
+test('Pulso Isapre leads with executive table and feed excludes low-value/unanalyzed data cards',async({page})=>{
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
+ await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
+ await expect(page.locator('article[data-card]').filter({hasText:'Resonancia Magnética del Biobío'})).toHaveCount(0);
+ await expect(page.locator('article[data-card]').filter({hasText:'Estadística Trimestral de Casos GES'})).toHaveCount(0);
+ await expect(page.locator('article[data-card]').filter({hasText:'Series Estadísticas del Sistema ISAPRE 1990-2025'})).toHaveCount(0);
+ await expect(page.locator('article[data-card]').filter({hasText:'Boletín Estadístico Informativo IP'})).toHaveCount(0);
+ const pulse=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})});
+ await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').click();
+ const table=page.locator('#detailBody .summary-table');
+ await expect(table).toBeVisible();
+ await expect(table).toContainText('Resumen ejecutivo Isapre');
+ for(const label of ['Beneficiarios','Cotizantes','Cargas','Suscripciones','Desahucios voluntarios','Movilidad'])await expect(table).toContainText(label);
+ await expect(table).toContainText('2.487.497');await expect(table).toContainText('-17.700');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+});
