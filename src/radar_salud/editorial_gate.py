@@ -1,6 +1,8 @@
 from __future__ import annotations
 from typing import Any, Dict, Tuple
 
+from .editorial_rules_v2 import evaluate_editorial_v2
+
 _BINARY=("%pdf-"," endobj"," endstream","/resources ","/contents "," obj <"," stream ")
 _HTML=("<a ","<script","<style",'target="_blank"',"schema.org")
 _GENERIC=("formaliza un cambio normativo o legal del sector salud","aporta información oficial reciente","describe un cambio material para una parte relevante del sistema de salud")
@@ -46,5 +48,8 @@ def publication_ready(r:Dict[str,Any])->Tuple[bool,str,int]:
     if "[…]" in what or what.rstrip().endswith("[…]"):return False,"truncated_summary",q
     if not r.get("source_url"):return False,"missing_source",q
     if not r.get("event_date") and r.get("source_name") in ("Ministerio de Salud","Diario Financiero","SUSESO","Diario Oficial"):return False,"missing_date",q
+    if "editorial_v2" in r:
+        v2=evaluate_editorial_v2(r)
+        if v2.decision!="accept":return False,f"editorial_v2_{v2.decision}",min(q,v2.materiality_score)
     if q<62:return False,"quality_below_threshold",q
     return True,"ok",q
