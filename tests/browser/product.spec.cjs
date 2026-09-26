@@ -163,10 +163,12 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(page.locator('#brief [data-share]')).toHaveCount(0);
  const share=page.locator('#local [data-share]').first();await expect(share).toBeVisible();await expect(share).toHaveAttribute('aria-label',/Compartir:/);
+ await expect(share.locator('xpath=..')).toHaveClass(/card-status-actions/);await expect(share.locator('xpath=..').locator('[data-read],[data-special-read]')).toHaveCount(1);await expect(page.locator('.card-actions [data-share]')).toHaveCount(0);
+ const targetSize=await share.evaluate(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height}));expect(targetSize.width).toBeGreaterThanOrEqual(44);expect(targetSize.height).toBeGreaterThanOrEqual(44);
  await share.click();const shared=(await page.evaluate(()=>window.__shared))[0];expect(shared.url).toContain('#');await expect(share.locator('xpath=following-sibling::*[1]')).toHaveText('Compartido');
  await page.evaluate(()=>{delete navigator.share;window.__copied=[];Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:value=>{window.__copied.push(value);return Promise.resolve()}}})});
  await share.click();await expect(share).toHaveAttribute('data-share-result','copied');await expect(share.locator('xpath=following-sibling::*[1]')).toHaveText('Enlace copiado');expect((await page.evaluate(()=>window.__copied))[0]).toContain('#');
- await page.goto(shared.url);await expect(page.locator('#meta')).toContainText('Última actualización:');const target=new URL(shared.url).hash.slice(1),targetCard=page.locator(`[id="${target}"]`);await expect(targetCard).toBeVisible();await expect(page).toHaveURL(new RegExp(`#${target.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`));
+ await page.goto(shared.url);await expect(page.locator('#meta')).toContainText('Última actualización:');const target=new URL(shared.url).hash.slice(1),targetCard=page.locator(`[id="${target}"]`);await expect(targetCard).toBeVisible();await expect(targetCard).toBeFocused();await expect(targetCard).not.toHaveClass(/read/);await expect(page).toHaveURL(new RegExp(`#${target.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`));
  const specialShare=page.locator('.signal.special.global [data-share]');await expect(specialShare).toHaveAttribute('data-share',/^special-/);
  await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
