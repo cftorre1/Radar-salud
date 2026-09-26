@@ -143,9 +143,19 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
                             "model": None, "output_id": theme["id"]},
         }
     weekly = None
-    ranked = rank_weekly_candidates(snapshot.get("signals") or [], prior_history, today)
-    if not current and ranked:
+    signals = snapshot.get("signals") or []
+    locked_signal = next((s for s in signals if current and s.get("source_url") == current.get("source_url")), None)
+    ranked = rank_weekly_candidates(signals, prior_history, today)
+    picked = None
+    if locked_signal:
+        picked = {
+            "signal": locked_signal,
+            "archetype": current.get("archetype") or _archetype(locked_signal),
+            "scope": current.get("scope") or ((locked_signal.get("scopes") or [None])[0]),
+        }
+    elif ranked:
         picked = ranked[0]
+    if picked:
         signal = picked["signal"]
         support = [
             *(signal.get("key_points") or []),
@@ -160,7 +170,7 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
                 "insight_title": f"Qué cambia esta semana: {signal['title']}",
                 "summary": signal.get("card_what") or signal.get("what_happened"),
                 "insight_teaser": signal.get("card_why") or signal.get("why_it_matters"),
-                "insight_reading": signal.get("card_why") or signal.get("why_it_matters"),
+                "insight_reading": signal.get("why_it_matters") or signal.get("card_why"),
                 "decision_use": "Revisar impacto, implementación y próximos hitos con la evidencia original.",
                 "source_name": signal["source_name"],
                 "source_url": signal["source_url"],
