@@ -2093,6 +2093,37 @@
         "DMARC creado en modo monitoreo p=none.",
         "Falta validar Authentication-Results y luego conectar MailerLite."
       ]
+    },
+    {
+      "id": "email_auth_qa_tomorrow_2026_09_26",
+      "status": "Pendiente_humano",
+      "priority": "Alta",
+      "horizon": "Mañana",
+      "decisions": [
+        "Validar en mensaje real SPF=PASS, DKIM=PASS y DMARC=PASS antes de cerrar Google Workspace.",
+        "No bloquea el trabajo nocturno de producto/fuentes."
+      ]
+    },
+    {
+      "id": "news_content_expert_audit_2026_09_25",
+      "status": "Aprobado_para_ejecucion",
+      "priority": "Crítica",
+      "horizon": "Overnight",
+      "decisions": [
+        "Auditar contenido de cada señal en Ponte al día y tarjeta con lente periodístico, negocio salud y producto digital.",
+        "No rediseñar UI."
+      ]
+    },
+    {
+      "id": "overnight_resume_experiment_sources_2026_09_25",
+      "status": "Aprobado_para_ejecucion",
+      "priority": "Alta",
+      "horizon": "Overnight",
+      "decisions": [
+        "Reanudar Fuentes Chile.",
+        "Preparar completamente el experimento Luna/Terra/Astra sin gasto; ejecución real sigue requiriendo presupuesto/credenciales.",
+        "Bloqueos externos no detienen otras tareas."
+      ]
     }
   ],
   "updated_at": "2026-09-25"
