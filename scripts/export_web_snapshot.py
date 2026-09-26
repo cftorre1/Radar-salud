@@ -119,6 +119,15 @@ def _editorial_enrichment(s):
         r.pop("historical_context_status",None)
     return r
 
+def _compact_subject(text, max_chars=105):
+    value=" ".join(str(text or "").split()).strip(" .:;-")
+    # Turn an obligation/impact sentence into a subject phrase suitable for a title.
+    value=re.sub(r"^(?:las?|los?)\s+(?:isapres?|prestadores?|entidades?|instituciones?|empleadores?|beneficiarios?|aseguradores?)\s+(?:deben|deberán|debe|deberá)\s+","",value,flags=re.I)
+    value=re.sub(r"^(?:la|el)\s+superintendencia\s+(?:de\s+salud\s+)?(?:dispuso|instruyó|estableció|establece|modificó|modifica|ordenó|ordena)\s+","",value,flags=re.I)
+    if len(value)<=max_chars:return value
+    cut=value[:max_chars+1].rsplit(" ",1)[0].rstrip(" ,;:-")
+    return cut
+
 def _normative_contract(s):
     r=dict(s)
     if r.get("event_type")!="REGULATION":
@@ -129,9 +138,16 @@ def _normative_contract(s):
         kind=" ".join(m.group(1).split())
         prefix=(m.group(2) or "").upper()
         number=m.group(3)
+        label=f"{kind} {prefix+'/' if prefix else ''}N°{number}"
         r["normative_document_type"]=kind
         r["normative_document_number"]=f"{prefix+'/' if prefix else ''}N°{number}"
-        r["normative_document_label"]=f"{kind} {prefix+'/' if prefix else ''}N°{number}"
+        r["normative_document_label"]=label
+        subject=_compact_subject(r.get("card_why") or r.get("why_it_matters") or r.get("card_what") or r.get("what_happened"))
+        if subject:
+            r["normative_subject"]=subject
+            # Persistent presentation contract: document identity is preserved,
+            # but a bare act number is never the public-facing headline.
+            r["display_title"]=f"{label} sobre {subject[0].lower()+subject[1:] if len(subject)>1 else subject.lower()}"
     return r
 
 def _doc_key(s):
@@ -209,8 +225,14 @@ def _latest_stats(signals):
         if f:fam[f].append(s)
         else:other.append(s)
     for family,items in fam.items():
-        if pulse_present and family in {"cartera_total","suscripciones","movilidad"}:
-            continue
+        if pulse_present and family in {"cartera_total","cartera_regional","suscripciones","movilidad"}:
+            # When the aggregate pulse already covers the same release period,
+            # routine component cards are redundant unless they add a distinct,
+            # evidenced decision insight of their own.
+            candidates=[x for x in items if x.get("distinct_decision_value") is True or x.get("data_insights")]
+            if not candidates:
+                continue
+            items=candidates
         other.append(max(items,key=lambda x:(_d(x.get("event_date")) or date.min,x.get("radar_score",0))))
     return other
 
