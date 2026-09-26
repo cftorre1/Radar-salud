@@ -1206,6 +1206,47 @@
       ],
       "completed_at": "2026-09-25",
       "validation_sha": "5b77435ffda7bf9ce4c4f72365600a05736a6855"
+    },
+    {
+      "id": "home_v2_final_polish_2026_09_25",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Aplicar el último polish de Home V2 en staging para cerrar consistencia editorial, jerarquía visual, densidad mobile y microinteracciones sin rediseñar la arquitectura.",
+      "depends_on": [
+        "home_v2_special_cards_refinement_2026_09_25"
+      ],
+      "instructions": [
+        "Releer staging y preservar toda lógica validada del refinement anterior.",
+        "En Ponte al día, mostrar fecha y fuente compactas en TODAS las filas, no solo Insight semanal y Global Intelligence. Ejemplos: «25 sep · Minsal», «23 sep · SIS», «18 sep · Reuters + WHO». Mantener metadata visualmente secundaria.",
+        "Ordenar piezas especiales en Ponte al día como: 1) Global Intelligence no leído, 2) Insight semanal no leído, 3) resto de señales no leídas. Al leerse, desaparecen de Ponte al día y permanecen en el feed según fecha/criterio activo.",
+        "Aumentar moderadamente la presencia cromática de Global Intelligence (dorado sobrio) e Insight semanal (plateado/azul grisáceo), con menos transparencia que ahora, tanto en Ponte al día como en las tarjetas del feed. Mantener legibilidad, elegancia y estados leídos atenuados.",
+        "Refinar la acción de lectura: reducir un poco el tamaño visual y usar un patrón estándar e inequívoco (check/check-circle u otro icono reconocido). Puede ser icon-only en mobile si mantiene aria-label/title accesible y target táctil suficiente; en desktop puede usar icono + texto corto si mejora comprensión.",
+        "Reducir el espacio vertical entre «Resumen semanal por correo» y «Ponte al día».",
+        "Corregir la navegación mobile para evitar sensación de scroll atrapado dentro de Ponte al día. La página debe dejar una señal visual clara de que hay feed después: reducir la altura/viewport interno y/o mostrar un fragmento del primer card del feed sin perjudicar la lectura rápida. Evitar nested-scroll frustrante.",
+        "Agregar acción «Compartir» SOLO en las tarjetas del feed/general, no en Ponte al día. Usar icono estándar de share, ocupar poco espacio y emplear Web Share API cuando esté disponible, con fallback seguro (por ejemplo copiar enlace). No implementar «Anclar/Guardar» en esta iteración.",
+        "La acción Compartir debe usar URL canónica/deep-link de la señal o pieza cuando exista y un título útil; no recolectar datos ni activar analytics nuevos.",
+        "Mantener métricas fail-closed: no mostrar «detectadas» mientras el total bruto por período no sea auditable; no inventar cifras.",
+        "Ejecutar Builder → tests → QA desktop/mobile → Reviewer independiente → corrección → QA final. Revisar especialmente densidad mobile, accesibilidad de iconos, scroll de página vs scroll interno, share fallback y estado leído."
+      ],
+      "constraints": [
+        "Solo staging; no tocar main/producción.",
+        "No introducir Anclar/Guardados.",
+        "No cambiar auth, pagos, pricing, proveedores, privacidad, legal, analytics ni Fuentes Chile.",
+        "No degradar target táctil/accessibility para ganar espacio.",
+        "No rediseñar la Home ni reabrir decisiones ya validadas fuera de este polish."
+      ],
+      "evidence_required": [
+        "fecha/fuente en todas las filas de Ponte al día",
+        "Global primero e Insight segundo cuando no leídos",
+        "fondos especiales más presentes y consistentes en inbox/feed",
+        "acción leído compacta e inequívoca con accesibilidad",
+        "menor separación newsletter→Ponte al día",
+        "QA mobile demuestra continuidad hacia el feed y ausencia de scroll trap problemático",
+        "Compartir funciona en cards con Web Share/fallback sin aparecer en Ponte al día",
+        "tests + QA desktop/mobile + Reviewer + preview PASS"
+      ]
     }
   ],
   "execution_policy": {
