@@ -216,8 +216,8 @@ def _resolution_relation_titles(signals):
     for s in signals:
         r=dict(s)
         kind=str(r.get("normative_document_type") or "")
-        source_title=str(r.get("source_title_full") or r.get("title") or "")
-        opaque=bool(re.fullmatch(r"(?:Resolución(?:\s+Exenta)?)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",source_title,re.I))
+        visible_title=str(r.get("title") or "")
+        opaque=bool(re.fullmatch(r"(?:Resolución(?:\s+Exenta)?)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",visible_title,re.I))
         if kind.lower().startswith("resolución") and opaque:
             rels=r.get("related_context") or []
             parent=next((x for x in rels if re.search(r"^(Circular|Oficio|Resolución|Decreto)\b",str(x.get("title") or ""),re.I)),None)
