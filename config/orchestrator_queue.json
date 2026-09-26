@@ -1642,6 +1642,82 @@
       ],
       "completed_at": "2026-09-26",
       "blocked_by": null
+    },
+    {
+      "id": "content_contract_pulso_normative_weekly_analysis_2026_09_26",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Builder/Work",
+      "source": "Dirección",
+      "objective": "Corregir contrato de contenido, Pulso Isapre, semántica normativa, referencias Bupa y lógica de análisis semanal antes de producción.",
+      "depends_on": [
+        "content_value_epidemiology_admin_iteration_2026_09_26",
+        "editorial_90d_learning_rules_2026_09_26"
+      ],
+      "instructions": [
+        "Definir un contrato mínimo uniforme para toda señal publicada: triage en Ponte al día + card/feed + detalle. Toda señal debe exponer al menos título informativo, tipo/ámbito, fecha, fuente original, qué pasó y por qué importa. Contexto/análisis/documentos relacionados solo aparecen si existe evidencia material; nunca mostrar botones/secciones vacíos.",
+        "Distinguir visual y semánticamente Fuente original, Documento normativo, Corroboración independiente y Contexto relacionado. Una página corporativa genérica o una pieza del mismo emisor no debe aparecer como si corroborara la señal.",
+        "Bupa US$15m: restaurar suficiente detalle del evento en card/detalle. Fuente original = Diario Financiero. La página genérica de Bupa Chile y Bupa Group/Mindplace no deben presentarse como fuentes relacionadas que prueban monto/compra/apertura; moverlas a contexto claramente limitado o retirarlas si no agregan valor material. Validar cada referencia contra la afirmación que supuestamente respalda.",
+        "Normativa: preservar siempre en Ponte al día y feed el tipo de acto y su identificador exacto cuando exista: Resolución, Circular, Oficio, Ley, etc. Ejemplo: «Resolución Exenta IF/N°11156 · cobertura TEA…». Si el acto modifica/interpreta/responde otra norma, mostrar explícitamente la referencia relacionada y relación; en este caso «modifica Circular IF/N°528». No sacrificar identidad jurídica por lenguaje natural.",
+        "Pulso Isapre: dejar de competir con las publicaciones estadísticas crudas como tarjetas equivalentes. Tratar cartera, suscripciones/desahucios, movilidad y cartera regional como insumos del mismo corte periódico cuando corresponda. El Pulso debe explicar qué piezas lo componen, cuáles están relacionadas y cuáles no implican causalidad.",
+        "Pulso Isapre: construir módulos separados y legibles (Cartera / Altas y bajas / Movilidad) con una conclusión por módulo y una conclusión integrada solo cuando la evidencia lo permita. No forzar una narrativa común.",
+        "Pulso Isapre: agregar una tabla ejecutiva derivada del workbook cuando los datos lo permitan, con Isapre, beneficiarios totales del último corte, variación absoluta y porcentual vs corte previo y ranking; opcionalmente cotizantes/cargas si aporta. Mantener fórmula, período y fuente trazables.",
+        "Las publicaciones estadísticas rutinarias deben quedar agrupadas dentro de Pulso/Trend/Benchmark y solo volver al feed como señal individual cuando exista cambio material.",
+        "Reformular la pieza semanal como un contenedor «Análisis de la semana» con dos modos: (A) Insight multievidencia cuando conecta fuentes/emisores independientes; (B) Análisis profundo de una señal/dataset extraordinariamente material cuando una única fuente oficial rica permite cálculo reproducible, comparación temporal y conclusión no obvia. Etiquetar el modo para no fingir corroboración externa.",
+        "Para el modo single-source, permitir una fuente oficial si existen múltiples observaciones/variables/períodos verificables y cálculos determinísticos; exigir fuente independiente solo para causalidad, explicación externa o extrapolación de mercado. El requisito anterior de dos emisores deja de ser gate absoluto.",
+        "Seleccionar cada semana primero la señal/dataset más material según editorial_rules_v2; luego buscar contexto/corroboración relacionada. Si existe, enriquecer. Si no existe, publicar análisis profundo basado en la evidencia primaria, con límites explícitos.",
+        "Evaluar el actual Pulso Isapre como candidato al primer «Análisis de la semana»: tendencias de beneficiarios/cotizantes/cargas, composición, movilidad y ranking por Isapre; no inferir causas sin corroboración.",
+        "Actualizar reglas editoriales v2, fixtures y tests de regresión para reflejar este nuevo contrato y los dos modos semanales.",
+        "QA desktop/mobile + Reviewer independiente, staging solamente. No tocar producción."
+      ],
+      "constraints": [
+        "No usar contexto genérico como corroboración.",
+        "No esconder identificadores normativos relevantes.",
+        "No inventar causalidad entre series estadísticas.",
+        "No publicar análisis semanal por obligación si la evidencia no alcanza el modo A ni B.",
+        "No tocar main/producción en esta tarea."
+      ],
+      "evidence_required": [
+        "matriz de contrato de contenido por tipo de señal",
+        "Bupa con referencias corregidas",
+        "Resolución TEA y otras normativas mostrando tipo/número/relación normativa",
+        "Pulso Isapre consolidado con módulos y tabla ejecutiva si datos disponibles",
+        "nuevo gate Análisis de la semana modo A/B",
+        "fixtures/tests actualizados",
+        "QA desktop/mobile + Reviewer PASS"
+      ]
+    },
+    {
+      "id": "admin_dashboard_read_model_v1_2026_09_26",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Builder/Work",
+      "source": "Dirección",
+      "objective": "Implementar el P0 de la auditoría PMO/BI: read-model ejecutivo observacional y dashboard dinámico fail-closed.",
+      "depends_on": [
+        "admin_portal_expert_audit_2026_09_26"
+      ],
+      "instructions": [
+        "Implementar un read-model único de solo lectura que ensamble desarrollo, operación y valor editorial con timestamp/freshness y deep-links a evidencia.",
+        "Aplicar config/admin_scorecard_v1.json: estados available/stale/not_available; nunca mostrar cero cuando no existe telemetría.",
+        "Dashboard: KPIs ejecutivos arriba, tendencias/sparklines solo con series válidas, drill-down hacia commits/workflows/fuentes/auditorías, y semáforos con reglas objetivas.",
+        "Mostrar claramente: último SHA deployable, suites/QA/Reviewer, tareas bloqueadas, salud/frescura de fuentes, LIVE/BACKFILL, aceptadas/degradadas/agrupadas/rechazadas y costos solo cuando exista evidencia.",
+        "Preparar slots desactivados/not_available para uso beta, conversión y FinOps hasta que analytics/consent/billing estén autorizados.",
+        "No añadir acciones mutables/RBAC en V1; dashboard observacional.",
+        "QA desktop/mobile + Reviewer independiente; staging solamente."
+      ],
+      "constraints": [
+        "No inventar métricas.",
+        "No activar analytics, privacidad, billing, auth ni secretos.",
+        "No tocar producción."
+      ],
+      "evidence_required": [
+        "read-model versionado",
+        "dashboard staging desktop/mobile",
+        "freshness/not_available verificados",
+        "deep-links a evidencia",
+        "QA + Reviewer PASS"
+      ]
     }
   ],
   "execution_policy": {
