@@ -1657,7 +1657,7 @@
     }
   ],
   "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
-  "current_staging_candidate_sha": "7499554a1abe72c45700209e41fee893ca57584e",
+  "current_staging_candidate_sha": "7fa4dcb1b0c70170e7621abd836d06b1424c6c35",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -2053,7 +2053,7 @@
     },
     {
       "id": "home_v2_final_polish_2026_09_25",
-      "status": "En_ejecucion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Cierre UX antes de beta",
       "decisions": [
@@ -2070,7 +2070,15 @@
         "Builder → tests → QA desktop/mobile → Reviewer independiente → corrección",
         "QA específica de scrolling mobile y microacciones de compartir/leído"
       ],
-      "progress": "2026-09-25: Work recogió la tarea automáticamente; implementación en staging en curso."
+      "progress": "2026-09-25: polish final de Home V2 validado en staging 7fa4dcb1b0c70170e7621abd836d06b1424c6c35. Builder, 163 Python, 27 web, 26 browser desktop/mobile, Reviewer independiente final y preview remoto PASS. Las correcciones cubren continuidad mobile sin nested scroll, targets de lectura de 44px, compartir feed-only con Web Share/clipboard/deep link y tolerancia a hashes malformados. No hubo cambios en main/producción ni fuera del alcance Home.",
+      "implementation_sha": "7fa4dcb1b0c70170e7621abd836d06b1424c6c35",
+      "validation_evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36209172651",
+        "163 tests Python, 27 tests web y 26 browser desktop/mobile PASS",
+        "Reviewer independiente FINAL PASS para el diff Home V2",
+        "JSON generados localmente excluidos expresamente del commit de implementación"
+      ],
+      "completed_at": "2026-09-25"
     }
   ],
   "updated_at": "2026-09-25"

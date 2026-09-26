@@ -1209,7 +1209,7 @@
     },
     {
       "id": "home_v2_final_polish_2026_09_25",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1247,7 +1247,15 @@
         "Compartir funciona en cards con Web Share/fallback sin aparecer en Ponte al día",
         "tests + QA desktop/mobile + Reviewer + preview PASS"
       ],
-      "progress": "2026-09-25: tarea recogida automáticamente desde staging; Builder en curso. Alcance limitado a Home V2 en staging, sin cambios en main/producción."
+      "progress": "2026-09-25: polish final validado en staging 7fa4dcb1b0c70170e7621abd836d06b1424c6c35. Todas las filas de Ponte al día muestran fecha/fuente; Global precede a Insight cuando no leídos; identidades cromáticas, acciones de lectura, continuidad mobile y compartir feed-only quedaron verificadas. Web Share, clipboard y deep links operan con feedback accesible y fail-closed; hashes malformados no detienen Home. Builder, 163 tests Python, 27 web, 26 browser desktop/mobile, Reviewer independiente y preview remoto PASS.",
+      "evidence": [
+        "staging 7fa4dcb1b0c70170e7621abd836d06b1424c6c35 — implementación Home V2 final polish",
+        "163 tests Python, 27 tests web y 26 browser desktop/mobile PASS",
+        "Reviewer independiente FINAL PASS tras correcciones de clipping mobile, deep links, target táctil 44px, fallback de copiado y hash malformado",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36209172651 — tests, QA staging desktop/mobile y preview PASS",
+        "Diff limitado a web/app.js, web/index.html y tests; main/producción y JSON regenerados no fueron modificados"
+      ],
+      "completed_at": "2026-09-25"
     }
   ],
   "execution_policy": {
