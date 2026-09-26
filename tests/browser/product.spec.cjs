@@ -379,3 +379,18 @@ test('authorized analytics fixture emits only anonymous event fields',async({pag
    expect(JSON.stringify(payload)).not.toMatch(/source_url|email|title|https:\/\/cftorre1/);
  }
 });
+
+test('persistent editorial contract is visible in feed and brief',async({page})=>{
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
+ await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
+ const pulse=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})});
+ await expect(pulse).toHaveCount(1);
+ await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(0);
+ const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
+ await expect(opaque).toHaveCount(0);
+ const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°533 sobre /})});
+ await expect(c533).toHaveCount(1);
+ await expect(c533).toContainText('Qué pasó:');
+ const briefOpaque=page.locator('.briefitem strong').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
+ await expect(briefOpaque).toHaveCount(0);
+});
