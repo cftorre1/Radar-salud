@@ -138,3 +138,33 @@ def test_df_bupa_enrichment_is_bounded_and_never_independent_corroboration():
     connection=row["historical_connections"][0]
     assert connection["kind"] == "same_source_context"
     assert "IntegraMédica" in connection["title"] and "mismo artículo" in connection["note"]
+
+
+def test_preproduction_bupa_removes_non_material_extra_links():
+    row=sig("Bupa acelera inversiones",event="2026-09-21",url="https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos")
+    row.update(source_name="Diario Financiero",editorial_enrichment=[{"url":"https://example.org/noise"}],historical_connections=[{"url":"https://example.org/context"}])
+    out=m._editorial_enrichment(row)
+    assert not out.get("editorial_enrichment")
+    assert not out.get("historical_connections")
+
+
+def test_pulso_isapre_replaces_routine_family_cards_when_present():
+    pulse=sig("Pulso Isapre · datos a 2026-07",url="https://x/pulse")
+    pulse.update(event_type="DATA_PULSE",signal_types=["Datos"],data_period="2026-07")
+    families=[]
+    for title,url in [
+        ("Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026","https://x/cartera"),
+        ("Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026","https://x/suscripciones"),
+        ("Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026","https://x/movilidad")]:
+        row=sig(title,url=url);row.update(signal_types=["Datos"],scopes=["Isapres"]);families.append(row)
+    out=m._latest_stats([pulse,*families])
+    assert [x["source_url"] for x in out]==["https://x/pulse"]
+
+
+def test_normative_contract_preserves_act_type_and_number():
+    row=sig("Circular IF/N°535",cat="Regulación & Legal")
+    row.update(event_type="REGULATION")
+    out=m._normative_contract(row)
+    assert out["normative_document_type"]=="Circular"
+    assert out["normative_document_number"]=="IF/N°535"
+    assert out["normative_document_label"]=="Circular IF/N°535"
