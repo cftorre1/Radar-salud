@@ -1,0 +1,61 @@
+{
+  "status": "provider_ready_not_promoted",
+  "signals": [
+    {
+      "title": "Urgencias respiratorias baja, con ocupación crítica adulta en 93.1%",
+      "source_name": "Ministerio de Salud",
+      "source_type": "official",
+      "source_url": "https://www.minsal.cl/wp-content/uploads/2026/09/26-Reporte-Semanal-Campana-de-Invierno-24-09-2026_.pdf",
+      "event_date": "2026-09-24",
+      "publication_date": "2026-09-24",
+      "data_period": "SE 37 · 2026-09-13 a 2026-09-19",
+      "signal_types": [
+        "Datos"
+      ],
+      "scopes": [
+        "Salud pública",
+        "Prestadores"
+      ],
+      "ingestion_mode": "BACKFILL",
+      "category": "Epidemiología y presión asistencial",
+      "event_type": "DATA_PULSE",
+      "distribution": "provider_ready_not_promoted",
+      "radar_score": 78,
+      "confidence_score": 100,
+      "what_happened": "En SE 37, la positividad respiratoria bajó de 56.7% a 53.7% y la proporción de urgencias respiratorias de 31.8% a 29.2%.",
+      "why_it_matters": "Las consultas de urgencia respiratoria baja disminuyeron 16.9% y las hospitalizaciones respiratorias disminuyeron 7.8% en la comparación semanal; la ocupación de camas críticas fue 80.6% en pediatría y 93.1% en adultos. La señal orienta capacidad y demanda; no atribuye causalidad entre circulación viral y uso de camas.",
+      "key_points": [
+        "Circulación: rinovirus 35.3%, VRS 21.3% y metapneumovirus 18.9%.",
+        "Pediatría: 746 camas críticas, 80.6% ocupadas y 34.8% de ocupación respiratoria.",
+        "Adultos: 4616 camas críticas, 93.1% ocupadas y 11.8% de ocupación respiratoria."
+      ],
+      "risk_notes": [
+        "El resumen ejecutivo informa positividad de 53,7% y la compara con 56,7% en la semana previa; una línea interior del PDF repite 56,7% para la semana actual. Se conserva 53,7% con una alerta explícita y sin ocultar la inconsistencia.",
+        "Los porcentajes de circulación viral y presión asistencial describen dimensiones distintas; no deben sumarse ni interpretarse como causalidad.",
+        "ISP/ANAMED no se usa como requisito de esta señal: la fuente MINSAL integra vigilancia ISP y presión asistencial en un mismo reporte oficial fechado."
+      ],
+      "editorial_v2": {
+        "actor": "Ministerio de Salud de Chile",
+        "action": "publica vigilancia respiratoria y presión asistencial de la semana epidemiológica",
+        "consequence": "permite anticipar demanda y revisar capacidad sin atribuir causalidad",
+        "value_category": "epidemiology_care_pressure",
+        "materiality": {
+          "financial_impact": 40,
+          "operational_impact": 90,
+          "affected_scope": 85,
+          "magnitude": 75,
+          "time_horizon": 75,
+          "actionability": 80,
+          "evidence_strength": 90
+        },
+        "evidence_refs": [
+          {
+            "url": "https://www.minsal.cl/wp-content/uploads/2026/09/26-Reporte-Semanal-Campana-de-Invierno-24-09-2026_.pdf",
+            "source": "Ministerio de Salud de Chile"
+          }
+        ],
+        "factuality": "official_report_with_disclosed_internal_inconsistency"
+      }
+    }
+  ]
+}
