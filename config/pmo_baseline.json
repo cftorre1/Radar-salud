@@ -1551,7 +1551,7 @@
     {
       "id": "data_insights_v1",
       "title": "Insights Excel V1",
-      "status": "Aprobado",
+      "status": "Validado",
       "horizon": "MVP viernes",
       "priority": "Crítica",
       "principle": "Dato → Insight determinístico → Señal; fail-closed",
@@ -1573,9 +1573,12 @@
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36028404964",
         "4a88aa6d870768b49d994c140a55b41174e306ed",
-        "data/excel/insights_v1.json — 8 cálculos; muestra FREE en web/data generada, no gating PREMIUM"
+        "data/excel/insights_v1.json — 10 cálculos determinísticos; muestra de 5 lecturas ejecutivas en web/data, no gating PREMIUM",
+        "6be87801b6ba1982c955871bd3404bcbaaa14220 — revisión experta de negocio; lectura calculada desde las series y fail-closed",
+        "171 tests Python, 28 web y 26 browser desktop/mobile PASS; Reviewer independiente FINAL PASS tras corregir copy numérico hard-coded"
       ],
-      "implementation_status": "Validado"
+      "implementation_status": "Validado",
+      "validation_note": "La muestra ya no prioriza el cambio mensual -0,07% aislado. Publica stock enero–julio, mezcla cargas/cotizante, racha, brecha de eventos con cautela y movilidad anual separada. No infiere causa ni impacto monetario; todas las cifras de la lectura se calculan desde business_metrics reconciliadas y cambian ante una serie sintética válida."
     }
   ],
   "infrastructure_debt": [
@@ -1770,7 +1773,7 @@
         "Evaluar una pieza FREE de alta inteligencia y baja frecuencia para fidelización/halo de calidad, sin degradar artificialmente el resto del producto.",
         "No activar gasto recurrente de Terra/Astra en producción hasta decisión posterior basada en resultados."
       ],
-      "validation_note": "Preflight reproducible validado en staging 80a749e26eedd6c11bd0b221af4fa7ba53e0b640: 7 casos públicos, snapshots fijados por SHA-256, contratos comunes, rúbrica ciega y plantilla de medición. 170 tests Python, 28 web y 26 browser desktop/mobile PASS; Reviewer independiente FINAL PASS. Sin credenciales, disponibilidad confirmada de los tres modelos ni costo máximo autorizado no es posible registrar tokens, costo, latencia u outputs reales. El experimento real permanece sin ejecutar; api_calls_made=0, outputs_generated=0 y no se sustituyó por resultados simulados.",
+      "validation_note": "Preflight reproducible validado en staging 80a749e26eedd6c11bd0b221af4fa7ba53e0b640 y snapshot Radar recongelado en 6be87801b6ba1982c955871bd3404bcbaaa14220 tras Pulso Excel: 7 casos públicos, snapshots fijados por SHA-256, contratos comunes, rúbrica ciega y plantilla de medición. 171 tests Python, 28 web y 26 browser desktop/mobile PASS; Reviewer independiente FINAL PASS. Sin credenciales, disponibilidad confirmada de los tres modelos ni costo máximo autorizado no es posible registrar tokens, costo, latencia u outputs reales. El experimento real permanece sin ejecutar; api_calls_made=0, outputs_generated=0 y no se sustituyó por resultados simulados.",
       "preflight_status": "Validado",
       "preflight_sha": "80a749e26eedd6c11bd0b221af4fa7ba53e0b640",
       "blocker_exact": "Dirección debe autorizar costo máximo USD, confirmar gpt-5.6-luna/gpt-5.6-terra/gpt-6-astra y aprovisionar OPENAI_API_KEY mediante secreto para ejecutar la comparación real."
@@ -2171,10 +2174,11 @@
         "Retomar experimento de modelos sin gasto no autorizado.",
         "Promover a producción antes de 08:00 solo con QA/Reviewer final PASS; autorización de release explícita."
       ],
-      "progress": "2026-09-26: Insight semanal fail-closed, MailerLite provider-ready y preflight de modelos cerrados en staging (e55120b, 87e64b0, 80a749e) con QA/Reviewer PASS. Fuentes revalidadas con blockers externos exactos: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta. Release retenido por gates restantes de fuentes, Excel y ejecución real del experimento sin credencial/tope USD.",
+      "progress": "2026-09-26: Insight semanal fail-closed, MailerLite provider-ready, preflight de modelos y Pulso Excel cerrados en staging (e55120b, 87e64b0, 80a749e, 6be8780) con QA/Reviewer PASS. Fuentes revalidadas con blockers externos exactos: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta. Release retenido por gates restantes de fuentes y ejecución real del experimento sin credencial/tope USD.",
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/commit/e55120ba5ed05226ca99484b07e8e53d1aea95c4",
         "https://github.com/cftorre1/Radar-salud/commit/80a749e26eedd6c11bd0b221af4fa7ba53e0b640",
+        "https://github.com/cftorre1/Radar-salud/commit/6be87801b6ba1982c955871bd3404bcbaaa14220",
         "Auditoría editorial: 16 piezas históricamente revisadas; 15 visibles tras ocultar Insight insuficiente",
         "Producción sin cambios; promoción condicionada sigue cerrada"
       ]

@@ -1387,8 +1387,8 @@
       "evidence": [
         "80a749e26eedd6c11bd0b221af4fa7ba53e0b640 — preflight reproducible en staging",
         "config/model_quality_experiment_v1.json — 7 casos; 2 síntesis multifuente; noticia simple, regulación, negocio, histórico y teaser FREE",
-        "Snapshots SHA-256: global_themes e8722d72ac111d54263ce1b636583f4d12d332c9ec55ff4277b87b657d757a74; radar_today eee4b11a781cf97f3779ca09a13a358193a0025e408efee41939a9affbf5a062",
-        "170 tests Python, 28 web y 26 Playwright desktop/mobile PASS; git diff --check PASS",
+        "Snapshots SHA-256: global_themes e8722d72ac111d54263ce1b636583f4d12d332c9ec55ff4277b87b657d757a74; radar_today 206fbe91882dda45f55db3be9c16399633a7c596b59d296b653624e65886b7e6 (recongelado en 6be87801b6ba1982c955871bd3404bcbaaa14220 tras Pulso Excel)",
+        "171 tests Python, 28 web y 26 Playwright desktop/mobile PASS; git diff --check PASS",
         "Reviewer independiente FINAL PASS tras corregir rotulación monofuente y fijar hashes de snapshots",
         "api_calls_made=0; outputs_generated=0; max_cost_usd=null"
       ],
@@ -1438,7 +1438,7 @@
         "tests + QA desktop/mobile + Reviewer PASS",
         "SHA de producción y QA post-deploy en alicantosalud.cl antes de 08:00 o blocker explícito"
       ],
-      "progress": "2026-09-26: share, auditoría editorial, Insight semanal fail-closed, MailerLite provider-ready y preflight Luna/Terra/Astra cerrados con QA/Reviewer PASS. Fuentes Chile se revalidó: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta; blockers externos exactos, sin señales simuladas. Gate de release sigue cerrado por fuentes epidemiológicas, Pulso Excel y ejecución real del experimento sin credencial/tope de gasto; producción no fue modificada.",
+      "progress": "2026-09-26: share, auditoría editorial, Insight semanal fail-closed, MailerLite provider-ready, preflight Luna/Terra/Astra y Pulso Excel cerrados con QA/Reviewer PASS. Fuentes Chile se revalidó: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta; blockers externos exactos, sin señales simuladas. Gate de release sigue cerrado por fuentes epidemiológicas y ejecución real del experimento sin credencial/tope de gasto; producción no fue modificada.",
       "evidence": [
         "e55120ba5ed05226ca99484b07e8e53d1aea95c4 — implementación fail-closed y auditoría reconciliada en staging",
         "166 tests Python PASS; 28 tests web PASS; 26 Playwright desktop/mobile PASS",
@@ -1446,6 +1446,7 @@
         "web/data/free_value.json: weekly_insight=null; weekly_insight_status=disabled_pending_verified_multi_evidence_builder; Global Intelligence conservado",
         "87e64b0bd081b6dcb4da9031a4266e82552f6268 — MailerLite provider-ready; 167 Python + 28 web + 26 browser PASS; Reviewer independiente PASS",
         "80a749e26eedd6c11bd0b221af4fa7ba53e0b640 — preflight reproducible de 7 casos; 170 Python + 28 web + 26 browser PASS; Reviewer independiente FINAL PASS; 0 llamadas/outputs/gasto",
+        "6be87801b6ba1982c955871bd3404bcbaaa14220 — Pulso Excel con lectura de negocio calculada desde series reconciliadas; 171 Python + 28 web + 26 browser PASS; Reviewer independiente FINAL PASS tras test sintético",
         "Fuentes 2026-09-26: FONASA HTTP 403, ISP/ANAMED HTTP 502, DEIS 0 elegibles, Diario Oficial timeout/interrumpido; 0 señales atribuidas",
         "Release NO ejecutado: gates integrales restantes sin PASS"
       ]
