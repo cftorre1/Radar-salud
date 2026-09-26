@@ -2050,6 +2050,26 @@
         "GitHub Actions: run Deploy static content to Pages on main.",
         "Google Admin/Cloudflare: complete Gmail MX/SPF/DKIM/DMARC and radar@ alias."
       ]
+    },
+    {
+      "id": "home_v2_final_polish_2026_09_25",
+      "status": "Aprobado_para_ejecucion",
+      "priority": "Crítica",
+      "horizon": "Cierre UX antes de beta",
+      "decisions": [
+        "Fecha y fuente compactas en todas las filas de Ponte al día.",
+        "Global Intelligence primero, Insight semanal segundo mientras estén no leídos.",
+        "Mayor presencia cromática sobria: dorado para Global, plateado/azul grisáceo para Insight.",
+        "Acción de leído más compacta e icónica, manteniendo claridad y accesibilidad.",
+        "Reducir espacio entre newsletter y Ponte al día.",
+        "Reducir efecto de nested scroll y dejar visible que existe feed después.",
+        "Agregar Compartir solo en cards del feed mediante icono estándar; no mostrar Compartir en Ponte al día.",
+        "No implementar Anclar/Guardar hasta que exista un destino/flujo de guardados."
+      ],
+      "validation_required": [
+        "Builder → tests → QA desktop/mobile → Reviewer independiente → corrección",
+        "QA específica de scrolling mobile y microacciones de compartir/leído"
+      ]
     }
   ],
   "updated_at": "2026-09-25"
