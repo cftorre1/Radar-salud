@@ -2161,6 +2161,19 @@
         "Auditar accesibilidad, seguridad/privacy-by-design, confiabilidad/observabilidad y crecimiento/conversión antes de beta pública.",
         "No reabrir UX/editorial salvo riesgo real."
       ]
+    },
+    {
+      "id": "home_v2_share_deeplink_polish_2026_09_25",
+      "status": "En_ejecucion",
+      "priority": "Crítica",
+      "horizon": "Cierre UX antes de beta",
+      "decisions": [
+        "Mover Compartir junto a Marcar leído, separado semánticamente de Fuente original.",
+        "Mantener Compartir solo en cards del feed.",
+        "Deep-link estable debe abrir la tarjeta exacta sin alterar su estado leído.",
+        "Conservar Web Share, fallback seguro, accesibilidad y ausencia de analytics nuevos."
+      ],
+      "progress": "2026-09-26: Work recogió la tarea crítica aprobada; Builder en curso en staging."
     }
   ],
   "updated_at": "2026-09-25"
