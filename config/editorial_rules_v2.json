@@ -1,0 +1,68 @@
+{
+  "version": "2.0",
+  "principle": "Una fuente válida no basta: una señal debe demostrar actor, acción, consecuencia y materialidad para una decisión.",
+  "required_fields": [
+    "actor",
+    "action",
+    "consequence"
+  ],
+  "materiality": {
+    "dimensions": {
+      "financial_impact": 0.2,
+      "operational_impact": 0.15,
+      "affected_scope": 0.1,
+      "magnitude": 0.1,
+      "time_horizon": 0.1,
+      "actionability": 0.2,
+      "evidence_strength": 0.15
+    },
+    "thresholds": {
+      "accept": 70,
+      "degrade": 45
+    }
+  },
+  "taxonomy": [
+    "regulatory_obligation",
+    "financial_impact",
+    "portfolio_competition",
+    "capacity_supply",
+    "care_network_operations",
+    "risk_enforcement",
+    "investment_ma",
+    "innovation_technology",
+    "epidemiology_care_pressure",
+    "workforce_capacity",
+    "context_without_action"
+  ],
+  "decisions": {
+    "accept": "Elevar como señal con evidencia y consecuencia explícitas.",
+    "degrade": "Mantener como contexto, sin prometer impacto no demostrado.",
+    "group": "Consolidar con piezas rutinarias equivalentes y evitar repetición.",
+    "reject": "No publicar como señal independiente."
+  },
+  "fail_closed": {
+    "missing_actor_action_consequence": "reject",
+    "missing_impact_evidence": "degrade",
+    "routine_repeated_below_accept": "group",
+    "unsupported_magnitude": "degrade"
+  },
+  "special_pieces": {
+    "weekly_insight": {
+      "min_independent_evidence": 2,
+      "requires_non_obvious_business_interpretation": true
+    },
+    "global_intelligence": {
+      "min_independent_evidence": 2,
+      "requires_separate_global_facts_and_chile_hypothesis": true,
+      "requires_actionable_strategic_reading": true
+    }
+  },
+  "writing_templates": {
+    "Normativa": "Actor obligado + cambio exigible + fecha/plazo + consecuencia operativa o financiera.",
+    "Legal": "Decisión + alcance + estado procesal + efecto vigente, sin anticipar el fondo.",
+    "Noticias": "Actor + acción comprobada + magnitud disponible + decisión que puede cambiar.",
+    "Datos": "Indicador + período + variación comparable + límite causal + decisión de seguimiento.",
+    "Fiscalización": "Fiscalizador + conducta + sanción/magnitud + patrón, separando LIVE e histórico.",
+    "Pieza especial": "Evidencias independientes + síntesis no obvia + implicancia accionable + incertidumbre."
+  }
+}
