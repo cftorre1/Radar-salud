@@ -2164,7 +2164,7 @@
     },
     {
       "id": "home_v2_share_deeplink_polish_2026_09_25",
-      "status": "En_ejecucion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Cierre UX antes de beta",
       "decisions": [
@@ -2173,8 +2173,17 @@
         "Deep-link estable debe abrir la tarjeta exacta sin alterar su estado leído.",
         "Conservar Web Share, fallback seguro, accesibilidad y ausencia de analytics nuevos."
       ],
-      "progress": "2026-09-26: Work recogió la tarea crítica aprobada; Builder en curso en staging."
+      "progress": "2026-09-26: implementación validada en staging a60bb2684b4c4ddf2fc407a0fec8745a751d176f. Compartir quedó en acciones de estado del feed, fuera de Ponte al día; deep-link exacto, foco sin lectura automática, Web Share/clipboard, accesibilidad y Fuente original fueron verificados sin analytics nuevos.",
+      "implementation_sha": "a60bb2684b4c4ddf2fc407a0fec8745a751d176f",
+      "validation_evidence": [
+        "163 tests Python PASS",
+        "27 tests web PASS",
+        "26 recorridos Playwright desktop/mobile PASS",
+        "Reviewer independiente PASS sin hallazgos materiales",
+        "Diff limitado a Home V2 y tests; main/producción no modificados"
+      ],
+      "completed_at": "2026-09-26"
     }
   ],
-  "updated_at": "2026-09-25"
+  "updated_at": "2026-09-26"
 }
