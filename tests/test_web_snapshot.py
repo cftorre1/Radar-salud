@@ -233,8 +233,8 @@ def test_every_opaque_resolution_with_normative_parent_exposes_parent_in_title()
     for row in rows:
         if not str(row.get("normative_document_type") or "").lower().startswith("resolución"):
             continue
-        source_title=str(row.get("source_title_full") or row.get("title") or "")
-        opaque=bool(__import__("re").fullmatch(r"(?:Resolución(?:\s+Exenta)?)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",source_title,__import__("re").I))
+        visible_title=str(row.get("title") or "")
+        opaque=bool(__import__("re").fullmatch(r"(?:Resolución(?:\s+Exenta)?)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",visible_title,__import__("re").I))
         parents=[x for x in row.get("related_context",[]) if __import__("re").search(r"^(Circular|Oficio|Resolución|Decreto)\b",str(x.get("title") or ""),__import__("re").I)]
         if opaque and parents:
             checked += 1
