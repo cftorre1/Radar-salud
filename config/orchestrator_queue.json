@@ -239,7 +239,7 @@
     },
     {
       "id": "email_subscription_mvp",
-      "status": "blocked",
+      "status": "approved",
       "priority": "high",
       "owner": "Work",
       "source": "Baseline MVP",
@@ -266,11 +266,11 @@
         "provider-ready integration or explicit human blocker",
         "staging evidence"
       ],
-      "progress": "Google Workspace operativo: hola@alicantosalud.cl envía y recibe correo; DKIM activado; SPF presente; DMARC creado en modo p=none; alias radar@alicantosalud.cl creado y recepción confirmada en la misma bandeja. Falta validar encabezados SPF/DKIM/DMARC en un mensaje real y luego conectar MailerLite, manteniendo newsletter y acceso anticipado separados.",
+      "progress": "Google Workspace operativo y autenticación base configurada: hola@ y radar@ funcionando, SPF, DKIM y DMARC p=none. QA exacto SPF/DKIM/DMARC queda para mañana. Retomar ahora dependencias provider-ready: MailerLite, newsletter, acceso anticipado y notificaciones internas hasta próximo blocker humano.",
       "blocked_by": [
-        "Validar en un correo real los resultados SPF/DKIM/DMARC (Authentication-Results) y que DKIM quede PASS.",
-        "Crear/configurar MailerLite y autenticar dominio sin duplicar SPF.",
-        "Aprobar finalidad, retención, textos de privacidad y doble opt-in antes de activar capturas/envíos reales."
+        "MailerLite: crear/configurar cuenta y autenticar dominio cuando Work tenga acceso/credenciales o registrar acción humana mínima.",
+        "Privacidad/doble opt-in: mantener captura fail-closed hasta aprobación.",
+        "QA exacto Authentication-Results (SPF/DKIM/DMARC PASS) pendiente para mañana."
       ],
       "evidence": [
         "3cf095594641812c8ac0d46d94b74f475ffce909 — implementación UI/digest; run 36040290271 FAIL por incompatibilidad concurrente detectada antes de preview",
@@ -1357,6 +1357,48 @@
         "rubric ciego",
         "plantilla de medición",
         "lista exacta de credenciales/modelos/costo máximo requerido para ejecutar"
+      ]
+    },
+    {
+      "id": "overnight_content_sources_experiments_release_2026_09_25",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Durante la noche, cerrar el polish de contenido/UX, retomar Fuentes Chile y experimento de modelos dentro de límites autorizados, desbloquear tareas dependientes de Google Workspace y publicar en producción antes de las 08:00 del 26-sep si y solo si QA/Reviewer final quedan PASS.",
+      "depends_on": [
+        "home_v2_special_cards_refinement_2026_09_25"
+      ],
+      "instructions": [
+        "Releer queue/PMO al iniciar y reconciliar cualquier avance nuevo.",
+        "CONTENIDO: ejecutar auditoría señal por señal con tres lentes independientes: periodista/editor de noticias, experto en negocio/financiamiento de salud y editor de producto digital. Evaluar copy de Ponte al día y tarjetas del feed; corregir títulos, síntesis, por qué importa, relevancia y jerarquía sin inventar hechos.",
+        "INSIGHT SEMANAL: no tratar una noticia como insight. Debe sintetizar al menos dos señales/datos relacionados o una señal + serie/indicador, producir una lectura de negocio accionable y explicar qué cambia, para quién y qué observar. Si evidencia insuficiente, fail-closed: no publicar insight débil.",
+        "GLOBAL INTELLIGENCE: revisar valor real de cada comentario. Mantener hechos internacionales separados de hipótesis Chile. El teaser FREE debe mostrar una idea con alto valor diferencial, no generalidades. Si no supera umbral editorial, reemplazarlo o no publicarlo.",
+        "PULSO EXCEL: revisar insights de Excel con experto en negocio de salud. No publicar observaciones obvias, débiles o no accionables; exigir evidencia, comparación temporal y lectura de negocio.",
+        "SHARE UX: mantener Compartir solo en tarjetas del feed, junto a controles de lectura, claramente separado de 'Fuente original'. Compartir debe apuntar a una URL/deep-link específica de la tarjeta/señal, no solo a la home. Usar Web Share API + fallback copiar enlace.",
+        "FUENTES CHILE: dejar Mercado Público fuera por ahora. Priorizar 1) ISP - informes semanales de circulación de virus respiratorios, 2) MINSAL - reportes semanales/Campaña de Invierno con ocupación de camas, urgencias y hospitalizaciones respiratorias, 3) FONASA, 4) ISP/ANAMED general, 5) COMPIN/mutualidades, 6) DEIS/Diario Oficial como validación/frescura. LinkedIn/Start-Up Chile quedan posteriores.",
+        "Para la nueva fuente epidemiológica, preferir páginas oficiales públicas estables y capturar semana epidemiológica, positividad, virus predominantes, tendencia semanal, ocupación camas pediátricas/adultos y hospitalizaciones/urgencias cuando estén disponibles. Mantener fecha y fuente trazables.",
+        "GOOGLE/EMAIL DEPENDENCIES: tomar como avance confirmado: hola@ operativo, radar@ alias funcionando, SPF configurado, DKIM activado, DMARC p=none. Reabrir y avanzar toda tarea que dependía del correo/Workspace hasta el siguiente blocker humano real (MailerLite provider-ready, textos/consentimientos, notificación de sugerencias si aplica). No cambiar secretos ni contratar servicios sin autorización.",
+        "EXPERIMENTO: retomar model_quality_experiment_global_free_2026_09_24. Completar corpus, prompts, scoring ciego y caso de negocio. Ejecutar modelos reales solo si existen credenciales y presupuesto ya autorizados; si faltan, dejar preflight completo y blocker exacto, sin simular resultados.",
+        "RELEASE: si Home final polish + contenido + fuentes aplicadas quedan con tests PASS, QA desktop/mobile PASS y Reviewer independiente PASS, promover staging a producción y publicar en alicantosalud.cl antes de las 08:00 del 26-sep-2026. La autorización de Dirección para esta promoción queda explícita en esta tarea.",
+        "Antes de promover, comparar staging vs main y evitar arrastrar cambios no aprobados, secretos, costos, experimentos incompletos o fuentes sin QA. Si existe cualquier blocker crítico, NO publicar y registrar la razón.",
+        "Después del deploy, verificar producción real: alicantosalud.cl, www, HTTPS, canonical, navegación mobile, share deep-links, leído/no leído, Global/Insight, Fuentes y ausencia de errores."
+      ],
+      "constraints": [
+        "No publicar contenido factual sin evidencia.",
+        "No gastar en APIs ni contratar proveedores sin autorización previa ya registrada.",
+        "No habilitar auth/pagos/pricing ni privacidad/analytics nuevos.",
+        "Mercado Público fuera de alcance de esta noche.",
+        "No simular PASS ni éxito de fuentes/experimentos."
+      ],
+      "evidence_required": [
+        "auditoría editorial/negocio/producto con hallazgos y elementos preservados",
+        "evidencia de insight semanal realmente analítico o decisión de no publicarlo",
+        "Global Intelligence revisado con umbral de valor",
+        "Pulso Excel revisado con lectura de negocio",
+        "nuevas fuentes epidemiológicas oficiales integradas o blocker exacto",
+        "tests + QA desktop/mobile + Reviewer PASS",
+        "SHA de producción y QA post-deploy en alicantosalud.cl antes de 08:00 o blocker explícito"
       ]
     }
   ],
