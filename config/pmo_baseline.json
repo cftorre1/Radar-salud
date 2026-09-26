@@ -2190,7 +2190,7 @@
     },
     {
       "id": "admin_portal_expert_audit_2026_09_26",
-      "status": "Aprobado_para_auditoria",
+      "status": "Validado",
       "priority": "Alta",
       "horizon": "26-sep-2026",
       "decisions": [
@@ -2198,7 +2198,14 @@
         "Priorizar estilo dashboard dinámico para números/indicadores.",
         "Diseñar scorecard que conecte desarrollo, operación, valor editorial, uso beta, conversión y costos.",
         "Primera pasada solo auditoría y backlog; implementación requiere revisión de Dirección."
-      ]
+      ],
+      "progress": "2026-09-26: auditoría experta completada con diagnóstico, arquitectura, scorecard y backlog. El P0 derivado ya fue implementado como read model observacional fail-closed en la consolidación preproducción.",
+      "validation_evidence": [
+        "config/admin_scorecard_v1.json",
+        "Diagnóstico, arquitectura y backlog registrados en PMO",
+        "P0 separado de telemetría beta/conversión/FinOps no autorizada"
+      ],
+      "completed_at": "2026-09-26"
     },
     {
       "id": "tomorrow_expert_gap_audit_2026_09_26",
@@ -2311,7 +2318,7 @@
     },
     {
       "id": "content_contract_pulso_normative_weekly_analysis_2026_09_26",
-      "status": "Aprobado_para_ejecucion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Antes de producción",
       "decisions": [
@@ -2322,21 +2329,40 @@
         "Pulso Isapre agrupa estadísticas periódicas; módulos separados y tabla/ranking derivado cuando sea trazable.",
         "Análisis semanal tendrá dos modos: insight multievidencia o análisis profundo single-source reproducible; dos emisores deja de ser requisito absoluto.",
         "Actualizar reglas/fixtures/tests antes de producción."
-      ]
+      ],
+      "progress": "2026-09-26: contrato preproducción implementado y validado. Bupa conserva solo evidencia material; normativa preserva tipo/número y relaciones; Pulso Isapre reemplaza tarjetas estadísticas rutinarias equivalentes; Insight semanal admite multievidencia o single-source reproducible con decision_use explícito y fail-closed.",
+      "implementation_sha": "8096583f7a54596b65da45095a6d0fcb06942a17",
+      "validation_evidence": [
+        "192 tests Python PASS",
+        "33 tests web PASS",
+        "26 recorridos Playwright desktop/mobile PASS",
+        "Reviewer independiente PASS",
+        "Reglas, fixtures y tests actualizados; main/producción intactos"
+      ],
+      "completed_at": "2026-09-26"
     },
     {
       "id": "admin_dashboard_read_model_v1_2026_09_26",
-      "status": "Aprobado_para_ejecucion",
+      "status": "Validado",
       "priority": "Alta",
       "horizon": "Antes/durante beta",
       "decisions": [
         "Implementar P0 del portal PMO/BI como dashboard observacional fail-closed.",
         "Unificar desarrollo, operación y valor editorial; slots beta/conversión/FinOps permanecen not_available hasta telemetría autorizada."
-      ]
+      ],
+      "progress": "2026-09-26: P0 implementado en portal admin con scorecard ejecutivo de desarrollo, operación y valor editorial. Beta usage, conversión y FinOps muestran No disponible cuando no existe telemetría autorizada; se corrigió overflow mobile del SHA/evidencia.",
+      "implementation_sha": "8096583f7a54596b65da45095a6d0fcb06942a17",
+      "validation_evidence": [
+        "Scorecard read model consumido desde product.json",
+        "Fail-closed para métricas no observadas; cero inferido prohibido",
+        "Playwright desktop/mobile PASS",
+        "Reviewer independiente PASS"
+      ],
+      "completed_at": "2026-09-26"
     },
     {
       "id": "preproduction_consolidation_2026_09_26",
-      "status": "Aprobado_para_ejecucion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Próxima revisión de Dirección",
       "decisions": [
@@ -2345,7 +2371,17 @@
         "Preservar todas las decisiones UX/editoriales ya validadas.",
         "Builder para cambios acotados, Work para complejos, Reviewer separado.",
         "No producción hasta revisión de Dirección."
-      ]
+      ],
+      "progress": "2026-09-26: candidato único de staging consolidado y validado sobre 8096583f7a54596b65da45095a6d0fcb06942a17. Incluye contenido, normativa, Pulso, Análisis semanal, Global, frente epidemiológico previamente validado y dashboard PMO/BI P0. No se modificó producción.",
+      "implementation_sha": "8096583f7a54596b65da45095a6d0fcb06942a17",
+      "validation_evidence": [
+        "GitHub Actions run 36269276175",
+        "192 Python + 33 web + 26 Playwright desktop/mobile PASS",
+        "Reviewer independiente PASS",
+        "Staging recompuesto, Global export y product report PASS",
+        "Producción/main sin cambios"
+      ],
+      "completed_at": "2026-09-26"
     }
   ],
   "updated_at": "2026-09-26"
