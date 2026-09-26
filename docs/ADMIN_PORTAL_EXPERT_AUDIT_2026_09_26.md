@@ -1,6 +1,6 @@
 # Portal Admin — diagnóstico experto y arquitectura
 
-Fecha: 2026-09-26. Estado: diagnóstico solamente. No se rediseñó ni implementó el portal y la tarea propia de Admin conserva su dependencia bloqueada.
+Fecha: 2026-09-26. Estado histórico de esta pasada: diagnóstico. Estado actual: el P0 derivado fue implementado posteriormente como read-model observacional fail-closed en staging; este documento conserva el diagnóstico que originó esa implementación.
 
 ## Diagnóstico
 
@@ -34,4 +34,4 @@ El control operativo está distribuido entre cola/PMO, resultados de GitHub Acti
 
 ## Límites
 
-No se habilitaron analytics, auth, pagos, pricing, privacidad, facturación ni secretos. Esta auditoría no desbloquea la tarea separada `admin_portal_expert_audit_2026_09_26`, cuya dependencia externa debe resolverse de forma independiente.
+No se habilitaron analytics, auth, pagos, pricing, privacidad, facturación ni secretos. El P0 posterior implementa solo lectura observacional de desarrollo, operación y valor editorial; uso beta, conversión y FinOps permanecen `not_available` hasta contar con telemetría autorizada.
