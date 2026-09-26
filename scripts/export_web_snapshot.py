@@ -77,9 +77,16 @@ def _card_micro(s):
     if (str(r.get("title") or "").startswith("Bupa acelera inversiones")
         and all(token in what for token in ("US$15 millones","La Dehesa","Huinganal","Mindplace","San Damián"))):
         r["source_title_full"]=r.get("source_title_full") or r["title"]
-        r["title"]="Bupa acelera inversiones con tres proyectos por US$15 millones"
-        r["card_what"]="Bupa anunció US$15 millones para La Dehesa, Clínicas Huinganal y Mindplace en San Damián."
-        r["card_why"]="Amplía oferta ambulatoria y de salud mental mediante inversión y compra."
+        r["title"]="Bupa refuerza su red en el sector oriente con inversión, compra y salud mental"
+        r["card_what"]="Bupa destina US$15 millones a tres movimientos simultáneos: un centro médico en La Dehesa, la compra de Clínicas Huinganal y Mindplace en San Damián."
+        r["card_why"]="No es solo expansión física: combina nueva capacidad ambulatoria, una adquisición y entrada específica en salud mental, elevando presión competitiva en el sector oriente."
+        r["key_points"]=[
+            "La Dehesa: inauguración del primer centro médico que operará bajo la marca Bupa en Chile.",
+            "Clínicas Huinganal: crecimiento mediante adquisición de activos clínicos existentes.",
+            "Mindplace San Damián: incorporación de una oferta específica de salud mental dentro del mismo plan de expansión.",
+            "Lectura competitiva: Bupa está creciendo por tres vías distintas a la vez —capacidad nueva, compra y diversificación de servicios— en una misma zona."
+        ]
+        r["affected_processes"]=["Estrategia de red","Competencia prestadores","M&A / expansión","Salud mental"]
     if (str(r.get("title") or "").startswith("Ministerio de Salud publica listado de Eleam")
         and all(token in what for token in ("Ministerio de Salud","Eleam","autorización sanitaria"))):
         r["card_what"]="El Minsal publicó un listado de Eleam con autorización sanitaria."
@@ -95,8 +102,10 @@ def _card_micro(s):
         and str(r.get("source_url") or "").startswith("https://www.superdesalud.gob.cl/")
         and all(token in what for token in ("Circular IF/Nº528","eliminación de esos topes","mecanismo de registro"))
         and all(token in support for token in ("bonificación sin tope anual","1 de noviembre de 2026","compra directa de bonos"))):
-        r["card_what"]="La Superintendencia confirmó la cobertura sin tope anual para cinco prestaciones vinculadas a TEA y añadió requisitos de acreditación y registro."
-        r["card_why"]="Las isapres deben habilitar el registro y la compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026."
+        r["source_title_full"]=r.get("source_title_full") or r["title"]
+        r["title"]="Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156"
+        r["card_what"]="La Superintendencia mantuvo la eliminación del tope anual para cinco prestaciones TEA, fijó cómo acreditar el diagnóstico y prohibió exigir RND, renovaciones o evaluaciones repetidas."
+        r["card_why"]="Las isapres deben implementar registro presencial y digital, resolver solicitudes en hasta 15 días hábiles y habilitar compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026."
     return r
 
 def _editorial_enrichment(s):
