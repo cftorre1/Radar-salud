@@ -1,0 +1,203 @@
+{
+  "version": "1.0",
+  "name": "Comité de Inteligencia Editorial Alicanto",
+  "mission": "Transformar evidencia heterogénea en señales claras, trazables y útiles para decisiones, maximizando valor sin inventar impacto.",
+  "operating_principles": [
+    "El comité participa antes de publicar, no solo corrige después.",
+    "La evidencia manda: hechos, inferencias e hipótesis deben quedar separados.",
+    "Cada señal se construye al máximo nivel de valor que permita la evidencia.",
+    "El tipo de señal determina qué expertos son obligatorios.",
+    "Una señal no se publica por unanimidad estética: se publica cuando cumple gates de evidencia, materialidad y utilidad.",
+    "Las nuevas fuentes y formatos generan aprendizaje persistente: reglas, tests y deuda analítica quedan registradas."
+  ],
+  "standing_members": [
+    {
+      "id": "editorial_intelligence",
+      "role": "Editor de Inteligencia",
+      "mandate": [
+        "claridad ejecutiva",
+        "título y síntesis",
+        "jerarquía de información",
+        "consistencia entre superficies"
+      ]
+    },
+    {
+      "id": "health_business",
+      "role": "Experto de Negocio Salud",
+      "mandate": [
+        "materialidad",
+        "impacto financiador/prestador",
+        "decisión afectada",
+        "competencia/cartera/capacidad"
+      ]
+    },
+    {
+      "id": "data_analytics",
+      "role": "Data Analytics / Estadística",
+      "mandate": [
+        "comparabilidad",
+        "denominadores",
+        "series temporales",
+        "anomalías",
+        "límites causales",
+        "reproducibilidad"
+      ]
+    },
+    {
+      "id": "decision_intelligence",
+      "role": "BI / Decision Intelligence",
+      "mandate": [
+        "qué cambia",
+        "qué mirar",
+        "qué decisión puede afectar",
+        "conexión entre indicadores y señales"
+      ]
+    },
+    {
+      "id": "regulatory_legal",
+      "role": "Regulación / Legal",
+      "mandate": [
+        "tipo y número de acto",
+        "tema central",
+        "vigencia",
+        "relación con antecedentes",
+        "alcance jurídico"
+      ]
+    },
+    {
+      "id": "evidence_research",
+      "role": "Evidence & Research",
+      "mandate": [
+        "calidad de fuente",
+        "corroboración",
+        "mapa de evidencia",
+        "incertidumbres",
+        "atribución"
+      ]
+    }
+  ],
+  "conditional_members": [
+    {
+      "id": "epidemiology_clinical",
+      "activate_for": [
+        "epidemiology_care_pressure",
+        "clinical_quality",
+        "public_health"
+      ]
+    },
+    {
+      "id": "market_ma",
+      "activate_for": [
+        "investment_ma",
+        "portfolio_competition",
+        "capacity_supply"
+      ]
+    },
+    {
+      "id": "technology_ai",
+      "activate_for": [
+        "innovation_technology"
+      ]
+    },
+    {
+      "id": "operations",
+      "activate_for": [
+        "care_network_operations",
+        "workforce_capacity"
+      ]
+    },
+    {
+      "id": "data_engineering",
+      "activate_for": [
+        "new_dataset",
+        "new_file_format",
+        "parser_missing"
+      ]
+    },
+    {
+      "id": "ux_visual",
+      "activate_for": [
+        "new_visualization",
+        "dense_table",
+        "complex_comparison"
+      ]
+    }
+  ],
+  "signal_panels": {
+    "Datos": [
+      "editorial_intelligence",
+      "health_business",
+      "data_analytics",
+      "decision_intelligence",
+      "evidence_research"
+    ],
+    "Normativa": [
+      "editorial_intelligence",
+      "health_business",
+      "regulatory_legal",
+      "evidence_research"
+    ],
+    "Legal": [
+      "editorial_intelligence",
+      "regulatory_legal",
+      "health_business",
+      "evidence_research"
+    ],
+    "Noticias": [
+      "editorial_intelligence",
+      "health_business",
+      "evidence_research"
+    ],
+    "Fiscalización": [
+      "editorial_intelligence",
+      "health_business",
+      "regulatory_legal",
+      "decision_intelligence",
+      "evidence_research"
+    ],
+    "Pieza especial": [
+      "editorial_intelligence",
+      "health_business",
+      "data_analytics",
+      "decision_intelligence",
+      "evidence_research"
+    ]
+  },
+  "required_outputs": [
+    "materiality_decision",
+    "public_title",
+    "what_happened",
+    "why_it_matters",
+    "evidence_map",
+    "uncertainties",
+    "value_level",
+    "publication_decision",
+    "parser_or_research_debt_if_any"
+  ],
+  "verdicts": [
+    "PASS",
+    "REVISE",
+    "HOLD",
+    "REJECT"
+  ],
+  "consensus": {
+    "rule": "PASS exige que todos los expertos obligatorios del panel no tengan objeciones críticas abiertas.",
+    "critical_objection_examples": [
+      "dato no reproducible",
+      "impacto no demostrado",
+      "acto normativo mal identificado",
+      "causalidad no sustentada",
+      "titular opaco",
+      "duplicación sin valor incremental"
+    ],
+    "revise": "Las objeciones resolubles generan REVISE con acciones concretas.",
+    "hold": "Falta evidencia o capacidad técnica; conservar señal y registrar deuda.",
+    "reject": "La pieza no merece publicación independiente o es ruido."
+  },
+  "learning_loop": {
+    "new_pattern": "Toda señal que revele una clase nueva de error o valor genera propuesta de regla persistente.",
+    "new_statistics": "Toda nueva publicación/familia estadística sin parser crea automáticamente deuda analítica visible.",
+    "promotion": "Las reglas pasan a contrato persistente solo después de prueba y Reviewer.",
+    "regression": "Toda regla persistente relevante debe tener test de regresión."
+  }
+}
