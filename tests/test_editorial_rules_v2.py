@@ -117,3 +117,16 @@ def test_weekly_single_source_deep_dive_requires_reproducibility_and_decision_us
     positive = fixtures["cases"][4]["candidate"]
     result = evaluate_editorial_v2(positive)
     assert result.decision == "accept"
+
+
+def test_expert_normative_checklist_is_persistent_and_resolution_aware():
+    cfg = json.loads(Path("config/editorial_rules_v2.json").read_text())
+    questions = cfg["expert_review_checklist"]["normative_documents"]
+    assert len(questions) >= 6
+    joined = " ".join(questions).lower()
+    assert "tipo de acto" in joined and "número" in joined
+    assert "tema central" in joined
+    assert "resoluciones" in joined and "circular" in joined and "oficio" in joined
+    assert "ponte al día" in joined and "card" in joined and "detalle" in joined
+    assert cfg["presentation_contract"]["normative_resolution_relation"]["required"] is True
+    assert cfg["presentation_contract"]["precedence"]["persistent_rules_override_human_copy"] is True
