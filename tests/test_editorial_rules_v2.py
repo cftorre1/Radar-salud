@@ -51,7 +51,7 @@ def test_empty_v2_structure_cannot_bypass_pipeline_gate():
 
 def test_special_piece_requires_structured_refs_from_independent_sources():
     fixtures = json.loads(Path("tests/fixtures/editorial_rules_v2.json").read_text())
-    global_case = fixtures["cases"][4]["candidate"]
+    global_case = fixtures["cases"][5]["candidate"]
     malformed = json.loads(json.dumps(global_case))
     malformed["editorial_v2"]["evidence_refs"] = ["a", "b"]
     result = evaluate_editorial_v2(malformed)
@@ -90,7 +90,7 @@ def test_malformed_v2_inputs_fail_closed_without_exceptions():
     result = evaluate_editorial_v2(bad_url)
     assert result.decision == "degrade"
     assert "missing_impact_evidence" in result.reasons
-    no_host = json.loads(json.dumps(fixtures["cases"][4]["candidate"]))
+    no_host = json.loads(json.dumps(fixtures["cases"][5]["candidate"]))
     no_host["editorial_v2"]["evidence_refs"] = [
         {"url": "https:foo", "source": "A"},
         {"url": "https:bar", "source": "B"},
@@ -105,3 +105,15 @@ def test_malformed_v2_inputs_fail_closed_without_exceptions():
         "editorial_v2": "invalid",
     }
     assert publication_ready(pipeline_candidate)[:2] == (False, "editorial_v2_reject")
+
+
+def test_weekly_single_source_deep_dive_requires_reproducibility_and_decision_use():
+    fixtures = json.loads(Path("tests/fixtures/editorial_rules_v2.json").read_text())
+    negative = fixtures["cases"][3]["candidate"]
+    result = evaluate_editorial_v2(negative)
+    assert result.decision == "degrade"
+    assert "missing_reproducible_analysis" in result.reasons
+    assert "missing_decision_use" in result.reasons
+    positive = fixtures["cases"][4]["candidate"]
+    result = evaluate_editorial_v2(positive)
+    assert result.decision == "accept"
