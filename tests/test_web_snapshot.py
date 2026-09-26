@@ -126,18 +126,13 @@ def test_df_headline_keeps_teaser_out_of_title():
     assert "El plan incluye" in out[0]["source_title_full"]
 
 
-def test_df_bupa_enrichment_is_bounded_and_never_independent_corroboration():
+def test_df_bupa_keeps_only_original_material_evidence_after_preproduction_review():
     history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
     row=next(s for s in m.curate(history,resolve_external=False) if s.get("source_url")=="https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos")
-    assert len(row["editorial_enrichment"]) == 3
-    same=next(x for x in row["editorial_enrichment"] if x["kind"]=="same_emitter_channel")
-    assert "no es corroboración independiente" in same["label"]
+    assert row.get("editorial_enrichment",[]) == []
+    assert row.get("historical_connections",[]) == []
     assert row.get("source_alternatives",[]) == []
     assert row["event_date"] == "2026-09-21"
-    assert len(row["historical_connections"]) == 1
-    connection=row["historical_connections"][0]
-    assert connection["kind"] == "same_source_context"
-    assert "IntegraMédica" in connection["title"] and "mismo artículo" in connection["note"]
 
 
 def test_preproduction_bupa_removes_non_material_extra_links():
