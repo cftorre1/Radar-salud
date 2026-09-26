@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "status": "diagnostic_only",
+  "policy": "No metric is shown without a named evidence source and freshness timestamp.",
+  "dimensions": [
+    {
+      "id": "development",
+      "label": "Desarrollo",
+      "questions": ["¿Qué cambió?", "¿Qué pruebas pasaron?", "¿Qué está bloqueado?"],
+      "evidence_sources": ["GitHub commits", "GitHub Actions", "orchestrator queue"],
+      "metrics": ["deployable_sha", "test_pass_count", "blocked_task_count"]
+    },
+    {
+      "id": "operations",
+      "label": "Operación",
+      "questions": ["¿Qué fuentes están sanas?", "¿Qué falló o quedó atrasado?"],
+      "evidence_sources": ["source_health.json", "workflow runs", "incident log"],
+      "metrics": ["source_success_rate", "stale_source_count", "failed_run_count"]
+    },
+    {
+      "id": "editorial_value",
+      "label": "Valor editorial",
+      "questions": ["¿Qué señales cambian una decisión?", "¿Qué fue degradado, agrupado o rechazado?"],
+      "evidence_sources": ["editorial audit", "editorial gate", "reviewer evidence"],
+      "metrics": ["accepted_signal_count", "degraded_signal_count", "grouped_signal_count", "rejected_signal_count"]
+    },
+    {
+      "id": "beta_usage",
+      "label": "Uso beta",
+      "questions": ["¿Qué se leyó?", "¿Qué se compartió?", "¿Qué se retuvo?"],
+      "evidence_sources": ["approved analytics provider"],
+      "metrics": ["weekly_active_readers", "read_rate", "share_rate"],
+      "availability": "blocked_until_analytics_and_privacy_are_authorized"
+    },
+    {
+      "id": "conversion",
+      "label": "Conversión",
+      "questions": ["¿Qué intención se expresó?", "¿Qué consentimiento existe?"],
+      "evidence_sources": ["approved consented subscription provider"],
+      "metrics": ["newsletter_opt_in_rate", "early_access_opt_in_rate"],
+      "availability": "blocked_until_consent_and_provider_credentials_are_authorized"
+    },
+    {
+      "id": "finops",
+      "label": "Costos / FinOps",
+      "questions": ["¿Qué costo fue autorizado?", "¿Cuál es el costo unitario?"],
+      "evidence_sources": ["approved provider billing exports"],
+      "metrics": ["monthly_authorized_cost", "cost_per_published_signal"],
+      "availability": "blocked_until_billing_data_access_is_authorized"
+    }
+  ],
+  "display_rules": {
+    "missing_evidence": "not_available",
+    "stale_evidence": "show_stale_badge",
+    "zero": "show_only_when_source_explicitly_reports_zero",
+    "inferred_values": "forbidden"
+  }
+}
