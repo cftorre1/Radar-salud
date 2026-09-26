@@ -23,7 +23,7 @@ def test_tea_resolution_card_keeps_outcome_requirement_and_deadline_compact():
         why_it_matters="Las isapres deben mantener la bonificación sin tope anual y adecuar la compra directa de bonos.",
         key_points=["Las isapres deben implementar el mecanismo de registro a más tardar el 1 de noviembre de 2026."])
     card=m._card_micro(row)
-    assert "cinco prestaciones" in card["card_what"] and "requisitos" in card["card_what"]
+    assert "cinco prestaciones" in card["card_what"] and "RND" in card["card_what"]
     assert "1 de noviembre de 2026" in card["card_why"] and "compra directa" in card["card_why"]
     assert len(card["card_what"])+len(card["card_why"])<300
 
