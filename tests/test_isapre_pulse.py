@@ -26,10 +26,17 @@ def test_pulse_reconciles_real_three_family_series():
     assert len(pulse["data_insights"]) == 5
     assert len(pulse["data_insight_evidence"]) == 5
     assert "Datos" not in pulse["data_insights"][0]
-    assert pulse["data_insight_evidence"][0]["period"] == "2026-06 → 2026-07"
+    assert pulse["data_insight_evidence"][0]["period"] == "2026-01 → 2026-07"
     assert {x["analysis_kind"] for x in pulse["data_insight_evidence"]} == {
-        "monthly_change_beneficiarios", "beneficiary_stock_change", "cotizantes_vs_cargas",
+        "beneficiary_stock_change", "portfolio_mix_shift", "beneficiary_streak",
         "subscriptions_voluntary_gap", "mobility_interval"}
+    mix = next(x for x in pulse["data_insight_evidence"] if x["analysis_kind"] == "portfolio_mix_shift")
+    assert "0.615 → 0.605" in mix["text"]
+    assert "72.9%" in mix["text"]
+    assert "no causa ni ingreso" in mix["text"]
+    assert "6 bajas mensuales" in pulse["why_it_matters"]
+    assert "otras terminaciones" in pulse["why_it_matters"]
+    assert pulse["data_insight_meta"]["business_review"] == "sustained_contraction_and_mix_watch_without_causal_attribution"
     assert len(pulse["source_alternatives"]) == 3
     assert {x["family"] for x in pulse["source_alternatives"]} == {"cartera", "suscripciones", "movilidad"}
     assert all(x["event_date"] == "2026-09-07" and "/biblioteca-digital/" in x["url"]
@@ -54,6 +61,18 @@ def test_pulse_fails_closed_for_missing_unvalidated_or_unreconciled_family():
         altered = copy.deepcopy(base)
         change(altered)
         assert build_pulse(altered, releases()) is None
+
+
+def test_business_reading_uses_current_reconciled_series_instead_of_frozen_copy():
+    changed = canonical()
+    january = changed["families"]["cartera"]["series"][0]["metrics"]
+    january["cotizantes"] += 1000
+    january["beneficiarios"] += 1000
+    pulse = build_pulse(changed, releases())
+    assert pulse is not None
+    assert "27.541 beneficiarios menos" in pulse["why_it_matters"]
+    assert "26.541 beneficiarios menos" not in pulse["why_it_matters"]
+    assert pulse["data_insight_meta"]["business_metrics"]["beneficiary_decline"] == 27541
 
 
 def test_pulse_fails_closed_without_three_dated_official_release_pages():

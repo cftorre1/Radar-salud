@@ -87,8 +87,16 @@ def build_pulse(validation, releases=None):
         analytic=derive(validation)
         if analytic["status"]!="validated":
             raise ValueError("Unvalidated analytic series")
+        business=analytic["business_metrics"]
+        decline=_count(business["beneficiary_decline"])
+        cargas_decline=_count(business["cargas_decline"])
+        streak=_count(business["consecutive_monthly_beneficiary_declines"])
+        cargas_share=business["cargas_share_of_decline_pct"]
+        if decline<=0 or cargas_decline<=0 or streak<2 or not isinstance(cargas_share,(int,float)) or isinstance(cargas_share,bool):
+            raise ValueError("Business reading is not supported by current series")
+        share_label=f"{cargas_share:.1f}".replace(".",",")
         by_kind={item["analysis_kind"]:item for item in analytic["insights"]}
-        selected_kinds=("monthly_change_beneficiarios","beneficiary_stock_change","cotizantes_vs_cargas",
+        selected_kinds=("beneficiary_stock_change","portfolio_mix_shift","beneficiary_streak",
                         "subscriptions_voluntary_gap","mobility_interval")
         published_insights=[by_kind[kind] for kind in selected_kinds]
         label=lambda v:f"{v:,}".replace(",",".")
@@ -102,7 +110,7 @@ def build_pulse(validation, releases=None):
             "category":"Datos sectoriales","event_type":"DATA_PULSE","distribution":"archive",
             "radar_score":72,"confidence_score":100,
             "what_happened":f"Las series oficiales del sistema Isapre registran a {period} una cartera de {label(benef)} beneficiarios ({label(cot)} cotizantes y {label(cargas)} cargas).",
-            "why_it_matters":"Permite leer juntos el tamaño de la cartera, las suscripciones y desahucios voluntarios mensuales, y la movilidad entre dos cortes anuales. Son medidas de períodos distintos; no prueban causas ni una tendencia por sí solas.",
+            "why_it_matters":f"La cartera acumula {streak} bajas mensuales y {label(decline)} beneficiarios menos entre enero y julio; {share_label}% de esa disminución aritmética corresponde a cargas. Para gestión comercial y financiera, es una alerta de composición y base de ingresos, no una explicación causal: la brecha entre contratos y desahucios voluntarios omite otras terminaciones, y la movilidad usa otro intervalo. Conviene seguir terminaciones completas, mezcla de cartera y próximas publicaciones antes de atribuir desempeño.",
             "key_points":[f"En {period} se registraron {label(contracts)} contratos suscritos y {label(voluntary)} desahucios voluntarios; estos últimos no representan todas las terminaciones.",
                 f"Entre los cortes {start_label} y {end_label} se registraron {label(exits)} salidas y {label(entries)} entradas por movilidad; diferencia entradas menos salidas: {label(net)}."],
             "data_insights":[item["text"] for item in published_insights],
@@ -112,7 +120,9 @@ def build_pulse(validation, releases=None):
                                  "anomaly_checks":analytic["anomaly_checks"],
                                  "publication_dates":{k:official[k]["event_date"] for k in ("cartera","suscripciones","movilidad")},
                                  "validated_at":validation["validated_at"],
-                                 "validated_insight_count":len(analytic["insights"]),"published_sample_count":len(published_insights)},
+                                 "validated_insight_count":len(analytic["insights"]),"published_sample_count":len(published_insights),
+                                 "business_review":"sustained_contraction_and_mix_watch_without_causal_attribution",
+                                 "business_metrics":business},
             "source_alternatives":[{**official[k],"workbook_url":families[k]["source_url"]} for k in ("cartera","suscripciones","movilidad")],
             "key_facts":[f"Cartera {period}: {benef} beneficiarios",f"Movilidad {m['period_start']} a {period}: {net}"],
         }

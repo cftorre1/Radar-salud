@@ -1,6 +1,6 @@
 {
-  "date": "2026-09-25",
-  "generated_at": "2026-09-25T14:43:10.414429+00:00",
+  "date": "2026-09-26",
+  "generated_at": "2026-09-26T10:57:48.978478+00:00",
   "signals": [
     {
       "title": "Ministra de Salud presenta piloto para que pacientes del Hospital Barros Luco retiren sus medicamentos en farmacias cercanas a sus hogares adheridas a Ley Cenabast",
@@ -2090,29 +2090,19 @@
       "radar_score": 72,
       "confidence_score": 100,
       "what_happened": "Las series oficiales del sistema Isapre registran a 2026-07 una cartera de 2.487.497 beneficiarios (1.549.873 cotizantes y 937.624 cargas).",
-      "why_it_matters": "Permite leer juntos el tamaño de la cartera, las suscripciones y desahucios voluntarios mensuales, y la movilidad entre dos cortes anuales. Son medidas de períodos distintos; no prueban causas ni una tendencia por sí solas.",
+      "why_it_matters": "La cartera acumula 6 bajas mensuales y 26.541 beneficiarios menos entre enero y julio; 72,9% de esa disminución aritmética corresponde a cargas. Para gestión comercial y financiera, es una alerta de composición y base de ingresos, no una explicación causal: la brecha entre contratos y desahucios voluntarios omite otras terminaciones, y la movilidad usa otro intervalo. Conviene seguir terminaciones completas, mezcla de cartera y próximas publicaciones antes de atribuir desempeño.",
       "key_points": [
         "En 2026-07 se registraron 19.716 contratos suscritos y 15.172 desahucios voluntarios; estos últimos no representan todas las terminaciones.",
         "Entre los cortes 07-2025 y 07-2026 se registraron 109.663 salidas y 91.963 entradas por movilidad; diferencia entradas menos salidas: -17.700."
       ],
       "data_insights": [
-        "Beneficiarios: 2.489.258 en junio y 2.487.497 en julio de 2026; variación -1.761 (-0.07%).",
         "La cartera pasó de 2.514.038 a 2.487.497 beneficiarios entre enero y julio de 2026; variación -26.541 (diferencia de stock, no suma mensual).",
-        "Composición de cartera entre enero y julio de 2026: cotizantes 1.557.064 → 1.549.873 (-7.191); cargas 956.974 → 937.624 (-19.350).",
+        "Mezcla de cartera enero→julio 2026: cargas por cotizante 0.615 → 0.605 (-1.57%); la baja de 19.350 cargas equivale al 72.9% de la disminución de 26.541 beneficiarios. Describe composición, no causa ni ingreso.",
+        "La cartera de beneficiarios cae en 6 comparaciones mensuales consecutivas hasta julio de 2026; no se infiere causa.",
         "Suscripciones y desahucios voluntarios: en julio hubo 19.716 y 15.172, brecha +4.544; enero–julio, brecha acumulada +19.100 eventos. No equivale a variación neta de cartera.",
         "Movilidad entre cortes julio 2025 y julio 2026: 91.963 entradas y 109.663 salidas; diferencia -17.700. No es variación mensual."
       ],
       "data_insight_evidence": [
-        {
-          "text": "Beneficiarios: 2.489.258 en junio y 2.487.497 en julio de 2026; variación -1.761 (-0.07%).",
-          "formula": "(2487497 - 2489258) / 2489258 * 100 = -0.0707%",
-          "family": "cartera",
-          "period": "2026-06 → 2026-07",
-          "sheet": "Julio",
-          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
-          "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-          "analysis_kind": "monthly_change_beneficiarios"
-        },
         {
           "text": "La cartera pasó de 2.514.038 a 2.487.497 beneficiarios entre enero y julio de 2026; variación -26.541 (diferencia de stock, no suma mensual).",
           "formula": "2487497 - 2514038 = -26541",
@@ -2124,14 +2114,24 @@
           "analysis_kind": "beneficiary_stock_change"
         },
         {
-          "text": "Composición de cartera entre enero y julio de 2026: cotizantes 1.557.064 → 1.549.873 (-7.191); cargas 956.974 → 937.624 (-19.350).",
-          "formula": "cotizantes: 1549873 - 1557064 = -7191; cargas: 937624 - 956974 = -19350",
+          "text": "Mezcla de cartera enero→julio 2026: cargas por cotizante 0.615 → 0.605 (-1.57%); la baja de 19.350 cargas equivale al 72.9% de la disminución de 26.541 beneficiarios. Describe composición, no causa ni ingreso.",
+          "formula": "cargas/cotizante: (937624/1549873 - 956974/1557064) / (956974/1557064) * 100 = -1.5674%; participación cargas: 19350 / 26541 * 100 = 72.9061%",
           "family": "cartera",
           "period": "2026-01 → 2026-07",
           "sheet": "Julio",
           "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
           "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-          "analysis_kind": "cotizantes_vs_cargas"
+          "analysis_kind": "portfolio_mix_shift"
+        },
+        {
+          "text": "La cartera de beneficiarios cae en 6 comparaciones mensuales consecutivas hasta julio de 2026; no se infiere causa.",
+          "formula": "2514038>2510385 and 2510385>2504837 and 2504837>2498649 and 2498649>2493684 and 2493684>2489258 and 2489258>2487497",
+          "family": "cartera",
+          "period": "2026-01 → 2026-07",
+          "sheet": "Julio",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+          "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+          "analysis_kind": "beneficiary_streak"
         },
         {
           "text": "Suscripciones y desahucios voluntarios: en julio hubo 19.716 y 15.172, brecha +4.544; enero–julio, brecha acumulada +19.100 eventos. No equivale a variación neta de cartera.",
@@ -2196,7 +2196,18 @@
         },
         "validated_at": "2026-09-24T03:49:04.189181+00:00",
         "validated_insight_count": 10,
-        "published_sample_count": 5
+        "published_sample_count": 5,
+        "business_review": "sustained_contraction_and_mix_watch_without_causal_attribution",
+        "business_metrics": {
+          "beneficiary_change": -26541,
+          "beneficiary_decline": 26541,
+          "cargas_decline": 19350,
+          "cargas_share_of_decline_pct": 72.90606985418786,
+          "cargas_per_cotizante_start": 0.6146015834930356,
+          "cargas_per_cotizante_end": 0.6049682780460076,
+          "cargas_per_cotizante_change_pct": -1.5674065452740842,
+          "consecutive_monthly_beneficiary_declines": 6
+        }
       },
       "source_alternatives": [
         {

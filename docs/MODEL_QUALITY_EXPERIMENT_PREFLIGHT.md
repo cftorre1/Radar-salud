@@ -2,7 +2,7 @@
 
 Estado: listo para ejecución controlada, **sin llamadas ni gasto**.
 
-La fuente de verdad es `config/model_quality_experiment_v1.json`. Congela siete casos permitidos y trazables, junto con el SHA-256 exacto de cada snapshot: informes multifuente complejos, un teaser monofuente, noticia oficial simple, lectura normativa, noticia de negocio y pulso histórico con guard LIVE. Los tres modelos reciben exactamente el mismo input, prompt y contrato JSON. Si cambia cualquiera de los hashes, el corpus debe recongelarse antes de ejecutar.
+La fuente de verdad es `config/model_quality_experiment_v1.json`. Congela siete casos permitidos y trazables, junto con el SHA-256 exacto de cada snapshot: informes multifuente complejos, un teaser monofuente, noticia oficial simple, lectura normativa, noticia de negocio y pulso histórico con guard LIVE. Los tres modelos reciben exactamente el mismo input, prompt y contrato JSON. Si cambia cualquiera de los hashes, el corpus debe recongelarse antes de ejecutar; el snapshot de Radar se recongeló tras el review experto de Pulso Excel, sin ejecutar modelos.
 
 ## Ejecución pendiente
 

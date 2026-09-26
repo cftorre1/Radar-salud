@@ -9,7 +9,8 @@
       "period": "2026-06 → 2026-07",
       "sheet": "Julio",
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
-      "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec"
+      "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+      "analysis_kind": "monthly_change_beneficiarios"
     },
     {
       "text": "Contratos suscritos: 18.331 en junio y 19.716 en julio de 2026; variación +1.385 (+7.56%).",
@@ -18,7 +19,8 @@
       "period": "2026-06 → 2026-07",
       "sheet": "Julio",
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
-      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6"
+      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+      "analysis_kind": "monthly_change_contratos_suscritos"
     },
     {
       "text": "Desahucios voluntarios: 14.726 en junio y 15.172 en julio de 2026; variación +446 (+3.03%).",
@@ -27,16 +29,28 @@
       "period": "2026-06 → 2026-07",
       "sheet": "Julio",
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
-      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6"
+      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+      "analysis_kind": "monthly_change_desahucios_voluntarios"
     },
     {
-      "text": "La cartera registra -26.541 beneficiarios entre enero y julio de 2026 (diferencia de stock, no suma mensual).",
+      "text": "La cartera pasó de 2.514.038 a 2.487.497 beneficiarios entre enero y julio de 2026; variación -26.541 (diferencia de stock, no suma mensual).",
       "formula": "2487497 - 2514038 = -26541",
       "family": "cartera",
       "period": "2026-01 → 2026-07",
       "sheet": "Julio",
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
-      "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec"
+      "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+      "analysis_kind": "beneficiary_stock_change"
+    },
+    {
+      "text": "Mezcla de cartera enero→julio 2026: cargas por cotizante 0.615 → 0.605 (-1.57%); la baja de 19.350 cargas equivale al 72.9% de la disminución de 26.541 beneficiarios. Describe composición, no causa ni ingreso.",
+      "formula": "cargas/cotizante: (937624/1549873 - 956974/1557064) / (956974/1557064) * 100 = -1.5674%; participación cargas: 19350 / 26541 * 100 = 72.9061%",
+      "family": "cartera",
+      "period": "2026-01 → 2026-07",
+      "sheet": "Julio",
+      "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+      "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+      "analysis_kind": "portfolio_mix_shift"
     },
     {
       "text": "Enero–julio 2026: 134.943 contratos suscritos acumulados como eventos mensuales; no equivalen a cambio neto de cartera.",
@@ -45,7 +59,8 @@
       "period": "2026-01 → 2026-07",
       "sheet": "Julio",
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
-      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6"
+      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+      "analysis_kind": "cumulative_contratos_suscritos"
     },
     {
       "text": "Enero–julio 2026: 115.843 desahucios voluntarios acumulados como eventos mensuales; no equivalen a cambio neto de cartera.",
@@ -54,7 +69,18 @@
       "period": "2026-01 → 2026-07",
       "sheet": "Julio",
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
-      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6"
+      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+      "analysis_kind": "cumulative_desahucios_voluntarios"
+    },
+    {
+      "text": "Suscripciones y desahucios voluntarios: en julio hubo 19.716 y 15.172, brecha +4.544; enero–julio, brecha acumulada +19.100 eventos. No equivale a variación neta de cartera.",
+      "formula": "julio: 19716 - 15172 = 4544; acumulado: 134943 - 115843 = 19100",
+      "family": "suscripciones",
+      "period": "2026-01 → 2026-07",
+      "sheet": "Julio",
+      "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
+      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+      "analysis_kind": "subscriptions_voluntary_gap"
     },
     {
       "text": "La cartera de beneficiarios cae en 6 comparaciones mensuales consecutivas hasta julio de 2026; no se infiere causa.",
@@ -63,7 +89,8 @@
       "period": "2026-01 → 2026-07",
       "sheet": "Julio",
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
-      "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec"
+      "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+      "analysis_kind": "beneficiary_streak"
     },
     {
       "text": "Movilidad entre cortes julio 2025 y julio 2026: 91.963 entradas y 109.663 salidas; diferencia -17.700. No es variación mensual.",
@@ -72,7 +99,8 @@
       "period": "2025-07 → 2026-07",
       "sheet": "Nacional",
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
-      "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7"
+      "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
+      "analysis_kind": "mobility_interval"
     }
   ],
   "anomaly_checks": {
@@ -94,6 +122,16 @@
       "observations": 6,
       "flagged_periods": []
     }
+  },
+  "business_metrics": {
+    "beneficiary_change": -26541,
+    "beneficiary_decline": 26541,
+    "cargas_decline": 19350,
+    "cargas_share_of_decline_pct": 72.90606985418786,
+    "cargas_per_cotizante_start": 0.6146015834930356,
+    "cargas_per_cotizante_end": 0.6049682780460076,
+    "cargas_per_cotizante_change_pct": -1.5674065452740842,
+    "consecutive_monthly_beneficiary_declines": 6
   },
   "sources": {
     "cartera": {

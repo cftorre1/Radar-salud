@@ -20,7 +20,9 @@ def test_real_series_have_reconciled_periods_formulas_and_official_sources():
         assert len(item["sha256"]) == 64
     assert "-1.761" in result["insights"][0]["text"]
     assert "no equivalen a cambio neto" in " ".join(x["text"] for x in result["insights"])
-    assert {x["analysis_kind"] for x in result["insights"]} >= {"cotizantes_vs_cargas", "subscriptions_voluntary_gap"}
+    assert {x["analysis_kind"] for x in result["insights"]} >= {"portfolio_mix_shift", "subscriptions_voluntary_gap"}
+    mix = next(x for x in result["insights"] if x["analysis_kind"] == "portfolio_mix_shift")
+    assert "72.9%" in mix["text"] and "no causa ni ingreso" in mix["text"]
     gap = next(x for x in result["insights"] if x["analysis_kind"] == "subscriptions_voluntary_gap")
     assert "15.172, brecha +4.544; enero–julio, brecha" in gap["text"]
     assert result["insights"][-1]["period"] == "2025-07 → 2026-07"

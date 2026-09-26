@@ -251,7 +251,9 @@ test('Cards V2 keep Bupa, sanctions and Circular 535 understandable',async({page
  await expect(isapre.locator('.card-meta')).toContainText('Validado 24 sept 2026');
  await isapre.locator('[data-detail]').click();
  await expect(page.locator('#detailBody .intel').filter({hasText:'Muestra de datos validada'}).locator('li')).toHaveCount(5);
- await expect(page.locator('#detailBody')).toContainText('2026-06 → 2026-07');
+ await expect(page.locator('#detailBody')).toContainText('2026-01 → 2026-07');
+ await expect(page.locator('#detailBody')).toContainText('0.615 → 0.605');
+ await expect(page.locator('#detailBody')).toContainText('72.9%');
  await expect(page.locator('#detailBody')).toContainText('cotizantes');
  await expect(page.locator('#detailBody')).toContainText('brecha acumulada');
  await expect(page.locator('#detailBody')).toContainText('No es variación mensual');

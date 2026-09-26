@@ -116,10 +116,18 @@ def derive(validation):
 
         cot_first, cot_last = c[0]["metrics"]["cotizantes"], c[-1]["metrics"]["cotizantes"]
         cargas_first, cargas_last = c[0]["metrics"]["cargas"], c[-1]["metrics"]["cargas"]
+        total_decline = first - last
+        cargas_decline = cargas_first - cargas_last
+        if total_decline <= 0 or cargas_decline < 0 or cot_first == 0:
+            raise ValueError("Portfolio mix comparison is not interpretable")
+        first_ratio = cargas_first / cot_first
+        last_ratio = cargas_last / cot_last
+        ratio_change = (last_ratio - first_ratio) / first_ratio * 100
+        cargas_share = cargas_decline / total_decline * 100
         records.append(_record(
-            f"Composición de cartera entre enero y julio de 2026: cotizantes {_label(cot_first)} → {_label(cot_last)} ({_signed_label(cot_last-cot_first)}); cargas {_label(cargas_first)} → {_label(cargas_last)} ({_signed_label(cargas_last-cargas_first)}).",
-            f"cotizantes: {cot_last} - {cot_first} = {cot_last-cot_first}; cargas: {cargas_last} - {cargas_first} = {cargas_last-cargas_first}",
-            car, "2026-01 → 2026-07", c[-1], "cotizantes_vs_cargas"))
+            f"Mezcla de cartera enero→julio 2026: cargas por cotizante {first_ratio:.3f} → {last_ratio:.3f} ({ratio_change:+.2f}%); la baja de {_label(cargas_decline)} cargas equivale al {cargas_share:.1f}% de la disminución de {_label(total_decline)} beneficiarios. Describe composición, no causa ni ingreso.",
+            f"cargas/cotizante: ({cargas_last}/{cot_last} - {cargas_first}/{cot_first}) / ({cargas_first}/{cot_first}) * 100 = {ratio_change:+.4f}%; participación cargas: {cargas_decline} / {total_decline} * 100 = {cargas_share:.4f}%",
+            car, "2026-01 → 2026-07", c[-1], "portfolio_mix_shift"))
         for metric, label in (("contratos_suscritos", "contratos suscritos"), ("desahucios_voluntarios", "desahucios voluntarios")):
             values = [row["metrics"][metric] for row in s]
             total = sum(values)
@@ -154,6 +162,11 @@ def derive(validation):
         checks = {metric: _anomaly_check([row["metrics"][metric] for row in series])
                   for series, metric in ((c, "beneficiarios"), (s, "contratos_suscritos"), (s, "desahucios_voluntarios"))}
         return {"status": "validated", "period": PERIODS[-1], "insights": records, "anomaly_checks": checks,
+                "business_metrics": {"beneficiary_change": last - first, "beneficiary_decline": total_decline,
+                                     "cargas_decline": cargas_decline, "cargas_share_of_decline_pct": cargas_share,
+                                     "cargas_per_cotizante_start": first_ratio, "cargas_per_cotizante_end": last_ratio,
+                                     "cargas_per_cotizante_change_pct": ratio_change,
+                                     "consecutive_monthly_beneficiary_declines": streak},
                 "sources": {name: {"url": item["source_url"], "sha256": item["sha256"]} for name, item in families.items()}}
     except (KeyError, TypeError, ValueError, IndexError, ZeroDivisionError):
         return {"status": "schema_or_denominator_not_validated", "insights": [], "anomaly_checks": {}}
