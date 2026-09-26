@@ -19,7 +19,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#newsletterDialog')).toContainText('proveedor y privacidad aprobados');
  await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
  await expect(page.locator('#radarTitle')).toHaveText('Ponte al día en 30 segundos');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ señales seleccionadas · \d+ no leídas$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas visibles tras filtros · \d+ tarjetas no leídas$/);
  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();
  await expect(page.locator('#sourcesList .source-row')).toHaveCount(10);
@@ -325,7 +325,7 @@ test('analytics never sends without explicit privacy approval even if a key is p
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('7');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ señales seleccionadas · \d+ no leídas$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas visibles tras filtros · \d+ tarjetas no leídas$/);
  expect(attempts).toBe(0);
 });
 test('authorized analytics fixture emits only anonymous event fields',async({page})=>{
