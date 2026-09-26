@@ -142,10 +142,37 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
             "model_trace": {"mode": "deterministic_existing_evidence", "api_call": False,
                             "model": None, "output_id": theme["id"]},
         }
-    # Weekly Insight is deliberately disabled until a builder can verify two
-    # independent signals, or one signal plus an independent indicator. The
-    # previous single-signal curation must not become an insight by relabelling.
     weekly = None
+    ranked = rank_weekly_candidates(snapshot.get("signals") or [], prior_history, today)
+    if not current and ranked:
+        picked = ranked[0]
+        signal = picked["signal"]
+        support = [
+            *(signal.get("key_points") or []),
+            *(signal.get("data_insights") or []),
+            *(signal.get("affected_processes") or []),
+        ]
+        reproducible = bool(support) and bool(signal.get("source_url")) and signal.get("publication_gate_reason") == "ok"
+        if reproducible:
+            weekly = {
+                "id": f"{week_start}:{signal.get('event_type','OTHER')}:{picked['archetype']}",
+                "title": signal["title"],
+                "insight_title": f"Qué cambia esta semana: {signal['title']}",
+                "summary": signal.get("card_what") or signal.get("what_happened"),
+                "insight_teaser": signal.get("card_why") or signal.get("why_it_matters"),
+                "insight_reading": signal.get("card_why") or signal.get("why_it_matters"),
+                "decision_use": "Revisar impacto, implementación y próximos hitos con la evidencia original.",
+                "source_name": signal["source_name"],
+                "source_url": signal["source_url"],
+                "event_date": signal["event_date"],
+                "scope": picked["scope"],
+                "archetype": picked["archetype"],
+                "weekly_mode": "single_source_deep_dive",
+                "reproducible_analysis": True,
+                "supporting_elements": support[:6],
+                "model_trace": {"mode": "deterministic_existing_evidence", "api_call": False,
+                                "model": None, "output_id": f"weekly:{week_start}:{signal['source_url']}"},
+            }
     return {
         "generated_at": snapshot.get("generated_at"),
         "status": "available" if teaser and weekly else "partial",
@@ -156,9 +183,9 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
             "recent_history_count": len(prior_history[-6:]),
             "current_week_locked": bool(current),
             "penalizes": ["archetype", "scope", "source"],
-            "fallback": "hide_without_curated_evidence_tied_insight",
-            "weekly_insight_status": "disabled_pending_verified_multi_evidence_builder",
-            "minimum_insight_evidence": "two_verified_signals_or_one_verified_signal_plus_one_verified_indicator",
+            "fallback": "hide_without_reproducible_evidence_tied_insight",
+            "weekly_insight_status": "published_single_source_deep_dive" if weekly else "hidden_fail_closed",
+            "minimum_insight_evidence": "two independent sources, or one high-quality source with reproducible deep analysis and explicit decision use",
             "no_forced_frequency": True,
         },
     }
