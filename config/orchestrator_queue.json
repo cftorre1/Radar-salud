@@ -1759,6 +1759,58 @@
         "checklist de acuerdos previos preservados",
         "lista explícita de blockers humanos/external-only restantes"
       ]
+    },
+    {
+      "id": "editorial_committee_insight_sitewide_v3_2026_09_26",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Builder+Work+Reviewer",
+      "source": "Dirección",
+      "objective": "Operacionalizar el Comité de Inteligencia Editorial como gate permanente por señal, aplicar lineamientos por tipo de contenido a toda la web e implementar Weekly Insight Pipeline V2 con scoring, enriquecimiento, Deep Intelligence y auditoría antes de producción.",
+      "depends_on": [
+        "editorial_90d_learning_rules_2026_09_26",
+        "content_contract_pulso_normative_weekly_analysis_2026_09_26",
+        "preproduction_consolidation_2026_09_26"
+      ],
+      "instructions": [
+        "Convertir config/editorial_intelligence_committee_v1.json y su charter en un gate obligatorio pre-publicación. Cada nueva señal debe generar un artefacto estructurado del panel experto correspondiente y un veredicto PASS/REVISE/HOLD/REJECT.",
+        "Núcleo permanente: Editor de Inteligencia, Negocio Salud, Data Analytics/Estadística, BI/Decision Intelligence, Regulación/Legal y Evidence & Research. Activar especialistas condicionales por dominio y UX/visual solo cuando corresponda.",
+        "Aplicar lineamientos estratégicos permanentes, no solo estilo: el comité maximiza valor dentro de un marco que no puede violar. Hechos, inferencias e hipótesis separados; fuente válida no equivale a señal; toda nueva clase de error/valor puede promover una regla versionada + test.",
+        "Normativa: título y Ponte al día deben conservar tipo de acto + número + tema central. En resoluciones, mostrar además la relación con Circular/Oficio/Resolución/antecedente cuando sea verificable. El comité puede optimizar forma y profundidad, pero no omitir identidad ni objeto jurídico.",
+        "Datos/estadísticas: aplicar escalera de valor obligatoria: insight conectado → análisis profundo → hallazgo/dato central → ficha útil. Toda nueva familia sin parser genera deuda analítica automática visible en PMO/BI.",
+        "Noticias: exigir actor+acción+consecuencia, materialidad y decisión afectada; eliminar contexto/fuentes adicionales que no agreguen valor real o no respalden afirmaciones.",
+        "Fiscalización: distinguir LIVE/BACKFILL, buscar patrón cuando exista y no elevar actos rutinarios sin valor incremental.",
+        "Global: separar hechos internacionales de hipótesis Chile y exigir lectura estratégica accionable.",
+        "Pulso/Trend/Benchmark: agrupar publicaciones rutinarias equivalentes y evitar que compitan como tarjetas individuales salvo hallazgo distinto y trazable.",
+        "Implementar Weekly Insight Pipeline V2 tal como está especificado en config/editorial_rules_v2.json y docs/WEEKLY_INSIGHT_PIPELINE_V2_2026_09_26.md.",
+        "Scoring semanal: evaluar todas las señales elegibles de los últimos 14 días con pesos: impacto financiero 16%, operacional 14%, cambio regulatorio/competitivo 14%, alcance 10%, urgencia 10%, accionabilidad 14%, fortaleza de evidencia 12%, novedad/no repetición 10%. Umbral mínimo 70; elegir mayor score; desempatar por evidencia, accionabilidad y fecha.",
+        "Enriquecimiento del candidato: buscar en este orden evidencia existente de Alicanto → histórico Alicanto → investigación web aprobada. La evidencia complementaria puede corroborar, contextualizar, tensionar o conectar; no etiquetar como corroboración si no sustenta el mismo hecho.",
+        "Soportar dos modos semanales: A) Insight multievidencia; B) análisis profundo single-source cuando la fuente primaria sea rica, el análisis reproducible, exista uso de decisión explícito y la interpretación sea no obvia.",
+        "Deep Intelligence preferido: TERRA. TERRA debe recibir solo el paquete de evidencia curado y producir tesis ejecutiva, qué cambió, por qué importa, conexiones, implicancias, decisión afectada, qué observar, límites y mapa de evidencia. No generar afirmaciones materiales sin evidencia.",
+        "Mientras TERRA no esté integrado/autorizado, implementar y validar todo el pipeline hasta el handoff fail-closed: ranking, candidato, enriquecimiento, paquete de evidencia, auditoría y estado blocked_at_terra. No simular output de Terra.",
+        "Cuando TERRA quede habilitado, ejecutar máximo dos ciclos REVISE; REJECT pasa al siguiente candidato; si todos fallan no publicar.",
+        "Aplicar desde esta iteración el ranking real sobre el período actual y dejar identificado el candidato #1, #2 y #3 con desglose de score y paquete de evidencia. Si existe una ruta autorizada a TERRA, completar el Insight; si no, dejar listo para ejecución en cuanto se habilite.",
+        "Revisar toda la web/staging para asegurar que Ponte al día, feed, detalle, Pulso, Global y Análisis de la semana respeten las reglas editoriales persistentes, especialmente normativa y fuentes/contexto.",
+        "Mantener learning loop: toda corrección aprobada del comité debe poder convertirse en regla/config/test sin hardcode por URL.",
+        "QA desktop/mobile + Reviewer independiente del candidato completo antes de producción."
+      ],
+      "constraints": [
+        "No inventar corroboración, causalidad, impacto o relación normativa.",
+        "No permitir que una mejora editorial omita identidad jurídica, período, fuente o consecuencia material.",
+        "No llamar a TERRA/ASTRA ni incurrir en gasto sin credencial y presupuesto autorizados.",
+        "No tocar main/producción hasta revisión de Dirección.",
+        "No depender de una automatización con escritura no comprobada como único mecanismo de ejecución."
+      ],
+      "evidence_required": [
+        "artefacto estructurado del Comité por señal",
+        "checklist/guardrails por tipo implementados",
+        "ranking semanal top 3 con scoring desglosado",
+        "paquete de enriquecimiento del candidato #1",
+        "estado TERRA real: ejecutado con evidencia o blocker explícito",
+        "fixtures/tests de regresión del comité y del Insight",
+        "auditoría site-wide de normativa/fuentes/contexto",
+        "QA desktop/mobile + Reviewer PASS"
+      ]
     }
   ],
   "execution_policy": {
