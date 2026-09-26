@@ -1400,6 +1400,69 @@
         "tests + QA desktop/mobile + Reviewer PASS",
         "SHA de producción y QA post-deploy en alicantosalud.cl antes de 08:00 o blocker explícito"
       ]
+    },
+    {
+      "id": "admin_portal_expert_audit_2026_09_26",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Auditar y proponer la evolución del portal /admin/product.html como centro de control ejecutivo del desarrollo y del beta de Alicanto Salud.",
+      "depends_on": [
+        "overnight_content_sources_experiments_release_2026_09_25"
+      ],
+      "instructions": [
+        "Realizar auditoría independiente del portal admin/product.html sin implementar cambios en esta primera pasada.",
+        "Evaluar con seis lentes: 1) UX/usabilidad de dashboards, 2) consultoría/PMO ejecutiva, 3) control de gestión estratégica, 4) Business Intelligence/data visualization, 5) FinOps/costos operativos y de IA, 6) experimentación/product analytics para beta.",
+        "Revisar sección por sección: Beta Readiness, estados de bloques, evidencia y blockers; historial de commits/iteraciones/workflows; QA/Reviewer/rollback; costos estimados y reales; fuentes y salud técnica/editorial; LIVE vs BACKFILL; uso de modelos/tokens/costos; resultados del beta y funnel de uso cuando exista; sugerencias de fuentes y newsletter cuando estén disponibles.",
+        "Distinguir claramente indicadores de proceso de desarrollo, indicadores operacionales del producto, indicadores de adopción/engagement beta y resultados/valor entregado al usuario.",
+        "Proponer un mapa de indicadores y relaciones causales tipo scorecard: calidad/cobertura → valor editorial → uso/retención → conversión/ingresos/costo, sin inventar métricas no observadas.",
+        "Diseñar conceptualmente un dashboard dinámico: KPIs principales arriba, tendencias temporales, drill-down, semáforos con definición objetiva, sparklines/gráficos cuando agreguen información, tablas solo cuando sean mejores que visualizaciones.",
+        "Definir qué debe verse en 30 segundos por Dirección y qué debe quedar en detalle para diagnóstico técnico.",
+        "Revisar semántica de estados PMO y evitar que 'implementado', 'validado', 'pendiente externo', 'bloqueo humano' o 'fuera de alcance' se mezclen.",
+        "Revisar costos: separar fijo/variable, real/estimado/no disponible, mensual/acumulado, por fuente, por modelo y por feature cuando exista trazabilidad.",
+        "Para beta, proponer cohortes y KPIs mínimos: activación, recurrencia, señales leídas, profundidad de lectura, filtros, shares, newsletter, Global/Insight, retorno semanal y feedback, sujetos a privacidad aprobada.",
+        "Registrar hallazgos, elementos a preservar, problemas prioritarios, mockup lógico/secciones recomendadas y backlog priorizado. No implementar hasta revisión de Dirección."
+      ],
+      "constraints": [
+        "No inventar mediciones, costos ni telemetría.",
+        "No activar analytics ni recolección sin aprobación de privacidad.",
+        "No convertir el portal en una pantalla técnica ilegible para Dirección.",
+        "No rediseñar por estética: cada cambio debe responder a una decisión o diagnóstico."
+      ],
+      "evidence_required": [
+        "hallazgos por cada uno de los seis lentes",
+        "inventario de KPIs actuales vs faltantes",
+        "mapa de indicadores/scorecard propuesto",
+        "arquitectura de dashboard recomendada",
+        "backlog P0/P1/P2 de mejoras",
+        "elementos explícitos a preservar"
+      ]
+    },
+    {
+      "id": "product_risk_gap_audit_2026_09_26",
+      "status": "pending",
+      "priority": "medium",
+      "owner": "Direction+Experts",
+      "source": "Orquestador",
+      "objective": "Auditoría transversal posterior a diseño, contenido y control de gestión para detectar riesgos no cubiertos antes de beta pública.",
+      "depends_on": [
+        "admin_portal_expert_audit_2026_09_26"
+      ],
+      "instructions": [
+        "Evaluar mañana cuatro dominios aún no auditados en profundidad: accesibilidad/inclusive design, seguridad/privacy-by-design, confiabilidad/observabilidad operativa y crecimiento/conversión de beta.",
+        "Usar expertos independientes y producir solo recomendaciones; no implementar hasta aprobación de Dirección.",
+        "Evitar reabrir decisiones de diseño/editorial ya validadas salvo evidencia de riesgo real."
+      ],
+      "constraints": [
+        "No ampliar scope si no existe riesgo o valor claro.",
+        "No implementar automáticamente."
+      ],
+      "evidence_required": [
+        "riesgos P0/P1/P2",
+        "controles faltantes",
+        "decisiones que requieren Dirección"
+      ]
     }
   ],
   "execution_policy": {
