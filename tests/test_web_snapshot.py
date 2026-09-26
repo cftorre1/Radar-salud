@@ -187,3 +187,32 @@ def test_tea_preproduction_copy_is_descriptive_and_operationally_complete():
     assert "15 días hábiles" in row["card_why"]
     assert "1 de noviembre de 2026" in row["card_why"]
     assert row["normative_document_label"]=="Resolución Exenta IF/N°11156"
+
+
+def test_all_opaque_normative_acts_get_identity_plus_subject_for_public_title():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    curated=m.curate(history,resolve_external=False)
+    acts=[x for x in curated if x.get("event_type")=="REGULATION" and x.get("normative_document_label")]
+    assert acts
+    for row in acts:
+        assert row.get("display_title"), row.get("title")
+        assert row["normative_document_label"] in row["display_title"]
+        assert " sobre " in row["display_title"]
+        assert len(row["display_title"]) > len(row["normative_document_label"]) + 8
+
+
+def test_pulso_suppresses_routine_component_statistics_including_regional_cartera():
+    pulse=sig("Pulso Isapre · datos a 2026-07",url="https://x/pulse")
+    pulse.update(event_type="DATA_PULSE",signal_types=["Datos"],data_period="2026-07")
+    rows=[pulse]
+    for title,url in [
+        ("Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026","https://x/cartera"),
+        ("Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional – Julio 2026","https://x/regional"),
+        ("Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026","https://x/sus"),
+        ("Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026","https://x/mov")]:
+        row=sig(title,url=url);row.update(signal_types=["Datos"],scopes=["Isapres"]);rows.append(row)
+    out=m._latest_stats(rows)
+    assert [x["source_url"] for x in out]==["https://x/pulse"]
+    distinct=dict(rows[2],source_url="https://x/regional-insight",distinct_decision_value=True,data_insights=["Región X cambia materialmente."])
+    out=m._latest_stats([pulse,distinct])
+    assert {x["source_url"] for x in out}=={"https://x/pulse","https://x/regional-insight"}
