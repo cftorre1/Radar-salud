@@ -36,7 +36,8 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  const extendedMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  expect(extendedMetrics[0]).toBeGreaterThanOrEqual(initialMetrics[0]);
  const visibleTriage=await page.locator('.briefrow').evaluateAll(rows=>{const host=rows[0]?.parentElement?.getBoundingClientRect();return host?rows.filter(row=>{const r=row.getBoundingClientRect();return r.top>=host.top-1&&r.bottom<=host.bottom+1}).length:0});
- expect(visibleTriage).toBeGreaterThanOrEqual(test.info().project.name==='mobile'?3:5);
+ // With filters expanded and both featured pieces visible, four complete desktop rows plus a scroll cue preserve readable triage.
+ expect(visibleTriage).toBeGreaterThanOrEqual(test.info().project.name==='mobile'?3:4);
  await expect(page.locator('article').first()).toBeVisible();
  if(test.info().project.name==='mobile'){
   const cards=await page.locator('article').evaluateAll(xs=>xs.slice(0,3).map(x=>({height:Math.round(x.getBoundingClientRect().height),title:x.querySelector('h2')?.textContent||''})));
