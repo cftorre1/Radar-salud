@@ -36,8 +36,8 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  const extendedMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  expect(extendedMetrics[0]).toBeGreaterThanOrEqual(initialMetrics[0]);
  const visibleTriage=await page.locator('.briefrow').evaluateAll(rows=>{const host=rows[0]?.parentElement?.getBoundingClientRect();return host?rows.filter(row=>{const r=row.getBoundingClientRect();return r.top>=host.top-1&&r.bottom<=host.bottom+1}).length:0});
- // With filters expanded and both featured pieces visible, four complete desktop rows plus a scroll cue preserve readable triage.
- expect(visibleTriage).toBeGreaterThanOrEqual(test.info().project.name==='mobile'?3:4);
+ // Mobile deliberately avoids an inner scroll: two complete rows plus the explicit expand/feed controls remain readable.
+ expect(visibleTriage).toBeGreaterThanOrEqual(test.info().project.name==='mobile'?2:4);
  await expect(page.locator('article').first()).toBeVisible();
  if(test.info().project.name==='mobile'){
   const cards=await page.locator('article').evaluateAll(xs=>xs.slice(0,3).map(x=>({height:Math.round(x.getBoundingClientRect().height),title:x.querySelector('h2')?.textContent||''})));
@@ -88,10 +88,17 @@ test('Inbox shows every unread signal, supports direct read and persists it',asy
  const inbox=page.locator('.brief-list');
  const deepCount=await page.locator('[data-brief-read]').count();
  expect(deepCount).toBeGreaterThan(4);
- await inbox.evaluate(el=>el.scrollTop=el.scrollHeight);
- expect(await inbox.evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
+ if(test.info().project.name==='mobile'){
+  await expect(page.locator('[data-brief-expand]')).toBeVisible();
+  expect(await inbox.evaluate(el=>getComputedStyle(el).overflowY)).toBe('hidden');
+  await page.locator('[data-brief-expand]').click();
+  await expect(inbox).toHaveClass(/expanded/);
+ }else{
+  await inbox.evaluate(el=>el.scrollTop=el.scrollHeight);
+  expect(await inbox.evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
+ }
  await page.locator('[data-brief-read]').last().click();
- expect(await inbox.evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
+ if(test.info().project.name!=='mobile')expect(await inbox.evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
  expect(await page.evaluate(()=>document.activeElement?.hasAttribute('data-brief-read'))).toBeTruthy();
 });
 test('operations dashboard loads without inventing measurements',async({page})=>{
@@ -128,10 +135,12 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  const global=page.locator('.signal.special.global'),weekly=page.locator('.signal.special.weekly');
  await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(1);
  await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(1);
- await expect(page.locator('.briefrow').nth(0)).toHaveClass(/brief-weekly/);await expect(page.locator('.briefrow').nth(1)).toHaveClass(/brief-global/);
+ await expect(page.locator('.briefrow').nth(0)).toHaveClass(/brief-global/);await expect(page.locator('.briefrow').nth(1)).toHaveClass(/brief-weekly/);
  await expect(page.locator('.brief-weekly .brief-meta')).toContainText('·');await expect(page.locator('.brief-global .brief-meta')).toContainText('·');
- const firstKinds=await page.locator('.briefrow').evaluateAll(rows=>rows.slice(0,2).map(row=>row.classList.contains('brief-weekly')?'weekly':row.classList.contains('brief-global')?'global':'ordinary'));expect(firstKinds).toEqual(['weekly','global']);
+ const firstKinds=await page.locator('.briefrow').evaluateAll(rows=>rows.slice(0,2).map(row=>row.classList.contains('brief-weekly')?'weekly':row.classList.contains('brief-global')?'global':'ordinary'));expect(firstKinds).toEqual(['global','weekly']);
+ await expect(page.locator('.briefrow .brief-meta')).toHaveCount(await page.locator('.briefrow').count());
  const fills=await page.locator('.signal.special').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(2);
+ const readTargets=await page.locator('.briefread').evaluateAll(buttons=>buttons.slice(0,2).map(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height})));expect(readTargets.every(({width,height})=>width>=44&&height>=44)).toBeTruthy();
  await expect(page.locator('.hero-purpose')).toContainText('Monitoreamos fuentes');
  const source=(await page.request.get('/data/free_value.json'));const data=await source.json();
  await expect(weekly).toContainText(data.weekly_insight.insight_title);
@@ -148,6 +157,18 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  await expect(page.locator('.signal.special.read')).toHaveCount(2);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-home-v2-final.png`,fullPage:true});
+});
+test('Feed-only share uses Web Share and clipboard fallback without analytics',async({page})=>{
+ await page.addInitScript(()=>{window.__shared=[];Object.defineProperty(navigator,'share',{configurable:true,value:payload=>{window.__shared.push(payload);return Promise.resolve()}})});
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
+ await expect(page.locator('#brief [data-share]')).toHaveCount(0);
+ const share=page.locator('#local [data-share]').first();await expect(share).toBeVisible();await expect(share).toHaveAttribute('aria-label',/Compartir:/);
+ await share.click();const shared=(await page.evaluate(()=>window.__shared))[0];expect(shared.url).toContain('#');await expect(share.locator('xpath=following-sibling::*[1]')).toHaveText('Compartido');
+ await page.evaluate(()=>{delete navigator.share;window.__copied=[];Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:value=>{window.__copied.push(value);return Promise.resolve()}}})});
+ await share.click();await expect(share).toHaveAttribute('data-share-result','copied');await expect(share.locator('xpath=following-sibling::*[1]')).toHaveText('Enlace copiado');expect((await page.evaluate(()=>window.__copied))[0]).toContain('#');
+ await page.goto(shared.url);await expect(page.locator('#meta')).toContainText('Última actualización:');const target=new URL(shared.url).hash.slice(1),targetCard=page.locator(`[id="${target}"]`);await expect(targetCard).toBeVisible();await expect(page).toHaveURL(new RegExp(`#${target.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`));
+ const specialShare=page.locator('.signal.special.global [data-share]');await expect(specialShare).toHaveAttribute('data-share',/^special-/);
+ await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
 test('Global read state is shared across Home and the research page',async({page})=>{
  await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
