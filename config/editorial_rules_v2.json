@@ -92,6 +92,14 @@
     "normative_resolution_relation": {
       "required": true,
       "rule": "En resoluciones, además de tipo/número y tema central, debe quedar clara la relación con el documento al que responden, modifican, confirman, ejecutan o aplican cuando esa relación esté respaldada por evidencia. Si no puede verificarse, debe indicarse como no verificada y nunca inventarse."
+    },
+    "statistical_analysis_required": {
+      "required": true,
+      "rule": "Una publicación estadística material no ocupa feed por el solo hecho de publicarse. Debe incluir al menos un hallazgo cuantitativo reproducible con período, comparación, evidencia y utilidad de decisión; si no existe, permanece en histórico/cola analítica hasta ser enriquecida."
+    },
+    "routine_institutional_accreditation": {
+      "required": true,
+      "rule": "Resoluciones individuales de acreditación, renovación, cumplimiento de plan de corrección o actualización registral de un prestador permanecen en histórico y no ocupan feed ejecutivo salvo que introduzcan un cambio sistémico, competitivo o de capacidad material."
     }
   },
   "expert_review_checklist": {
@@ -105,6 +113,16 @@
     ],
     "aggregation": [
       "¿Existe una pieza agregada o Pulso que ya cubra la misma familia, período y hallazgo? Si existe, ¿la señal individual aporta valor decisional distinto y trazable suficiente para publicarse por separado?"
+    ],
+    "data_publications": [
+      "¿La publicación estadística contiene un hallazgo cuantitativo reproducible y no solo anuncia que el archivo fue actualizado?",
+      "¿Se explicitan período, comparación, fórmula/evidencia y límite causal?",
+      "¿El hallazgo cambia algo que un actor del sector debería mirar o decidir?",
+      "¿Si no existe análisis suficiente, la pieza fue retenida del feed hasta completar enriquecimiento analítico?"
+    ],
+    "materiality": [
+      "¿La señal corresponde a un cambio con alcance material para el sector o es un acto individual/rutinario que debe permanecer en histórico?",
+      "¿Una acreditación individual de prestador cambia capacidad, competencia, acceso o reglas del sistema de manera suficiente para justificar portada?"
     ]
   },
   "weekly_insight_pipeline_v2": {
