@@ -104,8 +104,8 @@ def _card_micro(s):
         and all(token in support for token in ("bonificación sin tope anual","1 de noviembre de 2026","compra directa de bonos"))):
         r["source_title_full"]=r.get("source_title_full") or r["title"]
         r["title"]="Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156"
-        r["card_what"]="La Superintendencia mantuvo la eliminación del tope anual para cinco prestaciones TEA, fijó cómo acreditar el diagnóstico y prohibió exigir RND, renovaciones o evaluaciones repetidas."
-        r["card_why"]="Las isapres deben implementar registro presencial y digital, resolver solicitudes en hasta 15 días hábiles y habilitar compra directa de bonos sin tope a más tardar el 1 de noviembre de 2026."
+        r["card_what"]="La Superintendencia mantuvo cobertura TEA sin tope anual para cinco prestaciones y prohibió exigir RND, renovaciones o evaluaciones repetidas."
+        r["card_why"]="Las isapres deben habilitar registro presencial/digital, resolver en 15 días hábiles y compra directa de bonos sin tope antes del 1 de noviembre de 2026."
     return r
 
 def _editorial_enrichment(s):
