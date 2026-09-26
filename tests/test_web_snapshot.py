@@ -241,3 +241,32 @@ def test_every_opaque_resolution_with_normative_parent_exposes_parent_in_title()
             assert parents[0]["title"] in row["display_title"], row["display_title"]
             assert len(row["display_title"]) > len(row["normative_document_label"]) + len(parents[0]["title"]) + 6
     assert checked >= 2
+
+
+def test_resonancia_biobio_routine_accreditation_is_not_executive_feed_material():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    row=next(x for x in history if x.get("source_url")=="https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n7458/")
+    assert m._routine_accreditation(row) is True
+    curated=m.curate(history,resolve_external=False)
+    assert not any(x.get("source_url")==row["source_url"] for x in curated)
+
+
+def test_material_statistical_releases_fail_closed_without_analysis():
+    titles=[
+        "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a marzo 2026",
+        "Series Estadísticas del Sistema ISAPRE 1990-2025",
+        "Boletín Estadístico Informativo IP – Junio 2026",
+    ]
+    rows=[]
+    for i,title in enumerate(titles):
+        row=sig(title,event="2026-08-03",url=f"https://x/stat/{i}")
+        row.update(signal_types=["Datos"],scopes=["Isapres"],source_name="Superintendencia de Salud",
+                   source_type="official",what_happened="Se publicó una actualización estadística oficial.",
+                   why_it_matters="Permite observar cambios relevantes del sistema.")
+        rows.append(row)
+        assert m._statistical_release_requires_analysis(row)
+        assert not m._has_statistical_analysis(row)
+    assert m.curate(rows,resolve_external=False)==[]
+    rows[0]["data_insights"]=["La utilización GES cambió materialmente en una patología validada."]
+    out=m.curate(rows,resolve_external=False)
+    assert [x["title"] for x in out]==[titles[0]]
