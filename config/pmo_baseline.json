@@ -2268,6 +2268,17 @@
         "Diagnóstico PMO/BI sin rediseñar portal ni tocar producción."
       ],
       "progress": "2026-09-26: ejecución iniciada en staging tras satisfacer sus tres dependencias; sin cambios en main/producción."
+    },
+    {
+      "id": "automation_write_boundary_2026_09_26",
+      "status": "Registrado",
+      "priority": "Alta",
+      "horizon": "Inmediato",
+      "decisions": [
+        "El entorno de automatización programada puede quedar limitado a lectura y rechazar escrituras GitHub; no usarlo como único mecanismo de ejecución crítica.",
+        "Para tareas que requieren commits, queue/PMO, QA y Reviewer, usar contexto interactivo/Work con escritura comprobada.",
+        "No interpretar una automatización habilitada como evidencia de ejecución; exigir commit/progress real."
+      ]
     }
   ],
   "updated_at": "2026-09-26"
