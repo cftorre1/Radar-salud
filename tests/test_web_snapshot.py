@@ -224,3 +224,20 @@ def test_opaque_resolution_title_exposes_parent_act_and_topic_when_available():
     assert row["display_title"].startswith("Resolución Exenta IF/N°10670 sobre Circular IF/N°531")
     assert len(row["display_title"]) > len("Resolución Exenta IF/N°10670 sobre Circular IF/N°531: ")+10
     assert any("Circular IF/N°531" in x["title"] for x in row["related_context"])
+
+
+def test_every_opaque_resolution_with_normative_parent_exposes_parent_in_title():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    rows=m.curate(history,resolve_external=False)
+    checked=0
+    for row in rows:
+        if not str(row.get("normative_document_type") or "").lower().startswith("resolución"):
+            continue
+        source_title=str(row.get("source_title_full") or row.get("title") or "")
+        opaque=bool(__import__("re").fullmatch(r"(?:Resolución(?:\s+Exenta)?)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",source_title,__import__("re").I))
+        parents=[x for x in row.get("related_context",[]) if __import__("re").search(r"^(Circular|Oficio|Resolución|Decreto)\b",str(x.get("title") or ""),__import__("re").I)]
+        if opaque and parents:
+            checked += 1
+            assert parents[0]["title"] in row["display_title"], row["display_title"]
+            assert len(row["display_title"]) > len(row["normative_document_label"]) + len(parents[0]["title"]) + 6
+    assert checked >= 2
