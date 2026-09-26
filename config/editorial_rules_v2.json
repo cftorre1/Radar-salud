@@ -93,13 +93,13 @@
       "required": true,
       "rule": "En resoluciones, además de tipo/número y tema central, debe quedar clara la relación con el documento al que responden, modifican, confirman, ejecutan o aplican cuando esa relación esté respaldada por evidencia. Si no puede verificarse, debe indicarse como no verificada y nunca inventarse."
     },
-    "statistical_analysis_required": {
-      "required": true,
-      "rule": "Una publicación estadística material no ocupa feed por el solo hecho de publicarse. Debe incluir al menos un hallazgo cuantitativo reproducible con período, comparación, evidencia y utilidad de decisión; si no existe, permanece en histórico/cola analítica hasta ser enriquecida."
-    },
     "routine_institutional_accreditation": {
       "required": true,
       "rule": "Resoluciones individuales de acreditación, renovación, cumplimiento de plan de corrección o actualización registral de un prestador permanecen en histórico y no ocupan feed ejecutivo salvo que introduzcan un cambio sistémico, competitivo o de capacidad material."
+    },
+    "statistical_value_ladder": {
+      "required": true,
+      "rule": "Toda publicación estadística material debe permanecer visible en Alicanto y publicarse en el mayor nivel de valor soportado por la evidencia: (1) insight conectado con períodos/señales/noticias/normativa; (2) análisis profundo del documento; (3) hallazgo o dato central; (4) ficha útil de publicación con contenido, período/dimensiones y utilidad potencial. Nunca reducirla a 'se publicó' si puede describirse mejor, y nunca ocultarla solo por falta de parser."
     }
   },
   "expert_review_checklist": {
@@ -115,10 +115,11 @@
       "¿Existe una pieza agregada o Pulso que ya cubra la misma familia, período y hallazgo? Si existe, ¿la señal individual aporta valor decisional distinto y trazable suficiente para publicarse por separado?"
     ],
     "data_publications": [
-      "¿La publicación estadística contiene un hallazgo cuantitativo reproducible y no solo anuncia que el archivo fue actualizado?",
-      "¿Se explicitan período, comparación, fórmula/evidencia y límite causal?",
-      "¿El hallazgo cambia algo que un actor del sector debería mirar o decidir?",
-      "¿Si no existe análisis suficiente, la pieza fue retenida del feed hasta completar enriquecimiento analítico?"
+      "¿Se intentó primero relacionar la estadística con períodos anteriores, otras publicaciones, noticias, normativa o señales Alicanto para construir un insight conectado?",
+      "Si no fue posible, ¿se realizó un análisis profundo de la estadística publicada?",
+      "Si no fue posible, ¿se rescató al menos un dato, hallazgo, cobertura, período o dimensión central del documento?",
+      "Como último nivel, ¿la ficha explica claramente qué se publicó, qué contiene y para qué puede servir, evitando obligar al usuario a abrir el Excel solo para saberlo?",
+      "¿La pieza está publicada en el nivel más alto de valor que permite la evidencia, sin inventar comparaciones ni causalidad?"
     ],
     "materiality": [
       "¿La señal corresponde a un cambio con alcance material para el sector o es un acto individual/rutinario que debe permanecer en histórico?",
