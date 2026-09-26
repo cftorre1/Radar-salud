@@ -38,6 +38,45 @@ def aggregate_usage(rows):
         "cost_per_incremental_quality_point":round(cost/quality_points,6) if cost is not None and quality_points else None,
     }
 
+def statistics_parser_backlog(history):
+    """Auto-register every statistical publication without a dedicated parser/analytic output."""
+    rows=[]
+    seen=set()
+    for item in history or []:
+        if "Datos" not in (item.get("signal_types") or []):
+            continue
+        title=str(item.get("title") or "")
+        low=title.lower()
+        statistical=(
+            "estadíst" in low or "estadist" in low or "boletín" in low or "boletin" in low
+            or "ges" in low or "auge" in low or "cartera" in low or "movilidad" in low
+            or "suscripciones" in low or "desahucios" in low
+        )
+        if not statistical:
+            continue
+        key=item.get("source_url") or title
+        if key in seen:
+            continue
+        seen.add(key)
+        parsed=bool(item.get("data_insights") or item.get("data_insight_evidence") or item.get("summary_table")
+                    or item.get("data_insight_meta",{}).get("status")=="validated")
+        if parsed:
+            status="covered"
+        else:
+            status="parser_pending"
+        rows.append({
+            "title":title,
+            "source_url":item.get("source_url"),
+            "event_date":item.get("event_date"),
+            "status":status,
+            "documents":len(item.get("source_documents") or []),
+            "signal_types":item.get("signal_types") or [],
+            "scope":item.get("scopes") or [],
+        })
+    rows.sort(key=lambda x:(x.get("status")!="parser_pending",x.get("event_date") or "",x.get("title") or ""),reverse=False)
+    return rows
+
+
 def feature_observability(responses, month, free_value):
     deterministic={
         "global_intelligence":free_value.get("global_teaser"),
@@ -132,6 +171,7 @@ def build(root, output):
                      (item.get("raw", {}).get("url"), item.get("detected_at")) in selected_evidence
                      for item in live),
     ) if measured else None
+    parser_backlog=statistics_parser_backlog(history)
     report = dict(version="0.9.0", generated_at=datetime.now(timezone.utc).isoformat(),
         snapshot_at=snapshot.get("generated_at"), published=len(snapshot.get("signals", [])),
         queue=queue.counts() if measured else None,
@@ -150,6 +190,8 @@ def build(root, output):
             historical_tokens_status="not_measured_before_0.9.0", features=feature_usage,
             unassigned_responses=sum(not x.get("feature") for x in responses)),
         excel=diagnostics, excel_validation=excel_validation, excel_insights_v1=insight_summary,
+        statistics_parser_backlog=parser_backlog,
+        statistics_parser_pending=sum(x["status"]=="parser_pending" for x in parser_backlog),
         user_telemetry="local_preferences_only_no_central_collector",
         scorecard={
             "schema_version": scorecard_cfg.get("schema_version"),
