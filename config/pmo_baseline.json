@@ -2079,6 +2079,20 @@
         "JSON generados localmente excluidos expresamente del commit de implementación"
       ],
       "completed_at": "2026-09-25"
+    },
+    {
+      "id": "google_workspace_email_validation_2026_09_25",
+      "status": "Implementado_parcial",
+      "priority": "Alta",
+      "horizon": "MVP inmediato",
+      "decisions": [
+        "hola@alicantosalud.cl operativo para envío y recepción.",
+        "radar@alicantosalud.cl creado como alias y recepción confirmada.",
+        "SPF configurado para Google Workspace.",
+        "DKIM activado con clave 2048 bits.",
+        "DMARC creado en modo monitoreo p=none.",
+        "Falta validar Authentication-Results y luego conectar MailerLite."
+      ]
     }
   ],
   "updated_at": "2026-09-25"
