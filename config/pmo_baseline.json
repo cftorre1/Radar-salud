@@ -2149,7 +2149,12 @@
         "Retomar experimento de modelos sin gasto no autorizado.",
         "Promover a producción antes de 08:00 solo con QA/Reviewer final PASS; autorización de release explícita."
       ],
-      "progress": "2026-09-26: cierre nocturno en ejecución. Release retenido porque el Insight semanal actual es de una sola señal y aún faltan validaciones de fuentes/subfrentes."
+      "progress": "2026-09-26: subciclo Insight semanal cerrado en staging con SHA e55120b. Se eliminó la publicación basada en una sola señal; el componente queda fail-closed hasta contar con builder de evidencia múltiple verificable. Global Intelligence sigue operativo. 166 Python + 28 web + 26 browser desktop/mobile PASS; Reviewer independiente PASS. Release retenido por gates restantes de fuentes, Excel, correo/MailerLite y experimento/preflight.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/commit/e55120ba5ed05226ca99484b07e8e53d1aea95c4",
+        "Auditoría editorial: 16 piezas históricamente revisadas; 15 visibles tras ocultar Insight insuficiente",
+        "Producción sin cambios; promoción condicionada sigue cerrada"
+      ]
     },
     {
       "id": "admin_portal_expert_audit_2026_09_26",

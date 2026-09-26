@@ -1418,7 +1418,14 @@
         "tests + QA desktop/mobile + Reviewer PASS",
         "SHA de producción y QA post-deploy en alicantosalud.cl antes de 08:00 o blocker explícito"
       ],
-      "progress": "2026-09-26: tarea crítica recogida tras validar share y auditoría editorial. Gate de release permanece cerrado: el Insight semanal vigente declara is_single_signal=true y no cumple el umbral multiseñal; fuentes epidemiológicas y demás subfrentes aún requieren validación. Producción no se modificará hasta PASS integral o blocker explícito."
+      "progress": "2026-09-26: share y auditoría editorial cerrados. Subciclo Insight semanal fail-closed PASS en staging: se retiró la publicación single-signal y el generador queda explícitamente deshabilitado hasta implementar evidencia verificable de dos señales independientes o señal + indicador. Global Intelligence permanece visible. Gate de release sigue cerrado por fuentes epidemiológicas, Pulso Excel, correo/MailerLite y experimento/preflight aún no cerrados; producción no fue modificada.",
+      "evidence": [
+        "e55120ba5ed05226ca99484b07e8e53d1aea95c4 — implementación fail-closed y auditoría reconciliada en staging",
+        "166 tests Python PASS; 28 tests web PASS; 26 Playwright desktop/mobile PASS",
+        "Reviewer independiente FINAL PASS después de corregir ruta inalcanzable de evidencia y reconciliar 16 piezas auditadas vs 15 visibles",
+        "web/data/free_value.json: weekly_insight=null; weekly_insight_status=disabled_pending_verified_multi_evidence_builder; Global Intelligence conservado",
+        "Release NO ejecutado: gates integrales restantes sin PASS"
+      ]
     },
     {
       "id": "admin_portal_expert_audit_2026_09_26",
