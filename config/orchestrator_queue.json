@@ -133,7 +133,7 @@
     },
     {
       "id": "sources_chile_mvp",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "high",
       "owner": "Work",
       "source": "Baseline MVP",
@@ -161,7 +161,7 @@
         "QA/Reviewer",
         "staging evidence"
       ],
-      "progress": "Pilotos #24/#25: Bupa y RedSalud aportaron una señal BACKFILL real cada uno; LIVE 0; FONASA HTTPError, ISP URLError, DEIS técnico OK sin publicación elegible. Pfizer Chile quedó integrado con parser y guard fail-closed: piloto real descubrió 3 publicaciones de 2023; la tarjeta healthtech enlaza al artículo de depresión y quedó retry por headline mismatch, sin publicación. QA 6eabf23 PASS. Faltan accesos externos y una captura farma/healthtech vigente y correctamente enlazada. Dirección pausa temporalmente este bloque para evitar que accesos externos demorados consuman el ciclo; terminar solo la operación atómica en curso y luego pasar a otros bloques MVP. Dirección 2026-09-25 reanuda Fuentes Chile para trabajo nocturno. Prioridad inmediata: resolver/confirmar FONASA e ISP/ANAMED; luego validar señales frescas de DEIS/Diario Oficial y cerrar captura vigente de farma/prestadores antes de ampliar nuevas fuentes.",
+      "progress": "Pilotos #24/#25: Bupa y RedSalud aportaron una señal BACKFILL real cada uno; LIVE 0. Pfizer Chile quedó integrado con parser y guard fail-closed, sin señal vigente. Dirección reanudó Fuentes Chile el 2026-09-25. Revalidación real 2026-09-26: FONASA HTTP 403; ISP/ANAMED HTTP 502; DEIS técnicamente accesible con 0 publicaciones fechadas elegibles; Diario Oficial no completó respuesta y el intento se interrumpió para no detener otros frentes. Subfrente permanece en ejecución con blockers externos exactos; no se atribuyeron señales ni se rebajó verificación.",
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36029771353 — piloto #23 limitado a 1, 7 fuentes exitosas y 2 errores; staging datos 83f55e36c464972c2e8eee7763f5a7699a644cb1",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36030110235 — preview #74 059447995561647bcb814e15430ed1ae744ddcc2, tests/QA desktop-mobile/Reviewer/preview PASS; Reviewer independiente corrigió atribución de fecha/PDF y estructura, pero sin fixture real",
@@ -181,7 +181,11 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36038145561 — c0a1ef7 preview #95 PASS tests, QA desktop/mobile y Reviewer; RedSalud fecha, motivos, 9 clínicas, Isapres/Prestadores contrastados; LIVE 0, BACKFILL pendiente 4.",
         "Pfizer Chile 2026-09-24: 3 publicaciones oficiales descubiertas, todas de 2023. La tarjeta «Empresas healthtech…» enlaza al detalle de depresión; el guard headline↔H1 devolvió retry y publicó 0 señales.",
         "staging 6eabf235ca9ddaff9841ee3aa0f554243e7d84d5 — parser verificado contra HTML vivo: cuerpo material 5.950 caracteres, sin header señuelo ni footer; 142 tests Python y 20 Node PASS.",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36055804692 — tests, QA desktop/mobile, Reviewer CI e independiente y preview PASS; Pfizer sigue BACKFILL/bloqueo externo, nunca LIVE."
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36055804692 — tests, QA desktop/mobile, Reviewer CI e independiente y preview PASS; Pfizer sigue BACKFILL/bloqueo externo, nunca LIVE.",
+        "Captura directa 2026-09-26: https://www.fonasa.gob.cl/noticias/ → HTTP 403 Forbidden; 0 señales atribuidas.",
+        "Captura directa 2026-09-26: https://www.ispch.gob.cl/categorias-alertas/anamed/ → HTTP 502 Bad Gateway; 0 señales atribuidas.",
+        "Captura directa 2026-09-26: DEIS accesible, 0 publicaciones con fecha verificable y elegibles; salida correcta 0.",
+        "Captura directa 2026-09-26: Diario Oficial no completó respuesta dentro del ciclo; intento interrumpido y registrado como bloqueo externo, sin simular éxito."
       ],
       "resume_condition": "Reanudado explícitamente por Dirección el 2026-09-25."
     },
@@ -239,7 +243,7 @@
     },
     {
       "id": "email_subscription_mvp",
-      "status": "approved",
+      "status": "validated",
       "priority": "high",
       "owner": "Work",
       "source": "Baseline MVP",
@@ -266,10 +270,11 @@
         "provider-ready integration or explicit human blocker",
         "staging evidence"
       ],
-      "progress": "Google Workspace operativo y autenticación base configurada: hola@ y radar@ funcionando, SPF, DKIM y DMARC p=none. QA exacto SPF/DKIM/DMARC queda para mañana. Retomar ahora dependencias provider-ready: MailerLite, newsletter, acceso anticipado y notificaciones internas hasta próximo blocker humano.",
+      "progress": "Cierre técnico provider-ready completado en staging: Google Workspace confirmado por Dirección; integración migrada de Buttondown a MailerLite, funnels newsletter/acceso anticipado separados, sender y API fail-closed, DNS coexistence documentada y cero secretos/envíos. Activación real queda como bloqueo humano externo, no como pendiente técnico del MVP.",
       "blocked_by": [
-        "MailerLite: crear/configurar cuenta y autenticar dominio cuando Work tenga acceso/credenciales o registrar acción humana mínima.",
-        "Privacidad/doble opt-in: mantener captura fail-closed hasta aprobación.",
+        "MailerLite: Dirección debe crear/habilitar la cuenta, crear dos grupos, entregar IDs y API key por secreto, verificar hola@ y autenticar dominio con los valores exactos.",
+        "Plan MailerLite: confirmar que el plan habilita emails.*.content por API; no contratar Advanced sin autorización. Si no lo habilita, elegir y probar otro flujo oficial.",
+        "Privacidad/doble opt-in: aprobar finalidad, retención y textos antes de activar captura/envío.",
         "QA exacto Authentication-Results (SPF/DKIM/DMARC PASS) pendiente para mañana."
       ],
       "evidence": [
@@ -280,7 +285,9 @@
         "Dirección 2026-09-25: Gmail de hola@alicantosalud.cl operativo; correo de prueba enviado y recibido.",
         "Dirección 2026-09-25: DKIM Google generado 2048 bits y estado «Autenticando el correo electrónico con DKIM».",
         "Cloudflare: SPF v=spf1 include:_spf.google.com ~all; DMARC creado con p=none.",
-        "Dirección 2026-09-25: alias radar@alicantosalud.cl creado y correo a radar@ recibido en la bandeja de hola@."
+        "Dirección 2026-09-25: alias radar@alicantosalud.cl creado y correo a radar@ recibido en la bandeja de hola@.",
+        "87e64b0bd081b6dcb4da9031a4266e82552f6268 — MailerLite provider-ready fail-closed; grupos newsletter_weekly/early_access separados; documentación DNS SPF único.",
+        "167 tests Python, 28 web y 26 Playwright desktop/mobile PASS; Reviewer independiente PASS tras añadir gate de capacidad de plan Advanced."
       ]
     },
     {
@@ -1418,12 +1425,14 @@
         "tests + QA desktop/mobile + Reviewer PASS",
         "SHA de producción y QA post-deploy en alicantosalud.cl antes de 08:00 o blocker explícito"
       ],
-      "progress": "2026-09-26: share y auditoría editorial cerrados. Subciclo Insight semanal fail-closed PASS en staging: se retiró la publicación single-signal y el generador queda explícitamente deshabilitado hasta implementar evidencia verificable de dos señales independientes o señal + indicador. Global Intelligence permanece visible. Gate de release sigue cerrado por fuentes epidemiológicas, Pulso Excel, correo/MailerLite y experimento/preflight aún no cerrados; producción no fue modificada.",
+      "progress": "2026-09-26: share, auditoría editorial, Insight semanal fail-closed y MailerLite provider-ready cerrados con QA/Reviewer PASS. Fuentes Chile se revalidó: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta; blockers externos exactos, sin señales simuladas. Gate de release sigue cerrado por fuentes epidemiológicas, Pulso Excel y experimento/preflight aún no cerrados; producción no fue modificada.",
       "evidence": [
         "e55120ba5ed05226ca99484b07e8e53d1aea95c4 — implementación fail-closed y auditoría reconciliada en staging",
         "166 tests Python PASS; 28 tests web PASS; 26 Playwright desktop/mobile PASS",
         "Reviewer independiente FINAL PASS después de corregir ruta inalcanzable de evidencia y reconciliar 16 piezas auditadas vs 15 visibles",
         "web/data/free_value.json: weekly_insight=null; weekly_insight_status=disabled_pending_verified_multi_evidence_builder; Global Intelligence conservado",
+        "87e64b0bd081b6dcb4da9031a4266e82552f6268 — MailerLite provider-ready; 167 Python + 28 web + 26 browser PASS; Reviewer independiente PASS",
+        "Fuentes 2026-09-26: FONASA HTTP 403, ISP/ANAMED HTTP 502, DEIS 0 elegibles, Diario Oficial timeout/interrumpido; 0 señales atribuidas",
         "Release NO ejecutado: gates integrales restantes sin PASS"
       ]
     },

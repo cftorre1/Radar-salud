@@ -656,8 +656,15 @@
           "evidence": "corporate_newsrooms_qa"
         }
       ],
-      "paused": true,
-      "pause_reason": "Dirección prioriza cierre del resto del MVP; accesos FONASA/ISP/DEIS/farma-healthtech pendientes no deben monopolizar ejecución."
+  "paused": false,
+  "pause_reason": null,
+  "progress": "Reanudado por Dirección. Revalidación real 2026-09-26: FONASA HTTP 403, ISP/ANAMED HTTP 502, DEIS accesible sin publicaciones fechadas elegibles y Diario Oficial sin respuesta dentro del ciclo. Se mantuvo fail-closed y se continuó con otros frentes.",
+  "current_blockers": [
+    "FONASA: acceso público directo devuelve HTTP 403.",
+    "ISP/ANAMED: endpoint oficial devuelve HTTP 502.",
+    "DEIS: disponibilidad técnica sin publicación fechada elegible en la captura.",
+    "Diario Oficial: solicitud no completó respuesta dentro del ciclo; requiere reintento externo."
+  ]
     },
     {
       "id": "global",
@@ -728,7 +735,9 @@
       "status": "Bloqueado",
       "critical": true,
       "evidence": [
-        "email_subscription_technical_qa"
+        "email_subscription_technical_qa",
+        "mailerlite_provider_ready_qa",
+        "87e64b0bd081b6dcb4da9031a4266e82552f6268"
       ],
       "dependencies": [
         "Google Workspace Gmail/DNS",
@@ -736,15 +745,16 @@
         "privacidad/doble opt-in"
       ],
       "missing": [
-        "Completar Gmail/MX/SPF/DKIM/DMARC y alias radar@alicantosalud.cl.",
-        "Crear/configurar MailerLite.",
+        "Crear/habilitar MailerLite; crear grupos newsletter/acceso anticipado y entregar IDs/API key por secreto.",
+        "Confirmar capacidad emails.*.content del plan o elegir flujo oficial compatible; no cambiar plan sin autorización.",
         "Aprobar finalidad, retención, textos de consentimiento y doble opt-in.",
         "Credenciales vía GitHub secret y activación explícita de captura/envío."
       ],
       "requirements": [
         {
           "label": "Captura consentida y gestión básica",
-          "status": "Bloqueado"
+          "status": "Validado técnicamente / pendiente activación humana",
+          "evidence": "mailerlite_provider_ready_qa"
         },
         {
           "label": "Digest semanal condicional FREE",
@@ -753,9 +763,11 @@
         },
         {
           "label": "Preparación PREMIUM con envío real cuando exista proveedor",
-          "status": "Implementado"
+          "status": "Implementado",
+          "evidence": "mailerlite_provider_ready_qa"
         }
-      ]
+      ],
+      "progress": "MailerLite provider-ready en staging, con grupos separados, sender/API/DNS fail-closed y sin secretos. 167 Python + 28 web + 26 browser desktop/mobile PASS; Reviewer independiente PASS. Activación real requiere cuenta, grupos, secreto, capacidad del plan y aprobación de privacidad."
     },
     {
       "id": "analytics",
@@ -2149,7 +2161,7 @@
         "Retomar experimento de modelos sin gasto no autorizado.",
         "Promover a producción antes de 08:00 solo con QA/Reviewer final PASS; autorización de release explícita."
       ],
-      "progress": "2026-09-26: subciclo Insight semanal cerrado en staging con SHA e55120b. Se eliminó la publicación basada en una sola señal; el componente queda fail-closed hasta contar con builder de evidencia múltiple verificable. Global Intelligence sigue operativo. 166 Python + 28 web + 26 browser desktop/mobile PASS; Reviewer independiente PASS. Release retenido por gates restantes de fuentes, Excel, correo/MailerLite y experimento/preflight.",
+      "progress": "2026-09-26: Insight semanal fail-closed y MailerLite provider-ready cerrados en staging (e55120b, 87e64b0) con QA/Reviewer PASS. Fuentes revalidadas con blockers externos exactos: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta. Release retenido por gates restantes de fuentes, Excel y experimento/preflight.",
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/commit/e55120ba5ed05226ca99484b07e8e53d1aea95c4",
         "Auditoría editorial: 16 piezas históricamente revisadas; 15 visibles tras ocultar Insight insuficiente",
