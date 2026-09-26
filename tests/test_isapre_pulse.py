@@ -23,6 +23,11 @@ def test_pulse_reconciles_real_three_family_series():
     assert "2.487.497" in pulse["what_happened"]
     assert "-17.700" in " ".join(pulse["key_points"])
     assert pulse["ingestion_mode"] == "BACKFILL"
+    assert pulse["summary_table"]["title"] == "Resumen ejecutivo Isapre"
+    assert [x["indicator"] for x in pulse["summary_table"]["rows"]] == ["Beneficiarios","Cotizantes","Cargas","Suscripciones","Desahucios voluntarios","Movilidad"]
+    assert pulse["summary_table"]["rows"][0]["value"] == "2.487.497"
+    assert "26.541 menos que enero" in pulse["summary_table"]["rows"][0]["reading"]
+    assert "-17.700" in pulse["summary_table"]["rows"][-1]["value"]
     assert len(pulse["data_insights"]) == 5
     assert len(pulse["data_insight_evidence"]) == 5
     assert "Datos" not in pulse["data_insights"][0]
