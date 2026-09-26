@@ -1524,6 +1524,43 @@
         "controles faltantes",
         "decisiones que requieren Dirección"
       ]
+    },
+    {
+      "id": "content_value_epidemiology_admin_iteration_2026_09_26",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Aplicar auditoría editorial validada y elevar Insight semanal, Global Intelligence, Pulso/lectura de datos, nueva vigilancia epidemiológica y portal PMO/BI antes de reconsiderar producción.",
+      "depends_on": [
+        "news_content_expert_audit_2026_09_25",
+        "home_v2_final_polish_2026_09_25"
+      ],
+      "instructions": [
+        "Aplicar en staging el lote editorial P0/P1 respaldado por data/editorial_audit_2026_09_26.json, preservando hechos, atribución y trazabilidad. Revisar consistencia del copy corto de «Ponte al día» y del contenido de la tarjeta/detalle para cada señal visible.",
+        "No tratar como revisadas las 29 señales fuera del período inicial; si pasan a ser visibles antes de cerrar el ciclo, auditarlas con los mismos tres lentes antes de mostrarlas.",
+        "Insight semanal: construir solo si cumple dos señales independientes o una señal + indicador independiente; debe producir lectura ejecutiva de negocio y no una noticia renombrada. Evaluar explícitamente el candidato de cotizantes/cargas/cartera y movilidad. Si no supera el umbral, mantenerlo oculto.",
+        "Global Intelligence: ejecutar una segunda revisión centrada en valor de negocio. Cada comentario debe responder qué cambió, por qué importa, qué observar y cuál es la hipótesis para Chile, separando hechos internacionales de hipótesis. Reemplazar generalidades; si el teaser no aporta valor diferencial, no promoverlo.",
+        "Pulso Excel: conservar la lectura reconciliada ya validada y revisar si su presentación al usuario es suficientemente ejecutiva, accionable y no confunde flujo con stock/variación neta.",
+        "Epidemiología: abrir subfrente independiente de ISP/ANAMED. Investigar e integrar, si técnicamente posible, ISP Vigilancia de Virus Respiratorios + MINSAL Campaña de Invierno/presión asistencial. Conectar circulación viral, positividad/tendencia, hospitalizaciones/urgencias y ocupación de camas, con fecha/semana epidemiológica y fuente trazables. No considerar un 502 de ANAMED como blocker de este subfrente.",
+        "Ejecutar admin_portal_expert_audit_2026_09_26 en paralelo o inmediatamente después del lote editorial: UX dashboard, consultoría/PMO, control de gestión, BI, FinOps y product analytics. Primera pasada: diagnóstico + arquitectura + scorecard + backlog; no rediseñar/implementar portal sin revisión de Dirección.",
+        "No ejecutar producción hasta cerrar QA desktop/mobile + Reviewer independiente del paquete de contenido visible y fuentes realmente integradas. Los bloqueos externos de fuentes no visibles, MailerLite, PREMIUM o experimento de modelos no deben por sí solos impedir release si el producto visible queda íntegro y fail-closed."
+      ],
+      "constraints": [
+        "No inventar evidencia ni métricas.",
+        "No elevar piezas de baja evidencia a insight.",
+        "No activar analytics, auth, pagos, pricing, privacidad ni gastos.",
+        "No tocar main/producción en esta iteración."
+      ],
+      "evidence_required": [
+        "diff editorial P0/P1 aplicado y trazable",
+        "matriz de consistencia Ponte al día ↔ card/detalle",
+        "Insight semanal PASS con evidencia múltiple o estado oculto justificado",
+        "revisión de valor de Global Intelligence",
+        "resultado técnico/editorial del nuevo frente epidemiológico",
+        "auditoría PMO/BI con scorecard y backlog",
+        "tests + QA desktop/mobile + Reviewer independiente PASS"
+      ]
     }
   ],
   "execution_policy": {
