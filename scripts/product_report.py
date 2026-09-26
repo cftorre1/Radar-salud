@@ -112,6 +112,10 @@ def build(root, output):
             "insights": len(row.get("data_insights") or [])})
     ledger = read(root / "data/autopilot/ledger.json", {"iterations": []})
     baseline_path = root / "config/pmo_baseline.json"
+    scorecard_cfg = read(root / "config/admin_scorecard_v1.json", {"dimensions": [], "display_rules": {}})
+    editorial_audit = read(root / "data/editorial_audit_90d_2026_09_26.json", {"items": []})
+    audit_counts = dict(Counter((x.get("final_decision") or x.get("decision") or x.get("post_audit_state") or "unknown")
+                                for x in editorial_audit.get("items", [])))
     live = [item for item in queue.items.values() if item.get("lane") == "LIVE"]
     selected_evidence = set()
     for row in snapshot.get("signals", []):
@@ -147,6 +151,35 @@ def build(root, output):
             unassigned_responses=sum(not x.get("feature") for x in responses)),
         excel=diagnostics, excel_validation=excel_validation, excel_insights_v1=insight_summary,
         user_telemetry="local_preferences_only_no_central_collector",
+        scorecard={
+            "schema_version": scorecard_cfg.get("schema_version"),
+            "policy": scorecard_cfg.get("policy"),
+            "display_rules": scorecard_cfg.get("display_rules", {}),
+            "dimensions": scorecard_cfg.get("dimensions", []),
+            "observed": {
+                "development": {
+                    "deployable_sha": os.environ.get("ALICANTO_CANDIDATE_SHA") or os.environ.get("GITHUB_SHA"),
+                    "blocked_task_count": None,
+                    "test_pass_count": None,
+                },
+                "operations": {
+                    "source_success_rate": (round(sum((x.get("technical_status") == "ok" or
+                        (not x.get("technical_status") and x.get("status") in ("ok","warning"))) for x in sources.values()) /
+                        len(sources) * 100, 1) if sources else None),
+                    "stale_source_count": sum(x.get("content_freshness") == "stale" for x in sources.values()),
+                    "failed_run_count": discovery.get("failed_sources") if discovery else None,
+                },
+                "editorial_value": {
+                    "accepted_signal_count": audit_counts.get("accept"),
+                    "degraded_signal_count": audit_counts.get("degrade"),
+                    "grouped_signal_count": audit_counts.get("group"),
+                    "rejected_signal_count": audit_counts.get("reject"),
+                },
+                "beta_usage": {"weekly_active_readers": None, "read_rate": None, "share_rate": None},
+                "conversion": {"newsletter_opt_in_rate": None, "early_access_opt_in_rate": None},
+                "finops": {"monthly_authorized_cost": None, "cost_per_published_signal": None},
+            },
+        },
         pmo=project_pmo(baseline_path, os.environ.get("ALICANTO_CANDIDATE_SHA") or os.environ.get("GITHUB_SHA")) if baseline_path.exists() else None)
     output.mkdir(parents=True, exist_ok=True)
     atomic_json(output / "free_value.json", free_value)
