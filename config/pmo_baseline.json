@@ -518,6 +518,19 @@
         "5e28ccec4f2c715b25863f18f060280c0f082887"
       ],
       "scope": "staging only; hourly autonomous executor; liveness fail-loud at 75 minutes; no main/production"
+    },
+    "direction_home_global_refinement_2026_09_27": {
+      "sha": "2c76c321edb98e3572a8a1aaeb266adae4ddc9d4",
+      "actions_run": "https://github.com/cftorre1/Radar-salud/actions/runs/36346409154",
+      "result": "PASS",
+      "scope": "staging only",
+      "checks": [
+        "tests",
+        "QA desktop/mobile",
+        "Reviewer",
+        "preview/smoke"
+      ],
+      "summary": "Home compactado; newsletter strip; acceso directo Global; métrica sin período duplicado; teaser Global con frescura ≤14 días como gate y score estratégico/comercial."
     }
   },
   "blocks": [
@@ -946,7 +959,8 @@
       ],
       "missing": [],
       "requirements": [],
-      "implementation_sha": "64e7f2c58123564154b4903e9b0a46d17d200d5d"
+      "implementation_sha": "2c76c321edb98e3572a8a1aaeb266adae4ddc9d4",
+      "validation_note": "Refinement Dirección 2026-09-27 validado: hero más compacto, bajada breve de una línea, newsletter en strip horizontal, período compacto fuera del título y métrica sin duplicar período; acceso directo a Global Intelligence. Actions #500 PASS completo."
     }
   ],
   "human_blockers": [
@@ -2625,9 +2639,12 @@
         "Durante beta no implementar login/pago definitivo. Usar soft gate: contenido público limitado y profundidad Premium bloqueada con mensaje claro «Global Intelligence PREMIUM está en preparación» + invitación a preinscribirse.",
         "Separar newsletter de preinscripción Premium. Reusar funnel early_access/MailerLite cuando se active, con grupo específico si Dirección lo aprueba.",
         "Preparar arquitectura futura con login obligatorio para PREMIUM, pero no implementarla en esta iteración.",
-        "Medir en beta: CTR Home→Global, apertura de teasers, CTA de preinscripción y conversión a preinscripción cuando analytics/privacy estén activos."
+        "Medir en beta: CTR Home→Global, apertura de teasers, CTA de preinscripción y conversión a preinscripción cuando analytics/privacy estén activos.",
+        "Refinement Dirección 2026-09-27: la frescura se convierte en gate de elegibilidad de 14 días; dentro de la ventana no suma puntaje.",
+        "El ranking del teaser Home prioriza gancho comercial, relevancia estratégica, utilidad para decisión y potencial de conversación; evidencia funciona como guardrail.",
+        "El teaser Home queda orientado a IA en salud con evidencia reciente dentro de la ventana y acceso directo a Global Intelligence desde la navegación."
       ],
-      "validation_note": "Cerrado en staging 966dd9cb con Actions #474 PASS completo."
+      "validation_note": "Refinement validado en staging 2c76c321 con Actions #500 PASS: tests, QA desktop/mobile, Reviewer y preview/smoke."
     }
   ],
   "updated_at": "2026-09-27"
