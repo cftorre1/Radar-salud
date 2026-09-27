@@ -305,7 +305,7 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await page.locator('#globalFilters summary').click();
  await expect(page.locator('#globalPublisher')).toBeVisible();
  await expect(page.locator('#globalSort')).toBeVisible();
- await page.locator('#globalPeriod').selectOption('365');
+ await page.locator('#globalPeriod').selectOption('all');
  await expect(page.locator('.global-inbox')).toContainText(`${themeCount-1} temas · no leídos`);
  await expect(page.locator('.theme')).toHaveCount(themeCount);
  await page.locator('[data-open]').first().click();
