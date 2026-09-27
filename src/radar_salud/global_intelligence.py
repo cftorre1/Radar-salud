@@ -10,7 +10,7 @@ ALLOWED_PUBLISHERS = {
     "Reuters": {"reuters.com"},
     "CB Insights": {"cbinsights.com"},
     "McKinsey": {"mckinsey.com"},
-    "Deloitte": {"deloitte.com"},
+    "Deloitte": {"deloitte.com", "deloittedigital.com"},
     "PwC": {"pwc.com"},
     "WHO": {"who.int"},
     "PAHO": {"paho.org"},
