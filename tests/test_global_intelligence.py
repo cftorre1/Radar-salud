@@ -131,3 +131,20 @@ def test_long_form_sources_fail_closed_without_structured_depth():
         next(s for t in shallow["themes"] for s in t["sources"] if s["material_type"] != "high_trust_press")["analysis"]["key_findings"] = findings
         with pytest.raises(ValueError, match="invalid key_findings"):
             validate(shallow)
+
+
+def test_global_teaser_scoring_prefers_explicit_beta_criteria():
+    from datetime import date
+    from radar_salud.free_value import score_global_teaser
+    source=[{"publisher":"Deloitte","published_at":"2026-09-20"}]
+    ai={
+        "title":"IA en salud con retorno medible",
+        "global_finding":"La IA entra a modelos operativos medibles.",
+        "why_it_matters":"Afecta productividad, costos y decisiones de inversión.",
+    }
+    generic={
+        "title":"Panorama general",
+        "global_finding":"Cambios generales del sector.",
+        "why_it_matters":"Entrega contexto.",
+    }
+    assert score_global_teaser(ai,source,date(2026,9,27))["score"] > score_global_teaser(generic,source,date(2026,9,27))["score"]
