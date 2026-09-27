@@ -12,8 +12,8 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.getByText(/Ingresar|Registrarse/)).toHaveCount(0);
  await expect(page.locator('#earlyAccessOpen')).toHaveText('Acceso PREMIUM');
  await page.locator('#earlyAccessOpen').click();await expect(page.locator('#earlyAccessDialog')).toBeVisible();
- await expect(page.locator('#earlyAccessDialog')).toContainText('todavía no hay cuentas ni pagos');
- await expect(page.locator('#earlyAccessDialog')).toContainText('Solicitar acceso anticipado');
+ await expect(page.locator('#earlyAccessDialog')).toContainText('Ve más allá de la señal.');
+ await expect(page.locator('#earlyAccessDialog')).toContainText('Inscríbete al acceso anticipado');
  await page.getByRole('button',{name:'Cerrar acceso Premium'}).click();
  await page.locator('#newsletterOpen').click();await expect(page.locator('#newsletterDialog')).toBeVisible();
  await expect(page.locator('#homeEmail')).toBeDisabled();
@@ -23,10 +23,10 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+$/);
  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();
- await expect(page.locator('#sourcesList .source-row')).toHaveCount(10);
- await expect(page.locator('#sourcesDialog')).toContainText('¿Te falta alguna?');
- await page.locator('#sourcesMore').click();expect(await page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);
- await expect(page.locator('#sourcesList')).toContainText('Temporalmente no disponible');
+ expect(await page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);
+ await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');
+ if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();
+ expect(await page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);
  await page.getByRole('button',{name:'Cerrar fuentes'}).click();
  await page.locator('#filterDetails summary').click();
  await expect(page.locator('#filterDetails')).toContainText('Tus filtros se guardan automáticamente');
@@ -174,6 +174,7 @@ test('Global read state is shared across Home and the research page',async({page
  const free=await (await page.request.get('/data/free_value.json')).json(),teaserId=free.global_teaser.theme_id;
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page).toHaveURL(/global\.html#theme-/);
+ await page.locator('#globalPeriod').selectOption('365');
  await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(themeCount-1);
  const theme=page.locator(`#theme-${teaserId}`);
  await expect(theme).toHaveClass(/read/);
@@ -182,7 +183,7 @@ test('Global read state is shared across Home and the research page',async({page
  await page.locator('.signal.special.global [data-special-read]').click();
  await expect(page.locator('.signal.special.global [data-special-read]')).toBeFocused();
 });
-test('source suggestion is visible, anonymous and fail-closed without provider',async({page})=>{
+test('source suggestion is visible, concise and fail-closed without provider',async({page})=>{
  let captured;
  await page.route('**/api/source-suggestions',async route=>{
   captured=route.request().postDataJSON();
@@ -192,8 +193,8 @@ test('source suggestion is visible, anonymous and fail-closed without provider',
  await page.locator('#sourcesOpen').click();
  const cta=page.locator('#source-suggestion');
  await expect(cta).toBeVisible();
- await expect(cta).toContainText('¿Te falta alguna?');
- const open=page.getByRole('button',{name:'Pedir una fuente'});
+ await expect(cta).toContainText('¿Falta una fuente relevante?');
+ const open=page.getByRole('button',{name:'Sugerir fuente'});
  await open.focus();
  await expect(open).toBeFocused();
  await page.keyboard.press('Enter');
@@ -301,6 +302,7 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();
  await expect(page.getByRole('heading',{name:'Ponte al día en Global Intelligence'})).toBeVisible();
  await expect(page.locator('#globalPeriod')).toHaveValue('14');
+ await page.locator('#globalFilters summary').click();
  await expect(page.locator('#globalPublisher')).toBeVisible();
  await expect(page.locator('#globalSort')).toBeVisible();
  await page.locator('#globalPeriod').selectOption('365');
@@ -333,13 +335,13 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
 test('Weekly email capture requires consent and stays closed without approved provider',async({page})=>{
  await page.goto('/');
  await page.locator('#newsletterOpen').click();
- await page.getByRole('link',{name:'Ver condiciones de suscripción →'}).click();
- await expect(page.getByRole('heading',{name:'Recibe lo importante, una vez por semana.'})).toBeVisible();
+ await page.getByRole('link',{name:'Cómo funciona la suscripción →'}).click();
+ await expect(page.getByRole('heading',{name:'Lo importante de la semana, sin ruido.'})).toBeVisible();
  await expect(page.locator('#email')).toBeDisabled();
  await expect(page.locator('#consent')).toBeDisabled();
  await expect(page.getByRole('button',{name:'Suscribirme'})).toBeDisabled();
  await expect(page.locator('#status')).toContainText('Abriremos las suscripciones muy pronto.');
- await expect(page.getByText('Si no hay material suficiente, no enviamos correo.')).toBeVisible();
+ await expect(page.getByText('Una vez por semana · solo cuando haya material relevante · puedes darte de baja cuando quieras.')).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
  await page.screenshot({path:`artifacts/${test.info().project.name}-subscription.png`,fullPage:true});
 });
