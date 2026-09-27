@@ -1897,6 +1897,63 @@
         "Reviewer PASS",
         "captura staging"
       ]
+    },
+    {
+      "id": "sources_chile_diario_estadisticas_v2_2026_09_27",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Builder+Work",
+      "source": "Dirección",
+      "objective": "Repriorizar Fuentes Chile hacia Diario Oficial y fuentes estadísticas de alto valor; FONASA, ANAMED y DEIS dejan de ser prioridad inmediata.",
+      "instructions": [
+        "Estabilizar Diario Oficial con reintentos controlados, timeout, health status, fail-closed y backoff; no bypass ni scraping prohibido.",
+        "Separar disponibilidad técnica de valor editorial; registrar claramente errores y freshness.",
+        "Priorizar fuentes estadísticas ya accesibles y elevar su valor mediante parsers/analítica reproducible.",
+        "Implementar backlog de parsers para GES trimestral, Series Estadísticas ISAPRE y Boletín IP; usar escalera de valor insight conectado → análisis profundo → hallazgo central → ficha útil.",
+        "FONASA, ISP/ANAMED y DEIS quedan fuera de prioridad inmediata; no deben bloquear esta iteración."
+      ],
+      "constraints": [
+        "No degradar evidencia",
+        "No tocar producción hasta revisión"
+      ],
+      "evidence_required": [
+        "Diario Oficial health/retry strategy",
+        "parser backlog priorizado",
+        "al menos un parser estadístico adicional validado o blocker técnico explícito",
+        "QA/Reviewer"
+      ]
+    },
+    {
+      "id": "global_premium_beta_expansion_2026_09_27",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Builder+Work",
+      "source": "Dirección",
+      "objective": "Redefinir Global Intelligence/PREMIUM para beta: mayor profundidad, mejor teaser público y CTA de preinscripción sin login definitivo todavía.",
+      "instructions": [
+        "Ampliar Global Intelligence más allá de 3 piezas para generar percepción real de valor. Objetivo beta inicial: 6–8 temas activos de alta calidad, con diversidad entre consultoras, tendencias, mercado, tecnología/IA, workforce, prevención/longevidad y modelos de atención; no rellenar por cantidad.",
+        "Seleccionar como teaser de Home la pieza global más atractiva/comercial, preferentemente research de consultoras o una tendencia ejecutiva clara; no usar automáticamente workforce si no es la pieza con mayor atractivo.",
+        "Implementar selección del teaser mediante criterios explícitos de atractivo, novedad, relevancia ejecutiva, amplitud sectorial, fortaleza de evidencia y potencial de conversación/decisión.",
+        "En Home, Global Intelligence debe incluir CTA explícito tipo «Ver Global Intelligence» / «Conocer PREMIUM». Al abrir, mostrar experiencia beta con piezas teaser y un CTA de preinscripción.",
+        "Durante beta no implementar login/pago definitivo. Usar soft gate: contenido público limitado y profundidad Premium bloqueada con mensaje claro «Global Intelligence PREMIUM está en preparación» + invitación a preinscribirse.",
+        "Separar newsletter de preinscripción Premium. Reusar funnel early_access/MailerLite cuando se active, con grupo específico si Dirección lo aprueba.",
+        "Preparar arquitectura futura con login obligatorio para PREMIUM, pero no implementarla en esta iteración.",
+        "Medir en beta: CTR Home→Global, apertura de teasers, CTA de preinscripción y conversión a preinscripción cuando analytics/privacy estén activos.",
+        "Mantener hechos internacionales separados de hipótesis Chile y fuentes/licencias permitidas."
+      ],
+      "constraints": [
+        "No auth real aún",
+        "No pagos ni precio definitivo aún",
+        "No usar fuentes con restricciones comerciales no resueltas",
+        "No producción sin revisión"
+      ],
+      "evidence_required": [
+        "6–8 temas beta o explicación fail-closed de disponibilidad",
+        "teaser Home seleccionado con score",
+        "CTA/preinscripción soft gate",
+        "QA desktop/mobile",
+        "Reviewer PASS"
+      ]
     }
   ],
   "execution_policy": {
