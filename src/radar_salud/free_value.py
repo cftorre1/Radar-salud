@@ -69,33 +69,31 @@ def _score01(value: Any, fallback: float = 0.0) -> float:
 
 
 def score_global_teaser(theme: dict[str, Any], verified_sources: list[dict[str, Any]], today: date) -> dict[str, Any]:
-    """Score commercial teaser appeal using only explicit, reviewable criteria."""
-    title = str(theme.get("title") or "").lower()
-    finding = str(theme.get("global_finding") or "").lower()
-    why = str(theme.get("why_it_matters") or "").lower()
-    text = " ".join((title, finding, why))
+    """Score the Home teaser for executive pull, not generic global importance.
+
+    Editorial beta profiles are explicit and auditable. Freshness/evidence remain
+    guardrails, but they cannot dominate commercial hook and decision usefulness.
+    """
+    profile = theme.get("home_teaser_profile") or {}
     latest = max((_day(x.get("published_at")) for x in verified_sources), default=None)
     recency_days = (today - latest).days if latest else 9999
     recency = 100.0 if recency_days <= 30 else 85.0 if recency_days <= 120 else 70.0 if recency_days <= 365 else 55.0
     evidence = min(100.0, 55.0 + 15.0 * len({x.get("publisher") for x in verified_sources if x.get("publisher")}))
-    executive = 90.0 if any(k in text for k in ("retorno", "invers", "mercado", "modelo", "ia", "cost", "productiv")) else 75.0
-    breadth = 90.0 if any(k in text for k in ("salud", "bienestar", "prevención", "prevencion", "longevidad", "modelo")) else 70.0
-    conversation = 92.0 if any(k in text for k in ("ia", "longevidad", "prevención", "prevencion", "bienestar", "mercado")) else 72.0
     dims = {
-        "attractiveness": executive,
+        "commercial_hook": _score01(profile.get("commercial_hook"), 70.0),
+        "executive_relevance": _score01(profile.get("executive_relevance"), 70.0),
+        "decision_usefulness": _score01(profile.get("decision_usefulness"), 70.0),
+        "conversation_potential": _score01(profile.get("conversation_potential"), 70.0),
         "novelty_recency": recency,
-        "executive_relevance": executive,
-        "sector_breadth": breadth,
         "evidence_strength": evidence,
-        "conversation_potential": conversation,
     }
     weights = {
-        "attractiveness": .20,
-        "novelty_recency": .15,
-        "executive_relevance": .20,
-        "sector_breadth": .15,
-        "evidence_strength": .15,
+        "commercial_hook": .25,
+        "executive_relevance": .25,
+        "decision_usefulness": .20,
         "conversation_potential": .15,
+        "novelty_recency": .075,
+        "evidence_strength": .075,
     }
     return {"score": round(sum(dims[k] * weights[k] for k in weights), 2), "dimensions": dims}
 
