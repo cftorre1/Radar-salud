@@ -139,3 +139,24 @@ def test_product_report_preserves_persisted_deep_intelligence_weekly_insight(tmp
     assert merged["selection_policy"]["weekly_insight_status"] == "published_deep_intelligence"
     assert merged["selection_policy"]["deep_intelligence"]["name"] == "gpt-5.6-terra"
     assert merged["selection_policy"]["top3"][0]["title"] == "Circular IF/N°535"
+
+
+def test_product_report_reads_orchestrator_queue_for_executive_status(tmp_path):
+    module = load_report_module()
+    (tmp_path / "config").mkdir(parents=True)
+    (tmp_path / "config/orchestrator_queue.json").write_text(json.dumps({
+        "updated_at": "2026-09-27",
+        "tasks": [
+            {"id": "a", "status": "in_progress"},
+            {"id": "b", "status": "approved"},
+            {"id": "c", "status": "blocked"},
+            {"id": "d", "status": "validated"},
+        ],
+    }), encoding="utf-8")
+    result = module.build(tmp_path, tmp_path / "web/data")
+    assert result["read_model"]["freshness"] == "available"
+    assert result["read_model"]["active_task_count"] == 2
+    assert result["read_model"]["blocked_task_count"] == 1
+    observed = result["scorecard"]["observed"]["development"]
+    assert observed["active_task_count"] == 2
+    assert observed["blocked_task_count"] == 1
