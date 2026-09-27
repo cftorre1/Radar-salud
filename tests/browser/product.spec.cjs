@@ -293,7 +293,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await page.screenshot({path:`artifacts/${test.info().project.name}-cards-v2.png`,fullPage:true});
 });
 test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM distinct',async({page})=>{
- const themeCount=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')).themes.length;
+ const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,sourceCount=globalData.themes.flatMap(t=>t.sources||[]).length;
  await page.goto('/');
  await expect(page.locator('.signal.special.global [data-special-open]')).toBeVisible();
  await page.locator('.signal.special.global [data-special-open]').click();
