@@ -10,10 +10,11 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('.coverage,.toolbar,.weekly-cta,.preferences-panel')).toHaveCount(0);
  await expect(page.getByText('Personalizar mi radar',{exact:true})).toHaveCount(0);
  await expect(page.getByText(/Ingresar|Registrarse/)).toHaveCount(0);
- await expect(page.locator('#earlyAccessOpen')).toHaveText('Acceso anticipado');
+ await expect(page.locator('#earlyAccessOpen')).toHaveText('Acceso PREMIUM');
  await page.locator('#earlyAccessOpen').click();await expect(page.locator('#earlyAccessDialog')).toBeVisible();
- await expect(page.locator('#earlyAccessDialog')).toContainText('no tiene cuentas ni sesiones');
- await page.getByRole('button',{name:'Cerrar acceso anticipado'}).click();
+ await expect(page.locator('#earlyAccessDialog')).toContainText('todavía no hay cuentas ni pagos');
+ await expect(page.locator('#earlyAccessDialog')).toContainText('Solicitar acceso anticipado');
+ await page.getByRole('button',{name:'Cerrar acceso Premium'}).click();
  await page.locator('#newsletterOpen').click();await expect(page.locator('#newsletterDialog')).toBeVisible();
  await expect(page.locator('#homeEmail')).toBeDisabled();
  await expect(page.locator('#newsletterDialog')).toContainText('proveedor y privacidad aprobados');
@@ -462,11 +463,14 @@ test('Home hero is compact, one-line and exposes subscription plus Global Intell
  await expect(page.locator('.hero-purpose')).toHaveText('Señales clave del sector salud, claras y a tiempo.');
  await expect(page.locator('.newsletter-strip')).toContainText('Suscríbete para recibir en tu correo las señales más importantes');
  await expect(page.locator('.newsletter-strip #newsletterOpen')).toHaveText('Suscríbete');
- await expect(page.locator('.header-premium')).toHaveAttribute('href','global.html');
+ await expect(page.locator('a.header-premium')).toHaveAttribute('href','global.html');
+ await expect(page.locator('button.premium-access')).toHaveText('Acceso PREMIUM');
  if(test.info().project.name==='mobile'){
    const title=await page.locator('#radarTitle').boundingBox();
+   const metrics=await page.locator('#radarMetrics').boundingBox();
    const source=await page.locator('#sourcesOpen').boundingBox();
-   expect(title.y).toBeLessThan(source.y+source.height);
+   expect(metrics.y).toBeGreaterThan(title.y);
+   expect(source.y).toBeGreaterThan(metrics.y);
    expect(await page.locator('.hero-purpose').evaluate(el=>el.scrollWidth<=el.clientWidth+1)).toBeTruthy();
  }
 });
