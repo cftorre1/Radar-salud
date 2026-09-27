@@ -77,6 +77,26 @@ def statistics_parser_backlog(history):
     return rows
 
 
+def merge_persisted_weekly_insight(root, free_value):
+    """Preserve the reviewed/model-generated weekly insight during QA rebuilds.
+
+    QA may deterministically rebuild FREE value from the current snapshot. A
+    successful Deep Intelligence artifact is the authority for the weekly
+    insight until a newer model run replaces it.
+    """
+    latest=read(root / "data/weekly_insight/latest.json", {})
+    if latest.get("status")!="pass" or not isinstance(latest.get("weekly_insight"), dict):
+        return free_value
+    merged=dict(free_value)
+    merged["weekly_insight"]=latest["weekly_insight"]
+    policy=dict(merged.get("selection_policy") or {})
+    policy["weekly_insight_status"]="published_deep_intelligence"
+    policy["top3"]=latest.get("top3") or []
+    policy["deep_intelligence"]=latest.get("model") or {}
+    merged["selection_policy"]=policy
+    merged["status"]="available" if merged.get("global_teaser") else "partial"
+    return merged
+
 def feature_observability(responses, month, free_value):
     deterministic={
         "global_intelligence":free_value.get("global_teaser"),
@@ -132,6 +152,7 @@ def build(root, output):
     current_month=datetime.now(timezone.utc).strftime("%Y-%m")
     free_value = build_free_value(snapshot, read(root / "web/data/global_themes.json", {"themes": []}),
                                   read(root / "data/free_value/history.json", []))
+    free_value = merge_persisted_weekly_insight(root, free_value)
     feature_usage = feature_observability(responses,current_month,free_value)
     fast_failed=usage.get(current_month,{}).get("fast",{}).get("failed",0)
     failure_rows=[x for x in responses if x.get("kind")=="fast" and x.get("success") is False and str(x.get("at","")).startswith(current_month)]
