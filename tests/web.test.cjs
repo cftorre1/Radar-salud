@@ -49,3 +49,32 @@ test('normative public title always includes act identity and subject before hum
 test('persistent editorial contract encodes aggregation and review precedence',()=>{const cfg=JSON.parse(fs.readFileSync('config/editorial_rules_v2.json','utf8')).presentation_contract;assert.equal(cfg.normative_identity_and_subject.required,true);assert.equal(cfg.aggregate_over_components.required,true);assert.equal(cfg.surface_consistency.required,true);assert.equal(cfg.precedence.persistent_rules_override_human_copy,true);});
 
 test('editorial intelligence committee is permanent, multidisciplinary and signal-specific',()=>{const cfg=JSON.parse(fs.readFileSync('config/editorial_intelligence_committee_v1.json','utf8'));assert.equal(cfg.name,'Comité de Inteligencia Editorial Alicanto');for(const id of ['editorial_intelligence','health_business','data_analytics','decision_intelligence','regulatory_legal','evidence_research'])assert.ok(cfg.standing_members.some(x=>x.id===id));assert.deepEqual(cfg.signal_panels.Datos,['editorial_intelligence','health_business','data_analytics','decision_intelligence','evidence_research']);assert.ok(cfg.signal_panels.Normativa.includes('regulatory_legal'));assert.equal(cfg.learning_loop.new_statistics.includes('deuda analítica'),true);});
+
+
+test('visible stock obeys committee and publication contract site-wide',()=>{
+ const c=context(),radar=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
+ for(const s of radar.signals){
+   assert.ok(s.editorial_committee,s.source_url+' committee artifact required');
+   assert.equal(s.editorial_committee.verdict,'PASS',s.source_url+' visible card must be committee PASS');
+   assert.equal(c.individualCardAllowed(s),true,s.source_url+' must satisfy publication contract');
+ }
+});
+
+test('Bupa and Pulso retain approved business depth without weak references',()=>{
+ const radar=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
+ const bupa=radar.signals.find(s=>/Bupa refuerza/.test(s.title||''));
+ assert.ok(bupa);
+ assert.equal(bupa.source_name,'Diario Financiero');
+ assert.match(bupa.what_happened,/US\$15 millones/);
+ assert.match(bupa.what_happened,/La Dehesa/);
+ assert.match(bupa.what_happened,/Huinganal/);
+ assert.match(bupa.what_happened,/Mindplace/);
+ assert.deepEqual(bupa.related_context||[],[]);
+ assert.deepEqual(bupa.source_alternatives||[],[]);
+ const pulso=radar.signals.find(s=>s.event_type==='DATA_PULSE');
+ assert.ok(pulso);
+ assert.match(pulso.title,/Pulso Isapre/);
+ assert.ok(pulso.summary_table?.rows?.length>=6);
+ assert.match(pulso.why_it_matters,/no una explicación causal/);
+ assert.ok((pulso.data_insight_evidence||[]).length>=5);
+});
