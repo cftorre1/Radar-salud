@@ -19,7 +19,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#newsletterDialog')).toContainText('proveedor y privacidad aprobados');
  await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
  await expect(page.locator('#radarTitle')).toHaveText('Ponte al día en 30 segundos');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+ · período (?:\d+ días|desde última visita)$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+$/);
  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();
  await expect(page.locator('#sourcesList .source-row')).toHaveCount(10);
@@ -144,7 +144,7 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  await expect(page.locator('.briefrow .brief-meta')).toHaveCount(await page.locator('.briefrow').count());
  const fills=await page.locator('.signal.special').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(hasWeekly?2:1);
  const readTargets=await page.locator('.briefread').evaluateAll((buttons,count)=>buttons.slice(0,count).map(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height})),hasWeekly?2:1);expect(readTargets.every(({width,height})=>width>=44&&height>=44)).toBeTruthy();
- await expect(page.locator('.hero-purpose')).toContainText('Monitoreamos fuentes');
+ await expect(page.locator('.hero-purpose')).toHaveText('Señales clave del sector salud, claras y a tiempo.');
  if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await page.locator('.brief-weekly [data-brief-read]').click();await expect(page.locator('.brief-weekly')).toHaveCount(0);await expect(weekly).toHaveClass(/read/);await weekly.getByRole('button',{name:/Ver insight/}).click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto:');await expect(page.locator('#weeklyInsightDialog').getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
  await page.locator('.brief-global [data-brief-read]').click();
  await expect(page.locator('.brief-global')).toHaveCount(0);await expect(global).toHaveClass(/read/);
@@ -168,12 +168,13 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
 test('Global read state is shared across Home and the research page',async({page})=>{
- const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,sourceCount=globalData.themes.flatMap(t=>t.sources||[]).length;
+ const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length;
  await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
+ const free=await (await page.request.get('/data/free_value.json')).json(),teaserId=free.global_teaser.theme_id;
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page).toHaveURL(/global\.html#theme-/);
  await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(themeCount-1);
- const theme=page.locator('.theme').filter({hasText:'La brecha de personal sanitario'});
+ const theme=page.locator(`#theme-${teaserId}`);
  await expect(theme).toHaveClass(/read/);
  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);
  await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
