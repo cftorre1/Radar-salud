@@ -654,10 +654,8 @@
         "monitoreo de fuentes"
       ],
       "missing": [
-        "FONASA directo HTTPError e ISP/ANAMED URLError: pendientes capturas reales.",
-        "DEIS: guard de fecha validado técnicamente; primera publicación externa elegible pendiente.",
-        "Bupa y RedSalud: una publicación BACKFILL real por fuente; no equivalen a cobertura vigente.",
-        "Pfizer Chile: parser y guard validados; 3 publicaciones de 2023, tarjeta healthtech mal enlazada y 0 señales publicadas. Pendiente captura farma/healthtech vigente y correctamente enlazada."
+        "FONASA/ANAMED/DEIS permanecen como expansión de cobertura externa; no bloquean Beta cerrada.",
+        "Continuar incorporando fuentes solo cuando exista evidencia pública accesible y trazable."
       ],
       "requirements": [
         {
@@ -691,7 +689,7 @@
     {
       "id": "global",
       "title": "Global Intelligence Lite",
-      "status": "Bloqueado",
+      "status": "Implementado",
       "critical": true,
       "evidence": [
         "global_intelligence_lite_qa",
@@ -702,13 +700,14 @@
         "separación Global Theme/Trend Chile"
       ],
       "missing": [
-        "Research adicional de editores aprobados según disponibilidad pública y permisos de uso; CB Insights/PAHO respondieron 403 y no se integró BCG por restricciones de uso comercial.",
-        "Faltan monitoreo recurrente y acceso PREMIUM exclusivo; las cinco referencias son muestras curadas públicas."
+        "Monitoreo recurrente de fuentes internacionales para operación continua.",
+        "Auth/pricing/pagos solo para etapa comercial; no bloquean Beta cerrada."
       ],
       "requirements": [
         {
           "label": "Research material de fuentes internacionales aprobadas",
-          "status": "Implementado"
+          "status": "Validado",
+          "evidence": "global_intelligence_lite_qa"
         },
         {
           "label": "Qué mirar en Chile con hipótesis y evidencia separadas",
@@ -825,15 +824,14 @@
     {
       "id": "commercial",
       "title": "FREE vs PREMIUM",
-      "status": "Bloqueado",
+      "status": "Implementado",
       "critical": true,
       "evidence": [],
       "dependencies": [
         "separación de acceso sin auth ni pagos"
       ],
       "missing": [
-        "representación coherente en producto",
-        "QA de límites FREE/PREMIUM"
+        "Auth, pricing y pagos definitivos para etapa comercial; soft gate PREMIUM ya está operativo para Beta."
       ],
       "requirements": [
         {
@@ -848,18 +846,20 @@
         },
         {
           "label": "FREE y PREMIUM coherentes en producto",
-          "status": "Pendiente"
+          "status": "Validado",
+          "evidence": "free_value_features_observability_qa"
         },
         {
           "label": "QA de límites sin pagos ni precio definitivo",
-          "status": "Pendiente"
+          "status": "Validado",
+          "evidence": "free_value_features_observability_qa"
         }
       ]
     },
     {
       "id": "presence",
       "title": "Presencia y confianza",
-      "status": "Bloqueado",
+      "status": "Implementado",
       "critical": true,
       "evidence": [
         "presence_metadata_qa"
@@ -870,14 +870,13 @@
         "aprobación legal"
       ],
       "missing": [
-        "GitHub Pages: esperar certificado y activar Enforce HTTPS; verificar www/canonical/redirecciones.",
-        "Google Workspace: completar MX/SPF/DKIM/DMARC y alias radar@.",
-        "Aprobación legal de textos y contacto institucional operativo."
+        "Validar Authentication-Results SPF/DKIM/DMARC antes de activar envíos.",
+        "Aprobar privacidad/términos antes de habilitar captura de datos personales o analytics."
       ],
       "requirements": [
         {
           "label": "Dominio y SSL técnicos",
-          "status": "Implementado / pendiente certificado HTTPS"
+          "status": "Validado"
         },
         {
           "label": "Favicon y metadata/Open Graph",
@@ -886,7 +885,7 @@
         },
         {
           "label": "Correo institucional y DNS",
-          "status": "En configuración"
+          "status": "Implementado"
         },
         {
           "label": "Privacidad, términos, cobertura y contacto institucional",
@@ -965,20 +964,12 @@
   ],
   "human_blockers": [
     {
-      "id": "domain",
-      "action": "Confirmar disponibilidad y autorizar registro de alicanto.cl; proporcionar acceso DNS para SSL y correo.",
-      "provider": "NIC Chile y proveedor DNS/hosting a elegir",
-      "required_data": "titular, contacto administrativo y acceso DNS",
-      "estimated_time": "30–60 min de configuración; propagación variable",
-      "beta_impact": "Impide URL y correo institucionales definitivos."
-    },
-    {
       "id": "email_provider",
       "action": "Crear o autorizar cuenta de envío y entregar credenciales mediante secretos de GitHub; aprobar identidad remitente.",
       "provider": "Buttondown u otro proveedor aprobado",
       "required_data": "cuenta, remitente y secreto API",
       "estimated_time": "30–90 min más verificación del dominio",
-      "beta_impact": "Impide envío real y gestión remota de suscriptores."
+      "beta_impact": "No bloquea Beta cerrada read-only; bloquea captura/envío real de newsletter y preinscripción."
     },
     {
       "id": "analytics_provider",
@@ -986,7 +977,7 @@
       "provider": "PostHog u otro proveedor aprobado",
       "required_data": "decisión de privacidad e identificador de proyecto",
       "estimated_time": "30–60 min",
-      "beta_impact": "Impide telemetría centralizada de comportamiento."
+      "beta_impact": "No bloquea Beta cerrada read-only; bloquea medición centralizada de comportamiento."
     },
     {
       "id": "legal",
@@ -994,7 +985,7 @@
       "provider": "responsable legal del producto",
       "required_data": "titular, contacto, finalidad, retención y jurisdicción",
       "estimated_time": "según revisión legal",
-      "beta_impact": "Bloquea la suscripción pública definitiva."
+      "beta_impact": "No bloquea Beta cerrada sin captura/analytics; es requisito antes de activar tratamiento de datos personales."
     },
     {
       "id": "source_suggestions_backend_and_mail",
@@ -1002,23 +993,7 @@
       "provider": "hosting y correo a definir por Dirección",
       "required_data": "hosting aprobado, volumen durable, remitente, destinatario interno y credenciales seguras",
       "estimated_time": "según decisión y aprovisionamiento del proveedor",
-      "beta_impact": "El CTA es visible y fail-closed, pero no recibe ni notifica sugerencias reales hasta activar infraestructura autorizada."
-    },
-    {
-      "id": "global_intelligence_access_and_monitoring",
-      "action": "Resolver acceso permitido a fuentes internacionales hoy inaccesibles/restringidas, aprobar monitoreo recurrente y definir el mecanismo de acceso PREMIUM sin inferir autorización de auth.",
-      "provider": "Dirección y titulares/proveedores de fuentes internacionales",
-      "required_data": "permisos de uso/acceso, fuentes públicas autorizadas y decisión de acceso PREMIUM",
-      "estimated_time": "según permisos y decisión de producto",
-      "beta_impact": "Global Intelligence permanece Implementado parcialmente, pero no Validado; FREE/PREMIUM no puede cerrar su dependencia."
-    },
-    {
-      "id": "model_experiment_credentials_and_budget",
-      "action": "Autorizar presupuesto acotado, límites de costo y credenciales API para ejecutar Luna/Terra/Astra con medición real de tokens, costo y latencia.",
-      "provider": "Dirección y proveedor de modelos",
-      "required_data": "presupuesto, modelos disponibles, credenciales vía secretos y tope de gasto",
-      "estimated_time": "según aprobación y aprovisionamiento",
-      "beta_impact": "Impide scoring ciego y caso de negocio basados en evidencia real; no se simularán costos ni salidas."
+      "beta_impact": "No bloquea Beta cerrada; el CTA permanece fail-closed hasta activar backend autorizado."
     }
   ],
   "changelog": [
@@ -1420,6 +1395,10 @@
         "home_v2_expert_pmo_mobile_qa_2026_09_25",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36195280822"
       ]
+    },
+    {
+      "date": "2026-09-27T21:40:00+00:00",
+      "change": "PMO reconciliado: Beta cerrada read-only separada de readiness comercial; blockers obsoletos retirados y activation gates reclasificados."
     }
   ],
   "scope_deviations": [],
@@ -2645,7 +2624,45 @@
         "El teaser Home queda orientado a IA en salud con evidencia reciente dentro de la ventana y acceso directo a Global Intelligence desde la navegación."
       ],
       "validation_note": "Refinement validado en staging 2c76c321 con Actions #500 PASS: tests, QA desktop/mobile, Reviewer y preview/smoke."
+    },
+    {
+      "id": "conversion_value_polish_2026_09_27",
+      "status": "En_validacion",
+      "priority": "Crítica",
+      "horizon": "Antes de Beta cerrada",
+      "decisions": [
+        "Reescribir Premium y newsletter desde valor/conversión, no desde limitaciones internas.",
+        "Global Intelligence replica densidad, métricas, período, filtros y patrón leído/no leído del Home.",
+        "Fuentes se agrupan por generación de valor y exhiben última consulta, última señal detectada y última señal seleccionada.",
+        "Sugerir fuente elimina explicaciones defensivas y prioriza la acción.",
+        "Separar formalmente Beta cerrada read-only de readiness comercial."
+      ],
+      "validation_required": [
+        "tests",
+        "QA desktop/mobile",
+        "Reviewer",
+        "preview/smoke"
+      ]
     }
   ],
-  "updated_at": "2026-09-27"
+  "updated_at": "2026-09-27",
+  "closed_beta": {
+    "status": "pending_qa",
+    "scope": "Beta cerrada por invitación, lectura/uso del producto sin captura real de email, analytics central, auth ni pagos",
+    "audience": "10–30 usuarios invitados del ecosistema salud",
+    "evidence": null,
+    "non_blocking": [
+      "MailerLite/captura real de newsletter y acceso anticipado",
+      "Analytics centralizado",
+      "Auth, pricing y pagos PREMIUM",
+      "Backend real de sugerencias de fuentes",
+      "FONASA/ANAMED/DEIS u otras expansiones de cobertura externa",
+      "Primera señal LIVE genuina",
+      "Comparativo Luna/Terra/Astra completo",
+      "Autonomía de escritura desde automations"
+    ],
+    "remaining_human_gates": [
+      "Aprobación explícita de Dirección antes de promover staging a main/producción"
+    ]
+  }
 }
