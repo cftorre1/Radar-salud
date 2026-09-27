@@ -24,8 +24,13 @@ function renderScorecard(scorecard){
 }
 function renderPMO(pmo){
   if(!pmo){text('readiness','Sin baseline PMO verificado. No se puede determinar Beta Readiness.');return}
-  text('readiness',`${pmo.readiness.label} · ${pmo.readiness.validated}/${pmo.readiness.total} bloques críticos validados`);
-  text('requirementProgress',pmo.readiness.total_requirements?`${pmo.readiness.validated_requirements}/${pmo.readiness.total_requirements} requisitos validados con evidencia · ${pmo.readiness.requirement_percent}% del baseline desglosado.`:'Requisitos aún sin desglose verificable.');
+  const closed=pmo.closed_beta||{};
+  text('readiness',closed.defined?`${closed.label}${closed.evidence_sha?` · evidencia ${closed.evidence_sha.slice(0,8)}`:''}`:`${pmo.readiness.label} · ${pmo.readiness.validated}/${pmo.readiness.total} bloques críticos validados`);
+  text('requirementProgress',`${pmo.readiness.label} · ${pmo.readiness.validated}/${pmo.readiness.total} bloques críticos · ${pmo.readiness.total_requirements?`${pmo.readiness.validated_requirements}/${pmo.readiness.total_requirements} requisitos con evidencia (${pmo.readiness.requirement_percent}%).`:'sin desglose verificable.'}`);
+  if(closed.defined){
+    const note=document.getElementById('readiness');note.append(document.createElement('br'));
+    note.append(document.createTextNode(`Alcance: ${closed.scope||'no definido'}.`));
+  }
   text('releaseRule',pmo.release_rule);
   text('deployments',`Staging candidato: ${pmo.candidate_sha||'Sin SHA de CI'} · Último QA staging registrado: ${pmo.reference_staging_sha.slice(0,8)} · Producción: último SHA comprobado ${pmo.production_reference_sha.slice(0,8)} (estado actual no medido en este reporte).`);
   const deployment=document.getElementById('deployments');deployment.append(document.createTextNode(' Evidencia: '));link(deployment,pmo.reference_deploy.url,'run de staging validado');
