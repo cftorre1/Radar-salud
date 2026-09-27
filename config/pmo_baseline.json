@@ -2515,6 +2515,19 @@
         "Ejecutar ahora el ranking semanal real, enriquecer candidato, sintetizar con Luna/Terra y auditar.",
         "La consolidación preproducción no cierra hasta completar este gate."
       ]
+    },
+    {
+      "id": "execution_blocker_reconciliation_2026_09_26",
+      "status": "Corregido",
+      "priority": "Crítica",
+      "horizon": "Inmediato",
+      "decisions": [
+        "Los mensajes recibidos son válidos: el entorno programado no puede escribir GitHub y Luna/Terra no están habilitados vía API.",
+        "Se detectó y corrigió además un ciclo accidental de dependencias entre editorial v3 y preproduction consolidation.",
+        "Editorial v3 queda ejecutable sin depender de preproduction/content; preproduction espera editorial + content contract + dashboard.",
+        "El gate editorial debe correr antes del scoring semanal para excluir rutina/contexto del ranking.",
+        "Hasta habilitar API, el pipeline avanza hasta ranking/enrichment y se detiene fail-closed en Deep Intelligence; no se etiqueta Luna/Terra sin llamada real."
+      ]
     }
   ],
   "updated_at": "2026-09-26"
