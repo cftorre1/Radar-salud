@@ -175,10 +175,12 @@ def _normative_contract(s):
             opaque=bool(re.fullmatch(r"(?:Resolución(?:\s+Exenta)?|Circular|Oficio|Decreto)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",current,re.I))
             # Preserve an already descriptive editorial title. Generate the
             # identity+subject form only when the source headline is just an act number.
-            r["display_title"]=(
-                f"{label} sobre {subject[0].lower()+subject[1:] if len(subject)>1 else subject.lower()}"
-                if opaque else current
-            )
+            if opaque:
+                r["display_title"]=f"{label} sobre {subject[0].lower()+subject[1:] if len(subject)>1 else subject.lower()}"
+            elif label.lower() not in current.lower():
+                r["display_title"]=f"{label} · {current}"
+            else:
+                r["display_title"]=current
     return r
 
 def _doc_key(s):
@@ -244,13 +246,20 @@ def _resolution_relation_titles(signals):
         kind=str(r.get("normative_document_type") or "")
         visible_title=str(r.get("title") or "")
         opaque=bool(re.fullmatch(r"(?:Resolución(?:\s+Exenta)?)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",visible_title,re.I))
-        if kind.lower().startswith("resolución") and opaque:
+        if kind.lower().startswith("resolución"):
             rels=r.get("related_context") or []
             parent=next((x for x in rels if re.search(r"^(Circular|Oficio|Resolución|Decreto)\b",str(x.get("title") or ""),re.I)),None)
-            subject=_compact_subject(r.get("normative_subject") or r.get("card_why") or r.get("why_it_matters") or r.get("card_what") or r.get("what_happened"),78)
-            if parent and subject:
+            if parent:
                 parent_title=" ".join(str(parent.get("title") or "").split())
-                r["display_title"]=f"{r['normative_document_label']} sobre {parent_title}: {subject[0].lower()+subject[1:] if len(subject)>1 else subject.lower()}"
+                current=str(r.get("display_title") or r.get("title") or "")
+                if parent_title.lower() not in current.lower():
+                    relation=str(parent.get("relationship") or "").lower()
+                    verb="modifica" if "modific" in relation else ("confirma" if "confirm" in relation else "sobre")
+                    base=current
+                    label=str(r.get("normative_document_label") or "")
+                    if label and base.lower().startswith(label.lower()):
+                        base=base[len(label):].lstrip(" ·:-")
+                    r["display_title"]=f"{label} · {verb} {parent_title} · {base}" if base else f"{label} · {verb} {parent_title}"
         out.append(r)
     return out
 
