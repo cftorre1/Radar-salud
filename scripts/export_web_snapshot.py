@@ -242,8 +242,29 @@ def _related_context(signals,resolve_external=True):
         r.pop("related_norms",None);r.pop("related_sources",None);out.append(r)
     return out
 
+def _statistical_analysis_overrides(path=Path("data/statistical_analysis_overrides_v1.json")):
+    if not path.exists(): return {}
+    try:
+        payload=json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    rows=payload.get("signals",{}) if isinstance(payload,dict) else {}
+    return rows if isinstance(rows,dict) else {}
+
+def _apply_statistical_analysis(signals):
+    overrides=_statistical_analysis_overrides()
+    out=[]
+    for s in signals:
+        r=dict(s)
+        patch=overrides.get(str(r.get("source_url") or ""))
+        if isinstance(patch,dict):
+            for key,value in patch.items():
+                r[key]=value
+        out.append(r)
+    return out
+
 def _resolution_relation_titles(signals):
-    """Expose a resolution's principal referenced act plus its actionable topic."""
+    """Name the act once, its principal referenced norm once, then the material effect."""
     out=[]
     for s in signals:
         r=dict(s)
@@ -255,15 +276,21 @@ def _resolution_relation_titles(signals):
             parent=next((x for x in rels if re.search(r"^(Circular|Oficio|Resolución|Decreto)\b",str(x.get("title") or ""),re.I)),None)
             if parent:
                 parent_title=" ".join(str(parent.get("title") or "").split())
-                label=str(r.get("normative_document_label") or "")
-                current=str(r.get("display_title") or r.get("title") or "")
-                if opaque:
-                    base=_compact_subject(r.get("normative_subject") or r.get("card_why") or r.get("why_it_matters") or r.get("card_what") or r.get("what_happened"),78)
+                label=str(r.get("normative_document_label") or "").strip()
+                evidence=" ".join(str(r.get(k) or "") for k in ("what_happened","why_it_matters","card_what","card_why")).lower()
+                if "suspend" in evidence and ("caec" in evidence or "deriv" in evidence):
+                    effect="suspende temporalmente sus instrucciones y cambia la operación CAEC"
+                elif ("rechaz" in evidence and "suspend" in evidence) or "mantiene su ejecución" in evidence or "mantiene vigente" in evidence:
+                    effect="mantiene su vigencia durante la impugnación"
                 else:
-                    base=current
-                    if label and base.lower().startswith(label.lower()):
-                        base=base[len(label):].lstrip(" ·:-")
-                r["display_title"]=f"{label} sobre {parent_title}: {base}" if base else f"{label} sobre {parent_title}"
+                    base=_compact_subject(r.get("normative_subject") or r.get("card_why") or r.get("why_it_matters") or r.get("card_what") or r.get("what_happened"),86)
+                    base=re.sub(re.escape(parent_title),"",base,flags=re.I)
+                    base=re.sub(r"\b(?:la|el)\s+Circular\s+(?:IF\s*[/\-]?\s*)?N?[°º]?\s*\d+\b","",base,flags=re.I)
+                    base=" ".join(base.split()).strip(" ·,:;-")
+                    effect=base or "define un efecto operativo transitorio"
+                r["display_title"]=f"{label}: {parent_title} · {effect}"
+                r["editorial_committee"]=dict(r.get("editorial_committee") or {})
+                r["editorial_committee"]["public_title"]=r["display_title"]
         out.append(r)
     return out
 
@@ -450,6 +477,7 @@ def curate(signals,resolve_external=True):
     # Public statistics remain visible even when deep analysis is unavailable.
     # Enrich each one to the highest supported level: connected insight -> deep analysis
     # -> central finding -> useful publication inventory.
+    recent=_apply_statistical_analysis(recent)
     recent=[_statistical_value_ladder(s) for s in recent]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
     recent=_apply_persistent_editorial_decisions(recent)
