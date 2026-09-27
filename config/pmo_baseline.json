@@ -2541,6 +2541,22 @@
         "Crear adaptador Responses API + telemetría + budget guard semanal.",
         "Única acción humana pendiente para llamadas reales: agregar OPENAI_API_KEY como GitHub Actions secret."
       ]
+    },
+    {
+      "id": "terra_runtime_live_2026_09_26",
+      "status": "Validado",
+      "priority": "Crítica",
+      "horizon": "Inmediato",
+      "decisions": [
+        "OPENAI_API_KEY ya estaba operativo; bloqueo eliminado.",
+        "Terra ejecutado realmente en Weekly Insight V2 con costo USD 0.01594.",
+        "Restaurar routing permanente: deterministic → Luna → Terra; Astra solo experimento/caso extremo.",
+        "La caída de uso API reciente se debió a que features pasaron a modo deterministic_existing_evidence y el experimento quedó en preflight api_calls_made=0, no a falta de créditos."
+      ],
+      "evidence": [
+        "Alicanto Weekly Insight V2 run #1 PASS",
+        "gpt-5.6-terra response_id registrado"
+      ]
     }
   ],
   "updated_at": "2026-09-26"
