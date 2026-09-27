@@ -2062,6 +2062,43 @@
       "blocked_by": [],
       "progress": "Reconciliación final en ejecución: separar Beta cerrada read-only de readiness comercial, limpiar tareas supersedidas y validar conversion/value polish en Home, Global, Fuentes y suscripción.",
       "evidence": []
+    },
+    {
+      "id": "normative_title_dedup_v1_2026_09_27",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work+Reviewer",
+      "depends_on": [],
+      "blocked_by": [],
+      "progress": "Dirección detectó títulos normativos que repiten innecesariamente la circular antecedente. Objetivo: mantener identidad jurídica de la Resolución Exenta y mencionar la circular relacionada una sola vez, luego expresar el efecto material en lenguaje ejecutivo. Casos iniciales: IF/N°8760 y IF/N°9994. Aplicar regla site-wide sin borrar tipo/número de acto ni relación normativa.",
+      "acceptance": [
+        "Título mantiene tipo y número del acto principal.",
+        "La norma antecedente aparece máximo una vez en el título.",
+        "El resto del título describe efecto material, no repite la misma circular.",
+        "No truncamiento mecánico ni pérdida de sentido.",
+        "Tests de regresión para IF/N°8760, IF/N°9994 y muestra normativa adicional.",
+        "QA desktop/mobile + Reviewer PASS."
+      ]
+    },
+    {
+      "id": "statistics_deep_analysis_tables_v1_2026_09_27",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work+Data Analytics+Reviewer",
+      "depends_on": [],
+      "blocked_by": [],
+      "progress": "Dirección exige que cuatro publicaciones estadísticas dejen de ser fichas de publicación y entreguen inteligencia real: GES a marzo 2026, Series ISAPRE 1990-2025, Estadísticas Financieras ISAPRE a marzo 2026 y Boletín Estadístico Informativo IP junio 2026. Usar archivos oficiales enlazados, parser determinístico/fail-closed, análisis de negocio y tablas ejecutivas. Cuando exista desglose por Isapre, mostrar tabla por institución comparable a Pulso; cuando no exista, usar la tabla más decisiva disponible y explicar límites.",
+      "acceptance": [
+        "Ninguna de las cuatro cards puede decir solo que se publicó un archivo o que aún no existe insight.",
+        "Extraer 1–3 hallazgos materiales reproducibles por publicación.",
+        "GES: tabla por problema de salud y seguro cuando la fuente lo permita; identificar mayores volúmenes/tasas y diferencias útiles sin inferir causalidad.",
+        "Series ISAPRE: seleccionar series de mayor valor de negocio y mostrar tendencias/variaciones de largo plazo con período explícito.",
+        "Financieras ISAPRE: tabla por Isapre con resultados/indicadores financieros disponibles, ranking o comparación trazable y 1–3 insights.",
+        "Boletín IP: priorizar indicadores de prestadores/acreditación/reclamos/mediación que cambien lectura de mercado; tabla ejecutiva si el archivo lo permite.",
+        "Evidencia de hoja/celda/fórmula o equivalente para cada insight.",
+        "No publicar comparación si el esquema no valida; fallar cerrado.",
+        "QA desktop/mobile + Reviewer PASS."
+      ]
     }
   ],
   "execution_policy": {
