@@ -61,6 +61,12 @@ fetch('../data/product.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Err
   const iterations=document.getElementById('iterations');
   renderPMO(d.pmo);
   renderScorecard(d.scorecard);
+  const rm=d.read_model||{},rmHost=document.getElementById('orchestratorReadModel');
+  if(rmHost){
+    line(rmHost,rm.freshness==='available'
+      ?`Orquestación: ${number(rm.active_task_count)} tarea(s) activas · ${number(rm.blocked_task_count)} bloqueada(s) · queue actualizada ${rm.queue_updated_at||'sin fecha'}.`
+      :'Orquestación: No disponible; no se infiere ausencia de trabajo.');
+  }
   text('coverage',d.coverage_live?`Cobertura LIVE: ${number(d.coverage_live.detected)} detectadas · ${number(d.coverage_live.evaluated)} evaluadas · ${number(d.coverage_live.selected)} seleccionadas. BACKFILL separado.${d.discovery?.failed_sources?` Medición parcial: ${number(d.discovery.failed_sources)} fuentes con error.`:''}`:'Cobertura LIVE aún sin medición global; no se mezcla con BACKFILL.');
   if(!d.iterations.length)iterations.append(node('p','Sin iteraciones automáticas registradas. La habilitación de producción exige evidencia de todos los checks.'));
   for(const item of d.iterations.slice(-10).reverse())iterations.append(node('p',`${item.id} · ${item.state} · ${item.candidate_sha?.slice(0,8)} · checks: ${Object.entries(item.checks||{}).map(([k,v])=>`${k}=${v}`).join(', ')||'sin medir'} · feedback: ${(item.feedback||[]).map(x=>x.detail||x.code).join('; ')||'sin hallazgos'}`));
