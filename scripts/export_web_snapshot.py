@@ -288,7 +288,7 @@ def _resolution_relation_titles(signals):
                     base=re.sub(r"\b(?:la|el)\s+Circular\s+(?:IF\s*[/\-]?\s*)?N?[°º]?\s*\d+\b","",base,flags=re.I)
                     base=" ".join(base.split()).strip(" ·,:;-")
                     effect=base or "define un efecto operativo transitorio"
-                r["display_title"]=f"{label}: {parent_title} · {effect}"
+                r["display_title"]=f"{label} sobre {parent_title}: {effect}"
                 r["editorial_committee"]=dict(r.get("editorial_committee") or {})
                 r["editorial_committee"]["public_title"]=r["display_title"]
         out.append(r)
