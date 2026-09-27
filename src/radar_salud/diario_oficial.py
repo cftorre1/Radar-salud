@@ -1,5 +1,6 @@
 from __future__ import annotations
 import re
+import time
 from datetime import date,timedelta
 from html import unescape
 from urllib.parse import urljoin
@@ -31,8 +32,7 @@ def _issuer(context):
 
 def _section_urls(day):
     ds=day.strftime("%d-%m-%Y");idx=f"{BASE}?date={ds}"
-    try:html=fetch_html(idx)
-    except Exception:return []
+    html=_fetch_with_retry(idx)
     urls=[idx]
     for name in ("normas_generales.php","normas_particulares.php"):
         for m in re.finditer(r'href=["\']([^"\']*'+re.escape(name)+r'[^"\']*)["\']',html,re.I):urls.append(urljoin(idx,m.group(1)))
@@ -52,7 +52,7 @@ class DiarioOficialHealthScout:
         for delta in range(days_back):
             d=today-timedelta(days=delta)
             for section in _section_urls(d):
-                try:html=fetch_html(section)
+                try:html=_fetch_with_retry(section)
                 except Exception:continue
                 for m in re.finditer(r'href=["\']([^"\']+\.pdf(?:\?[^"\']*)?)["\'][^>]*>.*?</a>',html,re.I|re.S):
                     pdf=urljoin(section,m.group(1))
