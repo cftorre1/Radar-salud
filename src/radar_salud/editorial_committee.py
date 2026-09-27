@@ -37,3 +37,29 @@ def build_committee_artifact(signal:dict[str,Any],config:dict[str,Any]|None=None
     if not signal.get("source_url"):objections.append("source_missing")
     verdict="REJECT" if decision=="reject" else ("REVISE" if objections else "PASS")
     return {"committee_version":cfg.get("version","1.0"),"signal_type":stype,"members":members,"materiality_decision":decision,"public_title":title,"what_happened":signal.get("card_what") or signal.get("what_happened"),"why_it_matters":signal.get("card_why") or signal.get("why_it_matters"),"evidence_map":[{"source":signal.get("source_name"),"url":signal.get("source_url")}] if signal.get("source_url") else [],"uncertainties":signal.get("risk_notes") or [],"value_level":signal.get("statistical_value_level") or signal.get("editorial_value_category"),"publication_decision":decision,"critical_objections":objections,"verdict":verdict,"parser_or_research_debt_if_any":signal.get("parser_debt") or None}
+
+
+def build_stock_committee_report(signals:list[dict[str,Any]],config:dict[str,Any]|None=None)->dict[str,Any]:
+    """Apply the permanent committee gate to a stock snapshot without mutating history."""
+    cfg=config or _load()
+    items=[]
+    counts={"PASS":0,"REVISE":0,"HOLD":0,"REJECT":0}
+    for signal in signals:
+        artifact=build_committee_artifact(signal,cfg)
+        decision=str(signal.get("editorial_decision") or signal.get("editorial_source_decision") or "accept").lower()
+        if decision=="group":
+            artifact["verdict"]="HOLD"
+            artifact["hold_reason"]="group_into_pulse_trend_or_benchmark"
+        elif decision=="degrade" and artifact["verdict"]=="PASS":
+            artifact["verdict"]="HOLD"
+            artifact["hold_reason"]="context_only_after_editorial_audit"
+        artifact["signal_id"]=signal.get("id") or signal.get("source_url") or signal.get("title")
+        artifact["individual_card_allowed"]=artifact["verdict"]=="PASS" and signal.get("feed_visibility") is not False
+        counts[artifact["verdict"]]=counts.get(artifact["verdict"],0)+1
+        items.append(artifact)
+    return {
+        "committee_version":cfg.get("version","1.0"),
+        "signals_reviewed":len(items),
+        "counts":counts,
+        "items":items,
+    }
