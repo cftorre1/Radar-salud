@@ -17,6 +17,7 @@ def _norm(v:Any)->str:
 def family_from_title(title:str)->str|None:
     t=(title or "").lower()
     if "movilidad" in t:return "movilidad"
+    if "ges" in t or "auge" in t:return "ges"
     if "suscripciones" in t or "desahucios" in t:return "suscripciones"
     if "cartera" in t and "beneficiarios" in t:return "cartera"
     return None
@@ -42,6 +43,54 @@ def _isapre_label(row)->str|None:
 def _safe_numeric(v):
     return float(v) if isinstance(v,(int,float)) and not isinstance(v,bool) else None
 
+def _title_period(title:str):
+    s=(title or "").lower()
+    m=re.search(r"(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+(20\d{2})",s)
+    if not m:return None
+    names={"enero":1,"febrero":2,"marzo":3,"abril":4,"mayo":5,"junio":6,"julio":7,"agosto":8,"septiembre":9,"octubre":10,"noviembre":11,"diciembre":12}
+    return f"{m.group(2)}-{names[m.group(1)]:02d}"
+
+def parse_ges_workbook(book_bytes:bytes,title:str)->dict:
+    """Validate a conservative GES table shape; never infer causes or sum ambiguous rows."""
+    try:
+        from openpyxl import load_workbook
+        wb=load_workbook(io.BytesIO(book_bytes),read_only=True,data_only=True)
+    except Exception as exc:
+        return {"family":"ges","status":"download_or_open_failed","insights":[],"error":str(exc)[:180]}
+    period=_title_period(title)
+    if not period:
+        return {"family":"ges","status":"period_not_validated","insights":[]}
+    for ws in wb.worksheets[:16]:
+        rows=[list(r[:30]) for r in ws.iter_rows(min_row=1,max_row=450,values_only=True)]
+        rows=[r for r in rows if any(v not in (None,"") for v in r)]
+        for hi,row in enumerate(rows[:80]):
+            labels=[_norm(v).lower() for v in row]
+            fonasa=next((i for i,x in enumerate(labels) if "fonasa" in x),None)
+            isapre=next((i for i,x in enumerate(labels) if "isapre" in x),None)
+            name_col=next((i for i,x in enumerate(labels) if any(k in x for k in ("problema","ges","patolog","condición","condicion"))),0)
+            if fonasa is None or isapre is None or fonasa==isapre:
+                continue
+            observations=[]
+            seen=set()
+            for data in rows[hi+1:]:
+                if len(data)<=max(fonasa,isapre,name_col): continue
+                label=_norm(data[name_col])
+                if not label or label.lower() in seen: continue
+                a=_safe_numeric(data[fonasa]); b=_safe_numeric(data[isapre])
+                if a is None or b is None or a<0 or b<0: continue
+                seen.add(label.lower()); observations.append({"label":label,"fonasa":int(a),"isapre":int(b)})
+            if len(observations)<3:
+                continue
+            # We deliberately avoid totals: workbook rows may not be mutually exclusive.
+            largest=max(observations,key=lambda x:x["fonasa"]+x["isapre"])
+            return {
+                "family":"ges","status":"validated","sheet":ws.title,"period":period,
+                "rows":len(observations),
+                "insights":[f"{largest['label']} presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte {period}; no se infiere prevalencia ni causalidad."],
+                "evidence":{"header_row":hi+1,"fonasa_column":fonasa+1,"isapre_column":isapre+1,"aggregation":"none"},
+            }
+    return {"family":"ges","status":"schema_not_validated","period":period,"insights":[]}
+
 def source_specific_insights(url:str,title:str,validated_schemas:dict|None=None)->dict:
     """Fail-closed parser for three known SuperSalud statistical families.
 
@@ -53,6 +102,9 @@ def source_specific_insights(url:str,title:str,validated_schemas:dict|None=None)
     """
     fam=family_from_title(title)
     if not fam or not url:return {"family":fam,"status":"unsupported","insights":[]}
+    if fam=="ges":
+        try:return parse_ges_workbook(_download(url),title)
+        except Exception as e:return {"family":"ges","status":"download_or_open_failed","insights":[],"error":str(e)[:180]}
     try:
         from openpyxl import load_workbook
         wb=load_workbook(io.BytesIO(_download(url)),read_only=True,data_only=True)
