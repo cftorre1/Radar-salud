@@ -178,7 +178,11 @@ def _normative_contract(s):
             if opaque:
                 r["display_title"]=f"{label} sobre {subject[0].lower()+subject[1:] if len(subject)>1 else subject.lower()}"
             elif label.lower() not in current.lower():
-                r["display_title"]=f"{label} · {current}"
+                clean=current
+                number=str(r.get("normative_document_number") or "")
+                if number:
+                    clean=re.sub(rf"\s*[·:-]\s*{re.escape(number)}\s*$","",clean,flags=re.I).strip()
+                r["display_title"]=f"{label} · {clean}"
             else:
                 r["display_title"]=current
     return r
