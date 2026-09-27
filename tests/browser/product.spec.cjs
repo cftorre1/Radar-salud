@@ -168,7 +168,7 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
 test('Global read state is shared across Home and the research page',async({page})=>{
- const themeCount=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')).themes.length;
+ const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,sourceCount=globalData.themes.flatMap(t=>t.sources||[]).length;
  await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page).toHaveURL(/global\.html#theme-/);
@@ -323,13 +323,13 @@ test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM disti
  await opened.getByRole('button',{name:'Volver a Global Intelligence'}).click();
  await expect(page.locator('#globalInbox')).toBeFocused();
  await page.reload();
- await expect(page.locator('.global-inbox')).toContainText('1 tema no leído');
+ await expect(page.locator('.global-inbox')).toContainText(`${themeCount-2} temas no leídos`);
  await page.locator('.theme').first().getByRole('button',{name:'Marcar no leído'}).click();
- await expect(page.locator('.global-inbox')).toContainText('2 temas no leídos');
+ await expect(page.locator('.global-inbox')).toContainText(`${themeCount-1} temas no leídos`);
  await page.locator('[data-inbox-read]').first().click();
  await expect(page.locator('[data-inbox-read]').first()).toBeFocused();
- await expect(page.locator('.global-inbox')).toContainText('1 tema no leído');
- await expect(page.locator('.source a')).toHaveCount(5);
+ await expect(page.locator('.global-inbox')).toContainText(`${themeCount-2} temas no leídos`);
+ await expect(page.locator('.source a')).toHaveCount(sourceCount);
  await expect(page.locator('.source a').filter({hasText:'PwC'})).toHaveAttribute('href',/^https:\/\/www\.pwc\.com\//);
  await expect(page.locator('.source a[href="https://www.who.int/publications/i/item/9789240122925"]')).toContainText(/^WHO ·/);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
