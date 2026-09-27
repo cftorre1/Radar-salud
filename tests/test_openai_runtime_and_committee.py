@@ -19,3 +19,28 @@ def test_committee_requires_normative_identity():
 def test_budget_ledger_sums_empty_recent_calls(tmp_path):
     p=tmp_path/"usage.json";p.write_text(json.dumps({"calls":[]}),encoding="utf-8")
     assert rolling_7d_spend(p)==0
+
+
+def test_committee_stock_report_turns_grouped_and_degraded_items_into_hold():
+    from radar_salud.editorial_committee import build_stock_committee_report
+    base = {
+        "source_name": "Superintendencia de Salud",
+        "source_url": "https://example.org/source",
+        "signal_types": ["Noticias"],
+        "title": "Señal material",
+        "what_happened": "Ocurrió un cambio verificable.",
+        "why_it_matters": "Afecta una decisión.",
+    }
+    report = build_stock_committee_report([
+        {**base, "id": "accept", "editorial_decision": "accept"},
+        {**base, "id": "group", "editorial_decision": "group"},
+        {**base, "id": "degrade", "editorial_decision": "degrade"},
+        {**base, "id": "reject", "editorial_decision": "reject"},
+    ])
+    by_id = {x["signal_id"]: x for x in report["items"]}
+    assert by_id["accept"]["verdict"] == "PASS"
+    assert by_id["accept"]["individual_card_allowed"] is True
+    assert by_id["group"]["verdict"] == "HOLD"
+    assert by_id["degrade"]["verdict"] == "HOLD"
+    assert by_id["reject"]["verdict"] == "REJECT"
+    assert report["counts"] == {"PASS": 1, "REVISE": 0, "HOLD": 2, "REJECT": 1}
