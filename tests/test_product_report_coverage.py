@@ -110,3 +110,32 @@ def test_statistics_parser_backlog_auto_registers_new_unparsed_data_sources():
     assert by["https://example.org/new"]["documents"] == 1
     assert by["https://example.org/parsed"]["status"] == "covered"
     assert "https://example.org/news" not in by
+
+
+def test_product_report_preserves_persisted_deep_intelligence_weekly_insight(tmp_path):
+    module = load_report_module()
+    root = tmp_path
+    (root / "data/weekly_insight").mkdir(parents=True)
+    persisted = {
+        "status": "pass",
+        "top3": [{"rank": 1, "title": "Circular IF/N°535"}],
+        "model": {"name": "gpt-5.6-terra", "fallback_used": False},
+        "weekly_insight": {
+            "id": "weekly-insight-v2",
+            "insight_title": "Insight Terra",
+            "source_url": "https://example.org/if535",
+            "model_trace": {"api_call": True, "model": "gpt-5.6-terra"}
+        },
+    }
+    (root / "data/weekly_insight/latest.json").write_text(json.dumps(persisted), encoding="utf-8")
+    deterministic = {
+        "status": "partial",
+        "global_teaser": {"title": "Global"},
+        "weekly_insight": {"insight_title": "Deterministic old"},
+        "selection_policy": {"weekly_insight_status": "published_single_source_deep_dive"},
+    }
+    merged = module.merge_persisted_weekly_insight(root, deterministic)
+    assert merged["weekly_insight"]["insight_title"] == "Insight Terra"
+    assert merged["selection_policy"]["weekly_insight_status"] == "published_deep_intelligence"
+    assert merged["selection_policy"]["deep_intelligence"]["name"] == "gpt-5.6-terra"
+    assert merged["selection_policy"]["top3"][0]["title"] == "Circular IF/N°535"
