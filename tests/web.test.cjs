@@ -78,3 +78,14 @@ test('Bupa and Pulso retain approved business depth without weak references',()=
  assert.match(pulso.why_it_matters,/no una explicación causal/);
  assert.ok((pulso.data_insight_evidence||[]).length>=5);
 });
+
+
+test('Home keeps period compact and exposes direct Global Intelligence navigation',()=>{
+ const html=fs.readFileSync('web/index.html','utf8'),app=fs.readFileSync('web/app.js','utf8');
+ assert.match(html,/class="header-premium" href="global\.html">Global Intelligence<\/a>/);
+ const head=html.match(/<div class="radar-head">([\s\S]*?)<\/div>\s*<div class="radar-status-row">/)?.[1]||'';
+ assert.doesNotMatch(head,/id="period"/);
+ assert.match(html,/class="radar-status-row"/);
+ assert.match(html,/id="period"/);
+ assert.doesNotMatch(app,/tarjetas · no leídos \$\{unread\} · período/);
+});
