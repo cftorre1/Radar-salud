@@ -19,7 +19,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#newsletterDialog')).toContainText('proveedor y privacidad aprobados');
  await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
  await expect(page.locator('#radarTitle')).toHaveText('Ponte al día en 30 segundos');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas visibles tras filtros · \d+ tarjetas no leídas$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+ · período (?:\d+ días|desde última visita)$/);
  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();
  await expect(page.locator('#sourcesList .source-row')).toHaveCount(10);
@@ -31,7 +31,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#filterDetails')).toContainText('Tus filtros se guardan automáticamente');
  await expect(page.locator('#period')).toBeVisible();await expect(page.locator('#sort')).toBeVisible();
  const selectTops=await page.locator('.select-grid label').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().top)));
- expect(new Set(selectTops).size).toBe(test.info().project.name==='mobile'?2:1);
+ expect(new Set(selectTops).size).toBe(1);
  await page.locator('#period').selectOption('90');
  const extendedMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  expect(extendedMetrics[0]).toBeGreaterThanOrEqual(initialMetrics[0]);
@@ -357,7 +357,7 @@ test('analytics never sends without explicit privacy approval even if a key is p
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('7');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas visibles tras filtros · \d+ tarjetas no leídas$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+ · período (?:\d+ días|desde última visita)$/);
  expect(attempts).toBe(0);
 });
 test('authorized analytics fixture emits only anonymous event fields',async({page})=>{
