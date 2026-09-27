@@ -20,6 +20,24 @@ ISSUERS=[
 ]
 ACT_RE=re.compile(r"\b(Ley|Decreto(?:\s+exento)?|Resoluci[oó]n(?:\s+exenta)?|Circular|Reglamento)\b",re.I)
 
+
+FETCH_ATTEMPTS=3
+FETCH_TIMEOUT_SECONDS=12
+FETCH_BACKOFF_SECONDS=0.5
+
+def _fetch_with_retry(url,attempts=FETCH_ATTEMPTS,timeout=FETCH_TIMEOUT_SECONDS,backoff=FETCH_BACKOFF_SECONDS):
+    last_error=None
+    for attempt in range(max(1, attempts)):
+        try:
+            return fetch_html(url, timeout=timeout)
+        except Exception as exc:
+            last_error=exc
+            if attempt + 1 < max(1, attempts) and backoff > 0:
+                time.sleep(backoff * (2 ** attempt))
+    raise RuntimeError(
+        f"Diario Oficial unavailable after {max(1, attempts)} attempts: {type(last_error).__name__}"
+    ) from last_error
+
 def _strip(s):
     s=re.sub(r"<script.*?</script>"," ",s,flags=re.S|re.I);s=re.sub(r"<style.*?</style>"," ",s,flags=re.S|re.I);s=re.sub(r"<[^>]+>"," ",s)
     return " ".join(unescape(s).split())
