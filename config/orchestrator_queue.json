@@ -633,11 +633,8 @@
         "resultado teaser Global FREE y pieza FREE destacada",
         "QA/Reviewer independiente"
       ],
-      "progress": "El corpus, scoring ciego y caso de negocio requieren ejecuciones reales Luna/Terra/Astra con tokens, costo y latencia observados. No hay credenciales ni autorización de gasto para producir esa evidencia sin simularla. Dirección 2026-09-26 confirma cuenta OpenAI API activa, créditos disponibles y presupuesto autorizado de USD 10/semana para Alicanto. Los modelos oficiales gpt-5.6-luna, gpt-5.6-terra y gpt-6-astra están documentados por OpenAI; falta solo conectar una API key real al runtime del repositorio y validar acceso del proyecto.",
-      "blocked_by": [
-        "Acción humana mínima: agregar una API key de proyecto válida como GitHub Actions secret OPENAI_API_KEY en cftorre1/Radar-salud; nunca pegar la clave en chat ni commit.",
-        "Después del secret, ejecutar smoke test de /v1/responses con gpt-5.6-luna y gpt-5.6-terra; gpt-6-astra solo si el proyecto tiene acceso. Mantener costo agregado <= USD 10/semana."
-      ]
+      "progress": "El corpus, scoring ciego y caso de negocio requieren ejecuciones reales Luna/Terra/Astra con tokens, costo y latencia observados. No hay credenciales ni autorización de gasto para producir esa evidencia sin simularla. Dirección 2026-09-26 confirma cuenta OpenAI API activa, créditos disponibles y presupuesto autorizado de USD 10/semana para Alicanto. Los modelos oficiales gpt-5.6-luna, gpt-5.6-terra y gpt-6-astra están documentados por OpenAI; falta solo conectar una API key real al runtime del repositorio y validar acceso del proyecto. Runtime y secret ya validados con Terra real. El experimento comparativo Luna/Terra/Astra puede ejecutarse ahora dentro del tope USD 10/semana; Astra solo si el proyecto confirma acceso.",
+      "blocked_by": []
     },
     {
       "id": "free_value_features_and_model_cost_observability_2026_09_24",
@@ -1767,7 +1764,7 @@
     },
     {
       "id": "editorial_committee_insight_sitewide_v3_2026_09_26",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Builder+Work+Reviewer",
       "source": "Dirección",
@@ -1818,14 +1815,18 @@
         "auditoría site-wide de normativa/fuentes/contexto",
         "QA desktop/mobile + Reviewer PASS"
       ],
-      "progress": "Orquestación corregida 2026-09-26: se eliminó ciclo de dependencias. Esta tarea debe ejecutarse en lane interactivo/Work con escritura GitHub comprobada. Gate editorial debe aplicarse antes del ranking semanal; acreditaciones rutinarias quedan fuera de candidatos. Luna/Terra requieren runtime API real; hasta entonces el pipeline puede avanzar hasta ranking/enrichment y quedar fail-closed en Deep Intelligence. Presupuesto API ya autorizado: USD 10/semana. Cuenta y créditos confirmados por Dirección. Implementar ahora adaptador OpenAI Responses API y telemetría; Deep Intelligence queda pendiente únicamente del secret OPENAI_API_KEY.",
-      "blocked_by": [
-        "Solo el subpaso Deep Intelligence requiere acción humana: GitHub secret OPENAI_API_KEY. Todo el resto de la tarea debe continuar de inmediato."
+      "progress": "Terra real ya operativo. Gate editorial pre-ranking excluyó la acreditación rutinaria; top 3 actual: Circular IF/N°535, Circular IF/N°534 y Resolución IF/N°10670. Insight #1 generado por Terra y auditado estructuralmente PASS. Falta QA/Reviewer completo site-wide y cerrar aplicación del Comité al stock.",
+      "blocked_by": [],
+      "evidence": [
+        "Weekly Insight V2 run #1 PASS con gpt-5.6-terra",
+        "Top 3 y desglose estratégico persistidos en web/data/free_value.json",
+        "Gate editorial aplicado antes del ranking; acreditaciones rutinarias excluidas",
+        "data/weekly_insight/latest.json contiene paquete de evidencia, Comité, output y audit PASS"
       ]
     },
     {
       "id": "openai_runtime_integration_2026_09_26",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1857,7 +1858,17 @@
         "smoke test Luna/Terra con request IDs/tokens/costo cuando secret exista",
         "telemetría y guard semanal",
         "Reviewer independiente PASS"
-      ]
+      ],
+      "progress": "2026-09-26: runtime OpenAI integrado y probado en GitHub Actions con el repository secret existente. Weekly Insight V2 ejecutó gpt-5.6-terra real, sin fallback, response_id registrado, costo estimado USD 0.01594. Guard interno USD 10/7 días y telemetría persistente activos.",
+      "blocked_by": [],
+      "evidence": [
+        "Workflow Alicanto Weekly Insight V2 run #1 PASS",
+        "Terra real: gpt-5.6-terra; response_id resp_0fefaa338c3eb70f006ab86abd5e3487d1b0dc3fb685dc33e5",
+        "Costo estimado de la llamada: USD 0.01594",
+        "Repository secret OPENAI_API_KEY confirmado operativo por el workflow",
+        "data/state/model_usage.json registra tokens/costo/modelo"
+      ],
+      "completed_at": "2026-09-26"
     }
   ],
   "execution_policy": {
