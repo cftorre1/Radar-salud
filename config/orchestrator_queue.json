@@ -1961,7 +1961,7 @@
     },
     {
       "id": "orchestrator_autonomous_executor_v2_2026_09_27",
-      "status": "in_progress",
+      "status": "blocked",
       "priority": "critical",
       "owner": "Director-Orchestrator+Autonomous Executor",
       "source": "Dirección",
@@ -1987,8 +1987,10 @@
         "workflow Autopilot horario",
         "al menos un ciclo autónomo con commit real o blocker explícito"
       ],
-      "progress": "2026-09-27: causa raíz identificada: el Autopilot GitHub era un validador/rebuilder y no consumía orchestrator_queue para desarrollar. Se reactivó Alicanto Autonomous Executor horario con mandato explícito de escritura/QA y fallback; se añadieron scripts/orchestrator_liveness.py + tests y Autopilot pasó a frecuencia horaria con fail-loud tras 75 min de trabajo ejecutable sin commit. Commits a782930, 068da7f, 5e28cce. Pendiente observar primer ciclo autónomo con commit real para validación final.",
-      "blocked_by": [],
+      "progress": "2026-09-27: liveness guard y Autopilot horario quedaron implementados, pero la prueba del ejecutor autónomo real falló por límite de permisos del runtime: puede leer staging/PMO/Actions, pero la capa de seguridad bloquea escrituras GitHub desde esa automatización. La automatización fue desactivada para evitar ciclos que simulen trabajo. La ejecución continúa por lane interactivo/Work con escritura comprobada; los monitores permanecen solo observacionales.",
+      "blocked_by": [
+        "Runtime de automations sin permiso efectivo para escribir GitHub; requiere un lane autorizado de escritura o una futura capacidad de ejecución con permisos explícitos."
+      ],
       "evidence": [
         "Automation Alicanto Autonomous Executor habilitada 2026-09-27 con frecuencia horaria y ejecución de slices reales en staging.",
         "a782930b37b7800ec6b806d417805e585e06bb8c — liveness guard",
