@@ -1927,12 +1927,18 @@
       ],
       "completed_at": "2026-09-27",
       "blocked_by": [],
-      "progress": "Selector de período movido fuera del acordeón y visible en Ponte al día; métricas compactas muestran tarjetas/no leídos/período activo; persistencia real en localStorage y reset discreto validados en desktop/mobile.",
+      "progress": "Refinement adicional validado 2026-09-27: selector de período se mantiene visible pero compacto, fuera de la línea del título; la métrica deja de duplicar el período; se reduce whitespace del hero; bajada queda en una línea; resumen semanal pasa a strip de suscripción de una línea; acceso directo a Global Intelligence visible en Home.",
       "evidence": [
         "31cd087 — selector de período visible fuera del acordeón",
         "6770721 — métricas compactas + reset de filtros persistidos",
         "f2b3881 + 52a5f9e + 766d94a — regresiones browser y responsive",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36339151987 — tests, QA desktop/mobile, Reviewer y preview/smoke PASS"
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36339151987 — tests, QA desktop/mobile, Reviewer y preview/smoke PASS",
+        "d065882 — período compacto sin romper título",
+        "4874c3d — spacing + newsletter strip + hero copy",
+        "f75e6ef — acceso directo Global Intelligence",
+        "5cd8ff8 — métrica sin período duplicado",
+        "2c76c32 — QA actualizado al nuevo contrato",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36346409154 — HEAD 2c76c321: tests, QA desktop/mobile, Reviewer y preview/smoke PASS"
       ]
     },
     {
@@ -2000,7 +2006,7 @@
         "QA desktop/mobile",
         "Reviewer PASS"
       ],
-      "progress": "Validado para beta 2026-09-27. Global Intelligence expandido de 3 a 6 temas permitidos y trazables; teaser se selecciona por scoring explícito; soft gate y CTA de preinscripción implementados sin auth/pago. Las hipótesis Chile permanecen separadas de hechos globales.",
+      "progress": "Refinement adicional validado 2026-09-27: selección del teaser Home ahora usa gate de frescura ≤14 días sin premio adicional por recencia; dentro de elegibles prioriza gancho comercial, relevancia estratégica, utilidad de decisión y potencial de conversación, con evidencia como guardrail. El teaser seleccionado es IA en salud / retorno e integración operativa, respaldado por evidencia reciente dentro de la ventana.",
       "completed_at": "2026-09-27",
       "blocked_by": [],
       "evidence": [
@@ -2008,7 +2014,12 @@
         "ead3a38 — soft gate/CTA beta",
         "534ffd1 + 5206277 — 6 temas canónicos y paridad pública",
         "7f4bfe7 + a174cd8 + 966dd9c — QA browser adaptable al corpus beta",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36338373155 — HEAD 966dd9cb1f1a8f0ab431d66edd61c5fbcca3c751: tests, QA desktop/mobile, Reviewer y preview/smoke PASS"
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36338373155 — HEAD 966dd9cb1f1a8f0ab431d66edd61c5fbcca3c751: tests, QA desktop/mobile, Reviewer y preview/smoke PASS",
+        "d538435 + 5cd74a7 — scoring explícito de gancho/relevancia/decisión",
+        "e1d47b0 — frescura 14 días como gate, no bonus",
+        "01b8230 + 7e0c12f — evidencia reciente de IA + dominio Deloitte Digital validado",
+        "45c6bf7 + 2c76c32 — QA dinámico del teaser y métricas",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36346409154 — HEAD 2c76c321: tests, QA desktop/mobile, Reviewer y preview/smoke PASS"
       ]
     },
     {
