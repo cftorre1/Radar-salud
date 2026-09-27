@@ -144,10 +144,10 @@ Promise.all([
  let expanded=false;
  const sourceRow=x=>`<div class="source-row"><strong>${esc(x.name)}</strong><div class="source-meta"><span><b>Última consulta</b> · ${x.checked_at?fmtDate(x.checked_at):'sin dato'}</span><span><b>Última señal detectada</b> · ${x.last_signal_at?fmtDate(x.last_signal_at):'sin señal reciente'}</span><span><b>Última seleccionada</b> · ${x.last_selected_at?fmtDate(x.last_selected_at):'aún no visible'}</span></div></div>`;
  const render=()=>{
-  const visible=expanded?rows:rows.slice(0,12),groups=new Map();
-  for(const x of visible){const label=x.group[0];if(!groups.has(label))groups.set(label,[]);groups.get(label).push(x)}
-  host.innerHTML=[...groups].map(([label,xs])=>`<section class="source-group"><h3 class="source-group-title">${esc(label)}</h3>${xs.map(sourceRow).join('')}</section>`).join('')||'<p>No hay fuentes registradas.</p>';
-  more.hidden=rows.length<=12;more.textContent=expanded?'Ver menos':'Ver todas las fuentes';
+  const groups=new Map();
+  for(const x of rows){const label=x.group[0];if(!groups.has(label))groups.set(label,[]);groups.get(label).push(x)}
+  host.innerHTML=[...groups].map(([label,xs])=>{const shown=expanded?xs:xs.slice(0,4);return `<section class="source-group"><h3 class="source-group-title">${esc(label)}</h3>${shown.map(sourceRow).join('')}</section>`}).join('')||'<p>No hay fuentes registradas.</p>';
+  more.hidden=[...groups.values()].every(xs=>xs.length<=4);more.textContent=expanded?'Ver menos':'Ver todas las fuentes';
  };
  more.onclick=()=>{expanded=!expanded;render();more.focus()};render();
 }).catch(()=>{document.getElementById('sourcesList').innerHTML='<p>No se pudo cargar la lista de fuentes.</p>'});
