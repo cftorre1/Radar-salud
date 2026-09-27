@@ -414,3 +414,20 @@ test('Pulso Isapre leads with executive table and statistics use the value ladde
  await expect(table).toContainText('2.487.497');await expect(table).toContainText('-17.700');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
+
+
+test('committee HOLD/REJECT and failed publication contracts do not render as individual feed cards',async({page})=>{
+  await page.goto('/');
+  const response=await page.request.get('/data/radar_today.json');
+  const data=await response.json();
+  const hidden=(data.signals||[]).filter(s=>{
+    const verdict=String(s.editorial_committee?.verdict||'PASS').toUpperCase();
+    const types=Array.isArray(s.signal_types)?s.signal_types.map(x=>String(x).toLowerCase()):[];
+    const core=Boolean((s.display_title||s.title)&&s.signal_types?.length&&s.scopes?.length&&s.event_date&&s.source_name&&s.source_url&&(s.card_what||s.what_happened)&&(s.card_why||s.why_it_matters));
+    const contract=core&&(!types.includes('normativa')||Boolean(s.normative_document_label));
+    return s.feed_visibility===false||['HOLD','REJECT'].includes(verdict)||!contract;
+  });
+  for(const signal of hidden.slice(0,12)){
+    await expect(page.locator('.signal[data-card]').filter({hasText:signal.display_title||signal.title})).toHaveCount(0);
+  }
+});
