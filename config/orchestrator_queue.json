@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-09-26",
+  "updated_at": "2026-09-27",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -1869,6 +1869,34 @@
         "data/state/model_usage.json registra tokens/costo/modelo"
       ],
       "completed_at": "2026-09-26"
+    },
+    {
+      "id": "home_period_visibility_refinement_2026_09_27",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Builder",
+      "source": "Dirección",
+      "objective": "Hacer visible el período activo fuera del acordeón de filtros y aclarar las métricas de Ponte al día.",
+      "depends_on": [
+        "preproduction_consolidation_2026_09_26"
+      ],
+      "instructions": [
+        "Mover el selector de período fuera del acordeón 'Filtrar u ordenar' y dejarlo visible en la superficie principal de Ponte al día, sin aumentar demasiado la altura en mobile.",
+        "Mantener el resto de filtros dentro del acordeón.",
+        "Cambiar la línea de métricas al formato compacto: «X tarjetas · no leídos Y · período Z días».",
+        "El valor de período debe reflejar el filtro persistido real de localStorage, para que normal vs incógnito sea comprensible.",
+        "Agregar un control discreto de restablecer filtros si cabe sin ensuciar la interfaz; si no, dejarlo dentro del acordeón.",
+        "Preservar Home V2 validado, estados leído/no leído, especiales y responsive."
+      ],
+      "constraints": [
+        "No tocar producción todavía",
+        "No rediseñar Home completo"
+      ],
+      "evidence_required": [
+        "QA desktop/mobile",
+        "Reviewer PASS",
+        "captura staging"
+      ]
     }
   ],
   "execution_policy": {
