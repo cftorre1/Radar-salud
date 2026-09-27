@@ -7,8 +7,34 @@ from radar_salud.reference_resolver import resolve_reference
 from radar_salud.editorial_gate import publication_ready
 from radar_salud.editorial_copy import apply_reviewed_copy
 from radar_salud.isapre_pulse import build_pulse
+from radar_salud.editorial_committee import build_committee_artifact
 
 TYPES=("Normativa","Legal","Noticias","Datos","Fiscalización")
+
+def _audit_map(path=Path("data/editorial_audit_90d_2026_09_26.json")):
+    if not path.exists(): return {}
+    try: payload=json.loads(path.read_text(encoding="utf-8"))
+    except Exception: return {}
+    return {str(x.get("id") or ""):x for x in payload.get("items",[]) if isinstance(x,dict) and x.get("id")}
+
+def _apply_persistent_editorial_decisions(signals):
+    audit=_audit_map();out=[]
+    for s in signals:
+        r=dict(s);row=audit.get(str(r.get("source_url") or ""))
+        if row:
+            source_decision=str(row.get("decision") or "accept")
+            aggregate=bool(r.get("event_type")=="DATA_PULSE" or str(r.get("title") or "").startswith("Pulso de sanciones"))
+            r["editorial_source_decision"]=source_decision
+            r["editorial_decision"]="accept" if aggregate and source_decision=="group" else source_decision
+            r["editorial_materiality_score"]=row.get("materiality_score")
+            r["editorial_business_review"]=row.get("business_review")
+            r["editorial_value_category"]=row.get("value_category")
+        else:
+            r.setdefault("editorial_decision","accept")
+        r["editorial_committee"]=build_committee_artifact(r)
+        r["feed_visibility"]=False if r.get("editorial_decision")=="reject" else True
+        out.append(r)
+    return out
 
 def _d(v):
     if not v:return None
@@ -304,21 +330,23 @@ def _statistical_value_ladder(s):
         return r
     connected=bool(r.get("historical_connections") or r.get("related_context") or r.get("distinct_decision_value") is True)
     deep=bool(r.get("data_insights") or r.get("data_insight_evidence") or r.get("summary_table") or r.get("key_points"))
-    central=bool(r.get("key_numbers") or r.get("key_facts"))
+    title=str(r.get("title") or "")
+    facts=[str(x).strip() for x in (r.get("key_facts") or []) if str(x).strip()]
+    inventory=_document_inventory(r)
+    docs=r.get("source_documents") or []
+    inventory_preferred=bool(docs) and bool(re.search(r"series estad[ií]sticas|bolet[ií]n estad[ií]stico",title,re.I))
+    central=bool(r.get("key_numbers") or [x for x in facts if str(x).strip()!=title and " - superintendencia de salud" not in str(x).lower()])
     if connected and deep:
         level="connected_insight"
     elif deep:
         level="deep_analysis"
+    elif inventory_preferred:
+        level="publication_inventory"
     elif central:
         level="central_finding"
     else:
         level="publication_inventory"
     r["statistical_value_level"]=level
-
-    title=str(r.get("title") or "")
-    facts=[str(x).strip() for x in (r.get("key_facts") or []) if str(x).strip()]
-    inventory=_document_inventory(r)
-    docs=r.get("source_documents") or []
 
     if level=="central_finding":
         if "ges" in title.lower() or "auge" in title.lower():
@@ -411,6 +439,8 @@ def curate(signals,resolve_external=True):
     # -> central finding -> useful publication inventory.
     recent=[_statistical_value_ladder(s) for s in recent]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
+    recent=_apply_persistent_editorial_decisions(recent)
+    recent=[s for s in recent if s.get("feed_visibility") is not False]
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 
 def main():
