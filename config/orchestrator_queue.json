@@ -1686,7 +1686,8 @@
         "nuevo gate Análisis de la semana modo A/B",
         "fixtures/tests actualizados",
         "QA desktop/mobile + Reviewer PASS"
-      ]
+      ],
+      "blocked_by": null
     },
     {
       "id": "admin_dashboard_read_model_v1_2026_09_26",
@@ -1718,7 +1719,8 @@
         "freshness/not_available verificados",
         "deep-links a evidencia",
         "QA + Reviewer PASS"
-      ]
+      ],
+      "blocked_by": null
     },
     {
       "id": "preproduction_consolidation_2026_09_26",
@@ -1760,7 +1762,7 @@
         "checklist de acuerdos previos preservados",
         "lista explícita de blockers humanos/external-only restantes"
       ],
-      "progress": " Dirección agrega gate: no cerrar consolidación hasta completar comité permanente + reglas site-wide + Insight Pipeline V2 con Luna fallback/Terra si disponible."
+      "progress": "Gate de consolidación preservado. Espera tres frentes independientes; sin ciclo de dependencias."
     },
     {
       "id": "editorial_committee_insight_sitewide_v3_2026_09_26",
@@ -1770,9 +1772,7 @@
       "source": "Dirección",
       "objective": "Operacionalizar el Comité de Inteligencia Editorial como gate permanente por señal, aplicar lineamientos por tipo de contenido a toda la web e implementar Weekly Insight Pipeline V2 con scoring, enriquecimiento, Deep Intelligence y auditoría antes de producción.",
       "depends_on": [
-        "editorial_90d_learning_rules_2026_09_26",
-        "content_contract_pulso_normative_weekly_analysis_2026_09_26",
-        "preproduction_consolidation_2026_09_26"
+        "editorial_90d_learning_rules_2026_09_26"
       ],
       "instructions": [
         "Convertir config/editorial_intelligence_committee_v1.json y su charter en un gate obligatorio pre-publicación. Cada nueva señal debe generar un artefacto estructurado del panel experto correspondiente y un veredicto PASS/REVISE/HOLD/REJECT.",
@@ -1817,7 +1817,11 @@
         "auditoría site-wide de normativa/fuentes/contexto",
         "QA desktop/mobile + Reviewer PASS"
       ],
-      "progress": "Dirección 2026-09-26 amplía alcance: Luna será fallback operativo mientras Terra no esté habilitado; las reglas se aplicarán retroactivamente al stock de 43 señales; el pipeline semanal debe ejecutarse ahora con ranking real, enrichment y auditoría."
+      "progress": "Orquestación corregida 2026-09-26: se eliminó ciclo de dependencias. Esta tarea debe ejecutarse en lane interactivo/Work con escritura GitHub comprobada. Gate editorial debe aplicarse antes del ranking semanal; acreditaciones rutinarias quedan fuera de candidatos. Luna/Terra requieren runtime API real; hasta entonces el pipeline puede avanzar hasta ranking/enrichment y quedar fail-closed en Deep Intelligence.",
+      "blocked_by": [
+        "Ejecución funcional requiere lane interactivo/Work con escritura GitHub comprobada; la automatización programada solo lectura no puede materializar cambios.",
+        "Deep Intelligence real con Luna/Terra requiere OPENAI_API_KEY y presupuesto autorizado; no simular outputs."
+      ]
     }
   ],
   "execution_policy": {
