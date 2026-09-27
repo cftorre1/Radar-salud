@@ -71,3 +71,38 @@ def test_requirement_rejects_missing_sha_foreign_url_and_unlinked_proof(tmp_path
         result=project(path,changed['reference_staging_sha'])
         assert result['blocks'][0]['requirements'][0]['status']=='Implementado'
         assert result['readiness']['validated_requirements'] < project(Path('config/pmo_baseline.json'), changed['reference_staging_sha'])['readiness']['validated_requirements']
+
+
+def test_closed_beta_readiness_is_independent_from_commercial_readiness(tmp_path):
+    baseline=json.loads(Path("config/pmo_baseline.json").read_text())
+    baseline["closed_beta"]={
+        "status":"ready",
+        "scope":"invite-only read-only beta",
+        "audience":"invited users",
+        "evidence":"closed_beta_test",
+        "non_blocking":["email","analytics"],
+        "remaining_human_gates":["Direction release approval"],
+    }
+    baseline["evidence_catalog"]["closed_beta_test"]={
+        "kind":"github_actions",
+        "result":"success",
+        "checks":["tests","desktop","mobile","reviewer","preview"],
+        "sha":"c"*40,
+        "url":"https://github.com/cftorre1/Radar-salud/actions/runs/123456789",
+        "validated_blocks":[],
+        "validated_requirements":[],
+    }
+    path=tmp_path/"baseline.json";path.write_text(json.dumps(baseline))
+    report=project(path,"d"*40)
+    assert report["closed_beta"]["ready"] is True
+    assert report["closed_beta"]["label"]=="Lista para Beta cerrada"
+    assert report["readiness"]["ready"] is False
+    assert report["closed_beta"]["non_blocking"]==["email","analytics"]
+
+
+def test_closed_beta_never_claims_ready_without_full_qa(tmp_path):
+    baseline=json.loads(Path("config/pmo_baseline.json").read_text())
+    baseline["closed_beta"]={"status":"ready","scope":"beta","evidence":"bad","non_blocking":[],"remaining_human_gates":[]}
+    baseline["evidence_catalog"]["bad"]={"kind":"github_actions","result":"success","checks":["tests"],"sha":"c"*40,"url":"https://github.com/cftorre1/Radar-salud/actions/runs/123456789"}
+    path=tmp_path/"baseline.json";path.write_text(json.dumps(baseline))
+    assert project(path,"d"*40)["closed_beta"]["ready"] is False
