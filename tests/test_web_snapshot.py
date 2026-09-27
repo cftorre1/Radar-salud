@@ -8,7 +8,7 @@ def sig(title,event="2026-09-14",score=70,url=None,cat="Aseguramiento"):
 
 def test_bupa_card_preserves_all_three_projects_without_ellipsis():
     rows=json.loads(Path("web/data/radar_today.json").read_text())["signals"]
-    bupa=next(s for s in rows if s["title"].startswith("Bupa acelera inversiones"))
+    bupa=next(s for s in rows if s.get("source_url")=="https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos")
     card=m._card_micro(bupa)
     assert all(x in card["card_what"] for x in ("La Dehesa","Huinganal","Mindplace","San Damián"))
     assert "…" not in card["card_what"]
