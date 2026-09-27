@@ -509,6 +509,15 @@
       "result": "success",
       "scope": "Corrección CSS del panel PMO mobile al registrar observaciones largas. Contenido intacto; scrollWidth dentro de viewport en QA.",
       "validated_requirements": []
+    },
+    "orchestrator_autonomous_executor_v2_2026_09_27": {
+      "result": "implemented_pending_autonomous_write_observation",
+      "commits": [
+        "a782930b37b7800ec6b806d417805e585e06bb8c",
+        "068da7f47a95e0396a431fae71c0db57abb109af",
+        "5e28ccec4f2c715b25863f18f060280c0f082887"
+      ],
+      "scope": "staging only; hourly autonomous executor; liveness fail-loud at 75 minutes; no main/production"
     }
   },
   "blocks": [
@@ -1619,6 +1628,19 @@
       ],
       "implementation": "Fallback autorizado condition_watch_polling habilitado y observado en una reactivación real de Work; no se presenta como webhook instantáneo.",
       "evidence": "orchestrator_condition_watch_observed"
+    },
+    {
+      "id": "orchestrator_autonomous_executor_v2_2026_09_27",
+      "priority": "Crítica",
+      "horizon": "Inmediato",
+      "status": "Implementado / pendiente prueba autónoma",
+      "description": "Ejecutor horario real + guard de liveness para evitar tareas approved/in_progress silenciosamente detenidas. Distingue monitorización de ejecución: si hay trabajo ejecutable sin commit nuevo, debe marcar stalled, reanudar un slice seguro o escalar un blocker de escritura.",
+      "constraints": [
+        "staging only",
+        "no auto-promoción a producción",
+        "no cambios sensibles sin aprobación"
+      ],
+      "evidence": "orchestrator_autonomous_executor_v2_2026_09_27"
     }
   ],
   "external_observations": [
