@@ -433,3 +433,23 @@ test('committee HOLD/REJECT and failed publication contracts do not render as in
     await expect(page.locator('.signal[data-card]').filter({hasText:signal.display_title||signal.title})).toHaveCount(0);
   }
 });
+
+
+test('period is visible outside filters, persisted in metrics and resettable',async({page})=>{
+ await page.goto('/');
+ const period=page.locator('#period');
+ await expect(period).toBeVisible();
+ await expect(period.locator('xpath=ancestor::details')).toHaveCount(0);
+ await period.selectOption('90');
+ await expect(page.locator('#radarMetrics')).toContainText('período 90 días');
+ await page.reload();
+ await expect(period).toHaveValue('90');
+ await expect(page.locator('#radarMetrics')).toContainText('período 90 días');
+ await page.locator('#filterDetails summary').click();
+ await page.locator('#resetFilters').click();
+ await expect(period).toHaveValue('14');
+ await expect(page.locator('#sort')).toHaveValue('date');
+ await expect(page.locator('#radarMetrics')).toContainText('período 14 días');
+ const box=await period.boundingBox();expect(box.width).toBeLessThanOrEqual(140);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+});
