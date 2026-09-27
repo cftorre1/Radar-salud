@@ -1737,7 +1737,7 @@
     },
     {
       "id": "preproduction_consolidation_2026_09_26",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Builder+Work+Reviewer",
       "source": "Dirección",
@@ -1775,7 +1775,14 @@
         "checklist de acuerdos previos preservados",
         "lista explícita de blockers humanos/external-only restantes"
       ],
-      "progress": "Dependencias críticas cerradas en el mismo candidato verde 966dd9c. Consolidación final iniciada sobre staging; falta reconciliar PMO/queue de cierre y ejecutar el refinamiento de período desbloqueado antes del paquete de Dirección."
+      "progress": "Consolidación preproducción validada en staging. Los cinco frentes previos quedaron cerrados, el candidato integrado pasó tests, QA desktop/mobile, Reviewer y preview/smoke, y el refinamiento final del período se incorporó sin reabrir Home V2.",
+      "completed_at": "2026-09-27",
+      "blocked_by": [],
+      "evidence": [
+        "966dd9cb1f1a8f0ab431d66edd61c5fbcca3c751 / Actions #474 — cinco frentes integrados PASS",
+        "766d94ad381e31133e643e0b57968d8c2831bb53 / Actions #482 — consolidación final + período visible PASS desktop/mobile, Reviewer y preview/smoke",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36339151987"
+      ]
     },
     {
       "id": "editorial_committee_insight_sitewide_v3_2026_09_26",
@@ -1893,7 +1900,7 @@
     },
     {
       "id": "home_period_visibility_refinement_2026_09_27",
-      "status": "approved",
+      "status": "validated",
       "priority": "high",
       "owner": "Builder",
       "source": "Dirección",
@@ -1917,6 +1924,15 @@
         "QA desktop/mobile",
         "Reviewer PASS",
         "captura staging"
+      ],
+      "completed_at": "2026-09-27",
+      "blocked_by": [],
+      "progress": "Selector de período movido fuera del acordeón y visible en Ponte al día; métricas compactas muestran tarjetas/no leídos/período activo; persistencia real en localStorage y reset discreto validados en desktop/mobile.",
+      "evidence": [
+        "31cd087 — selector de período visible fuera del acordeón",
+        "6770721 — métricas compactas + reset de filtros persistidos",
+        "f2b3881 + 52a5f9e + 766d94a — regresiones browser y responsive",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36339151987 — tests, QA desktop/mobile, Reviewer y preview/smoke PASS"
       ]
     },
     {
