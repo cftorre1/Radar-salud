@@ -137,17 +137,17 @@ def test_global_teaser_scoring_prefers_explicit_beta_criteria():
     from datetime import date
     from radar_salud.free_value import score_global_teaser
     source=[{"publisher":"Deloitte","published_at":"2026-09-20"}]
-    ai={
-        "title":"IA en salud con retorno medible",
-        "global_finding":"La IA entra a modelos operativos medibles.",
-        "why_it_matters":"Afecta productividad, costos y decisiones de inversión.",
-    }
-    generic={
-        "title":"Panorama general",
-        "global_finding":"Cambios generales del sector.",
-        "why_it_matters":"Entrega contexto.",
-    }
+    ai={"home_teaser_profile":{"commercial_hook":98,"executive_relevance":96,"decision_usefulness":96,"conversation_potential":98}}
+    generic={"home_teaser_profile":{"commercial_hook":70,"executive_relevance":70,"decision_usefulness":70,"conversation_potential":70}}
     assert score_global_teaser(ai,source,date(2026,9,27))["score"] > score_global_teaser(generic,source,date(2026,9,27))["score"]
+
+
+def test_home_teaser_selects_ai_theme_from_current_beta():
+    from datetime import date
+    from radar_salud.free_value import build_free_value
+    themes=load(SOURCE)
+    result=build_free_value({"generated_at":"2026-09-27T00:00:00Z","signals":[]},themes,[],date(2026,9,27))
+    assert result["global_teaser"]["theme_id"]=="global-health-ai-operating-model-2026"
 
 
 def test_global_beta_has_six_evidence_backed_themes_and_soft_gate():
