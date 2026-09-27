@@ -5,6 +5,8 @@ from datetime import date, timedelta
 from typing import Any
 from urllib.parse import urlparse
 
+from .editorial_committee import weekly_candidate_eligibility
+
 
 ARCHETYPES = {
     "REGULATION": "cambio_regulatorio",
@@ -140,6 +142,9 @@ def rank_weekly_candidates(signals: list[dict[str, Any]], history: list[dict[str
             continue
         if signal.get("publication_gate_reason") != "ok":
             continue
+        eligibility = weekly_candidate_eligibility(signal)
+        if not eligibility["eligible"]:
+            continue
         ready = signal.get("publication_ready_score")
         if ready is None or float(ready) < 85:
             continue
@@ -168,6 +173,7 @@ def rank_weekly_candidates(signals: list[dict[str, Any]], history: list[dict[str
                 "same_source": 0,
             },
             "selection_score": selection_score,
+            "editorial_gate": eligibility,
         })
     return sorted(ranked, key=lambda x: (x["selection_score"], x["signal"].get("event_date", "")), reverse=True)
 
