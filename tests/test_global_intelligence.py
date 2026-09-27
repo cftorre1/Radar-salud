@@ -148,3 +148,14 @@ def test_global_teaser_scoring_prefers_explicit_beta_criteria():
         "why_it_matters":"Entrega contexto.",
     }
     assert score_global_teaser(ai,source,date(2026,9,27))["score"] > score_global_teaser(generic,source,date(2026,9,27))["score"]
+
+
+def test_global_beta_has_six_evidence_backed_themes_and_soft_gate():
+    import json
+    from pathlib import Path
+    payload=json.loads(Path("data/global/themes.json").read_text(encoding="utf-8"))
+    assert len(payload["themes"])>=6
+    assert all(theme["sources"] for theme in payload["themes"])
+    html=Path("web/global.html").read_text(encoding="utf-8")
+    assert "Global Intelligence PREMIUM está en preparación" in html
+    assert "Preinscribirme a PREMIUM" in html
