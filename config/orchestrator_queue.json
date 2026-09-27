@@ -1643,7 +1643,7 @@
     },
     {
       "id": "content_contract_pulso_normative_weekly_analysis_2026_09_26",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Builder/Work",
       "source": "Dirección",
@@ -1685,12 +1685,19 @@
         "fixtures/tests actualizados",
         "QA desktop/mobile + Reviewer PASS"
       ],
-      "blocked_by": null,
-      "progress": "Ejecución iniciada 2026-09-27. Contrato mínimo uniforme de publicación implementado como gate fail-closed; normativa exige identidad jurídica explícita y se evita renderizar secciones opcionales vacías. Commits c52a0fe y 9a223ed. Falta aplicar el gate site-wide, cerrar Pulso/Bupa y QA/Reviewer."
+      "blocked_by": [],
+      "progress": "Validado 2026-09-27. Contrato uniforme aplicado al feed; normativa exige identidad jurídica; Bupa conserva US$15m/La Dehesa/Huinganal/Mindplace con DF como fuente material; Pulso Isapre consolida cartera, altas/bajas y movilidad con tabla ejecutiva, evidencia y cautelas de no causalidad.",
+      "completed_at": "2026-09-27",
+      "evidence": [
+        "c52a0fe + 9a223ed — publication contract + tests",
+        "2b2ed24 + 1763954 — enforcement feed y compatibilidad Home",
+        "d223d39 — regresión site-wide Bupa/Pulso/Comité",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36338373155 — HEAD 966dd9cb1f1a8f0ab431d66edd61c5fbcca3c751: tests, QA desktop/mobile, Reviewer y preview/smoke PASS"
+      ]
     },
     {
       "id": "admin_dashboard_read_model_v1_2026_09_26",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "high",
       "owner": "Builder/Work",
       "source": "Dirección",
@@ -1719,12 +1726,18 @@
         "deep-links a evidencia",
         "QA + Reviewer PASS"
       ],
-      "blocked_by": null,
-      "progress": "Ejecución iniciada 2026-09-27. Read-model PMO ahora incorpora evidencia de orchestrator_queue para métricas active/blocked y freshness; test específico agregado. Commits b4e3447 y b899900. Pendiente QA/Reviewer del HEAD integrado."
+      "blocked_by": [],
+      "progress": "Validado 2026-09-27. Read-model ejecutivo observacional incorpora queue real, tareas active/blocked, freshness, salud de fuentes, valor editorial, LIVE/BACKFILL, parsers y métricas fail-closed; slots sin evidencia permanecen No disponible.",
+      "completed_at": "2026-09-27",
+      "evidence": [
+        "b4e3447 + b899900 — read-model queue-backed + tests",
+        "7f9f6b2 + 170c4c9 — liveness/orchestrator visibles en portal",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36338373155 — HEAD 966dd9cb1f1a8f0ab431d66edd61c5fbcca3c751: tests, QA desktop/mobile, Reviewer y preview/smoke PASS"
+      ]
     },
     {
       "id": "preproduction_consolidation_2026_09_26",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Builder+Work+Reviewer",
       "source": "Dirección",
@@ -1762,11 +1775,11 @@
         "checklist de acuerdos previos preservados",
         "lista explícita de blockers humanos/external-only restantes"
       ],
-      "progress": "Gate de consolidación preservado. Espera tres frentes independientes; sin ciclo de dependencias."
+      "progress": "Dependencias críticas cerradas en el mismo candidato verde 966dd9c. Consolidación final iniciada sobre staging; falta reconciliar PMO/queue de cierre y ejecutar el refinamiento de período desbloqueado antes del paquete de Dirección."
     },
     {
       "id": "editorial_committee_insight_sitewide_v3_2026_09_26",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Builder+Work+Reviewer",
       "source": "Dirección",
@@ -1817,14 +1830,20 @@
         "auditoría site-wide de normativa/fuentes/contexto",
         "QA desktop/mobile + Reviewer PASS"
       ],
-      "progress": "Terra real operativo; gate pre-ranking y top 3 persistidos; Insight #1 Terra auditado PASS. Ejecución 2026-09-27: reporte permanente del Comité agregado, export reproducible creado y stock auditado completo persistido: 43 señales = 23 PASS, 19 HOLD (11 degrade + 8 group) y 1 REJECT. Commits 37dec4b, 2c44eff, 4235360, db812ec. Falta aplicar la presentación resultante site-wide y cerrar QA/Reviewer.",
+      "progress": "Validado 2026-09-27. Comité permanente aplicado al stock auditado y al feed: 43 señales auditadas = 23 PASS, 19 HOLD (11 degrade + 8 group), 1 REJECT; solo PASS con contrato válido compite como card. Weekly Insight Terra real permanece PASS y top 3/enrichment trazables.",
       "blocked_by": [],
       "evidence": [
         "Weekly Insight V2 run #1 PASS con gpt-5.6-terra",
         "Top 3 y desglose estratégico persistidos en web/data/free_value.json",
         "Gate editorial aplicado antes del ranking; acreditaciones rutinarias excluidas",
-        "data/weekly_insight/latest.json contiene paquete de evidencia, Comité, output y audit PASS"
-      ]
+        "data/weekly_insight/latest.json contiene paquete de evidencia, Comité, output y audit PASS",
+        "37dec4b + 2c44eff — gate Comité + tests",
+        "4235360 + db812ec — export stock reproducible 43 señales",
+        "2b2ed24 + d6ceb2b — HOLD/REJECT excluidos del feed",
+        "Weekly Insight V2 Terra real PASS",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36338373155 — HEAD 966dd9cb1f1a8f0ab431d66edd61c5fbcca3c751: tests, QA desktop/mobile, Reviewer y preview/smoke PASS"
+      ],
+      "completed_at": "2026-09-27"
     },
     {
       "id": "openai_runtime_integration_2026_09_26",
@@ -1902,7 +1921,7 @@
     },
     {
       "id": "sources_chile_diario_estadisticas_v2_2026_09_27",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "high",
       "owner": "Builder+Work",
       "source": "Dirección",
@@ -1924,11 +1943,19 @@
         "al menos un parser estadístico adicional validado o blocker técnico explícito",
         "QA/Reviewer"
       ],
-      "progress": "Ejecución iniciada 2026-09-27. Diario Oficial endurecido con retry/timeout/backoff fail-closed y tests dedicados. Commits e525028, 889772a, c456986. Falta gate completo del HEAD y parser estadístico adicional."
+      "progress": "Validado 2026-09-27. Diario Oficial opera con retry/timeout/backoff y fail-closed explícito; parser GES adicional implementado, registrado como parser_ready y cubierto por tests de esquema/fallo cerrado. FONASA/ANAMED/DEIS no bloquearon la iteración.",
+      "completed_at": "2026-09-27",
+      "blocked_by": [],
+      "evidence": [
+        "c456986 — Diario Oficial retry helper",
+        "7dad1d4 + 2165845 — parser GES + tests",
+        "09b3c90 + 4b19c6b — parser_ready visible en PMO",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36338373155 — HEAD 966dd9cb1f1a8f0ab431d66edd61c5fbcca3c751: tests, QA desktop/mobile, Reviewer y preview/smoke PASS"
+      ]
     },
     {
       "id": "global_premium_beta_expansion_2026_09_27",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Builder+Work",
       "source": "Dirección",
@@ -1957,7 +1984,16 @@
         "QA desktop/mobile",
         "Reviewer PASS"
       ],
-      "progress": "Ejecución 2026-09-27: teaser Global seleccionado por scoring explícito; soft gate beta y CTA de preinscripción agregados sin auth/pago; test de scoring agregado. Commits 0100955, ead3a38, 923d761. Corpus verificado actual sigue en 3 temas; objetivo 6–8 permanece fail-closed hasta incorporar material adicional permitido y trazable."
+      "progress": "Validado para beta 2026-09-27. Global Intelligence expandido de 3 a 6 temas permitidos y trazables; teaser se selecciona por scoring explícito; soft gate y CTA de preinscripción implementados sin auth/pago. Las hipótesis Chile permanecen separadas de hechos globales.",
+      "completed_at": "2026-09-27",
+      "blocked_by": [],
+      "evidence": [
+        "0100955 + 923d761 — scoring teaser + tests",
+        "ead3a38 — soft gate/CTA beta",
+        "534ffd1 + 5206277 — 6 temas canónicos y paridad pública",
+        "7f4bfe7 + a174cd8 + 966dd9c — QA browser adaptable al corpus beta",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36338373155 — HEAD 966dd9cb1f1a8f0ab431d66edd61c5fbcca3c751: tests, QA desktop/mobile, Reviewer y preview/smoke PASS"
+      ]
     },
     {
       "id": "orchestrator_autonomous_executor_v2_2026_09_27",
