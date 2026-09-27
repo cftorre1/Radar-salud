@@ -62,17 +62,32 @@ def project(path: Path, candidate_sha: str | None = None, now: datetime | None =
     missing = [f"{b['title']}: {item}" for b in critical if b["status"] != "Validado"
                for item in (b["missing"] or [b.get("validation_note", "Falta evidencia completa del commit candidato.")])]
     external_observations=baseline.get("external_observations",[])
+    closed_cfg=baseline.get("closed_beta") or {}
+    closed_proof=evidence.get(closed_cfg.get("evidence"), {}) if closed_cfg else {}
+    closed_ready=bool(closed_cfg.get("status")=="ready" and full_qa(closed_proof))
+    closed_beta={
+        "defined":bool(closed_cfg),
+        "ready":closed_ready,
+        "label":"Lista para Beta cerrada" if closed_ready else ("Beta cerrada pendiente" if closed_cfg else "Sin alcance Beta cerrada definido"),
+        "scope":closed_cfg.get("scope"),
+        "audience":closed_cfg.get("audience"),
+        "non_blocking":closed_cfg.get("non_blocking",[]),
+        "remaining_human_gates":closed_cfg.get("remaining_human_gates",[]),
+        "evidence_url":closed_proof.get("url") if full_qa(closed_proof) else None,
+        "evidence_sha":closed_proof.get("sha") if full_qa(closed_proof) else None,
+    }
     return {
         "version": baseline["version"], "target_date": baseline["target_date"],
         "candidate_sha": candidate_sha, "reference_staging_sha": baseline["reference_staging_sha"],
         "production_reference_sha": baseline["production_reference_sha"],
         "reference_deploy": evidence["staging_qa"],
         "release_rule": baseline["release_rule"],
-        "readiness": {"ready": ready, "label": "Lista para decisión de release" if ready else "No lista para Beta",
+        "readiness": {"ready": ready, "label": "Lista para decisión comercial" if ready else "Readiness comercial incompleto",
                       "validated": len(validated), "total": len(critical),
                       "validated_requirements":completed_requirements,"total_requirements":total_requirements,
                       "requirement_percent":round(100*completed_requirements/total_requirements) if total_requirements else None},
         "blocks": blocks, "open_failures": failures, "human_blockers": blockers,
+        "closed_beta":closed_beta,
         "external_observations":external_observations,
         "scope_deviations": baseline["scope_deviations"], "changes_since_yesterday": changes,
         "missing_for_beta": missing, "next_action": missing[0] if missing else "Solicitar decisión explícita de release."
