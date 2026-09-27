@@ -2528,6 +2528,19 @@
         "El gate editorial debe correr antes del scoring semanal para excluir rutina/contexto del ranking.",
         "Hasta habilitar API, el pipeline avanza hasta ranking/enrichment y se detiene fail-closed en Deep Intelligence; no se etiqueta Luna/Terra sin llamada real."
       ]
+    },
+    {
+      "id": "openai_api_runtime_authorization_2026_09_26",
+      "status": "Aprobado",
+      "priority": "Crítica",
+      "horizon": "Inmediato",
+      "decisions": [
+        "Dirección confirma cuenta OpenAI API activa, créditos disponibles y presupuesto Alicanto de USD 10 por semana.",
+        "Modelos objetivo oficiales: gpt-5.6-luna, gpt-5.6-terra y gpt-6-astra; Terra preferido para Weekly Insight, Luna fallback, Astra solo experimento/alta complejidad.",
+        "El bloqueo histórico no era falta de presupuesto sino falta de integración runtime/secret en el repo: no existen referencias actuales a OPENAI_API_KEY ni clientes OpenAI en staging.",
+        "Crear adaptador Responses API + telemetría + budget guard semanal.",
+        "Única acción humana pendiente para llamadas reales: agregar OPENAI_API_KEY como GitHub Actions secret."
+      ]
     }
   ],
   "updated_at": "2026-09-26"
