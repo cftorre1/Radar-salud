@@ -2,7 +2,7 @@ name: Alicanto Autopilot
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 10,12,14,16,18 * * *'
+    - cron: '15 * * * *'
 permissions:
   contents: write
   actions: write
@@ -22,6 +22,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -e . pytest
+      - name: Fail loudly if executable work is stalled
+        run: python scripts/orchestrator_liveness.py --threshold-minutes 75
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
