@@ -26,7 +26,7 @@ function renderPMO(pmo){
   if(!pmo){text('readiness','Sin baseline PMO verificado. No se puede determinar Beta Readiness.');return}
   const closed=pmo.closed_beta||{};
   text('readiness',closed.defined?`${closed.label}${closed.evidence_sha?` · evidencia ${closed.evidence_sha.slice(0,8)}`:''}`:`${pmo.readiness.label} · ${pmo.readiness.validated}/${pmo.readiness.total} bloques críticos validados`);
-  text('requirementProgress',`${pmo.readiness.label} · ${pmo.readiness.validated}/${pmo.readiness.total} bloques críticos · ${pmo.readiness.total_requirements?`${pmo.readiness.validated_requirements}/${pmo.readiness.total_requirements} requisitos con evidencia (${pmo.readiness.requirement_percent}%).`:'sin desglose verificable.'}`);
+  text('requirementProgress',`${pmo.readiness.label} · ${pmo.readiness.validated}/${pmo.readiness.total} bloques críticos · ${pmo.readiness.total_requirements?`${pmo.readiness.validated_requirements}/${pmo.readiness.total_requirements} requisitos validados con evidencia (${pmo.readiness.requirement_percent}%).`:'sin desglose verificable.'}`);
   if(closed.defined){
     const note=document.getElementById('readiness');note.append(document.createElement('br'));
     note.append(document.createTextNode(`Alcance: ${closed.scope||'no definido'}.`));
