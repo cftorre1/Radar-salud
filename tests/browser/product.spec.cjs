@@ -358,7 +358,7 @@ test('analytics never sends without explicit privacy approval even if a key is p
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('7');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+ · período (?:\d+ días|desde última visita)$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+$/);
  expect(attempts).toBe(0);
 });
 test('authorized analytics fixture emits only anonymous event fields',async({page})=>{
