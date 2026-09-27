@@ -277,6 +277,12 @@ def _resolution_relation_titles(signals):
             if parent:
                 parent_title=" ".join(str(parent.get("title") or "").split())
                 label=str(r.get("normative_document_label") or "").strip()
+                current=str(r.get("display_title") or r.get("title") or "").strip()
+                # Preserve already-curated descriptive titles (e.g. TEA). This
+                # relation formatter exists for opaque/legal-identity titles.
+                if not opaque and label and not current.lower().startswith(label.lower()):
+                    out.append(r)
+                    continue
                 evidence=" ".join(str(r.get(k) or "") for k in ("what_happened","why_it_matters","card_what","card_why")).lower()
                 if "suspend" in evidence and ("caec" in evidence or "deriv" in evidence):
                     effect="suspende temporalmente sus instrucciones y cambia la operación CAEC"
