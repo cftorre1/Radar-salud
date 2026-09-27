@@ -594,7 +594,7 @@
     },
     {
       "id": "model_quality_experiment_global_free_2026_09_24",
-      "status": "blocked",
+      "status": "approved",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -633,10 +633,10 @@
         "resultado teaser Global FREE y pieza FREE destacada",
         "QA/Reviewer independiente"
       ],
-      "progress": "El corpus, scoring ciego y caso de negocio requieren ejecuciones reales Luna/Terra/Astra con tokens, costo y latencia observados. No hay credenciales ni autorización de gasto para producir esa evidencia sin simularla.",
+      "progress": "El corpus, scoring ciego y caso de negocio requieren ejecuciones reales Luna/Terra/Astra con tokens, costo y latencia observados. No hay credenciales ni autorización de gasto para producir esa evidencia sin simularla. Dirección 2026-09-26 confirma cuenta OpenAI API activa, créditos disponibles y presupuesto autorizado de USD 10/semana para Alicanto. Los modelos oficiales gpt-5.6-luna, gpt-5.6-terra y gpt-6-astra están documentados por OpenAI; falta solo conectar una API key real al runtime del repositorio y validar acceso del proyecto.",
       "blocked_by": [
-        "Autorizar presupuesto acotado y credenciales API para ejecuciones reales Luna/Terra/Astra, entregadas mediante secretos.",
-        "Confirmar disponibilidad de los tres modelos/rutas y límites de costo del experimento; no activar gasto recurrente ni producción."
+        "Acción humana mínima: agregar una API key de proyecto válida como GitHub Actions secret OPENAI_API_KEY en cftorre1/Radar-salud; nunca pegar la clave en chat ni commit.",
+        "Después del secret, ejecutar smoke test de /v1/responses con gpt-5.6-luna y gpt-5.6-terra; gpt-6-astra solo si el proyecto tiene acceso. Mantener costo agregado <= USD 10/semana."
       ]
     },
     {
@@ -1389,7 +1389,7 @@
         "plantilla de medición",
         "lista exacta de credenciales/modelos/costo máximo requerido para ejecutar"
       ],
-      "progress": "Preflight sin gasto completado: corpus público de 7 casos congelado con SHA-256 de insumos, contratos comunes de entrada/salida, rúbrica ciega de 100 puntos y plantilla de medición. Cero llamadas API y cero outputs. La ejecución real queda fail-closed hasta que Dirección autorice credencial, modelos disponibles y costo máximo.",
+      "progress": "Preflight sin gasto completado: corpus público de 7 casos congelado con SHA-256 de insumos, contratos comunes de entrada/salida, rúbrica ciega de 100 puntos y plantilla de medición. Cero llamadas API y cero outputs. La ejecución real queda fail-closed hasta que Dirección autorice credencial, modelos disponibles y costo máximo. Dirección 2026-09-26 confirma cuenta OpenAI API activa, créditos disponibles y presupuesto autorizado de USD 10/semana para Alicanto. Los modelos oficiales gpt-5.6-luna, gpt-5.6-terra y gpt-6-astra están documentados por OpenAI; falta solo conectar una API key real al runtime del repositorio y validar acceso del proyecto.",
       "evidence": [
         "80a749e26eedd6c11bd0b221af4fa7ba53e0b640 — preflight reproducible en staging",
         "config/model_quality_experiment_v1.json — 7 casos; 2 síntesis multifuente; noticia simple, regulación, negocio, histórico y teaser FREE",
@@ -1399,7 +1399,8 @@
         "api_calls_made=0; outputs_generated=0; max_cost_usd=null"
       ],
       "blocked_by": [
-        "Para la ejecución real: OPENAI_API_KEY por secreto, confirmación de disponibilidad de gpt-5.6-luna/gpt-5.6-terra/gpt-6-astra y costo máximo USD autorizado por Dirección."
+        "Acción humana mínima: agregar una API key de proyecto válida como GitHub Actions secret OPENAI_API_KEY en cftorre1/Radar-salud; nunca pegar la clave en chat ni commit.",
+        "Después del secret, ejecutar smoke test de /v1/responses con gpt-5.6-luna y gpt-5.6-terra; gpt-6-astra solo si el proyecto tiene acceso. Mantener costo agregado <= USD 10/semana."
       ],
       "completed_at": "2026-09-26"
     },
@@ -1817,10 +1818,45 @@
         "auditoría site-wide de normativa/fuentes/contexto",
         "QA desktop/mobile + Reviewer PASS"
       ],
-      "progress": "Orquestación corregida 2026-09-26: se eliminó ciclo de dependencias. Esta tarea debe ejecutarse en lane interactivo/Work con escritura GitHub comprobada. Gate editorial debe aplicarse antes del ranking semanal; acreditaciones rutinarias quedan fuera de candidatos. Luna/Terra requieren runtime API real; hasta entonces el pipeline puede avanzar hasta ranking/enrichment y quedar fail-closed en Deep Intelligence.",
+      "progress": "Orquestación corregida 2026-09-26: se eliminó ciclo de dependencias. Esta tarea debe ejecutarse en lane interactivo/Work con escritura GitHub comprobada. Gate editorial debe aplicarse antes del ranking semanal; acreditaciones rutinarias quedan fuera de candidatos. Luna/Terra requieren runtime API real; hasta entonces el pipeline puede avanzar hasta ranking/enrichment y quedar fail-closed en Deep Intelligence. Presupuesto API ya autorizado: USD 10/semana. Cuenta y créditos confirmados por Dirección. Implementar ahora adaptador OpenAI Responses API y telemetría; Deep Intelligence queda pendiente únicamente del secret OPENAI_API_KEY.",
       "blocked_by": [
-        "Ejecución funcional requiere lane interactivo/Work con escritura GitHub comprobada; la automatización programada solo lectura no puede materializar cambios.",
-        "Deep Intelligence real con Luna/Terra requiere OPENAI_API_KEY y presupuesto autorizado; no simular outputs."
+        "Solo el subpaso Deep Intelligence requiere acción humana: GitHub secret OPENAI_API_KEY. Todo el resto de la tarea debe continuar de inmediato."
+      ]
+    },
+    {
+      "id": "openai_runtime_integration_2026_09_26",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Work",
+      "source": "Dirección",
+      "objective": "Conectar Alicanto a OpenAI Responses API con Luna/Terra, telemetría y guardrails de costo, usando presupuesto autorizado de USD 10/semana.",
+      "depends_on": [
+        "model_quality_experiment_preflight_2026_09_25"
+      ],
+      "instructions": [
+        "Crear adaptador provider-ready para OpenAI Responses API, sin clave hardcodeada.",
+        "Leer OPENAI_API_KEY exclusivamente desde secret/env.",
+        "Soportar gpt-5.6-luna y gpt-5.6-terra; preparar gpt-6-astra solo si el proyecto confirma acceso.",
+        "Añadir smoke tests fail-closed que se salten llamadas reales si no existe secret.",
+        "Registrar por llamada: feature, model, input/output tokens, latencia, costo estimado/real si API lo expone, outcome y error.",
+        "Implementar budget guard semanal de USD 10 para Alicanto a nivel aplicación, independientemente de alertas de Platform.",
+        "Weekly Insight: Terra preferido; Luna fallback solo ante indisponibilidad/error/costo gate, nunca simulado.",
+        "No usar Astra automáticamente; solo experimento controlado o autorización explícita de feature.",
+        "Después de agregar secret, ejecutar smoke test Luna/Terra y luego el corpus comparativo aprobado dentro del presupuesto.",
+        "No tocar producción."
+      ],
+      "constraints": [
+        "Nunca escribir API keys en repo/logs/artefactos.",
+        "No superar USD 10/semana.",
+        "No realizar llamadas reales hasta que OPENAI_API_KEY exista como secret.",
+        "No asumir acceso a Astra; comprobarlo."
+      ],
+      "evidence_required": [
+        "adaptador Responses API",
+        "tests sin secret PASS",
+        "smoke test Luna/Terra con request IDs/tokens/costo cuando secret exista",
+        "telemetría y guard semanal",
+        "Reviewer independiente PASS"
       ]
     }
   ],
