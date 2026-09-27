@@ -38,6 +38,10 @@ def aggregate_usage(rows):
         "cost_per_incremental_quality_point":round(cost/quality_points,6) if cost is not None and quality_points else None,
     }
 
+STATISTICAL_PARSER_REGISTRY = {
+    "ges": ("ges", "auge"),
+}
+
 def statistics_parser_backlog(history):
     """Auto-register every statistical publication without a dedicated parser/analytic output."""
     rows=[]
@@ -60,12 +64,16 @@ def statistics_parser_backlog(history):
         seen.add(key)
         parsed=bool(item.get("data_insights") or item.get("data_insight_evidence") or item.get("summary_table")
                     or item.get("data_insight_meta",{}).get("status")=="validated")
+        parser_family=next((family for family,terms in STATISTICAL_PARSER_REGISTRY.items() if any(term in low for term in terms)),None)
         if parsed:
             status="covered"
+        elif parser_family:
+            status="parser_ready"
         else:
             status="parser_pending"
         rows.append({
             "title":title,
+            "parser_family":parser_family,
             "source_url":item.get("source_url"),
             "event_date":item.get("event_date"),
             "status":status,
