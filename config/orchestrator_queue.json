@@ -1643,7 +1643,7 @@
     },
     {
       "id": "content_contract_pulso_normative_weekly_analysis_2026_09_26",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Builder/Work",
       "source": "Dirección",
@@ -1685,11 +1685,12 @@
         "fixtures/tests actualizados",
         "QA desktop/mobile + Reviewer PASS"
       ],
-      "blocked_by": null
+      "blocked_by": null,
+      "progress": "Ejecución iniciada 2026-09-27. Contrato mínimo uniforme de publicación implementado como gate fail-closed; normativa exige identidad jurídica explícita y se evita renderizar secciones opcionales vacías. Commits c52a0fe y 9a223ed. Falta aplicar el gate site-wide, cerrar Pulso/Bupa y QA/Reviewer."
     },
     {
       "id": "admin_dashboard_read_model_v1_2026_09_26",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "high",
       "owner": "Builder/Work",
       "source": "Dirección",
@@ -1718,7 +1719,8 @@
         "deep-links a evidencia",
         "QA + Reviewer PASS"
       ],
-      "blocked_by": null
+      "blocked_by": null,
+      "progress": "Ejecución iniciada 2026-09-27. Read-model PMO ahora incorpora evidencia de orchestrator_queue para métricas active/blocked y freshness; test específico agregado. Commits b4e3447 y b899900. Pendiente QA/Reviewer del HEAD integrado."
     },
     {
       "id": "preproduction_consolidation_2026_09_26",
@@ -1815,7 +1817,7 @@
         "auditoría site-wide de normativa/fuentes/contexto",
         "QA desktop/mobile + Reviewer PASS"
       ],
-      "progress": "Terra real ya operativo. Gate editorial pre-ranking excluyó la acreditación rutinaria; top 3 actual: Circular IF/N°535, Circular IF/N°534 y Resolución IF/N°10670. Insight #1 generado por Terra y auditado estructuralmente PASS. Falta QA/Reviewer completo site-wide y cerrar aplicación del Comité al stock.",
+      "progress": "Terra real ya operativo. Gate editorial pre-ranking y top 3 persistidos; Insight #1 Terra auditado estructuralmente PASS. El 2026-09-27 se agregó reporte permanente del Comité sobre stock con PASS/HOLD/REJECT y elegibilidad de card, más test de clasificación. Commits 37dec4b y 2c44eff. Falta ejecutar/reconciliar el reporte sobre el stock real y cerrar QA/Reviewer site-wide.",
       "blocked_by": [],
       "evidence": [
         "Weekly Insight V2 run #1 PASS con gpt-5.6-terra",
@@ -1900,7 +1902,7 @@
     },
     {
       "id": "sources_chile_diario_estadisticas_v2_2026_09_27",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "high",
       "owner": "Builder+Work",
       "source": "Dirección",
@@ -1921,11 +1923,12 @@
         "parser backlog priorizado",
         "al menos un parser estadístico adicional validado o blocker técnico explícito",
         "QA/Reviewer"
-      ]
+      ],
+      "progress": "Ejecución iniciada 2026-09-27. Diario Oficial endurecido con retry/timeout/backoff fail-closed y tests dedicados. Commits e525028, 889772a, c456986. Falta gate completo del HEAD y parser estadístico adicional."
     },
     {
       "id": "global_premium_beta_expansion_2026_09_27",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Builder+Work",
       "source": "Dirección",
@@ -1953,7 +1956,8 @@
         "CTA/preinscripción soft gate",
         "QA desktop/mobile",
         "Reviewer PASS"
-      ]
+      ],
+      "progress": "Ejecución iniciada 2026-09-27. Teaser Global ahora se selecciona mediante scoring explícito de atractivo, novedad, relevancia ejecutiva, amplitud, evidencia y potencial de conversación; Global beta incorpora soft gate y CTA de preinscripción sin auth/pago. Commits 0100955 y ead3a38. Falta ampliar corpus a 6–8 temas o documentar fail-closed y cerrar QA/Reviewer."
     }
   ],
   "execution_policy": {
