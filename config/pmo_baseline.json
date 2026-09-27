@@ -1633,14 +1633,16 @@
       "id": "orchestrator_autonomous_executor_v2_2026_09_27",
       "priority": "Crítica",
       "horizon": "Inmediato",
-      "status": "Implementado / pendiente prueba autónoma",
+      "status": "Bloqueado por permisos del runtime",
       "description": "Ejecutor horario real + guard de liveness para evitar tareas approved/in_progress silenciosamente detenidas. Distingue monitorización de ejecución: si hay trabajo ejecutable sin commit nuevo, debe marcar stalled, reanudar un slice seguro o escalar un blocker de escritura.",
       "constraints": [
         "staging only",
         "no auto-promoción a producción",
         "no cambios sensibles sin aprobación"
       ],
-      "evidence": "orchestrator_autonomous_executor_v2_2026_09_27"
+      "evidence": "orchestrator_autonomous_executor_v2_2026_09_27",
+      "implementation": "Liveness guard + Autopilot horario implementados; ejecutor automation desactivado tras comprobar que el runtime no puede escribir GitHub.",
+      "blocker": "La capa de seguridad del runtime de automations bloquea mutaciones GitHub. La ejecución real debe continuar desde lane interactivo/Work con escritura comprobada."
     }
   ],
   "external_observations": [
