@@ -150,12 +150,13 @@ def test_home_teaser_selects_ai_theme_from_current_beta():
     assert result["global_teaser"]["theme_id"]=="global-health-ai-operating-model-2026"
 
 
-def test_global_beta_has_six_evidence_backed_themes_and_soft_gate():
+def test_global_beta_has_six_evidence_backed_themes_and_conversion_entry():
     import json
     from pathlib import Path
     payload=json.loads(Path("data/global/themes.json").read_text(encoding="utf-8"))
     assert len(payload["themes"])>=6
     assert all(theme["sources"] for theme in payload["themes"])
     html=Path("web/global.html").read_text(encoding="utf-8")
-    assert "Global Intelligence PREMIUM está en preparación" in html
-    assert "Preinscribirme a PREMIUM" in html
+    assert "Ponte al día en Global Intelligence" in html
+    assert "Acceso anticipado" in html
+    assert "está en preparación" not in html
