@@ -1958,6 +1958,43 @@
         "Reviewer PASS"
       ],
       "progress": "Ejecución 2026-09-27: teaser Global seleccionado por scoring explícito; soft gate beta y CTA de preinscripción agregados sin auth/pago; test de scoring agregado. Commits 0100955, ead3a38, 923d761. Corpus verificado actual sigue en 3 temas; objetivo 6–8 permanece fail-closed hasta incorporar material adicional permitido y trazable."
+    },
+    {
+      "id": "orchestrator_autonomous_executor_v2_2026_09_27",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Director-Orchestrator+Autonomous Executor",
+      "source": "Dirección",
+      "objective": "Evitar que tareas approved/in_progress ejecutables queden silenciosamente sin desarrollo real y reducir la necesidad de seguimiento manual de Dirección.",
+      "depends_on": [
+        "orchestrator_event_trigger"
+      ],
+      "instructions": [
+        "Ejecutar cada hora y consumir la siguiente tarea approved/in_progress con dependencias satisfechas y sin blocker humano/externo.",
+        "Solo considerar progreso real cuando exista commit, cambio de queue/PMO o QA/Reviewer nuevo.",
+        "Si una tarea ejecutable permanece sin evidencia nueva, tratarla como stalled y reanudar un slice seguro en el mismo ciclo.",
+        "Si el lane automático no puede escribir GitHub, derivar inmediatamente a un lane con escritura comprobada; no esperar ciclos sucesivos.",
+        "GitHub Autopilot debe ejecutar un guard de liveness horario que falle de forma visible si staging queda sin nuevos commits mientras existe trabajo ejecutable."
+      ],
+      "constraints": [
+        "staging only",
+        "no main/production",
+        "no auth/payments/pricing/privacy/secrets/analytics without explicit approval"
+      ],
+      "evidence_required": [
+        "executor horario habilitado",
+        "guard de liveness versionado y testeado",
+        "workflow Autopilot horario",
+        "al menos un ciclo autónomo con commit real o blocker explícito"
+      ],
+      "progress": "2026-09-27: causa raíz identificada: el Autopilot GitHub era un validador/rebuilder y no consumía orchestrator_queue para desarrollar. Se reactivó Alicanto Autonomous Executor horario con mandato explícito de escritura/QA y fallback; se añadieron scripts/orchestrator_liveness.py + tests y Autopilot pasó a frecuencia horaria con fail-loud tras 75 min de trabajo ejecutable sin commit. Commits a782930, 068da7f, 5e28cce. Pendiente observar primer ciclo autónomo con commit real para validación final.",
+      "blocked_by": [],
+      "evidence": [
+        "Automation Alicanto Autonomous Executor habilitada 2026-09-27 con frecuencia horaria y ejecución de slices reales en staging.",
+        "a782930b37b7800ec6b806d417805e585e06bb8c — liveness guard",
+        "068da7f47a95e0396a431fae71c0db57abb109af — tests liveness",
+        "5e28ccec4f2c715b25863f18f060280c0f082887 — Autopilot horario + fail-loud"
+      ]
     }
   ],
   "execution_policy": {
