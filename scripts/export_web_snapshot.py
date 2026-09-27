@@ -239,7 +239,7 @@ def _related_context(signals,resolve_external=True):
     return out
 
 def _resolution_relation_titles(signals):
-    """For opaque resolutions, expose the principal referenced act plus the topic."""
+    """Expose a resolution's principal referenced act plus its actionable topic."""
     out=[]
     for s in signals:
         r=dict(s)
@@ -251,15 +251,15 @@ def _resolution_relation_titles(signals):
             parent=next((x for x in rels if re.search(r"^(Circular|Oficio|Resolución|Decreto)\b",str(x.get("title") or ""),re.I)),None)
             if parent:
                 parent_title=" ".join(str(parent.get("title") or "").split())
+                label=str(r.get("normative_document_label") or "")
                 current=str(r.get("display_title") or r.get("title") or "")
-                if parent_title.lower() not in current.lower():
-                    relation=str(parent.get("relationship") or "").lower()
-                    verb="modifica" if "modific" in relation else ("confirma" if "confirm" in relation else "sobre")
+                if opaque:
+                    base=_compact_subject(r.get("normative_subject") or r.get("card_why") or r.get("why_it_matters") or r.get("card_what") or r.get("what_happened"),78)
+                else:
                     base=current
-                    label=str(r.get("normative_document_label") or "")
                     if label and base.lower().startswith(label.lower()):
                         base=base[len(label):].lstrip(" ·:-")
-                    r["display_title"]=f"{label} · {verb} {parent_title} · {base}" if base else f"{label} · {verb} {parent_title}"
+                r["display_title"]=f"{label} sobre {parent_title}: {base}" if base else f"{label} sobre {parent_title}"
         out.append(r)
     return out
 
