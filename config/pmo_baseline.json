@@ -2366,7 +2366,8 @@
       ],
       "completed_at": "2026-09-26",
       "initial_implementation_sha": "8096583f7a54596b65da45095a6d0fcb06942a17",
-      "revalidated_at": "2026-09-26"
+      "revalidated_at": "2026-09-26",
+      "validation_note": "Cerrado en staging 966dd9cb con Actions #474 PASS completo."
     },
     {
       "id": "admin_dashboard_read_model_v1_2026_09_26",
@@ -2389,11 +2390,12 @@
       "revalidation_sha": "fbb6bad08870dbfb8748f53c0e2ce8443d1911ee",
       "revalidation_evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36274054104 — portal admin sin regresiones; QA desktop/mobile + Reviewer + smoke PASS"
-      ]
+      ],
+      "validation_note": "Cerrado en staging 966dd9cb con Actions #474 PASS completo."
     },
     {
       "id": "preproduction_consolidation_2026_09_26",
-      "status": "Validado",
+      "status": "En_ejecucion",
       "priority": "Crítica",
       "horizon": "Próxima revisión de Dirección",
       "decisions": [
@@ -2415,7 +2417,8 @@
       ],
       "completed_at": "2026-09-26",
       "initial_implementation_sha": "8096583f7a54596b65da45095a6d0fcb06942a17",
-      "revalidated_at": "2026-09-26"
+      "revalidated_at": "2026-09-26",
+      "validation_note": "Dependencias cerradas; consolidación final desbloqueada por HEAD verde #474."
     },
     {
       "id": "last_three_iteration_reconciliation_2026_09_26",
@@ -2514,7 +2517,7 @@
     },
     {
       "id": "editorial_committee_insight_sitewide_v3_2026_09_26",
-      "status": "Aprobado_para_ejecucion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Próxima iteración antes de producción",
       "decisions": [
@@ -2526,7 +2529,8 @@
         "Insight admite modo multievidencia y deep-dive single-source reproducible.",
         "Aplicar ranking real y preparar candidato #1 desde esta iteración; TERRA sigue sujeto a credencial/presupuesto.",
         "Revisar toda la web bajo los nuevos criterios antes de producción."
-      ]
+      ],
+      "validation_note": "Cerrado en staging 966dd9cb con Actions #474 PASS completo."
     },
     {
       "id": "terra_luna_fallback_and_43_stock_2026_09_26",
@@ -2595,7 +2599,7 @@
     },
     {
       "id": "sources_chile_diario_estadisticas_v2_2026_09_27",
-      "status": "Aprobado_para_ejecucion",
+      "status": "Validado",
       "priority": "Alta",
       "horizon": "Beta",
       "decisions": [
@@ -2604,11 +2608,12 @@
         "Priorizar fuentes estadísticas ya accesibles y elevar su valor mediante parsers/analítica reproducible.",
         "Implementar backlog de parsers para GES trimestral, Series Estadísticas ISAPRE y Boletín IP; usar escalera de valor insight conectado → análisis profundo → hallazgo central → ficha útil.",
         "FONASA, ISP/ANAMED y DEIS quedan fuera de prioridad inmediata; no deben bloquear esta iteración."
-      ]
+      ],
+      "validation_note": "Cerrado en staging 966dd9cb con Actions #474 PASS completo."
     },
     {
       "id": "global_premium_beta_expansion_2026_09_27",
-      "status": "Aprobado_para_ejecucion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Beta",
       "decisions": [
@@ -2620,7 +2625,8 @@
         "Separar newsletter de preinscripción Premium. Reusar funnel early_access/MailerLite cuando se active, con grupo específico si Dirección lo aprueba.",
         "Preparar arquitectura futura con login obligatorio para PREMIUM, pero no implementarla en esta iteración.",
         "Medir en beta: CTR Home→Global, apertura de teasers, CTA de preinscripción y conversión a preinscripción cuando analytics/privacy estén activos."
-      ]
+      ],
+      "validation_note": "Cerrado en staging 966dd9cb con Actions #474 PASS completo."
     }
   ],
   "updated_at": "2026-09-27"
