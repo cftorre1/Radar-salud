@@ -435,21 +435,37 @@ test('committee HOLD/REJECT and failed publication contracts do not render as in
 });
 
 
-test('period is visible outside filters, persisted in metrics and resettable',async({page})=>{
+test('period is visible outside filters, persisted without duplicating metric copy, and resettable',async({page})=>{
  await page.goto('/');
  const period=page.locator('#period');
  await expect(period).toBeVisible();
  await expect(period.locator('xpath=ancestor::details')).toHaveCount(0);
  await period.selectOption('90');
- await expect(page.locator('#radarMetrics')).toContainText('período 90 días');
+ await expect(period).toHaveValue('90');
+ await expect(page.locator('#radarMetrics')).not.toContainText('período');
  await page.reload();
  await expect(period).toHaveValue('90');
- await expect(page.locator('#radarMetrics')).toContainText('período 90 días');
+ await expect(page.locator('#radarMetrics')).not.toContainText('período');
  await page.locator('#filterDetails summary').click();
  await page.locator('#resetFilters').click();
  await expect(period).toHaveValue('14');
  await expect(page.locator('#sort')).toHaveValue('date');
- await expect(page.locator('#radarMetrics')).toContainText('período 14 días');
- const box=await period.boundingBox();expect(box.width).toBeLessThanOrEqual(test.info().project.name==='mobile'?140:220);
+ await expect(page.locator('#radarMetrics')).not.toContainText('14 días');
+ const box=await period.boundingBox();expect(box.width).toBeLessThanOrEqual(test.info().project.name==='mobile'?110:150);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+});
+
+
+test('Home hero is compact, one-line and exposes subscription plus Global Intelligence',async({page})=>{
+ await page.goto('/');
+ await expect(page.locator('.hero-purpose')).toHaveText('Señales clave del sector salud, claras y a tiempo.');
+ await expect(page.locator('.newsletter-strip')).toContainText('Suscríbete para recibir en tu correo las señales más importantes');
+ await expect(page.locator('.newsletter-strip #newsletterOpen')).toHaveText('Suscríbete');
+ await expect(page.locator('.header-premium')).toHaveAttribute('href','global.html');
+ if(test.info().project.name==='mobile'){
+   const title=await page.locator('#radarTitle').boundingBox();
+   const source=await page.locator('#sourcesOpen').boundingBox();
+   expect(title.y).toBeLessThan(source.y+source.height);
+   expect(await page.locator('.hero-purpose').evaluate(el=>el.scrollWidth<=el.clientWidth+1)).toBeTruthy();
+ }
 });
