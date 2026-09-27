@@ -2065,12 +2065,12 @@
     },
     {
       "id": "normative_title_dedup_v1_2026_09_27",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Work+Reviewer",
       "depends_on": [],
       "blocked_by": [],
-      "progress": "Dirección detectó títulos normativos que repiten innecesariamente la circular antecedente. Objetivo: mantener identidad jurídica de la Resolución Exenta y mencionar la circular relacionada una sola vez, luego expresar el efecto material en lenguaje ejecutivo. Casos iniciales: IF/N°8760 y IF/N°9994. Aplicar regla site-wide sin borrar tipo/número de acto ni relación normativa.",
+      "progress": "Ejecución real iniciada 2026-09-27. Generador normativo actualizado para nombrar acto principal y norma relacionada una sola vez, seguido del efecto material; tests unitarios y browser agregados. Commits a66154f, 0da7dd5, 3d6ff95. Pendiente HEAD integrado full PASS.",
       "acceptance": [
         "Título mantiene tipo y número del acto principal.",
         "La norma antecedente aparece máximo una vez en el título.",
@@ -2082,12 +2082,12 @@
     },
     {
       "id": "statistics_deep_analysis_tables_v1_2026_09_27",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Work+Data Analytics+Reviewer",
       "depends_on": [],
       "blocked_by": [],
-      "progress": "Dirección exige que cuatro publicaciones estadísticas dejen de ser fichas de publicación y entreguen inteligencia real: GES a marzo 2026, Series ISAPRE 1990-2025, Estadísticas Financieras ISAPRE a marzo 2026 y Boletín Estadístico Informativo IP junio 2026. Usar archivos oficiales enlazados, parser determinístico/fail-closed, análisis de negocio y tablas ejecutivas. Cuando exista desglose por Isapre, mostrar tabla por institución comparable a Pulso; cuando no exista, usar la tabla más decisiva disponible y explicar límites.",
+      "progress": "Ejecución real iniciada 2026-09-27. Nuevo build estadístico reproducible integrado a QA: GES y Series se extraen desde XLSX oficiales con fail-closed; Financieras y Boletín IP construyen hallazgos y tablas ejecutivas desde cifras oficiales; snapshot consume overrides antes de value ladder. Commits bb0baab, d8a02f1, a66154f, 3d6ff95. Pendiente HEAD integrado full PASS.",
       "acceptance": [
         "Ninguna de las cuatro cards puede decir solo que se publicó un archivo o que aún no existe insight.",
         "Extraer 1–3 hallazgos materiales reproducibles por publicación.",
