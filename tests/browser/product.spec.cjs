@@ -306,10 +306,10 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await expect(page.locator('#globalPublisher')).toBeVisible();
  await expect(page.locator('#globalSort')).toBeVisible();
  await page.locator('#globalPeriod').selectOption('all');
- await expect(page.locator('.global-inbox')).toContainText(`${themeCount-1} temas · no leídos`);
+ await expect(page.locator('#globalMetrics')).toHaveText(`${themeCount} temas · no leídos ${themeCount-1}`);
  await expect(page.locator('.theme')).toHaveCount(themeCount);
  await page.locator('[data-open]').first().click();
- await expect(page.locator('.global-inbox')).toContainText(`${themeCount-2}`);
+ await expect(page.locator('#globalMetrics')).toHaveText(`${themeCount} temas · no leídos ${themeCount-2}`);
  const opened=page.locator('.theme').filter({has:page.locator('details[open]')});
  await expect(opened).toContainText('Qué mirar en Chile');
  await expect(opened).toContainText('Lectura estratégica');
