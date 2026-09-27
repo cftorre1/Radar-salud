@@ -2395,7 +2395,7 @@
     },
     {
       "id": "preproduction_consolidation_2026_09_26",
-      "status": "En_ejecucion",
+      "status": "Validado",
       "priority": "Crítica",
       "horizon": "Próxima revisión de Dirección",
       "decisions": [
@@ -2418,7 +2418,7 @@
       "completed_at": "2026-09-26",
       "initial_implementation_sha": "8096583f7a54596b65da45095a6d0fcb06942a17",
       "revalidated_at": "2026-09-26",
-      "validation_note": "Dependencias cerradas; consolidación final desbloqueada por HEAD verde #474."
+      "validation_note": "Consolidación cerrada en staging 766d94ad; Actions #482 PASS completo."
     },
     {
       "id": "last_three_iteration_reconciliation_2026_09_26",
@@ -2588,14 +2588,15 @@
     },
     {
       "id": "home_period_visibility_refinement_2026_09_27",
-      "status": "Aprobado_para_ejecucion",
+      "status": "Validado",
       "priority": "Alta",
       "horizon": "Próxima consolidación",
       "decisions": [
         "Selector de período visible fuera del acordeón.",
         "Métrica: «X tarjetas · no leídos Y · período Z días».",
         "Persistencia se mantiene, pero debe quedar explícita visualmente."
-      ]
+      ],
+      "validation_note": "Período visible, métricas compactas, persistencia/reset y responsive validados en staging 766d94ad; Actions #482 PASS."
     },
     {
       "id": "sources_chile_diario_estadisticas_v2_2026_09_27",
