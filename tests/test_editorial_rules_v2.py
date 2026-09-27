@@ -130,3 +130,23 @@ def test_expert_normative_checklist_is_persistent_and_resolution_aware():
     assert "ponte al día" in joined and "card" in joined and "detalle" in joined
     assert cfg["presentation_contract"]["normative_resolution_relation"]["required"] is True
     assert cfg["presentation_contract"]["precedence"]["persistent_rules_override_human_copy"] is True
+
+
+def test_publication_contract_requires_uniform_core_and_normative_identity():
+    from radar_salud.editorial_rules_v2 import validate_publication_contract
+    base={
+        "title":"Resolución sobre cobertura",
+        "signal_types":["Normativa"],
+        "scopes":["isapres"],
+        "event_date":"2026-09-27",
+        "source_name":"Superintendencia de Salud",
+        "source_url":"https://example.org/norma",
+        "what_happened":"Se dictó una resolución.",
+        "why_it_matters":"Cambia una obligación operativa.",
+    }
+    failed=validate_publication_contract(base)
+    assert failed["status"]=="fail"
+    assert "normative_document_label" in failed["missing"]
+    passed=validate_publication_contract({**base,"normative_document_label":"Resolución Exenta IF/N°11156"})
+    assert passed["status"]=="pass"
+    assert passed["render_empty_optional_sections"] is False
