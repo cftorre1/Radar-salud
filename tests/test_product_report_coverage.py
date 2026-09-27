@@ -160,3 +160,16 @@ def test_product_report_reads_orchestrator_queue_for_executive_status(tmp_path):
     observed = result["scorecard"]["observed"]["development"]
     assert observed["active_task_count"] == 2
     assert observed["blocked_task_count"] == 1
+
+
+def test_statistics_parser_backlog_marks_ges_parser_ready():
+    module = load_report_module()
+    rows = module.statistics_parser_backlog([{
+        "title":"Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a marzo 2026",
+        "source_url":"https://example.org/ges",
+        "event_date":"2026-07-10",
+        "signal_types":["Datos"],
+        "source_documents":[{"url":"https://example.org/ges.xlsx"}],
+    }])
+    assert rows[0]["status"]=="parser_ready"
+    assert rows[0]["parser_family"]=="ges"
