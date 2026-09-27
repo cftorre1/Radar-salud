@@ -133,7 +133,7 @@
     },
     {
       "id": "sources_chile_mvp",
-      "status": "blocked",
+      "status": "cancelled",
       "priority": "high",
       "owner": "Work",
       "source": "Baseline MVP",
@@ -161,13 +161,8 @@
         "QA/Reviewer",
         "staging evidence"
       ],
-      "progress": "Pilotos #24/#25: Bupa y RedSalud aportaron una señal BACKFILL real cada uno; LIVE 0. Pfizer Chile quedó integrado con parser y guard fail-closed, sin señal vigente. Dirección reanudó Fuentes Chile el 2026-09-25. Revalidación real 2026-09-26: FONASA HTTP 403; ISP/ANAMED HTTP 502; DEIS técnicamente accesible con 0 publicaciones fechadas elegibles; Diario Oficial no completó respuesta y el intento se interrumpió para no detener otros frentes. No quedan acciones internas seguras: subfrente bloqueado externamente, sin señales atribuidas ni verificación rebajada.",
-      "blocked_by": [
-        "FONASA oficial: HTTP 403. Acción mínima: restablecer acceso público o indicar un endpoint oficial público permitido equivalente.",
-        "ISP/ANAMED oficial: HTTP 502. Acción mínima: esperar recuperación del servicio o indicar un endpoint oficial público permitido equivalente.",
-        "DEIS: acceso técnico con 0 publicaciones fechadas elegibles; requiere una publicación oficial genuina nueva, no simulada.",
-        "Diario Oficial: la solicitud no completó respuesta dentro del ciclo; requiere recuperación/reintento externo, sin bypass."
-      ],
+      "progress": "Supersedida por sources_chile_diario_estadisticas_v2_2026_09_27, validada con Diario Oficial endurecido + parser GES. FONASA/ANAMED/DEIS quedan como expansión externa no bloqueante del Beta cerrado.",
+      "blocked_by": [],
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36029771353 — piloto #23 limitado a 1, 7 fuentes exitosas y 2 errores; staging datos 83f55e36c464972c2e8eee7763f5a7699a644cb1",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36030110235 — preview #74 059447995561647bcb814e15430ed1ae744ddcc2, tests/QA desktop-mobile/Reviewer/preview PASS; Reviewer independiente corrigió atribución de fecha/PDF y estructura, pero sin fixture real",
@@ -193,11 +188,12 @@
         "Captura directa 2026-09-26: DEIS accesible, 0 publicaciones con fecha verificable y elegibles; salida correcta 0.",
         "Captura directa 2026-09-26: Diario Oficial no completó respuesta dentro del ciclo; intento interrumpido y registrado como bloqueo externo, sin simular éxito."
       ],
-      "resume_condition": "Reanudado explícitamente por Dirección el 2026-09-25."
+      "resume_condition": "Reanudado explícitamente por Dirección el 2026-09-25.",
+      "completed_at": "2026-09-27"
     },
     {
       "id": "global_intelligence_lite",
-      "status": "blocked",
+      "status": "cancelled",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -225,12 +221,8 @@
         "Reviewer",
         "staging evidence"
       ],
-      "progress": "Muestra pública PREMIUM: 3 temas, 5 referencias de Reuters, Deloitte, McKinsey, PwC y WHO/OMS, con fuentes primarias contrastadas y Trend Chile no establecido. UX aprobada implementada: acceso destacado, copy PREMIUM, inbox propio, leído/no leído persistente, profundización y retorno con foco accesible. b071d49/#129 PASS. El cierre queda bloqueado por accesos/permisos externos y por la decisión de acceso PREMIUM; no se hará bypass de paywall ni cambio de auth.",
-      "blocked_by": [
-        "CB Insights y PAHO/OPS respondieron 403; BCG presenta restricciones de uso comercial. Requiere acceso público permitido o autorización explícita, sin scraping prohibido ni bypass.",
-        "Definir y autorizar el mecanismo de acceso PREMIUM exclusivo; cambiar auth está fuera del alcance autorizado.",
-        "Aprobar la operación de monitoreo recurrente de fuentes internacionales permitidas antes de considerarlo completo."
-      ],
+      "progress": "Supersedida por global_premium_beta_expansion_2026_09_27, validada con 6 temas, scoring ejecutivo, separación Chile y experiencia Global value-first.",
+      "blocked_by": [],
       "evidence": [
         "34f41894507e5323804a75439f854f8a5658ed33 — implementación Global Themes, export determinístico, página PREMIUM, validación fail-closed y pruebas adversariales",
         "Reuters 2026-09-18, Deloitte 2025-12-11 y McKinsey 2025-05-29: muestras reales con fecha, URL original, hallazgo y captura trazables",
@@ -245,7 +237,8 @@
         "Reviewer independiente UX: primer corte FAIL por pérdida de foco/contexto al marcar leído; corrección incremental preserva details abierto, foco del toggle, siguiente fila y retorno a la bandeja; segundo corte APPROVE.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36059112878 — 103eac2 #128: tests PASS; 14/16 browser PASS, FAIL por selector de heading ambiguo; Reviewer CI/preview omitidos.",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36059505522 — b071d49 #129: 142 Python, 20 Node, 16 browser desktop/mobile, Reviewer y preview PASS; Global Theme/hipótesis/Trend Chile intactos."
-      ]
+      ],
+      "completed_at": "2026-09-27"
     },
     {
       "id": "email_subscription_mvp",
@@ -334,7 +327,7 @@
     },
     {
       "id": "free_premium_mvp",
-      "status": "blocked",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -359,10 +352,12 @@
         "Reviewer",
         "staging evidence"
       ],
-      "progress": "Teaser Global FREE e Insight Alicanto semanal ya están validados; la representación completa FREE/PREMIUM no puede cerrar mientras Global Intelligence Lite siga bloqueado y no exista una decisión autorizada sobre acceso PREMIUM.",
-      "blocked_by": [
-        "Dependencia global_intelligence_lite no validada: accesos/permisos externos, monitoreo recurrente y mecanismo PREMIUM pendientes.",
-        "No se implementará auth, pagos ni precio definitivo sin autorización expresa."
+      "progress": "Validado para Beta cerrada 2026-09-27: FREE entrega radar + Insight semanal; Global Intelligence presenta 6 temas, acceso PREMIUM y soft gate sin auth/pago. Auth, pricing y pagos quedan fuera del alcance Beta y no son prerequisito.",
+      "blocked_by": [],
+      "completed_at": "2026-09-27",
+      "evidence": [
+        "global_premium_beta_expansion_2026_09_27 validated",
+        "Home/Global conversion pass 2026-09-27"
       ]
     },
     {
@@ -1116,7 +1111,7 @@
     {
       "id": "workspace_domain_home_execution_2026_09_25",
       "status": "blocked",
-      "priority": "critical",
+      "priority": "high",
       "owner": "Work",
       "source": "Dirección",
       "objective": "Cerrar en paralelo los frentes humanos/técnicos desbloqueados por alicantosalud.cl y Google Workspace, priorizando acciones que puedan requerir intervención humana inmediata y continuando automáticamente con Home V2 y demás tareas ejecutables si aparece un bloqueo.",
@@ -1161,12 +1156,11 @@
         "MailerLite provider-ready con DNS coexistence documentada",
         "cola/PMO actualizados tras cada ciclo"
       ],
-      "progress": "Google Workspace prácticamente cerrado: cuenta hola@ operativa, envío/recepción confirmados, alias radar@ confirmado, DKIM activado, SPF configurado y DMARC p=none creado. Falta una validación final de Authentication-Results y luego MailerLite. Home V2 sigue en polish final aprobado.",
+      "progress": "Reconciliado 2026-09-27: Home V2 y refinements validados. Dominio/HTTPS operativos en la experiencia actual. Workspace conserva como deuda únicamente la validación final Authentication-Results y activación posterior de MailerLite; no bloquea Beta cerrada read-only.",
       "blocker": "Gmail: Dirección debe completar inicio de sesión admin.google.com y desafío dash.cloudflare.com en sesión utilizable; DKIM exacto debe generarse allí. Dominio: publicación aislada del canonical sin web/data/radar_today.json ni web/data/source_health.json; no ejecutar release main completo. MailerLite depende de Gmail validado.",
       "blocked_by": [
-        "Validación final de SPF/DKIM/DMARC en encabezados reales y, si PASS, cerrar Google Workspace.",
-        "MailerLite: configuración/autenticación posterior, sujeta a privacidad/doble opt-in y credenciales.",
-        "Home V2 final polish: approved y pendiente de ser tomado por Work."
+        "Validación final de Authentication-Results SPF/DKIM/DMARC antes de activar envíos reales.",
+        "MailerLite/privacidad/doble opt-in antes de habilitar captura y envío; no bloquea Beta cerrada sin captura."
       ],
       "evidence": [
         "Home V2 special refinement validated: https://github.com/cftorre1/Radar-salud/actions/runs/36203582698",
@@ -1403,7 +1397,7 @@
     },
     {
       "id": "overnight_content_sources_experiments_release_2026_09_25",
-      "status": "blocked",
+      "status": "cancelled",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -1442,12 +1436,8 @@
         "tests + QA desktop/mobile + Reviewer PASS",
         "SHA de producción y QA post-deploy en alicantosalud.cl antes de 08:00 o blocker explícito"
       ],
-      "progress": "2026-09-26: share, auditoría editorial, Insight semanal fail-closed, MailerLite provider-ready, preflight Luna/Terra/Astra y Pulso Excel cerrados con QA/Reviewer PASS. Fuentes Chile se revalidó: FONASA 403, ISP/ANAMED 502, DEIS 0 elegibles y Diario Oficial sin respuesta; blockers externos exactos, sin señales simuladas. No quedan acciones internas seguras. Gate de release cerrado; producción no fue modificada.",
-      "blocked_by": [
-        "Fuentes epidemiológicas oficiales no integrables con evidencia actual: FONASA 403, ISP/ANAMED 502, DEIS sin publicación elegible y Diario Oficial sin respuesta.",
-        "Experimento real Luna/Terra/Astra: falta OPENAI_API_KEY vía secreto, confirmación de modelos disponibles y costo máximo USD autorizado por Dirección.",
-        "La instrucción de release exige todos los gates críticos PASS; con estos blockers la promoción a main/producción está expresamente prohibida."
-      ],
+      "progress": "Supersedida por la consolidación preproducción y refinements 2026-09-27. No representa el gate vigente de release.",
+      "blocked_by": [],
       "evidence": [
         "e55120ba5ed05226ca99484b07e8e53d1aea95c4 — implementación fail-closed y auditoría reconciliada en staging",
         "166 tests Python PASS; 28 tests web PASS; 26 Playwright desktop/mobile PASS",
@@ -1458,7 +1448,8 @@
         "6be87801b6ba1982c955871bd3404bcbaaa14220 — Pulso Excel con lectura de negocio calculada desde series reconciliadas; 171 Python + 28 web + 26 browser PASS; Reviewer independiente FINAL PASS tras test sintético",
         "Fuentes 2026-09-26: FONASA HTTP 403, ISP/ANAMED HTTP 502, DEIS 0 elegibles, Diario Oficial timeout/interrumpido; 0 señales atribuidas",
         "Release NO ejecutado: gates integrales restantes sin PASS"
-      ]
+      ],
+      "completed_at": "2026-09-27"
     },
     {
       "id": "admin_portal_expert_audit_2026_09_26",
@@ -1508,7 +1499,7 @@
     },
     {
       "id": "product_risk_gap_audit_2026_09_26",
-      "status": "pending",
+      "status": "in_progress",
       "priority": "medium",
       "owner": "Direction+Experts",
       "source": "Orquestador",
@@ -1529,7 +1520,8 @@
         "riesgos P0/P1/P2",
         "controles faltantes",
         "decisiones que requieren Dirección"
-      ]
+      ],
+      "progress": "Reconciliación Beta 2026-09-27: auditoría enfocada en conversion value, Global/Home parity, Fuentes, newsletter, Premium y estados PMO. Cierre condicionado al HEAD integrado con QA/Reviewer/preview PASS."
     },
     {
       "id": "content_value_epidemiology_admin_iteration_2026_09_26",
@@ -2060,6 +2052,16 @@
         "068da7f47a95e0396a431fae71c0db57abb109af — tests liveness",
         "5e28ccec4f2c715b25863f18f060280c0f082887 — Autopilot horario + fail-loud"
       ]
+    },
+    {
+      "id": "closed_beta_readiness_reconciliation_2026_09_27",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Director-Orchestrator+Reviewer",
+      "depends_on": [],
+      "blocked_by": [],
+      "progress": "Reconciliación final en ejecución: separar Beta cerrada read-only de readiness comercial, limpiar tareas supersedidas y validar conversion/value polish en Home, Global, Fuentes y suscripción.",
+      "evidence": []
     }
   ],
   "execution_policy": {
