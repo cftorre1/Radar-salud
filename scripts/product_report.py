@@ -172,6 +172,10 @@ def build(root, output):
             "insights": len(row.get("data_insights") or [])})
     ledger = read(root / "data/autopilot/ledger.json", {"iterations": []})
     baseline_path = root / "config/pmo_baseline.json"
+    orchestrator = read(root / "config/orchestrator_queue.json", {"tasks": []})
+    orchestration_tasks = orchestrator.get("tasks", []) if isinstance(orchestrator, dict) else []
+    blocked_tasks = [x for x in orchestration_tasks if x.get("status") == "blocked"]
+    active_tasks = [x for x in orchestration_tasks if x.get("status") in ("approved", "in_progress")]
     scorecard_cfg = read(root / "config/admin_scorecard_v1.json", {"dimensions": [], "display_rules": {}})
     editorial_audit = read(root / "data/editorial_audit_90d_2026_09_26.json", {"items": []})
     audit_counts = dict(Counter((x.get("final_decision") or x.get("decision") or x.get("post_audit_state") or "unknown")
@@ -222,7 +226,8 @@ def build(root, output):
             "observed": {
                 "development": {
                     "deployable_sha": os.environ.get("ALICANTO_CANDIDATE_SHA") or os.environ.get("GITHUB_SHA"),
-                    "blocked_task_count": None,
+                    "blocked_task_count": len(blocked_tasks) if orchestration_tasks else None,
+                    "active_task_count": len(active_tasks) if orchestration_tasks else None,
                     "test_pass_count": None,
                 },
                 "operations": {
@@ -242,6 +247,14 @@ def build(root, output):
                 "conversion": {"newsletter_opt_in_rate": None, "early_access_opt_in_rate": None},
                 "finops": {"monthly_authorized_cost": None, "cost_per_published_signal": None},
             },
+        },
+        read_model={
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "queue_updated_at": orchestrator.get("updated_at") if isinstance(orchestrator, dict) else None,
+            "queue_task_count": len(orchestration_tasks) if orchestration_tasks else None,
+            "active_task_count": len(active_tasks) if orchestration_tasks else None,
+            "blocked_task_count": len(blocked_tasks) if orchestration_tasks else None,
+            "freshness": "available" if orchestration_tasks else "not_available",
         },
         pmo=project_pmo(baseline_path, os.environ.get("ALICANTO_CANDIDATE_SHA") or os.environ.get("GITHUB_SHA")) if baseline_path.exists() else None)
     output.mkdir(parents=True, exist_ok=True)
