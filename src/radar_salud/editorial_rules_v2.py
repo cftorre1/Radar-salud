@@ -125,3 +125,38 @@ def evaluate_editorial_v2(
     if score < accept_at:
         return EditorialDecision("degrade", score, tuple(reasons or ["context_only"]), category)
     return EditorialDecision("accept", score, ("material_and_evidenced",), category)
+
+
+def validate_publication_contract(signal: Mapping[str, Any]) -> dict[str, Any]:
+    """Fail-closed minimum contract shared by brief, feed card and detail."""
+    missing=[]
+    title=str(signal.get("display_title") or signal.get("title") or "").strip()
+    what=str(signal.get("card_what") or signal.get("what_happened") or "").strip()
+    why=str(signal.get("card_why") or signal.get("why_it_matters") or "").strip()
+    for ok,label in (
+        (bool(title),"title"),
+        (bool(signal.get("signal_types")),"signal_type"),
+        (bool(signal.get("scopes")),"scope"),
+        (bool(signal.get("event_date")),"event_date"),
+        (bool(signal.get("source_name")),"source_name"),
+        (bool(signal.get("source_url")),"source_url"),
+        (bool(what),"what_happened"),
+        (bool(why),"why_it_matters"),
+    ):
+        if not ok: missing.append(label)
+    types={str(x).casefold() for x in signal.get("signal_types") or []}
+    if "normativa" in types:
+        normative_label=str(signal.get("normative_document_label") or "").strip()
+        if not normative_label:
+            missing.append("normative_document_label")
+    optional_sections={
+        "related_context": bool(signal.get("related_context")),
+        "source_documents": bool(signal.get("source_documents")),
+        "normative_relationships": bool(signal.get("normative_relationships") or signal.get("normative_relation")),
+    }
+    return {
+        "status":"pass" if not missing else "fail",
+        "missing":missing,
+        "optional_sections":optional_sections,
+        "render_empty_optional_sections":False,
+    }
