@@ -1,0 +1,45 @@
+name: Alicanto Weekly Insight V2
+on:
+  workflow_dispatch:
+  push:
+    branches: [staging]
+    paths:
+      - '.github/run-weekly-insight-v2-now'
+permissions:
+  contents: write
+concurrency:
+  group: weekly-insight-v2
+  cancel-in-progress: false
+jobs:
+  deep-intelligence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - name: Require API secret
+        run: test -n "$OPENAI_API_KEY"
+      - name: Run deterministic guards
+        run: python -m pytest -q tests/test_free_value.py tests/test_openai_runtime_and_committee.py tests/test_editorial_rules_v2.py
+      - name: Build current curated stock
+        run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline
+      - name: Run Weekly Insight V2 with Terra to Luna fallback
+        run: python scripts/run_weekly_insight_v2.py
+      - name: Re-run focused tests
+        run: python -m pytest -q tests/test_free_value.py tests/test_openai_runtime_and_committee.py
+      - name: Commit generated insight and usage telemetry
+        run: |
+          git config user.name alicanto-autopilot
+          git config user.email alicanto-autopilot@users.noreply.github.com
+          git add web/data/radar_today.json web/data/free_value.json data/weekly_insight/latest.json data/state/model_usage.json || true
+          git diff --cached --quiet && exit 0
+          git commit -m "feat: generate Weekly Insight V2 with OpenAI runtime"
+          git push origin HEAD:staging
