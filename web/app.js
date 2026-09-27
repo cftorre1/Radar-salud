@@ -125,6 +125,7 @@ function openDialog(id){const dialog=document.getElementById(id);if(dialog&&!dia
 document.getElementById('earlyAccessOpen').onclick=()=>openDialog('earlyAccessDialog');
 document.getElementById('newsletterOpen').onclick=()=>openDialog('newsletterDialog');
 document.getElementById('sourcesOpen').onclick=()=>openDialog('sourcesDialog');
+if(location.hash==='#premium')requestAnimationFrame(()=>openDialog('earlyAccessDialog'));
 document.querySelectorAll('[data-close]').forEach(button=>button.onclick=()=>document.getElementById(button.dataset.close).close());
 document.querySelectorAll('.home-dialog').forEach(dialog=>dialog.onclick=event=>{if(event.target===dialog)dialog.close()});
 const premiumForm=document.getElementById('premiumInterestForm'),premiumEmail=document.getElementById('premiumEmail'),premiumSubmit=document.getElementById('premiumSubmit'),premiumStatus=document.getElementById('premiumStatus');
