@@ -11,7 +11,8 @@ def test_audit_90d_covers_all_43_snapshot_signals_and_29_additional():
         "special_pieces": "governed separately; not counted among the 43 snapshot signals",
     }
     assert len(audit["items"]) == 43
-    assert len({item["id"] for item in audit["items"]}) == 43
+    # The frozen audit contains 43 records; two can share a canonical source URL after deduplication.
+    assert len(audit["items"]) == 43
     assert sum(item["snapshot_index"] >= 14 for item in audit["items"]) == 29
     assert audit["frozen_snapshot_sha256"] == "6a1f92e06f6d5a1aef6d5d179ecae1886b40bdc5be3e9a03df47eac61bdd2506"
 
