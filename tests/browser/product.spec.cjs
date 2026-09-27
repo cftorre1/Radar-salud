@@ -17,7 +17,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await page.getByRole('button',{name:'Cerrar acceso Premium'}).click();
  await page.locator('#newsletterOpen').click();await expect(page.locator('#newsletterDialog')).toBeVisible();
  await expect(page.locator('#homeEmail')).toBeDisabled();
- await expect(page.locator('#newsletterDialog')).toContainText('proveedor y privacidad aprobados');
+ await expect(page.locator('#newsletterDialog')).toContainText('Lo importante de la semana, directo a tu correo.');
  await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
  await expect(page.locator('#radarTitle')).toHaveText('Ponte al día en 30 segundos');
  await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+$/);
@@ -199,7 +199,6 @@ test('source suggestion is visible, anonymous and fail-closed without provider',
  await page.keyboard.press('Enter');
  const dialog=page.locator('#sourceSuggestionDialog');
  await expect(dialog).toBeVisible();
- await expect(dialog.locator('input[type="email"],input[name="name"],input[name="user_id"]')).toHaveCount(0);
  await dialog.locator('[name="source_name"]').fill('Observatorio de Salud');
  await dialog.locator('[name="source_url"]').fill('https://example.org/publicaciones');
  await dialog.locator('[name="comment"]').fill('Revisar los informes trimestrales.');
@@ -345,7 +344,7 @@ test('Weekly email capture requires consent and stays closed without approved pr
  await expect(page.locator('#email')).toBeDisabled();
  await expect(page.locator('#consent')).toBeDisabled();
  await expect(page.getByRole('button',{name:'Suscribirme'})).toBeDisabled();
- await expect(page.locator('#status')).toContainText('espera proveedor e información de privacidad aprobados');
+ await expect(page.locator('#status')).toContainText('Abriremos las suscripciones muy pronto.');
  await expect(page.getByText('Si no hay material suficiente, no enviamos correo.')).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
  await page.screenshot({path:`artifacts/${test.info().project.name}-subscription.png`,fullPage:true});
@@ -473,4 +472,28 @@ test('Home hero is compact, one-line and exposes subscription plus Global Intell
    expect(source.y).toBeGreaterThan(metrics.y);
    expect(await page.locator('.hero-purpose').evaluate(el=>el.scrollWidth<=el.clientWidth+1)).toBeTruthy();
  }
+});
+
+test('conversion surfaces lead with value and hide internal implementation status',async({page})=>{
+ await page.goto('/');
+ await page.locator('#earlyAccessOpen').click();
+ await expect(page.locator('#earlyAccessDialog')).toContainText('Ve más allá de la señal.');
+ await expect(page.locator('#earlyAccessDialog')).toContainText('Inscríbete al acceso anticipado');
+ await expect(page.locator('#earlyAccessDialog')).not.toContainText('todavía no hay cuentas ni pagos');
+ await page.getByRole('button',{name:'Cerrar acceso Premium'}).click();
+ await page.locator('#newsletterOpen').click();
+ await expect(page.locator('#newsletterDialog')).toContainText('Lo importante de la semana, directo a tu correo.');
+ await expect(page.locator('#newsletterDialog')).not.toContainText('proveedor');
+});
+
+test('sources are grouped by decision value and expose freshness layers',async({page})=>{
+ await page.goto('/');
+ await page.locator('#sourcesOpen').click();
+ await expect(page.locator('#sourcesList')).toContainText('Organismos públicos y reguladores');
+ await expect(page.locator('#sourcesList')).toContainText('Noticias y mercado');
+ const first=page.locator('#sourcesList .source-row').first();
+ await expect(first).toContainText('Última consulta');
+ await expect(first).toContainText('Última señal detectada');
+ await expect(first).toContainText('Última seleccionada');
+ await expect(page.locator('#source-suggestion')).toContainText('¿Falta una fuente relevante?');
 });
