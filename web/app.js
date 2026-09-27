@@ -127,7 +127,29 @@ document.getElementById('newsletterOpen').onclick=()=>openDialog('newsletterDial
 document.getElementById('sourcesOpen').onclick=()=>openDialog('sourcesDialog');
 document.querySelectorAll('[data-close]').forEach(button=>button.onclick=()=>document.getElementById(button.dataset.close).close());
 document.querySelectorAll('.home-dialog').forEach(dialog=>dialog.onclick=event=>{if(event.target===dialog)dialog.close()});
-fetch('data/product.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('sources');return r.json()}).then(d=>{const rows=Object.values(d.sources||{}).filter(x=>x&&x.name).sort((a,b)=>String(a.name).localeCompare(String(b.name),'es')),host=document.getElementById('sourcesList'),more=document.getElementById('sourcesMore');let expanded=false;const render=()=>{const visibleRows=expanded?rows:rows.slice(0,10);host.innerHTML=visibleRows.map(x=>`<div class="source-row"><strong>${esc(x.name)}</strong><span>${x.technical_status==='error'?'Temporalmente no disponible':x.last_signal_at?`Última señal ${fmtDate(x.last_signal_at)}`:'Monitoreo disponible · sin señal reciente'}</span></div>`).join('')||'<p>No hay fuentes registradas.</p>';more.hidden=rows.length<=10;more.textContent=expanded?'Ver menos':'Ver más'};more.onclick=()=>{expanded=!expanded;render();more.focus()};render()}).catch(()=>{document.getElementById('sourcesList').innerHTML='<p>No se pudo cargar la lista de fuentes.</p>'});
+const premiumForm=document.getElementById('premiumInterestForm'),premiumEmail=document.getElementById('premiumEmail'),premiumSubmit=document.getElementById('premiumSubmit'),premiumStatus=document.getElementById('premiumStatus');
+function approvedCaptureAction(value){try{const u=new URL(value);return u.protocol==='https:'?u.href:null}catch{return null}}
+fetch('data/subscription.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(cfg=>{const action=approvedCaptureAction(cfg.form_action);if(cfg.capture_enabled===true&&cfg.privacy_approved===true&&cfg.double_opt_in===true&&action){premiumForm.action=action;premiumEmail.disabled=false;premiumSubmit.disabled=false;premiumStatus.textContent='Te enviaremos un correo para confirmar tu inscripción.'}else{premiumStatus.textContent='Abriremos nuevas invitaciones muy pronto.'}}).catch(()=>{premiumStatus.textContent='Abriremos nuevas invitaciones muy pronto.'});
+premiumForm?.addEventListener('submit',event=>{if(!premiumForm.action||premiumEmail.disabled){event.preventDefault();premiumStatus.textContent='Abriremos nuevas invitaciones muy pronto.'}});
+Promise.all([
+ fetch('data/product.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('sources');return r.json()}),
+ fetch('data/radar_today.json',{cache:'no-store'}).then(r=>r.ok?r.json():({signals:[]}))
+]).then(([d,radar])=>{
+ const host=document.getElementById('sourcesList'),more=document.getElementById('sourcesMore'),signals=Array.isArray(radar.signals)?radar.signals:[];
+ const canonicalSource=name=>{const n=String(name||'').toLowerCase();if(n.includes('superintendencia'))return'Superintendencia de Salud';if(n==='minsal'||n.includes('ministerio'))return'Ministerio de Salud';if(n.includes('suseso'))return'SUSESO';return name};
+ const selectedDate=x=>{const target=canonicalSource(x.name);return signals.filter(s=>canonicalSource(s.source_name)===target).map(s=>s.event_date).filter(Boolean).sort().at(-1)||null};
+ const groupFor=name=>{const n=String(name||'').toLowerCase();if(/superintendencia|minsal|ministerio|suseso|diario oficial|fonasa|isp|anamed|deis|estadísticas e información/.test(n))return['Organismos públicos y reguladores',0];if(/bupa|redsalud|pfizer|clínica|clinica|prestador/.test(n))return['Prestadores e industria de salud',1];if(/diario financiero|reuters|noticia|medio/.test(n))return['Noticias y mercado',2];return['Otras fuentes relevantes',3]};
+ const rows=Object.values(d.sources||{}).filter(x=>x&&x.name).map(x=>({...x,last_selected_at:selectedDate(x),group:groupFor(x.name)})).sort((a,b)=>a.group[1]-b.group[1]||String(b.last_selected_at||b.last_signal_at||b.checked_at||'').localeCompare(String(a.last_selected_at||a.last_signal_at||a.checked_at||''))||String(a.name).localeCompare(String(b.name),'es'));
+ let expanded=false;
+ const sourceRow=x=>`<div class="source-row"><strong>${esc(x.name)}</strong><div class="source-meta"><span><b>Última consulta</b> · ${x.checked_at?fmtDate(x.checked_at):'sin dato'}</span><span><b>Última señal detectada</b> · ${x.last_signal_at?fmtDate(x.last_signal_at):'sin señal reciente'}</span><span><b>Última seleccionada</b> · ${x.last_selected_at?fmtDate(x.last_selected_at):'aún no visible'}</span></div></div>`;
+ const render=()=>{
+  const visible=expanded?rows:rows.slice(0,12),groups=new Map();
+  for(const x of visible){const label=x.group[0];if(!groups.has(label))groups.set(label,[]);groups.get(label).push(x)}
+  host.innerHTML=[...groups].map(([label,xs])=>`<section class="source-group"><h3 class="source-group-title">${esc(label)}</h3>${xs.map(sourceRow).join('')}</section>`).join('')||'<p>No hay fuentes registradas.</p>';
+  more.hidden=rows.length<=12;more.textContent=expanded?'Ver menos':'Ver todas las fuentes';
+ };
+ more.onclick=()=>{expanded=!expanded;render();more.focus()};render();
+}).catch(()=>{document.getElementById('sourcesList').innerHTML='<p>No se pudo cargar la lista de fuentes.</p>'});
 
 document.getElementById('closeDetail').onclick=()=>document.getElementById('signalDetail').close();
 document.getElementById('signalDetail').onclick=e=>{if(e.target.id==='signalDetail')e.target.close()};
