@@ -68,6 +68,38 @@ def _score01(value: Any, fallback: float = 0.0) -> float:
         return fallback
 
 
+def score_global_teaser(theme: dict[str, Any], verified_sources: list[dict[str, Any]], today: date) -> dict[str, Any]:
+    """Score commercial teaser appeal using only explicit, reviewable criteria."""
+    title = str(theme.get("title") or "").lower()
+    finding = str(theme.get("global_finding") or "").lower()
+    why = str(theme.get("why_it_matters") or "").lower()
+    text = " ".join((title, finding, why))
+    latest = max((_day(x.get("published_at")) for x in verified_sources), default=None)
+    recency_days = (today - latest).days if latest else 9999
+    recency = 100.0 if recency_days <= 30 else 85.0 if recency_days <= 120 else 70.0 if recency_days <= 365 else 55.0
+    evidence = min(100.0, 55.0 + 15.0 * len({x.get("publisher") for x in verified_sources if x.get("publisher")}))
+    executive = 90.0 if any(k in text for k in ("retorno", "invers", "mercado", "modelo", "ia", "cost", "productiv")) else 75.0
+    breadth = 90.0 if any(k in text for k in ("salud", "bienestar", "prevención", "prevencion", "longevidad", "modelo")) else 70.0
+    conversation = 92.0 if any(k in text for k in ("ia", "longevidad", "prevención", "prevencion", "bienestar", "mercado")) else 72.0
+    dims = {
+        "attractiveness": executive,
+        "novelty_recency": recency,
+        "executive_relevance": executive,
+        "sector_breadth": breadth,
+        "evidence_strength": evidence,
+        "conversation_potential": conversation,
+    }
+    weights = {
+        "attractiveness": .20,
+        "novelty_recency": .15,
+        "executive_relevance": .20,
+        "sector_breadth": .15,
+        "evidence_strength": .15,
+        "conversation_potential": .15,
+    }
+    return {"score": round(sum(dims[k] * weights[k] for k in weights), 2), "dimensions": dims}
+
+
 def strategic_weekly_score(signal: dict[str, Any], recent: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     """Quantitative business-first score for weekly insight selection.
 
@@ -187,7 +219,12 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
     current = next((x for x in reversed(history) if x.get("week_start") == week_start), None)
     prior_history = [x for x in history if x.get("week_start") != week_start]
     theme_rows = [row for x in themes.get("themes", []) if (row := _verified_theme(x, today))]
-    theme, verified_sources = theme_rows[0] if theme_rows else (None, [])
+    scored_themes = [
+        (score_global_teaser(theme, verified_sources, today), theme, verified_sources)
+        for theme, verified_sources in theme_rows
+    ]
+    scored_themes.sort(key=lambda row: row[0]["score"], reverse=True)
+    teaser_score, theme, verified_sources = scored_themes[0] if scored_themes else (None, None, [])
     teaser = None
     if theme:
         latest_source = max(verified_sources, key=lambda x: str(x.get("published_at") or ""))
@@ -209,6 +246,7 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
             "published_at": latest_source["published_at"],
             "premium_href": f"global.html#theme-{theme['id']}",
             "evidence_status": "verified_sources",
+            "teaser_score": teaser_score,
             "model_trace": {"mode": "deterministic_existing_evidence", "api_call": False,
                             "model": None, "output_id": theme["id"]},
         }
