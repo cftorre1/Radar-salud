@@ -69,33 +69,39 @@ def _score01(value: Any, fallback: float = 0.0) -> float:
 
 
 def score_global_teaser(theme: dict[str, Any], verified_sources: list[dict[str, Any]], today: date) -> dict[str, Any]:
-    """Score the Home teaser for executive pull, not generic global importance.
+    """Rank eligible Global themes by executive/commercial value.
 
-    Editorial beta profiles are explicit and auditable. Freshness/evidence remain
-    guardrails, but they cannot dominate commercial hook and decision usefulness.
+    Freshness is a gate, not a scoring advantage: at least one verified source
+    must have been published in the last 14 days. Once eligible, newer does not
+    score higher merely for being newer.
     """
     profile = theme.get("home_teaser_profile") or {}
-    latest = max((_day(x.get("published_at")) for x in verified_sources), default=None)
-    recency_days = (today - latest).days if latest else 9999
-    recency = 100.0 if recency_days <= 30 else 85.0 if recency_days <= 120 else 70.0 if recency_days <= 365 else 55.0
+    published_days=[_day(x.get("published_at")) for x in verified_sources]
+    latest=max((x for x in published_days if x), default=None)
+    eligible=bool(latest and 0 <= (today-latest).days <= 14)
     evidence = min(100.0, 55.0 + 15.0 * len({x.get("publisher") for x in verified_sources if x.get("publisher")}))
     dims = {
         "commercial_hook": _score01(profile.get("commercial_hook"), 70.0),
-        "executive_relevance": _score01(profile.get("executive_relevance"), 70.0),
+        "strategic_relevance": _score01(profile.get("executive_relevance"), 70.0),
         "decision_usefulness": _score01(profile.get("decision_usefulness"), 70.0),
         "conversation_potential": _score01(profile.get("conversation_potential"), 70.0),
-        "novelty_recency": recency,
         "evidence_strength": evidence,
     }
     weights = {
-        "commercial_hook": .25,
-        "executive_relevance": .25,
+        "commercial_hook": .30,
+        "strategic_relevance": .30,
         "decision_usefulness": .20,
         "conversation_potential": .15,
-        "novelty_recency": .075,
-        "evidence_strength": .075,
+        "evidence_strength": .05,
     }
-    return {"score": round(sum(dims[k] * weights[k] for k in weights), 2), "dimensions": dims}
+    score=round(sum(dims[k] * weights[k] for k in weights), 2) if eligible else -1.0
+    return {
+        "score": score,
+        "eligible": eligible,
+        "freshness_gate_days": 14,
+        "latest_source_date": latest.isoformat() if latest else None,
+        "dimensions": dims,
+    }
 
 
 def strategic_weekly_score(signal: dict[str, Any], recent: list[dict[str, Any]] | None = None) -> dict[str, Any]:
@@ -221,6 +227,7 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
         (score_global_teaser(theme, verified_sources, today), theme, verified_sources)
         for theme, verified_sources in theme_rows
     ]
+    scored_themes = [row for row in scored_themes if row[0].get("eligible")]
     scored_themes.sort(key=lambda row: row[0]["score"], reverse=True)
     teaser_score, theme, verified_sources = scored_themes[0] if scored_themes else (None, None, [])
     teaser = None
