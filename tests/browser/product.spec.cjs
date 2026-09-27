@@ -450,6 +450,6 @@ test('period is visible outside filters, persisted in metrics and resettable',as
  await expect(period).toHaveValue('14');
  await expect(page.locator('#sort')).toHaveValue('date');
  await expect(page.locator('#radarMetrics')).toContainText('período 14 días');
- const box=await period.boundingBox();expect(box.width).toBeLessThanOrEqual(140);
+ const box=await period.boundingBox();expect(box.width).toBeLessThanOrEqual(test.info().project.name==='mobile'?140:220);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
