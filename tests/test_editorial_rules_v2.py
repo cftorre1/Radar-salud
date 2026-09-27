@@ -150,3 +150,60 @@ def test_publication_contract_requires_uniform_core_and_normative_identity():
     passed=validate_publication_contract({**base,"normative_document_label":"Resolución Exenta IF/N°11156"})
     assert passed["status"]=="pass"
     assert passed["render_empty_optional_sections"] is False
+
+
+def _load_export_web_snapshot_module():
+    import importlib.util
+    from pathlib import Path
+    path=Path("scripts/export_web_snapshot.py")
+    spec=importlib.util.spec_from_file_location("export_web_snapshot_test",path)
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_resolution_title_mentions_parent_norm_once_and_keeps_material_effect():
+    module=_load_export_web_snapshot_module()
+    cases=[
+        ({
+            "title":"Resolución Exenta IF/N°8760",
+            "normative_document_type":"Resolución Exenta",
+            "normative_document_label":"Resolución Exenta IF/N°8760",
+            "what_happened":"La resolución suspende los efectos de la Circular IF/N°529 sobre derivación a prestadores de la Red CAEC.",
+            "why_it_matters":"Durante la suspensión cambian las instrucciones de derivación CAEC.",
+            "related_context":[{"title":"Circular IF/N°529","relationship":"Antecedente"}],
+        },"Circular IF/N°529","CAEC"),
+        ({
+            "title":"Resolución Exenta IF/N°9994",
+            "normative_document_type":"Resolución Exenta",
+            "normative_document_label":"Resolución Exenta IF/N°9994",
+            "what_happened":"Se rechazó suspender la Circular IF/N°532 mientras se resuelven recursos.",
+            "why_it_matters":"La Circular IF/N°532 mantiene su ejecución durante las impugnaciones.",
+            "related_context":[{"title":"Circular IF/N°532","relationship":"Antecedente"}],
+        },"Circular IF/N°532","impugnación"),
+    ]
+    for signal,parent,effect in cases:
+        row=module._resolution_relation_titles([signal])[0]
+        title=row["display_title"]
+        assert title.count(parent)==1
+        assert row["normative_document_label"] in title
+        assert effect.lower() in title.lower()
+        assert not title.endswith("no producen")
+
+
+def test_statistical_override_precedes_value_ladder():
+    module=_load_export_web_snapshot_module()
+    signal={
+        "title":"Estadísticas Financieras del Sistema ISAPRE a marzo 2026",
+        "source_name":"Superintendencia de Salud",
+        "source_url":"https://example.org/financial",
+        "signal_types":["Datos"],
+        "summary_table":{"title":"Tabla","rows":[{"indicator":"A","period":"2026","value":"1","reading":"ok"}]},
+        "data_insights":["Hallazgo material"],
+        "card_what":"Análisis listo",
+        "card_why":"Decisión útil",
+    }
+    row=module._statistical_value_ladder(signal)
+    assert row["statistical_value_level"]=="deep_analysis"
+    assert row["card_what"]=="Análisis listo"
+    assert row["card_why"]=="Decisión útil"
