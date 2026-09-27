@@ -174,7 +174,7 @@ test('Global read state is shared across Home and the research page',async({page
  const free=await (await page.request.get('/data/free_value.json')).json(),teaserId=free.global_teaser.theme_id;
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page).toHaveURL(/global\.html#theme-/);
- await page.locator('#globalPeriod').selectOption('365');
+ await page.locator('#globalPeriod').selectOption('all');
  await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(themeCount-1);
  const theme=page.locator(`#theme-${teaserId}`);
  await expect(theme).toHaveClass(/read/);
@@ -324,7 +324,7 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await toggle.click();await expect(opened.locator('details')).toHaveAttribute('open','');
  await opened.getByRole('button',{name:'Volver a Ponte al día ↑'}).click();
  await expect(page.locator('#globalInbox')).toBeFocused();
- await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('365');
+ await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('all');
  await expect(page.locator('.theme')).toHaveCount(themeCount);
  await expect(page.locator('.source a')).toHaveCount(sourceCount);
  await expect(page.locator('.source a').filter({hasText:'PwC'})).toHaveAttribute('href',/^https:\/\/www\.pwc\.com\//);
