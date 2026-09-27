@@ -493,3 +493,42 @@ test('sources are grouped by decision value and expose freshness layers',async({
  await expect(first).toContainText('Última seleccionada');
  await expect(page.locator('#source-suggestion')).toContainText('¿Falta una fuente relevante?');
 });
+
+
+test('priority statistical releases publish analysis and executive tables',async({page})=>{
+ await page.goto('/');
+ await page.locator('#filterDetails summary').click();
+ await page.locator('#period').selectOption('90');
+ const radar=await (await page.request.get('/data/radar_today.json')).json();
+ const cases=[
+  ['Estadística Trimestral de Casos GES',5],
+  ['Series Estadísticas del Sistema ISAPRE',2],
+  ['Estadísticas Financieras del Sistema ISAPRE',10],
+  ['Boletín Estadístico Informativo IP',4],
+ ];
+ for(const [needle,minRows] of cases){
+   const s=radar.signals.find(x=>(x.title||'').includes(needle));
+   expect(s,needle+' missing').toBeTruthy();
+   expect((s.data_insights||[]).length,needle+' insights').toBeGreaterThanOrEqual(1);
+   expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);
+   expect(String(s.card_why||s.why_it_matters||'')).not.toMatch(/aún no exista un insight|análisis comparativo aún no está disponible|aún no ha calculado/i);
+ }
+ const fin=radar.signals.find(x=>(x.title||'').includes('Estadísticas Financieras del Sistema ISAPRE'));
+ expect(fin.summary_table.rows.map(x=>x.indicator)).toEqual(expect.arrayContaining(['Consalud','Vida Tres','Esencial']));
+ await expect(page.locator('article[data-card]').filter({hasText:'Estadísticas Financieras del Sistema ISAPRE'})).toContainText('CLP 34.091 millones');
+});
+
+test('normative resolution titles name related circular only once',async({page})=>{
+ await page.goto('/');
+ await page.locator('#filterDetails summary').click();
+ await page.locator('#period').selectOption('90');
+ const radar=await (await page.request.get('/data/radar_today.json')).json();
+ for(const [number,circular] of [['8760','529'],['9994','532']]){
+   const s=radar.signals.find(x=>x.source_url?.includes('n'+number));
+   expect(s).toBeTruthy();
+   const title=s.display_title||s.title;
+   expect((title.match(new RegExp('Circular IF/N°'+circular,'g'))||[]).length).toBe(1);
+   expect(title).toContain('Resolución Exenta IF/N°'+number);
+   expect(title).not.toMatch(/no producen$/);
+ }
+});
