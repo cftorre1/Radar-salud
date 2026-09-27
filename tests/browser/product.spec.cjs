@@ -168,10 +168,11 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
 test('Global read state is shared across Home and the research page',async({page})=>{
+ const themeCount=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')).themes.length;
  await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page).toHaveURL(/global\.html#theme-/);
- await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(2);
+ await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(themeCount-1);
  const theme=page.locator('.theme').filter({hasText:'La brecha de personal sanitario'});
  await expect(theme).toHaveClass(/read/);
  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);
@@ -292,17 +293,18 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await page.screenshot({path:`artifacts/${test.info().project.name}-cards-v2.png`,fullPage:true});
 });
 test('Global Intelligence keeps global facts, Chile hypotheses and PREMIUM distinct',async({page})=>{
+ const themeCount=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')).themes.length;
  await page.goto('/');
  await expect(page.locator('.signal.special.global [data-special-open]')).toBeVisible();
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();
  await expect(page.locator('.premium-badge')).toHaveText('Acceso PREMIUM');
  await expect(page.getByText('Vista pública de la experiencia.',{exact:false})).toHaveCount(0);
- await expect(page.locator('.global-inbox')).toContainText('2 temas no leídos');
- await expect(page.locator('.theme')).toHaveCount(3);
+ await expect(page.locator('.global-inbox')).toContainText(`${themeCount-1} temas no leídos`);
+ await expect(page.locator('.theme')).toHaveCount(themeCount);
  await expect(page.locator('.theme').first()).toContainText('Global Theme · research internacional');
  await page.locator('[data-open]').first().click();
- await expect(page.locator('.global-inbox')).toContainText('1 tema no leído');
+ await expect(page.locator('.global-inbox')).toContainText(`${themeCount-2} temas no leídos`);
  const opened=page.locator('.theme').filter({has:page.locator('details[open]')});
  await expect(opened).toContainText('Qué mirar en Chile · hipótesis, no evidencia local');
  await expect(opened).toContainText('Lectura cruzada');
