@@ -36,10 +36,17 @@ def rolling_7d_spend(path=DEFAULT_LEDGER):
         if at>=cutoff:total+=float(row.get("estimated_cost_usd") or 0)
     return round(total,6)
 
+# Standard API input/output rates per 1M tokens. Astra rate verified against
+# https://developers.openai.com/api/docs/pricing (USD 10 input / USD 50 output).
+_MODEL_PRICES_PER_MILLION={
+    "gpt-5.6-luna":(.20,1.20),
+    "gpt-5.6-terra":(2.00,12.00),
+    "gpt-6-astra":(10.00,50.00),
+}
+
 def _prices(model):
-    if model=="gpt-5.6-luna":return .20,1.20
-    if model=="gpt-5.6-terra":return 2.00,12.00
-    return 0.0,0.0
+    try:return _MODEL_PRICES_PER_MILLION[model]
+    except KeyError as exc:raise ValueError("model_pricing_missing:"+str(model)) from exc
 
 def _estimate(model,i,o):
     a,b=_prices(model);return round(i*a/1_000_000+o*b/1_000_000,6)

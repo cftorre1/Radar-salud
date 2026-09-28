@@ -44,3 +44,15 @@ def test_committee_stock_report_turns_grouped_and_degraded_items_into_hold():
     assert by_id["degrade"]["verdict"] == "HOLD"
     assert by_id["reject"]["verdict"] == "REJECT"
     assert report["counts"] == {"PASS": 1, "REVISE": 0, "HOLD": 2, "REJECT": 1}
+
+
+def test_astra_cost_estimate_uses_standard_api_input_and_output_rates():
+    from radar_salud.openai_runtime import _estimate
+    assert _estimate("gpt-6-astra", 100_000, 20_000) == 2.0
+
+
+def test_unknown_model_pricing_fails_closed():
+    import pytest
+    from radar_salud.openai_runtime import _estimate
+    with pytest.raises(ValueError, match="model_pricing_missing"):
+        _estimate("unpriced-model", 1_000, 1_000)
