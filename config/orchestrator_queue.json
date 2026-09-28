@@ -2237,6 +2237,60 @@
       ],
       "approved_at": "2026-09-27",
       "progress": "Aprobado por Dirección. Debe consumirse como siguiente frente editorial prioritario sin interrumpir trabajos ya en ejecución."
+    },
+    {
+      "id": "signal_simplification_statistics_v2_2026_09_27",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Pele + Data/BI Committee + Editorial Committee",
+      "source": "Dirección",
+      "objective": "Simplificar señales y rediseñar la experiencia estadística para maximizar comprensión y valor analítico, eliminando bloques redundantes y endureciendo validación semántica de cifras.",
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "instructions": [
+        "SEÑALES GENERALES: cuestionar el bloque 'Por qué importa' como requisito universal. Para noticias/señales factual-first, priorizar título claro + Qué pasó breve + fuente/fecha; mostrar implicancia solo cuando exista una conclusión específica, no obvia y sustentada.",
+        "No generar 'Por qué importa' genérico para rellenar estructura. Si el valor depende del contexto de cada usuario, omitirlo antes que inventar una generalidad.",
+        "Simplificar las cards visibles y el detalle: cada bloque debe aportar información incremental; eliminar duplicidad entre Qué pasó, Por qué importa, Hallazgos, Muestra validada e Implicancias.",
+        "DATOS/ESTADÍSTICAS: separar evidencia técnica/auditoría del contenido usuario. Fórmulas, sheet, hash, parser trace y comprobaciones deben seguir disponibles para QA/Reviewer/Pato, pero no ocupar por defecto el modal del usuario.",
+        "Para señales estadísticas, usar por defecto: 1) descripción de qué mide la publicación; 2) tabla resumen autoexplicativa; 3) una lectura/conclusión breve si realmente agrega valor; 4) implicancia sólo si es específica y sustentada; 5) fuente.",
+        "Eliminar o colapsar el bloque visible 'Muestra de datos validada · período, cálculo y evidencia' cuando repite la tabla; mover evidencia metodológica a una capa secundaria opcional o admin.",
+        "GES: reemplazar la tabla actual basada en códigos/indicadores opacos (21, 7, 19...) por nombres de problemas de salud comprensibles. Incorporar más datos útiles en la tabla principal (p.ej. Fonasa, Isapre, total y participación Isapre/Fonasa cuando sea estadísticamente válido) antes de agregar bloques adicionales.",
+        "GES: no mostrar una segunda/tercera sección si solo repite que el mayor volumen es el primero o advierte genéricamente sobre prevalencia. Priorizar ranking con nombres, magnitudes y una sola conclusión material.",
+        "SERIES ISAPRE: auditar por completo el parser year_total. No aceptar una fila sólo porque contiene 'total/sistema/general'. Validar nombre de variable, unidad, tipo (conteo, CLP, prestaciones, beneficiarios, casos), hoja y escala antes de publicar.",
+        "SERIES ISAPRE: el valor de Prestaciones 4.784.847.384.336 debe tratarse como red flag y quedar fail-closed hasta confirmar semántica/unidad desde el workbook oficial. Agregar sanity checks de magnitud y unidad por familia.",
+        "SERIES ISAPRE: no comparar en una misma tabla variables heterogéneas como si fueran equivalentes. Cada fila debe declarar unidad. Si las unidades no son homogéneas, la columna debe ser explícita y la lectura debe evitar comparación transversal engañosa.",
+        "SERIES ISAPRE: una tabla 2024→2025 debe poder mostrar valor 2024, valor 2025, variación absoluta y variación %, evitando que el usuario tenga que abrir un segundo bloque para recuperar el dato base.",
+        "FINANCIERAS: conservar tabla resumen, pero definir claramente cada variable/columna (ingresos, resultado operacional, utilidad/pérdida, MM$ u otra unidad). Agregar tooltip/glosario breve o etiquetas autoexplicativas.",
+        "FINANCIERAS: mantener implicancias cuando sean específicas (ej. utilidad positiva con resultado operacional negativo), pero eliminar el bloque de 'muestra validada' del flujo principal si no agrega comprensión.",
+        "FINANCIERAS: revisar que la fuente_url de evidencia corresponda realmente a la estadística financiera oficial; no aceptar enlaces incongruentes.",
+        "Agregar Data Analytics/Statistics Reviewer permanente para publicaciones de Datos. Debe validar semántica, unidad, denominador, comparabilidad, magnitud, periodicidad, stock vs flujo y si la conclusión aporta algo no trivial.",
+        "Agregar un 'incremental value gate': cada bloque visible debe responder qué información nueva agrega respecto del bloque anterior. Si no agrega, se elimina/colapsa.",
+        "Aplicar a las cuatro familias actuales: GES marzo 2026, Series ISAPRE 1990-2025, Estadísticas financieras marzo 2026 y Boletín IP junio 2026.",
+        "Builder → Data QA → Editorial/Product Reviewer → mobile/desktop QA → Improvement Review. No promover a main/producción."
+      ],
+      "constraints": [
+        "No sacrificar trazabilidad: evidencia técnica puede moverse de capa, no eliminarse del sistema.",
+        "No publicar cifras cuya unidad o significado no esté validado.",
+        "No inferir prevalencia, causalidad o desempeño a partir de volumen bruto.",
+        "No mezclar stock, flujo, montos y conteos sin etiquetado explícito.",
+        "No llenar espacios con interpretaciones genéricas.",
+        "No tocar main/producción."
+      ],
+      "evidence_required": [
+        "auditoría semántica de cada variable estadística y unidad",
+        "sanity tests de magnitud y tipo",
+        "GES con nombres de problemas y tabla enriquecida",
+        "Series ISAPRE con valores base y variaciones correctas",
+        "financieras con definiciones de variables",
+        "comparación before/after de densidad informativa",
+        "Data/Statistics Reviewer PASS",
+        "QA desktop/mobile",
+        "Improvement Review",
+        "learning ledger actualizado"
+      ],
+      "approved_at": "2026-09-27",
+      "progress": "Aprobado por Dirección a partir de revisión mobile. Ejecutar después de no interrumpir el frente actualmente en curso, pero con prioridad crítica dentro del backlog."
     }
   ],
   "execution_policy": {
