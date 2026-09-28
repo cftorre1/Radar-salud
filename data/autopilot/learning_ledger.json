@@ -331,11 +331,12 @@
         "reference_sha_anchor_review"
       ],
       "preventive_rule": "Al añadir evidencia de una tarea, actualizar su clave independiente en evidence_catalog; no mover anclas de evidencia baseline salvo reconciliación explícita de todas las entradas dependientes.",
-      "status": "implemented_pending_validation",
+      "status": "validated_in_staging",
       "attempts": 1,
       "max_attempts": 3,
       "evidence": [
-        "https://github.com/cftorre1/Radar-salud/actions/runs/36430160293 — fallo test_validated_requires_full_evidence_for_exact_candidate; 243 pass, 1 fallo por mismatch del ancla."
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36430160293 — fallo test_validated_requires_full_evidence_for_exact_candidate; 243 pass, 1 fallo por mismatch del ancla.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36430841007 — restaurar reference_staging_sha separó ancla histórica del candidate por tarea; 244 Python, 39 Node, 46 browser, Reviewer y preview/smoke PASS."
       ]
     }
   ]
