@@ -34,6 +34,26 @@ def _level_direction(current: float, previous: float) -> str:
     return "se mantuvo"
 
 
+def is_material_weekly_change(dataset: dict[str, Any]) -> bool:
+    """Gate the public pulse on a measured week-over-week change.
+
+    A high occupancy value alone is context, not a weekly change, so it
+    cannot create a recurring signal.
+    """
+    try:
+        virus = dataset["virus_surveillance"]
+        care = dataset["care_pressure"]
+        return (
+            abs(_pct(virus["positivity_pct"]) - _pct(virus["previous_positivity_pct"])) >= 5
+            or abs(_pct(care["respiratory_emergency_share_pct"])
+                   - _pct(care["previous_respiratory_emergency_share_pct"])) >= 5
+            or abs(_pct(care["lower_respiratory_emergency_visits_weekly_change_pct"])) >= 15
+            or abs(_pct(care["respiratory_hospitalizations_weekly_change_pct"])) >= 10
+        )
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
 def build_respiratory_pressure(dataset: dict[str, Any], today: date | None = None) -> dict[str, Any] | None:
     """Return a provider-ready signal only when the complete official record reconciles."""
     try:
@@ -71,6 +91,8 @@ def build_respiratory_pressure(dataset: dict[str, Any], today: date | None = Non
         adult_occupancy = _pct(care["adult_critical_bed_occupancy_pct"])
         pediatric_respiratory = _pct(care["pediatric_respiratory_share_pct"])
         adult_respiratory = _pct(care["adult_respiratory_share_pct"])
+        if not is_material_weekly_change(dataset):
+            return None
         risk_notes = dataset["risk_notes"]
         if not isinstance(risk_notes, list) or len(risk_notes) < 2 or not all(isinstance(x, str) and x for x in risk_notes):
             raise ValueError("missing risk disclosure")
@@ -84,11 +106,11 @@ def build_respiratory_pressure(dataset: dict[str, Any], today: date | None = Non
             "publication_date": report_day.isoformat(),
             "data_period": f"SE {week} · {start.isoformat()} a {end.isoformat()}",
             "signal_types": ["Datos"],
-            "scopes": ["Salud pública", "Prestadores"],
+            "scopes": ["Salud pública", "Prestadores", "Fonasa", "Isapres"],
             "ingestion_mode": "BACKFILL",
             "category": "Epidemiología y presión asistencial",
             "event_type": "DATA_PULSE",
-            "distribution": "provider_ready_not_promoted",
+            "distribution": "promoted_material_weekly_change",
             "radar_score": 78,
             "confidence_score": 100,
             "what_happened": (
@@ -122,8 +144,19 @@ def build_respiratory_pressure(dataset: dict[str, Any], today: date | None = Non
                     "actionability": 80,
                     "evidence_strength": 90
                 },
-                "evidence_refs": [{"url": source["url"], "source": "Ministerio de Salud de Chile"}],
+                "evidence_refs": [
+                    {"url": source["url"], "source": "MINSAL · presión asistencial y reporte semanal"},
+                    {"url": dataset.get("lab_surveillance_source_url") or "https://www.ispch.cl/virusrespiratorios",
+                     "source": "ISP · vigilancia de laboratorio citada en el reporte"}
+                ],
                 "factuality": "official_report_with_disclosed_internal_inconsistency"
+            },
+            "epidemiology": {
+                "epidemiological_week": week,
+                "laboratory_source": "ISP",
+                "care_pressure_source": "MINSAL",
+                "material_weekly_change": True,
+                "materiality_rule": "positivity_or_emergency_share_delta_pp>=5 OR lower_respiratory_emergency_change_pct>=15 OR respiratory_hospitalization_change_pct>=10"
             }
         }
     except (KeyError, TypeError, ValueError):

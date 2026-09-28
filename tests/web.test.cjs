@@ -71,7 +71,7 @@ test('Bupa and Pulso retain approved business depth without weak references',()=
  assert.match(bupa.what_happened,/Mindplace/);
  assert.deepEqual(bupa.related_context||[],[]);
  assert.deepEqual(bupa.source_alternatives||[],[]);
- const pulso=radar.signals.find(s=>s.event_type==='DATA_PULSE');
+ const pulso=radar.signals.find(s=>s.event_type==='DATA_PULSE'&&/Isapre/.test(s.title||''));
  assert.ok(pulso);
  assert.match(pulso.title,/Pulso Isapre/);
  assert.ok(pulso.summary_table?.rows?.length>=6);

@@ -253,6 +253,12 @@ def _statistical_analysis_overrides(path=Path("data/statistical_analysis_overrid
     rows=payload.get("signals",{}) if isinstance(payload,dict) else {}
     return rows if isinstance(rows,dict) else {}
 
+def add_material_epidemiology(signals, payload):
+    """Append only a promoted material-week pulse; never leak provider-ready drafts."""
+    if not isinstance(payload,dict) or payload.get("status")!="promoted_material_weekly_change":
+        return list(signals)
+    return [*signals, *(x for x in payload.get("signals",[]) if isinstance(x,dict))]
+
 def _apply_statistical_analysis(signals):
     overrides=_statistical_analysis_overrides()
     out=[]
@@ -502,6 +508,13 @@ def main():
         try:pulse=build_pulse(json.loads(canonical.read_text(encoding="utf-8")),signals)
         except (OSError,ValueError,TypeError):pulse=None
         if pulse:signals.append(pulse)
+    epidemiology_path=Path("web/data/epidemiology.json")
+    if epidemiology_path.exists():
+        try:
+            epidemiology=json.loads(epidemiology_path.read_text(encoding="utf-8"))
+            signals=add_material_epidemiology(signals,epidemiology)
+        except (OSError,ValueError,TypeError):
+            pass
     payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":apply_reviewed_copy(curate(signals,resolve_external=not args.offline))}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")

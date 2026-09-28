@@ -1,5 +1,5 @@
 {
-  "status": "provider_ready_not_promoted",
+  "status": "promoted_material_weekly_change",
   "signals": [
     {
       "title": "Urgencias respiratorias baja, con ocupación crítica adulta en 93.1%",
@@ -14,12 +14,14 @@
       ],
       "scopes": [
         "Salud pública",
-        "Prestadores"
+        "Prestadores",
+        "Fonasa",
+        "Isapres"
       ],
       "ingestion_mode": "BACKFILL",
       "category": "Epidemiología y presión asistencial",
       "event_type": "DATA_PULSE",
-      "distribution": "provider_ready_not_promoted",
+      "distribution": "promoted_material_weekly_change",
       "radar_score": 78,
       "confidence_score": 100,
       "what_happened": "En SE 37, la positividad respiratoria bajó de 56.7% a 53.7% y la proporción de urgencias respiratorias de 31.8% a 29.2%.",
@@ -51,10 +53,21 @@
         "evidence_refs": [
           {
             "url": "https://www.minsal.cl/wp-content/uploads/2026/09/26-Reporte-Semanal-Campana-de-Invierno-24-09-2026_.pdf",
-            "source": "Ministerio de Salud de Chile"
+            "source": "MINSAL · presión asistencial y reporte semanal"
+          },
+          {
+            "url": "https://www.ispch.cl/virusrespiratorios",
+            "source": "ISP · vigilancia de laboratorio citada en el reporte"
           }
         ],
         "factuality": "official_report_with_disclosed_internal_inconsistency"
+      },
+      "epidemiology": {
+        "epidemiological_week": 37,
+        "laboratory_source": "ISP",
+        "care_pressure_source": "MINSAL",
+        "material_weekly_change": true,
+        "materiality_rule": "positivity_or_emergency_share_delta_pp>=5 OR lower_respiratory_emergency_change_pct>=15 OR respiratory_hospitalization_change_pct>=10"
       }
     }
   ]

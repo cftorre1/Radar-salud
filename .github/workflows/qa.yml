@@ -43,6 +43,8 @@ jobs:
           fi
       - name: Build priority statistical deep analysis
         run: python scripts/build_statistics_deep_analysis.py
+      - name: Build fresh material epidemiology signal
+        run: python scripts/build_epidemiology_snapshot.py
       - name: Recurate current history without external lookups
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline
       - name: Validate and export the canonical Global Intelligence sample

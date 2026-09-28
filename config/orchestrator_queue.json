@@ -2438,7 +2438,7 @@
     },
     {
       "id": "coverage_balance_sources_epidemiology_v1_2026_09_28",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Pele + Source Intelligence + Editorial/Data Committee",
       "source": "Dirección",
@@ -2480,7 +2480,42 @@
         "learning/coverage rules persistidas"
       ],
       "approved_at": "2026-09-28",
-      "progress": "Aprobado por Dirección. Ejecutar como expansión de valor sin esperar configuración humana de correo/backend."
+      "progress": "Subfrente 1/5 implementado y PASS local: señal respiratoria material y vigente conectada al feed; clasificación ISP laboratorio/MINSAL presión asistencial, atribución, caducidad 14 días y regla anti-repetición. Local: 246 Python, 39 Node, 46 Playwright; Reviewer determinístico PASS sin findings. Pendiente validar el commit remoto de staging; no etiquetado LIVE. El review registra como límite la falta de reconciliación independiente del archivo ISP.",
+      "execution_subfronts": [
+        {
+          "id": "epidemiology_visible_material_pulse",
+          "status": "validating_staging",
+          "scope": "Feed visible con cambio material semanal, vigencia 14 días, fuente ISP laboratorio separada de MINSAL presión asistencial, scopes transversales y no causalidad.",
+          "local_evidence": [
+            "246 tests Python PASS",
+            "39 tests Node PASS",
+            "46 Playwright desktop/mobile PASS",
+            "Reviewer local data/editorial/statistics/ux PASS, findings=[]"
+          ],
+          "improvement_review": "docs/IMPROVEMENT_REVIEW_COVERAGE_EPIdEMIOLOGY_2026_09_28.md",
+          "remaining": "Confirmar Actions de staging para commit y guardar SHA/run antes de pasar al subfrente de prestadores."
+        },
+        {
+          "id": "provider_sector_and_corporate_sources",
+          "status": "pending",
+          "scope": "Clínicas de Chile A.G.; evaluación e integración con filtros de negocio de INDISA, Clínica Alemana y UC CHRISTUS."
+        },
+        {
+          "id": "fonasa_official_indirect_coverage",
+          "status": "pending",
+          "scope": "Fuentes oficiales accesibles, señal público-privada y límites explícitos ante bloqueo Fonasa directo."
+        },
+        {
+          "id": "prestadores_data_and_segment_dashboard",
+          "status": "pending",
+          "scope": "Boletín IP e indicadores diagnósticos Isapres/Prestadores/Fonasa-Sistema Público/Transversal."
+        },
+        {
+          "id": "integrated_review_and_learning",
+          "status": "pending",
+          "scope": "QA/Reviewer/Improvement Review integrada, learning rules persistidas y cierre de evidencia."
+        }
+      ]
     }
   ],
   "execution_policy": {
