@@ -154,6 +154,22 @@
         "sha": "1ca766b258d5000e37ab0f09a7773315dd46e61c",
         "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36366375881"
       }
+    },
+    {
+      "id": "normative_v2_canonical_persistence_gap_2026_09_28",
+      "source": "Pedro QA",
+      "class": "pipeline_contract_persistence",
+      "finding": "Normative Editorial V2 podía transformar títulos durante el pipeline, pero el snapshot versionado/final seguía conservando display_title jurídicos antiguos o truncados; los tests dependían además de frases demasiado específicas.",
+      "root_cause": "La autoridad canónica de la recuración normativa no estaba suficientemente definida entre overrides, export_web_snapshot y snapshot final. El QA comprobaba partes del contrato, pero no que los campos finales persistidos fueran la fuente efectiva de UI.",
+      "preventive_controls": [
+        "canonical-transformation authority per content contract",
+        "post-export contract validation on final snapshot",
+        "stable identity selectors by source_url/document number",
+        "semantic title assertions separated from locator identity",
+        "pipeline persistence regression test"
+      ],
+      "status": "approved_in_execution",
+      "queue_task": "normative_editorial_v2_2026_09_27"
     }
   ]
 }
