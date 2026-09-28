@@ -182,8 +182,8 @@ def test_tea_preproduction_copy_is_descriptive_and_operationally_complete():
     history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
     original=next(s for s in history if s.get("source_url")=="https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/")
     row=m._normative_contract(m._card_micro(original))
-    assert row["title"].startswith("Isapres: cobertura TEA sin tope anual")
-    assert "RND" in row["card_what"] and "evaluaciones repetidas" in row["card_what"]
+    assert "Resolución Exenta IF/N°11156" in row["display_title"] and "TEA" in row["display_title"] and "mantiene" in row["display_title"]
+    assert "RND" in row["normative_context"]
     assert "15 días hábiles" in row["card_why"]
     assert "1 de noviembre de 2026" in row["card_why"]
     assert row["normative_document_label"]=="Resolución Exenta IF/N°11156"
@@ -285,6 +285,6 @@ def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_rev
     assert all(x["normative_editorial"]["plain_language_title"]==x["display_title"] for x in rows)
     assert all(x["normative_editorial"]["legal_identity"]==x["normative_document_label"] for x in rows)
     assert all(x["legal_subtitle"] for x in rows)
-    assert any(x["source_url"].endswith("n9994/") and "Suscripción y desafiliación" in x["display_title"] for x in rows)
+    assert any(x["source_url"].endswith("n9994/") and "Afiliación electrónica" in x["display_title"] and "rechaza" in x["display_title"] and "Circular IF/N°532" in x["display_title"] for x in rows)
     unknown={"event_type":"REGULATION","title":"Circular IF/N°123456","source_title_full":"Circular IF/N°123456","source_url":"https://x/n123456","signal_types":["Normativa"]}
     assert m._normative_contract(unknown)["normative_title_review_required"] is True
