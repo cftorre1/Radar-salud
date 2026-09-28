@@ -163,9 +163,9 @@ def _normative_contract(s):
     r=dict(s)
     if r.get("event_type")!="REGULATION":return r
     title=str(r.get("source_title_full") or r.get("title") or "").strip()
-    m=re.search(r"\\b(Resolución(?:\\s+Exenta)?|Circular|Oficio|Decreto)\\s+(?:(IF|IP)\\s*[/\\-]?\\s*)?N?[°º]?\\s*([\\d\\.]+)",title,re.I)
+    m=re.search(r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)",title,re.I)
     if not m:return r
-    kind=" ".join(m.group(1).split());prefix=(m.group(2) or "").upper();number=re.sub(r"\\D","",m.group(3))
+    kind=" ".join(m.group(1).split());prefix=(m.group(2) or "").upper();number=re.sub(r"\D","",m.group(3))
     label=f"{kind} {prefix+'/' if prefix else ''}N°{m.group(3)}"
     r.update({"normative_document_type":kind,"normative_document_number":f"{prefix+'/' if prefix else ''}N°{m.group(3)}","normative_document_label":label,"legal_identity":label})
     cfg=_normative_v2_config();record=cfg.get("records",{}).get(number,{})
@@ -173,9 +173,9 @@ def _normative_contract(s):
     if record.get("plain_language_title"):
         plain=record["plain_language_title"].strip();subtitle=record.get("legal_subtitle") or label;reviewed=True
     else:
-        opaque=bool(re.fullmatch(r"(?:Resolución(?:\\s+Exenta)?|Circular|Oficio|Decreto)\\s+(?:(?:IF|IP)\\s*[/\\-]?\\s*)?N?[°º]?\\s*[\\d\\.]+",current,re.I))
-        plain=re.sub(rf"^\\s*{re.escape(label)}\\s*(?:sobre\\s+|[·:–-]\\s*)?","",current,flags=re.I).strip()
-        plain=re.sub(r"\\s*[·:–-]\\s*(?:(?:IF|IP)/)?N[°º]?[\\d\\.]+\\s*$","",plain,flags=re.I).strip()
+        opaque=bool(re.fullmatch(r"(?:Resolución(?:\s+Exenta)?|Circular|Oficio|Decreto)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",current,re.I))
+        plain=re.sub(rf"^\s*{re.escape(label)}\s*(?:sobre\s+|[·:–-]\s*)?","",current,flags=re.I).strip()
+        plain=re.sub(r"\s*[·:–-]\s*(?:(?:IF|IP)/)?N[°º]?[\d\.]+\s*$","",plain,flags=re.I).strip()
         stop=set(cfg.get("title_contract",{}).get("reject_trailing_words",[]))
         clear=(not opaque and len(plain)>=int(cfg.get("title_contract",{}).get("min_characters",28)) and plain.split()[-1].strip(".,;:!?").lower() not in stop and plain.lower()!=str(r.get("normative_subject") or "").lower())
         reviewed=False;subtitle=label
