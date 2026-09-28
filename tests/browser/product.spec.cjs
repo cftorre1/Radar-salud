@@ -156,7 +156,7 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  await page.screenshot({path:`artifacts/${test.info().project.name}-home-v2-final.png`,fullPage:true});
 });
 test('Date-only signals remain inside the 14-day window across UTC midnight',async({page})=>{
- await page.addInitScript(()=>{Date.now=()=>new Date('2026-09-28T23:59:00Z').getTime()});
+ await page.addInitScript(()=>{const NativeDate=Date,fixed=NativeDate.parse('2026-09-28T23:59:00Z');class FixedDate extends NativeDate{constructor(...args){super(...(args.length?args:[fixed]))}static now(){return fixed}}window.Date=FixedDate});
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  const data=await (await page.request.get('/data/free_value.json')).json();
  expect(data.weekly_insight?.event_date).toBe('2026-09-14');
