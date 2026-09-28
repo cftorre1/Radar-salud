@@ -170,6 +170,21 @@
       ],
       "status": "approved_in_execution",
       "queue_task": "normative_editorial_v2_2026_09_27"
+    },
+    {
+      "id": "autopilot_manual_followup_regression_2026_09_28",
+      "source": "Toba",
+      "class": "autonomy_failure",
+      "finding": "Despite Autopilot V1 infrastructure, progress still depended on Toba asking for status because monitoring automations could not continue GitHub writes/reasoning autonomously.",
+      "root_cause": "Monitoring and execution were conflated. The hourly automation is an observer, not a durable write-capable Work execution lane. Pelé Work was specified but not actually activated/observed.",
+      "preventive_controls": [
+        "real Work execution lane required before claiming autonomy",
+        "autonomy acceptance test: fail→repair/switch→continue without human prompt",
+        "owner-followup count KPI",
+        "do not mark Autopilot operationally complete on monitoring-only evidence"
+      ],
+      "status": "blocked_human_activation_required",
+      "queue_task": "pele_work_activation_2026_09_27"
     }
   ]
 }
