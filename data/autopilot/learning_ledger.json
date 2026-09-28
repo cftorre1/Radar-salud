@@ -231,8 +231,24 @@
         "official_period_sheet_contract",
         "statistics_reviewer_denominator_checks"
       ],
-      "status": "recovery_in_progress",
+      "status": "recovered",
       "attempts": 2,
+      "max_attempts": 3
+    },
+    {
+      "id": "series_beneficiary_duplicate_total_recovery_2026_09_28",
+      "source": "Autopilot QA recovery",
+      "class": "statistical_series_semantic_ambiguity",
+      "finding": "La serie de cartera ofreció dos filas agregadas elegibles para Beneficiarios.",
+      "specific_fix": "Requerir que la propia etiqueta de fila mencione beneficiarios; la hoja no basta para inferir la variable.",
+      "root_cause": "El filtro semántico aceptaba cualquier fila total de un libro cuyo nombre contenía Beneficiarios.",
+      "preventive_controls": [
+        "variable_identity_in_row_label",
+        "ambiguous_aggregate_fail_closed",
+        "series_unit_and_scale_reviewer"
+      ],
+      "status": "recovery_in_progress",
+      "attempts": 1,
       "max_attempts": 3
     }
   ]

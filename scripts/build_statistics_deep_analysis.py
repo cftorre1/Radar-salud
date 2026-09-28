@@ -142,7 +142,7 @@ def validated_year_totals(url, variable, unit, lower, upper):
                 sheet_text = ws.title.lower()
                 if not any(term in label for term in ("total", "sistema")):
                     continue
-                if variable == "Beneficiarios" and "benefici" not in (label + " " + sheet_text):
+                if variable == "Beneficiarios" and "benefici" not in label:
                     continue
                 if variable == "Casos GES" and not any(term in (label + " " + sheet_text) for term in ("casos ges", "ges")):
                     continue
