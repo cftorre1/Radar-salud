@@ -537,12 +537,14 @@ test('priority statistical releases use compact tables and collapsed traceabilit
  const bulletin=radar.signals.find(x=>(x.title||'').includes('Boletín Estadístico Informativo IP'));
  expect(new Set(bulletin.summary_table.rows.map(r=>r.cells[0]))).toEqual(new Set(['Acreditación','Mediación','Reclamos','RNPI']));
  const card=page.locator('article[data-card]').filter({hasText:'Estadísticas Financieras del Sistema ISAPRE'});
+ await expect(card).not.toContainText('Por qué importa:');
  await card.locator('[data-detail]').click();
  const detail=page.locator('#detailBody');
  await expect(detail.locator('.summary-table')).toBeVisible();
  await expect(detail.locator('details.statistical-methodology')).not.toHaveAttribute('open','');
  await expect(detail).not.toContainText('Muestra de datos validada');
  await expect(detail.locator('.source')).toContainText('Fuente original');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
 });
 
