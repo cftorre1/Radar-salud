@@ -1400,6 +1400,15 @@
     {
       "date": "2026-09-27T21:40:00+00:00",
       "change": "PMO reconciliado: Beta cerrada read-only separada de readiness comercial; blockers obsoletos retirados y activation gates reclasificados."
+    },
+    {
+      "date": "2026-09-27",
+      "change": "Autopilot V1.0 validado: rescate de stall, liveness 60 min, Improvement Review, Learning Reviewer, learning ledger y gate de preview remoto. Se separa explícitamente infraestructura autónoma validada de la activación pendiente de Pelé en ChatGPT Work.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36362589074",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36363014542",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36363431187"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1409,12 +1418,6 @@
       "severity": "warning",
       "description": "FONASA oficial discovery 0, technical_status error HTTPError en piloto #23; no validada como fuente activa.",
       "source": "Daily Radar pilot #21; data/state/discovery_run.json y data/source_health.json"
-    },
-    {
-      "id": "autopilot_preview_not_verified",
-      "severity": "critical",
-      "description": "Autopilot distingue QA aprobado, pero aún no verifica el resultado del preview remoto ni registra su fallo para retry.",
-      "source": "src/radar_salud/autopilot.py; .github/workflows/autopilot.yml"
     },
     {
       "id": "beta_contract_not_gated",
@@ -1627,7 +1630,7 @@
       "id": "orchestrator_autonomous_executor_v2_2026_09_27",
       "priority": "Crítica",
       "horizon": "Inmediato",
-      "status": "Bloqueado por permisos del runtime",
+      "status": "Mitigado por Autopilot V1",
       "description": "Ejecutor horario real + guard de liveness para evitar tareas approved/in_progress silenciosamente detenidas. Distingue monitorización de ejecución: si hay trabajo ejecutable sin commit nuevo, debe marcar stalled, reanudar un slice seguro o escalar un blocker de escritura.",
       "constraints": [
         "staging only",
@@ -1635,8 +1638,20 @@
         "no cambios sensibles sin aprobación"
       ],
       "evidence": "orchestrator_autonomous_executor_v2_2026_09_27",
-      "implementation": "Liveness guard + Autopilot horario implementados; ejecutor automation desactivado tras comprobar que el runtime no puede escribir GitHub.",
-      "blocker": "La capa de seguridad del runtime de automations bloquea mutaciones GitHub. La ejecución real debe continuar desde lane interactivo/Work con escritura comprobada."
+      "implementation": "Autopilot V1 validado en staging con liveness 60 min, learning loop y preview remoto verificado. La escritura inteligente de larga duración sigue reservada a Work/lane interactivo; existe red horaria de seguridad.",
+      "blocker": "La activación de Pelé como sesión ChatGPT Work no puede iniciarse desde este chat normal; requiere una activación real en Work y luego evidencia durable."
+    },
+    {
+      "id": "pele_work_activation_2026_09_27",
+      "priority": "Crítica",
+      "horizon": "Inmediato",
+      "status": "Bloqueo humano de activación",
+      "description": "Activar Pelé en ChatGPT Work con el contrato durable ya versionado para explotar sesiones largas autónomas de ejecución y recuperación.",
+      "constraints": [
+        "una sola activación inicial; luego operar desde queue/PMO",
+        "sin main/producción automático"
+      ],
+      "blocker": "Debe iniciarse/autorizarse una ejecución real en Work; no se puede simular desde chat normal."
     }
   ],
   "external_observations": [
@@ -1687,10 +1702,38 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/35939432026 — rollback real previo; mismo mecanismo conservado; no se indujo un fallo en este ciclo",
         "Producción: último deploy #90, https://github.com/cftorre1/Radar-salud/actions/runs/36018933311; no apareció un run #91 durante piloto y preview; main 28be310 no desplegado."
       ]
+    },
+    {
+      "id": "autopilot_v1_2026_09_27",
+      "title": "Autopilot V1.0 — recuperación autónoma, mejora continua y aprendizaje sistémico",
+      "status": "Validado",
+      "priority": "Crítica",
+      "scope": [
+        "Liveness 60 minutos y prohibición de espera silenciosa.",
+        "Recuperación acotada, registro de blockers y continuación por frentes independientes.",
+        "Improvement Review posterior al PASS funcional.",
+        "Learning Reviewer y learning ledger para transformar hallazgos humanos en capacidad preventiva.",
+        "Contrato durable de Pelé Work.",
+        "Preview remoto despachado, esperado, verificado y persistido antes de aceptar el ciclo."
+      ],
+      "constraints": [
+        "staging/work branches por defecto",
+        "sin auto-promoción a main/producción",
+        "sin decisiones de estrategia, presupuesto, credenciales, legal o privacidad sin Dirección"
+      ],
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36362589074 — rescate staging #544 PASS",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36363014542 — Autopilot V1 #545 PASS",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36363431187 — preview gate #546 PASS",
+        "docs/AUTOPILOT_V1.md",
+        "docs/PELE_WORK_CONTRACT.md",
+        "config/system_learning_policy.json",
+        "data/autopilot/learning_ledger.json"
+      ]
     }
   ],
   "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
-  "current_staging_candidate_sha": "fbb6bad08870dbfb8748f53c0e2ce8443d1911ee",
+  "current_staging_candidate_sha": "250cfa28e92f4f15fd062a6d28295ad9923eaed0",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
