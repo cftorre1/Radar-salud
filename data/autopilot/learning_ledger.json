@@ -28,6 +28,20 @@
         "agent_creation_rule"
       ],
       "status": "implemented_pending_integration"
+    },
+    {
+      "id": "mutable_copy_selector_2026_09_27",
+      "source": "Autopilot recovery",
+      "class": "regression_contract_design",
+      "finding": "Browser QA anchored a normative card to mutable descriptive heading copy; editorial title reconciliation made the selector fail although the underlying TEA content remained correct.",
+      "specific_fix": "Anchor the TEA browser contract to stable normative identity (Resolución Exenta IF/N°11156 + Circular IF/Nº528) while retaining substantive assertions on RND, deadlines and effective date.",
+      "root_cause": "QA selector encoded presentation copy instead of stable domain identity.",
+      "preventive_controls": [
+        "browser_qa_assertion",
+        "reviewer_rule"
+      ],
+      "preventive_rule": "Entity/document identity selectors must prefer stable IDs, document numbers, canonical URLs or data attributes; descriptive copy belongs in separate semantic assertions.",
+      "status": "implemented_in_recovery_branch_pending_validation"
     }
   ]
 }
