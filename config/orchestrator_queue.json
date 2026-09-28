@@ -2102,7 +2102,7 @@
     },
     {
       "id": "autopilot_v1_2026_09_27",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Paolo + Pele",
       "source": "Dirección",
@@ -2131,12 +2131,49 @@
         "ciclo recurrente de seguridad habilitado",
         "bloqueo/limitación de Pelé Work registrado si su activación requiere acción humana"
       ],
-      "progress": "Infraestructura V1 implementada en rama rebased; pendiente QA completo e integración a staging.",
+      "progress": "Autopilot V1 integrado y validado en staging; recuperación anti-silencio, Improvement Review, Learning Reviewer, learning ledger, liveness 60 min y verificación remota de preview implementados.",
       "evidence": [
         "Staging recuperado y validado en run #544 antes de rebase de Autopilot V1.",
         "Autopilot V1 isolated validation PASS en iteraciones previas.",
-        "Tarea recurrente horaria de seguridad habilitada en ChatGPT."
-      ]
+        "Tarea recurrente horaria de seguridad habilitada en ChatGPT.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36362589074 — staging rescue #544 PASS",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36363014542 — Autopilot V1 #545 PASS",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36363431187 — remote preview gate #546 PASS"
+      ],
+      "completed_at": "2026-09-27"
+    },
+    {
+      "id": "pele_work_activation_2026_09_27",
+      "status": "blocked",
+      "priority": "critical",
+      "owner": "Pele",
+      "source": "Dirección",
+      "objective": "Activar ChatGPT Work como agente autónomo de larga duración usando docs/PELE_WORK_CONTRACT.md sobre el repositorio Alicanto.",
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "blocked_by": [
+        "work_mode_activation"
+      ],
+      "instructions": [
+        "Abrir Alicanto en Work y usar docs/PELE_WORK_CONTRACT.md como contrato maestro.",
+        "Conectar GitHub y permitir ejecución sobre staging/work branches dentro de los guardrails V1.",
+        "Consumir backlog, recuperar fallas, ejecutar Improvement Review y actualizar Pato/cola sin retransmisión humana.",
+        "Usar el ciclo horario ya habilitado como red de seguridad, no como sustituto de sesiones largas de Work."
+      ],
+      "constraints": [
+        "No main/producción sin Dirección.",
+        "No gasto/credenciales/estrategia/legal/privacidad sin escalación.",
+        "No cerrar este blocker hasta observar al menos una ejecución real de Work con escritura/evidencia durable."
+      ],
+      "evidence_required": [
+        "Work run real",
+        "lectura del contrato PELE_WORK_CONTRACT",
+        "mutación autorizada o evidencia de ejecución útil",
+        "actualización durable de queue/PMO",
+        "reanudación sin intervención de Toba"
+      ],
+      "progress": "Infraestructura y contrato listos; requiere iniciar/autorizar una ejecución en ChatGPT Work. No se simula esta activación desde chat normal."
     }
   ],
   "execution_policy": {
