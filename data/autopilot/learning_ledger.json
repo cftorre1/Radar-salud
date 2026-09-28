@@ -115,6 +115,24 @@
       ],
       "status": "approved_in_execution",
       "queue_task": "normative_editorial_v2_2026_09_27"
+    },
+    {
+      "id": "statistics_redundancy_semantic_validation_2026_09_27",
+      "source": "Toba",
+      "class": "missed_agent_finding",
+      "finding": "Cards y detalles muestran 'Por qué importa' genéricos y estadísticas con bloques redundantes; además Series ISAPRE presenta una cifra de Prestaciones de magnitud/semántica no explicada.",
+      "specific_fix": "Signal Simplification + Statistics V2 con tabla-first, evidencia técnica secundaria y validación semántica/unidad fail-closed.",
+      "root_cause": "El pipeline optimizó completitud estructural y trazabilidad visible, pero no midió valor incremental de cada bloque ni validó suficientemente la semántica de la fila/variable seleccionada por parsers heurísticos.",
+      "preventive_controls": [
+        "Data Analytics/Statistics Reviewer",
+        "semantic variable/unit contract",
+        "magnitude sanity checks",
+        "incremental-value gate",
+        "evidence-layer separation",
+        "family-specific regression corpus"
+      ],
+      "status": "approved_in_execution",
+      "queue_task": "signal_simplification_statistics_v2_2026_09_27"
     }
   ]
 }
