@@ -1,7 +1,7 @@
 {
   "version": "beta-friday-2026-09-25",
   "target_date": "2026-09-25",
-  "reference_staging_sha": "8db66b691135c8616120154b7253f9342ee5f93f",
+  "reference_staging_sha": "3433b3e26f4d76ea6ce0970015bc03e10fd85105",
   "production_reference_sha": "ea55bc7e084b54ff07cb25ea50e211186dfb1c63",
   "statuses": [
     "Aprobado",
@@ -107,8 +107,8 @@
     },
     "staging_qa": {
       "kind": "github_actions",
-      "sha": "8db66b691135c8616120154b7253f9342ee5f93f",
-      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36019691556",
+      "sha": "3433b3e26f4d76ea6ce0970015bc03e10fd85105",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36366521336",
       "checks": [
         "tests",
         "desktop",
@@ -531,6 +531,27 @@
         "preview/smoke"
       ],
       "summary": "Home compactado; newsletter strip; acceso directo Global; métrica sin período duplicado; teaser Global con frescura ≤14 días como gate y score estratégico/comercial."
+    },
+    "closed_beta_read_only_qa": {
+      "kind": "github_actions",
+      "sha": "3433b3e26f4d76ea6ce0970015bc03e10fd85105",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36366521336",
+      "result": "success",
+      "checks": [
+        "tests",
+        "desktop",
+        "mobile",
+        "reviewer",
+        "preview"
+      ],
+      "scope": "Candidato integrado verificado para beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes, teaser Global y email/auth/payments desactivados. La preview de staging no incorpora autenticación; el acceso se limita operativamente a participantes invitados, y no debe contener información sensible.",
+      "validated_blocks": [],
+      "validated_requirements": [
+        "Home y feed read-only con filtros y detalle",
+        "Fuentes visibles y navegables",
+        "Global en modo teaser sin pago",
+        "Suscripción/email y auth permanecen deshabilitados"
+      ]
     }
   },
   "blocks": [
@@ -1409,6 +1430,10 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36363014542",
         "https://github.com/cftorre1/Radar-salud/actions/runs/36363431187"
       ]
+    },
+    {
+      "date": "2026-09-28",
+      "change": "Separada la beta read-only por invitación del readiness comercial, validada en staging #561. La URL de preview no tiene auth y queda restringida por distribución operativa; no contiene datos sensibles."
     }
   ],
   "scope_deviations": [],
@@ -1422,7 +1447,7 @@
     {
       "id": "beta_contract_not_gated",
       "severity": "critical",
-      "description": "El Reviewer actual no cubre aún todas las condiciones funcionales del baseline Beta.",
+      "description": "El Reviewer no cubre aún todos los gates del readiness comercial del baseline. La beta read-only tiene evidencia separada en closed_beta_read_only_qa; email, analytics, auth, pagos y los requisitos comerciales siguen fuera de alcance.",
       "source": "scripts/review_candidate.py"
     },
     {
@@ -2691,10 +2716,10 @@
   ],
   "updated_at": "2026-09-27",
   "closed_beta": {
-    "status": "pending_qa",
-    "scope": "Beta cerrada por invitación, lectura/uso del producto sin captura real de email, analytics central, auth ni pagos",
+    "status": "ready",
+    "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
     "audience": "10–30 usuarios invitados del ecosistema salud",
-    "evidence": null,
+    "evidence": "closed_beta_read_only_qa",
     "non_blocking": [
       "MailerLite/captura real de newsletter y acceso anticipado",
       "Analytics centralizado",
@@ -2706,7 +2731,8 @@
       "Autonomía de escritura desde automations"
     ],
     "remaining_human_gates": [
-      "Aprobación explícita de Dirección antes de promover staging a main/producción"
+      "Aprobación explícita de Dirección antes de promover staging a main/producción",
+      "Distribuir la URL solo a participantes invitados; no usar el preview para contenido sensible mientras no haya autenticación"
     ]
   }
 }

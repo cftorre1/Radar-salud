@@ -2064,13 +2064,26 @@
     },
     {
       "id": "closed_beta_readiness_reconciliation_2026_09_27",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Director-Orchestrator+Reviewer",
       "depends_on": [],
       "blocked_by": [],
-      "progress": "Reconciliación final en ejecución: separar Beta cerrada read-only de readiness comercial, limpiar tareas supersedidas y validar conversion/value polish en Home, Global, Fuentes y suscripción.",
-      "evidence": []
+      "progress": "Validado en staging #561 (3433b3e): beta read-only separada del readiness comercial, scope y acceso por URL documentados; Home/feed, filtros, Fuentes, teaser Global y email/auth/payments desactivados verificados. Tests, QA desktop/mobile, Reviewer y preview PASS. Auth, email, analytics, pagos, expansión de cobertura, señal LIVE y producción permanecen fuera de alcance o con gate humano. Las tareas supersedidas ya están cancelled.",
+      "evidence": [
+        {
+          "kind": "github_actions",
+          "sha": "3433b3e26f4d76ea6ce0970015bc03e10fd85105",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36366521336",
+          "checks": [
+            "tests",
+            "desktop",
+            "mobile",
+            "reviewer",
+            "preview"
+          ]
+        }
+      ]
     },
     {
       "id": "normative_title_dedup_v1_2026_09_27",

@@ -133,6 +133,23 @@
       ],
       "status": "approved_in_execution",
       "queue_task": "signal_simplification_statistics_v2_2026_09_27"
+    },
+    {
+      "id": "async_sources_browser_race_2026_09_28",
+      "source": "Autopilot V1 recovery",
+      "class": "flaky_browser_contract",
+      "finding": "El QA móvil consultaba el recuento de fuentes inmediatamente tras abrir el modal, antes de terminar el render asíncrono; el DOM podía mostrar 0 filas aunque el contenido llegara a continuación.",
+      "specific_fix": "Usar expect.poll para esperar que el registro visible supere ambos umbrales.",
+      "root_cause": "La prueba trataba una condición temporal de red/render como sincrónica.",
+      "preventive_controls": [
+        "browser_test_waits_for_observable_state",
+        "dynamic_content_assertion"
+      ],
+      "status": "implemented_validated",
+      "evidence": {
+        "sha": "1ca766b258d5000e37ab0f09a7773315dd46e61c",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36366375881"
+      }
     }
   ]
 }
