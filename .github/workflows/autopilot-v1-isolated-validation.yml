@@ -1,0 +1,42 @@
+name: Autopilot V1 isolated validation
+
+on:
+  push:
+    branches:
+      - work/autopilot-v1-2026-09-27
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: autopilot-v1-isolated-validation
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate policy JSON
+        run: python -m json.tool config/autopilot_v1_policy.json >/dev/null
+      - name: Validate seeded control state
+        run: python -m json.tool data/autopilot/v1_control_state.json >/dev/null
+      - name: Run Autopilot V1 watchdog tests
+        run: |
+          pip install pytest
+          python -m pytest -q tests/test_autopilot_v1_watchdog.py
+      - name: Exercise watchdog without touching staging
+        run: |
+          python scripts/autopilot_v1_watchdog.py --stale-minutes 60 || code=$?
+          if [ "${code:-0}" -ne 0 ] && [ "${code:-0}" -ne 2 ]; then exit "${code}"; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autopilot-v1-isolated-evidence-${{ github.sha }}
+          path: artifacts/autopilot_v1_watchdog.json
+          if-no-files-found: warn
