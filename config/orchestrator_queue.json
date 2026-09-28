@@ -2212,48 +2212,48 @@
       "priority": "critical",
       "owner": "Paolo + Pele + Editorial Committee",
       "source": "Dirección",
-      "objective": "Reformular la presentación de normativa para que cada señal se entienda en segundos sin perder identidad jurídica visible y trazable.",
+      "objective": "Reformular la presentación normativa para que cada señal identifique de inmediato el acto jurídico y, al mismo tiempo, explique en lenguaje ejecutivo qué materia regula y qué cambió.",
       "depends_on": [
         "autopilot_v1_2026_09_27"
       ],
       "instructions": [
-        "Implementar Normative Editorial V2 para circulares, resoluciones, oficios y demás actos regulatorios visibles.",
-        "El título principal debe explicar en lenguaje ejecutivo qué cambia realmente, a quién afecta y/o qué debe hacer distinto; no debe construirse mecánicamente desde el nombre del documento ni desde fragmentos de why_it_matters.",
-        "Separar título editorial de identidad jurídica: plain_language_title como título principal y legal_identity/legal_subtitle como segunda capa.",
-        "La identidad jurídica NO puede quedar visualmente al nivel discreto de fecha/fuente. Debe ser inmediatamente reconocible mediante tratamiento destacado propio (eyebrow, badge o cápsula) con tipo y número, por ejemplo RESOLUCIÓN EXENTA IF/N°11156 o CIRCULAR IF/N°533.",
-        "El tratamiento visual debe permitir identificar de un vistazo que la señal es normativa, sin competir excesivamente con el título editorial ni degradarse a metadata secundaria.",
-        "Para actos que modifican, suspenden, rechazan recursos o mantienen otra norma, el título debe incorporar el tema sustantivo de la norma relacionada; no basta decir 'mantiene su vigencia', 'mientras se resuelven recursos' o 'modifica instrucciones'.",
-        "Agregar Regulatory Business Editor al comité normativo permanente, junto con editorial_intelligence, health_business, regulatory_legal y evidence_research.",
-        "Exigir salida estructurada mínima: legal_identity, legal_action, affected_rule, business_subject, affected_actor, required_change, effective_date_or_status, plain_language_title, legal_subtitle.",
-        "Aplicar test editorial de 5 segundos: leyendo solo el título, una persona de la industria debe poder responder qué cambió. Si no, FAIL.",
-        "Agregar guards contra títulos cortados/incompletos: no terminar en preposición/conjunción, no truncar frases, no publicar subjects mecánicos incompletos.",
-        "Recurar todas las normativas visibles actuales y después el stock histórico aplicable, preservando hechos, vigencia, relaciones normativas y trazabilidad.",
-        "Usar como casos de regresión obligatorios IF/N°11156, IF/N°10670, IF/N°10615, IF/N°533, IF/N°9994, IF/N°8760 e IF/N°532.",
-        "Ejecutar Builder → QA desktop/mobile → Reviewer → Improvement Review; si la mejora cambia sólo presentación/copy y respeta hechos aprobados, iterar sin pedir Dirección.",
-        "Registrar este hallazgo como learning incident y añadir controles preventivos para futuras normas."
+        "Aplicar Normative Editorial V2.1 a todo acto normativo visible y al stock vigente: circular, resolución, oficio, decreto u otro.",
+        "El título principal DEBE incluir de forma visible el tipo y número del documento. La identidad jurídica no puede quedar sólo en badge, metadata, contexto o detalle.",
+        "Estructura recomendada para circulares: 'Circular IF/N°XXX · [materia/sujeto]: [acción, obligación o cambio concreto]'. Ejemplo: 'Circular IF/N°535 · Reembolsos públicos: isapres no podrán compensarlos con deudas del empleador'.",
+        "Estructura recomendada para resoluciones sobre otra norma: 'Resolución Exenta IF/N°XXXX · [acción procesal] sobre Circular/Oficio Y: [materia + efecto vigente/cambio]'. Ejemplo: 'Resolución Exenta IF/N°10670 · rechaza recursos contra Circular IF/N°531: informe parcial EMP pasa a octubre y sigue vigente'.",
+        "Para resoluciones, diferenciar claramente qué hizo la resolución (rechazó, acogió parcialmente, suspendió, mantuvo, etc.) y sobre qué acto recaía.",
+        "Para circulares/oficios, explicar el objeto y cambio operativo en lenguaje comprensible para alguien de la industria.",
+        "No forzar títulos artificialmente cortos. Priorizar comprensión y precisión; permitir 2–3 líneas en mobile cuando sea necesario.",
+        "Evitar restricciones mecánicas excesivas. Los guards determinísticos sólo deben bloquear truncamiento real, duplicación absurda o ausencia de identidad/materia; no deben dictar estilo editorial palabra por palabra.",
+        "El bloque 'Contexto de la señal' debe aportar algo adicional y no ser necesario para entender el titular. Allí explicar en 1–3 párrafos breves: antecedente normativo, qué cambia/decide y alcance práctico cuando corresponda.",
+        "No usar 'Contexto de la señal' para repetir literalmente el título ni para esconder la identidad/documento que debió estar arriba.",
+        "El comité normativo tiene autoridad editorial para reescribir cada señal buscando claridad. Participan Regulatory Business Editor, regulatory_legal, health_business, editorial_intelligence y evidence_research.",
+        "Gate editorial humano-simulado: antes de publicar, el comité debe responder: (1) ¿sé qué documento es? (2) ¿sé de qué trata? (3) ¿sé qué hizo/cambió? Si alguna respuesta es no, REVISE.",
+        "Recurar todas las señales normativas vigentes/visibles, no sólo las recientes ni las del corpus de test.",
+        "Revisar especialmente IF/N°11156, 10670, 10615, 535, 534, 533, 9994, 532, 531, 8760, 530 y 529.",
+        "Builder → QA desktop/mobile → Regulatory/Business Reviewer → Improvement Review. La revisión debe evaluar comprensión real, no sólo cumplimiento de regex.",
+        "Actualizar tests para verificar presencia de tipo+número, materia sustantiva y acción/cambio, usando identidad estable por source_url/document number. No hacer tests frágiles por frase exacta."
       ],
       "constraints": [
-        "No inventar implicancias ni simplificar al punto de perder precisión jurídica.",
-        "No ocultar tipo/número del acto.",
-        "No convertir identidad jurídica en metadata secundaria equivalente a fecha/fuente.",
-        "No tocar main/producción.",
-        "No rebajar requisitos de evidencia, vigencia o relaciones normativas."
+        "No ocultar tipo/número del acto en metadata secundaria.",
+        "No sacrificar precisión jurídica.",
+        "No usar títulos mecánicamente truncados.",
+        "No exigir que todos los títulos tengan la misma longitud o sintaxis exacta.",
+        "No publicar una señal que requiera abrir 'Contexto' para saber qué documento es o qué regula.",
+        "No tocar main/producción hasta QA/Reviewer PASS y hasta completar el resto del release autorizado."
       ],
       "evidence_required": [
-        "before/after de señales normativas visibles",
+        "before/after de todo el stock normativo visible",
         "QA desktop/mobile",
-        "test de 5 segundos documentado",
-        "guards automáticos de título completo",
-        "casos de regresión obligatorios",
-        "Reviewer editorial/regulatorio",
-        "Improvement Review",
+        "revisión de comprensión por comité regulatorio+negocio",
+        "tests por tipo+número+materia+acción",
+        "Reviewer regulatorio/editorial PASS",
+        "Improvement Review PASS",
         "learning ledger actualizado"
       ],
       "approved_at": "2026-09-27",
-      "progress": "Recovery required. Último candidato staging 8a24af1 / run #573: qa/tests PASS, qa/staging FAIL, Reviewer/preview skipped. El contrato V2 no está reconciliado en el snapshot versionado: varias señales siguen con display_title jurídico antiguo o truncado y sin legal_identity/legal_subtitle persistidos. No iniciar Statistics V2 ni release hasta obtener gate verde de Normative V2.",
-      "blocked_by": [
-        "qa_staging_normative_v2"
-      ],
+      "progress": "Dirección redefine el contrato tras revisión mobile 2026-09-28. La separación estricta título editorial vs identidad jurídica se considera una solución equivocada. Se adopta Normative Editorial V2.1: identidad del documento integrada de forma prominente en el título + materia + acción/cambio; comité con mayor libertad editorial y menos constraints mecánicos.",
+      "blocked_by": [],
       "recovery_required": {
         "failed_run": "https://github.com/cftorre1/Radar-salud/actions/runs/36368237623",
         "failure_signature": [
