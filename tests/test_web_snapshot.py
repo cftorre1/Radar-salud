@@ -191,6 +191,7 @@ def test_tea_preproduction_copy_is_descriptive_and_operationally_complete():
 
 def test_all_opaque_normative_acts_get_identity_plus_subject_for_public_title():
     history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    cfg=json.loads(Path("config/normative_editorial_v2.json").read_text())
     curated=m.curate(history,resolve_external=False)
     acts=[x for x in curated if x.get("event_type")=="REGULATION" and x.get("normative_document_label")]
     assert acts
