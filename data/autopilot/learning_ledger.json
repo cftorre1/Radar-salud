@@ -224,7 +224,7 @@
       "source": "Autopilot QA recovery",
       "class": "statistics_parser_schema_false_negative",
       "finding": "El parser estricto de GES no detectó el esquema de la hoja 2026 y detuvo el build antes de publicar salidas.",
-      "specific_fix": "Leer encabezados combinados en una ventana de varias filas y conservar el fallo cerrado con muestra diagnóstica del libro.",
+      "specific_fix": "Combinar encabezados superiores, propagar etiquetas de grupos sobre celdas combinadas, seleccionar la serie acumulada a marzo de 2026 y usar el nombre textual oficial de la patología.",
       "root_cause": "Se asumió que nombre de asegurador y métrica 'casos' aparecen en una única celda de encabezado.",
       "preventive_controls": [
         "multirow_header_schema_validation",
@@ -232,7 +232,7 @@
         "statistics_reviewer_denominator_checks"
       ],
       "status": "recovery_in_progress",
-      "attempts": 1,
+      "attempts": 2,
       "max_attempts": 3
     }
   ]

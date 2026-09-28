@@ -19,13 +19,6 @@ SERIES_DOCS = [
     ("Beneficiarios", "personas", 500_000, 10_000_000, "https://www.superdesalud.gob.cl/app/uploads/2026/03/2-cartera-de-beneficiarios-anos-1990-2025.xlsx"),
     ("Casos GES", "casos", 10_000, 10_000_000, "https://www.superdesalud.gob.cl/app/uploads/2026/03/7-casos-ges-anos-2005-2025.xlsx"),
 ]
-GES_NAMES = {
-    7: "Diabetes mellitus tipo 2",
-    19: "Infección respiratoria aguda baja ambulatoria en menores de 5 años",
-    20: "Neumonía adquirida en la comunidad ambulatoria en personas de 65 años y más",
-    21: "Hipertensión arterial primaria o esencial en personas de 15 años y más",
-    23: "Epilepsia no refractaria en personas de 1 año y menores de 15 años",
-}
 FIN_SOURCE = "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls"
 ACC_SOURCE = "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf"
 MED_SOURCE = "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-mediacion-enero-junio-2026.pdf"
@@ -69,50 +62,61 @@ def ges():
             labels = []
             for column in range(len(header)):
                 start = max(0, header_index - 2)
-                labels.append(norm(" ".join(norm(rows[index][column]) for index in range(start, header_index + 1) if column < len(rows[index]))).lower())
-            fonasa_col = next((i for i, value in enumerate(labels) if "fonasa" in value and "cas" in value and "tasa" not in value), None)
-            isapre_col = next((i for i, value in enumerate(labels) if "isapre" in value and "cas" in value and "tasa" not in value), None)
+                parts = []
+                for row_index in range(start, header_index + 1):
+                    source_row = rows[row_index]
+                    propagated = None
+                    for index, value in enumerate(source_row):
+                        label = norm(value)
+                        if label and "caso" in label.lower():
+                            propagated = label
+                        elif label:
+                            propagated = None
+                        if index == column and (label or propagated):
+                            parts.append(label or propagated)
+                labels.append(norm(" ".join(parts)).lower())
+            fonasa_candidates = [i for i, value in enumerate(labels) if "fonasa" in value and "caso" in value and "tasa" not in value and "uso" not in value and "2026" in value and "mar" in value]
+            isapre_candidates = [i for i, value in enumerate(labels) if "isapre" in value and "caso" in value and "tasa" not in value and "uso" not in value and "2026" in value and "mar" in value]
+            fonasa_col = fonasa_candidates[-1] if fonasa_candidates else None
+            isapre_col = isapre_candidates[-1] if isapre_candidates else None
             if fonasa_col is None or isapre_col is None or fonasa_col == isapre_col:
                 continue
             problem_col = next((i for i, value in enumerate(labels) if any(word in value for word in ("problema", "patolog", "código", "codigo", "ges"))), None)
-            if problem_col is None:
+            code_col = next((i for i, value in enumerate(labels) if value.strip() in ("n°", "nº", "n.", "numero", "número")), None)
+            if problem_col is None or code_col is None:
                 continue
             observations = {}
             for row in rows[header_index + 1:]:
-                if len(row) <= max(problem_col, fonasa_col, isapre_col):
+                if len(row) <= max(problem_col, code_col, fonasa_col, isapre_col):
                     continue
                 label = norm(row[problem_col])
-                match = re.search(r"(?<!\d)(\d{1,2})(?!\d)", label)
+                code = norm(row[code_col])
                 fonasa, isapre = numeric(row[fonasa_col]), numeric(row[isapre_col])
-                if not match or fonasa is None or isapre is None or fonasa < 0 or isapre < 0:
+                if not label or not re.fullmatch(r"\d+", code) or fonasa is None or isapre is None or fonasa < 0 or isapre < 0 or label.lower().startswith("total"):
                     continue
-                code = int(match.group(1))
-                if code in GES_NAMES:
-                    observations[code] = (int(fonasa), int(isapre))
+                observations[label] = (int(fonasa), int(isapre))
             if len(observations) >= 5:
                 candidates.append((ws.title, header_index + 1, observations))
     if not candidates:
-        diagnostic = [(ws.title, [[norm(value) for value in row[:16]] for row in ws.iter_rows(min_row=1, max_row=8, values_only=True)]) for ws in book.worksheets]
-        raise RuntimeError("GES 2026 sheet/case-count schema not validated; fail closed; workbook sample=" + repr(diagnostic)[:12000])
+        raise RuntimeError("GES 2026 sheet/case-count schema not validated; fail closed")
     sheet, header, observations = candidates[-1]
-    top = sorted(observations.items(), key=lambda item: sum(item[1]), reverse=True)[:5]
+    top = sorted(observations.items(), key=lambda item: sum(item[1][:2]), reverse=True)[:5]
     rows = []
-    for code, (fonasa, isapre) in top:
+    for name, (fonasa, isapre) in top:
         total = fonasa + isapre
         share = round(isapre / total * 100, 1) if total else None
-        rows.append([GES_NAMES[code], fonasa, isapre, total, share])
-    largest = rows[0]
+        rows.append([name, fonasa, isapre, total, share])
     conclusion = "La proporción Isapre usa como denominador los casos reportados por ambos seguros; sin población afiliada comparable, no mide tasa de uso ni prevalencia."
     return {
         "card_what": "La tabla compara casos GES reportados por Fonasa e Isapres para cinco problemas de salud a marzo de 2026.",
         "card_why_optional": True,
         "data_insights": [],
-        "data_insight_evidence": [trace("Conteos declarados en la hoja del año 2026; la participación Isapre usa casos Fonasa + Isapre de cada problema como denominador.", "enero–marzo 2026", "cuentas reportadas; participación Isapre = casos Isapre / (Fonasa + Isapre)", sheet, GES_URL)],
-        "summary_table": {"title": "Casos GES por problema de salud · corte marzo 2026", **cells(["Problema de salud", "Fonasa (casos)", "Isapre (casos)", "Total (casos)", "Isapre (%)"], rows)},
+        "data_insight_evidence": [trace("Conteos acumulados por problema desde el inicio del registro; la participación Isapre usa los casos de ambos seguros como denominador.", "julio 2005–marzo 2026", "casos acumulados declarados; participación Isapre = casos Isapre / (Fonasa + Isapre)", sheet, GES_URL)],
+        "summary_table": {"title": "Casos GES acumulados por problema de salud · a marzo 2026", **cells(["Problema de salud", "Fonasa (casos)", "Isapre (casos)", "Total (casos)", "Isapre (%)"], rows)},
         "statistical_conclusion": conclusion,
         "incremental_value_gate": {"table": "Desglose de casos por problema, seguro y porcentaje de los casos informados", "conclusion": "Explicita el límite del denominador para no inferir tasa de uso o prevalencia"},
         "methodology_visibility": "collapsed",
-        "statistical_methodology": {"period": "enero–marzo 2026", "unit": "casos reportados; porcentaje sobre la suma de casos de ambos seguros", "source_url": GES_URL, "sheet": sheet, "header_row": header, "parser": "validated_2026_case_columns"},
+        "statistical_methodology": {"period": "julio 2005–marzo 2026", "unit": "casos acumulados; porcentaje sobre la suma de casos de ambos seguros", "source_url": GES_URL, "sheet": sheet, "header_row": header, "parser": "validated_2026_cumulative_case_columns"},
         "statistical_value_level": "deep_analysis",
         "analysis_trace": {"sheet": sheet, "header_row": header, "method": "deterministic_workbook_parser"},
     }
