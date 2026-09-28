@@ -2435,6 +2435,52 @@
       "progress": "QA integral de staging completada en Actions 36430841007 (SHA 3dde3747ed0e7a1ff7a36a695d568ae4428921bb): 244 Python, 39 Node, 46 Playwright desktop/móvil, Reviewer (data/editorial/statistics/ux PASS, sin hallazgos), preview y smoke PASS. Newsletter y acceso anticipado siguen deshabilitados; capture_enabled/send_enabled/privacy_approved=false, URL y grupos vacíos, sender.verified=false; no hubo envío ni doble opt-in real. Sugerencias de fuentes fallan explícitamente sin backend y no simulan persistencia; el test browser usa respuestas interceptadas, no prueba un servicio desplegado. Sin evidencia de SPF/DKIM/DMARC ni cuentas/secretos. Autorización de Dirección condicional: gates de entrega/provider/legal no cumplidos; no promover.",
       "blocker": "QA fail-closed PASS, pero la entrega real no es verificable: captura/envío deshabilitados, privacidad sin aprobación, remitente/grupos MailerLite sin verificar, sugerencias sin backend Pages ni persistencia/notificación; falta evidencia SPF/DKIM/DMARC. main y staging divergen 688 commits ahead, 5 behind y cambios de varias áreas fuera del alcance.",
       "blocked_at": "2026-09-28"
+    },
+    {
+      "id": "coverage_balance_sources_epidemiology_v1_2026_09_28",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Pele + Source Intelligence + Editorial/Data Committee",
+      "source": "Dirección",
+      "objective": "Reducir la brecha de valor entre Isapres, Prestadores y Fonasa aumentando cobertura útil —no volumen— en Prestadores/Fonasa y promoviendo epidemiología como señal visible de alto valor.",
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "instructions": [
+        "No reducir artificialmente señales Isapre para lograr equilibrio. Medir cobertura útil por segmento y aumentar fuentes/señales de Prestadores y Fonasa.",
+        "P0 EPIDEMIOLOGÍA: promover a feed visible el frente ya provider-ready de ISP Vigilancia de Virus Respiratorios + MINSAL Campaña de Invierno. Crear una señal/pulso epidemiológico sólo cuando exista cambio material semanal.",
+        "El Pulso Epidemiológico debe conectar semana epidemiológica, positividad, virus predominantes, tendencia vs semana previa, urgencias/hospitalizaciones respiratorias y ocupación de camas cuando estén disponibles; separar claramente laboratorio ISP de presión asistencial MINSAL.",
+        "Etiquetar epidemiología para que sea útil transversalmente a Prestadores, Fonasa y aseguradores; no tratarla como noticia genérica.",
+        "P0 PRESTADORES SECTOR: integrar Clínicas de Chile A.G. como fuente sectorial, con filtro estricto para financiamiento, sostenibilidad, relación con Fonasa/Isapres, capacidad, inversión, innovación, regulación y alianzas; excluir columnas/opinión o eventos sin señal de negocio salvo valor excepcional.",
+        "P0 PRESTADORES CORPORATIVOS: mantener RedSalud y Bupa; evaluar e integrar INDISA, Clínica Alemana y UC CHRISTUS con filtro de negocio. Priorizar alianzas con aseguradores/Fonasa, nuevas redes/capacidad, inversión, tecnología clínica/digital, modelos de atención, convenios y cambios estratégicos; evitar contenido educativo/promocional.",
+        "P0 FONASA: mientras noticias directas Fonasa sigan bloqueadas técnicamente, construir cobertura Fonasa desde fuentes oficiales accesibles: MINSAL, Superintendencia de Salud, documentos/datos abiertos/GRD/MLE/MCC de Fonasa cuando exista endpoint o archivo oficial accesible. Mantener atribución primaria y no presentar una fuente secundaria como Fonasa directo.",
+        "P0 FONASA/PRESTADORES: detectar señales de interacción público-privada: MLE, MCC, SAFED, listas de espera, compras/derivaciones, convenios, PAD/GRD, Ley de Urgencia y redes preferentes.",
+        "P1 PRESTADORES DATA: explotar mejor Boletín IP/Intendencia de Prestadores ya integrado: acreditación, solicitudes en trámite, reclamos, sanciones/fiscalización y cambios de capacidad/calidad, con tablas/insights claros.",
+        "Crear coverage dashboard por segmento: Isapres, Prestadores, Fonasa/Sistema Público y Transversal. Medir fuentes activas, señales detectadas, seleccionadas, publicadas y edad de la última señal; usarlo como diagnóstico, no como cuota editorial.",
+        "No publicar una fuente nueva por llenar un hueco. Aplicar Source Quality Gate: actualidad, estabilidad técnica, trazabilidad, densidad de señal de negocio y bajo ruido.",
+        "Para cada nueva fuente, hacer backfill 90 días, auditoría de valor, fixture y test de parser/fecha/URL/canonical, QA editorial y Reviewer antes de dejarla LIVE.",
+        "Normative V2.1 y Statistics V2 continúan en paralelo; este frente no debe esperar MailerLite, privacidad ni backend de sugerencias."
+      ],
+      "constraints": [
+        "Fuente primaria > secundaria cuando ambas estén disponibles.",
+        "No inventar cobertura Fonasa si el endpoint directo está bloqueado.",
+        "No incorporar blogs clínicos educativos o campañas promocionales como inteligencia de mercado salvo señal estratégica clara.",
+        "No imponer cuotas iguales de noticias por segmento.",
+        "No activar servicios pagos ni cambiar secretos.",
+        "No tocar producción hasta QA/Reviewer del paquete correspondiente."
+      ],
+      "evidence_required": [
+        "Pulso Epidemiológico visible con evidencia ISP+MINSAL",
+        "Clínicas de Chile parser/source health + señales seleccionadas",
+        "evaluación INDISA/Clínica Alemana/UC CHRISTUS",
+        "plan/resultado de cobertura Fonasa indirecta oficial",
+        "mejora del Boletín IP para Prestadores",
+        "coverage dashboard por segmento",
+        "QA desktop/mobile + Reviewer",
+        "learning/coverage rules persistidas"
+      ],
+      "approved_at": "2026-09-28",
+      "progress": "Aprobado por Dirección. Ejecutar como expansión de valor sin esperar configuración humana de correo/backend."
     }
   ],
   "execution_policy": {
