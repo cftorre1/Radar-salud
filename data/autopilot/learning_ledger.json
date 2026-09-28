@@ -47,8 +47,8 @@
       "id": "date_only_timezone_boundary_2026_09_27",
       "source": "Autopilot recovery",
       "class": "time_semantics_regression",
-      "finding": "A date-only weekly insight dated 2026-09-14 fell outside the 14-day window shortly after UTC midnight even though it was still September 27 in Santiago.",
-      "specific_fix": "Normalize date-only event_date values to a neutral midday instant before recency calculations and add a browser regression test across UTC midnight.",
+      "finding": "La fecha sin hora 2026-09-14 se excluía del período de 14 días según la hora UTC del 2026-09-28, dejando la tarjeta semanal fuera del período cerca de su límite.",
+      "specific_fix": "Comparar fechas YYYY-MM-DD por día calendario UTC y congelar constructor Date + Date.now() en browser QA a las 23:59.",
       "root_cause": "Recency logic interpreted YYYY-MM-DD as UTC midnight, mixing date-only business semantics with an instant-based UTC clock.",
       "preventive_controls": [
         "deterministic_test",
@@ -56,7 +56,10 @@
         "data_validation_rule"
       ],
       "preventive_rule": "Date-only source dates must never be compared as UTC-midnight instants without explicit normalization; product windows are calendar-day semantics in the product timezone.",
-      "status": "implemented_in_recovery_branch_pending_validation"
+      "status": "validated_in_staging",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: prueba desktop/mobile con reloj fijo al final del día; tarjeta semanal e Inbox deduplicados correctamente."
+      ]
     },
     {
       "id": "generated_artifact_fix_2026_09_27",
@@ -70,7 +73,10 @@
         "architecture_change"
       ],
       "preventive_rule": "Before editing a runtime/output file, identify whether it is generated; fixes must land in the canonical source and generated outputs must be rebuilt rather than hand-maintained.",
-      "status": "implemented_in_recovery_branch_pending_validation"
+      "status": "validated_in_staging",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: recencia aplicada a la fuente canónica app.js; QA/rebuild y browser PASS."
+      ]
     },
     {
       "id": "stale_pmo_browser_contract_2026_09_28",
@@ -117,8 +123,11 @@
         "normative_5_second_regression_gate",
         "opaque_future_titles_fail_closed"
       ],
-      "status": "implemented_pending_qa",
-      "queue_task": "normative_editorial_v2_2026_09_27"
+      "status": "validated_in_staging",
+      "queue_task": "normative_editorial_v2_2026_09_27",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: 12/12 titulares con acto, materia y acción; Improvement Review PASS."
+      ]
     },
     {
       "id": "statistics_redundancy_semantic_validation_2026_09_27",
@@ -168,8 +177,12 @@
         "semantic title assertions separated from locator identity",
         "pipeline persistence regression test"
       ],
-      "status": "approved_in_execution",
-      "queue_task": "normative_editorial_v2_2026_09_27"
+      "status": "validated_in_staging",
+      "queue_task": "normative_editorial_v2_2026_09_27",
+      "specific_fix": "Persistir titular V2.1, identidad/subtítulo legal y contexto en snapshot final; validar exportación y UI en corpus de 12 actos.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: contrato V2.1 persistido en snapshot final; 12/12 titulares; Reviewer PASS."
+      ]
     },
     {
       "id": "autopilot_manual_followup_regression_2026_09_28",
@@ -199,8 +212,12 @@
         "semantic reviewer over rigid title regex",
         "full stock recuration"
       ],
-      "status": "approved_in_execution",
-      "queue_task": "normative_editorial_v2_2026_09_27"
+      "status": "validated_in_staging",
+      "queue_task": "normative_editorial_v2_2026_09_27",
+      "specific_fix": "Mantener tipo y número del acto dentro del titular junto con materia y acción; admitir longitud móvil suficiente y exigir contexto adicional.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: contrato V2.1 persistido en snapshot final; 12/12 titulares; Reviewer PASS."
+      ]
     }
   ]
 }

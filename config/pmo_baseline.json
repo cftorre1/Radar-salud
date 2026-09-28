@@ -552,6 +552,27 @@
         "Global en modo teaser sin pago",
         "Suscripción/email y auth permanecen deshabilitados"
       ]
+    },
+    "normative_editorial_v2_1_qa": {
+      "kind": "github_actions",
+      "sha": "677702acda24c1a97ef114cb37b3f7fc835a5142",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711",
+      "checks": [
+        "237 tests Python",
+        "39 tests Node",
+        "46 Playwright desktop/mobile",
+        "Reviewer independiente: findings 0 (data/editorial/UX)",
+        "preview staging PASS"
+      ],
+      "result": "success",
+      "scope": "Normative Editorial V2.1 sobre 12 actos visibles; persistencia, comprensión de titular, contexto adicional, fecha calendario y render responsive. No autoriza main/producción ni sustituye dictamen legal humano.",
+      "validated_requirements": [
+        "Identidad jurídica, materia y acción en titular",
+        "Resoluciones: decisión, acto afectado y efecto explícitos",
+        "QA desktop/mobile",
+        "Reviewer PASS",
+        "Improvement Review PASS"
+      ]
     }
   },
   "blocks": [
@@ -1434,6 +1455,15 @@
     {
       "date": "2026-09-28",
       "change": "Separada la beta read-only por invitación del readiness comercial, validada en staging #561. La URL de preview no tiene auth y queda restringida por distribución operativa; no contiene datos sensibles."
+    },
+    {
+      "date": "2026-09-28",
+      "change": "Normative Editorial V2.1 validado en staging; Improvement Review completada. Cerrada recovery #573/sucesor y habilitada la siguiente tarea crítica de estadísticas.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711",
+        "SHA 677702acda24c1a97ef114cb37b3f7fc835a5142",
+        "docs/IMPROVEMENT_REVIEW_NORMATIVE_V2_1_2026_09_28.md"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1758,7 +1788,7 @@
     }
   ],
   "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
-  "current_staging_candidate_sha": "250cfa28e92f4f15fd062a6d28295ad9923eaed0",
+  "current_staging_candidate_sha": "677702acda24c1a97ef114cb37b3f7fc835a5142",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -2714,7 +2744,7 @@
       ]
     }
   ],
-  "updated_at": "2026-09-27",
+  "updated_at": "2026-09-28",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",

@@ -2208,7 +2208,7 @@
     },
     {
       "id": "normative_editorial_v2_2026_09_27",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Paolo + Pele + Editorial Committee",
       "source": "Dirección",
@@ -2254,30 +2254,17 @@
         "learning ledger actualizado"
       ],
       "approved_at": "2026-09-27",
-      "progress": "Dirección afina V2.1: en resoluciones, el título debe distinguir sin ambigüedad materia, decisión de la resolución y consecuencia sobre la norma recurrida. Patrón actualizado y ejemplo IF/N°10670 incorporado.",
+      "progress": "Normative Editorial V2.1 validado en staging: 12/12 actos visibles con documento, materia y acción en titular; resoluciones distinguen decisión, acto afectado y efecto. QA #602 sobre SHA 677702ac; Reviewer findings 0, browser 46/46 desktop/mobile, preview PASS. Improvement Review: docs/IMPROVEMENT_REVIEW_NORMATIVE_V2_1_2026_09_28.md.",
       "blocked_by": [],
-      "recovery_required": {
-        "failed_run": "https://github.com/cftorre1/Radar-salud/actions/runs/36368237623",
-        "failure_signature": [
-          "IF/N°535: test espera título ejecutivo separado, pero snapshot aún entrega 'Circular IF/N°535 · Isapres no podrán compensar reembolsos a empleadores públicos sin habilitación legal'.",
-          "Cards V2 IF/N°535: selector del test busca el nuevo título ejecutivo pero la card generada no queda localizable, por lo que [data-detail] timeout en desktop/mobile.",
-          "Normative V2 regression corpus: display_title todavía comienza con Resolución/Circular en múltiples actos (11156, 10670, 10615, 533, 9994, 532, 531, 8760, 530, 529), incumpliendo separación título editorial / identidad jurídica."
-        ],
-        "corrections_required": [
-          "Hacer que la recuración Normative V2 sea la fuente canónica de export_web_snapshot y no un override efímero sólo visible durante parte del pipeline.",
-          "Persistir por señal plain_language_title/display_title sin identidad jurídica prefijada; persistir legal_identity y legal_subtitle por separado.",
-          "Renderizar legal_identity en badge/eyebrow prominente en card y detalle, claramente por encima de fecha/fuente en jerarquía.",
-          "Recurar y verificar todo el corpus visible, no sólo typed legal signals parciales; usar los siete casos obligatorios y además 534/531/530/529.",
-          "Actualizar tests para verificar identidad estable por source_url/document number, no por frases frágiles, pero conservar assertion semántica del título ejecutivo.",
-          "No relajar el contrato para hacer pasar el test: el producto debe dejar de mostrar display_title que empiece con Resolución/Circular/Oficio.",
-          "Después de corregir, ejecutar run completo con QA desktop/mobile + Reviewer + preview PASS sobre el mismo SHA."
-        ],
-        "stop_condition": "No cerrar ni desbloquear Statistics V2/release mientras #573 o sucesor equivalente siga con qa/staging FAIL."
-      }
+      "completed_at": "2026-09-28",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — SHA 677702acda24c1a97ef114cb37b3f7fc835a5142: 237 Python, 39 Node, 46 Playwright desktop/mobile; Reviewer findings 0; preview PASS; rollback omitido.",
+        "Improvement Review: docs/IMPROVEMENT_REVIEW_NORMATIVE_V2_1_2026_09_28.md; comparación de titulares sobre snapshot previo 2680944dae6152e8d0aff77e267a56e84c021598."
+      ]
     },
     {
       "id": "signal_simplification_statistics_v2_2026_09_27",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Pele + Data/BI Committee + Editorial Committee",
       "source": "Dirección",
@@ -2327,7 +2314,7 @@
         "learning ledger actualizado"
       ],
       "approved_at": "2026-09-27",
-      "progress": "Aprobado por Dirección a partir de revisión mobile. Ejecutar después de no interrumpir el frente actualmente en curso, pero con prioridad crítica dentro del backlog."
+      "progress": "Iniciada tras cierre V2.1 en staging. Próximo ciclo: auditar GES, Series ISAPRE, Financieras y Boletín IP; simplificar bloques redundantes; validar variable/unidad/escala fail-closed; Data/Statistics QA, Editorial/Product Reviewer, desktop/mobile e Improvement Review."
     },
     {
       "id": "release_after_editorial_stats_email_qa_2026_09_27",
