@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0",
+  "incidents": [
+    {
+      "id": "silent_stall_2026_09_27",
+      "source": "Toba",
+      "class": "unexpected_stall",
+      "finding": "Development could stop for hours after a failure without proactive recovery or escalation.",
+      "specific_fix": "Autopilot V1 watchdog and anti-silence recovery state.",
+      "root_cause": "Previous loop treated workflow failure as terminal evidence rather than as an input to an autonomous recovery cycle.",
+      "preventive_controls": [
+        "liveness_or_recovery_rule",
+        "observability_or_dashboard_metric",
+        "work_agent_contract"
+      ],
+      "status": "implemented_pending_integration"
+    },
+    {
+      "id": "human_finds_what_agents_miss_2026_09_27",
+      "source": "Toba",
+      "class": "missed_agent_finding",
+      "finding": "Human review often finds deeper product issues that agents did not anticipate.",
+      "specific_fix": "Mandatory Improvement Review after functional PASS.",
+      "root_cause": "Review loops over-weighted correctness and regression protection, under-weighting strategic coherence and continuous improvement.",
+      "preventive_controls": [
+        "reviewer_rule",
+        "existing_agent_role_expansion",
+        "agent_creation_rule"
+      ],
+      "status": "implemented_pending_integration"
+    }
+  ]
+}
