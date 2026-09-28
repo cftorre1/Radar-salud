@@ -197,7 +197,9 @@ def test_all_opaque_normative_acts_get_identity_plus_subject_for_public_title():
     for row in acts:
         assert row.get("display_title"), row.get("title")
         assert row["display_title"] != row["normative_document_label"]
-        assert row["normative_document_number"] in row["display_title"]
+        assert row["normative_document_number"] in row.get("legal_subtitle","")
+        assert not row["display_title"].lower().startswith(("resolución","circular","oficio","decreto"))
+        assert row["normative_editorial"]["plain_language_title"] == row["display_title"]
         assert len(row["display_title"]) > len(row["normative_document_number"]) + 8
 
 
@@ -221,8 +223,9 @@ def test_pulso_suppresses_routine_component_statistics_including_regional_carter
 def test_opaque_resolution_title_exposes_parent_act_and_topic_when_available():
     history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
     row=next(x for x in m.curate(history,resolve_external=False) if x.get("source_url")=="https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10670/")
-    assert row["display_title"].startswith("Resolución Exenta IF/N°10670 sobre Circular IF/N°531")
-    assert len(row["display_title"]) > len("Resolución Exenta IF/N°10670 sobre Circular IF/N°531: ")+10
+    assert row["display_title"].startswith("Metas EMP: el informe parcial pasa a octubre")
+    assert "Resolución Exenta IF/N°10670" in row["legal_subtitle"]
+    assert "Circular IF/N°531" in row["legal_subtitle"]
     assert any("Circular IF/N°531" in x["title"] for x in row["related_context"])
 
 
@@ -238,8 +241,9 @@ def test_every_opaque_resolution_with_normative_parent_exposes_parent_in_title()
         parents=[x for x in row.get("related_context",[]) if __import__("re").search(r"^(Circular|Oficio|Resolución|Decreto)\b",str(x.get("title") or ""),__import__("re").I)]
         if opaque and parents:
             checked += 1
-            assert parents[0]["title"] in row["display_title"], row["display_title"]
-            assert len(row["display_title"]) > len(row["normative_document_label"]) + len(parents[0]["title"]) + 6
+            parent_number=__import__("re").search(r"N[°º]\\s*([\\d\\.]+)",parents[0]["title"],__import__("re").I)
+            assert parent_number and parent_number.group(1) in row["legal_subtitle"]
+            assert not row["display_title"].lower().startswith("resolución")
     assert checked >= 2
 
 
