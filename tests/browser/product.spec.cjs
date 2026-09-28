@@ -504,7 +504,7 @@ test('sources are grouped by decision value and expose freshness layers',async({
 });
 
 
-test('priority statistical releases publish analysis and executive tables',async({page})=>{
+test('priority statistical releases use compact tables and collapsed traceability',async({page})=>{
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('90');
@@ -513,18 +513,37 @@ test('priority statistical releases publish analysis and executive tables',async
   ['Estadística Trimestral de Casos GES',5],
   ['Series Estadísticas del Sistema ISAPRE',2],
   ['Estadísticas Financieras del Sistema ISAPRE',10],
-  ['Boletín Estadístico Informativo IP',4],
+  ['Boletín Estadístico Informativo IP',6],
  ];
  for(const [needle,minRows] of cases){
    const s=radar.signals.find(x=>(x.title||'').includes(needle));
    expect(s,needle+' missing').toBeTruthy();
-   expect((s.data_insights||[]).length,needle+' insights').toBeGreaterThanOrEqual(1);
+   expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);
    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);
-   expect(String(s.card_why||s.why_it_matters||'')).not.toMatch(/aún no exista un insight|análisis comparativo aún no está disponible|aún no ha calculado/i);
+   expect(s.methodology_visibility).toBe('collapsed');
+   expect(s.card_why_optional).toBe(true);
+   expect(s.incremental_value_gate?.table).toBeTruthy();
+   expect(s.data_insight_evidence?.length||0,needle+' evidence').toBeGreaterThan(0);
  }
+ const ges=radar.signals.find(x=>(x.title||'').includes('Estadística Trimestral de Casos GES'));
+ expect(ges.summary_table.columns).toEqual(['Problema de salud','Fonasa (casos)','Isapre (casos)','Total (casos)','Isapre (%)']);
+ expect(ges.summary_table.rows.every(r=>r.cells?.length===5&&!/^\d+$/.test(r.cells[0]))).toBe(true);
+ const series=radar.signals.find(x=>(x.title||'').includes('Series Estadísticas del Sistema ISAPRE'));
+ expect(series.summary_table.rows.map(r=>r.cells[0])).toEqual(['Beneficiarios','Casos GES']);
+ expect(series.summary_table.rows.every(r=>r.cells[2]+r.cells[4]===r.cells[3])).toBe(true);
  const fin=radar.signals.find(x=>(x.title||'').includes('Estadísticas Financieras del Sistema ISAPRE'));
- expect(fin.summary_table.rows.map(x=>x.indicator)).toEqual(expect.arrayContaining(['Consalud','Vida Tres','Esencial']));
- await expect(page.locator('article[data-card]').filter({hasText:'Estadísticas Financieras del Sistema ISAPRE'})).toContainText('CLP 34.091 millones');
+ expect(fin.summary_table.columns).toEqual(['Isapre','Ingresos (CLP millones)','Resultado operacional (CLP millones)','Utilidad/pérdida neta (CLP millones)']);
+ expect(fin.data_insight_evidence[0].source_url).toContain('finan_ifrs_mar_2026_web_v2.xls');
+ const bulletin=radar.signals.find(x=>(x.title||'').includes('Boletín Estadístico Informativo IP'));
+ expect(new Set(bulletin.summary_table.rows.map(r=>r.cells[0]))).toEqual(new Set(['Acreditación','Mediación','Reclamos','RNPI']));
+ const card=page.locator('article[data-card]').filter({hasText:'Estadísticas Financieras del Sistema ISAPRE'});
+ await card.locator('[data-detail]').click();
+ const detail=page.locator('#detailBody');
+ await expect(detail.locator('.summary-table')).toBeVisible();
+ await expect(detail.locator('details.statistical-methodology')).not.toHaveAttribute('open','');
+ await expect(detail).not.toContainText('Muestra de datos validada');
+ await expect(detail.locator('.source')).toContainText('Fuente original');
+ await page.getByRole('button',{name:'Cerrar resumen'}).click();
 });
 
 test('Normative V2.1 puts document, subject and action in each current headline',async({page})=>{

@@ -1,11 +1,16 @@
 """Read-only deterministic Reviewer: independent process, no repair authority."""
 import argparse
+import importlib.util
 import json
 from datetime import date, datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 from radar_salud.editorial_gate import publication_ready
 from radar_salud.pending_queue import atomic_json
+_statistics_spec=importlib.util.spec_from_file_location("statistics_reviewer",Path(__file__).with_name("statistics_reviewer.py"))
+_statistics_module=importlib.util.module_from_spec(_statistics_spec)
+_statistics_spec.loader.exec_module(_statistics_module)
+review_statistics=_statistics_module.review_statistics
 
 def review(web, sha):
     findings=[]
@@ -85,14 +90,17 @@ def review(web, sha):
             for related in signal.get(field,[]) or []:
                 if related.get("url") and urlparse(related["url"]).scheme not in ("http","https"):
                     fail("data","unsafe_link",path+"/"+field,"Link must use HTTP(S)")
+    for finding in review_statistics(signals):
+        findings.append(finding)
     for page in ("index.html","app.js","admin/product.html","admin/product.js","data/product.json"):
         if not (web/page).is_file():fail("ux","missing_asset",page,"Required file missing")
     return dict(reviewer="deterministic-reviewer",candidate_sha=sha,
         reviewed_at=datetime.now(timezone.utc).isoformat(),findings=findings,
         checks={category:not any(f["category"]==category and f["severity"]=="critical" for f in findings)
-            for category in ("data","editorial","ux")},
+            for category in ("data","editorial","statistics","ux")},
         limitations=["Semantic/legal accuracy is not certified by deterministic checks.",
-            "Browser evidence is required separately for desktop/mobile."])
+            "Browser evidence is required separately for desktop/mobile.",
+            "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."])
 
 if __name__=="__main__":
     p=argparse.ArgumentParser();p.add_argument("--web",default="web");p.add_argument("--sha",required=True);p.add_argument("--output",default="artifacts/review.json")
