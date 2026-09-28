@@ -1,0 +1,76 @@
+{
+  "version": "1.0.0",
+  "incidents": [
+    {
+      "id": "silent_stall_2026_09_27",
+      "source": "Toba",
+      "class": "unexpected_stall",
+      "finding": "Development could stop for hours after a failure without proactive recovery or escalation.",
+      "specific_fix": "Autopilot V1 watchdog and anti-silence recovery state.",
+      "root_cause": "Previous loop treated workflow failure as terminal evidence rather than as an input to an autonomous recovery cycle.",
+      "preventive_controls": [
+        "liveness_or_recovery_rule",
+        "observability_or_dashboard_metric",
+        "work_agent_contract"
+      ],
+      "status": "implemented_pending_integration"
+    },
+    {
+      "id": "human_finds_what_agents_miss_2026_09_27",
+      "source": "Toba",
+      "class": "missed_agent_finding",
+      "finding": "Human review often finds deeper product issues that agents did not anticipate.",
+      "specific_fix": "Mandatory Improvement Review after functional PASS.",
+      "root_cause": "Review loops over-weighted correctness and regression protection, under-weighting strategic coherence and continuous improvement.",
+      "preventive_controls": [
+        "reviewer_rule",
+        "existing_agent_role_expansion",
+        "agent_creation_rule"
+      ],
+      "status": "implemented_pending_integration"
+    },
+    {
+      "id": "mutable_copy_selector_2026_09_27",
+      "source": "Autopilot recovery",
+      "class": "regression_contract_design",
+      "finding": "Browser QA anchored a normative card to mutable descriptive heading copy; editorial title reconciliation made the selector fail although the underlying TEA content remained correct.",
+      "specific_fix": "Anchor the TEA browser contract to stable normative identity (Resolución Exenta IF/N°11156 + Circular IF/Nº528) while retaining substantive assertions on RND, deadlines and effective date.",
+      "root_cause": "QA selector encoded presentation copy instead of stable domain identity.",
+      "preventive_controls": [
+        "browser_qa_assertion",
+        "reviewer_rule"
+      ],
+      "preventive_rule": "Entity/document identity selectors must prefer stable IDs, document numbers, canonical URLs or data attributes; descriptive copy belongs in separate semantic assertions.",
+      "status": "implemented_in_recovery_branch_pending_validation"
+    },
+    {
+      "id": "date_only_timezone_boundary_2026_09_27",
+      "source": "Autopilot recovery",
+      "class": "time_semantics_regression",
+      "finding": "A date-only weekly insight dated 2026-09-14 fell outside the 14-day window shortly after UTC midnight even though it was still September 27 in Santiago.",
+      "specific_fix": "Normalize date-only event_date values to a neutral midday instant before recency calculations and add a browser regression test across UTC midnight.",
+      "root_cause": "Recency logic interpreted YYYY-MM-DD as UTC midnight, mixing date-only business semantics with an instant-based UTC clock.",
+      "preventive_controls": [
+        "deterministic_test",
+        "browser_qa_assertion",
+        "data_validation_rule"
+      ],
+      "preventive_rule": "Date-only source dates must never be compared as UTC-midnight instants without explicit normalization; product windows are calendar-day semantics in the product timezone.",
+      "status": "implemented_in_recovery_branch_pending_validation"
+    },
+    {
+      "id": "generated_artifact_fix_2026_09_27",
+      "source": "Autopilot recovery",
+      "class": "source_of_truth_miss",
+      "finding": "A valid recency fix was first applied to web/app.js, but the QA build regenerated it from canonical root app.js, so the fix disappeared.",
+      "specific_fix": "Apply product logic changes to canonical source files and treat generated web artifacts as outputs.",
+      "root_cause": "The repair loop did not verify source-of-truth ownership before editing.",
+      "preventive_controls": [
+        "reviewer_rule",
+        "architecture_change"
+      ],
+      "preventive_rule": "Before editing a runtime/output file, identify whether it is generated; fixes must land in the canonical source and generated outputs must be rebuilt rather than hand-maintained.",
+      "status": "implemented_in_recovery_branch_pending_validation"
+    }
+  ]
+}
