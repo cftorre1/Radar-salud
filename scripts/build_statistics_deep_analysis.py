@@ -125,6 +125,7 @@ def ges():
 def validated_year_totals(url, variable, unit, lower, upper):
     book = workbook(url)
     matches = []
+    total_candidates = []
     for ws in book.worksheets:
         rows = [list(row[:60]) for row in ws.iter_rows(min_row=1, max_row=500, values_only=True)]
         for header_index, header in enumerate(rows[:120]):
@@ -142,16 +143,19 @@ def validated_year_totals(url, variable, unit, lower, upper):
                 sheet_text = ws.title.lower()
                 if not any(term in label for term in ("total", "sistema")):
                     continue
+                first, last = numeric(row[year_2024]), numeric(row[year_2025])
+                if first is None or last is None:
+                    continue
+                total_candidates.append((ws.title, header_index + 1, label[:180], int(first), int(last)))
                 if variable == "Beneficiarios" and "benefici" not in label:
                     continue
                 if variable == "Casos GES" and not any(term in (label + " " + sheet_text) for term in ("casos ges", "ges")):
                     continue
-                first, last = numeric(row[year_2024]), numeric(row[year_2025])
-                if first is None or last is None or not (lower <= first <= upper and lower <= last <= upper):
+                if not (lower <= first <= upper and lower <= last <= upper):
                     continue
                 matches.append((ws.title, header_index + 1, label, int(first), int(last)))
     if len(matches) != 1:
-        raise RuntimeError(f"{variable}: expected one 2024/2025 total with unit {unit}; found {len(matches)}")
+        raise RuntimeError(f"{variable}: expected one 2024/2025 total with unit {unit}; found {len(matches)}; candidate_rows={total_candidates[:30]}")
     return matches[0]
 
 

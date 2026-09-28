@@ -240,7 +240,7 @@
       "source": "Autopilot QA recovery",
       "class": "statistical_series_semantic_ambiguity",
       "finding": "La serie de cartera ofreció dos filas agregadas elegibles para Beneficiarios.",
-      "specific_fix": "Requerir que la propia etiqueta de fila mencione beneficiarios; la hoja no basta para inferir la variable.",
+      "specific_fix": "Loguear en QA las etiquetas de filas agregadas 2024/2025 y seleccionar una sola fila por identidad semántica verificada, sin relajar filtros de unidad ni escala.",
       "root_cause": "El filtro semántico aceptaba cualquier fila total de un libro cuyo nombre contenía Beneficiarios.",
       "preventive_controls": [
         "variable_identity_in_row_label",
@@ -248,7 +248,7 @@
         "series_unit_and_scale_reviewer"
       ],
       "status": "recovery_in_progress",
-      "attempts": 1,
+      "attempts": 2,
       "max_attempts": 3
     }
   ]
