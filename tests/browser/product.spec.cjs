@@ -292,7 +292,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody .normative-context')).toContainText('1 de noviembre de 2026');
  await expect(page.locator('#detailBody')).toContainText('Registro Nacional de Discapacidad');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
- const circular=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Isapres no podrán compensar reembolsos públicos/i})});
+ const circular=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\\/N°535 · Reembolsos a empleadores públicos/i})});
  await circular.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Circular IF/N°77');
  await page.locator('#detailBody .related').getByText('Normativa relacionada',{exact:false}).click();
  await expect(page.locator('#detailBody')).toContainText('Norma modificada');
