@@ -75,7 +75,8 @@ test('Inbox shows every unread signal, supports direct read and persists it',asy
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  const initial=await page.locator('.briefitem').count();
  const freeValue=await (await page.request.get('/data/free_value.json')).json();
- const dedupedInsightBase=freeValue.weekly_insight?1:0;
+ const radar=await (await page.request.get('/data/radar_today.json')).json();
+ const dedupedInsightBase=freeValue.weekly_insight&&radar.signals.some(s=>s.source_url===freeValue.weekly_insight.source_url)?1:0;
  const expected=await page.locator('article[data-card]:not(.read)').count()+await page.locator('article[data-special]:not(.read)').count()-dedupedInsightBase;
  expect(initial).toBe(expected);expect(initial).toBeGreaterThan(4);
  const first=await page.locator('.briefitem').first().getAttribute('data-brief');

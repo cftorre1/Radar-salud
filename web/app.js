@@ -75,7 +75,7 @@ function card(s){const r=rel(s.radar_score),rd=isRead(s),id=idFor(s),depth=detai
 function openDetail(s){const dialog=document.getElementById('signalDetail');document.getElementById('detailBody').innerHTML=detailHtml(s);dialog.showModal();dialog.querySelector('#closeDetail').focus()}
 
 function dateVal(s){const raw=s.event_date||0,dateOnly=typeof raw==='string'&&raw.length===10&&raw[4]==='-'&&raw[7]==='-';const normalized=dateOnly?raw+'T12:00:00Z':raw;return new Date(normalized).getTime()||0}
-function ageDays(s){return Math.max(0,(Date.now()-dateVal(s))/86400000)}
+function ageDays(s){const raw=s.event_date;if(typeof raw==='string'&&/^\\d{4}-\\d{2}-\\d{2}$/.test(raw)){const now=new Date(),today=Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()),event=Date.parse(raw+'T00:00:00Z');return Math.max(0,Math.floor((today-event)/86400000))}return Math.max(0,(Date.now()-dateVal(s))/86400000)}
 function freshness(s){const a=ageDays(s);if(a<=2)return 100;if(a<=7)return 88;if(a<=14)return 72;if(a<=30)return 48;if(a<=60)return 28;return 12}
 function personalizedScore(s){const radar=Number(s.radar_score||0),action=Number(s.actionability_score||radar),scope=Number(s.scope_score||radar);const impact=Math.max(Number(s.regulatory_impact_score||0),Number(s.economic_impact_score||0),Number(s.editorial_relevance||0));return .39*radar+.11*action+.07*scope+.10*impact+.07*freshness(s)}
 function inboxPool(){const weekly=freeValue.weekly_insight,active=weekly&&activeType==='Todos'&&activeScope==='Todos'&&specialInPeriod({date:weekly.event_date});return visible().filter(s=>!isRead(s)&&!(active&&s.source_url===weekly.source_url)).sort((a,b)=>dateVal(b)-dateVal(a))}
