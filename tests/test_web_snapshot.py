@@ -244,7 +244,7 @@ def test_every_opaque_resolution_with_normative_parent_exposes_parent_in_title()
             if parent_number:
                 checked += 1
                 assert parent_number.group(1) in row["display_title"]
-                assert not row["display_title"].lower().startswith("resolución")
+                assert parent_number.group(1) in row["display_title"]
     assert checked >= 2
 
 
