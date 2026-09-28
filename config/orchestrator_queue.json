@@ -2191,6 +2191,52 @@
         "reanudación sin intervención de Toba"
       ],
       "progress": "Infraestructura y contrato listos; requiere iniciar/autorizar una ejecución en ChatGPT Work. No se simula esta activación desde chat normal."
+    },
+    {
+      "id": "normative_editorial_v2_2026_09_27",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Paolo + Pele + Editorial Committee",
+      "source": "Dirección",
+      "objective": "Reformular la presentación de normativa para que cada señal se entienda en segundos sin perder identidad jurídica visible y trazable.",
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "instructions": [
+        "Implementar Normative Editorial V2 para circulares, resoluciones, oficios y demás actos regulatorios visibles.",
+        "El título principal debe explicar en lenguaje ejecutivo qué cambia realmente, a quién afecta y/o qué debe hacer distinto; no debe construirse mecánicamente desde el nombre del documento ni desde fragmentos de why_it_matters.",
+        "Separar título editorial de identidad jurídica: plain_language_title como título principal y legal_identity/legal_subtitle como segunda capa.",
+        "La identidad jurídica NO puede quedar visualmente al nivel discreto de fecha/fuente. Debe ser inmediatamente reconocible mediante tratamiento destacado propio (eyebrow, badge o cápsula) con tipo y número, por ejemplo RESOLUCIÓN EXENTA IF/N°11156 o CIRCULAR IF/N°533.",
+        "El tratamiento visual debe permitir identificar de un vistazo que la señal es normativa, sin competir excesivamente con el título editorial ni degradarse a metadata secundaria.",
+        "Para actos que modifican, suspenden, rechazan recursos o mantienen otra norma, el título debe incorporar el tema sustantivo de la norma relacionada; no basta decir 'mantiene su vigencia', 'mientras se resuelven recursos' o 'modifica instrucciones'.",
+        "Agregar Regulatory Business Editor al comité normativo permanente, junto con editorial_intelligence, health_business, regulatory_legal y evidence_research.",
+        "Exigir salida estructurada mínima: legal_identity, legal_action, affected_rule, business_subject, affected_actor, required_change, effective_date_or_status, plain_language_title, legal_subtitle.",
+        "Aplicar test editorial de 5 segundos: leyendo solo el título, una persona de la industria debe poder responder qué cambió. Si no, FAIL.",
+        "Agregar guards contra títulos cortados/incompletos: no terminar en preposición/conjunción, no truncar frases, no publicar subjects mecánicos incompletos.",
+        "Recurar todas las normativas visibles actuales y después el stock histórico aplicable, preservando hechos, vigencia, relaciones normativas y trazabilidad.",
+        "Usar como casos de regresión obligatorios IF/N°11156, IF/N°10670, IF/N°10615, IF/N°533, IF/N°9994, IF/N°8760 e IF/N°532.",
+        "Ejecutar Builder → QA desktop/mobile → Reviewer → Improvement Review; si la mejora cambia sólo presentación/copy y respeta hechos aprobados, iterar sin pedir Dirección.",
+        "Registrar este hallazgo como learning incident y añadir controles preventivos para futuras normas."
+      ],
+      "constraints": [
+        "No inventar implicancias ni simplificar al punto de perder precisión jurídica.",
+        "No ocultar tipo/número del acto.",
+        "No convertir identidad jurídica en metadata secundaria equivalente a fecha/fuente.",
+        "No tocar main/producción.",
+        "No rebajar requisitos de evidencia, vigencia o relaciones normativas."
+      ],
+      "evidence_required": [
+        "before/after de señales normativas visibles",
+        "QA desktop/mobile",
+        "test de 5 segundos documentado",
+        "guards automáticos de título completo",
+        "casos de regresión obligatorios",
+        "Reviewer editorial/regulatorio",
+        "Improvement Review",
+        "learning ledger actualizado"
+      ],
+      "approved_at": "2026-09-27",
+      "progress": "Aprobado por Dirección. Debe consumirse como siguiente frente editorial prioritario sin interrumpir trabajos ya en ejecución."
     }
   ],
   "execution_policy": {
