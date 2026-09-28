@@ -94,7 +94,7 @@ def review_statistics(signals):
             if {str(item.get("source_url") or "").rsplit("/", 1)[-1] for item in evidence} != expected_series:
                 fail("series_source_document_mismatch", url, "Each published series needs its matching official workbook")
             trace = (signal.get("statistical_methodology") or {}).get("validated_series") or []
-            expected_sheets = {"Beneficiarios promedio anual": "promedio anual de cartera", "Casos GES": "casos ges"}
+            expected_sheets = {"Beneficiarios promedio anual": "promedio anual de cartera", "Casos GES": "casos resumen"}
             if {item.get("variable") for item in trace} != set(expected_sheets) or any(expected_sheets.get(item.get("variable"), "") not in str(item.get("sheet", "")).lower() for item in trace):
                 fail("series_sheet_or_type_mismatch", url, "Variable type must be sourced from its expected official worksheet")
 

@@ -54,7 +54,7 @@ def releases():
          "data_insight_evidence": [{**COMMON["data_insight_evidence"][0], "source_url": source} for source in SERIES_FILES],
          "statistical_methodology": {"validated_series": [
              {"variable": "Beneficiarios promedio anual", "sheet": "Promedio Anual de Cartera"},
-             {"variable": "Casos GES", "sheet": "Casos GES"},
+             {"variable": "Casos GES", "sheet": "Casos Resumen"},
          ]},
          "summary_table": {"columns": ["Variable", "Tipo", "Unidad", "2024", "2025", "Cambio absoluto", "Cambio (%)"],
                            "rows": [{"cells": row} for row in series_rows]}},

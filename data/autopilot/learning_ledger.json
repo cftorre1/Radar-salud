@@ -256,7 +256,7 @@
       "source": "Autopilot QA recovery",
       "class": "statistical_series_sheet_identity_mismatch",
       "finding": "La serie Casos GES no está en una hoja cuyo nombre coincida literalmente con el nombre esperado.",
-      "specific_fix": "Inspeccionar nombres y encabezados de hojas del XLS oficial y seleccionar la hoja con identidad de variable demostrable.",
+      "specific_fix": "Usar la pestaña oficial Casos Resumen, cuyo encabezado la identifica como casos GES informados por Isapres y Fonasa; mantener controles de unidad, escala y rótulo total.",
       "root_cause": "El parser equiparó el nombre de variable a un token del título de pestaña.",
       "preventive_controls": [
         "explicit_series_sheet_contract",
@@ -264,7 +264,7 @@
         "official_workbook_identity"
       ],
       "status": "recovery_in_progress",
-      "attempts": 1,
+      "attempts": 2,
       "max_attempts": 3
     }
   ]

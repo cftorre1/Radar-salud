@@ -17,7 +17,7 @@ BOLETIN_PAGE = "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estad
 GES_URL = "https://www.superdesalud.gob.cl/app/uploads/2026/07/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-marzo-2026-1.xlsx"
 SERIES_DOCS = [
     ("Beneficiarios promedio anual", "Promedio anual de stock", "personas", 500_000, 10_000_000, "Promedio Anual de Cartera", "https://www.superdesalud.gob.cl/app/uploads/2026/03/2-cartera-de-beneficiarios-anos-1990-2025.xlsx"),
-    ("Casos GES", "Flujo anual", "casos", 10_000, 10_000_000, "casos ges", "https://www.superdesalud.gob.cl/app/uploads/2026/03/7-casos-ges-anos-2005-2025.xlsx"),
+    ("Casos GES", "Flujo anual", "casos", 10_000, 10_000_000, "Casos Resumen", "https://www.superdesalud.gob.cl/app/uploads/2026/03/7-casos-ges-anos-2005-2025.xlsx"),
 ]
 FIN_SOURCE = "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls"
 ACC_SOURCE = "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf"
