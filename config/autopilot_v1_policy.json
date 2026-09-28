@@ -1,0 +1,94 @@
+{
+  "version": "1.0.0",
+  "name": "Alicanto Autopilot V1.0",
+  "team": {
+    "Pedro": "Partner / Dirección: strategy, product decisions, priorities and escalation resolution.",
+    "Paolo": "Operational orchestrator: decomposes approved work, coordinates execution, gates and recovery.",
+    "Pele": "ChatGPT Work autonomous agent: consumes executable backlog, investigates failures, iterates and proposes improvements.",
+    "Pato": "PMO: durable source of product readiness, evidence, blockers and decision history."
+  },
+  "principles": [
+    "Autonomy by default for approved and reversible staging work.",
+    "Never wait silently when executable work is blocked.",
+    "Every failed cycle must end in recovery, alternate work, or explicit escalation.",
+    "Continuous improvement is part of the loop, not a separate project.",
+    "A green test suite is necessary but not sufficient: coherence, clarity, strategic fit, editorial quality and UX must also be reviewed.",
+    "main and production require explicit Dirección authorization until policy changes."
+  ],
+  "execution_loop": [
+    "read_state",
+    "select_highest_priority_executable_task",
+    "build",
+    "run_deterministic_tests",
+    "run_browser_qa_desktop_mobile",
+    "independent_reviewer",
+    "quality_improvement_review",
+    "repair_and_repeat_if_safe",
+    "record_evidence",
+    "update_pmo_and_queue",
+    "select_next_task"
+  ],
+  "recovery": {
+    "max_repair_attempts_per_failure_signature": 3,
+    "stale_executable_work_minutes": 60,
+    "on_failure": [
+      "classify_failure",
+      "attempt_safe_repair",
+      "rerun_smallest_relevant_gate",
+      "rerun_full_gate_before_acceptance",
+      "if_not_recoverable_mark_blocked_with_exact_reason",
+      "continue_with_next_independent_executable_task"
+    ],
+    "never": [
+      "wait_for_human_without recording a blocker",
+      "repeatedly rerun identical failing work without new evidence",
+      "change approved product strategy to make a test pass",
+      "promote to main or production"
+    ]
+  },
+  "continuous_improvement": {
+    "required": true,
+    "review_dimensions": [
+      "strategic_coherence",
+      "user_clarity",
+      "editorial_quality",
+      "data_integrity",
+      "information_density",
+      "responsive_ux",
+      "maintainability",
+      "regression_risk"
+    ],
+    "rule": "After functional PASS, reviewer may request bounded refinements. Refinements must preserve the approved objective and return through QA.",
+    "stop_condition": "PASS with no material improvement requested, or remaining suggestions are explicitly classified as non-blocking backlog."
+  },
+  "escalation": {
+    "human_required_for": [
+      "production_or_main_promotion",
+      "irreversible_or_destructive_change",
+      "new_external_spend_or_budget_change",
+      "credentials_or_account_authorization",
+      "conflict_between_approved_requirements",
+      "change_to_product_strategy_or_business_model",
+      "legal_or_privacy_decision",
+      "failure_persisting_after_bounded_repair_attempts_when_no_independent_work_remains"
+    ],
+    "notification_rule": "Escalate with evidence, options and recommendation; never merely report that work stopped."
+  },
+  "work_agent_contract": {
+    "input": [
+      "config/orchestrator_queue.json",
+      "config/pmo_baseline.json",
+      "web/data/product.json",
+      "latest GitHub Actions evidence",
+      "current staging SHA"
+    ],
+    "output": [
+      "commits on an isolated work branch or authorized staging lane",
+      "QA/reviewer evidence",
+      "queue status updates",
+      "PMO evidence updates",
+      "new backlog items for discovered improvements",
+      "explicit escalation artifact only when policy requires"
+    ]
+  }
+}
