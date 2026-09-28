@@ -154,6 +154,15 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-home-v2-final.png`,fullPage:true});
 });
+test('Date-only signals remain inside the 14-day window across UTC midnight',async({page})=>{
+ await page.addInitScript(()=>{Date.now=()=>new Date('2026-09-28T00:20:00Z').getTime()});
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
+ const data=await (await page.request.get('/data/free_value.json')).json();
+ expect(data.weekly_insight?.event_date).toBe('2026-09-14');
+ await expect(page.locator('#period')).toHaveValue('14');
+ await expect(page.locator('.signal.special.weekly')).toHaveCount(1);
+ await expect(page.locator('.brief-weekly')).toHaveCount(1);
+});
 test('Feed-only share uses Web Share and clipboard fallback without analytics',async({page})=>{
  await page.addInitScript(()=>{window.__shared=[];Object.defineProperty(navigator,'share',{configurable:true,value:payload=>{window.__shared.push(payload);return Promise.resolve()}})});
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
