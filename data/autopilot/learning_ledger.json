@@ -57,6 +57,20 @@
       ],
       "preventive_rule": "Date-only source dates must never be compared as UTC-midnight instants without explicit normalization; product windows are calendar-day semantics in the product timezone.",
       "status": "implemented_in_recovery_branch_pending_validation"
+    },
+    {
+      "id": "generated_artifact_fix_2026_09_27",
+      "source": "Autopilot recovery",
+      "class": "source_of_truth_miss",
+      "finding": "A valid recency fix was first applied to web/app.js, but the QA build regenerated it from canonical root app.js, so the fix disappeared.",
+      "specific_fix": "Apply product logic changes to canonical source files and treat generated web artifacts as outputs.",
+      "root_cause": "The repair loop did not verify source-of-truth ownership before editing.",
+      "preventive_controls": [
+        "reviewer_rule",
+        "architecture_change"
+      ],
+      "preventive_rule": "Before editing a runtime/output file, identify whether it is generated; fixes must land in the canonical source and generated outputs must be rebuilt rather than hand-maintained.",
+      "status": "implemented_in_recovery_branch_pending_validation"
     }
   ]
 }
