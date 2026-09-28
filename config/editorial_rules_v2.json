@@ -100,6 +100,18 @@
     "statistical_value_ladder": {
       "required": true,
       "rule": "Toda publicación estadística material debe permanecer visible en Alicanto y publicarse en el mayor nivel de valor soportado por la evidencia: (1) insight conectado con períodos/señales/noticias/normativa; (2) análisis profundo del documento; (3) hallazgo o dato central; (4) ficha útil de publicación con contenido, período/dimensiones y utilidad potencial. Nunca reducirla a 'se publicó' si puede describirse mejor, y nunca ocultarla solo por falta de parser."
+    },
+    "normative_plain_language_title": {
+      "required": true,
+      "rule": "Para Normativa/Legal, el título principal debe responder en lenguaje ejecutivo qué cambia, a quién afecta y/o qué debe hacer distinto. La identidad jurídica (tipo/número y norma relacionada) se conserva en legal_subtitle. Un título que solo diga que una norma mantiene vigencia, fue impugnada, modifica instrucciones o responde a otra norma sin explicar la materia sustantiva falla el gate editorial."
+    },
+    "normative_five_second_test": {
+      "required": true,
+      "rule": "Leyendo solo el título principal, una persona de la industria debe poder responder qué cambió. Si necesita abrir Contexto de la señal para entender la materia, el título falla y debe reescribirse."
+    },
+    "normative_title_completeness": {
+      "required": true,
+      "rule": "El título principal no puede terminar en preposición, conjunción, artículo incompleto ni frase truncada. Debe ser una unidad semántica completa y evitar concatenaciones mecánicas desde normative_subject."
     }
   },
   "expert_review_checklist": {
@@ -109,7 +121,11 @@
       "¿En las resoluciones queda claro, cuando la evidencia lo permite, a qué Circular, Oficio, Resolución, norma o antecedente responden, modifican, confirman, ejecutan o aplican?",
       "¿La relación normativa mostrada está respaldada por evidencia y se distingue explícitamente cuando un enlace o antecedente no ha sido verificado?",
       "¿Ponte al día, card y detalle conservan de forma consistente la identidad del acto, el tema central y la relación normativa relevante?",
-      "¿La revisión editorial propuesta respeta estas reglas persistentes y evita reemplazar un título informativo por uno opaco?"
+      "¿La revisión editorial propuesta respeta estas reglas persistentes y evita reemplazar un título informativo por uno opaco?",
+      "¿El título principal pasa el test de 5 segundos: una persona de la industria entiende qué cambió sin abrir el contexto?",
+      "¿La identidad jurídica se conserva como subtítulo separado y no compite con la consecuencia de negocio en el título principal?",
+      "¿El título evita fórmulas opacas como «mantiene su vigencia», «se resuelven recursos» o «modifica instrucciones» sin decir sobre qué materia sustantiva?",
+      "¿El título es una frase semánticamente completa y no termina truncado en preposición, conjunción o complemento incompleto?"
     ],
     "aggregation": [
       "¿Existe una pieza agregada o Pulso que ya cubra la misma familia, período y hallazgo? Si existe, ¿la señal individual aporta valor decisional distinto y trazable suficiente para publicarse por separado?"
