@@ -218,6 +218,22 @@
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: contrato V2.1 persistido en snapshot final; 12/12 titulares; Reviewer PASS."
       ]
+    },
+    {
+      "id": "ges_workbook_multilevel_header_recovery_2026_09_28",
+      "source": "Autopilot QA recovery",
+      "class": "statistics_parser_schema_false_negative",
+      "finding": "El parser estricto de GES no detectó el esquema de la hoja 2026 y detuvo el build antes de publicar salidas.",
+      "specific_fix": "Leer encabezados combinados en una ventana de varias filas y conservar el fallo cerrado con muestra diagnóstica del libro.",
+      "root_cause": "Se asumió que nombre de asegurador y métrica 'casos' aparecen en una única celda de encabezado.",
+      "preventive_controls": [
+        "multirow_header_schema_validation",
+        "official_period_sheet_contract",
+        "statistics_reviewer_denominator_checks"
+      ],
+      "status": "recovery_in_progress",
+      "attempts": 1,
+      "max_attempts": 3
     }
   ]
 }

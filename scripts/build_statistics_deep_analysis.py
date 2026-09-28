@@ -66,7 +66,10 @@ def ges():
             continue
         rows = [list(row[:60]) for row in ws.iter_rows(min_row=1, max_row=500, values_only=True)]
         for header_index, header in enumerate(rows[:100]):
-            labels = [norm(value).lower() for value in header]
+            labels = []
+            for column in range(len(header)):
+                start = max(0, header_index - 2)
+                labels.append(norm(" ".join(norm(rows[index][column]) for index in range(start, header_index + 1) if column < len(rows[index]))).lower())
             fonasa_col = next((i for i, value in enumerate(labels) if "fonasa" in value and "cas" in value and "tasa" not in value), None)
             isapre_col = next((i for i, value in enumerate(labels) if "isapre" in value and "cas" in value and "tasa" not in value), None)
             if fonasa_col is None or isapre_col is None or fonasa_col == isapre_col:
@@ -89,7 +92,8 @@ def ges():
             if len(observations) >= 5:
                 candidates.append((ws.title, header_index + 1, observations))
     if not candidates:
-        raise RuntimeError("GES 2026 sheet/case-count schema not validated; fail closed")
+        diagnostic = [(ws.title, [[norm(value) for value in row[:16]] for row in ws.iter_rows(min_row=1, max_row=8, values_only=True)]) for ws in book.worksheets]
+        raise RuntimeError("GES 2026 sheet/case-count schema not validated; fail closed; workbook sample=" + repr(diagnostic)[:12000])
     sheet, header, observations = candidates[-1]
     top = sorted(observations.items(), key=lambda item: sum(item[1]), reverse=True)[:5]
     rows = []
