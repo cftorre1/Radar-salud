@@ -2099,6 +2099,44 @@
         "No publicar comparación si el esquema no valida; fallar cerrado.",
         "QA desktop/mobile + Reviewer PASS."
       ]
+    },
+    {
+      "id": "autopilot_v1_2026_09_27",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Paolo + Pele",
+      "source": "Dirección",
+      "objective": "Cerrar Autopilot V1.0 para que Alicanto mantenga ejecución, recuperación y mejora continua con mínima supervisión de Toba.",
+      "depends_on": [],
+      "instructions": [
+        "Usar docs/AUTOPILOT_V1.md y config/autopilot_v1_policy.json como contrato operacional.",
+        "Nunca detener trabajo ejecutable de forma silenciosa: recuperar, registrar blocker y continuar trabajo independiente.",
+        "Ejecutar Improvement Review después del PASS funcional y devolver mejoras materiales acotadas al Builder.",
+        "Aplicar config/system_learning_policy.json a todo hallazgo de Toba, error recurrente o intervención manual.",
+        "Mantener data/autopilot/learning_ledger.json como evidencia de aprendizaje sistémico.",
+        "Reducir progresivamente la intervención del dueño a 30–60 minutos por semana.",
+        "Mantener main/producción protegidos salvo autorización explícita de Dirección."
+      ],
+      "constraints": [
+        "No promover a main/producción sin autorización.",
+        "No cambiar estrategia, presupuesto, credenciales, decisiones legales/privacidad o requisitos aprobados.",
+        "No rebajar QA/Reviewer para obtener PASS."
+      ],
+      "evidence_required": [
+        "watchdog y tests PASS",
+        "validación aislada PASS",
+        "critical QA sobre staging base verde",
+        "liveness 60 minutos",
+        "Learning Reviewer y learning ledger versionados",
+        "ciclo recurrente de seguridad habilitado",
+        "bloqueo/limitación de Pelé Work registrado si su activación requiere acción humana"
+      ],
+      "progress": "Infraestructura V1 implementada en rama rebased; pendiente QA completo e integración a staging.",
+      "evidence": [
+        "Staging recuperado y validado en run #544 antes de rebase de Autopilot V1.",
+        "Autopilot V1 isolated validation PASS en iteraciones previas.",
+        "Tarea recurrente horaria de seguridad habilitada en ChatGPT."
+      ]
     }
   ],
   "execution_policy": {
