@@ -29,10 +29,10 @@ def build_experiment(snapshot, weekly, themes_doc):
         s=next((x for x in theme.get("sources",[]) if x.get("publisher")==publisher),None)
         if not s: raise ValueError("corpus_source_missing:"+sid)
         return rec(sid,s.get("publisher"),s.get("title"),s.get("published_at"),s.get("url"),s.get("material_type"),s.get("evidence"),s.get("analysis"))
-    who=theme_source(workforce,"WHO","WHO report")
-    reuters=theme_source(workforce,"Reuters","Reuters workforce")
-    deloitte=theme_source(ai,"Deloitte","Deloitte AI")
-    pwc=theme_source(ai,"PwC","PwC governance")
+    who=theme_source(workforce,"WHO","G1")
+    reuters=theme_source(workforce,"Reuters","G2")
+    deloitte=theme_source(ai,"Deloitte","G3")
+    pwc=theme_source(ai,"PwC","G4")
     catalog=[news,*norms,who,reuters,deloitte,pwc]
     if len(catalog)!=8: raise ValueError("corpus_must_contain_exactly_8_pieces")
     cases=[
@@ -47,7 +47,7 @@ def build_experiment(snapshot, weekly, themes_doc):
     return {"version":"1.0","pieces":catalog,"cases":cases}
 
 def make_prompt(case):
-    contract={"headline":"string","executive_thesis":"string","key_claims":[{"claim":"string","source_ids":["L1"]}],"why_it_matters":"string","business_implications":["string"],"chile_watch":{"classification":"evidence|hypothesis|none","text":"string","source_ids":["L1"]},"decision_use":"string","uncertainties_and_limits":["string"],"source_refs":["L1"]}
+    contract={"headline":"string","executive_thesis":"string","key_claims":[{"claim":"string","source_ids":["<ID from evidence_ids>"]}],"why_it_matters":"string","business_implications":["string"],"chile_watch":{"classification":"evidence|hypothesis|none","text":"string","source_ids":["L1"]},"decision_use":"string","uncertainties_and_limits":["string"],"source_refs":["<ID from evidence_ids>"]}
     payload={"task":case["id"],"instruction":case["instruction"],"evidence":case["evidence"],"theme_context":case.get("theme_context",{}),"output_contract":contract}
     return "Actúa como analista de inteligencia de negocio en salud. Responde en español y devuelve SOLO JSON. Usa exclusivamente la evidencia, sin búsqueda externa ni causalidad inventada. source_refs y key_claims.source_ids solo pueden usar los ID entregados. Respeta el límite de palabras.\n"+json.dumps(payload,ensure_ascii=False,separators=(",",":"))
 
