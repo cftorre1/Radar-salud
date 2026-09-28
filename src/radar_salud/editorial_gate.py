@@ -38,8 +38,11 @@ def quality_score(r:Dict[str,Any])->int:
 
 def publication_ready(r:Dict[str,Any])->Tuple[bool,str,int]:
     if invalid_validity(r):r["validity_text"]=None
-    if "Normativa" in (r.get("signal_types") or []) and r.get("normative_title_review_required"):
-        return False,"normative_title_needs_review",0
+    if "Normativa" in (r.get("signal_types") or []):
+        title=str(r.get("display_title") or r.get("title") or "")
+        identity=str(r.get("legal_identity") or r.get("normative_document_label") or "")
+        if r.get("normative_title_review_required") or not identity or identity.casefold() not in title.casefold() or not str(r.get("normative_context") or "").strip():
+            return False,"normative_title_needs_review",0
     q=quality_score(r)
     if has_garbage(r):return False,"binary_or_markup",q
     if is_minsal_noise(r):return False,"editorial_noise",q

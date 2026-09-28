@@ -1,72 +1,175 @@
 {
-  "version": "2.0",
+  "version": "2.1",
   "title_contract": {
-    "min_characters": 28,
-    "reject_trailing_words": [
-      "de",
-      "del",
-      "la",
-      "el",
-      "para",
-      "por",
-      "con",
-      "en",
-      "a",
-      "sobre",
-      "que",
-      "y",
-      "o"
-    ],
-    "missing_clear_title": "route_to_review"
+    "identity_in_headline": true,
+    "require_subject_and_action": true,
+    "allow_multiline_mobile": true,
+    "fail_closed_for_unreviewed_stock": true,
+    "reviewer_semantics": "document + subject + action/change; no rigid title length"
   },
   "records": {
     "529": {
-      "plain_language_title": "CAEC: la derivación tardía de urgencias puede obligar a cubrir la atención en el prestador",
-      "legal_subtitle": "Circular IF/N°529 · Circular IF/N°77"
+      "plain_language_title": "Circular IF/N°529 · CAEC en urgencias: vincula la derivación tardía con la cobertura en el prestador que atendió",
+      "legal_subtitle": "Circular IF/N°77",
+      "subject_terms": [
+        "CAEC",
+        "urgencias"
+      ],
+      "action_terms": [
+        "vincula",
+        "cobertura",
+        "derivación tardía"
+      ],
+      "normative_context": "Exige derivar a la red CAEC aun sin solicitud formal cuando la isapre conoce o debe conocer la hospitalización. Relaciona la falta de derivación oportuna con cobertura en el prestador de urgencia. Rige desde notificación."
     },
     "530": {
-      "plain_language_title": "Isapres deberán reportar cada mes los cambios en el registro de contralores médicos",
-      "legal_subtitle": "Circular IF/N°530 · Circular IF/N°124"
+      "plain_language_title": "Circular IF/N°530 · Contralores médicos: exige informar cambios cada mes, dentro de los primeros cinco días hábiles",
+      "legal_subtitle": "Circular IF/N°124",
+      "subject_terms": [
+        "contralores médicos",
+        "registro"
+      ],
+      "action_terms": [
+        "exige",
+        "informar",
+        "cada mes"
+      ],
+      "normative_context": "Las isapres deben enviar por casilla electrónica cambios del registro ocurridos durante el mes anterior, dentro de los primeros cinco días hábiles de cada mes."
     },
     "531": {
-      "plain_language_title": "Metas EMP: el informe parcial se emitirá en octubre tras diez meses de seguimiento",
-      "legal_subtitle": "Circular IF/N°531 · Circular IF/N°131"
+      "plain_language_title": "Circular IF/N°531 · Metas EMP: traslada a octubre el informe de avance parcial sobre enero-octubre",
+      "legal_subtitle": "Circular IF/N°131",
+      "subject_terms": [
+        "Metas EMP",
+        "Examen de Medicina Preventiva"
+      ],
+      "action_terms": [
+        "traslada",
+        "octubre"
+      ],
+      "normative_context": "El informe parcial deja de emitirse tras el primer semestre y pasa a efectuarse al cumplirse el décimo mes, evaluando enero-octubre. Rige desde su notificación."
     },
     "532": {
-      "plain_language_title": "Afiliación electrónica: nuevas exigencias de identidad, consentimiento y trazabilidad",
-      "legal_subtitle": "Circular IF/N°532"
+      "plain_language_title": "Circular IF/N°532 · Afiliación electrónica: refuerza controles de identidad, consentimiento y trazabilidad desde enero de 2027",
+      "legal_subtitle": "Circular IF/N°131 · Circular IF/N°80",
+      "subject_terms": [
+        "afiliación electrónica",
+        "suscripción"
+      ],
+      "action_terms": [
+        "refuerza",
+        "controles",
+        "trazabilidad"
+      ],
+      "normative_context": "Actualiza reglas de afiliación y desafiliación electrónica: incorpora autenticación, conservación documental, trazabilidad y controles sobre afiliaciones directas y validación de identidad. Entra en vigor el 1 de enero de 2027."
     },
     "533": {
-      "plain_language_title": "Isapres deben ampliar el archivo mensual de SIL con nuevos campos y validaciones",
-      "legal_subtitle": "Circular IF/N°533 · Circular IF/N°131"
+      "plain_language_title": "Circular IF/N°533 · SIL: actualiza el inventario mensual con nuevos campos, formatos y validaciones",
+      "legal_subtitle": "Circular IF/N°131",
+      "subject_terms": [
+        "SIL",
+        "inventario"
+      ],
+      "action_terms": [
+        "actualiza",
+        "nuevos campos"
+      ],
+      "normative_context": "Actualiza el archivo de Inventario de Subsidios por Pagar y Documentos Caducos. Añade datos de trabajador, profesional, licencias, fechas y montos; el campo 05 sigue en estructura, pero debe quedar vacío. Rige desde notificación."
     },
     "534": {
-      "plain_language_title": "Isapres deberán emitir bonos con cédula si falla la biometría",
-      "legal_subtitle": "Circular IF/N°534 · Circular IF/N°476"
+      "plain_language_title": "Circular IF/N°534 · Bonos electrónicos: si fallan biometría y validación auxiliar, las isapres deben aceptar la cédula",
+      "legal_subtitle": "Circular IF/N°476 · Circular IF/N°77",
+      "subject_terms": [
+        "bonos electrónicos",
+        "bonos"
+      ],
+      "action_terms": [
+        "deben aceptar",
+        "cédula"
+      ],
+      "normative_context": "Cuando no se puede validar identidad con biometría dactilar ni con el mecanismo auxiliar, permite comprar el bono con cédula o sus elementos de verificación, sin trabas. Regularizaciones van después; rige desde el 1 de diciembre de 2026."
     },
     "535": {
-      "plain_language_title": "Isapres no podrán compensar reembolsos públicos sin habilitación legal",
-      "legal_subtitle": "Circular IF/N°535 · Circular IF/N°77"
+      "plain_language_title": "Circular IF/N°535 · Reembolsos a empleadores públicos: prohíbe a las isapres compensarlos con otras deudas, salvo habilitación legal",
+      "legal_subtitle": "Circular IF/N°77",
+      "subject_terms": [
+        "reembolsos",
+        "empleadores públicos"
+      ],
+      "action_terms": [
+        "prohíbe",
+        "compensarlos"
+      ],
+      "normative_context": "Modifica la Circular IF/N°77 sobre pagos a empleadores públicos por subsidios de incapacidad laboral. Prohíbe imputarlos contra deudas de esos órganos, salvo habilitación legal expresa. Rige desde su notificación."
     },
     "8760": {
-      "plain_language_title": "CAEC: se suspenden temporalmente las nuevas reglas de derivación en urgencias",
-      "legal_subtitle": "Resolución Exenta IF/N°8760 · Circular IF/N°529"
+      "plain_language_title": "Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos",
+      "legal_subtitle": "Circular IF/N°529",
+      "subject_terms": [
+        "CAEC",
+        "derivación"
+      ],
+      "action_terms": [
+        "suspende",
+        "pausa"
+      ],
+      "normative_context": "Concede la suspensión de efectos de Circular IF/N°529 mientras se resuelven los recursos. La Circular regulaba derivación a Red CAEC desde urgencias; durante la suspensión sus nuevas instrucciones no producen efectos."
     },
     "9994": {
-      "plain_language_title": "Suscripción y desafiliación electrónica: la nueva regulación sigue adelante pese a la impugnación",
-      "legal_subtitle": "Resolución Exenta IF/N°9994 · Circular IF/N°532"
+      "plain_language_title": "Resolución Exenta IF/N°9994 · Afiliación electrónica: rechaza suspender Circular IF/N°532; sus reglas entran en vigor en enero de 2027",
+      "legal_subtitle": "Circular IF/N°532",
+      "subject_terms": [
+        "afiliación electrónica",
+        "suscripción"
+      ],
+      "action_terms": [
+        "rechaza",
+        "suspender",
+        "2027"
+      ],
+      "normative_context": "Rechaza la solicitud de Isapre Esencial para suspender los efectos de la Circular IF/N°532; no decide el fondo de los recursos. Esa Circular fija nuevas exigencias de suscripción y desafiliación, vigentes desde el 1 de enero de 2027."
     },
     "10615": {
-      "plain_language_title": "Nueva Masvida debe ajustar el Plan MAS2026: aporte, siniestralidad y mandato",
-      "legal_subtitle": "Resolución Exenta IF/N°10615 · Oficio Ord. IF/N°27.377"
+      "plain_language_title": "Resolución Exenta IF/N°10615 · Plan MAS2026: acoge parcialmente el recurso contra Oficio IF/N°27.377; Nueva Masvida ajusta aporte, siniestralidad y mandato",
+      "legal_subtitle": "Oficio Ord. IF/N°27.377",
+      "subject_terms": [
+        "Plan MAS2026",
+        "Nueva Masvida"
+      ],
+      "action_terms": [
+        "acoge",
+        "ajusta",
+        "siniestralidad"
+      ],
+      "normative_context": "La resolución permitió un aporte convencional, no una prima extraordinaria, y exige incluirlo como ingreso para calcular siniestralidad. Revocar el mandato no expulsa de inmediato al cotizante ni le quita beneficios o tarifas."
     },
     "10670": {
-      "plain_language_title": "Metas EMP: el informe parcial pasa a octubre y la regla sigue vigente pese a los recursos",
-      "legal_subtitle": "Resolución Exenta IF/N°10670 · Circular IF/N°531"
+      "plain_language_title": "Resolución Exenta IF/N°10670 · Metas EMP: rechaza recursos contra Circular IF/N°531; sigue vigente el informe parcial de octubre",
+      "legal_subtitle": "Circular IF/N°531",
+      "subject_terms": [
+        "Metas EMP",
+        "informe parcial"
+      ],
+      "action_terms": [
+        "rechaza",
+        "vigente",
+        "octubre"
+      ],
+      "normative_context": "La Intendencia rechazó reposiciones y solicitudes de suspensión; los recursos jerárquicos siguen pendientes. La Circular IF/N°531 movió el informe parcial desde junio a octubre, sobre enero-octubre. Las isapres mantienen el seguimiento de metas."
     },
     "11156": {
-      "plain_language_title": "TEA: se mantiene la cobertura sin tope anual y no se podrá exigir RND",
-      "legal_subtitle": "Resolución Exenta IF/N°11156 · Circular IF/N°528"
+      "plain_language_title": "Resolución Exenta IF/N°11156 · TEA: mantiene cobertura sin tope anual y prohíbe exigir RND",
+      "legal_subtitle": "Circular IF/N°528",
+      "subject_terms": [
+        "TEA",
+        "cobertura"
+      ],
+      "action_terms": [
+        "mantiene",
+        "tope anual",
+        "RND"
+      ],
+      "normative_context": "La resolución acogió parcialmente reposiciones contra la Circular IF/N°528. Confirmó eliminar el límite anual para cinco prestaciones TEA y prohibió exigir inscripción en el RND. Añadió un registro presencial y digital, decisión en hasta 15 días hábiles y adecuación antes del 1 de noviembre de 2026 para compra directa de bonos."
     }
   }
 }
