@@ -2480,11 +2480,11 @@
         "learning/coverage rules persistidas"
       ],
       "approved_at": "2026-09-28",
-      "progress": "Subfrente 1/5 implementado y PASS local: señal respiratoria material y vigente conectada al feed; clasificación ISP laboratorio/MINSAL presión asistencial, atribución, caducidad 14 días y regla anti-repetición. Local: 246 Python, 39 Node, 46 Playwright; Reviewer determinístico PASS sin findings. Pendiente validar el commit remoto de staging; no etiquetado LIVE. El review registra como límite la falta de reconciliación independiente del archivo ISP.",
+      "progress": "Subfrente 1/5 validado en staging 44e544a8827f3c03c43866404ae83a2a8dd7645b; Actions #627 PASS (tests, staging QA, Reviewer, preview/smoke). Feed publica sólo el pulso semanal material y vigente; se mantienen scopes Isapres/Fonasa/Prestadores y BACKFILL. Improvement Review PASS; queda backlog no bloqueante de reconciliación independiente con el archivo ISP. Continúo con fuentes de prestadores.",
       "execution_subfronts": [
         {
           "id": "epidemiology_visible_material_pulse",
-          "status": "validating_staging",
+          "status": "validated",
           "scope": "Feed visible con cambio material semanal, vigencia 14 días, fuente ISP laboratorio separada de MINSAL presión asistencial, scopes transversales y no causalidad.",
           "local_evidence": [
             "246 tests Python PASS",
@@ -2493,7 +2493,18 @@
             "Reviewer local data/editorial/statistics/ux PASS, findings=[]"
           ],
           "improvement_review": "docs/IMPROVEMENT_REVIEW_COVERAGE_EPIdEMIOLOGY_2026_09_28.md",
-          "remaining": "Confirmar Actions de staging para commit y guardar SHA/run antes de pasar al subfrente de prestadores."
+          "remaining": "Confirmar Actions de staging para commit y guardar SHA/run antes de pasar al subfrente de prestadores.",
+          "validated_at": "2026-09-28",
+          "implementation_sha": "44e544a8827f3c03c43866404ae83a2a8dd7645b",
+          "workflow_run": "https://github.com/cftorre1/Radar-salud/actions/runs/36499055150",
+          "remote_evidence": {
+            "tests": "PASS",
+            "staging_qa": "PASS",
+            "reviewer": "PASS",
+            "preview_smoke": "PASS",
+            "rollback": "skipped_no_failure"
+          },
+          "improvement_review_status": "PASS; remaining ISP independent-data reconciliation classified non-blocking backlog"
         },
         {
           "id": "provider_sector_and_corporate_sources",

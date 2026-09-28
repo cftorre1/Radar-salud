@@ -616,6 +616,27 @@
         "SPF/DKIM/DMARC proof unavailable"
       ],
       "browser_contract": "Browser tests validate disabled newsletter capture, consent guard and source-suggestion UI with intercepted API contract responses; not evidence of deployed provider delivery."
+    },
+    "coverage_balance_epidemiology_front": {
+      "kind": "github_actions",
+      "sha": "44e544a8827f3c03c43866404ae83a2a8dd7645b",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36499055150",
+      "checks": [
+        "246 tests Python",
+        "39 tests Node",
+        "46 Playwright desktop/mobile",
+        "staging QA",
+        "Reviewer data/editorial/statistics/ux",
+        "preview/smoke"
+      ],
+      "result": "success",
+      "validated_requirements": [
+        "Pulso epidemiológico visible sólo con cambio material semanal",
+        "ISP laboratorio y MINSAL presión asistencial atribuidos por dimensión",
+        "caducidad del builder a 14 días y no repetición por ocupación aislada",
+        "scopes Prestadores/Fonasa/Isapres sin cuotas"
+      ],
+      "scope": "Señal histórica en BACKFILL; no certifica reconciliación independiente con el archivo semanal ISP ni nuevos datos LIVE."
     }
   },
   "blocks": [
@@ -1534,6 +1555,14 @@
         "246 tests Python; 39 tests Node; 46 Playwright desktop/mobile",
         "Reviewer local data/editorial/statistics/ux PASS; findings=[]"
       ]
+    },
+    {
+      "date": "2026-09-28",
+      "change": "Subfrente epidemiología del coverage balance task validado en staging. Sólo cambios semanales materiales y frescos entran al feed; QA, Reviewer, preview y smoke PASS. Pendiente reconciliación independiente del archivo ISP, registrada como backlog no bloqueante.",
+      "evidence": [
+        "coverage_balance_epidemiology_front",
+        "docs/IMPROVEMENT_REVIEW_COVERAGE_EPIdEMIOLOGY_2026_09_28.md"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1858,7 +1887,7 @@
     }
   ],
   "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
-  "current_staging_candidate_sha": "348946bfb87cac8dd045fc4f4b0e1a6ea6691c6a",
+  "current_staging_candidate_sha": "44e544a8827f3c03c43866404ae83a2a8dd7645b",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
