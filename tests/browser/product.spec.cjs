@@ -275,7 +275,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
- const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/cobertura TEA sin tope anual/})});
+ const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Resolución Exenta IF\\/N°11156.*Circular IF\\/Nº528/i})});
  await expect(tea).toContainText('prohibió exigir RND');
  await expect(tea).toContainText('15 días hábiles');
  await expect(tea).toContainText('1 de noviembre de 2026');
