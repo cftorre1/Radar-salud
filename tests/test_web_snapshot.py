@@ -184,8 +184,8 @@ def test_tea_preproduction_copy_is_descriptive_and_operationally_complete():
     row=m._normative_contract(m._card_micro(original))
     assert "Resolución Exenta IF/N°11156" in row["display_title"] and "TEA" in row["display_title"] and "mantiene" in row["display_title"]
     assert "RND" in row["normative_context"]
-    assert "15 días hábiles" in row["card_why"]
-    assert "1 de noviembre de 2026" in row["card_why"]
+    assert "15 días hábiles" in row["normative_context"]
+    assert "1 de noviembre de 2026" in row["normative_context"]
     assert row["normative_document_label"]=="Resolución Exenta IF/N°11156"
 
 
@@ -197,8 +197,8 @@ def test_all_opaque_normative_acts_get_identity_plus_subject_for_public_title():
     for row in acts:
         assert row.get("display_title"), row.get("title")
         assert row["display_title"] != row["normative_document_label"]
-        assert row["normative_document_number"] in row.get("legal_subtitle","")
-        assert not row["display_title"].lower().startswith(("resolución","circular","oficio","decreto"))
+        assert row["normative_document_number"] in row["display_title"]
+        assert row["normative_context"] and row["normative_context"].casefold() not in row["display_title"].casefold()
         assert row["normative_editorial"]["plain_language_title"] == row["display_title"]
         assert len(row["display_title"]) > len(row["normative_document_number"]) + 8
 
@@ -223,8 +223,8 @@ def test_pulso_suppresses_routine_component_statistics_including_regional_carter
 def test_opaque_resolution_title_exposes_parent_act_and_topic_when_available():
     history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
     row=next(x for x in m.curate(history,resolve_external=False) if x.get("source_url")=="https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10670/")
-    assert row["display_title"].startswith("Metas EMP: el informe parcial pasa a octubre")
-    assert "Resolución Exenta IF/N°10670" in row["legal_subtitle"]
+    assert "Resolución Exenta IF/N°10670" in row["display_title"] and "Metas EMP" in row["display_title"] and "rechaza" in row["display_title"] and "Circular IF/N°531" in row["display_title"]
+    assert "Resolución Exenta IF/N°10670" in row["display_title"]
     assert "Circular IF/N°531" in row["legal_subtitle"]
     assert any("Circular IF/N°531" in x["title"] for x in row["related_context"])
 
@@ -243,7 +243,7 @@ def test_every_opaque_resolution_with_normative_parent_exposes_parent_in_title()
             parent_number=__import__("re").search(r"N[°º]\s*([\d\.]+)",parents[0]["title"],__import__("re").I)
             if parent_number:
                 checked += 1
-                assert parent_number.group(1) in row["legal_subtitle"]
+                assert parent_number.group(1) in row["display_title"]
                 assert not row["display_title"].lower().startswith("resolución")
     assert checked >= 2
 

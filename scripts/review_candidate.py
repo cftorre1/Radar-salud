@@ -39,6 +39,27 @@ def review(web, sha):
                 fail("data","stale_source_check",f"data/source_health.json#sources/{slug}","Source was not polled within seven days")
     except (OSError,KeyError,TypeError,ValueError) as exc:
         fail("data","unverified_source_checks","data/source_health.json",str(exc))
+    try:
+        contract=json.loads((Path(__file__).resolve().parents[1]/"config/normative_editorial_v2.json").read_text())
+        for index,signal in enumerate(signals):
+            is_normative=signal.get("event_type")=="REGULATION" or "Normativa" in (signal.get("signal_types") or [])
+            if not is_normative:
+                continue
+            path=f"data/radar_today.json#signals/{index}"
+            number="".join(ch for ch in str(signal.get("normative_document_number") or signal.get("normative_document_label") or "") if ch.isdigit())
+            record=contract.get("records",{}).get(number,{})
+            title=str(signal.get("display_title") or signal.get("title") or "")
+            identity=str(signal.get("normative_document_label") or signal.get("legal_identity") or "")
+            context=str(signal.get("normative_context") or "")
+            if not record or signal.get("normative_title_review_required"):
+                fail("editorial","normative_title_needs_review",path,"Normative act has no approved V2.1 editorial record")
+            elif (not identity or identity.casefold() not in title.casefold()
+                  or not context or context.casefold() in title.casefold()
+                  or not any(str(term).casefold() in title.casefold() for term in record.get("subject_terms",[]))
+                  or not any(str(term).casefold() in title.casefold() for term in record.get("action_terms",[]))):
+                fail("editorial","normative_v21_contract",path,"Headline must contain act identity, subject and action; context must add information")
+    except (OSError,ValueError,TypeError) as exc:
+        fail("editorial","normative_contract_unavailable","config/normative_editorial_v2.json",str(exc))
     identities=set()
     for index,signal in enumerate(signals):
         path=f"data/radar_today.json#signals/{index}"
