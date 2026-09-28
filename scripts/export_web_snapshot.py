@@ -9,7 +9,7 @@ from radar_salud.editorial_copy import apply_reviewed_copy
 from radar_salud.isapre_pulse import build_pulse
 from radar_salud.editorial_committee import build_committee_artifact
 
-_NORMATIVE_V2_PATH=Path(__file__).resolve().parents[1]/"config"/"normative_editorial_v2.json
+_NORMATIVE_V2_PATH=Path(__file__).resolve().parents[1]/"config"/"normative_editorial_v2.json"
 def _normative_v2_config():
     try:return json.loads(_NORMATIVE_V2_PATH.read_text(encoding="utf-8"))
     except Exception:return {"records":{},"title_contract":{}}
