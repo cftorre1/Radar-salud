@@ -1,91 +1,74 @@
-# Normative Editorial V2
+# Normative Editorial V2.1 — document-first clarity
 
-## Purpose
-Make every regulatory signal understandable in seconds while preserving a highly visible legal identity.
+## Principle
+For regulatory content, the legal document is not secondary metadata. The user should understand in the headline itself:
 
-## Visual hierarchy
-1. **Legal identity badge / eyebrow** — prominent, immediately recognizable, e.g. `RESOLUCIÓN EXENTA IF/N°11156` or `CIRCULAR IF/N°533`.
-2. **Plain-language title** — explains the substantive change and business meaning.
-3. **Compact metadata** — date and source remain secondary.
+1. **What document is this?**
+2. **What subject does it regulate or decide?**
+3. **What changed / what did the authority decide?**
 
-Legal identity must never be styled as quietly as date/source.
+A user should not need to open “Contexto de la señal” to discover the document identity or the substance.
 
-## Editorial title contract
-A plain-language title should normally answer at least two of:
-- What changed?
-- Who is affected?
-- What must they do differently?
-- When/status if material?
+## Headline patterns
 
-Do not use legal procedural status as the main idea unless it changes the substantive operational state.
+### Circulars / instructions
+Preferred pattern:
 
-Bad:
-> Resolución Exenta IF/N°9994 sobre Circular IF/N°532: mantiene su ejecución pese a las impugnaciones
+`Circular IF/N°XXX · [subject]: [concrete obligation/change]`
 
-Better:
-> Suscripción y desafiliación electrónica: la nueva regulación sigue adelante pese a la impugnación
+Examples:
+- **Circular IF/N°535 · Reembolsos públicos: isapres no podrán compensarlos con deudas del empleador**
+- **Circular IF/N°534 · Bonos electrónicos: isapres deberán permitir compra con cédula si falla la biometría**
+- **Circular IF/N°533 · SIL: nuevo archivo mensual incorpora campos y validaciones adicionales**
 
-Legal badge/subtitle:
-> RESOLUCIÓN EXENTA IF/N°9994 · CIRCULAR IF/N°532
+### Resolutions affecting another act
+Preferred pattern:
 
-## Required structured output
-- legal_identity
-- legal_action
-- affected_rule
-- business_subject
-- affected_actor
-- required_change
-- effective_date_or_status
-- plain_language_title
-- legal_subtitle
+`Resolución Exenta IF/N°XXXX · [procedural action] sobre [Circular/Oficio Y]: [substantive subject + practical effect]`
 
-## Committee
-Normative signals require:
-- editorial_intelligence
-- health_business
-- regulatory_legal
-- evidence_research
-- **regulatory_business_editor**
+Examples:
+- **Resolución Exenta IF/N°10670 · rechaza recursos contra Circular IF/N°531: informe parcial EMP pasa a octubre y sigue vigente**
+- **Resolución Exenta IF/N°9994 · rechaza suspensión de Circular IF/N°532: afiliación y desafiliación electrónica siguen su implementación**
+- **Resolución Exenta IF/N°8760 · suspende Circular IF/N°529: quedan en pausa las nuevas reglas de derivación CAEC**
+- **Resolución Exenta IF/N°10615 · acoge parcialmente recurso sobre Oficio IF/N°27.377: Nueva Masvida debe ajustar el Plan MAS2026**
 
-The regulatory_business_editor owns the translation from legally accurate content to executive comprehension.
+These are editorial patterns, not rigid templates. The committee may rewrite when another formulation is clearer.
 
-## Five-second gate
-Before publication, ask:
-> Reading only the title, can an industry professional explain what changed?
+## Length
+Do not optimize for the shortest possible title. Two or three mobile lines are acceptable when necessary to preserve document identity, subject and change.
 
-If no, FAIL.
+## Context
+“Contexto de la señal” is optional depth, not a crutch for an incomplete title. It should add:
+- relevant antecedent;
+- what the document changes/decides;
+- practical scope or timing when material.
 
-## Deterministic guards
-Reject or route to review if:
-- title ends in a preposition/conjunction or clearly incomplete clause;
-- title is mechanically built from `normative_subject`;
-- title says only that a rule is modified/suspended/maintained without naming its substantive subject;
-- title contains duplicate legal identifiers;
-- visible title is mechanically truncated;
-- legal identity is missing or visually downgraded to ordinary metadata.
+Avoid repeating the headline verbatim.
 
-## Mandatory regression corpus
-- IF/N°11156 — TEA / no annual cap / RND
-- IF/N°10670 — EMP / partial report in October / rule remains in force
-- IF/N°10615 — Nueva Masvida / MAS2026 / contribution, loss ratio and mandate
-- IF/N°533 — monthly SIL inventory / new fields and validations
-- IF/N°9994 — electronic subscription/disaffiliation / rule continues despite challenge
-- IF/N°8760 — CAEC emergency referral rules temporarily suspended
-- IF/N°532 — electronic subscription/disaffiliation evidence requirements
+## Committee gate
+Permanent reviewers:
+- Regulatory Business Editor
+- Regulatory/Legal
+- Health Business
+- Editorial Intelligence
+- Evidence Research
 
-## Example target titles
-- **TEA: se mantiene la cobertura sin tope anual y no se podrá exigir RND**
-- **Metas EMP: el informe parcial pasa a octubre y la regla sigue vigente pese a los recursos**
-- **Nueva Masvida deberá ajustar el Plan MAS2026: aporte, siniestralidad y mandato**
-- **Isapres deberán ampliar el archivo mensual de devolución de SIL con nuevos campos y validaciones**
-- **Suscripción y desafiliación electrónica: la nueva regulación sigue adelante pese a la impugnación**
-- **CAEC: se suspenden temporalmente las nuevas reglas de derivación en urgencias**
+Before publication, answer:
+- Do I know which document this is?
+- Do I understand the subject?
+- Do I understand what changed or was decided?
 
-## Learning closure
-This task is not complete after correcting today's titles. Completion requires:
-1. current visible normative signals recurated;
-2. regression tests;
-3. committee rule updated;
-4. future normative signals generated under this contract;
-5. historical recuration plan/evidence;
-6. desktop/mobile QA and Improvement Review.
+Any “no” => REVISE.
+
+## Tests
+Use stable identity (source URL / document number) for locators. Test semantic requirements:
+- type + number visible;
+- substantive subject present;
+- action/change understandable;
+- no real truncation;
+- context adds incremental value.
+
+Do not encode exact editorial phrasing or fragile regex rules.
+
+## Stock recuration
+Apply to all currently visible/vigente normative signals and future ones. The stock review is part of completion, not optional backfill.
