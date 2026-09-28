@@ -1508,7 +1508,7 @@
     },
     {
       "id": "product_risk_gap_audit_2026_09_26",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "medium",
       "owner": "Direction+Experts",
       "source": "Orquestador",
@@ -1530,7 +1530,12 @@
         "controles faltantes",
         "decisiones que requieren Dirección"
       ],
-      "progress": "Reconciliación Beta 2026-09-27: auditoría enfocada en conversion value, Global/Home parity, Fuentes, newsletter, Premium y estados PMO. Cierre condicionado al HEAD integrado con QA/Reviewer/preview PASS."
+      "progress": "Auditoría de cuatro lentes completada (accesibilidad/inclusive design, seguridad/privacy-by-design, confiabilidad/observabilidad, crecimiento/conversión). Solo recomendaciones: no se implementaron cambios. Sin P0 para Beta read-only sin datos sensibles; P1: URL no autenticada, funnels personales inactivos y sugerencias sin backend real; P2: auditoría WCAG formal, contraste/lectores de pantalla, telemetría y feedback/conversión manual. Controles, evidencia y decisiones de Dirección en docs/PRODUCT_RISK_GAP_AUDIT_2026_09_28.md.",
+      "completed_at": "2026-09-28",
+      "evidence": [
+        "docs/PRODUCT_RISK_GAP_AUDIT_2026_09_28.md",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36430841007"
+      ]
     },
     {
       "id": "content_value_epidemiology_admin_iteration_2026_09_26",
@@ -2379,7 +2384,7 @@
     },
     {
       "id": "release_after_editorial_stats_email_qa_2026_09_27",
-      "status": "approved",
+      "status": "blocked",
       "priority": "critical",
       "owner": "Paolo + Pele",
       "source": "Dirección",
@@ -2427,7 +2432,9 @@
       ],
       "authorization": "Dirección 2026-09-27: si las mejoras acordadas salen bien, revisar que todas las secciones de correo funcionen; si todo queda bien, pasar a producción y publicar en la web oficial.",
       "approved_at": "2026-09-27",
-      "progress": "Autorización condicional registrada. No ejecutar release hasta cerrar dependencias y QA de correo."
+      "progress": "QA integral de staging completada en Actions 36430841007 (SHA 3dde3747ed0e7a1ff7a36a695d568ae4428921bb): 244 Python, 39 Node, 46 Playwright desktop/móvil, Reviewer (data/editorial/statistics/ux PASS, sin hallazgos), preview y smoke PASS. Newsletter y acceso anticipado siguen deshabilitados; capture_enabled/send_enabled/privacy_approved=false, URL y grupos vacíos, sender.verified=false; no hubo envío ni doble opt-in real. Sugerencias de fuentes fallan explícitamente sin backend y no simulan persistencia; el test browser usa respuestas interceptadas, no prueba un servicio desplegado. Sin evidencia de SPF/DKIM/DMARC ni cuentas/secretos. Autorización de Dirección condicional: gates de entrega/provider/legal no cumplidos; no promover.",
+      "blocker": "QA fail-closed PASS, pero la entrega real no es verificable: captura/envío deshabilitados, privacidad sin aprobación, remitente/grupos MailerLite sin verificar, sugerencias sin backend Pages ni persistencia/notificación; falta evidencia SPF/DKIM/DMARC. main y staging divergen 688 commits ahead, 5 behind y cambios de varias áreas fuera del alcance.",
+      "blocked_at": "2026-09-28"
     }
   ],
   "execution_policy": {
