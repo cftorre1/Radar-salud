@@ -593,6 +593,29 @@
       "scope": "GES marzo 2026, Series ISAPRE 1990–2025, estadísticas financieras marzo 2026 y Boletín IP junio 2026; tabla-first, semántica/unidades/denominadores, trazabilidad técnica secundaria y QA móvil de detalle.",
       "improvement_review": "docs/IMPROVEMENT_REVIEW_STATISTICS_V2_2026_09_28.md",
       "reviewer_note": "Reviewer determinístico valida contrato estructural, unidades, denominadores y traceability; no sustituye revisión sustantiva independiente de publicaciones."
+    },
+    "email_integral_staging_qa": {
+      "kind": "github_actions",
+      "sha": "3dde3747ed0e7a1ff7a36a695d568ae4428921bb",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36430841007",
+      "checks": [
+        "244 tests Python PASS",
+        "39 tests Node PASS",
+        "46 Playwright desktop/mobile PASS",
+        "Reviewer data/editorial/statistics/ux PASS; findings=[]",
+        "preview PASS",
+        "smoke staging PASS"
+      ],
+      "result": "staging_pass_external_email_gates_blocked",
+      "scope": "Newsletter/PREMIUM permanecen cerrados sin proveedor/privacidad; sugerencias fallan sin simular registro. Sin envío de correo real, persistencia real de backend o prueba SPF/DKIM/DMARC.",
+      "blockers": [
+        "MailerLite account/groups/secret not configured",
+        "privacy approval/consent absent",
+        "sender not verified",
+        "source suggestions backend and SMTP notification not deployed",
+        "SPF/DKIM/DMARC proof unavailable"
+      ],
+      "browser_contract": "Browser tests validate disabled newsletter capture, consent guard and source-suggestion UI with intercepted API contract responses; not evidence of deployed provider delivery."
     }
   },
   "blocks": [
@@ -1493,6 +1516,14 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/36429461066",
         "SHA 348946bfb87cac8dd045fc4f4b0e1a6ea6691c6a",
         "docs/IMPROVEMENT_REVIEW_STATISTICS_V2_2026_09_28.md"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "change": "QA integral de correo ejecutada en staging; controles fail-closed y browser contracts PASS, pero no hay prueba de correo real, backend de sugerencias ni autenticación DNS. Release condicional bloqueado. main/staging divergen 688 commits ahead y 5 behind, con cambios de múltiples áreas.",
+      "evidence": [
+        "email_integral_staging_qa",
+        "https://github.com/cftorre1/Radar-salud/compare/main...staging"
       ]
     }
   ],
