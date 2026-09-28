@@ -317,6 +317,26 @@
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36429461066 — tabla ejecutiva abre detalle en desktop/móvil; tabla visible, metodología cerrada por defecto, sin bloque redundante, sin overflow móvil."
       ]
+    },
+    {
+      "id": "pmo_reference_anchor_recovery_2026_09_28",
+      "source": "Autopilot Pato update recovery",
+      "class": "pmo_evidence_anchor_mismatch",
+      "finding": "El nuevo Statistics V2 evidence se registró correctamente, pero cambiar reference_staging_sha movió el ancla histórica usada por el test PMO staging_qa y quebró su coincidencia exacta de candidato.",
+      "root_cause": "Se confundió el SHA de evidencia específica de tarea con reference_staging_sha, que ancla otra evidencia baseline y no debe reemplazarse en una actualización local de catálogo.",
+      "specific_fix": "Restaurar el reference_staging_sha histórico; conservar Statistics V2 en su propia entrada del evidence_catalog y mantener current_staging_candidate_sha separado.",
+      "preventive_controls": [
+        "deterministic_test",
+        "pmo_evidence_catalog_by_scope",
+        "reference_sha_anchor_review"
+      ],
+      "preventive_rule": "Al añadir evidencia de una tarea, actualizar su clave independiente en evidence_catalog; no mover anclas de evidencia baseline salvo reconciliación explícita de todas las entradas dependientes.",
+      "status": "implemented_pending_validation",
+      "attempts": 1,
+      "max_attempts": 3,
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36430160293 — fallo test_validated_requires_full_evidence_for_exact_candidate; 243 pass, 1 fallo por mismatch del ancla."
+      ]
     }
   ]
 }
