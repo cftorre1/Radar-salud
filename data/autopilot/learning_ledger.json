@@ -247,8 +247,24 @@
         "ambiguous_aggregate_fail_closed",
         "series_unit_and_scale_reviewer"
       ],
-      "status": "recovery_in_progress",
+      "status": "recovered",
       "attempts": 3,
+      "max_attempts": 3
+    },
+    {
+      "id": "series_ges_sheet_identity_recovery_2026_09_28",
+      "source": "Autopilot QA recovery",
+      "class": "statistical_series_sheet_identity_mismatch",
+      "finding": "La serie Casos GES no está en una hoja cuyo nombre coincida literalmente con el nombre esperado.",
+      "specific_fix": "Inspeccionar nombres y encabezados de hojas del XLS oficial y seleccionar la hoja con identidad de variable demostrable.",
+      "root_cause": "El parser equiparó el nombre de variable a un token del título de pestaña.",
+      "preventive_controls": [
+        "explicit_series_sheet_contract",
+        "variable_type_and_unit_validation",
+        "official_workbook_identity"
+      ],
+      "status": "recovery_in_progress",
+      "attempts": 1,
       "max_attempts": 3
     }
   ]

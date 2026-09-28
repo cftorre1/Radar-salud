@@ -165,7 +165,8 @@ def validated_year_totals(url, variable, unit, lower, upper, expected_sheet):
                 reconciled.append(candidate)
         matches = reconciled
     if len(matches) != 1:
-        raise RuntimeError(f"{variable}: expected one 2024/2025 total with unit {unit}; found {len(matches)}; candidate_rows={total_candidates[:30]}")
+        sheets = [(ws.title, [[norm(value) for value in row[:12]] for row in ws.iter_rows(min_row=1, max_row=5, values_only=True)]) for ws in book.worksheets]
+        raise RuntimeError(f"{variable}: expected one 2024/2025 total with unit {unit}; found {len(matches)}; candidate_rows={total_candidates[:30]}; workbook_sheets={sheets[:20]}")
     return matches[0]
 
 
