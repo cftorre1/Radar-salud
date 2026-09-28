@@ -50,15 +50,29 @@ def apply_reviewed_copy(
                         row["source_title_full"] = legacy_title or row.get("title")
                     row[signal_field] = value.strip()
             # Human-reviewed copy is subordinate to persistent presentation
-            # contracts, but can improve the subject wording. For normative acts
-            # preserve the canonical act identity and combine it with the reviewed
-            # descriptive title instead of keeping a mechanically generated subject.
+            # contracts. Normative Editorial V2 deliberately separates the
+            # executive title from the legal identity badge, so a reviewed copy
+            # must never re-prefix the act label after the canonical contract has
+            # already produced a plain-language display_title.
             label = row.get("normative_document_label")
             proposed_title = proposed.get("title")
-            if label and isinstance(proposed_title, str) and proposed_title.strip():
+            normative_editorial = row.get("normative_editorial") or {}
+            has_normative_v2 = bool(
+                row.get("legal_identity")
+                and normative_editorial.get("plain_language_title")
+            )
+            if (
+                not has_normative_v2
+                and label
+                and isinstance(proposed_title, str)
+                and proposed_title.strip()
+            ):
                 descriptive = proposed_title.strip()
-                # Avoid duplicating an act identifier already carried by the label.
-                descriptive = descriptive.replace(f" · {row.get('normative_document_number')}", "").strip()
+                # Legacy fallback only: keep old callers understandable when they
+                # have a document label but have not yet entered Normative V2.
+                descriptive = descriptive.replace(
+                    f" · {row.get('normative_document_number')}", ""
+                ).strip()
                 if descriptive != label:
                     row["display_title"] = f"{label} · {descriptive}"
             row["editorial_review_id"] = cfg["audit_id"]
