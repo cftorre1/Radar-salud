@@ -17,7 +17,7 @@ BOLETIN_PAGE = "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estad
 GES_URL = "https://www.superdesalud.gob.cl/app/uploads/2026/07/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-marzo-2026-1.xlsx"
 SERIES_DOCS = [
     ("Beneficiarios promedio anual", "Promedio anual de stock", "personas", 500_000, 10_000_000, "Promedio Anual de Cartera", "https://www.superdesalud.gob.cl/app/uploads/2026/03/2-cartera-de-beneficiarios-anos-1990-2025.xlsx"),
-    ("Casos GES", "Flujo anual", "casos", 10_000, 10_000_000, "Casos Resumen", "https://www.superdesalud.gob.cl/app/uploads/2026/03/7-casos-ges-anos-2005-2025.xlsx"),
+    ("Casos GES", "Flujo anual total del sistema (Isapres + Fonasa)", "casos", 10_000, 10_000_000, "Casos Resumen", "https://www.superdesalud.gob.cl/app/uploads/2026/03/7-casos-ges-anos-2005-2025.xlsx"),
 ]
 FIN_SOURCE = "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls"
 ACC_SOURCE = "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf"
@@ -143,7 +143,7 @@ def validated_year_totals(url, variable, unit, lower, upper, expected_sheet):
                     continue
                 label = " ".join(norm(value).lower() for value in row[:10])
                 sheet_text = ws.title.lower()
-                if not any(term in label for term in ("total", "sistema")):
+                if not (re.search(r"\btotal\b", label) or re.search(r"\bsistema\b", label)):
                     continue
                 first, last = numeric(row[year_2024]), numeric(row[year_2025])
                 if first is None or last is None:
@@ -184,7 +184,7 @@ def series():
         traces.append({"variable": variable, "type": series_type, "unit": unit, "sheet": sheet, "header_row": header, "row_label": label, "values": [first, last]})
     conclusion = ""
     return {
-        "card_what": "La tabla compara las bases anuales 2024 y 2025 para beneficiarios y casos GES del sistema Isapre.",
+        "card_what": "La tabla compara el promedio anual de beneficiarios Isapre con los casos GES informados por el sistema completo; cada variable conserva su tipo y unidad.",
         "card_why_optional": True,
         "data_insights": [],
         "data_insight_evidence": evidence,

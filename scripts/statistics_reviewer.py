@@ -83,7 +83,7 @@ def review_statistics(signals):
                 variables.append(name)
                 if name == "Prestaciones":
                     fail("unverified_prestaciones_published", url, "Prestaciones are excluded until their semantic unit and scale are verified")
-                expected_type = {"Beneficiarios promedio anual": "Promedio anual de stock", "Casos GES": "Flujo anual"}
+                expected_type = {"Beneficiarios promedio anual": "Promedio anual de stock", "Casos GES": "Flujo anual total del sistema (Isapres + Fonasa)"}
                 if unit not in ("personas", "casos") or series_type != expected_type.get(name) or not all(isinstance(value, (int, float)) for value in (first, last, delta, percent)):
                     fail("series_unit_or_type", url, "Series variable, unit and numeric types must be explicit")
                 elif not (0 < first <= 10_000_000 and 0 <= last <= 10_000_000 and delta == last - first and abs(percent - round(delta / first * 100, 1)) <= 0.1):

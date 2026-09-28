@@ -36,7 +36,7 @@ COMMON = {
 def releases():
     ges_rows = [[f"Problema de salud {i}", 100, 50, 150, 33.3] for i in range(5)]
     series_rows = [["Beneficiarios promedio anual", "Promedio anual de stock", "personas", 2_695_070, 2_556_288, -138_782, -5.1],
-                   ["Casos GES", "Flujo anual", "casos", 3_755_592, 4_278_631, 523_039, 13.9]]
+                   ["Casos GES", "Flujo anual total del sistema (Isapres + Fonasa)", "casos", 3_755_592, 4_278_631, 523_039, 13.9]]
     financial_rows = [[f"Isapre {i}", 100, -10, 20] for i in range(10)]
     bulletin_rows = [
         ["Acreditación", "Prestadores acreditados", "Stock", "30-jun-2026", "971", "101 (10%)"],
@@ -128,6 +128,22 @@ def test_series_parser_rejects_suspicious_scale(monkeypatch):
         assert "expected one" in str(error)
     else:
         raise AssertionError("Suspicious scale should fail closed")
+
+
+def test_series_ges_parser_rejects_subtotal_rows_and_keeps_total_system_scope(monkeypatch):
+    class Sheet:
+        title = "Casos Resumen"
+        def iter_rows(self, **kwargs):
+            return iter([("Variable", 2024, 2025),
+                         ("Subtotal Isapres", 150_956, 255_062),
+                         ("Subtotal Fonasa", 3_604_636, 4_023_569),
+                         ("Total Sistema", 3_755_592, 4_278_631)])
+    class Book:
+        worksheets = [Sheet()]
+    monkeypatch.setattr(builder, "workbook", lambda url: Book())
+    values = builder.validated_year_totals("source.xlsx", "Casos GES", "casos", 10_000, 10_000_000, "Casos Resumen")
+    assert values[2].startswith("total sistema")
+    assert values[3:] == (3_755_592, 4_278_631)
 
 
 def test_ges_parser_handles_multilevel_insurer_headers_and_uses_source_problem_names(monkeypatch):

@@ -2314,14 +2314,14 @@
         "learning ledger actualizado"
       ],
       "approved_at": "2026-09-27",
-      "progress": "Iniciada tras cierre V2.1 en staging. Próximo ciclo: auditar GES, Series ISAPRE, Financieras y Boletín IP; simplificar bloques redundantes; validar variable/unidad/escala fail-closed; Data/Statistics QA, Editorial/Product Reviewer, desktop/mobile e Improvement Review. Recuperación #1/3: QA #604 confirmó el build de pruebas (242 pass) y detectó falso negativo por encabezados GES combinados; se amplía lectura de encabezados y se obtiene muestra de esquema oficial. Recuperación #2/3: el archivo usa encabezados superiores combinados y nombres textuales en la hoja Año 2026. La corrección propaga los grupos de encabezado, selecciona casos acumulados hasta marzo y conserva el nombre oficial del problema. Recuperación GES #2/3: el build alcanzó y validó Año 2026. Nuevo fallo independiente de series: dos totales de cartera; el selector ahora exige que la etiqueta de fila nombre beneficiarios. Recuperación series #2/3: el rótulo visible no contiene la palabra 'beneficiarios'; se registra muestra limitada de agregados para escoger la fila semántica y revisar la unidad. Recuperación series #3/3: los agregados del libro se etiquetan 'Total Sistema' en varias secciones; se usa la hoja Promedio Anual de Cartera y se reconcilia Beneficiarios = cotizantes + cargas antes de aceptar escala y tipo. Recuperación serie Beneficiarios #3/3: la hoja Promedio Anual de Cartera pasó con reconciliación cotizantes+cargas. Nuevo bloqueo: el parser no encontró pestaña de Casos GES; se recopilarán los nombres y esquema reales del XLS oficial. Recuperación serie Casos GES #2/3: el libro oficial identifica el resumen en la pestaña 'Casos Resumen'; el filtro se ajusta a la identidad publicada y conserva el control de agregados.",
+      "progress": "Iniciada tras cierre V2.1 en staging. Próximo ciclo: auditar GES, Series ISAPRE, Financieras y Boletín IP; simplificar bloques redundantes; validar variable/unidad/escala fail-closed; Data/Statistics QA, Editorial/Product Reviewer, desktop/mobile e Improvement Review. Recuperación #1/3: QA #604 confirmó el build de pruebas (242 pass) y detectó falso negativo por encabezados GES combinados; se amplía lectura de encabezados y se obtiene muestra de esquema oficial. Recuperación #2/3: el archivo usa encabezados superiores combinados y nombres textuales en la hoja Año 2026. La corrección propaga los grupos de encabezado, selecciona casos acumulados hasta marzo y conserva el nombre oficial del problema. Recuperación GES #2/3: el build alcanzó y validó Año 2026. Nuevo fallo independiente de series: dos totales de cartera; el selector ahora exige que la etiqueta de fila nombre beneficiarios. Recuperación series #2/3: el rótulo visible no contiene la palabra 'beneficiarios'; se registra muestra limitada de agregados para escoger la fila semántica y revisar la unidad. Recuperación series #3/3: los agregados del libro se etiquetan 'Total Sistema' en varias secciones; se usa la hoja Promedio Anual de Cartera y se reconcilia Beneficiarios = cotizantes + cargas antes de aceptar escala y tipo. Recuperación serie Beneficiarios #3/3: la hoja Promedio Anual de Cartera pasó con reconciliación cotizantes+cargas. Nuevo bloqueo: el parser no encontró pestaña de Casos GES; se recopilarán los nombres y esquema reales del XLS oficial. Recuperación serie Casos GES #2/3: el libro oficial identifica el resumen en la pestaña 'Casos Resumen'; el filtro se ajusta a la identidad publicada y conserva el control de agregados. Recuperación de hoja GES #2/3: el XLS oficial usa Casos Resumen; el primer parseo separó subtotal Isapres, subtotal Fonasa y total del sistema. Se exige el token exacto 'total' y se etiqueta explícitamente alcance Isapres+Fonasa.",
       "recovery": {
-        "failure_signature": "series_ges_sheet_name_mismatch",
-        "attempt": 2,
+        "failure_signature": "series_ges_subtotal_token_false_positive",
+        "attempt": 1,
         "limit": 3,
-        "last_failed_sha": "5b4afc6a08151d7ddf054f75d1edca04821b5028",
+        "last_failed_sha": "4c82a509afe1b88484f457a13883d2f81dbbb8c6",
         "status": "in_progress",
-        "evidence": "Actions run 36427321894 workbook inventory"
+        "evidence": "Actions run 36427626909 returned 3 candidates including two subtotals"
       },
       "recovery_history": [
         {
@@ -2347,6 +2347,15 @@
           "status": "recovered",
           "evidence": "Actions run 36426267127 listed aggregate candidates and worksheet sections",
           "resolution_evidence": "Actions run 36427063829 reached Casos GES after Beneficiarios passed reconciliation"
+        },
+        {
+          "failure_signature": "series_ges_sheet_name_mismatch",
+          "attempt": 2,
+          "limit": 3,
+          "last_failed_sha": "5b4afc6a08151d7ddf054f75d1edca04821b5028",
+          "status": "recovered",
+          "evidence": "Actions run 36427321894 workbook inventory",
+          "resolution_evidence": "Actions run 36427626909 identified official tab Casos Resumen"
         }
       ]
     },

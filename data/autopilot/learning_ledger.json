@@ -263,8 +263,24 @@
         "variable_type_and_unit_validation",
         "official_workbook_identity"
       ],
-      "status": "recovery_in_progress",
+      "status": "recovered",
       "attempts": 2,
+      "max_attempts": 3
+    },
+    {
+      "id": "series_ges_subtotal_false_positive_recovery_2026_09_28",
+      "source": "Autopilot QA recovery",
+      "class": "statistical_series_aggregate_scope_ambiguity",
+      "finding": "El parser trató dos filas 'Subtotal' como total y seleccionó también un agregado del sistema sin etiquetar el alcance.",
+      "specific_fix": "Exigir token Total completo, no Subtotal; exponer tipo de serie como flujo anual combinado Isapres+Fonasa.",
+      "root_cause": "Búsqueda por substring 'total' aceptaba 'subtotal' y ocultaba el alcance combinado.",
+      "preventive_controls": [
+        "exact_aggregate_label_token",
+        "insurer_population_scope_label",
+        "adversarial_subtotal_fixture"
+      ],
+      "status": "recovery_in_progress",
+      "attempts": 1,
       "max_attempts": 3
     }
   ]
