@@ -2304,6 +2304,58 @@
       ],
       "approved_at": "2026-09-27",
       "progress": "Aprobado por Dirección a partir de revisión mobile. Ejecutar después de no interrumpir el frente actualmente en curso, pero con prioridad crítica dentro del backlog."
+    },
+    {
+      "id": "release_after_editorial_stats_email_qa_2026_09_27",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Paolo + Pele",
+      "source": "Dirección",
+      "objective": "Tras cerrar Normative Editorial V2 y Statistics V2, validar integralmente todos los flujos de correo y, si el paquete completo queda PASS, promover a producción y publicar en alicantosalud.cl.",
+      "depends_on": [
+        "normative_editorial_v2_2026_09_27",
+        "signal_simplification_statistics_v2_2026_09_27"
+      ],
+      "instructions": [
+        "Antes de cualquier release, ejecutar QA end-to-end de todas las superficies y flujos relacionados con correo.",
+        "Revisar newsletter semanal FREE: CTA, formulario, validaciones, captura consentida, doble opt-in si corresponde, provider config, grupo/lista destino, template/digest, links, unsubscribe y estado fail-closed.",
+        "Revisar acceso anticipado/PREMIUM: CTA y formulario separados del newsletter, grupo destino correcto, no mezclar consentimientos.",
+        "Revisar sugerencia de fuente: envío/registro, notificación por correo si está habilitada, anti-spam y manejo de error sin pérdida silenciosa.",
+        "Revisar correo institucional hola@alicantosalud.cl y alias radar@alicantosalud.cl en lo técnicamente verificable; confirmar SPF/DKIM/DMARC PASS en evidencia real si está disponible.",
+        "Revisar que no existan botones de correo aparentemente funcionales cuando el provider/privacidad no está habilitado; mantener fail-closed explícito.",
+        "Ejecutar tests unitarios/integración, browser QA desktop/mobile y Reviewer para todos los flujos de correo.",
+        "Si cualquier flujo de correo visible falla, no promover; corregir y repetir QA.",
+        "Si Normative Editorial V2, Statistics V2, correo integral, QA desktop/mobile, Reviewer, Improvement Review y preview/smoke quedan PASS sobre un mismo candidato, promover únicamente ese candidato a main/producción.",
+        "Antes de promover comparar staging vs main y excluir cambios no aprobados, secretos, experimentos incompletos o deuda fuera de alcance.",
+        "Después del deploy validar producción real en https://alicantosalud.cl y www: HTTPS, canonical, home, navegación mobile, normativa V2, estadísticas V2, formularios/CTAs de correo y ausencia de errores críticos.",
+        "Registrar SHA staging promovido, SHA main/producción, Actions de release y QA post-deploy en Pato.",
+        "Dirección autoriza explícitamente esta promoción condicional si y solo si todos los gates anteriores están PASS."
+      ],
+      "constraints": [
+        "No publicar si algún gate crítico está FAIL o skipped.",
+        "No exponer secretos ni cambiar credenciales.",
+        "No contratar proveedores ni cambiar presupuesto.",
+        "No activar captura real de datos si privacidad/consentimiento no está aprobado.",
+        "Promover sólo cambios aprobados y validados.",
+        "No considerar provider-ready como equivalente a envío real cuando se requiera evidencia de funcionamiento."
+      ],
+      "evidence_required": [
+        "Normative Editorial V2 PASS",
+        "Statistics V2 PASS",
+        "QA integral de newsletter",
+        "QA integral de acceso anticipado",
+        "QA de sugerencia de fuente/notificación",
+        "evidencia SPF/DKIM/DMARC o blocker explícito si no puede verificarse",
+        "tests + browser desktop/mobile PASS",
+        "Reviewer + Improvement Review PASS",
+        "preview/smoke PASS",
+        "diff staging→main revisado",
+        "deploy producción PASS",
+        "QA post-deploy en alicantosalud.cl"
+      ],
+      "authorization": "Dirección 2026-09-27: si las mejoras acordadas salen bien, revisar que todas las secciones de correo funcionen; si todo queda bien, pasar a producción y publicar en la web oficial.",
+      "approved_at": "2026-09-27",
+      "progress": "Autorización condicional registrada. No ejecutar release hasta cerrar dependencias y QA de correo."
     }
   ],
   "execution_policy": {
