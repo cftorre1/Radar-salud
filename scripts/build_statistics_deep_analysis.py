@@ -16,8 +16,8 @@ FIN_PAGE = "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-fina
 BOLETIN_PAGE = "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
 GES_URL = "https://www.superdesalud.gob.cl/app/uploads/2026/07/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-marzo-2026-1.xlsx"
 SERIES_DOCS = [
-    ("Beneficiarios", "personas", 500_000, 10_000_000, "https://www.superdesalud.gob.cl/app/uploads/2026/03/2-cartera-de-beneficiarios-anos-1990-2025.xlsx"),
-    ("Casos GES", "casos", 10_000, 10_000_000, "https://www.superdesalud.gob.cl/app/uploads/2026/03/7-casos-ges-anos-2005-2025.xlsx"),
+    ("Beneficiarios promedio anual", "Promedio anual de stock", "personas", 500_000, 10_000_000, "Promedio Anual de Cartera", "https://www.superdesalud.gob.cl/app/uploads/2026/03/2-cartera-de-beneficiarios-anos-1990-2025.xlsx"),
+    ("Casos GES", "Flujo anual", "casos", 10_000, 10_000_000, "casos ges", "https://www.superdesalud.gob.cl/app/uploads/2026/03/7-casos-ges-anos-2005-2025.xlsx"),
 ]
 FIN_SOURCE = "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls"
 ACC_SOURCE = "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf"
@@ -122,11 +122,13 @@ def ges():
     }
 
 
-def validated_year_totals(url, variable, unit, lower, upper):
+def validated_year_totals(url, variable, unit, lower, upper, expected_sheet):
     book = workbook(url)
     matches = []
     total_candidates = []
     for ws in book.worksheets:
+        if expected_sheet.lower() not in ws.title.lower():
+            continue
         rows = [list(row[:60]) for row in ws.iter_rows(min_row=1, max_row=500, values_only=True)]
         for header_index, header in enumerate(rows[:120]):
             columns_by_year = {}
@@ -147,13 +149,21 @@ def validated_year_totals(url, variable, unit, lower, upper):
                 if first is None or last is None:
                     continue
                 total_candidates.append((ws.title, header_index + 1, label[:180], int(first), int(last)))
-                if variable == "Beneficiarios" and "benefici" not in label:
-                    continue
-                if variable == "Casos GES" and not any(term in (label + " " + sheet_text) for term in ("casos ges", "ges")):
-                    continue
                 if not (lower <= first <= upper and lower <= last <= upper):
                     continue
-                matches.append((ws.title, header_index + 1, label, int(first), int(last)))
+                matches.append((ws.title, header_index + 1, label, int(round(first)), int(round(last))))
+    unique = {}
+    for item in matches:
+        unique[(item[0], item[3], item[4])] = item
+    matches = list(unique.values())
+    if variable == "Beneficiarios promedio anual":
+        reconciled = []
+        for candidate in matches:
+            components = [row for row in matches if row is not candidate]
+            if any(abs(a[3] + b[3] - candidate[3]) <= 2 and abs(a[4] + b[4] - candidate[4]) <= 2
+                   for index, a in enumerate(components) for b in components[index + 1:]):
+                reconciled.append(candidate)
+        matches = reconciled
     if len(matches) != 1:
         raise RuntimeError(f"{variable}: expected one 2024/2025 total with unit {unit}; found {len(matches)}; candidate_rows={total_candidates[:30]}")
     return matches[0]
@@ -164,20 +174,20 @@ def series():
     evidence = []
     excluded = "Prestaciones: excluida porque el valor 4.784.847.384.336 carece de unidad/escala semánticamente validada en esta auditoría."
     traces = []
-    for variable, unit, lower, upper, url in SERIES_DOCS:
-        sheet, header, label, first, last = validated_year_totals(url, variable, unit, lower, upper)
+    for variable, series_type, unit, lower, upper, expected_sheet, url in SERIES_DOCS:
+        sheet, header, label, first, last = validated_year_totals(url, variable, unit, lower, upper, expected_sheet)
         delta = last - first
         percent = delta / first * 100
-        rows.append([variable, unit, first, last, delta, round(percent, 1)])
+        rows.append([variable, series_type, unit, first, last, delta, round(percent, 1)])
         evidence.append(trace(f"Total {variable.lower()}: {first:,} en 2024 y {last:,} en 2025.".replace(",", "."), "2024 y 2025", "(2025 − 2024); variación porcentual = (2025 − 2024) / 2024", sheet, url))
-        traces.append({"variable": variable, "unit": unit, "sheet": sheet, "header_row": header, "row_label": label, "values": [first, last]})
+        traces.append({"variable": variable, "type": series_type, "unit": unit, "sheet": sheet, "header_row": header, "row_label": label, "values": [first, last]})
     conclusion = ""
     return {
         "card_what": "La tabla compara las bases anuales 2024 y 2025 para beneficiarios y casos GES del sistema Isapre.",
         "card_why_optional": True,
         "data_insights": [],
         "data_insight_evidence": evidence,
-        "summary_table": {"title": "Series ISAPRE · cambio 2024–2025", **cells(["Variable", "Unidad", "2024", "2025", "Cambio absoluto", "Cambio (%)"], rows)},
+        "summary_table": {"title": "Series ISAPRE · cambio 2024–2025", **cells(["Variable", "Tipo", "Unidad", "2024", "2025", "Cambio absoluto", "Cambio (%)"], rows)},
         "statistical_conclusion": conclusion,
         "incremental_value_gate": {"table": "Bases de los dos años y cambio absoluto y porcentual por variable", "conclusion": "No agrega narración repetida; omite Prestaciones por falta de unidad verificada"},
         "methodology_visibility": "collapsed",

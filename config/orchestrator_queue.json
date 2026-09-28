@@ -2314,14 +2314,14 @@
         "learning ledger actualizado"
       ],
       "approved_at": "2026-09-27",
-      "progress": "Iniciada tras cierre V2.1 en staging. Próximo ciclo: auditar GES, Series ISAPRE, Financieras y Boletín IP; simplificar bloques redundantes; validar variable/unidad/escala fail-closed; Data/Statistics QA, Editorial/Product Reviewer, desktop/mobile e Improvement Review. Recuperación #1/3: QA #604 confirmó el build de pruebas (242 pass) y detectó falso negativo por encabezados GES combinados; se amplía lectura de encabezados y se obtiene muestra de esquema oficial. Recuperación #2/3: el archivo usa encabezados superiores combinados y nombres textuales en la hoja Año 2026. La corrección propaga los grupos de encabezado, selecciona casos acumulados hasta marzo y conserva el nombre oficial del problema. Recuperación GES #2/3: el build alcanzó y validó Año 2026. Nuevo fallo independiente de series: dos totales de cartera; el selector ahora exige que la etiqueta de fila nombre beneficiarios. Recuperación series #2/3: el rótulo visible no contiene la palabra 'beneficiarios'; se registra muestra limitada de agregados para escoger la fila semántica y revisar la unidad.",
+      "progress": "Iniciada tras cierre V2.1 en staging. Próximo ciclo: auditar GES, Series ISAPRE, Financieras y Boletín IP; simplificar bloques redundantes; validar variable/unidad/escala fail-closed; Data/Statistics QA, Editorial/Product Reviewer, desktop/mobile e Improvement Review. Recuperación #1/3: QA #604 confirmó el build de pruebas (242 pass) y detectó falso negativo por encabezados GES combinados; se amplía lectura de encabezados y se obtiene muestra de esquema oficial. Recuperación #2/3: el archivo usa encabezados superiores combinados y nombres textuales en la hoja Año 2026. La corrección propaga los grupos de encabezado, selecciona casos acumulados hasta marzo y conserva el nombre oficial del problema. Recuperación GES #2/3: el build alcanzó y validó Año 2026. Nuevo fallo independiente de series: dos totales de cartera; el selector ahora exige que la etiqueta de fila nombre beneficiarios. Recuperación series #2/3: el rótulo visible no contiene la palabra 'beneficiarios'; se registra muestra limitada de agregados para escoger la fila semántica y revisar la unidad. Recuperación series #3/3: los agregados del libro se etiquetan 'Total Sistema' en varias secciones; se usa la hoja Promedio Anual de Cartera y se reconcilia Beneficiarios = cotizantes + cargas antes de aceptar escala y tipo.",
       "recovery": {
         "failure_signature": "series_beneficiary_duplicate_totals",
-        "attempt": 2,
+        "attempt": 3,
         "limit": 3,
-        "last_failed_sha": "e1e2a725dcc2ec73e5420fc029384f8f1241ab4f",
+        "last_failed_sha": "9b81344b7bdefd4dd185980924786b41e533b473",
         "status": "in_progress",
-        "evidence": "Actions run 36426023938; explicit row-label filter left 0 candidate totals"
+        "evidence": "Actions run 36426267127 listed aggregate candidates and worksheet sections"
       },
       "recovery_history": [
         {

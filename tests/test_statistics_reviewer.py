@@ -35,8 +35,8 @@ COMMON = {
 
 def releases():
     ges_rows = [[f"Problema de salud {i}", 100, 50, 150, 33.3] for i in range(5)]
-    series_rows = [["Beneficiarios", "personas", 2_695_070, 2_556_288, -138_782, -5.1],
-                   ["Casos GES", "casos", 3_755_592, 4_278_631, 523_039, 13.9]]
+    series_rows = [["Beneficiarios promedio anual", "Promedio anual de stock", "personas", 2_695_070, 2_556_288, -138_782, -5.1],
+                   ["Casos GES", "Flujo anual", "casos", 3_755_592, 4_278_631, 523_039, 13.9]]
     financial_rows = [[f"Isapre {i}", 100, -10, 20] for i in range(10)]
     bulletin_rows = [
         ["Acreditación", "Prestadores acreditados", "Stock", "30-jun-2026", "971", "101 (10%)"],
@@ -52,7 +52,11 @@ def releases():
                            "rows": [{"cells": row} for row in ges_rows]}},
         {**COMMON, "source_url": URLS["series"], "statistical_value_level": "deep_analysis",
          "data_insight_evidence": [{**COMMON["data_insight_evidence"][0], "source_url": source} for source in SERIES_FILES],
-         "summary_table": {"columns": ["Variable", "Unidad", "2024", "2025", "Cambio absoluto", "Cambio (%)"],
+         "statistical_methodology": {"validated_series": [
+             {"variable": "Beneficiarios promedio anual", "sheet": "Promedio Anual de Cartera"},
+             {"variable": "Casos GES", "sheet": "Casos GES"},
+         ]},
+         "summary_table": {"columns": ["Variable", "Tipo", "Unidad", "2024", "2025", "Cambio absoluto", "Cambio (%)"],
                            "rows": [{"cells": row} for row in series_rows]}},
         {**COMMON, "source_url": URLS["financial"], "statistical_value_level": "deep_analysis",
          "statistical_methodology": {"source_url": URLS["financial"]},
@@ -74,7 +78,7 @@ def test_statistics_reviewer_accepts_semantically_labeled_release_tables():
 
 def test_statistics_reviewer_fails_closed_on_outlier_and_unitless_prestaciones():
     signals = releases()
-    signals[1]["summary_table"]["rows"].append({"cells": ["Prestaciones", "monto", 4_526_117_479_378,
+    signals[1]["summary_table"]["rows"].append({"cells": ["Prestaciones", "Desconocido", "monto", 4_526_117_479_378,
                                                            4_784_847_384_336, 258_729_904_958, 5.7]})
     findings = review_statistics(signals)
     assert "unverified_prestaciones_published" in {finding["code"] for finding in findings}
@@ -93,17 +97,19 @@ def test_statistics_reviewer_rejects_miscomputed_ges_and_missing_bulletin_pdf():
 
 def test_series_parser_checks_schema_period_unit_and_scale(monkeypatch):
     class Sheet:
-        title = "Cartera de beneficiarios"
+        title = "Promedio Anual de Cartera"
         def iter_rows(self, **kwargs):
             return iter([
                 ("Variable", 2024, 2025),
-                ("Total Beneficiarios", 2_695_070, 2_556_288),
+                ("Total Sistema", 1_647_577, 1_573_534),
+                ("Total Sistema", 1_047_492, 982_753),
+                ("Total Sistema", 2_695_070, 2_556_288),
             ])
     class Book:
         worksheets = [Sheet()]
     monkeypatch.setattr(builder, "workbook", lambda url: Book())
-    values = builder.validated_year_totals("source.xlsx", "Beneficiarios", "personas", 500_000, 10_000_000)
-    assert values[0] == "Cartera de beneficiarios"
+    values = builder.validated_year_totals("source.xlsx", "Beneficiarios promedio anual", "personas", 500_000, 10_000_000, "Promedio Anual de Cartera")
+    assert values[0] == "Promedio Anual de Cartera"
     assert values[3:] == (2_695_070, 2_556_288)
 
 
@@ -117,8 +123,27 @@ def test_series_parser_rejects_suspicious_scale(monkeypatch):
         worksheets = [Sheet()]
     monkeypatch.setattr(builder, "workbook", lambda url: Book())
     try:
-        builder.validated_year_totals("source.xlsx", "Beneficiarios", "personas", 500_000, 10_000_000)
+        builder.validated_year_totals("source.xlsx", "Beneficiarios promedio anual", "personas", 500_000, 10_000_000, "Promedio Anual de Cartera")
     except RuntimeError as error:
         assert "expected one" in str(error)
     else:
         raise AssertionError("Suspicious scale should fail closed")
+
+
+def test_ges_parser_handles_multilevel_insurer_headers_and_uses_source_problem_names(monkeypatch):
+    class Sheet:
+        title = "Año 2026"
+        def iter_rows(self, **kwargs):
+            return iter([
+                ("N°", "PROBLEMA DE SALUD", "Número de casos acumulados Jul-2005 a Mar-2026", None),
+                (None, None, "FONASA", "ISAPRE"),
+                (None, None, "2026-03-31", "2026-03-31"),
+                *[(str(i), f"Problema de salud validado {i}", 100 + i, 50 + i) for i in range(1, 7)],
+            ])
+    class Book:
+        worksheets = [Sheet()]
+    monkeypatch.setattr(builder, "workbook", lambda url: Book())
+    result = builder.ges()
+    assert result["summary_table"]["rows"][0]["cells"][0] == "Problema de salud validado 6"
+    assert result["summary_table"]["rows"][0]["cells"][3] == 162
+    assert result["statistical_methodology"]["sheet"] == "Año 2026"

@@ -529,8 +529,8 @@ test('priority statistical releases use compact tables and collapsed traceabilit
  expect(ges.summary_table.columns).toEqual(['Problema de salud','Fonasa (casos)','Isapre (casos)','Total (casos)','Isapre (%)']);
  expect(ges.summary_table.rows.every(r=>r.cells?.length===5&&!/^\d+$/.test(r.cells[0]))).toBe(true);
  const series=radar.signals.find(x=>(x.title||'').includes('Series Estadísticas del Sistema ISAPRE'));
- expect(series.summary_table.rows.map(r=>r.cells[0])).toEqual(['Beneficiarios','Casos GES']);
- expect(series.summary_table.rows.every(r=>r.cells[2]+r.cells[4]===r.cells[3])).toBe(true);
+ expect(series.summary_table.rows.map(r=>r.cells[0])).toEqual(['Beneficiarios promedio anual','Casos GES']);
+ expect(series.summary_table.rows.every(r=>r.cells[3]+r.cells[5]===r.cells[4])).toBe(true);
  const fin=radar.signals.find(x=>(x.title||'').includes('Estadísticas Financieras del Sistema ISAPRE'));
  expect(fin.summary_table.columns).toEqual(['Isapre','Ingresos (CLP millones)','Resultado operacional (CLP millones)','Utilidad/pérdida neta (CLP millones)']);
  expect(fin.data_insight_evidence[0].source_url).toContain('finan_ifrs_mar_2026_web_v2.xls');

@@ -72,26 +72,31 @@ def review_statistics(signals):
                 fail("ges_workbook_mismatch", url, "Evidence must link to the official March 2026 GES workbook")
 
         elif family == "series":
-            if columns != ["Variable", "Unidad", "2024", "2025", "Cambio absoluto", "Cambio (%)"]:
-                fail("series_base_columns", url, "Annual series must expose 2024 and 2025 bases, unit and absolute/percentage changes")
+            if columns != ["Variable", "Tipo", "Unidad", "2024", "2025", "Cambio absoluto", "Cambio (%)"]:
+                fail("series_base_columns", url, "Annual series must expose 2024 and 2025 bases, type, unit and absolute/percentage changes")
             variables = []
             for row in rows:
                 cells = row.get("cells") or []
-                if len(cells) != 6:
+                if len(cells) != 7:
                     continue
-                name, unit, first, last, delta, percent = cells
+                name, series_type, unit, first, last, delta, percent = cells
                 variables.append(name)
                 if name == "Prestaciones":
                     fail("unverified_prestaciones_published", url, "Prestaciones are excluded until their semantic unit and scale are verified")
-                if unit not in ("personas", "casos") or not all(isinstance(value, (int, float)) for value in (first, last, delta, percent)):
+                expected_type = {"Beneficiarios promedio anual": "Promedio anual de stock", "Casos GES": "Flujo anual"}
+                if unit not in ("personas", "casos") or series_type != expected_type.get(name) or not all(isinstance(value, (int, float)) for value in (first, last, delta, percent)):
                     fail("series_unit_or_type", url, "Series variable, unit and numeric types must be explicit")
                 elif not (0 < first <= 10_000_000 and 0 <= last <= 10_000_000 and delta == last - first and abs(percent - round(delta / first * 100, 1)) <= 0.1):
                     fail("series_scale_or_delta", url, "Series magnitude and changes failed sanity checks")
-            if set(variables) != {"Beneficiarios", "Casos GES"}:
+            if set(variables) != {"Beneficiarios promedio anual", "Casos GES"}:
                 fail("series_incomplete_or_mixed_units", url, "Only semantically validated beneficiary and GES case-count series are eligible")
             expected_series = {"2-cartera-de-beneficiarios-anos-1990-2025.xlsx", "7-casos-ges-anos-2005-2025.xlsx"}
             if {str(item.get("source_url") or "").rsplit("/", 1)[-1] for item in evidence} != expected_series:
                 fail("series_source_document_mismatch", url, "Each published series needs its matching official workbook")
+            trace = (signal.get("statistical_methodology") or {}).get("validated_series") or []
+            expected_sheets = {"Beneficiarios promedio anual": "promedio anual de cartera", "Casos GES": "casos ges"}
+            if {item.get("variable") for item in trace} != set(expected_sheets) or any(expected_sheets.get(item.get("variable"), "") not in str(item.get("sheet", "")).lower() for item in trace):
+                fail("series_sheet_or_type_mismatch", url, "Variable type must be sourced from its expected official worksheet")
 
         elif family == "financial":
             expected = ["Isapre", "Ingresos (CLP millones)", "Resultado operacional (CLP millones)", "Utilidad/pérdida neta (CLP millones)"]

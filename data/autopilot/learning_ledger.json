@@ -240,7 +240,7 @@
       "source": "Autopilot QA recovery",
       "class": "statistical_series_semantic_ambiguity",
       "finding": "La serie de cartera ofreció dos filas agregadas elegibles para Beneficiarios.",
-      "specific_fix": "Loguear en QA las etiquetas de filas agregadas 2024/2025 y seleccionar una sola fila por identidad semántica verificada, sin relajar filtros de unidad ni escala.",
+      "specific_fix": "Restringir a la hoja Promedio Anual de Cartera; validar el total Beneficiarios mediante reconciliación con los agregados cotizantes + cargas (tolerancia de redondeo 2); registrar tipo stock promedio anual y unidad personas.",
       "root_cause": "El filtro semántico aceptaba cualquier fila total de un libro cuyo nombre contenía Beneficiarios.",
       "preventive_controls": [
         "variable_identity_in_row_label",
@@ -248,7 +248,7 @@
         "series_unit_and_scale_reviewer"
       ],
       "status": "recovery_in_progress",
-      "attempts": 2,
+      "attempts": 3,
       "max_attempts": 3
     }
   ]
