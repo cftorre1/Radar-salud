@@ -2183,7 +2183,8 @@
         "autopilot_v1_2026_09_27"
       ],
       "blocked_by": [
-        "work_mode_activation"
+        "work_mode_activation",
+        "autonomous_write_lane_missing"
       ],
       "instructions": [
         "Abrir Alicanto en Work y usar docs/PELE_WORK_CONTRACT.md como contrato maestro.",
@@ -2203,7 +2204,7 @@
         "actualización durable de queue/PMO",
         "reanudación sin intervención de Toba"
       ],
-      "progress": "Infraestructura y contrato listos; requiere iniciar/autorizar una ejecución en ChatGPT Work. No se simula esta activación desde chat normal."
+      "progress": "CRITICAL AUTOPILOT GAP confirmed 2026-09-28: monitoring/condition-watch automations can observe but do not provide a durable GitHub write-capable reasoning lane. This recreates manual follow-up: work resumes only when Toba reopens an interactive chat. Autopilot is not considered operationally complete until a real ChatGPT Work run reads PELE_WORK_CONTRACT, writes evidence/commits, survives a failure, recovers or switches tasks, and continues without Toba prompting."
     },
     {
       "id": "normative_editorial_v2_2026_09_27",
