@@ -67,11 +67,44 @@ jobs:
             artifacts/
             test-results/
             data/autopilot/
-      - name: Dispatch staged preview with critical checks
+      - name: Dispatch and verify staged preview with critical checks
         if: steps.cycle.outputs.qa_passed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run staging-preview.yml --ref staging
+        run: |
+          gh workflow run staging-preview.yml --ref staging
+          RUN_ID=""
+          for attempt in 1 2 3 4 5 6; do
+            RUN_ID=$(gh run list --workflow staging-preview.yml --branch staging --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId // empty')
+            [ -n "$RUN_ID" ] && break
+            sleep 5
+          done
+          if [ -z "$RUN_ID" ]; then
+            echo "No remote staging preview run could be resolved"
+            exit 1
+          fi
+          set +e
+          gh run watch "$RUN_ID" --exit-status
+          PREVIEW_STATUS=$?
+          set -e
+          python - "$RUN_ID" "$PREVIEW_STATUS" '${{ steps.reserve.outputs.sha }}' <<'PY'
+          import json, sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+          run_id, status, sha = sys.argv[1:]
+          target=Path('/tmp/autopilot-state/data/autopilot/preview.json')
+          target.parent.mkdir(parents=True, exist_ok=True)
+          target.write_text(json.dumps({
+              "run_id": int(run_id),
+              "candidate_sha": sha,
+              "result": "success" if status == "0" else "failure",
+              "verified_at": datetime.now(timezone.utc).isoformat()
+          }, indent=2) + "\\n")
+          PY
+          git -C /tmp/autopilot-state add data/autopilot/preview.json
+          git -C /tmp/autopilot-state diff --cached --quiet || git -C /tmp/autopilot-state commit -m "chore: record remote preview result"
+          git -C /tmp/autopilot-state push origin HEAD:autopilot-state
+          exit "$PREVIEW_STATUS"
       # Promotion is deliberately unavailable until the initial remote staging
       # acceptance and full Signal Density contract have been verified.
       # Do not turn a Boolean into an unchecked release authorization.
