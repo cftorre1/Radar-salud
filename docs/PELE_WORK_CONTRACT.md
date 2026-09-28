@@ -37,3 +37,17 @@ Before ending any Work run:
 - ensure the next run can resume without reconstructing hidden context.
 
 Never promote to main/production without explicit Dirección authorization.
+
+
+## System-learning obligation
+
+Whenever Toba finds a material issue that agents missed, or a failure requires manual intervention:
+1. fix the specific issue;
+2. explain why Builder/Reviewer/QA did not catch it;
+3. read config/system_learning_policy.json;
+4. add or strengthen the cheapest reliable preventive control;
+5. record the incident in data/autopilot/learning_ledger.json;
+6. add a regression test, reviewer rule, watchdog, backlog-generation rule or specialist agent when justified;
+7. treat the item as incomplete until the preventive capability is evidenced.
+
+The business-level success metric is owner involvement of 30–60 minutes per week. Prefer designs that reduce recurring owner supervision.
