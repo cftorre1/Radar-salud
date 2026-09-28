@@ -1,7 +1,7 @@
 {
   "version": "beta-friday-2026-09-25",
   "target_date": "2026-09-25",
-  "reference_staging_sha": "3433b3e26f4d76ea6ce0970015bc03e10fd85105",
+  "reference_staging_sha": "348946bfb87cac8dd045fc4f4b0e1a6ea6691c6a",
   "production_reference_sha": "ea55bc7e084b54ff07cb25ea50e211186dfb1c63",
   "statuses": [
     "Aprobado",
@@ -573,6 +573,26 @@
         "Reviewer PASS",
         "Improvement Review PASS"
       ]
+    },
+    "statistics_simplification_v2": {
+      "kind": "github_actions",
+      "sha": "348946bfb87cac8dd045fc4f4b0e1a6ea6691c6a",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36429461066",
+      "checks": [
+        "244 tests Python",
+        "39 tests Node",
+        "46 Playwright desktop/mobile",
+        "statistics Reviewer PASS",
+        "editorial Reviewer PASS",
+        "data Reviewer PASS",
+        "UX Reviewer PASS",
+        "staging preview PASS",
+        "smoke_release.py PASS"
+      ],
+      "result": "success",
+      "scope": "GES marzo 2026, Series ISAPRE 1990–2025, estadísticas financieras marzo 2026 y Boletín IP junio 2026; tabla-first, semántica/unidades/denominadores, trazabilidad técnica secundaria y QA móvil de detalle.",
+      "improvement_review": "docs/IMPROVEMENT_REVIEW_STATISTICS_V2_2026_09_28.md",
+      "reviewer_note": "Reviewer determinístico valida contrato estructural, unidades, denominadores y traceability; no sustituye revisión sustantiva independiente de publicaciones."
     }
   },
   "blocks": [
@@ -1464,6 +1484,16 @@
         "SHA 677702acda24c1a97ef114cb37b3f7fc835a5142",
         "docs/IMPROVEMENT_REVIEW_NORMATIVE_V2_1_2026_09_28.md"
       ]
+    },
+    {
+      "date": "2026-09-28",
+      "change": "Signal Simplification + Statistics V2 validada en staging. Tabla-first y capas de evidencia para cuatro familias; semántica, unidades, períodos y denominadores endurecidos. Improvement Review PASS. 244 Python, 39 Node, 46 Playwright, Reviewer completo y preview/smoke PASS.",
+      "evidence": [
+        "statistics_simplification_v2",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36429461066",
+        "SHA 348946bfb87cac8dd045fc4f4b0e1a6ea6691c6a",
+        "docs/IMPROVEMENT_REVIEW_STATISTICS_V2_2026_09_28.md"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1788,7 +1818,7 @@
     }
   ],
   "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
-  "current_staging_candidate_sha": "677702acda24c1a97ef114cb37b3f7fc835a5142",
+  "current_staging_candidate_sha": "348946bfb87cac8dd045fc4f4b0e1a6ea6691c6a",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
