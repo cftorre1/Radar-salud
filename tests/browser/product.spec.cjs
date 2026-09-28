@@ -537,6 +537,6 @@ test('Normative V2 separates executive titles from prominent legal identity acro
   const s=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));
   expect(s,number).toBeTruthy();expect(s.display_title).toContain(phrase);expect(s.legal_identity||s.normative_document_label).toContain(number);expect(s.legal_subtitle).toContain(number);
   const article=page.locator('article[data-card]').filter({hasText:s.display_title}).first();await expect(article.locator('.normative-identity')).toContainText(number);
-  expect(s.display_title).not.toMatch(/^(Resolución|Circular|Oficio)/i);expect(s.display_title).not.toMatch(/\\b(?:de|para|con|en|a|sobre|que|y|o)[.!?]?$/i);
+  expect(s.display_title).not.toMatch(/^(Resolución|Circular|Oficio)/i);expect(s.display_title).not.toMatch(/\b(?:de|para|con|en|a|sobre|que|y|o)[.!?]?$/i);
  }
 });
