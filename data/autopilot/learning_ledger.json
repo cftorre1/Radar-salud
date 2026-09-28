@@ -279,6 +279,22 @@
         "insurer_population_scope_label",
         "adversarial_subtotal_fixture"
       ],
+      "status": "recovered",
+      "attempts": 1,
+      "max_attempts": 3
+    },
+    {
+      "id": "statistical_summary_table_detail_button_recovery_2026_09_28",
+      "source": "Autopilot QA recovery",
+      "class": "statistical_release_detail_unreachable",
+      "finding": "El renderer no ofrecía abrir el detalle estadístico si data_insights estaba vacío, aunque existía una tabla ejecutiva validada.",
+      "specific_fix": "Tratar una tabla de análisis estadístico con filas como contenido de detalle; actualizar copy assertions para fuentes oficiales.",
+      "root_cause": "El cálculo de profundidad solo revisaba key points e insights narrativos, no summary_table.",
+      "preventive_controls": [
+        "detail_depth_includes_validated_tables",
+        "desktop_mobile_detail_accessibility",
+        "compact_factual_card_contract"
+      ],
       "status": "recovery_in_progress",
       "attempts": 1,
       "max_attempts": 3

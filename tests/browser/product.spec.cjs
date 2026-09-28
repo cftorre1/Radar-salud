@@ -408,11 +408,11 @@ test('Pulso Isapre leads with executive table and statistics use the value ladde
  await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
  await expect(page.locator('article[data-card]').filter({hasText:'Resonancia Magnética del Biobío'})).toHaveCount(0);
  const ges=page.locator('article[data-card]').filter({hasText:'Estadística Trimestral de Casos GES'});
- await expect(ges).toHaveCount(1);await expect(ges).toContainText('Alicanto leyó el archivo GES');await expect(ges).toContainText('marzo 2026');
+ await expect(ges).toHaveCount(1);await expect(ges).toContainText('casos GES acumulados por problema de salud');await expect(ges).toContainText('marzo 2026');
  const series=page.locator('article[data-card]').filter({hasText:'Series Estadísticas del Sistema ISAPRE 1990-2025'});
- await expect(series).toHaveCount(1);await expect(series).toContainText('Alicanto comparó los dos últimos años');
+ await expect(series).toHaveCount(1);await expect(series).toContainText('promedio anual de beneficiarios Isapre');
  const bulletin=page.locator('article[data-card]').filter({hasText:'Boletín Estadístico Informativo IP'});
- await expect(bulletin).toHaveCount(1);await expect(bulletin).toContainText('971 prestadores acreditados');
+ await expect(bulletin).toHaveCount(1);await expect(bulletin).toContainText('cortes de acreditación, mediación, reclamos y RNPI');
  const pulse=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})});
  await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').click();
  const table=page.locator('#detailBody .summary-table');

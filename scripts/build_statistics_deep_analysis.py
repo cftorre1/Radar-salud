@@ -108,7 +108,7 @@ def ges():
         rows.append([name, fonasa, isapre, total, share])
     conclusion = "La proporción Isapre usa como denominador los casos reportados por ambos seguros; sin población afiliada comparable, no mide tasa de uso ni prevalencia."
     return {
-        "card_what": "La tabla compara casos GES reportados por Fonasa e Isapres para cinco problemas de salud a marzo de 2026.",
+        "card_what": "La tabla compara casos GES acumulados por problema de salud entre Fonasa e Isapres, desde julio de 2005 hasta marzo de 2026.",
         "card_why_optional": True,
         "data_insights": [],
         "data_insight_evidence": [trace("Conteos acumulados por problema desde el inicio del registro; la participación Isapre usa los casos de ambos seguros como denominador.", "julio 2005–marzo 2026", "casos acumulados declarados; participación Isapre = casos Isapre / (Fonasa + Isapre)", sheet, GES_URL)],
