@@ -22,15 +22,26 @@ Examples:
 - **Circular IF/N°533 · SIL: nuevo archivo mensual incorpora campos y validaciones adicionales**
 
 ### Resolutions affecting another act
-Preferred pattern:
+Preferred semantic order:
 
-`Resolución Exenta IF/N°XXXX · [procedural action] sobre [Circular/Oficio Y]: [substantive subject + practical effect]`
+`Resolución Exenta IF/N°XXXX · [subject]: [decision by the resolution] regarding [Circular/Oficio Y], por lo que [explicit consequence for the prior rule]`
 
-Examples:
-- **Resolución Exenta IF/N°10670 · rechaza recursos contra Circular IF/N°531: informe parcial EMP pasa a octubre y sigue vigente**
-- **Resolución Exenta IF/N°9994 · rechaza suspensión de Circular IF/N°532: afiliación y desafiliación electrónica siguen su implementación**
-- **Resolución Exenta IF/N°8760 · suspende Circular IF/N°529: quedan en pausa las nuevas reglas de derivación CAEC**
-- **Resolución Exenta IF/N°10615 · acoge parcialmente recurso sobre Oficio IF/N°27.377: Nueva Masvida debe ajustar el Plan MAS2026**
+The headline must distinguish:
+1. the substantive subject;
+2. what the **resolution** decided;
+3. which earlier act it acted on;
+4. the resulting effect on that earlier act.
+
+Preferred examples:
+- **Resolución Exenta IF/N°10670 · Metas EMP: rechaza recursos contra Circular IF/N°531, por lo que sigue vigente el cambio de junio a octubre del informe parcial EMP**
+- **Resolución Exenta IF/N°9994 · Afiliación electrónica: rechaza suspender la Circular IF/N°532, por lo que continúan vigentes sus nuevas exigencias de suscripción y desafiliación**
+- **Resolución Exenta IF/N°8760 · CAEC: suspende la Circular IF/N°529, por lo que quedan temporalmente en pausa las nuevas reglas de derivación en urgencias**
+- **Resolución Exenta IF/N°10615 · Plan MAS2026: acoge parcialmente el recurso contra Oficio IF/N°27.377, por lo que Nueva Masvida debe ajustar aporte, siniestralidad y mandato**
+
+Avoid ambiguous forms such as:
+> Resolución X · rechaza recursos contra Circular Y: el informe pasa a octubre
+
+because the user may not know whether the last clause describes the resolution or the circular.
 
 These are editorial patterns, not rigid templates. The committee may rewrite when another formulation is clearer.
 
