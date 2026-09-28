@@ -9,6 +9,11 @@ from radar_salud.editorial_copy import apply_reviewed_copy
 from radar_salud.isapre_pulse import build_pulse
 from radar_salud.editorial_committee import build_committee_artifact
 
+_NORMATIVE_V2_PATH=Path(__file__).resolve().parents[1]/"config"/"normative_editorial_v2.json
+def _normative_v2_config():
+    try:return json.loads(_NORMATIVE_V2_PATH.read_text(encoding="utf-8"))
+    except Exception:return {"records":{},"title_contract":{}}
+
 TYPES=("Normativa","Legal","Noticias","Datos","Fiscalización")
 
 def _audit_map(path=Path("data/editorial_audit_90d_2026_09_26.json")):
@@ -156,35 +161,27 @@ def _compact_subject(text, max_chars=105):
 
 def _normative_contract(s):
     r=dict(s)
-    if r.get("event_type")!="REGULATION":
-        return r
+    if r.get("event_type")!="REGULATION":return r
     title=str(r.get("source_title_full") or r.get("title") or "").strip()
-    m=re.search(r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)",title,re.I)
-    if m:
-        kind=" ".join(m.group(1).split())
-        prefix=(m.group(2) or "").upper()
-        number=m.group(3)
-        label=f"{kind} {prefix+'/' if prefix else ''}N°{number}"
-        r["normative_document_type"]=kind
-        r["normative_document_number"]=f"{prefix+'/' if prefix else ''}N°{number}"
-        r["normative_document_label"]=label
-        subject=_compact_subject(r.get("card_why") or r.get("why_it_matters") or r.get("card_what") or r.get("what_happened"))
-        if subject:
-            r["normative_subject"]=subject
-            current=str(r.get("title") or "").strip()
-            opaque=bool(re.fullmatch(r"(?:Resolución(?:\s+Exenta)?|Circular|Oficio|Decreto)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",current,re.I))
-            # Preserve an already descriptive editorial title. Generate the
-            # identity+subject form only when the source headline is just an act number.
-            if opaque:
-                r["display_title"]=f"{label} sobre {subject[0].lower()+subject[1:] if len(subject)>1 else subject.lower()}"
-            elif label.lower() not in current.lower():
-                clean=current
-                number=str(r.get("normative_document_number") or "")
-                if number:
-                    clean=re.sub(rf"\s*[·:-]\s*{re.escape(number)}\s*$","",clean,flags=re.I).strip()
-                r["display_title"]=f"{label} · {clean}"
-            else:
-                r["display_title"]=current
+    m=re.search(r"\\b(Resolución(?:\\s+Exenta)?|Circular|Oficio|Decreto)\\s+(?:(IF|IP)\\s*[/\\-]?\\s*)?N?[°º]?\\s*([\\d\\.]+)",title,re.I)
+    if not m:return r
+    kind=" ".join(m.group(1).split());prefix=(m.group(2) or "").upper();number=re.sub(r"\\D","",m.group(3))
+    label=f"{kind} {prefix+'/' if prefix else ''}N°{m.group(3)}"
+    r.update({"normative_document_type":kind,"normative_document_number":f"{prefix+'/' if prefix else ''}N°{m.group(3)}","normative_document_label":label,"legal_identity":label})
+    cfg=_normative_v2_config();record=cfg.get("records",{}).get(number,{})
+    current=str(r.get("display_title") or r.get("title") or "").strip()
+    if record.get("plain_language_title"):
+        plain=record["plain_language_title"].strip();subtitle=record.get("legal_subtitle") or label;reviewed=True
+    else:
+        opaque=bool(re.fullmatch(r"(?:Resolución(?:\\s+Exenta)?|Circular|Oficio|Decreto)\\s+(?:(?:IF|IP)\\s*[/\\-]?\\s*)?N?[°º]?\\s*[\\d\\.]+",current,re.I))
+        plain=re.sub(rf"^\\s*{re.escape(label)}\\s*(?:sobre\\s+|[·:–-]\\s*)?","",current,flags=re.I).strip()
+        plain=re.sub(r"\\s*[·:–-]\\s*(?:(?:IF|IP)/)?N[°º]?[\\d\\.]+\\s*$","",plain,flags=re.I).strip()
+        stop=set(cfg.get("title_contract",{}).get("reject_trailing_words",[]))
+        clear=(not opaque and len(plain)>=int(cfg.get("title_contract",{}).get("min_characters",28)) and plain.split()[-1].strip(".,;:!?").lower() not in stop and plain.lower()!=str(r.get("normative_subject") or "").lower())
+        reviewed=False;subtitle=label
+        if not clear:r["normative_title_review_required"]=True;plain=current
+    r["display_title"]=plain;r["legal_subtitle"]=subtitle
+    r["normative_editorial"]={"legal_identity":label,"legal_action":r.get("what_happened"),"affected_rule":r.get("normative_subject") or r.get("related_reference_contexts"),"business_subject":r.get("normative_subject") or r.get("card_what") or r.get("what_happened"),"affected_actor":r.get("scopes") or r.get("affected_actors") or [],"required_change":r.get("card_why") or r.get("why_it_matters"),"effective_date_or_status":r.get("validity_text"),"plain_language_title":plain,"legal_subtitle":subtitle,"editorial_state":"reviewed" if reviewed else ("needs_review" if r.get("normative_title_review_required") else "source_title")}
     return r
 
 def _doc_key(s):
@@ -487,6 +484,7 @@ def curate(signals,resolve_external=True):
     recent=[_statistical_value_ladder(s) for s in recent]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
     recent=_apply_persistent_editorial_decisions(recent)
+    recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" else s for s in recent]
     recent=[s for s in recent if s.get("feed_visibility") is not False]
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 

@@ -527,17 +527,16 @@ test('priority statistical releases publish analysis and executive tables',async
  await expect(page.locator('article[data-card]').filter({hasText:'Estadísticas Financieras del Sistema ISAPRE'})).toContainText('CLP 34.091 millones');
 });
 
-test('normative resolution titles name related circular only once',async({page})=>{
+test('Normative V2 separates executive titles from prominent legal identity across visible acts',async({page})=>{
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
- for(const [number,circular] of [['8760','529'],['9994','532']]){
-   const s=radar.signals.find(x=>x.source_url?.includes('n'+number));
-   expect(s).toBeTruthy();
-   const title=s.display_title||s.title;
-   expect((title.match(new RegExp('Circular IF/N°'+circular,'g'))||[]).length).toBe(1);
-   expect(title).toContain('Resolución Exenta IF/N°'+number);
-   expect(title).not.toMatch(/no producen$/);
+ const expected=[['11156','cobertura sin tope anual'],['10670','informe parcial pasa a octubre'],['10615','Plan MAS2026'],['535','compensar reembolsos públicos'],['534','emitir bonos con cédula'],['533','archivo mensual de SIL'],['9994','Suscripción y desafiliación electrónica'],['532','Afiliación electrónica'],['531','Metas EMP'],['8760','CAEC'],['530','contralores médicos'],['529','CAEC']];
+ for(const [number,phrase] of expected){
+  const s=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));
+  expect(s,number).toBeTruthy();expect(s.display_title).toContain(phrase);expect(s.legal_identity||s.normative_document_label).toContain(number);expect(s.legal_subtitle).toContain(number);
+  const article=page.locator('article[data-card]').filter({hasText:s.display_title}).first();await expect(article.locator('.normative-identity')).toContainText(number);
+  expect(s.display_title).not.toMatch(/^(Resolución|Circular|Oficio)/i);expect(s.display_title).not.toMatch(/(?:de|para|con|en|a|sobre|que|y|o)[.!?]?$/i);
  }
 });

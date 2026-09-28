@@ -103,7 +103,7 @@
         "IF/N°8760",
         "IF/N°532"
       ],
-      "specific_fix": "Normative Editorial V2: título ejecutivo comprensible + identidad jurídica visualmente prominente y separada.",
+      "specific_fix": "Normative Editorial V2: plain_language_title separado de legal_identity/legal_subtitle, badge prominente, Regulatory Business Editor permanente, corpus de 12 señales visibles y gate fail-closed para titular opaco.",
       "root_cause": "El pipeline editorial priorizó composición desde identidad jurídica y fragments de normative_subject/why_it_matters, sin un gate explícito de comprensión ejecutiva ni separación entre título editorial e identidad legal.",
       "preventive_controls": [
         "Regulatory Business Editor",
@@ -111,9 +111,13 @@
         "structured normative output contract",
         "incomplete-title deterministic guards",
         "mandatory regression corpus",
-        "historical recuration"
+        "historical recuration",
+        "plain_language_title_schema",
+        "prominent_legal_identity_badge",
+        "normative_5_second_regression_gate",
+        "opaque_future_titles_fail_closed"
       ],
-      "status": "approved_in_execution",
+      "status": "implemented_pending_qa",
       "queue_task": "normative_editorial_v2_2026_09_27"
     },
     {

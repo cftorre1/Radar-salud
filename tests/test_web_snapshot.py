@@ -271,3 +271,15 @@ def test_material_statistical_releases_use_value_ladder_instead_of_disappearing(
     ges["data_insights"]=["La utilización GES aumentó frente al período anterior."]
     enriched=m._statistical_value_ladder(ges)
     assert enriched["statistical_value_level"]=="deep_analysis"
+
+
+def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():
+    payload=json.loads(Path("web/data/radar_today.json").read_text())
+    rows=[m._normative_contract(s) for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
+    assert len(rows)>=12
+    assert all(x["normative_editorial"]["plain_language_title"]==x["display_title"] for x in rows)
+    assert all(x["normative_editorial"]["legal_identity"]==x["normative_document_label"] for x in rows)
+    assert all(x["legal_subtitle"] for x in rows)
+    assert any(x["source_url"].endswith("n9994/") and "Suscripción y desafiliación" in x["display_title"] for x in rows)
+    unknown={"event_type":"REGULATION","title":"Circular IF/N°123456","source_title_full":"Circular IF/N°123456","source_url":"https://x/n123456","signal_types":["Normativa"]}
+    assert m._normative_contract(unknown)["normative_title_review_required"] is True
