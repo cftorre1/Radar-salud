@@ -1,0 +1,340 @@
+{
+  "version": "1.0",
+  "experiment_run_id": 36365445785,
+  "staging_sha": "a1256d1a2b3fea9ed9bc9ef0860f77eeb976dbe3",
+  "review": {
+    "method": "manual blind review; model names were mapped only after scoring",
+    "reviewer": "Pelé",
+    "rubric_max": {
+      "fidelity": 25,
+      "selection_prioritization": 20,
+      "synthesis_connection": 20,
+      "value_for_chile": 20,
+      "executive_utility": 15
+    },
+    "limitations": [
+      "One case per task category; results are directional, not statistically reliable.",
+      "The complex-report input uses Alicanto's structured extraction/analysis for a 60-page WHO report, not the complete report text.",
+      "Editing minutes are estimates, not observed stopwatch time; no manual baseline exists to quantify minutes saved.",
+      "A second human/model reviewer did not independently rescore the blind outputs. CI Reviewer validates the staging candidate, not the scorecard."
+    ]
+  },
+  "artifacts": {
+    "blinded_outputs": "https://github.com/cftorre1/Radar-salud/actions/runs/36365445785/artifacts/10947456746",
+    "cost_manifest": "https://github.com/cftorre1/Radar-salud/actions/runs/36365445785/artifacts/10947491763"
+  },
+  "scores": [
+    {
+      "blind_id": "Modelo A",
+      "model": "Astra",
+      "case_id": "simple_news",
+      "dimension_scores": {
+        "fidelity": 23,
+        "selection_prioritization": 17,
+        "synthesis_connection": 13,
+        "value_for_chile": 17,
+        "executive_utility": 12
+      },
+      "total": 82,
+      "human_edit_minutes_estimate": 4,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Resumen correcto y acotado; le falta explicitar Cenabast en el titular."
+    },
+    {
+      "blind_id": "Modelo A",
+      "model": "Astra",
+      "case_id": "complex_report",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 18,
+        "synthesis_connection": 17,
+        "value_for_chile": 18,
+        "executive_utility": 14
+      },
+      "total": 91,
+      "human_edit_minutes_estimate": 6,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Separa el informe OMS del contexto Reuters y limita la hipótesis Chile."
+    },
+    {
+      "blind_id": "Modelo A",
+      "model": "Astra",
+      "case_id": "multisource_chile",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 18,
+        "synthesis_connection": 18,
+        "value_for_chile": 19,
+        "executive_utility": 14
+      },
+      "total": 93,
+      "human_edit_minutes_estimate": 4,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Conserva cifras y límites; no combina porcentajes."
+    },
+    {
+      "blind_id": "Modelo A",
+      "model": "Astra",
+      "case_id": "free_feature",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 18,
+        "synthesis_connection": 17,
+        "value_for_chile": 18,
+        "executive_utility": 14
+      },
+      "total": 91,
+      "human_edit_minutes_estimate": 5,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Integra las tres normas sin atribuirles coordinación."
+    },
+    {
+      "blind_id": "Modelo A",
+      "model": "Astra",
+      "case_id": "global_teaser",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 18,
+        "synthesis_connection": 17,
+        "value_for_chile": 18,
+        "executive_utility": 13
+      },
+      "total": 90,
+      "human_edit_minutes_estimate": 4,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Teaser útil; aconsejable aclarar que las cifras vienen de encuesta global."
+    },
+    {
+      "blind_id": "Modelo B",
+      "model": "Luna",
+      "case_id": "simple_news",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 18,
+        "synthesis_connection": 14,
+        "value_for_chile": 18,
+        "executive_utility": 12
+      },
+      "total": 86,
+      "human_edit_minutes_estimate": 3,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Breve, fiel y con límites del piloto."
+    },
+    {
+      "blind_id": "Modelo B",
+      "model": "Luna",
+      "case_id": "complex_report",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 19,
+        "synthesis_connection": 18,
+        "value_for_chile": 19,
+        "executive_utility": 14
+      },
+      "total": 94,
+      "human_edit_minutes_estimate": 4,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Buen análisis; separa proyección Reuters de resultados del informe."
+    },
+    {
+      "blind_id": "Modelo B",
+      "model": "Luna",
+      "case_id": "multisource_chile",
+      "dimension_scores": {
+        "fidelity": 25,
+        "selection_prioritization": 19,
+        "synthesis_connection": 19,
+        "value_for_chile": 20,
+        "executive_utility": 15
+      },
+      "total": 98,
+      "human_edit_minutes_estimate": 3,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Mejor priorización ejecutiva y trazabilidad; evita transferencia a Chile."
+    },
+    {
+      "blind_id": "Modelo B",
+      "model": "Luna",
+      "case_id": "free_feature",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 19,
+        "synthesis_connection": 18,
+        "value_for_chile": 19,
+        "executive_utility": 14
+      },
+      "total": 94,
+      "human_edit_minutes_estimate": 5,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Buen valor operativo; antes de publicar, verificar el matiz jurídico de IF/531 vs. RE IF/N°10670."
+    },
+    {
+      "blind_id": "Modelo B",
+      "model": "Luna",
+      "case_id": "global_teaser",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 18,
+        "synthesis_connection": 17,
+        "value_for_chile": 18,
+        "executive_utility": 14
+      },
+      "total": 91,
+      "human_edit_minutes_estimate": 3,
+      "publishable_without_editing": false,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Agregar que los porcentajes corresponden a encuesta global, no a Chile."
+    },
+    {
+      "blind_id": "Modelo C",
+      "model": "Terra",
+      "case_id": "simple_news",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 17,
+        "synthesis_connection": 12,
+        "value_for_chile": 17,
+        "executive_utility": 12
+      },
+      "total": 82,
+      "human_edit_minutes_estimate": 4,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Correcto, aunque menos informativo que las otras dos versiones."
+    },
+    {
+      "blind_id": "Modelo C",
+      "model": "Terra",
+      "case_id": "complex_report",
+      "dimension_scores": {
+        "fidelity": 25,
+        "selection_prioritization": 19,
+        "synthesis_connection": 19,
+        "value_for_chile": 19,
+        "executive_utility": 14
+      },
+      "total": 96,
+      "human_edit_minutes_estimate": 3,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Mejor tratamiento de metodología, límites y uso ejecutivo."
+    },
+    {
+      "blind_id": "Modelo C",
+      "model": "Terra",
+      "case_id": "multisource_chile",
+      "dimension_scores": {
+        "fidelity": 23,
+        "selection_prioritization": 18,
+        "synthesis_connection": 17,
+        "value_for_chile": 20,
+        "executive_utility": 14
+      },
+      "total": 92,
+      "human_edit_minutes_estimate": 5,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Buen marco de control; omite cifras útiles de PwC."
+    },
+    {
+      "blind_id": "Modelo C",
+      "model": "Terra",
+      "case_id": "free_feature",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 19,
+        "synthesis_connection": 18,
+        "value_for_chile": 18,
+        "executive_utility": 14
+      },
+      "total": 93,
+      "human_edit_minutes_estimate": 4,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Mantiene separadas las obligaciones y sus cautelas."
+    },
+    {
+      "blind_id": "Modelo C",
+      "model": "Terra",
+      "case_id": "global_teaser",
+      "dimension_scores": {
+        "fidelity": 24,
+        "selection_prioritization": 18,
+        "synthesis_connection": 17,
+        "value_for_chile": 18,
+        "executive_utility": 14
+      },
+      "total": 91,
+      "human_edit_minutes_estimate": 3,
+      "publishable_without_editing": true,
+      "factual_errors": [],
+      "unsupported_claims": [],
+      "material_omissions": [],
+      "review_notes": "Compacto; explicita el alcance global."
+    }
+  ],
+  "summary": {
+    "Astra": {
+      "mean_quality": 89.4,
+      "total_cost_usd": 0.14795,
+      "input_tokens": 4060,
+      "output_tokens": 2147,
+      "mean_latency_ms": 9876
+    },
+    "Luna": {
+      "mean_quality": 93,
+      "total_cost_usd": 0.004302,
+      "input_tokens": 4060,
+      "output_tokens": 2909,
+      "mean_latency_ms": 7032
+    },
+    "Terra": {
+      "mean_quality": 90.8,
+      "total_cost_usd": 0.032528,
+      "input_tokens": 4060,
+      "output_tokens": 2034,
+      "mean_latency_ms": 4801
+    },
+    "total_cost_usd": 0.18478,
+    "rolling_7d_spend_before_usd": 0.032416,
+    "rolling_7d_spend_after_usd": 0.217196,
+    "weekly_limit_usd": 10
+  }
+}

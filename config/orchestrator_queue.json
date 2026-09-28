@@ -589,7 +589,7 @@
     },
     {
       "id": "model_quality_experiment_global_free_2026_09_24",
-      "status": "approved",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work",
       "source": "Dirección",
@@ -628,8 +628,17 @@
         "resultado teaser Global FREE y pieza FREE destacada",
         "QA/Reviewer independiente"
       ],
-      "progress": "El corpus, scoring ciego y caso de negocio requieren ejecuciones reales Luna/Terra/Astra con tokens, costo y latencia observados. No hay credenciales ni autorización de gasto para producir esa evidencia sin simularla. Dirección 2026-09-26 confirma cuenta OpenAI API activa, créditos disponibles y presupuesto autorizado de USD 10/semana para Alicanto. Los modelos oficiales gpt-5.6-luna, gpt-5.6-terra y gpt-6-astra están documentados por OpenAI; falta solo conectar una API key real al runtime del repositorio y validar acceso del proyecto. Runtime y secret ya validados con Terra real. El experimento comparativo Luna/Terra/Astra puede ejecutarse ahora dentro del tope USD 10/semana; Astra solo si el proyecto confirma acceso.",
-      "blocked_by": []
+      "progress": "Comparación real y blindada Luna/Terra/Astra completada en staging; 8 piezas, 5 tipos de tarea y 15/15 outputs válidos con source refs fail-closed. Scoring, tokens/costos/latencia, edit estimates, business case 10/15 reportes y recomendación documentados en docs/MODEL_QUALITY_EXPERIMENT_V1_2026_09_27.md y data/model_quality/scorecard_v1.json. Gasto estimado $0.184780; seven-day total $0.217196 de $10 autorizados. Luna lidera promedio (92.6), Terra en informe complejo (96), Astra sin mejora; no se cambia routing. Reviewer second-pass y muestras adicionales quedan como limitaciones de evidencia, no como autorización para cambiar producto.",
+      "blocked_by": [],
+      "completed_at": "2026-09-27",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36365445785 — 15/15 llamadas reales, outputs blinded, corpus y telemetría; Astra accesible.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36365445983 — tests, QA browser desktop/mobile, Reviewer y preview PASS.",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36365445785/artifacts/10947456746",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36365445785/artifacts/10947491763",
+        "data/model_quality/scorecard_v1.json — rubric ciega desglosada y estimación de edición por caso.",
+        "docs/MODEL_QUALITY_EXPERIMENT_V1_2026_09_27.md — conclusión, costos 10/15 informes y rutas contrafactuales."
+      ]
     },
     {
       "id": "free_value_features_and_model_cost_observability_2026_09_24",
