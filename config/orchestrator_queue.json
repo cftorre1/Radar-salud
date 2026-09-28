@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-09-27",
+  "updated_at": "2026-09-28",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -2249,7 +2249,28 @@
         "learning ledger actualizado"
       ],
       "approved_at": "2026-09-27",
-      "progress": "Normative Editorial V2 en staging: título ejecutivo separado de identidad jurídica, badge prominente, comité Regulatory Business Editor, 12 actos visibles recurados y gate fail-closed para titulares opacos. Recuración histórica y validación de QA/Reviewer/Improvement Review en curso."
+      "progress": "Recovery required. Último candidato staging 8a24af1 / run #573: qa/tests PASS, qa/staging FAIL, Reviewer/preview skipped. El contrato V2 no está reconciliado en el snapshot versionado: varias señales siguen con display_title jurídico antiguo o truncado y sin legal_identity/legal_subtitle persistidos. No iniciar Statistics V2 ni release hasta obtener gate verde de Normative V2.",
+      "blocked_by": [
+        "qa_staging_normative_v2"
+      ],
+      "recovery_required": {
+        "failed_run": "https://github.com/cftorre1/Radar-salud/actions/runs/36368237623",
+        "failure_signature": [
+          "IF/N°535: test espera título ejecutivo separado, pero snapshot aún entrega 'Circular IF/N°535 · Isapres no podrán compensar reembolsos a empleadores públicos sin habilitación legal'.",
+          "Cards V2 IF/N°535: selector del test busca el nuevo título ejecutivo pero la card generada no queda localizable, por lo que [data-detail] timeout en desktop/mobile.",
+          "Normative V2 regression corpus: display_title todavía comienza con Resolución/Circular en múltiples actos (11156, 10670, 10615, 533, 9994, 532, 531, 8760, 530, 529), incumpliendo separación título editorial / identidad jurídica."
+        ],
+        "corrections_required": [
+          "Hacer que la recuración Normative V2 sea la fuente canónica de export_web_snapshot y no un override efímero sólo visible durante parte del pipeline.",
+          "Persistir por señal plain_language_title/display_title sin identidad jurídica prefijada; persistir legal_identity y legal_subtitle por separado.",
+          "Renderizar legal_identity en badge/eyebrow prominente en card y detalle, claramente por encima de fecha/fuente en jerarquía.",
+          "Recurar y verificar todo el corpus visible, no sólo typed legal signals parciales; usar los siete casos obligatorios y además 534/531/530/529.",
+          "Actualizar tests para verificar identidad estable por source_url/document number, no por frases frágiles, pero conservar assertion semántica del título ejecutivo.",
+          "No relajar el contrato para hacer pasar el test: el producto debe dejar de mostrar display_title que empiece con Resolución/Circular/Oficio.",
+          "Después de corregir, ejecutar run completo con QA desktop/mobile + Reviewer + preview PASS sobre el mismo SHA."
+        ],
+        "stop_condition": "No cerrar ni desbloquear Statistics V2/release mientras #573 o sucesor equivalente siga con qa/staging FAIL."
+      }
     },
     {
       "id": "signal_simplification_statistics_v2_2026_09_27",
