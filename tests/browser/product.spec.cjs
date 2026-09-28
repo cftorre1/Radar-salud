@@ -23,10 +23,10 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+$/);
  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();
- expect(await page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);
+ await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);
  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');
  if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();
- expect(await page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);
+ await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);
  await page.getByRole('button',{name:'Cerrar fuentes'}).click();
  await page.locator('#filterDetails summary').click();
  await expect(page.locator('#filterDetails')).toContainText('Tus filtros se guardan automáticamente');
