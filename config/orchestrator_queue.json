@@ -2220,7 +2220,6 @@
         "Aplicar Normative Editorial V2.1 a todo acto normativo visible y al stock vigente: circular, resolución, oficio, decreto u otro.",
         "El título principal DEBE incluir de forma visible el tipo y número del documento. La identidad jurídica no puede quedar sólo en badge, metadata, contexto o detalle.",
         "Estructura recomendada para circulares: 'Circular IF/N°XXX · [materia/sujeto]: [acción, obligación o cambio concreto]'. Ejemplo: 'Circular IF/N°535 · Reembolsos públicos: isapres no podrán compensarlos con deudas del empleador'.",
-        "Estructura recomendada para resoluciones sobre otra norma: 'Resolución Exenta IF/N°XXXX · [acción procesal] sobre Circular/Oficio Y: [materia + efecto vigente/cambio]'. Ejemplo: 'Resolución Exenta IF/N°10670 · rechaza recursos contra Circular IF/N°531: informe parcial EMP pasa a octubre y sigue vigente'.",
         "Para resoluciones, diferenciar claramente qué hizo la resolución (rechazó, acogió parcialmente, suspendió, mantuvo, etc.) y sobre qué acto recaía.",
         "Para circulares/oficios, explicar el objeto y cambio operativo en lenguaje comprensible para alguien de la industria.",
         "No forzar títulos artificialmente cortos. Priorizar comprensión y precisión; permitir 2–3 líneas en mobile cuando sea necesario.",
@@ -2232,7 +2231,10 @@
         "Recurar todas las señales normativas vigentes/visibles, no sólo las recientes ni las del corpus de test.",
         "Revisar especialmente IF/N°11156, 10670, 10615, 535, 534, 533, 9994, 532, 531, 8760, 530 y 529.",
         "Builder → QA desktop/mobile → Regulatory/Business Reviewer → Improvement Review. La revisión debe evaluar comprensión real, no sólo cumplimiento de regex.",
-        "Actualizar tests para verificar presencia de tipo+número, materia sustantiva y acción/cambio, usando identidad estable por source_url/document number. No hacer tests frágiles por frase exacta."
+        "Actualizar tests para verificar presencia de tipo+número, materia sustantiva y acción/cambio, usando identidad estable por source_url/document number. No hacer tests frágiles por frase exacta.",
+        "Estructura recomendada para resoluciones: 'Resolución Exenta IF/N°XXXX · [materia]: [decisión de la resolución] respecto de [Circular/Oficio Y], por lo que [consecuencia concreta sobre vigencia/aplicación/cambio de la norma recurrida]'. La última parte debe dejar explícito que describe el efecto de la resolución sobre la norma previa, evitando ambigüedad entre lo que hizo la resolución y lo que ya establecía la circular/oficio.",
+        "Ejemplo patrón: 'Resolución Exenta IF/N°10670 · Metas EMP: rechaza recursos contra Circular IF/N°531, por lo que sigue vigente el cambio de junio a octubre del informe parcial EMP'.",
+        "Para resoluciones, priorizar esta secuencia semántica: materia → verbo de decisión de la resolución → acto recurrido/modificado → consecuencia explícita. Evitar construcciones donde tras dos puntos no quede claro si la frase describe la resolución o la circular."
       ],
       "constraints": [
         "No ocultar tipo/número del acto en metadata secundaria.",
@@ -2252,7 +2254,7 @@
         "learning ledger actualizado"
       ],
       "approved_at": "2026-09-27",
-      "progress": "Dirección redefine el contrato tras revisión mobile 2026-09-28. La separación estricta título editorial vs identidad jurídica se considera una solución equivocada. Se adopta Normative Editorial V2.1: identidad del documento integrada de forma prominente en el título + materia + acción/cambio; comité con mayor libertad editorial y menos constraints mecánicos.",
+      "progress": "Dirección afina V2.1: en resoluciones, el título debe distinguir sin ambigüedad materia, decisión de la resolución y consecuencia sobre la norma recurrida. Patrón actualizado y ejemplo IF/N°10670 incorporado.",
       "blocked_by": [],
       "recovery_required": {
         "failed_run": "https://github.com/cftorre1/Radar-salud/actions/runs/36368237623",
