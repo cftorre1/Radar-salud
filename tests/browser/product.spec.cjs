@@ -284,14 +284,13 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
- const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/TEA: se mantiene la cobertura sin tope anual/i})});
- await expect(tea).toContainText('prohibió exigir RND');
- await expect(tea).toContainText('15 días hábiles');
- await expect(tea).toContainText('1 de noviembre de 2026');
+ const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Resolución Exenta IF\/N°11156 · TEA:/i})});
+ await expect(tea).toContainText('RND');
  await tea.locator('[data-detail]').click();
- await expect(page.locator('#detailBody')).toContainText('Resolución Exenta IF/N°11156');
+ await expect(page.locator('#detailBody .normative-context')).toContainText('Contexto de la señal');
+ await expect(page.locator('#detailBody .normative-context')).toContainText('15 días hábiles');
+ await expect(page.locator('#detailBody .normative-context')).toContainText('1 de noviembre de 2026');
  await expect(page.locator('#detailBody')).toContainText('Registro Nacional de Discapacidad');
- await expect(page.locator('#detailBody')).toContainText('Sucursal Virtual');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
  const circular=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Isapres no podrán compensar reembolsos públicos/i})});
  await circular.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Circular IF/N°77');
@@ -396,7 +395,7 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(0);
  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
  await expect(opaque).toHaveCount(0);
- const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Isapres deben ampliar el archivo mensual de SIL/})});
+ const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°533 · SIL: actualiza el inventario mensual/})});
  await expect(c533).toHaveCount(1);
  await expect(c533).toContainText('Qué pasó:');
  const briefOpaque=page.locator('.briefitem strong').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
@@ -527,16 +526,40 @@ test('priority statistical releases publish analysis and executive tables',async
  await expect(page.locator('article[data-card]').filter({hasText:'Estadísticas Financieras del Sistema ISAPRE'})).toContainText('CLP 34.091 millones');
 });
 
-test('Normative V2 separates executive titles from prominent legal identity across visible acts',async({page})=>{
+test('Normative V2.1 puts document, subject and action in each current headline',async({page})=>{
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
- const expected=[['11156','cobertura sin tope anual'],['10670','informe parcial pasa a octubre'],['10615','Plan MAS2026'],['535','compensar reembolsos públicos'],['534','emitir bonos con cédula'],['533','archivo mensual de SIL'],['9994','Suscripción y desafiliación electrónica'],['532','Afiliación electrónica'],['531','Metas EMP'],['8760','CAEC'],['530','contralores médicos'],['529','CAEC']];
- for(const [number,phrase] of expected){
-  const s=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));
-  expect(s,number).toBeTruthy();expect(s.display_title).toContain(phrase);expect(s.legal_identity||s.normative_document_label).toContain(number);expect(s.legal_subtitle).toContain(number);
-  const article=page.locator('article[data-card]').filter({hasText:s.display_title}).first();await expect(article.locator('.normative-identity')).toContainText(number);
-  expect(s.display_title).not.toMatch(/^(Resolución|Circular|Oficio)/i);expect(s.display_title).not.toMatch(/(?:^|\s)(?:de|para|con|en|a|sobre|que|y|o)[.!?]?$/i);
+ const expected=[
+  ['11156',/TEA/i,/acoge|mantiene|proh[ií]be/i],
+  ['10670',/Metas EMP/i,/rechaza|vigente/i],
+  ['10615',/Plan MAS2026/i,/acoge|ajusta/i],
+  ['535',/reembolsos|empleadores públicos/i,/proh[ií]be|compensar/i],
+  ['534',/bonos/i,/aceptar/i],
+  ['533',/SIL|inventario/i,/actualiza/i],
+  ['9994',/afiliación electrónica/i,/rechaza|suspender/i],
+  ['532',/afiliación electrónica/i,/refuerza|controles/i],
+  ['531',/Metas EMP/i,/traslada/i],
+  ['8760',/CAEC/i,/suspende|pausa/i],
+  ['530',/contralores médicos/i,/exige|informar/i],
+  ['529',/CAEC/i,/vincula|cobertura/i]
+ ];
+ for(const [number,subject,action] of expected){
+  const signal=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));
+  expect(signal,number).toBeTruthy();
+  const title=signal.display_title;
+  expect(title).toContain(signal.normative_document_label||signal.legal_identity);
+  expect(title).toMatch(subject);expect(title).toMatch(action);
+  expect(signal.normative_context).toBeTruthy();
+  expect(signal.normative_context).not.toContain(title);
+  const article=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:title,exact:true})});
+  await expect(article).toHaveCount(1);
+  await expect(article.locator('.normative-identity')).toHaveCount(0);
+  await article.locator('[data-detail]').click();
+  await expect(page.locator('#detailBody .normative-context')).toBeVisible();
+  await expect(page.locator('#detailBody .normative-context')).toContainText('Contexto de la señal');
+  await expect(page.locator('#detailBody .normative-context')).not.toContainText(title);
+  await page.getByRole('button',{name:'Cerrar resumen'}).click();
  }
 });
