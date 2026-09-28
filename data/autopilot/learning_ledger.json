@@ -88,6 +88,33 @@
       "evidence": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/36364084776 — SHA b39c7a5a3704cfd1b10d882a9fd3a88ffe3a22c9: tests, browser desktop/mobile, Reviewer sin hallazgos y preview PASS tras sustituir el literal histórico."
       ]
+    },
+    {
+      "id": "normative_titles_not_understandable_2026_09_27",
+      "source": "Toba",
+      "class": "missed_agent_finding",
+      "finding": "Varias señales normativas eran jurídicamente identificables pero el título no permitía comprender rápidamente el contenido o impacto; además la identidad del documento no puede quedar tan discreta como fecha/fuente.",
+      "examples": [
+        "IF/N°11156",
+        "IF/N°10670",
+        "IF/N°10615",
+        "IF/N°533",
+        "IF/N°9994",
+        "IF/N°8760",
+        "IF/N°532"
+      ],
+      "specific_fix": "Normative Editorial V2: título ejecutivo comprensible + identidad jurídica visualmente prominente y separada.",
+      "root_cause": "El pipeline editorial priorizó composición desde identidad jurídica y fragments de normative_subject/why_it_matters, sin un gate explícito de comprensión ejecutiva ni separación entre título editorial e identidad legal.",
+      "preventive_controls": [
+        "Regulatory Business Editor",
+        "5-second editorial comprehension gate",
+        "structured normative output contract",
+        "incomplete-title deterministic guards",
+        "mandatory regression corpus",
+        "historical recuration"
+      ],
+      "status": "approved_in_execution",
+      "queue_task": "normative_editorial_v2_2026_09_27"
     }
   ]
 }
