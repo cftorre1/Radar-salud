@@ -284,7 +284,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
- const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Resolución Exenta IF\/N°11156.*Circular IF\/Nº528/i})});
+ const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/TEA: se mantiene la cobertura sin tope anual/i})});
  await expect(tea).toContainText('prohibió exigir RND');
  await expect(tea).toContainText('15 días hábiles');
  await expect(tea).toContainText('1 de noviembre de 2026');
@@ -293,7 +293,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody')).toContainText('Registro Nacional de Discapacidad');
  await expect(page.locator('#detailBody')).toContainText('Sucursal Virtual');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
- const circular=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°535.*Isapres/i})});
+ const circular=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Isapres no podrán compensar reembolsos públicos/i})});
  await circular.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Circular IF/N°77');
  await page.locator('#detailBody .related').getByText('Normativa relacionada',{exact:false}).click();
  await expect(page.locator('#detailBody')).toContainText('Norma modificada');
@@ -396,7 +396,7 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(0);
  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
  await expect(opaque).toHaveCount(0);
- const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°533 sobre /})});
+ const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Isapres deben ampliar el archivo mensual de SIL/})});
  await expect(c533).toHaveCount(1);
  await expect(c533).toContainText('Qué pasó:');
  const briefOpaque=page.locator('.briefitem strong').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
