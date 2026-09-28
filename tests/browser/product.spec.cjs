@@ -154,6 +154,15 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-home-v2-final.png`,fullPage:true});
 });
+test('Date-only signals remain inside the 14-day window across UTC midnight',async({page})=>{
+ await page.addInitScript(()=>{Date.now=()=>new Date('2026-09-28T00:20:00Z').getTime()});
+ await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
+ const data=await (await page.request.get('/data/free_value.json')).json();
+ expect(data.weekly_insight?.event_date).toBe('2026-09-14');
+ await expect(page.locator('#period')).toHaveValue('14');
+ await expect(page.locator('.signal.special.weekly')).toHaveCount(1);
+ await expect(page.locator('.brief-weekly')).toHaveCount(1);
+});
 test('Feed-only share uses Web Share and clipboard fallback without analytics',async({page})=>{
  await page.addInitScript(()=>{window.__shared=[];Object.defineProperty(navigator,'share',{configurable:true,value:payload=>{window.__shared.push(payload);return Promise.resolve()}})});
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
@@ -275,7 +284,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
- const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/cobertura TEA sin tope anual/})});
+ const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Resolución Exenta IF\/N°11156.*Circular IF\/Nº528/i})});
  await expect(tea).toContainText('prohibió exigir RND');
  await expect(tea).toContainText('15 días hábiles');
  await expect(tea).toContainText('1 de noviembre de 2026');
