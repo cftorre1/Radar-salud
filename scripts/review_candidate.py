@@ -64,7 +64,6 @@ def review(web, sha):
                     for group in ("decision_terms","affected_act_terms","effect_terms")):
                 fail("editorial","normative_resolution_effect",path,"Resolution headline must distinguish its decision, affected prior act and effect")
 
-                fail("editorial","normative_v21_contract",path,"Headline must contain act identity, subject and action; context must add information")
     except (OSError,ValueError,TypeError) as exc:
         fail("editorial","normative_contract_unavailable","config/normative_editorial_v2.json",str(exc))
     identities=set()
