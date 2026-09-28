@@ -161,7 +161,7 @@ def _compact_subject(text, max_chars=105):
 
 def _normative_contract(s):
     r=dict(s)
-    if r.get("event_type")!="REGULATION":return r
+    if r.get("event_type")!="REGULATION" and "Normativa" not in (r.get("signal_types") or []):return r
     title=str(r.get("source_title_full") or r.get("title") or "").strip()
     m=re.search(r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)",title,re.I)
     if not m:return r
