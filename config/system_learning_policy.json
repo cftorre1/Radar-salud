@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "objective": "Convert every material human-found issue or recurring system failure into preventive system capability, reducing owner involvement toward 30-60 minutes per week.",
+  "required_for": [
+    "user_found_issue",
+    "missed_agent_finding",
+    "repeated_failure_signature",
+    "manual_intervention_needed",
+    "unexpected_stall",
+    "reviewer_disagreement",
+    "production_or_staging_regression"
+  ],
+  "for_each_incident": {
+    "step_1": "fix_the_specific_issue",
+    "step_2": "identify_why_existing_agents_or_rules_missed_it",
+    "step_3": "select_preventive_control",
+    "step_4": "implement_and_test_preventive_control",
+    "step_5": "record_evidence_and_owner_time_saved"
+  },
+  "preventive_controls": [
+    "deterministic_test",
+    "browser_qa_assertion",
+    "reviewer_rule",
+    "editorial_rule",
+    "data_validation_rule",
+    "liveness_or_recovery_rule",
+    "new_specialist_agent",
+    "existing_agent_role_expansion",
+    "backlog_generation_rule",
+    "observability_or_dashboard_metric",
+    "architecture_change"
+  ],
+  "agent_creation_rule": "Create or propose a specialist agent when the same class of judgment is recurrent, material, and poorly served by existing reviewers.",
+  "success_metric": {
+    "primary": "owner_minutes_per_week",
+    "target": "30-60",
+    "secondary": [
+      "human_found_defects_not_previously_detected",
+      "silent_stalls",
+      "repeat_failure_signatures",
+      "manual_restarts",
+      "material_reviewer_findings_after_user_review"
+    ]
+  }
+}
