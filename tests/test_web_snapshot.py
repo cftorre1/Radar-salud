@@ -241,7 +241,7 @@ def test_every_opaque_resolution_with_normative_parent_exposes_parent_in_title()
         parents=[x for x in row.get("related_context",[]) if __import__("re").search(r"^(Circular|Oficio|Resolución|Decreto)\b",str(x.get("title") or ""),__import__("re").I)]
         if opaque and parents:
             checked += 1
-            parent_number=__import__("re").search(r"N[°º]\\s*([\\d\\.]+)",parents[0]["title"],__import__("re").I)
+            parent_number=__import__("re").search(r"N[°º]\s*([\d\.]+)",parents[0]["title"],__import__("re").I)
             assert parent_number and parent_number.group(1) in row["legal_subtitle"]
             assert not row["display_title"].lower().startswith("resolución")
     assert checked >= 2
