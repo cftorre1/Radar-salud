@@ -122,7 +122,7 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  await expect(page.locator('#externalObservations')).toContainText('No bloquea los demás bloques MVP');
  const report=await (await page.request.get('/data/product.json')).json();
  await expect(page.locator('#blocks .block')).toHaveCount(report.pmo.blocks.length);
- await expect(page.locator('#failures')).toContainText('Autopilot distingue QA aprobado');
+ for(const failure of (report.pmo.open_failures||[]))await expect(page.locator('#failures')).toContainText(failure.description);
  await expect(page.locator('#deployments')).toContainText('Producción: último SHA comprobado');
  await expect(page.locator('thead th').filter({hasText:'Última consulta'})).toBeVisible();
  expect(await page.locator('thead th').filter({hasText:'Última consulta'}).getAttribute('scope')).toBe('col');
