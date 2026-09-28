@@ -47,7 +47,7 @@ def build_experiment(snapshot, weekly, themes_doc):
     return {"version":"1.0","pieces":catalog,"cases":cases}
 
 def make_prompt(case):
-    contract={"headline":"string","executive_thesis":"string","key_claims":[{"claim":"string","source_ids":["<ID from evidence_ids>"]}],"why_it_matters":"string","business_implications":["string"],"chile_watch":{"classification":"evidence|hypothesis|none","text":"string","source_ids":["L1"]},"decision_use":"string","uncertainties_and_limits":["string"],"source_refs":["<ID from evidence_ids>"]}
+    contract={"headline":"string","executive_thesis":"string","key_claims":[{"claim":"string","source_ids":["<ID from evidence_ids>"]}],"why_it_matters":"string","business_implications":["string"],"chile_watch":{"classification":"evidence|hypothesis|none","text":"string","source_ids":["<ID from evidence_ids>"]},"decision_use":"string","uncertainties_and_limits":["string"],"source_refs":["<ID from evidence_ids>"]}
     payload={"task":case["id"],"instruction":case["instruction"],"evidence":case["evidence"],"theme_context":case.get("theme_context",{}),"output_contract":contract}
     return "Actúa como analista de inteligencia de negocio en salud. Responde en español y devuelve SOLO JSON. Usa exclusivamente la evidencia, sin búsqueda externa ni causalidad inventada. source_refs y key_claims.source_ids solo pueden usar los ID entregados. Respeta el límite de palabras.\n"+json.dumps(payload,ensure_ascii=False,separators=(",",":"))
 
