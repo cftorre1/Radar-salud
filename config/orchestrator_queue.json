@@ -2065,12 +2065,12 @@
     },
     {
       "id": "normative_title_dedup_v1_2026_09_27",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work+Reviewer",
       "depends_on": [],
       "blocked_by": [],
-      "progress": "Ejecución real iniciada 2026-09-27. Generador normativo actualizado para nombrar acto principal y norma relacionada una sola vez, seguido del efecto material; tests unitarios y browser agregados. Commits a66154f, 0da7dd5, 3d6ff95. Pendiente HEAD integrado full PASS.",
+      "progress": "Ejecución real iniciada 2026-09-27. Generador normativo actualizado para nombrar acto principal y norma relacionada una sola vez, seguido del efecto material; tests unitarios y browser agregados. Commits a66154f, 0da7dd5, 3d6ff95. Candidato integrado pasó full staging PASS. Improvement Review: suite y QA de navegador PASS, Reviewer determinístico sin hallazgos (data/editorial/UX), preview remoto PASS; contenido estadístico y títulos normativos revisados en el candidato integrado.",
       "acceptance": [
         "Título mantiene tipo y número del acto principal.",
         "La norma antecedente aparece máximo una vez en el título.",
@@ -2078,16 +2078,20 @@
         "No truncamiento mecánico ni pérdida de sentido.",
         "Tests de regresión para IF/N°8760, IF/N°9994 y muestra normativa adicional.",
         "QA desktop/mobile + Reviewer PASS."
+      ],
+      "completed_at": "2026-09-27",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36364084776 — SHA b39c7a5a3704cfd1b10d882a9fd3a88ffe3a22c9: bootstrap, tests, build estadístico fail-closed, QA browser desktop/mobile, Reviewer (findings 0) y preview PASS."
       ]
     },
     {
       "id": "statistics_deep_analysis_tables_v1_2026_09_27",
-      "status": "in_progress",
+      "status": "validated",
       "priority": "critical",
       "owner": "Work+Data Analytics+Reviewer",
       "depends_on": [],
       "blocked_by": [],
-      "progress": "Ejecución real iniciada 2026-09-27. Nuevo build estadístico reproducible integrado a QA: GES y Series se extraen desde XLSX oficiales con fail-closed; Financieras y Boletín IP construyen hallazgos y tablas ejecutivas desde cifras oficiales; snapshot consume overrides antes de value ladder. Commits bb0baab, d8a02f1, a66154f, 3d6ff95. Pendiente HEAD integrado full PASS.",
+      "progress": "Ejecución real iniciada 2026-09-27. Nuevo build estadístico reproducible integrado a QA: GES y Series se extraen desde XLSX oficiales con fail-closed; Financieras y Boletín IP construyen hallazgos y tablas ejecutivas desde cifras oficiales; snapshot consume overrides antes de value ladder. Commits bb0baab, d8a02f1, a66154f, 3d6ff95. Candidato integrado pasó full staging PASS. Improvement Review: suite y QA de navegador PASS, Reviewer determinístico sin hallazgos (data/editorial/UX), preview remoto PASS; contenido estadístico y títulos normativos revisados en el candidato integrado.",
       "acceptance": [
         "Ninguna de las cuatro cards puede decir solo que se publicó un archivo o que aún no existe insight.",
         "Extraer 1–3 hallazgos materiales reproducibles por publicación.",
@@ -2098,6 +2102,10 @@
         "Evidencia de hoja/celda/fórmula o equivalente para cada insight.",
         "No publicar comparación si el esquema no valida; fallar cerrado.",
         "QA desktop/mobile + Reviewer PASS."
+      ],
+      "completed_at": "2026-09-27",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36364084776 — SHA b39c7a5a3704cfd1b10d882a9fd3a88ffe3a22c9: bootstrap, tests, build estadístico fail-closed, QA browser desktop/mobile, Reviewer (findings 0) y preview PASS."
       ]
     },
     {

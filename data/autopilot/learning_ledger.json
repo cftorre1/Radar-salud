@@ -71,6 +71,23 @@
       ],
       "preventive_rule": "Before editing a runtime/output file, identify whether it is generated; fixes must land in the canonical source and generated outputs must be rebuilt rather than hand-maintained.",
       "status": "implemented_in_recovery_branch_pending_validation"
+    },
+    {
+      "id": "stale_pmo_browser_contract_2026_09_28",
+      "source": "Autopilot recovery",
+      "class": "repeated_failure_signature",
+      "finding": "La aserción browser del panel PMO buscaba texto fijo de una falla histórica; los fallos #541, #543 y #548 persistieron aunque el read model ya mostraba otro estado.",
+      "specific_fix": "Cambiar tests/browser/product.spec.cjs para cotejar cada descripción renderizada con pmo.open_failures del product report actual.",
+      "root_cause": "El contrato QA duplicaba contenido mutable del baseline en una cadena literal. El Reviewer previo verificaba datos, editorial y UX, pero no comprobaba vigencia semántica de selectores/aserciones de regresión.",
+      "preventive_controls": [
+        "browser_qa_assertion",
+        "reviewer_rule"
+      ],
+      "preventive_rule": "Cuando QA valida una interfaz basada en cola, PMO o reportes mutables, debe derivar las expectativas de la misma respuesta estructurada y comprobar todas las entradas actuales; evitar texto histórico fijo.",
+      "status": "validated_in_staging",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/36364084776 — SHA b39c7a5a3704cfd1b10d882a9fd3a88ffe3a22c9: tests, browser desktop/mobile, Reviewer sin hallazgos y preview PASS tras sustituir el literal histórico."
+      ]
     }
   ]
 }
