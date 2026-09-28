@@ -22,8 +22,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -e . pytest
-      - name: Fail loudly if executable work is stalled
-        run: python scripts/orchestrator_liveness.py --threshold-minutes 75
+      - name: Autopilot V1 liveness gate
+        run: python scripts/orchestrator_liveness.py --threshold-minutes 60
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
