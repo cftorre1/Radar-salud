@@ -2179,7 +2179,7 @@
     },
     {
       "id": "pele_work_activation_2026_09_27",
-      "status": "blocked",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Pele",
       "source": "Dirección",
@@ -2188,14 +2188,15 @@
         "autopilot_v1_2026_09_27"
       ],
       "blocked_by": [
-        "work_mode_activation",
-        "autonomous_write_lane_missing"
+        "autonomy_continuity_acceptance"
       ],
       "instructions": [
-        "Abrir Alicanto en Work y usar docs/PELE_WORK_CONTRACT.md como contrato maestro.",
-        "Conectar GitHub y permitir ejecución sobre staging/work branches dentro de los guardrails V1.",
-        "Consumir backlog, recuperar fallas, ejecutar Improvement Review y actualizar Pato/cola sin retransmisión humana.",
-        "Usar el ciclo horario ya habilitado como red de seguridad, no como sustituto de sesiones largas de Work."
+        "Use docs/PELE_WORK_CONTRACT.md as master contract and comply with Autonomy V1.1 no-idle/task-lease rules.",
+        "Consume approved backlog continuously while executable work exists.",
+        "Persist started_at, last_progress_at, current_subfront and next_action in queue/PMO.",
+        "On PASS immediately take the next executable subfront/task.",
+        "On FAIL attempt bounded recovery; if blocked, record evidence and switch to other independent work.",
+        "Do not consider activation validated until autonomy acceptance test passes."
       ],
       "constraints": [
         "No main/producción sin Dirección.",
@@ -2203,13 +2204,13 @@
         "No cerrar este blocker hasta observar al menos una ejecución real de Work con escritura/evidencia durable."
       ],
       "evidence_required": [
-        "Work run real",
-        "lectura del contrato PELE_WORK_CONTRACT",
-        "mutación autorizada o evidencia de ejecución útil",
-        "actualización durable de queue/PMO",
-        "reanudación sin intervención de Toba"
+        "autonomous task pickup without Toba prompt",
+        "durable GitHub mutation and queue/PMO heartbeat",
+        "real failure recovered or correctly bypassed without Toba prompt",
+        "automatic transition to next independent subfront/task",
+        "4h useful progress without owner restart/status prompt"
       ],
-      "progress": "CRITICAL AUTOPILOT GAP confirmed 2026-09-28: monitoring/condition-watch automations can observe but do not provide a durable GitHub write-capable reasoning lane. This recreates manual follow-up: work resumes only when Toba reopens an interactive chat. Autopilot is not considered operationally complete until a real ChatGPT Work run reads PELE_WORK_CONTRACT, writes evidence/commits, survives a failure, recovers or switches tasks, and continues without Toba prompting."
+      "progress": "Work lane is now demonstrably active: Pelé has produced durable commits, completed epidemiology, advanced provider coverage and handled real QA cycles. Activation is no longer blocked by work_mode_activation. Remaining gap is continuity autonomy: Pelé has still gone stale after failures until owner/chat intervention. V1.1 acceptance now requires autonomous pickup → failure recovery → next-task transition → 4h useful progress without owner restart."
     },
     {
       "id": "normative_editorial_v2_2026_09_27",
@@ -2581,6 +2582,39 @@
         "stale_detected_at": "2026-09-29",
         "stop_condition": "No cerrar el frente hasta completar los cinco subfrentes o registrar un blocker humano real."
       }
+    },
+    {
+      "id": "autonomy_continuity_hardening_v1_1_2026_09_29",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Pele + Paolo + Pato",
+      "source": "Dirección",
+      "objective": "Cerrar la brecha entre ejecución puntual y autonomía continua: no-idle, task leases/heartbeats, recuperación automática y validación objetiva de continuidad.",
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "instructions": [
+        "Aplicar config/autopilot_v1_policy.json V1.1 y docs/PELE_WORK_CONTRACT.md.",
+        "Reducir stale threshold de trabajo ejecutable a 30 minutos.",
+        "Registrar started_at/last_progress_at/current_subfront/next_action al tomar y avanzar tareas.",
+        "Tratar preguntas manuales de Toba para reiniciar trabajo como autonomy defects.",
+        "Ejecutar acceptance window de 4h con pickup→failure/recovery→next task sin restart humano.",
+        "Actualizar Pato con owner_followup_count, stale_recoveries, autonomous_transitions y useful_work_window."
+      ],
+      "constraints": [
+        "No inventar actividad para cumplir heartbeat.",
+        "No mantener Work ocupado con tareas sin valor sólo para consumir cuota.",
+        "No saltarse QA/Reviewer ni guardrails para mantener actividad."
+      ],
+      "evidence_required": [
+        "4h acceptance window",
+        "al menos una recuperación real autónoma",
+        "al menos una transición automática entre subfrentes/tareas",
+        "owner_followup_count=0 durante la ventana",
+        "queue/PMO durable heartbeat evidence"
+      ],
+      "approved_at": "2026-09-29",
+      "progress": "Aprobado e incorporado como condición de autonomía operativa."
     }
   ],
   "execution_policy": {
