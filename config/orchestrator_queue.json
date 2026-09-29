@@ -2703,8 +2703,10 @@
         "CORREGIR Diario Oficial: source_health registra 2 publicaciones el 29-09-2026 pero dashboard muestra 'aún no visible'. Reconciliar definición y cálculo de 'Última seleccionada' con señales efectivamente publicadas/seleccionadas.",
         "UNIFICAR display de Superintendencia de Salud en dashboard: una sola entidad visible 'Superintendencia de Salud' con subcanales Estadísticas, Normativa y Fiscalización. Mantener slugs/parsers separados internamente.",
         "CORREGIR nombres oficiales completos en UI: Departamento de Estadísticas e Información de Salud (DEIS), Instituto de Salud Pública / ANAMED, Fondo Nacional de Salud (FONASA), Superintendencia de Salud.",
-        "REVISAR sanciones Isapre: el pulso actual usa ventana de 30 días, no 90. La última sanción Isapre oficial visible es 09-07-2026, por lo que cae fuera del pulso de 30 días pero dentro del backfill de 90 días. Mantener pulso 30d, pero mostrar contexto/histórico 90d o una señal histórica accesible para que no parezca ausencia total. Excluir ISALUD de contenido reputacional según regla de negocio vigente, pero no otras Isapres.",
-        "Agregar test de consistencia dashboard: last_detected, last_selected/published y estado técnico deben provenir de una semántica única y no contradecir source_health."
+        "REVISAR sanciones Isapre: eliminar la ventana fija de 30 días. El pulso debe recalcularse con el período de revisión activo (p. ej. 14/30/90 días; y síntesis histórica separada para Todo el histórico). Publicar sanciones de TODAS las Isapres, incluida ISALUD, aplicando criterios editoriales idénticos y trazables.",
+        "Agregar test de consistencia dashboard: last_detected, last_selected/published y estado técnico deben provenir de una semántica única y no contradecir source_health.",
+        "Implementar pulso de sanciones dinámico según período activo de revisión y tests para 14/30/90 días + histórico.",
+        "Eliminar cualquier exclusión específica de ISALUD en sanciones/juicios/fallos; cobertura de todas las Isapres bajo criterios equivalentes."
       ],
       "constraints": [
         "No sacrificar calidad/evidencia por velocidad.",
@@ -2720,14 +2722,16 @@
         "Media Early Signal Gate con fuentes evaluadas",
         "QA desktop/mobile + Reviewer + Improvement Review",
         "coverage dashboard actualizado",
-        "heartbeats y autonomous transitions registradas"
+        "heartbeats y autonomous transitions registradas",
+        "pulso sanciones recalculado por período activo",
+        "test que confirme inclusión simétrica de ISALUD y demás Isapres"
       ],
       "started_at": "2026-09-29T20:44:00Z",
       "last_progress_at": "2026-09-29T20:44:00Z",
       "current_subfront": "fonasa_grd_financing",
       "next_action": "Ejecutar Fonasa/GRD y continuar automáticamente.",
       "approved_at": "2026-09-29",
-      "progress": "Dirección detecta gaps visibles en Sources dashboard. Prioridad inmediata junto a fuentes: corregir semántica/estado de Fonasa-ISP-DEIS, reconciliar Diario Oficial, unificar Superintendencia de Salud y exponer correctamente sanciones Isapre 30d vs histórico 90d."
+      "progress": "Dirección cambia regla: pulso sanciones dinámico según período de revisión y cobertura completa de todas las Isapres, incluida ISALUD. Mantener esto dentro del cierre beta de hoy."
     }
   ],
   "execution_policy": {
