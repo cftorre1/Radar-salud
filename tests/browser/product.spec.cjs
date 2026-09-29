@@ -76,7 +76,8 @@ test('Inbox shows every unread signal, supports direct read and persists it',asy
  const initial=await page.locator('.briefitem').count();
  const freeValue=await (await page.request.get('/data/free_value.json')).json();
  const radar=await (await page.request.get('/data/radar_today.json')).json();
- const dedupedInsightBase=freeValue.weekly_insight&&radar.signals.some(s=>s.source_url===freeValue.weekly_insight.source_url)?1:0;
+ const weeklyRendered=await page.locator('article[data-special].weekly:not(.read)').count()>0;
+ const dedupedInsightBase=weeklyRendered&&freeValue.weekly_insight&&radar.signals.some(s=>s.source_url===freeValue.weekly_insight.source_url)?1:0;
  const expected=await page.locator('article[data-card]:not(.read)').count()+await page.locator('article[data-special]:not(.read)').count()-dedupedInsightBase;
  expect(initial).toBe(expected);expect(initial).toBeGreaterThan(4);
  const first=await page.locator('.briefitem').first().getAttribute('data-brief');
@@ -140,7 +141,9 @@ test('operations dashboard loads without inventing measurements',async({page})=>
 });
 test('Home V2 places unread Global and Insight in the brief, then retains subdued feed cards',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
- const source=await page.request.get('/data/free_value.json'),data=await source.json(),hasWeekly=Boolean(data.weekly_insight);
+ const source=await page.request.get('/data/free_value.json'),data=await source.json();
+ const ageDays=raw=>{if(!raw)return Infinity;const d=/^\\d{4}-\\d{2}-\\d{2}$/.test(raw)?new Date(raw+'T00:00:00Z'):new Date(raw);const now=new Date(),today=Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate());return Math.max(0,Math.floor((today-d.getTime())/86400000))};
+ const hasWeekly=Boolean(data.weekly_insight)&&ageDays(data.weekly_insight.event_date)<=14;
  const global=page.locator('.signal.special.global'),weekly=page.locator('.signal.special.weekly');
  await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(hasWeekly?1:0);
  await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(hasWeekly?1:0);
