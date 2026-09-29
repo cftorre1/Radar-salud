@@ -2188,7 +2188,7 @@
         "autopilot_v1_2026_09_27"
       ],
       "blocked_by": [
-        "autonomy_continuity_acceptance"
+        "autonomy_continuity_acceptance_failed"
       ],
       "instructions": [
         "Use docs/PELE_WORK_CONTRACT.md as master contract and comply with Autonomy V1.1 no-idle/task-lease rules.",
@@ -2210,7 +2210,7 @@
         "automatic transition to next independent subfront/task",
         "4h useful progress without owner restart/status prompt"
       ],
-      "progress": "Work lane is now demonstrably active: Pelé has produced durable commits, completed epidemiology, advanced provider coverage and handled real QA cycles. Activation is no longer blocked by work_mode_activation. Remaining gap is continuity autonomy: Pelé has still gone stale after failures until owner/chat intervention. V1.1 acceptance now requires autonomous pickup → failure recovery → next-task transition → 4h useful progress without owner restart."
+      "progress": "Autonomy V1.1 acceptance FAILED on 2026-09-29: after policy/contract integration at staging a09fde9, no further Pelé progress/heartbeat occurred for >30 minutes while executable critical backlog remained. Toba had to ask for status again, which counts as owner_followup defect. Recovery required: resume coverage task immediately, persist task lease/heartbeat, and complete a new 4h acceptance window with owner_followup_count=0."
     },
     {
       "id": "normative_editorial_v2_2026_09_27",
@@ -2503,7 +2503,7 @@
         "al menos un caso early-signal trazable con lifecycle media_reported→primary/official cuando exista"
       ],
       "approved_at": "2026-09-28",
-      "progress": "QA de recuperación Home V2 cerrado: runs #632 y #633 PASS. Próximo tramo: Fonasa/GRD + Prestadores Data + nuevas fuentes. Dirección agrega estrategia de medios como EARLY SIGNALS: El Mercurio/Economía y Negocios, Pulso-La Tercera y DF deben detectar señales incipientes antes de fuentes oficiales, con gate y madurez de evidencia separados.",
+      "progress": "Autonomy recovery required: coverage task remains executable, but no Pelé heartbeat/progress followed Autopilot V1.1 activation for >30 minutes. Resume immediately at next pending subfront (Fonasa/GRD preferred), persist lease/heartbeat, then continue Prestadores Data and Early Signals without owner restart.",
       "execution_subfronts": [
         {
           "id": "epidemiology_visible_material_pulse",
@@ -2585,7 +2585,7 @@
     },
     {
       "id": "autonomy_continuity_hardening_v1_1_2026_09_29",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Pele + Paolo + Pato",
       "source": "Dirección",
@@ -2614,7 +2614,20 @@
         "queue/PMO durable heartbeat evidence"
       ],
       "approved_at": "2026-09-29",
-      "progress": "Aprobado e incorporado como condición de autonomía operativa."
+      "progress": "Acceptance attempt #1 FAILED: no durable heartbeat or autonomous pickup after V1.1 integration; owner follow-up required. Must start recovery now, set task lease/heartbeat, resume coverage_balance_sources_epidemiology_v1_2026_09_28 and prove 4h continuous useful work with owner_followup_count=0.",
+      "recovery": {
+        "failure_signature": "autonomy_v1_1_no_pickup_after_policy_activation",
+        "detected_at": "2026-09-29",
+        "failed_condition": "Executable critical backlog existed but no durable Pelé progress for >30 minutes after V1.1 activation.",
+        "owner_followup_count": 1,
+        "required_actions": [
+          "Pelé must resume coverage_balance_sources_epidemiology_v1_2026_09_28 immediately.",
+          "Persist started_at,last_progress_at,current_subfront,next_action before substantive work.",
+          "Advance Fonasa/GRD or another independent approved subfront if one lane blocks.",
+          "Write heartbeat after each material progress event.",
+          "Restart 4h autonomy acceptance clock only after durable autonomous pickup."
+        ]
+      }
     }
   ],
   "execution_policy": {
