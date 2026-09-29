@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "name": "Alicanto Autopilot V1.0",
+  "version": "1.1.0",
+  "name": "Alicanto Autopilot V1.1",
   "team": {
     "Pedro": "Partner / Dirección: strategy, product decisions, priorities and escalation resolution.",
     "Paolo": "Operational orchestrator: decomposes approved work, coordinates execution, gates and recovery.",
@@ -13,7 +13,9 @@
     "Every failed cycle must end in recovery, alternate work, or explicit escalation.",
     "Continuous improvement is part of the loop, not a separate project.",
     "A green test suite is necessary but not sufficient: coherence, clarity, strategic fit, editorial quality and UX must also be reviewed.",
-    "main and production require explicit Dirección authorization until policy changes."
+    "main and production require explicit Dirección authorization until policy changes.",
+    "No-idle rule: while approved executable backlog exists, Pelé must keep working; idle is allowed only when no executable work remains or a policy-required human blocker blocks all remaining work.",
+    "Owner follow-up is a failure signal: Toba should not need to ask for status to restart execution."
   ],
   "execution_loop": [
     "read_state",
@@ -30,7 +32,7 @@
   ],
   "recovery": {
     "max_repair_attempts_per_failure_signature": 3,
-    "stale_executable_work_minutes": 60,
+    "stale_executable_work_minutes": 30,
     "on_failure": [
       "classify_failure",
       "attempt_safe_repair",
@@ -90,5 +92,43 @@
       "new backlog items for discovered improvements",
       "explicit escalation artifact only when policy requires"
     ]
+  },
+  "execution_governance": {
+    "task_lease": {
+      "required": true,
+      "on_pickup": "Set task status=in_progress, owner=Pele, started_at/last_progress_at and current_subfront before substantive work.",
+      "heartbeat": "Update durable queue/PMO evidence after every completed subfront, meaningful recovery attempt, or material state change.",
+      "stale_minutes": 30,
+      "stale_behavior": "Treat as recovery_required, attempt resume immediately, then switch to the next independent executable task if recovery cannot proceed."
+    },
+    "continuation": {
+      "after_pass": "Immediately select and begin the next executable approved subfront/task.",
+      "after_failure": "Diagnose and repair within bounded attempts; if still blocked, record exact blocker and continue another independent task.",
+      "after_human_blocker": "Continue all other independent approved work.",
+      "stop_only_when": [
+        "no executable approved backlog remains",
+        "all remaining work requires human decision under escalation policy",
+        "platform/tool access prevents any durable execution lane"
+      ]
+    },
+    "utilization": {
+      "goal": "Use available Work/agent capacity productively while critical/high approved backlog exists; do not preserve quota by staying idle.",
+      "anti_pattern": "Stopping after one successful subfront, one failed QA run, or one queue update when more executable work exists."
+    }
+  },
+  "autonomy_acceptance": {
+    "status": "required",
+    "pass_when": [
+      "Pelé picks up approved work and writes durable state without Toba prompting.",
+      "Pelé encounters at least one real failure and either repairs it or marks it blocked with evidence without Toba prompting.",
+      "Pelé transitions to a next independent subfront/task after PASS or blocker without Toba prompting.",
+      "At least 4 consecutive hours of useful progress occur without owner follow-up being needed to restart work."
+    ],
+    "fail_when": [
+      "execution resumes only after Toba asks for status",
+      "an executable task remains stale for more than 30 minutes without recovery or alternate-work transition",
+      "a successful subfront ends the Work run while executable approved backlog remains"
+    ],
+    "owner_kpi": "Target owner involvement 30–60 minutes/week; count manual status/restart prompts as autonomy defects."
   }
 }
