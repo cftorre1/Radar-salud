@@ -2210,7 +2210,9 @@
         "automatic transition to next independent subfront/task",
         "4h useful progress without owner restart/status prompt"
       ],
-      "progress": "Autonomy V1.1 acceptance FAILED on 2026-09-29: after policy/contract integration at staging a09fde9, no further Pelé progress/heartbeat occurred for >30 minutes while executable critical backlog remained. Toba had to ask for status again, which counts as owner_followup defect. Recovery required: resume coverage task immediately, persist task lease/heartbeat, and complete a new 4h acceptance window with owner_followup_count=0."
+      "progress": "Dirección ordena ejecución continua hoy para completar todas las fuentes antes del beta de mañana. Pelé debe usar el frente de fuentes como acceptance run de autonomía: pickup, heartbeat, recuperación y transición entre subfrentes sin owner restart.",
+      "last_progress_at": "2026-09-29T20:44:00Z",
+      "next_action": "Mantener Work ejecutando backlog crítico hasta cerrar coverage_balance_sources_epidemiology_v1_2026_09_28; no detenerse tras PASS/FAIL si existe otro subfrente ejecutable."
     },
     {
       "id": "normative_editorial_v2_2026_09_27",
@@ -2503,7 +2505,7 @@
         "al menos un caso early-signal trazable con lifecycle media_reported→primary/official cuando exista"
       ],
       "approved_at": "2026-09-28",
-      "progress": "Autonomy recovery required: coverage task remains executable, but no Pelé heartbeat/progress followed Autopilot V1.1 activation for >30 minutes. Resume immediately at next pending subfront (Fonasa/GRD preferred), persist lease/heartbeat, then continue Prestadores Data and Early Signals without owner restart.",
+      "progress": "Dirección exige cierre hoy para beta de mañana. Ejecución continua obligatoria: Fonasa/GRD → Prestadores Data → redes adicionales → mutualidades → Early Signals → revisión integrada. No esperar instrucciones humanas entre subfrentes; actualizar heartbeat durable después de cada cambio material.",
       "execution_subfronts": [
         {
           "id": "epidemiology_visible_material_pulse",
@@ -2581,7 +2583,49 @@
         ],
         "stale_detected_at": "2026-09-29",
         "stop_condition": "No cerrar el frente hasta completar los cinco subfrentes o registrar un blocker humano real."
-      }
+      },
+      "current_subfront": "fonasa_grd_financing",
+      "started_at": "2026-09-29T20:44:00Z",
+      "last_progress_at": "2026-09-29T20:44:00Z",
+      "next_action": "Ejecutar Fonasa/GRD ahora; al cerrar QA/Reviewer, continuar automáticamente Prestadores Data → redes adicionales → mutualidades → Early Signals → revisión integrada.",
+      "execution_plan_today": [
+        {
+          "order": 1,
+          "id": "fonasa_grd_financing",
+          "status": "in_progress",
+          "scope": "Cobertura oficial indirecta Fonasa + GRD/financiamiento hospitalario con MINSAL/Subsecretaría de Redes/DIPRES/FONASA accesible, incluyendo compra estratégica y público-privado."
+        },
+        {
+          "order": 2,
+          "id": "prestadores_data",
+          "status": "pending",
+          "scope": "Boletín IP/Intendencia de Prestadores: acreditación, solicitudes, reclamos, fiscalización, sanciones y señales de capacidad/calidad."
+        },
+        {
+          "order": 3,
+          "id": "provider_network_expansion",
+          "status": "pending",
+          "scope": "Dávila, Clínica Las Condes, Clínicas Achs Salud, RedSalud, Andes Salud, Interclínicas, más candidatas relevantes que pasen Source Quality Gate."
+        },
+        {
+          "order": 4,
+          "id": "mutuals_expansion",
+          "status": "pending",
+          "scope": "ACHS Seguro Laboral, Mutual de Seguridad CChC e IST; integrar normativa SUSESO, accidentabilidad, enfermedad profesional, salud mental laboral y capacidad asistencial."
+        },
+        {
+          "order": 5,
+          "id": "media_early_signals",
+          "status": "pending",
+          "scope": "El Mercurio/Economía y Negocios, Pulso-La Tercera, Diario Financiero y Emol si aporta señal diferenciada; lifecycle media_reported→company_confirmed→official_confirmed."
+        },
+        {
+          "order": 6,
+          "id": "integrated_review",
+          "status": "pending",
+          "scope": "Backfill/auditoría, QA desktop/mobile, Reviewer, Improvement Review, coverage dashboard y learning rules persistidas."
+        }
+      ]
     },
     {
       "id": "autonomy_continuity_hardening_v1_1_2026_09_29",
@@ -2614,7 +2658,7 @@
         "queue/PMO durable heartbeat evidence"
       ],
       "approved_at": "2026-09-29",
-      "progress": "Acceptance attempt #1 FAILED: no durable heartbeat or autonomous pickup after V1.1 integration; owner follow-up required. Must start recovery now, set task lease/heartbeat, resume coverage_balance_sources_epidemiology_v1_2026_09_28 and prove 4h continuous useful work with owner_followup_count=0.",
+      "progress": "Hardening intercalado con incorporación de fuentes: cada subfrente debe producir heartbeat/lease y transición autónoma al siguiente. El objetivo de hoy es completar fuentes y demostrar continuidad sin pausas entre commits.",
       "recovery": {
         "failure_signature": "autonomy_v1_1_no_pickup_after_policy_activation",
         "detected_at": "2026-09-29",
@@ -2627,7 +2671,56 @@
           "Write heartbeat after each material progress event.",
           "Restart 4h autonomy acceptance clock only after durable autonomous pickup."
         ]
+      },
+      "last_progress_at": "2026-09-29T20:44:00Z",
+      "next_action": "Aplicar task lease/heartbeat durante cada subfrente de coverage; no interrumpir desarrollo por hardening. Registrar transiciones, stalls y recovery en paralelo.",
+      "metrics": {
+        "owner_restart_prompts_today": 1,
+        "target_stale_minutes": 30,
+        "acceptance_window_hours": 4
       }
+    },
+    {
+      "id": "beta_sources_completion_today_2026_09_29",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Pele + Paolo + Pato",
+      "source": "Dirección",
+      "objective": "Cerrar hoy todas las fuentes y capacidades de cobertura acordadas para disponer de beta validable mañana, endureciendo autonomía en paralelo sin frenar ejecución.",
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "instructions": [
+        "Usar coverage_balance_sources_epidemiology_v1_2026_09_28 como backlog maestro de fuentes.",
+        "Ejecutar en orden: Fonasa/GRD, Prestadores Data, expansión de redes, mutualidades, Media Early Signals, integración final.",
+        "No esperar aprobación humana entre subfrentes salvo gasto/credenciales/legal/privacidad/producción.",
+        "Después de cada subfrente: commit real, QA relevante, heartbeat queue/PMO y pickup inmediato del siguiente.",
+        "Si un subfrente se bloquea externamente, registrar evidencia y seguir con otro ejecutable.",
+        "Aplicar Autopilot V1.1 no-idle y acceptance rules durante toda la ejecución.",
+        "No publicar producción por esta tarea; dejar staging listo y validado para beta."
+      ],
+      "constraints": [
+        "No sacrificar calidad/evidencia por velocidad.",
+        "No activar fuentes con ruido alto sólo para completar cobertura.",
+        "No tocar secretos, gastos, privacidad, auth, pagos ni producción.",
+        "No dejar trabajo ejecutable idle >30 minutos."
+      ],
+      "evidence_required": [
+        "Fonasa/GRD implementado o blocker externo exacto",
+        "Prestadores Data validado",
+        "redes prestadoras evaluadas/integradas según gate",
+        "mutualidades integradas/evaluadas",
+        "Media Early Signal Gate con fuentes evaluadas",
+        "QA desktop/mobile + Reviewer + Improvement Review",
+        "coverage dashboard actualizado",
+        "heartbeats y autonomous transitions registradas"
+      ],
+      "started_at": "2026-09-29T20:44:00Z",
+      "last_progress_at": "2026-09-29T20:44:00Z",
+      "current_subfront": "fonasa_grd_financing",
+      "next_action": "Ejecutar Fonasa/GRD y continuar automáticamente.",
+      "approved_at": "2026-09-29",
+      "progress": "Kickoff durable registrado por Dirección; cierre hoy."
     }
   ],
   "execution_policy": {
