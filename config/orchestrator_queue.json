@@ -2459,7 +2459,14 @@
         "Crear coverage dashboard por segmento: Isapres, Prestadores, Fonasa/Sistema Público y Transversal. Medir fuentes activas, señales detectadas, seleccionadas, publicadas y edad de la última señal; usarlo como diagnóstico, no como cuota editorial.",
         "No publicar una fuente nueva por llenar un hueco. Aplicar Source Quality Gate: actualidad, estabilidad técnica, trazabilidad, densidad de señal de negocio y bajo ruido.",
         "Para cada nueva fuente, hacer backfill 90 días, auditoría de valor, fixture y test de parser/fecha/URL/canonical, QA editorial y Reviewer antes de dejarla LIVE.",
-        "Normative V2.1 y Statistics V2 continúan en paralelo; este frente no debe esperar MailerLite, privacidad ni backend de sugerencias."
+        "Normative V2.1 y Statistics V2 continúan en paralelo; este frente no debe esperar MailerLite, privacidad ni backend de sugerencias.",
+        "Ampliar lista de prestadores/redes a evaluar e integrar con Source Quality Gate: Clínica Dávila, Clínica Las Condes, Clínicas Achs Salud, RedSalud, Andes Salud, Interclínicas; además evaluar otras redes relevantes con presencia nacional/regional y señal de negocio material, evitando duplicar marcas ya cubiertas por holdings.",
+        "Separar claramente ACHS como prestador (Clínicas Achs Salud) de ACHS Seguro Laboral como mutualidad/organismo administrador; no mezclar señal comercial asistencial con seguridad laboral.",
+        "Agregar mutualidades/seguro laboral como frente específico: ACHS Seguro Laboral, Mutual de Seguridad CChC e IST. Priorizar normativa SUSESO, fiscalización, accidentabilidad, enfermedades profesionales, salud mental laboral, prestaciones médicas, inversiones/capacidad asistencial y cambios estratégicos.",
+        "Agregar La Tercera como portal de noticias, con filtro estricto de salud/negocio/regulación para evitar ruido político/general. Tratarla como fuente secundaria complementaria, nunca por sobre fuente primaria cuando exista.",
+        "Crear subfrente específico GRD/financiamiento hospitalario y compra estratégica: FONASA GRD, MINSAL/Subsecretaría de Redes, DIPRES/Ley de Presupuestos e informes de ejecución. Capturar presupuesto, cobertura hospitalaria, producción valorizada, precio base, complejidad, convenios, compras a privados, listas de espera y mecanismos de pago.",
+        "Priorizar señales GRD que conecten financiamiento, producción, complejidad, eficiencia, redes público-privadas y oportunidades/riesgos para prestadores. No publicar explicaciones introductorias si no hay cambio material.",
+        "Incluir como potenciales fuentes complementarias para Prestadores, sujeto a auditoría de 90 días y materialidad: Clínica Santa María, Clínica Universidad de los Andes y Hospital Clínico UC/Marcoleta si aportan señal estratégica diferenciada. No activar automáticamente."
       ],
       "constraints": [
         "Fuente primaria > secundaria cuando ambas estén disponibles.",
@@ -2477,10 +2484,14 @@
         "mejora del Boletín IP para Prestadores",
         "coverage dashboard por segmento",
         "QA desktop/mobile + Reviewer",
-        "learning/coverage rules persistidas"
+        "learning/coverage rules persistidas",
+        "evaluación Dávila/Clínica Las Condes/Clínicas Achs Salud/RedSalud/Andes Salud/Interclínicas y otras redes relevantes",
+        "mutualidades ACHS Seguro Laboral/Mutual de Seguridad/IST con source health y filtro editorial",
+        "La Tercera evaluada e integrada si supera Source Quality Gate",
+        "frente GRD/financiamiento hospitalario con fuentes FONASA/MINSAL/DIPRES y al menos una señal/tabla útil"
       ],
       "approved_at": "2026-09-28",
-      "progress": "RECOVERY REQUIRED 2026-09-29. Subfrente epidemiología validado. Subfrente Prestadores implementado, pero Actions #629 falló en QA browser por regresiones de Home V2/Weekly Insight; no hubo nuevos commits/runs durante varias horas. Reanudar sin intervención humana: diagnosticar #629, corregir tests/estado sin degradar producto, obtener QA+Reviewer+preview PASS y continuar inmediatamente con Fonasa oficial indirecto, Prestadores Data/dashboard e integrated review.",
+      "progress": "Dirección amplía alcance 2026-09-29: sumar redes prestadoras Dávila, Clínica Las Condes, Clínicas Achs Salud, RedSalud, Andes Salud, Interclínicas y otras relevantes; mutualidades ACHS Seguro Laboral, Mutual de Seguridad e IST; La Tercera; y un frente GRD/financiamiento hospitalario de alta prioridad.",
       "execution_subfronts": [
         {
           "id": "epidemiology_visible_material_pulse",
