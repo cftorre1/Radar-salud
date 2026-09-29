@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-09-28",
+  "updated_at": "2026-09-29",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -2480,7 +2480,7 @@
         "learning/coverage rules persistidas"
       ],
       "approved_at": "2026-09-28",
-      "progress": "Subfrente 1/5 validado en staging (Actions #627 PASS). Subfrente 2/5 implementado y PASS local: INDISA oficial con validación de URL/título/fecha/cuerpo y auditoría de materialidad; source quality gate mantiene sus hallazgos en BACKFILL hasta cerrar el inventario de 90 días. Clínicas de Chile, Alemana y UC CHRISTUS evaluadas y no activadas por evidencia de baja densidad o fecha insuficiente. Coverage dashboard por 4 segmentos implementado. QA local: 249 Python, 39 Node, 46 browser desktop/mobile y 2 assertions focalizadas; Reviewer determinístico PASS sin findings. Pendiente Actions staging para validar este subfrente; después sigo con cobertura indirecta oficial de Fonasa. El subfrente 2 conserva BACKFILL hasta la auditoría de fuente; no se habilita LIVE anticipadamente.",
+      "progress": "RECOVERY REQUIRED 2026-09-29. Subfrente epidemiología validado. Subfrente Prestadores implementado, pero Actions #629 falló en QA browser por regresiones de Home V2/Weekly Insight; no hubo nuevos commits/runs durante varias horas. Reanudar sin intervención humana: diagnosticar #629, corregir tests/estado sin degradar producto, obtener QA+Reviewer+preview PASS y continuar inmediatamente con Fonasa oficial indirecto, Prestadores Data/dashboard e integrated review.",
       "execution_subfronts": [
         {
           "id": "epidemiology_visible_material_pulse",
@@ -2539,7 +2539,26 @@
           "status": "pending",
           "scope": "QA/Reviewer/Improvement Review integrada, learning rules persistidas y cierre de evidencia."
         }
-      ]
+      ],
+      "recovery": {
+        "failure_signature": "coverage_provider_home_v2_snapshot_regression",
+        "failed_run": "https://github.com/cftorre1/Radar-salud/actions/runs/36501598992",
+        "symptoms": [
+          "Inbox unread count mismatch after new coverage content changed visible signal set.",
+          "Home V2 expected Weekly Insight card, but current free_value state has no visible weekly special in browser.",
+          "42/46 browser tests PASS; base tests PASS; Reviewer/preview skipped only because qa/staging failed."
+        ],
+        "instructions": [
+          "No revertir nuevas señales útiles sólo para recuperar tests.",
+          "Reconciliar tests con el contrato vigente de Weekly Insight fail-closed: si weekly_insight está ausente/oculto, browser no debe exigir card.",
+          "Recalcular expectativa de unread/brief con la misma lógica productiva usada por UI, evitando conteos frágiles por snapshot.",
+          "Correr QA desktop/mobile + Reviewer + preview sobre el mismo SHA.",
+          "Al quedar verde, cerrar subfrente Prestadores y pasar inmediatamente a Fonasa oficial indirecto sin esperar a Toba.",
+          "Después continuar Prestadores Data/dashboard e integrated review; no detenerse por MailerLite/backend/email."
+        ],
+        "stale_detected_at": "2026-09-29",
+        "stop_condition": "No cerrar el frente hasta completar los cinco subfrentes o registrar un blocker humano real."
+      }
     }
   ],
   "execution_policy": {
