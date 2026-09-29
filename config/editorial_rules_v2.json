@@ -100,6 +100,14 @@
     "statistical_value_ladder": {
       "required": true,
       "rule": "Toda publicación estadística material debe permanecer visible en Alicanto y publicarse en el mayor nivel de valor soportado por la evidencia: (1) insight conectado con períodos/señales/noticias/normativa; (2) análisis profundo del documento; (3) hallazgo o dato central; (4) ficha útil de publicación con contenido, período/dimensiones y utilidad potencial. Nunca reducirla a 'se publicó' si puede describirse mejor, y nunca ocultarla solo por falta de parser."
+    },
+    "sanctions_period_alignment": {
+      "required": true,
+      "rule": "Los pulsos de sanciones deben alinearse con el período de revisión activo del usuario. Para ventanas temporales explícitas (por ejemplo 14, 30 o 90 días), recalcular conteos, actores, montos y hallazgos con esa misma ventana. En 'Todo el histórico', mostrar una síntesis histórica separada y no reutilizar un pulso fijo de 30 días."
+    },
+    "equal_isapre_coverage": {
+      "required": true,
+      "rule": "Aplicar los mismos criterios editoriales, de fiscalización y publicación a todas las Isapres. No excluir ISALUD ni ninguna otra Isapre por identidad institucional o reputacional. Sólo pueden excluirse señales por reglas generales de evidencia, materialidad, privacidad, legalidad o calidad de fuente aplicables por igual a todos los actores."
     }
   },
   "expert_review_checklist": {
@@ -124,6 +132,11 @@
     "materiality": [
       "¿La señal corresponde a un cambio con alcance material para el sector o es un acto individual/rutinario que debe permanecer en histórico?",
       "¿Una acreditación individual de prestador cambia capacidad, competencia, acceso o reglas del sistema de manera suficiente para justificar portada?"
+    ],
+    "fiscalizacion": [
+      "¿El período del pulso coincide con el período de revisión activo mostrado al usuario?",
+      "¿Se aplicaron criterios equivalentes a todas las Isapres, sin exclusiones por identidad institucional?",
+      "¿Los conteos, montos y actores del pulso pueden reconciliarse con las resoluciones oficiales incluidas en la misma ventana?"
     ]
   },
   "weekly_insight_pipeline_v2": {
