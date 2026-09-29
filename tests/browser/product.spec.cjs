@@ -108,6 +108,10 @@ test('Inbox shows every unread signal, supports direct read and persists it',asy
 test('operations dashboard loads without inventing measurements',async({page})=>{
  await page.goto('/admin/product.html');await expect(page.locator('#status')).toContainText('Actualizado:');
  await expect(page.getByRole('heading',{name:'Control de producto'})).toBeVisible();
+ await expect(page.getByRole('table',{name:'Cobertura por segmento'})).toBeVisible();
+ await expect(page.locator('#coverageSegments tr')).toHaveCount(4);
+ await expect(page.locator('#coverageSegments')).toContainText('Prestadores');
+ await expect(page.locator('#coverageSegments')).toContainText('Fonasa / Sistema público');
  await expect(page.locator('#metrics')).toContainText('LIVE pending');
  await expect(page.locator('#usage')).toContainText('Costo USD: no disponible');
  await expect(page.locator('#featureUsage tr')).toHaveCount(12);

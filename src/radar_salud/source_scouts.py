@@ -145,6 +145,7 @@ class CorporateNewsroomScout:
         "bupa_chile":("Bupa Chile","https://www.bupa.cl/somos-bupa/sala-de-prensa",("www.bupa.cl","bupa.cl"),
                       r"/(?:somos-bupa/)?sala-de-prensa/[^/]+/?"),
         "pfizer_chile":("Pfizer Chile","https://www.pfizer.cl/news",("www.pfizer.cl","pfizer.cl"),r"/news/[^/]+/?"),
+        "indisa":("Clínica INDISA","https://www.indisa.cl/categoria-blog/novedades-indisa",("www.indisa.cl","indisa.cl"),r"/blog/[^/]+/?"),
     }
     SOURCE_TYPE="corporate"
     def __init__(self,slug):
@@ -152,7 +153,8 @@ class CorporateNewsroomScout:
         self.SOURCE_SLUG=slug
         self.SOURCE_NAME,self.PAGE,self.hosts,self.pattern=self.SOURCES[slug]
     def discover_from_html(self,html):
-        parser=(_BupaCards() if self.SOURCE_SLUG=="bupa_chile" else
+        parser=(_IndisaCards() if self.SOURCE_SLUG=="indisa" else
+                _BupaCards() if self.SOURCE_SLUG=="bupa_chile" else
                 _PfizerCards() if self.SOURCE_SLUG=="pfizer_chile" else _RedSaludCards())
         parser.feed(html);out=[];seen=set()
         for href,title in parser.links:
@@ -167,10 +169,61 @@ class CorporateNewsroomScout:
                 if not published:continue
             seen.add(url)
             out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                               event_date=published,metadata={"discovered_from":self.PAGE,"listing_date":published}))
+                               event_date=published,metadata={"discovered_from":self.PAGE,"listing_date":published,
+                                   **({"source_quality_gate":"pending_90_day_audit"} if self.SOURCE_SLUG=="indisa" else {})}))
         if not out:raise RuntimeError(f"{self.SOURCE_NAME} newsroom structure unrecognized")
         return out[:15]
-    def discover(self):return self.discover_from_html(fetch_html(self.PAGE))
+    def discover(self):
+        items=self.discover_from_html(fetch_html(self.PAGE))
+        if self.SOURCE_SLUG=="indisa":
+            from .public_source_pipeline import _IndisaArticle
+            verified=[]
+            for item in items:
+                try:
+                    parser=_IndisaArticle();parser.feed(fetch_html(item.url));parser.finish()
+                except Exception:
+                    continue
+                if not parser.title or (item.title.casefold() not in parser.title.casefold()
+                                        and parser.title.casefold() not in item.title.casefold()):
+                    continue
+                item.event_date=parser.event_date()
+                if not item.event_date:
+                    continue
+                item.metadata.update(listing_date=item.event_date)
+                verified.append(item)
+            if not verified:
+                raise RuntimeError("INDISA has no dated listing/detail pairs")
+            items=verified
+        return items
+
+
+class _IndisaCards(HTMLParser):
+    """Bind INDISA official blog links to their own headline, excluding menus."""
+    def __init__(self):
+        super().__init__();self.links=[];self.href=None;self.anchor_depth=0;self.heading_depth=0;self.parts=[];self.heading=[]
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs);lower=tag.lower()
+        if lower=="a" and not self.href:
+            href=attrs.get("href") or ""
+            if re.fullmatch(r"/blog/[^/]+/?",urlparse(href).path):
+                self.href=href;self.anchor_depth=1;self.parts=[];self.heading=[]
+        elif self.href:
+            if lower=="a":self.anchor_depth+=1
+            if lower in ("h2","h3","h4"):self.heading_depth+=1
+    def handle_data(self,data):
+        if self.href:
+            value=" ".join(data.split())
+            if value:self.parts.append(value)
+            if self.heading_depth and value:self.heading.append(value)
+    def handle_endtag(self,tag):
+        lower=tag.lower()
+        if self.href and lower in ("h2","h3","h4") and self.heading_depth:self.heading_depth-=1
+        elif self.href and lower=="a":
+            self.anchor_depth-=1
+            if self.anchor_depth<=0:
+                title=" ".join(self.heading).strip() or " ".join(self.parts).strip()
+                if title and self.href not in {x[0] for x in self.links}:self.links.append((self.href,title))
+                self.href=None;self.parts=[];self.heading=[];self.heading_depth=0
 
 
 class _BupaCards(HTMLParser):

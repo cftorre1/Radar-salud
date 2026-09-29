@@ -56,6 +56,7 @@ def main():
       ("deis","deis",DeisResourceScout().discover,process_deis),
       ("redsalud","redsalud",CorporateNewsroomScout("redsalud").discover,process_corporate_news),
       ("bupa_chile","bupa_chile",CorporateNewsroomScout("bupa_chile").discover,process_corporate_news),
+      ("indisa","indisa",CorporateNewsroomScout("indisa").discover,process_corporate_news),
       ("suseso","suseso",SusesoNormativeScout().discover,process_suseso),
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]

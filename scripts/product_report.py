@@ -42,6 +42,106 @@ STATISTICAL_PARSER_REGISTRY = {
     "ges": ("ges", "auge"),
 }
 
+COVERAGE_SEGMENTS = ("Isapres", "Prestadores", "Fonasa / Sistema público", "Transversal")
+_PROVIDER_SOURCES = {"redsalud", "bupa_chile", "indisa", "clinicas_de_chile"}
+_PUBLIC_SOURCES = {"minsal", "minsal_respiratory_pressure", "fonasa", "deis", "isp_anamed"}
+_INSURANCE_SOURCES = {"superintendencia", "superintendencia_salud", "superintendencia_normativa",
+                      "superintendencia_fiscalizacion"}
+
+
+def _source_segments(slug, cfg=None):
+    cfg = cfg or {}
+    result = set()
+    if slug in _INSURANCE_SOURCES or cfg.get("system_domain") == "HEALTH_INSURANCE":
+        result.add("Isapres")
+    if slug in _PROVIDER_SOURCES or cfg.get("system_domain") == "HEALTH_PROVIDERS":
+        result.add("Prestadores")
+    if slug in _PUBLIC_SOURCES or cfg.get("system_domain") == "PUBLIC_HEALTH":
+        result.add("Fonasa / Sistema público")
+    if slug in {"fonasa", "minsal", "deis"}:
+        result.add("Transversal")
+    if not result:
+        result.add("Transversal")
+    return result
+
+
+def _signal_segments(signal, fallback=()):
+    scopes = {str(x).casefold() for x in signal.get("scopes", []) if isinstance(x, str)}
+    result = set()
+    if any("isapre" in x or "asegur" in x for x in scopes):
+        result.add("Isapres")
+    if any("prestador" in x or "clínic" in x or "clinic" in x for x in scopes):
+        result.add("Prestadores")
+    if any("fonasa" in x or "salud pública" in x or "sistema público" in x for x in scopes):
+        result.add("Fonasa / Sistema público")
+    if not result:
+        result.update(fallback)
+    if len(result) > 1:
+        result.add("Transversal")
+    return result
+
+
+def coverage_by_segment(source_cfgs, source_health, queue_items, snapshot, *, measured, today=None):
+    """Explain segment coverage without balancing by quota or inventing zeroes."""
+    from datetime import date
+    today = today or datetime.now(timezone.utc).date()
+    config = {row.get("slug"): row for row in source_cfgs if isinstance(row, dict)}
+    if "superintendencia_salud" in config:
+        config.setdefault("superintendencia", config["superintendencia_salud"])
+    health_by_slug = dict(source_health or {})
+    if "superintendencia" not in health_by_slug and "superintendencia_stats" in health_by_slug:
+        health_by_slug["superintendencia"] = health_by_slug["superintendencia_stats"]
+    if "superintendencia" in health_by_slug:
+        health_by_slug.setdefault("superintendencia_salud", health_by_slug["superintendencia"])
+    registered = {name: set() for name in COVERAGE_SEGMENTS}
+    active = {name: set() for name in COVERAGE_SEGMENTS}
+    for slug, cfg in config.items():
+        for segment in _source_segments(slug, cfg):
+            registered[segment].add(slug)
+            state = health_by_slug.get(slug)
+            if state and (state.get("technical_status") == "ok" or
+                          (not state.get("technical_status") and state.get("status") in ("ok", "warning"))):
+                active[segment].add(slug)
+    detected = {name: 0 for name in COVERAGE_SEGMENTS}
+    if measured:
+        for item in queue_items:
+            if item.get("lane") != "LIVE":
+                continue
+            slug = item.get("source") or ""
+            cfg = config.get(slug, {})
+            for segment in _source_segments(slug, cfg):
+                detected[segment] += 1
+    selected = {name: 0 for name in COVERAGE_SEGMENTS}
+    published = {name: 0 for name in COVERAGE_SEGMENTS}
+    latest = {name: None for name in COVERAGE_SEGMENTS}
+    for signal in snapshot.get("signals", []):
+        slug = signal.get("source_slug") or ""
+        segments = _signal_segments(signal, _source_segments(slug, config.get(slug, {})))
+        event_day = str(signal.get("event_date") or "")[:10]
+        for segment in segments:
+            published[segment] += 1
+            if signal.get("ingestion_mode") == "LIVE":
+                selected[segment] += 1
+            if event_day and (latest[segment] is None or event_day > latest[segment]):
+                latest[segment] = event_day
+    report = {}
+    for segment in COVERAGE_SEGMENTS:
+        day = latest[segment]
+        try:
+            age = max(0, (today - date.fromisoformat(day)).days) if day else None
+        except ValueError:
+            age = None
+        report[segment] = {
+            "registered_sources": len(registered[segment]),
+            "active_sources": len(active[segment]),
+            "detected_live": detected[segment] if measured else None,
+            "selected_live": selected[segment] if measured else None,
+            "published_feed": published[segment],
+            "last_signal_at": day,
+            "last_signal_age_days": age,
+        }
+    return report
+
 def statistics_parser_backlog(history):
     """Auto-register every statistical publication without a dedicated parser/analytic output."""
     rows=[]
@@ -211,6 +311,9 @@ def build(root, output):
         queue_status="measured" if measured else "awaiting_successful_global_discovery",
         discovery=discovery,
         coverage_live=coverage_live,
+        coverage_segments=coverage_by_segment(
+            read(root / "config/sources.json", []), sources, list(queue.items.values()), snapshot,
+            measured=measured),
         legacy_pending=sum(x.get("pending", 0) for x in sources.values()),
         sources=sources, iterations=ledger["iterations"],
         usage=dict(calls=usage, measured_responses=len(responses),

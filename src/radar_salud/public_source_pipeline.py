@@ -207,6 +207,7 @@ def process_corporate_news(raw,cfg):
         "redsalud":("RedSalud",("www.redsalud.cl","redsalud.cl"),r"/noticias/[^/]+/?"),
         "bupa_chile":("Bupa Chile",("www.bupa.cl","bupa.cl"),r"/(?:somos-bupa/)?sala-de-prensa/[^/]+/?"),
         "pfizer_chile":("Pfizer Chile",("www.pfizer.cl","pfizer.cl"),r"/news/[^/]+/?"),
+        "indisa":("Clínica INDISA",("www.indisa.cl","indisa.cl"),r"/blog/[^/]+/?"),
     }
     expected=canonical.get(raw.source_slug);parsed=urlparse(raw.url)
     if (not expected or raw.source_name!=expected[0] or raw.source_type!="corporate"
@@ -235,6 +236,16 @@ def process_corporate_news(raw,cfg):
             raise DeferredProcessing("Pfizer headline mismatch between listing and article")
         raw.event_date=_date(raw.metadata.get("listing_date"))
         if not raw.event_date:raise DeferredProcessing("Pfizer listing publication date unavailable")
+        raw.raw_text=article.body[:9000];raw.metadata["page_text"]=raw.raw_text
+    elif raw.source_slug=="indisa":
+        try:page=fetch_html(raw.url)
+        except Exception as exc:raise DeferredProcessing("INDISA article temporarily unavailable") from exc
+        article=_IndisaArticle();article.feed(page);article.finish()
+        if not article.title or (raw.title.casefold() not in article.title.casefold()
+                                 and article.title.casefold() not in raw.title.casefold()):
+            raise DeferredProcessing("INDISA headline mismatch between listing and article")
+        raw.event_date=_date(article.published) or raw.event_date
+        if not raw.event_date:raise DeferredProcessing("INDISA article publication date unavailable")
         raw.raw_text=article.body[:9000];raw.metadata["page_text"]=raw.raw_text
     else:
         try:page=fetch_html(raw.url)
@@ -365,6 +376,36 @@ class _PfizerArticle(HTMLParser):
             self._body=False;self.body=" ".join(" ".join(self._body_parts).split());self._complete=True
     def finish(self):
         self.title=" ".join(self.title.split());self.body=" ".join(self.body.split())
+
+
+class _IndisaArticle(HTMLParser):
+    """Extract the INDISA article headline, publication date and visible body."""
+    def __init__(self):
+        super().__init__();self.title="";self.published="";self.body=[];self._capture=None;self._parts=[]
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs);lower=tag.lower()
+        if lower=="meta":
+            key=(attrs.get("property") or attrs.get("name") or "").casefold()
+            value=attrs.get("content") or ""
+            if key in ("article:published_time","datepublished","date") and value and not self.published:
+                self.published=value
+        elif lower=="h1" and not self.title:
+            self._capture="title";self._parts=[]
+        elif lower in ("p","li"):
+            self._capture="body";self._parts=[]
+    def handle_data(self,data):
+        if self._capture:self._parts.append(data)
+    def handle_endtag(self,tag):
+        lower=tag.lower()
+        if self._capture=="title" and lower=="h1":
+            self.title=" ".join(" ".join(self._parts).split());self._capture=None
+        elif self._capture=="body" and lower in ("p","li"):
+            value=" ".join(" ".join(self._parts).split())
+            if value:self.body.append(value)
+            self._capture=None
+    def finish(self):
+        self.title=" ".join(self.title.split());self.body=" ".join(self.body)
+    def event_date(self):return _date(self.published)
 
 
 def process_deis(raw,cfg):

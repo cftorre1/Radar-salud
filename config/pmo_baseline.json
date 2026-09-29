@@ -637,6 +637,24 @@
         "scopes Prestadores/Fonasa/Isapres sin cuotas"
       ],
       "scope": "Señal histórica en BACKFILL; no certifica reconciliación independiente con el archivo semanal ISP ni nuevos datos LIVE."
+    },
+    "coverage_balance_provider_sources_dashboard": {
+      "kind": "staging_validation_pending",
+      "sha": "pending_remote_commit",
+      "checks": [
+        "249 tests Python",
+        "39 tests Node",
+        "46 Playwright desktop/mobile",
+        "2 Playwright dashboard assertions desktop/mobile",
+        "Reviewer data/editorial/statistics/ux; findings=[]"
+      ],
+      "result": "local_pass_pending_actions",
+      "validated_requirements": [
+        "evaluación de fuente sectorial y tres corporativas",
+        "INDISA oficial con filtro de negocio y gate 90 días BACKFILL",
+        "métricas por cuatro segmentos sin cuotas ni ceros inventados"
+      ],
+      "scope": "No certifica inventario INDISA completo de 90 días ni habilitación LIVE. Se revisará tras Actions de staging."
     }
   },
   "blocks": [
@@ -1104,6 +1122,15 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-29",
+      "change": "Coverage balance avanza al subfrente de prestadores: auditoría de valor documentada, INDISA implementado bajo gate explícito BACKFILL hasta completar inventario de 90 días, tres candidatos sin evidencia suficiente quedan fuera, y dashboard por segmento implementado. QA/reviewer local PASS; Actions de staging pendiente.",
+      "evidence": [
+        "coverage_balance_provider_sources_dashboard",
+        "docs/IMPROVEMENT_REVIEW_PROVIDER_COVERAGE_2026_09_28.md",
+        "docs/SOURCE_COVERAGE_BALANCE_REVIEW_2026_09_28.md"
+      ]
+    },
     {
       "date": "2026-09-24",
       "change": "Relectura de cola tras cerrar sugerencias: Global Intelligence, FREE/PREMIUM, evidencia LIVE y experimento Luna/Terra/Astra se normalizan a Bloqueado porque no existe progreso ejecutable autorizado. Global espera accesos/permisos, monitoreo y decisión de acceso PREMIUM; FREE/PREMIUM depende de ese cierre; LIVE espera un evento externo genuino; el experimento requiere credenciales y presupuesto para medir costo/tokens/latencia reales. No se simuló evidencia ni se cambió auth, gasto, secretos, pagos o producción.",
@@ -2843,7 +2870,7 @@
       ]
     }
   ],
-  "updated_at": "2026-09-28",
+  "updated_at": "2026-09-29",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",

@@ -71,6 +71,16 @@ def test_first_discovery_is_backfill_even_when_item_is_recent(tmp_path):
     assert queue.counts()["live_pending"]==1
     assert queue.counts()["backfill_pending"]==1
 
+def test_new_source_stays_backfill_until_90_day_audit_gate_passes(tmp_path):
+    queue=PendingQueue(tmp_path/"q.json")
+    pending=RawItem("indisa","new provider signal","https://example.org/story","INDISA","corporate",
+                    "2026-09-23",metadata={"source_quality_gate":"pending_90_day_audit"})
+    approved=RawItem("indisa","audited provider signal","https://example.org/audited","INDISA","corporate",
+                     "2026-09-23",metadata={"source_quality_gate":"passed"})
+    queue.discover("indisa",[pending,approved],now=NOW,last_discovered_at="2026-09-22T10:00:00+00:00")
+    assert queue.counts()["live_pending"]==1
+    assert queue.counts()["backfill_pending"]==1
+
 def test_scheduled_cycle_skips_unchanged_reviewed_candidate():
     ledger={}
     entry=reserve(ledger,"abc","builder",NOW)

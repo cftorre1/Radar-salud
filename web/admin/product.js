@@ -73,6 +73,11 @@ fetch('../data/product.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Err
       :'Orquestación: No disponible; no se infiere ausencia de trabajo.');
   }
   text('coverage',d.coverage_live?`Cobertura LIVE: ${number(d.coverage_live.detected)} detectadas · ${number(d.coverage_live.evaluated)} evaluadas · ${number(d.coverage_live.selected)} seleccionadas. BACKFILL separado.${d.discovery?.failed_sources?` Medición parcial: ${number(d.discovery.failed_sources)} fuentes con error.`:''}`:'Cobertura LIVE aún sin medición global; no se mezcla con BACKFILL.');
+  for(const [segment,row] of Object.entries(d.coverage_segments||{})){
+    const tr=node('tr','');
+    for(const value of [segment,`${number(row.active_sources)} / ${number(row.registered_sources)}`,number(row.detected_live),number(row.selected_live),number(row.published_feed),row.last_signal_at||'Sin señal fechada',number(row.last_signal_age_days)])tr.append(node('td',value));
+    document.getElementById('coverageSegments')?.append(tr);
+  }
   if(!d.iterations.length)iterations.append(node('p','Sin iteraciones automáticas registradas. La habilitación de producción exige evidencia de todos los checks.'));
   for(const item of d.iterations.slice(-10).reverse())iterations.append(node('p',`${item.id} · ${item.state} · ${item.candidate_sha?.slice(0,8)} · checks: ${Object.entries(item.checks||{}).map(([k,v])=>`${k}=${v}`).join(', ')||'sin medir'} · feedback: ${(item.feedback||[]).map(x=>x.detail||x.code).join('; ')||'sin hallazgos'}`));
   for(const source of Object.values(d.sources)){const row=node('tr','');const checked=source.checked_at?new Date(source.checked_at):null;const last=checked&&!Number.isNaN(checked.getTime())?checked.toLocaleString('es-CL'):'Sin medir';for(const v of [source.name,source.technical_status||'Sin medir',source.content_freshness||'Sin medir',source.editorial_outcome||'Sin medir',last,number(source.live_pending),number(source.backfill_pending),number(source.rejected)])row.append(node('td',v));document.getElementById('sources').append(row)}

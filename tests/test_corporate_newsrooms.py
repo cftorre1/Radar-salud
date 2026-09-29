@@ -37,6 +37,30 @@ def test_pfizer_listing_binds_card_date_and_exposes_current_misroute():
     assert rows[0].url.endswith("/news/depresion-clinica-que-es-y-cuales-son-sus-sintomas")
 
 
+def test_indisa_listing_and_detail_bind_headline_publication_date_and_provider_scopes(monkeypatch):
+    cfg=source_index(load_sources(Path("config/sources.json")))["indisa"]
+    listing='''<article><a href="/blog/clinica-indisa-fortalece-propuesta"><h2>Clínica INDISA fortalece su atención preferente junto a Isapre Esencial</h2></a></article>'''
+    raw=CorporateNewsroomScout("indisa").discover_from_html(listing)[0]
+    html='''<meta property="article:published_time" content="2026-09-11T10:00:00-03:00">
+      <h1>Clínica INDISA fortalece su atención preferente junto a Isapre Esencial</h1>
+      <p>Clínica INDISA y la Isapre Esencial relanzaron una alianza de atención preferente para los planes INDISA e INICIA.</p>
+      <p>El convenio incorpora más de quinientas prestaciones en los centros de Providencia y Maipú.</p>
+      <p>La cartera actual considera cerca de cuatro mil afiliados y la compañía plantea duplicar sus beneficiarios hacia fines de 2027.</p>
+      <p>La atención preferente organiza acceso a consultas, exámenes y otras prestaciones ambulatorias de acuerdo con las condiciones de cada plan y la disponibilidad de las sedes.</p>
+      <p>La iniciativa se presenta como parte de la propuesta de atención de la clínica y su asegurador asociado; las cifras corresponden a información atribuida a las organizaciones participantes.</p>'''
+    monkeypatch.setattr("radar_salud.public_source_pipeline.fetch_html",lambda _:html)
+    captured=[]
+    monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news",lambda **kw:(captured.append(kw) or {
+        "relevance_score":82,
+        "what_happened":"Clínica INDISA relanzó su convenio preferente con Isapre Esencial para sus planes INDISA e INICIA.",
+        "why_it_matters":"El acuerdo amplía alternativas de atención y detalla prestaciones, sedes, cartera actual y meta declarada."}))
+    row=process_corporate_news(raw,cfg)
+    assert row["event_date"]=="2026-09-11"
+    assert row["scopes"]==["Isapres","Prestadores"]
+    assert len(captured)==1 and "cuatro mil" in captured[0]["text"]
+    assert row["source_url"]=="https://www.indisa.cl/blog/clinica-indisa-fortalece-propuesta"
+
+
 def test_pfizer_misrouted_listing_fails_closed_and_valid_detail_is_backfill(monkeypatch):
     cfg=source_index(load_sources(Path("config/sources.json")))["pfizer_chile"]
     raw=CorporateNewsroomScout("pfizer_chile").discover_from_html(

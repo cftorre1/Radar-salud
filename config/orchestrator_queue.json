@@ -2480,7 +2480,7 @@
         "learning/coverage rules persistidas"
       ],
       "approved_at": "2026-09-28",
-      "progress": "Subfrente 1/5 validado en staging 44e544a8827f3c03c43866404ae83a2a8dd7645b; Actions #627 PASS (tests, staging QA, Reviewer, preview/smoke). Feed publica sólo el pulso semanal material y vigente; se mantienen scopes Isapres/Fonasa/Prestadores y BACKFILL. Improvement Review PASS; queda backlog no bloqueante de reconciliación independiente con el archivo ISP. Continúo con fuentes de prestadores.",
+      "progress": "Subfrente 1/5 validado en staging (Actions #627 PASS). Subfrente 2/5 implementado y PASS local: INDISA oficial con validación de URL/título/fecha/cuerpo y auditoría de materialidad; source quality gate mantiene sus hallazgos en BACKFILL hasta cerrar el inventario de 90 días. Clínicas de Chile, Alemana y UC CHRISTUS evaluadas y no activadas por evidencia de baja densidad o fecha insuficiente. Coverage dashboard por 4 segmentos implementado. QA local: 249 Python, 39 Node, 46 browser desktop/mobile y 2 assertions focalizadas; Reviewer determinístico PASS sin findings. Pendiente Actions staging para validar este subfrente; después sigo con cobertura indirecta oficial de Fonasa. El subfrente 2 conserva BACKFILL hasta la auditoría de fuente; no se habilita LIVE anticipadamente.",
       "execution_subfronts": [
         {
           "id": "epidemiology_visible_material_pulse",
@@ -2508,8 +2508,21 @@
         },
         {
           "id": "provider_sector_and_corporate_sources",
-          "status": "pending",
-          "scope": "Clínicas de Chile A.G.; evaluación e integración con filtros de negocio de INDISA, Clínica Alemana y UC CHRISTUS."
+          "status": "validating_staging",
+          "scope": "Clínicas de Chile A.G. y evaluación de INDISA/Alemana/UC CHRISTUS; parser corporativo INDISA en BACKFILL hasta auditoría de valor 90 días; dashboard Isapres/Prestadores/Fonasa-Sistema Público/Transversal.",
+          "local_evidence": [
+            "249 tests Python PASS",
+            "39 tests Node PASS",
+            "46 Playwright desktop/mobile PASS",
+            "2 Playwright dashboard assertions PASS en desktop/mobile",
+            "Reviewer determinístico: data/editorial/statistics/ux PASS, findings=[]"
+          ],
+          "improvement_review": "docs/IMPROVEMENT_REVIEW_PROVIDER_COVERAGE_2026_09_28.md",
+          "source_review": "docs/SOURCE_COVERAGE_BALANCE_REVIEW_2026_09_28.md",
+          "remaining": "Actions de staging y auditoría INDISA de inventario 90 días. Mientras el gate siga pending_90_day_audit, nuevos ítems quedan BACKFILL.",
+          "validated_at": "2026-09-29",
+          "implementation_sha_local": "36655147b36497a6b8267b9a959b49b5a36328fe",
+          "local_reviewer_findings": []
         },
         {
           "id": "fonasa_official_indirect_coverage",

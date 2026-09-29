@@ -23,6 +23,10 @@ def atomic_json(path, value):
     temp.replace(path)
 
 def lane(raw, now, last_discovered_at=None):
+    # Newly integrated sources remain historical until their required
+    # 90-day value audit is explicitly completed and reviewed.
+    if raw.metadata.get("source_quality_gate") not in (None, "passed"):
+        return "BACKFILL"
     if not last_discovered_at:
         return "BACKFILL"
     try:

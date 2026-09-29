@@ -112,6 +112,33 @@ def test_statistics_parser_backlog_auto_registers_new_unparsed_data_sources():
     assert "https://example.org/news" not in by
 
 
+def test_segment_coverage_reports_live_funnel_published_stock_and_freshness_without_quotas():
+    module=load_report_module()
+    source_cfgs=[
+        {"slug":"redsalud","source_type":"corporate","system_domain":"HEALTH"},
+        {"slug":"minsal","source_type":"official","system_domain":"PUBLIC_HEALTH"},
+        {"slug":"superintendencia_salud","source_type":"official","system_domain":"HEALTH_INSURANCE"},
+    ]
+    health={name:{"technical_status":"ok","status":"ok","last_signal_at":"2026-09-25"}
+            for name in ("redsalud","minsal","superintendencia_salud")}
+    queue_items=[{"source":"redsalud","lane":"LIVE"},{"source":"redsalud","lane":"BACKFILL"}]
+    snapshot={"signals":[
+        {"source_slug":"redsalud","scopes":["Prestadores","Isapres"],"event_date":"2026-09-25","ingestion_mode":"LIVE"},
+        {"source_slug":"minsal","scopes":["Salud pública","Prestadores","Fonasa","Isapres"],"event_date":"2026-09-24","ingestion_mode":"BACKFILL"},
+    ]}
+    report=module.coverage_by_segment(source_cfgs,health,queue_items,snapshot,measured=True,today=__import__('datetime').date(2026,9,28))
+    assert report["Prestadores"]["registered_sources"]==1
+    assert report["Prestadores"]["active_sources"]==1
+    assert report["Prestadores"]["detected_live"]==1
+    assert report["Prestadores"]["selected_live"]==1
+    assert report["Prestadores"]["published_feed"]==2
+    assert report["Transversal"]["published_feed"]==2
+    assert report["Prestadores"]["last_signal_age_days"]==3
+    unavailable=module.coverage_by_segment(source_cfgs,health,queue_items,snapshot,measured=False,today=__import__('datetime').date(2026,9,28))
+    assert unavailable["Prestadores"]["detected_live"] is None
+    assert unavailable["Prestadores"]["published_feed"]==2
+
+
 def test_product_report_preserves_persisted_deep_intelligence_weekly_insight(tmp_path):
     module = load_report_module()
     root = tmp_path
