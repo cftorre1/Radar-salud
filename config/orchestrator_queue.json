@@ -2466,7 +2466,14 @@
         "Agregar La Tercera como portal de noticias, con filtro estricto de salud/negocio/regulación para evitar ruido político/general. Tratarla como fuente secundaria complementaria, nunca por sobre fuente primaria cuando exista.",
         "Crear subfrente específico GRD/financiamiento hospitalario y compra estratégica: FONASA GRD, MINSAL/Subsecretaría de Redes, DIPRES/Ley de Presupuestos e informes de ejecución. Capturar presupuesto, cobertura hospitalaria, producción valorizada, precio base, complejidad, convenios, compras a privados, listas de espera y mecanismos de pago.",
         "Priorizar señales GRD que conecten financiamiento, producción, complejidad, eficiencia, redes público-privadas y oportunidades/riesgos para prestadores. No publicar explicaciones introductorias si no hay cambio material.",
-        "Incluir como potenciales fuentes complementarias para Prestadores, sujeto a auditoría de 90 días y materialidad: Clínica Santa María, Clínica Universidad de los Andes y Hospital Clínico UC/Marcoleta si aportan señal estratégica diferenciada. No activar automáticamente."
+        "Incluir como potenciales fuentes complementarias para Prestadores, sujeto a auditoría de 90 días y materialidad: Clínica Santa María, Clínica Universidad de los Andes y Hospital Clínico UC/Marcoleta si aportan señal estratégica diferenciada. No activar automáticamente.",
+        "Crear una capa explícita de EARLY SIGNALS para medios confiables: su función no es sólo corroborar fuentes oficiales, sino detectar antes startups, nuevas empresas, pilotos, alianzas, M&A, inversiones, nuevas tecnologías/modelos de atención, cambios ejecutivos, rondas de capital, expansión de redes y discusiones regulatorias/estratégicas incipientes.",
+        "Agregar El Mercurio / Economía y Negocios como fuente candidata de alta prioridad para early signals; evaluar también Pulso-La Tercera y mantener Diario Financiero. Considerar Emol Economía/Negocios sólo si aporta señal diferenciada y no duplica sistemáticamente El Mercurio.",
+        "Las señales de prensa pueden publicarse antes de una fuente oficial si el medio es confiable, el hecho está claramente atribuido y no se presenta como confirmación oficial cuando no la hay. Etiquetar evidencia/origen de forma explícita.",
+        "Crear estados de madurez para señales tempranas: media_reported → company_confirmed → official_confirmed, cuando aplique. Si aparece posteriormente una fuente primaria, conectar y elevar la señal en lugar de duplicarla.",
+        "Distinguir rumor/especulación de anuncio/entrevista/declaración directa. Rumores sin evidencia material no se publican; entrevistas, anuncios de ejecutivos o reportes empresariales con datos concretos sí pueden gatillar una señal temprana.",
+        "Añadir radar de entidades emergentes: cuando un medio detecte una nueva empresa/startup/alianza relevante (ej. Salud AI), registrar entidad, actores, propuesta de valor, modelo de negocio, estado de madurez, socios/inversionistas mencionados y temas a monitorear.",
+        "Revisar filtros actuales de medios, especialmente Diario Financiero, para evitar sobre-rechazo de señales estratégicas tempranas. No exigir el mismo patrón de evidencia que a normativa/estadística; aplicar un Media Early Signal Gate separado."
       ],
       "constraints": [
         "Fuente primaria > secundaria cuando ambas estén disponibles.",
@@ -2488,10 +2495,14 @@
         "evaluación Dávila/Clínica Las Condes/Clínicas Achs Salud/RedSalud/Andes Salud/Interclínicas y otras redes relevantes",
         "mutualidades ACHS Seguro Laboral/Mutual de Seguridad/IST con source health y filtro editorial",
         "La Tercera evaluada e integrada si supera Source Quality Gate",
-        "frente GRD/financiamiento hospitalario con fuentes FONASA/MINSAL/DIPRES y al menos una señal/tabla útil"
+        "frente GRD/financiamiento hospitalario con fuentes FONASA/MINSAL/DIPRES y al menos una señal/tabla útil",
+        "Media Early Signal Gate documentado y testeado",
+        "El Mercurio/Economía y Negocios evaluado e integrado si técnicamente viable",
+        "revisión del filtro de Diario Financiero y Pulso-La Tercera para señales tempranas",
+        "al menos un caso early-signal trazable con lifecycle media_reported→primary/official cuando exista"
       ],
       "approved_at": "2026-09-28",
-      "progress": "Dirección amplía alcance 2026-09-29: sumar redes prestadoras Dávila, Clínica Las Condes, Clínicas Achs Salud, RedSalud, Andes Salud, Interclínicas y otras relevantes; mutualidades ACHS Seguro Laboral, Mutual de Seguridad e IST; La Tercera; y un frente GRD/financiamiento hospitalario de alta prioridad.",
+      "progress": "QA de recuperación Home V2 cerrado: runs #632 y #633 PASS. Próximo tramo: Fonasa/GRD + Prestadores Data + nuevas fuentes. Dirección agrega estrategia de medios como EARLY SIGNALS: El Mercurio/Economía y Negocios, Pulso-La Tercera y DF deben detectar señales incipientes antes de fuentes oficiales, con gate y madurez de evidencia separados.",
       "execution_subfronts": [
         {
           "id": "epidemiology_visible_material_pulse",
