@@ -17,8 +17,15 @@ class _A(HTMLParser):
             self.links.append((self._href," ".join("".join(self._text).split())));self._href=None;self._text=[]
 
 class SusesoNormativeScout:
-    SOURCE_SLUG="suseso";SOURCE_NAME="SUSESO";SOURCE_TYPE="official"
-    PAGES=["https://www.suseso.gob.cl/601/w3-channel.html","https://www.suseso.gob.cl/612/w3-propertyvalue-63007.html","https://www.suseso.gob.cl/612/w3-propertyvalue-10335.html","https://www.suseso.gob.cl/612/w3-propertyvalue-31037.html"]
+    SOURCE_SLUG="suseso";SOURCE_NAME="Superintendencia de Seguridad Social (SUSESO)";SOURCE_TYPE="official"
+    LATEST_NORMATIVE="https://www.suseso.gob.cl/612/w3-article-790656.html"
+    PAGES=[
+        "https://www.suseso.gob.cl/601/w3-channel.html",
+        "https://www.suseso.gob.cl/612/w3-propertyvalue-10371.html",
+        "https://www.suseso.gob.cl/612/w3-propertyvalue-63007.html",
+        "https://www.suseso.gob.cl/612/w3-propertyvalue-10335.html",
+        "https://www.suseso.gob.cl/612/w3-propertyvalue-31037.html"
+    ]
     def discover(self):
         out=[];seen=set()
         for page in self.PAGES:
@@ -30,6 +37,21 @@ class SusesoNormativeScout:
                 url=urljoin(page,href)
                 if not re.search(r"/612/w3-article-\d+\.html",url,re.I) or url in seen or not re.search(r"(circular|dictamen)",text,re.I):continue
                 seen.add(url);out.append(RawItem(self.SOURCE_SLUG,text,url,self.SOURCE_NAME,self.SOURCE_TYPE,raw_text="",metadata={"discovered_from":page}))
+        # The site also exposes a direct "última normativa" detail URL. Seed it
+        # explicitly so a redesign of listing pages cannot hide the newest act.
+        try:
+            from .public_source_pipeline import _Meta, _date
+            meta=_Meta();meta.feed(fetch_html(self.LATEST_NORMATIVE))
+            body=" ".join(meta.text)
+            m=re.search(r"\b(Circular|Dictamen)\s+(?:N?[°º]?\s*)?(\d{3,6})\b",body,re.I)
+            title=(f"{m.group(1).title()} {m.group(2)}" if m else (meta.ogtitle or "Última normativa SUSESO"))
+            event_date=_date(meta.published) or _date(body[:5000])
+            if self.LATEST_NORMATIVE not in seen:
+                out.append(RawItem(self.SOURCE_SLUG,title,self.LATEST_NORMATIVE,self.SOURCE_NAME,self.SOURCE_TYPE,
+                                   event_date=event_date,raw_text=(meta.description or body[:1800]),
+                                   metadata={"discovered_from":"latest_normative","page_text":body[:18000]}))
+        except Exception as e:
+            print("SUSESO latest normative:",e)
         print(f"SUSESO discovered={len(out)}");return out
 
 
@@ -59,6 +81,40 @@ class SusesoNewsScout:
         if not out:raise RuntimeError("SUSESO newsroom has no dated article rows")
         out.sort(key=lambda x:x.event_date or "",reverse=True)
         return out[:30]
+
+
+class SusesoFiscalizacionScout:
+    """Official SUSESO fiscalized-actor surfaces, separated from normative acts."""
+    SOURCE_SLUG="suseso_fiscalizacion";SOURCE_NAME="Superintendencia de Seguridad Social (SUSESO)";SOURCE_TYPE="official"
+    PAGES=[
+        ("Isapres","https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html"),
+        ("COMPIN","https://www.suseso.gob.cl/612/w3-propertyvalue-30982.html"),
+    ]
+    def discover(self):
+        from .public_source_pipeline import _Meta, _date
+        out=[];seen=set()
+        for actor,page in self.PAGES:
+            html=fetch_html(page);p=_A();p.feed(html)
+            for href,title in p.links:
+                if not href or len(title)<12:continue
+                url=urljoin(page,href);parsed=urlparse(url)
+                if parsed.netloc not in ("www.suseso.gob.cl","suseso.gob.cl"):continue
+                if not re.fullmatch(r"/612/w3-article-\d+\.html",parsed.path) or url in seen:continue
+                seen.add(url)
+                try:
+                    meta=_Meta();meta.feed(fetch_html(url))
+                    body=" ".join(meta.text)
+                    event_date=_date(meta.published) or _date(body[:5000])
+                except Exception:
+                    continue
+                if not event_date:continue
+                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                                   event_date=event_date,raw_text=(meta.description or body[:1800]),
+                                   metadata={"discovered_from":page,"fiscalized_actor":actor,"page_text":body[:18000]}))
+        if not out:raise RuntimeError("SUSESO fiscalizacion surfaces have no dated detail items")
+        out.sort(key=lambda x:x.event_date or "",reverse=True)
+        return out[:40]
+
 
 class DfHealthScout:
     SOURCE_SLUG="diario_financiero";SOURCE_NAME="Diario Financiero";SOURCE_TYPE="press_high_trust"
