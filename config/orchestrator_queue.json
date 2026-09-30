@@ -2709,7 +2709,11 @@
         "Eliminar cualquier exclusión específica de ISALUD en sanciones/juicios/fallos; cobertura de todas las Isapres bajo criterios equivalentes.",
         "Aplicar regla editorial evidence-first: hechos separados de inferencias/hipótesis, sin juicios de valor ni interpretaciones sin respaldo; exigir trazabilidad de toda implicancia y neutralidad equivalente entre actores.",
         "INSIGHT SEMANAL: corregir stale data y selección. Relevancia estratégica es criterio #1; gancho comercial #2; utilidad decisional #3; evidencia #4. Reevaluar en cada refresh, sin weekly lock que impida reemplazar por señal superior.",
-        "SUSESO: tratar last_signal_at=2026-01-13 pese a 7.602 discovered como coverage/parser gap. Auditar listing→fecha→seen-state→process_suseso; no aceptar 'sin novedades' hasta reconciliar publicaciones 2026 recientes."
+        "SUSESO: tratar last_signal_at=2026-01-13 pese a 7.602 discovered como coverage/parser gap. Auditar listing→fecha→seen-state→process_suseso; no aceptar 'sin novedades' hasta reconciliar publicaciones 2026 recientes.",
+        "SUSESO COVERAGE: mantener una sola entidad visible 'Superintendencia de Seguridad Social (SUSESO)' pero con canales internos separados: normativa, noticias y biblioteca/investigaciones.",
+        "SUSESO NEWS ya cableado: portada /601 + artículos /605; captar licencias médicas, Ley Karin, riesgos psicosociales, mutualidades, Fonasa/cajas, fiscalización, prevención, salud mental y SST.",
+        "SUSESO NORMATIVA: incluir portada /601 como superficie adicional para descubrir Circulares/Dictámenes recientes; validar Circular 3926 del 23-09-2026.",
+        "SUSESO RESEARCH: integrar biblioteca /619 como backfill/intelligence channel; no usar sólo el año del período como fecha de publicación. Requerir fecha exacta o mantener no-visible hasta poder verificar temporalidad."
       ],
       "constraints": [
         "No sacrificar calidad/evidencia por velocidad.",
@@ -2730,14 +2734,18 @@
         "test que confirme inclusión simétrica de ISALUD y demás Isapres",
         "Reviewer editorial PASS en objetividad, trazabilidad y separación hechos/inferencias/hipótesis",
         "Weekly Insight regenerado con stock actualizado posterior al 26-sep y top3 auditado",
-        "SUSESO freshness audit con al menos una publicación 2026 reciente reconciliada o blocker técnico exacto"
+        "SUSESO freshness audit con al menos una publicación 2026 reciente reconciliada o blocker técnico exacto",
+        "SUSESO noticia 28-sep licencias médicas detectada por nuevo scout",
+        "Circular 3926 detectada/procesada por canal normativo",
+        "SUSESO visible agregado bajo una sola entidad con subcanales internos",
+        "biblioteca SUSESO inventariada con temporalidad segura"
       ],
       "started_at": "2026-09-29T20:44:00Z",
       "last_progress_at": "2026-09-29T20:44:00Z",
       "current_subfront": "fonasa_grd_financing",
       "next_action": "Ejecutar Fonasa/GRD y continuar automáticamente.",
       "approved_at": "2026-09-29",
-      "progress": "Prioridad añadida: regenerar Insight semanal con relevancia estratégica→gancho comercial y resolver gap SUSESO (stale enero pese a miles discovered) dentro del cierre beta de hoy."
+      "progress": "SUSESO gap confirmado por evidencia oficial. Newsroom + normativa ampliados en código; falta validar corrida y luego integrar biblioteca/investigaciones con temporalidad fail-closed."
     }
   ],
   "execution_policy": {
