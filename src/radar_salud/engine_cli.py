@@ -9,9 +9,9 @@ from .distribution import UserPlan,choose_distribution
 from .history import load_history,merge_history,save_history
 from .regulatory import SuperintendenciaNormativaScout
 from .regulatory_pipeline import process_superintendencia_normativa
-from .source_scouts import SusesoNormativeScout,SusesoNewsScout,SusesoFiscalizacionScout,DfHealthScout,FonasaNewsScout,IspAnamedAlertScout,CorporateNewsroomScout,DeisResourceScout
+from .source_scouts import SusesoNormativeScout,SusesoNewsScout,SusesoFiscalizacionScout,DfHealthScout,FonasaDataHubScout,FonasaNewsScout,IspAnamedAlertScout,CorporateNewsroomScout,DeisResourceScout
 from .diario_oficial import DiarioOficialHealthScout
-from .public_source_pipeline import process_suseso,process_suseso_news,process_suseso_fiscalizacion,process_minsal,process_df,process_diario_oficial,process_fonasa,process_isp_anamed,process_corporate_news,process_deis
+from .public_source_pipeline import process_suseso,process_suseso_news,process_suseso_fiscalizacion,process_minsal,process_df,process_diario_oficial,process_fonasa_data_hub,process_fonasa,process_isp_anamed,process_corporate_news,process_deis
 from .analysis_cache import seed_from_history
 from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
@@ -51,6 +51,7 @@ def main():
       ("superintendencia_fiscalizacion","superintendencia_fiscalizacion",SuperintendenciaFiscalizacionScout().discover,process_fiscalizacion),
       ("minsal","minsal",MinsalNewsScout().discover,process_minsal),
       ("fonasa","fonasa",FonasaNewsScout().discover,process_fonasa),
+      ("fonasa_datos_abiertos","fonasa_datos_abiertos",FonasaDataHubScout().discover,process_fonasa_data_hub),
       ("isp_anamed","isp_anamed",IspAnamedAlertScout().discover,process_isp_anamed),
       ("pfizer_chile","pfizer_chile",CorporateNewsroomScout("pfizer_chile").discover,process_corporate_news),
       ("deis","deis",DeisResourceScout().discover,process_deis),
