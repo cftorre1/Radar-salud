@@ -123,7 +123,7 @@
   },
   {
     "slug": "suseso",
-    "name": "SUSESO",
+    "name": "Superintendencia de Seguridad Social (SUSESO)",
     "source_type": "official",
     "system_domain": "OCCUPATIONAL_HEALTH",
     "base_confidence": 100,
@@ -141,6 +141,17 @@
     "cadence": "daily",
     "method": "official_newsroom",
     "default_category": "Salud Laboral & Seguridad Social"
+  },
+  {
+    "slug": "suseso_fiscalizacion",
+    "name": "Superintendencia de Seguridad Social (SUSESO)",
+    "source_type": "official",
+    "system_domain": "OCCUPATIONAL_HEALTH",
+    "base_confidence": 100,
+    "cadence": "daily",
+    "method": "official_fiscalized_actor_surfaces",
+    "default_category": "Fiscalización",
+    "force_category": true
   },
   {
     "slug": "diario_financiero",
