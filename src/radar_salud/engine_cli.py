@@ -9,9 +9,9 @@ from .distribution import UserPlan,choose_distribution
 from .history import load_history,merge_history,save_history
 from .regulatory import SuperintendenciaNormativaScout
 from .regulatory_pipeline import process_superintendencia_normativa
-from .source_scouts import SusesoNormativeScout,SusesoNewsScout,DfHealthScout,FonasaNewsScout,IspAnamedAlertScout,CorporateNewsroomScout,DeisResourceScout
+from .source_scouts import SusesoNormativeScout,SusesoNewsScout,SusesoFiscalizacionScout,DfHealthScout,FonasaNewsScout,IspAnamedAlertScout,CorporateNewsroomScout,DeisResourceScout
 from .diario_oficial import DiarioOficialHealthScout
-from .public_source_pipeline import process_suseso,process_suseso_news,process_minsal,process_df,process_diario_oficial,process_fonasa,process_isp_anamed,process_corporate_news,process_deis
+from .public_source_pipeline import process_suseso,process_suseso_news,process_suseso_fiscalizacion,process_minsal,process_df,process_diario_oficial,process_fonasa,process_isp_anamed,process_corporate_news,process_deis
 from .analysis_cache import seed_from_history
 from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
@@ -59,6 +59,7 @@ def main():
       ("indisa","indisa",CorporateNewsroomScout("indisa").discover,process_corporate_news),
       ("suseso","suseso",SusesoNormativeScout().discover,process_suseso),
       ("suseso_news","suseso_news",SusesoNewsScout().discover,process_suseso_news),
+      ("suseso_fiscalizacion","suseso_fiscalizacion",SusesoFiscalizacionScout().discover,process_suseso_fiscalizacion),
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
