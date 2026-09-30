@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-29T16:03:01.321698+00:00",
+  "at": "2026-09-30T16:21:20.325546+00:00",
   "sources": {
     "superintendencia": {
       "discovered": 739,
@@ -8,24 +8,30 @@
       "error_type": null
     },
     "superintendencia_normativa": {
-      "discovered": 4273,
-      "new": 5,
+      "discovered": 4274,
+      "new": 1,
       "technical_status": "ok",
       "error_type": null
     },
     "superintendencia_fiscalizacion": {
       "discovered": 2696,
-      "new": 1,
+      "new": 0,
       "technical_status": "ok",
       "error_type": null
     },
     "minsal": {
       "discovered": 53,
-      "new": 3,
+      "new": 4,
       "technical_status": "ok",
       "error_type": null
     },
     "fonasa": {
+      "discovered": 0,
+      "new": 0,
+      "technical_status": "error",
+      "error_type": "HTTPError"
+    },
+    "fonasa_datos_abiertos": {
       "discovered": 0,
       "new": 0,
       "technical_status": "error",
@@ -50,8 +56,8 @@
       "error_type": null
     },
     "redsalud": {
-      "discovered": 9,
-      "new": 0,
+      "discovered": 10,
+      "new": 1,
       "technical_status": "ok",
       "error_type": null
     },
@@ -68,24 +74,36 @@
       "error_type": "HTTPError"
     },
     "suseso": {
-      "discovered": 7602,
-      "new": 0,
+      "discovered": 7607,
+      "new": 5,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "suseso_news": {
+      "discovered": 6,
+      "new": 6,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "suseso_fiscalizacion": {
+      "discovered": 38,
+      "new": 38,
       "technical_status": "ok",
       "error_type": null
     },
     "diario_financiero": {
-      "discovered": 73,
-      "new": 26,
+      "discovered": 70,
+      "new": 19,
       "technical_status": "ok",
       "error_type": null
     },
     "diario_oficial": {
       "discovered": 3,
-      "new": 2,
+      "new": 0,
       "technical_status": "ok",
       "error_type": null
     }
   },
-  "successful_sources": 11,
-  "failed_sources": 3
+  "successful_sources": 13,
+  "failed_sources": 4
 }
