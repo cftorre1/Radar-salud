@@ -1,5 +1,9 @@
 name: Daily Radar pilot
 on:
+  push:
+    branches: [staging]
+    paths:
+      - '.github/run-daily-radar-now'
   workflow_dispatch:
     inputs:
       rebuild:
