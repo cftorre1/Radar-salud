@@ -2707,7 +2707,9 @@
         "Agregar test de consistencia dashboard: last_detected, last_selected/published y estado técnico deben provenir de una semántica única y no contradecir source_health.",
         "Implementar pulso de sanciones dinámico según período activo de revisión y tests para 14/30/90 días + histórico.",
         "Eliminar cualquier exclusión específica de ISALUD en sanciones/juicios/fallos; cobertura de todas las Isapres bajo criterios equivalentes.",
-        "Aplicar regla editorial evidence-first: hechos separados de inferencias/hipótesis, sin juicios de valor ni interpretaciones sin respaldo; exigir trazabilidad de toda implicancia y neutralidad equivalente entre actores."
+        "Aplicar regla editorial evidence-first: hechos separados de inferencias/hipótesis, sin juicios de valor ni interpretaciones sin respaldo; exigir trazabilidad de toda implicancia y neutralidad equivalente entre actores.",
+        "INSIGHT SEMANAL: corregir stale data y selección. Relevancia estratégica es criterio #1; gancho comercial #2; utilidad decisional #3; evidencia #4. Reevaluar en cada refresh, sin weekly lock que impida reemplazar por señal superior.",
+        "SUSESO: tratar last_signal_at=2026-01-13 pese a 7.602 discovered como coverage/parser gap. Auditar listing→fecha→seen-state→process_suseso; no aceptar 'sin novedades' hasta reconciliar publicaciones 2026 recientes."
       ],
       "constraints": [
         "No sacrificar calidad/evidencia por velocidad.",
@@ -2726,14 +2728,16 @@
         "heartbeats y autonomous transitions registradas",
         "pulso sanciones recalculado por período activo",
         "test que confirme inclusión simétrica de ISALUD y demás Isapres",
-        "Reviewer editorial PASS en objetividad, trazabilidad y separación hechos/inferencias/hipótesis"
+        "Reviewer editorial PASS en objetividad, trazabilidad y separación hechos/inferencias/hipótesis",
+        "Weekly Insight regenerado con stock actualizado posterior al 26-sep y top3 auditado",
+        "SUSESO freshness audit con al menos una publicación 2026 reciente reconciliada o blocker técnico exacto"
       ],
       "started_at": "2026-09-29T20:44:00Z",
       "last_progress_at": "2026-09-29T20:44:00Z",
       "current_subfront": "fonasa_grd_financing",
       "next_action": "Ejecutar Fonasa/GRD y continuar automáticamente.",
       "approved_at": "2026-09-29",
-      "progress": "Dirección cambia regla: pulso sanciones dinámico según período de revisión y cobertura completa de todas las Isapres, incluida ISALUD. Mantener esto dentro del cierre beta de hoy."
+      "progress": "Prioridad añadida: regenerar Insight semanal con relevancia estratégica→gancho comercial y resolver gap SUSESO (stale enero pese a miles discovered) dentro del cierre beta de hoy."
     }
   ],
   "execution_policy": {
