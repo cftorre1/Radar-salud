@@ -18,7 +18,7 @@ class _A(HTMLParser):
 
 class SusesoNormativeScout:
     SOURCE_SLUG="suseso";SOURCE_NAME="SUSESO";SOURCE_TYPE="official"
-    PAGES=["https://www.suseso.gob.cl/612/w3-propertyvalue-63007.html","https://www.suseso.gob.cl/612/w3-propertyvalue-10335.html","https://www.suseso.gob.cl/612/w3-propertyvalue-31037.html"]
+    PAGES=["https://www.suseso.gob.cl/601/w3-channel.html","https://www.suseso.gob.cl/612/w3-propertyvalue-63007.html","https://www.suseso.gob.cl/612/w3-propertyvalue-10335.html","https://www.suseso.gob.cl/612/w3-propertyvalue-31037.html"]
     def discover(self):
         out=[];seen=set()
         for page in self.PAGES:
@@ -31,6 +31,34 @@ class SusesoNormativeScout:
                 if not re.search(r"/612/w3-article-\d+\.html",url,re.I) or url in seen or not re.search(r"(circular|dictamen)",text,re.I):continue
                 seen.add(url);out.append(RawItem(self.SOURCE_SLUG,text,url,self.SOURCE_NAME,self.SOURCE_TYPE,raw_text="",metadata={"discovered_from":page}))
         print(f"SUSESO discovered={len(out)}");return out
+
+
+class SusesoNewsScout:
+    """Official SUSESO newsroom. Detail pages provide the authoritative date."""
+    SOURCE_SLUG="suseso_news";SOURCE_NAME="Superintendencia de Seguridad Social (SUSESO)";SOURCE_TYPE="official"
+    PAGE="https://www.suseso.gob.cl/601/w3-channel.html"
+    def discover(self):
+        from .public_source_pipeline import _Meta, _date
+        html=fetch_html(self.PAGE);p=_A();p.feed(html);out=[];seen=set()
+        for href,title in p.links:
+            if not href or len(title)<18:continue
+            url=urljoin(self.PAGE,href);parsed=urlparse(url)
+            if parsed.netloc not in ("www.suseso.gob.cl","suseso.gob.cl"):continue
+            if not re.fullmatch(r"/605/w3-article-\d+\.html",parsed.path) or url in seen:continue
+            seen.add(url)
+            try:
+                meta=_Meta();meta.feed(fetch_html(url))
+                event_date=_date(meta.published) or _date(" ".join(meta.text)[:5000])
+                body=" ".join(meta.text)
+            except Exception:
+                continue
+            if not event_date:continue
+            out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                               event_date=event_date,raw_text=(meta.description or body[:1800]),
+                               metadata={"discovered_from":self.PAGE,"page_text":body[:18000]}))
+        if not out:raise RuntimeError("SUSESO newsroom has no dated article rows")
+        out.sort(key=lambda x:x.event_date or "",reverse=True)
+        return out[:30]
 
 class DfHealthScout:
     SOURCE_SLUG="diario_financiero";SOURCE_NAME="Diario Financiero";SOURCE_TYPE="press_high_trust"
