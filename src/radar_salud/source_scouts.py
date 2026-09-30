@@ -134,6 +134,44 @@ class DfHealthScout:
                 seen.add(url);out.append(RawItem(self.SOURCE_SLUG,text,url,self.SOURCE_NAME,self.SOURCE_TYPE,raw_text="",metadata={"discovered_from":page}))
         print(f"DF discovered={len(out)}");return out
 
+
+class FonasaDataHubScout:
+    """Official FONASA Datos Abiertos hubs. Discovery is broad; publication remains fail-closed."""
+    SOURCE_SLUG="fonasa_datos_abiertos";SOURCE_NAME="Fondo Nacional de Salud (FONASA)";SOURCE_TYPE="official"
+    PAGES=[
+        ("Noticias","https://datosabiertos.fonasa.cl/noticias/"),
+        ("Biblioteca / Cuenta Pública","https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/"),
+        ("Boletines estadísticos","https://datosabiertos.fonasa.cl/boletines-estadisticos/"),
+        ("Análisis","https://datosabiertos.fonasa.cl/analysis/"),
+    ]
+    HOSTS=("datosabiertos.fonasa.cl","www.datosabiertos.fonasa.cl")
+    def discover(self):
+        from .public_source_pipeline import _Meta, _date
+        out=[];seen=set()
+        for channel,page in self.PAGES:
+            html=fetch_html(page);p=_A();p.feed(html)
+            for href,title in p.links:
+                if not href or len(title)<12:continue
+                url=urljoin(page,href);parsed=urlparse(url)
+                if parsed.netloc not in self.HOSTS or url in seen:continue
+                if parsed.path.rstrip("/") in ("","/noticias","/biblioteca-cuenta-publica","/boletines-estadisticos","/analysis"):continue
+                if any(x in parsed.path.lower() for x in ("/wp-admin","/wp-login","/author/","/tag/","/category/")):continue
+                seen.add(url);event_date=None;body=""
+                if parsed.path.lower().endswith((".pdf",".xlsx",".xls",".csv")):
+                    event_date=_date(title)
+                else:
+                    try:
+                        meta=_Meta();meta.feed(fetch_html(url));body=" ".join(meta.text)
+                        event_date=_date(meta.published) or _date(body[:5000]) or _date(title)
+                    except Exception:
+                        pass
+                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                                   event_date=event_date,raw_text=body[:1800],
+                                   metadata={"discovered_from":page,"fonasa_channel":channel,"page_text":body[:18000]}))
+        if not out:raise RuntimeError("FONASA Datos Abiertos unavailable or no discoverable items")
+        return out[:80]
+
+
 class FonasaNewsScout:
     """Direct official newsroom; discovery never fabricates publication dates."""
     SOURCE_SLUG="fonasa";SOURCE_NAME="FONASA";SOURCE_TYPE="official"
