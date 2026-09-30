@@ -208,6 +208,42 @@ def process_diario_oficial(raw,cfg):
     s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=[stype];row["scopes"]=sc;row["editorial_relevance"]=score;row["issuer"]=issuer;return row
 
 
+
+def process_fonasa_data_hub(raw,cfg):
+    """Official FONASA Datos Abiertos content with channel-aware fail-closed handling."""
+    channel=raw.metadata.get("fonasa_channel") or "Datos Abiertos"
+    parsed_url=raw.url.lower()
+    text=raw.metadata.get("page_text") or raw.raw_text or ""
+    if parsed_url.endswith(".pdf"):
+        try:text=extract_pdf_text(raw.url,max_pages=8)
+        except Exception as exc:raise DeferredProcessing("FONASA documento no legible") from exc
+    elif not text:
+        raw=enrich(raw);text=raw.metadata.get("page_text") or raw.raw_text or ""
+    if not raw.event_date:
+        raw.event_date=_date(text[:6000]) or _date(raw.title)
+    if not raw.event_date:
+        raise DeferredProcessing("FONASA Datos Abiertos sin fecha verificable")
+    if len(text)<120 and not parsed_url.endswith((".xlsx",".xls",".csv")):
+        raise DeferredProcessing("FONASA Datos Abiertos sin contenido suficiente")
+    ai=analyze_official_news(title=raw.title,text=text[:9000],source_name="Fondo Nacional de Salud (FONASA)")
+    score=int(ai.get("relevance_score")) if ai else 72
+    if score<65:return None
+    combined=f"{raw.title} {text}".lower()
+    scopes=["Fonasa"]
+    if any(x in combined for x in ("hospital","clínica","clinica","prestador","derivación","derivacion")):scopes.append("Prestadores")
+    signal_type="Datos" if channel in ("Boletines estadísticos","Análisis","Biblioteca / Cuenta Pública") else "Noticias"
+    raw.metadata.update({
+      "what_happened":(ai.get("what_happened") if ai else raw.title) or raw.title,
+      "why_it_matters":(ai.get("why_it_matters") if ai else "La publicación oficial aporta información relevante sobre aseguramiento público, financiamiento, producción o relación público-privada."),
+      "signal_types":[signal_type],"scopes":list(dict.fromkeys(scopes)),
+      "watch_tags":["fonasa","datos abiertos",channel.lower()],
+      "scores":{"economic":65,"regulatory":45,"scope":score,"novelty":score,"actionability":72}
+    })
+    row=build_signal(raw,cfg).to_dict()
+    row["signal_types"]=[signal_type];row["scopes"]=list(dict.fromkeys(scopes));row["editorial_relevance"]=score
+    row["source_channel"]=channel
+    return row
+
 def process_fonasa(raw,cfg):
     """Only dated, substantive official evidence may reach the feed."""
     raw=enrich(raw)
