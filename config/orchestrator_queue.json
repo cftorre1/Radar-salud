@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-09-29",
+  "updated_at": "2026-09-30",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -2715,7 +2715,11 @@
         "SUSESO NORMATIVA: incluir portada /601 como superficie adicional para descubrir Circulares/Dictámenes recientes; validar Circular 3926 del 23-09-2026.",
         "SUSESO RESEARCH: integrar biblioteca /619 como backfill/intelligence channel; no usar sólo el año del período como fecha de publicación. Requerir fecha exacta o mantener no-visible hasta poder verificar temporalidad.",
         "SUSESO: agregar explícitamente superficies https://www.suseso.gob.cl/612/w3-article-790656.html (última normativa), https://www.suseso.gob.cl/612/w3-propertyvalue-10371.html (circulares), https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html (fiscalizados Isapres) y https://www.suseso.gob.cl/612/w3-propertyvalue-30982.html (fiscalizados COMPIN).",
-        "Mantener una sola entidad visible SUSESO; separar internamente canales normativa, noticias, fiscalización Isapres/COMPIN e investigaciones."
+        "Mantener una sola entidad visible SUSESO; separar internamente canales normativa, noticias, fiscalización Isapres/COMPIN e investigaciones.",
+        "CLÍNICAS DE CHILE: integrar/evaluar como subcanales explícitos dentro de una sola entidad visible 'Clínicas de Chile A.G.': Noticias https://www.clinicasdechile.cl/noticias/ ; Memorias https://www.clinicasdechile.cl/knowledgebase_category/memorias/ ; Estudios y análisis https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/page/3/?mostrar=6 ; Documentos https://www.clinicasdechile.cl/knowledgebase_category/documentos/ . Aplicar materiality gate distinto por canal: noticias para early/business signals; memorias/estudios/documentos para intelligence/backfill y feed sólo si existe cambio material o hallazgo accionable.",
+        "ISP: ampliar cobertura oficial con Boletines de vigilancia de laboratorios https://www.ispch.gob.cl/boletin/ e Informes de Vigilancia de Virus Respiratorios https://www.ispch.gob.cl/virusrespiratorios/ . Mantener separado laboratorio/epidemiología de presión asistencial MINSAL y evitar doble conteo de la misma semana.",
+        "FONASA: usar https://datosabiertos.fonasa.cl/ como hub oficial alternativo/principal mientras newsroom tradicional falle. Integrar/evaluar subcanales: Noticias https://datosabiertos.fonasa.cl/noticias/ ; Biblioteca / Cuenta Pública https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/ ; Estadísticas / boletines https://datosabiertos.fonasa.cl/boletines-estadisticos/ ; Análisis documentos https://datosabiertos.fonasa.cl/analysis/ . Priorizar GRD, MLE, MCC, PAD, listas de espera, producción, compras/derivaciones, convenios, financiamiento y relación público-privada.",
+        "Para estas entidades, mostrar una sola fuente visible por institución y manejar internamente subcanales con health/coverage separado. El dashboard debe poder resumir la entidad y expandir subcanales si se requiere auditoría."
       ],
       "constraints": [
         "No sacrificar calidad/evidencia por velocidad.",
@@ -2744,14 +2748,18 @@
         "Circular 3926/última normativa reconciliada",
         "canal fiscalizados Isapres SUSESO con señal reciente o evidencia de ausencia",
         "canal fiscalizados COMPIN SUSESO con señal reciente o evidencia de ausencia",
-        "canal Circulares SUSESO integrado"
+        "canal Circulares SUSESO integrado",
+        "Clínicas de Chile: auditoría de Noticias/Memorias/Estudios/Documentos y activación de los canales que superen Source Quality Gate",
+        "ISP: boletines laboratorio + virus respiratorios integrados sin duplicación de señal",
+        "FONASA Datos Abiertos: Noticias/Biblioteca/Estadísticas/Analysis evaluados e integrados con al menos una señal o tabla útil",
+        "health/coverage por entidad consolidada y subcanales internos"
       ],
       "started_at": "2026-09-29T20:44:00Z",
       "last_progress_at": "2026-09-29T20:44:00Z",
       "current_subfront": "fonasa_grd_financing",
       "next_action": "Ejecutar Fonasa/GRD y continuar automáticamente.",
       "approved_at": "2026-09-29",
-      "progress": "Cobertura SUSESO ampliada con última normativa, circulares y fiscalizados Isapres/COMPIN; código ya cableado, pendiente QA/ejecución y consolidación visible bajo una sola entidad."
+      "progress": "Dirección amplía fuentes oficiales/sectoriales: Clínicas de Chile (Noticias/Memorias/Estudios/Documentos), ISP (boletines laboratorio + virus respiratorios) y FONASA Datos Abiertos (Noticias/Biblioteca/Estadísticas/Analysis). Integrar como canales internos, una entidad visible por institución."
     }
   ],
   "execution_policy": {
