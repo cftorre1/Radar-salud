@@ -2713,7 +2713,9 @@
         "SUSESO COVERAGE: mantener una sola entidad visible 'Superintendencia de Seguridad Social (SUSESO)' pero con canales internos separados: normativa, noticias y biblioteca/investigaciones.",
         "SUSESO NEWS ya cableado: portada /601 + artículos /605; captar licencias médicas, Ley Karin, riesgos psicosociales, mutualidades, Fonasa/cajas, fiscalización, prevención, salud mental y SST.",
         "SUSESO NORMATIVA: incluir portada /601 como superficie adicional para descubrir Circulares/Dictámenes recientes; validar Circular 3926 del 23-09-2026.",
-        "SUSESO RESEARCH: integrar biblioteca /619 como backfill/intelligence channel; no usar sólo el año del período como fecha de publicación. Requerir fecha exacta o mantener no-visible hasta poder verificar temporalidad."
+        "SUSESO RESEARCH: integrar biblioteca /619 como backfill/intelligence channel; no usar sólo el año del período como fecha de publicación. Requerir fecha exacta o mantener no-visible hasta poder verificar temporalidad.",
+        "SUSESO: agregar explícitamente superficies https://www.suseso.gob.cl/612/w3-article-790656.html (última normativa), https://www.suseso.gob.cl/612/w3-propertyvalue-10371.html (circulares), https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html (fiscalizados Isapres) y https://www.suseso.gob.cl/612/w3-propertyvalue-30982.html (fiscalizados COMPIN).",
+        "Mantener una sola entidad visible SUSESO; separar internamente canales normativa, noticias, fiscalización Isapres/COMPIN e investigaciones."
       ],
       "constraints": [
         "No sacrificar calidad/evidencia por velocidad.",
@@ -2738,14 +2740,18 @@
         "SUSESO noticia 28-sep licencias médicas detectada por nuevo scout",
         "Circular 3926 detectada/procesada por canal normativo",
         "SUSESO visible agregado bajo una sola entidad con subcanales internos",
-        "biblioteca SUSESO inventariada con temporalidad segura"
+        "biblioteca SUSESO inventariada con temporalidad segura",
+        "Circular 3926/última normativa reconciliada",
+        "canal fiscalizados Isapres SUSESO con señal reciente o evidencia de ausencia",
+        "canal fiscalizados COMPIN SUSESO con señal reciente o evidencia de ausencia",
+        "canal Circulares SUSESO integrado"
       ],
       "started_at": "2026-09-29T20:44:00Z",
       "last_progress_at": "2026-09-29T20:44:00Z",
       "current_subfront": "fonasa_grd_financing",
       "next_action": "Ejecutar Fonasa/GRD y continuar automáticamente.",
       "approved_at": "2026-09-29",
-      "progress": "SUSESO gap confirmado por evidencia oficial. Newsroom + normativa ampliados en código; falta validar corrida y luego integrar biblioteca/investigaciones con temporalidad fail-closed."
+      "progress": "Cobertura SUSESO ampliada con última normativa, circulares y fiscalizados Isapres/COMPIN; código ya cableado, pendiente QA/ejecución y consolidación visible bajo una sola entidad."
     }
   ],
   "execution_policy": {
