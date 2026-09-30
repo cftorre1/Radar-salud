@@ -1,6 +1,8 @@
 name: Alicanto Weekly Insight V2
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '30 10 * * *'
   push:
     branches: [staging]
     paths:
