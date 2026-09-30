@@ -86,15 +86,15 @@ def test_weekly_selects_best_reproducible_candidate_without_forcing_relationship
     assert result["weekly_insight"]["source_url"] == tea_signal()["source_url"]
 
 
-def test_current_week_is_locked_and_next_week_penalizes_repetition():
+def test_current_week_is_re_evaluated_when_a_better_candidate_exists():
     regulation = tea_signal()
     investment = signal("inversión", "INVESTMENT", 82, "Prestadores", "Fuente económica")
     history = [{"week_start": "2026-09-21", "source_url": regulation["source_url"],
                 "archetype": "cambio_regulatorio", "scope": "Isapres", "source_name": "Fuente oficial"}]
     current = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 24))
     assert current["weekly_insight"] is not None
-    assert current["weekly_insight"]["source_url"] == regulation["source_url"]
-    assert current["selection_policy"]["current_week_locked"] is True
+    assert current["selection_policy"]["current_week_locked"] is False
+    assert current["selection_policy"]["selection_method"] == "strategic_relevance_first_then_commercial_hook_v3"
     following = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 28))
     assert following["weekly_insight"] is None  # no reproducible support: do not force a new week
 
