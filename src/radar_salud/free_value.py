@@ -105,10 +105,12 @@ def score_global_teaser(theme: dict[str, Any], verified_sources: list[dict[str, 
 
 
 def strategic_weekly_score(signal: dict[str, Any], recent: list[dict[str, Any]] | None = None) -> dict[str, Any]:
-    """Quantitative business-first score for weekly insight selection.
+    """Rank weekly Insight candidates with an explicit product hierarchy.
 
-    Uses structured editorial materiality when present and falls back to existing
-    product scores without inventing missing dimensions.
+    1) Strategic relevance is the primary criterion.
+    2) Commercial hook breaks ties among strategically strong candidates.
+    3) Decision usefulness and evidence protect quality.
+    Freshness is an eligibility gate, not a substitute for relevance.
     """
     recent = recent or []
     ev = signal.get("editorial_v2") or {}
@@ -121,13 +123,14 @@ def strategic_weekly_score(signal: dict[str, Any], recent: list[dict[str, Any]] 
     urgency = _score01(mat.get("time_horizon"), _score01(signal.get("actionability_score"), _score01(signal.get("radar_score"))))
     actionability = _score01(mat.get("actionability"), _score01(signal.get("actionability_score"), _score01(signal.get("radar_score"))))
     evidence = _score01(mat.get("evidence_strength"), _score01(signal.get("source_quality_score")))
+    magnitude = _score01(mat.get("magnitude"), _score01(signal.get("radar_score")))
     event = str(signal.get("event_type") or "").upper()
     category = str(ev.get("value_category") or "")
     shift = max(
         _score01(signal.get("regulatory_impact_score")),
         _score01(signal.get("economic_impact_score")),
-        92.0 if event in {"REGULATION", "M&A"} else 85.0 if event == "INVESTMENT" else 75.0 if event == "SANCTION" else 0.0,
-        90.0 if category in {"regulatory_obligation","portfolio_competition","investment_ma","financial_impact"} else 0.0,
+        92.0 if event in {"REGULATION", "M&A"} else 88.0 if event == "INVESTMENT" else 80.0 if event == "SANCTION" else 0.0,
+        92.0 if category in {"regulatory_obligation","portfolio_competition","investment_ma","financial_impact"} else 0.0,
     )
     url = signal.get("source_url")
     archetype = _archetype(signal)
@@ -138,7 +141,19 @@ def strategic_weekly_score(signal: dict[str, Any], recent: list[dict[str, Any]] 
     repetition_hits += sum(0.20 for x in recent if scope_name and x.get("scope")==scope_name)
     repetition_hits += sum(0.15 for x in recent if source and x.get("source_name")==source)
     novelty = max(0.0, 100.0 - min(100.0, repetition_hits * 35.0))
+
+    strategic_relevance = (
+        .18*financial + .18*operational + .22*shift + .15*scope
+        + .12*urgency + .15*actionability
+    )
+    commercial_hook = .35*magnitude + .30*shift + .20*novelty + .15*scope
+    decision_usefulness = .60*actionability + .40*urgency
+    selection_score = .55*strategic_relevance + .25*commercial_hook + .15*decision_usefulness + .05*evidence
+
     dims = {
+        "strategic_relevance": strategic_relevance,
+        "commercial_hook": commercial_hook,
+        "decision_usefulness": decision_usefulness,
         "financial_impact": financial,
         "operational_impact": operational,
         "regulatory_or_competitive_shift": shift,
@@ -146,20 +161,10 @@ def strategic_weekly_score(signal: dict[str, Any], recent: list[dict[str, Any]] 
         "urgency_time_horizon": urgency,
         "actionability": actionability,
         "evidence_strength": evidence,
+        "magnitude": magnitude,
         "novelty_non_repetition": novelty,
     }
-    weights = {
-        "financial_impact": .16,
-        "operational_impact": .14,
-        "regulatory_or_competitive_shift": .14,
-        "affected_scope": .10,
-        "urgency_time_horizon": .10,
-        "actionability": .14,
-        "evidence_strength": .12,
-        "novelty_non_repetition": .10,
-    }
-    return {"score": round(sum(dims[k]*weights[k] for k in weights),2), "dimensions": {k: round(v,2) for k,v in dims.items()}}
-
+    return {"score": round(selection_score,2), "dimensions": {k: round(v,2) for k,v in dims.items()}}
 
 def rank_weekly_candidates(signals: list[dict[str, Any]], history: list[dict[str, Any]],
                            as_of: date | None = None) -> list[dict[str, Any]]:
@@ -211,7 +216,13 @@ def rank_weekly_candidates(signals: list[dict[str, Any]], history: list[dict[str
             "selection_score": selection_score,
             "editorial_gate": eligibility,
         })
-    return sorted(ranked, key=lambda x: (x["selection_score"], x["signal"].get("event_date", "")), reverse=True)
+    return sorted(ranked, key=lambda x: (
+        x["strategic_dimensions"].get("strategic_relevance", 0),
+        x["strategic_dimensions"].get("commercial_hook", 0),
+        x["strategic_dimensions"].get("decision_usefulness", 0),
+        x["selection_score"],
+        x["signal"].get("event_date", "")
+    ), reverse=True)
 
 
 def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: list[dict[str, Any]] | None = None,
@@ -257,17 +268,8 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
         }
     weekly = None
     signals = snapshot.get("signals") or []
-    locked_signal = next((s for s in signals if current and s.get("source_url") == current.get("source_url")), None)
     ranked = rank_weekly_candidates(signals, prior_history, today)
-    picked = None
-    if locked_signal:
-        picked = {
-            "signal": locked_signal,
-            "archetype": current.get("archetype") or _archetype(locked_signal),
-            "scope": current.get("scope") or ((locked_signal.get("scopes") or [None])[0]),
-        }
-    elif ranked:
-        picked = ranked[0]
+    picked = ranked[0] if ranked else None
     if picked:
         signal = picked["signal"]
         support = [
@@ -304,8 +306,8 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
         "selection_policy": {
             "window_weeks": 6,
             "recent_history_count": len(prior_history[-6:]),
-            "current_week_locked": bool(current),
-            "selection_method": "quantitative_strategic_score_v2",
+            "current_week_locked": False,
+            "selection_method": "strategic_relevance_first_then_commercial_hook_v3",
             "strategic_dimensions": ["financial_impact","operational_impact","regulatory_or_competitive_shift","affected_scope","urgency_time_horizon","actionability","evidence_strength","novelty_non_repetition"],
             "penalizes": ["repetition_in_novelty_dimension"],
             "fallback": "hide_without_reproducible_evidence_tied_insight",
