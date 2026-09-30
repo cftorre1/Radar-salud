@@ -108,6 +108,33 @@ def process_suseso(raw,cfg):
       "scores":{"economic":50,"regulatory":90,"scope":75,"novelty":75,"actionability":82}})
     s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Normativa"];row["scopes"]=["Salud laboral"];return row
 
+
+def process_suseso_news(raw,cfg):
+    """Business-relevant official SUSESO news, separate from normative discovery."""
+    raw=enrich(raw)
+    if not raw.event_date:return None
+    body=raw.metadata.get("page_text") or raw.raw_text
+    t=f"{raw.title} {body}".lower()
+    material_terms=("licencia médica","licencias médicas","ley karin","riesgo psicosocial","riesgos psicosociales",
+                    "fonasa","cajas de compensación","mutual","accidentabilidad","enfermedad profesional",
+                    "seguridad y salud en el trabajo","salud mental","fiscalización","vigia","prevención")
+    if not any(x in t for x in material_terms):return None
+    ai=analyze_official_news(title=raw.title,text=body,source_name="Superintendencia de Seguridad Social (SUSESO)")
+    score=int(ai.get("relevance_score")) if ai else 72
+    if score<65:return None
+    scopes=["Salud laboral"]
+    if "fonasa" in t:scopes.append("Fonasa")
+    if "isapre" in t:scopes.append("Isapres")
+    what=(ai.get("what_happened") if ai else raw.raw_text) or raw.title
+    why=(ai.get("why_it_matters") if ai else "La publicación contiene información oficial relevante para salud laboral, licencias médicas, seguridad social o coordinación del sistema.")
+    raw.metadata.update({"what_happened":what,"why_it_matters":why,
+      "signal_types":["Noticias"],"scopes":list(dict.fromkeys(scopes)),
+      "watch_tags":["suseso","salud laboral","seguridad social"],
+      "scores":{"economic":50,"regulatory":60,"scope":score,"novelty":score,"actionability":68}})
+    row=build_signal(raw,cfg).to_dict()
+    row["signal_types"]=["Noticias"];row["scopes"]=list(dict.fromkeys(scopes));row["editorial_relevance"]=score
+    return row
+
 def _scopes(text):
     t=text.lower();out=[]
     if re.search(r"\bisapre(?:s)?\b",t):out.append("Isapres")
