@@ -73,13 +73,23 @@
   },
   {
     "slug": "isp_anamed",
-    "name": "ISP / ANAMED",
+    "name": "Instituto de Salud Pública de Chile (ISP) / ANAMED",
     "source_type": "official",
     "system_domain": "PUBLIC_HEALTH",
     "base_confidence": 100,
     "cadence": "daily",
     "method": "official_drug_alerts",
     "default_category": "Mercado"
+  },
+  {
+    "slug": "isp_surveillance",
+    "name": "Instituto de Salud Pública de Chile (ISP)",
+    "source_type": "official",
+    "system_domain": "PUBLIC_HEALTH",
+    "base_confidence": 100,
+    "cadence": "daily",
+    "method": "official_laboratory_and_respiratory_surveillance",
+    "default_category": "Datos sectoriales"
   },
   {
     "slug": "pfizer_chile",
