@@ -4,14 +4,14 @@ from pathlib import Path
 
 import pytest
 
-from radar_salud.beta_source_engine import main
+from radar_salud.beta_source_engine_fast import main
 
 ROOT=Path(__file__).resolve().parents[1]
 
 @pytest.mark.integration
 def test_beta_source_runtime_discovery_and_health():
     if not os.getenv("OPENAI_API_KEY"):
-        pytest.skip("live beta source integration runs in the collector workflow with analysis credentials")
+        pytest.skip("live beta source integration runs in collector workflow")
     main()
     report=json.loads((ROOT/"data/state/beta_source_validation.json").read_text(encoding="utf-8"))
     required={"prestadores_data","red_davila","andes_salud","clinicas_achs_salud","achs_seguro_laboral","mutual_seguridad","ist","pulso_latercera"}
