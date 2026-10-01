@@ -324,6 +324,42 @@ def process_isp_anamed(raw,cfg):
     return row
 
 
+
+def process_clinicas_chile(raw,cfg):
+    """Clínicas de Chile sector intelligence with channel-aware materiality."""
+    channel=raw.metadata.get("clinicas_channel") or "Noticias"
+    parsed=raw.url.lower()
+    text=raw.metadata.get("page_text") or raw.raw_text or ""
+    if parsed.endswith(".pdf"):
+        try:text=extract_pdf_text(raw.url,max_pages=10)
+        except Exception as exc:raise DeferredProcessing("Clínicas de Chile PDF unreadable") from exc
+    elif not text:
+        raw=enrich(raw);text=raw.metadata.get("page_text") or raw.raw_text or ""
+    if not raw.event_date:
+        raw.event_date=_date(text[:6000]) or _date(raw.title)
+    if not raw.event_date:
+        raise DeferredProcessing("Clínicas de Chile without verified date")
+    if len(text)<160:
+        raise DeferredProcessing("Clínicas de Chile without sufficient readable content")
+    kind="noticia sectorial" if channel=="Noticias" else "documento sectorial; extraer hallazgo material, no resumir por publicar"
+    ai=analyze_news(title=raw.title,text=text[:10000],source_name="Clínicas de Chile A.G.",kind=kind)
+    if not ai:raise DeferredProcessing("Clínicas de Chile pending assessment")
+    score=int(ai.get("relevance_score",0))
+    threshold=70 if channel=="Noticias" else 75
+    if score<threshold:return None
+    what=(ai.get("what_happened") or "").strip();why=(ai.get("why_it_matters") or "").strip()
+    if len(what)<45 or len(why)<35:return None
+    signal_type="Noticias" if channel=="Noticias" else "Datos"
+    raw.metadata.update({
+      "what_happened":what,"why_it_matters":why,
+      "signal_types":[signal_type],"scopes":["Prestadores"],
+      "watch_tags":["clínicas de chile","prestadores",channel.lower()],
+      "scores":{"economic":65,"regulatory":55,"scope":score,"novelty":score,"actionability":72}
+    })
+    row=build_signal(raw,cfg).to_dict()
+    row["signal_types"]=[signal_type];row["scopes"]=["Prestadores"];row["source_channel"]=channel;row["editorial_relevance"]=score
+    return row
+
 def process_corporate_news(raw,cfg):
     """Company announcements are signals only when independently legible and material."""
     from urllib.parse import urlparse
