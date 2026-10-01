@@ -1,0 +1,146 @@
+{
+  "reviewed_at": "2026-10-01",
+  "gate_version": "1.0.0",
+  "fonasa_grd": {
+    "status": "compensated_official_alternative",
+    "direct_source_blocker": "FONASA newsroom currently returns HTTPError in engine health; direct discovery cannot be treated as verified.",
+    "blocker_is_external": true,
+    "compensation": [
+      {
+        "source": "FONASA Datos Abiertos",
+        "url": "https://datosabiertos.fonasa.cl/",
+        "role": "official open-data hub already integrated"
+      },
+      {
+        "source": "MINSAL",
+        "url": "https://www.minsal.cl/minsal-presenta-avances-de-gestion-y-ejecucion-presupuestaria-mayor-productividad-reduccion-de-espera-oncologica-y-foco-en-eficiencia/",
+        "role": "official current GRD/production evidence; 2026-09-09"
+      },
+      {
+        "source": "DIPRES",
+        "url": "https://www.dipres.gob.cl/597/articles-390193_doc_pdf.pdf",
+        "role": "official 2026 GRD financing baseline"
+      }
+    ],
+    "beta_decision": "covered"
+  },
+  "prestadores_data": {
+    "status": "pass_data",
+    "slug": "prestadores_data",
+    "listing": "https://www.superdesalud.gob.cl/tax-observatorio-de-calidad-en-salud/boletines-estadisticos-7994/",
+    "current_release": "Boletín Estadístico Informativo IP N°2-2026, enero-junio 2026",
+    "families": [
+      "RNPI",
+      "Acreditación",
+      "Mediación",
+      "Reclamos"
+    ],
+    "beta_decision": "integrate health/discovery; no public-feed date fabrication"
+  },
+  "provider_networks": {
+    "red_davila": {
+      "status": "pass_active",
+      "slug": "red_davila",
+      "evidence": "https://www.davila.cl/novedades",
+      "reason": "dated official listing; material public-private agreements and capacity changes"
+    },
+    "clinica_las_condes": {
+      "status": "pass_secondary",
+      "reason": "strategic signals are more reliably evidenced through CMF and high-trust business media; own patient-facing surface is not required for beta",
+      "coverage": [
+        "pulso_latercera",
+        "el_mercurio_economia_negocios"
+      ]
+    },
+    "clinicas_achs_salud": {
+      "status": "pass_active",
+      "slug": "clinicas_achs_salud",
+      "evidence": "https://www.achs.cl/lista-noticias",
+      "reason": "official dated newsroom includes capacity and Fonasa/MCC signals"
+    },
+    "redsalud": {
+      "status": "pass_existing",
+      "slug": "redsalud",
+      "reason": "verified newsroom already in engine"
+    },
+    "andes_salud": {
+      "status": "pass_active",
+      "slug": "andes_salud",
+      "evidence": "https://www.andessalud.cl/novedades/",
+      "reason": "dated official newsroom includes M&A, expansion and public wait-list activity"
+    },
+    "interclinicas": {
+      "status": "pass_secondary",
+      "reason": "no stable official newsroom surface established for beta; strategic events covered by Diario Financiero/Pulso",
+      "coverage": [
+        "diario_financiero",
+        "pulso_latercera"
+      ]
+    },
+    "indisa": {
+      "status": "pass_existing",
+      "slug": "indisa",
+      "reason": "existing verified newsroom; 90-day inventory remains a conservative BACKFILL gate"
+    },
+    "bupa_chile": {
+      "status": "pass_existing",
+      "slug": "bupa_chile",
+      "reason": "existing verified newsroom"
+    },
+    "clinicas_chile": {
+      "status": "pass_existing",
+      "slug": "clinicas_chile",
+      "reason": "sector association multi-channel source integrated with per-channel materiality"
+    }
+  },
+  "mutualities": {
+    "achs_seguro_laboral": {
+      "status": "pass_active",
+      "slug": "achs_seguro_laboral",
+      "evidence": "https://www.achs.cl/lista-noticias",
+      "reason": "dated official newsroom with health-labor and prevention signals"
+    },
+    "mutual_seguridad": {
+      "status": "pass_active",
+      "slug": "mutual_seguridad",
+      "evidence": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "reason": "official newsroom with dated operational/prevention updates"
+    },
+    "ist": {
+      "status": "pass_active",
+      "slug": "ist",
+      "evidence": "https://ist.cl/noticias/",
+      "reason": "stable dated official newsroom; strict noise filter required"
+    }
+  },
+  "media": {
+    "diario_financiero": {
+      "status": "pass_existing",
+      "slug": "diario_financiero",
+      "reason": "high-trust business source already integrated; now governed by Media Early Signal Gate"
+    },
+    "pulso_latercera": {
+      "status": "pass_active",
+      "slug": "pulso_latercera",
+      "evidence": "https://www.latercera.com/etiqueta/isapre/",
+      "reason": "dated Pulso health-business inventory with financial and strategic signals"
+    },
+    "el_mercurio_economia_negocios": {
+      "status": "pass_secondary",
+      "reason": "evaluated; direct E&N current listing is not sufficiently stable for deterministic beta discovery. El Mercurio/Emol business reporting is useful corroboration but would duplicate Pulso/DF and primary sources.",
+      "coverage": [
+        "diario_financiero",
+        "pulso_latercera",
+        "official_primary_sources"
+      ]
+    }
+  },
+  "epidemiology": {
+    "status": "pass_existing",
+    "sources": [
+      "minsal_respiratory_pressure",
+      "isp_surveillance"
+    ],
+    "rule": "separate ISP laboratory surveillance from MINSAL care-pressure signal and do not double count the same epidemiological week"
+  }
+}

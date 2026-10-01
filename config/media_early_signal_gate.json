@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "name": "Media Early Signal Gate",
+  "trusted_sources": [
+    "diario_financiero",
+    "pulso_latercera"
+  ],
+  "evaluated_not_active": [
+    "el_mercurio_economia_negocios"
+  ],
+  "minimum_relevance_score": 72,
+  "material_events": [
+    "M&A/control",
+    "capital/financing",
+    "investment/capacity",
+    "payer-provider agreement",
+    "public-private contract",
+    "financial inflection",
+    "regulatory/business inflection",
+    "portfolio/pricing/member movement"
+  ],
+  "excluded": [
+    "opinion/columns",
+    "branded content",
+    "generic politics",
+    "patient education",
+    "events/awards without business consequence",
+    "rumor without attributable evidence"
+  ],
+  "lifecycle": [
+    "media_reported",
+    "company_confirmed",
+    "official_confirmed"
+  ],
+  "confirmation_rule": "When a company or official source confirms the same event, upgrade the existing signal instead of creating a duplicate.",
+  "attribution_rule": "Media-reported facts remain explicitly attributed until primary confirmation.",
+  "dedupe_keys": [
+    "entity",
+    "event_family",
+    "event_date_or_window"
+  ]
+}

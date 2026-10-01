@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "purpose": "Decidir qué fuentes entran al beta sin premiar volumen ni ruido.",
+  "required_checks": [
+    "authority",
+    "stable_discovery",
+    "verified_date",
+    "material_signal_density",
+    "traceable_detail",
+    "noise_control",
+    "duplicate_control"
+  ],
+  "dispositions": {
+    "pass_active": "Integrar al motor y health/coverage.",
+    "pass_existing": "Ya integrada; mantener bajo el gate.",
+    "pass_data": "Fuente de datos validada; puede permanecer fuera del feed hasta tener semántica temporal segura.",
+    "pass_secondary": "Cubierta mejor por una fuente primaria o media ya integrada; no duplicar.",
+    "hold_external": "No activar hasta que exista superficie técnicamente estable o evidencia suficiente.",
+    "reject": "No cumple valor/ruido/evidencia."
+  },
+  "publication_rule": "Una fuente aprobada no obliga a publicar: cada ítem vuelve a pasar materialidad, fecha y evidencia."
+}
