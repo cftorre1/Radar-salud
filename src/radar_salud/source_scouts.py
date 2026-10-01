@@ -294,6 +294,43 @@ class IspAnamedAlertScout:
     def discover(self):return self.discover_from_html(fetch_html(self.PAGE))
 
 
+
+class ClinicasChileScout:
+    """Sector-association coverage across news, reports, studies and documents."""
+    SOURCE_SLUG="clinicas_chile";SOURCE_NAME="Clínicas de Chile A.G.";SOURCE_TYPE="sector_association"
+    PAGES=[
+        ("Noticias","https://www.clinicasdechile.cl/noticias/"),
+        ("Memorias","https://www.clinicasdechile.cl/knowledgebase_category/memorias/"),
+        ("Estudios y análisis","https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/page/3/?mostrar=6"),
+        ("Documentos","https://www.clinicasdechile.cl/knowledgebase_category/documentos/"),
+    ]
+    HOSTS=("www.clinicasdechile.cl","clinicasdechile.cl")
+    def discover(self):
+        from .public_source_pipeline import _Meta, _date
+        out=[];seen=set()
+        for channel,page in self.PAGES:
+            html=fetch_html(page);p=_A();p.feed(html)
+            for href,title in p.links:
+                if not href or len(title)<12:continue
+                url=urljoin(page,href);parsed=urlparse(url)
+                if parsed.netloc not in self.HOSTS or url in seen:continue
+                rootpaths=("/noticias","/knowledgebase_category/memorias","/knowledgebase_category/estudios-y-analisis","/knowledgebase_category/documentos")
+                if parsed.path.rstrip("/") in rootpaths:continue
+                if any(x in parsed.path.lower() for x in ("/author/","/tag/","/category/","/wp-admin","/page/")) and "knowledgebase" not in parsed.path.lower():continue
+                seen.add(url);event_date=_date(title);body=""
+                if not parsed.path.lower().endswith((".pdf",".xlsx",".xls",".csv")):
+                    try:
+                        meta=_Meta();meta.feed(fetch_html(url));body=" ".join(meta.text)
+                        event_date=event_date or _date(meta.published) or _date(body[:5000])
+                    except Exception:
+                        pass
+                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                                   event_date=event_date,raw_text=body[:1800],
+                                   metadata={"discovered_from":page,"clinicas_channel":channel,"page_text":body[:18000]}))
+        if not out:raise RuntimeError("Clínicas de Chile hubs unavailable or empty")
+        return out[:100]
+
+
 class CorporateNewsroomScout:
     """Monitor verified corporate newsrooms; details require editorial review."""
     SOURCES={
