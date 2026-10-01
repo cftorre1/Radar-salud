@@ -265,6 +265,43 @@ def process_fonasa(raw,cfg):
     return row
 
 
+
+def process_isp_surveillance(raw,cfg):
+    """Official ISP surveillance evidence; promote only dated, substantive material."""
+    channel=raw.metadata.get("isp_channel") or "Vigilancia"
+    parsed=raw.url.lower()
+    text=raw.metadata.get("page_text") or raw.raw_text or ""
+    if parsed.endswith(".pdf"):
+        try:text=extract_pdf_text(raw.url,max_pages=8)
+        except Exception as exc:raise DeferredProcessing("ISP surveillance PDF unreadable") from exc
+    elif not text:
+        raw=enrich(raw);text=raw.metadata.get("page_text") or raw.raw_text or ""
+    if not raw.event_date:
+        raw.event_date=_date(text[:6000]) or _date(raw.title)
+    if not raw.event_date:
+        raise DeferredProcessing("ISP surveillance without verified date")
+    if len(text)<180:
+        raise DeferredProcessing("ISP surveillance without sufficient readable content")
+    ai=analyze_official_news(title=raw.title,text=text[:9000],source_name="Instituto de Salud Pública de Chile (ISP)")
+    score=int(ai.get("relevance_score")) if ai else 72
+    if score<65:return None
+    what=(ai.get("what_happened") if ai else raw.title) or raw.title
+    why=(ai.get("why_it_matters") if ai else
+         "La publicación oficial permite seguir circulación viral y actividad de laboratorio para anticipar demanda y presión asistencial.")
+    low=f"{raw.title} {text}".lower()
+    scopes=["Salud pública"]
+    if any(x in low for x in ("respir","influenza","virus","urgencia","hospital")):scopes+=["Prestadores","Fonasa","Isapres"]
+    raw.metadata.update({
+      "what_happened":what,"why_it_matters":why,
+      "signal_types":["Datos"],"scopes":list(dict.fromkeys(scopes)),
+      "watch_tags":["isp","vigilancia","laboratorio",channel.lower()],
+      "event_type":"DATA_RELEASE",
+      "scores":{"economic":40,"regulatory":40,"scope":score,"novelty":score,"actionability":78}
+    })
+    row=build_signal(raw,cfg).to_dict()
+    row["signal_types"]=["Datos"];row["scopes"]=list(dict.fromkeys(scopes));row["source_channel"]=channel;row["editorial_relevance"]=score
+    return row
+
 def process_isp_anamed(raw,cfg):
     """Publish an official alert only with dated, readable PDF and assessed implications."""
     if not raw.event_date or not raw.url.lower().endswith(".pdf"):
