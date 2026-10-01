@@ -224,6 +224,40 @@ class _TableRows(HTMLParser):
             self.rows.append(self.row);self.row=None
 
 
+
+class IspSurveillanceScout:
+    """Official ISP laboratory surveillance and respiratory-virus publications."""
+    SOURCE_SLUG="isp_surveillance";SOURCE_NAME="Instituto de Salud Pública de Chile (ISP)";SOURCE_TYPE="official"
+    PAGES=[
+        ("Boletines de vigilancia de laboratorios","https://www.ispch.gob.cl/boletin/"),
+        ("Vigilancia de virus respiratorios","https://www.ispch.gob.cl/virusrespiratorios/"),
+    ]
+    HOSTS=("www.ispch.gob.cl","ispch.gob.cl")
+    def discover(self):
+        from .public_source_pipeline import _Meta, _date
+        out=[];seen=set()
+        for channel,page in self.PAGES:
+            html=fetch_html(page);p=_A();p.feed(html)
+            for href,title in p.links:
+                if not href or len(title)<8:continue
+                url=urljoin(page,href);parsed=urlparse(url)
+                if parsed.netloc not in self.HOSTS or url in seen:continue
+                low=f"{title} {parsed.path}".lower()
+                if not any(k in low for k in ("bolet","vigil","virus","respir","influenza","laboratorio","informe","reporte",".pdf")):continue
+                seen.add(url);event_date=_date(title);body=""
+                if not parsed.path.lower().endswith(".pdf"):
+                    try:
+                        meta=_Meta();meta.feed(fetch_html(url));body=" ".join(meta.text)
+                        event_date=event_date or _date(meta.published) or _date(body[:5000])
+                    except Exception:
+                        pass
+                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                                   event_date=event_date,raw_text=body[:1800],
+                                   metadata={"discovered_from":page,"isp_channel":channel,"page_text":body[:18000]}))
+        if not out:raise RuntimeError("ISP surveillance hubs unavailable or empty")
+        return out[:80]
+
+
 class IspAnamedAlertScout:
     """Official ANAMED alerts with a verified date in the listing row."""
     SOURCE_SLUG="isp_anamed";SOURCE_NAME="ISP / ANAMED";SOURCE_TYPE="official"
