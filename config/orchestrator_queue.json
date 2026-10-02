@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-09-30",
+  "updated_at": "2026-10-02",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -2760,6 +2760,50 @@
       "next_action": "Ejecutar Fonasa/GRD y continuar automáticamente.",
       "approved_at": "2026-09-29",
       "progress": "Dirección amplía fuentes oficiales/sectoriales: Clínicas de Chile (Noticias/Memorias/Estudios/Documentos), ISP (boletines laboratorio + virus respiratorios) y FONASA Datos Abiertos (Noticias/Biblioteca/Estadísticas/Analysis). Integrar como canales internos, una entidad visible por institución."
+    },
+    {
+      "id": "source_runtime_audit_2026_10_02",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Pele + Paolo + Source Intelligence",
+      "source": "Dirección",
+      "objective": "Corregir brechas entre fuentes conversadas, contenido realmente publicado en la web y señales efectivamente detectadas/seleccionadas/publicadas por Alicanto.",
+      "instructions": [
+        "PRIORIDAD 0: reconciliar ciclo diario core. Muchas fuentes base tienen checked_at congelado en 2026-09-30 mientras validaciones beta corren 2026-10-02. Toda fuente activa debe tener polling diario verificable o un estado explícito de blocker.",
+        "DIARIO FINANCIERO: corregir frescura y sobre-rechazo. La sección DF Salud publica contenido nuevo (incluye nota 01-10-2026 sobre bono electrónico/huella) pero source_health queda en 22-09 y 116 rechazadas. Auditar discovery, date extraction, seen-state y Media Early Signal Gate.",
+        "PULSO/LA TERCERA: pasar de beta validation a integración daily/live. Hay señal estratégica 29-09-2026 sobre reestructuración Empresas Banmédica/Clínica Santa María que no está en feed.",
+        "SUSESO: mantener noticias + normativa + fiscalización. Circular 3926 debe estar visible con contrato normativo específico. Fiscalización Isapres/COMPIN no puede quedar en discovered=38/published=0 sin explicación por ítem.",
+        "SUPERINTENDENCIA DE SALUD FISCALIZACIÓN: source_health no puede mostrar last_signal_at 2025-10-24 cuando la web tiene sanciones a prestadores en septiembre 2026 y sanciones Isapre en julio 2026. Reconciliar health semantics, date parsing y pulso por período.",
+        "FONASA: direct newsroom y Datos Abiertos siguen HTTPError. Implementar alternativa técnica estable o declarar blocker visible; compensar con MINSAL/SIS/DIPRES sólo con atribución correcta.",
+        "ISP: ANAMED sigue URLError. Vigilancia respiratoria oficial tiene informes 2026 recientes; integrar al ciclo diario y separar de MINSAL care-pressure.",
+        "DEIS: discovered=0 no es saludable. Cambiar a coverage_gap y localizar superficies de datos/publicaciones con fechas verificables.",
+        "CLÍNICAS DE CHILE: canales Noticias/Memorias/Estudios/Documentos deben estar en daily runtime; última noticia visible en web 28-08-2026, por lo que no inventar frescura posterior.",
+        "RED DÁVILA: beta runtime falla RuntimeError pese a listing oficial accesible y fechado. Corregir parser.",
+        "ANDES SALUD: discovery funciona; aplicar gate de negocio para distinguir contenido clínico educativo de alianzas/inversión/expansión. Señal 24-09 MetLife y 08-09 clínica Talca son materialmente relevantes.",
+        "CLÍNICAS ACHS SALUD / ACHS SEGURO LABORAL / MUTUAL: parsers beta fallan RuntimeError; reparar antes de considerarlas activas.",
+        "IST: discovery devuelve contenido viejo (newest_event_date 2016-11-02) aunque el newsroom existe. Corregir selector/date parsing.",
+        "RED SALUD: discovery activo; mantener filtro estricto. Contenido reciente 29-30 sep parece principalmente corporativo/promocional, mientras convenio Nueva Masvida 21-09 sí es señal.",
+        "INDISA: runner da HTTPError aunque la web pública tiene contenido 11-09-2026 sobre alianza con Isapre Esencial. Corregir acceso/parser.",
+        "DIARIO OFICIAL: no se observa evidencia de falla de cobertura hoy; mantener monitoreo y reconciliar last_selected/dashboard.",
+        "EL MERCURIO/E&N y EMOL: mantener como secundarios/corroboración si no existe listing determinístico estable; no declararlos activos hasta tener discovery reproducible.",
+        "Para cada fuente: registrar web_latest_verified, engine_checked_at, engine_latest_detected, selected/published, failure_reason y decisión active/secondary/blocked.",
+        "No considerar una fuente 'activa' sólo porque un test aislado o Source Quality Gate pase: debe existir ejecución real en daily runtime y evidencia de una señal reciente o de ausencia genuina."
+      ],
+      "evidence_required": [
+        "matriz de auditoría completa por fuente",
+        "daily runtime con checked_at actual para fuentes activas",
+        "DF detectando contenido Salud de 01-10 o rechazo editorial trazable",
+        "Pulso/La Tercera integrando señal estratégica reciente",
+        "SUSESO Circular 3926 visible y fiscalización reconciliada",
+        "Superintendencia fiscalización fechas reconciliadas",
+        "FONASA/ISP/DEIS con estado técnico honesto",
+        "Dávila/ACHS/Mutual/IST parsers reparados o blockers exactos",
+        "QA + Reviewer + snapshot PASS"
+      ],
+      "approved_at": "2026-10-02",
+      "progress": "Auditoría 02-10 detecta brecha entre web pública y runtime: core sources stale desde 30-09; DF sobre-rechaza y pierde señal 01-10; Pulso/La Tercera valida pero no publica; varios beta parsers fallan. Corrección integral en curso.",
+      "current_subfront": "daily_runtime_and_df_latercera",
+      "next_action": "Reparar polling diario core + DF + Pulso/La Tercera; luego SUSESO/SIS fiscalización y fuentes bloqueadas."
     }
   ],
   "execution_policy": {
