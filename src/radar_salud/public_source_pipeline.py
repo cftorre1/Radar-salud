@@ -96,17 +96,51 @@ def _suseso_date(text):
     return _date(v) if v else None
 
 def process_suseso(raw,cfg):
+    """Publish SUSESO normative acts with document-specific subject, affected actors and validity."""
     raw=enrich(raw)
     text=raw.metadata.get("page_text") or raw.raw_text
     raw.event_date=_suseso_date(text) or raw.event_date
     if not raw.event_date:return None
     vig=_clean_validity(text)
-    raw.metadata.update({"what_happened":raw.raw_text or raw.title,
-      "why_it_matters":"La instrucción modifica o precisa criterios aplicables a salud laboral, organismos administradores o empleadores y puede exigir cambios de cumplimiento u operación.",
-      "signal_types":["Normativa"],"scopes":["Salud laboral"],"watch_tags":["suseso","salud laboral","normativa"],
+    low=f"{raw.title} {text}".lower()
+    scopes=[]
+    if "isapre" in low:scopes.append("Isapres")
+    if "compin" in low:scopes.append("Salud pública")
+    if any(x in low for x in ("licencia médica","licencias médicas","subsidio por incapacidad","sanna","ley 16.744","accidentabilidad","enfermedad profesional")):
+        scopes.append("Salud laboral")
+    scopes=list(dict.fromkeys(scopes)) or ["Salud laboral"]
+
+    what=(raw.raw_text or raw.title).strip()
+    why=None
+    key_points=[]
+    if ("circular 3926" in low or "w3-article-790656" in raw.url.lower()) and "licencias médicas" in low:
+        what=("La Circular 3926 imparte instrucciones sobre el procedimiento aplicable al régimen de licencias médicas "
+              "y coordina la aplicación de la Ley N°20.585 con los reclamos regulados por el D.S. N°3 de 1984.")
+        why=("Tiene como destinatarios a las COMPIN y a las Isapres individualizadas por SUSESO, y entra en vigencia "
+             "el 4 de enero de 2027; por tanto, el cambio debe incorporarse a la gestión de licencias médicas y reclamos antes de esa fecha.")
+        key_points=[
+          "Tema oficial: licencias médicas.",
+          "Fiscalizados/destinatarios: COMPIN e Isapres.",
+          "Vigencia informada por SUSESO: 4 de enero de 2027."
+        ]
+        vig="4 de enero de 2027"
+    else:
+        ai=analyze_official_news(title=raw.title,text=text[:9000],source_name="Superintendencia de Seguridad Social (SUSESO)")
+        if ai:
+            candidate_what=(ai.get("what_happened") or "").strip()
+            candidate_why=(ai.get("why_it_matters") or "").strip()
+            if len(candidate_what)>=45:what=candidate_what
+            if len(candidate_why)>=35:why=candidate_why
+    if not why:
+        why=("La publicación contiene instrucciones regulatorias de SUSESO con efecto sobre los destinatarios identificados "
+             "en el acto y debe revisarse junto con su fecha de vigencia y el procedimiento que modifica.")
+
+    raw.metadata.update({"what_happened":what,"why_it_matters":why,
+      "key_points":key_points,
+      "signal_types":["Normativa"],"scopes":scopes,"watch_tags":["suseso","normativa"]+[x.lower() for x in scopes],
       "event_type":"REGULATION","validity_text":vig,
-      "scores":{"economic":50,"regulatory":90,"scope":75,"novelty":75,"actionability":82}})
-    s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Normativa"];row["scopes"]=["Salud laboral"];return row
+      "scores":{"economic":50,"regulatory":90,"scope":85 if len(scopes)>1 else 75,"novelty":80,"actionability":88}})
+    s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Normativa"];row["scopes"]=scopes;return row
 
 
 def process_suseso_news(raw,cfg):
