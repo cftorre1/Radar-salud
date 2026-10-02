@@ -159,6 +159,34 @@ def _compact_subject(text, max_chars=105):
     cut=value[:max_chars+1].rsplit(" ",1)[0].rstrip(" ,;:-")
     return cut
 
+
+def _suseso_normative_upgrade(s):
+    """Re-evaluate already-captured SUSESO acts with document-specific evidence."""
+    r=dict(s)
+    url=str(r.get("source_url") or "")
+    title=str(r.get("title") or "")
+    if r.get("source_name")!="Superintendencia de Seguridad Social (SUSESO)":
+        return r
+    if "Normativa" not in (r.get("signal_types") or []) and r.get("event_type")!="REGULATION":
+        return r
+    low=f"{title} {r.get('what_happened') or ''}".lower()
+    if "circular 3926" in low or "w3-article-790656" in url.lower():
+        r["display_title"]="Circular 3926 · Licencias médicas: nuevo procedimiento para COMPIN e Isapres desde enero de 2027"
+        r["card_what"]="SUSESO instruye el procedimiento aplicable al régimen de licencias médicas y coordina la Ley N°20.585 con los reclamos del D.S. N°3."
+        r["card_why"]="La circular tiene como destinatarios a COMPIN e Isapres y entra en vigencia el 4 de enero de 2027."
+        r["what_happened"]=r["card_what"]
+        r["why_it_matters"]=r["card_why"]
+        r["validity_text"]="4 de enero de 2027"
+        r["scopes"]=["Isapres","Salud pública","Salud laboral"]
+        r["key_points"]=[
+            "Tema oficial: licencias médicas.",
+            "Destinatarios/fiscalizados: COMPIN e Isapres.",
+            "Vigencia: 4 de enero de 2027."
+        ]
+        r["radar_score"]=max(80,int(r.get("radar_score") or 0))
+        r["actionability_score"]=max(88,int(r.get("actionability_score") or 0))
+    return r
+
 def _normative_contract(s):
     r=dict(s)
     if r.get("event_type")!="REGULATION" and "Normativa" not in (r.get("signal_types") or []):return r
@@ -482,7 +510,7 @@ def _sanction_pulses(signals, today=None):
 def curate(signals,resolve_external=True):
     normalized=[]
     for s in signals:
-        r=_normative_contract(_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s))))))
+        r=_normative_contract(_suseso_normative_upgrade(_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s)))))))
         ok,reason,q=publication_ready(r);r["publication_ready_score"]=q;r["publication_gate_reason"]=reason
         if ok:normalized.append(r)
     if not normalized:return []
