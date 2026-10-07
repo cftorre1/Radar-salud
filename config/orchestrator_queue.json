@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-02",
+  "updated_at": "2026-10-07",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -2804,6 +2804,45 @@
       "progress": "Auditoría 02-10 detecta brecha entre web pública y runtime: core sources stale desde 30-09; DF sobre-rechaza y pierde señal 01-10; Pulso/La Tercera valida pero no publica; varios beta parsers fallan. Corrección integral en curso.",
       "current_subfront": "daily_runtime_and_df_latercera",
       "next_action": "Reparar polling diario core + DF + Pulso/La Tercera; luego SUSESO/SIS fiscalización y fuentes bloqueadas."
+    },
+    {
+      "id": "independent_auditor_and_autonomy_controller_2026_10_07",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Paolo + Auditor + Pele",
+      "source": "Dirección",
+      "objective": "Crear un auditor independiente y un control loop que detecte fuentes falsas-sanas, runtime detenido y autonomía estancada antes de que Toba tenga que preguntar.",
+      "depends_on": [],
+      "instructions": [
+        "Adoptar docs/AGENT_AUDITOR_CONTRACT.md y config/auditor_policy.json como contrato del Auditor independiente.",
+        "Auditar inmediatamente source_runtime_audit_2026_10_02 y autonomy_continuity_hardening_v1_1_2026_09_29 contra evidencia real, no status declarados.",
+        "Generar matriz completa active/degraded/blocked/secondary/remove para todas las fuentes conversadas.",
+        "P0 fuentes: reparar daily runtime core; DF; Pulso/La Tercera; SUSESO normativa/fiscalización; Superintendencia fiscalización.",
+        "P1 fuentes: FONASA, ISP/ANAMED, DEIS, INDISA, Dávila, Clínicas ACHS, ACHS Seguro Laboral, Mutual, IST y Andes Salud.",
+        "Tras cada repair: ejecutar discovery real, revisar reason distribution, snapshot, QA y Reviewer.",
+        "No detenerse por una fuente bloqueada; saltar a otra independiente.",
+        "Registrar todo owner prompt de status/restart como autonomy defect.",
+        "La autonomía no pasa hasta completar 4h de progreso útil con al menos una recuperación real y una transición automática sin Toba."
+      ],
+      "constraints": [
+        "No main/producción sin Dirección",
+        "No gasto nuevo",
+        "No secretos/credenciales nuevos sin autorización",
+        "No degradar gates editoriales para fabricar señales"
+      ],
+      "evidence_required": [
+        "data/audits/source_autonomy_audit_latest.json",
+        "matriz de fuentes completa con web vs engine vs snapshot",
+        "DF y Pulso/La Tercera reconciliados",
+        "SUSESO 3926 y fiscalización reconciliadas",
+        "daily runtime core con polling fresco",
+        "parsers rotos reparados o blockers exactos",
+        "4h autonomy acceptance PASS"
+      ],
+      "approved_at": "2026-10-07",
+      "progress": "Dirección ordena pasar de contratos declarativos a auditor independiente + controlador de autonomía.",
+      "current_subfront": "auditor_bootstrap_and_source_runtime_recovery",
+      "next_action": "Ejecutar auditoría inicial; reparar P0 sin esperar a Toba."
     }
   ],
   "execution_policy": {
