@@ -61,3 +61,16 @@ def test_fonasa_grd_compensation_is_official_and_explicit():
     assert row["beta_decision"]=="covered"
     hosts=" ".join(x["url"] for x in row["compensation"])
     assert "minsal.cl" in hosts and "dipres.gob.cl" in hosts and "datosabiertos.fonasa.cl" in hosts
+
+
+def test_compact_spanish_date_parser_used_by_provider_newsrooms():
+    from radar_salud.public_source_pipeline import _date
+    assert _date("11sept.2026")=="2026-09-11"
+    assert _date("24ago.2026")=="2026-08-24"
+
+
+def test_beta_source_surfaces_use_current_newsroom_routes():
+    sources=CuratedBetaSourceScout.SOURCES
+    assert sources["clinicas_achs_salud"]["page"]=="https://www.achs.cl/centro-de-noticias"
+    assert sources["achs_seguro_laboral"]["page"]=="https://www.achs.cl/centro-de-noticias"
+    assert sources["pulso_latercera"]["page"]=="https://www.latercera.com/canal/pulso/"

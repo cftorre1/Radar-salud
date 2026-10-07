@@ -62,7 +62,7 @@ class CuratedBetaSourceScout:
         "clinicas_achs_salud": {
             "name": "Clínicas Achs Salud",
             "type": "corporate",
-            "page": "https://www.achs.cl/lista-noticias",
+            "page": "https://www.achs.cl/centro-de-noticias",
             "hosts": ("www.achs.cl", "achs.cl"),
             "path": r"/centro-de-noticias/noticia/20\d{2}/[^/]+/?",
             "role": "provider_achs",
@@ -70,7 +70,7 @@ class CuratedBetaSourceScout:
         "achs_seguro_laboral": {
             "name": "Achs Seguro Laboral",
             "type": "mutuality",
-            "page": "https://www.achs.cl/lista-noticias",
+            "page": "https://www.achs.cl/centro-de-noticias",
             "hosts": ("www.achs.cl", "achs.cl"),
             "path": r"/centro-de-noticias/noticia/20\d{2}/[^/]+/?",
             "role": "mutuality",
@@ -94,7 +94,7 @@ class CuratedBetaSourceScout:
         "pulso_latercera": {
             "name": "Pulso / La Tercera",
             "type": "press_high_trust",
-            "page": "https://www.latercera.com/etiqueta/isapre/",
+            "page": "https://www.latercera.com/canal/pulso/",
             "hosts": ("www.latercera.com", "latercera.com"),
             "path": r"/pulso/noticia/[^/]+/?",
             "role": "media",
