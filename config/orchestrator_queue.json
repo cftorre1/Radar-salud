@@ -2843,6 +2843,45 @@
       "progress": "Dirección ordena pasar de contratos declarativos a auditor independiente + controlador de autonomía.",
       "current_subfront": "auditor_bootstrap_and_source_runtime_recovery",
       "next_action": "Ejecutar auditoría inicial; reparar P0 sin esperar a Toba."
+    },
+    {
+      "id": "autonomy_architecture_redesign_2026_10_07",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Autonomy Architect + Paolo + Auditor",
+      "source": "Dirección",
+      "objective": "Rediseñar y validar la arquitectura integral de autonomía para que Alicanto avance sin depender de mensajes de Toba.",
+      "depends_on": [],
+      "instructions": [
+        "Leer docs/AGENT_AUTONOMY_ARCHITECT.md y config/autonomy_architect_policy.json.",
+        "Auditar trigger→executor→evidence→recovery de todas las capas actuales.",
+        "Separar claramente vigilancia de ejecución: todo watchdog debe apuntar a un executor real.",
+        "Reactivar y modernizar el Autonomous Executor como lane de escritura sobre staging.",
+        "Usar Pelé/Work para tareas largas/complejas, pero nunca como único motor de avance.",
+        "El Auditor valida progreso y fuentes; el Arquitecto audita también al Auditor y al orquestador.",
+        "Implementar acceptance Stage A 4h sin owner restart, luego 24h y 7d.",
+        "Convertir cada owner prompt de reactivación en defecto de arquitectura y control preventivo.",
+        "No cerrar la tarea con documentación solamente: exigir evidencia de ejecución autónoma real."
+      ],
+      "constraints": [
+        "No main/producción",
+        "No gasto nuevo",
+        "No credenciales nuevas",
+        "No legal/privacidad",
+        "No cambios irreversibles"
+      ],
+      "evidence_required": [
+        "matriz trigger-executor-evidence-recovery",
+        "executor horario habilitado",
+        "kickoff automático sin mensaje humano",
+        "commit/heartbeat generado por executor",
+        "recovery real demostrado",
+        "Stage A 4h PASS"
+      ],
+      "approved_at": "2026-10-07",
+      "progress": "Arquitecto creado; se activa executor real y kickoff automático.",
+      "current_subfront": "activate_real_executor",
+      "next_action": "Habilitar Autonomous Executor, lanzar kickoff y auditar primer pickup."
     }
   ],
   "execution_policy": {
