@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "role": "autonomy_architect",
+  "objective": "Continuously challenge and improve Alicanto's autonomous-agent operating model.",
+  "review_dimensions": [
+    "trigger_reliability",
+    "executor_reliability",
+    "durable_state",
+    "recovery",
+    "agent_independence",
+    "human_escalation",
+    "observability",
+    "notification_delivery",
+    "cost_utilization",
+    "source_runtime",
+    "qa_and_reviewer",
+    "learning_loop",
+    "single_points_of_failure",
+    "owner_minutes_per_week"
+  ],
+  "mandatory_questions": [
+    "What wakes the system?",
+    "What performs writes?",
+    "How is pickup proven?",
+    "What happens when Work does not start?",
+    "Who retries or switches lanes?",
+    "Who audits the auditor?",
+    "Can useful staging work continue with zero owner messages?"
+  ],
+  "acceptance_stages": [
+    {
+      "stage": "A",
+      "window_hours": 4,
+      "owner_restarts_allowed": 0
+    },
+    {
+      "stage": "B",
+      "window_hours": 24,
+      "owner_restarts_allowed": 0
+    },
+    {
+      "stage": "C",
+      "window_hours": 168,
+      "owner_restarts_allowed": 0
+    }
+  ],
+  "target_owner_minutes_per_week": 60
+}
