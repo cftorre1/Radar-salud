@@ -1,0 +1,87 @@
+{
+  "generated_at": "2026-10-07T07:45:00-03:00",
+  "autonomous_pickup": {
+    "proven": true,
+    "first_commit": "9ce5ee965bd4c4845157951c11a5b42305332b92",
+    "owner_prompt_required": false
+  },
+  "accepted_change": {
+    "commit": "2d76d534d12d823922a9864f686b1f587f164fd4",
+    "change": "source_health truthfulness: discovered=0 with no last signal is warning/coverage gap, not healthy",
+    "checks": "Python and Node unit tests PASS in staging preview #706; browser QA fails on pre-existing Home/browser regressions"
+  },
+  "daily_runtime_root_cause": {
+    "latest_failed_schedule_run": 37492692048,
+    "date": "2026-10-06",
+    "failure": "Tests before collection abort before collectors",
+    "exact_test": "tests/test_beta_source_runtime_fast.py::test_beta_source_runtime_discovery_and_health",
+    "exact_source_failure": "clinicas_achs_salud RuntimeError; same beta report also shows red_davila/achs_seguro_laboral/mutual_seguridad RuntimeError",
+    "consequence": "core daily collectors are skipped, so core source health remains stale even though the schedule itself fires",
+    "architecture_finding": "known-beta live integration health is coupled as a blocking precondition for independent core collection"
+  },
+  "source_web_reconciliation": {
+    "red_davila": {
+      "web": "official newsroom has dated Sep 2026 items",
+      "engine": "RuntimeError",
+      "status": "repair_required"
+    },
+    "clinicas_achs_salud": {
+      "web": "current newsroom is /centro-de-noticias with dated Sep 2026 items",
+      "engine": "configured historical /lista-noticias produced RuntimeError",
+      "status": "candidate_route_repair_committed_not_accepted"
+    },
+    "achs_seguro_laboral": {
+      "web": "same current /centro-de-noticias surface",
+      "engine": "RuntimeError",
+      "status": "candidate_route_repair_committed_not_accepted"
+    },
+    "mutual_seguridad": {
+      "web": "official portal listing is dynamic/opaque to current crawler; direct 2026 official process content exists",
+      "engine": "RuntimeError",
+      "status": "exact_listing_parser_blocker"
+    },
+    "ist": {
+      "web": "current Oct 2026 content exists",
+      "engine": "discovery returns newest 2016-11-02",
+      "status": "date_selector_parser_gap"
+    },
+    "pulso_latercera": {
+      "web": "Pulso main carries Banmedica/Clinica Santa Maria Sep 29 2026 early signal",
+      "engine": "old isapre tag surface returns stale inventory",
+      "status": "candidate_broader_route_repair_committed_not_accepted"
+    },
+    "diario_financiero": {
+      "web": "DF Salud has Oct 1 2026 bono/biometric article",
+      "engine": "last_signal_at Sep 22 with high rejection count",
+      "status": "discovery_or_gate_gap"
+    }
+  },
+  "attempted_repairs": [
+    {
+      "commit": "db6aed2a6576b5e867b1124cd49f22f0babeff74",
+      "change": "switch ACHS to /centro-de-noticias and Pulso to /canal/pulso; add date parser regression candidate",
+      "result": "CI failed on new compact-date regression; candidate not accepted"
+    },
+    {
+      "action": "rerun failed Daily Radar schedule run",
+      "result": "blocked by platform safety"
+    },
+    {
+      "action": "repair compact-date parser / revert failed test candidate",
+      "result": "write/update blocked by platform safety in automation lane"
+    }
+  ],
+  "exact_blocker": {
+    "human_required": false,
+    "type": "automation_lane_write_safety",
+    "scope": "test/source parser repair and Actions rerun were blocked; normal durable data/source-health writes were proven",
+    "next_safe_action": "next executor lane should first reconcile db6 candidate to green, then repair live beta sources one by one; do not claim source repairs accepted until unit and runtime validation pass"
+  },
+  "autonomy_acceptance": {
+    "stage_a_4h": "in_progress_not_passed",
+    "pickup": true,
+    "durable_write": true,
+    "failure_recovery": "partial: switched P0 after blocked workflow trigger and diagnosed actual scheduled-runtime failure",
+    "autonomous_transition": true
+  }
+}
