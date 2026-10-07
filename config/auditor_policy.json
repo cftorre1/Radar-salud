@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "name": "Alicanto Independent Auditor",
+  "cadence": {
+    "liveness_minutes": 60,
+    "source_runtime_daily": true,
+    "deep_audit_daily": true
+  },
+  "thresholds": {
+    "autonomy_stale_minutes": 30,
+    "core_source_poll_hours": 26,
+    "beta_source_poll_hours": 48
+  },
+  "severity": {
+    "P0": [
+      "critical executable work stale without human blocker",
+      "core daily runtime not running",
+      "public evidence materially newer than engine state",
+      "source marked active while parser/runtime is broken"
+    ],
+    "P1": [
+      "discovery works but no selection/publication explanation",
+      "source freshness unknown after successful polling",
+      "repeated parser/date mismatch"
+    ],
+    "P2": [
+      "secondary source unavailable with primary coverage intact"
+    ]
+  },
+  "rules": {
+    "trust_status_labels": false,
+    "verify_end_to_end": true,
+    "require_failure_reason_distribution": true,
+    "require_real_runtime_evidence_for_active_source": true,
+    "owner_prompt_is_autonomy_defect": true
+  },
+  "escalation": {
+    "human_only": [
+      "production_or_main",
+      "irreversible_or_destructive",
+      "new_spend_or_budget",
+      "new_credentials_or_account_auth",
+      "legal_or_privacy",
+      "strategy_conflict",
+      "no_independent_work_after_bounded_repair"
+    ],
+    "staging_source_repairs": "autonomous"
+  }
+}
