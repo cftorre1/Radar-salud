@@ -1,0 +1,100 @@
+{
+  "generated_at": "2026-10-07",
+  "verdict": "FAIL_AUTONOMY_AND_SOURCE_RUNTIME",
+  "human_blocker_for_staging_repair": false,
+  "executive_summary": [
+    "No existe bloqueo humano para reparar fuentes, runtime diario, QA o autonomía en staging.",
+    "La autonomía actual falla porque Pelé no tiene un controlador externo confiable que detecte staleness y fuerce continuidad.",
+    "Varias fuentes están aprobadas o testeadas pero no operan end-to-end en el runtime diario real.",
+    "El sistema debe privilegiar menos fuentes realmente activas sobre muchas fuentes nominalmente integradas."
+  ],
+  "autonomy": {
+    "status": "failed",
+    "last_known_pele_progress_at": "2026-09-29T20:44:00Z",
+    "owner_followup_required_repeatedly": true,
+    "acceptance_4h_pass": false,
+    "root_causes": [
+      "contrato declarativo sin watchdog externo efectivo",
+      "no existe transición garantizada entre PASS/FAIL y siguiente tarea",
+      "validaciones aisladas no equivalen a operación continua",
+      "queue status no se reconcilió automáticamente con evidencia real"
+    ],
+    "required_controls": [
+      "auditor independiente",
+      "watchdog horario",
+      "heartbeat durable",
+      "stale detection + recovery",
+      "source runtime audit end-to-end",
+      "owner prompt registrado como autonomy defect"
+    ]
+  },
+  "repair_order": [
+    {
+      "priority": "P0",
+      "front": "daily_runtime_core",
+      "goal": "todas las fuentes core realmente polled en <=26h o blocker explícito"
+    },
+    {
+      "priority": "P0",
+      "front": "diario_financiero",
+      "goal": "reconciliar publicaciones web nuevas vs discovery/seen/rejection"
+    },
+    {
+      "priority": "P0",
+      "front": "pulso_latercera",
+      "goal": "pasar beta validation a daily runtime y publicar early signals materiales"
+    },
+    {
+      "priority": "P0",
+      "front": "suseso_normativa_fiscalizacion",
+      "goal": "3926 + fiscalización Isapres/COMPIN reconciliadas end-to-end"
+    },
+    {
+      "priority": "P0",
+      "front": "superintendencia_fiscalizacion",
+      "goal": "fechas y sanciones recientes coherentes en health/feed"
+    },
+    {
+      "priority": "P1",
+      "front": "fonasa_isp_deis_indisa",
+      "goal": "reparar parser/acceso o declarar blocker honesto"
+    },
+    {
+      "priority": "P1",
+      "front": "providers_mutuals",
+      "goal": "Dávila/ACHS/Mutual/IST parsers reparados; Andes materiality gate activo"
+    },
+    {
+      "priority": "P1",
+      "front": "integrated_qa",
+      "goal": "snapshot + source matrix + reviewer PASS"
+    }
+  ],
+  "source_status_snapshot": {
+    "diario_financiero": "degraded_stale_and_overrejected",
+    "pulso_latercera": "discovery_only_not_publishing",
+    "suseso": "partially_active_normative_and_fiscalization_gap",
+    "superintendencia_fiscalizacion": "false_stale_semantics",
+    "fonasa": "blocked_http",
+    "fonasa_datos_abiertos": "blocked_http",
+    "isp_anamed": "blocked_url",
+    "deis": "coverage_gap_false_healthy",
+    "indisa": "blocked_http",
+    "red_davila": "runtime_error",
+    "clinicas_achs_salud": "runtime_error",
+    "achs_seguro_laboral": "runtime_error",
+    "mutual_seguridad": "runtime_error",
+    "ist": "date_parser_gap",
+    "andes_salud": "discovery_ok_publication_gap",
+    "prestadores_data": "discovery_ok_value_layer_missing"
+  },
+  "human_escalation_only_for": [
+    "main/production promotion",
+    "new external spend or budget change",
+    "new credentials/account authorization",
+    "legal/privacy decision",
+    "irreversible/destructive action",
+    "strategy conflict requiring Dirección"
+  ],
+  "next_unattended_step": "Auditor verifies current runtime and failure logs, then directs Pelé to repair P0 in order without waiting for owner input."
+}
