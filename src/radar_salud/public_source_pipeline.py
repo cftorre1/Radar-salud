@@ -33,6 +33,8 @@ def _date(text):
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
     m=re.search(r"(\d{1,2})\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+(20\d{2})",text,re.I)
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
+    m=re.search(r"(\d{1,2})\s*([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\.?\s*(20\d{2})",text,re.I)
+    if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
     return None
 
 def _field(text,label):
