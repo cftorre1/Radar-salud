@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-10-07T07:52:00-03:00",
+  "automation_turn": 2,
+  "autonomous_pickup": true,
+  "owner_prompt_required": false,
+  "executor_schedule": {
+    "status": "corrected",
+    "next_start_local": "2026-10-07T08:00:00-03:00",
+    "cadence": "hourly"
+  },
+  "p0": {
+    "daily_runtime_core": {
+      "root_cause": "scheduled workflow fires but pre-collection pytest includes live beta-source integration; beta parser failure aborts all collectors",
+      "code_repair_attempted": true,
+      "automation_lane_write_blocked": true,
+      "human_blocker": false
+    }
+  },
+  "next_action": "Use next write-capable executor cycle to restore staging green, then decouple beta integration health from core collection while retaining explicit nonblocking health evidence."
+}
