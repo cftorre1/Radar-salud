@@ -6,6 +6,7 @@
 - **Paolo** — Orquestador operacional. Convierte decisiones aprobadas en trabajo ejecutable, coordina agentes, gates, recuperación y evidencia.
 - **Pelé** — ChatGPT Work. Es el agente autónomo de larga duración: consume backlog, investiga fallas, ejecuta iteraciones, solicita revisiones y continúa sin esperar instrucciones humanas mientras exista trabajo autorizado.
 - **Pato** — PMO. Es el registro durable de readiness, evidencia, bloqueos, desviaciones y decisiones.
+- **Auditor** — control independiente de confiabilidad y autonomía. No confía en estados declarados: contrasta queue, Actions, source health, snapshot y evidencia pública; detecta stalls, fuentes falsas-sanas y gaps discovery→publicación, y devuelve reparaciones concretas a Paolo/Pelé.
 
 ## Regla central
 
@@ -19,7 +20,7 @@ Cada ciclo debe terminar en una de cuatro salidas:
 
 ## Control loop
 
-1. Leer queue, Pato, HEAD y evidencia reciente.
+1. Leer queue, Pato, HEAD, evidencia reciente y último informe del Auditor.
 2. Seleccionar la tarea aprobada de mayor prioridad que esté desbloqueada.
 3. Builder implementa en rama/lane autorizada.
 4. Ejecutar tests determinísticos.
@@ -106,3 +107,13 @@ Las tareas recurrentes sirven como red de seguridad aunque un evento no dispare.
 Autopilot V1.0 puede desarrollar, revisar, corregir, documentar y preparar candidatos.
 
 No puede promover a `main` ni producción sin autorización explícita de Dirección mientras esta regla siga vigente.
+
+
+## Auditor independiente
+
+El Auditor no reemplaza a Reviewer ni a Pato:
+- Reviewer valida un candidato concreto.
+- Pato registra el estado durable.
+- Auditor cuestiona si el sistema completo está diciendo la verdad y si la autonomía está realmente operando.
+
+Debe ejecutarse periódicamente y activar recovery cuando exista trabajo crítico stale, una fuente activa sin polling real, una brecha entre web pública y engine, o una señal capturada que no llega al snapshot sin una razón trazable.
