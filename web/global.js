@@ -12,13 +12,13 @@ function saveRead(){saveLocal('alicanto_read',JSON.stringify([...readSet]))}
 
 let themes=[];
 const filters=stored('alicanto_global_filters',{});
-let periodMode=filters.period||'14',publisherMode=filters.publisher||'Todos',sortMode=filters.sort||'score';
+let periodMode=filters.period||'30',publisherMode=filters.publisher||'Todos',sortMode=filters.sort||'score';
 function persistFilters(){saveLocal('alicanto_global_filters',JSON.stringify({period:periodMode,publisher:publisherMode,sort:sortMode}))}
 function latestDate(t){return (t.sources||[]).map(s=>s.published_at).filter(Boolean).sort().at(-1)||'1900-01-01'}
 function ageDays(raw){const now=new Date();const d=new Date(raw+'T12:00:00Z');return Math.floor((now-d)/86400000)}
 function themeScore(t){const p=t.home_teaser_profile||{};return .30*Number(p.commercial_hook||70)+.30*Number(p.executive_relevance||70)+.20*Number(p.decision_usefulness||70)+.15*Number(p.conversation_potential||70)+.05*Math.min(100,55+15*new Set((t.sources||[]).map(s=>s.publisher)).size)}
 function publishers(t){return [...new Set((t.sources||[]).map(s=>s.publisher).filter(Boolean))]}
-function visibleThemes(){let out=periodMode==='all'?themes.slice():themes.filter(t=>ageDays(latestDate(t))<=Number(periodMode));if(publisherMode!=='Todos')out=out.filter(t=>publishers(t).includes(publisherMode));out.sort(sortMode==='date'?(a,b)=>latestDate(b).localeCompare(latestDate(a)):(a,b)=>themeScore(b)-themeScore(a)||latestDate(b).localeCompare(latestDate(a)));return out}
+function visibleThemes(){let out=periodMode==='all'?themes.slice():themes.filter(t=>ageDays(latestDate(t))<=Number(periodMode));if(publisherMode!=='Todos')out=out.filter(t=>publishers(t).includes(publisherMode));out.sort(sortMode==='date'?(a,b)=>latestDate(b).localeCompare(latestDate(a)):(a,b)=>themeScore(b)-themeScore(a)||latestDate(b).localeCompare(latestDate(a)));return out.slice(0,10)}
 
 function bullets(title,items){return Array.isArray(items)&&items.length?`<div class="analysis-list"><strong>${title}</strong><ul>${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
 function source(s){const a=s.analysis;return `<div class="source"><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.publisher)} · ${esc(s.title)} ↗</a><span>Publicado ${dateText(s.published_at)} · ${esc(s.material_type)}</span>${a?`<div class="source-analysis"><strong>Resumen ejecutivo</strong><p>${esc(a.executive_summary)}</p>${bullets('Hallazgos clave',a.key_findings)}${bullets('Cifras',a.figures)}${bullets('Implicancias',a.implications)}<p><strong>Metodología y alcance:</strong> ${esc(a.methodology)}</p></div>`:''}</div>`}
