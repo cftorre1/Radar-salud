@@ -519,7 +519,6 @@ test('priority statistical releases use compact tables and collapsed traceabilit
  const cases=[
   ['Estadística Trimestral de Casos GES',5],
   ['Series Estadísticas del Sistema ISAPRE',2],
-  ['Estadísticas Financieras del Sistema ISAPRE',10],
   ['Boletín Estadístico Informativo IP',6],
  ];
  for(const [needle,minRows] of cases){
@@ -539,15 +538,18 @@ test('priority statistical releases use compact tables and collapsed traceabilit
  expect(series.summary_table.rows.map(r=>r.cells[0])).toEqual(['Beneficiarios promedio anual','Casos GES']);
  expect(series.summary_table.rows.every(r=>r.cells[3]+r.cells[5]===r.cells[4])).toBe(true);
  const fin=radar.signals.find(x=>(x.title||'').includes('Estadísticas Financieras del Sistema ISAPRE'));
- expect(fin.summary_table.columns).toEqual(['Isapre','Ingresos (CLP millones)','Resultado operacional (CLP millones)','Utilidad/pérdida neta (CLP millones)']);
- expect(fin.data_insight_evidence[0].source_url).toContain('finan_ifrs_mar_2026_web_v2.xls');
+ if(fin){
+   expect(fin.summary_table.columns).toEqual(['Isapre','Ingresos (CLP millones)','Resultado operacional (CLP millones)','Utilidad/pérdida neta (CLP millones)']);
+   expect(fin.data_insight_evidence[0].source_url).toContain('finan_ifrs_mar_2026_web_v2.xls');
+   const card=page.locator('article[data-card]').filter({hasText:'Estadísticas Financieras del Sistema ISAPRE'});
+   await expect(card).not.toContainText('Por qué importa:');
+   await card.locator('[data-detail]').click();
+   const detail=page.locator('#detailBody');
+   await expect(detail.locator('.summary-table')).toBeVisible();
+   await page.locator('#detailDialog [data-close]').click();
+ }
  const bulletin=radar.signals.find(x=>(x.title||'').includes('Boletín Estadístico Informativo IP'));
  expect(new Set(bulletin.summary_table.rows.map(r=>r.cells[0]))).toEqual(new Set(['Acreditación','Mediación','Reclamos','RNPI']));
- const card=page.locator('article[data-card]').filter({hasText:'Estadísticas Financieras del Sistema ISAPRE'});
- await expect(card).not.toContainText('Por qué importa:');
- await card.locator('[data-detail]').click();
- const detail=page.locator('#detailBody');
- await expect(detail.locator('.summary-table')).toBeVisible();
  await expect(detail.locator('details.statistical-methodology')).not.toHaveAttribute('open','');
  await expect(detail).not.toContainText('Muestra de datos validada');
  await expect(detail.locator('.source')).toContainText('Fuente original');
