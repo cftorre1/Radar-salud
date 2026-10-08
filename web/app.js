@@ -30,7 +30,7 @@ function persistRead(){saveLocal('alicanto_read',JSON.stringify([...readSet]))}
 function globalId(id){return `global:${id}`}
 function specials(){const out=[],g=freeValue.global_teaser,w=freeValue.weekly_insight;if(g)out.push({kind:'global',id:globalId(g.theme_id),title:g.title,summary:g.excerpt,date:g.published_at,source:g.source_label||(g.publishers||[]).join(' · '),href:g.premium_href});if(w){const base=allSignals.find(s=>s.source_url===w.source_url);out.push({kind:'weekly',id:base?idFor(base):`weekly:${w.id}`,title:w.insight_title||w.title,summary:w.insight_teaser||w.insight_reading,date:w.event_date,source:w.source_name,href:w.source_url})}return out}
 function specialRead(x){return readSet.has(x.id)}
-function specialInPeriod(x){return periodMode!=='last'&&inPeriod({event_date:x.date})}
+function specialInPeriod(x){if(periodMode==='last')return false;if(x.kind==='global')return true;return inPeriod({event_date:x.date})}
 const checkIcon='<svg class="action-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 2.5 2.5L16 9"></path></svg>';
 const unreadIcon='<svg class="action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 9V4m0 0h5M5 4l3.6 3.6A7 7 0 1 1 5.7 15"></path></svg>';
 const shareIcon='<svg class="action-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"></path></svg>';
