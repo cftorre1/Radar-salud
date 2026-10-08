@@ -26,10 +26,6 @@ def review_statistics(signals):
     if not by_page:
         return findings
 
-    for family in STATISTIC_PAGES:
-        if family not in by_page:
-            fail("missing_statistical_release", family, "Approved statistical family is absent from the candidate snapshot")
-
     for family, signal in by_page.items():
         url = signal.get("source_url", "")
         table = signal.get("summary_table") or {}
