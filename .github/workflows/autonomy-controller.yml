@@ -1,0 +1,88 @@
+name: Alicanto autonomy controller
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '5 * * * *'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: alicanto-autonomy-controller
+  cancel-in-progress: false
+jobs:
+  control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 0
+      - name: Evaluate executable backlog and runtime freshness
+        id: decide
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          queue=json.loads(Path('config/orchestrator_queue.json').read_text(encoding='utf-8'))
+          tasks=queue.get('tasks') or []
+          status={t.get('id'):t.get('status') for t in tasks}
+          active=[]
+          for t in tasks:
+              if t.get('status') not in {'approved','in_progress'} or t.get('blocked_by'):
+                  continue
+              if all(status.get(d) in {'validated','completed','cancelled'} for d in (t.get('depends_on') or [])):
+                  active.append(t.get('id'))
+
+          discovery=Path('data/state/discovery_run.json')
+          age_hours=9999.0
+          last_runtime=None
+          if discovery.exists():
+              try:
+                  payload=json.loads(discovery.read_text(encoding='utf-8'))
+                  last_runtime=payload.get('at')
+                  if last_runtime:
+                      at=datetime.fromisoformat(last_runtime.replace('Z','+00:00'))
+                      age_hours=max(0.0,(datetime.now(timezone.utc)-at).total_seconds()/3600)
+              except Exception:
+                  pass
+
+          dispatch=bool(active and age_hours>26)
+          decision={
+              'generated_at':datetime.now(timezone.utc).isoformat(),
+              'executable_tasks':active,
+              'last_runtime_at':last_runtime,
+              'runtime_age_hours':round(age_hours,2),
+              'dispatch_daily_radar':dispatch,
+              'reason':'runtime_stale_with_executable_backlog' if dispatch else 'heartbeat_only'
+          }
+          Path('artifacts').mkdir(exist_ok=True)
+          Path('artifacts/autonomy_controller.json').write_text(json.dumps(decision,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write(f"dispatch={'true' if dispatch else 'false'}\n")
+          print(json.dumps(decision,ensure_ascii=False))
+          PY
+      - name: Persist controller heartbeat
+        run: |
+          git config user.name alicanto-autonomy-controller
+          git config user.email alicanto-autonomy-controller@users.noreply.github.com
+          git fetch origin autopilot-state
+          git worktree add /tmp/autonomy-state origin/autopilot-state
+          mkdir -p /tmp/autonomy-state/data/autopilot
+          cp artifacts/autonomy_controller.json /tmp/autonomy-state/data/autopilot/controller_heartbeat_latest.json
+          git -C /tmp/autonomy-state add data/autopilot/controller_heartbeat_latest.json
+          git -C /tmp/autonomy-state diff --cached --quiet || git -C /tmp/autonomy-state commit -m "chore: autonomy controller heartbeat"
+          git -C /tmp/autonomy-state push origin HEAD:autopilot-state
+      - name: Dispatch Daily Radar through authorized GitHub API
+        if: steps.decide.outputs.dispatch == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          active=$(gh run list --workflow daily-radar.yml --limit 20 --json status --jq '[.[] | select(.status == "queued" or .status == "in_progress")] | length')
+          if [ "$active" -eq 0 ]; then
+            gh workflow run daily-radar.yml --ref main
+          else
+            echo "Daily Radar already active; no duplicate dispatch."
+          fi
