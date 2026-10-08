@@ -116,6 +116,20 @@ def test_old_unsafe_or_repeated_signal_fails_closed():
     assert rank_weekly_candidates([used], history, date(2026, 9, 24)) == []
 
 
+def test_verified_global_teaser_does_not_expire_at_fourteen_days():
+    snapshot = {"generated_at": "2026-10-08T12:00:00Z", "signals": []}
+    themes = {"themes": [{"id": "theme-old", "kind": "global_theme", "title": "Tema vigente",
+        "global_finding": "Hallazgo global verificado.", "why_it_matters": "Sigue siendo material mientras sea la pieza curada activa.",
+        "cross_analysis": {"decision_use": "Vigilar el patrón."},
+        "chile_watch": {"kind": "hypothesis", "trend_chile_status": "not_established", "text": "Hipótesis local no establecida."},
+        "sources": [{"publisher": "Reuters", "title": "Nota", "url": "https://reuters.com/note",
+                    "published_at": "2026-09-18", "captured_at": "2026-09-18", "evidence": "Evidencia verificada"}]}]}
+    result = build_free_value(snapshot, themes, today=date(2026, 10, 8))
+    assert result["global_teaser"] is not None
+    assert result["global_teaser"]["published_at"] == "2026-09-18"
+    assert result["global_teaser"]["teaser_score"]["source_age_days"] == 20
+
+
 def test_spoofed_global_source_never_becomes_verified_teaser():
     fake = {"kind": "global_theme", "id": "fake", "title": "Tema", "why_it_matters": "Importa",
             "chile_watch": {"kind": "hypothesis", "trend_chile_status": "not_established"},
