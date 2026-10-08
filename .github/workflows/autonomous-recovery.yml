@@ -1,0 +1,133 @@
+name: Alicanto autonomous recovery
+on:
+  workflow_run:
+    workflows:
+      - 'Alicanto staging preview'
+    types: [completed]
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: alicanto-autonomous-recovery
+  cancel-in-progress: false
+jobs:
+  recover:
+    if: github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      RADAR_REPAIR_MODEL: gpt-5.6-terra
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install repair dependencies
+        run: pip install -e . pytest openai
+      - name: Capture failed logs and durable recovery task
+        run: |
+          mkdir -p artifacts/recovery
+          gh run view '${{ github.event.workflow_run.id }}' --log-failed > artifacts/recovery/failed.log || true
+          python - <<'PY'
+          import json, os, re
+          from datetime import datetime, timezone
+          from pathlib import Path
+          log=Path('artifacts/recovery/failed.log').read_text(errors='replace')
+          signature='unknown_failure'
+          patterns=[
+            ('browser_contract', r'playwright|product\.spec|toHaveValue|toBeVisible|toHaveCount'),
+            ('reviewer_statistics', r'missing_statistical_release|statistics.*critical'),
+            ('source_runtime', r'beta_source_runtime|RuntimeError|source_health'),
+            ('unit_test', r'FAILED tests/|AssertionError'),
+          ]
+          for name,pat in patterns:
+              if re.search(pat,log,re.I): signature=name; break
+          task={
+            'generated_at':datetime.now(timezone.utc).isoformat(),
+            'source_run_id':int(os.environ.get('SOURCE_RUN_ID','0') or 0),
+            'source_sha':os.environ.get('SOURCE_SHA'),
+            'signature':signature,
+            'status':'repair_attempt_started',
+            'human_blocker':False,
+            'policy':'staging_only_bounded_repair',
+          }
+          Path('artifacts/recovery/task.json').write_text(json.dumps(task,indent=2)+'\n')
+          PY
+        env:
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+          SOURCE_SHA: ${{ github.event.workflow_run.head_sha }}
+      - name: Select bounded repair context
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          log=Path('artifacts/recovery/failed.log').read_text(errors='replace')[-30000:]
+          paths=[]
+          for match in re.findall(r'([A-Za-z0-9_./-]+\.(?:py|js|cjs|html|json|yml))(?::\d+)?',log):
+              p=Path(match)
+              if p.exists() and str(p) not in paths and not str(p).startswith('.github/workflows/static'): paths.append(str(p))
+          defaults=['tests/browser/product.spec.cjs','web/app.js','web/global.js','src/radar_salud/free_value.py','scripts/statistics_reviewer.py']
+          for p in defaults:
+              if Path(p).exists() and p not in paths: paths.append(p)
+          paths=paths[:8]
+          chunks=[]
+          for p in paths:
+              text=Path(p).read_text(errors='replace')
+              chunks.append(f'\n### FILE {p}\n{text[:18000]}')
+          Path('artifacts/recovery/context.txt').write_text('\n'.join(chunks))
+          Path('artifacts/recovery/paths.txt').write_text('\n'.join(paths)+'\n')
+          PY
+      - name: Generate one constrained patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from openai import OpenAI
+          import os
+          log=Path('artifacts/recovery/failed.log').read_text(errors='replace')[-24000:]
+          ctx=Path('artifacts/recovery/context.txt').read_text(errors='replace')
+          prompt=f'''You are repairing Alicanto Salud in a reversible staging-only lane.\n
+          Rules:\n- Fix only the demonstrated failure.\n- Do not change product strategy, pricing, auth, privacy, secrets, main or production.\n- Do not weaken QA merely to make it pass. A stale test may be updated only when logs and product contract show it is obsolete.\n- Return ONLY a valid unified git diff. No markdown fences.\n- Touch only files included below.\n- Prefer the smallest safe patch.\n\nFAILED LOG:\n{log}\n\nALLOWED FILE CONTEXT:\n{ctx}'''
+          client=OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+          resp=client.responses.create(model=os.environ['RADAR_REPAIR_MODEL'],input=prompt)
+          patch=resp.output_text.strip()
+          Path('artifacts/recovery/repair.patch').write_text(patch+'\n')
+          PY
+      - name: Apply patch safely
+        run: |
+          git apply --check artifacts/recovery/repair.patch
+          git apply artifacts/recovery/repair.patch
+          git diff -- . ':!.github/workflows/static.yml' ':!.github/workflows/daily-radar.yml' > artifacts/recovery/applied.diff
+          test -s artifacts/recovery/applied.diff
+          if git diff --name-only | grep -E '^(config/.*(pricing|privacy|auth)|\.github/workflows/static\.yml|\.github/workflows/daily-radar\.yml)$'; then
+            echo 'Forbidden repair scope'; git reset --hard HEAD; exit 1;
+          fi
+      - name: Validate repair
+        run: |
+          python -m pytest -q
+          npm ci
+          npm test
+      - name: Commit successful autonomous repair
+        run: |
+          git config user.name alicanto-recovery-bot
+          git config user.email alicanto-recovery-bot@users.noreply.github.com
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m 'autonomy: recover failed staging candidate'
+          git push origin HEAD:staging
+      - name: Persist recovery evidence
+        if: always()
+        run: |
+          git fetch origin autopilot-state
+          git worktree add /tmp/recovery-state origin/autopilot-state
+          mkdir -p /tmp/recovery-state/data/autopilot
+          cp artifacts/recovery/task.json /tmp/recovery-state/data/autopilot/recovery_task_latest.json
+          cp artifacts/recovery/failed.log /tmp/recovery-state/data/autopilot/recovery_failed_latest.log || true
+          cp artifacts/recovery/applied.diff /tmp/recovery-state/data/autopilot/recovery_applied_latest.diff || true
+          git -C /tmp/recovery-state add data/autopilot
+          git -C /tmp/recovery-state diff --cached --quiet || git -C /tmp/recovery-state commit -m 'chore: autonomous recovery evidence'
+          git -C /tmp/recovery-state push origin HEAD:autopilot-state
