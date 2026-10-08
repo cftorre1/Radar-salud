@@ -41,8 +41,8 @@ jobs:
           python-version: '3.11'
       - name: Install package
         run: pip install -e . pytest
-      - name: Tests before collection
-        run: python -m pytest -q
+      - name: Core deterministic tests before collection
+        run: python -m pytest -q --ignore=tests/test_reviewer.py --ignore=tests/test_beta_source_runtime_fast.py
       - name: Preserve paid Terra analyses
         run: python scripts/seed_analysis_cache.py
       - name: Run incremental collectors
@@ -61,6 +61,18 @@ jobs:
           timeout --signal=TERM 20m python -m radar_salud.engine_cli --limit "$limit"
       - name: Export public snapshot and source health
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
+      - name: Live beta source validation (degrades beta, never blocks core)
+        id: beta_validation
+        continue-on-error: true
+        run: python -m pytest -q tests/test_beta_source_runtime_fast.py
+      - name: Record beta validation status
+        if: always()
+        run: |
+          echo "### Live beta validation" >> "$GITHUB_STEP_SUMMARY"
+          echo "Outcome: ${{ steps.beta_validation.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Beta source failures remain repair-required but do not suppress independent core collection." >> "$GITHUB_STEP_SUMMARY"
+      - name: Snapshot reviewer after collection
+        run: python -m pytest -q tests/test_reviewer.py
       - name: Preserve queue, paid usage and checkpoints on failure
         if: always()
         run: |
