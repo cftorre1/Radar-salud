@@ -1,6 +1,15 @@
 name: Alicanto autonomy controller
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/autonomy-controller.yml'
+  workflow_run:
+    workflows:
+      - 'Daily Radar pilot'
+      - 'Alicanto staging preview'
+    types: [completed]
   schedule:
     - cron: '5 * * * *'
 permissions:
