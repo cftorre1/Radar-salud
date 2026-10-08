@@ -15,6 +15,8 @@ ALLOWED_PUBLISHERS = {
     "WHO": {"who.int"},
     "PAHO": {"paho.org"},
     "BCG": {"bcg.com"},
+    "OECD": {"oecd.org"},
+    "KFF": {"kff.org"},
 }
 MATERIAL_TYPES = {"research", "outlook", "report", "high_trust_press"}
 TREND_STATES = {"not_established", "candidate", "established"}
