@@ -317,7 +317,7 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();
  await expect(page.getByRole('heading',{name:'Ponte al día en Global Intelligence'})).toBeVisible();
- await expect(page.locator('#globalPeriod')).toHaveValue('14');
+ await expect(page.locator('#globalPeriod')).toHaveValue('30');
  await page.locator('#globalFilters summary').click();
  await expect(page.locator('#globalPublisher')).toBeVisible();
  await expect(page.locator('#globalSort')).toBeVisible();
