@@ -69,16 +69,18 @@ def _score01(value: Any, fallback: float = 0.0) -> float:
 
 
 def score_global_teaser(theme: dict[str, Any], verified_sources: list[dict[str, Any]], today: date) -> dict[str, Any]:
-    """Rank eligible Global themes by executive/commercial value.
+    """Rank verified Global themes by executive/commercial value.
 
-    Freshness is a gate, not a scoring advantage: at least one verified source
-    must have been published in the last 14 days. Once eligible, newer does not
-    score higher merely for being newer.
+    Global Intelligence is curated research, not a daily-news card. Verified
+    evidence remains eligible while it is the active curated theme; its source
+    date stays visible to the user and replacement is driven by a better theme,
+    not by an arbitrary 14-day expiry.
     """
     profile = theme.get("home_teaser_profile") or {}
     published_days=[_day(x.get("published_at")) for x in verified_sources]
     latest=max((x for x in published_days if x), default=None)
-    eligible=bool(latest and 0 <= (today-latest).days <= 14)
+    age_days=(today-latest).days if latest else None
+    eligible=bool(latest and age_days is not None and age_days >= 0)
     evidence = min(100.0, 55.0 + 15.0 * len({x.get("publisher") for x in verified_sources if x.get("publisher")}))
     dims = {
         "commercial_hook": _score01(profile.get("commercial_hook"), 70.0),
@@ -98,7 +100,8 @@ def score_global_teaser(theme: dict[str, Any], verified_sources: list[dict[str, 
     return {
         "score": score,
         "eligible": eligible,
-        "freshness_gate_days": 14,
+        "freshness_gate_days": None,
+        "source_age_days": age_days,
         "latest_source_date": latest.isoformat() if latest else None,
         "dimensions": dims,
     }
