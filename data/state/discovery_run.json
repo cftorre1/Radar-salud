@@ -1,15 +1,15 @@
 {
-  "at": "2026-09-30T19:09:11.070395+00:00",
+  "at": "2026-10-08T08:46:06.863462+00:00",
   "sources": {
     "superintendencia": {
-      "discovered": 739,
-      "new": 0,
+      "discovered": 740,
+      "new": 1,
       "technical_status": "ok",
       "error_type": null
     },
     "superintendencia_normativa": {
-      "discovered": 4274,
-      "new": 0,
+      "discovered": 4284,
+      "new": 10,
       "technical_status": "ok",
       "error_type": null
     },
@@ -21,7 +21,7 @@
     },
     "minsal": {
       "discovered": 53,
-      "new": 0,
+      "new": 8,
       "technical_status": "ok",
       "error_type": null
     },
@@ -43,6 +43,12 @@
       "technical_status": "error",
       "error_type": "URLError"
     },
+    "isp_surveillance": {
+      "discovered": 0,
+      "new": 0,
+      "technical_status": "error",
+      "error_type": "URLError"
+    },
     "pfizer_chile": {
       "discovered": 3,
       "new": 0,
@@ -57,7 +63,7 @@
     },
     "redsalud": {
       "discovered": 10,
-      "new": 0,
+      "new": 3,
       "technical_status": "ok",
       "error_type": null
     },
@@ -73,15 +79,21 @@
       "technical_status": "error",
       "error_type": "HTTPError"
     },
+    "clinicas_chile": {
+      "discovered": 29,
+      "new": 29,
+      "technical_status": "ok",
+      "error_type": null
+    },
     "suseso": {
       "discovered": 7607,
-      "new": 0,
+      "new": 3,
       "technical_status": "ok",
       "error_type": null
     },
     "suseso_news": {
       "discovered": 6,
-      "new": 0,
+      "new": 6,
       "technical_status": "ok",
       "error_type": null
     },
@@ -92,18 +104,18 @@
       "error_type": null
     },
     "diario_financiero": {
-      "discovered": 71,
-      "new": 9,
+      "discovered": 76,
+      "new": 52,
       "technical_status": "ok",
       "error_type": null
     },
     "diario_oficial": {
-      "discovered": 3,
-      "new": 0,
+      "discovered": 4,
+      "new": 2,
       "technical_status": "ok",
       "error_type": null
     }
   },
-  "successful_sources": 13,
-  "failed_sources": 4
+  "successful_sources": 14,
+  "failed_sources": 5
 }
