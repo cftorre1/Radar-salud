@@ -95,10 +95,15 @@ jobs:
           client=OpenAI(api_key=os.environ['OPENAI_API_KEY'])
           resp=client.responses.create(model=os.environ['RADAR_REPAIR_MODEL'],input=prompt)
           patch=resp.output_text.strip()
+          if patch.startswith('~~~') or patch.startswith('```'):
+              patch='\n'.join(line for line in patch.splitlines() if not line.strip().startswith(('~~~','```')))
           Path('artifacts/recovery/repair.patch').write_text(patch+'\n')
           PY
       - name: Apply patch safely
         run: |
+          if ! grep -q '^diff --git ' artifacts/recovery/repair.patch; then
+            echo 'Model did not return a valid unified diff'; exit 2
+          fi
           git apply --check artifacts/recovery/repair.patch
           git apply artifacts/recovery/repair.patch
           git diff -- . ':!.github/workflows/static.yml' ':!.github/workflows/daily-radar.yml' > artifacts/recovery/applied.diff
@@ -124,6 +129,8 @@ jobs:
         run: |
           git fetch origin autopilot-state
           git worktree add /tmp/recovery-state origin/autopilot-state
+          git -C /tmp/recovery-state config user.name alicanto-recovery-bot
+          git -C /tmp/recovery-state config user.email alicanto-recovery-bot@users.noreply.github.com
           mkdir -p /tmp/recovery-state/data/autopilot
           cp artifacts/recovery/task.json /tmp/recovery-state/data/autopilot/recovery_task_latest.json
           cp artifacts/recovery/failed.log /tmp/recovery-state/data/autopilot/recovery_failed_latest.log || true
