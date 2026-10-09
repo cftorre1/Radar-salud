@@ -2,11 +2,11 @@
   "sources": {
     "superintendencia_normativa": {
       "name": "Superintendencia Normativa",
-      "checked_at": "2026-10-08T16:49:35.400117+00:00",
-      "last_signal_at": "2026-10-08",
-      "discovered": 4285,
-      "new": 1,
-      "published": 1,
+      "checked_at": "2026-10-09T16:33:12.137056+00:00",
+      "last_signal_at": "2026-10-09",
+      "discovered": 4289,
+      "new": 4,
+      "published": 4,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
@@ -21,9 +21,9 @@
     },
     "minsal": {
       "name": "Minsal",
-      "checked_at": "2026-10-08T16:49:35.404240+00:00",
+      "checked_at": "2026-10-09T16:33:12.140070+00:00",
       "last_signal_at": "2026-10-07",
-      "discovered": 53,
+      "discovered": 0,
       "new": 0,
       "published": 0,
       "live_pending": 0,
@@ -31,23 +31,23 @@
       "pending": 0,
       "deferred": 0,
       "rejected": 14,
-      "status": "ok",
-      "error": null,
-      "technical_status": "ok",
-      "coverage_status": "observed",
+      "status": "error",
+      "error": "HTTPError",
+      "technical_status": "error",
+      "coverage_status": "unverified",
       "content_freshness": "recent",
-      "editorial_outcome": "rejected"
+      "editorial_outcome": "not_evaluated"
     },
     "suseso": {
       "name": "Suseso",
-      "checked_at": "2026-10-08T16:49:35.410826+00:00",
+      "checked_at": "2026-10-09T16:33:12.150624+00:00",
       "last_signal_at": "2026-10-02",
       "discovered": 7607,
-      "new": 0,
-      "published": 3,
+      "new": 2,
+      "published": 0,
       "live_pending": 0,
-      "backfill_pending": 0,
-      "pending": 0,
+      "backfill_pending": 2,
+      "pending": 2,
       "deferred": 0,
       "rejected": 1,
       "status": "ok",
@@ -55,20 +55,20 @@
       "technical_status": "ok",
       "coverage_status": "observed",
       "content_freshness": "recent",
-      "editorial_outcome": "published"
+      "editorial_outcome": "pending"
     },
     "diario_financiero": {
       "name": "Diario Financiero",
-      "checked_at": "2026-10-08T16:49:35.412653+00:00",
+      "checked_at": "2026-10-09T16:33:12.153531+00:00",
       "last_signal_at": "2026-09-22",
-      "discovered": 72,
-      "new": 14,
+      "discovered": 71,
+      "new": 18,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 66,
-      "pending": 66,
+      "backfill_pending": 59,
+      "pending": 59,
       "deferred": 0,
-      "rejected": 116,
+      "rejected": 141,
       "status": "ok",
       "error": null,
       "technical_status": "ok",
@@ -78,17 +78,17 @@
     },
     "diario_oficial": {
       "name": "Diario Oficial",
-      "checked_at": "2026-10-08T16:49:35.413251+00:00",
+      "checked_at": "2026-10-09T16:33:12.154460+00:00",
       "last_signal_at": "2026-10-07",
-      "discovered": 6,
-      "new": 2,
+      "discovered": 2,
+      "new": 0,
       "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
       "rejected": 3,
-      "status": "warning",
+      "status": "ok",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "observed",
@@ -97,7 +97,7 @@
     },
     "superintendencia_fiscalizacion": {
       "name": "Superintendencia Fiscalizacion",
-      "checked_at": "2026-10-08T16:49:35.403608+00:00",
+      "checked_at": "2026-10-09T16:33:12.139122+00:00",
       "last_signal_at": "2025-10-24",
       "discovered": 2696,
       "new": 0,
@@ -116,7 +116,7 @@
     },
     "superintendencia": {
       "name": "Superintendencia",
-      "checked_at": "2026-10-08T16:49:35.399305+00:00",
+      "checked_at": "2026-10-09T16:33:12.135927+00:00",
       "last_signal_at": "2026-10-02",
       "discovered": 740,
       "new": 0,
@@ -135,7 +135,7 @@
     },
     "fonasa": {
       "name": "Fonasa",
-      "checked_at": "2026-10-08T16:49:35.404848+00:00",
+      "checked_at": "2026-10-09T16:33:12.140996+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -154,7 +154,7 @@
     },
     "isp_anamed": {
       "name": "Isp Anamed",
-      "checked_at": "2026-10-08T16:49:35.406067+00:00",
+      "checked_at": "2026-10-09T16:33:12.142874+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -173,7 +173,7 @@
     },
     "deis": {
       "name": "Deis",
-      "checked_at": "2026-10-08T16:49:35.407845+00:00",
+      "checked_at": "2026-10-09T16:33:12.145707+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -192,7 +192,7 @@
     },
     "redsalud": {
       "name": "Redsalud",
-      "checked_at": "2026-10-08T16:49:35.408412+00:00",
+      "checked_at": "2026-10-09T16:33:12.146659+00:00",
       "last_signal_at": "2026-09-21",
       "discovered": 10,
       "new": 0,
@@ -211,7 +211,7 @@
     },
     "bupa_chile": {
       "name": "Bupa Chile",
-      "checked_at": "2026-10-08T16:49:35.409011+00:00",
+      "checked_at": "2026-10-09T16:33:12.147610+00:00",
       "last_signal_at": "2026-08-13",
       "discovered": 15,
       "new": 0,
@@ -230,7 +230,7 @@
     },
     "pfizer_chile": {
       "name": "Pfizer Chile",
-      "checked_at": "2026-10-08T16:49:35.407259+00:00",
+      "checked_at": "2026-10-09T16:33:12.144778+00:00",
       "last_signal_at": null,
       "discovered": 3,
       "new": 0,
@@ -249,7 +249,7 @@
     },
     "indisa": {
       "name": "Indisa",
-      "checked_at": "2026-10-08T16:49:35.409598+00:00",
+      "checked_at": "2026-10-09T16:33:12.148588+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -268,7 +268,7 @@
     },
     "fonasa_datos_abiertos": {
       "name": "Fonasa Datos Abiertos",
-      "checked_at": "2026-10-08T16:49:35.405442+00:00",
+      "checked_at": "2026-10-09T16:33:12.141929+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -287,14 +287,14 @@
     },
     "suseso_news": {
       "name": "Suseso News",
-      "checked_at": "2026-10-08T16:49:35.411412+00:00",
+      "checked_at": "2026-10-09T16:33:12.151585+00:00",
       "last_signal_at": "2026-10-07",
       "discovered": 6,
       "new": 0,
-      "published": 0,
+      "published": 1,
       "live_pending": 0,
-      "backfill_pending": 1,
-      "pending": 1,
+      "backfill_pending": 0,
+      "pending": 0,
       "deferred": 0,
       "rejected": 2,
       "status": "ok",
@@ -302,11 +302,11 @@
       "technical_status": "ok",
       "coverage_status": "observed",
       "content_freshness": "recent",
-      "editorial_outcome": "pending"
+      "editorial_outcome": "published"
     },
     "suseso_fiscalizacion": {
       "name": "Suseso Fiscalizacion",
-      "checked_at": "2026-10-08T16:49:35.411991+00:00",
+      "checked_at": "2026-10-09T16:33:12.152537+00:00",
       "last_signal_at": null,
       "discovered": 38,
       "new": 0,
@@ -325,7 +325,7 @@
     },
     "prestadores_data": {
       "name": "Superintendencia de Salud · Intendencia de Prestadores",
-      "checked_at": "2026-10-08T16:49:50.146510+00:00",
+      "checked_at": "2026-10-09T16:33:24.290849+00:00",
       "last_signal_at": null,
       "discovered": 8,
       "new": 0,
@@ -344,7 +344,7 @@
     },
     "red_davila": {
       "name": "Red Dávila",
-      "checked_at": "2026-10-08T16:50:01.461683+00:00",
+      "checked_at": "2026-10-09T16:33:34.153673+00:00",
       "last_signal_at": null,
       "discovered": 5,
       "new": 0,
@@ -363,7 +363,7 @@
     },
     "andes_salud": {
       "name": "Andes Salud",
-      "checked_at": "2026-10-08T16:50:08.018803+00:00",
+      "checked_at": "2026-10-09T16:33:40.278136+00:00",
       "last_signal_at": null,
       "discovered": 5,
       "new": 0,
@@ -382,7 +382,7 @@
     },
     "clinicas_achs_salud": {
       "name": "Clínicas Achs Salud",
-      "checked_at": "2026-10-08T16:50:11.587113+00:00",
+      "checked_at": "2026-10-09T16:33:44.193625+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -401,7 +401,7 @@
     },
     "achs_seguro_laboral": {
       "name": "Achs Seguro Laboral",
-      "checked_at": "2026-10-08T16:50:15.622211+00:00",
+      "checked_at": "2026-10-09T16:33:47.436576+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -420,7 +420,7 @@
     },
     "mutual_seguridad": {
       "name": "Mutual de Seguridad CChC",
-      "checked_at": "2026-10-08T16:50:16.093321+00:00",
+      "checked_at": "2026-10-09T16:33:47.675654+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -439,7 +439,7 @@
     },
     "ist": {
       "name": "Instituto de Seguridad del Trabajo (IST)",
-      "checked_at": "2026-10-08T16:50:27.274254+00:00",
+      "checked_at": "2026-10-09T16:33:58.439894+00:00",
       "last_signal_at": null,
       "discovered": 3,
       "new": 0,
@@ -458,7 +458,7 @@
     },
     "pulso_latercera": {
       "name": "Pulso / La Tercera",
-      "checked_at": "2026-10-08T16:50:28.713309+00:00",
+      "checked_at": "2026-10-09T16:34:00.274780+00:00",
       "last_signal_at": null,
       "discovered": 5,
       "new": 0,
@@ -477,7 +477,7 @@
     },
     "isp_surveillance": {
       "name": "Isp Surveillance",
-      "checked_at": "2026-10-08T16:49:35.406667+00:00",
+      "checked_at": "2026-10-09T16:33:12.143832+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -496,11 +496,11 @@
     },
     "clinicas_chile": {
       "name": "Clinicas Chile",
-      "checked_at": "2026-10-08T16:49:35.410193+00:00",
+      "checked_at": "2026-10-09T16:33:12.149545+00:00",
       "last_signal_at": "2018-02-01",
       "discovered": 29,
       "new": 0,
-      "published": 2,
+      "published": 0,
       "live_pending": 0,
       "backfill_pending": 19,
       "pending": 19,
@@ -511,8 +511,8 @@
       "technical_status": "ok",
       "coverage_status": "observed",
       "content_freshness": "older",
-      "editorial_outcome": "published"
+      "editorial_outcome": "pending"
     }
   },
-  "generated_at": "2026-10-08T16:50:28.713321+00:00"
+  "generated_at": "2026-10-09T16:34:00.274789+00:00"
 }
