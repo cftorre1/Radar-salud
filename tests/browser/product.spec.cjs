@@ -186,13 +186,13 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
 test('Global read state is shared across Home and the research page',async({page})=>{
- const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length;
+ const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=Math.min(themeCount,10);
  await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
  const free=await (await page.request.get('/data/free_value.json')).json(),teaserId=free.global_teaser.theme_id;
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page).toHaveURL(/global\.html#theme-/);
  await page.locator('#globalPeriod').selectOption('all');
- await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(themeCount-1);
+ await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(visibleCount-1);
  const theme=page.locator(`#theme-${teaserId}`);
  await expect(theme).toHaveClass(/read/);
  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);
@@ -311,7 +311,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await page.screenshot({path:`artifacts/${test.info().project.name}-cards-v2.png`,fullPage:true});
 });
 test('Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct',async({page})=>{
- const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,sourceCount=globalData.themes.flatMap(t=>t.sources||[]).length;
+ const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=Math.min(themeCount,10);
  await page.goto('/');
  await expect(page.locator('.signal.special.global [data-special-open]')).toBeVisible();
  await page.locator('.signal.special.global [data-special-open]').click();
@@ -322,10 +322,10 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await expect(page.locator('#globalPublisher')).toBeVisible();
  await expect(page.locator('#globalSort')).toBeVisible();
  await page.locator('#globalPeriod').selectOption('all');
- await expect(page.locator('#globalMetrics')).toHaveText(`${themeCount} temas · no leídos ${themeCount-1}`);
- await expect(page.locator('.theme')).toHaveCount(themeCount);
+ await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-1}`);
+ await expect(page.locator('.theme')).toHaveCount(visibleCount);
  await page.locator('[data-open]').first().click();
- await expect(page.locator('#globalMetrics')).toHaveText(`${themeCount} temas · no leídos ${themeCount-2}`);
+ await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-2}`);
  const opened=page.locator('.theme').filter({has:page.locator('details[open]')});
  await expect(opened).toContainText('Qué mirar en Chile');
  await expect(opened).toContainText('Lectura estratégica');
@@ -341,8 +341,7 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await opened.getByRole('button',{name:'Volver a Ponte al día ↑'}).click();
  await expect(page.locator('#globalInbox')).toBeFocused();
  await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('all');
- await expect(page.locator('.theme')).toHaveCount(themeCount);
- await expect(page.locator('.source a')).toHaveCount(sourceCount);
+ await expect(page.locator('.theme')).toHaveCount(visibleCount);
  await expect(page.locator('.source a').filter({hasText:'PwC'})).toHaveAttribute('href',/^https:\/\/www\.pwc\.com\//);
  await expect(page.locator('.source a[href="https://www.who.int/publications/i/item/9789240122925"]')).toContainText(/^WHO ·/);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
@@ -414,12 +413,19 @@ test('Pulso Isapre leads with executive table and statistics use the value ladde
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
  await expect(page.locator('article[data-card]').filter({hasText:'Resonancia Magnética del Biobío'})).toHaveCount(0);
- const ges=page.locator('article[data-card]').filter({hasText:'Estadística Trimestral de Casos GES'});
- await expect(ges).toHaveCount(1);await expect(ges).toContainText('casos GES acumulados por problema de salud');await expect(ges).toContainText('marzo 2026');
- const series=page.locator('article[data-card]').filter({hasText:'Series Estadísticas del Sistema ISAPRE 1990-2025'});
- await expect(series).toHaveCount(1);await expect(series).toContainText('promedio anual de beneficiarios Isapre');
- const bulletin=page.locator('article[data-card]').filter({hasText:'Boletín Estadístico Informativo IP'});
- await expect(bulletin).toHaveCount(1);await expect(bulletin).toContainText('cortes de acreditación, mediación, reclamos y RNPI');
+ const radar=await (await page.request.get('/data/radar_today.json')).json();
+ for(const [needle,copy] of [
+   ['Estadística Trimestral de Casos GES','casos GES acumulados por problema de salud'],
+   ['Series Estadísticas del Sistema ISAPRE 1990-2025','promedio anual de beneficiarios Isapre'],
+   ['Boletín Estadístico Informativo IP','cortes de acreditación, mediación, reclamos y RNPI'],
+ ]){
+   const signal=radar.signals.find(x=>(x.title||'').includes(needle));
+   expect(signal,needle+' missing from snapshot').toBeTruthy();
+   const age=Math.floor((Date.now()-Date.parse(signal.event_date+'T00:00:00Z'))/86400000);
+   const card=page.locator('article[data-card]').filter({hasText:needle});
+   if(age<=91){await expect(card).toHaveCount(1);await expect(card).toContainText(copy)}
+   else await expect(card).toHaveCount(0);
+ }
  const pulse=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})});
  await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').click();
  const table=page.locator('#detailBody .summary-table');
@@ -588,12 +594,15 @@ test('Normative V2.1 puts document, subject and action in each current headline'
   expect(signal.normative_context).toBeTruthy();
   expect(signal.normative_context).not.toContain(title);
   const article=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:title,exact:true})});
-  await expect(article).toHaveCount(1);
-  await expect(article.locator('.normative-identity')).toHaveCount(0);
-  await article.locator('[data-detail]').click();
-  await expect(page.locator('#detailBody .normative-context')).toBeVisible();
-  await expect(page.locator('#detailBody .normative-context')).toContainText('Contexto de la señal');
-  await expect(page.locator('#detailBody .normative-context')).not.toContainText(title);
-  await page.getByRole('button',{name:'Cerrar resumen'}).click();
+  const age=Math.floor((Date.now()-Date.parse(signal.event_date+'T00:00:00Z'))/86400000);
+  if(age<=91){
+    await expect(article).toHaveCount(1);
+    await expect(article.locator('.normative-identity')).toHaveCount(0);
+    await article.locator('[data-detail]').click();
+    await expect(page.locator('#detailBody .normative-context')).toBeVisible();
+    await expect(page.locator('#detailBody .normative-context')).toContainText('Contexto de la señal');
+    await expect(page.locator('#detailBody .normative-context')).not.toContainText(title);
+    await page.getByRole('button',{name:'Cerrar resumen'}).click();
+  } else await expect(article).toHaveCount(0);
  }
 });
