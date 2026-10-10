@@ -59,18 +59,21 @@ jobs:
                   pass
 
           dispatch=bool(active and age_hours>26)
+          issue5_active=any(str(task_id).startswith('source_audit_issue5_') for task_id in active)
           decision={
               'generated_at':datetime.now(timezone.utc).isoformat(),
               'executable_tasks':active,
               'last_runtime_at':last_runtime,
               'runtime_age_hours':round(age_hours,2),
               'dispatch_daily_radar':dispatch,
-              'reason':'runtime_stale_with_executable_backlog' if dispatch else 'heartbeat_only'
+              'dispatch_source_audit_executor':issue5_active,
+              'reason':'issue5_backlog_active' if issue5_active else ('runtime_stale_with_executable_backlog' if dispatch else 'heartbeat_only')
           }
           Path('artifacts').mkdir(exist_ok=True)
           Path('artifacts/autonomy_controller.json').write_text(json.dumps(decision,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:
               out.write(f"dispatch={'true' if dispatch else 'false'}\n")
+              out.write(f"dispatch_source_audit={'true' if issue5_active else 'false'}\n")
           print(json.dumps(decision,ensure_ascii=False))
           PY
       - name: Persist controller heartbeat
@@ -94,4 +97,15 @@ jobs:
             gh workflow run daily-radar.yml --ref main
           else
             echo "Daily Radar already active; no duplicate dispatch."
+          fi
+      - name: Dispatch Source Audit Executor
+        if: steps.decide.outputs.dispatch_source_audit == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          active=$(gh run list --workflow source-audit-executor.yml --limit 20 --json status --jq '[.[] | select(.status == "queued" or .status == "in_progress")] | length')
+          if [ "$active" -eq 0 ]; then
+            gh workflow run source-audit-executor.yml --ref main
+          else
+            echo "Source Audit Executor already active; no duplicate dispatch."
           fi
