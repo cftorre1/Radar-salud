@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-07",
+  "updated_at": "2026-10-10",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -2882,6 +2882,164 @@
       "progress": "Arquitecto creado; se activa executor real y kickoff automático.",
       "current_subfront": "activate_real_executor",
       "next_action": "Habilitar Autonomous Executor, lanzar kickoff y auditar primer pickup."
+    },
+    {
+      "id": "source_audit_issue5_master_2026_10_09",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Pele + Paolo + Source Intelligence + Auditor",
+      "source": "Dirección / GitHub issue #5",
+      "objective": "Ejecutar la auditoría integral de 27 conectores y recuperación editorial aprobada en issue #5 hasta cerrar cobertura efectiva, vigencia editorial y autonomía sin tocar producción.",
+      "depends_on": [],
+      "instructions": [
+        "Usar GitHub issue #5 como backlog maestro y config/orchestrator_queue.json como cola ejecutable.",
+        "No declarar una fuente sana sólo por HTTP 200 o workflow PASS; distinguir captura, fecha, selección, publicación y ausencia genuina de material.",
+        "Ejecutar las cinco iteraciones hijas en orden de prioridad, permitiendo autonomía en paralelo cuando no exista dependencia.",
+        "Registrar evidencia durable por fuente y mantener issue #5 actualizada con avances verificables.",
+        "No tocar main/producción salvo workflows de autonomía ya autorizados; las reparaciones de producto/fuentes van a staging."
+      ],
+      "evidence_required": [
+        "27 fuentes reconciliadas contra web original 30/90 días",
+        "matriz coverage-effective actualizada",
+        "reparaciones P0 con evidencia por URL",
+        "Insight semanal vigente o ausencia explícita",
+        "autonomía con pickup, reparación y transición comprobadas",
+        "QA + Reviewer + staging preview PASS"
+      ],
+      "approved_at": "2026-10-10",
+      "started_at": "2026-10-10",
+      "last_progress_at": "2026-10-10",
+      "current_subfront": "iteration_1_critical_source_recovery",
+      "next_action": "Ejecutar source_audit_issue5_iteration1_recovery_2026_10_09 y autonomía en paralelo."
+    },
+    {
+      "id": "source_audit_issue5_iteration1_recovery_2026_10_09",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Pele + Source Intelligence",
+      "source": "Dirección / GitHub issue #5",
+      "objective": "Recuperar fuentes críticas: Diario Financiero, Pulso/La Tercera, FONASA, ISP, DEIS, SIS fiscalización, SUSESO fiscalización, ACHS y Mutual.",
+      "depends_on": [],
+      "instructions": [
+        "Reconciliar por fuente web original 30 y 90 días versus discovered/seen/rejected/pending/published.",
+        "Clasificar cada omisión como captura, fecha, filtro/materialidad, publicación o ausencia genuina.",
+        "Reparar primero DF y Pulso/La Tercera, luego FONASA/ISP/DEIS, SIS/SUSESO fiscalización y errores ACHS/Mutual.",
+        "No bajar gates editoriales para aumentar volumen.",
+        "Después de cada reparación ejecutar test dirigido y luego QA/Reviewer."
+      ],
+      "evidence_required": [
+        "DF con últimas publicaciones relevantes reconciliadas y reason distribution documentada",
+        "Pulso/La Tercera con hallazgos recientes capturados o rechazo exacto",
+        "FONASA/ISP/DEIS con estado técnico honesto y ruta funcional o blocker exacto",
+        "SIS/SUSESO fiscalización reconciliadas",
+        "ACHS/Mutual reparadas o blocker exacto",
+        "matriz por fuente con URLs y fechas"
+      ],
+      "approved_at": "2026-10-10",
+      "started_at": "2026-10-10",
+      "last_progress_at": "2026-10-10",
+      "current_subfront": "diario_financiero_and_pulso_latercera",
+      "next_action": "Auditar y reparar DF y Pulso/La Tercera end-to-end en staging."
+    },
+    {
+      "id": "source_audit_issue5_iteration2_balance_2026_10_09",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Pele + Source Intelligence + Editorial Committee",
+      "source": "Dirección / GitHub issue #5",
+      "objective": "Aumentar profundidad y equilibrio sectorial sin cuotas artificiales.",
+      "depends_on": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ],
+      "instructions": [
+        "Auditar RedSalud, Bupa, INDISA, Dávila, Andes Salud, Clínicas de Chile, IST y Pfizer.",
+        "Construir universo de isapres y prestadores adicionales de alto valor.",
+        "Auditar rechazos y detectar señales perdidas por filtros excesivos.",
+        "Mantener una sola entidad visible por institución con subcanales internos cuando corresponda."
+      ],
+      "evidence_required": [
+        "matriz sectorial reconciliada",
+        "reducción de fuentes nominalmente activas sin cobertura",
+        "QA editorial de diversidad y materialidad"
+      ],
+      "approved_at": "2026-10-10",
+      "next_action": "Iniciar tras cierre P0 técnico."
+    },
+    {
+      "id": "source_audit_issue5_iteration3_editorial_2026_10_09",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Pele + Editorial/Data Committee",
+      "source": "Dirección / GitHub issue #5",
+      "objective": "Reconstruir inteligencia editorial: Insight semanal vigente, relaciones entre señales y análisis estadístico útil.",
+      "depends_on": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ],
+      "instructions": [
+        "Regenerar Insight semanal con freshness gate real y top3 auditado.",
+        "Una pieza vieja sale del módulo semanal sin borrarse del histórico.",
+        "Revisar 90 días para conexiones entre noticias, cifras, regulación y decisiones de negocio.",
+        "No forzar frecuencia si no existe evidencia suficiente."
+      ],
+      "evidence_required": [
+        "Insight vigente o ausencia explicada",
+        "top3 candidatos auditados",
+        "prueba de freshness",
+        "QA editorial y Reviewer PASS"
+      ],
+      "approved_at": "2026-10-10",
+      "next_action": "Regenerar Insight después del stock de fuentes P0."
+    },
+    {
+      "id": "source_audit_issue5_iteration4_autonomy_2026_10_09",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Autonomy Architect + Paolo + Pele + Auditor",
+      "source": "Dirección / GitHub issue #5",
+      "objective": "Hacer que la auditoría y recuperación editorial se ejecuten sin intervención recurrente de Toba.",
+      "depends_on": [],
+      "instructions": [
+        "Conectar issue #5 y sus tareas con un Executor GitHub-native staging-only.",
+        "Todo FAIL o fuente estancada debe generar tarea durable, intento de reparación y evidencia.",
+        "El executor debe tomar el siguiente subfrente aprobado automáticamente después de PASS o blocker.",
+        "Mantener límite de intentos y no tocar producción."
+      ],
+      "evidence_required": [
+        "executor consume tarea de issue #5",
+        "commit autónomo útil en staging",
+        "QA posterior",
+        "transición automática",
+        "4h acceptance sin owner restart"
+      ],
+      "approved_at": "2026-10-10",
+      "started_at": "2026-10-10",
+      "last_progress_at": "2026-10-10",
+      "current_subfront": "github_native_editorial_executor",
+      "next_action": "Crear Editorial Executor y probar pickup real."
+    },
+    {
+      "id": "source_audit_issue5_iteration5_expansion_2026_10_09",
+      "status": "approved",
+      "priority": "high",
+      "owner": "Pele + Source Intelligence + Market Intelligence",
+      "source": "Dirección / GitHub issue #5",
+      "objective": "Expandir inteligencia de mercado con fuentes de alto valor luego de estabilizar cobertura core.",
+      "depends_on": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "instructions": [
+        "Evaluar ChileCompra, Poder Judicial, BCN/LeyChile, CMF, DIPRES, INE/CASEN/CEP, universidades, innovación, healthtech y cobertura internacional recurrente.",
+        "Cada fuente debe tener propósito analítico y source quality gate.",
+        "No activar por volumen."
+      ],
+      "evidence_required": [
+        "evaluación source-quality",
+        "ruta a módulo Discovery/Watch/Trend/Benchmark/Global",
+        "evidencia de captura o descarte justificado"
+      ],
+      "approved_at": "2026-10-10",
+      "next_action": "Ejecutar tras estabilizar P0/P1."
     }
   ],
   "execution_policy": {
