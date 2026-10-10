@@ -1,0 +1,54 @@
+name: Alicanto source audit executor
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '25 * * * *'
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: alicanto-source-audit-executor
+  cancel-in-progress: false
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install project
+        run: pip install -e . pytest
+      - name: Run live beta source validation
+        id: live
+        continue-on-error: true
+        run: python -m pytest -q tests/test_beta_source_runtime_fast.py
+      - name: Build source audit task evidence
+        run: python scripts/source_audit_executor.py
+      - name: Persist durable executor state
+        env:
+          LIVE_OUTCOME: ${{ steps.live.outcome }}
+        run: |
+          git config user.name alicanto-source-audit-executor
+          git config user.email alicanto-source-audit-executor@users.noreply.github.com
+          git fetch origin autopilot-state
+          git worktree add /tmp/source-audit-state origin/autopilot-state
+          git -C /tmp/source-audit-state config user.name alicanto-source-audit-executor
+          git -C /tmp/source-audit-state config user.email alicanto-source-audit-executor@users.noreply.github.com
+          mkdir -p /tmp/source-audit-state/data/autopilot
+          cp artifacts/source_audit_executor.json /tmp/source-audit-state/data/autopilot/source_audit_executor_latest.json
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path('/tmp/source-audit-state/data/autopilot/source_audit_executor_latest.json')
+          d=json.loads(p.read_text())
+          d['live_validation_outcome']=os.environ.get('LIVE_OUTCOME')
+          p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
+          PY
+          git -C /tmp/source-audit-state add data/autopilot/source_audit_executor_latest.json
+          git -C /tmp/source-audit-state diff --cached --quiet || git -C /tmp/source-audit-state commit -m 'chore: source audit executor evidence'
+          git -C /tmp/source-audit-state push origin HEAD:autopilot-state
