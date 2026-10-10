@@ -14,6 +14,7 @@ AUDIT_IDS={
 }
 P0=["diario_financiero","pulso_latercera","fonasa","fonasa_datos_abiertos","isp_anamed","isp_surveillance",
 "deis","superintendencia_fiscalizacion","suseso_fiscalizacion","clinicas_achs_salud","achs_seguro_laboral","mutual_seguridad"]
+P0_ORDER={slug:i for i,slug in enumerate(P0)}
 
 def load(path, fallback):
     p=ROOT/path
@@ -65,6 +66,7 @@ def main():
         })
     unresolved=[r for r in rows if r["classification"]!="operational_unverified"]
     p0=[r for r in rows if r["priority"]=="P0" and r["classification"]!="operational_unverified"]
+    p0.sort(key=lambda r:P0_ORDER.get(r["slug"],999))
     report={
         "generated_at":datetime.now(timezone.utc).isoformat(),
         "task_id":"source_audit_issue5_iteration1_recovery_2026_10_09",
