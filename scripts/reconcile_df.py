@@ -25,6 +25,7 @@ from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue, atomic_json
 from radar_salud.scouts import fetch_html
 from radar_salud.source_scouts import DfHealthScout, _A
+from radar_salud.df_inventory import DfListing
 
 
 def read_captured_html(path, expected_sha256):
@@ -162,14 +163,16 @@ def main():
                 parser = _A(); parser.feed(html)
                 from urllib.parse import urljoin, urlsplit
                 page_articles = []
-                for href, title in parser.links:
+                listing=DfListing();listing.feed(html)
+                links=[*listing.primary_links,*listing.pagination] if listing.has_primary_layout else parser.links
+                for href, title in links:
                     url = urldefrag(urljoin(page, href))[0]
                     parsed = urlsplit(url)
                     if parsed.netloc not in ("df.cl", "www.df.cl"): continue
                     if re.search(r"tagport_(161|121|2150)_\d+\.html$", parsed.path) or re.search(r'/tags/(salud|isapres?|fonasa)/p/\d+/?$',parsed.path):
                         if url not in visited: pages.append(url)
                         continue
-                    if len(title) < 18 or parsed.path.count("/") < 3: continue
+                    if len(title) < 18 or parsed.path.count("/") < 3 or re.search(r"/p/\d+/?$",parsed.path): continue
                     if any(x in parsed.path for x in ("/tag/", "/autor/", "/tax/", "/suscripcion", "/login")): continue
                     if "/salud/" in parsed.path or public_source_pipeline._health_relevance(title, ""):
                         titles.setdefault(url, title); ordered.append(url); page_articles.append(url)

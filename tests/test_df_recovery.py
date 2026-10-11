@@ -445,3 +445,25 @@ def test_verified_body_repair_unblocks_retry_without_changing_publication_day(tm
     queue.discover('diario_financiero', [_raw(dated=True)], now=NOW)
     assert queue.items[key]['status'] == 'pending'
     assert queue.items[key]['retry_at'] is None
+
+
+def test_real_df_listings_select_primary_cards_and_observable_health_pagination(monkeypatch):
+    from pathlib import Path
+    from radar_salud.df_inventory import DfListing
+    fixtures = Path(__file__).parent / 'fixtures'
+    tag = DfListing();tag.feed((fixtures / 'df_health_tag_real.html').read_text())
+    assert tag.has_primary_layout
+    assert ('/tags/salud/p/2', '2') in tag.pagination
+    assert any('clinica-san-carlos' in (u or '') for u, title in tag.primary_links)
+    def fetch(url):
+        if url == DfHealthScout.PAGES[0]:return (fixtures / 'df_health_listing_real.html').read_text()
+        if url == DfHealthScout.PAGES[1]:return (fixtures / 'df_health_tag_real.html').read_text()
+        return '<meta name="cXenseParse:recs:publishtime" content="2026-10-10"><article>Contenido</article>'
+    monkeypatch.setattr('radar_salud.source_scouts.fetch_html', fetch)
+    items = DfHealthScout().discover()
+    assert any('clinica-san-carlos' in raw.url for raw in items)
+    assert any('ricarte-soto' in raw.url for raw in items)
+    assert not any('/p/1' in raw.url or raw.url.endswith('.pdf') for raw in items)
+    assert not any('klap-se-suma' in raw.url for raw in items)
+    assert all(raw.metadata['listing_extraction'] == 'primary_cards' for raw in items)
+    assert len(items) < 40
