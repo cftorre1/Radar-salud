@@ -313,6 +313,14 @@ def test_origin_http_failure_keeps_status_and_other_article():
     assert report["errors"][0]["code"] == "origin_http_status" and report["errors"][0]["http_status"] == 503
 
 
+def test_capture_loader_origin_error_retains_numeric_status_without_inventing_a_response():
+    source, _ = scout({PAGE: listing(branch(0, card("one"))),
+                       detail_url("one"): SourceDiscoveryError("origin_http_status", detail_url("one"), "503")})
+    report = source.discover_inventory()
+    assert not report["coverage_complete"] and report["errors"][0]["http_status"] == 503
+    assert isinstance(report["errors"][0]["http_status"], int)
+
+
 def test_malformed_card_is_recorded_instead_of_silent_complete_coverage():
     html = listing(branch(0, card("good") + '<div class="card-noticia"><div class="fecha">9 oct. 2026</div></div>'))
     source, _ = scout({PAGE: html, detail_url("good"): detail()})

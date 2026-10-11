@@ -308,7 +308,10 @@ def _error(exc, url, reason, **extra):
     result = {"url": url, "reason": code, "code": code,
               "detail": str(exc), "exception_type": type(exc).__name__, **extra}
     if code == "origin_http_status":
-        result["http_status"] = exc.code
+        if isinstance(getattr(exc, "code", None), int):
+            result["http_status"] = exc.code
+        elif re.fullmatch(r"[1-5]\d{2}", getattr(exc, "detail", "")):
+            result["http_status"] = int(exc.detail)
     return result
 
 
