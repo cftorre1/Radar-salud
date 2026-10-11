@@ -280,17 +280,40 @@ def verified_video_without_text(metadata):
     """Structural evidence allows a pending candidate, never editorial approval."""
     evidence = metadata.get("video_evidence", {})
     canonical = metadata.get("canonical_url")
-    return (metadata.get("primary_identity_verified") is True
+    if not (metadata.get("primary_identity_verified") is True
             and metadata.get("publication_date_verified") is True
+            and metadata.get("article_verified") is False
             and publication_day(metadata.get("publication_date")) == metadata.get("publication_date")
             and article_url(canonical) == canonical and canonical is not None
+            and urlparse(canonical).path.startswith("/videos/")
             and metadata.get("article_body_complete") is False
             and metadata.get("publisher_document_type") == "video"
             and metadata.get("video_identity_verified") is True
             and metadata.get("source_content_unavailable_reason") == "publisher_video_text_unavailable"
             and isinstance(evidence, dict) and evidence.get("type") == "VideoObject"
             and article_url(evidence.get("url")) == canonical
-            and evidence.get("id") == str(canonical) + "#video" and bool(evidence.get("embed_url")))
+            and evidence.get("id") == str(canonical) + "#video" and bool(evidence.get("embed_url"))):
+        return False
+    try:
+        rows = metadata["publication_evidence"]
+        dates = [(row["source"], row["timestamp"], publication_day(row["timestamp"])) for row in rows]
+        if not dates or any(not day for _, _, day in dates):
+            return False
+        published, _, expected = _reconcile_publication_dates(dates, metadata.get("visible_publication_date"))
+        if metadata.get("publication_date") != published or metadata.get("publication_timestamp") != dates[0][1]:
+            return False
+        if rows != expected:
+            return False
+        now = datetime.now(ZoneInfo("UTC"))
+        for _, value, _ in dates:
+            if len(value) == 10:
+                if date.fromisoformat(value) > now.astimezone(ZoneInfo("America/Santiago")).date():
+                    return False
+            elif datetime.fromisoformat(value.replace("Z", "+00:00")) > now:
+                return False
+    except (KeyError, ValueError, TypeError):
+        return False
+    return True
 
 
 class ConflictingPublicationArticle(ValueError):

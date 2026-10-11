@@ -100,8 +100,13 @@ def test_structural_video_exception_requires_bound_primary_identity_and_verified
     evidence = result['metadata']
     for change in ({'canonical_url': None}, {'publication_date_verified': False},
                    {'video_evidence': dict(evidence['video_evidence'], url='https://www.latercera.com/videos/noticia/related/')},
-                   {'source_content_unavailable_reason': 'unknown'}, {'primary_identity_verified': False}):
+                   {'source_content_unavailable_reason': 'unknown'}, {'primary_identity_verified': False},
+                   {'publication_evidence': []}, {'publication_date': '2099-01-01'}, {'article_verified': True}):
         assert not verified_video_without_text(dict(evidence, **change))
+    national_url = evidence['canonical_url'].replace('/videos/', '/nacional/')
+    moved = dict(evidence, canonical_url=national_url,
+                 video_evidence=dict(evidence['video_evidence'], url=national_url, id=national_url+'#video'))
+    assert not verified_video_without_text(moved)
     with pytest.raises(ValueError, match='article_identity_mismatch'):
         extract_article(original(row).replace('rel="canonical"', 'rel="related"').replace('property="og:url"', 'property="related"'), row['url'])
 
