@@ -53,6 +53,42 @@ REVALIDATED_MODE = "genuine_revalidated_processing_baseline"
 FINAL_PAID_PRODUCER = "323b73ef5fb0ec39410024c21d70e6fd99b065e2"
 FINAL_PAID_CODE = "c2db17141fd55cbacbcda5b53805341aa4dfa86f"
 FINAL_PAID_FINGERPRINT = "c960999eea01aed6e578d0ca1354cb5f45b8720ae8832993d609d0db540b0406"
+TERMINAL_FOLLOWTHROUGH_MODE = "genuine_terminal_followthrough_processing_baseline"
+ARCHIVED_FINAL_PRODUCER = "123bf2550536030a077c03ad4d56572df24ab418"
+ARCHIVED_FINAL_CODE = "46a3683c6760f0e61031a7dc7d5961c105cacb36"
+ARCHIVED_FINAL_FINGERPRINT = "8f50110e88b79f0832e86957a0f14d3a461a52faf6f65fd2b1fab8299df831fa"
+ARCHIVED_FINAL_FILES = {
+    DEFAULT_REPORT: "6f0f26ac044cf50e2df2fc30be21e42b56276c6e77ca6678b6c8621b35a7d8d9",
+    DEFAULT_QA: "719d0afbb61718808c4ccee7252cb98af337e0d6fec3c56aab2ad2a553dd4582",
+    "data/state/pending_queue.json": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+    "data/history/superintendencia_signals.json": "1400cb4a7bfd9d50283bf7927515dffa328ec07cbb1a780148f9227f3db98b26",
+    "web/data/radar_today.json": "6c7bd5a3b7dda1fbb6fe032d43c4927adc1393111716852835dfd495ce1e53dc",
+    "data/ai_usage/responses.jsonl": "19bb3e6b2ae1e15c623a97eb08ae6b3f323b1c11cec6fa74aad359f3ca04cfad",
+    "data/ai_usage/2026-10.json": "aec8ca63b045c2d44c28ebfddcfd4474651ae5bfc27efbc1247f4171a18e9ca9",
+    "data/state/discovery_run.json": "301529a60f3209f6b1d5294d6bf1123f90e8c283974528602d461f1c09120f26",
+}
+ALLOWED_TERMINAL_CONSUMER_CHANGES = frozenset({
+    "scripts/qa_pulso_recovery.py", "scripts/pulso_idempotence.py",
+    "scripts/pulso_recovery_command.py", ".github/workflows/pulso-runtime-recovery.yml",
+})
+SETTLEMENT_PRODUCER = "d48a495a5fcefb9adaca26ca30b1f12ddad7e59f"
+SETTLEMENT_CODE = "1b4817164dbd9cd091197e1c7ebd03de6fa93526"
+SETTLEMENT_FINGERPRINT = "be91910c2f322831f8279afd200963155b7bb076e31034c2592cb31290e56814"
+SETTLEMENT_FILES = {
+    DEFAULT_REPORT: "8ce66b878a4165bb079292eb4c2853eb029309a9341954c77007bc578cf5accb",
+    DEFAULT_QA: "cf5ee33b0833b6ee6704c19b7a8e308a4e65c6d089e4dda4a4b4d2e662bc063a",
+    "data/state/pending_queue.json": "d44cfa10569f34cf1e1f8a7746d26bd71728d069679c89b756387381123eddf8",
+    "data/history/superintendencia_signals.json": "1400cb4a7bfd9d50283bf7927515dffa328ec07cbb1a780148f9227f3db98b26",
+    "web/data/radar_today.json": "4801f42db2518366dd9c2555bd62a1b55d257e46cfb25f67bf089352fc5eccf0",
+    "data/ai_usage/responses.jsonl": "85baafcd92e24f98d912105fc8dced023b5dd78f18d63a571e7626908d917d31",
+    "data/ai_usage/2026-10.json": "4411394f3ac5fa75136f023b125ed00eac7538b0d4670e545fc34a05d921204a",
+    "data/state/discovery_run.json": "6ed0352474bb398f02d13bf6550e2865f71c7e0c65c4c25062c4d1e3ee48a9c0",
+}
+SETTLEMENT_REVIEW_FILES = {
+    "data/audits/pulso_additional_live9_recovery_cohort_2026_10_11.json": "641eee7d713cd1c9fba2171d9e45dbaeab0688434ac371a87f56089b2f141373",
+    "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8",
+    "tests/fixtures/pulso_live9_primary_real/manifest.json": "908875faca85694905ca6abeae9945b1366903a3cc54f67c588cee96b133d46f",
+}
 
 
 def digest(value):
@@ -701,6 +737,213 @@ def validate_revalidated_baseline(bundle):
             "baseline_full_selection_or_two_current_receipts_missing")
 
 
+def terminal_followthrough_provenance(context, execution, *, root):
+    reader = final_paid_reader(root)
+    require(callable(getattr(reader, "verify_terminal_followthrough_execution", None)),
+            "independent_terminal_followthrough_reader_unavailable")
+    history = context["history"]
+    history = history["signals"] if isinstance(history, dict) else history
+    result = reader.verify_terminal_followthrough_execution(root, report=context["report"],
+        queue=context["queue"], history=history, snapshot=context["feed"], telemetry=context["events"], execution=execution)
+    require(isinstance(result, dict) and result.get("current_followthrough_execution") == execution
+            and result.get("actual_budget_delta") == budget_delta(execution)
+            and result.get("publication_approved") is False,
+            "independent_terminal_followthrough_execution_binding_missing")
+    return result
+
+
+def terminal_context(context, *, root):
+    # This mode alone binds the later ordinary-processing namespace. Older
+    # baseline contracts retain their original proof inventory unchanged.
+    result = dict(context)
+    result["referenced_proof_files"] = dict(context.get("referenced_proof_files", {}))
+    result["observed_files"] = dict(context["observed_files"])
+    for path, expected in SETTLEMENT_REVIEW_FILES.items():
+        require(digest((root / path).read_bytes()) == expected, "terminal_settlement_review_file_changed")
+        result["referenced_proof_files"][path] = expected
+        result["observed_files"][path] = expected
+    return result
+
+
+def capture_terminal_followthrough_baseline(context, *, root=ROOT, now=None):
+    context = terminal_context(context, root=root)
+    now = now or datetime.now(timezone.utc)
+    qa = context["processing_qa"]
+    require(qa.get("phase") == "real_core_processing" and qa.get("requested_phase") == "processing"
+            and qa.get("verdict") == "PASS_AUTOMATED_PROCESSING_REQUIRES_INDEPENDENT_REVIEW"
+            and qa.get("discovery_qa") == qa.get("processing_qa") == "PASS"
+            and qa.get("acceptance") == "PENDING_INDEPENDENT_EDITORIAL_AND_FINAL_SHA_REVIEW"
+            and not qa.get("findings"), "terminal_followthrough_processing_qa_pass_required")
+    execution, urls, delta, events = core_proof(context)
+    require(all(value == 0 for tier in delta.values() for value in tier.values()) and not events
+            and execution.get("processing_attempts_increased") == context["discovery"].get("processing_attempts") == 0,
+            "terminal_followthrough_requires_zero_actual_ai_and_attempts")
+    require(qa.get("checks", {}).get("actual_ai_budget_delta") == delta
+            and qa["checks"].get("actual_fast_response_events") == 0
+            and qa["checks"].get("processing_selection", {}).get("sha256") == context["observed_files"][DEFAULT_SELECTION]
+            and qa["checks"]["processing_selection"].get("selected_urls") == 113,
+            "passing_terminal_followthrough_qa_not_bound_to_actual_observations")
+    snapshot = revalidated_snapshot(context)
+    partition = selected_partition(snapshot["source_queue"], urls, now)
+    recorded = execution["processing_selection"]
+    require(partition == dict(terminal_urls=sorted(urls), held_not_due_urls=[])
+            and all(snapshot["source_queue"][url]["status"] in {"published", "rejected"} for url in urls)
+            and sorted(recorded.get("skipped_terminal_urls", [])) == sorted(urls)
+            and not any(recorded.get(field) for field in (
+                "ready_selected_urls", "skipped_not_due_urls", "skipped_in_progress_urls")),
+            "terminal_followthrough_requires_actual_all113_terminal_skip")
+    proof = terminal_followthrough_provenance(context, execution, root=root)
+    bundle = dict(schema_version=SCHEMA, mode=TERMINAL_FOLLOWTHROUGH_MODE, at=now.isoformat(), read_only=True,
+        baseline_execution=execution, terminal_budget_delta=delta, terminal_successful_response_ids=[],
+        terminal_followthrough_provenance=proof,
+        archived_producer=dict(state_commit=ARCHIVED_FINAL_PRODUCER, core_checkout=ARCHIVED_FINAL_CODE,
+            runtime_fingerprint_sha256=ARCHIVED_FINAL_FINGERPRINT, files=dict(ARCHIVED_FINAL_FILES)),
+        settlement_producer=dict(state_commit=SETTLEMENT_PRODUCER, core_checkout=SETTLEMENT_CODE,
+            runtime_fingerprint_sha256=SETTLEMENT_FINGERPRINT, files=dict(SETTLEMENT_FILES)),
+        allowed_consumer_changes=sorted(ALLOWED_TERMINAL_CONSUMER_CHANGES),
+        selection=dict(path=DEFAULT_SELECTION, sha256=context["observed_files"][DEFAULT_SELECTION], urls=urls,
+                       count=113, current_partition=partition), observed_files=context["observed_files"],
+        runtime_fingerprint=context["runtime_fingerprint"],
+        cohort_declared_reference_provenance=context.get("cohort_declared_reference_provenance", {}),
+        processing_qa=dict(verdict=qa["verdict"], discovery_qa="PASS", processing_qa="PASS",
+            requested_phase=qa["requested_phase"], acceptance=qa["acceptance"], phase=qa["phase"],
+            sha256=context["observed_files"][DEFAULT_QA], checks=qa.get("checks", {})), semantic=snapshot,
+        acceptance_note="Original paid323, final123 and LIVE9 settlement QA remain FAIL. Bound ordinary LIVE9 processing may add real usage; fresh terminal followthrough uses zero new AI with unchanged runtime outside four consumers. Final acceptance remains separate.")
+    bundle["payload_sha256"] = digest(bundle)
+    validate_terminal_followthrough_baseline(bundle)
+    return bundle
+
+
+def validate_terminal_followthrough_baseline(bundle):
+    require(bundle.get("schema_version") == SCHEMA and bundle.get("mode") == TERMINAL_FOLLOWTHROUGH_MODE
+            and bundle.get("read_only") is True, "invalid_terminal_followthrough_baseline")
+    require(bundle.get("payload_sha256") == digest({key: value for key, value in bundle.items() if key != "payload_sha256"}),
+            "baseline_payload_sha256_mismatch")
+    require(bundle.get("archived_producer") == dict(state_commit=ARCHIVED_FINAL_PRODUCER,
+                core_checkout=ARCHIVED_FINAL_CODE, runtime_fingerprint_sha256=ARCHIVED_FINAL_FINGERPRINT,
+                files=ARCHIVED_FINAL_FILES)
+            and bundle.get("settlement_producer") == dict(state_commit=SETTLEMENT_PRODUCER,
+                core_checkout=SETTLEMENT_CODE, runtime_fingerprint_sha256=SETTLEMENT_FINGERPRINT, files=SETTLEMENT_FILES)
+            and bundle.get("allowed_consumer_changes") == sorted(ALLOWED_TERMINAL_CONSUMER_CHANGES),
+            "terminal_followthrough_archive_or_consumer_scope_changed")
+    execution, quality = bundle["baseline_execution"], bundle["processing_qa"]
+    proof = bundle["terminal_followthrough_provenance"]
+    require(proof.get("schema_version") == "pulso_terminal_followthrough_provenance_v1"
+            and proof.get("archived_producer") == dict(commit=ARCHIVED_FINAL_PRODUCER, code_sha=ARCHIVED_FINAL_CODE,
+                runtime_fingerprint_sha256=ARCHIVED_FINAL_FINGERPRINT, files=ARCHIVED_FINAL_FILES, original_qa_promoted=False)
+            and proof.get("settlement_producer") == dict(commit=SETTLEMENT_PRODUCER, code_sha=SETTLEMENT_CODE,
+                runtime_fingerprint_sha256=SETTLEMENT_FINGERPRINT, files=SETTLEMENT_FILES, original_qa_promoted=False),
+            "terminal_followthrough_provenance_descriptor_changed")
+    archived = proof["archived_final_evaluation"]["evaluation_execution"]
+    archived_qa = proof["archived_processing_qa"]
+    delta = budget_delta(execution)
+    require(proof.get("current_followthrough_execution") == execution and proof.get("actual_budget_delta") == delta
+            and proof.get("publication_approved") is False and delta == bundle["terminal_budget_delta"]
+            and not any(value for tier in delta.values() for value in tier.values())
+            and bundle.get("terminal_successful_response_ids") == [] and execution.get("processing_attempts_increased") == 0
+            and execution.get("mode") == "real_core_processing" and execution.get("engine_called") is True
+            and execution.get("engine_completed") is True and execution.get("ai_guardrails_modified") is False,
+            "terminal_followthrough_current_execution_not_genuine_zero")
+    require(quality.get("phase") == "real_core_processing" and quality.get("requested_phase") == "processing"
+            and quality.get("verdict") == "PASS_AUTOMATED_PROCESSING_REQUIRES_INDEPENDENT_REVIEW"
+            and quality.get("discovery_qa") == quality.get("processing_qa") == "PASS"
+            and quality.get("acceptance") == "PENDING_INDEPENDENT_EDITORIAL_AND_FINAL_SHA_REVIEW"
+            and quality.get("checks", {}).get("actual_ai_budget_delta") == delta
+            and quality["checks"].get("actual_fast_response_events") == 0,
+            "terminal_followthrough_current_processing_qa_missing")
+    original = archived["runtime_fingerprint"]
+    current = bundle["runtime_fingerprint"]
+    require(archived.get("code_sha") == ARCHIVED_FINAL_CODE
+            and original.get("sha256") == digest(original.get("files")) == ARCHIVED_FINAL_FINGERPRINT
+            and archived.get("processing_attempts_increased") == 2
+            and not any(value for tier in budget_delta(archived).values() for value in tier.values())
+            and archived_qa.get("verdict") == archived_qa.get("processing_qa") == "FAIL"
+            and archived_qa.get("acceptance") == "NOT_ACCEPTED" and len(archived_qa.get("findings", [])) == 24,
+            "terminal_followthrough_archived_real_evaluation_or_failure_changed")
+    require(set(original["files"]) == set(current["files"])
+            and current.get("sha256") == digest(current["files"])
+            and original.get("git_or_marker_sha_used") is current.get("git_or_marker_sha_used") is False
+            and all(current["files"][path] == value for path, value in original["files"].items()
+                    if path not in ALLOWED_TERMINAL_CONSUMER_CHANGES)
+            and execution.get("runtime_fingerprint") == current
+            and re.fullmatch(r"[0-9a-f]{40}", str(execution.get("code_sha", "")))
+            and stamp(archived.get("finished_at")) < stamp(execution.get("started_at")) <= stamp(execution.get("finished_at")),
+            "terminal_followthrough_runtime_changed_outside_bound_consumers")
+    lineage = proof["paid_model_lineage"]
+    require(lineage == proof["archived_final_evaluation"]["paid_model_lineage"]
+            and lineage.get("producer_state_commit") == FINAL_PAID_PRODUCER
+            and lineage.get("original_paid_qa_promoted") is False
+            and lineage.get("same_runtime_fingerprint_as_baseline") is False
+            and lineage["original_processing_qa"].get("processing_qa") == "FAIL"
+            and lineage["original_budget_delta"]["fast"] == dict(attempted=2, successful=2, failed=0)
+            and len(set(lineage["original_successful_response_ids"])) == 2
+            and set(lineage["original_successful_response_ids"]) <= set(bundle["semantic"]["actual_response_ids"])
+            and len(proof["preserved_final_receipts"]) == 2,
+            "terminal_followthrough_original_paid_or_final_receipts_erased")
+    settlement = proof["settlement_execution"]
+    settled_fp = settlement["runtime_fingerprint"]
+    settled_delta = budget_delta(settlement)
+    require(settlement.get("code_sha") == SETTLEMENT_CODE
+            and settled_fp.get("sha256") == digest(settled_fp.get("files")) == SETTLEMENT_FINGERPRINT
+            and settlement.get("mode") == "real_core_processing" and settlement.get("engine_called") is True
+            and settlement.get("engine_completed") is True and settlement.get("ai_guardrails_modified") is False
+            and settlement.get("processing_attempts_increased") == 9
+            and settled_delta == proof["settlement_budget_delta"] == {
+                "fast": dict(attempted=4, successful=4, failed=0), "deep": dict(attempted=0, successful=0, failed=0)}
+            and proof["settlement_processing_qa"].get("verdict") == proof["settlement_processing_qa"].get("processing_qa") == "FAIL"
+            and len(proof["settlement_processing_qa"].get("findings", [])) == 1477
+            and len(proof["settlement_live9"]) == 9
+            and not set(proof["settlement_live9"]) & set(bundle["selection"]["urls"])
+            and all(row.get("status") == "rejected" and row.get("attempts") == 1
+                    and bundle["semantic"]["source_queue"][url]["status"] == "rejected"
+                    and bundle["semantic"]["source_queue"][url]["attempts"] == 1
+                    for url, row in proof["settlement_live9"].items())
+            and set(settled_fp["files"]) == set(original["files"])
+            and all(settled_fp["files"][path] == value for path, value in original["files"].items()
+                    if path not in ALLOWED_TERMINAL_CONSUMER_CHANGES)
+            and stamp(archived.get("finished_at")) < stamp(settlement.get("started_at"))
+                <= stamp(settlement.get("finished_at")) < stamp(execution.get("started_at"))
+            and execution["budget_before"]["month"] == execution["budget_after"]["month"] == settlement["budget_after"]["month"],
+            "terminal_followthrough_settlement_execution_or_usage_changed")
+    events = proof["settlement_response_events"]
+    require(len(events) == len({event.get("response_id") for event in events}) == 4
+            and all(event.get("kind") == "fast" and event.get("success") is True
+                and isinstance(event.get("response_id"), str) and event["response_id"]
+                and stamp(settlement["started_at"]) <= stamp(event.get("at")) <= stamp(settlement["finished_at"])
+                for event in events)
+            and {event["response_id"] for event in events} <= set(bundle["semantic"]["actual_response_ids"])
+            and all(bundle["semantic"]["referenced_proof_files"].get(path) == sha
+                    for path, sha in SETTLEMENT_REVIEW_FILES.items()),
+            "terminal_followthrough_settlement_responses_or_reviews_missing")
+    selection, stock = bundle["selection"], proof["launch_stock"]
+    require(selection.get("count") == len(set(selection["urls"])) == 113
+            and selection["current_partition"] == dict(terminal_urls=sorted(selection["urls"]), held_not_due_urls=[])
+            and all(bundle["semantic"]["source_queue"][url]["status"] in {"published", "rejected"}
+                    for url in selection["urls"])
+            and execution["processing_selection"].get("selected_urls") == selection["urls"]
+            and execution["processing_selection"].get("sha256") == selection["sha256"]
+            and sorted(execution["processing_selection"].get("skipped_terminal_urls", [])) == sorted(selection["urls"])
+            and not any(execution["processing_selection"].get(field) for field in (
+                "ready_selected_urls", "skipped_not_due_urls", "skipped_in_progress_urls"))
+            and quality["checks"].get("processing_selection", {}).get("sha256") == selection["sha256"]
+            and quality["checks"]["processing_selection"].get("selected_urls") == 113
+            and len(bundle["semantic"]["native_queue"]) == stock.get("native_queue_count") == 5293
+            and stock.get("native_history_count") == 897
+            and stock.get("commit") == SETTLEMENT_PRODUCER
+            and stock.get("file_sha256") == SETTLEMENT_FILES,
+            "terminal_followthrough_full113_or_native_stock_missing")
+    source_rows = bundle["semantic"]["source_queue"]
+    source_stocks = stock["source_queue_semantic_sha256s"]
+    require(all(url in source_rows and source_rows[url]["semantic_sha256"] == sha for url, sha in source_stocks.items())
+            and set(selection["urls"]) | set(proof["settlement_live9"]) <= set(source_stocks)
+            and all(source_rows[url]["attempts"] == 0 and source_rows[url]["status"] in {"pending", "archived"}
+                    for url in set(source_rows) - set(source_stocks)),
+            "terminal_followthrough_existing_source_semantics_changed")
+    require(not any(field in bundle for field in ("paid_budget_delta", "paid_successful_response_ids",
+                "revalidated_budget_delta", "revalidated_successful_response_ids")),
+            "terminal_followthrough_retagged_as_paid_or_revalidation")
+
+
 def capture_baseline(context, *, now=None):
     now = now or datetime.now(timezone.utc)
     qa = context["processing_qa"]
@@ -742,6 +985,9 @@ def capture_baseline(context, *, now=None):
 
 
 def validate_baseline(bundle):
+    if bundle.get("mode") == TERMINAL_FOLLOWTHROUGH_MODE:
+        validate_terminal_followthrough_baseline(bundle)
+        return
     if bundle.get("mode") == REVALIDATED_MODE:
         validate_revalidated_baseline(bundle)
         return
@@ -772,17 +1018,28 @@ def verify_revalidated_baseline_lineage(bundle, context, *, root):
             "immutable_original_paid_or_revalidated_execution_lineage_changed")
 
 
+def verify_terminal_followthrough_baseline_lineage(bundle, context, *, root):
+    proof = terminal_followthrough_provenance(context, bundle["baseline_execution"], root=root)
+    require(proof == bundle["terminal_followthrough_provenance"],
+            "immutable_archived_final_or_terminal_followthrough_provenance_changed")
+
+
 def preflight(bundle, context, *, now=None, root=ROOT):
     """Fail before engine/model activity if the genuine baseline cannot replay."""
     validate_baseline(bundle)
+    if bundle["mode"] == TERMINAL_FOLLOWTHROUGH_MODE:
+        context = terminal_context(context, root=root)
     now = now or datetime.now(timezone.utc)
     require(bundle["runtime_fingerprint"] == context["runtime_fingerprint"], "runtime_implementation_or_policy_changed")
     require(bundle["selection"]["sha256"] == context["observed_files"][DEFAULT_SELECTION]
             and bundle["selection"]["urls"] == context["selection"]["urls"], "immutable_113_selection_changed")
     revalidated = bundle["mode"] == REVALIDATED_MODE
+    terminal = bundle["mode"] == TERMINAL_FOLLOWTHROUGH_MODE
     if revalidated:
         verify_revalidated_baseline_lineage(bundle, context, root=root)
-    snapshot = revalidated_snapshot(context) if revalidated else semantic_snapshot(context)
+    if terminal:
+        verify_terminal_followthrough_baseline_lineage(bundle, context, root=root)
+    snapshot = revalidated_snapshot(context) if revalidated or terminal else semantic_snapshot(context)
     require(snapshot == bundle["semantic"], "runtime_state_changed_since_passing_baseline")
     partition = selected_partition(snapshot["source_queue"], bundle["selection"]["urls"], now,
                                    reviewed_holds=snapshot["reviewed_hold_bindings"])
@@ -794,6 +1051,8 @@ def preflight(bundle, context, *, now=None, root=ROOT):
 
 def compare(bundle, context, *, now=None, root=ROOT):
     validate_baseline(bundle)
+    if bundle["mode"] == TERMINAL_FOLLOWTHROUGH_MODE:
+        context = terminal_context(context, root=root)
     now = now or datetime.now(timezone.utc)
     findings = []
     def check(condition, code, **evidence):
@@ -803,11 +1062,17 @@ def compare(bundle, context, *, now=None, root=ROOT):
     check(context.get("recorded_core_runtime_fingerprint") == context["runtime_fingerprint"],
           "actual_second_core_implementation_not_bound")
     revalidated = bundle["mode"] == REVALIDATED_MODE
+    terminal = bundle["mode"] == TERMINAL_FOLLOWTHROUGH_MODE
     if revalidated:
         try:
             verify_revalidated_baseline_lineage(bundle, context, root=root)
         except (OSError, KeyError, TypeError, ValueError) as error:
             findings.append(dict(code="original_paid_or_revalidated_execution_lineage_invalid", reason=str(error)))
+    if terminal:
+        try:
+            verify_terminal_followthrough_baseline_lineage(bundle, context, root=root)
+        except (OSError, KeyError, TypeError, ValueError) as error:
+            findings.append(dict(code="archived_final_or_terminal_followthrough_provenance_invalid", reason=str(error)))
     try:
         execution, urls, delta, events = core_proof(context)
         check(stamp(execution["started_at"]) > stamp(bundle["baseline_execution"]["finished_at"]), "second_actual_core_not_fresh")
@@ -827,12 +1092,12 @@ def compare(bundle, context, *, now=None, root=ROOT):
     except (KeyError, TypeError, ValueError) as error:
         findings.append(dict(code="genuine_second_core_proof_invalid", reason=str(error)))
         delta, partition = {}, {}
-    after = revalidated_snapshot(context) if revalidated else semantic_snapshot(context)
+    after = revalidated_snapshot(context) if revalidated or terminal else semantic_snapshot(context)
     before = bundle["semantic"]
     for key in ("history", "feed", "referenced_proof_files", "reviewed_hold_bindings", "ledgers",
                 "response_event_sha256s", "actual_response_ids"):
         check(after[key] == before[key], "changed_" + key)
-    if revalidated:
+    if revalidated or terminal:
         check(after["native_queue"] == before["native_queue"], "changed_native_queue")
     added = {}
     for key in ("source_queue", "source_primary"):
@@ -851,7 +1116,8 @@ def compare(bundle, context, *, now=None, root=ROOT):
                 runtime_fingerprint=context["runtime_fingerprint"], actual_budget_delta=delta,
                 selected_partition=partition, new_unselected_discovery=added,
                 history_signal_count=len(after["history"]), feed_signal_count=len(after["feed"]),
-                findings=findings, method=("Actual selected core execution after separately bound original paid lineage and genuine repaired processing; no original paid QA relabelling."
+                findings=findings, method=("Actual same-runtime terminal replay after bound immutable paid and final evaluation lineage; archived QA failures preserved."
+                    if terminal else "Actual selected core execution after separately bound original paid lineage and genuine repaired processing; no original paid QA relabelling."
                     if revalidated else "Actual selected core execution, paid baseline and immutable semantic identities; no mocked model or injected discovery."))
 
 
@@ -868,7 +1134,7 @@ def write_result(root, path, result):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("capture", "capture-revalidated", "preflight", "compare"))
+    parser.add_argument("mode", choices=("capture", "capture-revalidated", "capture-terminal-followthrough", "preflight", "compare"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--baseline", type=Path, default=Path(DEFAULT_BASELINE))
     parser.add_argument("--output", type=Path)
@@ -876,18 +1142,20 @@ def main():
     try:
         context = read_context(args.root)
         baseline_path = args.baseline if args.baseline.is_absolute() else args.root / args.baseline
-        if args.mode in {"capture", "capture-revalidated"}:
+        if args.mode in {"capture", "capture-revalidated", "capture-terminal-followthrough"}:
             output = args.output or args.baseline
             destination = output if output.is_absolute() else args.root / output
             if destination.exists():
                 result = json.loads(destination.read_bytes())
-                expected_mode = REVALIDATED_MODE if args.mode == "capture-revalidated" else "genuine_processing_baseline"
+                expected_mode = (TERMINAL_FOLLOWTHROUGH_MODE if args.mode == "capture-terminal-followthrough"
+                                 else REVALIDATED_MODE if args.mode == "capture-revalidated" else "genuine_processing_baseline")
                 require(result.get("mode") == expected_mode, "refusing_to_replace_different_processing_baseline_mode")
                 preflight(result, context, root=args.root)
                 require(result["baseline_execution"] == (context["report"].get("last_core_execution") or context["report"].get("execution")),
                         "refusing_to_replace_genuine_processing_baseline")
             else:
-                result = (capture_revalidated_baseline(context, root=args.root) if args.mode == "capture-revalidated"
+                result = (capture_terminal_followthrough_baseline(context, root=args.root) if args.mode == "capture-terminal-followthrough"
+                          else capture_revalidated_baseline(context, root=args.root) if args.mode == "capture-revalidated"
                           else capture_baseline(context))
         else:
             baseline = json.loads(baseline_path.read_bytes())
