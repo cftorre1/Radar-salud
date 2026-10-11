@@ -6,8 +6,8 @@
     "queue_blob_sha": "7c5603b261ec1fee2f3244a315c3f955d9b972c9",
     "queue_sha256": "e51964a3aa0a07b9e55e8b59d21c2b8d28862b546236461a5c2e33425348400f",
     "staging_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
-    "state_control_sha256": "111147687abe19e293988659c0b412151258d48c881582f219ede397c738b164",
-    "state_sha": "ed846b3e9e4973922655e17b4e19d5a891db0b0b"
+    "state_control_sha256": "810220b9fe303f0f1a04ab263a03a3005b4d501b3f6acffa63e1d251547d2365",
+    "state_sha": "79f5318ef3e181f7d9d90b29c8966c1dd1b30a7e"
   },
   "canonical_pmo_updated": false,
   "corrected_material_event_count": 8,
@@ -29,6 +29,7 @@
       "escalated_task_ids": [
         "source_repair_fiscalization_lane_2026_10_11",
         "source_repair_mutualities_lane_2026_10_11",
+        "source_repair_public_data_lane_2026_10_11",
         "staging_qa_failed_run_38113830124",
         "staging_qa_failed_run_38116961282",
         "staging_qa_failed_run_38123952091",
@@ -44,18 +45,18 @@
     "legacy_stage_a": {
       "metrics": {
         "autonomous_pickups": 12,
-        "material_event_count": 14,
-        "max_material_gap_seconds": 11459.538361,
+        "material_event_count": 15,
+        "max_material_gap_seconds": 11362.825483,
         "mode": "live",
         "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 31230.128425,
-        "window_started_at": "2026-10-11T10:10:16.359922Z"
+        "total_elapsed_seconds": 31326.841303,
+        "window_started_at": "2026-10-11T10:11:53.072800Z"
       },
-      "observed_until": "2026-10-11T14:10:16.359922Z",
+      "observed_until": "2026-10-11T14:11:53.072800Z",
       "reasons": [
         "owner_intervention_observation_not_verified",
         "durable_verified_mutation_not_observed",
@@ -73,22 +74,22 @@
       "is_live_proof": false,
       "metrics": {
         "autonomous_pickups": 12,
-        "material_event_count": 14,
-        "max_material_gap_seconds": 11459.538361,
+        "material_event_count": 15,
+        "max_material_gap_seconds": 11362.825483,
         "mode": "live",
         "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 31230.128425,
-        "window_started_at": "2026-10-11T10:10:16.359922Z"
+        "total_elapsed_seconds": 31326.841303,
+        "window_started_at": "2026-10-11T10:11:53.072800Z"
       }
     }
   },
-  "effective_material_event_count": 69,
+  "effective_material_event_count": 70,
   "kind": "autonomy_pmo_evidence",
-  "last_material_progress_at": "2026-10-11T14:08:39.529055Z",
+  "last_material_progress_at": "2026-10-11T14:10:54.349133Z",
   "legacy_stage_a_status": "NOT_PROVEN",
   "material_event_correction_count": 8,
   "material_event_correction_signature": "14cbca971a3efea245f05e6d7fdd2c121166557d1e33476e8a1396c7251c746e",
@@ -472,24 +473,23 @@
       "terminal_event_sha256": "2ed9d38034f7a28cb43693792f1013a279c04b1cd51de5dad4a9db2039469f4a"
     }
   ],
-  "material_event_count": 69,
-  "material_signature": "dedbc5eb295dc1879084824e369b524ad2fc7396dc571dd90c8d2f50d3e11b05",
+  "material_event_count": 70,
+  "material_signature": "12ce968dc3b3d9d4e7ab4a8ec8b17133565756956db70d3329a7d5ebb758f2f5",
   "observation": {
-    "path": "data/autopilot/evidence/observation-4ff987dac4d143f392a11582fc869ae3.json",
-    "sha256": "04015719619fdf78dd252a474f8210724a030e1d76378af49091b5008d69d3b1",
+    "path": "data/autopilot/evidence/observation-67d04850783a41d0a248587f35447870.json",
+    "sha256": "a1b9e7470470054e27accfd4e010e63b92004247fff6d8b2424afa83279498a8",
     "staging_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
-    "state_sha": "ed846b3e9e4973922655e17b4e19d5a891db0b0b"
+    "state_sha": "79f5318ef3e181f7d9d90b29c8966c1dd1b30a7e"
   },
   "owner_followup_count": null,
   "owner_followups": "UNKNOWN",
-  "raw_last_material_progress_at": "2026-10-11T14:08:39.529055Z",
-  "raw_material_event_count": 77,
-  "raw_material_signature": "7d9fd0d629e45a57be2768f55d499f5e14b787d0ef32b6aa9c936a27f633cad0",
+  "raw_last_material_progress_at": "2026-10-11T14:10:54.349133Z",
+  "raw_material_event_count": 78,
+  "raw_material_signature": "b9a3ff7062e2a8ca4eb1434419c1383f7fe0544f653f5e66466a4cbb85477153",
   "schema_version": 2,
   "stalls": [],
   "task_counts": {
-    "BLOCKED": 38,
-    "READY": 1,
-    "RUNNING": 1
+    "BLOCKED": 39,
+    "READY": 1
   }
 }
