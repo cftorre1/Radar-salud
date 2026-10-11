@@ -95,6 +95,42 @@ class OverlayQueueTests(unittest.TestCase):
         self.assertEqual(context["baseline_input_fingerprint"], self.fingerprint)
         self.assertEqual(context["current_input_fingerprint"], "e" * 64)
 
+    def test_trusted_exact_integration_uses_current_staging_and_keeps_candidate_evidence(self):
+        self.queue["input_sha"] = "d" * 40
+        self.queue["tasks"][0].update(input_sha="d" * 40, input_fingerprint="e" * 64)
+        original = deepcopy(self.queue)
+        result = overlay_queue(self.queue, self.state, integrated_candidate_commits={self.candidate_sha})
+        task = result["tasks"][0]
+        self.assertEqual(task["input_sha"], "d" * 40)
+        self.assertEqual(task["candidate_context"]["commit"], self.candidate_sha)
+        self.assertEqual(task["candidate_context"]["branch"], "autonomy/media/fix")
+        self.assertTrue(task["candidate_context"]["integrated_into_staging"])
+        self.assertFalse(task["candidate_context"]["rebase_required"])
+        self.assertEqual(task["blocked_by"], original["tasks"][0]["blocked_by"])
+        self.assertEqual(result["policy"], original["policy"])
+        self.assertEqual(self.queue, original)
+        self.assertEqual(overlay_queue(result, self.state, integrated_candidate_commits={self.candidate_sha}), result)
+
+    def test_queue_marker_and_unrelated_commit_cannot_claim_integration(self):
+        self.queue["input_sha"] = "d" * 40
+        self.queue["tasks"][0].update(input_sha="d" * 40, input_fingerprint="e" * 64,
+            candidate_context={"commit": self.candidate_sha, "integrated_into_staging": True})
+        for proofs in ((), {"f" * 40}):
+            with self.subTest(proofs=proofs):
+                result = overlay_queue(self.queue, self.state, integrated_candidate_commits=proofs)["tasks"][0]
+                self.assertEqual(result["input_sha"], self.candidate_sha)
+                self.assertFalse(result["candidate_context"]["integrated_into_staging"])
+                self.assertTrue(result["candidate_context"]["rebase_required"])
+
+    def test_integration_mode_changes_evidence_revision_without_observation_clock_churn(self):
+        isolated = self.task()["evidence_revision"]
+        first = overlay_queue(self.queue, self.state, integrated_candidate_commits={self.candidate_sha})
+        integrated = first["tasks"][0]["evidence_revision"]
+        self.assertNotEqual(integrated, isolated)
+        self.state["tasks"][MEDIA]["candidate_review"]["reviewed_at"] = "new observation"
+        second = overlay_queue(self.queue, self.state, integrated_candidate_commits={self.candidate_sha})
+        self.assertEqual(second["tasks"][0]["evidence_revision"], integrated)
+
     def test_evidence_revision_ignores_observation_clock_churn(self):
         first = self.task()["evidence_revision"]
         self.queue["generated_at"] = "2026-10-11T04:00:00Z"
@@ -310,6 +346,44 @@ class PrepareWorkspaceTests(unittest.TestCase):
         self.assertEqual(self.git("-C", str(self.workspace), "branch", "--show-current"), "staging")
         self.assertEqual((self.workspace / "source.py").read_text(), "repair = False\n")
         self.assertEqual(self.refs(), before_refs)
+
+    def test_integrated_exact_ancestor_keeps_current_staging_without_checkout_or_remote_write(self):
+        # Represent an independently authorized integration in a private Git
+        # fixture. The continuation implementation performs no merge or push.
+        self.git("-C", str(self.workspace), "checkout", "--quiet", "-b", "authorized-integration-fixture",
+                 self.candidate_sha)
+        self.git("-C", str(self.workspace), "config", "user.name", "Integration Fixture")
+        self.git("-C", str(self.workspace), "config", "user.email", "integration@example.invalid")
+        (self.workspace / "source.py").write_text("repair = 'current staging validation'\n")
+        self.git("-C", str(self.workspace), "commit", "--quiet", "-am", "fixture descendant staging authority")
+        current = self.head()
+        self.git("-C", str(self.workspace), "branch", "-f", "staging", current)
+        self.git("-C", str(self.workspace), "checkout", "--quiet", "staging")
+        self.task["input_sha"] = current
+        self.task["candidate_context"].update(current_staging_sha=current, integrated_into_staging=True,
+            current_input_fingerprint=hashlib.sha256((self.workspace / "source.py").read_bytes()).hexdigest(),
+            base_changed=True, rebase_required=False)
+        before_refs = self.refs()
+        result = prepare_workspace(self.workspace, self.task)
+        self.assertTrue(result["prepared"])
+        self.assertTrue(result["integrated_into_staging"])
+        self.assertEqual(result["input_sha"], current)
+        self.assertEqual(self.head(), current)
+        self.assertEqual(self.git("-C", str(self.workspace), "branch", "--show-current"), "staging")
+        self.assertEqual((self.workspace / "source.py").read_text(), "repair = 'current staging validation'\n")
+        self.assertEqual(self.refs(), before_refs)
+
+    def test_forged_integration_marker_or_moved_staging_cannot_fall_back_to_old_input(self):
+        for staging in (self.parent_sha, "f" * 40):
+            with self.subTest(staging=staging):
+                task = deepcopy(self.task)
+                task["input_sha"] = staging
+                task["candidate_context"].update(current_staging_sha=staging, integrated_into_staging=True)
+                before_head, before_refs = self.head(), self.refs()
+                with self.assertRaises(CandidateContextError):
+                    prepare_workspace(self.workspace, task)
+                self.assertEqual(self.head(), before_head)
+                self.assertEqual(self.refs(), before_refs)
 
     def test_remote_candidate_ref_moved_rejected_without_checkout(self):
         (self.seed / "source.py").write_text("repair = 'newer unrecorded candidate'\n")

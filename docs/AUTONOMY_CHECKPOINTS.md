@@ -212,3 +212,26 @@ and controlled artifacts remain test evidence, not live four-hour acceptance.
 
 Next hypothesis: hosted executors can produce a genuine target-bound repaired
 failure event, followed by four real hours of useful autonomous progress.
+
+## 11. Executable controller and incorporated candidate continuation
+
+Decision: the controller and each independent worker perform lease, heartbeat,
+candidate publication and finish through the same replayed Git transactions.
+A failed/expired worker keeps its immutable diagnostics without altering a new
+owner's task. Approved candidates stay isolated; the executor never promotes a
+product ref. A later authorized staging integration is recognized by actual Git
+ancestry, rechecked before execution, and resumes on the current staging SHA.
+Unincorporated candidates preserve their pinned branch and review context.
+
+Local initialization is simulation. Hosted activation starts a new live window
+without carrying earlier fixture events; local reads cannot downgrade a live
+window. Four-hour acceptance still requires genuine hosted evidence.
+
+Directed validation: state store, candidate context and runtime integration ran
+51 tests PASS: 9 + 27 + 15. Real local Git authorities verify durable isolated
+mutation, explicit verified PASS/blocker followed by independent pickup,
+conflict-safe writes, stale-token fencing, unpicked STALLED observations,
+protected production refs and exact incorporated-candidate continuation.
+
+Next hypothesis: the main workflow triggers can exercise this already committed
+runtime on GitHub, with independent families continuing despite staging QA.

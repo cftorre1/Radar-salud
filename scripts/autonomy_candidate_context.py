@@ -47,19 +47,24 @@ def _base_revision(task):
     return _hash({"declared": declared, "semantics": engine._semantic(semantics)})
 
 
-def overlay_queue(queue, state):
+def overlay_queue(queue, state, *, integrated_candidate_commits=()):
     """Bind an approved task to its latest independently reviewed candidate.
 
     No blocker or dependency is removed, and no parent is closed. Pending,
     superseded or mismatched reviews cannot select an older candidate. Review
     clocks are omitted from the revision identity. Relevant staging changes are
     exposed in context for ``prepare_workspace`` to block without a merge.
+    Only the trusted caller's exact Git ancestry proofs may select current
+    staging after integration; queue-authored integration markers are ignored.
     """
     result = deepcopy(queue)
     if not isinstance(result, dict) or not isinstance(result.get("tasks"), list):
         raise CandidateContextError("queue.tasks must be a list")
     tasks = state.get("tasks", {})
     events = state.get("material_events", [])
+    integrated_commits = set(integrated_candidate_commits)
+    if any(not isinstance(commit, str) or not SHA.fullmatch(commit) for commit in integrated_commits):
+        raise CandidateContextError("Integration proofs require full recorded candidate commit SHAs")
     for task in result["tasks"]:
         previous = task.get("candidate_context") or {}
         # Queue-authored context does not substitute for a durable state event.
@@ -96,18 +101,24 @@ def overlay_queue(queue, state):
         current = task.get("input_fingerprint")
         parent = details.get("parent_input_sha")
         base_changed = bool(parent and latest_staging and parent != latest_staging)
-        rebase_required = not baseline or not current or baseline != current
+        integrated = (commit in integrated_commits and isinstance(latest_staging, str)
+                      and bool(SHA.fullmatch(latest_staging)))
+        rebase_required = not integrated and (not baseline or not current or baseline != current)
         context = {"branch": branch, "commit": commit, "parent_input_sha": parent,
             "current_staging_sha": latest_staging, "baseline_input_fingerprint": baseline,
             "current_input_fingerprint": current, "base_changed": base_changed,
-            "rebase_required": rebase_required, "queue_evidence_revision": declared}
+            "rebase_required": rebase_required, "queue_evidence_revision": declared,
+            "integrated_into_staging": integrated}
         review_semantics = {key: review.get(key) for key in (
             "candidate_commit", "candidate_branch", "candidate_scope", "status",
             "technical_review_pass", "next_action", "blocker", "semantic_fingerprint", "superseded")}
         task["candidate_context"] = context
-        task["input_sha"] = commit
-        task["evidence_revision"] = _hash({"queue_revision": base_revision,
-            "candidate_commit": commit, "review": engine._semantic(review_semantics)})
+        task["input_sha"] = latest_staging if integrated else commit
+        revision = {"queue_revision": base_revision, "candidate_commit": commit,
+                    "review": engine._semantic(review_semantics)}
+        if integrated:
+            revision["continuation"] = "post_integration"
+        task["evidence_revision"] = _hash(revision)
     return result
 
 
@@ -154,12 +165,27 @@ def prepare_workspace(workspace, task, remote="origin"):
     branch, commit = context.get("branch"), context.get("commit")
     if not _branch_valid(branch, family) or not isinstance(commit, str) or not SHA.fullmatch(commit):
         raise CandidateContextError("Candidate context has an unsafe branch or non-full commit SHA")
-    if task.get("input_sha") != commit:
+    integrated = context.get("integrated_into_staging") is True
+    staging = context.get("current_staging_sha")
+    expected_input = staging if integrated else commit
+    if task.get("input_sha") != expected_input:
         raise CandidateContextError("Task input SHA is not bound to the recorded candidate")
     if not isinstance(remote, str) or not REMOTE.fullmatch(remote):
         raise CandidateContextError("Candidate remote must be a configured remote name")
     if _git(workspace, "status", "--porcelain", "--untracked-files=no"):
         raise CandidateContextError("Candidate checkout has dirty tracked files")
+    if integrated:
+        # The graph proof is checked again at use time. An authored marker or
+        # stale queue snapshot can never silently fall back to old staging or
+        # authorize an integration. Keep this current checkout unchanged.
+        if not isinstance(staging, str) or not SHA.fullmatch(staging):
+            raise CandidateContextError("Integrated candidate lacks a full staging authority SHA")
+        if _git(workspace, "rev-parse", "HEAD") != staging:
+            raise CandidateContextError("Staging checkout moved since integration was established")
+        _git(workspace, "merge-base", "--is-ancestor", commit, staging)
+        return {"prepared": True, "input_sha": staging, "candidate_context": deepcopy(context),
+                "base_changed": bool(context.get("base_changed")), "rebase_required": False,
+                "integrated_into_staging": True, "blocker": None}
     parent = context.get("parent_input_sha")
     if not isinstance(parent, str) or not SHA.fullmatch(parent):
         blocked = {**context, "baseline_input_fingerprint": None}
