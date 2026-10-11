@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "reviewer": "Work 3 — Independent Adversarial Reviewer",
+  "recorded_at": "2026-10-11T07:21:59.245Z",
+  "branch": "staging",
+  "reviewed_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+  "previous_artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+  "previous_artifact_commit": "44ec3f30af18c5bc99f47adf4b07ca5f5782ded9",
+  "verdict": "AUTONOMY_INFRASTRUCTURE_PARTIALLY_REVALIDATED_ACCEPTANCE_AND_PRODUCT_REPAIRS_NOT_PROVEN",
+  "scope": {
+    "staging_only": true,
+    "no_product_or_evidence_repair": true,
+    "no_workflow_dispatch": true,
+    "no_main_or_production_mutation": true,
+    "delta_since_previous": "One staging commit adds autonomy evidence/governance only. It does not modify source health, discovery, pending queue, history, feed, weekly insight or product source code.",
+    "method": "Cross-check the checked-in acceptance object against hosted Actions logs and the current staging QA run."
+  },
+  "findings": [],
+  "repairs_revalidated": [
+    {
+      "issue": 7,
+      "id": "autonomy_lease_heartbeat_fencing_canary",
+      "status": "revalidated_infrastructure_only",
+      "evidence": {
+        "run_id": 38116123889,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116123889",
+        "job_id": 114401329218,
+        "observed_until": "2026-10-11T05:51:45.814918Z",
+        "checks": {
+          "old_token_finish_rejected": true,
+          "old_worker_did_not_mutate_state": true,
+          "real_heartbeat_grace_elapsed": true,
+          "reclaimed_with_new_generation": true,
+          "stall_fenced_original_token": true,
+          "stalled_detected": true
+        },
+        "result_sha256": "e4af535b0f1bae144b68d1621f8943df26a929e1dc6921e942c8281cf02d1a38"
+      },
+      "assessment": "Hosted fault injection demonstrates expiry after the 180-second grace, STALLED detection, fencing of the old token, rejection of its finish, acquisition by a new generation and no stale-worker mutation.",
+      "does_not_prove": [
+        "four useful autonomous hours",
+        "source LIVE evidence",
+        "product candidate mutation",
+        "source closure",
+        "release readiness"
+      ]
+    },
+    {
+      "issue": 7,
+      "id": "autonomy_structured_output_before_truncation",
+      "status": "revalidated_transport_only",
+      "evidence": {
+        "run_id": 38115967398,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398",
+        "job_id": 114400854282,
+        "structured_slug": "suseso_fiscalizacion",
+        "source_evidence_sha256": "0a3888d8e043fe41abbaede67f29bf786a749c99f843c91aedfa8b31499ed1c7",
+        "display_output_length": 24000
+      },
+      "assessment": "The hosted job now extracts and hashes structured source evidence despite a bounded 24,000-character display log. The task remains BLOCKED and this is not a SUSESO repair or source acceptance."
+    }
+  ],
+  "acceptance_reconciliation": {
+    "reported_status": "NOT_PROVEN",
+    "reported_result": "implemented_pending_live_acceptance",
+    "hosted_pickups": 12,
+    "independent_transitions": 6,
+    "candidate_mutations": 0,
+    "verified_source_closures": 0,
+    "four_useful_hours_proven": false,
+    "validated_requirements": [],
+    "validated_blocks": [],
+    "assessment": "Internally coherent fail-open avoidance: jobs may be green while acceptance remains NOT_PROVEN, mutations/closures remain zero and synthetic canary is excluded from progress."
+  },
+  "provenance_limitation": {
+    "severity": "P2",
+    "status": "open_traceability_caveat",
+    "description": "The acceptance artifact lists controller_runs 38114913138 and 38115967398, but the checked PASS output for the final hosted canary is in later run 38116123889, observe job 114401329218. result_path/hash are present, but the producing run/job are not linked in the artifact.",
+    "closure_criteria": "Record canary producer run_id, job_id and URL next to result_path/SHA. Do not count this as a new product/autonomy P0 or duplicate issue #7."
+  },
+  "actions_and_qa": {
+    "latest_staging_run": {
+      "run_id": 38116961282,
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282",
+      "head_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "result": "failure",
+      "tests": "1 failed, 265 passed, 1 skipped, 1 warning",
+      "failure": "test_web_snapshot.py:289 assert 11 >= 12",
+      "reviewer_preview": "skipped"
+    },
+    "interpretation": "The staging candidate remains blocked. The autonomy evidence commit did not repair the existing QA gate."
+  },
+  "unchanged_product_evidence": {
+    "basis": "GitHub compare 44ec3f30...c4819844 changes only config/orchestrator_queue.json, config/pmo_baseline.json, data/autopilot/learning_ledger.json and data/pmo/autonomy_acceptance_2026_10_11.json.",
+    "paths": [
+      "data/source_health.json",
+      "data/state/beta_source_validation.json",
+      "data/state/discovery_run.json",
+      "data/state/pending_queue.json",
+      "data/history/superintendencia_signals.json",
+      "web/data/radar_today.json",
+      "data/weekly_insight/latest.json"
+    ],
+    "assessment": "No source/media/coverage/editorial repair is eligible for revalidation in this staging delta. Claims and green runs on DF/Pulso/fiscalization branches remain candidate evidence only."
+  },
+  "open_fronts": {
+    "6": "No DF/Pulso repair merged to staging; candidate branch results do not close media coverage.",
+    "7": "Lease/heartbeat and structured transport are partially revalidated; four-hour acceptance, actual useful mutation and closure remain NOT_PROVEN.",
+    "8": "SUSESO medical-license sanctions and Andes/MetLife remain open in staging; branch fiscalization claims are not integrated.",
+    "9": "No editorial/telemetry delta; weekly provenance, Bupa, diversity/modes and readiness remain open."
+  },
+  "limitations": [
+    "No source pages were re-fetched because the staging delta contains no source/data repair; prior original-page findings remain authoritative until integration changes them.",
+    "The reviewer read main-referenced hosted logs as evidence but made no main/production change and grants no product/source approval.",
+    "A synthetic canary validates lease mechanics, not sustained autonomous work."
+  ],
+  "monitoring_window_complete": false
+}
