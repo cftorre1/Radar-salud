@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "slug": "pfizer_chile",
+  "as_of": "2026-10-11",
+  "timezone": "America/Santiago",
+  "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
+  "audit_path": "data/audits/providers_2026_10_11/pfizer_chile.json",
+  "status": "reconciled_with_exact_blockers",
+  "coverage": "zero_in_30_and_90_on_visible_original_surface",
+  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "source_quality_gate": "passed",
+  "surfaces": [
+    {
+      "url": "https://www.pfizer.cl/news",
+      "result": "Visible original newsroom exposes only 2023 articles. Healthtech card links to depression article; title mismatch."
+    }
+  ],
+  "blockers": [
+    "runtime_original_http_CONNECT_403",
+    "stale_external_newsroom_latest_2023_06_08",
+    "healthtech_card_links_to_wrong_article"
+  ],
+  "original_items": [
+    {
+      "title": "Encuentro de empresas healthtech",
+      "url": "https://www.pfizer.cl/news/depresion-clinica",
+      "publication_date": "2023-06-08",
+      "date_evidence": "verified_article_header",
+      "materiality": "outside_window",
+      "recover": false,
+      "evidence": "La tarjeta de 8 junio 2023 lleva al detalle de depresión (2 febrero 2023). Gate de identidad impide publicación."
+    },
+    {
+      "title": "Depresión clínica",
+      "url": "https://www.pfizer.cl/news/depresion-clinica",
+      "publication_date": "2023-02-02",
+      "date_evidence": "verified_article_header",
+      "materiality": "outside_window",
+      "recover": false,
+      "evidence": "Educación clínica histórica, fuera de 90 días. No representa noticia farmacéutica reciente."
+    }
+  ],
+  "notes": [
+    "Tres URLs históricas ya archivadas en cola. No hay omission fechada 2026 demostrada en el original visible.",
+    "Health técnico ok del poll anterior no implica frescura; se marca stale_external_surface y blocker editorial de enlace equivocado. No se inventa sustituto de prensa."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:25.973085+00:00",
+    "changes": []
+  },
+  "reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 0,
+    "material_candidates_90_days": 0,
+    "publication_date_unknown": 0,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 0,
+      "rejected": 0,
+      "published": 0
+    },
+    "items": [
+      {
+        "url": "https://www.pfizer.cl/news/depresion-clinica",
+        "publication_date": "2023-06-08",
+        "in_30_days": false,
+        "in_90_days": false,
+        "materiality": "outside_window",
+        "queue": [],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.pfizer.cl/news/depresion-clinica",
+        "publication_date": "2023-02-02",
+        "in_30_days": false,
+        "in_90_days": false,
+        "materiality": "outside_window",
+        "queue": [],
+        "history_count": 0,
+        "visible_count": 0
+      }
+    ]
+  }
+}

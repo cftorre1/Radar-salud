@@ -262,12 +262,23 @@
       "pending": 0,
       "deferred": 0,
       "rejected": 0,
-      "status": "ok",
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
-      "content_freshness": "unknown",
-      "editorial_outcome": "no_new_signals"
+      "coverage_status": "unverified",
+      "content_freshness": "stale_external_surface",
+      "editorial_outcome": "no_new_signals",
+      "provider_audit": {
+        "as_of": "2026-10-11",
+        "path": "data/audits/providers_2026_10_11/pfizer_chile.json",
+        "blockers": [
+          "runtime_original_http_CONNECT_403",
+          "stale_external_newsroom_latest_2023_06_08",
+          "healthtech_card_links_to_wrong_article"
+        ],
+        "latest_verified_original_at": "2023-06-08",
+        "recovered_pending": 0
+      }
     },
     "indisa": {
       "name": "Clínica INDISA",
