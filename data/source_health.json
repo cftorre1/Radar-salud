@@ -59,26 +59,34 @@
     },
     "diario_financiero": {
       "name": "Diario Financiero",
-      "checked_at": "2026-10-11T06:52:30.383782+00:00",
+      "checked_at": "2026-10-11T13:18:27.077647+00:00",
       "last_signal_at": "2026-10-10",
       "discovered": 41,
       "new": 0,
-      "published": 1,
+      "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 19,
-      "rejected": 176,
+      "rejected": 175,
       "status": "warning",
       "error": null,
       "technical_status": "partial",
       "coverage_status": "date_or_detail_gap",
       "content_freshness": "recent",
-      "editorial_outcome": "published",
+      "editorial_outcome": "no_new_signals",
       "dated": 41,
       "undated": 0,
       "detail_errors": 0,
       "insufficient_evidence": 5,
+      "textual_candidates": 36,
+      "nontextual_candidates_known": 5,
+      "textual_capture_status": "verified",
+      "format_capability": {
+        "text": "runtime_verified",
+        "images": "requires_ocr",
+        "audio_video": "requires_official_text"
+      },
       "newest_event_date": "2026-10-10",
       "deferred_multimedia": 19,
       "unverifiable_date_dispositions": 0,
@@ -88,22 +96,25 @@
         "new": "this_run",
         "published": "this_run",
         "pending": "cumulative_queue",
-        "rejected": "cumulative_queue",
-        "deferred": "cumulative_queue"
+        "deferred": "cumulative_queue",
+        "rejected": "cumulative_queue"
       },
       "last_discovered_event_at": "2026-10-10",
-      "editorial_reviewed_at": "2026-10-11T06:55:59.923604+00:00",
-      "accepted_queue_publications": 26,
-      "review_withdrawn": 0,
-      "textual_candidates": 36,
-      "nontextual_candidates_known": 5,
-      "textual_capture_status": "verified",
-      "format_capability": {
-        "text": "runtime_verified",
-        "images": "requires_ocr",
-        "audio_video": "requires_official_text"
+      "runtime_raw_editorial_outcome": "rejected",
+      "counts_semantics": {
+        "discovered": "current_poll",
+        "new": "current_poll",
+        "published": "current_poll",
+        "pending": "cumulative_queue",
+        "rejected": "cumulative_queue",
+        "deferred": "cumulative_queue",
+        "last_signal_at": "latest_accepted_history_publication"
       },
-      "format_facets_basis": "Derived from actual41 candidates/5 nontextual/0 undated/0 detail errors in runtime38119095016; no new polling"
+      "editorial_outcome_reconciliation_reason": "Both genuine post-merge polls have zero new, pending and published. Raw engine used cumulative rejected stock for editorial_outcome; current-poll outcome reconciled here. Producer fix follows with the next scoped health integration.",
+      "integration_status": "INTEGRATED_DEGRADED",
+      "integration_staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "postmerge_runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38142527704",
+      "coverage_complete": false
     },
     "diario_oficial": {
       "name": "Diario Oficial",
@@ -543,5 +554,5 @@
       "editorial_outcome": "pending"
     }
   },
-  "generated_at": "2026-10-11T06:52:30.383799+00:00"
+  "generated_at": "2026-10-11T13:18:27.077647+00:00"
 }

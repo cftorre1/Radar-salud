@@ -3541,7 +3541,7 @@
         "base_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
         "started_at": "2026-10-11T04:18:12.641064+00:00",
         "last_progress_at": "2026-10-11T07:11:23.063060+00:00",
-        "current_subfront": "df_integration_package_complete",
+        "current_subfront": "integrated_degraded_postmerge_runtime_verified",
         "completed": [
           "Textual Daily runtime PASS, LIVE82/82/86 retained and CESFAM72 BACKFILL recovered",
           "58 focused tests PASS; no new failures versus staging",
@@ -3552,7 +3552,7 @@
           "Current staging c481984 merged into own branch without rewrite; concurrency evidence preserved,58DF+14governance PASS; GitHub mergeable."
         ],
         "failing": [],
-        "next_action": "Integration Commander review current staging diff, merge PR11 to staging only, run global QA/Reviewer/browser and fresh Daily runtime after merge; verify LIVE/new eligible publication, counts/format deferrals/idempotence before issue5/6 closure.",
+        "next_action": "Fix cumulative rejection interpretation in the shared health producer, then integrate PR15; retain the 19 publisher text/OCR holds. Pulso remains NOT_READY.",
         "runtime_restored": "38111768459",
         "runtime_artifact": "data/audits/df_reconciliation_2026_10_11.json",
         "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38119095016",
@@ -3589,7 +3589,57 @@
         },
         "runtime_post_merge_required": true,
         "integration_base_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-        "staging_reconciliation_merge_sha": "99b65b392cb12e144ca93c545bfd9fe328f59cb2"
+        "staging_reconciliation_merge_sha": "99b65b392cb12e144ca93c545bfd9fe328f59cb2",
+        "integration": {
+          "issue": [
+            5,
+            6
+          ],
+          "task": "source_repair_media_lane_2026_10_11",
+          "pr": 11,
+          "source": "diario_financiero",
+          "origin_head_sha": "50cef26c4d829f18b3619d41710fffdf50534e91",
+          "integrated_commit": "7fc33c9f6bfae2d65a29e0c733f56b5edfe163ba",
+          "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+          "qa": {
+            "run_id": 38142344995,
+            "sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+            "python_passed": 309,
+            "python_skipped": 1,
+            "node_passed": 41,
+            "browser_passed": 46,
+            "failed": 0,
+            "reviewer": "PASS, zero findings"
+          },
+          "postmerge_runtime": {
+            "run_id": 38142527704,
+            "artifact_id": 11703507513,
+            "artifact_sha256": "27c88b9b8db5aa0452d76fce37dfc370ee97b460b0e9ccdead4328838e3f7dc9",
+            "two_actual_engine_polls": true,
+            "discovered_each": 41,
+            "dated_each": 41,
+            "detail_errors": 0,
+            "new_each": 0,
+            "published_each": 0,
+            "idempotence": true,
+            "unrelated_stock_preserved": true,
+            "history_rows": 771,
+            "feed_rows": 73,
+            "reviewer": "PASS"
+          },
+          "editorial_outcome": {
+            "published_stock": 26,
+            "deferred_multimedia": 19,
+            "current_poll": "no_new_signals",
+            "LIVE_recent_stock_preserved": true,
+            "new_paid_calls": 0,
+            "queue_history_feed_seen_dedupe": "PASS",
+            "materiality_threshold": 72
+          },
+          "final_outcome": "INTEGRATED_DEGRADED",
+          "reason": "Repaired text discovery, publisher dates and stock integration validated; 19 multimedia items and partial site coverage retain warning. No full multimedia/absolute site coverage claim.",
+          "next_action": "Fix cumulative rejection interpretation in the shared health producer, then integrate PR15; retain the 19 publisher text/OCR holds. Pulso remains NOT_READY."
+        }
       },
       "independent_review_cuts": [
         {
@@ -4380,7 +4430,7 @@
       "started_at": "2026-10-11",
       "last_progress_at": "2026-10-11T04:45:00Z",
       "current_subfront": "reconcile_work_findings_and_codex_prs",
-      "next_action": "Conciliar PRs #10-#13 con issues #5-#9 y queue; no cerrar ninguna fuente hasta merge + QA + runtime.",
+      "next_action": "Integrate PR15 then PR12/13/14 with post-merge source runtime; PR10 only when READY_FOR_INTEGRATION.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -4416,7 +4466,59 @@
             7
           ]
         }
-      ]
+      ],
+      "lane_evidence": {
+        "diario_financiero": {
+          "issue": [
+            5,
+            6
+          ],
+          "task": "source_repair_media_lane_2026_10_11",
+          "pr": 11,
+          "source": "diario_financiero",
+          "origin_head_sha": "50cef26c4d829f18b3619d41710fffdf50534e91",
+          "integrated_commit": "7fc33c9f6bfae2d65a29e0c733f56b5edfe163ba",
+          "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+          "qa": {
+            "run_id": 38142344995,
+            "sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+            "python_passed": 309,
+            "python_skipped": 1,
+            "node_passed": 41,
+            "browser_passed": 46,
+            "failed": 0,
+            "reviewer": "PASS, zero findings"
+          },
+          "postmerge_runtime": {
+            "run_id": 38142527704,
+            "artifact_id": 11703507513,
+            "artifact_sha256": "27c88b9b8db5aa0452d76fce37dfc370ee97b460b0e9ccdead4328838e3f7dc9",
+            "two_actual_engine_polls": true,
+            "discovered_each": 41,
+            "dated_each": 41,
+            "detail_errors": 0,
+            "new_each": 0,
+            "published_each": 0,
+            "idempotence": true,
+            "unrelated_stock_preserved": true,
+            "history_rows": 771,
+            "feed_rows": 73,
+            "reviewer": "PASS"
+          },
+          "editorial_outcome": {
+            "published_stock": 26,
+            "deferred_multimedia": 19,
+            "current_poll": "no_new_signals",
+            "LIVE_recent_stock_preserved": true,
+            "new_paid_calls": 0,
+            "queue_history_feed_seen_dedupe": "PASS",
+            "materiality_threshold": 72
+          },
+          "final_outcome": "INTEGRATED_DEGRADED",
+          "reason": "Repaired text discovery, publisher dates and stock integration validated; 19 multimedia items and partial site coverage retain warning. No full multimedia/absolute site coverage claim.",
+          "next_action": "Fix cumulative rejection interpretation in the shared health producer, then integrate PR15; retain the 19 publisher text/OCR holds. Pulso remains NOT_READY."
+        }
+      }
     },
     {
       "id": "beta_gate5_test_ops_golive_2026_10_11",
