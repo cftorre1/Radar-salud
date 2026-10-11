@@ -2937,9 +2937,16 @@
       ],
       "approved_at": "2026-10-10",
       "started_at": "2026-10-10",
-      "last_progress_at": "2026-10-10",
-      "current_subfront": "diario_financiero_and_pulso_latercera",
-      "next_action": "Auditar y reparar DF y Pulso/La Tercera end-to-end en staging."
+      "last_progress_at": "2026-10-10T23:47:00-03:00",
+      "current_subfront": "df_live_classification_and_pulso_core_runtime",
+      "next_action": "Esperar QA de commits DF/Pulso; ejecutar Daily Radar y verificar live_pending/publicación/rechazo trazable. Si PASS, avanzar a FONASA/ISP/DEIS.",
+      "progress": "DF: corregido discovery para extraer event_date y evidencia antes de la cola, evitando clasificar noticias recientes como BACKFILL. Pulso/La Tercera: promovido desde beta-only al Daily Radar core con mismo gate editorial estricto. QA en curso.",
+      "evidence": [
+        "staging 7bc86b15644957069d7cbcba678221c1c6297450 — DF extrae fecha/cuerpo en discovery",
+        "staging 770ae5f964cf9ef4684393a0f32e57d4e95d91f6 — DF reutiliza evidencia discovery",
+        "staging f8007b7234ad384b7cd9a1a58c72601d132fa551 — regression test DF LIVE date",
+        "staging eeef3f58000702eda0ac4dc324452053df779d13 → 65a73083b631065070427f69046d025490c3d65c → 4fa7ddb50e03e749b68d85bf98b1fe9b8c15542f — Pulso en config core, engine Daily Radar y test"
+      ]
     },
     {
       "id": "source_audit_issue5_iteration2_balance_2026_10_09",
