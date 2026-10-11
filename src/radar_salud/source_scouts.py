@@ -313,34 +313,73 @@ class ClinicasChileScout:
     PAGES=[
         ("Noticias","https://www.clinicasdechile.cl/noticias/"),
         ("Memorias","https://www.clinicasdechile.cl/knowledgebase_category/memorias/"),
-        ("Estudios y análisis","https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/page/3/?mostrar=6"),
+        ("Estudios y análisis","https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/"),
         ("Documentos","https://www.clinicasdechile.cl/knowledgebase_category/documentos/"),
     ]
     HOSTS=("www.clinicasdechile.cl","clinicasdechile.cl")
+    def discover_from_html(self,html,channel,page):
+        parser=_ClinicasLinks();parser.feed(html);out=[];seen=set()
+        for href,title in parser.links:
+            if not href or len(title)<12:continue
+            url=urljoin(page,href);parsed=urlparse(url)
+            if parsed.scheme!="https" or parsed.netloc not in self.HOSTS or url in seen:continue
+            document=bool(re.fullmatch(r"/wp-content/uploads/.+\.(?:pdf|xlsx?|csv)",parsed.path,re.I))
+            if channel=="Noticias":
+                if (len(title)<25 or document or not re.fullmatch(r"/(?:noticias/)?[^/]+/?",parsed.path)
+                        or parsed.path.rstrip("/") in ("/noticias","/quienes-somos","/asociados","/seminarios","/biblioteca","/contacto")):
+                    continue
+            elif not (document and title.casefold().startswith("descargar")):
+                continue
+            seen.add(url)
+            event_date=parser.dates.get(href) if channel=="Noticias" else None
+            out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                event_date=event_date,metadata={"discovered_from":page,"clinicas_channel":channel,
+                "publication_date_source":"dated_news_listing" if event_date else "unverified"}))
+        return out
     def discover(self):
         from .public_source_pipeline import _Meta, _date
         out=[];seen=set()
         for channel,page in self.PAGES:
-            html=fetch_html(page);p=_A();p.feed(html)
-            for href,title in p.links:
-                if not href or len(title)<12:continue
-                url=urljoin(page,href);parsed=urlparse(url)
-                if parsed.netloc not in self.HOSTS or url in seen:continue
-                rootpaths=("/noticias","/knowledgebase_category/memorias","/knowledgebase_category/estudios-y-analisis","/knowledgebase_category/documentos")
-                if parsed.path.rstrip("/") in rootpaths:continue
-                if any(x in parsed.path.lower() for x in ("/author/","/tag/","/category/","/wp-admin","/page/")) and "knowledgebase" not in parsed.path.lower():continue
-                seen.add(url);event_date=_date(title);body=""
-                if not parsed.path.lower().endswith((".pdf",".xlsx",".xls",".csv")):
-                    try:
-                        meta=_Meta();meta.feed(fetch_html(url));body=" ".join(meta.text)
-                        event_date=event_date or _date(meta.published) or _date(body[:5000])
-                    except Exception:
-                        pass
-                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                                   event_date=event_date,raw_text=body[:1800],
-                                   metadata={"discovered_from":page,"clinicas_channel":channel,"page_text":body[:18000]}))
+            # The library lists 3/3/4 pages. Scan each channel from page 1;
+            # library order is not a verified chronology.
+            count={"Memorias":3,"Estudios y análisis":3,"Documentos":4}.get(channel,1)
+            pages=[page]+[f"{page}page/{n}/?mostrar=6" for n in range(2,count+1)]
+            candidates=[]
+            for listing in pages:
+                candidates.extend(self.discover_from_html(fetch_html(listing),channel,listing))
+            for raw in candidates:
+                if raw.url in seen:continue
+                seen.add(raw.url)
+                if channel=="Noticias":
+                    # A detail fetch failure remains retryable, never a date
+                    # borrowed from navigation, legal citations or PDF body text.
+                    detail=fetch_html(raw.url)
+                    meta=_Meta();meta.feed(detail)
+                    stamp=_PublishedMeta();stamp.feed(detail)
+                    # _Meta includes several historical date names; only the
+                    # explicit article property can replace the listing stamp.
+                    verified=_date(stamp.published)
+                    if verified:
+                        raw.event_date=verified;raw.metadata["publication_date_source"]="article:published_time"
+                    raw.metadata["page_text"]=" ".join(meta.text)[:18000]
+                    raw.raw_text=raw.metadata["page_text"][:1800]
+                out.append(raw)
         if not out:raise RuntimeError("Clínicas de Chile hubs unavailable or empty")
         return out[:100]
+
+
+class _ClinicasLinks(_A):
+    """Associate the site's publication stamp with the following news headline."""
+    def __init__(self):super().__init__();self.dates={};self._stamp=None
+    def handle_data(self,data):
+        from .public_source_pipeline import _date
+        if re.search(r"\bel\s+\d{1,2}\s+de\s+\w+\s+del\s+20\d{2}",data,re.I):
+            self._stamp=_date(data)
+        super().handle_data(data)
+    def handle_endtag(self,tag):
+        href=self._href
+        super().handle_endtag(tag)
+        if tag.lower()=="a" and href and self._stamp:self.dates[href]=self._stamp
 
 
 class CorporateNewsroomScout:

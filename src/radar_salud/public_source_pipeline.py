@@ -29,7 +29,7 @@ def _date(text):
     if m:return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
     m=re.search(r"(\d{1,2})[/-](\d{1,2})[/-](20\d{2})",text)
     if m:return f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}"
-    m=re.search(r"(\d{1,2})\s+de\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+de\s+(20\d{2})",text,re.I)
+    m=re.search(r"(\d{1,2})\s+de\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+del?\s+(20\d{2})",text,re.I)
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
     m=re.search(r"(\d{1,2})\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+(20\d{2})",text,re.I)
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
@@ -364,6 +364,9 @@ def process_isp_anamed(raw,cfg):
 
 def process_clinicas_chile(raw,cfg):
     """Clínicas de Chile sector intelligence with channel-aware materiality."""
+    if (not raw.event_date or raw.metadata.get("publication_date_source")
+            not in ("article:published_time","dated_news_listing","verified_document_release")):
+        raise DeferredProcessing("Clínicas de Chile without verified date")
     channel=raw.metadata.get("clinicas_channel") or "Noticias"
     parsed=raw.url.lower()
     text=raw.metadata.get("page_text") or raw.raw_text or ""
@@ -372,10 +375,6 @@ def process_clinicas_chile(raw,cfg):
         except Exception as exc:raise DeferredProcessing("Clínicas de Chile PDF unreadable") from exc
     elif not text:
         raw=enrich(raw);text=raw.metadata.get("page_text") or raw.raw_text or ""
-    if not raw.event_date:
-        raw.event_date=_date(text[:6000]) or _date(raw.title)
-    if not raw.event_date:
-        raise DeferredProcessing("Clínicas de Chile without verified date")
     if len(text)<160:
         raise DeferredProcessing("Clínicas de Chile without sufficient readable content")
     kind="noticia sectorial" if channel=="Noticias" else "documento sectorial; extraer hallazgo material, no resumir por publicar"
