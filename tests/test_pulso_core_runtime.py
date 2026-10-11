@@ -127,6 +127,16 @@ def test_generic_finance_excluded_and_strategic_health_prefilter_kept():
         assert media_gate_accepts(title)
 
 
+@pytest.mark.parametrize("title,body", [
+    ("Hospital regional reconoce crisis y anuncia cierre de pabellones", "Reduce capacidad y prestaciones de su red."),
+    ("Salud reconoce recorte en su presupuesto hospitalario", "Cambia financiamiento de las prestaciones."),
+    ("Reforma del aseguramiento sanitario", "La norma modifica cobertura y obligaciones de aseguradores."),
+    ("Hospital modifica norma de acreditación", "Nuevas obligaciones operacionales para prestadores."),
+])
+def test_strategic_changes_are_not_rejected_as_ceremonial_before_analysis(title, body):
+    assert media_gate_accepts(title, body)
+
+
 def test_pulso_rediscovery_rehydrates_same_url_without_resetting_capture_attempts_or_lane(tmp_path):
     now = datetime.now(timezone.utc)
     url = "https://www.latercera.com/pulso/noticia/clinica-cierre/"

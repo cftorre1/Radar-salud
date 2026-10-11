@@ -102,7 +102,8 @@ class _Article(HTMLParser):
                                heading=parent.get("heading", False) or tag == "h1"))
         if tag == "script" and a.get("type") == "application/ld+json":
             self.script = []
-        if tag == "time" and in_article and not blocked and a.get("datetime"):
+        if (tag == "time" and in_article and not blocked and a.get("datetime")
+                and a.get("itemprop") != "dateModified"):
             self.times.append(a["datetime"])
 
     def handle_startendtag(self, tag, attrs):
@@ -188,14 +189,19 @@ def extract_article(html, expected_url):
     title = node.get("headline") or " ".join(parser.headline) or parser.metas.get("og:title", "")
     title = re.sub(r"\s+-\s+La Tercera$", "", " ".join(title.split()))
     body = " ".join(parser.body or parser.paragraphs)
-    if not body and isinstance(node.get("articleBody"), str):
+    # The original publisher emits its primary story in URL-bound NewsArticle
+    # articleBody. Prefer it over broad HTML wrappers containing captions/tags.
+    if isinstance(node.get("articleBody"), str) and len(node["articleBody"].strip()) >= 160:
         body = " ".join(node["articleBody"].split())
     if len(title) < 18 or len(body) < 160:
         raise ValueError("incomplete_article_evidence")
     section = node.get("articleSection") or parser.metas.get("article:section") or expected.split('/')[3]
     if re.search(r"opini[oó]n|editorial|columna", str(section), re.I):
         raise ValueError("excluded_opinion_content")
-    return title, body, dict(section=section, publication_date=published, publication_timestamp=timestamp,
+    return title, body, dict(section=section, keywords=node.get("keywords", []),
+                            description=node.get("description", ""),
+                            body_source="url_bound_json_ld_articleBody" if node.get("articleBody") else "article_html",
+                            publication_date=published, publication_timestamp=timestamp,
                             publication_date_source=date_source, canonical_url=expected,
                             article_verified=True)
 

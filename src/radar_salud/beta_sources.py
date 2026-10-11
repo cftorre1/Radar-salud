@@ -243,6 +243,9 @@ _MEDIA_TERMS = _PROVIDER_TERMS + (
     "cotizantes", "beneficiarios", "licencias médicas", "licencias medicas", "regulación", "regulacion",
     "presupuesto", "deuda", "fuerza de ventas", "estructura organizacional", "suspensión de operaciones",
     "suspende operaciones", "cierre", "traslado de pacientes", "residencias para adultos mayores",
+    "reforma", "norma", "acreditación", "acreditacion", "auditor", "fiscaliza",
+    "certificación", "certificacion", "recorte", "trasplante", "ficha clínica", "ficha clinica",
+    "vacunación", "vacunacion", "alerta", "oncol", "aseguramiento", "cenabast",
 )
 _NOISE = (
     "seminario", "feria de bienestar", "premio", "reconoc", "conmemor", "campeonato", "charla",
@@ -256,7 +259,10 @@ def _material(role, title, body):
         from .pulso_source import health_anchor
         if not health_anchor(text):
             return False
-    if any(x in text for x in _NOISE) and not any(x in text for x in ("inversión", "fonasa", "isapre", "adquiere", "capital", "lista de espera")):
+    consequential = ("inversión", "fonasa", "isapre", "adquiere", "capital", "lista de espera",
+                     "cierre", "suspende", "suspensión", "traslado", "recorte", "presupuesto",
+                     "reforma", "norma", "auditor", "fiscaliza", "capacidad", "trasplante", "financiamiento")
+    if any(x in title.lower() for x in _NOISE) and not any(x in text for x in consequential):
         return False
     terms = _MEDIA_TERMS if role == "media" else _MUTUAL_TERMS if role == "mutuality" else _PROVIDER_TERMS
     if role == "provider_achs" and "clínicas achs salud" not in text and "clinicas achs salud" not in text:
