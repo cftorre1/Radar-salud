@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import types
 import unittest
 from unittest.mock import patch
 
@@ -304,6 +305,44 @@ class RecoveryTests(unittest.TestCase):
         with patch.dict(os.environ, {"RADAR_REPAIR_MODEL": "existing-model", "OPENAI_API_KEY": "test-api-key"}):
             with self.assertRaisesRegex(recovery.RecoveryError, "disables"):
                 recovery.generate_plan(self.root, [], "failure", {})
+
+    def test_model_requires_shared_task_bound_approved_budget_reservation(self):
+        (self.root / "config").mkdir()
+        (self.root / "config/autopilot.json").write_text('{"ai_builder_enabled": true}')
+        with patch.dict(os.environ, {"RADAR_REPAIR_MODEL": "existing-model", "OPENAI_API_KEY": "test-api-key"}):
+            with self.assertRaisesRegex(recovery.RecoveryError, "reservation unavailable"):
+                recovery.generate_plan(self.root, [], "failure", {"id": "task-1"})
+            ledger = self.root / "reservation.json"
+            ledger.write_text(json.dumps({"reservations": {"reservation-1": {"state": "reserved", "task_id": "other-task", "model": "existing-model"}}}))
+            task = {"id": "task-1", "repair_budget_reservation": {"artifact": str(ledger), "sha256": recovery.digest(ledger.read_bytes()), "reservation_id": "reservation-1"}}
+            with self.assertRaisesRegex(recovery.RecoveryError, "does not authorize"):
+                recovery.generate_plan(self.root, [], "failure", task)
+
+    def test_relative_existing_budget_import_and_reserved_model_response(self):
+        (self.root / "config").mkdir()
+        (self.root / "config/autopilot.json").write_text('{"ai_builder_enabled": true}')
+        ledger = self.root / "reservation.json"
+        ledger.write_text(json.dumps({"reservations": {"reservation-1": {"state": "reserved", "task_id": "task-1", "model": "existing-model"}}}))
+        task = {"id": "task-1", "repair_budget_reservation": {"artifact": str(ledger), "sha256": recovery.digest(ledger.read_bytes()), "reservation_id": "reservation-1"}}
+        (self.source.parent / "paths.py").write_text('APPROVED = True\n')
+        (self.source.parent / "ai_budget.py").write_text(
+            'from .paths import APPROVED\n'
+            'def allow_call(kind):\n    return APPROVED and kind == "deep"\n'
+            'def record_result(kind, success):\n    assert kind == "deep" and success\n')
+        calls = []
+        plan = self.plan()
+        class Client:
+            def __init__(self, **kwargs):
+                self.responses = self
+            def create(self, **kwargs):
+                calls.append(kwargs)
+                return types.SimpleNamespace(output_text=json.dumps(plan))
+        with patch.dict(os.environ, {"RADAR_REPAIR_MODEL": "existing-model", "OPENAI_API_KEY": "test-api-key"}), patch.dict(sys.modules, {"openai": types.SimpleNamespace(OpenAI=Client)}):
+            result = recovery.generate_plan(self.root, [], "AssertionError", task)
+        self.assertEqual(result, plan)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(calls[0]["model"], "existing-model")
+        self.assertEqual(calls[0]["reasoning"], {"effort": "high"})
 
 
 if __name__ == "__main__":

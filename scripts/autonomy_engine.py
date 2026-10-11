@@ -20,6 +20,7 @@ HEARTBEAT_SECONDS = 60
 HEARTBEAT_GRACE_SECONDS = 180
 STALL_SECONDS = 1800
 MAX_IDENTICAL_AUDITS = 3
+MAX_STALL_RECOVERIES = 3
 SOURCE_TASKS = {
     "source_repair_media_lane_2026_10_11": "media",
     "source_repair_public_data_lane_2026_10_11": "public_data",
@@ -91,6 +92,11 @@ def _event(state, task, kind, now, details):
     if not any(e["id"] == event["id"] for e in state["material_events"]):
         state["material_events"].append(event)
         task["material_progress_at"] = event["at"]
+        task["material_watch_started_at"] = event["at"]
+        task["recovery_reclaims"] = 0
+        task["recovery_episode"] = event["id"]
+        if task.get("lease"):
+            task["lease"].pop("recovery_deadline_at", None)
     return event
 
 
@@ -142,6 +148,29 @@ def _invalidate(task, status, now, reason):
     task["lease"] = None
     task["state_changed_at"] = _iso(now)
     task["reason"] = reason
+    if status == "READY":
+        task["last_ready_at"] = _iso(now)
+        task["pickup_ready_since"] = _iso(now)
+
+
+def _material_baseline(task, state):
+    if task.get("material_watch_started_at"):
+        return _time(task["material_watch_started_at"])
+    if task.get("material_progress_at"):
+        return _time(task["material_progress_at"])
+    pickups = [_time(event["at"]) for event in state.get("lease_events", [])
+               if event.get("task_id") == task["id"] and event.get("kind") == "pickup"]
+    if pickups:
+        return min(pickups)
+    lease = task.get("lease") or {}
+    return _time(lease.get("claimed_at", task["created_at"]))
+
+
+def _material_deadline_exceeded(task, state, now):
+    if (_time(now) - _material_baseline(task, state)).total_seconds() < STALL_SECONDS:
+        return False
+    deadline = (task.get("lease") or {}).get("recovery_deadline_at")
+    return not deadline or _time(now) >= _time(deadline)
 
 
 def _block(state, task, blocker, now, *, terminal=False):
@@ -203,9 +232,11 @@ def reconcile(state, queue, now):
         family = _family(source)
         task = result["tasks"].setdefault(task_id, {
             "id": task_id, "status": "READY", "fence": 0, "lease": None,
-            "created_at": _iso(now), "attempts": 0, "audit_counts": {},
+            "created_at": _iso(now), "last_ready_at": _iso(now), "pickup_ready_since": _iso(now),
+            "attempts": 0, "audit_counts": {},
             "blocker_signatures": [],
         })
+        previous_evidence_revision = task.get("evidence_revision")
         # A sibling lane can push staging while this worker is still running.
         # Pin the active lease's input; evidence/approval changes still fence it.
         if (task["status"] == "RUNNING" and task.get("evidence_revision") == evidence_revision
@@ -235,7 +266,13 @@ def reconcile(state, queue, now):
         if changed and task["status"] == "RUNNING":
             _invalidate(task, "READY", now, "input_changed_fenced_previous_worker")
         elif changed and task["status"] in {"BLOCKED", "REVOKED"}:
-            _invalidate(task, "READY", now, "input_or_evidence_changed")
+            exhausted = task.get("blocker", {}).get("kind") == "stall_recovery_budget"
+            if not exhausted or previous_evidence_revision != evidence_revision:
+                _invalidate(task, "READY", now, "input_or_evidence_changed")
+                if exhausted:
+                    task["recovery_reclaims"] = 0
+                    task["material_watch_started_at"] = _iso(now)
+                    task["recovery_episode"] = _hash([task_id, evidence_revision, _iso(now)])
         elif changed and task["status"] == "CLOSED" and source.get("reopen_on_input_change"):
             _invalidate(task, "READY", now, "explicit_repeatable_task_input_changed")
         elif task["status"] == "REVOKED":
@@ -248,10 +285,8 @@ def reconcile(state, queue, now):
             continue
         if task["status"] == "RUNNING":
             lease = task["lease"]
-            baseline = task.get("material_progress_at") or lease["claimed_at"]
-            baseline = max(_time(baseline), _time(lease["claimed_at"]))
             reason = None
-            if (now - baseline).total_seconds() >= STALL_SECONDS:
+            if _material_deadline_exceeded(task, result, now):
                 reason = "no_material_progress_30m"
             elif now >= _time(lease["expires_at"]):
                 reason = "lease_expired"
@@ -263,6 +298,25 @@ def reconcile(state, queue, now):
                 result["lease_events"].append({"task_id": task_id, "family": family,
                     "at": _iso(now), "kind": "stalled", "reason": reason,
                     "fenced_token": old_token})
+        elif task["status"] == "READY":
+            if not _dependencies_satisfied(task, result, queue):
+                task["awaiting_dependencies"] = True
+                task["pickup_ready_since"] = None
+                continue
+            if task.pop("awaiting_dependencies", False):
+                task["last_ready_at"] = _iso(now)
+            ready_since = task.get("last_ready_at", task["created_at"])
+            task["pickup_ready_since"] = ready_since
+            reason = None
+            if (now - _time(ready_since)).total_seconds() >= STALL_SECONDS:
+                reason = "no_pickup_30m"
+            elif task.get("material_watch_started_at") and _material_deadline_exceeded(task, result, now):
+                reason = "no_material_progress_30m"
+            if reason:
+                _invalidate(task, "STALLED", now, reason)
+                result["lease_events"].append({"task_id": task_id, "family": family,
+                    "at": _iso(now), "kind": "stalled", "reason": reason,
+                    "ready_since": ready_since})
     return result
 
 
@@ -290,6 +344,21 @@ def plan(state, queue, now):
         if (family not in FAMILIES or family in running or family in candidates
                 or task["status"] not in {"READY", "STALLED"}
                 or not _dependencies_satisfied(task, result, queue)):
+            continue
+        if task["status"] == "STALLED" and task.get("recovery_reclaims", 0) >= MAX_STALL_RECOVERIES:
+            episode = task.get("recovery_episode")
+            reclaims = task["recovery_reclaims"]
+            _block(result, task, {"kind": "stall_recovery_budget",
+                "fingerprint": "recovery_budget_exhausted:" + _hash([task["id"], episode, task["input_fingerprint"]]),
+                "reason": "Three lease recovery pickups without material progress are exhausted.",
+                "evidence": [{"task_id": task["id"], "recovery_episode": episode,
+                    "recovery_reclaims": reclaims, "input_fingerprint": task["input_fingerprint"],
+                    "material_watch_started_at": task.get("material_watch_started_at"),
+                    "stalled_leases": [deepcopy(event) for event in result["lease_events"]
+                                       if event.get("task_id") == task["id"] and event.get("kind") == "stalled"]}],
+                "human_required": False}, now, terminal=task.get("attempts", 0) > 0)
+            # Keep the exhausted count visible after the evidenced terminal event.
+            task["recovery_reclaims"] = reclaims
             continue
         known_failure = task.get("failure") or task.get("last_failure") or {}
         failure_signature = known_failure.get("failure_signature")
@@ -322,6 +391,13 @@ def claim(state, queue, family, owner, now):
     if family not in candidates:
         return result, None
     task = result["tasks"][candidates[family]["task_id"]]
+    recovering = task["status"] == "STALLED" and task.get("attempts", 0) > 0
+    if not task.get("material_watch_started_at"):
+        task["material_watch_started_at"] = _iso(now) if not task.get("attempts", 0) else _iso(_material_baseline(task, result))
+    task.setdefault("recovery_reclaims", 0)
+    task.setdefault("recovery_episode", _hash([task["id"], task["material_watch_started_at"], task["input_fingerprint"]]))
+    if recovering:
+        task["recovery_reclaims"] += 1
     task["fence"] += 1
     task["attempts"] += 1
     token = _hash({"task_id": task["id"], "fence": task["fence"],
@@ -329,6 +405,8 @@ def claim(state, queue, family, owner, now):
     task["lease"] = {"token": token, "fence": task["fence"], "owner": owner,
         "claimed_at": _iso(now), "heartbeat_at": _iso(now),
         "expires_at": _iso(now + timedelta(seconds=LEASE_SECONDS))}
+    if recovering and (now - _material_baseline(task, result)).total_seconds() >= STALL_SECONDS:
+        task["lease"]["recovery_deadline_at"] = _iso(now + timedelta(seconds=LEASE_SECONDS))
     task["status"] = "RUNNING"
     task["state_changed_at"] = _iso(now)
     result["lease_events"].append({"task_id": task["id"], "family": family,
@@ -360,9 +438,7 @@ def _leased(state, task_id, token, now):
         raise LeaseError("lease is expired, revoked or fenced: " + task_id)
     if _time(now) < _time(lease["heartbeat_at"]):
         raise LeaseError("worker timestamp moved backwards")
-    baseline = max(_time(task.get("material_progress_at") or lease["claimed_at"]),
-                   _time(lease["claimed_at"]))
-    if (_time(now) - baseline).total_seconds() >= STALL_SECONDS:
+    if _material_deadline_exceeded(task, state, now):
         raise LeaseError("task is STALLED without material progress for 30m")
     return task
 
@@ -372,7 +448,10 @@ def heartbeat(state, task_id, token, now):
     result = deepcopy(state)
     task = _leased(result, task_id, token, now)
     task["lease"]["heartbeat_at"] = _iso(now)
-    task["lease"]["expires_at"] = _iso(_time(now) + timedelta(seconds=LEASE_SECONDS))
+    expires = _time(now) + timedelta(seconds=LEASE_SECONDS)
+    if task["lease"].get("recovery_deadline_at"):
+        expires = min(expires, _time(task["lease"]["recovery_deadline_at"]))
+    task["lease"]["expires_at"] = _iso(expires)
     return result
 
 
@@ -519,6 +598,8 @@ def finish(state, task_id, token, report, now):
             "candidate_commit", "candidate_branch", "changed_paths", "before_hash",
             "after_hash", "input_hash", "semantic_hash", "gates", "evidence",
             "partial_candidate", "candidate_scope", "directed_gates", "non_regression", "live_gate")}
+        details["input_fingerprint"] = task["input_fingerprint"]
+        details["parent_input_sha"] = task["input_sha"]
         if _failure_proof(task.get("failure")):
             details["real_failure"] = deepcopy(task["failure"])
             details["failure_action"] = "repaired"
@@ -569,6 +650,9 @@ def finish(state, task_id, token, report, now):
                               "input_sha": task["input_sha"],
                               "evidence_revision": task["evidence_revision"]}]}, now, terminal=True)
     task["state_changed_at"] = _iso(now)
+    if task["status"] == "READY":
+        task["last_ready_at"] = _iso(now)
+        task["pickup_ready_since"] = _iso(now)
     return result
 
 

@@ -103,6 +103,15 @@ class OverlayQueueTests(unittest.TestCase):
         self.state["material_events"][0]["at"] = "2026-10-11T04:00:00Z"
         self.assertEqual(self.task()["evidence_revision"], first)
 
+    def test_review_wrapper_hash_churn_is_stable_but_semantic_fingerprint_change_is_new(self):
+        review = self.state["tasks"][MEDIA]["candidate_review"]
+        review.update(evidence_sha256="1" * 64, semantic_fingerprint="2" * 64)
+        first = self.task()["evidence_revision"]
+        review.update(evidence_sha256="3" * 64, reviewed_at="2026-10-11T04:00:00Z")
+        self.assertEqual(self.task()["evidence_revision"], first)
+        review["semantic_fingerprint"] = "4" * 64
+        self.assertNotEqual(self.task()["evidence_revision"], first)
+
     def test_overlay_is_idempotent_and_does_not_recursively_hash_its_revision(self):
         self.queue["tasks"][0]["evidence_revision"] = "owner-approved-evidence-v1"
         first = overlay_queue(self.queue, self.state)

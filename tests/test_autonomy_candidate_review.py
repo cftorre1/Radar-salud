@@ -10,7 +10,7 @@ import unittest
 from unittest.mock import patch
 
 from scripts.autonomy_candidate_review import (
-    STATE, ReviewError, digest, encode, project_commands, pytest_summary, review_candidate,
+    STATE, ReviewError, digest, encode, project_commands, pytest_summary, review_candidate, semantic_fingerprint,
 )
 from scripts.autonomy_state_store import GitStateStore, Mutation
 
@@ -96,6 +96,39 @@ class CandidateReviewTests(unittest.TestCase):
         self.assertFalse(review["blocker"]["human_required"])
         self.assertEqual(state["material_events"], self.state["material_events"])
         self.assertEqual(self.git("--git-dir", str(self.remote), "rev-parse", "refs/heads/" + self.branch), self.sha)
+
+    def test_repeated_completed_reviews_do_not_run_gates_or_write_state(self):
+        for commands in ([[sys.executable, "-c", "assert True"]], [[sys.executable, "-c", "assert False"]]):
+            # Exercise reuse separately for completed PASS and BLOCKED results.
+            if self.store.read_snapshot().read_json(STATE)["tasks"][self.task_id].get("candidate_reviews"):
+                self.update_state(lambda state: state["tasks"][self.task_id].update(candidate_reviews={}, candidate_review={}))
+            first = self.review(commands)
+            before = self.store.read_snapshot()
+            with patch.object(self.store, "transact", side_effect=AssertionError("identical review must not mutate")):
+                repeated = review_candidate(self.workspace, self.workspace, self.task_id, "media", self.sha, self.report,
+                                           store=self.store, command_planner=lambda infra, work: self.fail("identical review must not execute gates"))
+            self.assertEqual(repeated["status"], "ALREADY_REVIEWED")
+            self.assertEqual(repeated["result_status"], first["status"])
+            self.assertEqual(repeated["technical_review_pass"], first["technical_review_pass"])
+            self.assertEqual(repeated["review_evidence_path"], first["review_evidence_path"])
+            after = self.store.read_snapshot()
+            self.assertEqual(before.commit, after.commit)
+            self.assertEqual(before.paths(), after.paths())
+
+    def test_semantic_review_identity_ignores_observation_clocks_and_logs(self):
+        report = {"task_id": self.task_id, "family": "media", "candidate_commit": self.sha,
+                  "status": "BLOCKED", "technical_review_pass": False,
+                  "reviewed_at": "2026-10-11T01:00:00Z", "operation_id": "old",
+                  "gates": [{"command": [sys.executable, "-m", "pytest", "--junitxml=/tmp/old.xml"],
+                             "status": "FAIL", "returncode": 1, "failure_fingerprint": "a" * 64,
+                             "log_path": "/tmp/old.log", "log_sha256": "b" * 64, "elapsed_seconds": 1}]}
+        updated = deepcopy(report)
+        updated.update(reviewed_at="2026-10-11T02:00:00Z", operation_id="new")
+        updated["gates"][0].update(log_path="/tmp/new.log", log_sha256="c" * 64, elapsed_seconds=22)
+        updated["gates"][0]["command"][-1] = "--junitxml=/tmp/new.xml"
+        self.assertEqual(semantic_fingerprint(report), semantic_fingerprint(updated))
+        updated["gates"][0]["failure_fingerprint"] = "d" * 64
+        self.assertNotEqual(semantic_fingerprint(report), semantic_fingerprint(updated))
 
     def test_rejects_unrecorded_candidate_before_running_commands(self):
         self.update_state(lambda state: state.update(material_events=[]))

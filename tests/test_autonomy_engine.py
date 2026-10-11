@@ -131,12 +131,194 @@ class AutonomyEngineTests(unittest.TestCase):
         self.assertEqual(state["tasks"][MEDIA]["reason"], "no_material_progress_30m")
         self.assertEqual(state["material_events"], [])
 
+    def test_verified_twenty_minute_work_does_not_emit_stall_or_recovery_blocker(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        for minute in range(1, 21):
+            state = heartbeat(state, MEDIA, lease["token"], BASE + timedelta(minutes=minute))
+        state = finish(state, MEDIA, lease["token"], mutation(), BASE + timedelta(minutes=20))
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=21))
+        for minute in range(22, 41):
+            state = heartbeat(state, MEDIA, lease["token"], BASE + timedelta(minutes=minute))
+        state = finish(state, MEDIA, lease["token"], mutation(candidate_commit="c" * 40,
+            before_hash="2" * 64, after_hash="3" * 64), BASE + timedelta(minutes=40))
+        self.assertEqual([event["kind"] for event in state["material_events"]], ["mutation", "mutation"])
+        self.assertFalse(any(event["kind"] == "stalled" for event in state["lease_events"]))
+        self.assertEqual(state["tasks"][MEDIA]["recovery_reclaims"], 0)
+
     def test_missing_heartbeat_stalls_before_ten_minute_lease(self):
         q = queue("media")
         state, _ = claim({}, q, "media", "worker", BASE)
         state, candidates = plan(state, q, BASE + timedelta(minutes=3))
         self.assertEqual(state["tasks"][MEDIA]["status"], "STALLED")
         self.assertIn("media", candidates)
+
+    def test_ready_without_pickup_stalls_after_thirty_minutes_without_material_credit(self):
+        q = queue("media", "public_data")
+        state, candidates = plan({}, q, BASE)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertIn("media", candidates)
+        started = state["tasks"][MEDIA]["pickup_ready_since"]
+        state, _ = plan(state, q, BASE + timedelta(minutes=29, seconds=59))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertEqual(state["tasks"][MEDIA]["pickup_ready_since"], started)
+        state, candidates = plan(state, q, BASE + timedelta(minutes=30))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "STALLED")
+        self.assertEqual(state["tasks"][MEDIA]["reason"], "no_pickup_30m")
+        self.assertEqual(state["material_events"], [])
+        self.assertFalse(any(event["kind"] == "pickup" for event in state["lease_events"]))
+        self.assertIn("media", candidates)
+        self.assertIn("public_data", candidates)
+
+    def test_unmet_dependency_does_not_start_no_pickup_watch_until_actionable(self):
+        q = queue("media", "public_data")
+        media = next(task for task in q["tasks"] if task["id"] == MEDIA)
+        public = next(task for task in q["tasks"] if task["id"] == PUBLIC)
+        media["depends_on"] = [PUBLIC]
+        state, candidates = plan({}, q, BASE)
+        self.assertNotIn("media", candidates)
+        self.assertFalse(state["tasks"][MEDIA].get("pickup_ready_since"))
+        released = BASE + timedelta(minutes=40)
+        state, candidates = plan(state, q, released)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertNotIn("media", candidates)
+        self.assertFalse(state["tasks"][MEDIA].get("pickup_ready_since"))
+        public["status"] = "validated"
+        state, candidates = plan(state, q, released)
+        self.assertIn("media", candidates)
+        ready_since = state["tasks"][MEDIA]["pickup_ready_since"]
+        self.assertEqual(datetime.fromisoformat(ready_since.replace("Z", "+00:00")), released)
+        state, _ = plan(state, q, released + timedelta(minutes=29, seconds=59))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        state, candidates = plan(state, q, released + timedelta(minutes=30))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "STALLED")
+        self.assertEqual(state["tasks"][MEDIA]["reason"], "no_pickup_30m")
+        self.assertIn("media", candidates)
+        self.assertEqual(state["material_events"], [])
+
+    def test_reclaims_preserve_absolute_material_watch_and_exhaust_without_blocking_other_family(self):
+        q = queue("media", "public_data")
+        state, first = claim({}, q, "media", "worker-0", BASE)
+        baseline = state["tasks"][MEDIA]["material_watch_started_at"]
+        previous = first
+        for attempt, minute in enumerate((11, 22, 33), start=1):
+            at = BASE + timedelta(minutes=minute)
+            state, lease = claim(state, q, "media", "worker-" + str(attempt), at)
+            self.assertIsNotNone(lease)
+            self.assertNotEqual(lease["token"], previous["token"])
+            self.assertGreater(lease["fence"], previous["fence"])
+            self.assertEqual(state["tasks"][MEDIA]["material_watch_started_at"], baseline)
+            self.assertEqual(state["tasks"][MEDIA]["recovery_reclaims"], attempt)
+            self.assertEqual(state["material_events"], [])
+            previous = lease
+        # Heartbeats extend ownership but cannot extend the recovery grace.
+        for minute in range(34, 43):
+            state = heartbeat(state, MEDIA, previous["token"], BASE + timedelta(minutes=minute))
+            self.assertEqual(state["tasks"][MEDIA]["material_watch_started_at"], baseline)
+        exhausted = BASE + timedelta(minutes=43)
+        with self.assertRaises(LeaseError):
+            heartbeat(state, MEDIA, previous["token"], exhausted)
+        state = reconcile(state, q, exhausted)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "STALLED")
+        self.assertEqual(state["material_events"], [])
+        episode = state["tasks"][MEDIA]["recovery_episode"]
+        input_fingerprint = state["tasks"][MEDIA]["input_fingerprint"]
+        state, candidates = plan(state, q, exhausted)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "BLOCKED")
+        self.assertNotIn("media", candidates)
+        self.assertIn("public_data", candidates)
+        blocker = state["tasks"][MEDIA]["blocker"]
+        self.assertEqual(blocker["kind"], "stall_recovery_budget")
+        self.assertIn("recovery_budget_exhausted", blocker["fingerprint"])
+        self.assertEqual(blocker["reason"], "Three lease recovery pickups without material progress are exhausted.")
+        self.assertFalse(blocker["human_required"])
+        self.assertEqual(len(blocker["evidence"]), 1)
+        evidence = blocker["evidence"][0]
+        self.assertEqual(evidence["task_id"], MEDIA)
+        self.assertEqual(evidence["recovery_episode"], episode)
+        self.assertEqual(evidence["recovery_reclaims"], 3)
+        self.assertEqual(evidence["input_fingerprint"], input_fingerprint)
+        self.assertEqual(evidence["material_watch_started_at"], baseline)
+        self.assertEqual(len(evidence["stalled_leases"]), 4)
+        self.assertTrue(all(event["fenced_token"] for event in evidence["stalled_leases"]))
+        self.assertEqual([event["kind"] for event in state["material_events"]], ["blocker"])
+        again, denied = claim(state, q, "media", "worker-4", exhausted + timedelta(minutes=1))
+        self.assertIsNone(denied)
+        self.assertEqual(again["material_events"], state["material_events"])
+        q["input_sha"] = "c" * 40
+        again, denied = claim(again, q, "media", "worker-after-unrelated-staging", exhausted + timedelta(minutes=2))
+        self.assertIsNone(denied)
+        self.assertEqual(again["material_events"], state["material_events"])
+
+    def test_missing_heartbeat_reclaims_preserve_absolute_watch_across_generations(self):
+        q = queue("media")
+        state, _ = claim({}, q, "media", "worker-0", BASE)
+        baseline = state["tasks"][MEDIA]["material_watch_started_at"]
+        for attempt, minute in enumerate((3, 6, 9), start=1):
+            state, lease = claim(state, q, "media", "worker-" + str(attempt),
+                                 BASE + timedelta(minutes=minute))
+            self.assertIsNotNone(lease)
+            self.assertEqual(state["tasks"][MEDIA]["recovery_reclaims"], attempt)
+            self.assertEqual(state["tasks"][MEDIA]["material_watch_started_at"], baseline)
+            self.assertEqual(state["material_events"], [])
+        state = reconcile(state, q, BASE + timedelta(minutes=12))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "STALLED")
+        self.assertEqual(state["material_events"], [])
+        state, denied = claim(state, q, "media", "worker-4", BASE + timedelta(minutes=12))
+        self.assertIsNone(denied)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "BLOCKED")
+        self.assertEqual([event["kind"] for event in state["material_events"]], ["blocker"])
+
+    def test_verified_mutation_resets_absolute_watch_and_recovery_episode(self):
+        q = queue("media")
+        state, _ = claim({}, q, "media", "worker-0", BASE)
+        for attempt, minute in enumerate((11, 22), start=1):
+            state, lease = claim(state, q, "media", "worker-" + str(attempt),
+                                 BASE + timedelta(minutes=minute))
+        previous_episode = state["tasks"][MEDIA]["recovery_episode"]
+        repaired_at = BASE + timedelta(minutes=23)
+        state = finish(state, MEDIA, lease["token"], mutation(), repaired_at)
+        task = state["tasks"][MEDIA]
+        self.assertEqual(task["status"], "READY")
+        self.assertEqual(task["recovery_reclaims"], 0)
+        self.assertNotEqual(task["recovery_episode"], previous_episode)
+        self.assertEqual(datetime.fromisoformat(task["material_watch_started_at"].replace("Z", "+00:00")),
+                         repaired_at)
+        self.assertEqual([event["kind"] for event in state["material_events"]], ["mutation"])
+        state, lease = claim(state, q, "media", "worker-after-repair", repaired_at)
+        state, new = claim(state, q, "media", "worker-after-expiry", BASE + timedelta(minutes=34))
+        self.assertIsNotNone(new)
+        self.assertEqual(state["tasks"][MEDIA]["recovery_reclaims"], 1)
+        self.assertEqual(datetime.fromisoformat(state["tasks"][MEDIA]["material_watch_started_at"].replace("Z", "+00:00")),
+                         repaired_at)
+        self.assertEqual([event["kind"] for event in state["material_events"]], ["mutation"])
+
+    def test_rotating_audit_fingerprints_cannot_reset_absolute_material_watch(self):
+        q = queue("media")
+        state = {}
+        baseline = None
+        for minute in range(0, 30, 5):
+            at = BASE + timedelta(minutes=minute)
+            state, lease = claim(state, q, "media", "worker-" + str(minute), at)
+            self.assertIsNotNone(lease)
+            if baseline is None:
+                baseline = state["tasks"][MEDIA]["material_watch_started_at"]
+            state = finish(state, MEDIA, lease["token"], {
+                "status": "SUCCESS", "audit_fingerprint": "different-observation-" + str(minute)}, at)
+            self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+            self.assertEqual(state["tasks"][MEDIA]["material_watch_started_at"], baseline)
+            self.assertEqual(state["tasks"][MEDIA]["recovery_reclaims"], 0)
+            self.assertEqual(state["material_events"], [])
+        at_stall = BASE + timedelta(minutes=30)
+        state, candidates = plan(state, q, at_stall)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "STALLED")
+        self.assertEqual(state["tasks"][MEDIA]["reason"], "no_material_progress_30m")
+        self.assertIn("media", candidates)
+        self.assertEqual(state["material_events"], [])
+        state, recovery = claim(state, q, "media", "recovery-worker", at_stall)
+        self.assertIsNotNone(recovery)
+        self.assertEqual(state["tasks"][MEDIA]["recovery_reclaims"], 1)
+        self.assertEqual(state["tasks"][MEDIA]["material_watch_started_at"], baseline)
 
     def test_queue_approval_revocation_fences_worker(self):
         q = queue("media")
@@ -296,6 +478,9 @@ class AutonomyEngineTests(unittest.TestCase):
         state = finish(state, MEDIA, lease["token"], mutation(), BASE)
         self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
         self.assertEqual(state["material_events"][0]["kind"], "mutation")
+        self.assertEqual(state["material_events"][0]["details"]["parent_input_sha"], SHA)
+        self.assertEqual(state["material_events"][0]["details"]["input_fingerprint"],
+                         state["tasks"][MEDIA]["input_fingerprint"])
 
     def test_isolated_candidate_with_baseline_failure_can_make_durable_progress(self):
         q = queue("media")

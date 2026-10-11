@@ -137,6 +137,55 @@ def pytest_summary(xml_path):
     return {"collected": len(cases), "passed": passed, "failed": failed, "skipped": skipped, "proof": bool(passed) and not failed}
 
 
+def canonical_text(value, roots=()):
+    value = re.sub(r"\x1b\[[0-9;]*m", "", str(value))
+    for root in sorted((str(root) for root in roots), key=len, reverse=True):
+        value = value.replace(root, "<workspace>")
+    value = re.sub(r"\b\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})\b", "<timestamp>", value)
+    value = re.sub(r"\bin \d+(?:\.\d+)?s\b", "in <duration>", value)
+    value = re.sub(r"(?m)^.*generated xml file:.*$", "<generated-junit-artifact>", value)
+    return value
+
+
+def canonical_command(command):
+    return ["--junitxml=<artifact>" if part.startswith("--junitxml=") else
+            ("<python>" if index == 0 and re.fullmatch(r"python(?:\d+(?:\.\d+)*)?", Path(part).name) else part)
+            for index, part in enumerate(command)]
+
+
+def semantic_fingerprint(report, roots=()):
+    identity = {key: report.get(key) for key in ("task_id", "family", "candidate_commit", "candidate_scope", "status", "technical_review_pass", "next_action")}
+    identity["error"] = canonical_text(report.get("error", ""), roots)
+    identity["gates"] = [{"command": canonical_command(gate["command"]),
+                          "status": gate["status"], "returncode": gate["returncode"],
+                          "pytest": gate.get("pytest"), "failure_fingerprint": gate.get("failure_fingerprint")}
+                         for gate in report.get("gates", [])]
+    return digest(encode(identity))
+
+
+def completed_review(snapshot, task, candidate_commit):
+    metadata = task.get("candidate_reviews", {}).get(candidate_commit) or task.get("candidate_review", {})
+    if metadata.get("candidate_commit") != candidate_commit or metadata.get("status") not in {"PASS", "BLOCKED"}:
+        return None
+    path = metadata.get("evidence_path", "")
+    if not isinstance(path, str) or not path.startswith("data/autopilot/evidence/"):
+        raise ReviewError("Completed candidate review lacks immutable evidence")
+    raw = snapshot.read(path)
+    if not isinstance(raw, bytes) or digest(raw) != metadata.get("evidence_sha256"):
+        raise ReviewError("Completed candidate review evidence is absent or changed")
+    report = json.loads(raw)
+    if report.get("task_id") != task["id"] or report.get("candidate_commit") != candidate_commit or report.get("status") != metadata["status"]:
+        raise ReviewError("Completed review evidence is not bound to this candidate")
+    return metadata, report
+
+
+def reused_report(metadata, existing, commit):
+    report = deepcopy(existing)
+    report.update(result_status=existing["status"], status="ALREADY_REVIEWED", state_commit=commit,
+                  review_evidence_path=metadata["evidence_path"], superseded=metadata.get("superseded", False))
+    return report
+
+
 def run_gate(command, workspace, directory, ordinal, *, timeout=600):
     """Produce a fresh log/hash; validation receives no paid model credentials."""
     executed = list(command)
@@ -167,16 +216,25 @@ def run_gate(command, workspace, directory, ordinal, *, timeout=600):
                 gate["status"] = "FAIL" if counts["failed"] or code else "UNVERIFIED"
         except (OSError, ET.ParseError):
             gate["status"] = "UNVERIFIED"
+    if gate["status"] != "PASS":
+        gate["failure_fingerprint"] = digest(canonical_text(output, (workspace, directory)))
     return gate
 
 
 def review_candidate(infrastructure, workspace, task_id, family, candidate_commit, report_path, *, store=None, command_planner=project_commands, gate_runner=run_gate):
     infrastructure, workspace, report_path = Path(infrastructure).resolve(), Path(workspace).resolve(), Path(report_path).resolve()
     authority = store or GitStateStore(repository=infrastructure)
-    initial = authority.read_snapshot().read_json(STATE, {})
-    _task, mutation, _latest = recorded_candidate(initial, task_id, family, candidate_commit)
+    snapshot = authority.read_snapshot()
+    initial = snapshot.read_json(STATE, {})
+    task, mutation, _latest = recorded_candidate(initial, task_id, family, candidate_commit)
     candidate_branch = mutation["details"]["candidate_branch"]
     validate_checkout(workspace, candidate_commit, candidate_branch)
+    completed = completed_review(snapshot, task, candidate_commit)
+    if completed:
+        report = reused_report(*completed, snapshot.commit)
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(encode(report))
+        return report
     operation = uuid.uuid4().hex
     directory = report_path.parent / ("review-" + operation)
     directory.mkdir(parents=True, exist_ok=False)
@@ -197,25 +255,33 @@ def review_candidate(infrastructure, workspace, task_id, family, candidate_commi
         report["error"] = redact(str(error)) if isinstance(error, (ReviewError, OSError, ValueError)) else type(error).__name__
     report["next_action"] = ("staging_acceptance_reconciliation" if family == "staging_qa" else "source_acceptance_reconciliation") if report["technical_review_pass"] else "repair_review_failure"
     if not report["technical_review_pass"]:
-        failed = [{"command": ["--junitxml=<artifact>" if part.startswith("--junitxml=") else part for part in gate["command"]],
+        failed = [{"command": canonical_command(gate["command"]), "failure_fingerprint": gate.get("failure_fingerprint"),
                    "returncode": gate["returncode"], "status": gate["status"], "pytest": gate.get("pytest")}
                   for gate in report["gates"] if gate["status"] != "PASS"]
         # Stable problem identity; changing review clocks/path cannot create progress.
         identity = {"candidate_commit": candidate_commit, "failed_gates": failed, "error": report.get("error")}
         report["blocker"] = {"kind": "candidate_technical_review", "fingerprint": digest(encode(identity)), "reason": "Independent mandatory candidate gates did not PASS", "evidence": deepcopy(report["gates"]) or [{"error": report.get("error", "No executed mandatory gates")}], "human_required": False}
+    report["semantic_fingerprint"] = semantic_fingerprint(report, (workspace, directory))
     evidence_path = "data/autopilot/evidence/" + operation + ".json"
     immutable = encode(report)
     def save(snapshot):
         state = snapshot.read_json(STATE, {})
         task, _recorded, latest = recorded_candidate(state, task_id, family, candidate_commit)
-        metadata = {key: deepcopy(report.get(key)) for key in ("candidate_commit", "candidate_branch", "candidate_scope", "status", "technical_review_pass", "reviewed_at", "next_action", "blocker")}
+        completed = completed_review(snapshot, task, candidate_commit)
+        if completed:
+            existing_metadata, existing_report = completed
+            return Mutation({}, {"metadata": existing_metadata, "report": existing_report, "already_reviewed": True})
+        metadata = {key: deepcopy(report.get(key)) for key in ("candidate_commit", "candidate_branch", "candidate_scope", "status", "technical_review_pass", "reviewed_at", "next_action", "blocker", "semantic_fingerprint")}
         metadata.update(evidence_path=evidence_path, evidence_sha256=digest(immutable), superseded=not latest)
         task.setdefault("candidate_reviews", {})[candidate_commit] = metadata
         if latest:
             task["candidate_review"] = metadata
-        return Mutation({STATE: encode(state), evidence_path: immutable}, metadata)
+        return Mutation({STATE: encode(state), evidence_path: immutable}, {"metadata": metadata, "already_reviewed": False})
     transaction = authority.transact(save, message="autonomy: independent " + family + " candidate review")
-    report.update(state_commit=transaction.commit, review_evidence_path=evidence_path, superseded=transaction.value["superseded"])
+    if transaction.value["already_reviewed"]:
+        report = reused_report(transaction.value["metadata"], transaction.value["report"], transaction.commit)
+    else:
+        report.update(state_commit=transaction.commit, review_evidence_path=evidence_path, superseded=transaction.value["metadata"]["superseded"])
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(encode(report))
     return report

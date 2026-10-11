@@ -103,7 +103,7 @@ def overlay_queue(queue, state):
             "rebase_required": rebase_required, "queue_evidence_revision": declared}
         review_semantics = {key: review.get(key) for key in (
             "candidate_commit", "candidate_branch", "candidate_scope", "status",
-            "technical_review_pass", "next_action", "blocker", "evidence_sha256", "superseded")}
+            "technical_review_pass", "next_action", "blocker", "semantic_fingerprint", "superseded")}
         task["candidate_context"] = context
         task["input_sha"] = commit
         task["evidence_revision"] = _hash({"queue_revision": base_revision,

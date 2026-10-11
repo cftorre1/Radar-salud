@@ -104,3 +104,40 @@ code, scoped-base drift, unsafe/moved refs, review races and no model credential
 Next hypothesis: the controller can dispatch review independently, select the
 reviewed candidate on its next lease, and retain blockers without losing repairs
 or inflating useful progress. Hosted credentials and pickup remain unproved.
+
+## 6. Unpicked work and bounded stall recovery
+
+Decision: actionable READY tasks become STALLED after thirty minutes without
+pickup. The material-progress baseline survives expired/missing-heartbeat lease
+generations and changing audit fingerprints. Three stalled lease recoveries are
+the maximum; after the absolute material deadline, a recovery receives ten
+minutes that heartbeat renewals cannot extend. Exhaustion records the actual
+fenced lease evidence in a terminal blocker, while independent families remain
+available. An unrelated staging SHA cannot reopen the exhausted episode.
+Review wrapper timestamps/hashes do not change candidate-context eligibility;
+the semantic review fingerprint does.
+
+Directed validation: `python -m unittest tests.test_autonomy_engine tests.test_autonomy_candidate_context -q`.
+65 tests passed: 43 engine tests and 22 candidate-context tests. They cover
+thirty-minute unpicked work, dependency release, expiry/heartbeat recovery,
+rotating audit outputs, bounded recovery grace, exact lost-lease blocker evidence,
+ordinary twenty-minute useful work, and review wrapper churn. This is directed
+state-machine and local Git evidence, not four hours of hosted acceptance.
+
+Next hypothesis: hosted controller observations expose unpicked/stalled work and
+automatically recover it with the same bounded leases, leaving other families
+active when a lane exhausts its recovery budget.
+
+## 7. Stable review identities and paid-call guard
+
+Decision: a completed review of the same isolated SHA is reused without rerunning
+gates or writing state/evidence. Review semantics exclude wrapper clocks and log
+hashes. Optional model imports retain the existing package budget guard and
+cannot authorize a paid call without the approved durable reservation.
+
+Directed validation: candidate reviewer 12 tests, recovery 30 tests, engine and
+candidate context 65 tests passed. These checks execute local Git transactions
+and validation subprocesses. They do not establish hosted pickup or Stage A.
+
+Next hypothesis: a shared staging-failure capture contract will keep controller
+and worker evidence revisions identical and avoid fencing a healthy repair.
