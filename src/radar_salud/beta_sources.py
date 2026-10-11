@@ -288,7 +288,9 @@ def _material(role, title, body):
             re.search(r"proyecto|propuesta|iniciativa", text)) and bool(re.search(
                 r"aborto|abortar|interrupci[oó]n (?:legal |voluntaria )?del embarazo|ley de tres causales", text)) and bool(
             re.search(r"mujeres?[^.!?]{0,100}\bdeban escuchar\b[^.!?]{0,100}\blatidos?\b|"
-                      r"m[eé]dico[^.!?]{0,120}\bnegarse a (?:realizar|practicar)\b[^.!?]{0,50}(?:procedimiento|interrupci[oó]n)", text))
+                      r"m[eé]dico[^.!?]{0,120}\bnegarse a (?:realizar|practicar)\b[^.!?]{0,50}(?:procedimiento|interrupci[oó]n)|"
+                      r"\bcondicion(?:ando|a|ar)[^.!?]{0,70}(?:realizaci[oó]n|prestaci[oó]n)[^.!?]{0,70}"
+                      r"(?:procedimiento|interrupci[oó]n)[^.!?]{0,70}(?:aceptaci[oó]n|escuchar)", text))
         provider_flood_response = bool(re.search(
             r"\b(?:cl[ií]nica|hospital)\b[^.!?]{0,100}\binundad[oa]s?\b", text)) and bool(
             re.search(r"ministerio de salud|\bminsal\b|autoridad sanitaria", text)) and bool(
