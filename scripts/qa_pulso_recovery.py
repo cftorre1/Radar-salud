@@ -28,6 +28,8 @@ EDITORIAL_REVIEW_PATH = "data/audits/pulso_first_paid_editorial_corrections_2026
 EDITORIAL_REVIEW_SHA256 = "35e1d8a806f99881b56c5358d904880ca6bf2aa7ddd21e7bdada8a4b740a78d2"
 INDEPENDENT_EDITORIAL_PATH = "data/audits/pulso_first_real_all32_semantic_review_2026_10_11.json"
 INDEPENDENT_EDITORIAL_SHA256 = "a6ddc143c4cedb1bdc77bb1eb07ce80f25630a36bdde9ac68d49e2e2fe44d48f"
+INCREMENTAL_REVIEW_PATH = "data/audits/pulso_incremental_review_2026_10_11.json"
+INCREMENTAL_REVIEW_SHA256 = "e5cee8d34839a905e391e85d6187db8bcdae09c0dde7f688cc71a9f04f093ddd"
 WINDOWS = {"30": ("2026-09-11", "2026-10-10", 29), "90": ("2026-07-13", "2026-10-10", 79)}
 REQUIRED_FEEDS = {"section:" + name for name in (
     "pulso", "nacional", "politica", "tendencias", "que-pasa", "paula", "sustentabilidad",
@@ -1176,7 +1178,13 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
                 assessment=metadata.get("editorial_assessment"), editorial_hold=metadata.get("editorial_hold"),
                 body_sha256=metadata.get("article_body_sha256"), body_characters=metadata.get("article_body_characters"),
                 source_quality_gate=metadata.get("source_quality_gate"),
+                editorial_proof_validation=metadata.get("pulso_editorial_proof_validation"),
+                primary_item_binding=metadata.get("primary_item_binding"),
+                analysis_input_complete=metadata.get("analysis_input_complete"),
+                article_body_complete=metadata.get("article_body_complete"),
                 editorial_review_sha256=object_digest(metadata["editorial_review"]) if metadata.get("editorial_review") else None)
+            if url in cohort["urls"]:
+                require(not technical_processing_deferral(item, {}), "replay_selected_processing_evidence_unresolved")
         require(all(current_queue.get(url) == item for url, item in old["source_queue"].items()),
                 "replay_changed_existing_queue_state_or_original_proof")
         primary = {}
@@ -1196,8 +1204,18 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
         reviews = [row.get("editorial_review", {}) for row in history]
         reviews.extend(item.get("raw", {}).get("metadata", {}).get("editorial_review", {}) for item in queue.values())
         references.update(row["review_file"] for row in reviews if isinstance(row, dict) and isinstance(row.get("review_file"), str))
+        for item in queue.values():
+            review = item.get("raw", {}).get("metadata", {}).get("incremental_review")
+            if item.get("source") != SOURCE or not isinstance(review, dict):
+                continue
+            require(review.get("review_ref") == INCREMENTAL_REVIEW_PATH
+                    and review.get("review_sha256") == INCREMENTAL_REVIEW_SHA256
+                    and digest(local_capture_path(root, INCREMENTAL_REVIEW_PATH).read_bytes()) == INCREMENTAL_REVIEW_SHA256,
+                    "replay_incremental_review_reference_unverified")
+            references.add(INCREMENTAL_REVIEW_PATH)
         require({path: digest(local_capture_path(root, path).read_bytes()) for path in references} == old["referenced_proof_files"],
                 "replay_changed_independent_body_reviews_or_editorial_provenance")
+        require(not old.get("reviewed_hold_bindings"), "reviewed_duplicate_hold_requires_independent_target_validation")
         added = set(current_queue) - set(old["source_queue"])
         require(not added & set(cohort["urls"]) and all(current_queue[url]["attempts"] == 0
                 and current_queue[url]["status"] in {"pending", "archived"} for url in added),

@@ -49,7 +49,7 @@ def replay(tmp_path):
     fingerprint = helper.runtime_fingerprint(ROOT)
     cohort_raw = (ROOT / qa.PROCESSING_COHORT_PATH).read_bytes()
     cohort = json.loads(cohort_raw)
-    paths = set(fingerprint["files"]) | {qa.PROCESSING_COHORT_PATH}
+    paths = set(fingerprint["files"]) | {qa.PROCESSING_COHORT_PATH, qa.INCREMENTAL_REVIEW_PATH}
     paths.update(cohort["inputs"][key]["path"] for key in
                  ("frozen_control", "independent_primary_review", "expanded_negative_review"))
     for relative in paths:
@@ -83,6 +83,8 @@ def replay(tmp_path):
     context["processing_qa"]["checks"]["processing_selection"].update(sha256=qa.PROCESSING_COHORT_SHA256)
     context["referenced_proof_files"] = {cohort["inputs"][key]["path"]: cohort["inputs"][key]["sha256"]
         for key in ("frozen_control", "independent_primary_review", "expanded_negative_review")}
+    if any(item["raw"]["metadata"].get("incremental_review") for item in context["queue"].values()):
+        context["referenced_proof_files"][qa.INCREMENTAL_REVIEW_PATH] = qa.INCREMENTAL_REVIEW_SHA256
     write_context(tmp_path, context)
     baseline = helper.capture_baseline(context, now=NOW.replace(minute=2))
     after = unit.unit_second_core(context)
@@ -101,6 +103,44 @@ def test_reader_recomputes_all113_queue_ledger_and_response_observations(replay)
     assert checked["selected_urls"] == 113
     assert checked["paid_successful_response_ids"] == 1
     assert checked["actual_ai_calls"] == checked["actual_attempts"] == 0
+
+
+@pytest.mark.parametrize("field,value", [
+    ("pulso_editorial_proof_validation", {"decision": "deferred", "reason": "renamed_editorial_retry"}),
+    ("primary_item_binding", {"verified": False}),
+    ("analysis_input_complete", False), ("article_body_complete", False),
+])
+def test_identical_invalid_proof_in_paid_baseline_and_replay_is_not_accepted(replay, field, value):
+    item = next(iter(replay["queue"].values()))
+    item["raw"]["metadata"][field] = value
+    baseline = replay["baseline"]
+    # Even a self-consistent compact snapshot and a claimed earlier QA PASS
+    # cannot make explicit failed processing evidence valid. The helper below
+    # constructs the test snapshot only; the QA reader must judge it itself.
+    baseline["semantic"]["source_queue"] = helper.source_queue(replay["queue"])
+    baseline["payload_sha256"] = qa.object_digest({k: v for k, v in baseline.items() if k != "payload_sha256"})
+    replay["proof"]["baseline_sha256"] = baseline["payload_sha256"]
+    checked, failures = qa.verify_genuine_idempotence(**replay)
+    assert checked == {}
+    assert failures[0]["reason"] == "replay_selected_processing_evidence_unresolved"
+
+
+def test_unverified_duplicate_hold_map_cannot_grant_replay_acceptance(replay):
+    baseline = replay["baseline"]
+    baseline["semantic"]["reviewed_hold_bindings"] = {"synthetic-held-url": {"target_url": "synthetic-target"}}
+    baseline["payload_sha256"] = qa.object_digest({k: v for k, v in baseline.items() if k != "payload_sha256"})
+    replay["proof"]["baseline_sha256"] = baseline["payload_sha256"]
+    checked, failures = qa.verify_genuine_idempotence(**replay)
+    assert checked == {}
+    assert failures[0]["reason"] == "reviewed_duplicate_hold_requires_independent_target_validation"
+
+
+def test_incremental_review_original_file_is_immutable_in_replay(replay):
+    path = replay["root"] / qa.INCREMENTAL_REVIEW_PATH
+    path.write_bytes(path.read_bytes() + b" ")
+    checked, failures = qa.verify_genuine_idempotence(**replay)
+    assert checked == {}
+    assert failures[0]["reason"] == "replay_incremental_review_reference_unverified"
 
 
 @pytest.mark.parametrize("attack", ["missing_baseline", "payload", "failed_paid_qa", "wrong_paid_cohort",
