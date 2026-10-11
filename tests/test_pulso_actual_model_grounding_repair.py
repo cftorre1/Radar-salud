@@ -40,15 +40,15 @@ def test_all69_actual_complete_inputs_and_outputs_remain_bound_and_unmodified():
         assert verdict["quote_validation_is_semantic_approval"] is False
         counts[(verdict["decision"], verdict["reason"])] += 1
     assert counts == {
-        ("deferred", "pulso_editorial_actor_not_grounded"): 23,
-        ("deferred", "pulso_editorial_action_not_grounded"): 23,
-        ("deferred", "pulso_editorial_scope_not_grounded"): 7,
+        ("deferred", "pulso_editorial_actor_not_grounded"): 22,
+        ("deferred", "pulso_editorial_action_not_grounded"): 20,
+        ("deferred", "pulso_editorial_scope_not_grounded"): 5,
         ("deferred", "pulso_editorial_status_or_novelty_not_grounded"): 4,
-        ("deferred", "pulso_editorial_consequence_not_grounded"): 4,
-        ("deferred", "pulso_editorial_scope_quote_not_in_input"): 3,
-        ("ready", "pulso_editorial_grounded_assessment"): 3,
+        ("deferred", "pulso_editorial_consequence_not_grounded"): 3,
+        ("deferred", "pulso_editorial_scope_quote_not_in_input"): 2,
+        ("ready", "pulso_editorial_grounded_assessment"): 2,
         ("deferred", "pulso_editorial_future_copy_not_grounded"): 1,
-        ("deferred", "pulso_editorial_incremental_value_uncertain"): 1,
+        ("rejected", "editorial_relevance_below_threshold"): 10,
     }
     assert hashlib.sha256(gzip.decompress(FIXTURE.read_bytes())).hexdigest() == before
 
@@ -57,7 +57,11 @@ def test_all69_actual_complete_inputs_and_outputs_remain_bound_and_unmodified():
 def test_three_actual_conditional_copies_are_grounded_without_approval_or_score_changes(row):
     ai = copy.deepcopy(row["ai"])
     verdict = validate_pulso_editorial_proof(ai, row["body"])
-    assert verdict["decision"] == "ready" and verdict["prospective_evidence"] is True
+    if ai["relevance_score"] < 72:
+        assert verdict["decision"] == "rejected"
+        assert verdict["reason"] == "editorial_relevance_below_threshold"
+    else:
+        assert verdict["decision"] == "ready" and verdict["prospective_evidence"] is True
     assert verdict["publication_approved"] is False
     assert ai == row["ai"]
     if "San Antonio" in row["title"]:
@@ -68,7 +72,9 @@ def test_three_actual_conditional_copies_are_grounded_without_approval_or_score_
     for claim in ai["pulso_editorial_proof"]["future_claims"]:
         if claim["summary_field"] == "what_happened":
             claim["summary_quote"] = ai["what_happened"]
-    assert validate_pulso_editorial_proof(ai, row["body"])["reason"] == "pulso_editorial_future_copy_not_grounded"
+    expected = ("editorial_relevance_below_threshold" if ai["relevance_score"] < 72
+                else "pulso_editorial_future_copy_not_grounded")
+    assert validate_pulso_editorial_proof(ai, row["body"])["reason"] == expected
 
 
 def test_actual_ovalle_coordination_does_not_prove_installed_or_available_capacity():

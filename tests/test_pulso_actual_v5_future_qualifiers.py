@@ -36,7 +36,8 @@ def test_every_actual_future_hold_replayed_without_changing_its_answer(index, ro
     verdict = validate_pulso_editorial_proof(row["analysis"], row["full_primary_body"])
     # Three nonliteral source quotes, a rewritten whole summary, and the
     # approval-scope finding remain held. No punctuation or words are deleted.
-    expected = "deferred" if index in {3, 7, 12, 17, 21} else "ready"
+    expected = ("rejected" if index in {22, 24} else
+                "deferred" if index in {3, 7, 12, 17, 21} else "ready")
     assert verdict["decision"] == expected
     assert verdict["publication_approved"] is False
     assert verdict["quote_validation_is_semantic_approval"] is False
@@ -59,6 +60,8 @@ def test_demonstrated_conditional_and_dated_nonachievement_phrases(text):
     "La secretaría mantuvo el registro de enfermería y minería.",
     "La capacidad fue agregada y el hospital se encuentra operativo.",
     "El efecto esperado era ampliar la capacidad.",  # no observation-day context
+    "La inversión hospitalaria prioritaria y necesaria tiene capacidad disponible.",
+    "La atención secundaria unitaria ordinaria y comunitaria fue implementada.",
 ])
 def test_generic_nouns_or_unqualified_past_states_are_not_future_proof(text):
     assert not future_copy_qualified(text)
@@ -100,3 +103,15 @@ def test_actual_model_numeric_finding_remains_explicitly_unapproved_by_technical
     verdict = validate_pulso_editorial_proof(row["analysis"], row["full_primary_body"])
     assert verdict["publication_approved"] is False
     assert verdict["quote_validation_is_semantic_approval"] is False
+
+
+def test_dated_disclaimer_does_not_hide_separate_available_capacity_claim():
+    row = ROWS[24]
+    ai = deepcopy(row["analysis"])
+    ai["what_happened"] = (
+        "Al 18 de julio de 2026, la nota no acredita la ejecución. "
+        "La inversión hospitalaria ya tiene capacidad disponible.")
+    for claim in ai["pulso_editorial_proof"]["future_claims"]:
+        if claim["summary_field"] == "what_happened":
+            claim["summary_quote"] = ai["what_happened"]
+    assert validate_pulso_editorial_proof(ai, row["full_primary_body"])["reason"] == "pulso_editorial_future_copy_not_grounded"

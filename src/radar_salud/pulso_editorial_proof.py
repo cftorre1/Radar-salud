@@ -29,7 +29,7 @@ REGULAR_CONDITIONAL_VERB = (
     r"\b(?!(?:secretar[ií]a|comisar[ií]a|notar[ií]a|enfermer[ií]a|"
     r"ingenier[ií]a|miner[ií]a|loter[ií]a|porter[ií]a|guarder[ií]a|"
     r"panader[ií]a|librer[ií]a|tesorer[ií]a|bater[ií]a|consejer[ií]a)\b)"
-    r"[a-záéíóúñü]{3,}(?:ar|er|ir)[ií]a(?:s|mos|is|n)?\b")
+    r"[a-záéíóúñü]{3,}(?:ar|er|ir)ía(?:s|mos|is|n)?\b")
 FUTURE_SOURCE = re.compile(REGULAR_FUTURE_VERB + r"|\b(?:habr[aá]|permitir[aá]n?|ser[aá]n?|podr(?:[aá]n?|[ií]an?)|previst[oa]s?|"
                            r"se prev[eé]|se propone(?:n)?|incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?|"
                            r"coordinaci(?:ones|[oó]n)\b[^.;!?]{0,160}\bpara instalar|"
@@ -53,6 +53,7 @@ FUTURE_COPY = re.compile(REGULAR_CONDITIONAL_VERB + r"|\b(?:propuest[oa]s?|propo
                          r"todav[ií]a no constituye capacidad disponible)\b", re.I)
 ACHIEVED_COPY = re.compile(r"\b(?:ya (?:se )?(?:alcanz\w*|incorpor\w*|aument\w*|ampli\w*|"
                            r"implement\w*|ejecut\w*|concret\w*|instal\w*|realiz\w*)|"
+                           r"ya (?:tiene|dispone de|cuenta con)\b[^.;!?]{0,80}\bcapacidad disponible|"
                            r"se ejecut[oó]|termin[oó])\b", re.I)
 # Actual v5 answers use the past tense to describe an intention or estimate as
 # observed on an earlier publication day. Only accept these narrower phrases
@@ -198,6 +199,20 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
         return verdict("deferred", "pulso_editorial_proof_invalid_schema")
     if len(proof["scope_reason"].strip()) < 12:
         return verdict("deferred", "pulso_editorial_scope_reason_missing")
+    # Validate nested structure before the conservative score rejection too.
+    # A malformed provider response cannot be turned into an editorial verdict.
+    for claim in proof["future_claims"]:
+        if (not isinstance(claim, dict)
+                or set(claim) != {"summary_field", "summary_quote", "source_quote"}
+                or claim["summary_field"] not in ("what_happened", "why_it_matters")
+                or not isinstance(claim["summary_quote"], str)
+                or not isinstance(claim["source_quote"], str)):
+            return verdict("deferred", "pulso_editorial_future_claims_invalid")
+    # A genuine structured score below the unchanged media threshold cannot
+    # publish. Invalid shapes/scores still defer above, and the processor must
+    # independently verify the actual response/request binding afterwards.
+    if score < 72:
+        return verdict("rejected", "editorial_relevance_below_threshold")
     body = normalized(analysis_text)
     def quote_matches(value, minimum=20):
         return literal_quote_matches(value, body, minimum)

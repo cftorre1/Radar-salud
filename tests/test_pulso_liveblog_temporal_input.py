@@ -77,7 +77,7 @@ def model_requests(monkeypatch):
                          human_health_scope_quote=quote, event_status='actual',
                          novelty_decision='new_material_information', future_claims=[])
             assessment['pulso_editorial_proof'] = proof
-            assert validate_pulso_editorial_proof(assessment, body)['reason'] == 'pulso_editorial_incidental_health'
+            assert validate_pulso_editorial_proof(assessment, body)['reason'] == 'editorial_relevance_below_threshold'
         return SimpleNamespace(output_text=json.dumps(assessment, ensure_ascii=False),
                                id='unit-test-liveblog-response', model='unit-test-no-paid-call')
     monkeypatch.setattr(llm_analysis, '_client', lambda: SimpleNamespace(responses=SimpleNamespace(create=create)))
@@ -147,9 +147,7 @@ def test_actual_responses_payload_contains_entire_body_and_every_dated_entry_wit
     assert raw.metadata['analysis_request_input_characters'] == len(request)
     assert raw.metadata['analysis_input_complete'] is True
     assert raw.metadata['editorial_assessment']['threshold'] == 72
-    expected = ('editorial_relevance_below_threshold' if '/nacional/' in raw.url
-                else 'pulso_editorial_incidental_health')
-    assert raw.metadata['rejection_reason'] == expected
+    assert raw.metadata['rejection_reason'] == 'editorial_relevance_below_threshold'
     assert raw.metadata['analysis_model_output']['relevance_score'] == 71
     assert raw.metadata['pulso_editorial_proof_validation']['model_response']['response_id'] == 'unit-test-liveblog-response'
     assert 'no convertir reporte de prensa en hecho oficial' in requests[0]['instructions']
