@@ -1,11 +1,13 @@
 import hashlib
 import json
 import pytest
+from datetime import datetime, timedelta, timezone
 from radar_salud.occupational_capture import CaptureLoader
 from radar_salud.occupational_sources import SourceDiscoveryError
 
 
-def record(folder, url, body, stamp="2026-10-11T00:00:00+00:00", status=200):
+def record(folder, url, body, stamp=None, status=200):
+    stamp = stamp or datetime.now(timezone.utc).isoformat()
     folder.mkdir(parents=True, exist_ok=True)
     name=hashlib.sha256(url.encode()).hexdigest()+".body"
     (folder/name).write_bytes(body)
@@ -53,3 +55,20 @@ def test_public_robots_denial_prevents_article_request(tmp_path,monkeypatch):
     with pytest.raises(SourceDiscoveryError,match="robots_disallowed"):
         loader("https://ist.cl/private/article")
 
+
+
+@pytest.mark.parametrize("stamp", [
+    (datetime.now(timezone.utc) - timedelta(hours=7)).isoformat(),
+    (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat(),
+    "2026-10-11T00:00:00",
+    "not-a-timestamp",
+])
+def test_live_cache_rejects_stale_future_and_unverifiable_timestamps(tmp_path, stamp):
+    prior=tmp_path/"prior"
+    url="https://ist.cl/noticias/"
+    r=record(prior,url,b"archive",stamp=stamp)
+    (prior/"capture_index.json").write_text(json.dumps({url:r}))
+    live=CaptureLoader(tmp_path/"live",cache=prior)
+    assert url not in live.records
+    replay=CaptureLoader(tmp_path/"replay",replay=prior)
+    assert replay._body(replay._request(url)) == "archive"

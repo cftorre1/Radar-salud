@@ -161,6 +161,7 @@ def main():
     parser.add_argument("--sync-budget", help="Read-only staging ledger; preserve the larger counter per metric")
     parser.add_argument("--replay", help="Previous inventory directory: hashes and parser replay, no network")
     parser.add_argument("--capture-cache-latest", action="store_true", help="Reuse hashed detail captures; current origin probes override cached listings")
+    parser.add_argument("--as-of", help="Fixed Chile calendar date for deterministic read-only replay")
     parser.add_argument("--apply", action="store_true", help="Reconcile only these lanes into durable branch state")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
@@ -177,6 +178,13 @@ def main():
         return
     if not args.output:
         parser.error("--output is required for inventory")
+    as_of = args.as_of or chile_today().isoformat()
+    if args.replay and not args.as_of:
+        prior_report = Path(args.replay) / "inventory.json"
+        if prior_report.exists():
+            as_of = json.loads(prior_report.read_text())["as_of_chile"]
+    if args.apply and as_of != chile_today().isoformat():
+        parser.error("Durable processing requires today's real Chile calendar; historical replay is read-only")
     output = Path(args.output)
     cache = None
     if args.capture_cache_latest:
@@ -189,7 +197,7 @@ def main():
     for slug in sorted(SOURCES):
         scout = CuratedBetaSourceScout(slug)
         try:
-            report = inventory(scout, loader)
+            report = inventory(scout, loader, as_of=as_of)
         except Exception as exc:
             report = {"source_slug": slug, "rows": [], "raw_items": [], "pages": [], "metrics": {},
                       "coverage_complete": False, "stop_reason": "inventory_failed", "errors": [{"url": getattr(exc, "url", scout.cfg["page"]), "code": getattr(exc, "code", type(exc).__name__), "detail": str(exc)}],
@@ -205,7 +213,7 @@ def main():
     before = copy.deepcopy(status())
     totals = reconcile(root, reports, loader, apply=args.apply)
     result = {"candidate_sha": os.getenv("CANDIDATE_SHA", os.getenv("GITHUB_SHA")), "run_id": os.getenv("GITHUB_RUN_ID"),
-              "captured_at": datetime.now(timezone.utc).isoformat(), "as_of_chile": chile_today().isoformat(),
+              "captured_at": datetime.now(timezone.utc).isoformat(), "as_of_chile": as_of,
               "mode": "runtime_and_branch_reconciliation" if args.apply else "read_only_replay", "sources": reports, "processing": totals}
     result["editorial_runtime"] = {"credentials_available": bool(os.getenv("OPENAI_API_KEY")),
                                    "model": os.getenv("RADAR_FAST_MODEL", "gpt-5.6-luna"), "budget_before": before,

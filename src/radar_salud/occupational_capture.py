@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 from urllib.robotparser import RobotFileParser
@@ -24,6 +25,14 @@ class CaptureLoader:
         if replay or cache:
             index = Path(replay or cache) / "capture_index.json"
             for url, record in json.loads(index.read_text()).items():
+                if not self.replay_only:
+                    try:
+                        captured = datetime.fromisoformat(record["captured_at"])
+                        age = (datetime.now(timezone.utc) - captured).total_seconds()
+                        if not 0 <= age <= 6 * 3600:
+                            continue
+                    except (ValueError, KeyError, TypeError):
+                        continue
                 self.records[url] = record
         if probe and not self.replay_only:
             report = json.loads(Path(probe).read_text())
