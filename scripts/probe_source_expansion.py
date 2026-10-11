@@ -1,17 +1,25 @@
 """Verified public transport for isolated source expansion; no repository writes."""
 from __future__ import annotations
 import argparse, hashlib, json, os, re, subprocess
+from threading import Lock
 from pathlib import Path
 from datetime import datetime, timezone
 from urllib.parse import urlsplit, urljoin
 from html.parser import HTMLParser
 from concurrent.futures import ThreadPoolExecutor
 HOSTS={"www.superdesalud.gob.cl","superdesalud.gob.cl","www.cmfchile.cl","cmfchile.cl","www.dipres.gob.cl","dipres.gob.cl"}
+CMF_LOCK = Lock()
 def utcnow():
     return datetime.now(timezone.utc).isoformat()
 
 
 def fetch(url, output, post=None):
+    if urlsplit(url).hostname in ('www.cmfchile.cl', 'cmfchile.cl'):
+        with CMF_LOCK: return fetch_verified(url, output, post)
+    return fetch_verified(url, output, post)
+
+
+def fetch_verified(url, output, post=None):
     """Persist body, response chain and verified TLS diagnostics without credentials."""
     if urlsplit(url).scheme != 'https' or urlsplit(url).hostname not in HOSTS:
         raise ValueError('Probe requires an official HTTPS URL')
