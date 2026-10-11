@@ -72,6 +72,24 @@ def test_numeric_72_does_not_override_explicit_preliminary_nonmaterial_research(
     assert assessment_exclusion({'score':72,'reason':'Ensayo preliminar, con licencia comercial aprobada y financiación comprometida.'}) is None
 
 
+def test_offline_publication_review_retains_original_proof_only_for_same_body_date_and_identity():
+    import importlib.util
+    from pathlib import Path
+    from copy import deepcopy
+    spec=importlib.util.spec_from_file_location('df_original_review',Path(__file__).resolve().parents[1]/'scripts/audit_df_integration.py')
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    previous=dict(original_reparsed=True,original_sha256='html',primary_body_sha256='body',date='2026-10-10',
+        title='Clínica cerrada',primary_header_title='Clínica cerrada',title_matches_primary_header=True,
+        original_review_at='2026-10-11T06:52:35Z')
+    offline={**previous,'original_reparsed':False,'primary_header_title':None,'title_matches_primary_header':False}
+    retained=module.retain_original_review(deepcopy(offline),previous)
+    assert retained['original_reparsed'] and retained['primary_header_title']=='Clínica cerrada'
+    assert retained['original_review_at']==previous['original_review_at']
+    for changed in ('original_sha256','primary_body_sha256','date','title'):
+        mismatched={**offline,changed:'changed'}
+        assert not module.retain_original_review(mismatched,previous)['original_reparsed']
+
+
 def test_recorded_real_publisher_metadata_samples():
     # Recorded Work3 metadata, NOT freshly fetched full original HTML.
     from pathlib import Path
