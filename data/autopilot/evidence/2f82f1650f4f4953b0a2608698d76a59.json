@@ -1,0 +1,33 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 25,
+      "material_event_count": 25,
+      "max_material_gap_seconds": 3495.837717,
+      "mode": "live",
+      "observed_seconds": 9270.15813,
+      "original_started_at": "2026-10-11T05:29:46.231497Z",
+      "owner_observation_verified": false,
+      "owner_prompts": 0,
+      "owner_restarts": 0,
+      "total_elapsed_seconds": 9270.15813,
+      "window_started_at": "2026-10-11T05:29:46.231497Z"
+    },
+    "observed_until": "2026-10-11T08:04:16.389627Z",
+    "reasons": [
+      "four_real_wall_hours_not_observed",
+      "owner_intervention_observation_not_verified",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed",
+      "material_progress_gap_exceeded_30m"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {},
+  "generated_at": "2026-10-11T08:04:16.389627+00:00",
+  "input_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+  "kind": "controller_observation",
+  "operation_id": "2f82f1650f4f4953b0a2608698d76a59",
+  "stalled_tasks": []
+}
