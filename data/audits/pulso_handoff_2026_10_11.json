@@ -212,7 +212,7 @@
     "status": "Merged latest staging; source/core unaffected; all other task/governance/PMO evidence preserved."
   },
   "actual_corrected_core_checkpoint": "data/audits/pulso_actual_core_checkpoint_2026_10_11.json",
-  "next_prior_capture_run_id": 38134030226,
+  "next_prior_capture_run_id": 38183583899,
   "next_core_phase": "process",
   "renewed_capacity_resume": {
     "same_branch": true,
@@ -291,7 +291,7 @@
     },
     "next_run": "Same branch/PR; genuine full discovery plus113-existing-URL processing selection under unchanged budget; no extra discovery expansion. Then independent semantic review, real second-run idempotence and final-SHA QA/staging."
   },
-  "acceptance": "NOT_ACCEPTED_PENDING_LIVE9_ACTUAL_AND_GENUINE_REPLAY_AND_FINAL_SHA_GATES",
+  "acceptance": "NOT_ACCEPTED_PENDING_GENUINE_TERMINAL_BASELINE_REPLAY_AND_FINAL_SHA_GATES",
   "preserved_previous_operational_headers": [
     {
       "recorded_at": "2026-10-11T12:50:20.018214+00:00",
@@ -340,10 +340,10 @@
     }
   ],
   "next_actions": [
-    "Bounded pinned2 historical human-reader consumer repair, noSource/state/gate changes",
-    "Observe current terminal0core baseline with original123/46a/323 separate",
-    "Run SAMEfingerprint actualsecond0core and preserve exact113/native/history/feed/model/costs",
-    "Final113 outcome matrix and all finalSHA QA/Reviewer/staging; merge commit preserving ancestry by Integration Commander only"
+    "Finish independent terminal-consumer peer review and regressions; source/guard/config remain unchanged.",
+    "Run a fresh genuine selected113 terminal core with zero attempts/API and seal its passing baseline.",
+    "Run the same runtime fingerprint a second time and verify all Source/native stocks, paid models, history/feed and costs unchanged.",
+    "Finalize durable complete editorial matrix and exact FINAL SHA QA/Reviewer/staging checks; no direct merge, main or production."
   ],
   "latest_followup5_launch_checkpoint": {
     "path": "data/audits/pulso_followup5_genuine_launch_checkpoint_2026_10_11.json",
@@ -1171,5 +1171,307 @@
     "publication_approved": false,
     "directed_local_validation": "147 PASS consumer/idempotence/command tests; strict9 existing queue identities and complete_article_body predicates PASS",
     "acceptance": "NOT_ACCEPTED_PENDING_LIVE9_ACTUAL_AND_GENUINE_REPLAY_AND_FINAL_SHA_GATES"
+  },
+  "latest_additional_live9_actual_processing_checkpoint": {
+    "schema_version": "pulso_additional_live9_actual_checkpoint_v1",
+    "at": "2026-10-11T23:49:30Z",
+    "branch": "codex/b-pulso-runtime-20261011",
+    "pr": 10,
+    "acceptance": "NOT_ACCEPTED_PENDING_GENUINE_TERMINAL_BASELINE_REPLAY_AND_FINAL_SHA_GATES",
+    "actual_core": {
+      "run_id": 38183583899,
+      "job_id": 114601080104,
+      "producer_state_commit": "d48a495a5fcefb9adaca26ca30b1f12ddad7e59f",
+      "launch_sha": "1b4817164dbd9cd091197e1c7ebd03de6fa93526",
+      "actual_execution_window": {
+        "started_at": "2026-10-11T23:23:42.019544+00:00",
+        "finished_at": "2026-10-11T23:32:47.864132+00:00"
+      },
+      "actual_runtime_fingerprint_sha256": "be91910c2f322831f8279afd200963155b7bb076e31034c2592cb31290e56814",
+      "actual_guard_sha256": "cfdfc0914a1e6d145d932ffe29063eae3be0cf72a977a522dd7e454772cb241b",
+      "actual_processing_attempts": 9,
+      "actual_new_model_events": [
+        {
+          "at": "2026-10-11T23:31:45.715081+00:00",
+          "kind": "fast",
+          "model": "gpt-5.6-luna",
+          "requested_model": "gpt-5.6-luna",
+          "response_id": "resp_01b2cb8f55165d7a006acc1c55288487d0821c27732520eb29",
+          "success": true,
+          "error_type": null,
+          "input_tokens": 3247,
+          "cached_input_tokens": 0,
+          "output_tokens": 1211,
+          "total_tokens": 4458,
+          "cost_usd": null,
+          "cost_status": "pricing_not_configured",
+          "feature": null,
+          "output_id": null,
+          "run_id": null,
+          "publishable": null,
+          "incremental_quality_points": null
+        },
+        {
+          "at": "2026-10-11T23:32:02.365502+00:00",
+          "kind": "fast",
+          "model": "gpt-5.6-luna",
+          "requested_model": "gpt-5.6-luna",
+          "response_id": "resp_0f0c1b79cdd56e85006acc1c648e8887d0b8d6025a5f374a71",
+          "success": true,
+          "error_type": null,
+          "input_tokens": 3208,
+          "cached_input_tokens": 2578,
+          "output_tokens": 1541,
+          "total_tokens": 4749,
+          "cost_usd": null,
+          "cost_status": "pricing_not_configured",
+          "feature": null,
+          "output_id": null,
+          "run_id": null,
+          "publishable": null,
+          "incremental_quality_points": null
+        },
+        {
+          "at": "2026-10-11T23:32:27.290485+00:00",
+          "kind": "fast",
+          "model": "gpt-5.6-luna",
+          "requested_model": "gpt-5.6-luna",
+          "response_id": "resp_06ad848f4f62031e006acc1c7a7b1487d097607e5885a5fa10",
+          "success": true,
+          "error_type": null,
+          "input_tokens": 3651,
+          "cached_input_tokens": 2578,
+          "output_tokens": 2102,
+          "total_tokens": 5753,
+          "cost_usd": null,
+          "cost_status": "pricing_not_configured",
+          "feature": null,
+          "output_id": null,
+          "run_id": null,
+          "publishable": null,
+          "incremental_quality_points": null
+        },
+        {
+          "at": "2026-10-11T23:32:44.684105+00:00",
+          "kind": "fast",
+          "model": "gpt-5.6-luna",
+          "requested_model": "gpt-5.6-luna",
+          "response_id": "resp_0123ba60b6d9db6f006acc1c93845487d0a8b9fc05432adb98",
+          "success": true,
+          "error_type": null,
+          "input_tokens": 3355,
+          "cached_input_tokens": 2578,
+          "output_tokens": 787,
+          "total_tokens": 4142,
+          "cost_usd": null,
+          "cost_status": "pricing_not_configured",
+          "feature": null,
+          "output_id": null,
+          "run_id": null,
+          "publishable": null,
+          "incremental_quality_points": null
+        }
+      ],
+      "actual_unique_new_model_events": 4,
+      "ledger_delta": {
+        "fast": {
+          "attempted": 4,
+          "successful": 4,
+          "failed": 0
+        },
+        "deep": {
+          "attempted": 0,
+          "successful": 0,
+          "failed": 0
+        }
+      },
+      "budget_before": {
+        "run": {
+          "deep": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          }
+        },
+        "month": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 516,
+            "successful": 516,
+            "failed": 0
+          }
+        }
+      },
+      "budget_after": {
+        "run": {
+          "deep": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 4,
+            "successful": 4,
+            "failed": 0
+          }
+        },
+        "month": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 520,
+            "successful": 520,
+            "failed": 0
+          }
+        }
+      }
+    },
+    "editorial": {
+      "additional9_outcomes": {
+        "rejected": 9
+      },
+      "rejection_reasons": {
+        "media_materiality_prefilter": 5,
+        "editorial_relevance_below_threshold": 4
+      },
+      "scores": [
+        58,
+        35,
+        68,
+        5
+      ],
+      "gate": 72,
+      "new_publications": 0,
+      "pending_selected": 0,
+      "quota_publication": false,
+      "original113_outcomes": {
+        "published": 65,
+        "rejected": 48
+      },
+      "history_source": 95,
+      "feed_source": 70,
+      "full_history_signal_content_unchanged": true,
+      "feed_signal_content_unchanged": true
+    },
+    "primary": {
+      "original_characters": 28243,
+      "actual_characters": 29047,
+      "revisions": [
+        "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/"
+      ],
+      "old9_raw_replay": {
+        "EXACT_ORIGINAL_REPLAY_VERIFIED": 9
+      },
+      "current9_raw_replay": {
+        "EXACT_ORIGINAL_REPLAY_VERIFIED": 9
+      },
+      "all79_raw_replay": {
+        "EXACT_ORIGINAL_REPLAY_VERIFIED": 79
+      },
+      "original_manifest_path": "tests/fixtures/pulso_live9_primary_real/manifest.json",
+      "original_manifest_sha256": "908875faca85694905ca6abeae9945b1366903a3cc54f67c588cee96b133d46f",
+      "original_retention_run": 38185346135,
+      "partial_retention_fail_run": 38185111020,
+      "partial_fail_retained": true
+    },
+    "controls": {
+      "30": {
+        "control_expected": 29,
+        "control_detected_by_current_core": 29,
+        "recall": 1.0,
+        "missed": []
+      },
+      "90": {
+        "control_expected": 79,
+        "control_detected_by_current_core": 79,
+        "recall": 1.0,
+        "missed": []
+      }
+    },
+    "stock": {
+      "original113_whole_unchanged": true,
+      "native5293_unchanged": true,
+      "native897_unchanged": true,
+      "health": {
+        "name": "Pulso / La Tercera",
+        "checked_at": "2026-10-11T23:32:47.775165+00:00",
+        "last_signal_at": "2026-10-10",
+        "discovered": 1745,
+        "new": 1,
+        "published": 0,
+        "live_pending": 1,
+        "backfill_pending": 1507,
+        "pending": 1508,
+        "deferred": 12,
+        "rejected": 180,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "recent",
+        "latest_original_at": "2026-10-11",
+        "editorial_outcome": "rejected",
+        "evaluation_performed": true,
+        "processed_rejections": 9,
+        "counts_scope": {
+          "discovered": "this_run",
+          "new": "this_run",
+          "published": "this_run",
+          "processed_rejections": "this_run",
+          "rejected": "cumulative_queue",
+          "published_total": "effective_persisted_source_history"
+        },
+        "published_total": 70,
+        "last_signal_at_basis": "effective_verified_published_history"
+      },
+      "outside_selected_unresolved": 1508,
+      "all_source_pending_zero_claim": false
+    },
+    "original_qa": {
+      "verdict": "FAIL",
+      "findings_count": 1477,
+      "findings_by_code": {
+        "processing_selection_recorded_manifest_mismatch": 1,
+        "processing_selection_ready_partition_invalid": 1,
+        "processing_selection_excluded_reason_without_membership_proof": 1463,
+        "processing_selection_processed_outside_cohort": 9,
+        "genuine_revalidated_paid_model_lineage_unverified": 1,
+        "final_paid_revalidation_provenance_unverified": 2
+      },
+      "retagged_pass": false
+    },
+    "evidence": {
+      "technical": {
+        "path": "data/audits/pulso_additional_live9_actual_technical_evidence_2026_10_11.json",
+        "sha256": "e3e48ad086780fdd3515a1db9b457e3731ccd54ac35a8b68ae67b60892c61bda",
+        "tests": "14 PASS: 2 genuine technical audit + 12 original retainer"
+      },
+      "independent_editorial": {
+        "path": "data/audits/pulso_live9_actual_four_paid_rejections_independent_review_2026_10_11.json",
+        "sha256": "447ae9d3b28491c553a05b4b6ca0164df6725a057dcd7cdb28137f2ee7335910",
+        "tests": "3 PASS: four actual full bodies/models/RIDs/rejections"
+      },
+      "bounded_terminal_consumer_checkpoint": "5d16f6bf",
+      "terminal_consumer_qa_tests": "17 PASS"
+    },
+    "next_actions": [
+      "Finish independent terminal-consumer peer review and regressions; source/guard/config remain unchanged.",
+      "Run a fresh genuine selected113 terminal core with zero attempts/API and seal its passing baseline.",
+      "Run the same runtime fingerprint a second time and verify all Source/native stocks, paid models, history/feed and costs unchanged.",
+      "Finalize durable complete editorial matrix and exact FINAL SHA QA/Reviewer/staging checks; no direct merge, main or production."
+    ],
+    "issues_5_6_remain_open": true
   }
 }
