@@ -180,6 +180,52 @@ def _pagination_base(tree, html, page_url):
                   "purpose": "experimental_archive_fallback", "browser_anchor_rewrite_verified": False}
 
 
+def parse_public_search(html, page_url):
+    """Expose exact public result links without assigning snippet publication dates.
+
+    Run9 search results link to institutional applications and alternate news
+    listings, not dated releases. The JSF page counter describes that query's
+    results only; it never certifies a complete publisher date horizon.
+    """
+    assert_not_challenge(html, page_url)
+    parsed_url = urlsplit(page_url)
+    if not _official(page_url) or parsed_url.path != "/portal/publico/empresa/search":
+        raise SourceDiscoveryError("public_search_url_unrecognized", page_url)
+    tree = _Tree(html)
+    roots = [node for node in tree.root.walk() if "resultados" in node.classes()]
+    if len(roots) != 1:
+        raise SourceDiscoveryError("public_search_structure_unrecognized", page_url)
+    results, listings, articles = [], [], []
+    for node in roots[0].walk():
+        if node.tag != "div" or "item" not in node.classes():
+            continue
+        links = [child.attrs.get("href") for child in node.walk()
+                 if child.tag == "a" and "button-medium" in child.classes() and child.attrs.get("href")]
+        for href in dict.fromkeys(links):
+            url = urljoin(page_url, href)
+            if not _official(url):
+                continue
+            path = urlsplit(url).path
+            listing = bool(re.fullmatch(r"/portal/publico/(?:empresa|trabajador)/home/nuestra-mutual/noticias"
+                                       r"(?:/|/!ut/p/[^?#]*)?", path))
+            if any(part in {".", ".."} for part in unquote(path).split("/")):
+                listing = False
+            article = _detail_url(url)
+            if listing and not urlsplit(url).query:
+                listings.append(url)
+            if article:
+                articles.append(article)
+            results.append({"url": url, "href": href, "excerpt": node.text()[:600],
+                            "news_listing": listing, "article_url": article, "publication_date": None})
+    counters = [node.text() for node in roots[0].walk() if "page-results" in node.classes()]
+    count = re.fullmatch(r"Página\s+(\d+)\s+de\s+(\d+)", counters[0]) if len(counters) == 1 else None
+    return {"url": page_url, "sha256": hashlib.sha256(html.encode()).hexdigest(), "results": results,
+            "news_listing_urls": list(dict.fromkeys(listings)), "article_urls": list(dict.fromkeys(articles)),
+            "query_result_pages": {"current": int(count[1]), "total": int(count[2])} if count else None,
+            "jsf_ajax_paging_observed": "jsf.ajax.request" in html,
+            "publication_date_evidence": None, "coverage_complete": False}
+
+
 def parse_listing(html, page_url=PAGE, *, as_of=None):
     """Expose observed category cards and next URLs for live capture loaders."""
     assert_not_challenge(html, page_url)

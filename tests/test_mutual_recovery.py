@@ -9,7 +9,7 @@ import pytest
 from radar_salud.mutual_sources import (
     DETAIL_PAGE, PAGE, MutualNewsScout, _OfficialRedirect, _detail_url,
     fetch_mutual_html, parse_detail, parse_listing,
-    same_article_url,
+    same_article_url, parse_public_search,
 )
 from radar_salud.occupational_sources import SourceDiscoveryError
 
@@ -78,6 +78,66 @@ def test_detail_query_is_preserved_and_article_ids_remain_distinct():
     assert _detail_url(second) == second
     assert _detail_url(first + "#not-evidence") == first
     assert first != second and urlsplit(first).path == urlsplit(second).path
+
+
+def test_public_search_preserves_observed_listing_routes_and_never_dates_snippets():
+    search_url = "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=2026"
+    path = "/portal/publico/trabajador/home/nuestra-mutual/noticias/!ut/p/z0/OBSERVED_STATE/"
+    html = (f'<div class="resultados"><div id="found" class="item-wrapper"><div class="item">'
+            f'<div class="item-text">Noticias 2026, período2025, 9 oct. 2026.</div>'
+            f'<a class="button-medium" href="{path}">Visitar</a></div></div>'
+            '<span class="page-results">Página 1 de 1</span><input onclick="jsf.ajax.request()"></div>')
+    parsed = parse_public_search(html, search_url)
+    assert parsed["news_listing_urls"] == ["https://www.mutual.cl" + path]
+    assert parsed["results"][0]["publication_date"] is None and parsed["publication_date_evidence"] is None
+    assert parsed["query_result_pages"] == {"current": 1, "total": 1}
+    assert parsed["jsf_ajax_paging_observed"] and not parsed["coverage_complete"]
+
+
+def test_public_search_reads_only_result_links_and_excludes_unofficial_or_traversal_routes():
+    search_url = "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=2026"
+    safe = "/portal/publico/empresa/home/nuestra-mutual/noticias"
+    html = f'<nav><a class="button-medium" href="{safe}/outside">Menu</a></nav><div class="resultados">'
+    for href in [safe, "https://example.test/", "/portal/privado/login", safe + "/!ut/p/z0/../../privado/"]:
+        html += f'<div class="item"><a class="button-medium" href="{href}">Visitar</a></div>'
+    parsed = parse_public_search(html + '</div>', search_url)
+    assert parsed["news_listing_urls"] == ["https://www.mutual.cl" + safe]
+    assert parsed["article_urls"] == [] and not parsed["coverage_complete"]
+
+
+def test_actual_run9_public_search_results_supply_four_alternate_listings_but_no_article_dates():
+    import hashlib
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1] / "data/audits/source_e_recovery/actions/38119024441"
+    for file, query, expected_count, expected_listings, sha in [
+        ("cc5816e60f195718a7ea-0.body", "Mutual", 10, 0, "13639e20b94a44a83ef79eaa6284cec1ccbe4b125013a5d4ead9489adf4040a6"),
+        ("2c0b76638b356e24d869-0.body", "2026", 4, 4, "c933299843e1f683073514df3bb345b4de853d647b5d7f0b03fc5993c1c02b32"),
+    ]:
+        body = (root / file).read_bytes()
+        assert hashlib.sha256(body).hexdigest() == sha
+        parsed = parse_public_search(body.decode("utf8", "replace"),
+                                     "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=" + query)
+        assert len(parsed["results"]) == expected_count and len(parsed["news_listing_urls"]) == expected_listings
+        assert parsed["article_urls"] == [] and all(x["publication_date"] is None for x in parsed["results"])
+        assert parsed["query_result_pages"] == {"current": 1, "total": 1} and not parsed["coverage_complete"]
+
+
+def test_actual_run9_native_browser_click_returns_empty_news_layout_without_transport_blocker():
+    import hashlib
+    import json
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1] / "data/audits/source_e_recovery/actions/38119024441/mutual_browser"
+    report = json.loads((root / "report.json").read_text())
+    step = next(x for x in report["steps"] if x["step"] == "visible_client_page_2")
+    assert step["new_document_or_xhr_responses"] == 0 and len(step["visible_cards"]) == 5
+    anchor = next(x for x in report["steps"] if x["step"] == "observed_native_next_anchor")
+    assert not anchor["visible"] and anchor["onclick"] is None
+    response = next(x for x in report["responses"] if x["url"] == anchor["absolute_href"])
+    body = (root / response["body_file"]).read_bytes()
+    assert hashlib.sha256(body).hexdigest() == response["sha256"]
+    assert response["http_status"] == 200 and response["tls_verified"] and response["waf"] is None
+    with pytest.raises(SourceDiscoveryError, match="listing_structure_unrecognized"):
+        parse_listing(body.decode("utf8", "replace"), response["url"], as_of=TODAY)
 
 
 @pytest.mark.parametrize("url", [

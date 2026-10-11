@@ -6,13 +6,13 @@
   "branch": "codex/e-salud-laboral-20261011",
   "pr": 12,
   "scope": "Read-only discovery and endpoint probes; no application, source_health or queue changes; no WAF challenge solving, no proxy/TLS bypass, no form submission.",
-  "decision": "SOURCE_AVAILABLE_WITH_VERIFIED_PUBLICATION_DATES__ARCHIVE_COVERAGE_PARTIAL",
+  "decision": "OPERATIVE_DEGRADED__VERIFIED_PUBLICATION_DATES__ARCHIVE_INCOMPLETE",
   "limitations": {
     "codex_runtime": "Runner transport result to be recorded separately; environment restriction alone cannot establish EXTERNAL_BLOCKER for the source.",
     "webtool": "Search text and web opens can be cached/indexed. Crawl labels are retained and none are represented as origin wire capture. 'Not accessible via this tool' does not prove endpoint absence.",
     "dates": "51 initial in-horizon article details have exact publisher publication dates and verified identity/body;2 material candidates after common gate review.14 actual archive continuations repeat initial state, so90-day coverage remains incomplete. Data periods, signing/approval and modification dates stay excluded.",
     "rss_api": "Fresh /feed/ redirects to portal HTML, not RSS. Fresh sitemap is static official institutional route listing, not a dated article inventory. No declared public API verified.",
-    "memoria_2025": "Superseded by live official Memorias listing Run6: exact2025 attachment observed; PDF capture and explicit publication day pending. Prior search absence never proved publisher absence."
+    "memoria_2025": "Exact2025 annual report URL observed in live official listing and verified complete14.1MB TLS200 PDF bytes in Run9; no explicit full publication day verified."
   },
   "actions_recommendation": "GET prioritized exact official URLs on isolated GitHub Actions runner using TLS verification and ordinary bot/browser User-Agents. Respect robots restrictions. Persist status, redirects, final URL, content type, content SHA256 and WAF markers; require real HTML/article date or valid PDF bytes. Compare with Codex environment before any source-level blocker conclusion.",
   "routes": [
@@ -1049,7 +1049,11 @@
     "prior_pdf_size_limit": "Superseded:2024/2023 complete verified TLS200 PDF bodies captured Run6,12.6/10.3MB; collector limit never source failure.",
     "publication_date": "No full publication day verified for evaluated PDF alternatives;2024 PDF explicit publication monthMay2025 only, signing29May2025 not pubday.",
     "new_search_contract": "data/audits/source_e_recovery/mutual_paging_routes.json: public_search_contract exact publisher inline GET navigation; generated inputs pending capture.",
-    "current_news_replay": "data/audits/source_e_recovery/mutual_run6_replay.json:2 material dated candidates,51 verified initial in-horizon details,14 repeated category pages, coverage false."
+    "current_news_replay": "data/audits/source_e_recovery/mutual_run6_replay.json:2 material dated candidates,51 verified initial in-horizon details,14 repeated category pages, coverage false.",
+    "current_annual_and_hospital_pdf_capture": "Run9 verified14.1MB Memoria2025 and11.1MB HospitalAnuario2024 actual PDFs; exact publication day remains unverified.",
+    "public_search": "Run9 Mutual query returns10undated generic application routes;2026returns4alternate Noticias listings with no article IDs/dates. Four exact listings scheduled for safe GET captures."
   },
-  "latest_checked_at_utc": "2026-10-11T06:43:45.432581+00:00"
+  "latest_checked_at_utc": "2026-10-11T06:43:45.432581+00:00",
+  "latest_actions_run": "38119024441",
+  "latest_run9_evidence": "data/audits/source_e_recovery/mutual_run9_closure_evidence.json"
 }
