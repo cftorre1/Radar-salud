@@ -1,4 +1,5 @@
 import hashlib
+import json
 from datetime import date
 import pytest
 from radar_salud.beta_sources import CuratedBetaSourceScout, process_curated_beta_source
@@ -16,11 +17,18 @@ def captured_raw(tmp_path, monkeypatch):
             '</p>')
     raw = CuratedBetaSourceScout("achs_seguro_laboral").discover_from_html(
         '<a href="/centro-de-noticias/noticia/2026/guia">Ver detalle</a>', lambda url: html)[0]
-    path = tmp_path / "data/audits/source_e_recovery/fixture/body.html"
+    identity = hashlib.sha256((raw.url + "\nidentified").encode()).hexdigest()[:20]
+    path = tmp_path / "data/audits/source_e_recovery/fixture" / (identity + "-0.body")
     path.parent.mkdir(parents=True)
     path.write_text(html)
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    stamp = "2026-10-11T06:00:00+00:00"
+    hop = dict(url=raw.url, http_status=200, curl_exit=0, tls={"verified": True}, waf=None,
+               body_file=path.name, sha256=digest, bytes=len(path.read_bytes()))
+    path.with_name(identity + ".json").write_text(json.dumps(dict(url=raw.url, final_url=raw.url,
+        user_agent="identified", captured_at=stamp, stop_reason="response_captured", waf=None, http_status=200, hops=[hop])))
     raw.metadata["capture_evidence"] = dict(url=raw.url, final_url=raw.url, tls_verified=True,
-        http_status=200, sha256=hashlib.sha256(path.read_bytes()).hexdigest(), artifact=str(path))
+        http_status=200, sha256=digest, artifact=str(path), captured_at=stamp)
     calls = []
     def analyze(**kwargs):
         calls.append(kwargs)

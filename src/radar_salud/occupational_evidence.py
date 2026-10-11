@@ -1,7 +1,9 @@
 """Verify publisher evidence against the actual saved public response bytes."""
 from __future__ import annotations
 import hashlib
+import json
 from pathlib import Path
+import re
 from urllib.parse import urlsplit, parse_qs, unquote
 from .occupational_sources import Article, fold, valid_date
 from .paths import project_root
@@ -38,10 +40,36 @@ def _captured(evidence, url, hosts):
     root = project_root().resolve()
     path = Path(evidence.get("artifact", ""))
     path = path.resolve() if path.is_absolute() else (root / path).resolve()
-    if not path.is_relative_to(root / "data/audits/source_e_recovery") or not path.is_file():
+    match = re.fullmatch(r"([0-9a-f]{20})-(\d+)\.body", path.name)
+    if not match or not path.is_relative_to(root / "data/audits/source_e_recovery") or not path.is_file():
         raise DeferredProcessing("occupational capture artifact unavailable")
+    # Metadata alone cannot establish that a successful public response was
+    # captured. Bind the exact bytes to the original URL/UA response record.
+    try:
+        record_path = path.with_name(match[1] + ".json")
+        if not record_path.resolve().is_relative_to(root / "data/audits/source_e_recovery"):
+            raise ValueError("response record outside audit root")
+        record = json.loads(record_path.read_text())
+        hops = record["hops"]
+        if not isinstance(hops, list) or not hops or not all(isinstance(hop, dict) for hop in hops):
+            raise ValueError("invalid response chain")
+        last = hops[-1]
+        identity = hashlib.sha256((url + "\n" + record["user_agent"]).encode()).hexdigest()[:20]
+        if (identity != match[1] or int(match[2]) != len(hops) - 1
+                or record["url"] != url or hops[0]["url"] != url
+                or record["final_url"] != evidence["final_url"] or last["url"] != record["final_url"]
+                or record.get("captured_at") != evidence.get("captured_at") or not record.get("captured_at")
+                or record.get("stop_reason") != "response_captured" or record.get("waf")
+                or record.get("http_status") != 200 or last["http_status"] != 200
+                or last["body_file"] != path.name or last["sha256"] != evidence["sha256"]
+                or any(not _public(hop["url"], hosts) or hop.get("curl_exit") != 0
+                       or hop.get("waf") or hop.get("tls", {}).get("verified") is not True for hop in hops)
+                or any(hop["http_status"] not in (301, 302, 303, 307, 308) for hop in hops[:-1])):
+            raise ValueError("saved response differs from declared capture")
+    except (OSError, ValueError, KeyError, TypeError, IndexError, AttributeError) as exc:
+        raise DeferredProcessing("occupational capture saved response unverified") from exc
     data = path.read_bytes()
-    if hashlib.sha256(data).hexdigest() != evidence.get("sha256"):
+    if len(data) != last.get("bytes") or hashlib.sha256(data).hexdigest() != evidence.get("sha256"):
         raise DeferredProcessing("occupational capture bytes mismatch")
     return data.decode("utf-8", errors="replace")
 

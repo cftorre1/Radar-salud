@@ -21,13 +21,20 @@ def audit_calendar(monkeypatch, tmp_path):
             return cache[url]
         rows = original(self, html, load)
         import hashlib
+        import json
         for raw in rows:
             body = cache[raw.url].encode()
-            path = tmp_path / "data/audits/source_e_recovery/fixture" / (hashlib.sha256(raw.url.encode()).hexdigest() + ".body")
+            identity = hashlib.sha256((raw.url + "\nidentified").encode()).hexdigest()[:20]
+            path = tmp_path / "data/audits/source_e_recovery/fixture" / (identity + "-0.body")
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(body)
+            digest, stamp = hashlib.sha256(body).hexdigest(), "2026-10-11T06:00:00+00:00"
+            hop = dict(url=raw.url, http_status=200, curl_exit=0, tls={"verified": True}, waf=None,
+                       body_file=path.name, sha256=digest, bytes=len(body))
+            path.with_name(identity + ".json").write_text(json.dumps(dict(url=raw.url, final_url=raw.url,
+                user_agent="identified", captured_at=stamp, stop_reason="response_captured", waf=None, http_status=200, hops=[hop])))
             raw.metadata["capture_evidence"] = {"url": raw.url, "final_url": raw.url, "http_status": 200,
-                                                 "tls_verified": True, "sha256": hashlib.sha256(body).hexdigest(), "artifact": str(path)}
+                "tls_verified": True, "sha256": digest, "artifact": str(path), "captured_at": stamp}
         return rows
     monkeypatch.setattr(CuratedBetaSourceScout, "discover_from_html", captured)
 
