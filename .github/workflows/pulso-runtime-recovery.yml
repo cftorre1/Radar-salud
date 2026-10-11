@@ -64,7 +64,8 @@ jobs:
           python - <<'PY'
           import json, os
           manifest=json.load(open('tests/fixtures/pulso_runtime_real/manifest.json'))
-          missing=manifest.get('current_metadata_hold_original_status')=='CURRENT_METADATA_HOLD_ORIGINAL_RETENTION_PARTIAL'
+          missing=(manifest.get('current_metadata_hold_original_status')=='CURRENT_METADATA_HOLD_ORIGINAL_RETENTION_PARTIAL'
+                   or manifest.get('current_control_primary_original_status')=='CURRENT_CONTROL_PRIMARY_ORIGINAL_RETENTION_PARTIAL')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write('needs_initial_warm_originals='+str(missing).lower()+'\n')
           PY
