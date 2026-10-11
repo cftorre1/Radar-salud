@@ -670,6 +670,62 @@
       "scope": "Universo de familias y 10 Isapres evaluado; 15 paquetes P0/P1. No certifica runtime, salud de fuentes, QA de producto ni readiness/release.",
       "validated_requirements": [],
       "validated_blocks": []
+    },
+    "work3_followup_2026_10_11T043452Z": {
+      "recorded_at": "2026-10-11T04:34:52.930386+00:00",
+      "reviewer": "Work 3",
+      "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "reconciled_staging_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+      "artifact": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+      "verdict": "PARTIAL_WEEKLY_REVALIDATION_NEW_PROVENANCE_FINDING_CORE_GATES_OPEN",
+      "new_finding_ids": [
+        "work3_weekly_regeneration_provenance_mixed"
+      ],
+      "revalidated": [
+        "weekly_stale_replacement_and_expiry"
+      ],
+      "backlog_issues": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    "work3_followup_20261011T055521Z": {
+      "reviewer": "Work 3",
+      "recorded_at": "2026-10-11T05:55:21.049Z",
+      "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+      "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+      "new_finding_ids": [
+        "work3_suseso_medical_licence_sanctions_surface_missing"
+      ],
+      "partial_revalidations": [
+        "autonomy_success_semantics_internal_guard"
+      ],
+      "backlog_issues": [
+        5,
+        7,
+        8
+      ]
+    },
+    "autonomy_runtime_v2_2026_10_11": {
+      "kind": "autonomy_infrastructure_hosted_observation",
+      "date": "2026-10-11",
+      "sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+      "paths": [
+        "data/pmo/autonomy_acceptance_2026_10_11.json"
+      ],
+      "result": "implemented_pending_live_acceptance",
+      "acceptance": "NOT_PROVEN",
+      "scope": "Local tests and hosted infrastructure behavior; does not certify source/editorial closure, full QA, release or four-hour autonomy.",
+      "validated_requirements": [],
+      "validated_blocks": [],
+      "run_urls": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38114913138",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398"
+      ]
     }
   },
   "blocks": [
@@ -1624,6 +1680,28 @@
       "evidence": [
         "work4_source_expansion_2026_10_11"
       ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Work3: revalidación parcial de Insight vigente/vencimiento; P1 nuevo de atribución al regenerar. No se cierran cobertura, autonomía, QA ni readiness. Se conserva expansión Work4.",
+      "evidence": [
+        "data/audits/work3_adversarial_2026_10_11T043452Z.json"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Work3: P0 nuevo por registro SUSESO de sanciones a emisores omitido pese a health ok; 20 oficios en 30 fechas exactas y 72 en 90. Revalidación parcial de guardas de progreso autónomo; autonomía y QA siguen abiertos.",
+      "evidence": [
+        "data/audits/work3_adversarial_2026_10_11T055521Z.json"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "id": "autonomy_runtime_v2_2026_10_11",
+      "change": "Autonomy infrastructure authorized and published to main. Hosted leases, heartbeats, concurrent blockers, automatic transitions and isolated STALLED fault injection observed; real transport defect fixed. Four-hour acceptance NOT_PROVEN; product and historical evidence anchors unchanged.",
+      "evidence": [
+        "data/pmo/autonomy_acceptance_2026_10_11.json"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1842,6 +1920,37 @@
         "Publish a mutually consistent snapshot with explicit generation time and correct source identity mapping.",
         "Separate last-run discovered/published from cumulative queue counts; do not infer coverage rates by dividing unrelated scopes.",
         "Verify displayed source count and source dates against the same snapshot."
+      ]
+    },
+    {
+      "id": "work3_weekly_regeneration_provenance_mixed",
+      "severity": "warning",
+      "priority": "P1",
+      "description": "Regeneration attaches another candidate selection/model evidence to retained reviewed Insight — scripts/run_weekly_insight_v2.py replaces weekly_insight and audit with editorial_approved but retains generator top3, evidence_package and model, then copies top3/model into free.selection_policy. No publication-specific candidate/provenance binding is checked.",
+      "source": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+      "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "issue_url": "https://github.com/cftorre1/Radar-salud/issues/9",
+      "closure_criteria": [
+        "Keep published Insight, reviewed top3, evidence package, audit and model trace bound to the same approved artifact/version.",
+        "Store attempted generation and its draft/evidence/model separately and label its outcome distinctly.",
+        "Run a regression with a different candidate and model failure/no_candidate while approved Insight remains fresh; verify attribution, then expiry fail-closed."
+      ]
+    },
+    {
+      "id": "work3_suseso_medical_licence_sanctions_surface_missing",
+      "severity": "critical",
+      "priority": "P0",
+      "description": "SUSESO fiscalization is healthy while omitting the executed-sanctions register for medical-certificate issuers — The staging suseso_fiscalizacion source reports status=ok/technical_status=ok/coverage_status=observed with 38 discovered and zero new/published/pending/rejected, but its configured/runtime surfaces do not include the official register at /609/w3-propertyvalue-799701.html.",
+      "source": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+      "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "issue_url": "https://github.com/cftorre1/Radar-salud/issues/8",
+      "original_url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+      "closure_criteria": [
+        "Merge the surface and identity/date rules to staging; an isolated PR, HTTP 200 or parser test is not closure.",
+        "Run the core path after merge and reconcile all 20 exact-30-date and 72 exact-90-date oficios to seen/pending/rejected/published or a specific grouped editorial outcome.",
+        "Key identity by oficio (not the shared page URL) while deduplicating repeats and keeping date-oficio distinct from suspension dates.",
+        "Publish aggregates or material groupings without exposing personal identifiers; record explicit rejection/grouping reasons rather than creating cards by quota.",
+        "Keep health partial/error until the omitted surface has a real post-merge outcome; QA and independent Reviewer must pass."
       ]
     }
   ],
@@ -2157,6 +2266,24 @@
         "docs/PELE_WORK_CONTRACT.md",
         "config/system_learning_policy.json",
         "data/autopilot/learning_ledger.json"
+      ]
+    },
+    {
+      "id": "autonomy_runtime_v2_2026_10_11",
+      "title": "Autonomy Runtime V2 — infrastructure exception only",
+      "status": "Implementado",
+      "acceptance": "NOT_PROVEN",
+      "source": "Explicit owner authorization in this task for public main infrastructure and activation; no product promotion",
+      "evidence": [
+        "data/pmo/autonomy_acceptance_2026_10_11.json",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38114913138",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398"
+      ],
+      "constraints": [
+        "No product promotion",
+        "Original QA/Reviewer/editorial/security gates preserved",
+        "No new paid services or secrets",
+        "Four useful hours and verified owner observation still required"
       ]
     }
   ],
@@ -3117,7 +3244,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T04:25:45.756169+00:00",
+  "updated_at": "2026-10-11T06:01:59.671306+00:00",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",

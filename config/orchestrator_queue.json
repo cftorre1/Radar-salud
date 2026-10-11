@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T04:25:45.756169+00:00",
+  "updated_at": "2026-10-11T06:01:59.671306+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -2879,9 +2879,9 @@
         "Stage A 4h PASS"
       ],
       "approved_at": "2026-10-07",
-      "progress": "Arquitecto creado; se activa executor real y kickoff automático.",
-      "current_subfront": "activate_real_executor",
-      "next_action": "Habilitar Autonomous Executor, lanzar kickoff y auditar primer pickup.",
+      "progress": "Arquitecto creado; se activa executor real y kickoff automático.\nInfraestructura publicada y corregida en main; seis familias y 12 pickups reales, heartbeats, seis transiciones independientes, CAS y canary STALLED observados. Recovery de transporte SUSESO reparado y verificado hosted. Acceptance 4h NOT_PROVEN; no cierre editorial/fuente ni promoción de producto.",
+      "current_subfront": "hosted_runtime_v2_implemented_acceptance_not_proven",
+      "next_action": "Habilitar Autonomous Executor, lanzar kickoff y auditar primer pickup.\nContinuación de arquitectura: Approved bounded repair/acceptance inputs can resume only the affected family without controller SUCCESS loops, then a complete useful four-hour window with trusted owner telemetry can be evaluated.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -2900,6 +2900,15 @@
           "https://github.com/cftorre1/Radar-salud/issues/7"
         ],
         "supplement_finding_ids": []
+      },
+      "last_progress_at": "2026-10-11T06:01:59.671306+00:00",
+      "runtime_v2_evidence": {
+        "artifact": "data/pmo/autonomy_acceptance_2026_10_11.json",
+        "status": "NOT_PROVEN",
+        "main_infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+        "canonical_state_sha": "6412b829e669eae298d40693b3d153fd2fa50904",
+        "owner_infrastructure_main_exception": true,
+        "production_promotion_authorized": false
       }
     },
     {
@@ -2949,7 +2958,48 @@
           "https://github.com/cftorre1/Radar-salud/issues/9"
         ],
         "supplement_finding_ids": []
-      }
+      },
+      "independent_review_cuts": [
+        {
+          "recorded_at": "2026-10-11T04:34:52.930386+00:00",
+          "reviewer": "Work 3",
+          "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+          "reconciled_staging_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+          "verdict": "PARTIAL_WEEKLY_REVALIDATION_NEW_PROVENANCE_FINDING_CORE_GATES_OPEN",
+          "new_finding_ids": [
+            "work3_weekly_regeneration_provenance_mixed"
+          ],
+          "revalidated": [
+            "weekly_stale_replacement_and_expiry"
+          ],
+          "backlog_issues": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ]
+        },
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T05:55:21.049Z",
+          "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+          "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+          "new_finding_ids": [
+            "work3_suseso_medical_licence_sanctions_surface_missing"
+          ],
+          "partial_revalidations": [
+            "autonomy_success_semantics_internal_guard"
+          ],
+          "backlog_issues": [
+            5,
+            7,
+            8
+          ]
+        }
+      ]
     },
     {
       "id": "source_audit_issue5_iteration1_recovery_2026_10_09",
@@ -3008,7 +3058,30 @@
           "work3_df_real_html_date_null",
           "work3_andes_first_five_misses_alliance"
         ]
-      }
+      },
+      "independent_review_cuts": [
+        {
+          "recorded_at": "2026-10-11T04:34:52.930386+00:00",
+          "reviewer": "Work 3",
+          "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+          "reconciled_staging_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+          "verdict": "PARTIAL_WEEKLY_REVALIDATION_NEW_PROVENANCE_FINDING_CORE_GATES_OPEN",
+          "new_finding_ids": [
+            "work3_weekly_regeneration_provenance_mixed"
+          ],
+          "revalidated": [
+            "weekly_stale_replacement_and_expiry"
+          ],
+          "backlog_issues": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ]
+        }
+      ]
     },
     {
       "id": "source_audit_issue5_iteration2_balance_2026_10_09",
@@ -3053,7 +3126,48 @@
           "work3_andes_first_five_misses_alliance",
           "work3_public_telemetry_stale"
         ]
-      }
+      },
+      "independent_review_cuts": [
+        {
+          "recorded_at": "2026-10-11T04:34:52.930386+00:00",
+          "reviewer": "Work 3",
+          "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+          "reconciled_staging_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+          "verdict": "PARTIAL_WEEKLY_REVALIDATION_NEW_PROVENANCE_FINDING_CORE_GATES_OPEN",
+          "new_finding_ids": [
+            "work3_weekly_regeneration_provenance_mixed"
+          ],
+          "revalidated": [
+            "weekly_stale_replacement_and_expiry"
+          ],
+          "backlog_issues": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ]
+        },
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T05:55:21.049Z",
+          "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+          "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+          "new_finding_ids": [
+            "work3_suseso_medical_licence_sanctions_surface_missing"
+          ],
+          "partial_revalidations": [
+            "autonomy_success_semantics_internal_guard"
+          ],
+          "backlog_issues": [
+            5,
+            7,
+            8
+          ]
+        }
+      ]
     },
     {
       "id": "source_audit_issue5_iteration3_editorial_2026_10_09",
@@ -3078,7 +3192,7 @@
         "QA editorial y Reviewer PASS"
       ],
       "approved_at": "2026-10-10",
-      "next_action": "QA/Reviewer de commit Work2 y revisión incremental cuando cambien stock o auditorías de recuperación. Corregir hallazgos por fila; mantener gates externos abiertos. El evento DF pendiente se usa en Insight revisado, sin declarar reparada la cola.",
+      "next_action": "Resolver P1 de atribución en regeneración (Work3 #9); conservar top3/evidencia/modelo del Insight aprobado separados del intento nuevo. Vigencia revalidada parcialmente; QA, telemetría y Bupa siguen abiertos. Ver último independent_review_cuts.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3106,6 +3220,29 @@
         "data/audits/weekly_candidates_2026_10_11.json",
         "data/weekly_insight/editorial_approved.json",
         "docs/EDITORIAL_SENIOR_REVIEW_2026_10_11.md"
+      ],
+      "independent_review_cuts": [
+        {
+          "recorded_at": "2026-10-11T04:34:52.930386+00:00",
+          "reviewer": "Work 3",
+          "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+          "reconciled_staging_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+          "verdict": "PARTIAL_WEEKLY_REVALIDATION_NEW_PROVENANCE_FINDING_CORE_GATES_OPEN",
+          "new_finding_ids": [
+            "work3_weekly_regeneration_provenance_mixed"
+          ],
+          "revalidated": [
+            "weekly_stale_replacement_and_expiry"
+          ],
+          "backlog_issues": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ]
+        }
       ]
     },
     {
@@ -3131,9 +3268,9 @@
       ],
       "approved_at": "2026-10-10",
       "started_at": "2026-10-10",
-      "last_progress_at": "2026-10-10",
-      "current_subfront": "github_native_editorial_executor",
-      "next_action": "Crear Editorial Executor y probar pickup real.",
+      "last_progress_at": "2026-10-11T06:01:59.671306+00:00",
+      "current_subfront": "hosted_runtime_v2_implemented_acceptance_not_proven",
+      "next_action": "Completar transición heartbeat y demostrar reparación mergeada a staging; preservar guardas NOT_PROVEN/BLOCKED y workflow_success_is_progress=false. Ver último independent_review_cuts.\nContinuación de arquitectura: Approved bounded repair/acceptance inputs can resume only the affected family without controller SUCCESS loops, then a complete useful four-hour window with trusted owner telemetry can be evaluated.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3152,6 +3289,56 @@
           "https://github.com/cftorre1/Radar-salud/issues/7"
         ],
         "supplement_finding_ids": []
+      },
+      "independent_review_cuts": [
+        {
+          "recorded_at": "2026-10-11T04:34:52.930386+00:00",
+          "reviewer": "Work 3",
+          "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+          "reconciled_staging_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+          "verdict": "PARTIAL_WEEKLY_REVALIDATION_NEW_PROVENANCE_FINDING_CORE_GATES_OPEN",
+          "new_finding_ids": [
+            "work3_weekly_regeneration_provenance_mixed"
+          ],
+          "revalidated": [
+            "weekly_stale_replacement_and_expiry"
+          ],
+          "backlog_issues": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ]
+        },
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T05:55:21.049Z",
+          "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+          "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+          "new_finding_ids": [
+            "work3_suseso_medical_licence_sanctions_surface_missing"
+          ],
+          "partial_revalidations": [
+            "autonomy_success_semantics_internal_guard"
+          ],
+          "backlog_issues": [
+            5,
+            7,
+            8
+          ]
+        }
+      ],
+      "progress": "Infraestructura publicada y corregida en main; seis familias y 12 pickups reales, heartbeats, seis transiciones independientes, CAS y canary STALLED observados. Recovery de transporte SUSESO reparado y verificado hosted. Acceptance 4h NOT_PROVEN; no cierre editorial/fuente ni promoción de producto.",
+      "runtime_v2_evidence": {
+        "artifact": "data/pmo/autonomy_acceptance_2026_10_11.json",
+        "status": "NOT_PROVEN",
+        "main_infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+        "canonical_state_sha": "6412b829e669eae298d40693b3d153fd2fa50904",
+        "owner_infrastructure_main_exception": true,
+        "production_promotion_authorized": false
       }
     },
     {
@@ -3306,7 +3493,30 @@
           "instruction": "Resume only with attributable primary text and verified date, or reassess scope with new publisher evidence; preserve before snapshots and unchanged72gate"
         },
         "runtime_post_merge_required": true
-      }
+      },
+      "independent_review_cuts": [
+        {
+          "recorded_at": "2026-10-11T04:34:52.930386+00:00",
+          "reviewer": "Work 3",
+          "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+          "reconciled_staging_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+          "verdict": "PARTIAL_WEEKLY_REVALIDATION_NEW_PROVENANCE_FINDING_CORE_GATES_OPEN",
+          "new_finding_ids": [
+            "work3_weekly_regeneration_provenance_mixed"
+          ],
+          "revalidated": [
+            "weekly_stale_replacement_and_expiry"
+          ],
+          "backlog_issues": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ]
+        }
+      ]
     },
     {
       "id": "source_repair_public_data_lane_2026_10_11",
@@ -3356,7 +3566,27 @@
       "started_at": "2026-10-11",
       "last_progress_at": "2026-10-11",
       "current_subfront": "sis_suseso_fiscalization",
-      "next_action": "Reconcile 2026 fiscalization surfaces."
+      "next_action": "Integrar y ejecutar en staging el registro SUSESO /609/799701; reconciliar 20 oficios en 30 fechas y 72 en 90 fechas por número de oficio, con fecha de oficio y outcome específico/agrupado. Ver último independent_review_cuts.",
+      "independent_review_cuts": [
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T05:55:21.049Z",
+          "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+          "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+          "new_finding_ids": [
+            "work3_suseso_medical_licence_sanctions_surface_missing"
+          ],
+          "partial_revalidations": [
+            "autonomy_success_semantics_internal_guard"
+          ],
+          "backlog_issues": [
+            5,
+            7,
+            8
+          ]
+        }
+      ]
     },
     {
       "id": "source_repair_mutualities_lane_2026_10_11",
@@ -4023,6 +4253,126 @@
       ],
       "external_blockers": [],
       "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+    },
+    {
+      "id": "source_recovery_reconciliation_gate_2026_10_11",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Paolo + Pato + Reviewer",
+      "source": "Dirección",
+      "objective": "Conciliar todo hallazgo, issue, PR Codex, tarea Work y evidencia de fuente para que ningún compromiso quede olvidado ni se cierre sin llegar efectivamente a staging validado.",
+      "depends_on": [],
+      "instructions": [
+        "Usar issue #5 como backlog maestro de cobertura y las issues #6-#9 como hallazgos P0 derivados.",
+        "Registrar para cada hallazgo: issue origen, task_id, worker/Work/Codex responsable, branch/PR, SHA mergeado a staging, QA, Reviewer, evidencia fuente y estado final.",
+        "Un PR abierto o un commit en rama no cuenta como implementación hasta merge seguro a staging.",
+        "Una fuente no cuenta como reparada hasta runtime real posterior al merge y evidencia de publicación/rechazo/ausencia genuina.",
+        "No cerrar un issue por documentación בלבד; exigir evidencia de resultado.",
+        "Antes de cerrar cualquier iteración, revisar todas las issues abiertas y todos los tasks approved/in_progress relacionados para evitar orphaned backlog.",
+        "Después de cada merge de Codex, actualizar queue/PMO/issue y seleccionar el siguiente hallazgo independiente.",
+        "Los hallazgos nuevos de Work/Reviewer se incorporan a esta conciliación aunque no existieran en el baseline inicial."
+      ],
+      "evidence_required": [
+        "matriz issue→task→PR→merge SHA→QA→Reviewer→runtime evidence",
+        "cero issues P0 huérfanas",
+        "cero tareas approved/in_progress sin owner/next_action",
+        "cada fuente con outcome operativo/blocked/secondary/remove",
+        "staging final reconciliado contra issue #5 y Work3"
+      ],
+      "approved_at": "2026-10-11",
+      "started_at": "2026-10-11",
+      "last_progress_at": "2026-10-11T04:45:00Z",
+      "current_subfront": "reconcile_work_findings_and_codex_prs",
+      "next_action": "Conciliar PRs #10-#13 con issues #5-#9 y queue; no cerrar ninguna fuente hasta merge + QA + runtime.",
+      "independent_review_cuts": [
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T05:55:21.049Z",
+          "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+          "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+          "new_finding_ids": [
+            "work3_suseso_medical_licence_sanctions_surface_missing"
+          ],
+          "partial_revalidations": [
+            "autonomy_success_semantics_internal_guard"
+          ],
+          "backlog_issues": [
+            5,
+            7,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beta_gate5_test_ops_golive_2026_10_11",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Dirección + Paolo + Pato + Legal/Privacy + Growth Ops",
+      "source": "Dirección",
+      "objective": "Cerrar testeo operacional, cumplimiento y go-live después del beta atractivo, incluyendo analytics, newsletter, correo, source suggestions, evidencia LIVE y promoción explícita.",
+      "depends_on": [
+        "source_recovery_reconciliation_gate_2026_10_11"
+      ],
+      "instructions": [
+        "Analytics: aprobar tratamiento/aviso de privacidad, definir eventos permitidos, retención y metadatos; habilitar captura sólo después de aprobación y validar dashboard/telemetría end-to-end.",
+        "Newsletter/MailerLite: crear/habilitar cuenta y grupos, aportar IDs/API key vía secreto, confirmar plan/API, configurar doble opt-in, activar captura/envío sólo tras privacidad aprobada y ejecutar prueba end-to-end.",
+        "Source Suggestions: definir hosting/backend durable, almacenamiento y destinatario interno; implementar API real y prueba de persistencia/entrega.",
+        "Correo: completar MX, SPF, DKIM, DMARC, alias operativo y verificar Authentication-Results reales.",
+        "LIVE Evidence: mantener gate abierto hasta observar evento LIVE externo genuino; no simular ni degradar gates.",
+        "Legal: aprobar Privacidad y Términos antes de activación pública de captura/analytics/newsletter.",
+        "Credenciales/API: registrar por fuente cualquier necesidad de cuenta/API/secret; escalar sólo cuando sea imprescindible y con propósito claro.",
+        "Gasto externo: toda nueva contratación/proveedor requiere decisión explícita de Dirección.",
+        "Producción/main: promoción sólo por autorización explícita de Dirección después de staging PASS, reviewer PASS, smoke desktop/mobile y rollback preparado.",
+        "No considerar beta comercial cerrada hasta completar o aceptar explícitamente los blockers humanos de esta puerta."
+      ],
+      "evidence_required": [
+        "analytics real con consentimiento/política y eventos validados",
+        "newsletter double opt-in end-to-end",
+        "source suggestions backend durable operativo",
+        "SPF/DKIM/DMARC PASS y alias operativo",
+        "evidencia LIVE genuina o dependencia externa explícita",
+        "Privacidad y Términos aprobados",
+        "inventario de credenciales/APIs y blockers",
+        "registro de decisiones de gasto externo",
+        "release checklist completo",
+        "autorización explícita Dirección para main/producción"
+      ],
+      "approved_at": "2026-10-11",
+      "next_action": "Después de beta atractivo en staging, ejecutar checklist humano/operacional y preparar promoción explícita."
+    },
+    {
+      "id": "pulso_latercera_exhaustive_discovery_2026_10_11",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Codex B + Media Source Worker + Reviewer",
+      "source": "Dirección / external reconciliation",
+      "objective": "Rediseñar discovery de Pulso/La Tercera para cobertura exhaustiva razonable 30/90 días; la muestra actual de 11 candidatos es insuficiente y omite artículos sanitarios recientes verificables.",
+      "depends_on": [],
+      "instructions": [
+        "No aceptar los 11 candidatos actuales como universo; tratarlos sólo como muestra.",
+        "Inventariar todas las superficies relevantes de latercera.com: Pulso, Nacional, etiquetas, archivo/paginación, búsqueda/sitemap/feed si existe, y otras secciones que publiquen salud material.",
+        "Eliminar dependencia exclusiva de links visibles en primera página y de un prefiltro de título que pueda impedir abrir artículos cuyo valor sanitario aparece en cuerpo/subtítulo.",
+        "Implementar paginación/archivo o superficie equivalente para cubrir 30 y 90 días.",
+        "Comparar inventario contra búsquedas externas independientes y sitio original; documentar omisiones y causas.",
+        "Mantener exclusión de Opinión y contenido no factual salvo decisión editorial explícita.",
+        "No publicar por cuota; después del discovery aplicar gate editorial vigente.",
+        "Cierre sólo con recall auditado sobre muestra externa, runtime real, QA y Reviewer."
+      ],
+      "evidence_required": [
+        "inventario 30/90 con URLs y fechas verificadas",
+        "superficies/paginación documentadas",
+        "muestra externa independiente con recall explicado",
+        "omisión cero o justificada en set de control reciente",
+        "runtime core real",
+        "QA + Reviewer PASS"
+      ],
+      "approved_at": "2026-10-11",
+      "started_at": "2026-10-11",
+      "last_progress_at": "2026-10-11",
+      "current_subfront": "expand_discovery_beyond_11_sample",
+      "next_action": "Ampliar superficies y paginación, luego reconciliar contra set externo reciente antes de considerar PR #10 integrable."
     }
   ],
   "execution_policy": {
