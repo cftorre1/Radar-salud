@@ -42,6 +42,10 @@ VOLATILE_KEYS = {
     "heartbeat_at", "last_heartbeat_at", "duration", "duration_seconds", "elapsed_seconds",
     "run_id", "log_path", "log_sha256", "response_sha256", "response_bytes",
 }
+PRODUCT_OBSERVATION_KEYS = {
+    "generated_at", "updated_at", "checked_at", "reviewed_at", "started_at", "finished_at",
+    "heartbeat_at", "last_heartbeat_at", "duration", "duration_seconds", "elapsed_seconds", "run_id",
+}
 SOURCE_ACCEPTANCE = {
     "external_reconciliation_30d", "external_reconciliation_90d", "publication_trace",
     "source_health", "qa_pass", "independent_review_pass", "runtime_after_merge_pass",
@@ -137,6 +141,34 @@ def tracked_hashes(workspace):
         path = workspace / relative
         hashes[relative] = digest(path.read_bytes()) if path.is_file() else None
     return hashes
+
+
+def product_semantic(value):
+    """Ignore observation clocks, retaining publication dates, strings and hashes."""
+    if isinstance(value, dict):
+        return {key: product_semantic(item) for key, item in sorted(value.items()) if key not in PRODUCT_OBSERVATION_KEYS}
+    if isinstance(value, list):
+        return [product_semantic(item) for item in value]
+    return value
+
+
+def material_file_hashes(workspace, raw_hashes):
+    """JSON contents define material changes; other files retain their exact bytes."""
+    fingerprints = dict(raw_hashes)
+    unknown = []
+    for relative, raw_hash in raw_hashes.items():
+        path = workspace / relative
+        if path.suffix.lower() != ".json" or raw_hash is None:
+            continue
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, ValueError):
+            # Invalid/unreadable JSON cannot be confidently ignored as churn.
+            # Preserve the raw identity and leave its required gates in control.
+            unknown.append(relative)
+            continue
+        fingerprints[relative] = digest(json.dumps(product_semantic(payload), sort_keys=True, ensure_ascii=False, separators=(",", ":")))
+    return fingerprints, sorted(unknown)
 
 
 def blocker(reason, evidence, *, kind="technical", urls=()):
@@ -411,7 +443,9 @@ def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeo
         atomic_json(report_path, report)
         return report
     before = tracked_hashes(workspace)
-    report["before_hash"] = semantic_hash(before)
+    before_material, before_unknown = material_file_hashes(workspace, before)
+    report["before_hash"] = digest(json.dumps(before_material, sort_keys=True))
+    report["raw_before_hash"] = digest(json.dumps(before, sort_keys=True))
     supplied_failure = ""
     if task.get("failure_log_path"):
         failure_path = (workspace / task["failure_log_path"]).resolve()
@@ -519,7 +553,9 @@ def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeo
             report["blockers"].append(blocker("Existing reviewed weekly sync could not be proven", [{"error": f"{type(error).__name__}: {error}"}]))
 
     after = tracked_hashes(workspace)
-    changed = sorted(path for path in set(before) | set(after) if before.get(path) != after.get(path))
+    after_material, after_unknown = material_file_hashes(workspace, after)
+    raw_changed = sorted(path for path in set(before) | set(after) if before.get(path) != after.get(path))
+    changed = [path for path in raw_changed if before_material.get(path) != after_material.get(path)]
     if changed:
         xml = logs / "full-pytest.xml"
         result = command_runner([sys.executable, "-m", "pytest", "-q", "-rs", "-m", "not integration", "--junitxml=" + str(xml)], workspace, timeout=max(timeout, 300))
@@ -572,7 +608,12 @@ def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeo
             if gate["status"] != "PASS":
                 report["blockers"].append(blocker("Independent candidate gate rejected or could not execute: " + name, [gate]))
     report["changed_paths"] = changed
-    report["after_hash"] = semantic_hash(after)
+    report["after_hash"] = digest(json.dumps(after_material, sort_keys=True))
+    report["raw_after_hash"] = digest(json.dumps(after, sort_keys=True))
+    report["raw_changed_paths"] = raw_changed
+    report["ignored_observation_paths"] = sorted(set(raw_changed) - set(changed))
+    report["semantic_noop"] = bool(raw_changed) and not changed
+    report["semantic_unknown_paths"] = sorted(set(before_unknown) | set(after_unknown))
     report["targeted_validated"] = bool(report["gates"]) and report["gates"][0]["status"] == "PASS"
     report["family_live_validated"] = bool(report["source_results"]) and all(row["technical_status"] == "ok" and row.get("dated") for row in report["source_results"])
     if not report.get("live_scope"):

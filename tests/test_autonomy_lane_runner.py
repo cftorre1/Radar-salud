@@ -82,6 +82,16 @@ class RunnerTests(unittest.TestCase):
         if incorporated:
             self.git("update-ref", "refs/remotes/origin/staging", self.sha)
 
+    def tracked_json(self, payload, relative="web/data/snapshot.json"):
+        self.staging_reference()
+        path = self.root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(payload))
+        self.git("add", "--", relative)
+        self.git("commit", "-m", "controlled product snapshot")
+        self.sha = self.git("rev-parse", "HEAD")
+        return path
+
     def acceptance(self, family="media", **overrides):
         if runner.FAMILIES[family]:
             self.staging_reference()
@@ -130,6 +140,79 @@ class RunnerTests(unittest.TestCase):
                   "command": ["pytest", "--junitxml=/run/2/evidence.xml"]}
         self.assertEqual(runner.semantic_hash(first), runner.semantic_hash(second))
         self.assertNotEqual(runner.semantic_hash(first), runner.semantic_hash({**second, "event_date": "2026-10-09"}))
+
+    def test_actual_git_clock_only_json_edit_is_not_a_publishable_mutation(self):
+        payload = {"generated_at": "2026-10-11T04:00:00Z", "signals": [{"title": "Unchanged material signal", "event_date": "2026-10-10"}]}
+        path = self.tracked_json(payload)
+        self.install_gate("editorial")
+        def change_clock(workspace):
+            path.write_text(json.dumps({**payload, "generated_at": "2026-10-11T05:00:00Z"}, indent=2))
+            return {"operation": "controlled_clock_update", "changed_paths": ["web/data/snapshot.json"]}
+        with patch.object(runner, "sync_reviewed_editorial", side_effect=change_clock):
+            report = runner.execute_lane("editorial", self.root, self.task, self.report, command_runner=self.fake_commands())
+        self.assertEqual(report["before_hash"], report["after_hash"])
+        self.assertNotEqual(report["raw_before_hash"], report["raw_after_hash"])
+        self.assertEqual(report["raw_changed_paths"], ["web/data/snapshot.json"])
+        self.assertEqual(report["ignored_observation_paths"], ["web/data/snapshot.json"])
+        self.assertTrue(report["semantic_noop"])
+        self.assertFalse(report["changed_paths"])
+        self.assertFalse(report["material_progress"]["mutation_candidate"])
+        self.assertNotEqual(report["status"], "REPAIRED")
+
+    def test_actual_git_meaningful_signal_edit_retains_material_identity(self):
+        payload = {"generated_at": "2026-10-11T04:00:00Z", "signals": [{"title": "Original signal", "event_date": "2026-10-10"}]}
+        path = self.tracked_json(payload)
+        self.install_gate("editorial")
+        def change_signal(workspace):
+            path.write_text(json.dumps({**payload, "signals": [{"title": "Verified additional context", "event_date": "2026-10-10"}]}))
+            return {"operation": "controlled_material_update", "changed_paths": ["web/data/snapshot.json"]}
+        with patch.object(runner, "sync_reviewed_editorial", side_effect=change_signal):
+            report = runner.execute_lane("editorial", self.root, self.task, self.report, command_runner=self.fake_commands())
+        self.assertNotEqual(report["before_hash"], report["after_hash"])
+        self.assertEqual(report["changed_paths"], ["web/data/snapshot.json"])
+        self.assertFalse(report["semantic_noop"])
+        self.assertFalse(report["ignored_observation_paths"])
+
+    def test_json_formatting_and_order_only_are_semantically_unchanged(self):
+        path = self.tracked_json({"signals": [{"title": "Stable", "event_date": "2026-10-10"}], "generated_at": "old"})
+        before_raw = runner.tracked_hashes(self.root)
+        before, _ = runner.material_file_hashes(self.root, before_raw)
+        path.write_text('{\n  "generated_at": "old",\n  "signals": [{"event_date": "2026-10-10", "title": "Stable"}]\n}\n')
+        after_raw = runner.tracked_hashes(self.root)
+        after, _ = runner.material_file_hashes(self.root, after_raw)
+        self.assertNotEqual(before_raw, after_raw)
+        self.assertEqual(before, after)
+
+    def test_material_json_preserves_publication_dates_deadlines_strings_and_hashes(self):
+        payload = {"generated_at": "observation", "signal": {"event_date": "2026-10-10", "published_at": "2026-10-10T04:00:00Z",
+                    "effective_at": "2026-11-01T04:00:00Z", "deadline": "2026-12-01T04:00:00Z", "source_content": "Content at 2026-10-10T04:00:00Z",
+                    "content_hash": "a" * 64, "response_sha256": "b" * 64}}
+        path = self.tracked_json(payload)
+        original, _ = runner.material_file_hashes(self.root, runner.tracked_hashes(self.root))
+        for field, value in (("event_date", "2026-10-11"), ("published_at", "2026-10-10T05:00:00Z"),
+                             ("effective_at", "2026-11-01T05:00:00Z"), ("deadline", "2026-12-01T05:00:00Z"),
+                             ("source_content", "Content at 2026-10-10T05:00:00Z"), ("content_hash", "c" * 64), ("response_sha256", "d" * 64)):
+            with self.subTest(field=field):
+                path.write_text(json.dumps({**payload, "signal": {**payload["signal"], field: value}}))
+                changed, _ = runner.material_file_hashes(self.root, runner.tracked_hashes(self.root))
+                self.assertNotEqual(original, changed)
+
+    def test_invalid_json_and_source_code_keep_raw_identity(self):
+        path = self.tracked_json({"signals": []})
+        path.write_text('{"signals": invalid json}')
+        raw = runner.tracked_hashes(self.root)
+        material, unknown = runner.material_file_hashes(self.root, raw)
+        self.assertEqual(material["web/data/snapshot.json"], raw["web/data/snapshot.json"])
+        self.assertEqual(unknown, ["web/data/snapshot.json"])
+        code = self.root / "src/radar_salud/source.py"
+        code.parent.mkdir(parents=True, exist_ok=True)
+        code.write_text('published_at = "2026-10-10T04:00:00Z"\n')
+        self.git("add", "src/radar_salud/source.py")
+        self.git("commit", "-m", "controlled source module")
+        first, _ = runner.material_file_hashes(self.root, runner.tracked_hashes(self.root))
+        code.write_text('published_at = "2026-10-10T05:00:00Z"\n')
+        second, _ = runner.material_file_hashes(self.root, runner.tracked_hashes(self.root))
+        self.assertNotEqual(first["src/radar_salud/source.py"], second["src/radar_salud/source.py"])
 
     def test_skipped_pytest_exit_zero_is_not_live_or_acceptance_proof(self):
         report = self.execute(skipped=True)

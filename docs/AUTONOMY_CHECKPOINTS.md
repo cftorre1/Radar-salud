@@ -253,3 +253,20 @@ fixtures test the evaluator contract only; live acceptance remains unproven.
 
 Next hypothesis: owner-intervention observation and actual JSON content hashes
 can make the four-hour evaluator resistant to empty counters and timestamp churn.
+
+## 13. Semantic file mutation rather than regenerated JSON clocks
+
+Decision: raw bytes remain diagnostic evidence. Material file fingerprints parse
+JSON and discard only explicit observation fields, preserving publication dates,
+effective dates, deadlines, source content and substantive hashes. Formatting or
+clock-only changes cannot enter candidate publication or earn mutation credit.
+Non-JSON source changes retain their byte identity; invalid JSON is explicit.
+
+Directed validation: 23 runner tests passed. Real temporary Git repositories
+show changed raw hashes but unchanged material identity for generated-at and
+format churn, while changed titles, publication dates and source code remain
+material. The independent review reproduced the original timestamp defect and
+confirmed its correction.
+
+Next hypothesis: hosted material events can retain meaningful code/content
+changes without treating recurring export/audit observations as useful progress.
