@@ -6,8 +6,8 @@
     "queue_blob_sha": "1f2c408f62163fe9060bbdb2aa1e09a083d616d8",
     "queue_sha256": "08d0b5506d8ff5711ece644f0e2d57602ad77cd6125a4ced50652cd58ba7d174",
     "staging_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
-    "state_control_sha256": "292441432c4002736fc0090cae78e512d64a3d95cbb7a7c57c59a4d6e8b66ef6",
-    "state_sha": "6ce372b2e52ecb4613ca2aeaa04730edf098288f"
+    "state_control_sha256": "c790c175dccf9ea9e41c42e0913f19689099a001447c83c194a1d7409a111990",
+    "state_sha": "badc587414860c98cf152158d504ce1e66fc2e1d"
   },
   "canonical_queue_updated": false,
   "derived_runtime_tasks": [
@@ -254,10 +254,10 @@
   ],
   "kind": "queue_runtime_projection",
   "observation": {
-    "path": "data/autopilot/evidence/observation-07964b55c9d74dbd8196bed1fd169202.json",
-    "sha256": "c12277c658850e67a0eef59e0105c6aa1a3713b48745078a2d042a49c90b2fe7",
+    "path": "data/autopilot/evidence/observation-515c97c6663e4977a3c5e5477eeff7f8.json",
+    "sha256": "58695e2eb262ae0eec48a6a9c69a32fd5472d15cd4d4b5ea75f4dff81b8eae64",
     "staging_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
-    "state_sha": "6ce372b2e52ecb4613ca2aeaa04730edf098288f"
+    "state_sha": "badc587414860c98cf152158d504ce1e66fc2e1d"
   },
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
@@ -1683,9 +1683,9 @@
       "owner": "Pele + Occupational Health Worker",
       "queue_status": "in_progress",
       "runtime": {
-        "attempts": 6,
-        "blocker_evidence_count": 10,
-        "blocker_fingerprint": "6c11f6974cd4912ae9e3f59d1a9576236bbc8d7e71e6660877fb385cebd7330d",
+        "attempts": 7,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "recovery_budget_exhausted:84b1be630eb2ce5d647c754073da04f584e9299ce8652133d1cefd164acdb881",
         "candidate_review": {
           "candidate_branch": null,
           "candidate_commit": null,
@@ -1696,12 +1696,12 @@
           "superseded": null
         },
         "candidate_reviews": {},
-        "canonical_material_progress_at": "2026-10-11T07:06:00.551910Z",
+        "canonical_material_progress_at": "2026-10-11T15:44:53.889181Z",
         "evidence_revision": "a892411287e975a1afce4db3aa80c672eed8c8047f269ef20411b4cf0eea4079",
         "failure_signature": "2e1711ae92e4fa6ad4208c85a0931a781a450d387b26709550de273b401d909a",
         "failure_verified": true,
         "family": "mutualities",
-        "fence": 15,
+        "fence": 17,
         "input_fingerprint": "f43e9ca087fa0107f9c6e882ad625863fbf5c53d3f161d1ddde6e7d9aecf598e",
         "input_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
         "last_ready_at": "2026-10-11T15:07:18.917675Z",
@@ -1714,12 +1714,12 @@
           "recovery_deadline_at": null,
           "token_sha256": null
         },
-        "material_progress_at": "2026-10-11T07:06:00.551910Z",
-        "raw_material_progress_at": "2026-10-11T07:06:00.551910Z",
+        "material_progress_at": "2026-10-11T15:44:53.889181Z",
+        "raw_material_progress_at": "2026-10-11T15:44:53.889181Z",
         "reason": "no_material_progress_30m",
-        "recovery_episode": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
-        "recovery_reclaims": 2,
-        "status": "STALLED",
+        "recovery_episode": "809a4c1b8027b0bb512f20f1542db2bdd13f305787ce5759338366514b88adb4",
+        "recovery_reclaims": 3,
+        "status": "BLOCKED",
         "task_id": "source_repair_mutualities_lane_2026_10_11"
       },
       "task_id": "source_repair_mutualities_lane_2026_10_11"
