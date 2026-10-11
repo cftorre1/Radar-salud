@@ -348,7 +348,7 @@ class CorporateNewsroomScout:
     SOURCES={
         "redsalud":("RedSalud","https://www.redsalud.cl/noticias",("www.redsalud.cl","redsalud.cl"),r"/noticias/[^/]+/?"),
         "bupa_chile":("Bupa Chile","https://www.bupa.cl/somos-bupa/sala-de-prensa",("www.bupa.cl","bupa.cl"),
-                      r"/(?:somos-bupa/)?sala-de-prensa/[^/]+/?"),
+                      r"/(?:(?:somos-bupa/)?sala-de-prensa/)?[a-z0-9][a-z0-9-]+/?"),
         "pfizer_chile":("Pfizer Chile","https://www.pfizer.cl/news",("www.pfizer.cl","pfizer.cl"),r"/news/[^/]+/?"),
         "indisa":("Clínica INDISA","https://www.indisa.cl/categoria-blog/novedades-indisa",("www.indisa.cl","indisa.cl"),r"/blog/[^/]+/?"),
     }
@@ -377,9 +377,18 @@ class CorporateNewsroomScout:
                                event_date=published,metadata={"discovered_from":self.PAGE,"listing_date":published,
                                    **({"source_quality_gate":"pending_90_day_audit"} if self.SOURCE_SLUG=="indisa" else {})}))
         if not out:raise RuntimeError(f"{self.SOURCE_NAME} newsroom structure unrecognized")
-        return out[:15]
+        return out[:100]
     def discover(self):
         items=self.discover_from_html(fetch_html(self.PAGE))
+        if self.SOURCE_SLUG=="redsalud":
+            # First-page-only polling hides capacity/convenio articles in the
+            # rolling backfill window. Follow same-newsroom pagination, bounded.
+            seen={item.url for item in items}
+            for number in range(1,5):
+                page=f"{self.PAGE}?page={number}"
+                for item in self.discover_from_html(fetch_html(page)):
+                    if item.url not in seen:
+                        seen.add(item.url);item.metadata["discovered_from"]=page;items.append(item)
         if self.SOURCE_SLUG=="indisa":
             from .public_source_pipeline import _IndisaArticle
             verified=[]
@@ -399,7 +408,7 @@ class CorporateNewsroomScout:
             if not verified:
                 raise RuntimeError("INDISA has no dated listing/detail pairs")
             items=verified
-        return items
+        return items[:100]
 
 
 class _IndisaCards(HTMLParser):

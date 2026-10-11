@@ -407,9 +407,15 @@ def process_corporate_news(raw,cfg):
         "indisa":("Clínica INDISA",("www.indisa.cl","indisa.cl"),r"/blog/[^/]+/?"),
     }
     expected=canonical.get(raw.source_slug);parsed=urlparse(raw.url)
+    # Root-level Bupa articles are eligible only when linked by its reviewed
+    # newsroom card parser. Identity, H1, date, body and the 78 gate still apply.
+    root_bupa=(raw.source_slug=="bupa_chile"
+        and raw.metadata.get("discovered_from")=="https://www.bupa.cl/somos-bupa/sala-de-prensa"
+        and re.fullmatch(r"/[a-z0-9][a-z0-9-]+/?",parsed.path))
     if (not expected or raw.source_name!=expected[0] or raw.source_type!="corporate"
             or cfg.get("slug")!=raw.source_slug or cfg.get("source_type")!="corporate"
-            or parsed.scheme!="https" or parsed.netloc not in expected[1] or not re.fullmatch(expected[2],parsed.path)):
+            or parsed.scheme!="https" or parsed.netloc not in expected[1]
+            or not (re.fullmatch(expected[2],parsed.path) or root_bupa)):
         return None
     if raw.source_slug=="bupa_chile":
         try:
@@ -441,7 +447,7 @@ def process_corporate_news(raw,cfg):
         if not article.title or (raw.title.casefold() not in article.title.casefold()
                                  and article.title.casefold() not in raw.title.casefold()):
             raise DeferredProcessing("INDISA headline mismatch between listing and article")
-        raw.event_date=_date(article.published) or raw.event_date
+        raw.event_date=article.event_date()
         if not raw.event_date:raise DeferredProcessing("INDISA article publication date unavailable")
         raw.raw_text=article.body[:9000];raw.metadata["page_text"]=raw.raw_text
     else:
@@ -496,7 +502,9 @@ class _BupaArticle(HTMLParser):
     def __init__(self):
         super().__init__();self.title="";self.published="";self.body="";self._field=None;self._parts=[];self._body_depth=0
     def handle_starttag(self,tag,attrs):
-        classes=(dict(attrs).get("class") or "").split()
+        attrs=dict(attrs);classes=(attrs.get("class") or "").split()
+        if tag.lower()=="meta" and (attrs.get("property") or "").lower()=="article:published_time":
+            self.published=attrs.get("content") or self.published
         if tag.lower()=="div" and "CUERPO" in classes:self._body_depth=1
         elif self._body_depth and tag.lower()=="div":self._body_depth+=1
         if tag.lower()=="h1" and "enc-main__title" in classes:self._field="title";self._parts=[]
@@ -578,7 +586,7 @@ class _PfizerArticle(HTMLParser):
 class _IndisaArticle(HTMLParser):
     """Extract the INDISA article headline, publication date and visible body."""
     def __init__(self):
-        super().__init__();self.title="";self.published="";self.body=[];self._capture=None;self._parts=[]
+        super().__init__();self.title="";self.published="";self.body=[];self._capture=None;self._parts=[];self._before_title=[];self._header_date=None
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs);lower=tag.lower()
         if lower=="meta":
@@ -587,10 +595,14 @@ class _IndisaArticle(HTMLParser):
             if key in ("article:published_time","datepublished","date") and value and not self.published:
                 self.published=value
         elif lower=="h1" and not self.title:
+            # INDISA exposes a compact publication stamp immediately before H1.
+            # Never take dates from medical/event text, related cards or the footer.
+            self._header_date=_date(" ".join(self._before_title)[-180:])
             self._capture="title";self._parts=[]
         elif lower in ("p","li"):
             self._capture="body";self._parts=[]
     def handle_data(self,data):
+        if not self.title and self._capture!="title":self._before_title.append(" ".join(data.split()))
         if self._capture:self._parts.append(data)
     def handle_endtag(self,tag):
         lower=tag.lower()
@@ -602,7 +614,7 @@ class _IndisaArticle(HTMLParser):
             self._capture=None
     def finish(self):
         self.title=" ".join(self.title.split());self.body=" ".join(self.body)
-    def event_date(self):return _date(self.published)
+    def event_date(self):return _date(self.published) or self._header_date
 
 
 def process_deis(raw,cfg):
