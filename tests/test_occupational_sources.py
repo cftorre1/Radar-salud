@@ -236,3 +236,34 @@ def test_core_collector_continues_after_mutual_blocker_and_records_noise_rejecti
     item = next(iter(queue.values()))
     assert item["status"] == "rejected"
     assert item["reason"] == "campaign_event_testimonial_or_recognition"
+    health = json.loads((tmp_path / "data/source_health.json").read_text())
+    assert health["sources"]["mutual_seguridad"]["error_detail"]["code"] == "external_waf_challenge"
+
+
+def test_beta_analysis_deferral_remains_pending_not_editorial_rejection(tmp_path, monkeypatch):
+    import json
+    import shutil
+    from pathlib import Path
+    from radar_salud import beta_source_engine, paths
+    (tmp_path / "config").mkdir()
+    shutil.copy(Path(__file__).resolve().parents[1] / "config/beta_source_configs.json", tmp_path / "config/beta_source_configs.json")
+    class Curated(CuratedBetaSourceScout):
+        def discover(self):
+            if self.slug != "achs_seguro_laboral":
+                return []
+            return self.discover_from_html(f'<a href="{ACHS}guia">Ver detalle</a>',
+                                           lambda url: detail("Nueva guía de tratamiento en salud mental laboral"))
+    class Null:
+        def discover(self):
+            return []
+    monkeypatch.setattr(beta_source_engine, "CuratedBetaSourceScout", Curated)
+    monkeypatch.setattr(beta_source_engine, "PrestadoresDataScout", Null)
+    monkeypatch.setattr(paths, "project_root", lambda: tmp_path)
+    monkeypatch.setattr(beta_source_engine, "project_root", lambda: tmp_path)
+    monkeypatch.setattr("radar_salud.llm_analysis.analyze_news", lambda **kwargs: None)
+    beta_source_engine.main()
+    row = json.loads((tmp_path / "data/state/beta_source_validation.json").read_text())["sources"]["achs_seguro_laboral"]
+    assert row["published"] == 0
+    assert row["rejected_sample"] == 0
+    assert row["deferred_sample"] == 1
+    assert row["processing_decisions"][0]["status"] == "pending"
