@@ -81,6 +81,9 @@ class PendingQueue:
                                 verified_title=raw.title, previous_capture_method=old_meta.get("capture_method"),
                                 reason="verified_article_rediscovery", lane_preserved=previous["lane"])]
                             previous["raw"] = asdict(raw)
+                            for field in ("editorial_hold", "event_equivalence_review"):
+                                if field in old_meta:
+                                    previous["raw"]["metadata"][field] = old_meta[field]
                             previous["raw"]["metadata"]["evidence_revisions"] = revisions
                             previous["raw"]["metadata"]["queue_identity_fingerprint"] = pulso_urls[url]
                     continue
@@ -97,10 +100,12 @@ class PendingQueue:
         self.save()
         return added
 
-    def enforce_backfill_horizon(self, now=None):
+    def enforce_backfill_horizon(self, now=None, sources=None):
         now = now or now_utc()
         changed = 0
         for item in self.items.values():
+            if sources is not None and item["source"] not in sources:
+                continue
             if item.get("lane") == "BACKFILL" and item.get("status") in ("pending", "retry", "processing"):
                 raw = item.get("raw", {})
                 try:

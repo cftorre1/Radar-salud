@@ -285,6 +285,9 @@ def process_curated_beta_source(raw, cfg):
         raw = enrich(raw)
     body = raw.metadata.get("page_text") or raw.raw_text or ""
     role = raw.metadata.get("market_role") or "provider"
+    if raw.metadata.get("editorial_hold"):
+        raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": raw.metadata["editorial_hold"]}
+        raise DeferredProcessing("Pulso pending incremental-value review")
     def reject(reason, **evidence):
         raw.metadata["rejection_reason"] = reason
         raw.metadata["editorial_assessment"] = dict(decision="rejected", reason=reason, **evidence)

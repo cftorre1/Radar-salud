@@ -67,9 +67,13 @@ def test_core_pulso_publication_rejection_pending_and_feed_trace(tmp_path, monke
                     why_it_matters="La suspensión reduce capacidad asistencial disponible y redistribuye la demanda entre los centros de la red.")
     monkeypatch.setattr(llm_analysis, "analyze_news", analysis)
     monkeypatch.setattr(sys, "argv", ["engine_cli", "--sources", "pulso_latercera"])
-    other = RawItem("minsal", "Noticia que debe permanecer intacta", "https://example.org/other", "Minsal", "official", day)
+    other = RawItem("minsal", "Noticia que debe permanecer intacta", "https://example.org/other", "Minsal", "official",
+                    (now - timedelta(days=180)).date().isoformat())
     queue = PendingQueue(state / "pending_queue.json")
     queue.discover("minsal", [other])
+    # Deliberately recover an old pending row to test selected-source isolation.
+    next(iter(queue.items.values()))["status"] = "pending"
+    queue.save()
     preserved = json.loads(json.dumps(next(iter(queue.items.values()))))
     engine_cli.main()
     discovery = json.loads((state / "discovery_run.json").read_text())
@@ -126,7 +130,8 @@ def test_pulso_rediscovery_rehydrates_same_url_without_resetting_capture_attempt
     now = datetime.now(timezone.utc)
     url = "https://www.latercera.com/pulso/noticia/clinica-cierre/"
     old = RawItem("pulso_latercera", "Clínica anuncia cierre temporal", url, "Pulso / La Tercera", "press_high_trust",
-                  metadata={"capture_method": "verified_original_byline_inventory"})
+                  metadata={"capture_method": "verified_original_byline_inventory",
+                            "editorial_hold": "possible_duplicate_requires_incremental_review"})
     queue = PendingQueue(tmp_path / "queue.json")
     queue.discover("pulso_latercera", [old], now=now)
     key = fingerprint(old)
@@ -144,6 +149,7 @@ def test_pulso_rediscovery_rehydrates_same_url_without_resetting_capture_attempt
         assert item[field] == before[field]
     assert item["lane"] == "BACKFILL"  # Rediscovery is not a new LIVE event.
     assert len(item["raw"]["metadata"]["evidence_revisions"]) == 1
+    assert item["raw"]["metadata"]["editorial_hold"] == "possible_duplicate_requires_incremental_review"
     queue.discover("pulso_latercera", [verified], now=now)
     assert len(queue.items[key]["raw"]["metadata"]["evidence_revisions"]) == 1
     queue.finish(key, "rejected", "editorial_relevance_below_threshold", now=now)

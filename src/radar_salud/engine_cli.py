@@ -103,7 +103,7 @@ def main():
         "selected_sources":args.sources,
     })
     produced={name:[] for name in processors}
-    queue.enforce_backfill_horizon()
+    queue.enforce_backfill_horizon(sources=args.sources)
     ready=((key,item) for key,item in queue.ready() if item["source"] in processors)
     for index,(key,item) in enumerate(ready):
         if args.limit and index>=args.limit:break
