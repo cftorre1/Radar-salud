@@ -1,0 +1,34 @@
+{
+  "reviewer": "/root/reviewer",
+  "as_of": "2026-10-11",
+  "reviewed_runtime_and_data_sha": "cfa253f8c677e1956f69311d93b31326beb9b1ce",
+  "scope_verdict": "PASS",
+  "global_acceptance": "BLOCKED",
+  "open_scoped_findings": [],
+  "tests_executed": {"focal_passed": 46, "failed": 0, "durable_verification": "PASS", "paid_AI_calls": 0},
+  "resolved_finding": {
+    "severity": "P2",
+    "reported_at_sha": "93c8f9705ed5716d244050c4838ee0e382cca7bb",
+    "fixed_at_commit": "34f1e2d",
+    "description": "Preserve Farma for agreements with named pharmaceutical laboratories while excluding on-site clinical pharmacy/laboratory capacity.",
+    "positive_cases": ["Roche", "Sanofi", "Merck", "Biomed"],
+    "negative_case": "Talca hospital pharmacy and diagnostic laboratory"
+  },
+  "verified": [
+    "12 audited candidates: 5 published, 3 rejected, 4 retry; all BACKFILL",
+    "fast ledger39 with no duplicate accounting; original and repair checkpoints byte-intact",
+    "two false PDF publication dates hidden; seven navigation records archived with prior state",
+    "eight source audit queue counts match queue and source health",
+    "browser44 passed/6 failed; six failures shared with baseline32 passed/14 failed; no candidate-only failure",
+    "eight deterministic statistical findings equal baseline by category/code/path/severity",
+    "governance merge changes only69 lines; CodexF adds one in_progress task without modifying other owners",
+    "handoff includes clean-checkout bootstrap and no-cost durable verification"
+  ],
+  "remaining_conditions": [
+    "Commit and push final evidence/handoff checkpoint",
+    "Keep PR draft and issue5/recovery gate open",
+    "Resolve pre-existing global Python/browser/statistics QA without reducing tests",
+    "Complete declared original inventory/publication-date/access blockers",
+    "Verify recurring staging runtime after permitted merge"
+  ]
+}

@@ -4207,6 +4207,33 @@
       "last_progress_at": "2026-10-11",
       "current_subfront": "expand_discovery_beyond_11_sample",
       "next_action": "Ampliar superficies y paginación, luego reconciliar contra set externo reciente antes de considerar PR #10 integrable."
+    },
+    {
+      "id": "codex_f_providers_gremio_pharma_recovery_2026_10_11",
+      "status": "in_progress",
+      "priority": "high",
+      "owner": "Codex F / Provider Intelligence + Source Engineering",
+      "source": "Direct user instruction Codex F 2026-10-11; issue #5 recovery scope",
+      "objective": "Reconcile existing providers, gremio and Pfizer original 30/90-day surfaces with Alicanto, without reducing gates or duplicating institutions.",
+      "constraints": [
+        "isolated branch based on staging",
+        "no main/production promotion",
+        "no gate reductions",
+        "no repeated paid assessment of terminal candidates"
+      ],
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/pull/14",
+        "data/audits/provider_reconciliation_2026_10_11.json",
+        "data/audits/providers_2026_10_11",
+        "data/audits/provider_qa_2026_10_11/summary.json"
+      ],
+      "blocked_by": [
+        "declared per-source inventory/date/access blockers",
+        "pre-existing global statistics and normative QA",
+        "staging merge and recurring runtime evidence pending"
+      ],
+      "progress": "8 original sources observed; 12 candidates admitted; 5 isolated outputs,3 editorial rejections,4 held; two false PDF dates quarantined; 7 navigation retries archived; budgets and gates unchanged.",
+      "next_action": "Complete declared original date/inventory blockers; global QA repair by owning fronts; then required Reviewer and staging runtime. PR14 remains draft; do not close issue5 or source recovery gate."
     }
   ],
   "execution_policy": {

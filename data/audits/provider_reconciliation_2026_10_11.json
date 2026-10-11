@@ -1,23 +1,287 @@
 {
-  "version": 1,
+  "version": 2,
   "as_of": "2026-10-11",
   "timezone": "America/Santiago",
-  "base_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
   "branch": "codex/f-prestadores-gremio-2026-10-11",
-  "status": "in_progress",
-  "current_subfront": "daily_provider_queue_and_health",
-  "sources": ["redsalud", "bupa_chile", "indisa", "red_davila", "andes_salud", "clinicas_chile", "pfizer_chile", "clinicas_achs_salud"],
-  "findings": [
-    "Dávila, Andes Salud y Clínicas Achs están registrados como beta activos pero ausentes del motor diario; el validador rápido sólo descubre cinco artículos y reporta no_new_signals sin evaluación.",
-    "Bupa enlaza nuevas noticias en la raíz del host. El patrón vigente sólo admite sala-de-prensa, omitiendo inversión US$15 millones y adquisición Huinganal.",
-    "Clínicas de Chile inicia Estudios y análisis en página 3 y descubre menús como documentos; infiere fechas del cuerpo de PDFs que no son fechas de publicación.",
-    "INDISA mantiene gate pending_90_day_audit y falla HTTPError en la última colección; Pfizer ofrece artículos de 2023 con una tarjeta enlazada al detalle equivocado."
+  "base_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "merged_staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+  "candidate_runtime_and_data_sha": "cfa253f8c677e1956f69311d93b31326beb9b1ce",
+  "pull_request": "https://github.com/cftorre1/Radar-salud/pull/14",
+  "status": "in_progress_blocked_acceptance",
+  "accepted": false,
+  "current_subfront": "reviewable_isolated_provider_checkpoint",
+  "sources": [
+    {
+      "slug": "redsalud",
+      "name": "RedSalud",
+      "audit_path": "data/audits/providers_2026_10_11/redsalud.json",
+      "checkpoint_commit": "e5aeedd",
+      "original_material_30_days_lower_bound": 1,
+      "original_material_90_days_lower_bound": 2,
+      "publication_date_unknown": 0,
+      "recovered_candidate_states": {
+        "retry": 1
+      },
+      "full_90_reconciled": false,
+      "outcome": "reconciled_with_exact_blockers",
+      "blockers": [
+        "90_day_inventory_dates_not_fully_persisted_after_five_page_probe",
+        "listing_detail_publication_date_conflict_2026_08_27_vs_2026_09_04"
+      ],
+      "technical_status": "ok",
+      "content_freshness": "older",
+      "editorial_outcome": "pending"
+    },
+    {
+      "slug": "bupa_chile",
+      "name": "Bupa Chile",
+      "audit_path": "data/audits/providers_2026_10_11/bupa_chile.json",
+      "checkpoint_commit": "01c62f2",
+      "original_material_30_days_lower_bound": 0,
+      "original_material_90_days_lower_bound": 2,
+      "publication_date_unknown": 2,
+      "recovered_candidate_states": {
+        "retry": 2,
+        "published": 1
+      },
+      "full_90_reconciled": false,
+      "outcome": "reconciled_with_exact_blockers",
+      "blockers": [
+        "51_listing_cards_undated_full_90_day_detail_inventory_incomplete",
+        "investment_and_bank_campaign_publication_date_not_exposed"
+      ],
+      "technical_status": "ok",
+      "content_freshness": "older",
+      "editorial_outcome": "published"
+    },
+    {
+      "slug": "indisa",
+      "name": "Clínica INDISA",
+      "audit_path": "data/audits/providers_2026_10_11/indisa.json",
+      "checkpoint_commit": "3050106",
+      "original_material_30_days_lower_bound": 1,
+      "original_material_90_days_lower_bound": 1,
+      "publication_date_unknown": 1,
+      "recovered_candidate_states": {
+        "retry": 1
+      },
+      "full_90_reconciled": false,
+      "outcome": "reconciled_with_exact_blockers",
+      "blockers": [
+        "actions_original_HTTP_403",
+        "pending_90_day_audit_inventory_pages_2_to_4_unverified"
+      ],
+      "technical_status": "error",
+      "content_freshness": "unknown",
+      "editorial_outcome": "pending"
+    },
+    {
+      "slug": "red_davila",
+      "name": "Red Dávila",
+      "audit_path": "data/audits/providers_2026_10_11/red_davila.json",
+      "checkpoint_commit": "6e00e1e",
+      "original_material_30_days_lower_bound": 0,
+      "original_material_90_days_lower_bound": 2,
+      "publication_date_unknown": 0,
+      "recovered_candidate_states": {
+        "rejected": 2
+      },
+      "full_90_reconciled": false,
+      "outcome": "reconciled_with_exact_blockers",
+      "blockers": [
+        "first_listing_only_90_day_pagination_boundary_unverified",
+        "2026_10_05_cancer_article_publication_stamp_unverified",
+        "two_original_urls_editorially_rejected_without_persisted_subreason"
+      ],
+      "technical_status": "error",
+      "content_freshness": "unknown",
+      "editorial_outcome": "rejected"
+    },
+    {
+      "slug": "andes_salud",
+      "name": "Andes Salud",
+      "audit_path": "data/audits/providers_2026_10_11/andes_salud.json",
+      "checkpoint_commit": "fe592be",
+      "original_material_30_days_lower_bound": 1,
+      "original_material_90_days_lower_bound": 3,
+      "publication_date_unknown": 0,
+      "recovered_candidate_states": {
+        "published": 3
+      },
+      "full_90_reconciled": false,
+      "outcome": "reconciled_with_exact_blockers",
+      "blockers": [
+        "first_listing_only_90_day_pagination_boundary_unverified"
+      ],
+      "technical_status": "ok",
+      "content_freshness": "older",
+      "editorial_outcome": "published"
+    },
+    {
+      "slug": "clinicas_chile",
+      "name": "Clínicas de Chile A.G.",
+      "audit_path": "data/audits/providers_2026_10_11/clinicas_chile.json",
+      "checkpoint_commit": "4274c37",
+      "original_material_30_days_lower_bound": 1,
+      "original_material_90_days_lower_bound": 1,
+      "publication_date_unknown": 4,
+      "recovered_candidate_states": {
+        "published": 1
+      },
+      "full_90_reconciled": false,
+      "outcome": "reconciled_with_exact_blockers",
+      "blockers": [
+        "library_publication_dates_unverified_33_discovered_documents"
+      ],
+      "technical_status": "ok",
+      "content_freshness": "older",
+      "editorial_outcome": "published"
+    },
+    {
+      "slug": "pfizer_chile",
+      "name": "Pfizer Chile",
+      "audit_path": "data/audits/providers_2026_10_11/pfizer_chile.json",
+      "checkpoint_commit": "8d9f453",
+      "original_material_30_days_lower_bound": 0,
+      "original_material_90_days_lower_bound": 0,
+      "publication_date_unknown": 0,
+      "recovered_candidate_states": {},
+      "full_90_reconciled": false,
+      "outcome": "reconciled_with_exact_blockers",
+      "blockers": [
+        "stale_external_newsroom_latest_2023_06_08",
+        "healthtech_card_links_to_wrong_article"
+      ],
+      "technical_status": "ok",
+      "content_freshness": "stale_external_surface",
+      "editorial_outcome": "not_evaluated"
+    },
+    {
+      "slug": "clinicas_achs_salud",
+      "name": "Clínicas Achs Salud",
+      "audit_path": "data/audits/providers_2026_10_11/clinicas_achs_salud.json",
+      "checkpoint_commit": "76b4383",
+      "original_material_30_days_lower_bound": 0,
+      "original_material_90_days_lower_bound": 1,
+      "publication_date_unknown": 0,
+      "recovered_candidate_states": {
+        "rejected": 1
+      },
+      "full_90_reconciled": false,
+      "outcome": "reconciled_with_exact_blockers",
+      "blockers": [
+        "first_listing_only_90_day_boundary_unverified",
+        "partial_discovery_unicode_url_comiee_and_2026_09_03_HTTPError",
+        "assessment_rejected_without_persisted_subreason"
+      ],
+      "technical_status": "error",
+      "content_freshness": "unknown",
+      "editorial_outcome": "rejected"
+    }
   ],
-  "environment_blocker": {
-    "code": "restricted_original_http_hosts",
-    "evidence": "curl HEAD https://www.redsalud.cl/noticias con red habilitada: CONNECT 403; /etc/codex/network-policy.json sólo habilita hosts de paquetes/GitHub.",
-    "impact": "No ejecución LIVE del collector desde este entorno. Auditoría de originales mediante navegador web disponible; no confundir lectura web con polling del motor.",
-    "next_action": "Reanudar colección desde runner autorizado que ya tiene acceso a originales y OPENAI_API_KEY; preservar gates y BACKFILL."
+  "window_rule": "inclusive age 0..30/90 at as_of; verified publication only; null is unknown, counts are lower bounds where inventory blocked",
+  "recovery": {
+    "audited_candidates": 12,
+    "current_states": {
+      "retry": 4,
+      "published": 5,
+      "rejected": 3
+    },
+    "candidate_outputs": 5,
+    "new_outputs_by_institution": {
+      "Andes Salud": 3,
+      "Clínicas de Chile A.G.": 1,
+      "Bupa Chile": 1
+    },
+    "quarantined_false_pdf_dates": 2,
+    "archived_navigation_records": 7,
+    "original_material_90_days_lower_bound": 12,
+    "original_material_30_days_lower_bound": 4
   },
-  "continuation": "Integrar beta prestadores al pending queue diario, corregir health de validación; después corregir Bupa, INDISA y las cuatro superficies del gremio. Registrar inventarios, omisiones y blockers por fuente. Ejecutar tests, QA desktop/mobile y Reviewer."
+  "other_registered_provider_context": [
+    {
+      "institution": "Clínica Las Condes",
+      "status": "pass_secondary",
+      "registry": "config/source_quality_reviews_beta_2026_10_01.json",
+      "rails": [
+        "CMF",
+        "Pulso / La Tercera",
+        "El Mercurio / Economía y Negocios"
+      ],
+      "disposition": "keep existing institution; own active newsroom not configured; no full original 90-day claim"
+    },
+    {
+      "institution": "Interclínicas",
+      "status": "pass_secondary",
+      "registry": "config/source_quality_reviews_beta_2026_10_01.json",
+      "rails": [
+        "Diario Financiero",
+        "Pulso / La Tercera"
+      ],
+      "disposition": "keep existing institution; no stable own active newsroom; memorias/regional recovery remains Work4 task w4_provider_data_2026_10_11"
+    },
+    {
+      "slug": "prestadores_data",
+      "status": "data_only_publication_date_unverified_and_critical_statistics_QA",
+      "registry": "config/beta_source_configs.json",
+      "disposition": "official statistical rail, not an additional institution entity; existing statistical QA blockers remain under Data Intelligence"
+    }
+  ],
+  "gates": {
+    "corporate_min_relevance": 78,
+    "provider_min_relevance": 75,
+    "clinicas_news_min_relevance": 70,
+    "clinicas_document_min_relevance": 75,
+    "indisa_source_quality_gate": "pending_90_day_audit",
+    "publication_date": "verified original publication only",
+    "relaxed": false
+  },
+  "runtime": {
+    "first_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "repair_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38113531772",
+    "replay_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38112991484",
+    "observed_original_sources": 8,
+    "candidate_attempts": 14,
+    "paid_fast_calls": 8,
+    "paid_deep_calls": 0,
+    "fast_month_ledger_before": 31,
+    "fast_month_ledger_after": 39,
+    "repeated_paid_evaluations": 0,
+    "checkpoint_paths": [
+      "data/audits/provider_live_checkpoint_2026_10_11.json",
+      "data/audits/provider_repair_checkpoint_2026_10_11.json"
+    ],
+    "routine_staging_poll_verified": false,
+    "promotion": "none; isolated candidate only"
+  },
+  "acceptance": {
+    "each_active_source_audited_with_exact_blocker": true,
+    "important_dated_omissions_recovered": true,
+    "truthful_health_and_one_entity": true,
+    "source_tests_and_provider_QA": true,
+    "independent_reviewer": "PASS scoped / global acceptance BLOCKED; no open scoped findings",
+    "global_QA": false,
+    "staging_merge_and_runtime": false,
+    "issue_5_closed": false
+  },
+  "QA_evidence": "data/audits/provider_qa_2026_10_11/summary.json",
+  "continuation": {
+    "owner": "Codex F / Provider Intelligence + Source Engineering",
+    "no_repeat_ai": "Receipts suppress both paid CI passes; published/rejected candidates remain terminal. Do not rerun model analysis solely for an unstored rejection subreason.",
+    "read_only_reconciliation": "work/venv/bin/python scripts/reconcile_providers.py",
+    "minimum_tests": "work/venv/bin/python -m pytest -q tests/test_provider_audit_intake.py tests/test_provider_newsroom_repairs.py tests/test_clinicas_chile_reconciliation.py tests/test_provider_runtime_reconciliation.py tests/test_corporate_newsrooms.py tests/test_beta_source_package.py",
+    "next_actions": [
+      "Complete read-only dated 90-day inventories at the declared boundaries; persist URL/date/materiality and blocked pages.",
+      "Recover authoritative release dates for 33 gremio documents and two Bupa articles; otherwise keep them held. Resolve RedSalud original date disagreement before assessing.",
+      "Resolve INDISA original HTTP403 and full90 inventory; pending_90_day_audit remains until actual review.",
+      "Data/Normative owners must repair pre-existing global QA without lowering its tests. Keep PR14 draft until required checks pass.",
+      "After permitted merge into staging, run bounded recurring collection and verify health/queue/dedup on staging; update issue5 and recovery gate only with QA+Reviewer+runtime evidence."
+    ],
+    "bootstrap": [
+      "mkdir -p work",
+      "python3 -m venv work/venv",
+      "work/venv/bin/python -m pip install -e . pytest"
+    ],
+    "handoff": "docs/PROVIDER_RECONCILIATION_HANDOFF_2026_10_11.md"
+  }
 }
