@@ -392,5 +392,23 @@
     ],
     "status": "implemented_runtime_review_open",
     "owner_time_saved": "No owner intervention requested; runtime discovery and recovery were autonomous."
+  },
+  {
+    "id": "df_withdrawn_history_acknowledgement_2026_10_11",
+    "source": "Codex A runtime review",
+    "class": "recovery_interaction_defect",
+    "finding": "After hiding contaminated DF publications, URL dedupe still treated retained rejected history as published and superseded valid reassessments.",
+    "root_cause": "History crash-safety dedupe lacked a distinction between retained evidence and accepted publication. Existing tests tested each repair separately, not their interaction.",
+    "specific_fix": "Exclude withdrawn body-review records from publication acknowledgements, recover only exact affected superseded records and preserve old history snapshots across successful reassessment.",
+    "preventive_controls": [
+      "deterministic_test",
+      "data_validation_rule"
+    ],
+    "evidence": [
+      "test_retained_withdrawn_history_does_not_acknowledge_reassessment_as_published",
+      "03605e4; 48 targeted regression tests PASS",
+      "Runtime38114333430 pending review"
+    ],
+    "status": "implemented_runtime_review_open"
   }
 ]
