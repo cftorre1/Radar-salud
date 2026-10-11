@@ -236,3 +236,49 @@ def test_real_paid_retry_cannot_be_turned_into_publication_by_synchronized_flags
     failures = errors(value)
     assert any(row.get("error") == "editorial_original_not_in_immutable_paid_history" for row in failures)
     assert pending["status"] == "retry" and pending["raw"]["metadata"]["editorial_assessment"]["decision"] == "pending"
+
+
+def grouped_five(value):
+    """Structural grouping fixture, not a semantic claim about these articles."""
+    document, reader, path, reader_path = make_generic(value)
+    record, parent, target = document["records"][0], reader["all_signals"][0], document["records"][2]
+    original_target = next(item for item in value["queue"].values() if item["raw"]["url"] == target["url"])
+    record.update(decision="group", reason="Temporary grouping guard fixture; independent semantic approval is not claimed.",
+                  duplicate_of=dict(url=target["url"], event_date=target["publication_date"]))
+    parent.update(decision="group", exact_reason=record["reason"], duplicate_of=target["url"],
+                  duplicate_of_event_date=target["publication_date"],
+                  duplicate_target_signal_sha256=target["original_signal_sha256"],
+                  duplicate_target_queue_sha256=qa.object_digest(original_target))
+    bind_generic(value, document, reader, path, reader_path)
+    apply_temporary(value, path)
+    return document, reader, path, reader_path, target
+
+
+def test_same_audit_survivor_uses_original_paid_hash_and_reconstructs_final_acceptance_without_circular_hash(real_originals):
+    _, reader, _, _, target = grouped_five(real_originals)
+    surviving = next(row for row in real_originals["history"] if row["source_url"] == target["url"])
+    assert reader["all_signals"][0]["duplicate_target_signal_sha256"] != qa.object_digest(surviving)
+    proofs, failures = qa.verify_additional_editorial_reviews(**real_originals)
+    assert failures == [] and len(proofs) == 5
+    assert sum(proof["decision"] == "group" for proof in proofs.values()) == 1
+
+
+@pytest.mark.parametrize("attack", ["target_retry", "pending_assessment", "withdrawn", "wrong_score", "target_model",
+    "wrong_original_hash", "wrong_day", "duplicate_history", "missing_feed"])
+def test_group_target_must_remain_unique_actual_paid_and_eligible_even_with_declared_current_hashes(real_originals, attack):
+    value = real_originals
+    document, reader, path, reader_path, target = grouped_five(value)
+    signal = next(row for row in value["history"] if row["source_url"] == target["url"])
+    item = next(row for row in value["queue"].values() if row["raw"]["url"] == target["url"])
+    if attack == "target_retry": item["status"] = "retry"
+    elif attack == "pending_assessment": item["raw"]["metadata"]["editorial_assessment"]["decision"] = "pending"
+    elif attack == "withdrawn": signal.update(editorial_decision="reject", feed_visibility=False)
+    elif attack == "wrong_score": signal["editorial_relevance"] = 71
+    elif attack == "target_model": item["raw"]["metadata"]["analysis_model_output"]["what_happened"] += " fabricated"
+    elif attack == "wrong_original_hash":
+        reader["all_signals"][0]["duplicate_target_signal_sha256"] = qa.object_digest(signal)
+        bind_generic(value, document, reader, path, reader_path)
+    elif attack == "wrong_day": reader["all_signals"][0]["duplicate_of_event_date"] = "2026-10-11"; bind_generic(value, document, reader, path, reader_path)
+    elif attack == "duplicate_history": value["history"].append(deepcopy(signal))
+    elif attack == "missing_feed": value["snapshot"]["signals"] = []
+    assert errors(value)

@@ -590,17 +590,46 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                 survivors = [row for row in history if (row.get("source_url"), row.get("event_date")) == target_key]
                 survivor_items = [row for row in queue.values() if (row.get("raw", {}).get("url"), row.get("raw", {}).get("event_date")) == target_key]
                 feeds = [row for row in snapshot.get("signals", []) if (row.get("source_url"), row.get("event_date")) == target_key]
-                _, _, audit, readers = load(provenance)
+                review_path, _, audit, readers = load(provenance)
                 reader = readers[key]
+                target_record = next((row for row in audit["records"]
+                    if (row["url"], row["publication_date"]) == target_key), None)
+                if target_record:
+                    # Hash the immutable original, not a signal that embeds
+                    # this audit's own hash. Reconstruct the final target copy.
+                    if len(survivors) != 1:
+                        raise ValueError("editorial_group_target_identity_not_unique")
+                    target_effective, _, target_paid, target_assessment = derive(
+                        survivors[0].get("editorial_review") or {}, target_key)
+                    target_original = target_record["original_signal"]
+                    if (survivors[0] != target_effective or len(survivor_items) != 1
+                            or survivor_items[0].get("raw", {}).get("metadata", {}).get("editorial_assessment") != target_assessment
+                            or target_record.get("decision") not in {"accept", "correct"}):
+                        raise ValueError("editorial_group_target_reviewed_effective_state_changed")
+                else:
+                    parent_document = json.loads(local_capture_path(root, audit["independent_review"]["path"]).read_bytes())
+                    target_producer = producer(parent_document, review_path in FOLLOWUP_REVIEW_PINS)
+                    original_targets = [row for row in target_producer["history"]["signals"]
+                        if (row.get("source_url"), row.get("event_date")) == target_key]
+                    paid_targets = [row for row in target_producer["queue"].values()
+                        if (row.get("raw", {}).get("url"), row.get("raw", {}).get("event_date")) == target_key]
+                    if (len(original_targets) != 1 or len(paid_targets) != 1
+                            or survivors != original_targets or survivor_items != paid_targets):
+                        raise ValueError("editorial_group_target_not_in_immutable_published_producer")
+                    target_original, target_paid = original_targets[0], paid_targets[0]
+                    target_assessment = target_paid.get("raw", {}).get("metadata", {}).get("editorial_assessment") or {}
                 if (target_key == key or len(survivors) != 1 or len(survivor_items) != 1 or len(feeds) != 1
                         or survivor_items[0].get("status") != "published" or survivors[0].get("feed_visibility") is False
                         or survivors[0].get("editorial_decision") in {"reject", "group"}
                         or type(survivors[0].get("editorial_relevance")) is not int or survivors[0]["editorial_relevance"] < 72
+                        or target_paid.get("status") != "published" or target_assessment.get("decision") != "published"
+                        or target_assessment.get("threshold") != 72
+                        or target_assessment.get("relevance_score") != survivors[0]["editorial_relevance"]
                         or normalized_url(target_key[0]) and survivors[0].get("evidence_maturity") != "media_reported"
                         or reader.get("duplicate_of") != target_key[0]
                         or reader.get("duplicate_of_event_date") != target_key[1]
-                        or reader.get("duplicate_target_signal_sha256") != object_digest(survivors[0])
-                        or reader.get("duplicate_target_queue_sha256") != object_digest(survivor_items[0])
+                        or reader.get("duplicate_target_signal_sha256") != object_digest(target_original)
+                        or reader.get("duplicate_target_queue_sha256") != object_digest(target_paid)
                         or any(feeds[0].get(field) != survivors[0].get(field) for field in (
                             "what_happened", "why_it_matters", "event_date", "publication_date", "editorial_relevance", "evidence_maturity"))):
                     raise ValueError("editorial_group_target_not_actual_unique_published_survivor")
