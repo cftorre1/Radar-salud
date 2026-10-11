@@ -315,3 +315,32 @@ def test_normative_window_keeps_day90_and_expires_day91_without_losing_history()
         curated=m.curate([act,clock],resolve_external=False)
         assert any(s["source_url"]==act["source_url"] for s in curated) is expected
         assert act["event_date"]=="2026-07-10"
+
+
+def test_offline_bulletin_export_preserves_all_reviewed_primary_pdf_analysis(tmp_path):
+    from scripts.statistics_reviewer import review_statistics
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    original=next(s for s in history if "boletin-estadistico-informativo-ip-junio-2026/" in s.get("source_url", ""))
+    missing_runtime=tmp_path/"not-built-in-this-checkout.json"
+    verified=m._statistical_analysis_overrides(path=missing_runtime)
+    patch=verified[original["source_url"]]
+    raw_findings=review_statistics([original])
+    assert len(raw_findings)==8
+    enriched=dict(original,**patch)
+    assert review_statistics([enriched])==[]
+    assert enriched["event_date"]==original["event_date"]=="2026-08-03"
+    assert {e["source_url"] for e in enriched["data_insight_evidence"]}=={d["url"] for d in original["source_documents"]}
+    exported,=m.curate([original],resolve_external=False)
+    assert exported["summary_table"]==patch["summary_table"]
+    assert review_statistics([exported])==[]
+
+
+def test_malformed_statistical_override_fails_instead_of_hiding_findings(tmp_path):
+    import pytest
+    runtime=tmp_path/"runtime.json"
+    runtime.write_text('{"signals": []}')
+    with pytest.raises(ValueError,match="Invalid statistical analysis"):
+        m._statistical_analysis_overrides(path=runtime)
+    runtime.write_text('{"signals": {"https://example.test/release": {"event_date": "2099-01-01"}}}')
+    with pytest.raises(ValueError,match="preserve source identity/date"):
+        m._statistical_analysis_overrides(path=runtime)

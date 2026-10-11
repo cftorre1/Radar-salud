@@ -76,6 +76,16 @@ def test_statistics_reviewer_accepts_semantically_labeled_release_tables():
     assert review_statistics(releases()) == []
 
 
+def test_statistics_build_only_requests_current_release_inputs_at_day90_boundary():
+    history=[{"source_url":builder.GES_PAGE,"event_date":"2026-07-10"},
+             {"source_url":builder.BOLETIN_PAGE,"event_date":"2026-08-03"},
+             {"source_url":"https://fixture.example/reference","event_date":"2026-10-08"}]
+    assert set(builder.current_release_builders(history))=={builder.GES_PAGE,builder.BOLETIN_PAGE}
+    history[-1]["event_date"]="2026-10-09"
+    assert set(builder.current_release_builders(history))=={builder.BOLETIN_PAGE}
+    assert history[0]["event_date"]=="2026-07-10"
+
+
 def test_statistics_reviewer_fails_closed_on_outlier_and_unitless_prestaciones():
     signals = releases()
     signals[1]["summary_table"]["rows"].append({"cells": ["Prestaciones", "Desconocido", "monto", 4_526_117_479_378,

@@ -91,6 +91,107 @@
     }
   ],
   "missing_analysis_file": "data/statistical_analysis_overrides_v1.json is not versioned/present on staging; investigation of CI export overwrite follows",
-  "next_action": "Persist primary-PDF-verified bulletin analysis as versioned export input; fix expired statistical inventory assertions while retaining present-release schema and reviewer gates.",
-  "last_progress_at": "2026-10-11T13:00:41.935439+00:00"
+  "next_action": "Run exact canonical QA build (epidemiology/global/product), full browser desktop/mobile and CI PR; preserve unrelated generated outputs outside commits.",
+  "last_progress_at": "2026-10-11T13:06:52.267397+00:00",
+  "statistics_resolution": [
+    {
+      "code": "invalid_statistical_table",
+      "classification": "export defect",
+      "correction": "Six rows with six named columns restored from original PDFs",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "methodology_not_collapsed",
+      "classification": "presentation/export defect",
+      "correction": "Collapsed methodology retained in durable analysis",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "missing_incremental_value_gate",
+      "classification": "export defect",
+      "correction": "Distinct table value stated; redundant conclusion omitted",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "generic_why_required",
+      "classification": "presentation/export defect",
+      "correction": "card_why_optional true; no forced generic impact copy",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "untraceable_statistical_evidence",
+      "classification": "export defect",
+      "correction": "All4primaryPDF URLs referenced in data_insight_evidence",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "bulletin_coverage",
+      "classification": "export defect",
+      "correction": "Acreditación/Mediación/Reclamos/RNPI all retained",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "bulletin_missing_pdf",
+      "classification": "export projection defect",
+      "correction": "Source_documents already had4URLs; missing derived evidence restored",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "bulletin_stock_flow_confusion",
+      "classification": "presentation/export defect",
+      "correction": "Stock, cumulative2019–2026 flow and monthly average labeled separately",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    }
+  ],
+  "statistical_primary_evidence": "config/statistical_analysis_verified_v1.json:4PDFs, page references and source-declared metrics; publication date stays3Aug2026",
+  "statistical_browser_expiry": [
+    {
+      "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-marzo-2026/",
+      "publisher_date": "2026-07-10",
+      "classification": "obsolete fixed current inventory assertion; release outside90day window"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/biblioteca-digital/series-estadisticas-del-sistema-isapre-1990-2025/",
+      "publisher_date": "2026-07-10",
+      "classification": "obsolete fixed current inventory assertion; release outside90day window"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2026/",
+      "publisher_date": "2026-07-07",
+      "classification": "obsolete fixed current inventory assertion; release outside90day window"
+    }
+  ],
+  "statistical_checkpoint": {
+    "focused_tests_passed": 36,
+    "python_passed": 270,
+    "python_skipped": 1,
+    "reviewer": {
+      "reviewer": "deterministic-reviewer",
+      "candidate_sha": "b6f5e03",
+      "reviewed_at": "2026-10-11T13:04:25.732123+00:00",
+      "findings": [],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": true,
+        "ux": true
+      },
+      "limitations": [
+        "Semantic/legal accuracy is not certified by deterministic checks.",
+        "Browser evidence is required separately for desktop/mobile.",
+        "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+      ]
+    },
+    "feed_other_rows_preserved": 48,
+    "source_history_queue_health_unchanged": true,
+    "browser_before_canonical_build": "38PASS/8FAIL unrelated Global/product prerequisite outputs; rebuilding exact QA pipeline, not accepting this as PASS"
+  }
 }

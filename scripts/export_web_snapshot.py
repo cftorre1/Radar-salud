@@ -272,14 +272,26 @@ def _related_context(signals,resolve_external=True):
         r.pop("related_norms",None);r.pop("related_sources",None);out.append(r)
     return out
 
-def _statistical_analysis_overrides(path=Path("data/statistical_analysis_overrides_v1.json")):
-    if not path.exists(): return {}
-    try:
-        payload=json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
-    rows=payload.get("signals",{}) if isinstance(payload,dict) else {}
-    return rows if isinstance(rows,dict) else {}
+def _statistical_analysis_overrides(
+    path=Path("data/statistical_analysis_overrides_v1.json"),
+    verified_path=Path(__file__).resolve().parents[1]/"config"/"statistical_analysis_verified_v1.json",
+):
+    # Replays need the reviewed primary evidence, not an uncommitted CI file.
+    # A newly built analysis may supersede that presentation; malformed inputs
+    # must fail explicitly rather than silently degrading to an empty inventory.
+    merged={}
+    for candidate in (verified_path,path):
+        if not candidate.exists():
+            continue
+        payload=json.loads(candidate.read_text(encoding="utf-8"))
+        rows=payload.get("signals") if isinstance(payload,dict) else None
+        if not isinstance(rows,dict) or any(not isinstance(row,dict) for row in rows.values()):
+            raise ValueError(f"Invalid statistical analysis signals: {candidate}")
+        identity_fields={"event_date","source_url","source_name","detected_at","ingestion_mode"}
+        if any(identity_fields.intersection(row) for row in rows.values()):
+            raise ValueError(f"Statistical presentation must preserve source identity/date: {candidate}")
+        merged.update(rows)
+    return merged
 
 def add_material_epidemiology(signals, payload):
     """Append only a promoted material-week pulse; never leak provider-ready drafts."""
