@@ -6,15 +6,15 @@
     "queue_blob_sha": "8decd4a8ca1a58bf53aa410e299c7a7fa2527ef6",
     "queue_sha256": "54a227c47ce40c441c72cd432b9ceacb7f760f44135202cd759535a9f8a2796a",
     "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c",
-    "state_control_sha256": "92c6dc5b4058f7f8b13b475338f4c435983544a9d262bab9684af13009ee7b03",
-    "state_sha": "0c96168d13157cd24f0a9757e5313e055bdd342b"
+    "state_control_sha256": "ba117a59a7f4ee34b9ed2c2f9fd774a28768a92ddb35e6c29d2efc35ead192fa",
+    "state_sha": "03f46ec4d44db7dd8b272c8112aec9c218dccb14"
   },
   "canonical_pmo_updated": false,
   "corrected_material_event_count": 8,
   "correction_is_material_progress": false,
   "criteria": {
     "autonomous_pickup": {
-      "declared_pickups": 47,
+      "declared_pickups": 48,
       "reason": "Worker event/actor causality has not been independently verified.",
       "status": "NOT_PROVEN"
     },
@@ -43,19 +43,19 @@
     },
     "legacy_stage_a": {
       "metrics": {
-        "autonomous_pickups": 20,
+        "autonomous_pickups": 21,
         "material_event_count": 23,
-        "max_material_gap_seconds": 9835.994575,
+        "max_material_gap_seconds": 9800.155801,
         "mode": "live",
         "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 32853.672211,
-        "window_started_at": "2026-10-11T10:37:19.903708Z"
+        "total_elapsed_seconds": 32889.510985,
+        "window_started_at": "2026-10-11T10:37:55.742482Z"
       },
-      "observed_until": "2026-10-11T14:37:19.903708Z",
+      "observed_until": "2026-10-11T14:37:55.742482Z",
       "reasons": [
         "owner_intervention_observation_not_verified",
         "durable_verified_mutation_not_observed",
@@ -72,17 +72,17 @@
     "useful_work_window": {
       "is_live_proof": false,
       "metrics": {
-        "autonomous_pickups": 20,
+        "autonomous_pickups": 21,
         "material_event_count": 23,
-        "max_material_gap_seconds": 9835.994575,
+        "max_material_gap_seconds": 9800.155801,
         "mode": "live",
         "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 32853.672211,
-        "window_started_at": "2026-10-11T10:37:19.903708Z"
+        "total_elapsed_seconds": 32889.510985,
+        "window_started_at": "2026-10-11T10:37:55.742482Z"
       }
     }
   },
@@ -475,10 +475,10 @@
   "material_event_count": 78,
   "material_signature": "27c3b61b8006f92552dd2f1c2cd944850f93a626491913070aaf783e5ccd5751",
   "observation": {
-    "path": "data/autopilot/evidence/observation-41dbcdd7063b48ac9b3a360a1a14eddd.json",
-    "sha256": "b6a80af866724fee0d5b63619cad47967e70942fe41f74d8ea143dd2831ba89b",
+    "path": "data/autopilot/evidence/observation-29c714da06c6416f88e69b6b615e9166.json",
+    "sha256": "f8f9c7384ce25d99448eca05f4715623b7a7476c83710df16453de51974f13b7",
     "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c",
-    "state_sha": "0c96168d13157cd24f0a9757e5313e055bdd342b"
+    "state_sha": "03f46ec4d44db7dd8b272c8112aec9c218dccb14"
   },
   "owner_followup_count": null,
   "owner_followups": "UNKNOWN",
@@ -490,7 +490,6 @@
   "task_counts": {
     "BLOCKED": 38,
     "READY": 1,
-    "REVOKED": 1,
-    "RUNNING": 1
+    "RUNNING": 2
   }
 }
