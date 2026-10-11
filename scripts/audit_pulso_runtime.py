@@ -234,6 +234,9 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
     current = text_candidates if returned_to_core else set()
     metadata_only = metadata_candidates if returned_to_core else set()
     enumerated = current | metadata_only
+    publisher_exclusions = {url for url, rows in traces.items() if any(
+        row.get("status") == "excluded" and row.get("reason") in {
+            "publisher_opinion_taxonomy", "excluded_opinion_content"} for row in rows)}
     queued = {}
     for fingerprint, item in queue.items():
         if item.get("source") != SOURCE:
@@ -275,7 +278,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         primary_coverage = next((row for row in reversed(coverage) if row.get("status") == "archive_coverage"), None)
     source_error = discovery.get("audit_discovery_error") or discovery.get("sources", {}).get(SOURCE, {}).get("error_type")
     matrix = []
-    for url in sorted(text_candidates | metadata_candidates | set(queued) | set(controls) | set(history_by_url)):
+    for url in sorted(text_candidates | metadata_candidates | publisher_exclusions | set(queued) | set(controls) | set(history_by_url)):
         observed = traces.get(url, [])
         primary = next((row for row in observed if row.get("status") in {
             "discovered", "discovered_metadata_only", "excluded"}), {})
@@ -311,6 +314,10 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
                       or "not_processed; run_limit_budget_or_discovery_only; no_editorial_verdict")
         else:
             disposition, reason = "not_detected", "not_in_queue_or_history; no_editorial_verdict"
+            if url in publisher_exclusions:
+                disposition = "excluded_at_discovery"
+                reason = next(row["reason"] for row in observed if row.get("reason") in {
+                    "publisher_opinion_taxonomy", "excluded_opinion_content"})
         omission = None
         if url not in enumerated:
             precise = next((row for row in observed if row.get("status") in {"detail_error", "excluded", "excluded_path"}), None)
@@ -356,6 +363,9 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
             "source_content_unavailable_reason": primary.get("source_content_unavailable_reason"),
             "publisher_exception_reason": primary.get("publisher_exception_reason"),
             "publisher_document_type": primary.get("publisher_document_type"),
+            "publisher_content_classification": primary.get("publisher_content_classification"),
+            "publisher_taxonomy": primary.get("publisher_taxonomy"),
+            "publisher_exclusion_reason": primary.get("publisher_exclusion_reason"),
             "publication_evidence": primary.get("publication_evidence", []),
             "visible_publication_date": primary.get("visible_publication_date"),
             "possible_publication_days": primary.get("possible_publication_days", []),
@@ -423,6 +433,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
                    "current_core_verified_health_urls": len(current),
                    "source_trace_candidate_urls": len(text_candidates | metadata_candidates),
                    "metadata_only_candidates": len(metadata_only), "source_queue_urls": len(queued),
+                   "publisher_factuality_exclusions": len(publisher_exclusions),
                    "external_control_urls": len(controls), "history_urls": len(history_by_url),
                    "published_in_feed": sum(row["history_present"] and row["feed_present"] for row in matrix)},
         "publisher_editorial_exceptions": [row for row in matrix if row["metadata_only_candidate"]],

@@ -138,6 +138,23 @@ def test_discovery_exclusion_and_date_conflict_remain_explicit():
     assert report["windows"]["30"]["date_conflicts"] == [BASE + "conflict/"]
 
 
+def test_primary_publisher_opinion_is_traced_without_inventing_an_ai_rejection():
+    excluded = trace("opinion", status="excluded", reason="publisher_opinion_taxonomy",
+                     publisher_content_classification="opinion",
+                     publisher_exclusion_reason="publisher_opinion_taxonomy",
+                     publisher_taxonomy={"classification": "opinion", "matched_opinion_labels": ["Columna"]})
+    report = audit.join_report(discovery([excluded]), {}, [], [], control([]))
+    row = report["matrix"][0]
+    assert row["editorial_outcome"] == "excluded_at_discovery"
+    assert row["exact_reason"] == "publisher_opinion_taxonomy"
+    assert row["publisher_taxonomy"] == excluded["publisher_taxonomy"]
+    assert row["publisher_content_classification"] == "opinion"
+    assert row["passed_gate"] is None and not row["current_core_detected"]
+    assert not row["queue_present"] and not row["history_present"] and not row["feed_present"]
+    assert report["counts"]["publisher_factuality_exclusions"] == 1
+    assert report["counts"]["current_core_discovered_urls"] == 0
+
+
 def test_verified_video_identity_is_enumerated_without_inflating_health_recall():
     video = trace("video", status="discovered_metadata_only", article_verified=False,
                   article_body_complete=False, publication_date_verified=True,
