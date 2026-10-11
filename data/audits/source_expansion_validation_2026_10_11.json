@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-11T04:25:46.013466+00:00",
+  "branch": "staging",
+  "integration_base_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "result": "PASS_DOCUMENTATION_AND_CONFIG_CONSISTENCY",
+  "checks": {
+    "rows": 75,
+    "required_families": 25,
+    "isapres": 10,
+    "open_isapres": 7,
+    "closed_isapres": 3,
+    "backlog_packages": 15,
+    "all_ten_fields_present": true,
+    "p0_p1_rows_mapped": true,
+    "new_dependency_graph_acyclic": true,
+    "input_hashes_match": true,
+    "report_local_links_resolve": true,
+    "other_teams_tasks_preserved": true,
+    "parent_core_dependencies_preserved": true,
+    "pmo_readiness_and_validation_claims_unchanged": true,
+    "source_configs_runtime_and_workflows_unchanged": true,
+    "git_diff_check": "pass"
+  },
+  "project_checks": {
+    "method": "existing_test_functions_via_stdlib_harness",
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0,
+    "test_ids": [
+      "tests/test_orchestrator_trigger.py::test_validated_trigger_has_observed_wakeup_and_honest_limitation",
+      "tests/test_orchestrator_trigger.py::test_pmo_records_same_operational_evidence_without_production_scope",
+      "tests/test_pmo_readiness.py::test_every_declared_validated_requirement_has_matching_successful_qa",
+      "tests/test_pmo_readiness.py::test_validated_requires_full_evidence_for_exact_candidate",
+      "tests/test_pmo_readiness.py::test_source_baseline_has_no_unproven_validation",
+      "tests/test_pmo_readiness.py::test_subrequirement_without_successful_full_evidence_never_counts",
+      "tests/test_pmo_readiness.py::test_requirement_rejects_missing_sha_foreign_url_and_unlinked_proof",
+      "tests/test_pmo_readiness.py::test_closed_beta_readiness_is_independent_from_commercial_readiness",
+      "tests/test_pmo_readiness.py::test_closed_beta_never_claims_ready_without_full_qa",
+      "tests/test_beta_source_package.py::test_all_required_beta_sources_have_gate_disposition",
+      "tests/test_beta_source_package.py::test_every_new_active_gate_source_is_in_beta_catalog",
+      "tests/test_beta_source_package.py::test_media_early_signal_gate_has_lifecycle_and_noise_controls",
+      "tests/test_beta_source_package.py::test_curated_scout_catalog_covers_required_integrations",
+      "tests/test_beta_source_package.py::test_prestadores_data_discovers_current_2026_bulletins_without_fake_publication_date",
+      "tests/test_beta_source_package.py::test_fonasa_grd_compensation_is_official_and_explicit",
+      "tests/test_beta_source_package.py::test_compact_spanish_date_parser_used_by_provider_newsrooms",
+      "tests/test_beta_source_package.py::test_beta_source_surfaces_use_current_newsroom_routes",
+      "tests/test_beta_source_package.py::test_pulso_is_promoted_to_core_daily_source_config"
+    ]
+  },
+  "pytest_attempt": {
+    "status": "unavailable",
+    "reason": "No module named pytest in primary runtime or system Python; no dependency changes made.",
+    "fallback": "Directly executed the 18 existing test functions with isolated TemporaryDirectory for tmp_path; no custom test assertions substituted."
+  },
+  "limitations": [
+    "No full pytest/CI/browser run claimed.",
+    "No new connector implemented or collected.",
+    "No 90-day exhaustive capture or twice-scheduled runtime certification.",
+    "Existing catalog assertions passing do not validate operational compensation or source health.",
+    "Source access probes were external research, not GitHub Actions fetch tests."
+  ],
+  "artifact_sha256": {
+    "data/audits/source_expansion_matrix_2026_10_11.json": "c24b696f8bc1c023a00e1f3850c5744b0e651c704b85b0df8125ad7a6ac82211",
+    "config/source_expansion_backlog_2026_10_11.json": "c7b09a8e28d50529ec3b2fad58e5f69de349dfd217e57fe25a7229885edbc73f",
+    "docs/SOURCE_EXPANSION_AUDIT_2026_10_11.md": "8797a67efc1394a89a8a168c9082c0aa6f35988e71452b34340cac95b77edaa7",
+    "config/orchestrator_queue.json": "2dc7f9a05dce7e3beace06d482c1905df89a64f6b54cfc51d0cf8a96b3a48974",
+    "config/pmo_baseline.json": "0012965899a926e0a2b895f3403fcb74432d00d93dc5d44fae9a34c1e7b32d83"
+  }
+}

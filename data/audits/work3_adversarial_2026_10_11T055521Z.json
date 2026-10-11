@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "reviewer": "Work 3 — Independent Adversarial Reviewer",
+  "recorded_at": "2026-10-11T05:55:21.049Z",
+  "branch": "staging",
+  "reviewed_staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+  "previous_artifact": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+  "previous_artifact_commit": "365541aa5bbe29674a59d0e90efcf6f0e104afdd",
+  "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+  "scope": {
+    "staging_only": true,
+    "no_product_or_evidence_repair": true,
+    "no_workflow_dispatch": true,
+    "no_main_or_production_mutation": true,
+    "local_isolation": "Dedicated detached clone work3-isolated-20261011T0551Z; no branch checkout shared with other executions.",
+    "delta_since_previous": "Three staging commits changed orchestrator queue only; source, state, history, feed and weekly assets did not change.",
+    "not_exhaustive": "Focused re-audit of new claims and official omitted surface. Search failure was not treated as evidence of absence."
+  },
+  "staging_delta": [
+    {
+      "sha": "24d4c1a8d6a70d73324207b33985378aeff36142",
+      "message": "governance: add source recovery reconciliation gate",
+      "classification": "governance only"
+    },
+    {
+      "sha": "734ed6c4802c80a60eb523d3c0e83ba2c3366728",
+      "message": "roadmap: add beta gate 5 test ops and go-live",
+      "classification": "queue/roadmap only"
+    },
+    {
+      "sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "message": "sources: require exhaustive La Tercera discovery audit",
+      "classification": "queue requirement only"
+    }
+  ],
+  "findings": [
+    {
+      "id": "work3_suseso_medical_licence_sanctions_surface_missing",
+      "priority": "P0",
+      "severity": "critical",
+      "status": "open",
+      "issue": 8,
+      "title": "SUSESO fiscalization is healthy while omitting the executed-sanctions register for medical-certificate issuers",
+      "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "cause": "The staging suseso_fiscalizacion source reports status=ok/technical_status=ok/coverage_status=observed with 38 discovered and zero new/published/pending/rejected, but its configured/runtime surfaces do not include the official register at /609/w3-propertyvalue-799701.html.",
+      "official_url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+      "materiality": "The official register says sanctions are imposed and final. Rows carry fine UTM, suspension duration and suspension start/end, which can affect provider and medical-certificate operations. This audit does not require one public card per professional.",
+      "original_counts": {
+        "method": "Unique oficio number and FECHA OFICIO from the official table; identities/RUNs deliberately excluded from durable evidence.",
+        "exact_30_calendar_dates": {
+          "from_inclusive": "2026-09-12",
+          "to_inclusive": "2026-10-11",
+          "unique_oficios": 20
+        },
+        "exact_90_calendar_dates": {
+          "from_inclusive": "2026-07-14",
+          "to_inclusive": "2026-10-11",
+          "unique_oficios": 72
+        },
+        "prior_91_date_convention": {
+          "from_inclusive": "2026-07-13",
+          "to_inclusive": "2026-10-11",
+          "unique_oficios": 75,
+          "note": "Explains the 75 asserted in branch checkpoint comments; it is 91 inclusive calendar dates, not exactly 90."
+        },
+        "date_semantics": "Use FECHA OFICIO as the act date. Preserve suspension start/end separately; neither fetch date nor future suspension start may rejuvenate the act.",
+        "sample_ids": [
+          "O-02-S-03209-2026",
+          "O-02-S-03164-2026",
+          "O-02-S-02827-2026"
+        ]
+      },
+      "pipeline_reconciliation": {
+        "source_health": {
+          "checked_at": "2026-10-10T22:24:44.407735+00:00",
+          "last_signal_at": null,
+          "discovered": 38,
+          "new": 0,
+          "published": 0,
+          "pending": 0,
+          "rejected": 0,
+          "status": "ok",
+          "technical_status": "ok",
+          "coverage_status": "observed",
+          "content_freshness": "unknown",
+          "editorial_outcome": "no_new_signals"
+        },
+        "exact_url": {
+          "discovered": false,
+          "seen": false,
+          "pending": false,
+          "rejected": false,
+          "published_history": false,
+          "published_feed": false
+        },
+        "equivalent_event_check": "No match for the register descriptor or sampled oficio IDs in staging pending queue, suseso seen ledger, history or feed. This is not a claim that every medical-certificate sanction concept is absent from every source."
+      },
+      "closure_criteria": [
+        "Merge the surface and identity/date rules to staging; an isolated PR, HTTP 200 or parser test is not closure.",
+        "Run the core path after merge and reconcile all 20 exact-30-date and 72 exact-90-date oficios to seen/pending/rejected/published or a specific grouped editorial outcome.",
+        "Key identity by oficio (not the shared page URL) while deduplicating repeats and keeping date-oficio distinct from suspension dates.",
+        "Publish aggregates or material groupings without exposing personal identifiers; record explicit rejection/grouping reasons rather than creating cards by quota.",
+        "Keep health partial/error until the omitted surface has a real post-merge outcome; QA and independent Reviewer must pass."
+      ]
+    }
+  ],
+  "repairs_revalidated": [
+    {
+      "issue": 7,
+      "id": "autonomy_success_semantics_internal_guard",
+      "status": "partial_revalidated",
+      "evidence": [
+        {
+          "run_id": 38115967398,
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398",
+          "controller": "NOT_PROVEN; real_failure_verified_repair_not_observed",
+          "media_job": "BLOCKED; workflow_success_is_progress=false"
+        },
+        {
+          "run_id": 38116104901,
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116104901",
+          "control": "same staging failure signature; repair and candidate_review skipped",
+          "observation": "counts_as_material_progress=false; hosted canary WAITING_HEARTBEAT"
+        }
+      ],
+      "assessment": "The newest controller artifacts correctly refuse to treat a green job as material progress. This is a semantic improvement over the earlier skipped-LIVE success. It does not validate autonomy: no repair was merged to staging, the demonstrated QA failure persists, and the canary has not completed a heartbeat transition."
+    }
+  ],
+  "actions_and_qa": {
+    "latest_staging_run": {
+      "run_id": 38113830124,
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38113830124",
+      "head_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "result": "failure",
+      "tests": "1 failed, 265 passed, 1 skipped, 1 warning",
+      "failure": "test_web_snapshot.py:289 assert 11 >= 12",
+      "staging_reviewer_preview": "skipped"
+    },
+    "active_branch_claims": "DF, Pulso, fiscalization and provider repairs remain on non-staging branches/PRs. Their tests and real-source runs are candidate evidence, not staging repairs."
+  },
+  "unchanged_state": {
+    "basis": "GitHub compare 365541aa...73aff5c lists only config/orchestrator_queue.json.",
+    "paths": [
+      "data/source_health.json",
+      "data/state/beta_source_validation.json",
+      "data/state/discovery_run.json",
+      "data/state/pending_queue.json",
+      "data/history/superintendencia_signals.json",
+      "web/data/radar_today.json",
+      "data/weekly_insight/latest.json"
+    ],
+    "prior_hashes": {
+      "data/source_health.json": {
+        "sha256": "eb7a18536cf7d374fea0ea0c637f0db1c1d63b6591a9181ae81e21180459480e",
+        "unchanged_from_supplement": true
+      },
+      "web/data/source_health.json": {
+        "sha256": "653c3df4908751a8ac2b5c77a17c2d185f4024b2c9dc3744f0e33fe61b35c186",
+        "unchanged_from_supplement": true
+      },
+      "data/state/beta_source_validation.json": {
+        "sha256": "6794ec0bcb1b28356c8f02253358fcdea23041a8c8e95bc4eac4ab299416512b",
+        "unchanged_from_supplement": true
+      },
+      "data/state/discovery_run.json": {
+        "sha256": "b79bdbbb5210dbd31600a6fe298f92d70f2bc27efa76827a96a2c42b5157d2b4",
+        "unchanged_from_supplement": true
+      },
+      "data/state/pending_queue.json": {
+        "sha256": "803ce81e9e4a339783d94ecc7a13140f1b6c5ccc2f657611410e13f565e9ca2d",
+        "unchanged_from_supplement": true
+      },
+      "data/history/superintendencia_signals.json": {
+        "sha256": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+        "unchanged_from_supplement": true
+      },
+      "web/data/radar_today.json": {
+        "sha256": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+        "unchanged_from_supplement": true
+      }
+    }
+  },
+  "open_fronts": {
+    "6": "No media repair merged to staging. DF/Pulso branch claims remain unapproved; latest staging product data is unchanged.",
+    "7": "Internal progress semantics improved, but autonomy remains unvalidated: NOT_PROVEN, blocked/skipped repairs and no staging outcome.",
+    "8": "New P0 official SUSESO sanctions surface omitted while source is labeled ok; Andes/MetLife and other coverage gaps remain.",
+    "9": "No new editorial asset since prior cut; weekly partial revalidation and provenance P1 remain as previously recorded."
+  },
+  "source_original_receipt": {
+    "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+    "checked_on": "2026-10-11",
+    "page_title": "Registro de sanciones a profesionales emisores de licencias médicas",
+    "official_statement": "Sanciones cursadas y ejecutoriadas para el periodo señalado.",
+    "columns_used": [
+      "NÚMERO OFICIO",
+      "FECHA OFICIO",
+      "MONTO MULTA (UTM)",
+      "SUSPENSIÓN (días)",
+      "INICIO",
+      "FIN"
+    ],
+    "privacy_note": "Names and RUNs are not reproduced in this report."
+  },
+  "limitations": [
+    "The official page is a mutable register; counts are a dated receipt and require durable post-merge capture.",
+    "The page filter says fecha de resolución while the table column says FECHA OFICIO; closure must document the chosen provenance.",
+    "No branch candidate was approved and no workflow was triggered by this reviewer."
+  ],
+  "monitoring_window_complete": false
+}

@@ -1,0 +1,3243 @@
+{
+  "schema_version": 1,
+  "audit_id": "work4_source_expansion_2026_10_11",
+  "audit_date": "2026-10-11",
+  "generated_at": "2026-10-11T04:25:45.756169+00:00",
+  "branch": "staging",
+  "product_reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+  "integration_base_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "issue_url": "https://github.com/cftorre1/Radar-salud/issues/5",
+  "verdict": "UNIVERSE_AUDITED_BACKLOG_READY_NO_SOURCE_ACTIVATION",
+  "scope": {
+    "rows": 75,
+    "new_runtime_connectors": 0,
+    "isapres": 10,
+    "isapres_open": 7,
+    "isapres_closed": 3,
+    "p0_packages": 3,
+    "p1_packages": 12,
+    "decisions": {
+      "activar ahora": 34,
+      "secundaria": 32,
+      "post-MVP": 7,
+      "descartar": 2
+    },
+    "production_changes": false,
+    "source_runtime_changes": false,
+    "scheduled_job_changes": false
+  },
+  "method": {
+    "window_30_days": [
+      "2026-09-11",
+      "2026-10-11"
+    ],
+    "window_90_days": [
+      "2026-07-13",
+      "2026-10-11"
+    ],
+    "universe_definition": "Todas las familias comprometidas en SOURCES_V2_FINAL, los mínimos de Work 4 y fuentes adicionales justificadas por brechas. No significa todos los sitios de todas las empresas del mercado.",
+    "sampling": "Comprobación pública dirigida de superficies y señales, con evidencia por fila. No certifica exhaustividad de cada archivo de 90 días, parser de producción, disponibilidad desde GitHub Actions ni permisos de automatización.",
+    "recent_test_rule": "Un campo null o fuera de ventana se informa como pendiente/histórico. Indexación, apertura, PDF de emisor, referencia curada y prueba runtime son niveles distintos.",
+    "decision_meaning": {
+      "activar ahora": "Priorizar incorporación/calificación en staging. Es recomendación, no active/healthy. Acceso, fecha, materialidad y dependencias siguen siendo gates.",
+      "secundaria": "Usar corroboración, snapshots o canal existente dirigido; no nuevo feed autónomo.",
+      "post-MVP": "Diferir explícitamente por valor incremental, derechos, coste o madurez; no se declara compromiso cumplido.",
+      "descartar": "Descartar como conector de ingesta para este alcance; motivo por fila."
+    },
+    "priority_meaning": "P0/P1 relativos a expansión, sin desplazar recuperación crítica de los 27. Varios actores comparten un adapter; filas no son conteo de conectores.",
+    "no_inference": "La falta de una señal encontrada no prueba inexistencia de material. Ninguna propuesta de incorporación se activa con esta auditoría."
+  },
+  "input_hashes_at_integration_base": {
+    "docs/SOURCES_V2_FINAL.md": "058f8e5aded55d0608b0f95a118eb1dd4bfe303b5b95d14730dc8556541428fb",
+    "docs/SERVICES_V2_FINAL.md": "608c300692daacce57d72c7d1a987e9b843438c0f5d4fad877c2fff10d69eb12",
+    "docs/PMO_BASELINE.md": "36d0bd0b77a3b08da4be429da41f9d4aa630ea976225ddc64a52502fbe8293da",
+    "docs/AGENT_AUDITOR_CONTRACT.md": "cfece0f7df0820d535d76d3d556ccd7b59d4bd3b6d2be73a48349884810562d0",
+    "docs/SOURCE_COVERAGE_BALANCE_REVIEW_2026_09_28.md": "6fb41f9e1dfef60067ec9f255229dd247fa3f750184a2c57a0e93df872da42c6",
+    "docs/IMPROVEMENT_REVIEW_PROVIDER_COVERAGE_2026_09_28.md": "71a0c7794e8268a2d789c1cdf855bfe19a7c9c14a97aa21b7c69cd47ea5be8f3",
+    "docs/IMPROVEMENT_REVIEW_COVERAGE_EPIdEMIOLOGY_2026_09_28.md": "e303adbdec2e6c8b074b09c9edc63b22d8148a350ac116e47ce6c6580ba381a9",
+    "docs/IMPROVEMENT_REVIEW_BETA_SOURCES_2026_10_01.md": "a9946001a887adcb64f5b4709b70befc66560f742f50569f2aa52d80198455e1",
+    "config/sources.json": "3414ca7f9650be66bacb97ad90b1f17d24001321e0481f6c47f8372a0e6294b4",
+    "config/beta_source_configs.json": "fa4f84bff1fdeb5c6549bcb9eafc43879d1effcb6cad45ec3030a3bb3f0a9d1f",
+    "config/orchestrator_queue.json": "b10c9fc35db95d99cb3a34403808130ed500839ffa7ff558e3bad3d8df5eccc7",
+    "config/pmo_baseline.json": "b0eb9d48c8a426bdc9a8e2d63553776a0b55be932cc7d507e007e875513f5716",
+    "config/source_quality_gate.json": "a25932b75342d2c479832dc6dc3de9d0a06b13a98d8408c937f1b58ea92af71a",
+    "config/source_quality_reviews_beta_2026_10_01.json": "17ff52d96d9a1d55e05d56468fefe7a705dfb724507e62971fd0f27966812608",
+    "data/source_health.json": "eb7a18536cf7d374fea0ea0c637f0db1c1d63b6591a9181ae81e21180459480e",
+    "data/state/discovery_run.json": "b79bdbbb5210dbd31600a6fe298f92d70f2bc27efa76827a96a2c42b5157d2b4",
+    "data/global/themes.json": "e2517bf6d5435f899e30dbac6c1fa651cf811613400426dc87490010ef0d5a77",
+    "data/audits/source_autonomy_audit_latest.json": "892409226584763757c5b54c528fc0225b2a9d8bc6b44ac1ed1557bbe4233c2e",
+    "data/audits/work3_adversarial_2026_10_11.json": "014e3565142795ed72a9e279701f73716efada4d29fc696e6896d20fca01a422",
+    "data/audits/work3_adversarial_2026_10_11_supplement.json": "7e2532757474d8dafe9c30ace3129b88834e7b148a0c65bdd3a9e967fffe923a",
+    "web/data/radar_today.json": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+    "docs/EDITORIAL_SENIOR_REVIEW_2026_10_11.md": "57ba49d0d7aa9f21071754cfce9545659c4ceef897ef9fa3385197bb2a79901b",
+    "data/audits/work2_editorial_closeout_2026_10_11.json": "f7c03fe61d5ba0e6b93b7dba3370bea1cc8f7da69dec6a66d37e08b0cd88e181",
+    "src/radar_salud/engine_cli.py": "8e613f1c2568aef87f33e06518089ee4cf6f48638bd4fb90dbe8b4c12006d273",
+    "src/radar_salud/press_pipeline.py": "564bf5bdef62be48b4f11d7feee47a87bba68d991865da5e448af54a1354c56f",
+    "src/radar_salud/mercado_publico.py": "2660a8e2c59b5d68e84141b8a1c87ff8d773f810dd93ea758519ed088536a099",
+    "src/radar_salud/global_intelligence.py": "e8c87d97ef0148728104fb20649708ebd09998f2e81b0607605e1dc5e8ab4d78",
+    "scripts/export_global_intelligence.py": "2fb5a44eec9841d8c91654dccf193285d103dd2930dc40030c918072d4a92831",
+    ".github/workflows/daily-radar.yml": "f53363188e7d25ca5de39edf7bfec9d16febd42b90e265dfa42dd5370ad5d1d4",
+    ".github/workflows/qa.yml": "5e6545b0153fbccfa1838a0ad8797a1764863d3ff4081865c8c01ad9c86b1fd8"
+  },
+  "roadmap_inputs": [
+    "docs/SOURCES_V2_FINAL.md",
+    "docs/SERVICES_V2_FINAL.md",
+    "docs/PMO_BASELINE.md",
+    "config/orchestrator_queue.json"
+  ],
+  "required_family_coverage": {
+    "Reuters recurrente": [
+      "reuters"
+    ],
+    "OMS/WHO": [
+      "who"
+    ],
+    "OPS/PAHO": [
+      "paho"
+    ],
+    "Mercado Público/ChileCompra": [
+      "procurement"
+    ],
+    "Poder Judicial": [
+      "pjud"
+    ],
+    "BCN/LeyChile": [
+      "bcn"
+    ],
+    "CMF": [
+      "cmf"
+    ],
+    "DIPRES": [
+      "dipres"
+    ],
+    "INE": [
+      "ine"
+    ],
+    "CASEN": [
+      "casen"
+    ],
+    "CEP": [
+      "cep"
+    ],
+    "ISL": [
+      "isl"
+    ],
+    "COMPIN": [
+      "compin"
+    ],
+    "universo completo Isapres": [
+      "sis_cohort",
+      "isapre_banmedica",
+      "isapre_colmena",
+      "isapre_consalud",
+      "isapre_cruzblanca",
+      "isapre_nuevamasvida",
+      "isapre_vidatres",
+      "isapre_esencial",
+      "isapre_isalud",
+      "isapre_fundacion",
+      "isapre_cruzdelnorte"
+    ],
+    "Clínica Alemana": [
+      "alemana"
+    ],
+    "UC CHRISTUS": [
+      "uc_christus"
+    ],
+    "Clínica Las Condes": [
+      "clc"
+    ],
+    "Interclínicas": [
+      "interclinica"
+    ],
+    "otras redes prestadoras": [
+      "falp",
+      "uandes_clinic",
+      "meds",
+      "andes_regional",
+      "existing_networks",
+      "other_providers",
+      "public_providers"
+    ],
+    "universidades y centros de estudios": [
+      "udd",
+      "uchile",
+      "uc_policy",
+      "clapes"
+    ],
+    "Start-Up Chile": [
+      "startup_chile"
+    ],
+    "ecosistema healthtech": [
+      "cens",
+      "prosalud",
+      "healthtech",
+      "lavca",
+      "vc_maps"
+    ],
+    "laboratorios": [
+      "pharma_primary",
+      "roche",
+      "megalabs",
+      "saval",
+      "pharma_associations",
+      "pfizer_existing"
+    ],
+    "farmacias": [
+      "ahumada",
+      "salcobrand",
+      "cruzverde",
+      "independent_pharmacies"
+    ],
+    "medtech": [
+      "ge",
+      "siemens",
+      "medtronic",
+      "adimech"
+    ]
+  },
+  "roadmap_additional_coverage": {
+    "careers_ATS": [
+      "careers"
+    ],
+    "LinkedIn_complement": [
+      "linkedin"
+    ],
+    "TC_legal": [
+      "tc_tdlc"
+    ],
+    "VC_accelerators": [
+      "lavca",
+      "vc_maps",
+      "startup_chile"
+    ],
+    "biotech_technology": [
+      "healthtech",
+      "udd",
+      "pharma_primary",
+      "nonhealth_biotech"
+    ],
+    "international_later": [
+      "oecd",
+      "consulting",
+      "restricted_global",
+      "specialist_media"
+    ],
+    "LatAm_6_8_months": [
+      "latam"
+    ],
+    "existing_official_press_occupational": [
+      "core_official",
+      "press_chile",
+      "mutualities_existing",
+      "pharma_primary"
+    ]
+  },
+  "gap_to_backlog": {
+    "competencia entre Isapres": [
+      "w4_isapres_2026_10_11",
+      "w4_cmf_2026_10_11"
+    ],
+    "prestadores": [
+      "w4_providers_2026_10_11",
+      "w4_provider_data_2026_10_11",
+      "w4_fne_2026_10_11"
+    ],
+    "inversiones": [
+      "w4_cmf_2026_10_11",
+      "w4_dipres_2026_10_11",
+      "w4_provider_data_2026_10_11"
+    ],
+    "M&A": [
+      "w4_fne_2026_10_11",
+      "w4_cmf_2026_10_11",
+      "w4_reuters_2026_10_11"
+    ],
+    "financiamiento": [
+      "w4_cmf_2026_10_11",
+      "w4_dipres_2026_10_11"
+    ],
+    "compras públicas": [
+      "w4_procurement_2026_10_11",
+      "w4_cenabast_2026_10_11"
+    ],
+    "regulación": [
+      "w4_legal_2026_10_11",
+      "w4_occupational_2026_10_11"
+    ],
+    "judicialización": [
+      "w4_legal_2026_10_11"
+    ],
+    "datos epidemiológicos": [
+      "w4_who_2026_10_11",
+      "w4_paho_2026_10_11",
+      "w4_socioeconomic_2026_10_11"
+    ],
+    "innovación": [
+      "w4_innovation_2026_10_11",
+      "w4_cenabast_2026_10_11"
+    ],
+    "tecnología": [
+      "w4_innovation_2026_10_11",
+      "w4_reuters_2026_10_11",
+      "w4_procurement_2026_10_11"
+    ],
+    "tendencias internacionales": [
+      "w4_who_2026_10_11",
+      "w4_paho_2026_10_11",
+      "w4_reuters_2026_10_11"
+    ]
+  },
+  "runtime_recurrence_audit": {
+    "themes_generated_at": "2026-10-08T23:55:00Z",
+    "theme_count": 14,
+    "unique_reference_count": 17,
+    "publisher_counts": {
+      "Reuters": 8,
+      "WHO": 2,
+      "Deloitte": 3,
+      "PwC": 1,
+      "McKinsey": 2,
+      "OECD": 1
+    },
+    "sources": [
+      {
+        "publisher": "Reuters",
+        "source_id": "reuters",
+        "unique_curated_references": 8,
+        "latest_curated_publication": "2026-10-08",
+        "in_source_configs": false,
+        "scheduled_fetch_route_found": false,
+        "own_source_health_found": false,
+        "assessment": "curated_only_no_periodic_operation_proven",
+        "code_note": "raw_reuters_item/process_reuters_item son normalizadores usados por pruebas/demo; no descubrimiento periódico."
+      },
+      {
+        "publisher": "WHO",
+        "source_id": "who",
+        "unique_curated_references": 2,
+        "latest_curated_publication": "2026-06-22",
+        "in_source_configs": false,
+        "scheduled_fetch_route_found": false,
+        "own_source_health_found": false,
+        "assessment": "curated_only_no_periodic_operation_proven",
+        "code_note": "Publisher permitido y referencias estáticas; no scout periódico."
+      },
+      {
+        "publisher": "PAHO",
+        "source_id": "paho",
+        "unique_curated_references": 0,
+        "latest_curated_publication": null,
+        "in_source_configs": false,
+        "scheduled_fetch_route_found": false,
+        "own_source_health_found": false,
+        "assessment": "not_present_in_curated_dataset_or_runtime",
+        "code_note": "Publisher permitido; no referencias en themes ni scout periódico."
+      }
+    ],
+    "daily_route": "daily-radar.yml → radar_salud.engine_cli → core/beta source specs. No Reuters/WHO/PAHO collector route found.",
+    "curated_route": "data/global/themes.json → global_intelligence.py/load/validate → export_global_intelligence.py in QA. Exportar JSON no consulta publishers.",
+    "important_distinction": "La curación fue actualizada en octubre; no son sólo ejemplos viejos. Tampoco hay evidencia de operación periódica de los tres publishers.",
+    "mercado_publico": "Cliente/ticket y tests existen; no ruta en motor diario ni prueba transaccional reciente."
+  },
+  "current_coverage_context": {
+    "issue_connector_count": 27,
+    "core_config_rows": 21,
+    "beta_config_rows": 8,
+    "unique_declared_slugs": 28,
+    "count_explanation": "Pulso se repite en ambos configs; minsal_respiratory_pressure es derivado. Alias superintendencia_salud/superintendencia no es otra entidad. 27 conectores no equivalen a 27 familias cubiertas.",
+    "source_health_generated_at": "2026-10-10T22:25:43.933396+00:00",
+    "discovery_timestamps": {
+      "at": "2026-10-10T22:23:57.654378+00:00"
+    },
+    "work3_supplement_verdict": "COVERAGE_EDITORIAL_AND_AUTONOMY_NOT_VALIDATED",
+    "work3_distribution": {
+      "history": {
+        "30": {
+          "date_from_inclusive": "2026-09-11",
+          "date_to_inclusive": "2026-10-11",
+          "rows": 73,
+          "by_source": {
+            "Superintendencia de Salud": 27,
+            "Ministerio de Salud": 17,
+            "Diario Oficial": 12,
+            "Diario Financiero": 4,
+            "RedSalud": 1,
+            "Superintendencia de Seguridad Social (SUSESO)": 12
+          },
+          "ingestion_mode": {
+            "unspecified": 27,
+            "BACKFILL": 26,
+            "LIVE": 20
+          }
+        },
+        "90": {
+          "date_from_inclusive": "2026-07-13",
+          "date_to_inclusive": "2026-10-11",
+          "rows": 184,
+          "by_source": {
+            "Superintendencia de Salud": 52,
+            "Ministerio de Salud": 20,
+            "Diario Oficial": 80,
+            "Diario Financiero": 14,
+            "Bupa Chile": 1,
+            "RedSalud": 1,
+            "Superintendencia de Seguridad Social (SUSESO)": 16
+          },
+          "ingestion_mode": {
+            "unspecified": 131,
+            "BACKFILL": 33,
+            "LIVE": 20
+          }
+        }
+      },
+      "feed": {
+        "30": {
+          "date_from_inclusive": "2026-09-11",
+          "date_to_inclusive": "2026-10-11",
+          "rows": 28,
+          "by_source": {
+            "Superintendencia de Seguridad Social (SUSESO)": 9,
+            "Ministerio de Salud": 11,
+            "Superintendencia de Salud": 4,
+            "Diario Financiero": 3,
+            "RedSalud": 1
+          },
+          "ingestion_mode": {
+            "LIVE": 4,
+            "BACKFILL": 17,
+            "unspecified": 7
+          }
+        },
+        "90": {
+          "date_from_inclusive": "2026-07-13",
+          "date_to_inclusive": "2026-10-11",
+          "rows": 49,
+          "by_source": {
+            "Superintendencia de Seguridad Social (SUSESO)": 9,
+            "Ministerio de Salud": 11,
+            "Superintendencia de Salud": 14,
+            "Diario Financiero": 13,
+            "RedSalud": 1,
+            "Bupa Chile": 1
+          },
+          "ingestion_mode": {
+            "LIVE": 4,
+            "BACKFILL": 19,
+            "unspecified": 26
+          }
+        }
+      },
+      "counts_note": "Counts use event_date, not crawl date; history is not equivalent to public feed. Health published is last-run; queue states are cumulative. Discovered values cannot be divided by last-run published to infer coverage.",
+      "feed_7d": {
+        "date_from_inclusive": "2026-10-04",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 6,
+        "by_source": {
+          "Superintendencia de Seguridad Social (SUSESO)": 3,
+          "Ministerio de Salud": 3
+        }
+      },
+      "last_30d_public_trio": {
+        "rows": 24,
+        "denominator_feed_rows": 28,
+        "percent": 85.71428571428571
+      },
+      "all_feed_lane_counts": {
+        "LIVE": 4,
+        "BACKFILL": 19,
+        "unspecified": 26
+      }
+    },
+    "no_recertification": "Work 3 no valida cobertura/editorial/autonomía y documenta truncación de Andes, fallos de fecha DF y pruebas omitidas. Esta expansión no cierra esas tareas.",
+    "compensation_gap": "Revisión beta usa CMF como argumento para CLC y DIPRES puntual para FONASA sin demostrar conectores periódicos. Son hipótesis de cobertura, no compensación operativa completa."
+  },
+  "source_matrix": [
+    {
+      "id": "reuters",
+      "name": "Reuters recurrente",
+      "family": "internacional",
+      "analytical_purpose": "M&A, capital, tecnología y regulación internacional con posible transferencia a Chile",
+      "modules": [
+        "Global Intelligence",
+        "Discovery"
+      ],
+      "primary_url": "https://www.reuters.com/business/healthcare-pharmaceuticals/",
+      "cadence": "Diaria hábil; alertas materiales, no cuota",
+      "technical_availability": "Normalizadores en press_pipeline.py; sin fetcher/ruta periódica. Acceso automatizado y derechos no acreditados.",
+      "date_and_evidence_quality": "Fecha editorial y URL disponibles en referencias; falta validar captura íntegra permitida y actualizaciones.",
+      "recent_test_signal": {
+        "url": "https://www.reuters.com/legal/transactional/ge-healthcare-buy-sofie-biosciences-945-million-strengthen-radiopharma-business-2026-10-05/",
+        "reference_id": "turn20news48",
+        "published_at": "2026-10-05",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "GE HealthCare anuncia compra de SOFIE; contrastable con emisor. Muestra indexada, no prueba de conector."
+      },
+      "expected_value": "Alto: operaciones que los reguladores chilenos no cubren.",
+      "noise_risk": "Medio: litigios sin pertinencia, duplicados y foco EE.UU.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_reuters_2026_10_11"
+      ],
+      "coverage_gap": "Sólo curación reciente en Global; sin recurrencia probada.",
+      "readiness": "hold_access_validation",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "who",
+      "name": "OMS / WHO",
+      "family": "internacional",
+      "analytical_purpose": "Epidemiología, guías y cambios de sistemas sanitarios",
+      "modules": [
+        "Global Intelligence",
+        "Trend"
+      ],
+      "primary_url": "https://www.who.int/news-room",
+      "cadence": "2 veces por semana; alertas urgentes diarias",
+      "technical_availability": "Listado y detalle HTML públicos abiertos en esta auditoría; falta parser/routing periódico.",
+      "date_and_evidence_quality": "Fecha explícita en detalle; distinguir versión de guía, período de datos y noticia.",
+      "recent_test_signal": {
+        "url": "https://www.who.int/news/item/09-10-2026-who-urges-shift-from-institutional-to-community-based-mental-health-care",
+        "reference_id": "turn7view4",
+        "published_at": "2026-10-09",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Orientación hacia atención comunitaria de salud mental; detalle primario accesible."
+      },
+      "expected_value": "Alto: evidencia internacional de política y demanda.",
+      "noise_risk": "Medio: nombramientos, campañas y efemérides.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_who_2026_10_11"
+      ],
+      "coverage_gap": "Dos referencias curadas antiguas no equivalen a polling.",
+      "readiness": "public_surface_verified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "paho",
+      "name": "OPS / PAHO",
+      "family": "internacional",
+      "analytical_purpose": "Vigilancia epidemiológica regional y políticas comparables",
+      "modules": [
+        "Global Intelligence",
+        "Trend"
+      ],
+      "primary_url": "https://www.paho.org/es/informes-tecnicos",
+      "cadence": "Semanal por boletín; diario sólo alertas",
+      "technical_availability": "Contenido oficial indexado; listado y PDF devolvieron 403. Ruta alternativa pública pendiente.",
+      "date_and_evidence_quality": "Lista presenta publicación y semana epidemiológica; PDF completo sin verificar en este entorno.",
+      "recent_test_signal": {
+        "url": "https://www.paho.org/es/informes-tecnicos",
+        "reference_id": "turn15search1",
+        "published_at": "2026-09-25",
+        "data_period": "SE 37/2026",
+        "verification": "primary_indexed_blocked",
+        "within_90_days": true,
+        "observation": "Informe regional influenza semana 37, publicación listada 25/09; señal indexada y acceso directo bloqueado."
+      },
+      "expected_value": "Alto: contexto LatAm y riesgo sanitario.",
+      "noise_risk": "Bajo-medio: mezclar países o revisiones.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_paho_2026_10_11"
+      ],
+      "coverage_gap": "Cero referencias PAHO en themes.json y sin fuente runtime.",
+      "readiness": "hold_external",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "oecd",
+      "name": "OECD salud",
+      "family": "internacional",
+      "analytical_purpose": "Comparación de sistemas, gasto y adopción tecnológica",
+      "modules": [
+        "Global Intelligence",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.oecd.org/en/topics/health.html",
+      "cadence": "Mensual y por publicación",
+      "technical_availability": "URL primaria presente en colección curada; no se verificó canal recurrente en este trabajo.",
+      "date_and_evidence_quality": "Datos y fecha de informe deben separarse; metodología internacional no idéntica a Chile.",
+      "recent_test_signal": {
+        "url": "https://www.oecd.org/en/publications/proceeding-report-from-madrid-conference-on-the-responsible-scale-of-ai-in-healthcare_cf9439c3-en.html",
+        "reference_id": null,
+        "published_at": "2026-10-07",
+        "data_period": null,
+        "verification": "repository_curated_only",
+        "within_90_days": true,
+        "observation": "Informe Madrid sobre escala responsable de IA, según themes.json; no recapturado aquí."
+      },
+      "expected_value": "Medio-alto para Benchmark y tesis Global.",
+      "noise_risk": "Bajo; riesgo de atribuir cifras internacionales a Chile.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Curación sin health ni recolección comprobada.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "consulting",
+      "name": "Deloitte, McKinsey y PwC",
+      "family": "internacional",
+      "analytical_purpose": "Tesis estratégicas y cambio de modelos de negocio",
+      "modules": [
+        "Global Intelligence"
+      ],
+      "primary_url": "https://www.deloitte.com/us/en/industries/life-sciences-health-care.html",
+      "cadence": "Mensual",
+      "technical_availability": "Enlaces de informes curados; automatización/reutilización y fechas deben calificarse por editor.",
+      "date_and_evidence_quality": "Fecha en themes.json no sustituye chequeo del original; distinguir proyección de resultado.",
+      "recent_test_signal": {
+        "url": "https://www.deloittedigital.com/us/en/insights/perspective/genai-greenlight-health-care.html",
+        "reference_id": null,
+        "published_at": "2026-09-18",
+        "data_period": null,
+        "verification": "repository_curated_only",
+        "within_90_days": true,
+        "observation": "Referencia GenAI en themes.json; revisión directa pendiente."
+      },
+      "expected_value": "Medio: insumo interpretativo con corroboración primaria.",
+      "noise_risk": "Alto: marketing, encuestas no comparables y contenido repetido.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "No confundir publishers permitidos con fuentes implementadas.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.mckinsey.com/industries/healthcare/our-insights",
+        "https://www.pwc.com/gx/en/industries/healthcare.html"
+      ]
+    },
+    {
+      "id": "restricted_global",
+      "name": "BCG / CB Insights",
+      "family": "internacional",
+      "analytical_purpose": "Tesis de mercado y mapas de innovación",
+      "modules": [
+        "Global Intelligence"
+      ],
+      "primary_url": "https://www.cbinsights.com/research/",
+      "cadence": "Trimestral si existe acceso autorizado",
+      "technical_availability": "Auditorías previas registran 403/acceso y restricciones de reutilización comercial; no demostrada licencia aplicable.",
+      "date_and_evidence_quality": "No se validó una muestra reciente reutilizable.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "repository_audit_only",
+        "within_90_days": null,
+        "observation": "Sin prueba reciente permitida; restricciones/acceso descritos en PMO_BASELINE. No se infiere una prohibición universal."
+      },
+      "expected_value": "Medio; alto solapamiento con fuentes primarias.",
+      "noise_risk": "Alto: gated marketing y coste de derechos.",
+      "decision": "post-MVP",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "No justifica integrar antes que fuentes públicas materiales.",
+      "readiness": "hold_rights",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.bcg.com/industries/health-care"
+      ]
+    },
+    {
+      "id": "specialist_media",
+      "name": "STAT / Fierce Healthcare",
+      "family": "internacional",
+      "analytical_purpose": "Profundidad sectorial internacional complementaria",
+      "modules": [
+        "Global Intelligence"
+      ],
+      "primary_url": "https://www.statnews.com/",
+      "cadence": "Semanal si se habilita",
+      "technical_availability": "Roadmap posterior; superficies/acceso no calificados aquí.",
+      "date_and_evidence_quality": "Sin detalle reciente validado; exigir fecha editorial y derechos.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": null,
+        "observation": "No se invierte en validar nuevas suscripciones antes de resolver Reuters/WHO."
+      },
+      "expected_value": "Medio incremental.",
+      "noise_risk": "Medio-alto: redundancia y geografía EE.UU.",
+      "decision": "post-MVP",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Expansión posterior ya contemplada, sin necesidad P0/P1.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.fiercehealthcare.com/"
+      ]
+    },
+    {
+      "id": "sis_cohort",
+      "name": "SIS: registro y datos de las 10 Isapres",
+      "family": "isapres",
+      "analytical_purpose": "Denominador completo de competencia, beneficiarios, finanzas y redes",
+      "modules": [
+        "Benchmark",
+        "Trend",
+        "Watch"
+      ],
+      "primary_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "cadence": "Registro mensual; datos por release mensual/trimestral; cambios materiales diarios",
+      "technical_availability": "Registro HTML y publicación con adjuntos; aprovechar conector SIS existente.",
+      "date_and_evidence_quality": "Publicación explícita 02/10/2026, datos agosto 2026; no medir cobertura por nombre de conector.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Nueva publicación mensual de cartera del sistema; validar archivo por código antes de computar participación."
+      },
+      "expected_value": "Muy alto: cierra comparación completa con baja fragmentación.",
+      "noise_risk": "Bajo si normaliza períodos, universos y tipos de Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "SIS existe, pero cobertura competitiva completa no está acreditada.",
+      "readiness": "extend_existing_source",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "procurement",
+      "name": "Mercado Público / ChileCompra",
+      "family": "compras_publicas",
+      "analytical_purpose": "Demanda, inversión, proveedores ganadores y contratos sanitarios",
+      "modules": [
+        "Discovery",
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://api.mercadopublico.cl/",
+      "cadence": "Diaria hábil incremental; adjudicaciones y cambios de etapa",
+      "technical_availability": "Cliente API implementado, sin ruta periódica. API exige ticket; alternativa datos abiertos por validar.",
+      "date_and_evidence_quality": "Cliente actual conserva cierre, no evidencia suficiente de publicación/adjudicación. Cada campo requiere semántica propia.",
+      "recent_test_signal": {
+        "url": "https://www.chilecompra.cl/category/centro-de-documentacion/normativa/salud/",
+        "reference_id": "turn1search13",
+        "published_at": "2026-10-02",
+        "data_period": null,
+        "verification": "primary_indexed_not_transaction",
+        "within_90_days": true,
+        "observation": "Categoría oficial Salud con aviso 02/10; no se validó todavía licitación/adjudicación reciente a nivel transacción."
+      },
+      "expected_value": "Muy alto: brecha de compras, medtech, laboratorios y financiamiento.",
+      "noise_risk": "Alto si usa sólo palabra laboratorio o montos estimados.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_procurement_2026_10_11"
+      ],
+      "coverage_gap": "Existe código y tests, pero no operación recurrente certificada.",
+      "readiness": "hold_access_validation",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://api.mercadopublico.cl/servicios/v1/publico/licitaciones.json",
+        "https://datos-abiertos.chilecompra.cl/"
+      ]
+    },
+    {
+      "id": "pjud",
+      "name": "Poder Judicial",
+      "family": "judicializacion",
+      "analytical_purpose": "Precios, coberturas, prestaciones y conflictos judiciales materiales",
+      "modules": [
+        "Watch",
+        "Discovery"
+      ],
+      "primary_url": "https://www.pjud.cl/prensa-y-comunicaciones/noticias-del-poder-judicial",
+      "cadence": "Diaria hábil una vez calificado",
+      "technical_availability": "Acceso observado exige JavaScript/CAPTCHA; sin detalle primario reciente capturado.",
+      "date_and_evidence_quality": "Requiere fecha de fallo y publicación, rol, instancia y efecto; titulares secundarios no bastan.",
+      "recent_test_signal": {
+        "url": "https://www.pjud.cl/prensa-y-comunicaciones/noticias-del-poder-judicial",
+        "reference_id": "turn3view1",
+        "published_at": null,
+        "data_period": null,
+        "verification": "blocked",
+        "within_90_days": null,
+        "observation": "Bloqueo de verificación en prensa PJUD; no hay fallo reciente primario validado."
+      },
+      "expected_value": "Alto: brecha de judicialización.",
+      "noise_risk": "Alto: casos individuales, reiteración y datos sensibles.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_legal_2026_10_11"
+      ],
+      "coverage_gap": "Prensa cubre episodios; no universo judicial ni acceso probado.",
+      "readiness": "hold_external",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "bcn",
+      "name": "BCN / LeyChile",
+      "family": "regulacion",
+      "analytical_purpose": "Texto consolidado, vigencia y cambios normativos",
+      "modules": [
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.bcn.cl/leychile/",
+      "cadence": "Diaria para cambios detectados; snapshot de versión",
+      "technical_availability": "Normas indexadas y PDFs; calificar resolver canónico/versiones. Complementar DO/SIS.",
+      "date_and_evidence_quality": "Alta autoridad; alto riesgo de confundir fecha de generación PDF con norma/publicación/vigencia.",
+      "recent_test_signal": {
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1222748",
+        "reference_id": "turn2search39",
+        "published_at": "2026-03-31",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": false,
+        "observation": "Resolución de adecuación ISALUD publicada 31/03; prueba histórica, no novedad reciente."
+      },
+      "expected_value": "Alto como referencia verificable; bajo como feed duplicado.",
+      "noise_risk": "Bajo si actúa como resolver, alto con PDFs rejuvenecidos.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_legal_2026_10_11"
+      ],
+      "coverage_gap": "DO no reemplaza trazabilidad de texto consolidado.",
+      "readiness": "qualification_required",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "cmf",
+      "name": "CMF",
+      "family": "financiamiento",
+      "analytical_purpose": "Capital, deuda, propiedad, resultados y hechos esenciales",
+      "modules": [
+        "Discovery",
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=101&row=&rut=93930000&tipoentidad=RVEMI&vig=VI",
+      "cadence": "Diaria hábil hechos; trimestral EEFF",
+      "technical_availability": "Ficha de emisor/índices públicos; acceso/descarga dinámica y parser canónico pendientes.",
+      "date_and_evidence_quality": "Distinguir aviso, período financiero y calendario de entrega. PDF del emisor puede estar replicado en Bolsa.",
+      "recent_test_signal": {
+        "url": "https://cibe.bolsadesantiago.com/Documentos/Noticias/Hechos%20Esenciales/hes_2026080512549.pdf",
+        "reference_id": "turn19search48",
+        "published_at": "2026-08-05",
+        "data_period": null,
+        "verification": "issuer_pdf_indexed",
+        "within_90_days": true,
+        "observation": "Aviso de CLC del 05/08 sobre cierre de aumento de capital; documento del emisor alojado en Bolsa, original CMF por resolver."
+      },
+      "expected_value": "Muy alto: respaldo hoy supuesto pero no conectado.",
+      "noise_risk": "Bajo-medio: perímetros de holding y avisos administrativos.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_cmf_2026_10_11"
+      ],
+      "coverage_gap": "Referencia secundaria de CLC no prueba integración CMF.",
+      "readiness": "qualification_required",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "dipres",
+      "name": "DIPRES",
+      "family": "financiamiento",
+      "analytical_purpose": "Presupuesto, ejecución y programas de Salud/FONASA",
+      "modules": [
+        "Benchmark",
+        "Trend",
+        "Watch"
+      ],
+      "primary_url": "https://www.dipres.gob.cl/597/w3-multipropertyvalues-14626-38403.html",
+      "cadence": "Mensual ejecución; semanal durante discusión presupuestaria",
+      "technical_availability": "Índice público abierto; documentos/carga dinámica requieren resolver enlaces estables.",
+      "date_and_evidence_quality": "Proyecto, ley y ejecución diferentes; año fiscal no es fecha de publicación.",
+      "recent_test_signal": {
+        "url": "https://www.minsal.cl/salud-aumentara-su-presupuesto-en-47-para-2027-ministra-chomali-destaca-foco-en-gestion-eficiencia-y-reduccion-de-listas-de-espera/",
+        "reference_id": "turn2search43",
+        "published_at": "2026-10-05",
+        "data_period": "Proyecto 2027",
+        "verification": "primary_indexed_context_only",
+        "within_90_days": true,
+        "observation": "MINSAL anuncia aumento del presupuesto 2027 el 05/10; índice DIPRES del proyecto abierto. Falta normalizar tablas originales."
+      },
+      "expected_value": "Muy alto: financiamiento público y capacidad futura.",
+      "noise_risk": "Medio: anuncios agregados y dobles conteos entre transferencias.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_dipres_2026_10_11"
+      ],
+      "coverage_gap": "PDF fijo citado como compensación FONASA no da recurrencia.",
+      "readiness": "public_index_verified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "ine",
+      "name": "INE",
+      "family": "datos_demanda",
+      "analytical_purpose": "Inflación de salud, demografía y denominadores territoriales",
+      "modules": [
+        "Benchmark",
+        "Trend"
+      ],
+      "primary_url": "https://www.ine.gob.cl/estadisticas-por-tema/precios-e-inflacion/indice-de-precios-al-consumidor",
+      "cadence": "Mensual según calendario; demografía por versión",
+      "technical_availability": "Tablas/boletines oficiales; descarga y normalización de división Salud pendientes.",
+      "date_and_evidence_quality": "Alta con base, división, unidad, territorio y mes de referencia.",
+      "recent_test_signal": {
+        "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/10/08/%C3%ADndice-de-precios-al-consumidor-%28ipc%29-de-septiembre-present%C3%B3-una-variaci%C3%B3n-mensual-de-0-4",
+        "reference_id": "turn4search1",
+        "published_at": "2026-10-08",
+        "data_period": "2026-09",
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "IPC de septiembre divulgado 08/10; dato general no puede sustituir componente Salud."
+      },
+      "expected_value": "Alto para contexto y comparación real de gasto/demanda.",
+      "noise_risk": "Bajo; riesgo de extrapolar IPC a costos clínicos específicos.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_socioeconomic_2026_10_11"
+      ],
+      "coverage_gap": "No cubierto por DEIS/FONASA; canal de datos, no noticias diarias.",
+      "readiness": "data_qualification_required",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "casen",
+      "name": "CASEN / Observatorio Social",
+      "family": "datos_demanda",
+      "analytical_purpose": "Previsión, acceso, gasto y segmentación socioeconómica",
+      "modules": [
+        "Benchmark",
+        "Trend"
+      ],
+      "primary_url": "https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2024",
+      "cadence": "Chequeo mensual; carga sólo nueva versión/encuesta",
+      "technical_availability": "Resultados y archivos oficiales de encuesta 2024; microdatos/metodología requieren adapter.",
+      "date_and_evidence_quality": "Separar levantamiento, difusión y revisión; pesos y cambios metodológicos obligatorios.",
+      "recent_test_signal": {
+        "url": "https://bidat.gob.cl/details/ficha/dataset/estadisticas-casen-2024",
+        "reference_id": "turn4search20",
+        "published_at": null,
+        "data_period": "2024",
+        "verification": "primary_indexed_historical",
+        "within_90_days": null,
+        "observation": "Dataset CASEN 2024 difundido en enero 2026, fuera de ventana reciente; insumo estructural, no noticia fresca."
+      },
+      "expected_value": "Alto para segmentación; menor valor en Discovery.",
+      "noise_risk": "Bajo si respeta error muestral y comparabilidad.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_socioeconomic_2026_10_11"
+      ],
+      "coverage_gap": "Brecha de denominadores y acceso no cubierta por producción sanitaria.",
+      "readiness": "data_qualification_required",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "cep",
+      "name": "CEP",
+      "family": "datos_demanda",
+      "analytical_purpose": "Prioridad social y percepción sobre salud",
+      "modules": [
+        "Trend"
+      ],
+      "primary_url": "https://www.cepchile.cl/opinion-publica/encuesta-cep/",
+      "cadence": "Por publicación; control trimestral",
+      "technical_availability": "Serie y PDFs públicos indexados; sin adapter justificado para MVP.",
+      "date_and_evidence_quality": "Fecha de encuesta/campo distinta de difusión; opinión no equivale a demanda observada.",
+      "recent_test_signal": {
+        "url": "https://www.cepchile.cl/opinion-publica/encuesta-cep/",
+        "reference_id": "turn4search4",
+        "published_at": "2026-06-10",
+        "data_period": "2026-04/05",
+        "verification": "primary_indexed",
+        "within_90_days": false,
+        "observation": "Encuesta N°96 difundida 10/06, campo abril-mayo; muestra disponible fuera de 90 días."
+      },
+      "expected_value": "Medio contextual; menor urgencia que INE/CASEN.",
+      "noise_risk": "Medio: coyuntura política y lectura causal incorrecta.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Mantener referencia contextual y activar sólo por release de interés sanitario.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "isl",
+      "name": "ISL",
+      "family": "salud_laboral",
+      "analytical_purpose": "Cobertura laboral pública, siniestralidad y compras/redes",
+      "modules": [
+        "Benchmark",
+        "Trend",
+        "Watch"
+      ],
+      "primary_url": "https://www.isl.gob.cl/centro_estadisticas/",
+      "cadence": "Mensual datos; semanal convenios materiales",
+      "technical_availability": "Centro de estadísticas y noticias oficiales; parsear PDFs y períodos.",
+      "date_and_evidence_quality": "Infografía agosto 2026 identificada; día de publicación no confirmado.",
+      "recent_test_signal": {
+        "url": "https://www.isl.gob.cl/centro_estadisticas/",
+        "reference_id": "turn6search21",
+        "published_at": null,
+        "data_period": "2026-08",
+        "verification": "primary_indexed_period_only",
+        "within_90_days": null,
+        "observation": "Centro estadístico incluye agosto 2026; no fecha editorial exacta. Convenio RedSalud de marzo es sólo fixture histórico."
+      },
+      "expected_value": "Alto para completar ACHS/Mutual/IST con asegurador público.",
+      "noise_risk": "Medio-alto en noticias de talleres y ceremonias.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_occupational_2026_10_11"
+      ],
+      "coverage_gap": "Falta contraparte pública en cobertura laboral.",
+      "readiness": "data_qualification_required",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "compin",
+      "name": "COMPIN",
+      "family": "regulacion",
+      "analytical_purpose": "Licencias, discapacidad, cambios de gestión y capacidad",
+      "modules": [
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.milicenciamedica.cl/",
+      "cadence": "Semanal por MINSAL/SUSESO; alertas institucionales",
+      "technical_availability": "Portal de trámites no es feed; usar noticias/normativa pública MINSAL/SUSESO existentes. Sin login.",
+      "date_and_evidence_quality": "Alta para anuncio oficial fechado, baja para banners de trámites sin año.",
+      "recent_test_signal": {
+        "url": "https://www.minsal.cl/presidente-kast-minsal-y-desarrollo-social-lanzan-plan-que-moderniza-y-agiliza-certificacion-de-discapacidad/",
+        "reference_id": "turn6search0",
+        "published_at": "2026-10-06",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "Anuncio MINSAL sobre modernización de certificación de discapacidad."
+      },
+      "expected_value": "Alto por cambios sistémicos; no requiere datos individuales.",
+      "noise_risk": "Medio: instrucciones de uso repetidas y promesas sin resultados.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_occupational_2026_10_11"
+      ],
+      "coverage_gap": "Ampliar cobertura temática existente, no otro conector de trámites.",
+      "readiness": "extend_existing_source",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "fne",
+      "name": "FNE: operaciones de concentración",
+      "family": "competencia",
+      "analytical_purpose": "M&A de prestadores, farmacias y suministros",
+      "modules": [
+        "Discovery",
+        "Watch"
+      ],
+      "primary_url": "https://www.fne.gob.cl/",
+      "cadence": "Diaria hábil",
+      "technical_availability": "Noticia primaria abierta, resoluciones/versiones públicas enlazables; algunas pendientes de publicación.",
+      "date_and_evidence_quality": "Fecha clara; aprobación, inicio de investigación y cierre son etapas diferentes.",
+      "recent_test_signal": {
+        "url": "https://www.fne.gob.cl/fne-aprueba-adquisicion-de-rotter-krauss-por-parte-de-salcobrand/",
+        "reference_id": "turn21view1",
+        "published_at": "2026-09-23",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Aprobación de adquisición de Rotter & Krauss por Salcobrand."
+      },
+      "expected_value": "Muy alto: M&A verificable transversal, más preciso que noticias promocionales.",
+      "noise_risk": "Bajo con filtro sectorial y entidades.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_fne_2026_10_11"
+      ],
+      "coverage_gap": "Fuente adicional justificada por brecha real, no por volumen.",
+      "readiness": "public_surface_verified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "cenabast",
+      "name": "CENABAST",
+      "family": "suministro",
+      "analytical_purpose": "Contratación, dispensación, farmacias y adopción digital",
+      "modules": [
+        "Discovery",
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.cenabast.cl/category/noticias/",
+      "cadence": "2 veces por semana; datos por release",
+      "technical_availability": "Listado/detalle HTML abierto con fecha, tablas y actores.",
+      "date_and_evidence_quality": "Alta fecha; claims/ahorros requieren contexto. Discrepancia 25/26 productos en noticia Ahumada debe preservarse.",
+      "recent_test_signal": {
+        "url": "https://www.cenabast.cl/421-locales-de-farmacias-ahumada-se-adhieren-a-la-ley-cenabast-para-fortalecer-la-cobertura-de-remedios-mas-baratos/",
+        "reference_id": "turn22view0",
+        "published_at": "2026-10-07",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Adhesión de 421 locales Ahumada; segunda muestra: piloto Barros Luco/Yapp publicado 24/09."
+      },
+      "expected_value": "Muy alto: un canal cubre farmacias, laboratorios, compras e innovación.",
+      "noise_risk": "Medio: ceremonias y metas no ejecutadas.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_cenabast_2026_10_11"
+      ],
+      "coverage_gap": "No sustituye detalle transaccional ChileCompra; se complementan.",
+      "readiness": "public_surface_verified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "congress",
+      "name": "Congreso: comisiones y tramitación sanitaria",
+      "family": "regulacion",
+      "analytical_purpose": "Anticipar cambios legales antes de publicación en DO",
+      "modules": [
+        "Watch"
+      ],
+      "primary_url": "https://www.senado.cl/actividad-legislativa/comisiones/",
+      "cadence": "Semanal; por hitos",
+      "technical_availability": "Agenda, sesiones y tramitación públicas; video/transcripción no constituyen norma aprobada.",
+      "date_and_evidence_quality": "Fecha de sesión, ingreso, votación y promulgación diferentes.",
+      "recent_test_signal": {
+        "url": "https://tv.senado.cl/tvsenado/comisiones/permanentes/salud/comision-de-salud/2026-10-05/120031.html",
+        "reference_id": "turn20search10",
+        "published_at": "2026-10-06",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "Sesión de comisión de Salud sobre glosas presupuestarias; página fechada 06/10."
+      },
+      "expected_value": "Medio-alto como alerta temprana.",
+      "noise_risk": "Alto si cada sesión se publica o confunde propuesta con ley.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Secundaria hasta que el circuito DO/BCN y presupuestos sea consistente.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "tc_tdlc",
+      "name": "Tribunal Constitucional / TDLC",
+      "family": "judicializacion",
+      "analytical_purpose": "Conflictos constitucionales y competencia sanitaria relevantes",
+      "modules": [
+        "Watch"
+      ],
+      "primary_url": "https://www.tribunalconstitucional.cl/",
+      "cadence": "Semanal por roles sanitarios",
+      "technical_availability": "Superficies institucionales candidatas; no probadas en esta revisión.",
+      "date_and_evidence_quality": "Exigir rol, resolución, fecha y alcance; no detalle reciente validado.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": null,
+        "observation": "No se obtuvo muestra primaria sanitaria reciente; no activar por completar lista."
+      },
+      "expected_value": "Medio y episódico; complemento a PJUD/FNE.",
+      "noise_risk": "Medio-alto: procedimientos sin efecto y doble cobertura.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Roadmap jurídico más amplio que DO; conservar búsqueda dirigida.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.tdlc.cl/"
+      ]
+    },
+    {
+      "id": "contraloria",
+      "name": "Contraloría: fiscalización sanitaria",
+      "family": "regulacion",
+      "analytical_purpose": "Uso de fondos, licencias y fallas institucionales",
+      "modules": [
+        "Watch"
+      ],
+      "primary_url": "https://siad.contraloria.cl/ca/recursos-digitales",
+      "cadence": "Mensual o por informe material",
+      "technical_availability": "Índice público de reportes; seleccionar salud antes de profundizar.",
+      "date_and_evidence_quality": "Fecha de informe/período auditado distintas; última muestra específica de licencias localizada es histórica.",
+      "recent_test_signal": {
+        "url": "https://siad.contraloria.cl/ca/recursos-digitales",
+        "reference_id": "turn19search2",
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed_no_recent_health",
+        "within_90_days": null,
+        "observation": "Catálogo CIC; no se validó informe sanitario material dentro de 90 días."
+      },
+      "expected_value": "Medio como corroboración de MINSAL/SUSESO.",
+      "noise_risk": "Alto si incorpora toda fiscalización pública.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Complemento dirigido, no nuevo feed general.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "isapre_banmedica",
+      "name": "Banmédica",
+      "family": "isapres",
+      "analytical_purpose": "Cuota, cartera, resultados, precios regulados, redes/convenios y cambios de control; comparar dentro de su tipo.",
+      "modules": [
+        "Benchmark",
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.banmedica.cl/",
+      "cadence": "SIS mensual/trimestral; canal corporativo semanal selectivo",
+      "technical_availability": "Timeout en apertura; no prueba inaccesibilidad permanente. El adapter compartido SIS cubre la entidad sin conector diario propio.",
+      "date_and_evidence_quality": "Alta en publicación SIS agregada; corporativa todavía no calificada. Sin muestra corporativa reciente fechada verificada.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened_shared_dataset",
+        "within_90_days": true,
+        "observation": "Prueba compartida: SIS publica cartera de agosto el 02/10. No es prueba de publicación nativa de Banmédica."
+      },
+      "expected_value": "Alto en cohorte competitiva completa; valor incremental de newsroom por demostrar.",
+      "noise_risk": "Medio-alto: descuentos, beneficios y banners sin fecha; holding no equivale a Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "Cubrir cada código en adapter SIS; promoción corporativa permanece secundaria hasta quality gate.",
+      "readiness": "shared_adapter_pending",
+      "activated_by_this_work": false,
+      "isapre_code": 99,
+      "isapre_type": "abierta",
+      "registry_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "corporate_channel_decision": "secundaria hasta calificación P1",
+      "entity_label_note": "Nombre usado por registro consultado; reconciliar razón social/RUT y vigencia en implementación."
+    },
+    {
+      "id": "isapre_colmena",
+      "name": "Colmena Golden Cross",
+      "family": "isapres",
+      "analytical_purpose": "Cuota, cartera, resultados, precios regulados, redes/convenios y cambios de control; comparar dentro de su tipo.",
+      "modules": [
+        "Benchmark",
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.colmena.cl/",
+      "cadence": "SIS mensual/trimestral; canal corporativo semanal selectivo",
+      "technical_availability": "Home abierta, alianzas y memoria enlazadas. El adapter compartido SIS cubre la entidad sin conector diario propio.",
+      "date_and_evidence_quality": "Alta en publicación SIS agregada; corporativa todavía no calificada. Alianzas INDISA/UC/Salcobrand visibles pero sin fecha de novedad verificada.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened_shared_dataset",
+        "within_90_days": true,
+        "observation": "Prueba compartida: SIS publica cartera de agosto el 02/10. No es prueba de publicación nativa de Colmena Golden Cross."
+      },
+      "expected_value": "Alto en cohorte competitiva completa; valor incremental de newsroom por demostrar.",
+      "noise_risk": "Medio-alto: descuentos, beneficios y banners sin fecha; holding no equivale a Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "Cubrir cada código en adapter SIS; promoción corporativa permanece secundaria hasta quality gate.",
+      "readiness": "shared_adapter_pending",
+      "activated_by_this_work": false,
+      "isapre_code": 67,
+      "isapre_type": "abierta",
+      "registry_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "corporate_channel_decision": "secundaria hasta calificación P1",
+      "entity_label_note": "Nombre usado por registro consultado; reconciliar razón social/RUT y vigencia en implementación."
+    },
+    {
+      "id": "isapre_consalud",
+      "name": "Consalud",
+      "family": "isapres",
+      "analytical_purpose": "Cuota, cartera, resultados, precios regulados, redes/convenios y cambios de control; comparar dentro de su tipo.",
+      "modules": [
+        "Benchmark",
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.consalud.cl/",
+      "cadence": "SIS mensual/trimestral; canal corporativo semanal selectivo",
+      "technical_availability": "Home abierta; gobierno corporativo, estudios y vínculo a ILC. El adapter compartido SIS cubre la entidad sin conector diario propio.",
+      "date_and_evidence_quality": "Alta en publicación SIS agregada; corporativa todavía no calificada. Beneficios preventivos visibles sin fecha; no convertir promoción en cambio de cobertura.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened_shared_dataset",
+        "within_90_days": true,
+        "observation": "Prueba compartida: SIS publica cartera de agosto el 02/10. No es prueba de publicación nativa de Consalud."
+      },
+      "expected_value": "Alto en cohorte competitiva completa; valor incremental de newsroom por demostrar.",
+      "noise_risk": "Medio-alto: descuentos, beneficios y banners sin fecha; holding no equivale a Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "Cubrir cada código en adapter SIS; promoción corporativa permanece secundaria hasta quality gate.",
+      "readiness": "shared_adapter_pending",
+      "activated_by_this_work": false,
+      "isapre_code": 107,
+      "isapre_type": "abierta",
+      "registry_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "corporate_channel_decision": "secundaria hasta calificación P1",
+      "entity_label_note": "Nombre usado por registro consultado; reconciliar razón social/RUT y vigencia en implementación."
+    },
+    {
+      "id": "isapre_cruzblanca",
+      "name": "Cruz Blanca",
+      "family": "isapres",
+      "analytical_purpose": "Cuota, cartera, resultados, precios regulados, redes/convenios y cambios de control; comparar dentro de su tipo.",
+      "modules": [
+        "Benchmark",
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.cruzblanca.cl/",
+      "cadence": "SIS mensual/trimestral; canal corporativo semanal selectivo",
+      "technical_availability": "Home abierta, redes y tablas públicas; grupo Bupa exige separar negocios. El adapter compartido SIS cubre la entidad sin conector diario propio.",
+      "date_and_evidence_quality": "Alta en publicación SIS agregada; corporativa todavía no calificada. Banner de precios 2026/27 indica vigencia, no fecha de noticia.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened_shared_dataset",
+        "within_90_days": true,
+        "observation": "Prueba compartida: SIS publica cartera de agosto el 02/10. No es prueba de publicación nativa de Cruz Blanca."
+      },
+      "expected_value": "Alto en cohorte competitiva completa; valor incremental de newsroom por demostrar.",
+      "noise_risk": "Medio-alto: descuentos, beneficios y banners sin fecha; holding no equivale a Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "Cubrir cada código en adapter SIS; promoción corporativa permanece secundaria hasta quality gate.",
+      "readiness": "shared_adapter_pending",
+      "activated_by_this_work": false,
+      "isapre_code": 78,
+      "isapre_type": "abierta",
+      "registry_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "corporate_channel_decision": "secundaria hasta calificación P1",
+      "entity_label_note": "Nombre usado por registro consultado; reconciliar razón social/RUT y vigencia en implementación."
+    },
+    {
+      "id": "isapre_nuevamasvida",
+      "name": "Nueva Masvida",
+      "family": "isapres",
+      "analytical_purpose": "Cuota, cartera, resultados, precios regulados, redes/convenios y cambios de control; comparar dentro de su tipo.",
+      "modules": [
+        "Benchmark",
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.nuevamasvida.cl/",
+      "cadence": "SIS mensual/trimestral; canal corporativo semanal selectivo",
+      "technical_availability": "Home abierta; noticias/convenios por calificar. El adapter compartido SIS cubre la entidad sin conector diario propio.",
+      "date_and_evidence_quality": "Alta en publicación SIS agregada; corporativa todavía no calificada. Convenio Examedi localizado es de 2025; no muestra reciente validada.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened_shared_dataset",
+        "within_90_days": true,
+        "observation": "Prueba compartida: SIS publica cartera de agosto el 02/10. No es prueba de publicación nativa de Nueva Masvida."
+      },
+      "expected_value": "Alto en cohorte competitiva completa; valor incremental de newsroom por demostrar.",
+      "noise_risk": "Medio-alto: descuentos, beneficios y banners sin fecha; holding no equivale a Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "Cubrir cada código en adapter SIS; promoción corporativa permanece secundaria hasta quality gate.",
+      "readiness": "shared_adapter_pending",
+      "activated_by_this_work": false,
+      "isapre_code": 81,
+      "isapre_type": "abierta",
+      "registry_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "corporate_channel_decision": "secundaria hasta calificación P1",
+      "entity_label_note": "Nombre usado por registro consultado; reconciliar razón social/RUT y vigencia en implementación."
+    },
+    {
+      "id": "isapre_vidatres",
+      "name": "Vida Tres",
+      "family": "isapres",
+      "analytical_purpose": "Cuota, cartera, resultados, precios regulados, redes/convenios y cambios de control; comparar dentro de su tipo.",
+      "modules": [
+        "Benchmark",
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.vidatres.cl/",
+      "cadence": "SIS mensual/trimestral; canal corporativo semanal selectivo",
+      "technical_availability": "Home y novedades públicas abiertas. El adapter compartido SIS cubre la entidad sin conector diario propio.",
+      "date_and_evidence_quality": "Alta en publicación SIS agregada; corporativa todavía no calificada. Indicadores al 31/08/2026 son período de cifras, no publicación ni cambio contractual.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened_shared_dataset",
+        "within_90_days": true,
+        "observation": "Prueba compartida: SIS publica cartera de agosto el 02/10. No es prueba de publicación nativa de Vida Tres."
+      },
+      "expected_value": "Alto en cohorte competitiva completa; valor incremental de newsroom por demostrar.",
+      "noise_risk": "Medio-alto: descuentos, beneficios y banners sin fecha; holding no equivale a Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "Cubrir cada código en adapter SIS; promoción corporativa permanece secundaria hasta quality gate.",
+      "readiness": "shared_adapter_pending",
+      "activated_by_this_work": false,
+      "isapre_code": 80,
+      "isapre_type": "abierta",
+      "registry_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "corporate_channel_decision": "secundaria hasta calificación P1",
+      "entity_label_note": "Nombre usado por registro consultado; reconciliar razón social/RUT y vigencia en implementación."
+    },
+    {
+      "id": "isapre_esencial",
+      "name": "Esencial",
+      "family": "isapres",
+      "analytical_purpose": "Cuota, cartera, resultados, precios regulados, redes/convenios y cambios de control; comparar dentro de su tipo.",
+      "modules": [
+        "Benchmark",
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.somosesencial.cl/",
+      "cadence": "SIS mensual/trimestral; canal corporativo semanal selectivo",
+      "technical_availability": "Home abierta, redes/beneficios; noticia de tercero no equivale a canal propio. El adapter compartido SIS cubre la entidad sin conector diario propio.",
+      "date_and_evidence_quality": "Alta en publicación SIS agregada; corporativa todavía no calificada. Redes INDISA/Andes visibles sin fecha corporativa verificada; cobertura INDISA existente debe cruzarse.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened_shared_dataset",
+        "within_90_days": true,
+        "observation": "Prueba compartida: SIS publica cartera de agosto el 02/10. No es prueba de publicación nativa de Esencial."
+      },
+      "expected_value": "Alto en cohorte competitiva completa; valor incremental de newsroom por demostrar.",
+      "noise_risk": "Medio-alto: descuentos, beneficios y banners sin fecha; holding no equivale a Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "Cubrir cada código en adapter SIS; promoción corporativa permanece secundaria hasta quality gate.",
+      "readiness": "shared_adapter_pending",
+      "activated_by_this_work": false,
+      "isapre_code": 108,
+      "isapre_type": "abierta",
+      "registry_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "corporate_channel_decision": "secundaria hasta calificación P1",
+      "entity_label_note": "Nombre usado por registro consultado; reconciliar razón social/RUT y vigencia en implementación."
+    },
+    {
+      "id": "isapre_isalud",
+      "name": "Isalud (registro SIS: Isalud Ltda.)",
+      "family": "isapres",
+      "analytical_purpose": "Cuota, cartera, resultados, precios regulados, redes/convenios y cambios de control; comparar dentro de su tipo.",
+      "modules": [
+        "Benchmark",
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.isapredecodelco.cl/",
+      "cadence": "SIS mensual/trimestral; canal corporativo mensual",
+      "technical_availability": "Home falló en una apertura; novedades y aviso de adecuación indexados. El adapter compartido SIS cubre la entidad sin conector diario propio.",
+      "date_and_evidence_quality": "Alta en publicación SIS agregada; corporativa todavía no calificada. Adecuación 2026 con vigencia junio y resolución marzo: histórica, no nueva en octubre.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened_shared_dataset",
+        "within_90_days": true,
+        "observation": "Prueba compartida: SIS publica cartera de agosto el 02/10. No es prueba de publicación nativa de Isalud (registro SIS: Isalud Ltda.)."
+      },
+      "expected_value": "Alto en cohorte competitiva completa; valor incremental de newsroom por demostrar.",
+      "noise_risk": "Medio-alto: descuentos, beneficios y banners sin fecha; holding no equivale a Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "Cubrir cada código en adapter SIS; promoción corporativa permanece secundaria hasta quality gate.",
+      "readiness": "shared_adapter_pending",
+      "activated_by_this_work": false,
+      "isapre_code": 63,
+      "isapre_type": "cerrada",
+      "registry_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "corporate_channel_decision": "secundaria hasta calificación P1",
+      "entity_label_note": "Nombre usado por registro consultado; reconciliar razón social/RUT y vigencia en implementación."
+    },
+    {
+      "id": "isapre_fundacion",
+      "name": "Fundación",
+      "family": "isapres",
+      "analytical_purpose": "Cuota, cartera, resultados, precios regulados, redes/convenios y cambios de control; comparar dentro de su tipo.",
+      "modules": [
+        "Benchmark",
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.isaprefundacion.cl/",
+      "cadence": "SIS mensual/trimestral; canal corporativo mensual",
+      "technical_availability": "Home y noticias públicas; alto componente de beneficios. El adapter compartido SIS cubre la entidad sin conector diario propio.",
+      "date_and_evidence_quality": "Alta en publicación SIS agregada; corporativa todavía no calificada. Aviso sin aumento base 2026 indexado sin publicación inequívoca.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened_shared_dataset",
+        "within_90_days": true,
+        "observation": "Prueba compartida: SIS publica cartera de agosto el 02/10. No es prueba de publicación nativa de Fundación."
+      },
+      "expected_value": "Alto en cohorte competitiva completa; valor incremental de newsroom por demostrar.",
+      "noise_risk": "Medio-alto: descuentos, beneficios y banners sin fecha; holding no equivale a Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "Cubrir cada código en adapter SIS; promoción corporativa permanece secundaria hasta quality gate.",
+      "readiness": "shared_adapter_pending",
+      "activated_by_this_work": false,
+      "isapre_code": 76,
+      "isapre_type": "cerrada",
+      "registry_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "corporate_channel_decision": "secundaria hasta calificación P1",
+      "entity_label_note": "Nombre usado por registro consultado; reconciliar razón social/RUT y vigencia en implementación."
+    },
+    {
+      "id": "isapre_cruzdelnorte",
+      "name": "Cruz del Norte",
+      "family": "isapres",
+      "analytical_purpose": "Cuota, cartera, resultados, precios regulados, redes/convenios y cambios de control; comparar dentro de su tipo.",
+      "modules": [
+        "Benchmark",
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.isaprecruzdelnorte.cl/",
+      "cadence": "SIS mensual/trimestral; canal corporativo mensual",
+      "technical_availability": "Home pública abierta; no novedad fechada localizada. El adapter compartido SIS cubre la entidad sin conector diario propio.",
+      "date_and_evidence_quality": "Alta en publicación SIS agregada; corporativa todavía no calificada. Ausencia de muestra nativa reciente no se trata como cero cambios.",
+      "recent_test_signal": {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+        "reference_id": "turn9view0",
+        "published_at": "2026-10-02",
+        "data_period": "2026-08",
+        "verification": "primary_opened_shared_dataset",
+        "within_90_days": true,
+        "observation": "Prueba compartida: SIS publica cartera de agosto el 02/10. No es prueba de publicación nativa de Cruz del Norte."
+      },
+      "expected_value": "Alto en cohorte competitiva completa; valor incremental de newsroom por demostrar.",
+      "noise_risk": "Medio-alto: descuentos, beneficios y banners sin fecha; holding no equivale a Isapre.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_isapres_2026_10_11"
+      ],
+      "coverage_gap": "Cubrir cada código en adapter SIS; promoción corporativa permanece secundaria hasta quality gate.",
+      "readiness": "shared_adapter_pending",
+      "activated_by_this_work": false,
+      "isapre_code": 94,
+      "isapre_type": "cerrada",
+      "registry_url": "https://www.superdesalud.gob.cl/registro/isapres/",
+      "corporate_channel_decision": "secundaria hasta calificación P1",
+      "entity_label_note": "Nombre usado por registro consultado; reconciliar razón social/RUT y vigencia en implementación."
+    },
+    {
+      "id": "alemana",
+      "name": "Clínica Alemana",
+      "family": "prestadores",
+      "analytical_purpose": "Capacidad, inversión, alianzas clínicas y tecnología",
+      "modules": [
+        "Discovery",
+        "Watch"
+      ],
+      "primary_url": "https://www.clinicaalemana.cl/articulos/todas-las-noticias/novedades-alemana",
+      "cadence": "Semanal; aumentar sólo si densidad material lo justifica",
+      "technical_availability": "Dominio antiguo redirige a clinicaalemana.cl; listado/detalle con fecha abiertos.",
+      "date_and_evidence_quality": "Fecha editorial verificable; evento y publicación no siempre coinciden.",
+      "recent_test_signal": {
+        "url": "https://www.clinicaalemana.cl/articulos/detalle/2026/llevamos-atencion-especializada-a-cauquenes-con-200-prestaciones-de-salud?itm_campaign=marca&itm_medium=web&itm_source=vitrina_cas",
+        "reference_id": "turn9view1",
+        "published_at": "2026-09-25",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Operativo en Cauquenes con prestaciones; útil para parser, no prueba de expansión permanente."
+      },
+      "expected_value": "Alto como actor, materialidad de muestra reciente insuficiente para aprobar feed.",
+      "noise_risk": "Alto: educación, campañas, premios y operativos.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_providers_2026_10_11"
+      ],
+      "coverage_gap": "Auditoría anterior sin señal material no implica inexistencia de superficie fechada.",
+      "readiness": "qualification_pilot",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "uc_christus",
+      "name": "UC CHRISTUS",
+      "family": "prestadores",
+      "analytical_purpose": "Red, inversión, acceso y acuerdos asistenciales",
+      "modules": [
+        "Discovery",
+        "Watch"
+      ],
+      "primary_url": "https://www.ucchristus.cl/blog-salud-uc/articulos",
+      "cadence": "Semanal",
+      "technical_availability": "Listado y detalles públicos con fechas verificables. Contingencias es segunda superficie material, abierta pero sin fecha editorial.",
+      "date_and_evidence_quality": "Distinguir operativo 26–27/09 de noticia 01/10 y personas de prestaciones. La página contingencias requiere snapshot/versionado y corroboración temporal; no extraer todo como noticia nueva.",
+      "recent_test_signal": {
+        "url": "https://www.ucchristus.cl/blog-salud-uc/articulos/2026/operativo-en-la-region-de-antofagasta-concreto-427-consultas-y-36-cirugias-oftalmologicas",
+        "reference_id": "turn9view2",
+        "published_at": "2026-10-01",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Operativo oftalmológico en Antofagasta; prueba de fecha, no inversión permanente."
+      },
+      "expected_value": "Alto: hay evidencia de interrupción de capacidad en página de contingencia; falta asegurar fecha/versión para ingestión.",
+      "noise_risk": "Alto: educación y difusión de atención comunitaria.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_providers_2026_10_11"
+      ],
+      "coverage_gap": "Corregir supuesto previo de imposibilidad de encontrar fechas; calidad editorial sigue pendiente.",
+      "readiness": "qualification_pilot",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.ucchristus.cl/contingencias"
+      ],
+      "supplemental_signal": {
+        "url": "https://www.ucchristus.cl/contingencias",
+        "reference_id": "turn23view0",
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_opened_undated",
+        "within_90_days": null,
+        "observation": "Superficie de contingencia abierta: suspensión ambulatoria/urgencia San Carlos y cierre El Alba, sin fecha editorial. Texto sobre hospitalizados requiere conciliar versión con comunicado difundido por prensa. No asignar fecha de captura como publicación."
+      }
+    },
+    {
+      "id": "clc",
+      "name": "Clínica Las Condes",
+      "family": "prestadores",
+      "analytical_purpose": "Capital, estructura financiera, control e inversiones",
+      "modules": [
+        "Discovery",
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=101&row=&rut=93930000&tipoentidad=RVEMI&vig=VI",
+      "cadence": "Diaria hábil CMF; trimestral estados",
+      "technical_availability": "Priorizar ficha de emisor CMF y documentos de inversionistas; newsroom no necesario para primera cobertura.",
+      "date_and_evidence_quality": "Aviso fechado; validar URL original CMF y no confundir calendario de EEFF.",
+      "recent_test_signal": {
+        "url": "https://cibe.bolsadesantiago.com/Documentos/Noticias/Hechos%20Esenciales/hes_2026080512549.pdf",
+        "reference_id": "turn19search48",
+        "published_at": "2026-08-05",
+        "data_period": null,
+        "verification": "issuer_pdf_indexed",
+        "within_90_days": true,
+        "observation": "Aviso del emisor sobre cierre del aumento de capital, replicado por Bolsa."
+      },
+      "expected_value": "Muy alto en finanzas; alto ruido en contenido clínico corporativo.",
+      "noise_risk": "Bajo en hechos esenciales; alto en noticias clínicas generales.",
+      "decision": "activar ahora",
+      "priority": "P0",
+      "backlog_ids": [
+        "w4_cmf_2026_10_11"
+      ],
+      "coverage_gap": "La compensación CMF declarada en revisión previa carece de conector.",
+      "readiness": "shared_financial_adapter_pending",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "interclinica",
+      "name": "Interclínica / Interclínicas",
+      "family": "prestadores",
+      "analytical_purpose": "Red regional, adquisiciones, capacidad y resultados",
+      "modules": [
+        "Benchmark",
+        "Watch"
+      ],
+      "primary_url": "https://www.interclinica.cl/memorias-anuales",
+      "cadence": "Anual memorias con chequeo mensual; eventos por FNE/prensa",
+      "technical_availability": "Memorias 2025/2024/2023 enlazadas y accesibles en índice; extracción PDF pendiente.",
+      "date_and_evidence_quality": "Año de ejercicio visible, fecha de publicación no demostrada.",
+      "recent_test_signal": {
+        "url": "https://www.interclinica.cl/memorias-anuales",
+        "reference_id": "turn7view2",
+        "published_at": null,
+        "data_period": "2025",
+        "verification": "primary_opened_period_only",
+        "within_90_days": null,
+        "observation": "Índice oficial de memorias incluye 2025; no prueba de publicación reciente."
+      },
+      "expected_value": "Alto para mapa de red; newsrooms diarios aportarían poco.",
+      "noise_risk": "Bajo en memorias con perímetro; medio en prensa.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_provider_data_2026_10_11",
+        "w4_fne_2026_10_11"
+      ],
+      "coverage_gap": "La ausencia de newsroom no descarta datos primarios anuales.",
+      "readiness": "data_qualification_required",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "falp",
+      "name": "FALP",
+      "family": "prestadores",
+      "analytical_purpose": "Capacidad oncológica, diagnóstico, investigación y alianzas",
+      "modules": [
+        "Watch",
+        "Discovery"
+      ],
+      "primary_url": "https://www.falp.org/noticia/falp-y-cchen-exploran-nuevas-oportunidades-de-colaboracion-para-la-investigacion-en-cancer/?cat=fundacion",
+      "cadence": "Semanal",
+      "technical_availability": "Artículos oficiales indexados con fecha; listado canónico por resolver en piloto.",
+      "date_and_evidence_quality": "Buena fecha; visita exploratoria no demuestra acuerdo firmado ni inversión.",
+      "recent_test_signal": {
+        "url": "https://www.falp.org/noticia/falp-y-cchen-exploran-nuevas-oportunidades-de-colaboracion-para-la-investigacion-en-cancer/?cat=fundacion",
+        "reference_id": "turn17search6",
+        "published_at": "2026-09-07",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "Exploración de colaboración FALP/CCHEN en investigación oncológica."
+      },
+      "expected_value": "Alto para oncología y tecnología especializada.",
+      "noise_risk": "Medio-alto: educación y exploración sin compromiso.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_providers_2026_10_11"
+      ],
+      "coverage_gap": "Canal especializado ausente; aprobar sólo eventos materiales.",
+      "readiness": "qualification_pilot",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "uandes_clinic",
+      "name": "Clínica Universidad de los Andes",
+      "family": "prestadores",
+      "analytical_purpose": "Capacidad y competencia de alta complejidad",
+      "modules": [
+        "Watch"
+      ],
+      "primary_url": "https://www.clinicauandes.cl/noticia",
+      "cadence": "Quincenal dirigida",
+      "technical_availability": "Noticias públicas indexadas; muestra material reciente no validada.",
+      "date_and_evidence_quality": "No usar avance de infraestructura universitaria como obra clínica sin identificación.",
+      "recent_test_signal": {
+        "url": "https://www.clinicauandes.cl/noticia",
+        "reference_id": "turn17search2",
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed_no_material_sample",
+        "within_90_days": null,
+        "observation": "Newsroom localizado; predominan premios y comunicaciones, sin inversión reciente confirmada."
+      },
+      "expected_value": "Medio incremental tras Alemana/UC/FALP.",
+      "noise_risk": "Alto: premios, educación y confusión universidad/clínica.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Secundaria vía prensa y FNE hasta señal original material.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "meds",
+      "name": "MEDS",
+      "family": "prestadores",
+      "analytical_purpose": "Centros ambulatorios, alianzas y expansión",
+      "modules": [
+        "Watch"
+      ],
+      "primary_url": "https://www.meds.cl/",
+      "cadence": "Quincenal dirigida",
+      "technical_availability": "Web corporativa indexada; señal de alianza reciente localizada en prensa, no confirmada en original.",
+      "date_and_evidence_quality": "Fecha de DF verificable por índice; falta detalle primario corporativo.",
+      "recent_test_signal": {
+        "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro",
+        "reference_id": "turn17search47",
+        "published_at": "2026-09-01",
+        "data_period": null,
+        "verification": "secondary_indexed",
+        "within_90_days": true,
+        "observation": "DF informa alianza MEDS–UDP para centro; lead secundario que requiere corroboración."
+      },
+      "expected_value": "Medio para ambulatorio; hoy puede cubrirlo DF.",
+      "noise_risk": "Alto en deporte, marcas personales y promociones.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "No sumar conector sin señal incremental.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "andes_regional",
+      "name": "Andes Salud: Puerto Montt y Talca",
+      "family": "prestadores",
+      "analytical_purpose": "Expansión regional y capacidad efectiva por sede",
+      "modules": [
+        "Discovery",
+        "Watch"
+      ],
+      "primary_url": "https://www.andessaludpuertomontt.cl/noticias/andes-salud-puerto-montt-presenta-plan-2030/",
+      "cadence": "Semanal en conector existente",
+      "technical_availability": "Subdominios/sitios regionales con artículos fechados; ampliar frontier del actor ya conectado.",
+      "date_and_evidence_quality": "Fecha editorial y apertura/plan separadas; plan 2030 no implica capacidad instalada hoy.",
+      "recent_test_signal": {
+        "url": "https://www.andessaludpuertomontt.cl/noticias/andes-salud-puerto-montt-presenta-plan-2030/",
+        "reference_id": "turn17search33",
+        "published_at": "2026-09-09",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "Puerto Montt presenta plan 2030 el 09/09; Talca publica apertura 08/09."
+      },
+      "expected_value": "Alto: resuelve sesgo Santiago y límites del hub.",
+      "noise_risk": "Medio: republicaciones de matriz y sedes.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_provider_data_2026_10_11"
+      ],
+      "coverage_gap": "Contar con andes_salud no prueba capturar todas sus sedes.",
+      "readiness": "extend_existing_source",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.andessaludtalca.cl/noticias/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/"
+      ]
+    },
+    {
+      "id": "existing_networks",
+      "name": "RedSalud, Bupa/IntegraMédica, INDISA, Dávila y ACHS Salud",
+      "family": "prestadores",
+      "analytical_purpose": "Cobertura material de redes y filiales de conectores existentes",
+      "modules": [
+        "Discovery",
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.redsalud.cl/",
+      "cadence": "Cadencia de conector existente; auditoría de sedes mensual",
+      "technical_availability": "Conectores ya declarados; issue #5 mantiene recuperación/balance. No certificarlos sanos por esta matriz.",
+      "date_and_evidence_quality": "Usar auditorías existentes por actor y ledger real; no se recapturó toda la ventana en Work 4.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "repository_audit_only",
+        "within_90_days": null,
+        "observation": "Hay fuentes implementadas y auditorías de cobertura; ausencia de una sede en el ledger sigue siendo brecha."
+      },
+      "expected_value": "Alto en expansión de frontera; cero valor en duplicar conectores ya existentes.",
+      "noise_risk": "Medio: duplicación matriz/filial y actividad promocional.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_provider_data_2026_10_11"
+      ],
+      "coverage_gap": "Extensión selectiva y reconciliación con tareas de recuperación; no abrir otro proyecto core.",
+      "readiness": "existing_under_issue5_audit",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.bupachile.cl/",
+        "https://www.indisa.cl/",
+        "https://www.davila.cl/",
+        "https://www.achssalud.cl/"
+      ]
+    },
+    {
+      "id": "other_providers",
+      "name": "Otros prestadores regionales, diagnóstico, diálisis y odontología",
+      "family": "prestadores",
+      "analytical_purpose": "Detectar consolidación y capacidad fuera de las grandes redes",
+      "modules": [
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.superdesalud.gob.cl/registro/",
+      "cadence": "Registro mensual; señales por FNE/CMF/prensa",
+      "technical_availability": "Registro de prestadores ya conectado como familia; inventario de actores/propiedad debe validar sede y razón social.",
+      "date_and_evidence_quality": "No se calificaron todos los newsrooms independientes ni se obtuvo muestra primaria común.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": null,
+        "observation": "Cobertura por intermediarios primarios y registro; no prometer censo exhaustivo de sitios privados."
+      },
+      "expected_value": "Medio incremental; foco en operaciones concretas y concentración regional.",
+      "noise_risk": "Alto si se rastrea cada clínica sin materialidad.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Lista dinámica derivada del registro y transacciones; no tantos conectores como prestadores.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "public_providers",
+      "name": "Servicios de Salud y hospitales públicos",
+      "family": "prestadores",
+      "analytical_purpose": "Infraestructura, compras, productividad y alianzas público-privadas",
+      "modules": [
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.minsal.cl/",
+      "cadence": "Semanal por proyectos; datos por release",
+      "technical_availability": "Cubrir prioritariamente MINSAL, DIPRES, ChileCompra y CENABAST; portales hospitalarios sólo para corroborar.",
+      "date_and_evidence_quality": "Distinguir licitación, construcción, recepción e inicio de operación.",
+      "recent_test_signal": {
+        "url": "https://www.cenabast.cl/cenabast-hospital-barros-luco-trudeau-y-yapp-inician-piloto-para-el-retiro-de-medicamentos-gratuitos-en-farmacias-privadas/",
+        "reference_id": "turn22view1",
+        "published_at": "2026-09-24",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Barros Luco participa en piloto de dispensación con Yapp."
+      },
+      "expected_value": "Alto con canales comunes; bajo retorno de cientos de newsrooms.",
+      "noise_risk": "Alto en ceremonias y operativos.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "No multiplicar conectores por establecimiento; usar paquetes priorizados.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "udd",
+      "name": "UDD / DHTAC y evaluación tecnológica",
+      "family": "universidades",
+      "analytical_purpose": "Tecnología clínica, evidencia de adopción y evaluación",
+      "modules": [
+        "Trend",
+        "Watch"
+      ],
+      "primary_url": "https://medicina.udd.cl/dhtac/",
+      "cadence": "Quincenal",
+      "technical_availability": "Noticia oficial fechada y duplicado institucional; calificar índice estable.",
+      "date_and_evidence_quality": "Fecha precisa; separar prototipo/plataforma de resultado clínico demostrado.",
+      "recent_test_signal": {
+        "url": "https://medicina.udd.cl/dhtac/2026/07/14/clinica-alemana-y-udd-impulsan-plataforma-digital-para-apoyar-la-toma-de-decisiones-clinicas-basada-en-evidencia/",
+        "reference_id": "turn8search16",
+        "published_at": "2026-07-14",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "UDD y Alemana impulsan plataforma de apoyo a decisiones clínicas."
+      },
+      "expected_value": "Alto para innovación con actor clínico identificable.",
+      "noise_risk": "Medio-alto: seminarios, aspiraciones y publicaciones duplicadas.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_innovation_2026_10_11"
+      ],
+      "coverage_gap": "Complementa prensa y proveedores con evidencia académica aplicada.",
+      "readiness": "qualification_pilot",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "uchile",
+      "name": "Universidad de Chile: Escuela de Salud Pública / RCSP",
+      "family": "universidades",
+      "analytical_purpose": "Epidemiología, sistemas y políticas sanitarias",
+      "modules": [
+        "Trend",
+        "Global Intelligence"
+      ],
+      "primary_url": "https://saludpublica.uchile.cl/",
+      "cadence": "Mensual por investigación",
+      "technical_availability": "Registro de prensa y revista públicos indexados; registro de prensa es secundario, no estudio original.",
+      "date_and_evidence_quality": "Requiere fecha, método, DOI/URL de estudio y período; abstracts no equivalen a resultados definitivos.",
+      "recent_test_signal": {
+        "url": "https://saludpublica.uchile.cl/noticias-esp/registro-de-prensa/2026-registro-de-prensa/septiembre",
+        "reference_id": "turn10search3",
+        "published_at": null,
+        "data_period": "2026-09",
+        "verification": "primary_indexed_period_only",
+        "within_90_days": null,
+        "observation": "Registro de prensa septiembre 2026; se localizó superficie, no estudio original reciente calificado."
+      },
+      "expected_value": "Medio-alto contextual.",
+      "noise_risk": "Medio: opinión, prensa republicada y congresos.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Admisión dirigida por estudio y calidad, no todas las notas.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://revistasaludpublica.uchile.cl/index.php/RCSP"
+      ]
+    },
+    {
+      "id": "uc_policy",
+      "name": "UC: Centro de Políticas Públicas",
+      "family": "universidades",
+      "analytical_purpose": "Propuestas de sistema y ensayos clínicos",
+      "modules": [
+        "Trend",
+        "Watch"
+      ],
+      "primary_url": "https://politicaspublicas.uc.cl/publicaciones/",
+      "cadence": "Mensual",
+      "technical_availability": "Publicaciones y PDFs públicos; filtro sanitario necesario.",
+      "date_and_evidence_quality": "Alta trazabilidad de autor/documento; propuesta no es política vigente.",
+      "recent_test_signal": {
+        "url": "https://politicaspublicas.uc.cl/web/content/uploads/2026/04/CAP7-Propuesta-para-Chile25.pdf",
+        "reference_id": "turn10search52",
+        "published_at": null,
+        "data_period": "2026-04",
+        "verification": "primary_indexed_historical",
+        "within_90_days": null,
+        "observation": "Capítulo de propuestas sobre ensayos clínicos publicado en abril; fuera de 90 días."
+      },
+      "expected_value": "Medio, principalmente escenarios.",
+      "noise_risk": "Medio: opinión/política no aplicada.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Secundaria; no justifica otro feed diario.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "clapes",
+      "name": "CLAPES UC y otros centros de estudios",
+      "family": "universidades",
+      "analytical_purpose": "Economía de salud, datos y propuestas sectoriales",
+      "modules": [
+        "Trend"
+      ],
+      "primary_url": "https://clapesuc.cl/investigacion/",
+      "cadence": "Mensual dirigida",
+      "technical_availability": "Informes indexados; cada centro adicional requiere evaluar metodología y financiamiento.",
+      "date_and_evidence_quality": "Fecha verificable en informe; mantener atribución y sesgo de origen.",
+      "recent_test_signal": {
+        "url": "https://clapesuc.cl/investigacion/informe-el-desafio-de-generar-politicas-publicas-con-el-uso-de-datos-de-salud-agregados-en-el-tiempo",
+        "reference_id": "turn10search34",
+        "published_at": "2026-04-24",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": false,
+        "observation": "Informe sobre políticas con datos agregados de salud, 24/04; histórico."
+      },
+      "expected_value": "Medio; aporta interpretación, no reemplaza INE/CASEN.",
+      "noise_risk": "Medio-alto: advocacy, columnas y métodos heterogéneos.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Sólo documentos materiales; no censo de centros por volumen.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "startup_chile",
+      "name": "Start-Up Chile / CORFO",
+      "family": "innovacion",
+      "analytical_purpose": "Descubrir empresas, cohortes y financiamiento temprano sanitario",
+      "modules": [
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://startupchile.org/portafolio/",
+      "cadence": "Trimestral por cohorte",
+      "technical_availability": "Portafolio/blog públicos indexados; clasificación healthtech, datos por empresa y ronda deben corroborarse.",
+      "date_and_evidence_quality": "Cohorte/selección no prueba inversión privada, ingresos o eficacia.",
+      "recent_test_signal": {
+        "url": "https://www.economia.gob.cl/2026/09/21/nueva-generacion-de-start-up-chile-comienza-proceso-de-aceleracion-en-nido-lucia.htm",
+        "reference_id": "turn8search40",
+        "published_at": "2026-09-21",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "Ministerio informa inicio cohorte BIG 12 el 21/09; no señal healthtech específica."
+      },
+      "expected_value": "Medio como seed de entidades; bajo como feed de salud hoy.",
+      "noise_risk": "Alto: emprendimientos no sanitarios y eventos.",
+      "decision": "post-MVP",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Priorizar contratos/rondas materiales actuales antes que catálogo de startups.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "cens",
+      "name": "CENS",
+      "family": "innovacion",
+      "analytical_purpose": "Interoperabilidad, evaluación y adopción de salud digital",
+      "modules": [
+        "Trend",
+        "Watch"
+      ],
+      "primary_url": "https://cens.cl/makecens/",
+      "cadence": "Quincenal",
+      "technical_availability": "Listado/detalle HTML público abierto; bienes públicos requieren extraer versión/autor.",
+      "date_and_evidence_quality": "Fecha clara de noticia; webinar no prueba compra ni contratación.",
+      "recent_test_signal": {
+        "url": "https://cens.cl/compras-publicas-de-innovacion-nuevas-herramientas-para-abordar-desafios-de-salud/",
+        "reference_id": "turn22view2",
+        "published_at": "2026-09-10",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Webinar sobre compras públicas de innovación; negativo editorial útil salvo documento técnico nuevo."
+      },
+      "expected_value": "Alto potencial técnico, valor real condicionado a documentos y adopciones.",
+      "noise_risk": "Alto: cursos, agenda, certificaciones y promoción.",
+      "decision": "activar ahora",
+      "priority": "P1",
+      "backlog_ids": [
+        "w4_innovation_2026_10_11"
+      ],
+      "coverage_gap": "Calificar recursos y contratos, no activar toda agenda.",
+      "readiness": "qualification_pilot",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://cens.cl/bienes-publicos/"
+      ]
+    },
+    {
+      "id": "prosalud",
+      "name": "Pro Salud Chile / Transforma Salud",
+      "family": "innovacion",
+      "analytical_purpose": "Mapa de actores y alianzas de salud digital",
+      "modules": [
+        "Watch"
+      ],
+      "primary_url": "https://prosaludchile.cl/noticias/noticias-de-salud/",
+      "cadence": "Mensual dirigida",
+      "technical_availability": "Noticias institucionales indexadas; predominan encuentros y comités.",
+      "date_and_evidence_quality": "No detalle reciente de financiamiento/adopción validado.",
+      "recent_test_signal": {
+        "url": "https://prosaludchile.cl/noticias/noticias-de-salud/",
+        "reference_id": "turn11search26",
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed_no_material_sample",
+        "within_90_days": null,
+        "observation": "Actividades/estrategia 2026–27 y ferias; no operación material reciente probada."
+      },
+      "expected_value": "Medio para descubrir actores.",
+      "noise_risk": "Alto: eventos y declaraciones gremiales.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Complementar CENS; no duplicar toda agenda.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "healthtech",
+      "name": "Healthtech: Healthatom, Examedi, Yapp, I-MED y cartera abierta",
+      "family": "innovacion",
+      "analytical_purpose": "Rondas, contratos, despliegue y cambios de modelo",
+      "modules": [
+        "Watch",
+        "Discovery"
+      ],
+      "primary_url": "https://www.healthatom.com/prensa",
+      "cadence": "Quincenal dirigida por empresa; eventos en fuentes primarias comunes",
+      "technical_availability": "Healthatom sin novedad reciente validada; Examedi blog, Yapp vía contraparte CENABAST, I-MED vía SIS.",
+      "date_and_evidence_quality": "Fecha/counterparty/etapa obligatorias; premio o API administrativa no prueba adopción clínica.",
+      "recent_test_signal": {
+        "url": "https://www.cenabast.cl/cenabast-hospital-barros-luco-trudeau-y-yapp-inician-piloto-para-el-retiro-de-medicamentos-gratuitos-en-farmacias-privadas/",
+        "reference_id": "turn22view1",
+        "published_at": "2026-09-24",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Piloto Yapp/Barros Luco documentado por contraparte pública; no despliegue nacional."
+      },
+      "expected_value": "Alto cuando hay contrato/ronda; bajo para blogs generales.",
+      "noise_risk": "Alto: promoción, premios y claims clínicos.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Watch de entidades; primera cobertura se resuelve en CENABAST/SIS/FNE, no múltiples feeds.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://blog.examedi.com/prevencion-temprana-en-casa-caja-los-andes/",
+        "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-n-1087/"
+      ]
+    },
+    {
+      "id": "lavca",
+      "name": "LAVCA",
+      "family": "capital_innovacion",
+      "analytical_purpose": "Capital privado y venture capital latinoamericano",
+      "modules": [
+        "Global Intelligence",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.lavca.org/research/",
+      "cadence": "Semestral/release",
+      "technical_availability": "Investigación pública indexada; bases detalladas reservadas a miembros.",
+      "date_and_evidence_quality": "Período semestral y publicación diferentes; cifra LatAm no es Chile/salud.",
+      "recent_test_signal": {
+        "url": "https://www.lavca.org/research/",
+        "reference_id": "turn18search0",
+        "published_at": null,
+        "data_period": "2026-H1",
+        "verification": "primary_indexed_period_only",
+        "within_90_days": null,
+        "observation": "Reporte Mid-Year 2026 localizado, sin transacción reciente sanitaria chilena validada."
+      },
+      "expected_value": "Medio para contexto de inversión.",
+      "noise_risk": "Medio: geografía/sector amplios y cobertura parcial de deals.",
+      "decision": "post-MVP",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "No contratar base antes de demostrar valor incremental.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "vc_maps",
+      "name": "LatamList, Dealroom y portafolios VC",
+      "family": "capital_innovacion",
+      "analytical_purpose": "Descubrir rondas y entidades que luego requieren confirmación",
+      "modules": [
+        "Watch",
+        "Global Intelligence"
+      ],
+      "primary_url": "https://latamlist.com/",
+      "cadence": "Quincenal dirigida tras MVP",
+      "technical_availability": "Roadmap contempla fuentes públicas/permitidas; APIs/licencia y portafolios no calificados aquí.",
+      "date_and_evidence_quality": "Sin ronda reciente primaria validada. Anuncio, cierre y monto revelado deben distinguirse.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": null,
+        "observation": "No hay muestra reciente comprobada de Chile/salud; corroborar en startup/inversor y transacción."
+      },
+      "expected_value": "Medio potencial; menor que FNE/CMF para etapa actual.",
+      "noise_risk": "Alto: rondas repetidas, estimaciones y cobertura selectiva.",
+      "decision": "post-MVP",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "No usar scraping de base restringida como supuesto.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://dealroom.co/"
+      ]
+    },
+    {
+      "id": "pharma_primary",
+      "name": "Laboratorios: ISP + compras como canal común",
+      "family": "laboratorios",
+      "analytical_purpose": "Registro sanitario, seguridad, oferta, demanda y adjudicaciones",
+      "modules": [
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.ispch.cl/anamed/",
+      "cadence": "Cadencia ISP existente; compras diaria cuando calificada",
+      "technical_availability": "ISP ANAMED/surveillance ya declarados; issue #5 mantiene verificación de recuperación. ChileCompra/CENABAST amplían mercado.",
+      "date_and_evidence_quality": "Separar fecha de alerta, lote/evento, resolución y cierre del retiro.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "repository_audit_only",
+        "within_90_days": null,
+        "observation": "Revisiones existentes de ISP; este trabajo no certifica ejecución ni recaptura toda su ventana."
+      },
+      "expected_value": "Muy alto transversal; no requiere un feed por laboratorio.",
+      "noise_risk": "Bajo en actos regulatorios, medio si duplica alerta/noticia.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Pfizer no representa el universo; priorizar cobertura común de marcas/titulares y actores de compras.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "roche",
+      "name": "Roche Chile / Roche global",
+      "family": "laboratorios",
+      "analytical_purpose": "Inversión, diagnóstico, acceso y pipeline",
+      "modules": [
+        "Watch",
+        "Global Intelligence"
+      ],
+      "primary_url": "https://www.roche.cl/media",
+      "cadence": "Mensual local; global por hito",
+      "technical_availability": "Media local indexado con contenido antiguo; comunicados globales fechados disponibles.",
+      "date_and_evidence_quality": "Regulador, país y etapa obligatorios; prioridad FDA no equivale a registro ISP.",
+      "recent_test_signal": {
+        "url": "https://www.roche.com/media/releases/med-cor-2026-09-10",
+        "reference_id": "turn17search15",
+        "published_at": "2026-09-10",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "Comunicado global de revisión prioritaria FDA para Enspyng; no demuestra autorización chilena."
+      },
+      "expected_value": "Medio como corroboración tecnológica.",
+      "noise_risk": "Alto en productos/claims y falta de aplicabilidad local.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Secundaria vía ISP, Reuters/WHO y emisor cuando material.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "megalabs",
+      "name": "Megalabs Chile y laboratorios nacionales",
+      "family": "laboratorios",
+      "analytical_purpose": "Capacidad, inversiones, compras y cambios de suministro",
+      "modules": [
+        "Watch"
+      ],
+      "primary_url": "https://www.megalabschile.cl/noticias/",
+      "cadence": "Mensual dirigida",
+      "technical_availability": "Noticias corporativas indexadas; sin detalle reciente material validado.",
+      "date_and_evidence_quality": "No inferir fecha desde recrawl ni nombre de ruta de PDF de alerta.",
+      "recent_test_signal": {
+        "url": "https://www.megalabschile.cl/noticias/",
+        "reference_id": "turn17search39",
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed_no_material_sample",
+        "within_90_days": null,
+        "observation": "Superficie localizada; no señal corporativa reciente calificada."
+      },
+      "expected_value": "Medio si aparece inversión o contrato; cobertura común más eficiente.",
+      "noise_risk": "Alto en campañas, formación y lanzamientos no materiales.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Ampliar entidad/titular vía ISP y compras; no activar toda la promoción.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "saval",
+      "name": "SAVAL / SAVALnet",
+      "family": "laboratorios",
+      "analytical_purpose": "Innovación y educación profesional como contexto",
+      "modules": [
+        "Trend"
+      ],
+      "primary_url": "https://www.savalnet.cl/mundo-medico/noticias/",
+      "cadence": "Mensual dirigida",
+      "technical_availability": "Noticias fechadas indexadas; mucho contenido educativo.",
+      "date_and_evidence_quality": "Fecha editorial disponible, novedad de app no implica adopción o beneficio clínico.",
+      "recent_test_signal": {
+        "url": "https://www.savalnet.cl/mundo-medico/noticias/presentan-aplicacion-movil-centro-saval-en-congreso-de-medicina-interna.html",
+        "reference_id": "turn11search4",
+        "published_at": "2026-10-09",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "Lanzamiento de aplicación Centro SAVAL en congreso; señal reciente de bajo valor estratégico."
+      },
+      "expected_value": "Bajo-medio incremental.",
+      "noise_risk": "Alto: congresos, opinión y educación médica.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Secundaria; señal de prueba no obliga a admisión.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "pharma_associations",
+      "name": "CIF y asociaciones de laboratorios",
+      "family": "laboratorios",
+      "analytical_purpose": "Posiciones sectoriales, ensayos e inversión",
+      "modules": [
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://www.cifchile.cl/noticias/",
+      "cadence": "Mensual dirigida",
+      "technical_availability": "Noticias gremiales públicas indexadas; otras asociaciones (p. ej., ASILFA) necesitan calificación de superficie.",
+      "date_and_evidence_quality": "Atribuir afirmaciones al gremio; sin detalle reciente material verificado.",
+      "recent_test_signal": {
+        "url": "https://www.cifchile.cl/noticias/",
+        "reference_id": "turn10search27",
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed_no_material_sample",
+        "within_90_days": null,
+        "observation": "Seminarios/actividad de ensayos 2026; no contrato, inversión ni cambio regulatorio reciente demostrado."
+      },
+      "expected_value": "Medio contextual; no sustituye regulador o estudios.",
+      "noise_risk": "Alto: advocacy y eventos.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Mantener como fuente de hipótesis y corroborar.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "pfizer_existing",
+      "name": "Pfizer Chile y otros emisores internacionales",
+      "family": "laboratorios",
+      "analytical_purpose": "Inversión, alianzas y acceso de actores específicos",
+      "modules": [
+        "Watch",
+        "Global Intelligence"
+      ],
+      "primary_url": "https://www.pfizer.cl/",
+      "cadence": "Cadencia existente Pfizer; otros sólo por evento",
+      "technical_availability": "Pfizer tiene conector; no se recertifica en esta revisión. Resto por fuente primaria del evento.",
+      "date_and_evidence_quality": "No confundir fecha global con disponibilidad Chile; fuente corporativa exige atribución.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "repository_audit_only",
+        "within_90_days": null,
+        "observation": "Conector Pfizer en universo issue #5; no demuestra cobertura de la familia pharma."
+      },
+      "expected_value": "Medio incremental; alta cobertura por ISP/CENABAST/Reuters.",
+      "noise_risk": "Alto en campaña y marca.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Evitar clonar conector para todos los laboratorios sin densidad material.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "ahumada",
+      "name": "Farmacias Ahumada",
+      "family": "farmacias",
+      "analytical_purpose": "Red de dispensación, precios y acuerdos público-privados",
+      "modules": [
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.farmaciasahumada.cl/",
+      "cadence": "Por evento; canal primario CENABAST semanal",
+      "technical_availability": "Retail no recomendado como feed; contraparte CENABAST dispone de comunicado y tabla públicos.",
+      "date_and_evidence_quality": "Publicación clara en contraparte; precios y ahorro con fecha y comparador, no serie homogénea.",
+      "recent_test_signal": {
+        "url": "https://www.cenabast.cl/421-locales-de-farmacias-ahumada-se-adhieren-a-la-ley-cenabast-para-fortalecer-la-cobertura-de-remedios-mas-baratos/",
+        "reference_id": "turn22view0",
+        "published_at": "2026-10-07",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Adhesión Ley CENABAST de 421 locales documentada el 07/10."
+      },
+      "expected_value": "Alto sobre estructura/acceso, bajo en ofertas diarias.",
+      "noise_risk": "Alto si se usa ecommerce como noticia.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Cubrir evento en paquete CENABAST, sin conector de catálogo.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "salcobrand",
+      "name": "Salcobrand / Empresas SB",
+      "family": "farmacias",
+      "analytical_purpose": "M&A, integración de canales y alianzas",
+      "modules": [
+        "Watch",
+        "Discovery"
+      ],
+      "primary_url": "https://salcobrand.cl/",
+      "cadence": "Por evento FNE/CENABAST; revisión corporativa mensual",
+      "technical_availability": "Priorizar FNE y contraparte pública; retail y programas de innovación sólo descubren leads.",
+      "date_and_evidence_quality": "Aprobación de compra identificable; cierre y perímetro requieren fuente adicional.",
+      "recent_test_signal": {
+        "url": "https://www.fne.gob.cl/fne-aprueba-adquisicion-de-rotter-krauss-por-parte-de-salcobrand/",
+        "reference_id": "turn21view1",
+        "published_at": "2026-09-23",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "FNE aprueba compra Rotter & Krauss por Salcobrand el 23/09."
+      },
+      "expected_value": "Alto para concentración y expansión a óptica.",
+      "noise_risk": "Alto en promociones; bajo en resolución FNE.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Paquete FNE aporta señal primaria sin rastreo de promociones.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "cruzverde",
+      "name": "Cruz Verde / Socofar",
+      "family": "farmacias",
+      "analytical_purpose": "Red, propiedad, abastecimiento y acuerdos",
+      "modules": [
+        "Watch",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.cruzverde.cl/",
+      "cadence": "Mensual dirigida por actor",
+      "technical_availability": "Retail público; no se calificó newsroom corporativo. No usar páginas internas de empleados aunque aparezcan indexadas.",
+      "date_and_evidence_quality": "Sin muestra primaria material reciente validada; no inventar actividad por completar tres cadenas.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": null,
+        "observation": "Ninguna señal reciente pública material verificada en este trabajo."
+      },
+      "expected_value": "Medio-alto por tamaño del actor; recurrencia propia por demostrar.",
+      "noise_risk": "Alto en promociones y contenidos no destinados al público.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Watch por FNE/CMF cuando aplique, CENABAST y prensa; calificar canal propio sólo ante necesidad.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "independent_pharmacies",
+      "name": "Farmacias independientes y comunales",
+      "family": "farmacias",
+      "analytical_purpose": "Cobertura territorial y acceso a medicamentos",
+      "modules": [
+        "Benchmark",
+        "Trend"
+      ],
+      "primary_url": "https://www.cenabast.cl/",
+      "cadence": "Mensual datos; hitos por publicación",
+      "technical_availability": "Registro/canales CENABAST y municipalidad sólo con dato agregado público.",
+      "date_and_evidence_quality": "Direcciones/locales y fármacos cambian; conservar snapshot y fecha de actualización real.",
+      "recent_test_signal": {
+        "url": "https://www.cenabast.cl/cenabast-hospital-barros-luco-trudeau-y-yapp-inician-piloto-para-el-retiro-de-medicamentos-gratuitos-en-farmacias-privadas/",
+        "reference_id": "turn22view1",
+        "published_at": "2026-09-24",
+        "data_period": null,
+        "verification": "primary_opened",
+        "within_90_days": true,
+        "observation": "Piloto Barros Luco/Yapp usa farmacias adheridas; no representa todas las independientes."
+      },
+      "expected_value": "Alto en mapa territorial; poco valor en noticias por farmacia.",
+      "noise_risk": "Bajo-medio con filtro de cobertura.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Canal de datos agregado en paquete CENABAST, no censo de ecommerce.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "ge",
+      "name": "GE HealthCare",
+      "family": "medtech",
+      "analytical_purpose": "M&A, tecnologías diagnósticas y suministro",
+      "modules": [
+        "Global Intelligence",
+        "Watch"
+      ],
+      "primary_url": "https://www.gehealthcare.com/en/about/newsroom/press-releases",
+      "cadence": "Semanal dirigida por eventos",
+      "technical_availability": "Newsroom y comunicado primario indexados; acceso periódico aún no implementado.",
+      "date_and_evidence_quality": "Fecha de anuncio explícita; acuerdo de compra no equivale a cierre ni operación Chile.",
+      "recent_test_signal": {
+        "url": "https://www.gehealthcare.com/en-us/about/newsroom/press-releases/ge-healthcare-to-acquire-sofie-biosciences-establishing-a-final-mile-footprint-for-pet-radiopharmaceutical-supply-in-the-us",
+        "reference_id": "turn20search0",
+        "published_at": "2026-10-05",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "Anuncio compra SOFIE para radiofármacos PET en EE.UU.; corrobora Reuters."
+      },
+      "expected_value": "Alto en evento material; canal permanente incremental por probar.",
+      "noise_risk": "Medio-alto: productos/claims y geografía externa.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Corroboración de Reuters; no otro feed diario sin cobertura distinta.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "siemens",
+      "name": "Siemens Healthineers",
+      "family": "medtech",
+      "analytical_purpose": "Equipamiento, inversión hospitalaria y diagnóstico",
+      "modules": [
+        "Global Intelligence",
+        "Watch"
+      ],
+      "primary_url": "https://www.siemens-healthineers.com/latam/news",
+      "cadence": "Mensual; hitos regionales",
+      "technical_availability": "Portal regional de noticias/press releases indexado.",
+      "date_and_evidence_quality": "Separar país de instalación y fecha editorial; noticia regional no es inversión Chile.",
+      "recent_test_signal": {
+        "url": "https://www.siemens-healthineers.com/latam/news",
+        "reference_id": "turn11search3",
+        "published_at": "2026-07-29",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "Instalación/tecnología en Hospital Italiano de Argentina el 29/07; señal regional."
+      },
+      "expected_value": "Medio para transferencias tecnológicas.",
+      "noise_risk": "Alto en novedades comerciales y adjudicaciones no confirmadas.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Compras públicas y hospitales chilenos darán señal local más verificable.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.siemens-healthineers.com/latam/press-room/press-releases"
+      ]
+    },
+    {
+      "id": "medtronic",
+      "name": "Medtronic y fabricantes de dispositivos",
+      "family": "medtech",
+      "analytical_purpose": "Robótica, dispositivos, acuerdos y financiamiento",
+      "modules": [
+        "Global Intelligence",
+        "Watch"
+      ],
+      "primary_url": "https://news.medtronic.com/press-releases?keywords=Innovative+Integrated+Health",
+      "cadence": "Mensual dirigida",
+      "technical_availability": "Portal global de comunicados indexado; no detalle reciente con fecha validado en esta auditoría.",
+      "date_and_evidence_quality": "Distinguir aprobación, indicación, jurisdicción y comercialización.",
+      "recent_test_signal": {
+        "url": "https://news.medtronic.com/press-releases?keywords=Innovative+Integrated+Health",
+        "reference_id": "turn11search12",
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed_no_material_sample",
+        "within_90_days": null,
+        "observation": "Índice de comunicados localizado; señal reciente material pendiente."
+      },
+      "expected_value": "Medio incremental tras Reuters/ISP/compras.",
+      "noise_risk": "Alto en claims de producto.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "No activar por tamaño de marca; empezar por contratos locales o evento internacional material.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "adimech",
+      "name": "ADIMECH",
+      "family": "medtech",
+      "analytical_purpose": "Estándares, regulación y ecosistema de dispositivos",
+      "modules": [
+        "Watch",
+        "Trend"
+      ],
+      "primary_url": "https://adimech.org/",
+      "cadence": "Mensual dirigida",
+      "technical_availability": "Sitio gremial público indexado; dominio verificado adimech.org.",
+      "date_and_evidence_quality": "Actividad de ciberseguridad/HIMSS localizada sin inversión reciente fechada calificada.",
+      "recent_test_signal": {
+        "url": "https://adimech.org/",
+        "reference_id": "turn18search20",
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed_no_material_sample",
+        "within_90_days": null,
+        "observation": "Noticias/eventos gremiales; no evento comercial material reciente confirmado."
+      },
+      "expected_value": "Medio como perspectiva sectorial.",
+      "noise_risk": "Alto: agenda, advocacy y premios.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Corroborar estándares con autoridad, compras con ChileCompra.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "careers",
+      "name": "Career pages / ATS públicos de 10–20 actores",
+      "family": "talento",
+      "analytical_purpose": "Cambios de capacidades, contratación y perfiles tecnológicos",
+      "modules": [
+        "Trend",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.redsalud.cl/",
+      "cadence": "Semanal si se aprueba cartera de ATS",
+      "technical_availability": "Compromiso roadmap; endpoints públicos/condiciones por actor no calificados. No fingir universo de 20 cubierto.",
+      "date_and_evidence_quality": "Fecha original, republicación, ubicación e ID de vacante imprescindibles; sin muestra reciente verificada.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": null,
+        "observation": "No se validó lote actual de ATS. Primero inventario público de Isapres/redes priorizadas, con dedup de vacantes."
+      },
+      "expected_value": "Medio para Talent Intelligence, menor urgencia que finanzas/compras.",
+      "noise_risk": "Alto: reposts, consultoras y vacantes permanentes.",
+      "decision": "post-MVP",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Diferimiento explícito de compromiso día 15–60: se propone reordenarlo por valor y falta de evidencia, no declararlo cumplido.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "linkedin",
+      "name": "LinkedIn",
+      "family": "talento",
+      "analytical_purpose": "Descubrimiento/distribución complementaria",
+      "modules": [
+        "Watch"
+      ],
+      "primary_url": "https://www.linkedin.com/",
+      "cadence": "Manual dirigida",
+      "technical_availability": "Roadmap excluye dependencia de scraping; no se presupone acceso automatizado.",
+      "date_and_evidence_quality": "Sin muestra pública material reciente calificada; posts no prueban contratos.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": null,
+        "observation": "No se usa como fuente de ingesta recurrente."
+      },
+      "expected_value": "Bajo como ingesta, medio como pista humana.",
+      "noise_risk": "Alto: autopromoción, duplicados y permisos.",
+      "decision": "descartar",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Descartar conector/scraping; conservar sólo papel complementario previsto en roadmap.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "nonhealth_biotech",
+      "name": "Biotech no sanitaria / ChileBio agrícola",
+      "family": "innovacion",
+      "analytical_purpose": "Control negativo de clasificación por sector",
+      "modules": [
+        "Discovery"
+      ],
+      "primary_url": "https://www.chilebio.cl/",
+      "cadence": "No recolectar para este universo",
+      "technical_availability": "Sitio relacionado con biotecnología agrícola; nombre no prueba pertinencia sanitaria.",
+      "date_and_evidence_quality": "No hay señal sanitaria material reciente validada.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": null,
+        "observation": "La palabra biotech por sí sola no habilita el dominio."
+      },
+      "expected_value": "Bajo para Alicanto Salud.",
+      "noise_risk": "Muy alto: falso positivo semántico.",
+      "decision": "descartar",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Excluir biotech agrícola; biotech sanitaria permanece cubierta por ISP, universidades, startups y emisores.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "latam",
+      "name": "Expansión Colombia/Perú → Argentina/Uruguay → Brasil",
+      "family": "latam",
+      "analytical_purpose": "Replicar mapa de fuentes por país",
+      "modules": [
+        "Global Intelligence",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.paho.org/",
+      "cadence": "Diseño por país después de MVP; vigilancia regional OPS antes",
+      "technical_availability": "Roadmap 6–8 meses; reguladores/compras/justicia/corporate/VC de cada país todavía sin calificación.",
+      "date_and_evidence_quality": "Sin prueba por país en este trabajo; no prometer universo internacional implementado.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": null,
+        "observation": "Se preserva expansión por familias y country_code, sin hardcodear Chile."
+      },
+      "expected_value": "Alto posterior; dispersa foco actual.",
+      "noise_risk": "Alto por legislación, idioma y comparabilidad.",
+      "decision": "post-MVP",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Compromiso explicitado, selección de país requiere disponibilidad y caso comercial.",
+      "readiness": "candidate_unqualified",
+      "activated_by_this_work": false
+    },
+    {
+      "id": "core_official",
+      "name": "MINSAL / FONASA / DEIS / SUSESO / Diario Oficial",
+      "family": "core_existente",
+      "analytical_purpose": "Política, cobertura pública, epidemiología/utilización, seguridad social y actos normativos; completar operación antes de duplicar fuentes.",
+      "modules": [
+        "Discovery",
+        "Watch",
+        "Trend",
+        "Benchmark"
+      ],
+      "primary_url": "https://www.minsal.cl/",
+      "cadence": "Diaria normativa/noticias; estadísticas por release",
+      "technical_availability": "Fuentes declaradas dentro de los 27; recuperación runtime/fechas/archivos sigue abierta bajo issue #5. No se propone otra copia de esos conectores.",
+      "date_and_evidence_quality": "Acto, publicación, vigencia y período son distintos. DEIS y FONASA requieren versiones y denominadores; faltantes no son ceros.",
+      "recent_test_signal": {
+        "url": "https://www.minsal.cl/presidente-kast-minsal-y-desarrollo-social-lanzan-plan-que-moderniza-y-agiliza-certificacion-de-discapacidad/",
+        "reference_id": "turn6search0",
+        "published_at": "2026-10-06",
+        "data_period": null,
+        "verification": "primary_indexed",
+        "within_90_days": true,
+        "observation": "Anuncio MINSAL COMPIN del 06/10; sólo muestra de la familia, no validación completa de FONASA/DEIS/SUSESO/DO."
+      },
+      "expected_value": "Muy alto; expansión complementa sin sustituir recuperación.",
+      "noise_risk": "Medio: actos administrativos, republicaciones y episodios sin cambio material.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Work 4 remite reparación a iteration1_recovery/iteration2_balance; DIPRES/WHO/PAHO agregan dimensiones, no certifican estos canales.",
+      "readiness": "existing_under_issue5_audit",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.fonasa.cl/",
+        "https://deis.minsal.cl/",
+        "https://www.suseso.cl/",
+        "https://www.diariooficial.interior.gob.cl/"
+      ]
+    },
+    {
+      "id": "press_chile",
+      "name": "Prensa Chile: DF / Pulso y medios secundarios",
+      "family": "core_existente",
+      "analytical_purpose": "Inversión, M&A y señales empresariales tempranas",
+      "modules": [
+        "Discovery",
+        "Watch"
+      ],
+      "primary_url": "https://www.df.cl/empresas/salud",
+      "cadence": "Cadencia existente diaria/múltiple diaria",
+      "technical_availability": "DF y Pulso declarados; Work 3 acredita fallos pendientes de fecha/cola y falta de prueba posterior a reparación. Otros medios sólo si añaden cobertura.",
+      "date_and_evidence_quality": "Fecha editorial de origen y evento distintas; conservar procedencia de modificación. Alta confianza no elimina gate temporal.",
+      "recent_test_signal": {
+        "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro",
+        "reference_id": "turn17search47",
+        "published_at": "2026-09-01",
+        "data_period": null,
+        "verification": "secondary_indexed",
+        "within_90_days": true,
+        "observation": "DF informa alianza MEDS–UDP; ejemplo de coverage secundaria, no prueba de ingesta real."
+      },
+      "expected_value": "Alto con operación correcta; menor valor de duplicar medios generalistas.",
+      "noise_risk": "Medio: columnas, paywalls, notas repetidas y titulares sin etapa de transacción.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "No prometer que CLC/Interclínica están compensadas end-to-end sólo por figurar DF/Pulso en la revisión beta.",
+      "readiness": "existing_under_issue5_audit",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.latercera.com/canal/pulso/"
+      ]
+    },
+    {
+      "id": "mutualities_existing",
+      "name": "ACHS Seguro Laboral / Mutual de Seguridad / IST",
+      "family": "core_existente",
+      "analytical_purpose": "Competencia laboral, red prestadora, prevención y siniestralidad",
+      "modules": [
+        "Watch",
+        "Benchmark",
+        "Trend"
+      ],
+      "primary_url": "https://www.achs.cl/centro-de-noticias",
+      "cadence": "Cadencia existente; estadísticas por release",
+      "technical_availability": "Conectores en issue #5; calificación/ejecución real aún a reconciliar. ISL se añade como contraparte pública.",
+      "date_and_evidence_quality": "Datos SUSESO pueden comparar actores con denominadores; newsrooms no sustituyen series.",
+      "recent_test_signal": {
+        "url": null,
+        "reference_id": null,
+        "published_at": null,
+        "data_period": null,
+        "verification": "repository_audit_only",
+        "within_90_days": null,
+        "observation": "Artefactos de auditoría existentes; sin nueva muestra primaria fechada propia en este trabajo."
+      },
+      "expected_value": "Alto como familia, incremento de valor depende de completar datos y operación.",
+      "noise_risk": "Alto en talleres/campañas; bajo en estadísticas comparables.",
+      "decision": "secundaria",
+      "priority": null,
+      "backlog_ids": [],
+      "coverage_gap": "Mantener recuperación bajo issue #5 y completar ISL; no aumentar conteo con réplicas.",
+      "readiness": "existing_under_issue5_audit",
+      "activated_by_this_work": false,
+      "additional_surfaces": [
+        "https://www.mutual.cl/",
+        "https://www.ist.cl/"
+      ]
+    }
+  ],
+  "evidence_catalog": {
+    "turn20news48": {
+      "ref_id": "turn20news48",
+      "title": "GE HealthCare to buy Sofie Biosciences for $945 million to strengthen radiopharma business",
+      "url": "https://www.reuters.com/legal/transactional/ge-healthcare-buy-sofie-biosciences-945-million-strengthen-radiopharma-business-2026-10-05/",
+      "research_batch": 21
+    },
+    "turn7view4": {
+      "ref_id": "turn7view4",
+      "title": "WHO urges shift from institutional to community-based mental health care",
+      "url": "https://www.who.int/news/item/09-10-2026-who-urges-shift-from-institutional-to-community-based-mental-health-care",
+      "research_batch": 8
+    },
+    "turn15search1": {
+      "ref_id": "turn15search1",
+      "title": "Informes técnicos | OPS/OMS | Organización Panamericana de la Salud",
+      "url": "https://www.paho.org/es/informes-tecnicos",
+      "research_batch": 16
+    },
+    "turn9view0": {
+      "ref_id": "turn9view0",
+      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE - año 2026 - Superintendencia de Salud",
+      "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+      "research_batch": 10
+    },
+    "turn1search13": {
+      "ref_id": "turn1search13",
+      "title": "Salud",
+      "url": "https://www.chilecompra.cl/category/centro-de-documentacion/normativa/salud/",
+      "research_batch": 2
+    },
+    "turn3view1": {
+      "ref_id": "turn3view1",
+      "title": "www.pjud.cl",
+      "url": "https://www.pjud.cl/prensa-y-comunicaciones/noticias-del-poder-judicial",
+      "research_batch": 4
+    },
+    "turn2search39": {
+      "ref_id": "turn2search39",
+      "title": "Ley Chile - Resolución 3228 Exenta; Resolución if 3228 Exenta (31-mar-2026) M. de Salud; Superintendencia de Salud; Intendencia de Fondos y Seguros Previsionales de Salud - Biblioteca del Congreso Nacional de Chile",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1222748",
+      "research_batch": 3
+    },
+    "turn19search48": {
+      "ref_id": "turn19search48",
+      "title": "HECHO ESENCIAL",
+      "url": "https://cibe.bolsadesantiago.com/Documentos/Noticias/Hechos%20Esenciales/hes_2026080512549.pdf",
+      "research_batch": 20
+    },
+    "turn2search43": {
+      "ref_id": "turn2search43",
+      "title": "Salud aumentará su presupuesto en 4,7% para 2027: Ministra Chomali destaca foco en gestión, eficiencia y reducción de listas de espera - Ministerio de Salud de Chile",
+      "url": "https://www.minsal.cl/salud-aumentara-su-presupuesto-en-47-para-2027-ministra-chomali-destaca-foco-en-gestion-eficiencia-y-reduccion-de-listas-de-espera/",
+      "research_batch": 3
+    },
+    "turn4search1": {
+      "ref_id": "turn4search1",
+      "title": "Índice de Precios al Consumidor (IPC) de septiembre presentó una variación mensual de 0,4%",
+      "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/10/08/%C3%ADndice-de-precios-al-consumidor-%28ipc%29-de-septiembre-present%C3%B3-una-variaci%C3%B3n-mensual-de-0-4",
+      "research_batch": 5
+    },
+    "turn4search20": {
+      "ref_id": "turn4search20",
+      "title": "Estadísticas CASEN 2024 - BIDAT",
+      "url": "https://bidat.gob.cl/details/ficha/dataset/estadisticas-casen-2024",
+      "research_batch": 5
+    },
+    "turn4search4": {
+      "ref_id": "turn4search4",
+      "title": "Encuesta CEP - CEP Chile",
+      "url": "https://www.cepchile.cl/opinion-publica/encuesta-cep/",
+      "research_batch": 5
+    },
+    "turn6search21": {
+      "ref_id": "turn6search21",
+      "title": "Centro de estadísticas archivo | Instituto de Seguridad Laboral",
+      "url": "https://www.isl.gob.cl/centro_estadisticas/",
+      "research_batch": 7
+    },
+    "turn6search0": {
+      "ref_id": "turn6search0",
+      "title": "Presidente Kast, Minsal y Desarrollo Social lanzan plan que moderniza y agiliza certificación de discapacidad - Ministerio de Salud de Chile",
+      "url": "https://www.minsal.cl/presidente-kast-minsal-y-desarrollo-social-lanzan-plan-que-moderniza-y-agiliza-certificacion-de-discapacidad/",
+      "research_batch": 7
+    },
+    "turn21view1": {
+      "ref_id": "turn21view1",
+      "title": "FNE aprueba adquisición de Rotter & Krauss por parte de Salcobrand",
+      "url": "https://www.fne.gob.cl/fne-aprueba-adquisicion-de-rotter-krauss-por-parte-de-salcobrand/",
+      "research_batch": 22
+    },
+    "turn22view0": {
+      "ref_id": "turn22view0",
+      "title": "421 locales de Farmacias Ahumada se adhieren a la Ley Cenabast para fortalecer la cobertura de remedios más baratos - CENABAST",
+      "url": "https://www.cenabast.cl/421-locales-de-farmacias-ahumada-se-adhieren-a-la-ley-cenabast-para-fortalecer-la-cobertura-de-remedios-mas-baratos/",
+      "research_batch": 23
+    },
+    "turn20search10": {
+      "ref_id": "turn20search10",
+      "title": "Comisión de Salud - TV Senado",
+      "url": "https://tv.senado.cl/tvsenado/comisiones/permanentes/salud/comision-de-salud/2026-10-05/120031.html",
+      "research_batch": 21
+    },
+    "turn19search2": {
+      "ref_id": "turn19search2",
+      "title": "Recursos digitales - SIAD",
+      "url": "https://siad.contraloria.cl/ca/recursos-digitales",
+      "research_batch": 20
+    },
+    "turn9view1": {
+      "ref_id": "turn9view1",
+      "title": "Llevamos atención especializada a Cauquenes con 200 prestaciones de salud",
+      "url": "https://www.clinicaalemana.cl/articulos/detalle/2026/llevamos-atencion-especializada-a-cauquenes-con-200-prestaciones-de-salud?itm_campaign=marca&itm_medium=web&itm_source=vitrina_cas",
+      "research_batch": 10
+    },
+    "turn9view2": {
+      "ref_id": "turn9view2",
+      "title": "Operativo en la Región de Antofagasta concretó 427 consultas y 36 cirugías oftalmológicas",
+      "url": "https://www.ucchristus.cl/blog-salud-uc/articulos/2026/operativo-en-la-region-de-antofagasta-concreto-427-consultas-y-36-cirugias-oftalmologicas",
+      "research_batch": 10
+    },
+    "turn23view0": {
+      "ref_id": "turn23view0",
+      "title": "Información para pacientes | UC CHRISTUS",
+      "url": "https://www.ucchristus.cl/contingencias",
+      "research_batch": 24
+    },
+    "turn7view2": {
+      "ref_id": "turn7view2",
+      "title": "Memorias Anuales | Interclinica",
+      "url": "https://www.interclinica.cl/memorias-anuales",
+      "research_batch": 8
+    },
+    "turn17search6": {
+      "ref_id": "turn17search6",
+      "title": "FALP y CCHEN exploran nuevas oportunidades de colaboración para la investigación en cáncer - Fundación Arturo López Pérez",
+      "url": "https://www.falp.org/noticia/falp-y-cchen-exploran-nuevas-oportunidades-de-colaboracion-para-la-investigacion-en-cancer/?cat=fundacion",
+      "research_batch": 18
+    },
+    "turn17search2": {
+      "ref_id": "turn17search2",
+      "title": "Listado de Noticias | Clínica UANDES",
+      "url": "https://www.clinicauandes.cl/noticia",
+      "research_batch": 18
+    },
+    "turn17search47": {
+      "ref_id": "turn17search47",
+      "title": "Clínica MEDS y Universidad Diego Portales sellan alianza que creará Centro Académico de Salud | Diario Financiero",
+      "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro",
+      "research_batch": 18
+    },
+    "turn17search33": {
+      "ref_id": "turn17search33",
+      "title": "Andes Salud Puerto Montt presenta Plan 2030 - Clinica Andes Salud Puerto Montt",
+      "url": "https://www.andessaludpuertomontt.cl/noticias/andes-salud-puerto-montt-presenta-plan-2030/",
+      "research_batch": 18
+    },
+    "turn22view1": {
+      "ref_id": "turn22view1",
+      "title": "Cenabast, Hospital Barros Luco Trudeau y Yapp inician piloto para el retiro de medicamentos gratuitos en farmacias privadas - CENABAST",
+      "url": "https://www.cenabast.cl/cenabast-hospital-barros-luco-trudeau-y-yapp-inician-piloto-para-el-retiro-de-medicamentos-gratuitos-en-farmacias-privadas/",
+      "research_batch": 23
+    },
+    "turn8search16": {
+      "ref_id": "turn8search16",
+      "title": "Clínica Alemana y UDD impulsan plataforma digital para apoyar la toma de decisiones clínicas basada en evidencia - Centro de Evaluación de Tecnologías Sanitarias Digitales",
+      "url": "https://medicina.udd.cl/dhtac/2026/07/14/clinica-alemana-y-udd-impulsan-plataforma-digital-para-apoyar-la-toma-de-decisiones-clinicas-basada-en-evidencia/",
+      "research_batch": 9
+    },
+    "turn10search3": {
+      "ref_id": "turn10search3",
+      "title": "Septiembre - Escuela de Salud Pública",
+      "url": "https://saludpublica.uchile.cl/noticias-esp/registro-de-prensa/2026-registro-de-prensa/septiembre",
+      "research_batch": 11
+    },
+    "turn10search52": {
+      "ref_id": "turn10search52",
+      "title": "Concurso Políticas Públicas",
+      "url": "https://politicaspublicas.uc.cl/web/content/uploads/2026/04/CAP7-Propuesta-para-Chile25.pdf",
+      "research_batch": 11
+    },
+    "turn10search34": {
+      "ref_id": "turn10search34",
+      "title": "Clapes UC | Informe: El desafío de generar políticas públicas con el uso de datos de salud agregados en el tiempo",
+      "url": "https://clapesuc.cl/investigacion/informe-el-desafio-de-generar-politicas-publicas-con-el-uso-de-datos-de-salud-agregados-en-el-tiempo",
+      "research_batch": 11
+    },
+    "turn8search40": {
+      "ref_id": "turn8search40",
+      "title": "Nueva generación de Start-Up Chile comienza proceso de aceleración en NIDO Lucía - Ministerio de Economía, Fomento y Turismo",
+      "url": "https://www.economia.gob.cl/2026/09/21/nueva-generacion-de-start-up-chile-comienza-proceso-de-aceleracion-en-nido-lucia.htm",
+      "research_batch": 9
+    },
+    "turn22view2": {
+      "ref_id": "turn22view2",
+      "title": "Compras Públicas de Innovación: nuevas herramientas para abordar desafíos de salud | Sitio CENS Oficial",
+      "url": "https://cens.cl/compras-publicas-de-innovacion-nuevas-herramientas-para-abordar-desafios-de-salud/",
+      "research_batch": 23
+    },
+    "turn11search26": {
+      "ref_id": "turn11search26",
+      "title": "Noticias de Salud - Pro Salud Chile",
+      "url": "https://prosaludchile.cl/noticias/noticias-de-salud/",
+      "research_batch": 12
+    },
+    "turn18search0": {
+      "ref_id": "turn18search0",
+      "title": "Research - LAVCA",
+      "url": "https://www.lavca.org/research/",
+      "research_batch": 19
+    },
+    "turn17search15": {
+      "ref_id": "turn17search15",
+      "title": "U.S. FDA grants Priority Review for Roche’s Enspryng for MOGAD, an autoimmune disease with no approved treatments",
+      "url": "https://www.roche.com/media/releases/med-cor-2026-09-10",
+      "research_batch": 18
+    },
+    "turn17search39": {
+      "ref_id": "turn17search39",
+      "title": "Noticias - Megalabs",
+      "url": "https://www.megalabschile.cl/noticias/",
+      "research_batch": 18
+    },
+    "turn11search4": {
+      "ref_id": "turn11search4",
+      "title": "SAVALnet - Mundo Médico - Noticias",
+      "url": "https://www.savalnet.cl/mundo-medico/noticias/presentan-aplicacion-movil-centro-saval-en-congreso-de-medicina-interna.html",
+      "research_batch": 12
+    },
+    "turn10search27": {
+      "ref_id": "turn10search27",
+      "title": "Noticias - Cámara de la Innovación Farmacéutica",
+      "url": "https://www.cifchile.cl/noticias/",
+      "research_batch": 11
+    },
+    "turn20search0": {
+      "ref_id": "turn20search0",
+      "title": "GE HealthCare to acquire SOFIE Biosciences establishing a final mile footprint for PET radiopharmaceutical supply in the U.S. | GE HealthCare (United States)",
+      "url": "https://www.gehealthcare.com/en-us/about/newsroom/press-releases/ge-healthcare-to-acquire-sofie-biosciences-establishing-a-final-mile-footprint-for-pet-radiopharmaceutical-supply-in-the-us",
+      "research_batch": 21
+    },
+    "turn11search3": {
+      "ref_id": "turn11search3",
+      "title": "Noticias e Historias - Siemens Healthineers Latinoamérica",
+      "url": "https://www.siemens-healthineers.com/latam/news",
+      "research_batch": 12
+    },
+    "turn11search12": {
+      "ref_id": "turn11search12",
+      "title": "Press releases | Medtronic",
+      "url": "https://news.medtronic.com/press-releases?keywords=Innovative+Integrated+Health",
+      "research_batch": 12
+    },
+    "turn18search20": {
+      "ref_id": "turn18search20",
+      "title": "Adimech",
+      "url": "https://adimech.org/",
+      "research_batch": 19
+    }
+  },
+  "backlog_path": "config/source_expansion_backlog_2026_10_11.json",
+  "report_path": "docs/SOURCE_EXPANSION_AUDIT_2026_10_11.md",
+  "unattended_next_step": "Tomar w4_isapres_2026_10_11: snapshot del registro oficial y fixture de publicación 02/10 con diez códigos. Preparación independiente en staging; mantener gates de activación core.",
+  "external_limits": [
+    "Reuters: ruta/derechos de automatización pendientes; no nueva compra autorizada.",
+    "PAHO y PJUD: acceso directo bloqueado en este entorno; probar sólo alternativas oficiales públicas.",
+    "ChileCompra: ticket autorizado o ruta abierta equivalente no acreditados; no exigir intervención humana antes de agotar alternativa pública.",
+    "ATS/Start-Up Chile: se recomienda diferir compromisos originales de día 15–60; decisión estratégica explícita, no cierre silencioso."
+  ]
+}
