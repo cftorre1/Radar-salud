@@ -2,6 +2,9 @@ import importlib.util
 from pathlib import Path
 import socket
 import ssl
+import hashlib
+import json
+import zipfile
 from urllib.error import HTTPError, URLError
 from urllib.request import Request
 
@@ -104,3 +107,20 @@ def test_primary_deis_workbook_is_structurally_readable_without_fabricated_signa
 def test_non_rectangular_csv_cannot_be_a_validated_dataset():
     with pytest.raises((ValueError, runtime.csv.Error)):
         runtime.verify_dataset_body(b'one;two\n1;2\n3;4;5\n', 'https://datos.gob.cl/resource.csv')
+
+
+def test_current_primary_csvs_replay_with_hashes_and_no_editorial_dates():
+    path = Path('data/audits/public_sources_c_20261011/recovery/runs/38117670184/full-primary-evidence.zip')
+    with zipfile.ZipFile(path) as bundle:
+        samples = json.loads(bundle.read('dataset_samples.json'))
+        counts = []
+        for sample in samples:
+            if sample['format'] != 'csv':
+                continue
+            body = bundle.read(sample['body_path'])
+            assert hashlib.sha256(body).hexdigest() == sample['sha256']
+            replay = runtime.verify_dataset_body(body, sample['url'])
+            counts.append(replay['data_rows'])
+            assert replay['columns'] == sample['columns']
+            assert sample['publication_date'] is None and not sample['feed_eligible']
+    assert counts == [5782, 168474]
