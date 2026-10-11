@@ -122,7 +122,8 @@ def _reviewed_pulso_admission(raw, previous):
 
 def _code_repair_pulso_admission(raw, previous):
     """Release a pinned failed assessment once for a new model call only."""
-    if previous.get("status") not in {"pending", "retry"}:
+    if (previous.get("status") not in {"pending", "retry"}
+            or type(previous.get("attempts")) is not int or previous["attempts"] < 1):
         return None
     old = previous.get("raw", {}).get("metadata", {})
     reason = previous.get("reason")

@@ -113,6 +113,10 @@ def test_repair_never_reopens_terminal_or_active_processing_rows(tmp_path, statu
 
 @pytest.mark.parametrize("mutation", [
     lambda entry, fresh: entry.update(reason="analysis_unavailable"),
+    lambda entry, fresh: entry.update(attempts=0),
+    lambda entry, fresh: entry.update(attempts=-1),
+    lambda entry, fresh: entry.update(attempts=False),
+    lambda entry, fresh: entry.update(attempts="1"),
     lambda entry, fresh: entry["raw"]["metadata"]["editorial_assessment"].update(decision="published"),
     lambda entry, fresh: entry["raw"]["metadata"]["editorial_assessment"].update(reason="unrelated_hold"),
     lambda entry, fresh: entry["raw"]["metadata"]["editorial_assessment"].update(threshold=70),
