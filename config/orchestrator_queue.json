@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T06:01:59.671306+00:00",
+  "updated_at": "2026-10-11T06:10:20.095337+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -4316,11 +4316,11 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T05:49:20.850928+00:00",
-      "current_subfront": "actual_core_historical_reconciliation",
-      "next_action": "Monitor Actions38115982275 discovery-only; reconcile every control omission/date then process with gate72 and review holds. No RESOLVED or merge before real outcomes and final QA/Reviewer/staging.",
+      "last_progress_at": "2026-10-11T06:10:20.095337+00:00",
+      "current_subfront": "actual_core_capture_and_independent_qa",
+      "next_action": "Finish coldcore38115982275; queuedreport38116857374 retains actualcontrolHTML. Reconcile29/79 before process. Currentstaging governance merged preserving all othertasks; finalactualQA/Reviewer stillrequired.",
       "branch": "codex/b-pulso-runtime-20261011",
-      "baseline_sha": "73aff5c",
+      "baseline_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "current_hypothesis": "Normal public frontend pagination spans factual sections and health tags; verify sustained primary-byline July boundary and frozen control in actual core.",
       "evidence": [
         "data/audits/pulso_external_control_2026_10_11.json",
@@ -4330,10 +4330,13 @@
         "data/audits/pulso_incremental_review_2026_10_11.json",
         "data/audits/pulso_runtime_2026_10_11.json"
       ],
-      "candidate_sha": "bbcbe55de8968dcf05bd7305084ad6e7d5d6bfd1",
+      "candidate_sha": "55d7dccf77924018ed6967072e0c1d6ff365434a",
       "pr": 10,
       "acceptance": "NOT_RESOLVED_NO_MERGE",
-      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115982275"
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115982275",
+      "baseline_start_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_staging_sync_at": "2026-10-11T06:10:20.095337+00:00",
+      "queued_reconciliation_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38116857374"
     }
   ],
   "execution_policy": {

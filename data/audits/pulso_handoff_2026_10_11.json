@@ -1,12 +1,12 @@
 {
   "schema_version": "2.0",
-  "recorded_at": "2026-10-11T05:51:14.959763+00:00",
+  "recorded_at": "2026-10-11T06:10:20.095337+00:00",
   "status": "IN_PROGRESS_NOT_ACCEPTED",
   "source": "pulso_latercera",
   "owner": "Codex B / Senior Source Recovery Engineer",
   "branch": "codex/b-pulso-runtime-20261011",
-  "base_staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
-  "current_product_candidate": "bbcbe55de8968dcf05bd7305084ad6e7d5d6bfd1",
+  "base_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+  "current_product_candidate": "55d7dccf77924018ed6967072e0c1d6ff365434a",
   "previous_handoff": "Historical pre-exhaustive record is preserved in git. Its CONNECT403 limitation is resolved through authorized GitHub Actions and is not a current source blocker.",
   "pr": "https://github.com/cftorre1/Radar-salud/pull/10",
   "issues_must_remain_open": [
@@ -44,8 +44,8 @@
   },
   "validation": {
     "directed_tests": "Independent77PASS at bbcbe55; agent15PASS runtime export increment e49f662",
-    "full_python": "343PASS,1FAIL,1SKIP; normative count11 expected>=12. Proven identical failure on staging73aff5c; dated QA expectations under repair.",
-    "acceptance": "NOT_RESOLVED_NO_MERGE; final Reviewer and staging PASS pending"
+    "full_python": "411PASS/2SKIP aftercurrentstagingintegration; one livekey skip and one corpuspending skip; npm earlierPASS",
+    "acceptance": "NOT_RESOLVED_NO_MERGE; actualdatarecall/process/finalReviewer/stagingPASS pending"
   },
   "current_agents": {
     "historical_discovery": "Source-required fast budget stop before queue.start in preparation",
@@ -63,5 +63,18 @@
     "Reconcile published/rejected/retry/pending exact reasons, primary dates, media_reported, history and actual exported feed; resolve unknown operational reasons.",
     "Run full QA, independent Reviewer and exact candidate/staging gates. Update PR10/#5/queue evidence; leave#6open; do not touch main/production."
   ],
-  "main_production": "Untouched; isolated branch only; no merge/deployment performed"
+  "main_production": "Untouched; isolated branch only; no merge/deployment performed",
+  "queued_report_run": {
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116857374",
+    "phase": "report_only",
+    "prior_capture_run_id": 38115982275,
+    "scope": "Originalfixturepreservation and updatedreconciliation only; noAI/coldcrawl repetition"
+  },
+  "staging_sync": {
+    "mode": "preserve_checkpoint_ancestry_merge",
+    "all_other_tasks_preserved": true,
+    "pmo_observations_preserved": true,
+    "learning_records_preserved": true,
+    "reason": "Concurrentstaginggovernancechanged; preservedrunningbotancestor/checkpointSHAs and noforcepush."
+  }
 }
