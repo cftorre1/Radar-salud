@@ -15,16 +15,22 @@ from .pending_queue import atomic_json
 
 class CaptureLoader:
     """Public capture cache with verified TLS, hashed bytes and robots controls."""
-    def __init__(self, output, *, replay=None):
+    def __init__(self, output, *, replay=None, cache=None, probe=None):
         self.output = Path(output)
         self.output.mkdir(parents=True, exist_ok=True)
         self.records = {}
         self.robots = {}
         self.replay_only = replay is not None
-        if replay:
-            index = Path(replay) / "capture_index.json"
+        if replay or cache:
+            index = Path(replay or cache) / "capture_index.json"
             for url, record in json.loads(index.read_text()).items():
                 self.records[url] = record
+        if probe and not self.replay_only:
+            report = json.loads(Path(probe).read_text())
+            for record in report["records"]:
+                if record.get("user_agent") == "identified":
+                    self.records[record["url"]] = dict(record, artifact_dir=str(Path(probe).parent))
+        atomic_json(self.output / "capture_index.json", self.records)
 
     def _request(self, url):
         if url in self.records:

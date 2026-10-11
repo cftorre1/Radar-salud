@@ -47,7 +47,7 @@ jobs:
           git fetch origin staging
           git show FETCH_HEAD:data/ai_usage/$(date -u +%Y-%m).json > /tmp/occupational-staging-ai-usage.json
           python scripts/occupational_inventory.py --sync-budget /tmp/occupational-staging-ai-usage.json
-          python scripts/occupational_inventory.py --output "data/audits/source_e_recovery/actions/${GITHUB_RUN_ID}/inventory" --apply
+          python scripts/occupational_inventory.py --output "data/audits/source_e_recovery/actions/${GITHUB_RUN_ID}/inventory" --capture-cache-latest --apply
       - uses: actions/upload-artifact@v4
         if: always()
         with:

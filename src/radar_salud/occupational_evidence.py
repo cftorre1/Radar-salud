@@ -73,7 +73,9 @@ def verify_capture(raw, hosts):
                 raise DeferredProcessing("occupational publisher field differs from capture")
         title, body = parsed["title"], parsed["body"]
     else:
-        article = Article(url=raw.url)
+        from .achs_clinics import ClinicArticle, clinic_for_host
+        article_class = ClinicArticle if clinic_for_host(urlsplit(raw.url).hostname) else Article
+        article = article_class(url=raw.url)
         article.feed(html)
         title, published, body, _ = article.result()
         actual = article.publication_evidence()

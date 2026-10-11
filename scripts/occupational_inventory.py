@@ -134,7 +134,7 @@ def save_health(root, reports):
         outcome = "OPERATIVE_VALIDATED" if complete and not error_count and not state.get("deferred") else "OPERATIVE_DEGRADED"
         if not report["rows"] and error_count:
             outcome = "VALIDATION_PENDING"
-        row = dict(existing, name=CuratedBetaSourceScout.SOURCES[slug]["name"], checked_at=datetime.now(timezone.utc).isoformat(),
+        row = dict(existing, name=CuratedBetaSourceScout.SOURCES[slug]["name"], checked_at=report.get("capture_checked_at") or datetime.now(timezone.utc).isoformat(),
                    recovery_outcome=outcome, status="ok" if outcome == "OPERATIVE_VALIDATED" else "warning",
                    technical_status="error" if not report["rows"] and error_count else "partial" if error_count else "ok", coverage_status="complete" if complete else "partial",
                    coverage_window=report["window"], pages_checked=len(report["pages"]),
@@ -160,6 +160,7 @@ def main():
     parser.add_argument("--output")
     parser.add_argument("--sync-budget", help="Read-only staging ledger; preserve the larger counter per metric")
     parser.add_argument("--replay", help="Previous inventory directory: hashes and parser replay, no network")
+    parser.add_argument("--capture-cache-latest", action="store_true", help="Reuse hashed detail captures; current origin probes override cached listings")
     parser.add_argument("--apply", action="store_true", help="Reconcile only these lanes into durable branch state")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
@@ -177,7 +178,12 @@ def main():
     if not args.output:
         parser.error("--output is required for inventory")
     output = Path(args.output)
-    loader = CaptureLoader(output, replay=args.replay)
+    cache = None
+    if args.capture_cache_latest:
+        prior = sorted((root / "data/audits/source_e_recovery/actions").glob("*/inventory/capture_index.json"))
+        cache = prior[-1].parent if prior else None
+    probe = output.parent / "report.json"
+    loader = CaptureLoader(output, replay=args.replay, cache=cache, probe=probe if probe.exists() else None)
     reports = {}
     from radar_salud.occupational_recovery import inventory
     for slug in sorted(SOURCES):
@@ -189,6 +195,11 @@ def main():
                       "coverage_complete": False, "stop_reason": "inventory_failed", "errors": [{"url": getattr(exc, "url", scout.cfg["page"]), "code": getattr(exc, "code", type(exc).__name__), "detail": str(exc)}],
                       "window": {"as_of": chile_today().isoformat(), "30": "unknown", "90": "unknown"}}
         reports[slug] = report
+        urls = {p["url"] for p in report["pages"]} | {r["url"] for r in report["rows"]}
+        report["capture_checked_at"] = max((loader.records[u]["captured_at"] for u in urls if u in loader.records), default=None)
+        preview = {k:v for k,v in report.items() if k != "raw_items"}
+        preview["raw_items"] = [asdict(raw) for raw in report["raw_items"]]
+        atomic_json(output / (slug + "_inventory_checkpoint.json"), preview)
         print(json.dumps({"source": slug, "items": len(report["rows"]), "complete": report["coverage_complete"], "stop": report.get("stop_reason")}), flush=True)
     from radar_salud.ai_budget import status
     before = copy.deepcopy(status())

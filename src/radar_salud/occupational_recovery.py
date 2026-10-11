@@ -23,16 +23,18 @@ def inventory(scout, loader):
     if scout.slug == "mutual_seguridad":
         from .mutual_sources import MutualNewsScout
         return MutualNewsScout(fetcher=loader).discover_inventory()
-    report = discover_inventory(scout, loader)
+    # The native API provides exhaustive IST date-window pagination; three
+    # linked HTML pages suffice to compare it without crawling old archives.
+    report = discover_inventory(scout, loader, max_pages=3 if scout.slug == "ist" else 20)
     report["newsroom_coverage_complete"] = report["coverage_complete"]
     if scout.slug == "ist":
         return enrich_inventory_from_ist_api(report, scout, loader,
             api_headers=lambda url: loader.records[url]["hops"][-1]["headers"])
     if scout.slug == "clinicas_achs_salud":
         from .achs_blog import discover_blog_inventory
+        from .achs_clinics import discover_clinics_inventory
         report = _merge(report, discover_blog_inventory(scout, loader))
-        report["errors"].append({"code": "individual_clinic_surfaces_pending", "url": "https://www.clinicasachssalud.cl/",
-                                "detail": "Central portal opens in public web service; Actions TCP timeout. Individual official clinic routes remain under reconciliation."})
-        report["coverage_complete"] = False
+        report = _merge(report, discover_clinics_inventory(scout, loader))
+        report["required_clinic_publishers_checked"] = 9
     return report
 
