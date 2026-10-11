@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "slug": "andes_salud",
+  "as_of": "2026-10-11",
+  "timezone": "America/Santiago",
+  "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
+  "audit_path": "data/audits/providers_2026_10_11/andes_salud.json",
+  "status": "reconciled_with_exact_blockers",
+  "coverage": "partial_30_and_90_inventory",
+  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "source_quality_gate": "passed",
+  "market_role": "provider",
+  "surfaces": [
+    {
+      "url": "https://www.andessalud.cl/novedades/",
+      "result": "Listing unavailable through web reader; homepage and original dated detail articles readable."
+    },
+    {
+      "url": "https://www.andessalud.cl/",
+      "result": "Homepage mixes education and institutional news; used to discover original article URLs, not infer dates."
+    }
+  ],
+  "blockers": [
+    "runtime_original_http_CONNECT_403",
+    "newsroom_listing_and_90_day_pagination_unverified",
+    "assessment_pending_existing_gates"
+  ],
+  "original_items": [
+    {
+      "title": "Clínica Andes Salud Talca abre sus puertas y fortalece el acceso a salud de alta complejidad en el Maule",
+      "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+      "publication_date": "2026-09-08",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Detalle original: US$45 millones y 94 camas; apertura con UPC, urgencia 24/7 y pabellones. Capacidad e inversión material omitidas."
+    },
+    {
+      "title": "Andes Salud y MetLife fortalecen su alianza para acercar protección financiera en salud a las regiones de Chile",
+      "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+      "publication_date": "2026-09-23",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Renovación de alianza por cinco años; red regional y seguros. No confundir alianza renovada con adquisición de aseguradora."
+    },
+    {
+      "title": "Centro Médico Andes Salud Puerto Varas fortalecerá el acceso a salud en la Región de Los Lagos",
+      "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+      "publication_date": "2026-08-24",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Séptimo centro ambulatorio anunciado: más de 1.000 m², 17 boxes y cinco de toma de muestras. Inversión de $10.000 millones corresponde a primera etapa del plan regional, no sólo al centro. Apertura y volúmenes 2030 son proyectados."
+    }
+  ],
+  "notes": [
+    "Fechas invertidas de encabezado (septiembre 8, 2026) soportadas. Se excluyen fechas del cuerpo y tarjetas relacionadas.",
+    "Magallanes marzo/mayo y Calbuco junio están fuera de 90 días. No se reviven para compensar published=0."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:23.879240+00:00",
+    "changes": [
+      {
+        "key": "59f04ea940925b9686889ee4a2451021859b2b0342c910c0c0842747bab9045f",
+        "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+        "action": "admit_backfill"
+      },
+      {
+        "key": "cf0ce7de00232f65af676f81e641a435151ae5f9560f5a12b73249b7fcf2204c",
+        "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+        "action": "admit_backfill"
+      },
+      {
+        "key": "b3556fb8caf5acaa4ffde98d1466207d5a45a161bc306d7251efc69e1992c54f",
+        "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+        "action": "admit_backfill"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 1,
+    "material_candidates_90_days": 3,
+    "publication_date_unknown": 0,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 3,
+      "rejected": 0,
+      "published": 0
+    },
+    "items": [
+      {
+        "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+        "publication_date": "2026-09-08",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "59f04ea940925b9686889ee4a2451021859b2b0342c910c0c0842747bab9045f",
+            "status": "pending",
+            "reason": "audited_recovery_pending_assessment",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+        "publication_date": "2026-09-23",
+        "in_30_days": true,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "cf0ce7de00232f65af676f81e641a435151ae5f9560f5a12b73249b7fcf2204c",
+            "status": "pending",
+            "reason": "audited_recovery_pending_assessment",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+        "publication_date": "2026-08-24",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "b3556fb8caf5acaa4ffde98d1466207d5a45a161bc306d7251efc69e1992c54f",
+            "status": "pending",
+            "reason": "audited_recovery_pending_assessment",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      }
+    ]
+  }
+}
