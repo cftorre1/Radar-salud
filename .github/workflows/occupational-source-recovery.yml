@@ -1,0 +1,49 @@
+name: Occupational public-source recovery
+
+on:
+  push:
+    branches: [codex/e-salud-laboral-20261011]
+    paths:
+      - .github/workflows/occupational-source-recovery.yml
+      - scripts/occupational_access_probe.py
+      - scripts/occupational_inventory.py
+      - config/occupational_recovery_routes.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: occupational-source-recovery-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  public-origin-capture:
+    if: github.ref == 'refs/heads/codex/e-salud-laboral-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Capture official surfaces without executing WAF challenges
+        run: |
+          python scripts/occupational_access_probe.py --environment github_actions --output "data/audits/source_e_recovery/actions/${GITHUB_RUN_ID}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: occupational-public-origin-${{ github.run_id }}
+          path: data/audits/source_e_recovery/actions/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Persist public capture on the authorized isolated branch
+        if: success()
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/e-salud-laboral-20261011
+          git config user.name 'Alicanto source evidence'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "data/audits/source_e_recovery/actions/${GITHUB_RUN_ID}"
+          git commit -m "audit(occupational): capture public origins in Actions ${GITHUB_RUN_ID}"
+          git pull --rebase origin codex/e-salud-laboral-20261011
+          git push origin HEAD:codex/e-salud-laboral-20261011
