@@ -1,0 +1,142 @@
+{
+  "researched_at": "2026-10-11",
+  "method": "Independent web connector opens of official publisher URLs; XML bodies must be captured by authorized repository runner",
+  "robots": {
+    "url": "https://www.latercera.com/robots.txt",
+    "allowed": "/",
+    "disallowed": [
+      "/pf/api/v3/*",
+      "/search/?q=*"
+    ],
+    "declared_sitemaps": [
+      "https://www.latercera.com/arc/outboundfeeds/sitemap-index/?outputType=xml",
+      "https://www.latercera.com/arc/outboundfeeds/news-sitemap-index/?outputType=xml",
+      "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml"
+    ]
+  },
+  "official_surfaces": [
+    {
+      "url": "https://www.latercera.com/arc/outboundfeeds/sitemap-index/?outputType=xml",
+      "result": "Origin fetch reaches application/xml; web renderer cannot parse",
+      "verified_payload": false,
+      "required_followup": "Capture index body and recursively traverse declared children. Use child URL dates only to select candidate indexes; verify publication in detail."
+    },
+    {
+      "url": "https://www.latercera.com/arc/outboundfeeds/news-sitemap-index/?outputType=xml",
+      "result": "Origin fetch reaches application/xml; web renderer cannot parse",
+      "verified_payload": false,
+      "required_followup": "Capture actual index body. Google-news feed is usually current-only; do not claim 90-day coverage without dated children."
+    },
+    {
+      "url": "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml",
+      "result": "Origin fetch reaches application/xml; web renderer cannot parse",
+      "verified_payload": false
+    },
+    {
+      "url": "https://www.latercera.com/arc/outboundfeeds/rss/?outputType=xml",
+      "result": "Origin fetch reaches application/xml; web renderer cannot parse",
+      "verified_payload": false,
+      "required_followup": "Capture feed and inspect item count, dates and section/category filters. Feed alone cannot establish historical90daycoverage."
+    },
+    {
+      "url": "https://www.latercera.com/archivo/",
+      "result": "Not accessible via web renderer",
+      "verified_payload": false
+    },
+    {
+      "url": "https://www.latercera.com/feed/",
+      "result": "Not accessible via web renderer",
+      "verified_payload": false
+    }
+  ],
+  "pagination_probes": [
+    {
+      "url": "https://www.latercera.com/etiqueta/salud/?page=2",
+      "result": "Not accessible"
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/salud/?from=12",
+      "result": "Not accessible"
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/salud/2/",
+      "result": "Not accessible"
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/salud/page/2/",
+      "result": "Accepted HTML route renders same first-page health articles,12cards endingOctober7. This does not prove pagination.",
+      "new_inventory": false
+    },
+    {
+      "url": "https://www.latercera.com/canal/pulso/?page=2",
+      "result": "Renderer returned cached2025landing page, crawled1.2yearsago. Not usable to prove currentpagination."
+    },
+    {
+      "url": "https://www.latercera.com/canal/pulso/2/",
+      "result": "Not accessible"
+    }
+  ],
+  "validated_taxonomies": [
+    {
+      "url": "https://www.latercera.com/etiqueta/salud/",
+      "result": "Official HTML tag landing exists;12cards with nonlinked Ver más button"
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/isapres/",
+      "result": "Official HTML tag landing exists;12cards with nonlinked Ver más button"
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/fonasa/",
+      "result": "Official HTML tag landing exists;12cards with nonlinked Ver más button"
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/clinicas/",
+      "result": "Official HTML tag landing exists;12cards with nonlinked Ver más button"
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/listas-de-espera/",
+      "result": "Official HTML tag landing exists;12cards with nonlinked Ver más button"
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/hospitales/",
+      "result": "Official HTML tag landing exists;12cards with nonlinked Ver más button"
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/ministerio-de-salud/",
+      "result": "Official HTML tag landing exists;12cards with nonlinked Ver más button"
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/banmedica/",
+      "result": "Official HTML tag landing exists;12cards with nonlinked Ver más button"
+    }
+  ],
+  "material_health_sections_observed": [
+    "pulso",
+    "nacional",
+    "politica",
+    "servicios",
+    "tendencias",
+    "paula",
+    "videos"
+  ],
+  "listing_limits": [
+    "Broad salud tag current first page spans onlyOctober7throughOctober11.",
+    "Isapres tag firstpage spansApril20throughSeptember29; tag chronology differs radically.",
+    "Listas de Espera tag provides material omitted signals datedSeptember3,September2,August14,July15 on listings; detaildates stillrequireverification.",
+    "Hospitales tag provides strategic provider concession article datedJuly28 onlisting; omitted from previous11articleaudit.",
+    "Opinion/editorial/cartas content mixes with reporting on tags and should be excluded by detail taxonomy."
+  ],
+  "recommendations": [
+    "Use real official sitemap index children as historical backbone and traverse all windowintersectingchildren, retaining explicitcountsandboundaryproof.",
+    "Open every article candidate before health/topic gating to avoid misleadingtitles and providerbrandmisses.",
+    "Do not mark any guessedpaginationroutehealthy merelyHTTP200. Requireinventorygrowth, oldestboundaryandduplicatepageprotection.",
+    "Preserve source-scoped publicationmetadata, routeidentity and media_reported. RSS/sitemap lastmod are not publicationevidence.",
+    "Retain every fetch/parsererror as coveragegaps instead of silently claiming a completed90daycrawl.",
+    "Reconcile all capturedarticle URLs against independentcontrols and persistedqueue/history/feed outcomes."
+  ],
+  "limitations": [
+    "XML contents not rendered by webconnector; officialarchivechildformat unresolved until authorizedrealcapture.",
+    "No internal search fetch due robots-disallowedpattern.",
+    "This research is surface evidence, not a closedcoverageaudit."
+  ]
+}

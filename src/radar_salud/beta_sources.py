@@ -262,7 +262,9 @@ def _material(role, title, body):
     consequential = ("inversión", "fonasa", "isapre", "adquiere", "capital", "lista de espera",
                      "cierre", "suspende", "suspensión", "traslado", "recorte", "presupuesto",
                      "reforma", "norma", "auditor", "fiscaliza", "capacidad", "trasplante", "financiamiento")
-    if any(x in title.lower() for x in _NOISE) and not any(x in text for x in consequential):
+    noise_text = title.lower() if role == "media" else text
+    exceptions = consequential if role == "media" else ("inversión", "fonasa", "isapre", "adquiere", "capital", "lista de espera")
+    if any(x in noise_text for x in _NOISE) and not any(x in text for x in exceptions):
         return False
     terms = _MEDIA_TERMS if role == "media" else _MUTUAL_TERMS if role == "mutuality" else _PROVIDER_TERMS
     if role == "provider_achs" and "clínicas achs salud" not in text and "clinicas achs salud" not in text:
