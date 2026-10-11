@@ -498,6 +498,7 @@ def annotate_pending(report, execution):
         reason = None
         pending = [item for item in row["queue"] if item["status"] == "pending"]
         ended = execution.get("finished_at") or execution.get("started_at")
+        selection = execution.get("processing_selection") or {}
         if ended and pending and all(item.get("publication_date") and item["publication_date"] > ended[:10] for item in pending):
             reason = "processing_not_attempted:future_BACKFILL_date_excluded_by_queue_ready"
         elif ended and pending and all(item.get("retry_at") and item["retry_at"] > ended for item in pending):
@@ -506,6 +507,12 @@ def annotate_pending(report, execution):
             reason = "processing_not_completed:runtime_error:" + str(execution.get("error_type", "unknown"))
         elif execution.get("mode") == "discovery_only":
             reason = "processing_not_attempted:explicit_discovery_only"
+        elif (execution.get("engine_completed") and selection.get("source") == SOURCE
+              and selection.get("sha256") and isinstance(selection.get("selected_urls"), list)
+              and row["url"] not in selection["selected_urls"]):
+            reason = "processing_not_attempted:explicit_queue_selection_excluded"
+            row["processing_selection_evidence"] = dict(sha256=selection["sha256"], selected=False,
+                                                       source=SOURCE)
         elif execution.get("engine_completed"):
             deferral = report.get("processing_deferrals", {}).get(SOURCE, {})
             limit = execution.get("processing_limit", 0)
@@ -530,6 +537,8 @@ def main():
     parser.add_argument("--limit", type=int, default=250)
     parser.add_argument("--discovery-only", action="store_true")
     parser.add_argument("--report-only", action="store_true")
+    parser.add_argument("--queue-selection", type=Path,
+                        help="Process an explicit material recovery cohort already registered by core discovery")
     parser.add_argument("--control", type=Path, default=Path("data/audits/pulso_external_control_2026_10_11.json"))
     parser.add_argument("--output", type=Path, default=Path("data/audits/pulso_runtime_2026_10_11.json"))
     parser.add_argument("--capture", type=Path, default=Path("data/audits/pulso_runtime_capture"))
@@ -568,6 +577,9 @@ def main():
             raise KeyboardInterrupt("runtime_terminated_signal_" + str(signum))
         signal.signal(signal.SIGTERM, terminate)
         sys.argv = ["engine_cli", "--sources", SOURCE, "--limit", str(args.limit)]
+        if args.queue_selection:
+            selection_path = args.queue_selection if args.queue_selection.is_absolute() else root / args.queue_selection
+            sys.argv.extend(["--queue-selection", str(selection_path)])
         if args.discovery_only:
             sys.argv.append("--discovery-only")
         try:
@@ -592,6 +604,8 @@ def main():
     discovery_current = None
     if not args.report_only:
         discovery, discovery_current = current_execution_discovery(discovery, execution["started_at"])
+        if discovery_current and discovery.get("processing_selection"):
+            execution["processing_selection"] = discovery["processing_selection"]
     else:
         discovery, discovery_current = report_only_discovery(discovery, prior)
     after = read_json(queue_path, {})
