@@ -244,6 +244,11 @@ class DeisCatalogScout:
         for row in payload:
             if not isinstance(row, dict):
                 raise ValueError("DEIS catalog row is not an object")
+            # Ninja Tables' actual public response wraps cells under value;
+            # options carries presentation classes, never publication metadata.
+            row = row.get("value", row)
+            if not isinstance(row, dict):
+                raise ValueError("DEIS catalog cells are not an object")
             name, link = row.get("nombre"), row.get("ver")
             if not isinstance(name, str) or not isinstance(link, str) or not name.strip():
                 continue

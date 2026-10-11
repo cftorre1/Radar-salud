@@ -59,3 +59,15 @@ def test_catalog_period_never_becomes_feed_date():
     assert resources[0]['publication_date'] is None
     assert resources[0]['feed_eligible'] is False
     assert resources[0]['purpose'] == 'trend_benchmark_dataset'
+
+
+def test_primary_ninja_response_unwraps_cells_without_inventing_release_dates():
+    path = Path('data/audits/public_sources_c_20261011/recovery/runs/38115202557/captures/86bd6f7134dbb5b632234c8c797fa76d1f727a1301a1a642f66eee40f2188d4e.html')
+    body = path.read_bytes()
+    assert hashlib.sha256(body).hexdigest() == path.stem
+    rows = DeisCatalogScout.resources_from_json(json.loads(body),
+        {'title': 'Estadísticas', 'purpose': 'indicator'})
+    assert len(rows) == 330
+    assert rows[0]['title'] == 'Indicadores Hospitalarios según Servicio de Salud 2024'
+    assert rows[0]['period_fields']['filtro_2'] == '2024'
+    assert all(r['publication_date'] is None and not r['feed_eligible'] for r in rows)
