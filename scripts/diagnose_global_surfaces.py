@@ -7,8 +7,8 @@ from radar_salud.global_discovery_common import CaptureClient, Document
 
 client = CaptureClient(Path('work/global-diagnostic-captures'))
 rows = []
-targets = ['https://www.paho.org/en/news?page=8', 'https://www.paho.org/en/news?page=9',
-           'https://www.paho.org/en/news?page=10', 'https://www.paho.org/sitemap.xml']
+targets = ['https://www.paho.org/sitemap.xml?page=1', 'https://www.paho.org/sitemap.xml?page=8',
+           'https://www.paho.org/sitemap.xml?page=9']
 for url in targets:
     try:
         raw, capture = client.fetch(url)
@@ -36,6 +36,7 @@ for url in targets:
             'chile_option': [n.attrs for n in doc.nodes('option') if n.text() == 'Chile'],
             'sitemap_locations': locations if not news_locations else [],
             'sitemap_total_urls': len(locations), 'sitemap_news_urls': len(news_locations),
+            'sitemap_news_sample': news_locations[:5]+news_locations[-5:],
             'recent_url_date_hints_not_publication_dates': recent_hints,
             'cards': [{'title':n.text(),'urls':[a.attrs.get('href') for a in n.nodes('a')]} for n in doc.nodes() if n.has_class('views-field-title')],
             'times': [n.attrs.get('datetime') for n in doc.nodes('time')],
