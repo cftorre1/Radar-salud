@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T04:44:10.518952+00:00",
+  "updated_at": "2026-10-11T04:48:29.637107+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -4118,6 +4118,37 @@
       ],
       "external_blockers": [],
       "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+    },
+    {
+      "id": "source_recovery_reconciliation_gate_2026_10_11",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Paolo + Pato + Reviewer",
+      "source": "Dirección",
+      "objective": "Conciliar todo hallazgo, issue, PR Codex, tarea Work y evidencia de fuente para que ningún compromiso quede olvidado ni se cierre sin llegar efectivamente a staging validado.",
+      "depends_on": [],
+      "instructions": [
+        "Usar issue #5 como backlog maestro de cobertura y las issues #6-#9 como hallazgos P0 derivados.",
+        "Registrar para cada hallazgo: issue origen, task_id, worker/Work/Codex responsable, branch/PR, SHA mergeado a staging, QA, Reviewer, evidencia fuente y estado final.",
+        "Un PR abierto o un commit en rama no cuenta como implementación hasta merge seguro a staging.",
+        "Una fuente no cuenta como reparada hasta runtime real posterior al merge y evidencia de publicación/rechazo/ausencia genuina.",
+        "No cerrar un issue por documentación בלבד; exigir evidencia de resultado.",
+        "Antes de cerrar cualquier iteración, revisar todas las issues abiertas y todos los tasks approved/in_progress relacionados para evitar orphaned backlog.",
+        "Después de cada merge de Codex, actualizar queue/PMO/issue y seleccionar el siguiente hallazgo independiente.",
+        "Los hallazgos nuevos de Work/Reviewer se incorporan a esta conciliación aunque no existieran en el baseline inicial."
+      ],
+      "evidence_required": [
+        "matriz issue→task→PR→merge SHA→QA→Reviewer→runtime evidence",
+        "cero issues P0 huérfanas",
+        "cero tareas approved/in_progress sin owner/next_action",
+        "cada fuente con outcome operativo/blocked/secondary/remove",
+        "staging final reconciliado contra issue #5 y Work3"
+      ],
+      "approved_at": "2026-10-11",
+      "started_at": "2026-10-11",
+      "last_progress_at": "2026-10-11T04:45:00Z",
+      "current_subfront": "reconcile_work_findings_and_codex_prs",
+      "next_action": "Conciliar PRs #10-#13 con issues #5-#9 y queue; no cerrar ninguna fuente hasta merge + QA + runtime."
     }
   ],
   "execution_policy": {
