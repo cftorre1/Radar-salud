@@ -6,7 +6,8 @@ from pathlib import Path
 if '--durable' in sys.argv:
     # Once imported, the branch contains the actual checkpoint. Validation must
     # not depend on a temporary Actions artifact or repeat paid analysis.
-    files=['provider_live_checkpoint_2026_10_11.json','provider_repair_checkpoint_2026_10_11.json']
+    files=['provider_live_checkpoint_2026_10_11.json','provider_repair_checkpoint_2026_10_11.json',
+           'provider_completion_checkpoint_2026_10_11.json']
     history=json.loads(Path('data/history/superintendencia_signals.json').read_text())['signals']
     outputs=[]
     for filename in files:
@@ -19,7 +20,7 @@ if '--durable' in sys.argv:
                 assert matches[0]['event_date']==row['event_date']
                 assert matches[0]['source_name']==row['source_name']
                 outputs.append(row['source_url'])
-    assert len(set(outputs))==5
+    assert len(set(outputs))==6
     print(json.dumps({'checkpoint':'durable_original_and_repair_receipts','candidate_outputs':len(outputs),
                       'promotion':'none','paid_calls':0,'artifact_download_required':False}))
     raise SystemExit(0)
