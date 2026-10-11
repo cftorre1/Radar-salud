@@ -1,110 +1,67 @@
 {
-  "schema_version": "1.0",
-  "recorded_at": "2026-10-11T04:42:58.167048+00:00",
-  "status": "BLOCKED_NOT_CLOSED",
-  "owner": "Codex B",
+  "schema_version": "2.0",
+  "recorded_at": "2026-10-11T05:51:14.959763+00:00",
+  "status": "IN_PROGRESS_NOT_ACCEPTED",
   "source": "pulso_latercera",
+  "owner": "Codex B / Senior Source Recovery Engineer",
   "branch": "codex/b-pulso-runtime-20261011",
-  "base_staging_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
-  "latest_product_candidate_sha": "63765b199fb5575538293a1a11a1b9ca98f6837c",
+  "base_staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+  "current_product_candidate": "bbcbe55de8968dcf05bd7305084ad6e7d5d6bfd1",
+  "previous_handoff": "Historical pre-exhaustive record is preserved in git. Its CONNECT403 limitation is resolved through authorized GitHub Actions and is not a current source blocker.",
   "pr": "https://github.com/cftorre1/Radar-salud/pull/10",
-  "issues": [
+  "issues_must_remain_open": [
     5,
     6
   ],
-  "checkpoints": [
-    {
-      "sha": "56e078d",
-      "repair": "article identity, body/date extraction, Nacional and sector listings",
-      "minimum_checks": "23 PASS"
-    },
-    {
-      "sha": "9f33a24",
-      "repair": "editorial outcome trace, source-scoped core, history/feed replay",
-      "minimum_checks": "25 PASS"
-    },
-    {
-      "sha": "d45c770",
-      "repair": "beta validation does not overwrite promoted core outcomes",
-      "minimum_checks": "29 PASS"
-    },
-    {
-      "sha": "2ef0b3b",
-      "repair": "same-URL evidence rehydration preserving detected_at, lane, attempts and terminal decisions",
-      "minimum_checks": "20 PASS"
-    },
-    {
-      "sha": "dd3b253",
-      "repair": "incremental-review holds and selected-source isolation",
-      "minimum_checks": "21 PASS"
-    },
-    {
-      "sha": "63765b1",
-      "repair": "11 original-byline candidates persisted, unbound JSON-LD rejected, duplicates held",
-      "minimum_checks": "32 PASS"
-    }
-  ],
-  "artifacts": [
-    "data/audits/pulso_reconciliation_2026_10_11.json",
-    "data/audits/pulso_core_blocked_2026_10_11.json",
-    "data/audits/pulso_qa_2026_10_11.json"
-  ],
-  "stock": {
-    "pending_pulso_candidates": 11,
-    "lane": "BACKFILL",
-    "attempts_in_durable_inventory": 0,
-    "published": 0,
-    "rejected": 0,
-    "holds": "Budget announcements and July membership candidate require incremental-value/event-equivalence review; rediscovery preserves holds."
+  "active_run": {
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38115982275",
+    "phase": "discovery_only",
+    "job_id": 114400848210,
+    "expected_branch_commit": "Inventory/cache/manifest/report committed by job. Fetch/rebase before editing state.",
+    "timeout_minutes": 75
   },
-  "acceptance": {
-    "core_presence": "Code registered; real source-scoped CLI observed degraded; daily staging workflow NOT validated",
-    "dates": "11 original bylines checked; 3 listing/byline discrepancies open; no original HTML fixture",
-    "trace": "Published/rejected/retry through history/feed tested in replay; real blocked candidate trace retained",
-    "strategic_coverage": "11 candidates inventoried across requested themes; exhaustive 30/90 coverage NOT established",
-    "media_reported": "preserved with explicit attribution and threshold 72",
-    "qa_reviewer_staging": "NOT PASS"
-  },
-  "blockers": [
-    {
-      "id": "pulso_origin_access",
-      "evidence": "latercera.com not allowed by enforced network policy; CONNECT 403",
-      "resolution": "Use an authorized runtime/network configuration allowing original host; do not bypass proxy."
-    },
-    {
-      "id": "pulso_analysis_credentials",
-      "evidence": "No configured OPENAI_API_KEY in environment",
-      "resolution": "Configure the intended credential through supported environment setup; preserve existing budgets."
-    },
-    {
-      "id": "original_html_and_archive_inventory",
-      "evidence": "No raw original HTML; Ver más/pagination not traversed for complete 30/90 inventory",
-      "resolution": "Capture original primary article metadata/body and paginated sector archives, compare timestamps with visible bylines."
-    },
-    {
-      "id": "canonical_qa",
-      "evidence": "Python normative inventory failure, 6 browser failures and Reviewer statistical failures",
-      "resolution": "Coordinate with normative/statistical QA owners; complete full original-data build in authorized runtime and rerun gates."
-    }
+  "evidence": [
+    "data/audits/pulso_external_control_2026_10_11.json",
+    "data/audits/pulso_browser_pagination/manifest.json",
+    "tests/fixtures/pulso_real/manifest.json",
+    "data/audits/pulso_surface_research_2026_10_11.json",
+    "data/audits/pulso_incremental_review_2026_10_11.json"
   ],
+  "control": {
+    "frozen_urls": 236,
+    "verified_original_bylines": 200,
+    "primary_30_denominator": 29,
+    "primary_90_denominator": 79,
+    "complete_30": [
+      "2026-09-11",
+      "2026-10-10"
+    ],
+    "complete_90": [
+      "2026-07-13",
+      "2026-10-10"
+    ],
+    "runtime_recall": "Not measured until actual core run completes; legacy11 is not discovery recall."
+  },
+  "validation": {
+    "directed_tests": "Independent77PASS at bbcbe55; agent15PASS runtime export increment e49f662",
+    "full_python": "343PASS,1FAIL,1SKIP; normative count11 expected>=12. Proven identical failure on staging73aff5c; dated QA expectations under repair.",
+    "acceptance": "NOT_RESOLVED_NO_MERGE; final Reviewer and staging PASS pending"
+  },
+  "current_agents": {
+    "historical_discovery": "Source-required fast budget stop before queue.start in preparation",
+    "actions_route": "Real feed export/report added e49f662; refine fast-only pending reason",
+    "external_control": "Safe audited incremental-hold application helper in preparation",
+    "adversarial_review": "Independent code/data Reviewer awaiting real artifacts",
+    "browser_pagination": "Expiry-aware baseline QA repair; strict statistical quality preserved"
+  },
   "resume_order": [
-    "Fetch current staging and preserve concurrent worker changes; keep work in this isolated branch and target staging.",
-    "Read issue #5/#6 and these three audit artifacts before resuming; do not infer current readiness from historical PASS.",
-    "Capture raw original HTML for the 11 originals and finish source archive pagination for the defined 30/90 windows.",
-    "Validate parser against actual publisher HTML, byline/JSON-LD/time/canonical identity and full body; repair with tests and a small commit if needed.",
-    "Review budget/member-stock equivalence against existing MINSAL/DF rows; keep holds until incremental value is documented.",
-    "Run source-scoped core in a separate RADAR_ROOT; compare discovered, queue reason/assessment, seen, history and feed per URL. No fake LIVE on rediscovery.",
-    "Run full daily staging runtime only after candidate validation/integration authorization and existing editorial/AI budgets are preserved; observe Pulso in full discovery_run after this SHA.",
-    "Require tests, original-content QA, desktop/mobile QA, independent Reviewer and staging preview for the exact candidate before closing Pulso."
+    "Check active run38115982275 and fetch/rebase isolated remote branch; do not start duplicate paid processing.",
+    "Inspect pulso_runtime audit and discovery_run. Measure current actual discovered recall29/79 and every omitted URL/date/section.",
+    "Resolve incomplete feeds/caps/errors and primary-byline conflicts; tests+small commit then rerun discovery-only only if needed.",
+    "Complete verified incremental review of three legacy holds. Oct7 budget and July14 enter unchanged gate only; Oct5 reviewed deferral persists.",
+    "Set .github/run-pulso-runtime-now phase=process with unique checkpoint. Commit+push triggers actual scoped core using existing120fast/15deep budgets. No injected inventory, fake AI, threshold reduction or terminal reopening.",
+    "Reconcile published/rejected/retry/pending exact reasons, primary dates, media_reported, history and actual exported feed; resolve unknown operational reasons.",
+    "Run full QA, independent Reviewer and exact candidate/staging gates. Update PR10/#5/queue evidence; leave#6open; do not touch main/production."
   ],
-  "useful_commands": [
-    "python -m pytest -q tests/test_pulso_source.py tests/test_pulso_core_runtime.py tests/test_beta_core_handoff.py tests/test_beta_source_package.py tests/test_live_evidence_replay.py",
-    "RADAR_ROOT=work/pulso-runtime python -m radar_salud.engine_cli --sources pulso_latercera --limit 11",
-    "python -m pytest -q",
-    "npm test",
-    "npm run test:browser",
-    "python scripts/review_candidate.py --web web --sha <exact-candidate-sha>"
-  ],
-  "human_decision": "Only environment access/credential configuration if not already available in an authorized runtime. No content/publication approval requested.",
-  "main_production": "unchanged; no merge or deployment performed"
+  "main_production": "Untouched; isolated branch only; no merge/deployment performed"
 }
