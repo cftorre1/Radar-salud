@@ -1189,6 +1189,105 @@
       "result": "MERGED_RUNTIME_PENDING",
       "matrix": "data/pmo/integration_release_2026_10_11.json",
       "scope": "staging only; no source closure or autonomy acceptance inferred"
+    },
+    "postmerge_achs_seguro_laboral_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "preview": 38145632732,
+      "result": {
+        "achs_seguro_laboral": "INTEGRATED_VALIDATED"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-achs_seguro_laboral/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_mutual_seguridad_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "preview": 38145632732,
+      "result": {
+        "mutual_seguridad": "INTEGRATED_DEGRADED"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-mutual_seguridad/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_ist_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "preview": 38145632732,
+      "result": {
+        "ist": "INTEGRATED_DEGRADED"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-ist/summary.json",
+      "queue_history_preserved": true
+    },
+    "integration_PR23_2026_10_11": {
+      "kind": "staging_integration",
+      "origin_pr": 14,
+      "integration_pr": 23,
+      "sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "qa_run": 38146579368,
+      "runtime_run": 38147271657,
+      "result": "MERGED_RUNTIME_PENDING",
+      "matrix": "data/pmo/integration_release_2026_10_11.json",
+      "scope": "staging only; no source closure or autonomy acceptance inferred"
+    },
+    "postmerge_clinicas_achs_salud_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "preview": 38145632732,
+      "result": {
+        "clinicas_achs_salud": "INTEGRATED_DEGRADED"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-clinicas_achs_salud/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_deis_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "preview": 38146250319,
+      "result": {
+        "deis": "INTEGRATED_DEGRADED"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-deis/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_fonasa_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "preview": 38146250319,
+      "result": {
+        "fonasa": "EXTERNAL_BLOCKER_PROVEN"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-fonasa/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_fonasa_datos_abiertos_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "preview": 38146250319,
+      "result": {
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-fonasa_datos_abiertos/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_isp_anamed_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "preview": 38146250319,
+      "result": {
+        "isp_anamed": "EXTERNAL_BLOCKER_PROVEN"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-isp_anamed/summary.json",
+      "queue_history_preserved": true
     }
   },
   "blocks": [
@@ -3823,7 +3922,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T14:13:46.692772+00:00",
+  "updated_at": "2026-10-11T14:30:08.169918+00:00",
   "closed_beta": {
     "status": "pending_validation",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
