@@ -163,6 +163,7 @@ def test_sanction_pulse_counts_publications_without_changing_act_dates():
     row={'title':'Resolución 6836','source_url':'https://example.org/6836','event_type':'SANCTION','scopes':['Prestadores'],'event_date':'2026-09-08','publication_date':'2026-09-15','regulated_entity':'Clínica Los Carrera','sanction_amount':70,'sanction_unit':'UF'}
     pulse,=module._sanction_pulses([row],date(2026,10,11))
     assert pulse['event_date']=='2026-09-15' and pulse['window_basis']=='publication_date'
+    assert pulse['event_date_basis']=='publication' and pulse['emission_date'] is None
     assert pulse['source_alternatives'][0]['event_date']=='2026-09-08'
     assert pulse['source_alternatives'][0]['publication_date']=='2026-09-15'
 
@@ -187,3 +188,39 @@ def test_fiscalization_feed_identity_preserves_authority_division_and_distinct_u
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     rows=[{'title':f'Resolución Exenta {division}/N°123','source_url':f'https://example.org/{division}/123','signal_types':['Fiscalización']} for division in ['IF','IP']]
     assert len(module._merge_duplicates(rows))==2
+
+
+def test_native_engine_replay_routes_reviewed_normative_when_ai_budget_is_exhausted(tmp_path,monkeypatch):
+    import json, shutil, sys
+    from pathlib import Path
+    from radar_salud import engine_cli, paths
+    from radar_salud.suseso_fiscalizacion import parse_actor_listing, PAGES
+    cfg=tmp_path/'config';cfg.mkdir()
+    for name in ['sources.json','fiscalization_editorial_reviews.json']:
+        shutil.copyfile(Path('config')/name,cfg/name)
+    raw,=parse_actor_listing(suseso_table(),*PAGES[0])
+    class Empty:
+        def __init__(self,*args,**kwargs):pass
+        def discover(self,*args,**kwargs):return []
+    class Fiscal(Empty):
+        def discover(self):
+            self.surface_results=[{'url':PAGES[0][1],'status':'parsed','documents':1}]
+            return [raw]
+    for name in ['SuperintendenciaStatsScout','SuperintendenciaNormativaScout','SuperintendenciaFiscalizacionScout','MinsalNewsScout','FonasaNewsScout','FonasaDataHubScout','IspAnamedAlertScout','IspSurveillanceScout','CorporateNewsroomScout','DeisResourceScout','ClinicasChileScout','SusesoNormativeScout','SusesoNewsScout','DfHealthScout','CuratedBetaSourceScout','DiarioOficialHealthScout']:
+        monkeypatch.setattr(engine_cli,name,Empty)
+    monkeypatch.setattr(engine_cli,'SusesoFiscalizacionScout',Fiscal)
+    monkeypatch.setattr(paths,'project_root',lambda:tmp_path)
+    monkeypatch.setattr(engine_cli,'seed_from_history',lambda root:None)
+    monkeypatch.setattr(engine_cli,'has_capacity',lambda kind:False)
+    monkeypatch.setattr(engine_cli,'ai_budget_status',lambda:{})
+    monkeypatch.setattr(sys,'argv',['engine_cli','--limit','4'])
+    engine_cli.main()
+    history=json.loads((tmp_path/'data/history/superintendencia_signals.json').read_text())['signals']
+    assert len(history)==1 and history[0]['signal_types']==['Normativa']
+    assert history[0]['ingestion_mode']=='BACKFILL'
+    queue=json.loads((tmp_path/'data/state/pending_queue.json').read_text())
+    assert sorted(item['status'] for item in queue.values())==['published','rejected']
+    rejected=next(item for item in queue.values() if item['status']=='rejected')
+    assert rejected['reason']=='related_normative_not_enforcement'
+    engine_cli.main()
+    assert len(json.loads((tmp_path/'data/history/superintendencia_signals.json').read_text())['signals'])==1

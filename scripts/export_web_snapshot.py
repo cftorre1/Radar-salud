@@ -509,6 +509,7 @@ def _sanction_pulses(signals, today=None):
             card_what=f"{len(items)} sanciones a {sector} en 30 días."+(f" Entre ellas: {brief_material}." if brief_material else ""),
             event_date=max((s.get("publication_date") or s.get("event_date") or "" for s in items)),
             publication_date=max((s.get("publication_date") or s.get("event_date") or "" for s in items)),
+            event_date_basis="publication", emission_date=None,
             window_basis="publication_date", sanction_count=len(items),source_documents=[],key_points=[f"{x['material']} · {x['title']}" for x in resolutions if x['material']],risk_notes=[],key_facts=[],
             related_reference_ids=[],related_reference_contexts=[],affected_processes=[],
             regulated_entity=None,sanction_amount=None,sanction_unit=None,fiscalization_topic=None,
