@@ -423,3 +423,27 @@ owner/acceptance limitations. Actionlint validates the independent job wiring.
 Next hypothesis: the first real hosted canary reaches STALLED after at least
 three actual minutes and publishes a fenced recovery proof while ordinary repair
 families continue independently.
+
+## 21. Correct observed transport and retry scope defects
+
+The twelve post-publication infrastructure checkpoints are isolated and reviewed
+against b6794bf. They fix browser-gate reproduction, child credential isolation,
+structured source parsing before bounded logs, explicit no-pickup reports, and
+the real first-pickup acceptance clock. The executor revision now permits a
+bounded retry after committed runner/recovery changes while product identity
+remains independent for candidate context and historical failure budgets remain
+intact. Docs, observations, canary updates and dirty working files cannot reopen
+those source tasks.
+
+Directed tests include exact offline transport replay of the real SUSESO failure;
+it preserves RuntimeError bounded_probe_budget and never claims LIVE PASS. The
+complete corrected code at 4b07e433 passed 244 autonomy tests in 39.160 seconds;
+actionlint 1.7.7 passed all five workflows. Product and original gates are
+unchanged. Each individual test log, commit, decision and next hypothesis is
+preserved under work/prepush-20261011 and work/live-review.
+
+Next hypothesis: publishing this exact corrected executor dispatches another
+actual task automatically, preserves its complete failure evidence, records a
+real independent transition and keeps the scoped staging blocker isolated. The
+canary must wait for actual elapsed time. Four useful hours and owner event
+coverage remain NOT_PROVEN.
