@@ -830,7 +830,27 @@ def process_curated_beta_source(raw, cfg):
         if raw.metadata.get("publisher_document_type") == "liveblog":
             raw.metadata["analysis_liveblog_entries_sha256"] = raw.metadata["liveblog_temporal_evidence"]["entries_sha256"]
         paid_revalidation = None
-        if raw.metadata.get("paid_guard_revalidation_admission") is not None:
+        current_paid_revalidation = None
+        from . import pulso_current_paid_revalidation as current_paid
+        if current_paid.has_claim(raw.metadata):
+            from .pulso_paid_revalidation import verified_paid_processing_mode
+            try:
+                current_paid_revalidation, _ = current_paid.verified_processing_mode(raw)
+                # The earlier 981 admission remains a distinct, mandatory
+                # history. A current repair never relabels its new29731 answer.
+                paid_revalidation, _ = verified_paid_processing_mode(raw)
+                context = current_paid.reassessment_context(raw)
+                if context is not None:
+                    kind += (". Revisión del contrato editorial sobre este mismo artículo completo: "
+                             + context["context_text"])
+                ai = (analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind,
+                                   full_text=True, pulso_editorial_proof=True)
+                      if current_paid_revalidation["new_model_request"] else current_paid.unchanged_output(raw))
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif raw.metadata.get("paid_guard_revalidation_admission") is not None:
             from .pulso_paid_revalidation import (verified_paid_processing_mode, unchanged_paid_output,
                                                   verified_reassessment_context)
             try:
@@ -866,7 +886,24 @@ def process_curated_beta_source(raw, cfg):
                                      input_text_sha256=raw.metadata["analysis_input_body_sha256"],
                                      request_input_sha256=raw.metadata["analysis_request_input_sha256"]):
             validation.update(decision="deferred",reason="pulso_editorial_model_binding_mismatch")
-        if paid_revalidation is not None and not paid_revalidation["new_model_request"]:
+        if current_paid_revalidation is not None:
+            from . import pulso_current_paid_revalidation as current_paid
+            try:
+                if current_paid_revalidation["new_model_request"]:
+                    from .pulso_paid_revalidation import NEW_FAST_RECEIPTS, new_fast_attempt_receipt
+                    current_receipt = current_paid.new_fast_attempt_receipt(raw, ai, validation)
+                    legacy_receipt = new_fast_attempt_receipt(raw, ai, validation)
+                    raw.metadata.setdefault(current_paid.NEW_FAST_RECEIPTS, []).append(current_receipt)
+                    raw.metadata.setdefault(NEW_FAST_RECEIPTS, []).append(legacy_receipt)
+                else:
+                    raw.metadata[current_paid.RECEIPT] = current_paid.revalidation_receipt(raw, ai, validation)
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["analysis_model_output"] = ai
+                raw.metadata["pulso_editorial_proof_validation"] = validation
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif paid_revalidation is not None and not paid_revalidation["new_model_request"]:
             from .pulso_paid_revalidation import revalidation_receipt
             try:
                 raw.metadata["paid_guard_revalidation_receipt"] = revalidation_receipt(raw, ai, validation)
