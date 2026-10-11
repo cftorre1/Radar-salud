@@ -1,0 +1,48 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 25,
+      "material_event_count": 25,
+      "max_material_gap_seconds": 4002.534346,
+      "mode": "live",
+      "observed_seconds": 9776.854759,
+      "original_started_at": "2026-10-11T05:29:46.231497Z",
+      "owner_observation_verified": false,
+      "owner_prompts": 0,
+      "owner_restarts": 0,
+      "total_elapsed_seconds": 9776.854759,
+      "window_started_at": "2026-10-11T05:29:46.231497Z"
+    },
+    "observed_until": "2026-10-11T08:12:43.086256Z",
+    "reasons": [
+      "four_real_wall_hours_not_observed",
+      "owner_intervention_observation_not_verified",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed",
+      "material_progress_gap_exceeded_30m"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {
+    "staging_qa": {
+      "evidence_revision": "64c7a19863b485a45ee6e1e90df459328ba5322f7db7c8f98ce3fc67a21e2488",
+      "failure": {
+        "conclusion": "failure",
+        "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+        "head_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+        "run_id": 38123952091,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38123952091"
+      },
+      "family": "staging_qa",
+      "input_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+      "reason": "approved_available",
+      "task_id": "staging_qa_failed_run_38123952091"
+    }
+  },
+  "generated_at": "2026-10-11T08:12:43.086256+00:00",
+  "input_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+  "kind": "controller_observation",
+  "operation_id": "b57e56d0e48c41609b5311dfb0f567db",
+  "stalled_tasks": []
+}
