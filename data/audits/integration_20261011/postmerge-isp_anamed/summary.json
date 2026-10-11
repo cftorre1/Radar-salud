@@ -1,0 +1,373 @@
+{
+  "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+  "targets": {
+    "sources": [
+      "isp_anamed"
+    ],
+    "origin_prs": [
+      13
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "fonasa": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "fonasa_datos_abiertos": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_anamed": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_surveillance": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:22:49.499180+00:00",
+      "finished_at": "2026-10-11T14:25:21.538165+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "isp_anamed": "EXTERNAL_BLOCKER_OBSERVED"
+      },
+      "discovery": {
+        "isp_anamed": {
+          "discovered": 0,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "RuntimeError",
+          "checked_at": "2026-10-11T14:25:21.096696+00:00",
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "RuntimeError"
+              },
+              {
+                "type": "URLError",
+                "reason": "timed out"
+              },
+              {
+                "type": "TimeoutError",
+                "reason": "timed out"
+              }
+            ],
+            "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+          },
+          "diagnostics": {
+            "surfaces": [
+              {
+                "channel": "ANAMED",
+                "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://ispch.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://ispch.gob.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          }
+        }
+      },
+      "queue_identity_sha256": "6c6dccd95005ad730d6c75d3998f6ab731a0fcbe74bac797def577c34745e68a",
+      "published_queue_keys": [],
+      "history_sha256": "ea2a57b1b0b2707c8f8551be4cf591ed83b620f0862ac131dbb3f6d95a755284",
+      "history_count": 891,
+      "history_selected_unique": 0,
+      "source_health": {
+        "isp_anamed": {
+          "name": "Isp Anamed",
+          "checked_at": "2026-10-11T14:25:21.103355+00:00",
+          "last_signal_at": null,
+          "discovered": 0,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 0,
+          "status": "error",
+          "error": "RuntimeError",
+          "technical_status": "error",
+          "coverage_status": "unverified",
+          "content_freshness": "unknown",
+          "editorial_outcome": "not_evaluated",
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "RuntimeError"
+              },
+              {
+                "type": "URLError",
+                "reason": "timed out"
+              },
+              {
+                "type": "TimeoutError",
+                "reason": "timed out"
+              }
+            ],
+            "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+          },
+          "discovery_diagnostics": {
+            "surfaces": [
+              {
+                "channel": "ANAMED",
+                "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://ispch.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://ispch.gob.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          },
+          "engine_checked_at": "2026-10-11T14:25:21.103355+00:00",
+          "poll_mode": "daily_engine"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:25:21.575907+00:00",
+      "finished_at": "2026-10-11T14:27:55.498634+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "isp_anamed": "EXTERNAL_BLOCKER_OBSERVED"
+      },
+      "discovery": {
+        "isp_anamed": {
+          "discovered": 0,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "RuntimeError",
+          "checked_at": "2026-10-11T14:27:55.041369+00:00",
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "RuntimeError"
+              },
+              {
+                "type": "URLError",
+                "reason": "timed out"
+              },
+              {
+                "type": "TimeoutError",
+                "reason": "timed out"
+              }
+            ],
+            "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+          },
+          "diagnostics": {
+            "surfaces": [
+              {
+                "channel": "ANAMED",
+                "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://ispch.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://ispch.gob.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          }
+        }
+      },
+      "queue_identity_sha256": "6c6dccd95005ad730d6c75d3998f6ab731a0fcbe74bac797def577c34745e68a",
+      "published_queue_keys": [],
+      "history_sha256": "ea2a57b1b0b2707c8f8551be4cf591ed83b620f0862ac131dbb3f6d95a755284",
+      "history_count": 891,
+      "history_selected_unique": 0,
+      "source_health": {
+        "isp_anamed": {
+          "name": "Isp Anamed",
+          "checked_at": "2026-10-11T14:27:55.048155+00:00",
+          "last_signal_at": null,
+          "discovered": 0,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 0,
+          "status": "error",
+          "error": "RuntimeError",
+          "technical_status": "error",
+          "coverage_status": "unverified",
+          "content_freshness": "unknown",
+          "editorial_outcome": "not_evaluated",
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "RuntimeError"
+              },
+              {
+                "type": "URLError",
+                "reason": "timed out"
+              },
+              {
+                "type": "TimeoutError",
+                "reason": "timed out"
+              }
+            ],
+            "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+          },
+          "discovery_diagnostics": {
+            "surfaces": [
+              {
+                "channel": "ANAMED",
+                "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://ispch.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              },
+              {
+                "channel": "ANAMED",
+                "url": "https://ispch.gob.cl/categorias-alertas/anamed/",
+                "status": "blocked",
+                "error_type": "URLError",
+                "error": "<urlopen error timed out>"
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          },
+          "engine_checked_at": "2026-10-11T14:27:55.048155+00:00",
+          "poll_mode": "daily_engine"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+    "reviewed_at": "2026-10-11T14:27:55.829833+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 87,
+  "runtime_run": 38146249940,
+  "preview_run": 38146250319,
+  "artifact_id": 11705485800,
+  "artifact_sha256": "47da5b44916be5cb2134cdd207556a4bac00b67926d577e89105b078aa1dc841",
+  "artifact_retention": "Original full archive retained by GitHub Actions; immutable summary, poll logs, capture manifest and original source-lane evidence preserved in git",
+  "imported_at": "2026-10-11T14:30:08.169918+00:00",
+  "import_scope": "source health/discovery/watermark receipts only; accepted queue/history unchanged"
+}
