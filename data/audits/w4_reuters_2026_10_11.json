@@ -112,7 +112,20 @@
     "tests/test_global_source_discovery.py::test_reuters_default_robots_prohibits_even_metadata_automation",
     "tests/test_global_source_probe_policy.py"
   ],
-  "reviewer_status": "code_and_policy_review_completed; consolidated final gate follows PAHO dated recovery",
+  "reviewer_status": "PASS_SCOPED_WITH_OPERATIONAL_HOLDS",
   "next_action": "Accredit Reuters/LSEG service, prior written consent and authorized commercial metadata/reproduction scope through a secure channel; configure only the licensed route.",
-  "editorial_fallback": "Editor may submit a Reuters link without fetching Reuters, and an original description supported by independently verified primary evidence. No body, excerpts or automated title/metadata collection; publication remains held for rights and editorial review."
+  "editorial_fallback": "Editor may submit a Reuters link without fetching Reuters, and an original description supported by independently verified primary evidence. No body, excerpts or automated title/metadata collection; publication remains held for rights and editorial review.",
+  "qa_evidence": [
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+    "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
+  ]
 }
