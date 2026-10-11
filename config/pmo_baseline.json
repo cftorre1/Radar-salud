@@ -691,6 +691,24 @@
         8,
         9
       ]
+    },
+    "work3_followup_20261011T055521Z": {
+      "reviewer": "Work 3",
+      "recorded_at": "2026-10-11T05:55:21.049Z",
+      "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+      "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+      "new_finding_ids": [
+        "work3_suseso_medical_licence_sanctions_surface_missing"
+      ],
+      "partial_revalidations": [
+        "autonomy_success_semantics_internal_guard"
+      ],
+      "backlog_issues": [
+        5,
+        7,
+        8
+      ]
     }
   },
   "blocks": [
@@ -1652,6 +1670,13 @@
       "evidence": [
         "data/audits/work3_adversarial_2026_10_11T043452Z.json"
       ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Work3: P0 nuevo por registro SUSESO de sanciones a emisores omitido pese a health ok; 20 oficios en 30 fechas exactas y 72 en 90. Revalidación parcial de guardas de progreso autónomo; autonomía y QA siguen abiertos.",
+      "evidence": [
+        "data/audits/work3_adversarial_2026_10_11T055521Z.json"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1884,6 +1909,23 @@
         "Keep published Insight, reviewed top3, evidence package, audit and model trace bound to the same approved artifact/version.",
         "Store attempted generation and its draft/evidence/model separately and label its outcome distinctly.",
         "Run a regression with a different candidate and model failure/no_candidate while approved Insight remains fresh; verify attribution, then expiry fail-closed."
+      ]
+    },
+    {
+      "id": "work3_suseso_medical_licence_sanctions_surface_missing",
+      "severity": "critical",
+      "priority": "P0",
+      "description": "SUSESO fiscalization is healthy while omitting the executed-sanctions register for medical-certificate issuers — The staging suseso_fiscalizacion source reports status=ok/technical_status=ok/coverage_status=observed with 38 discovered and zero new/published/pending/rejected, but its configured/runtime surfaces do not include the official register at /609/w3-propertyvalue-799701.html.",
+      "source": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+      "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "issue_url": "https://github.com/cftorre1/Radar-salud/issues/8",
+      "original_url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+      "closure_criteria": [
+        "Merge the surface and identity/date rules to staging; an isolated PR, HTTP 200 or parser test is not closure.",
+        "Run the core path after merge and reconcile all 20 exact-30-date and 72 exact-90-date oficios to seen/pending/rejected/published or a specific grouped editorial outcome.",
+        "Key identity by oficio (not the shared page URL) while deduplicating repeats and keeping date-oficio distinct from suspension dates.",
+        "Publish aggregates or material groupings without exposing personal identifiers; record explicit rejection/grouping reasons rather than creating cards by quota.",
+        "Keep health partial/error until the omitted surface has a real post-merge outcome; QA and independent Reviewer must pass."
       ]
     }
   ],
@@ -3141,7 +3183,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T04:34:52.930386+00:00",
+  "updated_at": "2026-10-11T05:55:21.049Z",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
