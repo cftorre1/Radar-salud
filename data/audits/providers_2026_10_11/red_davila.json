@@ -1,12 +1,50 @@
 {
-  "version": 1,
+  "version": 3,
   "slug": "red_davila",
   "as_of": "2026-10-11",
   "timezone": "America/Santiago",
   "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
   "audit_path": "data/audits/providers_2026_10_11/red_davila.json",
-  "status": "reconciled_with_exact_blockers",
-  "coverage": "partial_90_inventory_visible_30_reviewed",
+  "status": "EXTERNAL_BLOCKER_PROVEN",
+  "coverage": {
+    "outcome": "EXTERNAL_BLOCKER_PROVEN",
+    "coverage_complete": false,
+    "coverage_reason": "Every640 official sitemap news URL visited;448dated originals,13verified90 and3verified30 after all228HTTP-denied originals were navigated with ordinary native Chrome:37dated200,191still403. Archive aliases/feed/CMS are HTMLfallbacks. Six visible material candidates reconciled, all evaluated executions/additions below75; related announcement excluded; no gate reduction.",
+    "archive_depth": {
+      "sitemap_news_urls_visited": 640,
+      "dated_originals": 448,
+      "denied_originals": 191,
+      "ordinary_browser_targets": 228,
+      "browser_recovered_dates": 37
+    },
+    "owner": "Publisher Red Dávila / Source Engineering",
+    "next_action": "Publisher restore access/date evidence for191originals still403 after every640sitemapURL and all228HTTP-denied ordinary browser navigations. Six visible operational candidates are reconciled, with explicit below75/currentrelated reasons; no unchanged paid retry.",
+    "pages_checked": 879,
+    "latest_original_publication": "2026-10-05",
+    "discovered": 640,
+    "unique": 639,
+    "recent_30d": 3,
+    "recent_90d": 13,
+    "publication_date_unknown": 191,
+    "material_30d": 1,
+    "material_90d": 6,
+    "material_date_unknown": 0,
+    "material": 6,
+    "material_unknown": 191,
+    "published": 0,
+    "rejected": 6,
+    "deferred": 0,
+    "detected_material": 6,
+    "omitted_material": 0,
+    "parse_errors": 0,
+    "access_errors": 228,
+    "inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json",
+    "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+    "relevant_30d_total": null,
+    "relevant_90d_total": null,
+    "publicable_confirmed": 0,
+    "publicable_total": null
+  },
   "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "market_role": "provider",
@@ -17,69 +55,504 @@
     }
   ],
   "blockers": [
-    "first_listing_only_90_day_pagination_boundary_unverified",
-    "2026_10_05_cancer_article_publication_stamp_unverified",
-    "two_original_urls_editorially_rejected_without_persisted_subreason"
+    "Every640 official sitemap news URL visited;448dated originals,13verified90 and3verified30 after all228HTTP-denied originals were navigated with ordinary native Chrome:37dated200,191still403. Archive aliases/feed/CMS are HTMLfallbacks. Six visible material candidates reconciled, all evaluated executions/additions below75; related announcement excluded; no gate reduction."
   ],
   "original_items": [
-    {
-      "title": "Red Dávila se suma al Plan Enlace para reducir listas de espera odontológicas",
-      "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
-      "publication_date": "2026-08-20",
-      "date_evidence": "verified_article_header",
-      "materiality": "candidate",
-      "recover": true,
-      "evidence": "Convenio Minsal/Sótero del Río: objetivo 500 pacientes, diez jornadas en diez meses, primer operativo planificado de 50 cirugías. Es compromiso anunciado."
-    },
-    {
-      "title": "Red Dávila realiza su primer operativo del Programa Enlace y contribuye a reducir listas de espera odontológicas",
-      "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
-      "publication_date": "2026-08-24",
-      "date_evidence": "verified_article_header",
-      "materiality": "candidate",
-      "recover": true,
-      "evidence": "El detalle atribuye 30 cirugías efectivamente realizadas el 22 agosto, cinco pabellones y 18 voluntarios. Actualización del mismo Plan Enlace; no sumar las 50 planificadas a las 30 ejecutadas.",
-      "review_false_negative": true,
-      "review_revision": "enlace_official_chain_v1",
-      "event_date": "2026-08-22",
-      "supporting_official_sources": [
-        {
-          "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
-          "title": "Red Dávila se suma al Plan Enlace para reducir listas de espera odontológicas",
-          "publication_date": "2026-08-20",
-          "relationship": "programme_announcement_before_execution"
-        }
-      ]
-    },
     {
       "url": "https://www.davila.cl/novedades/operativo-medico-en-valparaiso",
       "title": "Operativo Médico en Valparaíso",
       "publication_date": "2026-09-30",
-      "date_evidence": "verified_article_header",
+      "event_date": "2026-09-24/2026-09-26",
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
       "materiality": "candidate",
-      "recover": true,
-      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
-      "original_inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Contexto útil sobre colaboración público-privada y movilización de especialistas, pero de alcance local y principalmente institucional; no evidencia un cambio material para el sector salud.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Contexto útil sobre colaboración público-privada y movilización de especialistas, pero de alcance local y principalmente institucional; no evidencia un cambio material para el sector salud.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T06:17:07.118228+00:00",
+          "relevance_score": 62,
+          "minimum_relevance": 75,
+          "editorial_reason": "Contexto útil sobre colaboración público-privada y movilización de especialistas, pero de alcance local y principalmente institucional; no evidencia un cambio material para el sector salud.",
+          "what_characters": 482,
+          "why_characters": 318,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-30",
+          "publication_date_source": "verified_article_header"
+        },
+        "event_date": "2026-09-24/2026-09-26",
+        "detected": true,
+        "queue": [
+          {
+            "key": "82641e89cc8479329589d8feab44efafffbc5584a4205366afb620de922ccb38",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": {
+              "assessed_at": "2026-10-11T06:17:07.118228+00:00",
+              "relevance_score": 62,
+              "minimum_relevance": 75,
+              "editorial_reason": "Contexto útil sobre colaboración público-privada y movilización de especialistas, pero de alcance local y principalmente institucional; no evidencia un cambio material para el sector salud.",
+              "what_characters": 482,
+              "why_characters": 318,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-09-30",
+              "publication_date_source": "verified_article_header"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:23:20.667150+00:00",
+          "body_sha256": "3a17070a1998c9c16a92a31db4d13b8fe58f3553c5ecf1a1625533b01f03a9d8",
+          "date_stamps": [
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-30T00:00:00.000Z",
+              "date": "2026-09-30"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-09-30",
+              "date": "2026-09-30"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
     },
     {
       "url": "https://www.davila.cl/novedades/resonancia-cardiaca-en-clinica-davila-vespucio",
       "title": "Resonancia cardíaca en Clínica Dávila Vespucio",
       "publication_date": "2026-09-08",
-      "date_evidence": "verified_article_header",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
       "materiality": "candidate",
-      "recover": true,
-      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
-      "original_inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "La incorporación de equipamiento avanzado sí constituye un desarrollo de capacidad e inversión dentro de la red, pero la publicación es principalmente informativa y no entrega antecedentes suficientes para calificarla como un cambio competitivo o sectorial de mayor escala.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "La incorporación de equipamiento avanzado sí constituye un desarrollo de capacidad e inversión dentro de la red, pero la publicación es principalmente informativa y no entrega antecedentes suficientes para calificarla como un cambio competitivo o sectorial de mayor escala.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T06:17:15.511242+00:00",
+          "relevance_score": 70,
+          "minimum_relevance": 75,
+          "editorial_reason": "La incorporación de equipamiento avanzado sí constituye un desarrollo de capacidad e inversión dentro de la red, pero la publicación es principalmente informativa y no entrega antecedentes suficientes para calificarla como un cambio competitivo o sectorial de mayor escala.",
+          "what_characters": 207,
+          "why_characters": 377,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-08",
+          "publication_date_source": "verified_article_header"
+        },
+        "detected": true,
+        "queue": [
+          {
+            "key": "a69805b0a648e162d0f05ca0eb4799f4a0146d16808583aa774102ccaae65bd7",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": {
+              "assessed_at": "2026-10-11T06:17:15.511242+00:00",
+              "relevance_score": 70,
+              "minimum_relevance": 75,
+              "editorial_reason": "La incorporación de equipamiento avanzado sí constituye un desarrollo de capacidad e inversión dentro de la red, pero la publicación es principalmente informativa y no entrega antecedentes suficientes para calificarla como un cambio competitivo o sectorial de mayor escala.",
+              "what_characters": 207,
+              "why_characters": 377,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-09-08",
+              "publication_date_source": "verified_article_header"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:23:20.667199+00:00",
+          "body_sha256": "1a7b41fc7adf5c3998ae1c184ed079ba593e9acf1433df42a76a05db8f39c491",
+          "date_stamps": [
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-08T00:00:00.000Z",
+              "date": "2026-09-08"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-09-08",
+              "date": "2026-09-08"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
     },
     {
       "url": "https://www.davila.cl/novedades/clinica-davila-recoleta-incorpora-nuevo-servicio-de-fototerapia-dermatologica",
       "title": "Clínica Dávila Recoleta incorpora nuevo servicio de Fototerapia Dermatológica",
       "publication_date": "2026-09-02",
-      "date_evidence": "verified_article_header",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
       "materiality": "candidate",
-      "recover": true,
-      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
-      "original_inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Es una incorporación puntual de prestación en un establecimiento específico, sin evidencia de un cambio material para el sector salud, de impacto nacional o de una estrategia competitiva de mayor escala.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Es una incorporación puntual de prestación en un establecimiento específico, sin evidencia de un cambio material para el sector salud, de impacto nacional o de una estrategia competitiva de mayor escala.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T06:17:22.196953+00:00",
+          "relevance_score": 60,
+          "minimum_relevance": 75,
+          "editorial_reason": "Es una incorporación puntual de prestación en un establecimiento específico, sin evidencia de un cambio material para el sector salud, de impacto nacional o de una estrategia competitiva de mayor escala.",
+          "what_characters": 213,
+          "why_characters": 302,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-02",
+          "publication_date_source": "verified_article_header"
+        },
+        "detected": true,
+        "queue": [
+          {
+            "key": "ff4dfd34fc1b4ad84f4147bed4396c794aa219e04ab8024314ffe1c2aa1a64f2",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": {
+              "assessed_at": "2026-10-11T06:17:22.196953+00:00",
+              "relevance_score": 60,
+              "minimum_relevance": 75,
+              "editorial_reason": "Es una incorporación puntual de prestación en un establecimiento específico, sin evidencia de un cambio material para el sector salud, de impacto nacional o de una estrategia competitiva de mayor escala.",
+              "what_characters": 213,
+              "why_characters": 302,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-09-02",
+              "publication_date_source": "verified_article_header"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:23:20.667255+00:00",
+          "body_sha256": "69ea42c98d96d22885fc1718bc7b627c2d65fba22a7a9e0f29c9a98dee245e8a",
+          "date_stamps": [
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-02T00:00:00.000Z",
+              "date": "2026-09-02"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-09-02",
+              "date": "2026-09-02"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+    },
+    {
+      "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
+      "title": "Red Dávila realiza su primer operativo del Programa Enlace y contribuye a reducir listas de espera odontológicas",
+      "publication_date": "2026-08-24",
+      "event_date": "2026-08-22",
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Es un convenio operativo con metas cuantificables, beneficiarios definidos y uso de capacidad instalada de un prestador privado para apoyar a la red pública. Su impacto es relevante para los actores involucrados, pero acotado territorialmente y a cirugía maxilofacial, por lo que corresponde a un contexto sectorial útil más que a un cambio nacional material.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Es un convenio operativo con metas cuantificables, beneficiarios definidos y uso de capacidad instalada de un prestador privado para apoyar a la red pública. Su impacto es relevante para los actores involucrados, pero acotado territorialmente y a cirugía maxilofacial, por lo que corresponde a un contexto sectorial útil más que a un cambio nacional material.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T05:57:59.863362+00:00",
+          "relevance_score": 74,
+          "minimum_relevance": 75,
+          "editorial_reason": "Es un convenio operativo con metas cuantificables, beneficiarios definidos y uso de capacidad instalada de un prestador privado para apoyar a la red pública. Su impacto es relevante para los actores involucrados, pero acotado territorialmente y a cirugía maxilofacial, por lo que corresponde a un contexto sectorial útil más que a un cambio nacional material.",
+          "what_characters": 577,
+          "why_characters": 481,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-08-24",
+          "publication_date_source": "verified_article_header"
+        },
+        "event_date": "2026-08-22",
+        "detected": true,
+        "queue": [
+          {
+            "key": "c37af1410f6e19197c0f9b67dd2769765a1e3b35c0d71e9076b9059bcbf8a6a4",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": "Provider listing/detail publication date mismatch: https://www.davila.cl/novedades/operativo-medico-sotero",
+            "assessment": {
+              "assessed_at": "2026-10-11T05:57:59.863362+00:00",
+              "relevance_score": 74,
+              "minimum_relevance": 75,
+              "editorial_reason": "Es un convenio operativo con metas cuantificables, beneficiarios definidos y uso de capacidad instalada de un prestador privado para apoyar a la red pública. Su impacto es relevante para los actores involucrados, pero acotado territorialmente y a cirugía maxilofacial, por lo que corresponde a un contexto sectorial útil más que a un cambio nacional material.",
+              "what_characters": 577,
+              "why_characters": 481,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-08-24",
+              "publication_date_source": "verified_article_header"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:23:20.667296+00:00",
+          "body_sha256": "39c4f2548293abe7f294eb2f477b5e0281616bc4ae757c8b12ab6a533e054c54",
+          "date_stamps": [
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-08-24T00:00:00.000Z",
+              "date": "2026-08-24"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-08-24",
+              "date": "2026-08-24"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+    },
+    {
+      "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+      "title": "Red Dávila se suma al Plan Enlace para reducir listas de espera odontológicas",
+      "publication_date": "2026-08-20",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Planned500 patients/10sessions/10months; execution independently assessed with announcement evidence74<75. Context of the same programme; historical reason/score unavailable.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Planned500 patients/10sessions/10months; execution independently assessed with announcement evidence74<75. Context of the same programme; historical reason/score unavailable.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [
+          "https://www.davila.cl/novedades/operativo-medico-sotero"
+        ],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "ba09f70fb16cf82e05c956be5ae9b181f1f77a5fc1c1fd5d11dd36f5ebdf068b",
+            "status": "rejected",
+            "reason": "related_programme_announcement_current_execution_below_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:34:01.091479+00:00",
+              "method": "original evidence + independent Reviewer; no new paid model",
+              "reason": "related_programme_announcement_current_execution_below_gate",
+              "rationale": "Planned500 patients/10sessions/10months; execution independently assessed with announcement evidence74<75. Context of the same programme; historical reason/score unavailable.",
+              "related_to": [
+                "https://www.davila.cl/novedades/operativo-medico-sotero"
+              ],
+              "historical_processor_reason": "processor_rejected",
+              "historical_model_diagnostics": "not persisted; do not reconstruct",
+              "prior_queue_state": {
+                "status": "rejected",
+                "reason": "processor_rejected"
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:23:20.667318+00:00",
+          "body_sha256": "55a39578c9e7ebbf1bb704682517c4d6cb5b8a67d29f2a7970a49c866a2dfdf7",
+          "date_stamps": [
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-08-20T00:00:00.000Z",
+              "date": "2026-08-20"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-08-20",
+              "date": "2026-08-20"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+    },
+    {
+      "url": "https://www.davila.cl/novedades/medicina-deportiva-llega-a-red-davila",
+      "title": "Medicina Deportiva llega a Red Dávila",
+      "publication_date": "2026-08-01",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Es un lanzamiento de servicio y una ampliación local de prestaciones, sin evidencia de impacto sectorial, expansión significativa, inversión material o movimiento competitivo de alcance amplio.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Es un lanzamiento de servicio y una ampliación local de prestaciones, sin evidencia de impacto sectorial, expansión significativa, inversión material o movimiento competitivo de alcance amplio.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T06:58:21.838319+00:00",
+          "relevance_score": 58,
+          "minimum_relevance": 75,
+          "editorial_reason": "Es un lanzamiento de servicio y una ampliación local de prestaciones, sin evidencia de impacto sectorial, expansión significativa, inversión material o movimiento competitivo de alcance amplio.",
+          "what_characters": 398,
+          "why_characters": 330,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-08-01",
+          "publication_date_source": "verified_article_header"
+        },
+        "detected": true,
+        "queue": [
+          {
+            "key": "fd1aa1d4356773933bfbde188959c301b4e8222c8f232641ba78ef38070f31cc",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": {
+              "assessed_at": "2026-10-11T06:58:21.838319+00:00",
+              "relevance_score": 58,
+              "minimum_relevance": 75,
+              "editorial_reason": "Es un lanzamiento de servicio y una ampliación local de prestaciones, sin evidencia de impacto sectorial, expansión significativa, inversión material o movimiento competitivo de alcance amplio.",
+              "what_characters": 398,
+              "why_characters": 330,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-08-01",
+              "publication_date_source": "verified_article_header"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:23:30.104007+00:00",
+          "body_sha256": "ac5925df0906b1e0a043ace7e6d3bfc758839574d7f4ab32b71c50e719fe4f5f",
+          "date_stamps": [
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-08-01T00:00:00.000Z",
+              "date": "2026-08-01"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-08-01",
+              "date": "2026-08-01"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
     }
   ],
   "notes": [
@@ -103,50 +576,542 @@
     ]
   },
   "reconciliation": {
-    "scope": "verified original items; lower bound where inventory is blocked",
-    "material_candidates_30_days": 0,
-    "material_candidates_90_days": 2,
-    "publication_date_unknown": 0,
-    "queue_counts": {
-      "live_pending": 0,
-      "backfill_pending": 0,
-      "rejected": 2,
-      "published": 0
+    "scope": "full original inventory with unknown totals explicit",
+    "summary": {
+      "outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "Every640 official sitemap news URL visited;448dated originals,13verified90 and3verified30 after all228HTTP-denied originals were navigated with ordinary native Chrome:37dated200,191still403. Archive aliases/feed/CMS are HTMLfallbacks. Six visible material candidates reconciled, all evaluated executions/additions below75; related announcement excluded; no gate reduction.",
+      "archive_depth": {
+        "sitemap_news_urls_visited": 640,
+        "dated_originals": 448,
+        "denied_originals": 191,
+        "ordinary_browser_targets": 228,
+        "browser_recovered_dates": 37
+      },
+      "owner": "Publisher Red Dávila / Source Engineering",
+      "next_action": "Publisher restore access/date evidence for191originals still403 after every640sitemapURL and all228HTTP-denied ordinary browser navigations. Six visible operational candidates are reconciled, with explicit below75/currentrelated reasons; no unchanged paid retry.",
+      "pages_checked": 879,
+      "latest_original_publication": "2026-10-05",
+      "discovered": 640,
+      "unique": 639,
+      "recent_30d": 3,
+      "recent_90d": 13,
+      "publication_date_unknown": 191,
+      "material_30d": 1,
+      "material_90d": 6,
+      "material_date_unknown": 0,
+      "material": 6,
+      "material_unknown": 191,
+      "published": 0,
+      "rejected": 6,
+      "deferred": 0,
+      "detected_material": 6,
+      "omitted_material": 0,
+      "parse_errors": 0,
+      "access_errors": 228,
+      "inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json",
+      "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+      "relevant_30d_total": null,
+      "relevant_90d_total": null,
+      "publicable_confirmed": 0,
+      "publicable_total": null
     },
     "items": [
       {
-        "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
-        "publication_date": "2026-08-20",
-        "in_30_days": false,
-        "in_90_days": true,
+        "url": "https://www.davila.cl/novedades/operativo-medico-en-valparaiso",
+        "title": "Operativo Médico en Valparaíso",
+        "publication_date": "2026-09-30",
+        "event_date": "2026-09-24/2026-09-26",
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
         "materiality": "candidate",
-        "queue": [
-          {
-            "key": "ba09f70fb16cf82e05c956be5ae9b181f1f77a5fc1c1fd5d11dd36f5ebdf068b",
-            "status": "rejected",
-            "reason": "processor_rejected",
-            "lane": "BACKFILL"
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Contexto útil sobre colaboración público-privada y movilización de especialistas, pero de alcance local y principalmente institucional; no evidencia un cambio material para el sector salud.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Contexto útil sobre colaboración público-privada y movilización de especialistas, pero de alcance local y principalmente institucional; no evidencia un cambio material para el sector salud.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T06:17:07.118228+00:00",
+            "relevance_score": 62,
+            "minimum_relevance": 75,
+            "editorial_reason": "Contexto útil sobre colaboración público-privada y movilización de especialistas, pero de alcance local y principalmente institucional; no evidencia un cambio material para el sector salud.",
+            "what_characters": 482,
+            "why_characters": 318,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-09-30",
+            "publication_date_source": "verified_article_header"
+          },
+          "event_date": "2026-09-24/2026-09-26",
+          "detected": true,
+          "queue": [
+            {
+              "key": "82641e89cc8479329589d8feab44efafffbc5584a4205366afb620de922ccb38",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": {
+                "assessed_at": "2026-10-11T06:17:07.118228+00:00",
+                "relevance_score": 62,
+                "minimum_relevance": 75,
+                "editorial_reason": "Contexto útil sobre colaboración público-privada y movilización de especialistas, pero de alcance local y principalmente institucional; no evidencia un cambio material para el sector salud.",
+                "what_characters": 482,
+                "why_characters": 318,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-09-30",
+                "publication_date_source": "verified_article_header"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:23:20.667150+00:00",
+            "body_sha256": "3a17070a1998c9c16a92a31db4d13b8fe58f3553c5ecf1a1625533b01f03a9d8",
+            "date_stamps": [
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-30T00:00:00.000Z",
+                "date": "2026-09-30"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-09-30",
+                "date": "2026-09-30"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
           }
-        ],
-        "history_count": 0,
-        "visible_count": 0
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+      },
+      {
+        "url": "https://www.davila.cl/novedades/resonancia-cardiaca-en-clinica-davila-vespucio",
+        "title": "Resonancia cardíaca en Clínica Dávila Vespucio",
+        "publication_date": "2026-09-08",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "La incorporación de equipamiento avanzado sí constituye un desarrollo de capacidad e inversión dentro de la red, pero la publicación es principalmente informativa y no entrega antecedentes suficientes para calificarla como un cambio competitivo o sectorial de mayor escala.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "La incorporación de equipamiento avanzado sí constituye un desarrollo de capacidad e inversión dentro de la red, pero la publicación es principalmente informativa y no entrega antecedentes suficientes para calificarla como un cambio competitivo o sectorial de mayor escala.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T06:17:15.511242+00:00",
+            "relevance_score": 70,
+            "minimum_relevance": 75,
+            "editorial_reason": "La incorporación de equipamiento avanzado sí constituye un desarrollo de capacidad e inversión dentro de la red, pero la publicación es principalmente informativa y no entrega antecedentes suficientes para calificarla como un cambio competitivo o sectorial de mayor escala.",
+            "what_characters": 207,
+            "why_characters": 377,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-09-08",
+            "publication_date_source": "verified_article_header"
+          },
+          "detected": true,
+          "queue": [
+            {
+              "key": "a69805b0a648e162d0f05ca0eb4799f4a0146d16808583aa774102ccaae65bd7",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": {
+                "assessed_at": "2026-10-11T06:17:15.511242+00:00",
+                "relevance_score": 70,
+                "minimum_relevance": 75,
+                "editorial_reason": "La incorporación de equipamiento avanzado sí constituye un desarrollo de capacidad e inversión dentro de la red, pero la publicación es principalmente informativa y no entrega antecedentes suficientes para calificarla como un cambio competitivo o sectorial de mayor escala.",
+                "what_characters": 207,
+                "why_characters": 377,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-09-08",
+                "publication_date_source": "verified_article_header"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:23:20.667199+00:00",
+            "body_sha256": "1a7b41fc7adf5c3998ae1c184ed079ba593e9acf1433df42a76a05db8f39c491",
+            "date_stamps": [
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-08T00:00:00.000Z",
+                "date": "2026-09-08"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-09-08",
+                "date": "2026-09-08"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+      },
+      {
+        "url": "https://www.davila.cl/novedades/clinica-davila-recoleta-incorpora-nuevo-servicio-de-fototerapia-dermatologica",
+        "title": "Clínica Dávila Recoleta incorpora nuevo servicio de Fototerapia Dermatológica",
+        "publication_date": "2026-09-02",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Es una incorporación puntual de prestación en un establecimiento específico, sin evidencia de un cambio material para el sector salud, de impacto nacional o de una estrategia competitiva de mayor escala.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Es una incorporación puntual de prestación en un establecimiento específico, sin evidencia de un cambio material para el sector salud, de impacto nacional o de una estrategia competitiva de mayor escala.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T06:17:22.196953+00:00",
+            "relevance_score": 60,
+            "minimum_relevance": 75,
+            "editorial_reason": "Es una incorporación puntual de prestación en un establecimiento específico, sin evidencia de un cambio material para el sector salud, de impacto nacional o de una estrategia competitiva de mayor escala.",
+            "what_characters": 213,
+            "why_characters": 302,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-09-02",
+            "publication_date_source": "verified_article_header"
+          },
+          "detected": true,
+          "queue": [
+            {
+              "key": "ff4dfd34fc1b4ad84f4147bed4396c794aa219e04ab8024314ffe1c2aa1a64f2",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": {
+                "assessed_at": "2026-10-11T06:17:22.196953+00:00",
+                "relevance_score": 60,
+                "minimum_relevance": 75,
+                "editorial_reason": "Es una incorporación puntual de prestación en un establecimiento específico, sin evidencia de un cambio material para el sector salud, de impacto nacional o de una estrategia competitiva de mayor escala.",
+                "what_characters": 213,
+                "why_characters": 302,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-09-02",
+                "publication_date_source": "verified_article_header"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:23:20.667255+00:00",
+            "body_sha256": "69ea42c98d96d22885fc1718bc7b627c2d65fba22a7a9e0f29c9a98dee245e8a",
+            "date_stamps": [
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-02T00:00:00.000Z",
+                "date": "2026-09-02"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-09-02",
+                "date": "2026-09-02"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
       },
       {
         "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
+        "title": "Red Dávila realiza su primer operativo del Programa Enlace y contribuye a reducir listas de espera odontológicas",
         "publication_date": "2026-08-24",
-        "in_30_days": false,
-        "in_90_days": true,
+        "event_date": "2026-08-22",
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
         "materiality": "candidate",
-        "queue": [
-          {
-            "key": "c37af1410f6e19197c0f9b67dd2769765a1e3b35c0d71e9076b9059bcbf8a6a4",
-            "status": "rejected",
-            "reason": "processor_rejected",
-            "lane": "BACKFILL"
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Es un convenio operativo con metas cuantificables, beneficiarios definidos y uso de capacidad instalada de un prestador privado para apoyar a la red pública. Su impacto es relevante para los actores involucrados, pero acotado territorialmente y a cirugía maxilofacial, por lo que corresponde a un contexto sectorial útil más que a un cambio nacional material.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Es un convenio operativo con metas cuantificables, beneficiarios definidos y uso de capacidad instalada de un prestador privado para apoyar a la red pública. Su impacto es relevante para los actores involucrados, pero acotado territorialmente y a cirugía maxilofacial, por lo que corresponde a un contexto sectorial útil más que a un cambio nacional material.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T05:57:59.863362+00:00",
+            "relevance_score": 74,
+            "minimum_relevance": 75,
+            "editorial_reason": "Es un convenio operativo con metas cuantificables, beneficiarios definidos y uso de capacidad instalada de un prestador privado para apoyar a la red pública. Su impacto es relevante para los actores involucrados, pero acotado territorialmente y a cirugía maxilofacial, por lo que corresponde a un contexto sectorial útil más que a un cambio nacional material.",
+            "what_characters": 577,
+            "why_characters": 481,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-08-24",
+            "publication_date_source": "verified_article_header"
+          },
+          "event_date": "2026-08-22",
+          "detected": true,
+          "queue": [
+            {
+              "key": "c37af1410f6e19197c0f9b67dd2769765a1e3b35c0d71e9076b9059bcbf8a6a4",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": "Provider listing/detail publication date mismatch: https://www.davila.cl/novedades/operativo-medico-sotero",
+              "assessment": {
+                "assessed_at": "2026-10-11T05:57:59.863362+00:00",
+                "relevance_score": 74,
+                "minimum_relevance": 75,
+                "editorial_reason": "Es un convenio operativo con metas cuantificables, beneficiarios definidos y uso de capacidad instalada de un prestador privado para apoyar a la red pública. Su impacto es relevante para los actores involucrados, pero acotado territorialmente y a cirugía maxilofacial, por lo que corresponde a un contexto sectorial útil más que a un cambio nacional material.",
+                "what_characters": 577,
+                "why_characters": 481,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-08-24",
+                "publication_date_source": "verified_article_header"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:23:20.667296+00:00",
+            "body_sha256": "39c4f2548293abe7f294eb2f477b5e0281616bc4ae757c8b12ab6a533e054c54",
+            "date_stamps": [
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-08-24T00:00:00.000Z",
+                "date": "2026-08-24"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-08-24",
+                "date": "2026-08-24"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
           }
-        ],
-        "history_count": 0,
-        "visible_count": 0
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+      },
+      {
+        "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+        "title": "Red Dávila se suma al Plan Enlace para reducir listas de espera odontológicas",
+        "publication_date": "2026-08-20",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Planned500 patients/10sessions/10months; execution independently assessed with announcement evidence74<75. Context of the same programme; historical reason/score unavailable.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Planned500 patients/10sessions/10months; execution independently assessed with announcement evidence74<75. Context of the same programme; historical reason/score unavailable.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [
+            "https://www.davila.cl/novedades/operativo-medico-sotero"
+          ],
+          "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+          "detected": true,
+          "queue": [
+            {
+              "key": "ba09f70fb16cf82e05c956be5ae9b181f1f77a5fc1c1fd5d11dd36f5ebdf068b",
+              "status": "rejected",
+              "reason": "related_programme_announcement_current_execution_below_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": {
+                "at": "2026-10-11T06:34:01.091479+00:00",
+                "method": "original evidence + independent Reviewer; no new paid model",
+                "reason": "related_programme_announcement_current_execution_below_gate",
+                "rationale": "Planned500 patients/10sessions/10months; execution independently assessed with announcement evidence74<75. Context of the same programme; historical reason/score unavailable.",
+                "related_to": [
+                  "https://www.davila.cl/novedades/operativo-medico-sotero"
+                ],
+                "historical_processor_reason": "processor_rejected",
+                "historical_model_diagnostics": "not persisted; do not reconstruct",
+                "prior_queue_state": {
+                  "status": "rejected",
+                  "reason": "processor_rejected"
+                }
+              }
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:23:20.667318+00:00",
+            "body_sha256": "55a39578c9e7ebbf1bb704682517c4d6cb5b8a67d29f2a7970a49c866a2dfdf7",
+            "date_stamps": [
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-08-20T00:00:00.000Z",
+                "date": "2026-08-20"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-08-20",
+                "date": "2026-08-20"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+      },
+      {
+        "url": "https://www.davila.cl/novedades/medicina-deportiva-llega-a-red-davila",
+        "title": "Medicina Deportiva llega a Red Dávila",
+        "publication_date": "2026-08-01",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Es un lanzamiento de servicio y una ampliación local de prestaciones, sin evidencia de impacto sectorial, expansión significativa, inversión material o movimiento competitivo de alcance amplio.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Es un lanzamiento de servicio y una ampliación local de prestaciones, sin evidencia de impacto sectorial, expansión significativa, inversión material o movimiento competitivo de alcance amplio.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T06:58:21.838319+00:00",
+            "relevance_score": 58,
+            "minimum_relevance": 75,
+            "editorial_reason": "Es un lanzamiento de servicio y una ampliación local de prestaciones, sin evidencia de impacto sectorial, expansión significativa, inversión material o movimiento competitivo de alcance amplio.",
+            "what_characters": 398,
+            "why_characters": 330,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-08-01",
+            "publication_date_source": "verified_article_header"
+          },
+          "detected": true,
+          "queue": [
+            {
+              "key": "fd1aa1d4356773933bfbde188959c301b4e8222c8f232641ba78ef38070f31cc",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": {
+                "assessed_at": "2026-10-11T06:58:21.838319+00:00",
+                "relevance_score": 58,
+                "minimum_relevance": 75,
+                "editorial_reason": "Es un lanzamiento de servicio y una ampliación local de prestaciones, sin evidencia de impacto sectorial, expansión significativa, inversión material o movimiento competitivo de alcance amplio.",
+                "what_characters": 398,
+                "why_characters": 330,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-08-01",
+                "publication_date_source": "verified_article_header"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:23:30.104007+00:00",
+            "body_sha256": "ac5925df0906b1e0a043ace7e6d3bfc758839574d7f4ab32b71c50e719fe4f5f",
+            "date_stamps": [
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-08-01T00:00:00.000Z",
+                "date": "2026-08-01"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-08-01",
+                "date": "2026-08-01"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/red_davila.json"
       }
     ]
   },
@@ -192,7 +1157,7 @@
     "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
     "repeated_paid_calls": 0
   },
-  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null",
+  "coverage_claim": "Every640 official sitemap news URL visited;448dated originals,13verified90 and3verified30 after all228HTTP-denied originals were navigated with ordinary native Chrome:37dated200,191still403. Archive aliases/feed/CMS are HTMLfallbacks. Six visible material candidates reconciled, all evaluated executions/additions below75; related announcement excluded; no gate reduction.",
   "baseline": {
     "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
     "queue_states": {},
@@ -310,5 +1275,129 @@
         }
       }
     ]
-  }
+  },
+  "initial_checkpoint_status": "reconciled_with_exact_blockers",
+  "initial_original_items": [
+    {
+      "title": "Red Dávila se suma al Plan Enlace para reducir listas de espera odontológicas",
+      "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+      "publication_date": "2026-08-20",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Convenio Minsal/Sótero del Río: objetivo 500 pacientes, diez jornadas en diez meses, primer operativo planificado de 50 cirugías. Es compromiso anunciado."
+    },
+    {
+      "title": "Red Dávila realiza su primer operativo del Programa Enlace y contribuye a reducir listas de espera odontológicas",
+      "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
+      "publication_date": "2026-08-24",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "El detalle atribuye 30 cirugías efectivamente realizadas el 22 agosto, cinco pabellones y 18 voluntarios. Actualización del mismo Plan Enlace; no sumar las 50 planificadas a las 30 ejecutadas.",
+      "review_false_negative": true,
+      "review_revision": "enlace_official_chain_v1",
+      "event_date": "2026-08-22",
+      "supporting_official_sources": [
+        {
+          "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+          "title": "Red Dávila se suma al Plan Enlace para reducir listas de espera odontológicas",
+          "publication_date": "2026-08-20",
+          "relationship": "programme_announcement_before_execution"
+        }
+      ]
+    },
+    {
+      "url": "https://www.davila.cl/novedades/operativo-medico-en-valparaiso",
+      "title": "Operativo Médico en Valparaíso",
+      "publication_date": "2026-09-30",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
+      "original_inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+    },
+    {
+      "url": "https://www.davila.cl/novedades/resonancia-cardiaca-en-clinica-davila-vespucio",
+      "title": "Resonancia cardíaca en Clínica Dávila Vespucio",
+      "publication_date": "2026-09-08",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
+      "original_inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+    },
+    {
+      "url": "https://www.davila.cl/novedades/clinica-davila-recoleta-incorpora-nuevo-servicio-de-fototerapia-dermatologica",
+      "title": "Clínica Dávila Recoleta incorpora nuevo servicio de Fototerapia Dermatológica",
+      "publication_date": "2026-09-02",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
+      "original_inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json"
+    }
+  ],
+  "blockers_before_exhaustive_audit": [
+    "first_listing_only_90_day_pagination_boundary_unverified",
+    "2026_10_05_cancer_article_publication_stamp_unverified",
+    "two_original_urls_editorially_rejected_without_persisted_subreason"
+  ],
+  "initial_reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 0,
+    "material_candidates_90_days": 2,
+    "publication_date_unknown": 0,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 0,
+      "rejected": 2,
+      "published": 0
+    },
+    "items": [
+      {
+        "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+        "publication_date": "2026-08-20",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "ba09f70fb16cf82e05c956be5ae9b181f1f77a5fc1c1fd5d11dd36f5ebdf068b",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
+        "publication_date": "2026-08-24",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "c37af1410f6e19197c0f9b67dd2769765a1e3b35c0d71e9076b9059bcbf8a6a4",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      }
+    ]
+  },
+  "outcome": "EXTERNAL_BLOCKER_PROVEN",
+  "original_items_role": "Current candidate reconciliation. Initial evidence is preserved separately; terminal results are not replayed.",
+  "latest_original_inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json",
+  "piece_decisions": "data/audits/provider_editorial_decisions_2026_10_11.json",
+  "last_runtime_evidence": "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
+  "next_action": "Publisher restore access/date evidence for191originals still403 after every640sitemapURL and all228HTTP-denied ordinary browser navigations. Six visible operational candidates are reconciled, with explicit below75/currentrelated reasons; no unchanged paid retry.",
+  "blocker_owner": "Publisher Red Dávila / Source Engineering",
+  "current_checkpoint_test": "74 passed, 1 skipped; provider/beta/publication/gremio/source-health focal suite on 2026-10-11",
+  "merged_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104"
 }
