@@ -1,0 +1,40 @@
+{
+  "at": "2026-10-11T14:36:21.687951+00:00",
+  "fenced": true,
+  "kind": "fenced_worker_result",
+  "operation_id": "796f3f5587de4969b5ffcc24daaa1a12",
+  "report": {
+    "blockers": [
+      {
+        "evidence": [
+          {
+            "error": "LeaseError",
+            "kind": "executor_failure",
+            "log_sha256": "159d80fb1dd12e3839bc03e060ea0ead4f7c06e152cad0ff51abb95aa64043e7",
+            "reason": "lease is expired, revoked or fenced: staging_qa_failed_run_38147271878"
+          }
+        ],
+        "fingerprint": "0a35d8eea11f11a3232fe98585275b82d64dc520e09d39dfcb920343cb76ee06",
+        "kind": "executor_failure",
+        "reason": "LeaseError: lease is expired, revoked or fenced: staging_qa_failed_run_38147271878"
+      }
+    ],
+    "changed_paths": [],
+    "evidence": [
+      {
+        "error": "LeaseError",
+        "kind": "executor_failure",
+        "log_sha256": "159d80fb1dd12e3839bc03e060ea0ead4f7c06e152cad0ff51abb95aa64043e7",
+        "reason": "lease is expired, revoked or fenced: staging_qa_failed_run_38147271878"
+      }
+    ],
+    "family": "staging_qa",
+    "input_sha": "fe03b0f34442bb52ed703c9a2047875dc31ba8a0",
+    "run_id": "38147509834-1-staging_qa",
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38147509834",
+    "semantic_hash": "0a35d8eea11f11a3232fe98585275b82d64dc520e09d39dfcb920343cb76ee06",
+    "status": "BLOCKED",
+    "task_id": "staging_qa_failed_run_38147271878",
+    "validated": false
+  }
+}
