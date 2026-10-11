@@ -73,10 +73,12 @@ def main():
                  for slug in ("red_davila","andes_salud","clinicas_achs_salud") if slug in cfgs)
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
     discoveries={}
+    original_dates={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
         try:
             items=discover()
+            original_dates[name]=max([raw.event_date for raw in items if raw.event_date] or ['']) or None
             partial_errors=getattr(getattr(discover,"__self__",None),"discovery_errors",[])
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
             seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw))}
@@ -129,7 +131,7 @@ def main():
         health_record(root,name,name=label,discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
             rejected=counts["rejected"],rows=produced[name],error=error,
-            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"])
+            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"],latest_original_at=original_dates.get(name))
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()

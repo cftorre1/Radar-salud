@@ -71,3 +71,10 @@ def test_partial_poll_error_keeps_real_publication_outcome(tmp_path):
     row=json.loads((tmp_path/'data/source_health.json').read_text())['sources']['redsalud']
     assert row['technical_status']=='error' and row['coverage_status']=='unverified'
     assert row['editorial_outcome']=='published'
+
+
+def test_provider_stale_original_survives_successful_technical_poll(tmp_path):
+    record(tmp_path,'pfizer_chile',name='Pfizer Chile',discovered=3,new=0,published=0,latest_original_at='2023-06-08')
+    row=json.loads((tmp_path/'data/source_health.json').read_text())['sources']['pfizer_chile']
+    assert row['technical_status']=='ok' and row['status']=='warning'
+    assert row['content_freshness']=='stale_external_surface' and row['coverage_status']=='gap'

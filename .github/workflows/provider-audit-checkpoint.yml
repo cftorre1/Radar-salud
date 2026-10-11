@@ -52,7 +52,7 @@ jobs:
         if: hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') != ''
         run: python scripts/export_provider_checkpoint.py
       - name: Preserve resumable isolated checkpoint
-        if: always()
+        if: always() && hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') == ''
         uses: actions/upload-artifact@v4
         with:
           name: provider-checkpoint-${{ github.event.pull_request.head.sha }}
