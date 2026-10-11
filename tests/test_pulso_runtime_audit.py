@@ -170,11 +170,14 @@ def test_original_date_conflict_identity_never_acquires_an_invented_publication_
     held = item("ambiguous", "retry", "publisher_conflicting_publication_dates",
                 {"decision": "pending", "reason": "publisher_conflicting_publication_dates"})
     held["raw"]["event_date"] = None
-    report = audit.join_report(discovery([conflict]), {"ambiguous": held}, [], [], control([]))
+    report = audit.join_report(discovery([conflict]), {"ambiguous": held}, [], [],
+                               control([original("ambiguous", "2026-07-31", expected=False)]))
     row = report["matrix"][0]
     assert row["current_core_detected"] and row["metadata_only_candidate"]
     assert row["publication_date"] is None and not row["publication_date_verified"]
-    assert row["publication_date_source"] is None and row["publication_date_evidence"] == "unverified"
+    assert row["publication_date_source"] is None
+    assert row["publication_date_evidence"] == "unresolved_primary_publisher_date_conflict"
+    assert row["external_control"]["publication_date"] == "2026-07-31"
     assert row["publisher_date_conflict"] == conflict["publisher_date_conflict"]
     assert row["publication_evidence"] == conflict["publication_evidence"]
     assert row["primary_detail_sha256"] == "b" * 64

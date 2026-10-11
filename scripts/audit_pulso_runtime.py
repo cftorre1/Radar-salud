@@ -329,20 +329,22 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
                     "source_error:" + str(source_error) if source_error else "URL_not_enumerated_by_current_core"),
                     "url_level_cause_verified": False}
         runtime_day = verified.get("publication_date")
+        unresolved_primary_day = (primary.get("status") == "discovered_metadata_only"
+                                  and primary.get("publication_date_verified") is False)
         comparison = "match" if runtime_day and original.get("publication_date") == runtime_day else (
             "conflict" if runtime_day and original.get("publication_date") else "runtime_original_date_unverified" if original else "no_external_date_control")
         title = primary.get("title") or original.get("title") or (historical or {}).get("title") or next((row["title"] for row in rows if row.get("title")), None)
         historical_day = (historical or {}).get("publication_date") or (historical or {}).get("event_date")
         matrix.append({"url": url, "title": title,
-            "publication_date": runtime_day or original.get("publication_date") or historical_day,
-            "publication_date_evidence": ("reused_verified_primary_byline_unchanged_publisher_lastmod" if verified.get("cache_hit") else "current_verified_detail") if runtime_day else original.get("verification_method") or (
+            "publication_date": None if unresolved_primary_day else runtime_day or original.get("publication_date") or historical_day,
+            "publication_date_evidence": "unresolved_primary_publisher_date_conflict" if unresolved_primary_day else ("reused_verified_primary_byline_unchanged_publisher_lastmod" if verified.get("cache_hit") else "current_verified_detail") if runtime_day else original.get("verification_method") or (
                 "recorded_history_date_requires_current_original_verification" if historical_day else "unverified"),
             "primary_detail_captured_at": primary.get("captured_at"),
             "primary_detail_cache_hit": primary.get("cache_hit", False),
             "primary_detail_sha256": primary.get("content_sha256") or primary.get("html_sha256"),
             "publisher_lastmod": primary.get("publisher_lastmod"),
             "publication_timestamp": verified.get("publication_timestamp"),
-            "publication_date_source": verified.get("publication_date_source"),
+            "publication_date_source": verified.get("publication_date_source") or primary.get("publication_date_source"),
             "section": primary.get("section") or original.get("section") or urlsplit(url).path.split("/")[1],
             "topics": primary.get("topics") or ([original["topic"]] if original.get("topic") else []) or next((row["topics"] for row in rows if row.get("topics")), []),
             "current_core_detected": url in enumerated,
