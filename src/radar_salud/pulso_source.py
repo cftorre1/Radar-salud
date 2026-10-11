@@ -606,6 +606,123 @@ def _matching_primary_taxonomy(metadata):
                         ("section", "labels", "matched_opinion_labels", "classification")))
 
 
+class _CommercialPrimaryText(HTMLParser):
+    """Observe real text in the publisher body region, excluding UI wrappers."""
+    def __init__(self):
+        super().__init__()
+        self.stack, self.parts, self.regions = [], [], 0
+
+    def handle_starttag(self, tag, attrs):
+        classes = dict(attrs).get("class", "").split()
+        region = "article-right-rail__body" in classes
+        self.regions += int(region)
+        active = region or bool(self.stack and self.stack[-1][1])
+        excluded = bool(self.stack and self.stack[-1][2]) or tag in {
+            "script", "style", "svg", "noscript", "nav", "footer", "aside"} or any(
+            value.startswith(("article-body__byline", "article-body__social", "article-body__tags",
+                              "article-body__figure", "coral__")) for value in classes)
+        if tag not in _Article.VOID:
+            self.stack.append((tag, active, excluded))
+
+    def handle_endtag(self, tag):
+        for index in range(len(self.stack) - 1, -1, -1):
+            if self.stack[index][0] == tag:
+                del self.stack[index:]
+                break
+
+    def handle_data(self, data):
+        if self.stack and self.stack[-1][1] and not self.stack[-1][2] and data.strip():
+            self.parts.append(data)
+
+
+def _sponsored_empty_text_evidence(html, expected, node, parser):
+    """Prove the observed commercial document has no primary text to recover.
+
+    A missing articleBody alone is not proof: the publisher's bound ANS story
+    and actual primary paragraphs must also expose no text. Descriptions,
+    subtitles and navigation are never substituted for the absent body.
+    """
+    matches = list(re.finditer(r"\bFusion\.globalContent\s*=\s*", html))
+    if len(matches) != 1 or parser.body_paragraphs or parser.paragraphs:
+        return None
+    json_body = node.get("articleBody")
+    if json_body is not None and (not isinstance(json_body, str) or json_body.strip()):
+        return None
+    displayed = _CommercialPrimaryText()
+    displayed.feed(html)
+    if displayed.regions != 1 or displayed.parts:
+        return None
+    try:
+        story, _ = json.JSONDecoder().raw_decode(html[matches[0].end():])
+        elements = story.get("content_elements")
+        if not (story.get("type") == "story" and isinstance(story.get("_id"), str) and story["_id"]
+                and article_url(story.get("canonical_url")) == expected
+                and article_url(story.get("websites", {}).get("la-tercera", {}).get("website_url")) == expected
+                and story.get("first_publish_date") == node.get("datePublished")
+                and story.get("headlines", {}).get("basic") == node.get("headline")
+                and isinstance(elements, list) and elements
+                and all(isinstance(entry, dict) and entry.get("type") == "text"
+                        and isinstance(entry.get("content"), str) and not entry["content"].strip()
+                        for entry in elements)):
+            return None
+        return dict(source="url_bound_json_ld_and_empty_fusion_story", canonical_url=expected,
+                    article_type=node.get("@type"), fusion_story_id=story["_id"],
+                    fusion_canonical_url=article_url(story["canonical_url"]),
+                    fusion_first_publish_date=story["first_publish_date"],
+                    json_article_body_available=False, primary_paragraph_count=0,
+                    primary_body_region_count=1, primary_body_region_text_characters=0,
+                    fusion_content_element_count=len(elements), fusion_text_characters=0,
+                    original_html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest())
+    except (ValueError, TypeError, AttributeError):
+        return None
+
+
+def verified_sponsored_without_text(metadata):
+    """A byte-bound commercial limitation is not verified factual content."""
+    reason = "publisher_sponsored_text_unavailable"
+    canonical = metadata.get("canonical_url")
+    proof = metadata.get("sponsored_text_evidence", {})
+    taxonomy = metadata.get("publisher_taxonomy", {})
+    if not (canonical and article_url(canonical) == canonical and _matching_primary_taxonomy(metadata)
+            and taxonomy.get("classification") == "sponsored"
+            and metadata.get("publisher_content_classification") == "sponsored"
+            and metadata.get("primary_identity_verified") is True
+            and metadata.get("publication_date_verified") is True
+            and metadata.get("article_verified") is False and metadata.get("article_body_complete") is False
+            and metadata.get("publisher_document_type") == "sponsored_without_text"
+            and metadata.get("body_source") == "publisher_sponsored_no_textual_article_body"
+            and metadata.get("publisher_exception_reason") == reason
+            and metadata.get("source_content_unavailable_reason") == reason and metadata.get("editorial_hold") == reason
+            and metadata.get("page_text") == "" and metadata.get("article_body_characters") == 0
+            and metadata.get("article_body_sha256") == hashlib.sha256(b"").hexdigest()
+            and re.fullmatch(r"[0-9a-f]{64}", str(metadata.get("html_sha256", "")))
+            and isinstance(proof, dict) and proof.get("source") == "url_bound_json_ld_and_empty_fusion_story"
+            and proof.get("canonical_url") == proof.get("fusion_canonical_url") == canonical
+            and proof.get("article_type") == taxonomy.get("article_type")
+            and isinstance(proof.get("fusion_story_id"), str) and proof["fusion_story_id"]
+            and proof.get("original_html_sha256") == metadata.get("html_sha256")
+            and proof.get("json_article_body_available") is False
+            and type(proof.get("primary_paragraph_count")) is int and proof["primary_paragraph_count"] == 0
+            and type(proof.get("primary_body_region_count")) is int and proof["primary_body_region_count"] == 1
+            and type(proof.get("primary_body_region_text_characters")) is int and proof["primary_body_region_text_characters"] == 0
+            and type(proof.get("fusion_content_element_count")) is int and proof["fusion_content_element_count"] > 0
+            and type(proof.get("fusion_text_characters")) is int and proof["fusion_text_characters"] == 0
+            and metadata.get("visible_publication_date")):
+        return False
+    try:
+        rows = metadata["publication_evidence"]
+        dates = [(row["source"], row["timestamp"], publication_day(row["timestamp"])) for row in rows]
+        if not dates or any(not day for _, _, day in dates):
+            return False
+        published, _, expected = _reconcile_publication_dates(dates, metadata["visible_publication_date"])
+        return (metadata.get("publication_date") == published
+                and metadata.get("publication_timestamp") == dates[0][1]
+                and proof.get("fusion_first_publish_date") == dates[0][1]
+                and rows == expected and _cached_capture_dates_valid(metadata))
+    except (KeyError, ValueError, TypeError):
+        return False
+
+
 def publisher_taxonomy_requires_revalidation(metadata):
     """Legacy successful caches must not bypass newly verified publisher labels."""
     canonical = metadata.get("canonical_url")
@@ -620,7 +737,8 @@ def publisher_taxonomy_requires_revalidation(metadata):
         return not (metadata.get("publisher_exclusion_reason") in ("publisher_opinion_taxonomy", "excluded_opinion_content")
                     and metadata.get("primary_identity_verified") is True
                     and metadata.get("publication_date_verified") is True)
-    return not (verified_sponsored_content(metadata) or verified_publication_date_conflict(metadata))
+    return not (verified_sponsored_content(metadata) or verified_publication_date_conflict(metadata)
+                or verified_sponsored_without_text(metadata))
 
 
 def verified_sponsored_content(metadata):
@@ -868,6 +986,18 @@ def extract_article(html, expected_url):
                             source_content_unavailable_reason="publisher_video_text_unavailable",
                             editorial_assessment=dict(decision="pending", reason="publisher_video_text_unavailable"))
             raise TextUnavailableArticle("publisher_video_text_unavailable", title, body, metadata)
+    if (title.strip() and visible_day and len(articles) == 1
+            and metadata.get("publisher_content_classification") == "sponsored"):
+        proof = _sponsored_empty_text_evidence(html, expected, node, parser)
+        if proof:
+            reason = "publisher_sponsored_text_unavailable"
+            metadata.update(article_body_evidence(""), article_verified=False, article_body_complete=False,
+                            publisher_document_type="sponsored_without_text",
+                            body_source="publisher_sponsored_no_textual_article_body",
+                            sponsored_text_evidence=proof, html_sha256=proof["original_html_sha256"],
+                            publisher_exception_reason=reason, source_content_unavailable_reason=reason,
+                            editorial_hold=reason, editorial_assessment=dict(decision="pending", reason=reason))
+            raise TextUnavailableArticle(reason, title, "", metadata)
     # A brief primary headline is not missing evidence: real publisher stories
     # such as "Vivir con TOC" contain complete, URL-bound factual article bodies.
     if not title.strip() or len(body) < 160:
@@ -888,7 +1018,7 @@ def _primary_trace(metadata):
             "publisher_exclusion_reason", "publisher_taxonomy", "publisher_content_classification",
             "possible_publication_days", "video_evidence", "html_sha256", "captured_at",
             "article_body_characters", "article_body_sha256", "source_quality_gate",
-            "liveblog_temporal_evidence", "liveblog_temporal_evidence_verified")
+            "liveblog_temporal_evidence", "liveblog_temporal_evidence_verified", "sponsored_text_evidence")
     trace = {key: metadata.get(key) for key in keys}
     trace.update(topics=metadata.get("topics", []),
                  primary_identity_verified=metadata.get("primary_identity_verified", False),
@@ -1123,12 +1253,14 @@ def _verified_detail(entry, loader, cached, audit=None):
             and not liveblog_requires_revalidation(cached.get("metadata", {}))
             and (cached.get("metadata", {}).get("article_verified")
                  or verified_video_without_text(cached.get("metadata", {}))
-                 or verified_publication_date_conflict(cached.get("metadata", {})))
+                 or verified_publication_date_conflict(cached.get("metadata", {}))
+                 or verified_sponsored_without_text(cached.get("metadata", {})))
             and cached.get("url") == url
             and (not urlparse(url).path.startswith("/videos/")
                  or cached.get("metadata", {}).get("video_identity_verified") is True)
             and (not cached.get("relevant") or complete_article_body(cached.get("metadata", {}))
-                 or verified_video_without_text(cached.get("metadata", {})))):
+                 or verified_video_without_text(cached.get("metadata", {}))
+                 or verified_sponsored_without_text(cached.get("metadata", {})))):
         metadata = cached["metadata"]
         if verified_publication_date_conflict(metadata):
             return dict(cached, cache_hit=True)
@@ -1193,8 +1325,9 @@ def _verified_detail(entry, loader, cached, audit=None):
                     lastmod=entry.get("lastmod", ""), cache_hit=False)
     except TextUnavailableArticle as exc:
         metadata = dict(exc.metadata)
+        quality = ("deferred_sponsored_text" if str(exc) == "publisher_sponsored_text_unavailable" else "deferred_video_text")
         metadata.update(article_body_evidence(exc.body), discovered_from=entry["listing"],
-                        market_role="media", source_quality_gate="deferred_video_text", captured_at=now,
+                        market_role="media", source_quality_gate=quality, captured_at=now,
                         html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
                         publisher_lastmod=entry.get("lastmod", ""),
                         health_anchor_observed=health_anchor(exc.title + " " + str(metadata.get("keywords", ""))
@@ -1534,7 +1667,8 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                     if (cached and _cached_capture_dates_valid(cached.get("metadata", {}))
                             and (cached.get("metadata", {}).get("article_verified")
                                    or verified_video_without_text(cached.get("metadata", {}))
-                                   or verified_publication_date_conflict(cached.get("metadata", {})))):
+                                   or verified_publication_date_conflict(cached.get("metadata", {}))
+                                   or verified_sponsored_without_text(cached.get("metadata", {})))):
                         page_results.append((entry, dict(cached, cache_hit=True)))
                         continue
                 candidates.append(entry)
@@ -1636,6 +1770,7 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                    metadata_only_video_candidates=sum(item.metadata.get("publisher_document_type") == "video" and not item.metadata.get("article_body_complete", True) for item in out),
                    metadata_only_date_conflict_candidates=sum(item.metadata.get("publisher_exception_reason") == "publisher_conflicting_publication_dates" for item in out),
                    metadata_only_sponsored_candidates=sum(item.metadata.get("publisher_exception_reason") == "publisher_sponsored_content_review_required" for item in out),
+                   metadata_only_sponsored_text_unavailable_candidates=sum(item.metadata.get("publisher_exception_reason") == "publisher_sponsored_text_unavailable" for item in out),
                    publication_date_coverage_only_for_text_unavailable_candidates=True)
     audit.append(summary)
     return out, summary

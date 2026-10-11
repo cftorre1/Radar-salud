@@ -368,7 +368,7 @@ def process_curated_beta_source(raw, cfg):
                                    extract_article, liveblog_analysis_text, liveblog_requires_revalidation,
                                    publisher_taxonomy_requires_revalidation, verified_liveblog_temporal_evidence,
                                    verified_publication_date_conflict, verified_sponsored_content,
-                                   verified_video_without_text)
+                                   verified_sponsored_without_text, verified_video_without_text)
 
         def defer_verified_publisher_limitation():
             if article_url(raw.url) != raw.metadata.get("canonical_url"):
@@ -382,6 +382,8 @@ def process_curated_beta_source(raw, cfg):
                     reason = "publisher_video_text_unavailable"
                 elif verified_sponsored_content(raw.metadata):
                     reason = "publisher_sponsored_content_review_required"
+                elif verified_sponsored_without_text(raw.metadata):
+                    reason = "publisher_sponsored_text_unavailable"
             if reason:
                 raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": reason}
                 raise DeferredProcessing(reason)
@@ -409,7 +411,7 @@ def process_curated_beta_source(raw, cfg):
                         # exceptions, while reviewed duplicate holds remain.
                         publisher_reasons = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
                                              "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy",
-                                             "publisher_liveblog_entry_dates_unverified"}
+                                             "publisher_liveblog_entry_dates_unverified", "publisher_sponsored_text_unavailable"}
                         for key in ("publisher_exception_reason", "source_content_unavailable_reason",
                                     "publisher_exclusion_reason", "editorial_hold"):
                             if key not in evidence and raw.metadata.get(key) in publisher_reasons:
@@ -425,7 +427,8 @@ def process_curated_beta_source(raw, cfg):
                     title, body, evidence = extract_article(html, raw.url)
                 except (ConflictingPublicationArticle, TextUnavailableArticle, SponsoredArticle, ExcludedArticle) as exc:
                     quality = ("deferred_publication_date" if isinstance(exc, ConflictingPublicationArticle) else
-                               "deferred_video_text" if isinstance(exc, TextUnavailableArticle) else
+                               ("deferred_sponsored_text" if str(exc) == "publisher_sponsored_text_unavailable"
+                                else "deferred_video_text") if isinstance(exc, TextUnavailableArticle) else
                                "deferred_sponsored_content_review" if isinstance(exc, SponsoredArticle) else
                                "excluded_publisher_opinion")
                     save_primary(exc.title, exc.body, exc.metadata, quality)

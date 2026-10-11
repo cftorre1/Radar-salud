@@ -31,6 +31,7 @@ PRIMARY_DATE_SOURCES = {"visible_article_byline", "json_ld_datePublished", "arti
 VIDEO_HOLD = "publisher_video_text_unavailable"
 DATE_HOLD = "publisher_conflicting_publication_dates"
 SPONSORED_HOLD = "publisher_sponsored_content_review_required"
+SPONSORED_TEXT_HOLD = "publisher_sponsored_text_unavailable"
 SHA = re.compile(r"[0-9a-f]{64}")
 
 
@@ -121,6 +122,7 @@ class PrimaryDates(HTMLParser):
         self.in_title, self.blocked = False, 0
         self.contexts, self.bylines, self.byline = [], [], None
         self.paragraph, self.primary_paragraphs, self.body_contexts = None, [], []
+        self.commercial_contexts, self.commercial_regions, self.commercial_body_text = [], 0, []
 
     def handle_starttag(self, tag, attrs):
         attr = dict(attrs)
@@ -130,6 +132,13 @@ class PrimaryDates(HTMLParser):
             term in attr.get("class", "") for term in ("latest-news", "related", "story-card"))
         if tag not in {"meta", "link", "br", "hr", "img", "input", "source", "area", "base", "wbr", "embed", "param", "track", "col"}:
             self.contexts.append((tag, blocked_context))
+            region = "article-right-rail__body" in classes
+            self.commercial_regions += int(region)
+            previous = self.commercial_contexts[-1] if self.commercial_contexts else (None, False, False)
+            wrapper = previous[2] or blocked_context or tag == "svg" or any(
+                label.startswith(("article-body__byline", "article-body__social", "article-body__tags",
+                                  "article-body__figure", "coral__")) for label in classes)
+            self.commercial_contexts.append((tag, previous[1] or region, wrapper))
             parent_body = self.body_contexts[-1][1] if self.body_contexts else False
             body = parent_body or tag == "article" or attr.get("itemprop") == "articleBody" or (
                 tag == "p" and "article-body__paragraph" in classes) or any(
@@ -164,6 +173,8 @@ class PrimaryDates(HTMLParser):
             self.byline["text"].append(data)
         if self.paragraph is not None and not self.blocked and not (self.contexts and self.contexts[-1][1]):
             self.paragraph.append(data)
+        if self.commercial_contexts and self.commercial_contexts[-1][1] and not self.commercial_contexts[-1][2] and data.strip():
+            self.commercial_body_text.append(data)
 
     def handle_endtag(self, tag):
         if tag == "script" and self.parts is not None:
@@ -194,6 +205,10 @@ class PrimaryDates(HTMLParser):
         for index in range(len(self.body_contexts) - 1, -1, -1):
             if self.body_contexts[index][0] == tag:
                 del self.body_contexts[index:]
+                break
+        for index in range(len(self.commercial_contexts) - 1, -1, -1):
+            if self.commercial_contexts[index][0] == tag:
+                del self.commercial_contexts[index:]
                 break
 
     @classmethod
@@ -355,6 +370,36 @@ def original_taxonomy(article, url):
                 labels=labels, matched_opinion_labels=matched, classification=classification)
 
 
+def original_sponsored_empty_text_evidence(html, url, article, parser):
+    """Independently inspect the absent body, including the bound ANS story."""
+    markers = list(re.finditer(r"\bFusion\.globalContent\s*=\s*", html))
+    json_body = article.get("articleBody")
+    if (len(markers) != 1 or parser.primary_paragraphs or parser.commercial_regions != 1
+            or parser.commercial_body_text
+            or json_body is not None and (not isinstance(json_body, str) or json_body.strip())):
+        raise ValueError("commercial_primary_text_absence_not_proven")
+    story, _ = json.JSONDecoder().raw_decode(html[markers[0].end():])
+    elements = story.get("content_elements")
+    canonical = normalized_url(urljoin(url, story.get("canonical_url") or ""))
+    site = normalized_url(urljoin(url, story.get("websites", {}).get("la-tercera", {}).get("website_url") or ""))
+    if (not story.get("canonical_url") or not story.get("websites", {}).get("la-tercera", {}).get("website_url")
+            or canonical != url or site != url or story.get("type") != "story"
+            or not isinstance(story.get("_id"), str) or not story["_id"]
+            or story.get("first_publish_date") != article.get("datePublished")
+            or story.get("headlines", {}).get("basic") != article.get("headline")
+            or not isinstance(elements, list) or not elements
+            or any(not isinstance(entry, dict) or entry.get("type") != "text"
+                   or not isinstance(entry.get("content"), str) or entry["content"].strip() for entry in elements)):
+        raise ValueError("commercial_empty_fusion_story_identity_or_text_unverified")
+    return dict(source="url_bound_json_ld_and_empty_fusion_story", canonical_url=url,
+                article_type=article.get("@type"), fusion_story_id=story["_id"],
+                fusion_canonical_url=canonical, fusion_first_publish_date=story["first_publish_date"],
+                json_article_body_available=False, primary_paragraph_count=0,
+                primary_body_region_count=1, primary_body_region_text_characters=0,
+                fusion_content_element_count=len(elements), fusion_text_characters=0,
+                original_html_sha256=digest(html.encode()))
+
+
 def verify_primary_capture(row, root, date_evidence=None):
     """Require original bytes matching the primary detail hash and URL/date."""
     url, expected = row["url"], row.get("primary_detail_sha256")
@@ -404,7 +449,7 @@ def verify_publisher_exception(row, metadata, traces, root):
     url, expected = row.get("url"), row.get("primary_detail_sha256")
     reason = metadata.get("publisher_exception_reason") or metadata.get("source_content_unavailable_reason")
     errors = []
-    if reason not in {VIDEO_HOLD, DATE_HOLD, SPONSORED_HOLD}:
+    if reason not in {VIDEO_HOLD, DATE_HOLD, SPONSORED_HOLD, SPONSORED_TEXT_HOLD}:
         return None, ["unsupported_publisher_exception"]
     article_verified = reason == SPONSORED_HOLD
     if (metadata.get("primary_identity_verified") is not True or metadata.get("article_verified") is not article_verified
@@ -483,6 +528,29 @@ def verify_publisher_exception(row, metadata, traces, root):
                                or trace.get("possible_publication_days") != possible for trace in traces)):
                     raise ValueError("exception_conflict_adopted_date_or_lost_original_days")
                 publication_verified, content_verified = False, True
+            elif reason == SPONSORED_TEXT_HOLD:
+                empty = original_sponsored_empty_text_evidence(text, url, projection["article"], parser)
+                saved_empty = metadata.get("sponsored_text_evidence", {})
+                if (body != "" or taxonomy["classification"] != "sponsored" or convention is None
+                        or metadata.get("publisher_taxonomy") != taxonomy
+                        or metadata.get("publisher_content_classification") != "sponsored"
+                        or saved_empty != empty or any(type(saved_empty.get(key)) is not int for key in (
+                            "primary_paragraph_count", "primary_body_region_count", "primary_body_region_text_characters",
+                            "fusion_content_element_count", "fusion_text_characters"))
+                        or metadata.get("article_body_complete") is not False
+                        or metadata.get("publication_date_verified") is not True or metadata.get("publication_date") != visible
+                        or row.get("publication_date") != visible or row.get("publication_date_verified") is not True
+                        or metadata.get("publisher_document_type") != "sponsored_without_text"
+                        or metadata.get("body_source") != "publisher_sponsored_no_textual_article_body"
+                        or metadata.get("source_content_unavailable_reason") != SPONSORED_TEXT_HOLD
+                        or metadata.get("publisher_exception_reason") != SPONSORED_TEXT_HOLD
+                        or metadata.get("source_quality_gate") != "deferred_sponsored_text"
+                        or metadata.get("editorial_hold") != SPONSORED_TEXT_HOLD
+                        or any(trace.get("publication_date") != visible or trace.get("publication_date_verified") is not True
+                               or trace.get("article_body_complete") is not False or trace.get("sponsored_text_evidence") != empty
+                               or trace.get("publisher_taxonomy") != taxonomy for trace in traces)):
+                    raise ValueError("commercial_unavailable_body_claim_disagrees_with_original")
+                publication_verified, content_verified = True, False
             else:
                 if (taxonomy["classification"] != "sponsored" or metadata.get("publisher_taxonomy") != taxonomy
                         or metadata.get("publisher_content_classification") != "sponsored" or convention is None
@@ -885,7 +953,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
             fail("discovery", "publisher_exception_capture_freshness_unproven", url=url)
         if row.get("primary_detail_cache_hit") and not row.get("publisher_lastmod"):
             fail("discovery", "publisher_exception_cached_original_lastmod_missing", url=url)
-        if reason in {VIDEO_HOLD, SPONSORED_HOLD} and row.get("publication_date_evidence") != (
+        if reason in {VIDEO_HOLD, SPONSORED_HOLD, SPONSORED_TEXT_HOLD} and row.get("publication_date_evidence") != (
                 "reused_verified_primary_byline_unchanged_publisher_lastmod" if row.get("primary_detail_cache_hit") else "current_verified_detail"):
             fail("discovery", "publisher_video_date_falsely_labeled_fresh_or_unverified", url=url)
         if reason == DATE_HOLD and row.get("publication_date_evidence") not in {

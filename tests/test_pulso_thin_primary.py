@@ -55,6 +55,7 @@ def test_short_health_headline_opens_full_detail_and_cannot_be_false_negative():
 
 
 VIDEOS = [row for row in MANIFEST['requests'] if '/videos/' in row['url']]
+EMPTY_COMMERCIAL = [row for row in MANIFEST['requests'] if row['url'].split('/')[3] in ('branded', 'publirreportajes')]
 
 
 def test_all_sixteen_incomplete_original_videos_are_covered():
@@ -160,12 +161,19 @@ def test_full_original_thin_inventory_separates_queued_videos_from_verified_text
     audit = []
     candidates, coverage = discover_public_feeds(loader, audit, tmp_path/'cache.json',
                                                 today=date(2026, 10, 11), feeds=[('tag', 'salud')])
-    assert len(opened) == len(set(opened)) == 29 and coverage['coverage_complete']
+    assert len(opened) == len(set(opened)) == len(by_url) == len(rows) and coverage['coverage_complete']
+    # All 29 immutable cold thin originals remain; the independently captured
+    # commercial empty body adds a distinct limitation, never factual text.
+    assert len(SHORT_HEADLINES) == 13 and len(VIDEOS) == 16
+    assert {row['url'] for row in rows} == {row['url'] for row in SHORT_HEADLINES + VIDEOS + EMPTY_COMMERCIAL}
     assert not any(row['status'] in ('detail_error', 'listing_error') for row in audit)
     metadata_only = [row for row in audit if row['status'] == 'discovered_metadata_only']
-    assert len(metadata_only) == 12
-    assert all(row['reason'] == 'publisher_video_text_unavailable' and row['publication_date_verified']
-               and not row['article_verified'] and not row['article_body_complete'] for row in metadata_only)
+    assert len(metadata_only) == 12 + len(EMPTY_COMMERCIAL)
+    assert all(row['publication_date_verified'] and not row['article_verified']
+               and not row['article_body_complete'] for row in metadata_only)
+    commercial_urls = {row['url'] for row in EMPTY_COMMERCIAL}
+    assert commercial_urls == {row['url'] for row in metadata_only if row['reason'] == 'publisher_sponsored_text_unavailable'}
+    assert all(row['reason'] == 'publisher_video_text_unavailable' for row in metadata_only if row['url'] not in commercial_urls)
     video_candidates = [raw for raw in candidates if raw.metadata.get('publisher_document_type') == 'video']
     assert len(video_candidates) == coverage['metadata_only_video_candidates'] == 12
     assert all(not raw.metadata['article_body_complete'] and raw.metadata['page_text'] == ''
