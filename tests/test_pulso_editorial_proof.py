@@ -128,6 +128,59 @@ def test_real_announced_care_plan_is_eligible_but_achieved_capacity_copy_is_defe
     assert validate_pulso_editorial_proof(ai, body)["reason"] == "pulso_editorial_future_status_mismatch"
 
 
+@pytest.mark.parametrize("coverage", ["secondary_clause_only", "whole_field_false_achievement"])
+def test_real_care_plan_cannot_launder_false_achievement_with_a_secondary_future_clause(coverage):
+    body, ai = care_plan_assessment()
+    assert hashlib.sha256(body.encode()).hexdigest() == "d41b5474b0797552f3a1a086d558427da3e3b0cc6942d5b59e9fd442ddc4f2ad"
+    ai["what_happened"] = (
+        "Según La Tercera, la red ya incorporó las 24 nuevas comunas y alcanzó 333 "
+        "de las 345 previstas por ley. La ampliación podría llegar a otras comunas.")
+    ai["why_it_matters"] = (
+        "La expansión ya aumentó la capacidad de atención disponible en 24 comunas. "
+        "El presupuesto permitiría ampliar apoyos domiciliarios.")
+    clauses = {"what_happened": "La ampliación podría llegar a otras comunas.",
+               "why_it_matters": "El presupuesto permitiría ampliar apoyos domiciliarios."}
+    for claim in ai["pulso_editorial_proof"]["future_claims"]:
+        field = claim["summary_field"]
+        claim["summary_quote"] = clauses[field] if coverage == "secondary_clause_only" else ai[field]
+    verdict = validate_pulso_editorial_proof(ai, body)
+    assert verdict["decision"] == "deferred"
+    assert verdict["reason"] == "pulso_editorial_future_copy_not_grounded"
+    assert verdict["publication_approved"] is False
+
+
+def test_literal_animal_plant_quote_cannot_substantiate_a_mislabeled_human_health_scope():
+    body = ROWS[22]["original_full_primary_body"]
+    assert hashlib.sha256(body.encode()).hexdigest() == "c04c53da3f42d3622571f4ed40754744f34a8ba64ab175400e15dfffcffaa029"
+    action = "Esta última hebra es la que Joyvio tomó para presentar una nueva querella contra Quiroga."
+    scope = (
+        "La nueva acción penal, patrocinada por los abogados Jorge Bofill y César Ramos, "
+        "apunta a los delitos de “propagación indebida de agentes susceptibles de poner en "
+        "peligro la salud animal o vegetal, y de introducción de agentes contaminantes con "
+        "daño a recursos hidrobiológicos”.")
+    assert action in body and scope in body
+    ai = dict(relevance_score=99,
+              what_happened="Según Pulso, Joyvio presentó una nueva querella contra Quiroga por delitos ambientales.",
+              why_it_matters="La disputa empresarial trata salud animal o vegetal y recursos hidrobiológicos.",
+              reason="Contraejemplo independiente con citas genuinas y scope humano incorrecto.")
+    ai["pulso_editorial_proof"] = dict(
+        scope_decision="human_health_specific", scope_reason="Clasificación humana errónea de una controversia de salmonicultura.",
+        human_health_scope_quote=scope, actor="Joyvio", actor_quote=action,
+        action="presentar una nueva querella contra Quiroga", action_quote=action,
+        consequence="poner en peligro la salud animal o vegetal", consequence_quote=scope,
+        event_status="actual", event_status_quote=action,
+        novelty_decision="new_material_information", novelty_reason="Una acción judicial nueva en la disputa empresarial.",
+        novelty_quote=scope, future_claims=[])
+    verdict = validate_pulso_editorial_proof(ai, body)
+    assert verdict["decision"] == "deferred"
+    assert verdict["reason"] == "pulso_editorial_human_scope_conflicts_with_non_human_quote"
+    assert verdict["publication_approved"] is False
+    # An explicit model classification remains an ordinary editorial rejection;
+    # the contradictory human claim above is never silently rewritten for it.
+    ai["pulso_editorial_proof"]["scope_decision"] = "non_human_health"
+    assert validate_pulso_editorial_proof(ai, body)["reason"] == "pulso_editorial_non_human_health"
+
+
 @pytest.mark.parametrize("novelty,decision", [("repetition_or_context", "rejected"), ("uncertain", "deferred")])
 def test_context_repetition_or_uncertain_increment_never_becomes_approved(novelty, decision):
     body, ai = clinical_assessment(); ai["pulso_editorial_proof"]["novelty_decision"] = novelty

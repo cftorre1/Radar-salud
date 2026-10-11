@@ -11,7 +11,7 @@ import json
 import re
 import unicodedata
 
-VERSION = "pulso_editorial_proof_v1"
+VERSION = "pulso_editorial_proof_v2"
 SCOPES = ("human_health_specific", "incidental_health", "non_human_health", "marketing", "opinion")
 STATUSES = ("actual", "proposal", "plan", "mixed_actual_and_future", "historical_context")
 NOVELTY = ("new_material_information", "repetition_or_context", "uncertain")
@@ -22,8 +22,12 @@ FUTURE_COPY = re.compile(r"\b(?:propuest[oa]s?|propon\w*|proyecto|plan(?:ea|eado
                          r"podr[ií]\w*|puede\w*|ser[aá]n?|futur[oa]s?|de aprobarse|"
                          r"incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?|ampliar[aá]n?|"
                          r"si se (?:aprueba|implementa|concreta))\b", re.I)
-ACHIEVED_COPY = re.compile(r"\b(?:ya (?:se )?(?:alcanz\w*|implement\w*|ejecut\w*|concret\w*)|"
+ACHIEVED_COPY = re.compile(r"\b(?:ya (?:se )?(?:alcanz\w*|incorpor\w*|aument\w*|ampli\w*|"
+                           r"implement\w*|ejecut\w*|concret\w*)|"
                            r"se ejecut[oó]|termin[oó])\b", re.I)
+NON_HUMAN_HEALTH = re.compile(
+    r"\b(?:salud|sanidad)\s+(?:animal(?:\s+o\s+vegetal)?|vegetal|veterinari[ao])\b|"
+    r"\b(?:cl[ií]nic\w*|hospital\w*|medicin\w*|vacun\w*)\s+veterinari\w*", re.I)
 
 PROOF_SCHEMA = {
     "type": "object", "properties": {
@@ -90,7 +94,15 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
     if proof["scope_decision"] != "human_health_specific":
         return verdict("rejected", "pulso_editorial_" + proof["scope_decision"])
     from .pulso_source import health_anchor
-    if not health_anchor(proof["human_health_scope_quote"]):
+    scope_quote = proof["human_health_scope_quote"]
+    # A generic discovery anchor deliberately admits animal/plant references.
+    # They cannot substantiate a human-health editorial assertion on their own.
+    # Preserve any independent human-health evidence in the same primary quote,
+    # and defer contradictory model labels rather than infer a rejection.
+    if (NON_HUMAN_HEALTH.search(scope_quote)
+            and not health_anchor(NON_HUMAN_HEALTH.sub("", scope_quote))):
+        return verdict("deferred", "pulso_editorial_human_scope_conflicts_with_non_human_quote")
+    if not health_anchor(scope_quote):
         return verdict("deferred", "pulso_editorial_scope_not_grounded")
     for field, minimum in (("actor", 8), ("action", 20), ("consequence", 20)):
         quote = proof[field + "_quote"]
@@ -122,7 +134,7 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
         if (field not in ("what_happened", "why_it_matters") or not isinstance(summary, str)
                 or not isinstance(claim["summary_quote"], str)
                 or not normalized(claim["summary_quote"])
-                or normalized(claim["summary_quote"]) not in normalized(summary)
+                or normalized(claim["summary_quote"]) != normalized(summary)
                 or not quote_matches(claim["source_quote"])
                 or not FUTURE_COPY.search(claim["summary_quote"])
                 or ACHIEVED_COPY.search(claim["summary_quote"])):

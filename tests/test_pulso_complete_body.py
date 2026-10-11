@@ -15,6 +15,7 @@ import pytest
 from radar_salud import beta_sources, llm_analysis
 from radar_salud.models import RawItem
 from radar_salud.processing import DeferredProcessing
+from radar_salud.pulso_editorial_proof import VERSION
 from radar_salud.pulso_source import (
     _verified_detail, article_body_evidence, complete_article_body, extract_article, health_anchor,
 )
@@ -50,7 +51,7 @@ def actual_model_input(monkeypatch):
         assessment = {
             'relevance_score': 71, 'what_happened': '', 'why_it_matters': '',
             'reason': 'Evaluación bajo el umbral editorial vigente.'}
-        if kwargs['text']['format']['name'] == 'pulso_editorial_proof_v1':
+        if kwargs['text']['format']['name'] == VERSION:
             header, body = kwargs['input'].split('Contenido:\n', 1)
             source_name, title = header.rstrip().split('\n')
             assessment = valid_assessment(assessment, {

@@ -112,8 +112,9 @@ uncertain, con razón y cita literal; un nuevo artículo sobre un hecho ya conoc
 no es necesariamente nueva señal. Usa el contexto incremental entregado.
 Para proposal/plan/mixed_actual_and_future incluye future_claims con al menos
 una entrada de what_happened y otra de why_it_matters: summary_quote debe copiar
-literalmente la cláusula prospectiva de ese campo y source_quote su apoyo literal
-en el contenido. Conserva futuro/condicional en ambas cláusulas, sin decir que
+literalmente TODO el campo correspondiente, no una frase condicional secundaria;
+source_quote debe dar su apoyo literal en el contenido. Conserva futuro/condicional
+en ambos campos completos, sin presentar la medida futura como logro ejecutado ni decir que
 ya se alcanzó, ejecutó o elevó capacidad futura. Para actual usa future_claims=[];
 si mezcla logros reales y medidas futuras, separa expresamente ambos en el texto.
 Para liveblog, usa cada fecha de entrada verificada; no trates un balance repetido
