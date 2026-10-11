@@ -150,6 +150,22 @@ def test_initial_queue_model_prose_must_match_observed_history(inputs):
         apply(inputs)
 
 
+def test_reviewed_copy_still_must_pass_existing_editorial_gate(inputs):
+    correction = next(r for r in inputs[2]["records"] if r["decision"] == "correct")
+    correction["proposed"]["why_it_matters"] = "El artículo no se relaciona con el sector salud y no sustenta cambios concretos."
+    with pytest.raises(ValueError, match="reviewed_copy_fails_existing_publication_gate"):
+        apply(inputs)
+
+
+def test_group_uses_effective_corrected_target_not_unreviewed_original_copy(inputs):
+    target = next(r for r in inputs[2]["records"] if "presupuesto-salud-2027" in r["url"])
+    target.update(decision="correct", event_status="planned", proposed={
+        "what_happened": target["original_signal"]["what_happened"],
+        "why_it_matters": "El contenido no se relaciona con el sector salud y no sustenta una señal estratégica."})
+    with pytest.raises(ValueError, match="reviewed_copy_fails_existing_publication_gate|group_surviving_signal_not_eligible"):
+        apply(inputs)
+
+
 @pytest.mark.parametrize("mutation", ["hidden", "rejected", "low_score", "unverified_media", "queue_rejected"])
 def test_group_survivor_must_really_remain_eligible_and_published(inputs, mutation):
     target_record = next(r for r in inputs[2]["records"] if r["decision"] == "group")["duplicate_of"]

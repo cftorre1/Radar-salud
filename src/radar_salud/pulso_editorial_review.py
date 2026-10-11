@@ -131,7 +131,9 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
             target = (duplicate.get("url"), duplicate.get("event_date"))
             if target == key or target not in indexed or reviewed.get(target, {}).get("decision") in {"reject", "group"}:
                 raise ValueError("group_surviving_signal_missing_or_withdrawn")
-            survivor = indexed[target]
+            survivor = deepcopy(indexed[target])
+            if reviewed.get(target, {}).get("decision") == "correct":
+                survivor.update(reviewed[target].get("proposed") or {})
             if (survivor.get("feed_visibility") is False or survivor.get("editorial_decision") in {"reject", "group"}
                     or not publication_ready(deepcopy(survivor))[0]
                     or int(survivor.get("editorial_relevance") or 0) < 72
@@ -153,6 +155,10 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
                     or not re.search(r"pulso|la tercera", proposed["what_happened"], re.I)
                     or record.get("event_status") not in {"reported", "proposed", "planned", "historical"}):
                 raise ValueError("invalid_reviewed_copy_correction")
+            corrected = deepcopy(original)
+            corrected.update(proposed)
+            if not publication_ready(corrected)[0]:
+                raise ValueError("reviewed_copy_fails_existing_publication_gate")
         original_assessment = record.get("original_model_assessment")
         provenance = dict(schema_version="pulso_editorial_review_v1", review_id=audit["review_id"],
                           review_file=audit_path, review_sha256=audit_sha256, record_sha256=canonical_sha(record),
