@@ -6,7 +6,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: integration-commander-source-runtime
+  group: integration-commander-source-runtime-${{ github.sha }}
   cancel-in-progress: false
 jobs:
   targets:
@@ -44,6 +44,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -51,13 +52,12 @@ jobs:
       - name: Execute real collector and core twice, preserving the staging input
         run: python scripts/integration_runtime.py
       - name: Reconcile native fiscalization indexes against their original HTML
+        if: matrix.source == 'suseso_fiscalizacion'
         run: |
-          if python -c "import json,sys;sys.exit('suseso_fiscalizacion' not in json.load(open('config/integration_runtime_targets.json'))['sources'])"; then
-            python scripts/probe_fiscalization_runtime.py --as-of 2026-10-11 --output work/fiscalization-runtime
-            python scripts/replay_fiscalization_runtime.py --captures work/fiscalization-runtime --output work/fiscalization-runtime/isolated-replay
-            python scripts/review_fiscalization_coverage.py --runtime work/fiscalization-runtime --output work/fiscalization-runtime/coverage-review.json
-            python scripts/reconcile_native_fiscalization.py --runtime work/fiscalization-runtime
-          fi
+          python scripts/probe_fiscalization_runtime.py --as-of 2026-10-11 --output work/fiscalization-runtime
+          python scripts/replay_fiscalization_runtime.py --captures work/fiscalization-runtime --output work/fiscalization-runtime/isolated-replay
+          python scripts/review_fiscalization_coverage.py --runtime work/fiscalization-runtime --output work/fiscalization-runtime/coverage-review.json
+          python scripts/reconcile_native_fiscalization.py --runtime work/fiscalization-runtime > work/fiscalization-runtime/native-reconciliation-summary.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:

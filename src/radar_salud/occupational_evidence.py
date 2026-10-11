@@ -112,4 +112,3 @@ def verify_capture(raw, hosts):
     if (published != raw.event_date or valid_date(published) != published or fold(title) != fold(raw.title)
             or raw.metadata.get("page_text") != body[:18000]):
         raise DeferredProcessing("occupational article content differs from capture")
-
