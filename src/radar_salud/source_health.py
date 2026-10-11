@@ -15,7 +15,7 @@ def _load(root:Path)->dict[str,Any]:
 def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,rows:list[dict]|None=None,
            pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None, observed_rows:list[dict]|None=None,
            surfaces:list[dict]|None=None, published_history:list[dict]|None=None,
-           archived:int=0, rejection_reasons:dict|None=None)->None:
+           archived:int=0, rejection_reasons:dict|None=None, source_queue:list[dict]|None=None)->None:
     d=_load(root);src=d.setdefault("sources",{});rows=rows or []
     dates=[x.get("event_date") for x in rows if x.get("event_date")]
     prev=src.get(slug) or (src.get("superintendencia_stats",{}) if slug=="superintendencia" else {})
@@ -63,18 +63,56 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         "editorial_outcome":editorial,
     }
     if fiscal:
+        from .superintendencia_fiscalizacion import canonical_url
+        def identity(row):
+            meta=row.get('metadata', {})
+            return (canonical_url(row.get('url') or row.get('source_url') or ''),
+                    meta.get('source_record_id') or row.get('source_record_id'))
+        def recent(row, days):
+            meta=row.get('metadata', {})
+            # Modifications and suspension dates never rejuvenate an old act.
+            for value in (meta.get('publication_date'),meta.get('emission_date'),row.get('event_date')):
+                try:
+                    if 0 <= (datetime.now(timezone.utc).date()-date.fromisoformat(value)).days <= days:
+                        return True
+                except (ValueError,TypeError):
+                    pass
+            return False
+        observed={identity(row):row for row in observed_rows}
+        published_ids={identity(row) for row in published_history or []}
+        queue_by_id={identity(item['raw']):item for item in source_queue or []}
+        windows={}
+        for days in (30,90):
+            current={key:row for key,row in observed.items() if recent(row,days)}
+            related={key for key,row in current.items() if row.get('metadata', {}).get('document_class')=='related_normative'}
+            windows[str(days)]=dict(items_recent=len(current),enforcement_recent=len(current)-len(related),
+                related_normative_recent=len(related),published=len(set(current)&published_ids),
+                rejected=sum(queue_by_id.get(key,{}).get('status')=='rejected' for key in current),
+                deferred=sum(queue_by_id.get(key,{}).get('status') in ('retry','processing','pending') for key in current),
+                items_material=len(set(current)&published_ids),
+                unaccounted=sum(key not in published_ids and key not in queue_by_id for key in current))
         src[slug].update(
             last_observed_event_at=last_observed, last_observed_publication_at=last_observed_publication,
             surfaces=surfaces or [], undated_observations=undated,
             coverage_complete=False,
             archived=archived, rejection_reasons=rejection_reasons or {},
             published_total=len(published_history) if published_history is not None else None,
+            final_state='OPERATIVE_DEGRADED',
+            pages_checked=len(surfaces or []),items_discovered=discovered,unique_items=len(observed),
+            surface_rows_discovered=sum(row.get('documents',0) for row in surfaces or [] if row.get('status')=='parsed'),
+            items_recent=windows['90']['items_recent'],items_material=windows['90']['items_material'],
+            parse_errors=sum(row.get('error') in ('ValueError','ParseError','HTMLParseError') for row in surfaces or []),
+            surface_errors=surface_errors,windows=windows,
             coverage_reason="listed_documents_only; not site-wide reconciliation" if surface_success else "no_surface_receipt; discovery_count_is_not_coverage",
             counter_semantics={"discovered":"documents in this discovery run, including historical",
                 "new":"queue additions this run", "published":"processed to history this run; feed gate is separate",
                 "published_total":"persisted source history stock", "pending":"current queue stock",
                 "rejected":"queue stock with evaluated rejection", "archived":"queue stock beyond backfill horizon"})
+        if not error and not published:
+            src[slug]['zero_published_reason'] = ('pending_or_deferred_candidates' if pending else
+                'evaluated_rejections_or_existing_published_history' if rejected or published_history else
+                'no_recent_material_signal_verified; coverage_not_certified')
         if not error and not published and not pending and not rejected and published_history:
-            src[slug]["editorial_outcome"] = "no_new_publications_existing_history"
+            src[slug]['editorial_outcome']='no_new_publications_existing_history'
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
     atomic_json(_path(root),d)

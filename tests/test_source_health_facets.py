@@ -30,6 +30,27 @@ def test_fiscalization_counts_do_not_certify_coverage_and_history_repairs_last_s
     assert row['status']=='warning' and row['coverage_status']=='unverified'
     assert row['last_signal_at']=='2026-09-08' and row['published_total']==1
     assert row['editorial_outcome']=='no_new_publications_existing_history'
+
+
+def test_fiscalization_windows_use_office_identity_and_never_suspension_dates(tmp_path):
+    from datetime import date, timedelta
+    today=date.today()
+    current=(today-timedelta(days=2)).isoformat()
+    old=(today-timedelta(days=150)).isoformat()
+    observed=[dict(url='https://www.suseso.gob.cl/609/register',event_date=day,
+        metadata={'source_record_id':identity,'emission_date':day,'publication_date':None,
+                  'suspension_start':current,'document_class':'enforcement_sanction'})
+        for identity,day in [('A',current),('B',current),('C',old)]]
+    published=[{'source_url':row['url'],'source_record_id':row['metadata']['source_record_id'],
+        'event_date':row['event_date']} for row in observed]
+    record(tmp_path,'suseso_fiscalizacion',name='SUSESO',discovered=3,new=0,published=0,
+        observed_rows=observed,published_history=published,surfaces=[{'status':'parsed','documents':3}])
+    row=json.loads((tmp_path/'data/source_health.json').read_text())['sources']['suseso_fiscalizacion']
+    assert row['pages_checked']==1 and row['unique_items']==3
+    assert row['items_recent']==row['items_material']==2
+    assert row['windows']['30']['published']==2
+    assert row['parse_errors']==0 and row['coverage_complete'] is False
+    assert row['zero_published_reason']=='evaluated_rejections_or_existing_published_history'
     assert row['published']==0 and row['archived']==2516
 
 

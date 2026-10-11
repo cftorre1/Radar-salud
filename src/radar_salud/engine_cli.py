@@ -128,8 +128,8 @@ def main():
         except RejectedProcessing as exc:
             queue.finish(key,"rejected",str(exc))
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
-        except DeferredProcessing:
-            queue.finish(key,"retry","budget_or_analysis_deferred")
+        except DeferredProcessing as exc:
+            queue.finish(key,"retry",str(exc) or "budget_or_analysis_deferred")
         except Exception as exc:
             queue.finish(key,"retry",type(exc).__name__)
     for name,(discovered,new,error) in discoveries.items():
@@ -144,6 +144,7 @@ def main():
             rejected=counts["rejected"],rows=produced[name],error=error,
             live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"], observed_rows=observed.get(name),surfaces=surfaces.get(name),
             published_history=fiscal_history if name in FISCALIZATION_SOURCES else None,
+            source_queue=source_items if name in FISCALIZATION_SOURCES else None,
             archived=sum(item.get("status")=="archived" for item in source_items),
             rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")))
     print({"queue":queue.counts(),"budget":ai_budget_status()})
