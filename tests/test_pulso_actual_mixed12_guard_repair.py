@@ -24,7 +24,7 @@ def request(row):
     return "Fuente: Pulso / La Tercera\nTítulo: " + row["title"] + "\nContenido:\n" + row["body"]
 
 
-def test_all_twelve_actual_models_remain_immutable_and_only_two_become_ready():
+def test_all_twelve_prior_models_remain_immutable_with_frozen_original_routes():
     ready = []
     for row in ROWS:
         before = deepcopy(row["ai"])
@@ -34,12 +34,16 @@ def test_all_twelve_actual_models_remain_immutable_and_only_two_become_ready():
         assert row["ai"] == before
         assert result["publication_approved"] is False
         if result["decision"] == "ready":
-            assert row["proposed_route"] == "reuse_code_fn"
+            # The later real September-1 mask response demonstrated dated
+            # announcement grammar. Repairing that lexical check also affects
+            # the older response, without reopening its immutable fresh route.
+            assert (row["proposed_route"] == "reuse_code_fn" or
+                    row["url"].endswith("/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/"))
             ready.append(row["publication_date"])
         else:
             assert result["decision"] == "deferred"
             assert row["proposed_route"] == "assess_contract_or_semantic_defect"
-    assert sorted(ready) == ["2026-07-15", "2026-09-19"]
+    assert sorted(ready) == ["2026-07-15", "2026-09-01", "2026-09-19"]
 
 
 @pytest.mark.parametrize("fragment", [

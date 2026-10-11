@@ -78,6 +78,12 @@ HISTORICAL_FUTURE_COPY = re.compile(
     r"posibilidad en evaluaci[oó]n|efecto esperado|capacidad estimada|"
     r"estimaci[oó]n reportada|actuaci[oó]n posterior|pr[oó]ximo juicio|"
     r"objetivo era|buscaba[n]?|programad[oa]s?|riesgos? potenciales?|"
+    r"extensi[oó]n se anunciaba para ese per[ií]odo|"
+    r"anunci[oó] extender hasta el \d{1,2} de "
+    r"(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)|"
+    r"condiciones anunciadas en esa fecha|"
+    r"recomendaciones de revisi[oó]n focalizada\b[^.;!?]{0,160}\b"
+    r"sin acreditar su implementaci[oó]n|"
     r"coordinaciones\b[^.;!?]{0,160}\bpara instalar|"
     r"coordinaba\b[^.;!?]{0,160}\bcapacidad asistencial temporal\b"
     r"[^.;!?]{0,80}\bpara absorber)\b", re.I)
@@ -85,11 +91,14 @@ NEGATED_ACHIEVEMENT_PREFIX = re.compile(
     r"\bno\s*$|\bno como (?:resultados|acciones|medidas|logros)\s*$|"
     r"\bno como capacidad\s*$|"
     r"\bno acredita capacidad(?: nacional)?\s*$|"
+    r"\bno acredita resultados\s*$|\bno de inversiones\s*$|"
+    r"\bno acredita una reasignaci[oó]n\s*$|"
     r"\bno (?:deben?|pueden?) (?:entenderse|considerarse|presentarse|tratarse) como\s*$",
     re.I)
 NON_HUMAN_HEALTH = re.compile(
     r"\b(?:salud|sanidad)\s+(?:animal(?:\s+o\s+vegetal)?|vegetal|veterinari[ao])\b|"
     r"\b(?:hospital(?: cl[ií]nico)?|cl[ií]nic\w*|medicin\w*|vacun\w*)\s+veterinari\w*|"
+    r"\bsanatorio(?: Alem[aá]n)?\s+veterinari\w*|"
     r"\becosistema de animales y mascotas\b[^.;!?]{0,1000}|"
     r"\batenci[oó]n m[eé]dica (?:de|a|para) (?:los |las )?(?:animales|mascotas)\b|"
     r"\bpacientes? (?:animales|veterinari\w*)\b|"
@@ -119,9 +128,16 @@ HUMAN_CLINICAL_BATCH_TWO = re.compile(
     r"\binterrupci[oó]n del embarazo por las tres causales\b", re.I)
 PATIENT_CONTACT_SCOPE = re.compile(
     r"\bpacientes contactados iniciaron su proceso de atenci[oó]n\b", re.I)
+# The complete literal ILC quote identifies clinical prestations and their
+# named human-care provider. Neither a bare accounting figure nor a generic
+# reference to prestaciones/sanatorios establishes this editorial scope.
+NAMED_CLINICAL_PROVIDER_SCOPE = re.compile(
+    r"\bcomplejidad de sus prestaciones\b[^.;!?]{0,120}\b"
+    r"incorporaci[oó]n del Sanatorio Alem[aá]n\b(?!\s+veterinari\w*)", re.I)
 
 
-def human_health_scope_anchor(quote, *, allow_patient_contact=True):
+def human_health_scope_anchor(quote, *, allow_patient_contact=True,
+                              allow_named_clinical_provider=True):
     from .pulso_source import health_anchor
     # Discovery admits housing to open the primary detail; an editorial quote
     # must establish care/clinical relevance beyond the property-sector label.
@@ -129,6 +145,7 @@ def human_health_scope_anchor(quote, *, allow_patient_contact=True):
                             "", quote, flags=re.I)
     return (health_anchor(clinical_quote) or bool(HUMAN_CLINICAL_SCOPE.search(quote))
             or bool(HUMAN_CLINICAL_BATCH_TWO.search(quote))
+            or (allow_named_clinical_provider and bool(NAMED_CLINICAL_PROVIDER_SCOPE.search(quote)))
             or (allow_patient_contact and bool(PATIENT_CONTACT_SCOPE.search(quote))))
 
 PROOF_SCHEMA = {
@@ -277,7 +294,8 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
     # and defer contradictory model labels rather than infer a rejection.
     if (NON_HUMAN_HEALTH.search(scope_quote)
             and not human_health_scope_anchor(
-                NON_HUMAN_HEALTH.sub("", scope_quote), allow_patient_contact=False)):
+                NON_HUMAN_HEALTH.sub("", scope_quote), allow_patient_contact=False,
+                allow_named_clinical_provider=False)):
         return verdict("deferred", "pulso_editorial_human_scope_conflicts_with_non_human_quote")
     if not human_health_scope_anchor(scope_quote):
         return verdict("deferred", "pulso_editorial_scope_not_grounded")
