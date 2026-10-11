@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T13:34:28.611883+00:00",
+  "updated_at": "2026-10-11T13:41:48.647967+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3676,9 +3676,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T07:39:26.902569+00:00",
+      "last_progress_at": "2026-10-11T13:41:48.647967+00:00",
       "current_subfront": "bounded_coverage_validated_global_gates_and_dates_pending",
-      "next_action": "QA/Reviewer de PR18; merge seguro a staging y runtime real con identidad por oficio. No cerrar #8 por el merge.",
+      "next_action": "Mantener abiertos los informes sin fecha y completitud jurídica del stock; 20/72 oficios SUSESO exactos están reconciliados en staging. No certificar totalidad del sitio.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -3763,7 +3763,11 @@
         "suseso": 17,
         "published_backfill": 17,
         "counted_as_recent": false
-      }
+      },
+      "integration_outcome": "INTEGRATED_DEGRADED",
+      "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+      "qa_run": 38143952494,
+      "runtime_run": 38143952220
     },
     {
       "id": "source_repair_mutualities_lane_2026_10_11",
@@ -4538,9 +4542,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T13:34:28.611883+00:00",
-      "current_subfront": "SIS_SUSESO_PR18_candidate_global_QA",
-      "next_action": "Integrar PR18 después de QA/Reviewer completos; runtime post-merge SIS/SUSESO. Continuar #12, #13, #14; #10 sólo READY_FOR_INTEGRATION.",
+      "last_progress_at": "2026-10-11T13:41:48.647967+00:00",
+      "current_subfront": "salud_laboral_candidate",
+      "next_action": "Integrar Salud Laboral #12 tras QA/Reviewer; luego públicas #13 y prestadores #14. Pulso #10 sólo READY.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
