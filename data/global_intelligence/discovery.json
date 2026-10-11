@@ -108,16 +108,16 @@
       "checked_at": "2026-10-11T16:19:32.470424+00:00",
       "status": "warning",
       "technical_status": "ok",
-      "coverage_status": "incomplete",
-      "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
+      "coverage_status": "complete",
+      "outcome": "READY_FOR_INTEGRATION",
       "operation_mode": "isolated_qualification",
       "discovery_scope": "global_intelligence",
       "recurrent_operation_proven": false,
       "cadence_seconds": 86400,
       "cadence_validation_pending": true,
-      "coverage_contract_id": "5c148342ba4b50afbd9b3f610aa6e4ab6c48935af80c43b1a7a906e5072316fa",
+      "coverage_contract_id": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
       "next_cadence_validation_not_before": "2026-10-12T16:19:32.470424+00:00",
-      "coverage_completeness": "incomplete",
+      "coverage_completeness": "complete",
       "coverage_window_days": 90,
       "coverage_from": "2026-07-14",
       "coverage_to": "2026-10-11",
@@ -140,8 +140,8 @@
         "whole_source_archive_claim": false
       },
       "window_completeness": {
-        "30": "incomplete_lower_bound",
-        "90": "incomplete_lower_bound"
+        "30": "complete_on_declared_surfaces",
+        "90": "complete_on_declared_surfaces"
       },
       "unique_language_urls_90": 673,
       "unique_items": 530,
@@ -174,12 +174,12 @@
       "boundary_evidence": [
         {
           "section": "regional_news",
-          "stop": "date_partition_coverage_incomplete",
+          "stop": "verified_date_partition_coverage",
           "pages": 43
         },
         {
           "section": "regional_news_es",
-          "stop": "date_partition_coverage_incomplete",
+          "stop": "verified_date_partition_coverage",
           "pages": 77
         },
         {
@@ -204,12 +204,17 @@
         }
       ],
       "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json",
-      "source_quality_disposition": "hold_external",
+      "source_quality_disposition": "pass_data",
       "publication_activation": false,
       "content_freshness": "recent",
       "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
       "materiality_evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
-      "materiality_projection_run_id": "38155456354"
+      "materiality_projection_run_id": "38155456354",
+      "coverage_evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json",
+      "coverage_qualification_run_id": "38156977778",
+      "coverage_qualification_mode": "captured_byte_replay",
+      "first_complete_fresh_capture_under_current_contract_pending": true,
+      "cadence_validation_requires": "First complete fresh live capture under current contract, then a second at least 86400 seconds later. This projection is not a fresh cadence anchor."
     },
     "reuters": {
       "name": "Reuters",
@@ -112783,7 +112788,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 4,
+            "clamped_current": 3,
+            "maximum": 3,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=3"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04",
@@ -113350,7 +113362,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 2,
+            "clamped_current": 1,
+            "maximum": 1,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04&page=1"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11",
@@ -113917,7 +113936,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 2,
+            "clamped_current": 1,
+            "maximum": 1,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11&page=1"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18",
@@ -114454,7 +114480,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 2,
+            "clamped_current": 1,
+            "maximum": 1,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18&page=1"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25",
@@ -114871,7 +114904,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 2,
+            "clamped_current": 1,
+            "maximum": 1,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25&page=1"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01",
@@ -115468,7 +115508,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 2,
+            "clamped_current": 1,
+            "maximum": 1,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01&page=1"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08",
@@ -115885,7 +115932,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 2,
+            "clamped_current": 1,
+            "maximum": 1,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08&page=1"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15",
@@ -116362,7 +116416,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 2,
+            "clamped_current": 1,
+            "maximum": 1,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15&page=1"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22",
@@ -117140,7 +117201,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 3,
+            "clamped_current": 2,
+            "maximum": 2,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=2"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29",
@@ -117978,7 +118046,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 3,
+            "clamped_current": 2,
+            "maximum": 2,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=2"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06",
@@ -118997,7 +119072,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 4,
+            "clamped_current": 3,
+            "maximum": 3,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=3"
+          }
         },
         {
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-10-05&date%5Bmax%5D=2026-10-12",
@@ -124763,8 +124845,8 @@
           ]
         }
       ],
-      "archive_complete": false,
-      "stop_reason": "date_partition_coverage_incomplete",
+      "archive_complete": true,
+      "stop_reason": "verified_date_partition_coverage",
       "date_pending": 0,
       "date_partitions": [
         {
@@ -124783,8 +124865,8 @@
           "query_from": "2026-07-20",
           "query_to": "2026-07-28",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 5
         },
         {
@@ -124793,8 +124875,8 @@
           "query_from": "2026-07-27",
           "query_to": "2026-08-04",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 3
         },
         {
@@ -124803,8 +124885,8 @@
           "query_from": "2026-08-03",
           "query_to": "2026-08-11",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 3
         },
         {
@@ -124813,8 +124895,8 @@
           "query_from": "2026-08-10",
           "query_to": "2026-08-18",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 3
         },
         {
@@ -124823,8 +124905,8 @@
           "query_from": "2026-08-17",
           "query_to": "2026-08-25",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 3
         },
         {
@@ -124833,8 +124915,8 @@
           "query_from": "2026-08-24",
           "query_to": "2026-09-01",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 3
         },
         {
@@ -124843,8 +124925,8 @@
           "query_from": "2026-08-31",
           "query_to": "2026-09-08",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 3
         },
         {
@@ -124853,8 +124935,8 @@
           "query_from": "2026-09-07",
           "query_to": "2026-09-15",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 3
         },
         {
@@ -124863,8 +124945,8 @@
           "query_from": "2026-09-14",
           "query_to": "2026-09-22",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 4
         },
         {
@@ -124873,8 +124955,8 @@
           "query_from": "2026-09-21",
           "query_to": "2026-09-29",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 4
         },
         {
@@ -124883,8 +124965,8 @@
           "query_from": "2026-09-28",
           "query_to": "2026-10-06",
           "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 5
         },
         {
@@ -127781,7 +127863,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 5,
+            "clamped_current": 4,
+            "maximum": 4,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=4"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04",
@@ -128860,7 +128949,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 4,
+            "clamped_current": 3,
+            "maximum": 3,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04&page=3"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11",
@@ -130240,7 +130336,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 5,
+            "clamped_current": 4,
+            "maximum": 4,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11&page=4"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18",
@@ -131680,7 +131783,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 5,
+            "clamped_current": 4,
+            "maximum": 4,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18&page=4"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25",
@@ -132608,7 +132718,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 3,
+            "clamped_current": 2,
+            "maximum": 2,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25&page=2"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01",
@@ -133837,7 +133954,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 4,
+            "clamped_current": 3,
+            "maximum": 3,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01&page=3"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08",
@@ -135518,7 +135642,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 6,
+            "clamped_current": 5,
+            "maximum": 5,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08&page=5"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15",
@@ -137048,7 +137179,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 5,
+            "clamped_current": 4,
+            "maximum": 4,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15&page=4"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22",
@@ -138669,7 +138807,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 6,
+            "clamped_current": 5,
+            "maximum": 5,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=5"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29",
@@ -140440,7 +140585,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 6,
+            "clamped_current": 5,
+            "maximum": 5,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=5"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06",
@@ -142723,7 +142875,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 8,
+            "clamped_current": 7,
+            "maximum": 7,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=7"
+          }
         },
         {
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-10-05&date%5Bmax%5D=2026-10-12",
@@ -143621,7 +143780,14 @@
           },
           "native_records": 0,
           "native_control": [],
-          "items": []
+          "items": [],
+          "clamped_empty_native_pager": {
+            "requested_page": 3,
+            "clamped_current": 2,
+            "maximum": 2,
+            "terminal": true,
+            "previous_page_url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-10-05&date%5Bmax%5D=2026-10-12&page=2"
+          }
         }
       ],
       "items": [
@@ -156362,8 +156528,8 @@
           ]
         }
       ],
-      "archive_complete": false,
-      "stop_reason": "date_partition_coverage_incomplete",
+      "archive_complete": true,
+      "stop_reason": "verified_date_partition_coverage",
       "date_pending": 0,
       "date_partitions": [
         {
@@ -156382,8 +156548,8 @@
           "query_from": "2026-07-20",
           "query_to": "2026-07-28",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 6
         },
         {
@@ -156392,8 +156558,8 @@
           "query_from": "2026-07-27",
           "query_to": "2026-08-04",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 5
         },
         {
@@ -156402,8 +156568,8 @@
           "query_from": "2026-08-03",
           "query_to": "2026-08-11",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 6
         },
         {
@@ -156412,8 +156578,8 @@
           "query_from": "2026-08-10",
           "query_to": "2026-08-18",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 6
         },
         {
@@ -156422,8 +156588,8 @@
           "query_from": "2026-08-17",
           "query_to": "2026-08-25",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 4
         },
         {
@@ -156432,8 +156598,8 @@
           "query_from": "2026-08-24",
           "query_to": "2026-09-01",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 5
         },
         {
@@ -156442,8 +156608,8 @@
           "query_from": "2026-08-31",
           "query_to": "2026-09-08",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 7
         },
         {
@@ -156452,8 +156618,8 @@
           "query_from": "2026-09-07",
           "query_to": "2026-09-15",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 6
         },
         {
@@ -156462,8 +156628,8 @@
           "query_from": "2026-09-14",
           "query_to": "2026-09-22",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 7
         },
         {
@@ -156472,8 +156638,8 @@
           "query_from": "2026-09-21",
           "query_to": "2026-09-29",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 7
         },
         {
@@ -156482,8 +156648,8 @@
           "query_from": "2026-09-28",
           "query_to": "2026-10-06",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 9
         },
         {
@@ -156492,8 +156658,8 @@
           "query_from": "2026-10-05",
           "query_to": "2026-10-12",
           "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-10-05&date%5Bmax%5D=2026-10-12",
-          "archive_complete": false,
-          "stop_reason": "date_partition_empty_unverified",
+          "archive_complete": true,
+          "stop_reason": "date_partition_native_empty_after_clamped_numbered_end",
           "pages": 4
         }
       ],
@@ -160615,6 +160781,19 @@
     "fresh_inventory_sha256": "434dec044c79ade78f82f82271121753685cdf5b4a80888cc1c52831efcff831",
     "inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
     "inventory_csv_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.csv",
+    "publisher_requests": 0,
+    "does_not_prove_fresh_capture_or_cadence": true
+  },
+  "coverage_projection": {
+    "qualified_at": "2026-10-11T16:49:17.399446+00:00",
+    "qa_run_id": "38156977778",
+    "code_commit": "aee4ed3dff0c6cd900751e89a219548b261308a1",
+    "fresh_capture_run_id": "38153425336",
+    "fresh_inventory_sha256": "434dec044c79ade78f82f82271121753685cdf5b4a80888cc1c52831efcff831",
+    "metadata_inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+    "metadata_inventory_sha256": "83fa7e2150d07c0e7ee2d7c2afd9d9e03abcc92d62f90ec0211a456960774063",
+    "inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json",
+    "inventory_csv_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.csv",
     "publisher_requests": 0,
     "does_not_prove_fresh_capture_or_cadence": true
   }

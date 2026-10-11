@@ -3062,16 +3062,16 @@
       "checked_at": "2026-10-11T16:19:32.470424+00:00",
       "status": "warning",
       "technical_status": "ok",
-      "coverage_status": "incomplete",
-      "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
+      "coverage_status": "complete",
+      "outcome": "READY_FOR_INTEGRATION",
       "operation_mode": "isolated_qualification",
       "discovery_scope": "global_intelligence",
       "recurrent_operation_proven": false,
       "cadence_seconds": 86400,
       "cadence_validation_pending": true,
-      "coverage_contract_id": "5c148342ba4b50afbd9b3f610aa6e4ab6c48935af80c43b1a7a906e5072316fa",
+      "coverage_contract_id": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
       "next_cadence_validation_not_before": "2026-10-12T16:19:32.470424+00:00",
-      "coverage_completeness": "incomplete",
+      "coverage_completeness": "complete",
       "coverage_window_days": 90,
       "coverage_from": "2026-07-14",
       "coverage_to": "2026-10-11",
@@ -3094,8 +3094,8 @@
         "whole_source_archive_claim": false
       },
       "window_completeness": {
-        "30": "incomplete_lower_bound",
-        "90": "incomplete_lower_bound"
+        "30": "complete_on_declared_surfaces",
+        "90": "complete_on_declared_surfaces"
       },
       "unique_language_urls_90": 673,
       "unique_items": 530,
@@ -3128,12 +3128,12 @@
       "boundary_evidence": [
         {
           "section": "regional_news",
-          "stop": "date_partition_coverage_incomplete",
+          "stop": "verified_date_partition_coverage",
           "pages": 43
         },
         {
           "section": "regional_news_es",
-          "stop": "date_partition_coverage_incomplete",
+          "stop": "verified_date_partition_coverage",
           "pages": 77
         },
         {
@@ -3158,12 +3158,17 @@
         }
       ],
       "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json",
-      "source_quality_disposition": "hold_external",
+      "source_quality_disposition": "pass_data",
       "publication_activation": false,
       "content_freshness": "recent",
       "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
       "materiality_evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
-      "materiality_projection_run_id": "38155456354"
+      "materiality_projection_run_id": "38155456354",
+      "coverage_evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json",
+      "coverage_qualification_run_id": "38156977778",
+      "coverage_qualification_mode": "captured_byte_replay",
+      "first_complete_fresh_capture_under_current_contract_pending": true,
+      "cadence_validation_requires": "First complete fresh live capture under current contract, then a second at least 86400 seconds later. This projection is not a fresh cadence anchor."
     },
     "global_reuters": {
       "name": "Reuters",
