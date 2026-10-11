@@ -38,6 +38,11 @@ def fresh(entry):
 
 @pytest.fixture(params=URLS, ids=[url.split('/')[-2][:35] for url in URLS])
 def case(request, tmp_path, actual_origin, monkeypatch):
+    # This unit isolates the earlier five-member processing envelope. The
+    # subsequently paid final-two authority is exercised with claim-erasure
+    # attacks in test_pulso_final_paid_revalidation_qa, never disabled at runtime.
+    from radar_salud import pulso_final_paid_revalidation
+    monkeypatch.setattr(pulso_final_paid_revalidation, 'known_original_candidate', lambda raw: False)
     row = actual_origin['rows'][request.param]
     key = row['queue_fingerprint']; original = actual_origin['originals'][key]
     queue = PendingQueue(tmp_path / 'queue.json'); queue.items = {key: deepcopy(original)}
