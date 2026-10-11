@@ -270,6 +270,85 @@
       "kind": "pickup",
       "owner": "38117002323-1-staging_qa",
       "task_id": "staging_qa_failed_run_38116961282"
+    },
+    {
+      "at": "2026-10-11T06:25:47.641878Z",
+      "family": "media",
+      "kind": "stalled",
+      "ready_since": "2026-10-11T06:25:47.641878Z",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T06:25:47.641878Z",
+      "family": "public_data",
+      "kind": "stalled",
+      "ready_since": "2026-10-11T06:25:47.641878Z",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T06:25:47.641878Z",
+      "family": "fiscalization",
+      "kind": "stalled",
+      "ready_since": "2026-10-11T06:25:47.641878Z",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T06:25:47.641878Z",
+      "family": "mutualities",
+      "kind": "stalled",
+      "ready_since": "2026-10-11T06:25:47.641878Z",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T06:25:47.641878Z",
+      "family": "editorial",
+      "kind": "stalled",
+      "ready_since": "2026-10-11T06:25:47.641878Z",
+      "reason": "no_material_progress_30m",
+      "task_id": "editorial_repair_lane_2026_10_11"
+    }
+  ],
+  "material_event_corrections": [
+    {
+      "at": "2026-10-11T06:25:47.641878Z",
+      "bindings": [
+        {
+          "failure": {
+            "conclusion": "failure",
+            "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+            "head_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+            "run_id": 38113830124,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38113830124"
+          },
+          "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+          "task_id": "staging_qa_failed_run_38113830124"
+        },
+        {
+          "failure": {
+            "conclusion": "failure",
+            "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+            "head_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+            "run_id": 38116961282,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282"
+          },
+          "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+          "task_id": "staging_qa_failed_run_38116961282"
+        }
+      ],
+      "canonical_signature": "d6c752d08fce7e494c072ff994232452ea12a5e4dec79ad054377dcac665685d",
+      "event_id": "f6682fbf21e28a62f0333785de12f199ec8b884a0136d612d3ef30f1e21eb12f",
+      "event_sha256": "9efd622e05b0c3ccdecb7e6171f343b65c04245674a1f64f7335482042b5d56a",
+      "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+      "id": "cf4d2557d3c7b6e42a538814a94da380d75083fa782da74fe73b51db867a6b69",
+      "kind": "duplicate_staging_blocker",
+      "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+      "reason": "Same demonstrated failure, product and evidenced problem; transport aliases do not earn new progress.",
+      "retained_event_id": "3ad0c44e63fe44935060eddf38232b36cfe19f891d75dbed152fcb6e93fd1951",
+      "retained_event_sha256": "241f2f3c95ac6fd2dd38df1802e4b4c536fabb8b9d94122a90937215a33350b0"
     }
   ],
   "material_events": [
@@ -38884,12 +38963,6 @@
       "event_id": "925d0100631445e1a44175810614a5befcdf121779b029ae9f46c4fe4a455e0e",
       "family": "public_data",
       "task_id": "source_repair_public_data_lane_2026_10_11"
-    },
-    {
-      "at": "2026-10-11T06:09:07.790367Z",
-      "event_id": "f6682fbf21e28a62f0333785de12f199ec8b884a0136d612d3ef30f1e21eb12f",
-      "family": "staging_qa",
-      "task_id": "staging_qa_failed_run_38116961282"
     }
   ],
   "schema_version": 2,
@@ -38945,7 +39018,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c61a38ee84cfbed29f3c01e9645a539738f9cc6fed776c2f3884961d85c485fe",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "autonomy_continuity_hardening_v1_1_2026_09_29": {
@@ -39001,7 +39074,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "3b8b4a9552edfcad0f7ccc3724701de0d806fb28ced8805456ae4099b18cd82f",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "beta_gate5_test_ops_golive_2026_10_11": {
@@ -39057,7 +39130,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a987a3e8e0275d38970e7987c3adff36f44be1a8b2577aa16ab80da6f538e18d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "beta_sources_completion_today_2026_09_29": {
@@ -39113,7 +39186,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "d2afc5bf9239ebd3911906cfeb680b60eb0aedf6e94d2aeaa4263abdb91204d2",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "coverage_balance_sources_epidemiology_v1_2026_09_28": {
@@ -39169,7 +39242,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "235d32233451d3ca0205c9482095425d51c99916839569eb3a840d4e97545e70",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "editorial_repair_lane_2026_10_11": {
@@ -39212,28 +39285,28 @@
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
       "depends_on": [],
-      "evidence_revision": "cd534a8ff0a554691ff9a4db65aef14543976cf12d8c9bf124df78dd62628340",
-      "executor_fingerprint": "26004ad8438f36a03f050b0536b46829c1a1157a1e53a5d64f315485308aaaa0",
+      "evidence_revision": "ecebc473a9a025e7e93ff287f061c14763e6b03b8756425cadea075b0b4b60c9",
+      "executor_fingerprint": "f57b7e92af9e6f9a09d735574dd21ff1eb65e5de4fff160618968279c24fac1b",
       "failure": null,
       "family": "editorial",
-      "fence": 3,
+      "fence": 5,
       "id": "editorial_repair_lane_2026_10_11",
-      "input_fingerprint": "e57973cb3de1a7666f5aac7cfaa64ae8ab6ea9d932f6e6cc90f2229e0389df8d",
+      "input_fingerprint": "006d28f98224274972accda0f3cdb8c45498fcab32ed82b93cdd3c23b8f810d4",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-      "last_ready_at": "2026-10-11T05:48:23.562198Z",
+      "last_ready_at": "2026-10-11T06:25:47.641878Z",
       "lease": null,
       "material_progress_at": "2026-10-11T05:49:10.476041Z",
       "material_watch_started_at": "2026-10-11T05:49:10.476041Z",
       "objective": "Repair existing reviewed editorial artifacts; retain independent parent acceptance.",
-      "pickup_ready_since": "2026-10-11T05:48:23.562198Z",
+      "pickup_ready_since": "2026-10-11T06:25:47.641878Z",
       "priority": "critical",
       "product_input_fingerprint": "303086a280a1ad3c5642e7fd891a8459dfe67ced08bf55ce5ce14e55e100ee17",
       "queue_status": "in_progress",
-      "reason": "input_or_evidence_changed",
+      "reason": "no_material_progress_30m",
       "recovery_episode": "497f84b95210cad1fc3b8025fc4af58cbf98f5c9216f203dda5164f67a943b8c",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T05:49:17.256586Z",
-      "status": "BLOCKED"
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
+      "status": "STALLED"
     },
     "independent_auditor_and_autonomy_controller_2026_10_07": {
       "approved": true,
@@ -39286,7 +39359,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "6318e081496dbd7ba074f2e97b5af621c29a2ead2f34bff30b7e901bb812b88c",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "pele_work_activation_2026_09_27": {
@@ -39335,7 +39408,7 @@
       "queue_status": "in_progress",
       "recovery_episode": "31239ddfcabb5d5c9f20d52fcdf327161d700857e43631de9c6ec04104b6fb22",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "pulso_latercera_exhaustive_discovery_2026_10_11": {
@@ -39389,7 +39462,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "97acc9e8faa4d2f339b1449aa975e05a62d4ebf3fc3e32c62393f929b5318803",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration1_recovery_2026_10_09": {
@@ -39443,7 +39516,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "9cba6c8204976e15c36b69d578e121a89db6fc6a67c8ba098bbde0b0aac910ea",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration2_balance_2026_10_09": {
@@ -39499,7 +39572,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "5aba57a7f8aa859dc131c182aa0788e655832a4ce02844d3bcbd7982ae470f27",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration3_editorial_2026_10_09": {
@@ -39512,13 +39585,13 @@
       "depends_on": [
         "source_audit_issue5_iteration1_recovery_2026_10_09"
       ],
-      "evidence_revision": "6c6446ba30572890f38580dfd884e4132cc67d6d1135463d4ff97a1322328580",
-      "executor_fingerprint": "26004ad8438f36a03f050b0536b46829c1a1157a1e53a5d64f315485308aaaa0",
+      "evidence_revision": "bd83ea76e7f72a63ea5006e0ed065cd1fdda642cb9c32612ba199cec822c54d1",
+      "executor_fingerprint": "f57b7e92af9e6f9a09d735574dd21ff1eb65e5de4fff160618968279c24fac1b",
       "failure": null,
       "family": "editorial",
       "fence": 0,
       "id": "source_audit_issue5_iteration3_editorial_2026_10_09",
-      "input_fingerprint": "e57973cb3de1a7666f5aac7cfaa64ae8ab6ea9d932f6e6cc90f2229e0389df8d",
+      "input_fingerprint": "006d28f98224274972accda0f3cdb8c45498fcab32ed82b93cdd3c23b8f810d4",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_ready_at": "2026-10-11T05:29:09.013956Z",
       "lease": null,
@@ -39580,7 +39653,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "e6f8a091a339da27663dd924412994424a07128518baafcb1fb103579f3c87b6",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration5_expansion_2026_10_09": {
@@ -39637,7 +39710,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a5062237250f020a1cc78759c343e03042e43ea9f610ff65896f6b3b9edad678",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_master_2026_10_09": {
@@ -39691,7 +39764,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "cf942b0661750d6bcbb1988985499466007e6c247524a9cd82af8ddb304c7f2e",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "source_recovery_reconciliation_gate_2026_10_11": {
@@ -39745,7 +39818,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c8440ecfcb1660f8bf14708fe8ca26771fe76be97aaf50476cf3cea797292ac6",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "source_repair_fiscalization_lane_2026_10_11": {
@@ -52500,13 +52573,13 @@
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
       "depends_on": [],
-      "evidence_revision": "4fc4eb00b709abb28c9cdf71e1d27adb2acbb40a1a2730a114e47ddf7454b0fb",
-      "executor_fingerprint": "26004ad8438f36a03f050b0536b46829c1a1157a1e53a5d64f315485308aaaa0",
+      "evidence_revision": "c59f4f1aa4c71cb76cc2e05b26caca2bae9f0ed9cc322af2566f068b75472ab2",
+      "executor_fingerprint": "f57b7e92af9e6f9a09d735574dd21ff1eb65e5de4fff160618968279c24fac1b",
       "failure": null,
       "family": "fiscalization",
-      "fence": 3,
+      "fence": 5,
       "id": "source_repair_fiscalization_lane_2026_10_11",
-      "input_fingerprint": "f0e6e1b69edb073ae2630ae7815e89f8cbeacacec0743dbcc5bd770fea8debe3",
+      "input_fingerprint": "ae07bdec0fd1af6be22fa64d6681b13a3f31791e7b57d4eacc86babda7d5ecef",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_failure": {
         "failure_signature": "63bd80fe6868312bdb1eab311620090fb6334bb22f65a03cda132a932b4e4563",
@@ -52518,20 +52591,20 @@
         "trace_sha256": "17511ebd09faf49db9ae7ef295c73173d0cbacf4a2372423c3ae2327ca63e18e",
         "verified": true
       },
-      "last_ready_at": "2026-10-11T05:48:23.562198Z",
+      "last_ready_at": "2026-10-11T06:25:47.641878Z",
       "lease": null,
       "material_progress_at": "2026-10-11T05:49:59.053350Z",
       "material_watch_started_at": "2026-10-11T05:49:59.053350Z",
       "objective": "Repair Superintendencia Fiscalización and SUSESO Fiscalización freshness/publication semantics.",
-      "pickup_ready_since": "2026-10-11T05:48:23.562198Z",
+      "pickup_ready_since": "2026-10-11T06:25:47.641878Z",
       "priority": "critical",
       "product_input_fingerprint": "078165b18871d2059155a0bddaf72364523df1bb71bd89d08558b6e4ef5367c4",
       "queue_status": "in_progress",
-      "reason": "input_or_evidence_changed",
+      "reason": "no_material_progress_30m",
       "recovery_episode": "d9b68ac4d65598c7d6d44d8cd627082ed4e785279f24da2ebea38bb6b24b1787",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T05:49:59.053350Z",
-      "status": "BLOCKED"
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
+      "status": "STALLED"
     },
     "source_repair_media_lane_2026_10_11": {
       "approved": true,
@@ -55514,28 +55587,28 @@
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
       "depends_on": [],
-      "evidence_revision": "054adb0e6539e78999298aa06480a89524e067fe3bbb5cc364ed6a1ded8b7cd2",
-      "executor_fingerprint": "26004ad8438f36a03f050b0536b46829c1a1157a1e53a5d64f315485308aaaa0",
+      "evidence_revision": "c288e3229e4b1d167bf05cc01e2ab31777dd869ce2882498b53c9b92a46b6794",
+      "executor_fingerprint": "f57b7e92af9e6f9a09d735574dd21ff1eb65e5de4fff160618968279c24fac1b",
       "failure": null,
       "family": "media",
-      "fence": 3,
+      "fence": 5,
       "id": "source_repair_media_lane_2026_10_11",
-      "input_fingerprint": "42fb21f5270cd94f4d0bf866e547633e1228aacd3708a8cb8d2455a2060d4d54",
+      "input_fingerprint": "9afebffea122073c4c248b5e4109cb00e291831ec16fd1538cd9605732ae3225",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-      "last_ready_at": "2026-10-11T05:48:23.562198Z",
+      "last_ready_at": "2026-10-11T06:25:47.641878Z",
       "lease": null,
       "material_progress_at": "2026-10-11T05:50:57.212073Z",
       "material_watch_started_at": "2026-10-11T05:50:57.212073Z",
       "objective": "Repair Diario Financiero and Pulso/La Tercera end-to-end in parallel with other P0 lanes.",
-      "pickup_ready_since": "2026-10-11T05:48:23.562198Z",
+      "pickup_ready_since": "2026-10-11T06:25:47.641878Z",
       "priority": "critical",
       "product_input_fingerprint": "db22389ac0ea0b7aa91b4e267f4252cb1f2fb41e48c498ca99639b54d3c17b77",
       "queue_status": "in_progress",
-      "reason": "input_or_evidence_changed",
+      "reason": "no_material_progress_30m",
       "recovery_episode": "d2266ac74b33c02287f562e745fc03fb43996e92df4f86465a554d3b96590734",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T05:50:57.212073Z",
-      "status": "BLOCKED"
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
+      "status": "STALLED"
     },
     "source_repair_mutualities_lane_2026_10_11": {
       "approved": true,
@@ -57110,13 +57183,13 @@
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
       "depends_on": [],
-      "evidence_revision": "32c1e2a748f602d9c728c58ff4296d73dc00fea3fcdaefe6b289a9a51cdbfd4d",
-      "executor_fingerprint": "26004ad8438f36a03f050b0536b46829c1a1157a1e53a5d64f315485308aaaa0",
+      "evidence_revision": "aa97cfef3c19086549728898c8d1bd2462329a13e7e892571877f8efbd117700",
+      "executor_fingerprint": "f57b7e92af9e6f9a09d735574dd21ff1eb65e5de4fff160618968279c24fac1b",
       "failure": null,
       "family": "mutualities",
-      "fence": 3,
+      "fence": 5,
       "id": "source_repair_mutualities_lane_2026_10_11",
-      "input_fingerprint": "c273d57aadf9bed3f4aef1dc6a29f5db7054882478ebfe881bf58590d6c3fee6",
+      "input_fingerprint": "5306961e2099021429e00e2f18ef5026790a771f770ffa90a56744765dee2fc0",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_failure": {
         "failure_signature": "72996ac38587716785fbb2512ec610775123f89cd0f6d40aea1f479e890d0a5f",
@@ -57128,20 +57201,20 @@
         "trace_sha256": "658ad59b4912a1bae9d48b61e80cd84e319b43d3db5f8bf1e0729273fe0c3365",
         "verified": true
       },
-      "last_ready_at": "2026-10-11T05:48:23.562198Z",
+      "last_ready_at": "2026-10-11T06:25:47.641878Z",
       "lease": null,
       "material_progress_at": "2026-10-11T05:50:36.986244Z",
       "material_watch_started_at": "2026-10-11T05:50:36.986244Z",
       "objective": "Repair Clínicas ACHS, ACHS Seguro Laboral and Mutual runtime errors independently.",
-      "pickup_ready_since": "2026-10-11T05:48:23.562198Z",
+      "pickup_ready_since": "2026-10-11T06:25:47.641878Z",
       "priority": "critical",
       "product_input_fingerprint": "2e3290ad7072100d541e44a68bb7504073a1bfafc853fe40278a33fe84a47c2e",
       "queue_status": "in_progress",
-      "reason": "input_or_evidence_changed",
+      "reason": "no_material_progress_30m",
       "recovery_episode": "99495489654606fbc8c19c3a3eb94f649720bddbcd40f83d20b46a56b9baea90",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T05:50:36.986244Z",
-      "status": "BLOCKED"
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
+      "status": "STALLED"
     },
     "source_repair_public_data_lane_2026_10_11": {
       "approved": true,
@@ -58474,13 +58547,13 @@
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
       "depends_on": [],
-      "evidence_revision": "f7d8e3d291c03a9ef8d3c1d26d9a77e30e969995413dd10f2368df5a15de7156",
-      "executor_fingerprint": "26004ad8438f36a03f050b0536b46829c1a1157a1e53a5d64f315485308aaaa0",
+      "evidence_revision": "77c76e0b5784191ac3f31f85a25b163a7481a952a85f7f5967dd36488c8fb195",
+      "executor_fingerprint": "f57b7e92af9e6f9a09d735574dd21ff1eb65e5de4fff160618968279c24fac1b",
       "failure": null,
       "family": "public_data",
-      "fence": 3,
+      "fence": 5,
       "id": "source_repair_public_data_lane_2026_10_11",
-      "input_fingerprint": "1e2c6131b8d28fa80cc0459265704b718a2c798291e4296c3d219f0d000a61f7",
+      "input_fingerprint": "9a36b581369ee62275f2ecd064ac70e8d4e8156b80999c4fc0cf4d09a7ec3974",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_failure": {
         "failure_signature": "17745ae2b3a25337b03f94a2a71b1337eeda0719b240300a9c77ce419ff5f40f",
@@ -58492,20 +58565,20 @@
         "trace_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
         "verified": true
       },
-      "last_ready_at": "2026-10-11T05:48:23.562198Z",
+      "last_ready_at": "2026-10-11T06:25:47.641878Z",
       "lease": null,
       "material_progress_at": "2026-10-11T05:51:52.898701Z",
       "material_watch_started_at": "2026-10-11T05:51:52.898701Z",
       "objective": "Repair FONASA, FONASA Datos Abiertos, ISP/ANAMED, ISP Surveillance and DEIS independently from media.",
-      "pickup_ready_since": "2026-10-11T05:48:23.562198Z",
+      "pickup_ready_since": "2026-10-11T06:25:47.641878Z",
       "priority": "critical",
       "product_input_fingerprint": "c481d468ac55655c78163a58f9013d8492217b793899cbb9690a6b3ce399b09c",
       "queue_status": "in_progress",
-      "reason": "input_or_evidence_changed",
+      "reason": "no_material_progress_30m",
       "recovery_episode": "925d0100631445e1a44175810614a5befcdf121779b029ae9f46c4fe4a455e0e",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T05:51:52.898701Z",
-      "status": "BLOCKED"
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
+      "status": "STALLED"
     },
     "source_runtime_audit_2026_10_02": {
       "approved": true,
@@ -58558,7 +58631,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "b59c31a8e8a6b2198d7fe806538c1c25ffb02035d378bc7223d92b7c3d1c13ea",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "staging_qa_failed_run_38113830124": {
@@ -65020,8 +65093,8 @@
       ],
       "created_at": "2026-10-11T06:07:05.137446Z",
       "depends_on": [],
-      "evidence_revision": "0ee64515b4a631625874d8fd0ac984c8c8828e9348ea7e24705e24b1f866ffa8",
-      "executor_fingerprint": "26004ad8438f36a03f050b0536b46829c1a1157a1e53a5d64f315485308aaaa0",
+      "evidence_revision": "1908733a6f4b6fc924668fc84dbc8a481bbfd007790610a00969dcdd2ae0ff78",
+      "executor_fingerprint": "f57b7e92af9e6f9a09d735574dd21ff1eb65e5de4fff160618968279c24fac1b",
       "failure": {
         "conclusion": "failure",
         "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
@@ -65030,9 +65103,9 @@
         "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282"
       },
       "family": "staging_qa",
-      "fence": 1,
+      "fence": 2,
       "id": "staging_qa_failed_run_38116961282",
-      "input_fingerprint": "3c75e89e52098d836b1a51b09b79b21210d6c52851b813a1973c56a9499bb42e",
+      "input_fingerprint": "8c871ab5d63b6e8dd34c5cfe5ae1e73eabc23e8d415b6208003012034a534a31",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_failure": {
         "conclusion": "failure",
@@ -65041,19 +65114,20 @@
         "run_id": 38116961282,
         "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282"
       },
-      "last_ready_at": "2026-10-11T06:07:05.137446Z",
+      "last_ready_at": "2026-10-11T06:25:47.641878Z",
       "lease": null,
-      "material_progress_at": "2026-10-11T06:09:07.790367Z",
-      "material_watch_started_at": "2026-10-11T06:09:07.790367Z",
+      "material_progress_at": "2026-10-11T06:07:52.299198Z",
+      "material_watch_started_at": "2026-10-11T06:07:52.299198Z",
       "objective": "Recover the demonstrated staging gate; preserve product contracts.",
-      "pickup_ready_since": "2026-10-11T06:07:05.137446Z",
+      "pickup_ready_since": "2026-10-11T06:25:47.641878Z",
       "priority": "critical",
       "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
       "queue_status": "approved",
-      "recovery_episode": "f6682fbf21e28a62f0333785de12f199ec8b884a0136d612d3ef30f1e21eb12f",
+      "reason": "input_or_evidence_changed",
+      "recovery_episode": "3bee8124d86b6b1c33c94d6d977b6fd121e1f268d50d9f5faef6637947214bb9",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:09:07.790367Z",
-      "status": "BLOCKED"
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
+      "status": "READY"
     },
     "w4_cenabast_2026_10_11": {
       "approved": true,
@@ -65106,7 +65180,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c5295fc453e484870ce34bf6d21bb1e1fc6445ee576af78478dcf3f3f5c8cee1",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_cmf_2026_10_11": {
@@ -65160,7 +65234,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "0463f5519e61c2a70c91e3835381d2459badb9bc611e9cdf7031a4d29083ea3d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_dipres_2026_10_11": {
@@ -65214,7 +65288,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "3d52752d3912d2158b859a5f6d9032d9252427728814d38a5db7de1784b27c6d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_fne_2026_10_11": {
@@ -65268,7 +65342,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "68af68accca1b35c7085744e16ceec5e734566b0bdd1ee17eef0f8f92d948272",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_innovation_2026_10_11": {
@@ -65324,7 +65398,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "e847e78d051b0097e00f9fe93ecb8b8cad1318214feeb8077e171c66f81b66bf",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_isapres_2026_10_11": {
@@ -65378,7 +65452,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "9829f867c40d17863cf83c0460f0f79ab13ef16645d4ff42687637b394670a42",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_legal_2026_10_11": {
@@ -65432,7 +65506,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "4343ece0dc2180b75aa2462f7d0053848b6355f84c064c495f0e6878992d35cd",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_occupational_2026_10_11": {
@@ -65486,7 +65560,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "42395920685debe39cc6ee457a06ba424929e5691a1bc1b5394fad7d7c204a26",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_paho_2026_10_11": {
@@ -65540,7 +65614,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "eab01e76913e7dac7572a08788d9f7da2d94ef51aafcb4236cdf247c7e69ae0b",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_procurement_2026_10_11": {
@@ -65594,7 +65668,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a5c013f42eb4035c137fb77738a455455d40a2a3bc590f44179f6cc972399e9b",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_provider_data_2026_10_11": {
@@ -65650,7 +65724,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "eabdaed28307ab96f1a2d2dfc3a4c1fa89e73ba635813f86c01992e507688103",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_providers_2026_10_11": {
@@ -65704,7 +65778,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "2ecb9c9fa89bc9efa7f5b0af6e7fdab5fc9d9a370fc08e80e07a41c415daa1f8",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_reuters_2026_10_11": {
@@ -65758,7 +65832,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "7cdbbf9a9b5d29d58e4606ec1d2fba620a94e74cb1feae5c5ef9679f4c094ed8",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_socioeconomic_2026_10_11": {
@@ -65812,7 +65886,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "4780ada0e4e927769d2d0a770ddcda3176d2f09ee88f597928c481023fa49829",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     },
     "w4_who_2026_10_11": {
@@ -65866,7 +65940,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "f3f06489347d3384ca04c7f6a54de4912f0d5e43bb1f7ac58fa198fb8f17af6f",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T06:10:23.395145Z",
+      "state_changed_at": "2026-10-11T06:25:47.641878Z",
       "status": "BLOCKED"
     }
   }

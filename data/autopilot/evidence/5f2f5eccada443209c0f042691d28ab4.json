@@ -1,0 +1,114 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 13,
+      "material_event_count": 18,
+      "max_material_gap_seconds": 1075.34268,
+      "mode": "live",
+      "observed_seconds": 3361.410381,
+      "owner_observation_verified": false,
+      "owner_restarts": 0
+    },
+    "observed_until": "2026-10-11T06:25:47.641878Z",
+    "reasons": [
+      "four_real_wall_hours_not_observed",
+      "owner_intervention_observation_not_verified",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {
+    "editorial": {
+      "evidence_revision": "ecebc473a9a025e7e93ff287f061c14763e6b03b8756425cadea075b0b4b60c9",
+      "failure": null,
+      "family": "editorial",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "editorial_repair_lane_2026_10_11"
+    },
+    "fiscalization": {
+      "evidence_revision": "c59f4f1aa4c71cb76cc2e05b26caca2bae9f0ed9cc322af2566f068b75472ab2",
+      "failure": null,
+      "family": "fiscalization",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    "media": {
+      "evidence_revision": "c288e3229e4b1d167bf05cc01e2ab31777dd869ce2882498b53c9b92a46b6794",
+      "failure": null,
+      "family": "media",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    "mutualities": {
+      "evidence_revision": "aa97cfef3c19086549728898c8d1bd2462329a13e7e892571877f8efbd117700",
+      "failure": null,
+      "family": "mutualities",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    },
+    "public_data": {
+      "evidence_revision": "77c76e0b5784191ac3f31f85a25b163a7481a952a85f7f5967dd36488c8fb195",
+      "failure": null,
+      "family": "public_data",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    },
+    "staging_qa": {
+      "evidence_revision": "1908733a6f4b6fc924668fc84dbc8a481bbfd007790610a00969dcdd2ae0ff78",
+      "failure": {
+        "conclusion": "failure",
+        "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+        "head_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+        "run_id": 38116961282,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282"
+      },
+      "family": "staging_qa",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "input_or_evidence_changed",
+      "task_id": "staging_qa_failed_run_38116961282"
+    }
+  },
+  "generated_at": "2026-10-11T06:25:47.641878+00:00",
+  "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+  "kind": "controller_observation",
+  "operation_id": "5f2f5eccada443209c0f042691d28ab4",
+  "stalled_tasks": [
+    {
+      "family": "editorial",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "editorial_repair_lane_2026_10_11"
+    },
+    {
+      "family": "fiscalization",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    {
+      "family": "media",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    {
+      "family": "mutualities",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    },
+    {
+      "family": "public_data",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    }
+  ]
+}
