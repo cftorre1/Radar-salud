@@ -1,0 +1,57 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 12,
+      "material_event_count": 15,
+      "max_material_gap_seconds": 11287.204481,
+      "mode": "live",
+      "observed_seconds": 14400.0,
+      "original_started_at": "2026-10-11T05:29:46.231497Z",
+      "owner_observation_verified": false,
+      "owner_prompts": 0,
+      "owner_restarts": 0,
+      "total_elapsed_seconds": 31402.462305,
+      "window_started_at": "2026-10-11T10:13:08.693802Z"
+    },
+    "observed_until": "2026-10-11T14:13:08.693802Z",
+    "reasons": [
+      "owner_intervention_observation_not_verified",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed",
+      "material_progress_gap_exceeded_30m"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {
+    "fiscalization": {
+      "evidence_revision": "fa2d01f104d3af1072b05dc6344d016d36d8b04cc22b82a215cebf318a2fbb3e",
+      "failure": null,
+      "family": "fiscalization",
+      "input_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "reason": "input_or_evidence_changed",
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    "media": {
+      "evidence_revision": "20ea09e84056523109fdf7a51f80c337b4ad89112bcfd6132ba00935e7b18ccb",
+      "failure": null,
+      "family": "media",
+      "input_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "reason": "input_or_evidence_changed",
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    "public_data": {
+      "evidence_revision": "96f8c77e21a5c0aab364f23319d16fe7364a79d1f71107b6f505ba1e5c513e5f",
+      "failure": null,
+      "family": "public_data",
+      "input_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "reason": "input_or_evidence_changed",
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    }
+  },
+  "generated_at": "2026-10-11T14:13:08.693802+00:00",
+  "input_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+  "kind": "controller_observation",
+  "operation_id": "d95a434f0a4b49319b47092854c46dfb",
+  "stalled_tasks": []
+}
