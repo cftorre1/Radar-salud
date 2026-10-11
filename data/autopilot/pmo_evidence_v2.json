@@ -6,13 +6,13 @@
     "queue_blob_sha": "839728922ad473867429ff96f3ff2ebbdf001b4b",
     "queue_sha256": "d6d1338359a937d45015cfa88a7f1da88cd262f311bfcf37391f400348ee088f",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_control_sha256": "5526a7bdb97e0c47c1fb07442d723c7d081ccef0ac67f57c7f8a4becfe5ee86a",
-    "state_sha": "7babfabcc141f7627d7e35ff09176b649034425e"
+    "state_control_sha256": "2204e83ffca25d7130fc2175ccfd4ce7a01880c172efb69f91025a1a296fa6c2",
+    "state_sha": "a766818913894670be71f74a57ecfb60f97a4085"
   },
   "canonical_pmo_updated": false,
   "criteria": {
     "autonomous_pickup": {
-      "declared_pickups": 12,
+      "declared_pickups": 13,
       "reason": "Worker event/actor causality has not been independently verified.",
       "status": "NOT_PROVEN"
     },
@@ -28,7 +28,8 @@
         "source_repair_fiscalization_lane_2026_10_11",
         "source_repair_mutualities_lane_2026_10_11",
         "source_repair_public_data_lane_2026_10_11",
-        "staging_qa_failed_run_38113830124"
+        "staging_qa_failed_run_38113830124",
+        "staging_qa_failed_run_38116961282"
       ],
       "repaired_event_ids": [],
       "satisfies_legacy_stage_a_repair": false,
@@ -39,15 +40,15 @@
     },
     "legacy_stage_a": {
       "metrics": {
-        "autonomous_pickups": 12,
-        "material_event_count": 17,
-        "max_material_gap_seconds": 928.776512,
+        "autonomous_pickups": 13,
+        "material_event_count": 19,
+        "max_material_gap_seconds": 959.400497,
         "mode": "live",
-        "observed_seconds": 2255.443716,
+        "observed_seconds": 2393.038744,
         "owner_observation_verified": false,
         "owner_restarts": 0
       },
-      "observed_until": "2026-10-11T06:07:21.675213Z",
+      "observed_until": "2026-10-11T06:09:39.270241Z",
       "reasons": [
         "four_real_wall_hours_not_observed",
         "owner_intervention_observation_not_verified",
@@ -64,11 +65,11 @@
     "useful_work_window": {
       "is_live_proof": false,
       "metrics": {
-        "autonomous_pickups": 12,
-        "material_event_count": 17,
-        "max_material_gap_seconds": 928.776512,
+        "autonomous_pickups": 13,
+        "material_event_count": 19,
+        "max_material_gap_seconds": 959.400497,
         "mode": "live",
-        "observed_seconds": 2255.443716,
+        "observed_seconds": 2393.038744,
         "owner_observation_verified": false,
         "owner_restarts": 0
       }
@@ -76,20 +77,20 @@
   },
   "kind": "autonomy_pmo_evidence",
   "legacy_stage_a_status": "NOT_PROVEN",
-  "material_event_count": 47,
-  "material_signature": "b6442564dbc97dd5468fc33b9932b2104a84d7aacd86134536324619b8e571c8",
+  "material_event_count": 49,
+  "material_signature": "edfa3c5897433170393f1c3df776794a324db97eebb864664a3bb938442e8766",
   "observation": {
-    "path": "data/autopilot/evidence/observation-301baffa5e5d4f31a3eecf43a72be309.json",
-    "sha256": "b8a5c17a1caacd11bf957cdd0eb1d1f7ab4cb43c97092988fa14f87359a21146",
+    "path": "data/autopilot/evidence/observation-55abc9d746384d33990f31a572dc9d67.json",
+    "sha256": "1b67954c9bfbc7071a158104d2961aa0e2a1afcfe4911bfe3799c7ddeb641dad",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_sha": "7babfabcc141f7627d7e35ff09176b649034425e"
+    "state_sha": "a766818913894670be71f74a57ecfb60f97a4085"
   },
   "owner_followup_count": null,
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
   "stalls": [],
   "task_counts": {
-    "BLOCKED": 36,
-    "READY": 2
+    "BLOCKED": 37,
+    "READY": 1
   }
 }

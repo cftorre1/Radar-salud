@@ -2003,5 +2003,30 @@
     "source_closed": false,
     "specific_fix": "Parse structured source evidence before truncation; retain bounded display log and full stdout byte count/SHA256. Commit 1d28d63, deployed main dd2d206.",
     "status": "infrastructure_repair_verified_hosted_source_acceptance_open"
+  },
+  {
+    "blocker_fingerprint": "b715a79803690ffb2a4716f4b67642fb8e6eb23a28fa26f031ed0603d6154ccc",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-55abc9d746384d33990f31a572dc9d67.json",
+        "sha256": "1b67954c9bfbc7071a158104d2961aa0e2a1afcfe4911bfe3799c7ddeb641dad",
+        "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+        "state_sha": "a766818913894670be71f74a57ecfb60f97a4085"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: staging_qa_failed_run_38116961282",
+    "id": "autonomy_observed_ffd44e15c6727da082df50846d633674049202d627f4a56e870ebdeecfd07a55",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "staging_qa_failed_run_38116961282"
   }
 ]

@@ -6,8 +6,8 @@
     "queue_blob_sha": "839728922ad473867429ff96f3ff2ebbdf001b4b",
     "queue_sha256": "d6d1338359a937d45015cfa88a7f1da88cd262f311bfcf37391f400348ee088f",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_control_sha256": "5526a7bdb97e0c47c1fb07442d723c7d081ccef0ac67f57c7f8a4becfe5ee86a",
-    "state_sha": "7babfabcc141f7627d7e35ff09176b649034425e"
+    "state_control_sha256": "2204e83ffca25d7130fc2175ccfd4ce7a01880c172efb69f91025a1a296fa6c2",
+    "state_sha": "a766818913894670be71f74a57ecfb60f97a4085"
   },
   "canonical_queue_updated": false,
   "derived_runtime_tasks": [
@@ -88,9 +88,9 @@
       "task_id": "staging_qa_failed_run_38113830124"
     },
     {
-      "attempts": 0,
-      "blocker_evidence_count": 0,
-      "blocker_fingerprint": null,
+      "attempts": 1,
+      "blocker_evidence_count": 5,
+      "blocker_fingerprint": "b715a79803690ffb2a4716f4b67642fb8e6eb23a28fa26f031ed0603d6154ccc",
       "candidate_review": {
         "candidate_branch": null,
         "candidate_commit": null,
@@ -105,7 +105,7 @@
       "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
       "failure_verified": true,
       "family": "staging_qa",
-      "fence": 0,
+      "fence": 1,
       "input_fingerprint": "3c75e89e52098d836b1a51b09b79b21210d6c52851b813a1973c56a9499bb42e",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_ready_at": "2026-10-11T06:07:05.137446Z",
@@ -118,20 +118,20 @@
         "recovery_deadline_at": null,
         "token_sha256": null
       },
-      "material_progress_at": null,
+      "material_progress_at": "2026-10-11T06:09:07.790367Z",
       "reason": null,
-      "recovery_episode": null,
+      "recovery_episode": "f6682fbf21e28a62f0333785de12f199ec8b884a0136d612d3ef30f1e21eb12f",
       "recovery_reclaims": 0,
-      "status": "READY",
+      "status": "BLOCKED",
       "task_id": "staging_qa_failed_run_38116961282"
     }
   ],
   "kind": "queue_runtime_projection",
   "observation": {
-    "path": "data/autopilot/evidence/observation-301baffa5e5d4f31a3eecf43a72be309.json",
-    "sha256": "b8a5c17a1caacd11bf957cdd0eb1d1f7ab4cb43c97092988fa14f87359a21146",
+    "path": "data/autopilot/evidence/observation-55abc9d746384d33990f31a572dc9d67.json",
+    "sha256": "1b67954c9bfbc7071a158104d2961aa0e2a1afcfe4911bfe3799c7ddeb641dad",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_sha": "7babfabcc141f7627d7e35ff09176b649034425e"
+    "state_sha": "a766818913894670be71f74a57ecfb60f97a4085"
   },
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
