@@ -248,7 +248,7 @@ def test_native_engine_replay_routes_reviewed_normative_when_ai_budget_is_exhaus
         def discover(self):
             self.surface_results=[{'url':PAGES[0][1],'status':'parsed','documents':1}]
             return [raw]
-    for name in ['SuperintendenciaStatsScout','SuperintendenciaNormativaScout','SuperintendenciaFiscalizacionScout','MinsalNewsScout','FonasaNewsScout','FonasaDataHubScout','IspAnamedAlertScout','IspSurveillanceScout','CorporateNewsroomScout','DeisResourceScout','ClinicasChileScout','SusesoNormativeScout','SusesoNewsScout','DfHealthScout','CuratedBetaSourceScout','DiarioOficialHealthScout']:
+    for name in ['SuperintendenciaStatsScout','SuperintendenciaNormativaScout','SuperintendenciaFiscalizacionScout','MinsalNewsScout','FonasaNewsScout','FonasaDataHubScout','IspAnamedAlertScout','IspSurveillanceScout','CorporateNewsroomScout','DeisDocumentScout','ClinicasChileScout','SusesoNormativeScout','SusesoNewsScout','DfHealthScout','CuratedBetaSourceScout','DiarioOficialHealthScout']:
         monkeypatch.setattr(engine_cli,name,Empty)
     monkeypatch.setattr(engine_cli,'SusesoFiscalizacionScout',Fiscal)
     monkeypatch.setattr(paths,'project_root',lambda:tmp_path)

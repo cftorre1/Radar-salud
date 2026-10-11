@@ -946,6 +946,36 @@
       "production_updated": false,
       "pr_closed": false
     },
+    "public_sources_c_2026_10_11": {
+      "branch": "codex/c-public-sources-20261011",
+      "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "verdict": "branch_runtime_proven_1_degraded_4_external_blockers",
+      "artifacts": [
+        "data/audits/public_sources_c_20261011/recovery/qa/manifest.json",
+        "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa-national-catalog.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa-financing-alternatives.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa_datos_abiertos-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/isp_surveillance-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/deis-checkpoint.json",
+        "docs/PUBLIC_SOURCES_C_2026_10_11.md"
+      ],
+      "source_outcomes": {
+        "fonasa": "EXTERNAL_BLOCKER_PROVEN",
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_anamed": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_surveillance": "EXTERNAL_BLOCKER_PROVEN",
+        "deis": "OPERATIVE_DEGRADED"
+      },
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+      "validated_code_sha": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
+      "staging_merge_sha": null,
+      "postmerge_runtime_verified": false,
+      "global_release_pass": false,
+      "primary_bundle": "data/audits/public_sources_c_20261011/recovery/runs/38117670184/full-primary-evidence.zip"
+    },
     "integration_commander_df_20261011": {
       "issue": [
         5,
@@ -1612,6 +1642,24 @@
       "required_data": "hosting aprobado, volumen durable, remitente, destinatario interno y credenciales seguras",
       "estimated_time": "según decisión y aprovisionamiento del proveedor",
       "beta_impact": "No bloquea Beta cerrada; el CTA permanece fail-closed hasta activar backend autorizado."
+    },
+    {
+      "id": "public_source_official_access_fonasa",
+      "action": "Administrador web de FONASA: revisar el rechazo HTTP403 del frontal AWS ALB para GET público desde GitHub hospedado, habilitar acceso autorizado de monitoreo o entregar export oficial accesible y confirmar rutas canónicas de noticias; luego repetir esta Action.",
+      "provider": "FONASA web/infraestructura",
+      "required_data": "Acceso HTTPS autorizado verificable o export/feed oficial actual con fechas y enlaces de recursos",
+      "estimated_time": "No verificable; depende del propietario oficial",
+      "beta_impact": "Limita cobertura de las fuentes indicadas; no detiene captura DEIS ni certifica release",
+      "evidence": "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json"
+    },
+    {
+      "id": "public_source_official_access_isp_anamed",
+      "action": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action.",
+      "provider": "ISP redes/hosting/web",
+      "required_data": "Acceso HTTPS autorizado verificable o export/feed oficial actual con fechas y enlaces de recursos",
+      "estimated_time": "No verificable; depende del propietario oficial",
+      "beta_impact": "Limita cobertura de las fuentes indicadas; no detiene captura DEIS ni certifica release",
+      "evidence": "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json"
     }
   ],
   "changelog": [
@@ -2133,6 +2181,21 @@
       "evidence": [
         "data/audits/work3_adversarial_2026_10_11T072159Z.json"
       ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Public-source C isolated lane: explicit publication provenance, official HTTPS redirects, dated DEIS classification documents and ISP publication-column coverage; current health stays error/unverified for exact external proxy403. No staging/main/production promotion.",
+      "evidence": [
+        "public_sources_c_2026_10_11"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Public data C recovery: real GitHub native discovery/PDF/catalógos and official national datasets; DEIS degraded operational, four blockers demonstrated across runtimes with official alternatives and exact owner steps. Stock preserved; no staging/main/production promotion or global QA closure.",
+      "evidence": [
+        "public_sources_c_2026_10_11",
+        "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -2140,8 +2203,9 @@
     {
       "id": "fonasa_unavailable",
       "severity": "warning",
-      "description": "FONASA oficial discovery 0, technical_status error HTTPError en piloto #23; no validada como fuente activa.",
-      "source": "Daily Radar pilot #21; data/state/discovery_run.json y data/source_health.json"
+      "description": "FONASA direct current coverage EXTERNAL_BLOCKER_PROVEN: GitHub verified TLS followed by awselb/2.0 HTTP403; current listings inaccessible. National publisher catalog complete but historical; official GRD references captured under DIPRES/MINSAL attribution.",
+      "source": "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json",
+      "next_action": "Administrador web de FONASA: revisar el rechazo HTTP403 del frontal AWS ALB para GET público desde GitHub hospedado, habilitar acceso autorizado de monitoreo o entregar export oficial accesible y confirmar rutas canónicas de noticias; luego repetir esta Action."
     },
     {
       "id": "beta_contract_not_gated",
@@ -2158,8 +2222,9 @@
     {
       "id": "isp_anamed_unavailable",
       "severity": "warning",
-      "description": "ISP/ANAMED responde URLError desde GitHub Actions piloto #23: 0 descubierto, 0 publicado, sin evaluación editorial. Conector técnico fail-closed y QA #74 no equivalen a fuente validada.",
-      "source": "data/state/discovery_run.json; data/source_health.json; piloto #23"
+      "description": "ISP/ANAMED EXTERNAL_BLOCKER_PROVEN: DNS resolves four official .cl/.gob.cl aliases but TCP443 times out before TLS from GitHub; Codex independently rejects CONNECT. Recent indexed alert remains primary-capture omission, no publication claimed.",
+      "source": "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json",
+      "next_action": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action."
     },
     {
       "id": "pfizer_newsroom_misroute",
@@ -2396,6 +2461,20 @@
         "historical_active_stock": 17,
         "closure_status": "OPEN: isolated candidate repair; staging merge, post-merge core and global gates outstanding",
         "artifact": "data/audits/fiscalizacion/native_reconciliation_2026_10_11.json"
+      }
+    },
+    {
+      "id": "public_data_lane_2026_10_11_proxy_connect",
+      "severity": "warning",
+      "description": "Codex proxy rejection remains environmental, superseded as sole closure cause. Real GitHub captures recover DEIS with exact degradation; FONASA current news/hub/docs are ALB HTTP403 after TLS, ISP four aliases time out on TCP443 before TLS. Official alternatives evaluated; current first-party coverage remains blocked for four sources.",
+      "source": "data/audits/public_sources_c_20261011/recovery/recovery-matrix.json",
+      "next_action": "Integración/Reviewer: revisar PR #13, hacer merge seguro a staging cuando sus gates lo permitan y repetir runtime real de DEIS después del merge. Mantener independientes los blockers FONASA ALB403 e ISP TCP443; sus propietarios oficiales deben habilitar acceso o export actual. No cerrar issue #5 con evidencia sólo de rama.",
+      "source_outcomes": {
+        "fonasa": "EXTERNAL_BLOCKER_PROVEN",
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_anamed": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_surveillance": "EXTERNAL_BLOCKER_PROVEN",
+        "deis": "OPERATIVE_DEGRADED"
       }
     }
   ],

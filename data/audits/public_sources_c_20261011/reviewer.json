@@ -1,0 +1,214 @@
+{
+  "reviewer": "independent QA agent /root/reviewer",
+  "reviewed_at_utc": "2026-10-11T04:38:08.861931+00:00",
+  "branch": "codex/c-public-sources-20261011",
+  "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "head_before_integration_commit": "b61dcab5dfcd8008cf59d7628dbb3f1616b9b6e7",
+  "review_includes_uncommitted_final_integration": true,
+  "verdict": "engineering_pass_with_external_blockers",
+  "blocking_code_findings": [],
+  "operational_sources": 0,
+  "operational_claim_approved": false,
+  "acceptance_scope": "Engineering changes, durable evidence and exact external-blocker acceptance for the five authorized lanes. No staging/main/production promotion and no claim of successful runner-origin captures.",
+  "independent_tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_public_source_runtime.py tests/test_public_source_integrity.py tests/test_fonasa_recovery.py tests/test_fonasa_source.py tests/test_isp_recovery.py tests/test_isp_anamed_source.py tests/test_deis_recovery.py tests/test_deis_source.py tests/test_source_health_facets.py tests/test_live_evidence_replay.py",
+    "result": "112 passed in 0.28s",
+    "exit_code": 0
+  },
+  "other_validation": {
+    "diff_check": "git diff --check passed",
+    "full_suite": {
+      "executed_by": "root",
+      "result": "364 passed, 1 skipped, 1 failed",
+      "failure": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+      "classification": "pre-existing staging baseline failure, outside exclusive public-source scope"
+    },
+    "baseline_failure_independently_reproduced": {
+      "baseline_worktree": "/workspace/work/c-baseline-check",
+      "baseline": "cadb6c2",
+      "baseline_command": "PYTHONPATH=src /workspace/Radar-salud/.venv/bin/python -m pytest -q tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+      "branch_command": ".venv/bin/python -m pytest -q tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+      "both_results": "1 failed; tests/test_web_snapshot.py:289 asserts 11 >= 12"
+    },
+    "npm_test": {
+      "executed_by": "root",
+      "result": "passed"
+    }
+  },
+  "live_blocker_independently_reproduced": {
+    "method": "curl --head --location --max-time 10 with RadarSaludBot/0.1 (+public-source-monitor), inherited proxy, TLS verification retained, explicit network tool permission",
+    "endpoints": [
+      "https://www.fonasa.gob.cl/noticias/",
+      "https://www.ispch.cl/categorias-alertas/anamed/",
+      "https://deis.minsal.cl/centrofic/"
+    ],
+    "observed_at_utc": "2026-10-11T04:27:29Z to 2026-10-11T04:27:34Z",
+    "all_exit_codes": 56,
+    "http_layer": "proxy CONNECT",
+    "proxy_response": "HTTP/1.1 403 Forbidden; server: envoy; content-length: 16; content-type: text/plain",
+    "origin_tls_observed": false,
+    "origin_http_status_proven": false,
+    "origin_redirect_chain_proven": false,
+    "origin_user_agent_effect_proven": false,
+    "origin_html_structure_live_parser_verified": false
+  },
+  "source_acceptance": {
+    "fonasa": {
+      "result": "exact_external_blocker_and_official_fallbacks_evaluated",
+      "evidence": [
+        "fonasa_newsroom_checkpoint.json",
+        "fonasa_transport_probe.json",
+        "fonasa_browser_probe.json"
+      ],
+      "limitation": "No current official newsroom capture from the runner or secondary navigation. No unverified fallback enabled."
+    },
+    "fonasa_datos_abiertos": {
+      "result": "exact_external_blocker_and_all_four_subfronts_evaluated",
+      "evidence": [
+        "fonasa_data_checkpoint.json",
+        "fonasa_fallback_transport.json",
+        "fonasa_fallback_browser_probe.json"
+      ],
+      "subfronts": [
+        "Noticias",
+        "Biblioteca / Cuenta Publica",
+        "Boletines estadisticos",
+        "Analisis"
+      ],
+      "limitation": "PDF/spreadsheet/title periods never become publication dates. Independent paths blocked; schema not assumed."
+    },
+    "isp_anamed": {
+      "result": "exact_external_blocker_and_official_fallbacks_evaluated",
+      "evidence": [
+        "isp_anamed_checkpoint.json",
+        "isp_anamed_transport.json",
+        "isp_discovery_search.json"
+      ],
+      "limitation": "Indexed official table corroborates labels and publication column; it is not live raw HTML or PDF capture."
+    },
+    "isp_surveillance": {
+      "result": "exact_external_blocker_and_both_subfronts_evaluated",
+      "evidence": [
+        "isp_surveillance_checkpoint.json",
+        "isp_surveillance_transport.json",
+        "isp_surveillance_documents_browser.json"
+      ],
+      "subfronts": [
+        "Boletines de vigilancia de laboratorios",
+        "Vigilancia de virus respiratorios"
+      ],
+      "limitation": "Date/week in report title or filename is excluded. Respiratory detail date must be bound to its exact PDF link."
+    },
+    "deis": {
+      "result": "exact_runtime_external_blocker_with_official_dated_document_fallback_evaluated",
+      "evidence": [
+        "deis_checkpoint.json",
+        "deis_network_probe.json",
+        "deis_browser_official_surfaces.json",
+        "deis_browser_pdf_checks.json"
+      ],
+      "limitation": "Secondary browser can read Centro FIC notices and two PDFs; runner captures remain blocked. Data period, upload directory, month-only and editorial-only updates remain excluded."
+    }
+  },
+  "source_health_integrity": {
+    "five_source_rows_mirror_backend_and_web": true,
+    "other_source_rows_unchanged_from_respective_baselines": true,
+    "authorized_sources": [
+      "fonasa",
+      "fonasa_datos_abiertos",
+      "isp_anamed",
+      "isp_surveillance",
+      "deis"
+    ],
+    "all_five_technical_status": "error",
+    "all_five_coverage_status": "unverified",
+    "exact_failure_stage": "proxy_connect_rejected",
+    "poll_mode": "discovery_and_document_verification_only",
+    "queue_history_seen_and_watermarks_not_mutated_by_monitor": true,
+    "scope_metadata": "Web preserves unrelated historic source rows and overall generated_at; public_data_sources_checked_at identifies this limited refresh.",
+    "orchestrator_queue_change": "Only the task source_repair_public_data_lane_2026_10_11 plus file updated_at is changed; status, evidence, blocker and resume action belong to this authorized lane."
+  },
+  "resolved_review_findings": [
+    {
+      "id": "R1",
+      "issue": "List diagnostics could raise AttributeError in engine/source_health.",
+      "resolution": "Normalized source diagnostics to dictionaries; production imports and replay tests pass."
+    },
+    {
+      "id": "R2",
+      "issue": "Publication guard accepted unrelated official detail URLs and arbitrary date substrings.",
+      "resolution": "Strict whole-field date parsing, detail identity binding and listing provenance binding; independent adversarial repros now return False."
+    },
+    {
+      "id": "R3",
+      "issue": "Generic HTML/PDF helpers followed redirects without official final-authority validation.",
+      "resolution": "Scoped HTTPS allowlist checks before redirects and after response, default proxy/CA preserved, PDF signature/content validation."
+    },
+    {
+      "id": "R4",
+      "issue": "ANAMED/laboratory row date was not bound to publication column semantics.",
+      "resolution": "Recognized Fecha Publicacion column binding, colspan handling and changed-header regression rejection."
+    },
+    {
+      "id": "R5",
+      "issue": "Historic signals or undated candidates could mask current coverage gap.",
+      "resolution": "Zero verified-publication diagnostics affect health even with historic signal; partial fronts produce degraded/partial health."
+    },
+    {
+      "id": "R6",
+      "issue": "PDF capture failure was indistinguishable from AI budget deferral.",
+      "resolution": "Scoped engine records exact deferred reasons/causes and capture_pending diagnostics; unrelated lanes retain original behavior."
+    },
+    {
+      "id": "R7",
+      "issue": "Detail-to-PDF date exception required coherent document link evidence.",
+      "resolution": "Guard requires matching detail, document and explicit link evidence identities."
+    },
+    {
+      "id": "R8",
+      "issue": "Monitor could claim operational after dated listing without downloading PDFs.",
+      "resolution": "Monitor verifies every discovered PDF, stores SHA256/final URL/byte count/capture timestamp, and marks failed PDF captures degraded/nonoperational."
+    },
+    {
+      "id": "R9",
+      "issue": "Legacy tests could pass via early guard/transport failure instead of exercising AI assessment.",
+      "resolution": "Updated explicit evidence fixtures and actual scoped-helper patches; stage-specific deferral assertions pass."
+    }
+  ],
+  "improvement_review": {
+    "maintainability": "Per-source modules plus shared scoped transport/provenance avoid changing unrelated source fetch behavior. Daily engine directly imports strict scouts; legacy DEIS hub scout remains compatibility code and should be clearly deprecated in a future cleanup.",
+    "integrity": "Synthetic fixtures are labeled; indexed/rendered browser evidence is distinguished from wire captures and origin status. No false LIVE/operational evidence enters publication state.",
+    "scope_clarity": "Implementation, health refresh, audit artifacts and task ledger stay within the five authorized lanes. The pre-existing normative snapshot failure is explicit and unchanged."
+  },
+  "required_external_resume": [
+    "Enable only required official authorities through the supported environment network configuration; preserve proxy and verified TLS.",
+    "Run PYTHONPATH=src .venv/bin/python scripts/check_public_sources.py --record-health and retain current raw official HTML/PDF captures, headers/final URLs and date evidence.",
+    "Replay real captures through the parsers, rerun source regressions and Reviewer; do not treat synthetic fixture success or browser indexing as runner operational validation."
+  ],
+  "reviewed_files_sha256": {
+    "src/radar_salud/engine_cli.py": "c049520199b1896fc85164ece865728d3de17d4c970776d4a14283e5e0fd145e",
+    "src/radar_salud/source_scouts.py": "b093f4c0121ab24b587bac25f76f40ef588e1de27656541144845a904a1207a1",
+    "src/radar_salud/fonasa_sources.py": "2e4cd4ab68632f7395c3829efde55091d08454c9a05169642db072419f7642e9",
+    "src/radar_salud/isp_sources.py": "480a28061ca0707ff675e462cd6fba7e5b9c0b4d4902c4c178915176aad69891",
+    "src/radar_salud/deis_sources.py": "c5cdbdd824134a11926504d9d7e8175e4dd960a9df00d34f7d256deb9a03d0e4",
+    "src/radar_salud/public_source_evidence.py": "c5f511602f88f9b45394f5880afbc027659aa3db41cd2d74384553b6519294f2",
+    "src/radar_salud/public_source_transport.py": "2b64b909f9102f38d0419be758a168e6d8235e85ceab5fac363c925a55ccfe11",
+    "src/radar_salud/public_source_pipeline.py": "b2d10adbbfe53b50dddee2e6bbb98c2679b2db9b6a33a1768b1d4d00ae2ba001",
+    "src/radar_salud/source_health.py": "c7d966de7a40b2dc9e7c5a874a2e3014f8a8d2283090d6fd5897890177997622",
+    "scripts/check_public_sources.py": "5cc138cdffac359d418700ec96c56efe3a3992fa497c34b7cdb8a9b26bf756ee",
+    "tests/test_public_source_runtime.py": "0a93601ddf36d501e73c8e970d78201d5054bcf0fbb4a86e093b1bcc7caca7e7",
+    "tests/test_public_source_integrity.py": "67a56effe14b5f5458ace7332eb124dd74798359651ca2954feeb52f1212dbb8",
+    "tests/test_fonasa_recovery.py": "c0fbe9a8a74c3704fa0e7a60faf639d4a97cfad737f486e0b5de3467e6360859",
+    "tests/test_fonasa_source.py": "1deaa4b2e36d8d53de51326f00d290329a6a313ceeba6b93d69a82b2b6953a70",
+    "tests/test_isp_recovery.py": "d3b829515f14716364b38368f819160cfaf16deb1976430d3f985ab92104cfc2",
+    "tests/test_isp_anamed_source.py": "f8104a00db56f43a641d855362913897b7656470f65846444ccf0eec8b5b15af",
+    "tests/test_deis_recovery.py": "42993d7fd00d7942b00ca93a8859bf6ccb686787394da4b94e646ceb4ba4ced7",
+    "tests/test_deis_source.py": "cc504405ff02dd69bd0ec39a3e8ef318efbd15adaec1604afe8e2aa3a5262168",
+    "tests/test_source_health_facets.py": "2c64c52b192f5c51b2642f6fde256cd8b759690cd7a02d1b062a7fbf57401016",
+    "tests/test_live_evidence_replay.py": "6082f2b3cc529519699e364dfb120ab573505055eb9f64f368d400e9635387d2",
+    "data/source_health.json": "1f7d993bf552174a504f9f29c50216564a185ef4d62eab5a5c7aacd5a77994cd",
+    "web/data/source_health.json": "d89e099124a3d3790000b8d5a52d55a3679e4430c580d0dfe2e016cca589cf37",
+    "data/audits/public_sources_c_20261011/runtime_capture.json": "3369bcf660235b50b2cdf8edf869007d254f706356f8afa2a5bed72586e25900",
+    "config/orchestrator_queue.json": "6c25b6aa6f6fdd0ed8fb31473bb5768e4a83a2cd6a2f9b0a01be925214f09c7b"
+  }
+}

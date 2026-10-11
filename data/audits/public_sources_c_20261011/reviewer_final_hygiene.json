@@ -1,0 +1,32 @@
+{
+  "reviewer": "independent QA agent /root/reviewer",
+  "checked_at_utc": "2026-10-11T04:48:05.590074+00:00",
+  "verdict": "cosmetic_delta_pass",
+  "head_sha": "6fe9806f29783551695dd7f92243e71ce678d686",
+  "upstream_baseline_sha": "365541aa5bbe29674a59d0e90efcf6f0e104afdd",
+  "reviewed_delta": {
+    "path": "tests/test_isp_recovery.py",
+    "added_lines": 0,
+    "removed_lines": 2,
+    "only_removed_content": "Two empty lines at end of file",
+    "exact_bytes_check": "HEAD file equals working file plus two newline bytes",
+    "python_ast_unchanged": true,
+    "other_tracked_working_tree_changes": []
+  },
+  "diff_checks": {
+    "working_tree": "passed",
+    "upstream_baseline_to_working_tree": "passed"
+  },
+  "tests": {
+    "executed_by": "root",
+    "scope": "tests/test_isp_recovery.py",
+    "result": "29 passed",
+    "full_suite_repeated": false,
+    "reason": "The exact byte delta is limited to EOF empty lines and the Python AST is unchanged."
+  },
+  "functional_code_changed": false,
+  "prior_source_and_merge_review_remain_valid": true,
+  "before_sha256": "d3b829515f14716364b38368f819160cfaf16deb1976430d3f985ab92104cfc2",
+  "after_sha256": "4a0fcb8af3cf34119c5874b0c2485d4f17f30c5b46474eaaac13f90449806c0d",
+  "blocking_findings": []
+}
