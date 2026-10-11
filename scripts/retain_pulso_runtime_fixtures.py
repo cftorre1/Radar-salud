@@ -118,7 +118,7 @@ def discovery_evidence(discovery_path, artifact_dir=None):
         payload = path.read_bytes()
         value = json.loads(payload)
         details = value.get("source_details", {}).get(SOURCE, [])
-        if any(row.get("status") == "public_feed_page" for row in details):
+        if any(row.get("status") in {"public_feed_page", "discovered_metadata_only"} for row in details):
             candidates.append((value.get("at") or "", sha256(payload), details))
     return max(candidates, key=lambda row: row[0]) if candidates else None
 
@@ -219,7 +219,8 @@ def preserve_api_proof(sources, evidence, output, requests):
             "raw_payload_retention": "Exact observed first and last three API responses per feed; interior pages retain observed HTTP metadata only."}
 
 
-def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=10, discovery_path=None):
+def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=10, discovery_path=None,
+           original_fixture_manifests=None):
     control_bytes = control_path.read_bytes()
     control = json.loads(control_bytes)
     window = control["window_90"]
@@ -231,11 +232,30 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
     previous_path = output / "manifest.json"
     previous = json.loads(previous_path.read_text()) if previous_path.exists() else {}
     sources = capture_manifests(capture_manifest, artifact_dir)
+    fallback_fixture_sources = set()
+    # Warm discovery can legitimately reuse primary bytes preserved by the
+    # original corpus collector. Retention does not recapture or relabel them.
+    if original_fixture_manifests is None:
+        original_fixture_manifests = [ROOT / "tests/fixtures" / name / "manifest.json" for name in (
+            "pulso_editorial_exception_real", "pulso_thin_primary_real", "pulso_targeted_primary_real")]
+    for path in original_fixture_manifests:
+        if path.exists():
+            value = json.loads(path.read_bytes())
+            if value.get("source") == SOURCE and isinstance(value.get("requests"), list):
+                manifest_hash = sha256(path.read_bytes())
+                sources.append((path.parent, manifest_hash, value["requests"]))
+                fallback_fixture_sources.add((path.parent, manifest_hash))
     # Existing verified fixtures preserve original provenance when the next run
     # serves details from a cache and its HTTP observer captures no article HTML.
     if previous.get("requests"):
         sources.append((output, sha256(previous_path.read_bytes()), previous["requests"]))
+    evidence = discovery_evidence(discovery_path, artifact_dir)
+    metadata_targets = {}
+    for trace in evidence[2] if evidence is not None else []:
+        if trace.get("status") == "discovered_metadata_only" and (url := normalized_url(trace.get("url"))) is not None:
+            metadata_targets.setdefault(url, []).append(trace)
     candidates = {}
+    metadata_candidates = {}
     debug = []
     for base, manifest_hash, records in sources:
         for record in records:
@@ -243,7 +263,10 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
             candidate = (base, manifest_hash, record)
             if url in controls:
                 candidates.setdefault(url, []).append(candidate)
-            if record.get("primary_article_error") and record.get("gzip_file"):
+            if url in metadata_targets:
+                metadata_candidates.setdefault(url, []).append(candidate)
+            if (record.get("primary_article_error") and record.get("gzip_file")
+                    and (base, manifest_hash) not in fallback_fixture_sources):
                 debug.append(candidate)
     requests = {}
 
@@ -272,7 +295,10 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
                 title, body, metadata = extract_article(text, result["url"])
                 result.update(title=title, publication_date=metadata["publication_date"],
                               publication_date_source=metadata.get("publication_date_source"),
-                              section=metadata.get("section"), primary_body_chars=len(body))
+                              section=metadata.get("section"), primary_body_chars=len(body),
+                              parsed_primary_identity_verified=metadata.get("primary_identity_verified"),
+                              parsed_publication_date_verified=metadata.get("publication_date_verified"),
+                              parsed_publisher_exception_reason=metadata.get("publisher_exception_reason"))
                 result["fixture_status"] = "verified_original"
                 if expected and metadata["publication_date"] != expected.get("publication_date"):
                     result["fixture_status"] = "original_date_conflict"
@@ -309,7 +335,35 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
             seen.add(digest)
         if len(debug_rows) >= max_debug:
             break
-    evidence = discovery_evidence(discovery_path, artifact_dir)
+    # Metadata holds are substantive current runtime outcomes, not incidental
+    # parser-debug samples. Every URL must bind to its CURRENT primary SHA.
+    metadata_rows = []
+    for url, traces in sorted(metadata_targets.items()):
+        expected_shas = {trace.get("html_sha256") for trace in traces
+                         if re.fullmatch(r"[0-9a-f]{64}", str(trace.get("html_sha256", "")))}
+        entries = [candidate for candidate in metadata_candidates.get(url, []) if candidate[2].get("status") == 200
+                   and expected_shas.intersection({candidate[2].get("sha256"), candidate[2].get("returned_text_utf8_sha256")})]
+        entries.sort(key=lambda item: item[2].get("captured_at") or "", reverse=True)
+        result = {"url": url, "fixture_status": "missing_current_metadata_hold_original"}
+        attempts = []
+        for candidate in entries:
+            result = preserve(candidate)
+            attempts.append(dict(result))
+            if result.get("original_bytes_verified"):
+                # This status verifies exact observed bytes, including a parser
+                # rejection; it grants no content/date/editorial credit.
+                result["original_parser_replay_status"] = result["fixture_status"]
+                result["fixture_status"] = "hash_verified_current_metadata_hold_original"
+                break
+        result.update(expected_current_primary_sha256s=sorted(expected_shas),
+                      source_observations=[{key: trace.get(key) for key in (
+                          "status", "reason", "publisher_exception_reason", "source_quality_gate", "possible_publication_days",
+                          "publication_date", "publication_date_verified", "primary_identity_verified", "article_verified",
+                          "article_body_complete", "source_content_unavailable_reason", "html_sha256", "captured_at",
+                          "cache_hit", "publisher_lastmod")} for trace in traces],
+                      capture_attempts=attempts, editorial_acceptance=False,
+                      source_sha_missing_or_ambiguous=len(expected_shas) != 1)
+        metadata_rows.append(result)
     api_proof = preserve_api_proof(sources, evidence, output, requests)
     counts = dict(Counter(row["fixture_status"] for row in rows))
     manifest = {"schema_version": "1.0", "source": SOURCE,
@@ -319,6 +373,11 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
                 "window_90": window, "external_control_sha256": sha256(control_bytes),
                 "expected_controls": len(controls), "counts": counts,
                 "fixtures": rows, "debug_parser_errors": debug_rows,
+                "current_metadata_hold_originals": metadata_rows,
+                "current_metadata_hold_expected_unique_urls": len(metadata_targets),
+                "current_metadata_hold_original_status": "ALL_CURRENT_METADATA_HOLD_ORIGINALS_RETAINED_NOT_EDITORIAL_ACCEPTANCE" if metadata_rows and all(
+                    row["fixture_status"] == "hash_verified_current_metadata_hold_original" and not row["source_sha_missing_or_ambiguous"]
+                    for row in metadata_rows) else ("CURRENT_METADATA_HOLD_ORIGINAL_RETENTION_PARTIAL" if metadata_rows else "NO_CURRENT_METADATA_HOLDS"),
                 "public_api_proof": api_proof,
                 "requests": list(requests.values()), "unique_original_payloads": len({row["sha256"] for row in requests.values() if row.get("gzip_file")}),
                 "acceptance_note": "These fixtures prove captured bytes and parser replay; they do not establish discovery recall or editorial acceptance."}

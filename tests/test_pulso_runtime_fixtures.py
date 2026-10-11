@@ -97,6 +97,70 @@ def test_warm_cache_retains_prior_exact_bytes_provenance_and_missing_controls(tm
     assert second["unique_original_payloads"] == 1
 
 
+def real_metadata_observations(tmp_path):
+    """Caller-unit traces over ALL genuine video bytes; never a discovery seed."""
+    source, control, senior, _ = original_capture(tmp_path)
+    original_folder = ROOT / "tests/fixtures/pulso_editorial_exception_real"
+    original_manifest = json.loads((original_folder / "manifest.json").read_text())
+    videos = [row for row in original_manifest["requests"] if row.get("url_bound_video_objects")]
+    assert len(videos) >= 44  # Regression must exceed the incidental debug quota.
+    records, traces = [senior], []
+    for index, witness in enumerate(videos):
+        compressed = (original_folder / witness["gzip_file"]).read_bytes()
+        payload = gzip.decompress(compressed)
+        assert hashlib.sha256(payload).hexdigest() == witness["sha256"]
+        assert hashlib.sha256(compressed).hexdigest() == witness["gzip_sha256"]
+        text = payload.decode(witness.get("charset") or "utf-8", errors="replace")
+        try:
+            _, _, metadata = extract_article(text, witness["url"])
+        except ValueError as error:
+            metadata = getattr(error, "metadata", None)
+            assert metadata is not None  # Actual URL-bound editorial exception.
+        primary_sha = hashlib.sha256(text.encode()).hexdigest()
+        filename = f"real-held-{index}.gz"
+        (source.parent / filename).write_bytes(compressed)
+        records.append(dict(witness, gzip_file=filename, returned_text_utf8_sha256=primary_sha))
+        traces.append(dict(metadata, url=witness["url"], status="discovered_metadata_only", html_sha256=primary_sha))
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": records}))
+    discovery = tmp_path / "discovery_run.json"
+    discovery.write_text(json.dumps({"at": "2026-10-11T08:00:00Z", "source_details": {"pulso_latercera": traces}}))
+    return source, control, discovery, records[1:]
+
+
+def test_all_real_current_metadata_originals_are_retained_without_debug_quota(tmp_path):
+    source, control, discovery, observed = real_metadata_observations(tmp_path)
+    output = tmp_path / "fixtures"
+    result = retain.retain(control, source, output, max_debug=1, discovery_path=discovery, original_fixture_manifests=[])
+    assert result["current_metadata_hold_expected_unique_urls"] == len(observed)
+    assert len(result["current_metadata_hold_originals"]) == len(observed)
+    assert result["current_metadata_hold_original_status"] == "ALL_CURRENT_METADATA_HOLD_ORIGINALS_RETAINED_NOT_EDITORIAL_ACCEPTANCE"
+    for row in result["current_metadata_hold_originals"]:
+        original = next(entry for entry in observed if entry["url"] == row["url"])
+        assert row["sha256"] == original["sha256"] and row["captured_at"] == original["captured_at"]
+        assert (output / row["path"]).read_bytes() == (source.parent / original["gzip_file"]).read_bytes()
+        assert row["fixture_status"] == "hash_verified_current_metadata_hold_original"
+        assert row["editorial_acceptance"] is False
+        request = next(entry for entry in result["requests"] if entry["url"] == row["url"] and entry["sha256"] == row["sha256"])
+        assert request["capture_provenance"] == "preserved_original_http_response"
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": []}))
+    warm = retain.retain(control, source, output, discovery_path=discovery, original_fixture_manifests=[])
+    assert warm["current_metadata_hold_original_status"] == result["current_metadata_hold_original_status"]
+    assert {row["url"]: row["captured_at"] for row in warm["current_metadata_hold_originals"]} == {
+        row["url"]: row["captured_at"] for row in result["current_metadata_hold_originals"]}
+
+
+def test_same_url_older_original_cannot_satisfy_changed_current_metadata_primary_sha(tmp_path):
+    source, control, discovery, observed = real_metadata_observations(tmp_path)
+    snapshot = json.loads(discovery.read_text())
+    snapshot["source_details"]["pulso_latercera"] = [dict(snapshot["source_details"]["pulso_latercera"][0], html_sha256="0" * 64)]
+    discovery.write_text(json.dumps(snapshot))
+    result = retain.retain(control, source, tmp_path / "fixtures", discovery_path=discovery, original_fixture_manifests=[])
+    row, = result["current_metadata_hold_originals"]
+    assert row["fixture_status"] == "missing_current_metadata_hold_original"
+    assert result["current_metadata_hold_original_status"] == "CURRENT_METADATA_HOLD_ORIGINAL_RETENTION_PARTIAL"
+    assert not any(entry["url"] == observed[0]["url"] for entry in result["requests"])
+
+
 def test_original_date_conflict_is_explicit_not_fixture_acceptance(tmp_path):
     source, control, _, _ = original_capture(tmp_path, date="2026-10-09")
     result = retain.retain(control, source, tmp_path / "fixtures")
