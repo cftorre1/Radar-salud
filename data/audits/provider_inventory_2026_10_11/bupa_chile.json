@@ -1133,7 +1133,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516357+00:00",
       "detail_title": "Bupa Chile triunfa en los Premios EIKON 2026 con doble reconocimiento en salud, sostenibilidad e inclusión",
       "article_schemas": [],
@@ -1155,7 +1155,51 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "2b707fedc278ec214618c1aad367606a2d4c5b22e320375c6fc1de39bd9d4496",
+            "status": "rejected",
+            "reason": "reviewed_nonmaterial",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:42:29.789541+00:00",
+              "method": "explicit original piece review; unpaid exclusion only",
+              "reason": "nonmaterial",
+              "rationale": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+              "related_to": [],
+              "prior_queue_state": {
+                "status": "pending",
+                "reason": null
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516357+00:00",
+          "body_sha256": "e9a6fcedf4c6b7271b1ea36f21113411de3c99724e919f1bad06981b05ae7498",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
@@ -1170,7 +1214,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516377+00:00",
       "detail_title": "Bupa Chile y BancoEstado impulsan campaña para acercar la prevención del cáncer a 35 mil mujeres",
       "article_schemas": [],
@@ -1192,7 +1236,53 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Annual October1–31 discounted prevention campaign, continuation of alliance since2024; no permanent capacity or coverage change. Original publication date is not the campaign start.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Annual October1–31 discounted prevention campaign, continuation of alliance since2024; no permanent capacity or coverage change. Original publication date is not the campaign start.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "bec250b2d5f59d9c77da0c22fe6265d4c72f69c5d814f25c64a08f0be985a4b1",
+            "status": "rejected",
+            "reason": "campaign_renewal_without_structural_change",
+            "lane": "BACKFILL",
+            "deferred_detail": "Bupa article publication date unavailable",
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:34:01.091479+00:00",
+              "method": "original evidence + independent Reviewer; no new paid model",
+              "reason": "campaign_renewal_without_structural_change",
+              "rationale": "Annual October1–31 discounted prevention campaign, continuation of alliance since2024; no permanent capacity or coverage change. Original publication date is not the campaign start.",
+              "related_to": [],
+              "historical_processor_reason": "budget_or_analysis_deferred",
+              "historical_model_diagnostics": "not evaluated before original publication/access gate",
+              "prior_queue_state": {
+                "status": "retry",
+                "reason": "budget_or_analysis_deferred"
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516377+00:00",
+          "body_sha256": "15ea5ee0a36129bce69ed9e349ece62545349d0b98981cedb180509c49ad2ecc",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/desafio-busca-incentivar-actividad-fisica-para-transformar-pasos-en-5-000",
@@ -1207,7 +1297,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516389+00:00",
       "detail_title": "Desafío busca incentivar actividad física para transformar pasos en 5.000 m² de áreas verdes",
       "article_schemas": [],
@@ -1229,7 +1319,51 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "f357537388ddf17b47697cee6ad7798ea9537f4f0fa601ac16209ba562871c61",
+            "status": "rejected",
+            "reason": "reviewed_nonmaterial",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:42:29.789541+00:00",
+              "method": "explicit original piece review; unpaid exclusion only",
+              "reason": "nonmaterial",
+              "rationale": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+              "related_to": [],
+              "prior_queue_state": {
+                "status": "pending",
+                "reason": null
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516389+00:00",
+          "body_sha256": "f5dc7bd81a78753f319a8ffd28bf72eb5133271453a6c9ba15b21d48ae224f1c",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/mas-autonomia-y-acompanamiento-las-claves-para-cuidar-la-salud-despues-de",
@@ -1244,7 +1378,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "candidate",
       "capture_date": "2026-10-11T05:53:38.516402+00:00",
       "detail_title": "Más autonomía y acompañamiento: las claves para cuidar la salud después de los 60",
       "article_schemas": [],
@@ -1266,7 +1400,40 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Bupa Conecta introduces insurer handling/reimbursement/appointment support for>14k insured older65. Potential operational insurer change hidden beneath wellness headline; original release date absent, so held without AI/publication.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Bupa Conecta introduces insurer handling/reimbursement/appointment support for>14k insured older65. Potential operational insurer change hidden beneath wellness headline; original release date absent, so held without AI/publication.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "71857c1447c1cb5b688090662fd5c32808434d2fc23c5deecda10e793aa7b64a",
+            "status": "retry",
+            "reason": "original_publication_date_not_exposed",
+            "lane": "BACKFILL",
+            "deferred_detail": "Official original has no editorial publication date; date gate retained. No paid assessment performed.",
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "retry",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516402+00:00",
+          "body_sha256": "1593db1d40949137d3691596d09136e8f5082defe12cdac5ca1f14d7a55f9686",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/clinica-bupa-antofagasta-recibe-certificacion-como-espacio-amigable-con-la",
@@ -1281,7 +1448,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516414+00:00",
       "detail_title": "Clínica Bupa Antofagasta recibe certificación como “Espacio Amigable con la Neurodiversidad”",
       "article_schemas": [],
@@ -1303,7 +1470,51 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "889761931f48cc7c6e631e6cf5bab4ca754b7f063763fe3540c2ce44639dd962",
+            "status": "rejected",
+            "reason": "reviewed_nonmaterial",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:42:29.789541+00:00",
+              "method": "explicit original piece review; unpaid exclusion only",
+              "reason": "nonmaterial",
+              "rationale": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+              "related_to": [],
+              "prior_queue_state": {
+                "status": "pending",
+                "reason": null
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516414+00:00",
+          "body_sha256": "2dc5ba93809388c21407584e5b809b548e3992eac1cc0f3b8182fe7cc63d281c",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
@@ -1318,7 +1529,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "candidate",
       "capture_date": "2026-10-11T05:53:38.516425+00:00",
       "detail_title": "Bupa acelera su crecimiento en el sector oriente de Santiago con inversión de US$15 millones en nueva infraestructura",
       "article_schemas": [],
@@ -1340,7 +1551,63 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Same US15m programme: La Dehesa, acquisition of Huinganal and planned Mindplace2027. Existing DF signal Sep21 remains; official publication date unknown.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Same US15m programme: La Dehesa, acquisition of Huinganal and planned Mindplace2027. Existing DF signal Sep21 remains; official publication date unknown.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [
+          "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
+        ],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "e1fc070079becba6e8407518a333578e2e3a25505345a33bdda93c4182dac283",
+            "status": "rejected",
+            "reason": "already_covered_by_existing_signal",
+            "lane": "BACKFILL",
+            "deferred_detail": "Bupa article publication date unavailable",
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:34:01.091479+00:00",
+              "method": "original evidence + independent Reviewer; no new paid model",
+              "reason": "already_covered_by_existing_signal",
+              "rationale": "Same US15m programme: La Dehesa, acquisition of Huinganal and planned Mindplace2027. Existing DF signal Sep21 remains; official publication date unknown.",
+              "related_to": [
+                "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
+              ],
+              "historical_processor_reason": "budget_or_analysis_deferred",
+              "historical_model_diagnostics": "not evaluated before original publication/access gate",
+              "prior_queue_state": {
+                "status": "retry",
+                "reason": "budget_or_analysis_deferred"
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [
+          {
+            "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+            "title": "Bupa acelera inversiones en sector oriente de Santiago con tres proyectos por US$ 15 millones El plan incluye la inauguración del primer centro médico bajo su marca en La Dehesa, la compra de las Clínicas Huinganal y un nuevo establecimiento de salud mental Mindplace en San Damián.",
+            "publication_date": "2026-09-21"
+          }
+        ],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516425+00:00",
+          "body_sha256": "3ba930fc796fb6ca2a47a4af2ddaa86c978ba96eed067201ab100c59a88d585d",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/bupa-chile-y-teleton-renuevan-alianza-para-acercar-salud-e-inclusion",
@@ -1361,7 +1628,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516437+00:00",
       "detail_title": "Bupa Chile y Teletón renuevan alianza para acercar salud e inclusión a más niños y jóvenes",
       "article_schemas": [],
@@ -1383,7 +1650,47 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": true
+      "in_90_days": true,
+      "editorial_reason": "Explicit continuation of2025 alliance;32k children is Teletón contextual annual population, not new Bupa throughput. No demonstrated expansion of benefits or capacity; current Reviewer continuity exclusion.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Explicit continuation of2025 alliance;32k children is Teletón contextual annual population, not new Bupa throughput. No demonstrated expansion of benefits or capacity; current Reviewer continuity exclusion.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "ce66c42a7a0e2d9256bc81f278b9bbeec26f7f587b5a95636346e001af62c9c7",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516437+00:00",
+          "body_sha256": "a56709bc39043cc5d9e4b61bd7b6f78902d9ec2976d26c77a7bb4dad5f401c34",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 10 de septiembre de 2026",
+              "date": "2026-09-10"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/mas-areas-verdes-y-menos-calor-municipalidad-de-huechuraba",
@@ -1404,7 +1711,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516448+00:00",
       "detail_title": "Más áreas verdes y menos calor: Municipalidad de Huechuraba, Cultiva y Bupa recuperan espacio público para más de 6 mil vecinos",
       "article_schemas": [],
@@ -1426,7 +1733,47 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": true
+      "in_90_days": true,
+      "editorial_reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "26675c79607d1a240ac835f6962aa795454f3a838e143b7e9e8eddd221a9fcfb",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516448+00:00",
+          "body_sha256": "356fb04ddad436cbcb3eed9f9ddff72beb1da6d7047fc717c1f55bbb9c8aeeaf",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 10 de septiembre de 2026",
+              "date": "2026-09-10"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/integramedica-se-suma-a-safed-en-atacama-para-apoyar-la-atencion-de-salud",
@@ -1447,7 +1794,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "related_existing_event",
       "capture_date": "2026-10-11T05:53:38.516459+00:00",
       "detail_title": "IntegraMédica se suma a SAFED en Atacama para apoyar la atención de salud de personas afectadas por la emergencia",
       "article_schemas": [],
@@ -1469,7 +1816,55 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": true
+      "in_90_days": true,
+      "editorial_reason": "Same five-network emergency programme already published from BupaAug13; no independent incremental own capacity or financing verified.",
+      "alicanto": {
+        "materiality": "related_existing_event",
+        "reason": "Same five-network emergency programme already published from BupaAug13; no independent incremental own capacity or financing verified.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [
+          "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas"
+        ],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "094b5f4e010652ec220d5c8e837af063dc0e82c79f427c763d8d73ef6497dd83",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [
+          {
+            "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas",
+            "title": "Personas damnificadas recibirán atención gratuita en clínicas privadas gracias a la activación del sistema de atención fonasa para emergencias y desastres (safed)",
+            "publication_date": "2026-08-13"
+          }
+        ],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516459+00:00",
+          "body_sha256": "24088127df3c4c9f1509251e6e7452f070105337bb7475430e6aa8a468b38569",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 27 de agosto de 2026",
+              "date": "2026-08-27"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/clinica-bupa-santiago-obtiene-su-segunda-acreditacion-nacional-de-calidad",
@@ -1490,7 +1885,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516472+00:00",
       "detail_title": "Clínica Bupa Santiago obtiene su segunda Acreditación Nacional de Calidad",
       "article_schemas": [],
@@ -1512,7 +1907,47 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": true
+      "in_90_days": true,
+      "editorial_reason": "Second periodic accreditation,100% mandatory characteristics;80–85 daily surgeries and>50%Fonasa are existing operating context, not new capacity. Valid untilFeb2028. Independent Reviewer current continuity exclusion; historical score unknown.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Second periodic accreditation,100% mandatory characteristics;80–85 daily surgeries and>50%Fonasa are existing operating context, not new capacity. Valid untilFeb2028. Independent Reviewer current continuity exclusion; historical score unknown.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "2b297d5b534d7c9536ea857f6820f31f5dc4fdc011cac952a24a297515ae92d3",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516472+00:00",
+          "body_sha256": "f2dffa55d3bdd76ef5842208bf0fc7a05d6d0b3f30a6cd1c149cca0fa91f5680",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 25 de agosto de 2026",
+              "date": "2026-08-25"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/integramedica-parte-de-bupa-chile-se-suma-a-alianza-con-fonasa-para-apoyar",
@@ -1527,7 +1962,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516484+00:00",
       "detail_title": "IntegraMédica, parte de Bupa Chile se suma a alianza con Fonasa para apoyar a damnificados por sistema frontal en Atacama y Coquimbo",
       "article_schemas": [],
@@ -1549,7 +1984,63 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Same original five-network SAFED programme already covered; undated repeated alliance announcement, no verified own incremental capacity.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Same original five-network SAFED programme already covered; undated repeated alliance announcement, no verified own incremental capacity.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [
+          "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas"
+        ],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "9b14076ff1c01b02b895ebb9cc5a9f4d85f0ab12b90f32dfa868e56edbc7b48b",
+            "status": "rejected",
+            "reason": "related_existing_SAFED_without_incremental_change",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:34:01.091479+00:00",
+              "method": "original evidence + independent Reviewer; no new paid model",
+              "reason": "related_existing_SAFED_without_incremental_change",
+              "rationale": "Same original five-network SAFED programme already covered; undated repeated alliance announcement, no verified own incremental capacity.",
+              "related_to": [
+                "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas"
+              ],
+              "historical_processor_reason": "budget_or_analysis_deferred",
+              "historical_model_diagnostics": "not evaluated before original publication/access gate",
+              "prior_queue_state": {
+                "status": "retry",
+                "reason": "budget_or_analysis_deferred"
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [
+          {
+            "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas",
+            "title": "Personas damnificadas recibirán atención gratuita en clínicas privadas gracias a la activación del sistema de atención fonasa para emergencias y desastres (safed)",
+            "publication_date": "2026-08-13"
+          }
+        ],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516484+00:00",
+          "body_sha256": "838fb9ac512e44fbe5839b6123ffca108b8f404c79ff97d7a58250b75ceff260",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas",
@@ -1570,7 +2061,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "candidate",
       "capture_date": "2026-10-11T05:53:38.516496+00:00",
       "detail_title": "Personas damnificadas recibirán atención gratuita en clínicas privadas gracias a la activación del sistema de atención fonasa para emergencias y desastres (safed)",
       "article_schemas": [],
@@ -1592,7 +2083,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": true
+      "in_90_days": true,
+      "editorial_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "e8e7a13bc1f7c7ea9390d11915843599c4ca82b6e25f9a3c366a4d60ae316f71",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 1,
+        "feed_count": 1,
+        "related_published_signals": [],
+        "alicanto_status": "published",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516496+00:00",
+          "body_sha256": "ff69e626300d90aea8e6bec2228c52a5fea7d6cb57b5c607101762861d04bcae",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 13 de agosto de 2026",
+              "date": "2026-08-13"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/fundacion-amigos-del-real-madrid-y-bupa-chile-acercan-salud-preventiva-a",
@@ -1607,7 +2137,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516508+00:00",
       "detail_title": "Fundación Amigos del Real Madrid y Bupa Chile acercan salud preventiva a niñas, niños y jóvenes de Huechuraba",
       "article_schemas": [],
@@ -1629,7 +2159,53 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Community preventive screening and social outreach; no new facility, permanent capacity, insurer coverage or financing change verified.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Community preventive screening and social outreach; no new facility, permanent capacity, insurer coverage or financing change verified.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "a8e4b2dddcd73cae76141b9356b8d053b5f690c57fd3d4c54b1358b2a03e9b13",
+            "status": "rejected",
+            "reason": "community_prevention_campaign_without_structural_change",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:34:01.091479+00:00",
+              "method": "original evidence + independent Reviewer; no new paid model",
+              "reason": "community_prevention_campaign_without_structural_change",
+              "rationale": "Community preventive screening and social outreach; no new facility, permanent capacity, insurer coverage or financing change verified.",
+              "related_to": [],
+              "historical_processor_reason": "budget_or_analysis_deferred",
+              "historical_model_diagnostics": "not evaluated before original publication/access gate",
+              "prior_queue_state": {
+                "status": "retry",
+                "reason": "budget_or_analysis_deferred"
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516508+00:00",
+          "body_sha256": "6117a34d151c35fa621ca77e031609b6fc377437d922994d116f52fb84c92749",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
@@ -1650,7 +2226,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "candidate",
       "capture_date": "2026-10-11T05:53:38.516519+00:00",
       "detail_title": "Chile tendrá su primera base genómica de referencia: Bupa lanza “1000 Genomas para Chile”",
       "article_schemas": [],
@@ -1672,7 +2248,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": true
+      "in_90_days": true,
+      "editorial_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": "Bupa headline mismatch between listing and article",
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 1,
+        "feed_count": 1,
+        "related_published_signals": [],
+        "alicanto_status": "published",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516519+00:00",
+          "body_sha256": "a7f686298c1b395b167cc57aa2b27da08ef1f79493e47c76be1feda7912d97cb",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 13 de agosto de 2026",
+              "date": "2026-08-13"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/salud-del-futuro-expertos-abordan-el-avance-de-la-medicina-predictiva",
@@ -1693,7 +2308,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516531+00:00",
       "detail_title": "Salud del futuro: Expertos abordan el avance de la medicina predictiva",
       "article_schemas": [],
@@ -1715,7 +2330,55 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": true
+      "in_90_days": true,
+      "editorial_reason": "Medical expert event/context for already published Genomas programme; not another capacity or agreement event.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Medical expert event/context for already published Genomas programme; not another capacity or agreement event.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [
+          "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000"
+        ],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "a5f22098aa2c1fb588860895b78535824f1583dfcae6bf5ccdd68833b05ba5ac",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [
+          {
+            "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+            "title": "Chile tendrá su primera base genómica de referencia: Bupa lanza “1000 Genomas para Chile”",
+            "publication_date": "2026-08-13"
+          }
+        ],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516531+00:00",
+          "body_sha256": "026649d4232dd1cffde22ae2916bda5bf48d1ad230ee96d6f94eb16ea7aad3c7",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 13 de agosto de 2026",
+              "date": "2026-08-13"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/mantener-la-movilidad-tambien-es-salud-lanzan-campana-con-consultas",
@@ -1736,7 +2399,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516543+00:00",
       "detail_title": "Mantener la movilidad también es salud: lanzan campaña con consultas médicas y kinesiología a bajo costo para adultos mayores",
       "article_schemas": [],
@@ -1758,7 +2421,47 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "e12618ff2002ea963a9fb4e8e50db4f5d9698b594dea382ee3f2cbfd02814937",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516543+00:00",
+          "body_sha256": "dcc379480e622446d5b7a4e129c7fd68b45a414e266ec46676928a76845a7be0",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 16 de junio de 2026",
+              "date": "2026-06-16"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/mas-de-26-mil-personas-seran-beneficiadas-con-nuevo-espacio-urbano",
@@ -1779,7 +2482,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516555+00:00",
       "detail_title": "Más de 26 mil personas serán beneficiadas con nuevo espacio urbano en Renca para enfrentar el calor",
       "article_schemas": [],
@@ -1801,7 +2504,47 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "ed841180472b308c2e6644e8eb43e109e06b02ecd0627a817690a83b990b0099",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516555+00:00",
+          "body_sha256": "dd8f8cb219b94b07332eb19fa477218594865e6cf5a4abc11e8bd88f6dc9ecf3",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 16 de junio de 2026",
+              "date": "2026-06-16"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/cerrillos-inaugura-nuevo-refugio-climatico-que-beneficiara-a-mas-de-7-mil",
@@ -1822,7 +2565,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516567+00:00",
       "detail_title": "Cerrillos inaugura nuevo refugio climático que beneficiará a más de 7 mil vecinos",
       "article_schemas": [],
@@ -1844,7 +2587,47 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "a072cba80f1de25f6a02debf196d95e20b77da24067ea9a4af18ae0b39e82ae4",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516567+00:00",
+          "body_sha256": "0ef4f93845cd9525175dd9e135ad12f80a663d868fa1812b706f973f492bdbec",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 12 de mayo de 2026",
+              "date": "2026-05-12"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-chile-es-reconocida-por-su-compromiso-con-la-integridad-empresarial",
@@ -1865,7 +2648,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516580+00:00",
       "detail_title": "Bupa Chile es reconocida por su compromiso con la integridad empresarial",
       "article_schemas": [],
@@ -1887,7 +2670,47 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "3df75e4e8e4a66c117ede40a1c170018249732fdada52389cddb606467386e42",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516580+00:00",
+          "body_sha256": "a01cc3c2dd4fb9213acd1d2be5f94698e2cbb75be07ad34a96eb01400858cefb",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 7 de mayo de 2026",
+              "date": "2026-05-07"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/integramedica-abre-su-primer-centro-en-coquimbo",
@@ -1908,7 +2731,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516592+00:00",
       "detail_title": "IntegraMédica abre su primer centro en Coquimbo y amplía el acceso a salud ambulatoria en la región",
       "article_schemas": [],
@@ -1930,7 +2753,47 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "9cf8f6f99d4e3006780a33c93e85ccc0f5ac267ebdaf623b13e9afeb6c0cdc18",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516592+00:00",
+          "body_sha256": "e387b0f4eea7edb8ebc4ecd6f1de78a11744185467640cda9454add45691b09b",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 7 de mayo de 2026",
+              "date": "2026-05-07"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/clinica-bupa-santiago-incorpora-cirugia-robotica",
@@ -1951,7 +2814,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516603+00:00",
       "detail_title": "Clínica Bupa Santiago incorpora cirugía robótica y amplía el acceso a intervenciones de alta precisión en Chile",
       "article_schemas": [],
@@ -1973,7 +2836,47 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "834a20426f8099a389b1f687b880b6a8261d5509c4d1c6813c5b31a5758d7c3f",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516603+00:00",
+          "body_sha256": "df60f4047e0882b9dedbc5a11f218ef0f02e51935fc3f6ca943f22e31d4daac4",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 5 de mayo de 2026",
+              "date": "2026-05-05"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-chile-lanza-nueva-direccion-de-desarrollo-medico-y-academico",
@@ -1994,7 +2897,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516614+00:00",
       "detail_title": "Bupa Chile lanza nueva Dirección de Desarrollo Médico y Académico y da inicio a su año formativo 2026",
       "article_schemas": [],
@@ -2016,7 +2919,47 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "89dbff14c56c62d31cb641920cb18c82f4dee4127a6f911293bbd37884eb5c3b",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516614+00:00",
+          "body_sha256": "4a986106f3302f60176b822fc68b9ea3963e7019fa0d85db79a9abb62ec85ac6",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 5 de mayo de 2026",
+              "date": "2026-05-05"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/historias-del-futuro-alto-rendimiento-paralmpico-juvenil",
@@ -2031,7 +2974,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516628+00:00",
       "detail_title": "Historias del Futuro: el documental que acompaña la preparación y los sueños del alto rendimiento paralímpico juvenil",
       "article_schemas": [],
@@ -2053,7 +2996,51 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "6cc04678fdb71700e724107a4999444a9b72a865879cee982d8af66643c97c5f",
+            "status": "rejected",
+            "reason": "reviewed_nonmaterial",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:42:29.789541+00:00",
+              "method": "explicit original piece review; unpaid exclusion only",
+              "reason": "nonmaterial",
+              "rationale": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+              "related_to": [],
+              "prior_queue_state": {
+                "status": "pending",
+                "reason": null
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516628+00:00",
+          "body_sha256": "ce4fe300af0a650c8be627be3533115330a6252fa112153998896d418948ad54",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-chile-ingresa-al-top-50-de-merco-esg",
@@ -2074,7 +3061,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516640+00:00",
       "detail_title": "Bupa Chile ingresa al top 50 de Merco ESG",
       "article_schemas": [],
@@ -2096,7 +3083,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "e16c00f74100d38bca8948cb50e140419f0c54ef55acabb595d13883365a0839",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516640+00:00",
+          "body_sha256": "b01ced215929c65fedefd18568dba6b94175376a7d3c54ebe787f8e9e1312c07",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Lunes 30 de marzo de 2026",
+              "date": "2026-03-30"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/clinica-bupa-renaca-es-reconocida-como-la-mejor-clinica-privada-regional",
@@ -2117,7 +3143,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516651+00:00",
       "detail_title": "Clínica Bupa Reñaca es reconocida como la mejor clínica privada regional",
       "article_schemas": [],
@@ -2139,7 +3165,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "2acee0acd869db60a70c94fe0de7b3dfa6de2eedd8a58302f5085dd9b8bd7be4",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516651+00:00",
+          "body_sha256": "7e2d9cb79aef5c5dd9f3e349fe57795821bde33d1f15438cc0e69132c4d76d71",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Lunes 30 de marzo de 2026",
+              "date": "2026-03-30"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/monica-parames-nueva-presidenta-de-bupa-chile",
@@ -2160,7 +3225,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516662+00:00",
       "detail_title": "Mónica Paramés, nueva presidenta de Bupa Chile",
       "article_schemas": [],
@@ -2182,7 +3247,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "9f9779a0c79067943f53fc273b101348f349d018d73b4db53901304e9126c082",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516662+00:00",
+          "body_sha256": "ddb13175e6099eef9291bc1cb37919e758bb210b812add90f9d2ea50f3b428f3",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Miércoles 11 de marzo de 2026",
+              "date": "2026-03-11"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/campana-nacional-busca-ampliar-el-acceso-a-la-deteccion-temprana-del-cancer",
@@ -2203,7 +3307,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516673+00:00",
       "detail_title": "Campaña nacional busca ampliar el acceso a la detección temprana del cáncer de mama en todo Chile",
       "article_schemas": [],
@@ -2225,7 +3329,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "5c26fb557579f7e928325c94ac0a324a68b6d65d8f5452ca13c7e8d3c627c8aa",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516673+00:00",
+          "body_sha256": "e6857e13379e2f419c1da278a79a19a42f4799f0188402f39968c422f7b1eda1",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Miércoles 11 de marzo de 2026",
+              "date": "2026-03-11"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/fonasa-activa-sistema-especial-de-atencion-de-salud-para-emergencias",
@@ -2246,7 +3389,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516684+00:00",
       "detail_title": "Fonasa activa sistema especial de atención de salud para emergencias con apoyo de Bupa Chile y prestadores privados",
       "article_schemas": [],
@@ -2268,7 +3411,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "1dcaa60cbb24be794c4cdb54c4ac2715f9658411962cb908372b12ad44385738",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516684+00:00",
+          "body_sha256": "10f6d52b281fe39ebfe75d0c4c0d7697158d98f42a05841fbe04f06f0f7b0fed",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Viernes 23 de enero de 2026",
+              "date": "2026-01-23"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/fondo-de-agua-santiago-maipo-construye-un-nuevo-bosque-de-lluvia",
@@ -2289,7 +3471,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516695+00:00",
       "detail_title": "Fondo de Agua Santiago-Maipo construye un nuevo bosque de lluvia en Pedro Aguirre Cerda",
       "article_schemas": [],
@@ -2311,7 +3493,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "a8d92870c1f9fe4691cd297b18c494c47ee50303b3fc30f82574f83a404bb607",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516695+00:00",
+          "body_sha256": "cb0ce279e747d52bac60e842ec9305048f7ec0890e494280081ac0200a3aef1d",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Lunes 19 de enero de 2026",
+              "date": "2026-01-19"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-chile-renueva-alianza-con-copachi",
@@ -2332,7 +3553,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516706+00:00",
       "detail_title": "Bupa Chile renueva alianza con COPACHI y refuerza la preparación del Team ParaChile rumbo a Los Ángeles 2028",
       "article_schemas": [],
@@ -2354,7 +3575,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "a28d5e3e6dd2cd3ab569f0622fdc8192d167eed44bd5fd567db869229644e2a6",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516706+00:00",
+          "body_sha256": "c93b2d0431ef7ee87f3f5284df8424501911f461ecf8ac9624d8cd8be369e8f2",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Viernes 16 de enero de 2026",
+              "date": "2026-01-16"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/uss-y-bupa-chile-sellan-alianza-estrategica-para-la-formacion",
@@ -2375,7 +3635,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516718+00:00",
       "detail_title": "USS y Bupa Chile sellan alianza estratégica para la formación de los futuros profesionales de la Salud",
       "article_schemas": [],
@@ -2397,7 +3657,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "2ef2c7fba6ce9bd058fbfa7a311990f1c669c977638bb2767bb351348f8c9a90",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516718+00:00",
+          "body_sha256": "5584005b9932ab2308e16a150487d241b45b87a6d07c232db73985bf45cc39e6",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Viernes 16 de enero de 2026",
+              "date": "2026-01-16"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-designa-a-rafael-cordova-como-gerente-general",
@@ -2418,7 +3717,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516728+00:00",
       "detail_title": "Bupa designa a Rafael Córdova como Gerente General",
       "article_schemas": [],
@@ -2440,7 +3739,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "52741199a69e25a23e42d3582c98bebe4d272fe88dc014fe70de9003cc193525",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516728+00:00",
+          "body_sha256": "db138ffba1a9ea34d3fdb6b53325fbc53a8007d8390c79d058a58564f31aab16",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 30 de diciembre de 2025",
+              "date": "2025-12-30"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-chile-cierra-el-desafio-ciudad-saludable-2025-con-un-crecimiento",
@@ -2461,7 +3799,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516739+00:00",
       "detail_title": "Bupa Chile cierra el desafío Ciudad Saludable 2025 con un crecimiento histórico en participación y nuevos legados ambientales",
       "article_schemas": [],
@@ -2483,7 +3821,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "6fc091668509c6e941e94696cae80d879933e6da96d636f37fc2df297be0782b",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516739+00:00",
+          "body_sha256": "5522d089f319b19c32a5d3a029e8fdfc5665356e859beca1c91d8a2fa8730903",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Lunes 22 de diciembre de 2025",
+              "date": "2025-12-22"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-y-municipalidad-de-renca-impulsan-alianza",
@@ -2504,7 +3881,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516750+00:00",
       "detail_title": "Bupa y Municipalidad de Renca impulsan alianza para ampliar el acceso a la salud y revitalizar los Cerros de Renca",
       "article_schemas": [],
@@ -2526,7 +3903,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "80e41bb29306ad1ab4f022e6fcbe44324c4d3451d757323a1a7bc17d4384bf7b",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516750+00:00",
+          "body_sha256": "f2182eaa9b283c23017717d86fc24e8620bd75664fb0e521577b0ccad5342bea",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 9 de diciembre de 2025",
+              "date": "2025-12-09"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-chile-presente-en-la-expo-salud-2025",
@@ -2541,7 +3957,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516761+00:00",
       "detail_title": "Bupa Chile presente en la Expo Salud 2025",
       "article_schemas": [],
@@ -2563,7 +3979,51 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "3f100f45dafb4d9f05b77c028a244d637e96240d4bfae5b0c093e0160dcd5a74",
+            "status": "rejected",
+            "reason": "reviewed_nonmaterial",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:42:29.789541+00:00",
+              "method": "explicit original piece review; unpaid exclusion only",
+              "reason": "nonmaterial",
+              "rationale": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+              "related_to": [],
+              "prior_queue_state": {
+                "status": "pending",
+                "reason": null
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516761+00:00",
+          "body_sha256": "623778e43a3857ac641ad44430799246a04a42b827f25eee4e839645218eae32",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-chile-vuelve-a-destacar-entre-las-100-empresas-con-mejor-reputacion",
@@ -2584,7 +4044,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516771+00:00",
       "detail_title": "Bupa Chile vuelve a destacar entre las 100 empresas con mejor reputación",
       "article_schemas": [],
@@ -2606,7 +4066,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "88a30732b8e40bd47e7aff29b59228f7e6fc28c925dde7e631b1ace7b12b7b03",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516771+00:00",
+          "body_sha256": "654a60f53ab3ef109cb0f42604c3172a01902c9e3d82ffe36aa6c836349072a2",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 9 de diciembre de 2025",
+              "date": "2025-12-09"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/personas-mayores-promediaron-mas-de-7-mil-pasos-diarios",
@@ -2627,7 +4126,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516783+00:00",
       "detail_title": "Personas mayores promediaron más de 7 mil pasos diarios durante el ciclo 2025 del Programa Caminatas Bupa",
       "article_schemas": [],
@@ -2649,7 +4148,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "2d41772971fed175146066f79d35cfb731bce0b1dab8d395a59d25f8bd7726ec",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516783+00:00",
+          "body_sha256": "eb70ad7bdbfddbfc5ee5343a1a67f2f1219b8ea04bf0161ba16d8beb223bb5b6",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 2 de diciembre de 2025",
+              "date": "2025-12-02"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-lab-incorpora-examen-de-sangre-para-diagnostico-precoz-de-alzheimer",
@@ -2670,7 +4208,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516794+00:00",
       "detail_title": "Bupa Lab incorpora examen de sangre para diagnóstico precoz de Alzheimer",
       "article_schemas": [],
@@ -2692,7 +4230,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "5e233ec270fade8208acbd9854029751925782f0323730ca30ddc2a6c72ee559",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516794+00:00",
+          "body_sha256": "b75c99fe85f7fabb2e86909a9fdc2d17970ffbe4e8fe5235f91c0b6d137bea50",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Viernes 21 de noviembre de 2025",
+              "date": "2025-11-21"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/prestadores-de-bupa-chile-reciben-doble-oro-en-los-premios-dec-chile-2025",
@@ -2713,7 +4290,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516805+00:00",
       "detail_title": "Prestadores de Bupa Chile reciben Doble Oro en los Premios DEC Chile 2025",
       "article_schemas": [],
@@ -2735,7 +4312,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "857df5ed578146f948e341157507ec72fac1607d8d1db51c9c224e767e30c441",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516805+00:00",
+          "body_sha256": "3c6e34b5198b0f8ef480a044a3d1f51506429d678e00ea70947ab2a089df10e7",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Miércoles 19 de noviembre de 2025",
+              "date": "2025-11-19"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/salcobrand-e-isapre-cruzblanca-celebran-seis-anos-de-alianza-para-cuidar-la",
@@ -2750,7 +4366,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "nonmaterial",
       "capture_date": "2026-10-11T05:53:38.516817+00:00",
       "detail_title": "Salcobrand e Isapre CruzBlanca celebran seis años de alianza para cuidar la salud y el bienestar de las personas",
       "article_schemas": [],
@@ -2772,7 +4388,51 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "02333e81f1cb690de06b4ebef08ba006ef8dcbc23edb164b84faa798ed34c75d",
+            "status": "rejected",
+            "reason": "reviewed_nonmaterial",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:42:29.789541+00:00",
+              "method": "explicit original piece review; unpaid exclusion only",
+              "reason": "nonmaterial",
+              "rationale": "Campaign, CSR/prevention, award, medical education or continuation of an existing alliance. No verified permanent capacity, coverage or financing expansion.",
+              "related_to": [],
+              "prior_queue_state": {
+                "status": "pending",
+                "reason": null
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516817+00:00",
+          "body_sha256": "92c93f286e31c508869baf1a31bb67072c8db46cf73ffdc0bd89704612d2cc71",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/integramedica-la-serena-inaugura-pabellones-ambulatorios",
@@ -2793,7 +4453,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516828+00:00",
       "detail_title": "IntegraMédica La Serena inaugura pabellones ambulatorios para fortalecer la respuesta quirúrgica regional",
       "article_schemas": [],
@@ -2815,7 +4475,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "bf114ecdeabeccfb7b79e4f7ab70d6dd87bdfa3000e34b5bcaf362cc22b41797",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516828+00:00",
+          "body_sha256": "3e1a5548c3ccc7ac4b283b1db95941202a44da67828e8b2549c032035713ad98",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Viernes 14 de noviembre de 2025",
+              "date": "2025-11-14"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-chile-es-el-patrocinador-oficial-de-salud-de-los-juegos",
@@ -2836,7 +4535,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516839+00:00",
       "detail_title": "Bupa Chile es el patrocinador oficial de salud de los Juegos Parapanamericanos Juveniles 2025",
       "article_schemas": [],
@@ -2858,7 +4557,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "eb8e0af89b97a3948dc11f730e516d44a0bd1a5a512072f6952c6c934990b92b",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516839+00:00",
+          "body_sha256": "fa922b6f7506cd2b5e0fd9ab15b8a11fcc83533534ddd4fc05457d26518a8e7a",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 30 de octubre de 2025",
+              "date": "2025-10-30"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/cruzblanca-obtiene-el-premio-aspid-de-oro-con-su-campana-impacientes",
@@ -2879,7 +4617,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516850+00:00",
       "detail_title": "CruzBlanca obtiene el Premio Aspid de Oro con su campaña “Impacientes”",
       "article_schemas": [],
@@ -2901,7 +4639,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "b9f6393f2cebfe04686525ad4bf874a1f225189b2bd559e53176e594bb4da653",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516850+00:00",
+          "body_sha256": "ca6933087c2b049039c39d96ec50e7f8d7f637692e2f2bba6975958d62677032",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 28 de octubre de 2025",
+              "date": "2025-10-28"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/solo-4-de-cada-10-mujeres-se-realizan-la-mamografia-anual-en-chile",
@@ -2922,7 +4699,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516864+00:00",
       "detail_title": "Solo 4 de cada 10 mujeres se realizan la mamografía anual en Chile: especialistas llaman al autocuidado",
       "article_schemas": [],
@@ -2944,7 +4721,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "a3dbb5b27c86f764a4de6a7721bdca3b2198bef39e072cbe1e90f99eb4c7f38c",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516864+00:00",
+          "body_sha256": "2e24989c6e93747bf991a6f023fa3dcd9764d5e7a1a6fbcaa32585b9bfd3f855",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 14 de octubre de 2025",
+              "date": "2025-10-14"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/campamento-paralimpico-en-santiago-busca-futuros-talentos-paradeportivos",
@@ -2965,7 +4781,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516875+00:00",
       "detail_title": "Campamento paralímpico en Santiago busca futuros talentos paradeportivos",
       "article_schemas": [],
@@ -2987,7 +4803,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "9c05bdbac6d33a67ccbad9d659264065f3c90e37916eb17a555a0ecc12c512f0",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516875+00:00",
+          "body_sha256": "4afa7cc766305ee7e32de699904cab54bd74067c8de92dbcb8a4291e763a9dae",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Miércoles 8 de octubre de 2025",
+              "date": "2025-10-08"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/primer-campamento-paralimpico-en-valparaiso",
@@ -3008,7 +4863,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516886+00:00",
       "detail_title": "Primer campamento paralímpico en Valparaíso proyecta nuevos talentos para el Team ParaChile",
       "article_schemas": [],
@@ -3030,7 +4885,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "8f937cfb7778fa7d483e33bfdb85c6a3e75e27b793f2aea533a456e7b66c6dfd",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516886+00:00",
+          "body_sha256": "12dcb298aec428500045b6b3dbb6f8f98fda9d36051095bf97be4e43da816592",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Viernes 26 de septiembre de 2025",
+              "date": "2025-09-26"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/adultos-mayores-podran-acceder-a-consultas-y-examenes-preventivos",
@@ -3051,7 +4945,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516896+00:00",
       "detail_title": "Adultos mayores podrán acceder a consultas y exámenes preventivos con tarjeta BancoEstado",
       "article_schemas": [],
@@ -3073,7 +4967,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "4437c93068fa0de43699f98af8339bcaf8cd500af8e3f302c7db764ac22f7b09",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516896+00:00",
+          "body_sha256": "bf407473c38d1f997df38b3704690855637f5152f5b034ff2f682f0866d6022e",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Miércoles 10 de septiembre de 2025",
+              "date": "2025-09-10"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/bupa-chile-integramedica-y-clinicas-bupa-avanzan-en-alianza-con-teleton",
@@ -3094,7 +5027,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516907+00:00",
       "detail_title": "Bupa Chile, IntegraMédica y Clínicas Bupa avanzan en alianza con Teletón por una salud más inclusiva y humana",
       "article_schemas": [],
@@ -3116,7 +5049,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "da21cf438ea885fd11e85d7bdd048a36bc29299c62dcbe87bb442cdd608ef558",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516907+00:00",
+          "body_sha256": "c929889062c4728af02820f7f7e52d01390edfd040a67f10ae66c2af7b01ff63",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Miércoles 10 de septiembre de 2025",
+              "date": "2025-09-10"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/plan-de-arborizacion-urbana-de-maipu-avanza-con-la-plantacion-de-130",
@@ -3137,7 +5109,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516918+00:00",
       "detail_title": "Plan de arborización urbana de Maipú avanza con la plantación de 130 árboles",
       "article_schemas": [],
@@ -3159,7 +5131,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "e613619bcc558fc9660f2e61a74af061d1c9694050e0b072b7de4240c1eec977",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516918+00:00",
+          "body_sha256": "805b75ae7870a6dd332f334bf5d81131c124f4687e9487462261ac3ffd778a73",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Lunes 8 de septiembre de 2025",
+              "date": "2025-09-08"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/caminatas-por-la-salud-cumplen-cinco-anos-impulsando-la-vida-activa",
@@ -3180,7 +5191,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516930+00:00",
       "detail_title": "Caminatas por la salud cumplen cinco años impulsando la vida activa de los adultos mayores en La Florida",
       "article_schemas": [],
@@ -3202,7 +5213,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "c117e14f2ca792ddc5e929ebfce2bb4a2b25098219a76d6ff3fd7db2754cd214",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516930+00:00",
+          "body_sha256": "00fcfeb041ab55dc5017b6fdc18509ab6c9359dbf5a510e7b584f90a74d7be07",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Martes 26 de agosto de 2025",
+              "date": "2025-08-26"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/sala-de-prensa/risas-que-rehabilitan-cuando-el-humor-abre-la-puerta-a-la-inclusion",
@@ -3223,7 +5273,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "outside_window",
       "capture_date": "2026-10-11T05:53:38.516941+00:00",
       "detail_title": "“Risas que Rehabilitan”: Cuando el humor abre la puerta a la inclusión",
       "article_schemas": [],
@@ -3245,7 +5295,46 @@
       ],
       "date_reason": "verified_original_publication",
       "in_30_days": false,
-      "in_90_days": false
+      "in_90_days": false,
+      "editorial_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "c8410d757b96440340d72990d84e5305aca0b38a826b856487bba4bb5f160915",
+            "status": "pending",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "pending",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516941+00:00",
+          "body_sha256": "07bd56158c8a0c6762e1518a5c7377cb7550c7f81ee1bcba25339887af3a8798",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Lunes 25 de agosto de 2025",
+              "date": "2025-08-25"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/centro-medico-la-dehesa",
@@ -3260,7 +5349,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "navigation",
       "capture_date": "2026-10-11T05:53:49.262065+00:00",
       "detail_title": "",
       "article_schemas": [],
@@ -3281,7 +5370,30 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Archive/taxonomy/service catalogue navigation; no independent publisher news or document release.",
+      "alicanto": {
+        "materiality": "navigation",
+        "reason": "Archive/taxonomy/service catalogue navigation; no independent publisher news or document release.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": false,
+        "queue": [],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "not_detected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:49.262065+00:00",
+          "body_sha256": "35df4472e697eb2e2fff90c0a5d0aa080b5bcfe456106d0769506594344c782b",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     },
     {
       "url": "https://www.bupa.cl/especialidades",
@@ -3296,7 +5408,7 @@
       "event_date": null,
       "reporting_period": null,
       "effective_date": null,
-      "materiality": "awaiting_editorial_review",
+      "materiality": "navigation",
       "capture_date": "2026-10-11T05:53:49.262092+00:00",
       "detail_title": "",
       "article_schemas": [],
@@ -3318,7 +5430,30 @@
       ],
       "date_reason": "publication_date_not_exposed",
       "in_30_days": null,
-      "in_90_days": null
+      "in_90_days": null,
+      "editorial_reason": "Archive/taxonomy/service catalogue navigation; no independent publisher news or document release.",
+      "alicanto": {
+        "materiality": "navigation",
+        "reason": "Archive/taxonomy/service catalogue navigation; no independent publisher news or document release.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": false,
+        "queue": [],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "not_detected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:49.262092+00:00",
+          "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      }
     }
   ],
   "archive_index": [],
@@ -3332,12 +5467,13 @@
   "recent_90_count": 7,
   "access_errors": 14,
   "coverage_complete": false,
-  "coverage_reason": "inventory captured; editorial reconciliation and archive boundary review required",
+  "coverage_reason": "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held.",
   "promotion": "none",
   "ai_calls": 0,
   "runtime_evidence": {
     "commit": "5d80dd2713b404413caf003f85cc3299314c1696",
     "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116192052",
     "job_id": 114401602528
-  }
+  },
+  "outcome": "EXTERNAL_BLOCKER_PROVEN"
 }

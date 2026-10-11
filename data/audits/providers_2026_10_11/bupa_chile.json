@@ -1,12 +1,48 @@
 {
-  "version": 1,
+  "version": 3,
   "slug": "bupa_chile",
   "as_of": "2026-10-11",
   "timezone": "America/Santiago",
   "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
   "audit_path": "data/audits/providers_2026_10_11/bupa_chile.json",
-  "status": "reconciled_with_exact_blockers",
-  "coverage": "partial_30_and_90_inventory",
+  "status": "EXTERNAL_BLOCKER_PROVEN",
+  "coverage": {
+    "outcome": "EXTERNAL_BLOCKER_PROVEN",
+    "coverage_complete": false,
+    "coverage_reason": "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held.",
+    "archive_depth": {
+      "newsroom_cards": 51,
+      "detail_urls": 53,
+      "public_script_metadata_checked": 5
+    },
+    "owner": "Publisher Bupa Chile / Source Engineering",
+    "next_action": "Require an article-level published date from the original for undated roots, particularly Conecta; recheck official newsroom/sitemap/feed/CMS after publisher supplies release evidence. Investment already covered by DF; BancoEstado renewal needs no paid retry.",
+    "pages_checked": 71,
+    "latest_original_publication": "2026-09-10",
+    "discovered": 53,
+    "unique": 51,
+    "recent_30d": 0,
+    "recent_90d": 7,
+    "publication_date_unknown": 11,
+    "material_30d": 0,
+    "material_90d": 2,
+    "material_date_unknown": 2,
+    "material": 4,
+    "material_unknown": 0,
+    "published": 2,
+    "rejected": 1,
+    "deferred": 1,
+    "detected_material": 4,
+    "omitted_material": 0,
+    "parse_errors": 0,
+    "access_errors": 14,
+    "inventory": "data/audits/provider_inventory_2026_10_11/bupa_chile.json",
+    "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+    "relevant_30d_total": null,
+    "relevant_90d_total": null,
+    "publicable_confirmed": 2,
+    "publicable_total": null
+  },
   "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "surfaces": [
@@ -16,10 +52,698 @@
     }
   ],
   "blockers": [
-    "51_listing_cards_undated_full_90_day_detail_inventory_incomplete",
-    "investment_and_bank_campaign_publication_date_not_exposed"
+    "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held."
   ],
   "original_items": [
+    {
+      "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
+      "title": "Bupa Chile y BancoEstado impulsan campaña para acercar la prevención del cáncer a 35 mil mujeres",
+      "publication_date": null,
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "publication_date_not_exposed",
+      "materiality": "nonmaterial",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Annual October1–31 discounted prevention campaign, continuation of alliance since2024; no permanent capacity or coverage change. Original publication date is not the campaign start.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Annual October1–31 discounted prevention campaign, continuation of alliance since2024; no permanent capacity or coverage change. Original publication date is not the campaign start.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "bec250b2d5f59d9c77da0c22fe6265d4c72f69c5d814f25c64a08f0be985a4b1",
+            "status": "rejected",
+            "reason": "campaign_renewal_without_structural_change",
+            "lane": "BACKFILL",
+            "deferred_detail": "Bupa article publication date unavailable",
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:34:01.091479+00:00",
+              "method": "original evidence + independent Reviewer; no new paid model",
+              "reason": "campaign_renewal_without_structural_change",
+              "rationale": "Annual October1–31 discounted prevention campaign, continuation of alliance since2024; no permanent capacity or coverage change. Original publication date is not the campaign start.",
+              "related_to": [],
+              "historical_processor_reason": "budget_or_analysis_deferred",
+              "historical_model_diagnostics": "not evaluated before original publication/access gate",
+              "prior_queue_state": {
+                "status": "retry",
+                "reason": "budget_or_analysis_deferred"
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516377+00:00",
+          "body_sha256": "15ea5ee0a36129bce69ed9e349ece62545349d0b98981cedb180509c49ad2ecc",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/bupa_chile.json"
+    },
+    {
+      "url": "https://www.bupa.cl/mas-autonomia-y-acompanamiento-las-claves-para-cuidar-la-salud-despues-de",
+      "title": "Más autonomía y acompañamiento: las claves para cuidar la salud después de los 60",
+      "publication_date": null,
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "publication_date_not_exposed",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Bupa Conecta introduces insurer handling/reimbursement/appointment support for>14k insured older65. Potential operational insurer change hidden beneath wellness headline; original release date absent, so held without AI/publication.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Bupa Conecta introduces insurer handling/reimbursement/appointment support for>14k insured older65. Potential operational insurer change hidden beneath wellness headline; original release date absent, so held without AI/publication.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "71857c1447c1cb5b688090662fd5c32808434d2fc23c5deecda10e793aa7b64a",
+            "status": "retry",
+            "reason": "original_publication_date_not_exposed",
+            "lane": "BACKFILL",
+            "deferred_detail": "Official original has no editorial publication date; date gate retained. No paid assessment performed.",
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "retry",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516402+00:00",
+          "body_sha256": "1593db1d40949137d3691596d09136e8f5082defe12cdac5ca1f14d7a55f9686",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/bupa_chile.json"
+    },
+    {
+      "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+      "title": "Bupa acelera su crecimiento en el sector oriente de Santiago con inversión de US$15 millones en nueva infraestructura",
+      "publication_date": null,
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "publication_date_not_exposed",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Same US15m programme: La Dehesa, acquisition of Huinganal and planned Mindplace2027. Existing DF signal Sep21 remains; official publication date unknown.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Same US15m programme: La Dehesa, acquisition of Huinganal and planned Mindplace2027. Existing DF signal Sep21 remains; official publication date unknown.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [
+          "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
+        ],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "e1fc070079becba6e8407518a333578e2e3a25505345a33bdda93c4182dac283",
+            "status": "rejected",
+            "reason": "already_covered_by_existing_signal",
+            "lane": "BACKFILL",
+            "deferred_detail": "Bupa article publication date unavailable",
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:34:01.091479+00:00",
+              "method": "original evidence + independent Reviewer; no new paid model",
+              "reason": "already_covered_by_existing_signal",
+              "rationale": "Same US15m programme: La Dehesa, acquisition of Huinganal and planned Mindplace2027. Existing DF signal Sep21 remains; official publication date unknown.",
+              "related_to": [
+                "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
+              ],
+              "historical_processor_reason": "budget_or_analysis_deferred",
+              "historical_model_diagnostics": "not evaluated before original publication/access gate",
+              "prior_queue_state": {
+                "status": "retry",
+                "reason": "budget_or_analysis_deferred"
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [
+          {
+            "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+            "title": "Bupa acelera inversiones en sector oriente de Santiago con tres proyectos por US$ 15 millones El plan incluye la inauguración del primer centro médico bajo su marca en La Dehesa, la compra de las Clínicas Huinganal y un nuevo establecimiento de salud mental Mindplace en San Damián.",
+            "publication_date": "2026-09-21"
+          }
+        ],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516425+00:00",
+          "body_sha256": "3ba930fc796fb6ca2a47a4af2ddaa86c978ba96eed067201ab100c59a88d585d",
+          "date_stamps": [],
+          "date_reason": "publication_date_not_exposed",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/bupa_chile.json"
+    },
+    {
+      "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas",
+      "title": "Personas damnificadas recibirán atención gratuita en clínicas privadas gracias a la activación del sistema de atención fonasa para emergencias y desastres (safed)",
+      "publication_date": "2026-08-13",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "e8e7a13bc1f7c7ea9390d11915843599c4ca82b6e25f9a3c366a4d60ae316f71",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 1,
+        "feed_count": 1,
+        "related_published_signals": [],
+        "alicanto_status": "published",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516496+00:00",
+          "body_sha256": "ff69e626300d90aea8e6bec2228c52a5fea7d6cb57b5c607101762861d04bcae",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 13 de agosto de 2026",
+              "date": "2026-08-13"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/bupa_chile.json"
+    },
+    {
+      "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+      "title": "Chile tendrá su primera base genómica de referencia: Bupa lanza “1000 Genomas para Chile”",
+      "publication_date": "2026-08-13",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": "Bupa headline mismatch between listing and article",
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 1,
+        "feed_count": 1,
+        "related_published_signals": [],
+        "alicanto_status": "published",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:38.516519+00:00",
+          "body_sha256": "a7f686298c1b395b167cc57aa2b27da08ef1f79493e47c76be1feda7912d97cb",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "Jueves 13 de agosto de 2026",
+              "date": "2026-08-13"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/bupa_chile.json"
+    }
+  ],
+  "notes": [
+    "Raíz permitida sólo con procedencia de tarjeta del newsroom oficial; conserva identidad, H1, fecha, cuerpo350 y score78.",
+    "Artículos robóticos de mayo y centro de Coquimbo antiguo no se reintroducen como señales 90 días. Fecha aprendida en detalle también respeta el horizonte."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:20.504095+00:00",
+    "changes": [
+      {
+        "key": "e1fc070079becba6e8407518a333578e2e3a25505345a33bdda93c4182dac283",
+        "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+        "action": "admit_backfill"
+      },
+      {
+        "key": "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353",
+        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+        "action": "admit_backfill"
+      },
+      {
+        "key": "bec250b2d5f59d9c77da0c22fe6265d4c72f69c5d814f25c64a08f0be985a4b1",
+        "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
+        "action": "admit_backfill"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "full original inventory with unknown totals explicit",
+    "summary": {
+      "outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held.",
+      "archive_depth": {
+        "newsroom_cards": 51,
+        "detail_urls": 53,
+        "public_script_metadata_checked": 5
+      },
+      "owner": "Publisher Bupa Chile / Source Engineering",
+      "next_action": "Require an article-level published date from the original for undated roots, particularly Conecta; recheck official newsroom/sitemap/feed/CMS after publisher supplies release evidence. Investment already covered by DF; BancoEstado renewal needs no paid retry.",
+      "pages_checked": 71,
+      "latest_original_publication": "2026-09-10",
+      "discovered": 53,
+      "unique": 51,
+      "recent_30d": 0,
+      "recent_90d": 7,
+      "publication_date_unknown": 11,
+      "material_30d": 0,
+      "material_90d": 2,
+      "material_date_unknown": 2,
+      "material": 4,
+      "material_unknown": 0,
+      "published": 2,
+      "rejected": 1,
+      "deferred": 1,
+      "detected_material": 4,
+      "omitted_material": 0,
+      "parse_errors": 0,
+      "access_errors": 14,
+      "inventory": "data/audits/provider_inventory_2026_10_11/bupa_chile.json",
+      "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+      "relevant_30d_total": null,
+      "relevant_90d_total": null,
+      "publicable_confirmed": 2,
+      "publicable_total": null
+    },
+    "items": [
+      {
+        "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
+        "title": "Bupa Chile y BancoEstado impulsan campaña para acercar la prevención del cáncer a 35 mil mujeres",
+        "publication_date": null,
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "publication_date_not_exposed",
+        "materiality": "nonmaterial",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Annual October1–31 discounted prevention campaign, continuation of alliance since2024; no permanent capacity or coverage change. Original publication date is not the campaign start.",
+        "alicanto": {
+          "materiality": "nonmaterial",
+          "reason": "Annual October1–31 discounted prevention campaign, continuation of alliance since2024; no permanent capacity or coverage change. Original publication date is not the campaign start.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+          "detected": true,
+          "queue": [
+            {
+              "key": "bec250b2d5f59d9c77da0c22fe6265d4c72f69c5d814f25c64a08f0be985a4b1",
+              "status": "rejected",
+              "reason": "campaign_renewal_without_structural_change",
+              "lane": "BACKFILL",
+              "deferred_detail": "Bupa article publication date unavailable",
+              "assessment": null,
+              "current_editorial_review": {
+                "at": "2026-10-11T06:34:01.091479+00:00",
+                "method": "original evidence + independent Reviewer; no new paid model",
+                "reason": "campaign_renewal_without_structural_change",
+                "rationale": "Annual October1–31 discounted prevention campaign, continuation of alliance since2024; no permanent capacity or coverage change. Original publication date is not the campaign start.",
+                "related_to": [],
+                "historical_processor_reason": "budget_or_analysis_deferred",
+                "historical_model_diagnostics": "not evaluated before original publication/access gate",
+                "prior_queue_state": {
+                  "status": "retry",
+                  "reason": "budget_or_analysis_deferred"
+                }
+              }
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:38.516377+00:00",
+            "body_sha256": "15ea5ee0a36129bce69ed9e349ece62545349d0b98981cedb180509c49ad2ecc",
+            "date_stamps": [],
+            "date_reason": "publication_date_not_exposed",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/bupa_chile.json"
+      },
+      {
+        "url": "https://www.bupa.cl/mas-autonomia-y-acompanamiento-las-claves-para-cuidar-la-salud-despues-de",
+        "title": "Más autonomía y acompañamiento: las claves para cuidar la salud después de los 60",
+        "publication_date": null,
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "publication_date_not_exposed",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Bupa Conecta introduces insurer handling/reimbursement/appointment support for>14k insured older65. Potential operational insurer change hidden beneath wellness headline; original release date absent, so held without AI/publication.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Bupa Conecta introduces insurer handling/reimbursement/appointment support for>14k insured older65. Potential operational insurer change hidden beneath wellness headline; original release date absent, so held without AI/publication.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": true,
+          "queue": [
+            {
+              "key": "71857c1447c1cb5b688090662fd5c32808434d2fc23c5deecda10e793aa7b64a",
+              "status": "retry",
+              "reason": "original_publication_date_not_exposed",
+              "lane": "BACKFILL",
+              "deferred_detail": "Official original has no editorial publication date; date gate retained. No paid assessment performed.",
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": false,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "retry",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:38.516402+00:00",
+            "body_sha256": "1593db1d40949137d3691596d09136e8f5082defe12cdac5ca1f14d7a55f9686",
+            "date_stamps": [],
+            "date_reason": "publication_date_not_exposed",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/bupa_chile.json"
+      },
+      {
+        "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+        "title": "Bupa acelera su crecimiento en el sector oriente de Santiago con inversión de US$15 millones en nueva infraestructura",
+        "publication_date": null,
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "publication_date_not_exposed",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Same US15m programme: La Dehesa, acquisition of Huinganal and planned Mindplace2027. Existing DF signal Sep21 remains; official publication date unknown.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Same US15m programme: La Dehesa, acquisition of Huinganal and planned Mindplace2027. Existing DF signal Sep21 remains; official publication date unknown.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [
+            "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
+          ],
+          "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+          "detected": true,
+          "queue": [
+            {
+              "key": "e1fc070079becba6e8407518a333578e2e3a25505345a33bdda93c4182dac283",
+              "status": "rejected",
+              "reason": "already_covered_by_existing_signal",
+              "lane": "BACKFILL",
+              "deferred_detail": "Bupa article publication date unavailable",
+              "assessment": null,
+              "current_editorial_review": {
+                "at": "2026-10-11T06:34:01.091479+00:00",
+                "method": "original evidence + independent Reviewer; no new paid model",
+                "reason": "already_covered_by_existing_signal",
+                "rationale": "Same US15m programme: La Dehesa, acquisition of Huinganal and planned Mindplace2027. Existing DF signal Sep21 remains; official publication date unknown.",
+                "related_to": [
+                  "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
+                ],
+                "historical_processor_reason": "budget_or_analysis_deferred",
+                "historical_model_diagnostics": "not evaluated before original publication/access gate",
+                "prior_queue_state": {
+                  "status": "retry",
+                  "reason": "budget_or_analysis_deferred"
+                }
+              }
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [
+            {
+              "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+              "title": "Bupa acelera inversiones en sector oriente de Santiago con tres proyectos por US$ 15 millones El plan incluye la inauguración del primer centro médico bajo su marca en La Dehesa, la compra de las Clínicas Huinganal y un nuevo establecimiento de salud mental Mindplace en San Damián.",
+              "publication_date": "2026-09-21"
+            }
+          ],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:38.516425+00:00",
+            "body_sha256": "3ba930fc796fb6ca2a47a4af2ddaa86c978ba96eed067201ab100c59a88d585d",
+            "date_stamps": [],
+            "date_reason": "publication_date_not_exposed",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/bupa_chile.json"
+      },
+      {
+        "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas",
+        "title": "Personas damnificadas recibirán atención gratuita en clínicas privadas gracias a la activación del sistema de atención fonasa para emergencias y desastres (safed)",
+        "publication_date": "2026-08-13",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": true,
+          "queue": [
+            {
+              "key": "e8e7a13bc1f7c7ea9390d11915843599c4ca82b6e25f9a3c366a4d60ae316f71",
+              "status": "published",
+              "reason": null,
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 1,
+          "feed_count": 1,
+          "related_published_signals": [],
+          "alicanto_status": "published",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:38.516496+00:00",
+            "body_sha256": "ff69e626300d90aea8e6bec2228c52a5fea7d6cb57b5c607101762861d04bcae",
+            "date_stamps": [
+              {
+                "kind": "verified_article_header",
+                "value": "Jueves 13 de agosto de 2026",
+                "date": "2026-08-13"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/bupa_chile.json"
+      },
+      {
+        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+        "title": "Chile tendrá su primera base genómica de referencia: Bupa lanza “1000 Genomas para Chile”",
+        "publication_date": "2026-08-13",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": true,
+          "queue": [
+            {
+              "key": "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353",
+              "status": "published",
+              "reason": null,
+              "lane": "BACKFILL",
+              "deferred_detail": "Bupa headline mismatch between listing and article",
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": false,
+          "history_count": 1,
+          "feed_count": 1,
+          "related_published_signals": [],
+          "alicanto_status": "published",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:38.516519+00:00",
+            "body_sha256": "a7f686298c1b395b167cc57aa2b27da08ef1f79493e47c76be1feda7912d97cb",
+            "date_stamps": [
+              {
+                "kind": "verified_article_header",
+                "value": "Jueves 13 de agosto de 2026",
+                "date": "2026-08-13"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/bupa_chile.json"
+      }
+    ]
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 51,
+      "dated": 0,
+      "latest_original_at": null,
+      "technical_status": "ok",
+      "errors": [],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "bupa_chile",
+        "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+        "outcome": "retry",
+        "blocker": "Bupa article publication date unavailable"
+      },
+      {
+        "source": "bupa_chile",
+        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+        "outcome": "retry",
+        "blocker": "Bupa headline mismatch between listing and article"
+      },
+      {
+        "source": "bupa_chile",
+        "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
+        "outcome": "retry",
+        "blocker": "Bupa article publication date unavailable"
+      },
+      {
+        "source": "bupa_chile",
+        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+        "outcome": "published"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held.",
+  "baseline": {
+    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+    "queue_states": {
+      "rejected": 12,
+      "retry": 2,
+      "published": 1
+    },
+    "health": {
+      "technical_status": "ok",
+      "editorial_outcome": "pending",
+      "last_signal_at": "2026-08-13",
+      "published": 0,
+      "pending": 2,
+      "rejected": 12
+    }
+  },
+  "checkpoint_commit": "01c62f2",
+  "initial_checkpoint_status": "reconciled_with_exact_blockers",
+  "initial_original_items": [
     {
       "title": "Bupa acelera su crecimiento en el sector oriente de Santiago con inversión de US$15 millones en nueva infraestructura",
       "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
@@ -57,31 +781,11 @@
       "evidence": "Ya publicado en historia; vigencia actual no verificada. No multiplicar señales del mismo SAFED."
     }
   ],
-  "notes": [
-    "Raíz permitida sólo con procedencia de tarjeta del newsroom oficial; conserva identidad, H1, fecha, cuerpo350 y score78.",
-    "Artículos robóticos de mayo y centro de Coquimbo antiguo no se reintroducen como señales 90 días. Fecha aprendida en detalle también respeta el horizonte."
+  "blockers_before_exhaustive_audit": [
+    "51_listing_cards_undated_full_90_day_detail_inventory_incomplete",
+    "investment_and_bank_campaign_publication_date_not_exposed"
   ],
-  "recovery_checkpoint": {
-    "at": "2026-10-11T04:41:20.504095+00:00",
-    "changes": [
-      {
-        "key": "e1fc070079becba6e8407518a333578e2e3a25505345a33bdda93c4182dac283",
-        "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
-        "action": "admit_backfill"
-      },
-      {
-        "key": "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353",
-        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
-        "action": "admit_backfill"
-      },
-      {
-        "key": "bec250b2d5f59d9c77da0c22fe6265d4c72f69c5d814f25c64a08f0be985a4b1",
-        "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
-        "action": "admit_backfill"
-      }
-    ]
-  },
-  "reconciliation": {
+  "initial_reconciliation": {
     "scope": "verified original items; lower bound where inventory is blocked",
     "material_candidates_30_days": 0,
     "material_candidates_90_days": 2,
@@ -163,68 +867,13 @@
       }
     ]
   },
-  "environment_blockers": {
-    "local_original_collector": "CONNECT_403_restricted_original_hosts",
-    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
-  },
-  "runtime_checkpoint": {
-    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
-    "probe": {
-      "discovered": 51,
-      "dated": 0,
-      "latest_original_at": null,
-      "technical_status": "ok",
-      "errors": [],
-      "evaluation_performed": false
-    },
-    "promotion": "none"
-  },
-  "assessment_checkpoints": {
-    "results": [
-      {
-        "source": "bupa_chile",
-        "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
-        "outcome": "retry",
-        "blocker": "Bupa article publication date unavailable"
-      },
-      {
-        "source": "bupa_chile",
-        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
-        "outcome": "retry",
-        "blocker": "Bupa headline mismatch between listing and article"
-      },
-      {
-        "source": "bupa_chile",
-        "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
-        "outcome": "retry",
-        "blocker": "Bupa article publication date unavailable"
-      },
-      {
-        "source": "bupa_chile",
-        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
-        "outcome": "published"
-      }
-    ],
-    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
-    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
-    "repeated_paid_calls": 0
-  },
-  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null",
-  "baseline": {
-    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
-    "queue_states": {
-      "rejected": 12,
-      "retry": 2,
-      "published": 1
-    },
-    "health": {
-      "technical_status": "ok",
-      "editorial_outcome": "pending",
-      "last_signal_at": "2026-08-13",
-      "published": 0,
-      "pending": 2,
-      "rejected": 12
-    }
-  },
-  "checkpoint_commit": "01c62f2"
+  "outcome": "EXTERNAL_BLOCKER_PROVEN",
+  "original_items_role": "Current candidate reconciliation. Initial evidence is preserved separately; terminal results are not replayed.",
+  "latest_original_inventory": "data/audits/provider_inventory_2026_10_11/bupa_chile.json",
+  "piece_decisions": "data/audits/provider_editorial_decisions_2026_10_11.json",
+  "last_runtime_evidence": "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
+  "next_action": "Require an article-level published date from the original for undated roots, particularly Conecta; recheck official newsroom/sitemap/feed/CMS after publisher supplies release evidence. Investment already covered by DF; BancoEstado renewal needs no paid retry.",
+  "blocker_owner": "Publisher Bupa Chile / Source Engineering",
+  "current_checkpoint_test": "55 passed, 1 skipped; provider/beta/publication/gremio/source-health focal suite on 2026-10-11",
+  "merged_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104"
 }
