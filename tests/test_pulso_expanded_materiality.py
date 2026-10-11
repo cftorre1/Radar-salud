@@ -19,7 +19,8 @@ CONTROLS = [row for row in json.loads((REAL / 'manifest.json').read_text())['fix
 PROJECTIONS = json.loads((Path(__file__).parent / 'fixtures/pulso_expanded_materiality_real/verified_primary_body_projections.json').read_text())['fixtures']
 REPAIRED_PROJECTIONS = ('proposed_clinical_condition_colmed', 'regional_health_power_interruption',
                         'modular_hospital_transport', 'mapped_multi_provider_flood_damage',
-                        'proposed_reproductive_legislative_progress')
+                        'proposed_reproductive_legislative_progress',
+                        'medical_insurance_coverage_inquiry', 'provider_judicial_financial_liability')
 
 
 def original_raw(entry):
@@ -152,6 +153,24 @@ def test_original_reproductive_bill_is_discussion_started_with_no_adopted_govern
     assert 'en 2025 la experta de la ONU' in entry['body']
 
 
+def test_original_dipreca_inquiry_is_an_allegation_without_an_investigation_result():
+    entry = next(row for row in PROJECTIONS if row['name'] == 'medical_insurance_coverage_inquiry')
+    assert entry['publication_date'] == '2026-07-30'
+    assert 'habrían sido cubiertas' in entry['body']
+    assert 'investigación en curso' in entry['body']
+    assert 'habrá que esperar el resultado' in entry['body']
+    assert 'no me corresponde que yo me refiera a ello' in entry['body']
+
+
+def test_original_court_award_is_new_liability_for_old_clinical_events():
+    entry = next(row for row in PROJECTIONS if row['name'] == 'provider_judicial_financial_liability')
+    assert entry['publication_date'] == '2026-09-02'
+    assert 'a pagar un total de $380.000.000' in entry['body']
+    assert '27 de julio 2020' in entry['body']
+    assert 'peritaje médico legal de 2023' in entry['body']
+    assert 'indemnización de perjuicios por falta de servicio' in entry['body']
+
+
 @pytest.mark.parametrize(('title', 'body'), [
     ('Minsal informa sobre salud de personas mayores', 'Los ELEAM necesitan autorización sanitaria. Las familias visitan a sus parientes.'),
     ('Lista de residencias ELEAM', 'Un directorio comercial ofrece un listado de ELEAM con autorización sanitaria, disponible públicamente.'),
@@ -167,6 +186,9 @@ def test_original_reproductive_bill_is_discussion_started_with_no_adopted_govern
     ('Salud aborda inundaciones', 'Un estudio describe clínicas inundadas y recintos asistenciales afectados durante un temporal histórico, sin respuesta actual.'),
     ('Una ministra comenta gestación subrogada', 'La ministra ofrece su opinión sobre gestación subrogada y propone que la comisión de Salud converse el tema algún día.'),
     ('El Senado debate educación', 'La comisión de educación inició la discusión del proyecto de ley de escuelas. En una entrevista aparte, un médico comenta gestación subrogada.'),
+    ('Dipreca ofrece información', 'Dipreca describe la cobertura de cirugías estéticas, sin una investigación ni procedimientos sancionatorios.'),
+    ('Dipreca investiga robos', 'Existe un sumario en Dipreca por robo de computadores de oficinas administrativas.'),
+    ('Hospital recuerda controversia', 'Un hospital y un servicio de salud comentan un asunto pendiente en la Corte de Apelaciones, sin resolución ni monto de indemnización.'),
 ])
 def test_narrow_registry_and_care_suspension_rules_do_not_admit_generic_directory_or_unadopted_ideas(title, body):
     assert not beta_sources._material('media', title, body)
