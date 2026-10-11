@@ -8,7 +8,7 @@ from zoneinfo import ZoneInfo
 from urllib.parse import urlsplit, urljoin, parse_qs, urlencode, urlunsplit
 from html.parser import HTMLParser
 from concurrent.futures import ThreadPoolExecutor
-HOSTS={"www.superdesalud.gob.cl","superdesalud.gob.cl","www.cmfchile.cl","cmfchile.cl","www.dipres.gob.cl","dipres.gob.cl","ilcinversiones.cl"}
+HOSTS={"www.superdesalud.gob.cl","superdesalud.gob.cl","www.cmfchile.cl","cmfchile.cl","www.dipres.gob.cl","dipres.gob.cl","ilcinversiones.cl","cibe.bolsadesantiago.com","servicioscms.bolsadesantiago.com"}
 CMF_LOCK = Lock()
 def utcnow():
     return datetime.now(timezone.utc).isoformat()
@@ -102,6 +102,10 @@ def period_seeds(seeds, as_of):
             parts=urlsplit(seed['url']);values={k:v[0] for k,v in parse_qs(parts.query).items()}
             index=by_rut.get(values['rut'],0);by_rut[values['rut']]=index+1
             year,month=financial[index%2];values.update(aa=str(year),mm=f'{month:02d}')
+            seed['url']=urlunsplit(parts._replace(query=urlencode(values)))
+        if seed['kind']=='subsidiary_reports':
+            parts=urlsplit(seed['url']);values={k:v[0] for k,v in parse_qs(parts.query).items()}
+            values.update(aa=str(financial[0][0]),mm=f'{financial[0][1]:02d}')
             seed['url']=urlunsplit(parts._replace(query=urlencode(values)))
         result.append(seed)
     return result
