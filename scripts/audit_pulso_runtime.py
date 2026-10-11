@@ -250,7 +250,13 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
             captures_by_url.setdefault(url, []).append({key: response.get(key) for key in (
                 "url", "status", "captured_at", "sha256", "returned_text_utf8_sha256", "gzip_file",
                 "retention_reason", "error_type", "error", "primary_article", "primary_article_error") if response.get(key) is not None})
-    coverage = [row for row in details if row.get("status") in {"archive_coverage", "coverage_summary"}]
+    coverage = [row for row in details if row.get("status") in {
+        "archive_coverage", "coverage_summary", "public_feed_coverage", "runtime_coverage"}]
+    primary_coverage = next((row for row in reversed(coverage) if row.get("status") == "runtime_coverage"), None)
+    if primary_coverage is None:
+        primary_coverage = next((row for row in reversed(coverage) if row.get("status") == "coverage_summary"), None)
+    if primary_coverage is None:
+        primary_coverage = next((row for row in reversed(coverage) if row.get("status") == "archive_coverage"), None)
     source_error = discovery.get("audit_discovery_error") or discovery.get("sources", {}).get(SOURCE, {}).get("error_type")
     matrix = []
     for url in sorted(current | set(queued) | set(controls) | set(history_by_url)):
@@ -289,9 +295,11 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
                 omission = {"status": precise["status"], "reason": precise.get("reason") or "reason_not_emitted",
                             "error_type": precise.get("error_type"), "url_level_cause_verified": True}
             else:
-                incomplete = next((row for row in coverage if not row.get("coverage_complete", row.get("complete", False))), None)
+                incomplete = primary_coverage if primary_coverage and not primary_coverage.get(
+                    "coverage_complete", primary_coverage.get("complete", False)) else None
                 omission = {"status": "not_observed_in_current_core", "reason": (
-                    "archive_coverage_incomplete:" + str(incomplete.get("termination", "unknown")) if incomplete else
+                    ("runtime_coverage_incomplete:" if incomplete.get("status") == "runtime_coverage" else "archive_coverage_incomplete:") + str(
+                        incomplete.get("termination", "required_public_feed_incomplete" if incomplete.get("status") == "runtime_coverage" else "unknown")) if incomplete else
                     "source_error:" + str(source_error) if source_error else "URL_not_enumerated_by_current_core"),
                     "url_level_cause_verified": False}
         runtime_day = verified.get("publication_date")
@@ -354,6 +362,8 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         "selected_sources": discovery.get("selected_sources"), "core_source_present": SOURCE in discovery.get("sources", {}),
         "audit_discovery_error": discovery.get("audit_discovery_error"),
         "core_source": discovery.get("sources", {}).get(SOURCE), "coverage": coverage,
+        "primary_coverage": primary_coverage,
+        "complementary_archive_limits": [row for row in coverage if row.get("status") == "archive_coverage"],
         "baseline_queue": list(baseline), "windows": windows, "matrix": matrix,
         "source_attribution_findings": attribution_findings,
         "unresolved_recent_feed_exclusions": unresolved_feed,
@@ -368,6 +378,22 @@ def curate_history(history):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module.curate(history, resolve_external=False)
+
+
+def snapshot_feed(snapshot, history_modified_at=None):
+    """Only serialized snapshot rows establish actual candidate feed presence."""
+    if not isinstance(snapshot, dict) or not isinstance(snapshot.get("signals"), list):
+        return [], {"mode": "candidate_snapshot_missing_or_invalid", "serialized_feed_verified": False}
+    fresh = None
+    if history_modified_at is not None:
+        try:
+            stamp = datetime.fromisoformat(snapshot["generated_at"].replace("Z", "+00:00"))
+            fresh = stamp.tzinfo is not None and stamp.timestamp() >= history_modified_at
+        except (ValueError, TypeError, KeyError):
+            fresh = False
+    return snapshot["signals"], {"mode": "actual_serialized_candidate_snapshot",
+        "serialized_feed_verified": True, "generated_at": snapshot.get("generated_at"),
+        "generated_after_current_history": fresh}
 
 
 def current_execution_discovery(discovery, started_at):
@@ -493,9 +519,15 @@ def main():
             for key, item in after.items() if item.get("source") == SOURCE)
     history_value = read_json(root / "data/history/superintendencia_signals.json", [])
     history = history_value.get("signals", []) if isinstance(history_value, dict) else history_value
-    feed = curate_history(history)
+    candidate = curate_history(history)
+    snapshot_path = root / "web/data/radar_today.json"
+    history_path = root / "data/history/superintendencia_signals.json"
+    feed, feed_evidence = snapshot_feed(read_json(snapshot_path, {}), history_path.stat().st_mtime if history_path.exists() else None)
     captures = read_json(capture_path / "manifest.json", {})
     report = join_report(discovery, after, history, feed, control, baseline=baseline, captures=captures)
+    candidate_urls = {url for row in candidate if (url := normalized_url(row.get("source_url")))}
+    for row in report["matrix"]:
+        row["in_memory_curate_eligible"] = row["url"] in candidate_urls
     report.update(at=datetime.now(timezone.utc).isoformat(), branch=branch,
                   code_sha=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPOSITORY, text=True).strip(),
                   execution=execution, prior_execution=prior.get("execution") if args.report_only else None,
@@ -510,7 +542,9 @@ def main():
                   external_control_sha256=hashlib.sha256(control_path.read_bytes()).hexdigest(),
                   capture_manifest=str(capture_path / "manifest.json"),
                   unrelated_queue_unchanged=unrelated_before == digest_json({key: row for key, row in after.items() if row.get("source") != SOURCE}),
-                  feed_method="actual full-history curate(resolve_external=False); no injected rows")
+                  feed_method="actual serialized web/data/radar_today.json; full-history curate(resolve_external=False) eligibility recorded separately; no injected rows",
+                  feed_evidence={**feed_evidence, "path": str(snapshot_path),
+                      "sha256": hashlib.sha256(snapshot_path.read_bytes()).hexdigest() if snapshot_path.exists() else None})
     annotate_pending(report, report["last_core_execution"] or execution)
     atomic_json(out, report)
     print(json.dumps({"report": str(out), "core_source_present": report["core_source_present"],

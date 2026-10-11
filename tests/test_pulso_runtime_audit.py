@@ -199,3 +199,26 @@ def test_pending_without_observed_stop_cause_remains_unresolved():
     audit.annotate_pending(report, {"mode": "report_only_rejoin", "engine_called": False})
     assert report["matrix"][0]["operational_reason_unresolved"]
     assert report["unresolved_pending_operational_reasons"] == [BASE + "pending/"]
+
+
+def test_primary_runtime_coverage_keeps_complementary_archive_cap_separate():
+    details = [
+        {"status": "archive_coverage", "coverage_complete": False, "termination": "explicit_page_limit"},
+        {"status": "public_feed_coverage", "feed": "tag:salud", "coverage_complete": True, "pages_attempted": 20},
+        {"status": "runtime_coverage", "coverage_complete": True, "required_feeds": ["tag:salud"]},
+    ]
+    report = audit.join_report(discovery(details), {}, [], [], control([original("not-enumerated")]))
+    assert report["primary_coverage"]["status"] == "runtime_coverage"
+    assert report["primary_coverage"]["coverage_complete"]
+    assert len(report["coverage"]) == 3
+    assert report["complementary_archive_limits"][0]["termination"] == "explicit_page_limit"
+    assert report["matrix"][0]["omission"]["reason"] == "URL_not_enumerated_by_current_core"
+
+
+def test_serialized_candidate_feed_rows_are_not_invented_from_history():
+    rows, evidence = audit.snapshot_feed({})
+    assert rows == [] and not evidence["serialized_feed_verified"]
+    actual = [{"source_url": BASE + "serialized/"}]
+    rows, evidence = audit.snapshot_feed({"signals": actual, "generated_at": "2026-10-11T11:00:00Z"}, 1791710000)
+    assert rows == actual and evidence["serialized_feed_verified"]
+    assert evidence["generated_after_current_history"]

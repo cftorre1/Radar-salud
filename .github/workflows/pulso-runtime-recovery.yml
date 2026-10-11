@@ -48,6 +48,15 @@ jobs:
           if phase=='report_only': command.append('--report-only')
           raise SystemExit(subprocess.call(command))
           PY
+      - name: Export processed history to actual offline candidate feed and reconcile it
+        run: |
+          python - <<'PY'
+          import json, subprocess, sys
+          phase=json.load(open('.github/run-pulso-runtime-now'))['phase']
+          if phase=='process':
+              subprocess.run([sys.executable, 'scripts/export_web_snapshot.py', '--input', 'data/history/superintendencia_signals.json', '--offline'], check=True)
+              subprocess.run([sys.executable, 'scripts/audit_pulso_runtime.py', '--report-only'], check=True)
+          PY
       - name: Preserve source checkpoints and paid ledgers exclusively on isolated branch
         if: always()
         run: |
@@ -57,6 +66,8 @@ jobs:
           git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json
           if test -f data/audits/pulso_runtime_2026_10_11.json; then git add data/audits/pulso_runtime_2026_10_11.json; fi
           if test -f data/audits/pulso_runtime_capture/manifest.json; then git add data/audits/pulso_runtime_capture/manifest.json; fi
+          if test -f web/data/radar_today.json; then git add web/data/radar_today.json; fi
+          if test -f web/data/source_health.json; then git add web/data/source_health.json; fi
           git diff --cached --quiet || git commit -m "audit(pulso): preserve real core inventory and exact outcomes [skip ci]"
           git fetch origin codex/b-pulso-runtime-20261011
           git rebase origin/codex/b-pulso-runtime-20261011
@@ -72,4 +83,7 @@ jobs:
             data/state/pulso_discovery_cache.json
             data/state/discovery_run.json
             data/source_health.json
+            data/history/superintendencia_signals.json
+            web/data/radar_today.json
+            web/data/source_health.json
           if-no-files-found: error
