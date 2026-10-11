@@ -6,13 +6,13 @@
     "queue_blob_sha": "839728922ad473867429ff96f3ff2ebbdf001b4b",
     "queue_sha256": "d6d1338359a937d45015cfa88a7f1da88cd262f311bfcf37391f400348ee088f",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_control_sha256": "bf63dcb7216e4b721aa9fc0f647e5c87c2903b467175d01fef18206e873a94af",
-    "state_sha": "6beaf46ee039e0a3e2f41ff49e7fd8f1a0e05f0e"
+    "state_control_sha256": "0cff666d321368d931b8b44ce85c94a44abd05445dbfbe094212cd5eadd724f6",
+    "state_sha": "c186d7f01015d8a41756880e781b168fe095fd97"
   },
   "canonical_queue_updated": false,
   "derived_runtime_tasks": [
     {
-      "attempts": 2,
+      "attempts": 3,
       "blocker_evidence_count": 1,
       "blocker_fingerprint": "bf7c16dcf9fbbb751840c43b368c1af73694cc230014e680157aba2988b69aae",
       "candidate_review": {
@@ -30,7 +30,7 @@
       "failure_signature": null,
       "failure_verified": false,
       "family": "editorial",
-      "fence": 5,
+      "fence": 6,
       "input_fingerprint": "006d28f98224274972accda0f3cdb8c45498fcab32ed82b93cdd3c23b8f810d4",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_ready_at": "2026-10-11T06:25:47.641878Z",
@@ -47,8 +47,8 @@
       "raw_material_progress_at": "2026-10-11T05:49:10.476041Z",
       "reason": "no_material_progress_30m",
       "recovery_episode": "497f84b95210cad1fc3b8025fc4af58cbf98f5c9216f203dda5164f67a943b8c",
-      "recovery_reclaims": 0,
-      "status": "STALLED",
+      "recovery_reclaims": 1,
+      "status": "BLOCKED",
       "task_id": "editorial_repair_lane_2026_10_11"
     },
     {
@@ -92,7 +92,7 @@
       "task_id": "staging_qa_failed_run_38113830124"
     },
     {
-      "attempts": 1,
+      "attempts": 2,
       "blocker_evidence_count": 5,
       "blocker_fingerprint": "b715a79803690ffb2a4716f4b67642fb8e6eb23a28fa26f031ed0603d6154ccc",
       "candidate_review": {
@@ -105,39 +105,39 @@
         "superseded": null
       },
       "candidate_reviews": {},
-      "canonical_material_progress_at": "2026-10-11T06:07:52.299198Z",
+      "canonical_material_progress_at": "2026-10-11T06:26:34.435251Z",
       "evidence_revision": "1908733a6f4b6fc924668fc84dbc8a481bbfd007790610a00969dcdd2ae0ff78",
       "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
       "failure_verified": true,
       "family": "staging_qa",
-      "fence": 2,
+      "fence": 3,
       "input_fingerprint": "8c871ab5d63b6e8dd34c5cfe5ae1e73eabc23e8d415b6208003012034a534a31",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_ready_at": "2026-10-11T06:25:47.641878Z",
       "lease": {
-        "claimed_at": null,
-        "expires_at": null,
-        "fence": null,
-        "heartbeat_at": null,
-        "owner": null,
+        "claimed_at": "2026-10-11T06:26:34.435251Z",
+        "expires_at": "2026-10-11T06:36:34.435251Z",
+        "fence": 3,
+        "heartbeat_at": "2026-10-11T06:26:34.435251Z",
+        "owner": "38118016823-1-staging_qa",
         "recovery_deadline_at": null,
-        "token_sha256": null
+        "token_sha256": "f85dceebaf90b3456979466760235741f4bc2d1b4fe03e22ab4d0dad7da6a768"
       },
-      "material_progress_at": "2026-10-11T06:07:52.299198Z",
-      "raw_material_progress_at": "2026-10-11T06:09:07.790367Z",
+      "material_progress_at": "2026-10-11T06:26:34.435251Z",
+      "raw_material_progress_at": "2026-10-11T06:26:34.435251Z",
       "reason": "input_or_evidence_changed",
-      "recovery_episode": "3bee8124d86b6b1c33c94d6d977b6fd121e1f268d50d9f5faef6637947214bb9",
+      "recovery_episode": "c4fd24fb43eac44ff1bdcfb2f33ae97234d5d980472eea42190bc7f91f501f75",
       "recovery_reclaims": 0,
-      "status": "READY",
+      "status": "RUNNING",
       "task_id": "staging_qa_failed_run_38116961282"
     }
   ],
   "kind": "queue_runtime_projection",
   "observation": {
-    "path": "data/autopilot/evidence/observation-dd37599099c646108d9863ff71292ddb.json",
-    "sha256": "c7a4957beb25b7ed8ce7d0ae0ba6602c54ef0f6b5490de8b8f3bdd73793ec4ea",
+    "path": "data/autopilot/evidence/observation-ee37268c04ff490eb33f92db11a1240b.json",
+    "sha256": "fe7c7bdbadc01e8547cb3131585e3258fe5f12802d26d9c716ca9d603283a97a",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_sha": "6beaf46ee039e0a3e2f41ff49e7fd8f1a0e05f0e"
+    "state_sha": "c186d7f01015d8a41756880e781b168fe095fd97"
   },
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
@@ -1419,7 +1419,7 @@
       "owner": "Pele + Media Source Worker",
       "queue_status": "in_progress",
       "runtime": {
-        "attempts": 2,
+        "attempts": 3,
         "blocker_evidence_count": 4,
         "blocker_fingerprint": "87fc9aadce7714824d9da1a36c3a2266a78a66f44266b38f600ff1b6cce33bdf",
         "candidate_review": {
@@ -1432,30 +1432,30 @@
           "superseded": null
         },
         "candidate_reviews": {},
-        "canonical_material_progress_at": "2026-10-11T05:50:57.212073Z",
+        "canonical_material_progress_at": "2026-10-11T06:26:38.718338Z",
         "evidence_revision": "c288e3229e4b1d167bf05cc01e2ab31777dd869ce2882498b53c9b92a46b6794",
         "failure_signature": null,
         "failure_verified": false,
         "family": "media",
-        "fence": 5,
+        "fence": 6,
         "input_fingerprint": "9afebffea122073c4c248b5e4109cb00e291831ec16fd1538cd9605732ae3225",
         "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
         "last_ready_at": "2026-10-11T06:25:47.641878Z",
         "lease": {
-          "claimed_at": null,
-          "expires_at": null,
-          "fence": null,
-          "heartbeat_at": null,
-          "owner": null,
+          "claimed_at": "2026-10-11T06:26:38.718338Z",
+          "expires_at": "2026-10-11T06:36:38.718338Z",
+          "fence": 6,
+          "heartbeat_at": "2026-10-11T06:26:38.718338Z",
+          "owner": "38118016823-1-media",
           "recovery_deadline_at": null,
-          "token_sha256": null
+          "token_sha256": "d92f36c1db474cf2e6641866e013ed0917abe2e17b91be904671a4cc823a1696"
         },
-        "material_progress_at": "2026-10-11T05:50:57.212073Z",
-        "raw_material_progress_at": "2026-10-11T05:50:57.212073Z",
+        "material_progress_at": "2026-10-11T06:26:38.718338Z",
+        "raw_material_progress_at": "2026-10-11T06:26:38.718338Z",
         "reason": "no_material_progress_30m",
-        "recovery_episode": "d2266ac74b33c02287f562e745fc03fb43996e92df4f86465a554d3b96590734",
+        "recovery_episode": "0017e57e0e30827958cdff70f89549369ea7e33493e5f480813e56caff4414c9",
         "recovery_reclaims": 0,
-        "status": "STALLED",
+        "status": "RUNNING",
         "task_id": "source_repair_media_lane_2026_10_11"
       },
       "task_id": "source_repair_media_lane_2026_10_11"
@@ -1467,7 +1467,7 @@
       "owner": "Pele + Public Data Worker",
       "queue_status": "in_progress",
       "runtime": {
-        "attempts": 2,
+        "attempts": 3,
         "blocker_evidence_count": 16,
         "blocker_fingerprint": "c27b6ed8dfabdcf88d82f028aaa7fe2c63f50278c349455db5abf77c9d268d04",
         "candidate_review": {
@@ -1480,30 +1480,30 @@
           "superseded": null
         },
         "candidate_reviews": {},
-        "canonical_material_progress_at": "2026-10-11T05:51:52.898701Z",
+        "canonical_material_progress_at": "2026-10-11T06:26:34.167333Z",
         "evidence_revision": "77c76e0b5784191ac3f31f85a25b163a7481a952a85f7f5967dd36488c8fb195",
         "failure_signature": "17745ae2b3a25337b03f94a2a71b1337eeda0719b240300a9c77ce419ff5f40f",
         "failure_verified": true,
         "family": "public_data",
-        "fence": 5,
+        "fence": 6,
         "input_fingerprint": "9a36b581369ee62275f2ecd064ac70e8d4e8156b80999c4fc0cf4d09a7ec3974",
         "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
         "last_ready_at": "2026-10-11T06:25:47.641878Z",
         "lease": {
-          "claimed_at": null,
-          "expires_at": null,
-          "fence": null,
-          "heartbeat_at": null,
-          "owner": null,
+          "claimed_at": "2026-10-11T06:26:34.167333Z",
+          "expires_at": "2026-10-11T06:36:34.167333Z",
+          "fence": 6,
+          "heartbeat_at": "2026-10-11T06:26:34.167333Z",
+          "owner": "38118016823-1-public_data",
           "recovery_deadline_at": null,
-          "token_sha256": null
+          "token_sha256": "d0786c6775b4a1ead37d85d538cd4f741d35fe641ba6ad0d181c24b032312608"
         },
-        "material_progress_at": "2026-10-11T05:51:52.898701Z",
-        "raw_material_progress_at": "2026-10-11T05:51:52.898701Z",
+        "material_progress_at": "2026-10-11T06:26:34.167333Z",
+        "raw_material_progress_at": "2026-10-11T06:26:34.167333Z",
         "reason": "no_material_progress_30m",
-        "recovery_episode": "925d0100631445e1a44175810614a5befcdf121779b029ae9f46c4fe4a455e0e",
+        "recovery_episode": "3a4ef577818f50ca8e8e5c7260aee57d3d7ba53ec13e378a991fc8f242d474fb",
         "recovery_reclaims": 0,
-        "status": "STALLED",
+        "status": "RUNNING",
         "task_id": "source_repair_public_data_lane_2026_10_11"
       },
       "task_id": "source_repair_public_data_lane_2026_10_11"
@@ -1515,7 +1515,7 @@
       "owner": "Pele + Regulatory Worker",
       "queue_status": "in_progress",
       "runtime": {
-        "attempts": 2,
+        "attempts": 3,
         "blocker_evidence_count": 4,
         "blocker_fingerprint": "42b01fa9d1e1bbbbb760bf894998a00a61d1971c4bfbb9b4af07ba4ce3f2ae46",
         "candidate_review": {
@@ -1528,30 +1528,30 @@
           "superseded": null
         },
         "candidate_reviews": {},
-        "canonical_material_progress_at": "2026-10-11T05:49:59.053350Z",
+        "canonical_material_progress_at": "2026-10-11T06:26:31.126468Z",
         "evidence_revision": "c59f4f1aa4c71cb76cc2e05b26caca2bae9f0ed9cc322af2566f068b75472ab2",
         "failure_signature": "63bd80fe6868312bdb1eab311620090fb6334bb22f65a03cda132a932b4e4563",
         "failure_verified": true,
         "family": "fiscalization",
-        "fence": 5,
+        "fence": 6,
         "input_fingerprint": "ae07bdec0fd1af6be22fa64d6681b13a3f31791e7b57d4eacc86babda7d5ecef",
         "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
         "last_ready_at": "2026-10-11T06:25:47.641878Z",
         "lease": {
-          "claimed_at": null,
-          "expires_at": null,
-          "fence": null,
-          "heartbeat_at": null,
-          "owner": null,
+          "claimed_at": "2026-10-11T06:26:31.126468Z",
+          "expires_at": "2026-10-11T06:37:24.234437Z",
+          "fence": 6,
+          "heartbeat_at": "2026-10-11T06:27:24.234437Z",
+          "owner": "38118016823-1-fiscalization",
           "recovery_deadline_at": null,
-          "token_sha256": null
+          "token_sha256": "6799bbd9bc24ca96a6fcd6529b2d58a3cd0ae867be15264385a2314074e43168"
         },
-        "material_progress_at": "2026-10-11T05:49:59.053350Z",
-        "raw_material_progress_at": "2026-10-11T05:49:59.053350Z",
+        "material_progress_at": "2026-10-11T06:26:31.126468Z",
+        "raw_material_progress_at": "2026-10-11T06:26:31.126468Z",
         "reason": "no_material_progress_30m",
-        "recovery_episode": "d9b68ac4d65598c7d6d44d8cd627082ed4e785279f24da2ebea38bb6b24b1787",
+        "recovery_episode": "92c75a257f55b79369a5f6c9a3d66c1f68f1469becfa2f879014e33f3413460e",
         "recovery_reclaims": 0,
-        "status": "STALLED",
+        "status": "RUNNING",
         "task_id": "source_repair_fiscalization_lane_2026_10_11"
       },
       "task_id": "source_repair_fiscalization_lane_2026_10_11"
@@ -1563,7 +1563,7 @@
       "owner": "Pele + Occupational Health Worker",
       "queue_status": "in_progress",
       "runtime": {
-        "attempts": 2,
+        "attempts": 3,
         "blocker_evidence_count": 10,
         "blocker_fingerprint": "0fd18c5c18af039521787f8b27d79521e1cc29f179f5082bee4397f7c7e0b938",
         "candidate_review": {
@@ -1581,25 +1581,25 @@
         "failure_signature": "72996ac38587716785fbb2512ec610775123f89cd0f6d40aea1f479e890d0a5f",
         "failure_verified": true,
         "family": "mutualities",
-        "fence": 5,
+        "fence": 6,
         "input_fingerprint": "5306961e2099021429e00e2f18ef5026790a771f770ffa90a56744765dee2fc0",
         "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
         "last_ready_at": "2026-10-11T06:25:47.641878Z",
         "lease": {
-          "claimed_at": null,
-          "expires_at": null,
-          "fence": null,
-          "heartbeat_at": null,
-          "owner": null,
-          "recovery_deadline_at": null,
-          "token_sha256": null
+          "claimed_at": "2026-10-11T06:26:38.240522Z",
+          "expires_at": "2026-10-11T06:36:38.240522Z",
+          "fence": 6,
+          "heartbeat_at": "2026-10-11T06:26:38.240522Z",
+          "owner": "38118016823-1-mutualities",
+          "recovery_deadline_at": "2026-10-11T06:36:38.240522Z",
+          "token_sha256": "23fe21c60793cd61e7f5251dd40bf6c5875070f5972b21769c029938e0991b10"
         },
         "material_progress_at": "2026-10-11T05:50:36.986244Z",
         "raw_material_progress_at": "2026-10-11T05:50:36.986244Z",
         "reason": "no_material_progress_30m",
         "recovery_episode": "99495489654606fbc8c19c3a3eb94f649720bddbcd40f83d20b46a56b9baea90",
-        "recovery_reclaims": 0,
-        "status": "STALLED",
+        "recovery_reclaims": 1,
+        "status": "RUNNING",
         "task_id": "source_repair_mutualities_lane_2026_10_11"
       },
       "task_id": "source_repair_mutualities_lane_2026_10_11"
