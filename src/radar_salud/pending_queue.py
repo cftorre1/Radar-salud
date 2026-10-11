@@ -60,7 +60,9 @@ class PendingQueue:
         # A single canonical news URL must retain its original durable identity.
         pulso_urls = {}
         if source == "pulso_latercera":
-            from .pulso_source import article_url
+            from .pulso_source import (article_url, complete_article_body,
+                                       verified_publication_date_conflict, verified_sponsored_content,
+                                       verified_video_without_text)
             pulso_urls = {article_url(item["raw"]["url"]): key for key,item in self.items.items()
                           if item["source"] == source and article_url(item["raw"]["url"])}
         for raw in items:
@@ -69,20 +71,43 @@ class PendingQueue:
                 url = article_url(raw.url)
                 previous = self.items.get(pulso_urls.get(url)) if url else None
                 if previous is not None:
-                    if previous["status"] in ("pending", "retry", "processing") and raw.metadata.get("article_verified"):
+                    metadata = raw.metadata
+                    primary_bound = bool(url and metadata.get("canonical_url") == url)
+                    publisher_exception = primary_bound and (
+                        (verified_publication_date_conflict(metadata) and raw.event_date is None)
+                        or ((verified_video_without_text(metadata) or verified_sponsored_content(metadata))
+                            and raw.event_date == metadata.get("publication_date")))
+                    factual_verified = (metadata.get("article_verified") is True and primary_bound
+                                        and metadata.get("primary_identity_verified") is True
+                                        and metadata.get("publication_date_verified") is True
+                                        and raw.event_date == metadata.get("publication_date")
+                                        and complete_article_body(metadata))
+                    if previous["status"] in ("pending", "retry", "processing") and (factual_verified or publisher_exception):
                         old = previous["raw"]
                         old_meta = old.get("metadata", {})
-                        changed = (not old_meta.get("article_verified") or old.get("event_date") != raw.event_date
-                                   or old.get("title") != raw.title or old_meta.get("page_text") != raw.metadata.get("page_text"))
+                        proof_fields = ("article_verified", "primary_identity_verified", "publication_date_verified",
+                                        "canonical_url", "source_quality_gate", "article_body_complete",
+                                        "article_body_sha256", "article_body_characters", "publisher_taxonomy",
+                                        "publisher_content_classification", "publisher_exception_reason",
+                                        "source_content_unavailable_reason", "video_identity_verified", "video_evidence",
+                                        "publication_date_source", "publication_timestamp", "publication_evidence",
+                                        "publisher_date_convention", "visible_publication_date", "possible_publication_days",
+                                        "html_sha256", "publisher_lastmod")
+                        changed = (old.get("event_date") != raw.event_date
+                                   or old.get("title") != raw.title or old_meta.get("page_text") != metadata.get("page_text")
+                                   or any(old_meta.get(field) != metadata.get(field) for field in proof_fields))
                         if changed:
                             revisions = old_meta.get("evidence_revisions", []) + [dict(
                                 at=now.isoformat(), previous_publication_date=old.get("event_date"),
                                 verified_publication_date=raw.event_date, previous_title=old.get("title"),
                                 verified_title=raw.title, previous_capture_method=old_meta.get("capture_method"),
-                                reason="verified_article_rediscovery", lane_preserved=previous["lane"])]
+                                reason="verified_publisher_exception_rediscovery" if publisher_exception else "verified_article_rediscovery",
+                                previous_publisher_exception_reason=old_meta.get("publisher_exception_reason"),
+                                verified_publisher_exception_reason=metadata.get("publisher_exception_reason"),
+                                lane_preserved=previous["lane"])]
                             previous["raw"] = asdict(raw)
                             for field in ("editorial_hold", "event_equivalence_review"):
-                                if field in old_meta:
+                                if field in old_meta and field not in previous["raw"]["metadata"]:
                                     previous["raw"]["metadata"][field] = old_meta[field]
                             previous["raw"]["metadata"]["evidence_revisions"] = revisions
                             previous["raw"]["metadata"]["queue_identity_fingerprint"] = pulso_urls[url]

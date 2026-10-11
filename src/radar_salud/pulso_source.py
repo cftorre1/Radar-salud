@@ -818,6 +818,8 @@ def _verified_detail(entry, loader, cached, audit=None):
     now = datetime.now(ZoneInfo("UTC")).isoformat()
     # lastmod is solely a change token: it never establishes publication date.
     if (cached and entry.get("lastmod") and cached.get("lastmod") == entry["lastmod"]
+            and cached.get("metadata", {}).get("canonical_url") == url
+            and re.fullmatch(r"[0-9a-f]{64}", str(cached.get("metadata", {}).get("html_sha256", "")))
             and not publisher_taxonomy_requires_revalidation(cached.get("metadata", {}))
             and (cached.get("metadata", {}).get("article_verified")
                  or verified_video_without_text(cached.get("metadata", {}))
@@ -845,6 +847,15 @@ def _verified_detail(entry, loader, cached, audit=None):
         else:
             result = dict(cached, metadata=dict(metadata, publisher_date_convention=convention,
                                                 publication_evidence=dated_evidence), cache_hit=True)
+            if metadata.get("article_verified") is True:
+                if (metadata.get("primary_identity_verified") is False
+                        or metadata.get("publication_date_verified") is False):
+                    return _verified_detail(entry, loader, None, audit)
+                # Earlier verified caches lacked these explicit flags. Their
+                # canonical identity, original HTML hash, unchanged lastmod and
+                # entire publication evidence were checked above. Capture time
+                # and original hash remain unchanged; this is not a fresh fetch.
+                result["metadata"].update(primary_identity_verified=True, publication_date_verified=True)
             return result
     try:
         html = _request_with_retries(loader, url, audit)
