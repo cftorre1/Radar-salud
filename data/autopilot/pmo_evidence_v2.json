@@ -3,11 +3,11 @@
     "infra_sha": "54174c5d690daa29f75b6956d6e90c90ee5cd177",
     "learning_ledger_blob_sha": "597b9e34f9990abd1018c6334825599ff188e308",
     "learning_ledger_sha256": "0c5b668739b78702a60f5427e40b7224c8eef0efb16ed71c5f14527b81006d40",
-    "queue_blob_sha": "1115fd39c4c69e9773494a4fee76c5d4c1534813",
-    "queue_sha256": "e09bff4b55ce66fbeca28888c3523fb2d7c4a569cd8c811a99b466bc3ee58198",
-    "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
-    "state_control_sha256": "8cf5ede46ba5ab09b1b966657d9643e8aa6b720a283f66b84d5a3817ede56c9f",
-    "state_sha": "cc6c040c8fccf98766ad83125590ac65cf7af1f1"
+    "queue_blob_sha": "f9b1cbc1504941f19468268de3bed7902dfa5fe4",
+    "queue_sha256": "7680b918521d523bf5eb6c968deec9adbd53d9ca30ef99497ec136717e1fb426",
+    "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+    "state_control_sha256": "888da626633f9024eef0c8bf1b9d7f0596c9502749fccd10e6c61e4fc034f98e",
+    "state_sha": "9958199e5c3b5554d39edf856c3940e9634e7087"
   },
   "canonical_pmo_updated": false,
   "corrected_material_event_count": 8,
@@ -28,7 +28,6 @@
     "failure_repaired_or_evidenced_escalation": {
       "escalated_task_ids": [
         "source_repair_mutualities_lane_2026_10_11",
-        "source_repair_public_data_lane_2026_10_11",
         "staging_qa_failed_run_38113830124",
         "staging_qa_failed_run_38116961282",
         "staging_qa_failed_run_38123952091",
@@ -43,19 +42,19 @@
     },
     "legacy_stage_a": {
       "metrics": {
-        "autonomous_pickups": 4,
+        "autonomous_pickups": 3,
         "material_event_count": 4,
-        "max_material_gap_seconds": 14186.409713,
+        "max_material_gap_seconds": 13125.005394,
         "mode": "live",
         "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 28503.257073,
-        "window_started_at": "2026-10-11T09:24:49.488570Z"
+        "total_elapsed_seconds": 29564.661392,
+        "window_started_at": "2026-10-11T09:42:30.892889Z"
       },
-      "observed_until": "2026-10-11T13:24:49.488570Z",
+      "observed_until": "2026-10-11T13:42:30.892889Z",
       "reasons": [
         "owner_intervention_observation_not_verified",
         "durable_verified_mutation_not_observed",
@@ -72,17 +71,17 @@
     "useful_work_window": {
       "is_live_proof": false,
       "metrics": {
-        "autonomous_pickups": 4,
+        "autonomous_pickups": 3,
         "material_event_count": 4,
-        "max_material_gap_seconds": 14186.409713,
+        "max_material_gap_seconds": 13125.005394,
         "mode": "live",
         "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 28503.257073,
-        "window_started_at": "2026-10-11T09:24:49.488570Z"
+        "total_elapsed_seconds": 29564.661392,
+        "window_started_at": "2026-10-11T09:42:30.892889Z"
       }
     }
   },
@@ -475,10 +474,10 @@
   "material_event_count": 59,
   "material_signature": "5502c9b39c468973641ded1f611d9a554f79ff7ce2ae7f20c704ab3cfb123029",
   "observation": {
-    "path": "data/autopilot/evidence/observation-c0ecf6d84acc4ec38f2263e3978b8e96.json",
-    "sha256": "f17a022d9f658a13083c69148b14bd66f4d4cd645f725b4d14089ecdd6c16306",
-    "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
-    "state_sha": "cc6c040c8fccf98766ad83125590ac65cf7af1f1"
+    "path": "data/autopilot/evidence/observation-ff94b42cdce8493096b5cfd73ee45620.json",
+    "sha256": "3662bdc336e1aed322bc07a04e8a557981af572cdfdae3461f047e1bead7bd78",
+    "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+    "state_sha": "9958199e5c3b5554d39edf856c3940e9634e7087"
   },
   "owner_followup_count": null,
   "owner_followups": "UNKNOWN",
@@ -486,9 +485,12 @@
   "raw_material_event_count": 67,
   "raw_material_signature": "4eef29093dd856e164bf481cc56594f2c8037f16e8a00ad870b0303a21674dd7",
   "schema_version": 2,
-  "stalls": [],
+  "stalls": [
+    "editorial_repair_lane_2026_10_11"
+  ],
   "task_counts": {
-    "BLOCKED": 39,
-    "READY": 1
+    "BLOCKED": 35,
+    "READY": 4,
+    "STALLED": 1
   }
 }
