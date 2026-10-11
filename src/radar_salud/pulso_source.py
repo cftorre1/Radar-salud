@@ -24,6 +24,8 @@ from .scouts import fetch_html
 HOSTS = {"www.latercera.com", "latercera.com"}
 ARTICLE_PATH = re.compile(r"/[a-z0-9-]+/noticia/[^/]+(?:/[A-Za-z0-9]{26})?/?")
 EXCLUDED_SECTIONS = {"opinion", "editorial", "columnas", "cartas-al-director"}
+_OPINION_LABELS = {"opinión", "opinion", "columna", "columna de opinión", "columna de opinion", "editorial"}
+_SPONSORED_SECTIONS = {"branded", "publirreportajes"}
 LISTINGS = (
     "https://www.latercera.com/canal/pulso/",
     "https://www.latercera.com/canal/nacional/",
@@ -323,6 +325,96 @@ class ConflictingPublicationArticle(ValueError):
         self.title, self.body, self.metadata = title, body, metadata
 
 
+class SponsoredArticle(ValueError):
+    """Complete publisher-declared commercial content requires human review."""
+    def __init__(self, title, body, metadata):
+        super().__init__("publisher_sponsored_content_review_required")
+        self.title, self.body, self.metadata = title, body, metadata
+
+
+def _primary_taxonomy(section, keywords, canonical, article_type):
+    labels = [value.strip() for value in keywords.split(',')] if isinstance(keywords, str) else keywords
+    labels = [value.strip() for value in labels if isinstance(value, str)] if isinstance(labels, list) else []
+    matched = [value for value in labels if value.casefold() in _OPINION_LABELS]
+    section_key = str(section).strip().casefold()
+    classification = ("opinion" if matched or section_key in _OPINION_LABELS else
+                      "sponsored" if section_key in _SPONSORED_SECTIONS
+                      and urlparse(canonical).path.split('/')[1] == section_key else "factual")
+    return dict(source="url_bound_json_ld", canonical_url=canonical, article_type=article_type,
+                section=section, labels=labels, matched_opinion_labels=matched, classification=classification)
+
+
+def _matching_primary_taxonomy(metadata):
+    canonical = metadata.get("canonical_url")
+    if not canonical or article_url(canonical) != canonical:
+        return False
+    expected = _primary_taxonomy(metadata.get("section"), metadata.get("keywords", []), canonical, None)
+    saved = metadata.get("publisher_taxonomy", {})
+    article_type = saved.get("article_type") if isinstance(saved, dict) else None
+    types = [article_type] if isinstance(article_type, str) else article_type
+    return (isinstance(saved, dict) and saved.get("source") == "url_bound_json_ld"
+                and isinstance(types, list) and any(value in ("NewsArticle", "Article", "ReportageNewsArticle") for value in types)
+                and saved.get("canonical_url") == canonical
+                and all(saved.get(key) == expected[key] for key in
+                        ("section", "labels", "matched_opinion_labels", "classification")))
+
+
+def publisher_taxonomy_requires_revalidation(metadata):
+    """Legacy successful caches must not bypass newly verified publisher labels."""
+    canonical = metadata.get("canonical_url")
+    if not canonical or article_url(canonical) != canonical:
+        return False
+    expected = _primary_taxonomy(metadata.get("section"), metadata.get("keywords", []), canonical, None)
+    if expected["classification"] == "factual":
+        return False
+    if not _matching_primary_taxonomy(metadata):
+        return True
+    if expected["classification"] == "opinion":
+        return not (metadata.get("publisher_exclusion_reason") in ("publisher_opinion_taxonomy", "excluded_opinion_content")
+                    and metadata.get("primary_identity_verified") is True
+                    and metadata.get("publication_date_verified") is True)
+    return not (verified_sponsored_content(metadata) or verified_publication_date_conflict(metadata))
+
+
+def verified_sponsored_content(metadata):
+    """Verify commercial provenance, never establish editorial eligibility."""
+    canonical = metadata.get("canonical_url")
+    taxonomy = metadata.get("publisher_taxonomy", {})
+    expected_taxonomy = _primary_taxonomy(metadata.get("section"), metadata.get("keywords", []), canonical, None) if canonical else {}
+    if not (canonical and article_url(canonical) == canonical
+            and metadata.get("primary_identity_verified") is True
+            and metadata.get("publication_date_verified") is True
+            and metadata.get("article_verified") is True
+            and metadata.get("article_body_complete") is True and complete_article_body(metadata)
+            and metadata.get("publisher_content_classification") == "sponsored"
+            and metadata.get("publisher_exception_reason") == "publisher_sponsored_content_review_required"
+            and metadata.get("editorial_hold") == "publisher_sponsored_content_review_required"
+            and isinstance(taxonomy, dict) and taxonomy.get("classification") == "sponsored"
+            and expected_taxonomy.get("classification") == "sponsored"
+            and taxonomy.get("source") == "url_bound_json_ld" and taxonomy.get("canonical_url") == canonical
+            and _matching_primary_taxonomy(metadata)):
+        return False
+    try:
+        rows = metadata["publication_evidence"]
+        dates = [(row["source"], row["timestamp"], publication_day(row["timestamp"])) for row in rows]
+        if not dates or any(not day for _, _, day in dates):
+            return False
+        published, _, expected = _reconcile_publication_dates(dates, metadata.get("visible_publication_date"))
+        if not (metadata.get("publication_date") == published
+                and metadata.get("publication_timestamp") == dates[0][1] and rows == expected):
+            return False
+        now = datetime.now(ZoneInfo("UTC"))
+        for _, value, _ in dates:
+            if len(value) == 10:
+                if date.fromisoformat(value) > now.astimezone(ZoneInfo("America/Santiago")).date():
+                    return False
+            elif datetime.fromisoformat(value.replace("Z", "+00:00")) > now:
+                return False
+        return True
+    except (KeyError, ValueError, TypeError):
+        return False
+
+
 def verified_publication_date_conflict(metadata):
     """Verify the exception proof without adopting any publication date."""
     canonical = metadata.get("canonical_url")
@@ -373,6 +465,8 @@ def _inventory_disposition(result, cutoff, today):
         return None, "discovered_metadata_only", result["deferred_reason"]
     if not cutoff <= day <= today:
         return day, "excluded", "outside_90_day_window"
+    if result.get("deferred_reason") == "publisher_sponsored_content_review_required" and not result["relevant"]:
+        return day, "excluded", "no_health_anchor"
     if result.get("deferred_reason"):
         return day, "discovered_metadata_only", result["deferred_reason"]
     if result["relevant"]:
@@ -471,6 +565,9 @@ def extract_article(html, expected_url):
                             publisher_date_convention=convention, publication_evidence=dated_evidence,
                             canonical_url=expected, primary_identity_verified=True,
                             publication_date_verified=not conflicting, article_verified=not conflicting)
+    if len(articles) == 1:
+        taxonomy = _primary_taxonomy(section, metadata["keywords"], expected, node.get("@type"))
+        metadata.update(publisher_taxonomy=taxonomy, publisher_content_classification=taxonomy["classification"])
     if conflicting:
         # Only a complete, URL-bound original with a displayed byline can be
         # classified as a publisher editorial exception. Unknown/partial
@@ -485,7 +582,11 @@ def extract_article(html, expected_url):
                         editorial_hold="publisher_conflicting_publication_dates",
                         editorial_assessment=dict(decision="pending", reason="publisher_conflicting_publication_dates"))
         raise ConflictingPublicationArticle(title, body, metadata)
+    if metadata.get("publisher_taxonomy", {}).get("matched_opinion_labels"):
+        metadata["publisher_exclusion_reason"] = "publisher_opinion_taxonomy"
+        raise ExcludedArticle("publisher_opinion_taxonomy", title, body, metadata)
     if re.search(r"opini[oó]n|editorial|columna", str(section), re.I):
+        metadata["publisher_exclusion_reason"] = "excluded_opinion_content"
         raise ExcludedArticle("excluded_opinion_content", title, body, metadata)
     if primary_video:
         video = videos[0]
@@ -502,6 +603,11 @@ def extract_article(html, expected_url):
     # such as "Vivir con TOC" contain complete, URL-bound factual article bodies.
     if not title.strip() or len(body) < 160:
         raise ValueError("incomplete_article_evidence")
+    if metadata.get("publisher_content_classification") == "sponsored":
+        metadata.update(article_body_complete=True, publisher_exception_reason="publisher_sponsored_content_review_required",
+                        editorial_hold="publisher_sponsored_content_review_required",
+                        editorial_assessment=dict(decision="pending", reason="publisher_sponsored_content_review_required"))
+        raise SponsoredArticle(title, body, metadata)
     return title, body, metadata
 
 
@@ -533,9 +639,16 @@ def discover_listing(html, base, detail_loader, audit, visited):
                                event_date=metadata["publication_date"], raw_text=body[:1800], metadata=metadata))
             audit.append(dict(url=url, listing=base, status="discovered", section=metadata["section"],
                               publication_date=metadata["publication_date"]))
-        except (TextUnavailableArticle, ConflictingPublicationArticle) as exc:
+        except (TextUnavailableArticle, ConflictingPublicationArticle, SponsoredArticle) as exc:
             result = _verified_detail(dict(url=url, listing=base), lambda _: html, None, audit)
             metadata = result["metadata"]
+            if not result["relevant"]:
+                audit.append(dict(url=url, listing=base, status="excluded", reason="no_health_anchor",
+                                  publication_date=metadata["publication_date"], section=metadata["section"],
+                                  publisher_taxonomy=metadata.get("publisher_taxonomy"),
+                                  publisher_content_classification=metadata.get("publisher_content_classification"),
+                                  html_sha256=metadata["html_sha256"]))
+                continue
             out.append(RawItem("pulso_latercera", result["title"], url, "Pulso / La Tercera", "press_high_trust",
                                event_date=metadata["publication_date"], raw_text=result["body"], metadata=metadata))
             audit.append(dict(url=url, listing=base, status="discovered_metadata_only", reason=result["deferred_reason"],
@@ -544,12 +657,18 @@ def discover_listing(html, base, detail_loader, audit, visited):
                               article_body_complete=metadata["article_body_complete"],
                               source_content_unavailable_reason=metadata.get("source_content_unavailable_reason"),
                          publisher_exception_reason=metadata.get("publisher_exception_reason"),
+                         publisher_exclusion_reason=metadata.get("publisher_exclusion_reason"),
                          possible_publication_days=metadata.get("possible_publication_days"),
+                         publisher_taxonomy=metadata.get("publisher_taxonomy"),
+                         publisher_content_classification=metadata.get("publisher_content_classification"),
                               publication_evidence=metadata.get("publication_evidence"),
                               video_evidence=metadata.get("video_evidence"), html_sha256=metadata["html_sha256"]))
         except ExcludedArticle as exc:
             audit.append(dict(url=url, listing=base, status="excluded", reason=str(exc),
-                              publication_date=exc.metadata["publication_date"], section=exc.metadata["section"]))
+                              publication_date=exc.metadata["publication_date"], section=exc.metadata["section"],
+                              publisher_taxonomy=exc.metadata.get("publisher_taxonomy"),
+                              publication_evidence=exc.metadata.get("publication_evidence"),
+                              html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest()))
         except Exception as exc:
             audit.append(dict(url=url, listing=base, status="detail_error", reason=str(exc), error_type=type(exc).__name__))
     return out
@@ -691,6 +810,7 @@ def _verified_detail(entry, loader, cached, audit=None):
     now = datetime.now(ZoneInfo("UTC")).isoformat()
     # lastmod is solely a change token: it never establishes publication date.
     if (cached and entry.get("lastmod") and cached.get("lastmod") == entry["lastmod"]
+            and not publisher_taxonomy_requires_revalidation(cached.get("metadata", {}))
             and (cached.get("metadata", {}).get("article_verified")
                  or verified_video_without_text(cached.get("metadata", {}))
                  or verified_publication_date_conflict(cached.get("metadata", {})))
@@ -731,6 +851,16 @@ def _verified_detail(entry, loader, cached, audit=None):
                         topics=health_topics(combined) if relevant else [])
         return dict(url=url, title=title, body=body[:1800] if relevant else "", metadata=metadata,
                     relevant=relevant, lastmod=entry.get("lastmod", ""), cache_hit=False)
+    except SponsoredArticle as exc:
+        metadata = dict(exc.metadata)
+        combined = exc.title + " " + exc.body + " " + str(metadata.get("keywords", ""))
+        metadata.update(article_body_evidence(exc.body), discovered_from=entry["listing"],
+                        market_role="media", source_quality_gate="deferred_sponsored_content_review", captured_at=now,
+                        html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
+                        publisher_lastmod=entry.get("lastmod", ""), topics=health_topics(combined))
+        return dict(url=url, title=exc.title, body=exc.body[:1800], metadata=metadata,
+                    relevant=health_anchor(combined), deferred_reason=str(exc),
+                    lastmod=entry.get("lastmod", ""), cache_hit=False)
     except ConflictingPublicationArticle as exc:
         metadata = dict(exc.metadata)
         metadata.update(article_body_evidence(exc.body), discovered_from=entry["listing"],
@@ -756,7 +886,7 @@ def _verified_detail(entry, loader, cached, audit=None):
                     deferred_reason=str(exc), lastmod=entry.get("lastmod", ""), cache_hit=False)
     except ExcludedArticle as exc:
         metadata = dict(exc.metadata)
-        metadata.update(discovered_from=entry["listing"], captured_at=now,
+        metadata.update(article_body_evidence(exc.body), discovered_from=entry["listing"], captured_at=now,
                         html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
                         publisher_lastmod=entry.get("lastmod", ""), topics=[])
         return dict(url=url, title=exc.title, body="", metadata=metadata, relevant=False,
@@ -901,6 +1031,9 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
                          article_body_complete=metadata.get("article_body_complete", True),
                          source_content_unavailable_reason=metadata.get("source_content_unavailable_reason"),
                          publisher_exception_reason=metadata.get("publisher_exception_reason"),
+                         publisher_exclusion_reason=metadata.get("publisher_exclusion_reason"),
+                         publisher_taxonomy=metadata.get("publisher_taxonomy"),
+                         publisher_content_classification=metadata.get("publisher_content_classification"),
                          possible_publication_days=metadata.get("possible_publication_days"),
                          publisher_document_type=metadata.get("publisher_document_type", "article"),
                          video_evidence=metadata.get("video_evidence"), html_sha256=metadata["html_sha256"],
@@ -1121,6 +1254,9 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                          article_body_complete=metadata.get("article_body_complete", True),
                          source_content_unavailable_reason=metadata.get("source_content_unavailable_reason"),
                          publisher_exception_reason=metadata.get("publisher_exception_reason"),
+                         publisher_exclusion_reason=metadata.get("publisher_exclusion_reason"),
+                         publisher_taxonomy=metadata.get("publisher_taxonomy"),
+                         publisher_content_classification=metadata.get("publisher_content_classification"),
                          possible_publication_days=metadata.get("possible_publication_days"),
                          publisher_document_type=metadata.get("publisher_document_type", "article"),
                          video_evidence=metadata.get("video_evidence"), html_sha256=metadata["html_sha256"],
@@ -1197,7 +1333,8 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                    new_health_urls=sum(not item.metadata.get("publisher_exception_reason")
                                        and not item.metadata.get("source_content_unavailable_reason") for item in out),
                    metadata_only_video_candidates=sum(item.metadata.get("publisher_document_type") == "video" and not item.metadata.get("article_body_complete", True) for item in out),
-                   metadata_only_date_conflict_candidates=sum(bool(item.metadata.get("publisher_exception_reason")) for item in out),
+                   metadata_only_date_conflict_candidates=sum(item.metadata.get("publisher_exception_reason") == "publisher_conflicting_publication_dates" for item in out),
+                   metadata_only_sponsored_candidates=sum(item.metadata.get("publisher_exception_reason") == "publisher_sponsored_content_review_required" for item in out),
                    publication_date_coverage_only_for_text_unavailable_candidates=True)
     audit.append(summary)
     return out, summary

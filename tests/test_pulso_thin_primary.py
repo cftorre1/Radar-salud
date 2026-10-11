@@ -27,7 +27,15 @@ def test_all_thirteen_short_primary_headlines_are_covered():
 
 @pytest.mark.parametrize('row', SHORT_HEADLINES, ids=lambda row: row['url'].split('/')[-2])
 def test_legitimate_short_headline_retains_complete_original_body_and_date(row):
-    title, body, metadata = extract_article(original(row), row['url'])
+    from radar_salud.pulso_source import ExcludedArticle
+    if row['url'].split('/')[-2] in ('nada-es-imposible', 'lo-dijimos'):
+        # These complete short texts are explicitly publisher-labelled columns;
+        # a valid short headline must not turn that taxonomy into factual news.
+        with pytest.raises(ExcludedArticle, match='^publisher_opinion_taxonomy$') as raised:
+            extract_article(original(row), row['url'])
+        title, body, metadata = raised.value.title, raised.value.body, raised.value.metadata
+    else:
+        title, body, metadata = extract_article(original(row), row['url'])
     assert title == row['title'].strip()
     assert 0 < len(title) < 18 and len(body) >= 160
     assert body == row['full_primary_body']
