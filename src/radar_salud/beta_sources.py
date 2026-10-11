@@ -178,32 +178,19 @@ class CuratedBetaSourceScout:
                     raw.metadata["capture_evidence"] = loader.evidence(raw.url)
                     raw.metadata["listing_capture_evidence"] = loader.evidence(raw.metadata["discovered_from"])
                 return rows
-        if self.slug == "mutual_seguridad":
-            from .mutual_sources import MutualNewsScout
-            owner = MutualNewsScout(fetcher=loader)
-            rows = attach(owner.discover())
-            self.inventory = owner.report
+        if self.slug in SOURCES:
+            from .occupational_recovery import inventory
+            self.inventory = inventory(self, loader)
+            rows = attach(self.inventory["raw_items"])
+            self.decisions = self.inventory["rows"]
             if not self.inventory["coverage_complete"]:
                 errors = self.inventory["errors"]
                 code = errors[0].get("code", "inventory_capture_incomplete") if len(errors) == 1 and not rows else "inventory_capture_incomplete"
                 exc = SourceDiscoveryError(code, errors[0].get("url", self.cfg["page"]) if errors else self.cfg["page"])
                 exc.partial_items = rows
-                exc.diagnostics = self.inventory["errors"]
+                exc.diagnostics = errors
                 raise exc
             return rows
-        if self.slug in SOURCES:
-            from .occupational_inventory import discover_inventory
-            self.inventory = discover_inventory(self, loader)
-            attach(self.inventory["raw_items"])
-            self.decisions = self.inventory["rows"]
-            if not self.inventory["coverage_complete"]:
-                errors = self.inventory["errors"]
-                code = errors[0].get("code", "inventory_capture_incomplete") if len(errors) == 1 and not self.inventory["raw_items"] else "inventory_capture_incomplete"
-                exc = SourceDiscoveryError(code, errors[0].get("url", self.cfg["page"]) if errors else self.cfg["page"])
-                exc.partial_items = self.inventory["raw_items"]
-                exc.diagnostics = self.inventory["errors"]
-                raise exc
-            return self.inventory["raw_items"]
         return self.discover_from_html(fetch_html(self.cfg["page"]))
 
 
@@ -307,7 +294,7 @@ def process_curated_beta_source(raw, cfg):
         hosts = CuratedBetaSourceScout.SOURCES[raw.source_slug]["hosts"]
         evidence = raw.metadata.get("publication_evidence") or raw.metadata.get("publication_date_evidence") or {}
         kinds = {"article:published_time", "datePublished", "publishdate", "time.published@datetime",
-                 "publisher:achs_div_fecha", "publisher:publication_container", "publisher:mutual_div_fecha"}
+                 "publisher:achs_div_fecha", "publisher:publication_container", "publisher:mutual_div_fecha", "publisher:mutual_detail_fecha"}
         if (parsed.scheme != "https" or parsed.hostname not in hosts or parsed.username or parsed.password
                 or parsed.port not in (None, 443)):
             raise DeferredProcessing("occupational official article authority unverified")

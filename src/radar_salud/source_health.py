@@ -14,7 +14,7 @@ def _load(root:Path)->dict[str,Any]:
 
 def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,rows:list[dict]|None=None,
            pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None,
-           error_detail:dict|None=None)->None:
+           error_detail:dict|None=None,inventory:dict|None=None)->None:
     d=_load(root);src=d.setdefault("sources",{});rows=rows or []
     dates=[x.get("event_date") for x in rows if x.get("event_date")]
     prev=src.get(slug) or (src.get("superintendencia_stats",{}) if slug=="superintendencia" else {})
@@ -41,5 +41,16 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
     }
     if error_detail:
         src[slug]["error_detail"]=error_detail
+    if inventory is not None:
+        complete = inventory.get("coverage_complete", False)
+        row = src[slug]
+        outcome = "OPERATIVE_VALIDATED" if complete and not error and not pending else "OPERATIVE_DEGRADED"
+        row.update(coverage_window=inventory.get("window"), pages_checked=len(inventory.get("pages", [])),
+            recent_items=inventory.get("metrics", {}), unique_items=inventory.get("metrics", {}).get("90", {}).get("expected_role", 0),
+            material_items=sum(r.get("status") == "candidate" for r in inventory.get("rows", [])),
+            technical_status="partial" if error and discovered else "error" if error else "ok",
+            technical_failures=inventory.get("errors", []) or ([error_detail] if error_detail else []),
+            coverage_status="complete" if complete else "partial", coverage_completeness=complete,
+            recovery_outcome=outcome, status="ok" if outcome == "OPERATIVE_VALIDATED" else "warning" if discovered or not error else "error")
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
     atomic_json(_path(root),d)

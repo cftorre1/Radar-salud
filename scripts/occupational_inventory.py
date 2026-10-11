@@ -179,28 +179,16 @@ def main():
     output = Path(args.output)
     loader = CaptureLoader(output, replay=args.replay)
     reports = {}
-    from radar_salud.occupational_inventory import discover_inventory
-    from radar_salud.mutual_sources import MutualNewsScout
+    from radar_salud.occupational_recovery import inventory
     for slug in sorted(SOURCES):
         scout = CuratedBetaSourceScout(slug)
         try:
-            report = (MutualNewsScout(fetcher=loader).discover_inventory() if slug == "mutual_seguridad"
-                      else discover_inventory(scout, loader))
+            report = inventory(scout, loader)
         except Exception as exc:
             report = {"source_slug": slug, "rows": [], "raw_items": [], "pages": [], "metrics": {},
                       "coverage_complete": False, "stop_reason": "inventory_failed", "errors": [{"url": getattr(exc, "url", scout.cfg["page"]), "code": getattr(exc, "code", type(exc).__name__), "detail": str(exc)}],
                       "window": {"as_of": chile_today().isoformat(), "30": "unknown", "90": "unknown"}}
         reports[slug] = report
-        if slug == "clinicas_achs_salud":
-            report["newsroom_coverage_complete"] = report["coverage_complete"]
-            report["coverage_complete"] = False
-            report["errors"].append({"code": "additional_clinical_surfaces_pending", "url": "https://www.achssalud.cl/blog",
-                                     "detail": "Clinical newsroom inventory alone does not validate the separately hosted blog or clinic portal"})
-        if slug == "ist":
-            report["newsroom_coverage_complete"] = report["coverage_complete"]
-            report["coverage_complete"] = False
-            report["errors"].append({"code": "official_api_reconciliation_pending", "url": "https://ist.cl/wp-json/wp/v2/posts",
-                                     "detail": "REST lists an additional dated sustainability report outside the news archive"})
         print(json.dumps({"source": slug, "items": len(report["rows"]), "complete": report["coverage_complete"], "stop": report.get("stop_reason")}), flush=True)
     from radar_salud.ai_budget import status
     before = copy.deepcopy(status())

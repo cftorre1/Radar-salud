@@ -86,15 +86,22 @@ def main():
             atomic_json(watermark_path,watermarks)
             discoveries[name]=(len(items),added,None)
             if name in OCCUPATIONAL_SOURCES:
+                inventory = getattr(owner, "inventory", {})
                 occupational_audit[name]={"technical_status":"ok","checked_at":checked_at,
                     "decisions":getattr(owner,"decisions",[]),"discovered":len(items),
-                    "inventory_complete":False}
+                    "inventory_complete":inventory.get("coverage_complete", False),
+                    "inventory":{k:v for k,v in inventory.items() if k != "raw_items"}}
         except Exception as exc:
-            discoveries[name]=(0,0,type(exc).__name__)
+            partial = getattr(exc, "partial_items", []) if name in OCCUPATIONAL_SOURCES else []
+            added = queue.discover(name, partial, last_discovered_at=watermarks.get(name)) if partial else 0
+            discoveries[name]=(len(partial),added,type(exc).__name__)
             if name in OCCUPATIONAL_SOURCES:
-                occupational_audit[name]={"technical_status":"error","checked_at":datetime.now(timezone.utc).isoformat(),
+                inventory = getattr(owner, "inventory", {})
+                occupational_audit[name]={"technical_status":"partial" if partial else "error","checked_at":datetime.now(timezone.utc).isoformat(),
                     "error":{"code":getattr(exc,"code",type(exc).__name__),"url":getattr(exc,"url",None),"message":str(exc)},
-                    "decisions":getattr(owner,"decisions",[]),"inventory_complete":False}
+                    "decisions":getattr(owner,"decisions",[]),"inventory_complete":False,
+                    "diagnostics":getattr(exc,"diagnostics", []), "discovered":len(partial),
+                    "inventory":{k:v for k,v in inventory.items() if k != "raw_items"}}
     atomic_json(root/"data/state/occupational_source_discovery.json",occupational_audit)
     atomic_json(root/"data/state/discovery_run.json",{
         "at":datetime.now(timezone.utc).isoformat(),
@@ -121,8 +128,8 @@ def main():
             reason=raw.metadata.get("publication_rejection_reason") or "processor_rejected"
             queue.finish(key,"published" if row else "rejected",None if row else reason)
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
-        except DeferredProcessing:
-            queue.finish(key,"retry","budget_or_analysis_deferred")
+        except DeferredProcessing as exc:
+            queue.finish(key,"retry",str(exc) if item["source"] in OCCUPATIONAL_SOURCES else "budget_or_analysis_deferred")
         except Exception as exc:
             queue.finish(key,"retry",type(exc).__name__)
     for name,(discovered,new,error) in discoveries.items():
@@ -131,7 +138,7 @@ def main():
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
             rejected=counts["rejected"],rows=produced[name],error=error,
             live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"],
-            **({"error_detail":occupational_audit[name].get("error")} if name in OCCUPATIONAL_SOURCES else {}))
+            **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}))
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()
