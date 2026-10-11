@@ -2849,7 +2849,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                 paid_origin = paid_revalidation_origin(root)
             except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
                 fail("processing", "paid_guard_revalidation_originals_unverified", error=str(error))
-        if local_capture_path(root, CURRENT_PAID_PATH).exists() and paid_origin is not None:
+        if local_capture_path(root, CURRENT_PAID_PATH).exists():
             try:
                 current_origin = current_paid_origin(root, previous_origin=paid_origin)
             except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
