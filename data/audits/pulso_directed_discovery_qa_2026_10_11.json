@@ -1,0 +1,793 @@
+{
+  "schema_version": 1,
+  "source": "pulso_latercera",
+  "reviewed_code_sha": "a7fc0246133a390beaaff78bf9cf01747e6611e3",
+  "phase": "discovery_only",
+  "requested_phase": "discovery",
+  "discovery_qa": "FAIL",
+  "processing_qa": "NOT_RUN",
+  "verdict": "FAIL",
+  "acceptance": "NOT_ACCEPTED",
+  "findings": [
+    {
+      "domain": "discovery",
+      "code": "important_external_control_omissions",
+      "days": "30",
+      "omissions": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/uc-christus-san-carlos-de-apoquindo-suspende-atencion-de-urgencia-y-consultas-medicas-tras-verse-afectada-por-aluvion/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        }
+      ]
+    },
+    {
+      "domain": "discovery",
+      "code": "important_external_control_omissions",
+      "days": "90",
+      "omissions": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/alerta-alimentaria-por-listeria-supermercado-informa-del-retiro-preventivo-de-todas-las-unidades-de-pasta-de-jamon/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/corte-ordena-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/diputados-avanzan-para-materializar-comision-investigadora-por-irregularidades-detectadas-en-gestion-de-vacunas-en-2024/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-alerta-por-peak-de-hospitalizaciones-pediatricas-por-causa-respiratoria-y-reitera-llamado-a-vacunarse/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-amplia-alerta-sanitaria-a-las-regiones-de-tarapaca-y-antofagasta-tras-afectaciones-por-el-sistema-frontal/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-apelara-a-fallo-que-ordeno-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-conforma-el-consejo-de-eficiencia-y-convergencia-financiera-de-la-red-asistencial-y-celebra-su-primera-sesion/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-designa-a-fernanda-robles-como-la-nueva-seremi-de-la-region-de-los-lagos/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/uc-christus-san-carlos-de-apoquindo-suspende-atencion-de-urgencia-y-consultas-medicas-tras-verse-afectada-por-aluvion/",
+          "explanation": {
+            "status": "not_observed_in_current_core",
+            "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+            "url_level_cause_verified": false
+          }
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+          "explanation": {
+            "status": "detail_error",
+            "reason": "conflicting_publication_dates",
+            "error_type": "ValueError",
+            "url_level_cause_verified": true
+          }
+        }
+      ]
+    },
+    {
+      "domain": "discovery",
+      "code": "primary_required_public_feed_coverage_incomplete",
+      "missing": []
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:servicios",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:servicios",
+        "coverage_complete": false,
+        "pages_attempted": 36,
+        "unique_urls": 864,
+        "publisher_count": 10000,
+        "errors": 11,
+        "termination": "three_publication_ordered_detail_verified_old_pages",
+        "verified_publication_day_min": "2026-06-26"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "tag:isapres"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "tag:isapres",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "tag:isapres",
+        "coverage_complete": false,
+        "pages_attempted": 10,
+        "unique_urls": 179,
+        "publisher_count": 1500,
+        "errors": 37,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": "2024-05-15"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "section:sustentabilidad"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:sustentabilidad",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:sustentabilidad",
+        "coverage_complete": false,
+        "pages_attempted": 5,
+        "unique_urls": 96,
+        "publisher_count": 506,
+        "errors": 4,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": "2026-05-30"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "tag:salud"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "tag:salud",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "tag:salud",
+        "coverage_complete": false,
+        "pages_attempted": 14,
+        "unique_urls": 303,
+        "publisher_count": 11615,
+        "errors": 37,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": "2026-07-07"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "section:tendencias"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:tendencias",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:tendencias",
+        "coverage_complete": false,
+        "pages_attempted": 5,
+        "unique_urls": 96,
+        "publisher_count": 10000,
+        "errors": 2,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": "2026-09-17"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "tag:fonasa",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "tag:fonasa",
+        "coverage_complete": false,
+        "pages_attempted": 20,
+        "unique_urls": 347,
+        "publisher_count": 755,
+        "errors": 78,
+        "termination": "three_publication_ordered_detail_verified_old_pages",
+        "verified_publication_day_min": "2020-04-30"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "tag:banmedica",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "tag:banmedica",
+        "coverage_complete": false,
+        "pages_attempted": 6,
+        "unique_urls": 86,
+        "publisher_count": 154,
+        "errors": 18,
+        "termination": "nonadvancing_public_feed_cursor",
+        "verified_publication_day_min": "2020-08-22"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "tag:clinicas",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "tag:clinicas",
+        "coverage_complete": false,
+        "pages_attempted": 9,
+        "unique_urls": 195,
+        "publisher_count": 247,
+        "errors": 41,
+        "termination": "nonadvancing_public_feed_cursor",
+        "verified_publication_day_min": "2020-03-24"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "tag:listas-de-espera",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "tag:listas-de-espera",
+        "coverage_complete": false,
+        "pages_attempted": 12,
+        "unique_urls": 184,
+        "publisher_count": 285,
+        "errors": 33,
+        "termination": "all_feed_count_delimited_articles",
+        "verified_publication_day_min": "2021-12-20"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:paula",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:paula",
+        "coverage_complete": false,
+        "pages_attempted": 18,
+        "unique_urls": 431,
+        "publisher_count": 13284,
+        "errors": 24,
+        "termination": "three_publication_ordered_detail_verified_old_pages",
+        "verified_publication_day_min": "2025-08-22"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "section:nacional"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:nacional",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:nacional",
+        "coverage_complete": false,
+        "pages_attempted": 1,
+        "unique_urls": 0,
+        "publisher_count": null,
+        "errors": 1,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": null
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "section:politica"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:politica",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:politica",
+        "coverage_complete": false,
+        "pages_attempted": 140,
+        "unique_urls": 3336,
+        "publisher_count": 10000,
+        "errors": 570,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": "2026-04-27"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:tecnologia",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:tecnologia",
+        "coverage_complete": false,
+        "pages_attempted": 17,
+        "unique_urls": 389,
+        "publisher_count": 389,
+        "errors": 23,
+        "termination": "all_feed_count_delimited_articles",
+        "verified_publication_day_min": "2026-02-04"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "tag:hospitales",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "tag:hospitales",
+        "coverage_complete": false,
+        "pages_attempted": 10,
+        "unique_urls": 119,
+        "publisher_count": 333,
+        "errors": 26,
+        "termination": "three_publication_ordered_detail_verified_old_pages",
+        "verified_publication_day_min": "2020-02-28"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "section:pulso"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:pulso",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:pulso",
+        "coverage_complete": false,
+        "pages_attempted": 39,
+        "unique_urls": 863,
+        "publisher_count": 12620,
+        "errors": 64,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": "2026-08-26"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "section:que-pasa"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:que-pasa",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:que-pasa",
+        "coverage_complete": false,
+        "pages_attempted": 1,
+        "unique_urls": 0,
+        "publisher_count": null,
+        "errors": 1,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": null
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "primary_publication_evidence_missing",
+      "url": "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/"
+    },
+    {
+      "domain": "discovery",
+      "code": "primary_capture_timestamp_invalid",
+      "url": "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/"
+    },
+    {
+      "domain": "discovery",
+      "code": "primary_publication_evidence_missing",
+      "url": "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/"
+    },
+    {
+      "domain": "discovery",
+      "code": "primary_capture_timestamp_invalid",
+      "url": "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/"
+    }
+  ],
+  "checks": {
+    "actual_ai_budget_delta": {
+      "fast": {
+        "attempted": 0,
+        "successful": 0,
+        "failed": 0
+      },
+      "deep": {
+        "attempted": 0,
+        "successful": 0,
+        "failed": 0
+      }
+    },
+    "window_30": {
+      "start": "2026-09-11",
+      "end": "2026-10-10",
+      "frozen_expected": 29,
+      "detected": 18,
+      "misses": [
+        "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+        "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+        "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+        "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+        "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+        "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+        "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+        "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+        "https://www.latercera.com/nacional/noticia/uc-christus-san-carlos-de-apoquindo-suspende-atencion-de-urgencia-y-consultas-medicas-tras-verse-afectada-por-aluvion/",
+        "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+        "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/"
+      ]
+    },
+    "window_90": {
+      "start": "2026-07-13",
+      "end": "2026-10-10",
+      "frozen_expected": 79,
+      "detected": 46,
+      "misses": [
+        "https://www.latercera.com/nacional/noticia/alerta-alimentaria-por-listeria-supermercado-informa-del-retiro-preventivo-de-todas-las-unidades-de-pasta-de-jamon/",
+        "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+        "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+        "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+        "https://www.latercera.com/nacional/noticia/corte-ordena-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+        "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+        "https://www.latercera.com/nacional/noticia/diputados-avanzan-para-materializar-comision-investigadora-por-irregularidades-detectadas-en-gestion-de-vacunas-en-2024/",
+        "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+        "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+        "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+        "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+        "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+        "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+        "https://www.latercera.com/nacional/noticia/minsal-alerta-por-peak-de-hospitalizaciones-pediatricas-por-causa-respiratoria-y-reitera-llamado-a-vacunarse/",
+        "https://www.latercera.com/nacional/noticia/minsal-amplia-alerta-sanitaria-a-las-regiones-de-tarapaca-y-antofagasta-tras-afectaciones-por-el-sistema-frontal/",
+        "https://www.latercera.com/nacional/noticia/minsal-apelara-a-fallo-que-ordeno-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+        "https://www.latercera.com/nacional/noticia/minsal-conforma-el-consejo-de-eficiencia-y-convergencia-financiera-de-la-red-asistencial-y-celebra-su-primera-sesion/",
+        "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+        "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+        "https://www.latercera.com/nacional/noticia/minsal-designa-a-fernanda-robles-como-la-nueva-seremi-de-la-region-de-los-lagos/",
+        "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+        "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+        "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+        "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+        "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
+        "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+        "https://www.latercera.com/nacional/noticia/uc-christus-san-carlos-de-apoquindo-suspende-atencion-de-urgencia-y-consultas-medicas-tras-verse-afectada-por-aluvion/",
+        "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+        "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+        "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+        "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+        "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+        "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/"
+      ]
+    }
+  },
+  "limitations": [
+    "Frozen 29/79 controls benchmark recall; they are not a publication quota or proof of every publisher article.",
+    "An automated PASS cannot settle semantic editorial correctness, final staging QA, or close issues/PR acceptance."
+  ]
+}
