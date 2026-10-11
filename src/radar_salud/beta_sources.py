@@ -340,6 +340,9 @@ def _material(role, title, body):
         territorial_toxic_exposure_health_order = ("suspensión de clases" in text
             and "seremi de salud" in text and "toxicidad del humo" in text
             and bool(re.search(r"todos los (?:colegios|establecimientos) de la comuna", text)))
+        institutional_food_health_investigation = ("junaeb" in text and "fiscal" in text
+            and "delitos contra la salud pública" in text and "distribución de comida contaminada" in text
+            and "incautación" in text)
         return (care_obligation or ges_coverage or care_legislation
                 or proposed_clinical_condition or provider_flood_response
                 or authorized_care_registry or clinical_service_suspension
@@ -347,7 +350,8 @@ def _material(role, title, body):
                 or reproductive_legislative_progress or medical_insurance_inquiry or provider_judicial_liability
                 or essential_care_transport_blocked or compulsory_respiratory_health_measure
                 or damaged_hospital_emergency_funds or minors_mental_health_legislative_urgency
-                or national_health_cost_access_measurement or territorial_toxic_exposure_health_order)
+                or national_health_cost_access_measurement or territorial_toxic_exposure_health_order
+                or institutional_food_health_investigation)
     return False
 
 

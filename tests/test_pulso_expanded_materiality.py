@@ -23,7 +23,8 @@ REPAIRED_PROJECTIONS = ('proposed_clinical_condition_colmed', 'regional_health_p
                         'medical_insurance_coverage_inquiry', 'provider_judicial_financial_liability',
                         'blocked_essential_dialysis_access', 'reported_compulsory_respiratory_measure',
                         'damaged_hospital_emergency_funds', 'proposed_minors_mental_health_legislative_urgency',
-                        'reported_national_health_cost_access_measurement', 'territorial_toxic_exposure_health_order')
+                        'reported_national_health_cost_access_measurement', 'territorial_toxic_exposure_health_order',
+                        'institutional_food_health_investigation')
 
 
 def original_raw(entry):
@@ -233,6 +234,16 @@ def test_original_toxic_exposure_order_is_local_public_health_protection_without
     assert 'hospital' not in entry['body'].lower()
 
 
+def test_original_food_health_inquiry_preserves_allegations_and_political_defense_context():
+    entry = next(row for row in PROJECTIONS if row['name'] == 'institutional_food_health_investigation')
+    assert entry['publication_date'] == '2026-08-21'
+    assert 'delitos contra la salud pública' in entry['body']
+    assert 'distribución de comida contaminada' in entry['body']
+    assert 'habrían existido irregularidades' in entry['body']
+    assert 'orden de entrada, registro e incautación' in entry['body']
+    assert 'afectaría derechos fundamentales del senador' in entry['body']
+
+
 @pytest.mark.parametrize(('title', 'body'), [
     ('Minsal informa sobre salud de personas mayores', 'Los ELEAM necesitan autorización sanitaria. Las familias visitan a sus parientes.'),
     ('Lista de residencias ELEAM', 'Un directorio comercial ofrece un listado de ELEAM con autorización sanitaria, disponible públicamente.'),
@@ -260,6 +271,7 @@ def test_original_toxic_exposure_order_is_local_public_health_protection_without
     ('Vecinos comentan sus gastos', 'Una encuesta informal del barrio comenta gastos de salud y cuidados y una barrera de acceso es el costo, sin medición nacional representativa.'),
     ('Comuna suspende clases', 'La suspensión de clases en todos los colegios de la comuna obedece a mantención de edificios. La Seremi de Salud difundió un recordatorio separado.'),
     ('Escuela difunde estudio de humo', 'La Seremi de Salud estudia la toxicidad del humo en un colegio, sin ordenar suspensión de clases territorial.'),
+    ('Fiscal investiga defensa política', 'La fiscal pidió incautación de documentos de Junaeb por pagos administrativos, sin acusaciones de daño sanitario.'),
 ])
 def test_narrow_registry_and_care_suspension_rules_do_not_admit_generic_directory_or_unadopted_ideas(title, body):
     assert not beta_sources._material('media', title, body)
