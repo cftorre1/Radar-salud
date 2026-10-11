@@ -709,6 +709,23 @@
         7,
         8
       ]
+    },
+    "autonomy_runtime_v2_2026_10_11": {
+      "kind": "autonomy_infrastructure_hosted_observation",
+      "date": "2026-10-11",
+      "sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+      "paths": [
+        "data/pmo/autonomy_acceptance_2026_10_11.json"
+      ],
+      "result": "implemented_pending_live_acceptance",
+      "acceptance": "NOT_PROVEN",
+      "scope": "Local tests and hosted infrastructure behavior; does not certify source/editorial closure, full QA, release or four-hour autonomy.",
+      "validated_requirements": [],
+      "validated_blocks": [],
+      "run_urls": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38114913138",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398"
+      ]
     }
   },
   "blocks": [
@@ -1677,6 +1694,14 @@
       "evidence": [
         "data/audits/work3_adversarial_2026_10_11T055521Z.json"
       ]
+    },
+    {
+      "date": "2026-10-11",
+      "id": "autonomy_runtime_v2_2026_10_11",
+      "change": "Autonomy infrastructure authorized and published to main. Hosted leases, heartbeats, concurrent blockers, automatic transitions and isolated STALLED fault injection observed; real transport defect fixed. Four-hour acceptance NOT_PROVEN; product and historical evidence anchors unchanged.",
+      "evidence": [
+        "data/pmo/autonomy_acceptance_2026_10_11.json"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -2223,6 +2248,24 @@
         "docs/PELE_WORK_CONTRACT.md",
         "config/system_learning_policy.json",
         "data/autopilot/learning_ledger.json"
+      ]
+    },
+    {
+      "id": "autonomy_runtime_v2_2026_10_11",
+      "title": "Autonomy Runtime V2 — infrastructure exception only",
+      "status": "Implementado",
+      "acceptance": "NOT_PROVEN",
+      "source": "Explicit owner authorization in this task for public main infrastructure and activation; no product promotion",
+      "evidence": [
+        "data/pmo/autonomy_acceptance_2026_10_11.json",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38114913138",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398"
+      ],
+      "constraints": [
+        "No product promotion",
+        "Original QA/Reviewer/editorial/security gates preserved",
+        "No new paid services or secrets",
+        "Four useful hours and verified owner observation still required"
       ]
     }
   ],
@@ -3183,7 +3226,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T05:55:21.049Z",
+  "updated_at": "2026-10-11T06:01:59.671306+00:00",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",

@@ -1,0 +1,237 @@
+{
+  "id": "autonomy_runtime_v2_2026_10_11",
+  "recorded_at": "2026-10-11T06:01:59.671306+00:00",
+  "status": "NOT_PROVEN",
+  "result": "implemented_pending_live_acceptance",
+  "scope": "Autonomy infrastructure and governance evidence only",
+  "source": "Explicit owner authorization in this task for public main infrastructure and activation; no product promotion",
+  "main_infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+  "verified_code_sha": "4b07e433b48cbcbcc5d69584ab536e9d60058144",
+  "staging_product_sha": "44ec3f30af18c5bc99f47adf4b07ca5f5782ded9",
+  "hosted_episodes_staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+  "canonical_state_sha": "6412b829e669eae298d40693b3d153fd2fa50904",
+  "first_durable_pickup_at": "2026-10-11T05:29:46.231497Z",
+  "controller_runs": [
+    38114913138,
+    38115967398
+  ],
+  "controller_urls": [
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38114913138",
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398"
+  ],
+  "hosted_families": [
+    "media",
+    "public_data",
+    "fiscalization",
+    "mutualities",
+    "editorial",
+    "staging_qa"
+  ],
+  "hosted_pickups": 12,
+  "unique_owner_fences": true,
+  "renewed_heartbeats_observed": true,
+  "independent_concurrent_execution_observed": true,
+  "material_events_since_first_pickup": {
+    "blocker": 11,
+    "transition": 6
+  },
+  "candidate_mutations": 0,
+  "verified_source_closures": 0,
+  "independent_transitions": 6,
+  "unchanged_audits_count_as_progress": false,
+  "startup_blockers_before_pickup_credited_to_live_window": false,
+  "concurrent_git_state_preserved": true,
+  "canary": {
+    "status": "PASS",
+    "checks": {
+      "old_token_finish_rejected": true,
+      "old_worker_did_not_mutate_state": true,
+      "real_heartbeat_grace_elapsed": true,
+      "reclaimed_with_new_generation": true,
+      "stall_fenced_original_token": true,
+      "stalled_detected": true
+    },
+    "started_at": "2026-10-11T05:48:42.412852Z",
+    "observed_until": "2026-10-11T05:51:45.814918Z",
+    "heartbeat_grace_seconds": 180,
+    "result_path": "data/autopilot/evidence/hosted_canary_lease-heartbeat-v1_result.json",
+    "result_sha256": "e4af535b0f1bae144b68d1621f8943df26a929e1dc6921e942c8281cf02d1a38",
+    "hosted_fault_injection": true,
+    "counts_as_material_progress": false,
+    "source_live_evidence": false,
+    "live_acceptance_evidence": false
+  },
+  "real_transport_recovery": {
+    "observed_at": "2026-10-11 05:52:53 UTC",
+    "kind": "hosted_transport_recovery",
+    "main_ref": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+    "state_ref": "1bb7b3ede802e0d8d0ad2ded429f57b33b968465",
+    "run_id": 38115967398,
+    "job_id": 114400854282,
+    "task_id": "source_repair_fiscalization_lane_2026_10_11",
+    "before": {
+      "state_ref": "240f1317559897871ac4927684e6efde26d16ae1",
+      "run_id": 38114913138,
+      "job_id": 114397839197,
+      "error": "Live reproduction returned no structured source evidence",
+      "display_output_length": 24000,
+      "full_source_log_sha256": "17511ebd09faf49db9ae7ef295c73173d0cbacf4a2372423c3ae2327ca63e18e"
+    },
+    "after": [
+      {
+        "path": "task.blocker.blockers[0].evidence[2].automated_recovery",
+        "status": "BLOCKED",
+        "blocker": "Reproduced failure requires a bounded repair plan; model lane disabled",
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "suseso_fiscalizacion"
+            ],
+            "returncode": 1,
+            "output_length": 24000,
+            "structured_slug": "suseso_fiscalizacion",
+            "source_evidence_sha256": "0a3888d8e043fe41abbaede67f29bf786a749c99f843c91aedfa8b31499ed1c7",
+            "captured_stdout_sha256": "17511ebd09faf49db9ae7ef295c73173d0cbacf4a2372423c3ae2327ca63e18e",
+            "captured_stdout_bytes": 55588
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "tests/test_press_pipeline.py",
+              "tests/test_fonasa_source.py",
+              "tests/test_isp_anamed_source.py",
+              "tests/test_deis_source.py",
+              "tests/test_suseso_pipeline.py"
+            ],
+            "returncode": 0,
+            "output_length": 99,
+            "captured_stdout_sha256": "e36b6ac3f26f6514018446c23569d17ea08e20849d68730d4f16bfe467656eb5",
+            "captured_stdout_bytes": 99
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q"
+            ],
+            "returncode": 1,
+            "output_length": 2217,
+            "captured_stdout_sha256": "2dde11b3148bc87b00f4f2e9a82f8b4d9dbf189687f7a4bbbe2e2e84685311f2",
+            "captured_stdout_bytes": 2221
+          }
+        ]
+      },
+      {
+        "path": "task.blocker.evidence[2].automated_recovery",
+        "status": "BLOCKED",
+        "blocker": "Reproduced failure requires a bounded repair plan; model lane disabled",
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "suseso_fiscalizacion"
+            ],
+            "returncode": 1,
+            "output_length": 24000,
+            "structured_slug": "suseso_fiscalizacion",
+            "source_evidence_sha256": "0a3888d8e043fe41abbaede67f29bf786a749c99f843c91aedfa8b31499ed1c7",
+            "captured_stdout_sha256": "17511ebd09faf49db9ae7ef295c73173d0cbacf4a2372423c3ae2327ca63e18e",
+            "captured_stdout_bytes": 55588
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "tests/test_press_pipeline.py",
+              "tests/test_fonasa_source.py",
+              "tests/test_isp_anamed_source.py",
+              "tests/test_deis_source.py",
+              "tests/test_suseso_pipeline.py"
+            ],
+            "returncode": 0,
+            "output_length": 99,
+            "captured_stdout_sha256": "e36b6ac3f26f6514018446c23569d17ea08e20849d68730d4f16bfe467656eb5",
+            "captured_stdout_bytes": 99
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q"
+            ],
+            "returncode": 1,
+            "output_length": 2217,
+            "captured_stdout_sha256": "2dde11b3148bc87b00f4f2e9a82f8b4d9dbf189687f7a4bbbe2e2e84685311f2",
+            "captured_stdout_bytes": 2221
+          }
+        ]
+      }
+    ],
+    "source_closure_proven": false,
+    "stage_a_recovery_proven": false,
+    "mutation_recorded": false,
+    "remote_mutations": false,
+    "next_hypothesis": "A bounded deterministic repair plan can now consume the retained source evidence while preserving source acceptance and existing full-gate blockers."
+  },
+  "local_validation": {
+    "autonomy_tests": 244,
+    "status": "PASS",
+    "actionlint": "1.7.7 PASS, five workflows",
+    "canonical_governance_pmo_tests": {
+      "status": "PASS",
+      "tests": 7,
+      "seconds": 0.07,
+      "workspace_base": "44ec3f30af18c5bc99f47adf4b07ca5f5782ded9",
+      "exact_pmo_payload": true,
+      "pmo_sha256": "c243037f5b156ce2d5985592e8dade9d45efc56ae4c064f877ec1c2f05549b99"
+    }
+  },
+  "real_blockers": [
+    {
+      "id": "useful_four_hour_window_not_proven",
+      "reason": "No four-hour observation exists; six supported lanes reached evidenced blockers, no candidate mutation or source closure. The READY editorial parent awaits its open dependency.",
+      "required_input": "Revision-bound, approved bounded repair plans and source/editorial acceptance artifacts from the owning fronts; existing native lanes may supply them.",
+      "auto_resume": "Relevant committed inputs or approved repair_patch/acceptance_artifact change reopens only affected blocked tasks."
+    },
+    {
+      "id": "owner_prompt_observation_unavailable",
+      "reason": "No trusted Work/chat owner_prompt_events source is connected. Empty arrays do not prove no human intervention.",
+      "required_input": "A trusted immutable event export with completeness watermark covering the same four hours, plus Actions event coverage.",
+      "owner_followup_count": null
+    },
+    {
+      "id": "unchanged_staging_normative_gate",
+      "reason": "11 >= 12 remains a real failure; targeted source tests 16 PASS, original full baseline 265 PASS / 1 FAIL / 1 SKIP.",
+      "required_input": "A justified repair approved in the product/source owning front; do not manufacture a row or relax the test."
+    },
+    {
+      "id": "approved_repair_payload_absent",
+      "reason": "Canonical queue currently contains no repair_patch or acceptance_artifact. ai_builder_enabled=false is preserved; bounded SUSESO probe budget 24 does not prove inventory of 370 entries.",
+      "required_input": "Bounded deterministic repair and exact source acceptance evidence; no new paid model, secret or product main write."
+    }
+  ],
+  "four_useful_hours_proven": false,
+  "owner_followup_count": null,
+  "owner_prompt_coverage": "UNAVAILABLE",
+  "validated_requirements": [],
+  "validated_blocks": [],
+  "human_authored_metadata_counts_as_material_progress": false,
+  "production_promoted": false,
+  "original_qa_reviewer_editorial_security_gates_unchanged": true,
+  "historical_main_prohibition": "Original task constraints retained. Owner exception applies only to this autonomy infrastructure package.",
+  "observation_authority": "autopilot-state:data/autopilot/control_v2.json and immutable evidence; canonical queue remains staging",
+  "next_hypothesis": "Approved bounded repair/acceptance inputs can resume only the affected family without controller SUCCESS loops, then a complete useful four-hour window with trusted owner telemetry can be evaluated.",
+  "final_reviewed_at": "2026-10-11T06:04:52.278462+00:00"
+}
