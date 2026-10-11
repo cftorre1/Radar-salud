@@ -178,6 +178,13 @@ def _publisher_day(value):
     return stamp.astimezone(ZoneInfo("America/Santiago")).date().isoformat()
 
 
+class ExcludedArticle(ValueError):
+    """An explicit publisher section exclusion with verified primary identity/date."""
+    def __init__(self, reason, title, body, metadata):
+        super().__init__(reason)
+        self.title, self.body, self.metadata = title, body, metadata
+
+
 def extract_article(html, expected_url):
     expected = article_url(expected_url)
     if not expected:
@@ -235,18 +242,19 @@ def extract_article(html, expected_url):
     # articleBody. Prefer it over broad HTML wrappers containing captions/tags.
     if isinstance(node.get("articleBody"), str) and len(node["articleBody"].strip()) >= 160:
         body = " ".join(node["articleBody"].split())
-    if len(title) < 18 or len(body) < 160:
-        raise ValueError("incomplete_article_evidence")
     section = node.get("articleSection") or parser.metas.get("article:section") or expected.split('/')[3]
-    if re.search(r"opini[oó]n|editorial|columna", str(section), re.I):
-        raise ValueError("excluded_opinion_content")
-    return title, body, dict(section=section, keywords=node.get("keywords", []),
+    metadata = dict(section=section, keywords=node.get("keywords", []),
                             description=node.get("description", ""),
                             body_source="url_bound_json_ld_articleBody" if node.get("articleBody") else "article_html",
                             publication_date=published, publication_timestamp=timestamp,
                             publication_date_source=date_source, visible_publication_date=visible_day,
                             publication_evidence=[dict(source=kind, timestamp=value, publisher_day=day) for kind, value, day in publisher_dates], canonical_url=expected,
                             article_verified=True)
+    if re.search(r"opini[oó]n|editorial|columna", str(section), re.I):
+        raise ExcludedArticle("excluded_opinion_content", title, body, metadata)
+    if len(title) < 18 or len(body) < 160:
+        raise ValueError("incomplete_article_evidence")
+    return title, body, metadata
 
 
 def discover_listing(html, base, detail_loader, audit, visited):
@@ -275,6 +283,9 @@ def discover_listing(html, base, detail_loader, audit, visited):
                                event_date=metadata["publication_date"], raw_text=body[:1800], metadata=metadata))
             audit.append(dict(url=url, listing=base, status="discovered", section=metadata["section"],
                               publication_date=metadata["publication_date"]))
+        except ExcludedArticle as exc:
+            audit.append(dict(url=url, listing=base, status="excluded", reason=str(exc),
+                              publication_date=exc.metadata["publication_date"], section=exc.metadata["section"]))
         except Exception as exc:
             audit.append(dict(url=url, listing=base, status="detail_error", reason=str(exc), error_type=type(exc).__name__))
     return out
@@ -433,6 +444,13 @@ def _verified_detail(entry, loader, cached):
                         topics=health_topics(combined) if relevant else [])
         return dict(url=url, title=title, body=body[:1800] if relevant else "", metadata=metadata,
                     relevant=relevant, lastmod=entry.get("lastmod", ""), cache_hit=False)
+    except ExcludedArticle as exc:
+        metadata = dict(exc.metadata)
+        metadata.update(discovered_from=entry["listing"], captured_at=now,
+                        html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
+                        publisher_lastmod=entry.get("lastmod", ""), topics=[])
+        return dict(url=url, title=exc.title, body="", metadata=metadata, relevant=False,
+                    exclusion_reason=str(exc), lastmod=entry.get("lastmod", ""), cache_hit=False)
     except Exception as exc:
         return dict(url=url, status="detail_error", reason=str(exc), error_type=type(exc).__name__,
                     listing=entry["listing"], captured_at=now)
@@ -568,7 +586,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
             dates.append(day)
             verified_days.append(day)
             status = "discovered" if result["relevant"] and cutoff <= day <= today else "excluded"
-            reason = None if status == "discovered" else "no_health_anchor" if not result["relevant"] else "outside_90_day_window"
+            reason = None if status == "discovered" else result.get("exclusion_reason", "no_health_anchor") if not result["relevant"] else "outside_90_day_window"
             trace = dict(url=result["url"], listing=url, status=status, reason=reason,
                          title=result["title"], section=metadata["section"], topics=metadata.get("topics", []),
                          publication_date=metadata["publication_date"], publication_timestamp=metadata["publication_timestamp"],

@@ -280,3 +280,22 @@ def test_valid_empty_page_before_required_window_is_a_cap_not_success(tmp_path):
     _, _, summary = discover_archive(loader, [], tmp_path / 'cache.json', today=TODAY)
     assert not summary['coverage_complete']
     assert summary['termination'] == 'archive_exhausted_before_required_window'
+
+
+def test_opinion_under_news_path_is_traced_editorial_exclusion_not_detail_error(tmp_path):
+    def loader(value):
+        if value == SITEMAP_INDEX:
+            return xml_index()
+        if value == SITEMAP_PAGE:
+            return xml_page(0, count=1)
+        if '/arc/outboundfeeds/' in value:
+            return f'<urlset xmlns="{NS}" />'
+        return html_article(value).replace('"articleSection": "Nacional"', '"articleSection": "Opinión"')
+    audit = []
+    items, _, summary = discover_archive(loader, audit, tmp_path / 'cache.json', today=TODAY)
+    assert not items and summary['errors'] == 0
+    trace = next(e for e in audit if e.get('reason') == 'excluded_opinion_content')
+    assert trace['status'] == 'excluded' and trace['publication_date'] == '2026-10-09'
+    assert not any(e['status'] == 'detail_error' for e in audit)
+    cached = json.loads((tmp_path / 'cache.json').read_text())['articles']
+    assert next(iter(cached.values()))['exclusion_reason'] == 'excluded_opinion_content'
