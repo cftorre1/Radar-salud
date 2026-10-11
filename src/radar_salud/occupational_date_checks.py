@@ -27,10 +27,11 @@ def blog_publication_date_issues(html, *, as_of=None):
     parser = _BlogRecords()
     parser.feed(html)
     parser.finish()
-    rows = []
+    rows, verified_days = [], []
     for fields in parser.records:
         day, reason, observations = _publication(fields, today)
         if day:
+            verified_days.append(day)
             continue
         values = [(field, value) for field in ("PublicationDate", "FechaArticulo")
                   for value in fields.get(field, [])]
@@ -52,6 +53,9 @@ def blog_publication_date_issues(html, *, as_of=None):
     return {"url": BLOG_URL, "as_of": today.isoformat(), "records": len(parser.records),
             "date_issues": rows, "parser_errors": parser.errors,
             "unknown_exact_publication_dates": len(rows),
+            "verified_publication_dates_total": len(verified_days),
+            "verified_dates_within_30_days": sum(today - timedelta(days=30) <= day <= today for day in verified_days),
+            "verified_dates_within_90_days": sum(today - timedelta(days=90) <= day <= today for day in verified_days),
             "potentially_current_90_day_issues": sum(row["potentially_within_90_days"] for row in rows),
             "historical_90_day_issues": sum(row["all_observed_days_before_90_day_boundary"] for row in rows),
             "no_publication_dates_assigned": True}

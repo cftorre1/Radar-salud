@@ -46,6 +46,17 @@ def test_an_invalid_or_future_field_cannot_be_bounded_as_a_historical_record():
         assert report['date_issues'][0]['publication_date'] is None
 
 
+def test_all_verified_dates_are_counted_separately_from_verified_window_membership():
+    html = (blog_record('sep. 24, 2026, 14:00', 'sep. 24, 2026, 14:00')
+            + blog_record('abr. 9, 2026, 14:00', 'abr. 9, 2026, 14:00')
+            + blog_record('sep. 4, 2026, 13:22', 'abr. 9, 2026, 14:00'))
+    report = blog_publication_date_issues(html, as_of=AS_OF)
+    assert report['verified_publication_dates_total'] == 2
+    assert report['verified_dates_within_30_days'] == report['verified_dates_within_90_days'] == 1
+    assert report['potentially_current_90_day_issues'] == 1
+    assert report['unknown_exact_publication_dates'] == 1
+
+
 def test_jsonld_requires_article_url_binding_and_never_uses_modified_as_publication():
     schema = [{'@type': 'Article', 'url': TPS_URL, 'datePublished': '2026-08-12T14:38:53+00:00',
                'dateModified': '2026-10-10T10:00:00-03:00'},
@@ -73,6 +84,8 @@ def test_current_run9_origin_captures_bound_the_two_ambiguities_without_automati
     loader = CaptureLoader(tmp_path, replay=base)
     blog = blog_publication_date_issues(loader('https://www.achssalud.cl/blog'), as_of=AS_OF)
     assert blog['records'] == 43 and blog['unknown_exact_publication_dates'] == 25
+    assert blog['verified_publication_dates_total'] == 18
+    assert blog['verified_dates_within_30_days'] == blog['verified_dates_within_90_days'] == 3
     assert blog['historical_90_day_issues'] == 24 and blog['potentially_current_90_day_issues'] == 1
     current = next(row for row in blog['date_issues'] if row['potentially_within_90_days'])
     assert 'duelo-migratorio' in current['url'] and current['observed_publication_days'] == ['2026-04-09', '2026-09-04']

@@ -1,6 +1,6 @@
 {
   "checkpoint": "official_publication_date_alternatives_read_only",
-  "generated_at": "2026-10-11T07:13:36.768052+00:00",
+  "generated_at": "2026-10-11T07:15:05.997439+00:00",
   "as_of": "2026-10-11",
   "window_convention": "Rolling elapsed-day bounds, inclusive: as_of minus 90 days through as_of; no date is selected for an ambiguous record.",
   "origin_capture_workflow": "38119024441",
@@ -964,6 +964,9 @@
     ],
     "parser_errors": [],
     "unknown_exact_publication_dates": 25,
+    "verified_publication_dates_total": 18,
+    "verified_dates_within_30_days": 3,
+    "verified_dates_within_90_days": 3,
     "potentially_current_90_day_issues": 1,
     "historical_90_day_issues": 24,
     "no_publication_dates_assigned": true
@@ -1228,11 +1231,11 @@
     "https://www.achssalud.cl/blog": {
       "url": "https://www.achssalud.cl/blog",
       "final_url": "https://www.achssalud.cl/blog",
-      "captured_at": "2026-10-11T06:46:00.668477+00:00",
-      "sha256": "491b81a6f7522fe74bb1dbf97711622d28e56e7c6e269aa2a2e2bc03802bfa6b",
+      "captured_at": "2026-10-11T07:05:07.831326+00:00",
+      "sha256": "46541c030906aded4fd0dd54c8e252b4fb0581f6a3643994b76fef6559d426da",
       "http_status": 200,
       "tls_verified": true,
-      "artifact": "data/audits/source_e_recovery/actions/38119024441/820f6e40aa4d4b72408c-0.body",
+      "artifact": "data/audits/source_e_recovery/actions/38120060930/820f6e40aa4d4b72408c-0.body",
       "environment": "github_actions"
     },
     "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/": {
@@ -1326,13 +1329,23 @@
       "date_assigned": false,
       "blocker_type": "publisher_evidence_ambiguity"
     },
-    "network_blocker": false
+    "network_blocker": false,
+    "blog_verified_window_counts": {
+      "records": 43,
+      "verified_publication_dates_total": 18,
+      "verified_dates_within_30_days": 3,
+      "verified_dates_within_90_days": 3,
+      "date_conflicts": 25,
+      "historical_90_day_issues": 24,
+      "potentially_current_90_day_issues": 1,
+      "note": "18 is the total with a verified date, not the 90-day count. Three dates are verified inside 90 days; one additional ambiguous record may belong to that window."
+    }
   },
   "regression_checkpoint": {
     "command": ".venv/bin/python -m pytest -q tests/test_occupational_date_checks.py tests/test_occupational_inventory.py tests/test_achs_blog_inventory.py",
-    "result": "71 passed in 1.89s",
+    "result": "72 passed in 1.89s",
     "exit_code": 0,
-    "new_date_check_tests": 6,
+    "new_date_check_tests": 7,
     "exact_alternative_raw_captures_verified": 2
   },
   "alternative_capture_workflow": "38120060930",
@@ -1372,5 +1385,7 @@
     "status": "pending",
     "reason": "listing_publication_editorial_date_conflict_and_no_detail_publication_evidence",
     "no_automatic_date_selection": true
-  }
+  },
+  "current_blog_origin_capture_workflow": "38120060930",
+  "current_blog_source_index": "data/audits/source_e_recovery/actions/38120060930/inventory/capture_index.json"
 }
