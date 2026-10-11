@@ -137,6 +137,7 @@ def main():
         "failed_sources":sum(row.get("technical_status")=="error" for row in run_sources.values()),
     })
     produced={name:[] for name in processors}
+    processed_rejections={name:0 for name in processors}
     queue.enforce_backfill_horizon(sources=set(args.source) if args.source else None)
     ready=[(key,item) for key,item in queue.ready() if item['source'] in processors and
         (not args.source or item['source'] in args.source or
@@ -171,9 +172,11 @@ def main():
                                     editorial_decision='reject',feed_visibility=False)
                     save_history(history_path,history)
             queue.finish(key,"published" if row else "rejected",None if row else processing_raw.metadata.get("rejection_reason","processor_rejected"))
+            if not row:processed_rejections[item['source']]+=1
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except RejectedProcessing as exc:
             queue.finish(key,"rejected",str(exc))
+            processed_rejections[item['source']]+=1
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except DeferredProcessing as exc:
             item["raw"]=asdict(processing_raw)
@@ -207,6 +210,7 @@ def main():
         source_items=[item for item in queue.items.values() if item.get("source")==name]
         health_record(root,name,name="Diario Financiero" if name=="diario_financiero" else name.replace("_"," ").title(),discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
+            processed_rejections=processed_rejections[name],
             deferred=sum(i.get('source')==name and i['status']=='deferred' for i in queue.items.values()) if name=='diario_financiero' else 0,
             rejected=counts["rejected"],rows=produced[name],error=error,
             live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"], discovery_evidence=df_evidence, observed_rows=observed.get(name),surfaces=surfaces.get(name),

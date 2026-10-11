@@ -74,6 +74,14 @@ def test_fiscalization_windows_use_office_identity_and_never_suspension_dates(tm
     assert row['zero_published_reason']=='evaluated_rejections_or_existing_published_history'
 
 
+def test_current_rejections_and_cumulative_stock_have_distinct_outcomes(tmp_path):
+    record(tmp_path,'source',name='Source',discovered=3,new=0,published=0,rejected=200)
+    path=tmp_path/'data/source_health.json'
+    assert json.loads(path.read_text())['sources']['source']['editorial_outcome']=='no_new_signals'
+    record(tmp_path,'source',name='Source',discovered=3,new=1,published=0,rejected=201,processed_rejections=1)
+    assert json.loads(path.read_text())['sources']['source']['editorial_outcome']=='rejected'
+
+
 def test_fiscalization_partial_receipt_and_observation_are_separate_from_publication(tmp_path):
     record(tmp_path,'suseso_fiscalizacion',name='SUSESO',discovered=38,new=2,published=0,
         observed_rows=[{'event_date':'2026-09-29','metadata':{'publication_date':'2026-09-29'}}],
