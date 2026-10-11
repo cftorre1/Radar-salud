@@ -272,10 +272,13 @@ def main():
             disposition="withdrawn_capture_defect:"+str(reviewed.get("df_body_reaudit_reason"))
         elif normalized in feed_urls: disposition = "published_in_history_and_feed"
         elif normalized in history_by_url: disposition = "history_present_feed_curator_excluded"
+        elif terminal_reject == 'df_not_article': disposition = 'capture_noise_excluded:df_not_article'
         elif terminal_reject: disposition = "editorial_rejected:" + terminal_reject
         elif any(e["status"] == "retry" for e in entries): disposition = "technical_or_analysis_retry:" + str(next(e["reason"] for e in entries if e["status"] == "retry"))
         elif original.get("fetch") == "error": disposition = "capture_blocked:" + original["error_type"]
         elif any(e["status"] == "pending" for e in entries): disposition = "pending_processing_limit_or_budget; not_editorial_rejection"
+        elif any(e['status']=='archived' for e in entries): disposition='archived:'+str(next(e['reason'] for e in entries if e['status']=='archived'))
+        elif any(e['status']=='superseded' for e in entries): disposition='superseded:'+str(next(e['reason'] for e in entries if e['status']=='superseded'))
         elif entries: disposition = "legacy_generic_rejection_unresolved; no_editorial_verdict_proven"
         else: disposition = "not_in_pipeline; capture_or_evaluation_required"
         matrix.append({"url": url, "title": titles.get(url), "publication_day": date,
