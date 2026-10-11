@@ -10,6 +10,15 @@ def policy():
     return json.loads((Path(__file__).resolve().parents[2] / "config/media_early_signal_gate.json").read_text())
 
 
+def assessment_exclusion(assessment):
+    """A numeric score cannot override the model's explicit nonmaterial verdict."""
+    reason=str(assessment.get('reason') or '').lower()
+    if ('contexto' in reason and 'secundario' in reason and
+            re.search(r'no\s+(?:como\s+)?(?:una\s+)?señal\s+material',reason)):
+        return 'media_assessment_no_material_event'
+    return None
+
+
 def exclusion(raw):
     url = raw.url.lower()
     path = urlsplit(url).path

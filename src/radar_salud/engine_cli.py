@@ -133,10 +133,24 @@ def main():
                 history=merge_history(history,[row]);save_history(history_path,history)
                 produced[item["source"]].append(row)
             item["raw"]=asdict(processing_raw)
+            if not row and item['source']=='diario_financiero':
+                previous=next((s for s in history if s.get('source_url')==processing_raw.url),None)
+                if previous and previous.get('df_body_reaudit_observations'):
+                    previous.update(df_body_reaudit_status='rejected_after_primary_body_reassessment',
+                                    df_body_reaudit_reason=processing_raw.metadata.get('rejection_reason'),
+                                    df_body_reaudit_latest_assessment=processing_raw.metadata.get('editorial_assessment'),
+                                    editorial_decision='reject',feed_visibility=False)
+                    save_history(history_path,history)
             queue.finish(key,"published" if row else "rejected",None if row else processing_raw.metadata.get("rejection_reason","processor_rejected"))
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except DeferredProcessing as exc:
             item["raw"]=asdict(processing_raw)
+            if item['source']=='diario_financiero':
+                previous=next((s for s in history if s.get('source_url')==processing_raw.url),None)
+                if previous and previous.get('df_body_reaudit_observations'):
+                    previous.update(df_body_reaudit_status='retry_after_primary_body_reassessment',
+                                    df_body_reaudit_reason=exc.reason,editorial_decision='reject',feed_visibility=False)
+                    save_history(history_path,history)
             queue.finish(key,"retry",exc.reason or "budget_or_analysis_deferred")
         except Exception as exc:
             queue.finish(key,"retry",type(exc).__name__)

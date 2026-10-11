@@ -216,7 +216,7 @@ def _health_relevance(title,text):
     return any(x in t for x in health_terms)
 
 def process_df(raw,cfg):
-    from .df_media_gate import policy, exclusion, material
+    from .df_media_gate import policy, exclusion, material, assessment_exclusion
     from .editorial_gate import publication_ready
     if not raw.metadata.get("publication_date_source") or not raw.metadata.get("page_text"):
         raw=enrich(raw)
@@ -243,6 +243,10 @@ def process_df(raw,cfg):
     gate=policy();threshold=int(gate["minimum_relevance_score"])
     raw.metadata["editorial_assessment"]={"score":int(ai.get("relevance_score",0)),"reason":ai.get("reason"),
                                           "gate":gate["name"],"gate_version":gate["version"],"threshold":threshold}
+    reason=assessment_exclusion(ai)
+    if reason:
+        raw.metadata['rejection_reason']=reason
+        return None
     if int(ai.get("relevance_score",0))<threshold:
         raw.metadata["rejection_reason"]=f"media_score_below_{threshold}"
         return None
@@ -251,11 +255,13 @@ def process_df(raw,cfg):
 def df_signal_from_assessment(raw,cfg,ai):
     """Build from an already-paid assessment; usable for crash checkpoint recovery."""
     from .editorial_gate import publication_ready
-    from .df_media_gate import policy
+    from .df_media_gate import policy, assessment_exclusion
     if not raw.event_date or not raw.metadata.get("publication_date_source") or (raw.metadata.get("publication_date_conflict") and not raw.metadata.get("publication_date_conflict_resolution")):
         raise ValueError("DF assessment recovery requires verified publisher date")
     if int(ai.get("relevance_score",0))<int(policy()["minimum_relevance_score"]):
         raise ValueError("DF assessment recovery failed Media Early Signal Gate")
+    if assessment_exclusion(ai):
+        raise ValueError('DF assessment explicitly says no material event')
     score=int(ai.get("relevance_score",0));sc=_scopes(f"{raw.title} {raw.raw_text}")
     raw.metadata.update({"what_happened":ai.get("what_happened") or raw.title,"why_it_matters":ai.get("why_it_matters") or "",
       "signal_types":["Noticias"],"scopes":sc,"watch_tags":["df","noticias"]+[x.lower() for x in sc],

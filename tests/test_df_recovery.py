@@ -470,3 +470,17 @@ def test_real_df_listings_select_primary_cards_and_observable_health_pagination(
     assert not any('klap-se-suma' in raw.url for raw in items)
     assert all(raw.metadata['listing_extraction'] == 'primary_cards' for raw in items)
     assert len(items) < 40
+
+
+def test_numeric_media_score_does_not_override_explicit_nonmaterial_assessment(monkeypatch):
+    from radar_salud.public_source_pipeline import process_df
+    from radar_salud.df_media_gate import assessment_exclusion
+    from test_press_pipeline import DF_CFG
+    recorded = 'Es un hallazgo relevante sobre salud ocupacional y una propuesta de gestión, pero funciona como contexto estratégico secundario, no como una señal material de alcance nacional.'
+    ai = _analysis(72);ai['reason'] = recorded
+    monkeypatch.setattr('radar_salud.public_source_pipeline.analyze_news', lambda **kw: ai)
+    raw = _raw(dated=True)
+    assert process_df(raw, DF_CFG) is None
+    assert raw.metadata['rejection_reason'] == 'media_assessment_no_material_event'
+    assert raw.metadata['editorial_assessment']['score'] == 72
+    assert assessment_exclusion({'reason': 'Material a escala regional; no alcanza impacto nacional.'}) is None
