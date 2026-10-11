@@ -295,7 +295,17 @@ def process_curated_beta_source(raw, cfg):
     from .public_source_pipeline import enrich, _scopes
 
     if raw.source_slug == "pulso_latercera":
-        from .pulso_source import article_body_evidence, complete_article_body, extract_article
+        from .pulso_source import (article_body_evidence, article_url, complete_article_body,
+                                   extract_article, verified_video_without_text)
+        if (verified_video_without_text(raw.metadata)
+                and article_url(raw.url) == raw.metadata.get("canonical_url")
+                and raw.event_date == raw.metadata.get("publication_date") and raw.event_date):
+            # A verified video identity/date cannot supply a missing transcript.
+            # Keep the exact availability hold without retrying or spending AI.
+            raw.metadata["article_body_complete"] = False
+            raw.metadata["editorial_assessment"] = {
+                "decision": "pending", "reason": "publisher_video_text_unavailable"}
+            raise DeferredProcessing("publisher_video_text_unavailable")
         if not (raw.metadata.get("article_verified") and complete_article_body(raw.metadata) and raw.event_date):
             try:
                 from datetime import datetime, timezone
