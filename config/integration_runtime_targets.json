@@ -1,31 +1,44 @@
 {
   "sources": [
-    "deis",
-    "fonasa",
-    "fonasa_datos_abiertos",
-    "isp_anamed",
-    "isp_surveillance"
+    "redsalud",
+    "bupa_chile",
+    "indisa",
+    "red_davila",
+    "andes_salud",
+    "clinicas_chile",
+    "pfizer_chile"
   ],
   "origin_prs": [
-    13
+    14
   ],
   "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
   "expectations": {
-    "fonasa": {
-      "allow_external_blocker": true,
-      "minimum_discovered": 0
+    "redsalud": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
     },
-    "fonasa_datos_abiertos": {
-      "allow_external_blocker": true,
-      "minimum_discovered": 0
+    "bupa_chile": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
     },
-    "isp_anamed": {
-      "allow_external_blocker": true,
-      "minimum_discovered": 0
+    "indisa": {
+      "allow_external_blocker": true
     },
-    "isp_surveillance": {
-      "allow_external_blocker": true,
-      "minimum_discovered": 0
+    "red_davila": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "andes_salud": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "clinicas_chile": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "pfizer_chile": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
     }
   }
 }

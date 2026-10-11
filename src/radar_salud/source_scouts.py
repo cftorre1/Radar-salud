@@ -130,34 +130,88 @@ class ClinicasChileScout:
     PAGES=[
         ("Noticias","https://www.clinicasdechile.cl/noticias/"),
         ("Memorias","https://www.clinicasdechile.cl/knowledgebase_category/memorias/"),
-        ("Estudios y análisis","https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/page/3/?mostrar=6"),
+        ("Estudios y análisis","https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/"),
         ("Documentos","https://www.clinicasdechile.cl/knowledgebase_category/documentos/"),
     ]
     HOSTS=("www.clinicasdechile.cl","clinicasdechile.cl")
+    def discover_from_html(self,html,channel,page):
+        parser=_ClinicasLinks();parser.feed(html);out=[];seen=set()
+        for href,title in parser.links:
+            if not href or len(title)<12:continue
+            url=urljoin(page,href);parsed=urlparse(url)
+            if parsed.scheme!="https" or parsed.netloc not in self.HOSTS or url in seen:continue
+            document=bool(re.fullmatch(r"/wp-content/uploads/.+\.(?:pdf|xlsx?|csv)",parsed.path,re.I))
+            if channel=="Noticias":
+                if (len(title)<25 or document or not re.fullmatch(r"/(?:noticias/)?[^/]+/?",parsed.path)
+                        or parsed.path.rstrip("/") in ("/noticias","/quienes-somos","/asociados","/seminarios","/biblioteca","/contacto","/equipo-de-trabajo","/consejo-medico","/temas-de-coyuntura")):
+                    continue
+            elif not (document and title.casefold().startswith("descargar")):
+                continue
+            seen.add(url)
+            event_date=parser.dates.get(href) if channel=="Noticias" else None
+            out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                event_date=event_date,metadata={"discovered_from":page,"clinicas_channel":channel,
+                "publication_date_source":"dated_news_listing" if event_date else "unverified"}))
+        return out
     def discover(self):
-        from .public_source_pipeline import _Meta, _date
-        out=[];seen=set()
+        from .public_source_pipeline import _VisibleArticle, _date
+        out=[];seen=set();self.discovery_errors=[]
         for channel,page in self.PAGES:
-            html=fetch_html(page);p=_A();p.feed(html)
-            for href,title in p.links:
-                if not href or len(title)<12:continue
-                url=urljoin(page,href);parsed=urlparse(url)
-                if parsed.netloc not in self.HOSTS or url in seen:continue
-                rootpaths=("/noticias","/knowledgebase_category/memorias","/knowledgebase_category/estudios-y-analisis","/knowledgebase_category/documentos")
-                if parsed.path.rstrip("/") in rootpaths:continue
-                if any(x in parsed.path.lower() for x in ("/author/","/tag/","/category/","/wp-admin","/page/")) and "knowledgebase" not in parsed.path.lower():continue
-                seen.add(url);event_date=_date(title);body=""
-                if not parsed.path.lower().endswith((".pdf",".xlsx",".xls",".csv")):
-                    try:
-                        meta=_Meta();meta.feed(fetch_html(url));body=" ".join(meta.text)
-                        event_date=event_date or _date(meta.published) or _date(body[:5000])
-                    except Exception:
-                        pass
-                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                                   event_date=event_date,raw_text=body[:1800],
-                                   metadata={"discovered_from":page,"clinicas_channel":channel,"page_text":body[:18000]}))
-        if not out:raise RuntimeError("Clínicas de Chile hubs unavailable or empty")
+            # The library lists 3/3/4 pages. Scan each channel from page 1;
+            # library order is not a verified chronology.
+            count={"Memorias":3,"Estudios y análisis":3,"Documentos":4}.get(channel,1)
+            pages=[page]+[f"{page}page/{n}/?mostrar=6" for n in range(2,count+1)]
+            candidates=[]
+            for listing in pages:
+                try:candidates.extend(self.discover_from_html(fetch_html(listing),channel,listing))
+                except Exception as exc:self.discovery_errors.append(f"{channel}: {listing}: {type(exc).__name__}")
+            for raw in candidates:
+                if raw.url in seen:continue
+                seen.add(raw.url)
+                if channel=="Noticias":
+                    # A detail fetch failure remains retryable, never a date
+                    # borrowed from navigation, legal citations or PDF body text.
+                    try:detail=fetch_html(raw.url)
+                    except Exception as exc:
+                        self.discovery_errors.append(f"{channel}: {raw.url}: {type(exc).__name__}")
+                        out.append(raw);continue
+                    article=_VisibleArticle();article.feed(detail)
+                    stamp=_PublishedMeta();stamp.feed(detail)
+                    # _Meta includes several historical date names; only the
+                    # explicit article property can replace the listing stamp.
+                    verified=_date(stamp.published)
+                    if verified and raw.event_date and verified != raw.event_date:
+                        self.discovery_errors.append(f"{channel}: {raw.url}: publication_date_mismatch")
+                        raw.event_date=None;raw.metadata["publication_date_source"]="conflicting_stamps"
+                    elif verified:
+                        raw.event_date=verified;raw.metadata["publication_date_source"]="article:published_time"
+                    raw.metadata["page_text"]=" ".join(article.text)[:18000]
+                    raw.raw_text=raw.metadata["page_text"][:1800]
+                out.append(raw)
+        if not out:raise RuntimeError("Clínicas de Chile hubs unavailable or empty: "+"; ".join(self.discovery_errors))
         return out[:100]
+
+
+class _ClinicasLinks(_A):
+    """Associate the site's publication stamp with the following news headline."""
+    def __init__(self):super().__init__();self.dates={};self._stamp=None;self._heading=False
+    def handle_starttag(self,tag,attrs):
+        lower=tag.lower()
+        if lower in ("article","nav","footer"):self._stamp=None
+        if lower in ("h2","h3"):self._heading=True
+        super().handle_starttag(tag,attrs)
+    def handle_data(self,data):
+        from .public_source_pipeline import _date
+        if re.fullmatch(r"\s*\d{1,2}:\d{2}\s*[ap]m\s+el\s+\d{1,2}\s+de\s+\w+\s+del\s+20\d{2}\s*",data,re.I):
+            self._stamp=_date(data)
+        super().handle_data(data)
+    def handle_endtag(self,tag):
+        href=self._href
+        super().handle_endtag(tag)
+        if tag.lower()=="a" and href and self._heading and self._stamp:
+            self.dates[href]=self._stamp;self._stamp=None
+        if tag.lower() in ("h2","h3","article"):
+            self._stamp=None;self._heading=False
 
 
 class CorporateNewsroomScout:
@@ -165,7 +219,7 @@ class CorporateNewsroomScout:
     SOURCES={
         "redsalud":("RedSalud","https://www.redsalud.cl/noticias",("www.redsalud.cl","redsalud.cl"),r"/noticias/[^/]+/?"),
         "bupa_chile":("Bupa Chile","https://www.bupa.cl/somos-bupa/sala-de-prensa",("www.bupa.cl","bupa.cl"),
-                      r"/(?:somos-bupa/)?sala-de-prensa/[^/]+/?"),
+                      r"/(?:(?:somos-bupa/)?sala-de-prensa/)?[a-z0-9][a-z0-9-]+/?"),
         "pfizer_chile":("Pfizer Chile","https://www.pfizer.cl/news",("www.pfizer.cl","pfizer.cl"),r"/news/[^/]+/?"),
         "indisa":("Clínica INDISA","https://www.indisa.cl/categoria-blog/novedades-indisa",("www.indisa.cl","indisa.cl"),r"/blog/[^/]+/?"),
     }
@@ -194,9 +248,22 @@ class CorporateNewsroomScout:
                                event_date=published,metadata={"discovered_from":self.PAGE,"listing_date":published,
                                    **({"source_quality_gate":"pending_90_day_audit"} if self.SOURCE_SLUG=="indisa" else {})}))
         if not out:raise RuntimeError(f"{self.SOURCE_NAME} newsroom structure unrecognized")
-        return out[:15]
+        return out[:100]
     def discover(self):
+        self.discovery_errors=[]
         items=self.discover_from_html(fetch_html(self.PAGE))
+        if self.SOURCE_SLUG=="redsalud":
+            # First-page-only polling hides capacity/convenio articles in the
+            # rolling backfill window. Follow same-newsroom pagination, bounded.
+            seen={item.url for item in items}
+            for number in range(1,5):
+                page=f"{self.PAGE}?page={number}"
+                try:page_items=self.discover_from_html(fetch_html(page))
+                except Exception as exc:
+                    self.discovery_errors.append(f"{page}: {type(exc).__name__}");continue
+                for item in page_items:
+                    if item.url not in seen:
+                        seen.add(item.url);item.metadata["discovered_from"]=page;items.append(item)
         if self.SOURCE_SLUG=="indisa":
             from .public_source_pipeline import _IndisaArticle
             verified=[]
@@ -216,7 +283,7 @@ class CorporateNewsroomScout:
             if not verified:
                 raise RuntimeError("INDISA has no dated listing/detail pairs")
             items=verified
-        return items
+        return items[:100]
 
 
 class _IndisaCards(HTMLParser):
