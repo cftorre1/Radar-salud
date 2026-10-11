@@ -21,6 +21,7 @@ from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
 from .processing import DeferredProcessing, RejectedProcessing
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
+from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 
 def main():
     from .models import RawItem
@@ -71,6 +72,8 @@ def main():
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
       ("pulso_latercera","pulso_latercera",CuratedBetaSourceScout("pulso_latercera").discover,process_curated_beta_source),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
+    specs += [(slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
+              for slug in sorted(OCCUPATIONAL_SOURCES)]
     if args.source:
         unknown=set(args.source)-{name for name,_,_,_ in specs}
         if unknown:ap.error("Unknown source(s): "+", ".join(sorted(unknown)))
@@ -82,8 +85,10 @@ def main():
     discovery_evidence={}
     observed={}
     surfaces={}
+    occupational_audit={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
+        owner=getattr(discover,"__self__",None)
         try:
             items=discover()
             observed[name]=[dict(url=raw.url,event_date=raw.event_date,metadata=raw.metadata) for raw in items]
@@ -120,9 +125,29 @@ def main():
                     "textual_capture_status":"partial" if any(raw.metadata.get('fetch_error') or (len(raw.metadata.get('page_text',''))>=160 and not raw.event_date) for raw in items) else "verified",
                     "format_capability":{"text":"runtime_verified","images":"requires_ocr","audio_video":"requires_official_text"},
                     "newest_event_date":max([raw.event_date for raw in items if raw.event_date],default=None)}
+            if name in OCCUPATIONAL_SOURCES:
+                inventory = getattr(owner, "inventory", {})
+                occupational_audit[name]={"technical_status":"ok","checked_at":checked_at,
+                    "decisions":getattr(owner,"decisions",[]),"discovered":len(items),
+                    "inventory_complete":inventory.get("coverage_complete", False),
+                    "inventory":{k:v for k,v in inventory.items() if k != "raw_items"}}
         except Exception as exc:
-            surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
-            discoveries[name]=(0,0,type(exc).__name__)
+            surfaces[name]=getattr(owner,"surface_results",None)
+            partial = getattr(exc, "partial_items", []) if name in OCCUPATIONAL_SOURCES else []
+            added = queue.discover(name, partial, last_discovered_at=watermarks.get(name)) if partial else 0
+            discoveries[name]=(len(partial),added,type(exc).__name__)
+            if name in OCCUPATIONAL_SOURCES:
+                inventory = getattr(owner, "inventory", {})
+                occupational_audit[name]={"technical_status":"partial" if partial else "error","checked_at":datetime.now(timezone.utc).isoformat(),
+                    "error":{"code":getattr(exc,"code",type(exc).__name__),"url":getattr(exc,"url",None),"message":str(exc)},
+                    "decisions":getattr(owner,"decisions",[]),"inventory_complete":False,
+                    "diagnostics":getattr(exc,"diagnostics", []), "discovered":len(partial),
+                    "inventory":{k:v for k,v in inventory.items() if k != "raw_items"}}
+    if occupational_audit:
+        audit_path=root/'data/state/occupational_source_discovery.json'
+        previous_audit=json.loads(audit_path.read_text()) if audit_path.exists() else {}
+        previous_audit.update(occupational_audit)
+        atomic_json(audit_path,previous_audit)
     run_path=root/"data/state/discovery_run.json"
     previous_run=json.loads(run_path.read_text()) if args.source and run_path.exists() else {}
     run_sources=previous_run.get("sources",{})
@@ -171,7 +196,7 @@ def main():
                                     df_body_reaudit_latest_assessment=processing_raw.metadata.get('editorial_assessment'),
                                     editorial_decision='reject',feed_visibility=False)
                     save_history(history_path,history)
-            queue.finish(key,"published" if row else "rejected",None if row else processing_raw.metadata.get("rejection_reason","processor_rejected"))
+            queue.finish(key,"published" if row else "rejected",None if row else processing_raw.metadata.get("rejection_reason") or processing_raw.metadata.get("publication_rejection_reason") or "processor_rejected")
             if not row:processed_rejections[item['source']]+=1
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except RejectedProcessing as exc:
@@ -217,7 +242,8 @@ def main():
             published_history=fiscal_history if name in FISCALIZATION_SOURCES else None,
             source_queue=source_items if name in FISCALIZATION_SOURCES else None,
             archived=sum(item.get("status")=="archived" for item in source_items),
-            rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")))
+            rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")),
+            **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}))
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()

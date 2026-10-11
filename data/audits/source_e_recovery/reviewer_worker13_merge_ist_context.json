@@ -1,0 +1,135 @@
+{
+  "reviewer": "independent agent /root/reviewer",
+  "reviewed_at": "2026-10-11",
+  "reviewed_head": "c5543294d3b15684238d36dbb1d032bd313667d4",
+  "scope": [
+    "achs_seguro_laboral",
+    "clinicas_achs_salud",
+    "mutual_seguridad",
+    "ist"
+  ],
+  "verdict": "PASS incremental engineering and evidence; final editorial/integrated acceptance pending Run14 IST reassessment",
+  "mutual_worker": {
+    "run": "38122111500",
+    "report_sha256": "5a279c0877b65ca6d584d7a3564641e348e58f9578f42c1281e17740da6da3d4",
+    "response_files_validated": 48,
+    "preflight_validated": 2,
+    "observed_anchors_bound_to_raw": 21,
+    "final_verified200_noIDs": 21,
+    "baselineIDs": 84,
+    "coverage_complete": false,
+    "elapsed_seconds": 8.398487,
+    "verdict": "PASS bounded real diagnostic; archive incomplete; no external blocker"
+  },
+  "staging_integration": {
+    "merge_commit": "b61249ce80207afadf938e4c5a89959e44a5fab4",
+    "staging_parent": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+    "upstream_tasks": 84,
+    "only_changed_task": "source_repair_mutualities_lane_2026_10_11",
+    "all_other_tasks_and_queue_metadata_exact": true,
+    "pmo_only_addition": [
+      "/evidence_catalog/occupational_origin_inventory_recovery_2026_10_11"
+    ],
+    "unmerged_index": false,
+    "changed_first_parent_files": [
+      "config/orchestrator_queue.json",
+      "config/pmo_baseline.json",
+      "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+      "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+      "data/audits/work3_adversarial_2026_10_11T072159Z.json",
+      "data/autopilot/learning_ledger.json",
+      "data/pmo/autonomy_acceptance_2026_10_11.json"
+    ],
+    "code_state_health_not_changed_by_merge": true,
+    "verdict": "PASS semantic scoped integration"
+  },
+  "ist_complete_document_evidence": {
+    "report_sha256": "7525b850aedbcced008fdc2c9e09dada441933386b95e0da311dad7c558e722a",
+    "binary_sha256": "acc895136dcfabe0ed8fd7ec2af599f5c0018b0e8288581ecc625e5ac12f53f7",
+    "pages_reextracted": 113,
+    "quotes_and_page_hashes_verified": 15,
+    "empty_text_pages": [
+      113
+    ],
+    "publication_date": "2026-07-14",
+    "data_period": "2025",
+    "new_financial_context_genuine": true,
+    "no_paid_API": true,
+    "canonical_state_mutated": false
+  },
+  "ist_independent_semantic_review": {
+    "reviewed_financial_context_pages": [
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60
+    ],
+    "scope_limit": "All 113 pages re-extracted to validate document/page evidence; 15 cited passages and financial-table meaning independently checked. This does not claim independent semantic reading of every uncited paragraph.",
+    "ordinary_revenue_2025_MM_CLP": 127894,
+    "ordinary_revenue_2024_MM_CLP": 124317,
+    "ordinary_expense_2025_MM_CLP": 129140,
+    "ordinary_expense_2024_MM_CLP": 126409,
+    "no_surplus_2025": "Explicit publisher statement; cannot infer a quantified net loss from ordinary income minus ordinary expense.",
+    "reserves_2025": "Exceed CLP70,600 million; quote was also present on earlier page13, but absent from prior selected AI facts.",
+    "publication_date": "2026-07-14 from verified parent article; PDF independent publication date unknown; report data period2025.",
+    "material_input_omission": "Previous 40-page extraction was further truncated at30000 chars during page19, excluding financial tables53–55 and no-surplus58. Prior score72 describes that bounded input, not the full accessible report.",
+    "new_profile": "Exact IST PDF binding; financial pages53–60 plus first32, max40pages/30000chars, explicit indices/profile. ACHS guide/infographic/PPTX proofs and editorial input unchanged by regression.",
+    "approval": "No fifth publication approved in this report. Await actual Run14 score/copy/ledger and independent editorial review."
+  },
+  "regression_tests": [
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py",
+      "passed": 85
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_occupational_ist_financial.py tests/test_occupational_documents.py tests/test_occupational_response_binding.py",
+      "passed": 54
+    }
+  ],
+  "primary_capture_binding_closed": [
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+      "result": "PASS_REAL_PRIMARY_AND_DOCUMENT_GUARDS",
+      "sha256": "fa70257082ed4913e36d9cd9d208aa4ab812b8fc07f21f0f8956ae7fc26296e6"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+      "result": "PASS_REAL_PRIMARY_AND_DOCUMENT_GUARDS",
+      "sha256": "3e1ffa52dc65b8b3552ed53da4462cbae38a8379c95c088891292de1508d5327"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+      "result": "PASS_REAL_PRIMARY_AND_DOCUMENT_GUARDS",
+      "sha256": "b3fd147fa5ff69a7f780c88d90fc079401429ffe9f16d0b0ea9eedabb2e14f93"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+      "result": "PASS_REAL_PRIMARY_AND_DOCUMENT_GUARDS",
+      "sha256": "9afeee854770e56970ad2260ce94c3471426c4931d1596ae9e965700edd582d7"
+    },
+    {
+      "probe": "unsupported-proof.body",
+      "result": "REJECTED",
+      "reason": "occupational capture artifact unavailable"
+    },
+    {
+      "probe": "2f8702b2b7fdab6e7e6c-0.body",
+      "result": "REJECTED",
+      "reason": "occupational capture saved response unverified"
+    }
+  ],
+  "limits": [
+    "Mutual archive remains incomplete after21 verified literal observed hrefs; no new IDs and no external blocker. Source health must retain OPERATIVE_DEGRADED.",
+    "Clinical25 exact publication-date conflicts and IST1 conflict remain fail-closed; final source counters must reflect pending items and 16clinical publisherURLs/8title-date groups.",
+    "Existing four editorial approval artifacts are immutable; new fifth candidate requires fresh review.",
+    "Final acceptance awaits last stable runtime, readonly replay without API/canonical mutation, updated counters/budget, and final scoped preservation checks.",
+    "PR12 remains existing draft on isolated E branch; no main/staging promotion or production publication authorized by this report."
+  ],
+  "paid_API_called": false,
+  "canonical_state_mutated": false,
+  "production_implementation_mutated": false
+}

@@ -6,7 +6,23 @@
   ],
   "origin_prs": [
     11,
-    15
+    15,
+    19,
+    22
   ],
-  "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication"
+  "purpose": "Repeat failed native historical baseline comparison after full-history checkout fix; occupational per-source runtime1996b4e continues independently. No automatic state import or production publication.",
+  "expectations": {
+    "clinicas_achs_salud": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "mutual_seguridad": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "ist": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    }
+  }
 }

@@ -14,6 +14,11 @@ class FastCuratedBetaSourceScout(CuratedBetaSourceScout):
     MAX_DETAILS=5
 
     def discover(self):
+        from .occupational_sources import SOURCES
+        if self.slug in SOURCES:
+            # Filter the entire newest listing before bounding output. The only
+            # clinic article can occur after the first five mutuality stories.
+            return super().discover()[:self.MAX_DETAILS]
         page_html=fetch_html(self.cfg["page"])
         parser=_Links();parser.feed(page_html)
         selected=[];seen=set()

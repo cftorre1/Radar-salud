@@ -1,0 +1,39 @@
+{
+  "url": "https://www.achs.cl/robots.txt",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T05:27:24.513406+00:00",
+  "hops": [
+    {
+      "url": "https://www.achs.cl/robots.txt",
+      "http_status": 404,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 404 ",
+          "date": "Sun, 11 Oct 2026 05:27:26 GMT",
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=14400",
+          "server": "cloudflare",
+          "strict-transport-security": "max-age=31536000; includeSubDomains",
+          "cf-ray": "a48b749b5a95ebe7-SJC"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 91081,
+      "sha256": "1c6145828f53862e4d46231fc84d846fb5e992c08feb74b983fcf7ba6abd6902",
+      "waf": "possible_access_challenge",
+      "error": null,
+      "body_file": "bdafb1260a528af8d6a3-0.body"
+    }
+  ],
+  "stop_reason": "possible_access_challenge",
+  "final_url": "https://www.achs.cl/robots.txt",
+  "http_status": 404,
+  "waf": "possible_access_challenge"
+}

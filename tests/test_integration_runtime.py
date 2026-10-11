@@ -21,3 +21,12 @@ def test_http_success_without_capture_is_not_operative():
         validate_discovery({'sources':['sis']},receipt,'2026-10-11T00:00:00Z')
     receipt['sources']['sis']['discovered']=2
     assert validate_discovery({'sources':['sis']},receipt,'2026-10-11T00:00:00Z') == {'sis':'EXECUTED_WITH_CAPTURE'}
+
+
+def test_partial_capture_retains_degradation_instead_of_claiming_external_outage():
+    receipt={'sources':{'clinic':{'checked_at':'2026-10-11T01:00:00Z','discovered':3,'technical_status':'error','error_type':'SourceDiscoveryError'}}}
+    targets={'sources':['clinic'],'expectations':{'clinic':{'allow_partial_capture':True}}}
+    assert validate_discovery(targets,receipt,'2026-10-11T00:00:00Z') == {'clinic':'EXECUTED_WITH_PARTIAL_CAPTURE'}
+    receipt['sources']['clinic']['discovered']=0
+    with pytest.raises(AssertionError):
+        validate_discovery(targets,receipt,'2026-10-11T00:00:00Z')

@@ -1,0 +1,68 @@
+{
+  "url": "https://www.clinicaportada.cl/",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T07:42:19.702024+00:00",
+  "hops": [
+    {
+      "url": "https://www.clinicaportada.cl/",
+      "http_status": 301,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 301 ",
+          "content-type": "text/html; charset=UTF-8",
+          "location": "https://clinicaportada.cl/",
+          "cache-control": "public, max-age=0",
+          "content-length": "0",
+          "date": "Sun, 11 Oct 2026 07:42:21 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "waf": null,
+      "error": null,
+      "body_file": "91614b886b0806eecee4-0.body"
+    },
+    {
+      "url": "https://clinicaportada.cl/",
+      "http_status": 200,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 200 ",
+          "last-modified": "Fri, 09 Oct 2026 19:54:05 GMT",
+          "content-type": "text/html; charset=UTF-8",
+          "cache-control": "public, max-age=0",
+          "date": "Sun, 11 Oct 2026 07:42:22 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 440140,
+      "sha256": "b06390577c8c8aa8675be84b3db3f14afcdbdb3f3aa1707cfb321889887543ab",
+      "waf": null,
+      "error": null,
+      "body_file": "91614b886b0806eecee4-1.body"
+    }
+  ],
+  "stop_reason": "response_captured",
+  "final_url": "https://clinicaportada.cl/",
+  "http_status": 200,
+  "waf": null
+}

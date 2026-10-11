@@ -1,0 +1,120 @@
+{
+  "checkpoint": "nine_clinical_publisher_inventory",
+  "captured_at_utc": "2026-10-11T06:14:36.054775+00:00",
+  "branch": "codex/e-salud-laboral-20261011",
+  "identity_evidence": "data/audits/source_e_recovery/achs_additional_surfaces.json:official_clinic_publishers",
+  "identity_url": "https://www.clinicasachssalud.cl/",
+  "publishers": [
+    {
+      "id": "portada",
+      "name": "Clínica Portada",
+      "home": "https://clinicaportada.cl/",
+      "news": "https://clinicaportada.cl/noticias/",
+      "hosts": [
+        "www.clinicaportada.cl",
+        "clinicaportada.cl"
+      ]
+    },
+    {
+      "id": "atacama",
+      "name": "Clínica Atacama",
+      "home": "https://clinicaatacama.cl/",
+      "news": "https://clinicaatacama.cl/noticias/",
+      "hosts": [
+        "clinicaatacama.cl",
+        "www.clinicaatacama.cl"
+      ]
+    },
+    {
+      "id": "los_coihues",
+      "name": "Clínica Los Coihues",
+      "home": "https://clinicaloscoihues.cl/",
+      "news": "https://clinicaloscoihues.cl/noticias",
+      "hosts": [
+        "clinicaloscoihues.cl"
+      ]
+    },
+    {
+      "id": "maitenes",
+      "name": "Clínica Maitenes",
+      "home": "https://clinicamaitenes.cl/",
+      "news": "https://clinicamaitenes.cl/noticias/",
+      "hosts": [
+        "www.clinicamaitenes.cl",
+        "clinicamaitenes.cl"
+      ]
+    },
+    {
+      "id": "lircay",
+      "name": "Clínica Lircay",
+      "home": "https://clinicalircay.cl/",
+      "news": "https://clinicalircay.cl/noticias/",
+      "hosts": [
+        "www.clinicalircay.cl",
+        "clinicalircay.cl"
+      ]
+    },
+    {
+      "id": "los_andes",
+      "name": "Clínica Los Andes",
+      "home": "https://www.clinicalosandes.cl/",
+      "news": "https://www.clinicalosandes.cl/noticias/",
+      "hosts": [
+        "clinicalosandes.cl",
+        "www.clinicalosandes.cl"
+      ]
+    },
+    {
+      "id": "del_sur",
+      "name": "Clínica Del Sur",
+      "home": "https://www.clinicasur.cl/",
+      "news": "https://www.clinicasur.cl/noticias/",
+      "hosts": [
+        "www.clinicasur.cl"
+      ]
+    },
+    {
+      "id": "puerto_montt",
+      "name": "Clínica Puerto Montt",
+      "home": "https://clinicapuertomontt.cl/",
+      "news": "https://clinicapuertomontt.cl/noticias/",
+      "hosts": [
+        "www.clinicapuertomontt.cl",
+        "clinicapuertomontt.cl"
+      ]
+    },
+    {
+      "id": "curico",
+      "name": "Clínica Curicó",
+      "home": "https://clinica-curico.cl/",
+      "news": "https://clinica-curico.cl/noticias/",
+      "hosts": [
+        "www.clinica-curico.cl",
+        "clinica-curico.cl"
+      ]
+    }
+  ],
+  "fixture_scope": "Synthetic native WordPress article/card/feed/API fixtures. No new origin response or live endpoint health is claimed by this checkpoint.",
+  "date_rule": "Explicit detail publication evidence is mandatory; listings, feed or native API dates must match. Unknown, conflicting, invalid or future publication leaves pending and no RawItem.",
+  "coverage_rule": "Every clinic requires a verified chronological older boundary or fully bounded advertised native API with total/page headers; all linked details must be dated and extracted. An RSS sample alone is not complete coverage.",
+  "article_scope": "ClinicArticle uses common publication fields, exact WordPress entry-content when present or semantic article fallback, excludes branding/sidebar and verified related/archives headings.",
+  "json_contract": "surface_slug=achs_clinics_network; RawItem objects appear only in top-level raw_items. Nested clinic_reports are JSON-ready.",
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/test_achs_clinics.py",
+    "tests/test_occupational_inventory.py",
+    "tests/test_occupational_integrity.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "stdout": "........................................................................ [ 64%]\n........................................                                 [100%]\n112 passed in 0.35s\n",
+  "stderr": "",
+  "cli_help_smoke_exit_code": 0,
+  "files_sha256": {
+    "src/radar_salud/achs_clinics.py": "f9208c00b2e5ad1f078baebd834749d78adb7a0b16fa8a2f82d9678ae34478ce",
+    "tests/test_achs_clinics.py": "6f016d3c08c37b528ae5ed4e4c1a40407d8b3290c4cbef5017170dfd15b9defb"
+  },
+  "next_action": "Root attaches captured artifact metadata to each RawItem, selects ClinicArticle by clinic_for_host for verification, runs the live Actions captures across all nine publishers, and reviews per-clinic blockers/candidate counts."
+}

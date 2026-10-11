@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T13:41:48.647967+00:00",
+  "updated_at": "2026-10-11T14:05:53.481344+00:00",
   "scope": "staging_only",
   "prior_staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
   "rows": [
@@ -113,14 +113,31 @@
       "pr": 12,
       "branch": "codex/e-salud-laboral-20261011",
       "candidate_sha": "49923320f84b8bf06b61d0fc408f8d9a7befd053",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR20",
+      "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "qa": {
+        "run": 38145313219,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38145313219,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38145632535,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Occupational Health Worker",
-      "next_action": "Repair runtime parsers in parallel."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "python": "818PASS/1SKIP",
+        "node": "42PASS",
+        "reviewer": "PASS deterministic",
+        "preserved_prior_history": 886,
+        "added_history": 5
+      }
     },
     {
       "source": "clinicas_achs_salud",
@@ -132,14 +149,31 @@
       "pr": 12,
       "branch": "codex/e-salud-laboral-20261011",
       "candidate_sha": "49923320f84b8bf06b61d0fc408f8d9a7befd053",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR20",
+      "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "qa": {
+        "run": 38145313219,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38145313219,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38145632535,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Occupational Health Worker",
-      "next_action": "Repair runtime parsers in parallel."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "python": "818PASS/1SKIP",
+        "node": "42PASS",
+        "reviewer": "PASS deterministic",
+        "preserved_prior_history": 886,
+        "added_history": 5
+      }
     },
     {
       "source": "mutual_seguridad",
@@ -151,14 +185,31 @@
       "pr": 12,
       "branch": "codex/e-salud-laboral-20261011",
       "candidate_sha": "49923320f84b8bf06b61d0fc408f8d9a7befd053",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR20",
+      "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "qa": {
+        "run": 38145313219,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38145313219,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38145632535,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Occupational Health Worker",
-      "next_action": "Repair runtime parsers in parallel."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "python": "818PASS/1SKIP",
+        "node": "42PASS",
+        "reviewer": "PASS deterministic",
+        "preserved_prior_history": 886,
+        "added_history": 5
+      }
     },
     {
       "source": "ist",
@@ -170,14 +221,31 @@
       "pr": 12,
       "branch": "codex/e-salud-laboral-20261011",
       "candidate_sha": "49923320f84b8bf06b61d0fc408f8d9a7befd053",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR20",
+      "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "qa": {
+        "run": 38145313219,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38145313219,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38145632535,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Occupational Health Worker",
-      "next_action": "Repair runtime parsers in parallel."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "python": "818PASS/1SKIP",
+        "node": "42PASS",
+        "reviewer": "PASS deterministic",
+        "preserved_prior_history": 886,
+        "added_history": 5
+      }
     },
     {
       "source": "deis",
