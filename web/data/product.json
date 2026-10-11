@@ -1,7 +1,7 @@
 {
   "version": "0.9.0",
-  "generated_at": "2026-10-11T19:20:04.818951+00:00",
-  "snapshot_at": "2026-10-11T19:20:04.112532+00:00",
+  "generated_at": "2026-10-11T19:48:36.453486+00:00",
+  "snapshot_at": "2026-10-11T19:48:35.228116+00:00",
   "published": 158,
   "queue": {
     "live_pending": 6,
@@ -697747,16 +697747,16 @@
   "iterations": [],
   "usage": {
     "calls": {
-      "2026-10": {
+      "2026-09": {
         "deep": {
-          "attempted": 14,
-          "successful": 14,
+          "attempted": 28,
+          "successful": 28,
           "failed": 0
         },
         "fast": {
-          "attempted": 504,
-          "successful": 504,
-          "failed": 0
+          "attempted": 124,
+          "successful": 82,
+          "failed": 42
         }
       },
       "occupational_recovery_2026_10": {
@@ -697799,16 +697799,16 @@
         "policy": "Unpromoted isolated branch: staging plus its own delta, shared writer lock; no staging/main writes",
         "phase_fast_limit": 30
       },
-      "2026-09": {
+      "2026-10": {
         "deep": {
-          "attempted": 28,
-          "successful": 28,
+          "attempted": 14,
+          "successful": 14,
           "failed": 0
         },
         "fast": {
-          "attempted": 124,
-          "successful": 82,
-          "failed": 42
+          "attempted": 504,
+          "successful": 504,
+          "failed": 0
         }
       }
     },
@@ -699557,7 +699557,7 @@
     ],
     "observed": {
       "development": {
-        "deployable_sha": "29731f04d998659e5892c109871f54ef0c7f8eef",
+        "deployable_sha": null,
         "blocked_task_count": 9,
         "active_task_count": 35,
         "test_pass_count": null
@@ -699589,7 +699589,7 @@
     }
   },
   "read_model": {
-    "generated_at": "2026-10-11T19:20:04.823943+00:00",
+    "generated_at": "2026-10-11T19:48:36.461632+00:00",
     "queue_updated_at": "2026-10-11T18:57:12.195832+00:00",
     "queue_task_count": 86,
     "active_task_count": 35,
@@ -699599,7 +699599,7 @@
   "pmo": {
     "version": "beta-friday-2026-09-25",
     "target_date": "2026-09-25",
-    "candidate_sha": "29731f04d998659e5892c109871f54ef0c7f8eef",
+    "candidate_sha": null,
     "reference_staging_sha": "3433b3e26f4d76ea6ce0970015bc03e10fd85105",
     "production_reference_sha": "ea55bc7e084b54ff07cb25ea50e211186dfb1c63",
     "reference_deploy": {
