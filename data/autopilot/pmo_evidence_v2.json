@@ -1,13 +1,13 @@
 {
   "authority": {
     "infra_sha": "720af52a7e652adcd34afabb43dd609d154f5ca2",
-    "learning_ledger_blob_sha": "42ca1e9b9004616448a54d993c1dae68c7fc5e69",
-    "learning_ledger_sha256": "5e215fedd45da15b6d5a018de75b171bad03bb4ef1c03187540524ae8ca90b1f",
-    "queue_blob_sha": "cb2074db1c68cdd16118eb1f94e61942b0a6b4aa",
-    "queue_sha256": "bf1acdfd40f21fa0856087b4007c14b94ca0a96d480d6c8eda5f6d191bde0e27",
-    "staging_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
-    "state_control_sha256": "5956065395e575aa0fd5d81fe1f74931a7f4af4756c5be652a0a9946b1dfebfd",
-    "state_sha": "6ba8a53bb4e72800f61855d46eb6b3b8981b73a9"
+    "learning_ledger_blob_sha": "40d3b90b42441a85d787433a7c2e2e1d574bc622",
+    "learning_ledger_sha256": "07748315a9c6059a61913fe69f44c783acbfd5b4b747e4369a46fcd7b85a131c",
+    "queue_blob_sha": "738da2b1494a38ed35d404f6b5b264f563d71287",
+    "queue_sha256": "813742e16fc82ee3e52f8fe299b500ddea62d1ce9fe0ecf17f23c8716021ecd5",
+    "staging_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+    "state_control_sha256": "374e322f92ae3a2c7cfc191c287e3c6e816c6fa7810386abb4bbfac89340def6",
+    "state_sha": "48a414c382674c770ec52a2abc5026209cb345d2"
   },
   "canonical_pmo_updated": false,
   "corrected_material_event_count": 8,
@@ -42,21 +42,20 @@
     },
     "legacy_stage_a": {
       "metrics": {
-        "autonomous_pickups": 26,
-        "material_event_count": 25,
-        "max_material_gap_seconds": 7669.250408,
+        "autonomous_pickups": 20,
+        "material_event_count": 19,
+        "max_material_gap_seconds": 9124.307452,
         "mode": "live",
-        "observed_seconds": 13443.570821,
+        "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 13443.570821,
-        "window_started_at": "2026-10-11T05:29:46.231497Z"
+        "total_elapsed_seconds": 14898.627865,
+        "window_started_at": "2026-10-11T05:38:04.859362Z"
       },
-      "observed_until": "2026-10-11T09:13:49.802318Z",
+      "observed_until": "2026-10-11T09:38:04.859362Z",
       "reasons": [
-        "four_real_wall_hours_not_observed",
         "owner_intervention_observation_not_verified",
         "durable_verified_mutation_not_observed",
         "real_failure_verified_repair_not_observed",
@@ -72,17 +71,17 @@
     "useful_work_window": {
       "is_live_proof": false,
       "metrics": {
-        "autonomous_pickups": 26,
-        "material_event_count": 25,
-        "max_material_gap_seconds": 7669.250408,
+        "autonomous_pickups": 20,
+        "material_event_count": 19,
+        "max_material_gap_seconds": 9124.307452,
         "mode": "live",
-        "observed_seconds": 13443.570821,
+        "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 13443.570821,
-        "window_started_at": "2026-10-11T05:29:46.231497Z"
+        "total_elapsed_seconds": 14898.627865,
+        "window_started_at": "2026-10-11T05:38:04.859362Z"
       }
     }
   },
@@ -475,10 +474,10 @@
   "material_event_count": 55,
   "material_signature": "39347935351dbe516573817cd1dba0d64254daa930297e9a93826af5af021947",
   "observation": {
-    "path": "data/autopilot/evidence/observation-b49faaa0352d46189ffb0f2c9ad9e235.json",
-    "sha256": "c54f7bd72cc3cecadbb354c1ffe168ee9970ba12e10c567ee3901791cba7cb7b",
-    "staging_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
-    "state_sha": "6ba8a53bb4e72800f61855d46eb6b3b8981b73a9"
+    "path": "data/autopilot/evidence/observation-4dd965fe45a44b14b08f22de4d1da32d.json",
+    "sha256": "b02706c32acdc8bf1810db886d44e4947b5cebbc2e66f2ead19650242be365e8",
+    "staging_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+    "state_sha": "48a414c382674c770ec52a2abc5026209cb345d2"
   },
   "owner_followup_count": null,
   "owner_followups": "UNKNOWN",
@@ -489,6 +488,6 @@
   "stalls": [],
   "task_counts": {
     "BLOCKED": 38,
-    "READY": 1
+    "READY": 2
   }
 }

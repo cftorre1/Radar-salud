@@ -2990,5 +2990,21 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "staging_qa_failed_run_38123952091"
+  },
+  {
+    "at": "2026-10-11T09:36:35.151546+00:00",
+    "class": "autonomy_claim_alias_transition_progress_accounting",
+    "evidence": [
+      "data/pmo/autonomy_acceptance_2026_10_11_final_v2.json",
+      "https://github.com/cftorre1/Radar-salud/actions/runs/38127573265"
+    ],
+    "finding": "A new QA alias task_id for the same exact attempted failure, combined/product input and executor does not prove a new useful claim transition.",
+    "four_hour_acceptance": "NOT_PROVEN",
+    "id": "autonomy_runtime_final_v2_claim_alias_transition_reconciliation_2026_10_11",
+    "metadata_counts_as_material_progress": false,
+    "proof_status": "VERIFIED",
+    "source_closed": false,
+    "specific_fix": "Committed infrastructure refuses same-input alias claim credit and records an append-only retirement of the earlier claim transition. Raw evidence, leases, first acceptance window and prior snapshots remain immutable; before/after effective counts are independent.",
+    "status": "infrastructure_implemented_acceptance_not_proven"
   }
 ]
