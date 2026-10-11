@@ -1570,7 +1570,8 @@ def verify_final_paid_revalidation(item, root, *, execution, telemetry, origin=N
         prior981_and908_and66_and323_paid_provenances_preserved=True, current_guard_sha256=guard_sha, current_evaluation_code=execution.get("code_sha"), current_receipt_sha256=object_digest(receipt), publication_approved=False)
 
 
-def verify_final_revalidated_execution(root, *, report, queue, history, telemetry, execution=None, origin=None):
+def verify_final_revalidated_execution(root, *, report, queue, history, telemetry, execution=None, origin=None,
+                                      _terminal_archive=False):
     """Observe real final evaluation separately from the immutable paid window."""
     origin = origin or final_paid_origin(root)
     execution = execution or report.get("last_core_execution") or report.get("execution") or {}
@@ -1599,9 +1600,18 @@ def verify_final_revalidated_execution(root, *, report, queue, history, telemetr
     code = execution.get("code_sha")
     if not re.fullmatch(r"[0-9a-f]{40}", str(code or "")):
         raise ValueError("final_revalidated_checkout_unavailable")
+    if _terminal_archive:
+        path = "data/audits/pulso_runtime_2026_10_11.json"
+        original = archived_editorial_input(root, dict(commit=TERMINAL_FOLLOWTHROUGH_PRODUCER,
+            path=path, file_sha256=TERMINAL_FOLLOWTHROUGH_FILES[path]), path)
+        if (execution != original.get("last_core_execution") or code != TERMINAL_FOLLOWTHROUGH_CODE
+                or fingerprint.get("sha256") != TERMINAL_FOLLOWTHROUGH_FINGERPRINT):
+            raise ValueError("final_terminal_archive_not_exact_known_execution")
     for path, expected in fingerprint["files"].items():
         archived = subprocess.run(["git", "show", code + ":" + path], cwd=root, capture_output=True)
-        if archived.returncode or digest(archived.stdout) != expected or digest(local_capture_path(root, path).read_bytes()) != expected:
+        if (archived.returncode or digest(archived.stdout) != expected
+                or not (_terminal_archive and path in TERMINAL_CONSUMER_PATHS)
+                and digest(local_capture_path(root, path).read_bytes()) != expected):
             raise ValueError("final_revalidated_implementation_not_exact_recorded_bytes")
     source_entries = [(key,item) for key,item in queue.items() if item.get("source") == SOURCE]
     current = {item["raw"]["url"]: (key, item) for key,item in source_entries}
@@ -1645,7 +1655,8 @@ def verify_final_revalidated_execution(root, *, report, queue, history, telemetr
         original = origin["originals"][row["queue_fingerprint"]]
         if key != row["queue_fingerprint"] or item.get("attempts") != original["attempts"] + 1:
             raise ValueError("final_revalidated_exact2_attempt_bookkeeping_changed")
-        proof = verify_final_paid_revalidation(item, root, execution=execution, telemetry=telemetry, origin=origin)
+        proof = verify_final_paid_revalidation(item, root, execution=execution, telemetry=telemetry, origin=origin,
+            archived_execution=_terminal_archive)
         receipts[url] = proof
         metadata = item["raw"]["metadata"]
         models[url] = dict(queue_fingerprint=key, original_response_id=row["original_response_id"],
@@ -1665,6 +1676,352 @@ def verify_final_revalidated_execution(root, *, report, queue, history, telemetr
         native_history_count=len(native_history), native_history_sha256=object_digest(native_history))
     return dict(paid_model_lineage=paid_lineage, launch_stock=stock, current_revalidation_receipts=receipts,
         evaluation_execution=execution, actual_budget_delta=delta, publication_approved=False)
+
+
+TERMINAL_FOLLOWTHROUGH_PRODUCER = "123bf2550536030a077c03ad4d56572df24ab418"
+TERMINAL_FOLLOWTHROUGH_CODE = "46a3683c6760f0e61031a7dc7d5961c105cacb36"
+TERMINAL_FOLLOWTHROUGH_FINGERPRINT = "8f50110e88b79f0832e86957a0f14d3a461a52faf6f65fd2b1fab8299df831fa"
+TERMINAL_FOLLOWTHROUGH_FILES = {
+    "data/audits/pulso_runtime_2026_10_11.json": "6f0f26ac044cf50e2df2fc30be21e42b56276c6e77ca6678b6c8621b35a7d8d9",
+    "data/audits/pulso_directed_processing_qa_2026_10_11.json": "719d0afbb61718808c4ccee7252cb98af337e0d6fec3c56aab2ad2a553dd4582",
+    "data/state/pending_queue.json": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+    "data/history/superintendencia_signals.json": "1400cb4a7bfd9d50283bf7927515dffa328ec07cbb1a780148f9227f3db98b26",
+    "web/data/radar_today.json": "6c7bd5a3b7dda1fbb6fe032d43c4927adc1393111716852835dfd495ce1e53dc",
+    "data/ai_usage/responses.jsonl": "19bb3e6b2ae1e15c623a97eb08ae6b3f323b1c11cec6fa74aad359f3ca04cfad",
+    "data/ai_usage/2026-10.json": "aec8ca63b045c2d44c28ebfddcfd4474651ae5bfc27efbc1247f4171a18e9ca9",
+    "data/state/discovery_run.json": "301529a60f3209f6b1d5294d6bf1123f90e8c283974528602d461f1c09120f26",
+}
+TERMINAL_CONSUMER_PATHS = frozenset({"scripts/qa_pulso_recovery.py", "scripts/pulso_idempotence.py",
+    "scripts/pulso_recovery_command.py", ".github/workflows/pulso-runtime-recovery.yml"})
+LIVE9_PRODUCER = "d48a495a5fcefb9adaca26ca30b1f12ddad7e59f"
+LIVE9_CODE = "1b4817164dbd9cd091197e1c7ebd03de6fa93526"
+LIVE9_FINGERPRINT = "be91910c2f322831f8279afd200963155b7bb076e31034c2592cb31290e56814"
+LIVE9_PATH = "data/audits/pulso_additional_live9_recovery_cohort_2026_10_11.json"
+LIVE9_SHA256 = "641eee7d713cd1c9fba2171d9e45dbaeab0688434ac371a87f56089b2f141373"
+LIVE9_TRIAGE_PATH = "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json"
+LIVE9_TRIAGE_SHA256 = "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8"
+LIVE9_ORIGINALS_PATH = "tests/fixtures/pulso_live9_primary_real/manifest.json"
+LIVE9_ORIGINALS_SHA256 = "908875faca85694905ca6abeae9945b1366903a3cc54f67c588cee96b133d46f"
+LIVE9_FILES = {
+    "data/audits/pulso_runtime_2026_10_11.json": "8ce66b878a4165bb079292eb4c2853eb029309a9341954c77007bc578cf5accb",
+    "data/audits/pulso_directed_processing_qa_2026_10_11.json": "cf5ee33b0833b6ee6704c19b7a8e308a4e65c6d089e4dda4a4b4d2e662bc063a",
+    "data/state/pending_queue.json": "d44cfa10569f34cf1e1f8a7746d26bd71728d069679c89b756387381123eddf8",
+    "data/history/superintendencia_signals.json": "1400cb4a7bfd9d50283bf7927515dffa328ec07cbb1a780148f9227f3db98b26",
+    "web/data/radar_today.json": "4801f42db2518366dd9c2555bd62a1b55d257e46cfb25f67bf089352fc5eccf0",
+    "data/ai_usage/responses.jsonl": "85baafcd92e24f98d912105fc8dced023b5dd78f18d63a571e7626908d917d31",
+    "data/ai_usage/2026-10.json": "4411394f3ac5fa75136f023b125ed00eac7538b0d4670e545fc34a05d921204a",
+    "data/state/discovery_run.json": "6ed0352474bb398f02d13bf6550e2865f71c7e0c65c4c25062c4d1e3ee48a9c0",
+}
+
+
+def terminal_live9_proof_files(root):
+    files = {LIVE9_PATH: LIVE9_SHA256, LIVE9_TRIAGE_PATH: LIVE9_TRIAGE_SHA256,
+             LIVE9_ORIGINALS_PATH:LIVE9_ORIGINALS_SHA256}
+    for path, expected in files.items():
+        if digest(local_capture_path(root, path).read_bytes()) != expected:
+            raise ValueError("terminal_live9_independent_selection_or_triage_changed")
+    return files
+
+
+def terminal_live9_original_bytes(root, raw, metadata, records):
+    """Open publisher bytes, independently binding current body and byline."""
+    url = raw["url"]; expected = metadata["html_sha256"]
+    for record in records:
+        if (record.get("status") != 200 or normalized_url(record.get("url")) != url
+                or record.get("returned_text_utf8_sha256") != expected):
+            continue
+        payload = local_capture_path(root, record["gzip_file"]).read_bytes()
+        original = gzip.decompress(payload)
+        html = original.decode(record.get("charset") or "utf-8",errors="replace")
+        dates = PrimaryDates(); dates.feed(html)
+        _, body = dates.primary_text(url)
+        if (digest(payload) != record.get("gzip_sha256") or digest(original) != record.get("sha256")
+                or len(original) != record.get("bytes") or digest(html.encode()) != expected
+                or dates.canonical != url or dates.days_for(url) != {raw["event_date"]}
+                or body != metadata["page_text"] or digest(body.encode()) != metadata["article_body_sha256"]
+                or record.get("primary_body_sha256") != metadata["article_body_sha256"]
+                or record.get("capture_provenance") != "preserved_original_http_response"
+                or not SHA.fullmatch(str(record.get("original_capture_manifest_sha256","")))
+                or not stamp(record.get("captured_at")) or type(record.get("artifact_run_id")) is not int
+                or type(record.get("artifact_id")) is not int):
+            raise ValueError("terminal_live9_original_html_date_body_or_transport_proof_changed")
+        return dict(original_html_sha256=expected,original_raw_sha256=record["sha256"],
+            gzip_sha256=record["gzip_sha256"],capture_manifest_sha256=record["original_capture_manifest_sha256"],
+            captured_at=record["captured_at"],artifact_run_id=record["artifact_run_id"],artifact_id=record["artifact_id"],
+            body_sha256=metadata["article_body_sha256"],publication_date=raw["event_date"],canonical_url=url)
+    raise ValueError("terminal_live9_original_html_missing_for_actual_body")
+
+
+def terminal_live9_settlement(root, archived):
+    """Read the actual additional paid scope without changing its failed QA.
+
+    This scope used the ordinary Source processor. Its four real answers and
+    five prefilter rejections settle the nine already discovered articles;
+    neither the frozen113 cohort nor a publication quota is redefined.
+    """
+    proof_files = terminal_live9_proof_files(root)
+    original_manifest = json.loads(local_capture_path(root,LIVE9_ORIGINALS_PATH).read_bytes())
+    if (original_manifest.get("schema_version") != "pulso_live9_original_primary_recovery_v1"
+            or original_manifest.get("verdict") != "PASS_ALL9_AND_UPDATED_PAID_PRIMARY_EXACT_ORIGINALS"
+            or original_manifest.get("targets") != 9 or original_manifest.get("retained_originals") != 9
+            or original_manifest.get("refreshed_primary_targets") != 1 or original_manifest.get("retained_refreshed_originals") != 1
+            or len(original_manifest.get("requests",[])) != 10 or original_manifest.get("missing")
+            or original_manifest.get("refreshed_missing")
+            or original_manifest.get("current_target_proof",{}).get("target_commit") != LIVE9_PRODUCER
+            or original_manifest.get("current_target_proof",{}).get("queue_sha256") != LIVE9_FILES["data/state/pending_queue.json"]):
+        raise ValueError("terminal_live9_original_manifest_not_complete_exact_producer")
+    data = {path: archived_editorial_input(root, dict(commit=LIVE9_PRODUCER,
+                path=path, file_sha256=sha), path) for path, sha in LIVE9_FILES.items()}
+    report = data["data/audits/pulso_runtime_2026_10_11.json"]
+    queue = data["data/state/pending_queue.json"]
+    history = data["data/history/superintendencia_signals.json"]["signals"]
+    snapshot = data["web/data/radar_today.json"]
+    telemetry = data["data/ai_usage/responses.jsonl"]
+    month = data["data/ai_usage/2026-10.json"]
+    quality = data["data/audits/pulso_directed_processing_qa_2026_10_11.json"]
+    execution = report.get("last_core_execution") or report.get("execution") or {}
+    cohort = json.loads(local_capture_path(root, LIVE9_PATH).read_bytes())
+    frozen = json.loads(local_capture_path(root, PROCESSING_COHORT_PATH).read_bytes())
+    selected = execution.get("processing_selection") or {}
+    delta, error = budget_delta(execution)
+    begin, end = stamp(execution.get("started_at")), stamp(execution.get("finished_at"))
+    fingerprint = execution.get("runtime_fingerprint") or {}
+    if (execution.get("mode") != "real_core_processing" or execution.get("engine_called") is not True
+            or execution.get("engine_completed") is not True or execution.get("ai_guardrails_modified") is not False
+            or execution.get("code_sha") != LIVE9_CODE or fingerprint.get("sha256") != LIVE9_FINGERPRINT
+            or object_digest(fingerprint.get("files")) != LIVE9_FINGERPRINT
+            or not begin or not end or not stamp(archived["execution"]["finished_at"]) < begin <= end
+            or selected.get("sha256") != LIVE9_SHA256 or selected.get("selected_urls") != cohort["urls"]
+            or selected.get("ready_selected_urls") != cohort["urls"] or len(set(cohort["urls"])) != 9
+            or set(cohort["urls"]) & set(frozen["urls"]) or execution.get("processing_attempts_increased") != 9
+            or selected.get("skipped_terminal_urls") or selected.get("skipped_not_due_urls") or selected.get("skipped_in_progress_urls")
+            or error or delta != {"fast":dict(attempted=4,successful=4,failed=0),"deep":dict(attempted=0,successful=0,failed=0)}
+            or execution.get("budget_before", {}).get("month") != archived["month"]
+            or execution.get("budget_after", {}).get("month") != month
+            or quality.get("verdict") != "FAIL" or quality.get("processing_qa") != "FAIL"
+            or len(quality.get("findings", [])) != 1477):
+        raise ValueError("terminal_live9_genuine_scope_execution_or_failed_qa_changed")
+    old_files = archived["execution"]["runtime_fingerprint"]["files"]
+    if set(fingerprint["files"]) != set(old_files) or any(fingerprint["files"][p] != old_files[p]
+            for p in old_files if p not in TERMINAL_CONSUMER_PATHS):
+        raise ValueError("terminal_live9_source_or_policy_changed")
+    for path, expected in fingerprint["files"].items():
+        raw = subprocess.run(["git", "show", LIVE9_CODE + ":" + path], cwd=root, capture_output=True)
+        if raw.returncode or digest(raw.stdout) != expected:
+            raise ValueError("terminal_live9_recorded_checkout_bytes_changed")
+    prefix = archived["telemetry"]
+    events = [event for event in telemetry if stamp(event.get("at")) and begin <= stamp(event["at"]) <= end]
+    if (telemetry[:len(prefix)] != prefix or telemetry[len(prefix):] != events
+            or len(events) != 4 or any(event.get("kind") != "fast" or event.get("success") is not True for event in events)
+            or any(not event.get("response_id") for event in events)
+            or len({event["response_id"] for event in events}) != 4
+            or {event["response_id"] for event in events} & {event.get("response_id") for event in prefix}):
+        raise ValueError("terminal_live9_real_response_events_not_exact_append")
+    if (history != archived["history"] or snapshot.get("signals") != archived["snapshot"].get("signals")
+            or {k:v for k,v in queue.items() if v.get("source") != SOURCE}
+                != {k:v for k,v in archived["queue"].items() if v.get("source") != SOURCE}):
+        raise ValueError("terminal_live9_previous_history_feed_or_native_stock_changed")
+    preserved = {url: (key,item) for key,item in archived["queue"].items() if item.get("source") == SOURCE
+                 for url in [item["raw"]["url"]] if url in frozen["urls"]}
+    if len(preserved) != 113 or any(queue.get(key) != item or item.get("status") not in {"published","rejected"}
+            for key,item in preserved.values()):
+        raise ValueError("terminal_live9_changed_original113_terminal_decisions")
+    rows = {}; response_ids = set()
+    for declared in cohort["items"]:
+        url, key = declared["url"], declared["queue_fingerprint"]
+        item = queue.get(key); original = archived["queue"].get(key)
+        if not item or not original:
+            raise ValueError("terminal_live9_original_queue_identity_missing")
+        raw = item.get("raw", {}); metadata = raw.get("metadata", {}); assessment = metadata.get("editorial_assessment") or {}
+        body = metadata.get("page_text"); day = raw.get("event_date"); body_sha = digest(body.encode()) if isinstance(body,str) else None
+        if (raw.get("url") != url or original.get("attempts") != 0 or item.get("attempts") != 1
+                or original.get("status") != "pending" or item.get("status") != "rejected"
+                or assessment.get("decision") != "rejected" or not assessment.get("reason")
+                or day != declared["publication_date"] or metadata.get("publication_date") != day
+                or metadata.get("canonical_url") != url or len(str(body or "")) < 160
+                or body_sha != metadata.get("article_body_sha256")
+                or any(metadata.get(flag) is not True for flag in
+                    ("article_verified","primary_identity_verified","publication_date_verified"))
+                or metadata.get("article_body_complete") is False
+                or not queue_timestamp_corroborates(metadata, day)
+                or metadata.get("rejection_reason") != assessment["reason"]):
+            raise ValueError("terminal_live9_original_primary_or_exact_rejection_unverified")
+        model = metadata.get("analysis_model_output"); validation = metadata.get("pulso_editorial_proof_validation")
+        response = model.get("_pulso_analysis_meta") if isinstance(model,dict) else None
+        if model is not None:
+            request = "Fuente: " + str(raw["source_name"]) + "\nTítulo: " + str(raw["title"]) + "\nContenido:\n" + body
+            pin = dict(body_sha256=body_sha, analysis_input_sha256=body_sha, request_input_sha256=digest(request.encode()))
+            if (metadata.get("analysis_input_complete") is not True or metadata.get("analysis_base_article_body_sha256") != body_sha
+                    or metadata.get("analysis_input_format") != "full_primary_article_body"
+                    or metadata.get("analysis_request_input_sha256") != pin["request_input_sha256"]
+                    or not isinstance(response,dict) or response.get("response_id") not in {e["response_id"] for e in events}
+                    or validation != replay_paid_guard_validation(model, body, root, execution, pin, archived=True)
+                    or validation.get("decision") != "rejected" or assessment.get("threshold") != 72
+                    or type(model.get("relevance_score")) is not int or model["relevance_score"] >= 72
+                    or model["relevance_score"] != assessment.get("relevance_score")):
+                raise ValueError("terminal_live9_new_paid_model_input_guard_or_gate_unverified")
+            response_ids.add(response["response_id"])
+        elif assessment != {"decision":"rejected", "reason":"media_materiality_prefilter"}:
+            raise ValueError("terminal_live9_prefilter_not_exact_non_ai_rejection")
+        html_proof = terminal_live9_original_bytes(root,raw,metadata,original_manifest["requests"])
+        rows[url] = dict(queue_fingerprint=key,queue_entry_sha256=object_digest(item),
+            publication_date=day,body_sha256=body_sha,html_sha256=metadata.get("html_sha256"),body_characters=len(body),
+            original_body_sha256=declared["body_sha256"],original_html_sha256=declared["html_sha256"],
+            primary_updated=body_sha != declared["body_sha256"] or metadata.get("html_sha256") != declared["html_sha256"],
+            model_output_sha256=object_digest(model) if model is not None else None,
+            model_response_id=response.get("response_id") if response else None,
+            validation_sha256=object_digest(validation) if validation is not None else None,
+            request_input_sha256=metadata.get("analysis_request_input_sha256"),status=item["status"],attempts=item["attempts"],
+            assessment=assessment,original_html_byte_proof=html_proof,
+            actual_primary_and_model_records_read=True,publication_approved=False)
+    if response_ids != {event["response_id"] for event in events}:
+        raise ValueError("terminal_live9_paid_response_set_not_exact_models")
+    updated_prior_html = {}
+    for url,row in rows.items():
+        if row["primary_updated"]:
+            prior_raw = archived["queue"][row["queue_fingerprint"]]["raw"]
+            updated_prior_html[url] = terminal_live9_original_bytes(root,prior_raw,prior_raw["metadata"],original_manifest["requests"])
+    return dict(report=report,queue=queue,history=history,snapshot=snapshot,telemetry=telemetry,month=month,
+        execution=execution,processing_qa=quality,files=dict(LIVE9_FILES),rows=rows,events=events,budget_delta=delta,
+        proof_files=proof_files,updated_prior_html=updated_prior_html,telemetry_prefix=dict(commit=TERMINAL_FOLLOWTHROUGH_PRODUCER,
+            events=len(prefix),sha256=object_digest(prefix),settled_events=len(telemetry),settled_sha256=object_digest(telemetry)))
+
+
+def terminal_followthrough_origin(root, *, final_origin=None):
+    """Retain the genuine final evaluation, including its original failed QA."""
+    data = {path: archived_editorial_input(root, dict(commit=TERMINAL_FOLLOWTHROUGH_PRODUCER,
+                path=path, file_sha256=sha), path) for path, sha in TERMINAL_FOLLOWTHROUGH_FILES.items()}
+    report = data["data/audits/pulso_runtime_2026_10_11.json"]
+    queue = data["data/state/pending_queue.json"]
+    history = data["data/history/superintendencia_signals.json"]["signals"]
+    snapshot = data["web/data/radar_today.json"]
+    telemetry = data["data/ai_usage/responses.jsonl"]
+    quality = data["data/audits/pulso_directed_processing_qa_2026_10_11.json"]
+    execution = report.get("last_core_execution") or report.get("execution") or {}
+    if (execution.get("code_sha") != TERMINAL_FOLLOWTHROUGH_CODE
+            or execution.get("runtime_fingerprint", {}).get("sha256") != TERMINAL_FOLLOWTHROUGH_FINGERPRINT
+            or quality.get("verdict") != "FAIL" or quality.get("processing_qa") != "FAIL"
+            or quality.get("discovery_qa") != "PASS" or len(quality.get("findings", [])) != 24):
+        raise ValueError("terminal_original_evaluation_or_failed_qa_changed")
+    final_origin = final_origin or final_paid_origin(root)
+    evaluation = verify_final_revalidated_execution(root, report=report, queue=queue, history=history,
+        telemetry=telemetry, execution=execution, origin=final_origin, _terminal_archive=True)
+    reviewed, failures = verify_bound_editorial_review(queue, history, snapshot, root)
+    if failures or len(reviewed) != 93:
+        raise ValueError("terminal_archived_human_reviews_not_exactly_bound")
+    result = dict(report=report, queue=queue, history=history, snapshot=snapshot, telemetry=telemetry,
+        month=data["data/ai_usage/2026-10.json"], processing_qa=quality, execution=execution,
+        final_origin=final_origin, evaluation=evaluation, files=dict(TERMINAL_FOLLOWTHROUGH_FILES))
+    result["settlement"] = terminal_live9_settlement(root, result)
+    return result
+
+
+def unchanged_final_paid_execution(item, terminal_origin):
+    """Published final receipts keep their real46a guard/window, never a new one."""
+    if terminal_origin is None:
+        return None
+    key = item.get("raw", {}).get("metadata", {}).get("queue_identity_fingerprint")
+    old = terminal_origin["queue"].get(key)
+    return terminal_origin["execution"] if old is not None and item == old else None
+
+
+def terminal_source_semantic(value):
+    """Preserve every primary/model/editorial field except two cache counters."""
+    if isinstance(value,dict):
+        return {key: ({"utf8_sha256":digest(item.encode()),"characters":len(item)}
+                if key in {"page_text","raw_text"} and isinstance(item,str) else terminal_source_semantic(item))
+                for key,item in value.items() if key not in {"last_checked_at","cache_hit"}}
+    return [terminal_source_semantic(item) for item in value] if isinstance(value,list) else value
+
+
+def verify_terminal_followthrough_execution(root, *, report, queue, history, snapshot, telemetry,
+                                            execution=None, origin=None):
+    """Observe a new inert core without relabelling the earlier evaluator or AI."""
+    origin = origin or terminal_followthrough_origin(root)
+    settlement = origin["settlement"]
+    execution = execution or report.get("last_core_execution") or report.get("execution") or {}
+    begin, end = stamp(execution.get("started_at")), stamp(execution.get("finished_at"))
+    delta, error = budget_delta(execution)
+    selection = execution.get("processing_selection") or {}
+    cohort_raw = local_capture_path(root, PROCESSING_COHORT_PATH).read_bytes()
+    cohort = json.loads(cohort_raw)
+    selected = selection.get("selected_urls") or []
+    if (execution.get("mode") != "real_core_processing" or execution.get("engine_called") is not True
+            or execution.get("engine_completed") is not True or execution.get("ai_guardrails_modified") is not False
+            or not begin or not end or begin > end or begin <= stamp(settlement["execution"]["finished_at"])
+            or error or any(value for tier in delta.values() for value in tier.values())
+            or execution.get("processing_attempts_increased") != 0
+            or digest(cohort_raw) != PROCESSING_COHORT_SHA256 or selection.get("sha256") != PROCESSING_COHORT_SHA256
+            or selected != cohort["urls"] or len(set(selected)) != 113
+            or selection.get("ready_selected_urls") or selection.get("skipped_not_due_urls")
+            or selection.get("skipped_in_progress_urls")
+            or set(selection.get("skipped_terminal_urls") or []) != set(selected)
+            or len(selection.get("skipped_terminal_urls") or []) != 113
+            or telemetry != settlement["telemetry"]
+            or any(stamp(row.get("at")) and begin <= stamp(row["at"]) <= end for row in telemetry)
+            or execution.get("budget_before", {}).get("month") != settlement["month"]
+            or execution.get("budget_after", {}).get("month") != settlement["month"]
+            or json.loads(local_capture_path(root, "data/ai_usage/2026-10.json").read_bytes()) != settlement["month"]):
+        raise ValueError("terminal_followthrough_not_fresh_genuine_zero_api_zero_attempts")
+    fingerprint = execution.get("runtime_fingerprint") or {}
+    files = fingerprint.get("files") or {}
+    old_files = origin["execution"]["runtime_fingerprint"]["files"]
+    changed = {path for path in files if files[path] != old_files.get(path)}
+    code = execution.get("code_sha")
+    if (set(files) != set(old_files) or not required_runtime_fingerprint_paths(root) <= set(files)
+            or fingerprint.get("git_or_marker_sha_used") is not False
+            or object_digest(files) != fingerprint.get("sha256")
+            or fingerprint.get("sha256") == TERMINAL_FOLLOWTHROUGH_FINGERPRINT
+            or "scripts/qa_pulso_recovery.py" not in changed or not changed <= TERMINAL_CONSUMER_PATHS
+            or not re.fullmatch(r"[0-9a-f]{40}", str(code or ""))):
+        raise ValueError("terminal_followthrough_source_or_policy_changed")
+    for path, expected in files.items():
+        original = subprocess.run(["git", "show", code + ":" + path], cwd=root, capture_output=True)
+        if original.returncode or digest(original.stdout) != expected or digest(local_capture_path(root, path).read_bytes()) != expected:
+            raise ValueError("terminal_followthrough_actual_implementation_not_bound")
+    previous = {item["raw"]["url"]: (key,item) for key,item in settlement["queue"].items() if item.get("source") == SOURCE}
+    rows = [(key,item) for key,item in queue.items() if item.get("source") == SOURCE]
+    current = {item["raw"]["url"]: (key,item) for key,item in rows}
+    if (len(rows) != len(current) or not set(previous) <= set(current)
+            or any(current[url][0] != key for url,(key,item) in previous.items()) or any(url not in current or previous.get(url) != current[url]
+            or current[url][1].get("status") not in {"published", "rejected"}
+            or technical_processing_deferral(current[url][1], {}) for url in selected)):
+        raise ValueError("terminal_followthrough_selected113_proof_or_status_changed")
+    native_queue = {key:item for key,item in queue.items() if item.get("source") != SOURCE}
+    native_original = {key:item for key,item in settlement["queue"].items() if item.get("source") != SOURCE}
+    if (native_queue != native_original or len(native_queue) != 5293 or history != settlement["history"]
+            or snapshot.get("signals") != settlement["snapshot"].get("signals")
+            or len([row for row in history if not normalized_url(row.get("source_url"))]) != 897):
+        raise ValueError("terminal_followthrough_effective_history_feed_or_native_stock_changed")
+    for url, (key,item) in current.items():
+        if url not in selected and url in previous:
+            old = previous[url][1]
+            if object_digest(terminal_source_semantic(item)) != object_digest(terminal_source_semantic(old)):
+                raise ValueError("terminal_followthrough_unselected_processing_changed")
+        elif url not in previous and (item.get("attempts") != 0 or item.get("status") not in {"pending", "archived"}):
+            raise ValueError("terminal_followthrough_new_unselected_candidate_processed")
+    stock = dict(commit=LIVE9_PRODUCER, file_sha256=settlement["files"],
+        preserved_terminal_urls={url:dict(queue_fingerprint=previous[url][0],
+            queue_entry_sha256=object_digest(previous[url][1])) for url in selected},
+        native_queue_count=len(native_queue), native_queue_sha256=object_digest(native_queue),
+        native_history_count=897,
+        native_history_sha256=object_digest([row for row in history if not normalized_url(row.get("source_url"))]),
+        history_signal_count=len(history), history_sha256=object_digest(history),
+        feed_signal_count=len(snapshot["signals"]), feed_sha256=object_digest(snapshot["signals"]),
+        source_queue_semantic_sha256s={url:object_digest(terminal_source_semantic(item)) for url,(key,item) in previous.items()})
+    return dict(schema_version="pulso_terminal_followthrough_provenance_v1",
+        archived_producer=dict(commit=TERMINAL_FOLLOWTHROUGH_PRODUCER,
+            code_sha=TERMINAL_FOLLOWTHROUGH_CODE, runtime_fingerprint_sha256=TERMINAL_FOLLOWTHROUGH_FINGERPRINT,
+            files=origin["files"], original_qa_promoted=False),
+        archived_final_evaluation=origin["evaluation"], current_followthrough_execution=execution,
+        archived_processing_qa=origin["processing_qa"], paid_model_lineage=origin["evaluation"]["paid_model_lineage"],
+        settlement_producer=dict(commit=LIVE9_PRODUCER,code_sha=LIVE9_CODE,
+            runtime_fingerprint_sha256=LIVE9_FINGERPRINT,files=settlement["files"],original_qa_promoted=False),
+        settlement_execution=settlement["execution"],settlement_processing_qa=settlement["processing_qa"],
+        settlement_live9=settlement["rows"],settlement_response_events=settlement["events"],
+        settlement_budget_delta=settlement["budget_delta"],settlement_telemetry_prefix=settlement["telemetry_prefix"],
+        launch_stock=stock, preserved_final_receipts=origin["evaluation"]["current_revalidation_receipts"],
+        actual_budget_delta=delta, publication_approved=False)
 
 
 def unchanged_followup_paid_execution(item, final_origin):
@@ -3413,9 +3770,11 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
         return [compact(item) for item in value] if isinstance(value, list) else value
     try:
         require(isinstance(baseline, dict) and isinstance(proof, dict), "both_baseline_and_actual_replay_proof_required")
-        composite = baseline.get("mode") == "genuine_revalidated_processing_baseline"
+        terminal = baseline.get("mode") == "genuine_terminal_followthrough_processing_baseline"
+        composite = terminal or baseline.get("mode") == "genuine_revalidated_processing_baseline"
         require(baseline.get("schema_version") == "pulso_idempotence_v1"
-                and baseline.get("mode") in {"genuine_processing_baseline", "genuine_revalidated_processing_baseline"}
+                and baseline.get("mode") in {"genuine_processing_baseline", "genuine_revalidated_processing_baseline",
+                                             "genuine_terminal_followthrough_processing_baseline"}
                 and baseline.get("read_only") is True,
                 "invalid_paid_idempotence_baseline")
         require(baseline.get("payload_sha256") == object_digest({k: v for k, v in baseline.items() if k != "payload_sha256"}),
@@ -3428,7 +3787,20 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
                 "genuine_paid_processing_qa_missing")
         paid, current = baseline["baseline_execution"], report.get("last_core_execution") or report["execution"]
         old_delta, error = budget_delta(paid)
-        if composite:
+        if terminal:
+            observed_lineage = verify_terminal_followthrough_execution(root,report=report,queue=queue,
+                history=history,snapshot=snapshot,telemetry=telemetry,execution=paid)
+            require(baseline.get("terminal_followthrough_provenance") == observed_lineage,
+                    "terminal_followthrough_original_and_live9_provenance_changed")
+            require(not error and old_delta == baseline.get("terminal_budget_delta")
+                    and not any(value for tier in old_delta.values() for value in tier.values())
+                    and baseline.get("terminal_successful_response_ids") == [] and paid.get("processing_attempts_increased") == 0
+                    and "paid_budget_delta" not in baseline and "paid_successful_response_ids" not in baseline,
+                    "terminal_followthrough_current_zero_retagged_as_paid")
+            paid_window = observed_lineage["paid_model_lineage"]["original_execution"]
+            paid_delta = observed_lineage["paid_model_lineage"]["original_budget_delta"]
+            paid_ids = observed_lineage["paid_model_lineage"]["original_successful_response_ids"]
+        elif composite:
             observed_lineage = verify_final_revalidated_execution(root, report=report, queue=queue,
                 history=history, telemetry=telemetry, execution=paid)
             require(all(baseline.get(key) == observed_lineage[key] for key in
@@ -3577,6 +3949,8 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
         references.update(current_paid_proof_files(root))
         references.update(followup_paid_proof_files(root))
         references.update(final_paid_proof_files(root))
+        if terminal:
+            references.update(terminal_live9_proof_files(root))
         require({path: digest(local_capture_path(root, path).read_bytes()) for path in references} == old["referenced_proof_files"],
                 "replay_changed_independent_body_reviews_or_editorial_provenance")
         require(not old.get("reviewed_hold_bindings"), "reviewed_duplicate_hold_requires_independent_target_validation")
@@ -3883,14 +4257,26 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
         if replay_checks:
             checks["genuine_selected_core_idempotence"] = replay_checks
         final_evaluation = None
-        if not replay_checks and any(has_final_paid_claim(item.get("raw", {}).get("metadata", {})) for item in queue.values()):
+        terminal_evaluation = None
+        terminal_origin = None
+        if not replay_checks and execution.get("processing_attempts_increased") == 0 and any(
+                has_final_paid_claim(item.get("raw", {}).get("metadata", {})) for item in queue.values()):
+            try:
+                terminal_origin = terminal_followthrough_origin(root)
+                terminal_evaluation = verify_terminal_followthrough_execution(root,report=report,queue=queue,
+                    history=history,snapshot=snapshot,telemetry=telemetry,execution=execution,origin=terminal_origin)
+                checks["genuine_terminal_followthrough_paid_model_lineage"] = terminal_evaluation
+            except (OSError,ValueError,KeyError,TypeError,AttributeError) as error:
+                fail("processing","genuine_terminal_followthrough_provenance_unverified",error=str(error))
+        if not replay_checks and not terminal_evaluation and execution.get("processing_attempts_increased") != 0 and any(
+                has_final_paid_claim(item.get("raw", {}).get("metadata", {})) for item in queue.values()):
             try:
                 final_evaluation = verify_final_revalidated_execution(root, report=report, queue=queue,
                     history=history, telemetry=telemetry, execution=execution)
                 checks["genuine_revalidated_paid_model_lineage"] = final_evaluation
             except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
                 fail("processing", "genuine_revalidated_paid_model_lineage_unverified", error=str(error))
-        if not replay_checks and not final_evaluation and (not delta.get("fast", {}).get("attempted") or not delta.get("fast", {}).get("successful")):
+        if not replay_checks and not final_evaluation and not terminal_evaluation and (not delta.get("fast", {}).get("attempted") or not delta.get("fast", {}).get("successful")):
             fail("processing", "no_actual_successful_fast_editorial_analysis")
         events = [row for row in telemetry if stamp(row.get("at")) and start and end and start <= stamp(row["at"]) <= end and row.get("kind") == "fast"]
         if len(events) != delta.get("fast", {}).get("attempted") or sum(row.get("success") is True for row in events) != delta.get("fast", {}).get("successful"):
@@ -3968,8 +4354,13 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                     if final_origin is None:
                         raise ValueError("final_paid_origin_unavailable")
                     validation_execution = idempotence_baseline["baseline_execution"] if replay_checks else execution
+                    if terminal_origin is None and (terminal_evaluation or replay_checks and idempotence_baseline.get("mode") == "genuine_terminal_followthrough_processing_baseline"):
+                        terminal_origin = terminal_followthrough_origin(root)
+                    previous_execution = unchanged_final_paid_execution(item,terminal_origin)
+                    if previous_execution is not None:
+                        validation_execution = previous_execution
                     revalidated = verify_final_paid_revalidation(item, root, execution=validation_execution,
-                        telemetry=telemetry, origin=final_origin)
+                        telemetry=telemetry, origin=final_origin,archived_execution=previous_execution is not None)
                     checks.setdefault("immutable_final_paid_guard_revalidations", {})[url] = revalidated
                 except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
                     code = ("final_paid_actual_validation_deferred"
