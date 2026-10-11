@@ -92,6 +92,8 @@ def main():
                  "df_catastrofe_real":"kast-decreta-estado-de-catastrofe-tras-aluvion-en-las-condes-que-deja-al",
                  "df_ricarte_real":"recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
                  "df_biometria_real":"super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+                 "df_senal_presupuesto_real":"el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
+                 "df_health_video_real":"corazon-del-negocio-carmen-mariman-y-salud-mental",
                  "df_health_listing_real":"/empresas/dfsalud",
                  "df_health_tag_real":"/tagport_161_1.html"}
         fixture_path=root/"tests/fixtures/df_original_manifest.json"
