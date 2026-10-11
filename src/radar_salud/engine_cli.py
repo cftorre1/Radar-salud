@@ -1,7 +1,7 @@
 from __future__ import annotations
 import argparse,hashlib,json
 from dataclasses import asdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from .scouts import SeenStore,SuperintendenciaStatsScout,fetch_html,save_raw_items,MinsalNewsScout
 from .sources import load_sources,source_index
@@ -19,6 +19,37 @@ from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
 from .processing import DeferredProcessing
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
+
+
+def _prioritize_pulso_ready(ready):
+    """Order publisher dates only inside Pulso's existing scheduling slots.
+
+    Other sources keep their exact positions; LIVE/BACKFILL and attempt groups
+    keep the queue's precedence. This changes an execution view, never records.
+    """
+    ordered = list(ready)
+    slots = {}
+    for index, (_, item) in enumerate(ordered):
+        if item["source"] == "pulso_latercera":
+            slots.setdefault((item.get("lane"), item.get("attempts")), []).append(index)
+
+    def publication_priority(pair):
+        value = pair[1].get("raw", {}).get("event_date")
+        try:
+            if not isinstance(value, str) or len(value) != 10:
+                return 0
+            day = date.fromisoformat(value)
+            return day.toordinal() if day.isoformat() == value else 0
+        except ValueError:
+            return 0
+
+    for indexes in slots.values():
+        # Python's stable sort retains ties and unknown-date relative order.
+        rows = sorted((ordered[index] for index in indexes),
+                      key=publication_priority, reverse=True)
+        for index, row in zip(indexes, rows):
+            ordered[index] = row
+    return ordered
 
 def main():
     from .models import RawItem
@@ -106,7 +137,7 @@ def main():
     })
     produced={name:[] for name in processors}
     queue.enforce_backfill_horizon(sources=args.sources)
-    ready=((key,item) for key,item in queue.ready() if item["source"] in processors)
+    ready=((key,item) for key,item in _prioritize_pulso_ready(queue.ready()) if item["source"] in processors)
     if args.discovery_only:
         ready=iter(())
     processed_count=0
