@@ -31,7 +31,7 @@ def _official(url):
         parsed = urlsplit(url)
         return (parsed.scheme == "https" and parsed.hostname in HOSTS
                 and not parsed.username and not parsed.password and parsed.port in (None, 443)
-                and not parsed.path.startswith("/portal/privado/"))
+                and not parsed.path.casefold().startswith("/portal/privado/"))
     except (ValueError, TypeError):
         return False
 
@@ -120,10 +120,11 @@ def _detail_url(href):
     parsed = urlsplit(url)
     query = parse_qs(parsed.query, keep_blank_values=True)
     content = query.get("urile", [])
+    marker = "/sa_noticias/sa_noticias_detalle/"
     if (query.get("page") != [DETAIL_PAGE] or len(content) != 1
             or not content[0].lower().startswith("wcm:path:")
-            or "/sa_noticias/sa_noticias_detalle/" not in content[0].lower()
-            or not content[0].rstrip("/").rsplit("/", 1)[-1]):
+            or marker not in content[0].lower()
+            or not content[0].lower().split(marker, 1)[1].strip("/")):
         return None
     # The query selects the article. Removing it turns every article into the
     # same listing URL. Use the stable listing route, preserving its bytes.
@@ -139,7 +140,7 @@ def parse_listing(html, page_url=PAGE, *, as_of=None):
         branch = node.attrs.get("id", "")
         if not re.fullmatch(r"component-\d+", branch) or "cards-noticias" not in node.classes():
             continue
-        cards, card_errors, next_links = [], [], []
+        cards, card_errors, next_links, has_later_page = [], [], [], False
         for child in node.walk():
             if "card-noticia" in child.classes():
                 fields = list(child.walk())
@@ -158,18 +159,27 @@ def parse_listing(html, page_url=PAGE, *, as_of=None):
                               "listing_sha256": hashlib.sha256(html.encode()).hexdigest(), "branch": branch})
             if child.tag == "a" and child.attrs.get("id", "").endswith("_nextPage"):
                 next_links.append(child.attrs.get("href"))
+            if child.tag == "a" and child.attrs.get("id", "").endswith("_lastPage"):
+                has_later_page = True
         next_links = list(dict.fromkeys(next_links))
         if len(next_links) > 1:
             raise SourceDiscoveryError("ambiguous_pagination", page_url)
         next_href = next_links[0] if next_links else None
+        if (next_links or has_later_page) and not next_href:
+            card_errors.append({"reason": "pagination_next_link_missing", "branch": branch, "url": page_url})
         next_url = urljoin(page_url, next_href) if next_href else None
         if next_url and not _official(next_url):
             raise SourceDiscoveryError("pagination_outside_official_scope", next_url)
         branches[branch] = {"id": branch, "cards": cards, "next_url": next_url, "errors": card_errors}
     if not branches or not any(branch["cards"] for branch in branches.values()):
         raise SourceDiscoveryError("listing_structure_unrecognized", page_url)
+    expected = {"component-" + option.attrs["value"] for select in tree.root.walk()
+                if select.tag == "select" and select.attrs.get("id") == "product-select"
+                for option in select.walk() if option.tag == "option" and option.attrs.get("value", "").isdigit()}
+    listing_errors = [{"code": "listed_category_component_missing", "reason": "listed_category_component_missing",
+                       "url": page_url, "branch": branch} for branch in sorted(expected - branches.keys())]
     return {"url": page_url, "branches": branches, "sha256": hashlib.sha256(html.encode()).hexdigest(),
-            "client_union_pagination": "collectUniqueCards" in html and "chunkArray" in html}
+            "errors": listing_errors, "client_union_pagination": "collectUniqueCards" in html and "chunkArray" in html}
 
 
 def parse_detail(html, url, *, as_of=None):
@@ -274,6 +284,7 @@ class MutualNewsScout:
                     state[target]["complete"] = False
                 continue
             branches = parsed["branches"] if target is None else {target: parsed["branches"].get(target)}
+            errors.extend(parsed["errors"])
             pages.append({"url": url, "branch": target, "sha256": parsed["sha256"], "client_union_pagination": parsed["client_union_pagination"]})
             for branch_id, branch in branches.items():
                 current = state.setdefault(branch_id, {"seen": set(), "done": False, "complete": True,
@@ -327,6 +338,8 @@ class MutualNewsScout:
             rows.append(row)
             if not card["listing_date"] or card.get("conflicting_listing_identity"):
                 row.update(status="pending", reason="invalid_or_conflicting_listing_date", date_verified=False)
+                errors.append({"url": card["url"], "reason": row["reason"], "code": row["reason"],
+                               "listing_url": card["listing_url"], "date_value": card["date_value"]})
                 continue
             if date.fromisoformat(card["listing_date"]) < cutoff:
                 row.update(status="rejected", reason="outside_90_day_horizon", date_verified=False)
@@ -355,6 +368,9 @@ class MutualNewsScout:
                 row.update(status="pending", reason=detail["reason"] if not published else
                            "listing_detail_date_conflict" if published != card["listing_date"] else
                            "article_identity_or_content_unrecognized", date_verified=False)
+                errors.append({"url": card["url"], "reason": row["reason"], "code": row["reason"],
+                               "listing_url": card["listing_url"], "listing_date": card["listing_date"],
+                               "detail_date": published})
                 continue
             accepted, reason = materiality("mutuality", detail["title"], detail["body"])
             row.update(status="candidate" if accepted else "rejected", reason=reason, date_verified=True,
@@ -373,6 +389,8 @@ class MutualNewsScout:
                 }))
         complete = (bool(state) and not queue and not errors and all(branch["done"] and branch["complete"] for branch in state.values())
                     and not any(row["status"] == "pending" for row in rows))
+        for diagnostic in errors:
+            diagnostic.setdefault("code", diagnostic["reason"])
         summary = [{"branch": key, "complete": value["complete"], "done": value["done"], "reason": value.get("reason")}
                    for key, value in state.items()]
         self.report = {"source_slug": self.SOURCE_SLUG, "raw_items": raws, "rows": rows, "pages": pages,

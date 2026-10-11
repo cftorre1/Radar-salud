@@ -64,9 +64,20 @@
   },
   "regression_tests": {
     "command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py",
-    "result": "39 passed",
+    "result": "42 passed after follow-up coverage hardening",
     "shared_command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py tests/test_occupational_sources.py tests/test_occupational_integrity.py",
     "shared_result": "114 passed, 3 shared-test failures from concurrent materiality and runtime adapter changes; root and common-module owner notified"
+  },
+  "follow_up_checkpoint": {
+    "coverage_checks": [
+      "Dropdown category IDs missing from server HTML are explicit gaps",
+      "A visible lastPage anchor without nextPage cannot imply branch exhaustion",
+      "Invalid/conflicting listing dates and unverified detail identity produce explicit diagnostics",
+      "An unordered category cannot cross the cutoff early; capture continues to branch exhaustion",
+      "All diagnostics distinguish proxy denial from real origin HTTP status"
+    ],
+    "paging_resolution_routes": "data/audits/source_e_recovery/mutual_paging_routes.json",
+    "known_live_validation_pending": "Targeted parent Actions Run3 must determine actual detail markup and correct observed p0 resolution base"
   },
   "next_actions": [
     "Validate actual detail HTML selectors from targeted fresh Actions capture",

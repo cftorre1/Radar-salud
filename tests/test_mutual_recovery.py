@@ -70,6 +70,7 @@ def test_detail_query_is_preserved_and_article_ids_remain_distinct():
     detail_url("a").replace("www.mutual.cl", "www.mutual.cl.evil.test"),
     detail_url("a").replace(DETAIL_PAGE, "noticias"),
     detail_url("a").replace("SA_Noticias_Detalle", "SA_Private"),
+    detail_url(""),
     detail_url("a") + "&page=other",
 ])
 def test_nonarticle_or_unofficial_links_are_not_discoverable(url):
@@ -206,6 +207,24 @@ def test_malformed_card_is_recorded_instead_of_silent_complete_coverage():
     report = source.discover_inventory()
     assert not report["coverage_complete"] and len(report["raw_items"]) == 1
     assert report["errors"][0]["reason"] == "listing_card_identity_unrecognized"
+
+
+def test_dropdown_category_missing_from_server_html_is_a_coverage_gap():
+    html = listing(branch(0, card("good"))) + ('<select id="product-select"><option value="0">Todas</option>'
+                                             '<option value="1">Salud laboral</option></select>')
+    source, _ = scout({PAGE: html, detail_url("good"): detail()})
+    report = source.discover_inventory()
+    assert not report["coverage_complete"] and len(report["raw_items"]) == 1
+    assert report["errors"][0]["reason"] == "listed_category_component_missing"
+    assert report["errors"][0]["branch"] == "component-1"
+
+
+def test_missing_next_link_is_not_treated_as_terminal_when_last_page_link_exists():
+    html = listing(branch(0, card("good") + '<a id="pc123_lastPage" href="p0/LAST=/">Última</a>'))
+    source, _ = scout({PAGE: html, detail_url("good"): detail()})
+    report = source.discover_inventory()
+    assert not report["coverage_complete"] and len(report["raw_items"]) == 1
+    assert report["errors"][0]["reason"] == "pagination_next_link_missing"
 
 
 def test_conflicting_repeated_card_binding_fails_closed():
