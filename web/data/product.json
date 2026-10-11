@@ -180,14 +180,14 @@
     },
     "clinicas_achs_salud": {
       "name": "Achs Salud / Clínicas",
-      "checked_at": "2026-10-11T06:48:40.627834+00:00",
-      "last_signal_at": "2026-09-17",
+      "checked_at": "2026-10-11T07:07:53.290829+00:00",
+      "last_signal_at": null,
       "discovered": 13,
-      "new": 11,
-      "published": 2,
+      "new": 0,
+      "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
-      "pending": 27,
+      "pending": 25,
       "deferred": 0,
       "rejected": 16,
       "status": "warning",
@@ -291,41 +291,12 @@
         {
           "code": "publication_editorial_date_conflict",
           "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
-        },
-        {
-          "code": "clinic_detail_extraction_failed",
-          "url": "https://clinicaatacama.cl/telemedicina/",
-          "phase": "clinic_detail_extraction",
-          "type": "ValueError",
-          "detail": "Clinic detail extraction unverified: article:published_time; scope=missing_native_article_container"
-        },
-        {
-          "code": "clinic_pagination_gap_or_cycle",
-          "url": "https://clinicaloscoihues.cl/noticias?page=1"
-        },
-        {
-          "code": "clinic_detail_extraction_failed",
-          "url": "https://www.clinicasur.cl/nuevo-mamografo/",
-          "phase": "clinic_detail_extraction",
-          "type": "ValueError",
-          "detail": "Clinic detail extraction unverified: article:published_time; scope=wordpress:medicenter_post-content"
-        },
-        {
-          "code": "clinic_listing_detail_date_conflict",
-          "url": "https://www.clinicasur.cl/nuevo-mamografo/",
-          "listing_evidence": {
-            "kind": "rss:item.pubDate",
-            "url": "https://www.clinicasur.cl/feed/",
-            "document_url": "https://www.clinicasur.cl/nuevo-mamografo/",
-            "value": "Thu, 25 May 2023 15:35:54 +0000",
-            "date": "2023-05-25"
-          }
         }
       ],
       "technical_status": "partial",
       "coverage_status": "partial",
       "content_freshness": "unknown",
-      "editorial_outcome": "published",
+      "editorial_outcome": "rejected",
       "recovery_outcome": "OPERATIVE_DEGRADED",
       "coverage_window": {
         "convention": "rolling_elapsed_days_inclusive",
@@ -344,8 +315,13 @@
           "rejected": 3,
           "excluded_role": 10,
           "pending": 0,
-          "unknown_date_items": 27,
-          "complete": false
+          "unknown_date_items": 25,
+          "complete": false,
+          "content_kinds": {
+            "news": 6,
+            "prevention": 5,
+            "study": 2
+          }
         },
         "90": {
           "start": "2026-07-13",
@@ -356,8 +332,13 @@
           "rejected": 14,
           "excluded_role": 23,
           "pending": 0,
-          "unknown_date_items": 27,
-          "complete": false
+          "unknown_date_items": 25,
+          "complete": false,
+          "content_kinds": {
+            "news": 19,
+            "prevention": 8,
+            "study": 12
+          }
         }
       },
       "unique_items": 16,
@@ -462,44 +443,21 @@
         {
           "code": "publication_editorial_date_conflict",
           "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
-        },
-        {
-          "code": "clinic_detail_extraction_failed",
-          "url": "https://clinicaatacama.cl/telemedicina/",
-          "phase": "clinic_detail_extraction",
-          "type": "ValueError",
-          "detail": "Clinic detail extraction unverified: article:published_time; scope=missing_native_article_container"
-        },
-        {
-          "code": "clinic_pagination_gap_or_cycle",
-          "url": "https://clinicaloscoihues.cl/noticias?page=1"
-        },
-        {
-          "code": "clinic_detail_extraction_failed",
-          "url": "https://www.clinicasur.cl/nuevo-mamografo/",
-          "phase": "clinic_detail_extraction",
-          "type": "ValueError",
-          "detail": "Clinic detail extraction unverified: article:published_time; scope=wordpress:medicenter_post-content"
-        },
-        {
-          "code": "clinic_listing_detail_date_conflict",
-          "url": "https://www.clinicasur.cl/nuevo-mamografo/",
-          "listing_evidence": {
-            "kind": "rss:item.pubDate",
-            "url": "https://www.clinicasur.cl/feed/",
-            "document_url": "https://www.clinicasur.cl/nuevo-mamografo/",
-            "value": "Thu, 25 May 2023 15:35:54 +0000",
-            "date": "2023-05-25"
-          }
         }
       ],
       "coverage_completeness": false,
       "capture_environment": "github_actions",
-      "capture_run_id": "38119024441",
+      "capture_run_id": "38120060930",
       "count_basis": "unique source items in rolling 90 days; published includes previously reconciled items",
       "latest_detected_at": "2026-10-01",
       "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00",
-      "latest_capture_at": "2026-10-11T06:48:40.627834+00:00"
+      "latest_capture_at": "2026-10-11T07:07:53.290829+00:00",
+      "accepted_history": 0,
+      "feed_reconciliation": {
+        "published": 0,
+        "deferred": {},
+        "unrelated_signals_preserved": 53
+      }
     },
     "ist": {
       "name": "Instituto de Seguridad del Trabajo (IST)",
@@ -1798,5 +1756,5 @@
     ],
     "next_action": "PMO baseline y panel: validar panel y estados contra el baseline en staging"
   },
-  "occupational_sources_checked_at": "2026-10-11T07:10:07.796184+00:00"
+  "occupational_sources_checked_at": "2026-10-11T07:10:14.564531+00:00"
 }
