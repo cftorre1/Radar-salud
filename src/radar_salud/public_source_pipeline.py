@@ -45,7 +45,11 @@ def _field(text,label):
 def enrich(raw):
     raw.metadata.pop("fetch_error",None)
     try:
-        p=_Meta();p.feed(fetch_html(raw.url));body=" ".join(p.text)
+        html=fetch_html(raw.url)
+        if raw.source_slug=="diario_financiero":
+            from .df_article import bind_df_article
+            return bind_df_article(raw,html)
+        p=_Meta();p.feed(html);body=" ".join(p.text)
         if p.ogtitle and len(raw.title)<18:raw.title=p.ogtitle
         raw.raw_text=p.description or body[:1400]
         raw.event_date=raw.event_date or _date(p.published)
