@@ -23,6 +23,7 @@ def main():
     if root.exists():raise RuntimeError('Runtime output must start empty; do not overwrite an earlier checkpoint')
     root.mkdir(parents=True)
     shutil.copytree(repo/'data',root/'data')
+    shutil.copytree(repo/'web',root/'web')
     queue_before=read(root/'data/state/pending_queue.json',{})
     history_before=read(root/'data/history/superintendencia_signals.json',{'signals':[]})
     history_before=history_before.get('signals',history_before)
