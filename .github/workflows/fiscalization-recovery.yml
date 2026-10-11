@@ -1,0 +1,34 @@
+name: Fiscalization isolated native runtime
+on:
+  pull_request:
+    branches: [staging]
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/fiscalization-recovery.yml'
+      - 'scripts/probe_fiscalization_runtime.py'
+      - 'src/radar_salud/*fiscalizacion.py'
+      - 'tests/test_fiscalization_runtime.py'
+permissions:
+  contents: read
+jobs:
+  native-probe:
+    if: github.head_ref == 'codex/d-fiscalizacion-sis-suseso-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - name: Native HTTP, TLS, listings and all recent primary documents
+        run: python scripts/probe_fiscalization_runtime.py --as-of 2026-10-11
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fiscalization-runtime-${{ github.event.pull_request.head.sha }}
+          path: artifacts/fiscalization-runtime/
+          retention-days: 30
