@@ -1,0 +1,2219 @@
+{
+  "config": {
+    "configFile": "/workspace/work/c-public-sources/work/qa/browser-final.cjs",
+    "rootDir": "/workspace/work/c-public-sources/tests/browser",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json",
+        {
+          "outputFile": "/workspace/work/c-public-sources/work/qa/browser-candidate-final.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/workspace/work/c-public-sources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/workspace/work/c-public-sources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 2,
+    "webServer": {
+      "command": "python -m http.server 8785 --directory web",
+      "cwd": "/workspace/work/c-public-sources",
+      "url": "http://127.0.0.1:8785",
+      "reuseExistingServer": false
+    }
+  },
+  "suites": [
+    {
+      "title": "product.spec.cjs",
+      "file": "product.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Home V2 loads, filters persist and compact triage remains stable",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6296,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:26:2",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 2,
+                      "line": 26
+                    },
+                    "snippet": "  24 |  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\\d+/g).map(Number);\n  25 |  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();\n> 26 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);\n     |  ^\n  27 |  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');\n  28 |  if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();\n  29 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 2,
+                        "line": 26
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  24 |  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\\d+/g).map(Number);\n  25 |  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();\n> 26 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);\n     |  ^\n  27 |  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');\n  28 |  if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();\n  29 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:26:2"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:34.064Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 2,
+                    "line": 26
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-eabca2fcc564d7522582",
+          "file": "product.spec.cjs",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "Inbox shows every unread signal, supports direct read and persists it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1692,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:41.230Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-9f31ee51c6d85182026c",
+          "file": "product.spec.cjs",
+          "line": 74,
+          "column": 1
+        },
+        {
+          "title": "operations dashboard loads without inventing measurements",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5605,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#coverageSegments tr')\nExpected: \u001b[32m4\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#coverageSegments tr')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#coverageSegments tr')\nExpected: \u001b[32m4\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#coverageSegments tr')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:113:53",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 53,
+                      "line": 113
+                    },
+                    "snippet": "  111 |  await expect(page.getByRole('heading',{name:'Control de producto'})).toBeVisible();\n  112 |  await expect(page.getByRole('table',{name:'Cobertura por segmento'})).toBeVisible();\n> 113 |  await expect(page.locator('#coverageSegments tr')).toHaveCount(4);\n      |                                                     ^\n  114 |  await expect(page.locator('#coverageSegments')).toContainText('Prestadores');\n  115 |  await expect(page.locator('#coverageSegments')).toContainText('Fonasa / Sistema público');\n  116 |  await expect(page.locator('#metrics')).toContainText('LIVE pending');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 53,
+                        "line": 113
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#coverageSegments tr')\nExpected: \u001b[32m4\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#coverageSegments tr')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n\n\n  111 |  await expect(page.getByRole('heading',{name:'Control de producto'})).toBeVisible();\n  112 |  await expect(page.getByRole('table',{name:'Cobertura por segmento'})).toBeVisible();\n> 113 |  await expect(page.locator('#coverageSegments tr')).toHaveCount(4);\n      |                                                     ^\n  114 |  await expect(page.locator('#coverageSegments')).toContainText('Prestadores');\n  115 |  await expect(page.locator('#coverageSegments')).toContainText('Fonasa / Sistema público');\n  116 |  await expect(page.locator('#metrics')).toContainText('LIVE pending');\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:113:53"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:43.131Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-operations-dashboa-510ad-hout-inventing-measurements-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-operations-dashboa-510ad-hout-inventing-measurements-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-operations-dashboa-510ad-hout-inventing-measurements-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 53,
+                    "line": 113
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-d26abcb77cf0a532dc75",
+          "file": "product.spec.cjs",
+          "line": 109,
+          "column": 1
+        },
+        {
+          "title": "Home V2 places unread Global and Insight in the brief, then retains subdued feed cards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1937,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:49.369Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-165aba1927ceb7e3b6c3",
+          "file": "product.spec.cjs",
+          "line": 142,
+          "column": 1
+        },
+        {
+          "title": "Expired weekly insight stays hidden while its original signal remains in history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 842,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:51.555Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-09570e66ab9fe3756997",
+          "file": "product.spec.cjs",
+          "line": 164,
+          "column": 1
+        },
+        {
+          "title": "Feed-only share uses Web Share and clipboard fallback without analytics",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1020,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:52.415Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-7ba77d6e22139db8374d",
+          "file": "product.spec.cjs",
+          "line": 173,
+          "column": 1
+        },
+        {
+          "title": "Global read state is shared across Home and the research page",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5866,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalInbox .inbox-row')\nExpected: \u001b[32m9\u001b[39m\nReceived: \u001b[31m10\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalInbox .inbox-row')\u001b[22m\n\u001b[2m    9 × locator resolved to 10 elements\u001b[22m\n\u001b[2m      - unexpected value \"10\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalInbox .inbox-row')\nExpected: \u001b[32m9\u001b[39m\nReceived: \u001b[31m10\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalInbox .inbox-row')\u001b[22m\n\u001b[2m    9 × locator resolved to 10 elements\u001b[22m\n\u001b[2m      - unexpected value \"10\"\u001b[22m\n\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:194:56",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 56,
+                      "line": 194
+                    },
+                    "snippet": "  192 |  await expect(page).toHaveURL(/global\\.html#theme-/);\n  193 |  await page.locator('#globalPeriod').selectOption('all');\n> 194 |  await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(visibleCount-1);\n      |                                                        ^\n  195 |  const theme=page.locator(`#theme-${teaserId}`);\n  196 |  await expect(theme).toHaveClass(/read/);\n  197 |  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 56,
+                        "line": 194
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalInbox .inbox-row')\nExpected: \u001b[32m9\u001b[39m\nReceived: \u001b[31m10\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalInbox .inbox-row')\u001b[22m\n\u001b[2m    9 × locator resolved to 10 elements\u001b[22m\n\u001b[2m      - unexpected value \"10\"\u001b[22m\n\n\n  192 |  await expect(page).toHaveURL(/global\\.html#theme-/);\n  193 |  await page.locator('#globalPeriod').selectOption('all');\n> 194 |  await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(visibleCount-1);\n      |                                                        ^\n  195 |  const theme=page.locator(`#theme-${teaserId}`);\n  196 |  await expect(theme).toHaveClass(/read/);\n  197 |  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:194:56"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:53.449Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-read-state--ce917--Home-and-the-research-page-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-read-state--ce917--Home-and-the-research-page-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-read-state--ce917--Home-and-the-research-page-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 56,
+                    "line": 194
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-83a789f7fb2a2e1f5389",
+          "file": "product.spec.cjs",
+          "line": 187,
+          "column": 1
+        },
+        {
+          "title": "source suggestion is visible, concise and fail-closed without provider",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1647,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:00.158Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-51ec581420799c74e1d3",
+          "file": "product.spec.cjs",
+          "line": 202,
+          "column": 1
+        },
+        {
+          "title": "source suggestion never falls back to URL serialization without JavaScript",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 623,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:02.044Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-fd5a366b658a34580dbb",
+          "file": "product.spec.cjs",
+          "line": 239,
+          "column": 1
+        },
+        {
+          "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3840,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:02.686Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-a35a7d4f785b52afa94f",
+          "file": "product.spec.cjs",
+          "line": 251,
+          "column": 1
+        },
+        {
+          "title": "Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6692,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalMetrics')\nExpected: \u001b[32m\"10 temas · no leídos \u001b[7m9\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"10 temas · no leídos \u001b[7m10\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalMetrics')\u001b[22m\n\u001b[2m    9 × locator resolved to <p class=\"inbox-meta\" id=\"globalMetrics\">10 temas · no leídos 10</p>\u001b[22m\n\u001b[2m      - unexpected value \"10 temas · no leídos 10\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalMetrics')\nExpected: \u001b[32m\"10 temas · no leídos \u001b[7m9\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"10 temas · no leídos \u001b[7m10\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalMetrics')\u001b[22m\n\u001b[2m    9 × locator resolved to <p class=\"inbox-meta\" id=\"globalMetrics\">10 temas · no leídos 10</p>\u001b[22m\n\u001b[2m      - unexpected value \"10 temas · no leídos 10\"\u001b[22m\n\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:324:47",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 47,
+                      "line": 324
+                    },
+                    "snippet": "  322 |  await expect(page.locator('#globalSort')).toBeVisible();\n  323 |  await page.locator('#globalPeriod').selectOption('all');\n> 324 |  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-1}`);\n      |                                               ^\n  325 |  await expect(page.locator('.theme')).toHaveCount(visibleCount);\n  326 |  await page.locator('[data-open]').first().click();\n  327 |  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-2}`);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 47,
+                        "line": 324
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalMetrics')\nExpected: \u001b[32m\"10 temas · no leídos \u001b[7m9\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"10 temas · no leídos \u001b[7m10\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalMetrics')\u001b[22m\n\u001b[2m    9 × locator resolved to <p class=\"inbox-meta\" id=\"globalMetrics\">10 temas · no leídos 10</p>\u001b[22m\n\u001b[2m      - unexpected value \"10 temas · no leídos 10\"\u001b[22m\n\n\n  322 |  await expect(page.locator('#globalSort')).toBeVisible();\n  323 |  await page.locator('#globalPeriod').selectOption('all');\n> 324 |  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-1}`);\n      |                                               ^\n  325 |  await expect(page.locator('.theme')).toHaveCount(visibleCount);\n  326 |  await page.locator('[data-open]').first().click();\n  327 |  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-2}`);\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:324:47"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:06.544Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-Intelligenc-9b828-d-Chile-hypotheses-distinct-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-Intelligenc-9b828-d-Chile-hypotheses-distinct-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-Intelligenc-9b828-d-Chile-hypotheses-distinct-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 47,
+                    "line": 324
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-b1053f557943f2211fb7",
+          "file": "product.spec.cjs",
+          "line": 312,
+          "column": 1
+        },
+        {
+          "title": "Weekly email capture requires consent and stays closed without approved provider",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1084,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:14.019Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-cd48b5a930709e7db18e",
+          "file": "product.spec.cjs",
+          "line": 352,
+          "column": 1
+        },
+        {
+          "title": "analytics never sends without explicit privacy approval even if a key is present",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 771,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:15.346Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-04d2ba2374edda9791b6",
+          "file": "product.spec.cjs",
+          "line": 365,
+          "column": 1
+        },
+        {
+          "title": "authorized analytics fixture emits only anonymous event fields",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 748,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:16.129Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-53973a8e3d7c8584a872",
+          "file": "product.spec.cjs",
+          "line": 377,
+          "column": 1
+        },
+        {
+          "title": "persistent editorial contract is visible in feed and brief",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 873,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:16.897Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-bf2df3b2bc0b66bd4c74",
+          "file": "product.spec.cjs",
+          "line": 399,
+          "column": 1
+        },
+        {
+          "title": "Pulso Isapre leads with executive table and statistics use the value ladder",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 830,
+                  "error": {
+                    "message": "Error: Estadística Trimestral de Casos GES missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
+                    "stack": "Error: Estadística Trimestral de Casos GES missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:425:51",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 51,
+                      "line": 425
+                    },
+                    "snippet": "  423 |  ]){\n  424 |    const signal=radar.signals.find(x=>(x.title||'').includes(needle));\n> 425 |    expect(signal,needle+' missing from snapshot').toBeTruthy();\n      |                                                   ^\n  426 |    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);\n  427 |    const card=page.locator('article[data-card]').filter({hasText:needle});\n  428 |    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 51,
+                        "line": 425
+                      },
+                      "message": "Error: Estadística Trimestral de Casos GES missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  423 |  ]){\n  424 |    const signal=radar.signals.find(x=>(x.title||'').includes(needle));\n> 425 |    expect(signal,needle+' missing from snapshot').toBeTruthy();\n      |                                                   ^\n  426 |    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);\n  427 |    const card=page.locator('article[data-card]').filter({hasText:needle});\n  428 |    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:425:51"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:17.781Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Pulso-Isapre-leads-a7294-istics-use-the-value-ladder-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Pulso-Isapre-leads-a7294-istics-use-the-value-ladder-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Pulso-Isapre-leads-a7294-istics-use-the-value-ladder-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 51,
+                    "line": 425
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-457983aa867d5c4ba7e7",
+          "file": "product.spec.cjs",
+          "line": 414,
+          "column": 1
+        },
+        {
+          "title": "committee HOLD/REJECT and failed publication contracts do not render as individual feed cards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 737,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:19.379Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-7092dd9c81ccd280a58a",
+          "file": "product.spec.cjs",
+          "line": 443,
+          "column": 1
+        },
+        {
+          "title": "period is visible outside filters, persisted without duplicating metric copy, and resettable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1311,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:20.373Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-34ed31f6b6929a6c8935",
+          "file": "product.spec.cjs",
+          "line": 460,
+          "column": 1
+        },
+        {
+          "title": "Home hero is compact, one-line and exposes subscription plus Global Intelligence",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 681,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:21.708Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-72763321da6c3590c7be",
+          "file": "product.spec.cjs",
+          "line": 481,
+          "column": 1
+        },
+        {
+          "title": "conversion surfaces lead with value and hide internal implementation status",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 865,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:22.400Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-cc7f5ae3981b086e90ad",
+          "file": "product.spec.cjs",
+          "line": 498,
+          "column": 1
+        },
+        {
+          "title": "sources are grouped by decision value and expose freshness layers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 725,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:23.276Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-cbc4189ce4f9d0733e3d",
+          "file": "product.spec.cjs",
+          "line": 510,
+          "column": 1
+        },
+        {
+          "title": "priority statistical releases use compact tables and collapsed traceability",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 771,
+                  "error": {
+                    "message": "Error: Estadística Trimestral de Casos GES missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
+                    "stack": "Error: Estadística Trimestral de Casos GES missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:535:32",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 32,
+                      "line": 535
+                    },
+                    "snippet": "  533 |  for(const [needle,minRows] of cases){\n  534 |    const s=radar.signals.find(x=>(x.title||'').includes(needle));\n> 535 |    expect(s,needle+' missing').toBeTruthy();\n      |                                ^\n  536 |    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);\n  537 |    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);\n  538 |    expect(s.methodology_visibility).toBe('collapsed');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 32,
+                        "line": 535
+                      },
+                      "message": "Error: Estadística Trimestral de Casos GES missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  533 |  for(const [needle,minRows] of cases){\n  534 |    const s=radar.signals.find(x=>(x.title||'').includes(needle));\n> 535 |    expect(s,needle+' missing').toBeTruthy();\n      |                                ^\n  536 |    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);\n  537 |    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);\n  538 |    expect(s.methodology_visibility).toBe('collapsed');\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:535:32"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:24.016Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-priority-statistic-8e695--and-collapsed-traceability-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-priority-statistic-8e695--and-collapsed-traceability-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-priority-statistic-8e695--and-collapsed-traceability-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 32,
+                    "line": 535
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-7690c576b7f9c662bdbd",
+          "file": "product.spec.cjs",
+          "line": 523,
+          "column": 1
+        },
+        {
+          "title": "Normative V2.1 puts document, subject and action in each current headline",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 3975,
+                  "error": {
+                    "message": "Error: 529\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
+                    "stack": "Error: 529\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:593:25",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 25,
+                      "line": 593
+                    },
+                    "snippet": "  591 |  for(const [number,subject,action] of expected){\n  592 |   const signal=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));\n> 593 |   expect(signal,number).toBeTruthy();\n      |                         ^\n  594 |   const title=signal.display_title;\n  595 |   expect(title).toContain(signal.normative_document_label||signal.legal_identity);\n  596 |   expect(title).toMatch(subject);expect(title).toMatch(action);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 25,
+                        "line": 593
+                      },
+                      "message": "Error: 529\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  591 |  for(const [number,subject,action] of expected){\n  592 |   const signal=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));\n> 593 |   expect(signal,number).toBeTruthy();\n      |                         ^\n  594 |   const title=signal.display_title;\n  595 |   expect(title).toContain(signal.normative_document_label||signal.legal_identity);\n  596 |   expect(title).toMatch(subject);expect(title).toMatch(action);\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:593:25"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:25.459Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Normative-V2-1-put-7bbc4-on-in-each-current-headline-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Normative-V2-1-put-7bbc4-on-in-each-current-headline-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Normative-V2-1-put-7bbc4-on-in-each-current-headline-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 25,
+                    "line": 593
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-c2a5a151c8017d56c20e",
+          "file": "product.spec.cjs",
+          "line": 572,
+          "column": 1
+        },
+        {
+          "title": "Home V2 loads, filters persist and compact triage remains stable",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 6269,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:26:2",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 2,
+                      "line": 26
+                    },
+                    "snippet": "  24 |  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\\d+/g).map(Number);\n  25 |  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();\n> 26 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);\n     |  ^\n  27 |  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');\n  28 |  if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();\n  29 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 2,
+                        "line": 26
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  24 |  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\\d+/g).map(Number);\n  25 |  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();\n> 26 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);\n     |  ^\n  27 |  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');\n  28 |  if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();\n  29 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:26:2"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:34.076Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-mobile/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-mobile/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-mobile/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 2,
+                    "line": 26
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-6046d8a6d54bb3a84fa5",
+          "file": "product.spec.cjs",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "Inbox shows every unread signal, supports direct read and persists it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1691,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:41.190Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-53c4e57f9d9029979db9",
+          "file": "product.spec.cjs",
+          "line": 74,
+          "column": 1
+        },
+        {
+          "title": "operations dashboard loads without inventing measurements",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 5520,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#coverageSegments tr')\nExpected: \u001b[32m4\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#coverageSegments tr')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#coverageSegments tr')\nExpected: \u001b[32m4\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#coverageSegments tr')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:113:53",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 53,
+                      "line": 113
+                    },
+                    "snippet": "  111 |  await expect(page.getByRole('heading',{name:'Control de producto'})).toBeVisible();\n  112 |  await expect(page.getByRole('table',{name:'Cobertura por segmento'})).toBeVisible();\n> 113 |  await expect(page.locator('#coverageSegments tr')).toHaveCount(4);\n      |                                                     ^\n  114 |  await expect(page.locator('#coverageSegments')).toContainText('Prestadores');\n  115 |  await expect(page.locator('#coverageSegments')).toContainText('Fonasa / Sistema público');\n  116 |  await expect(page.locator('#metrics')).toContainText('LIVE pending');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 53,
+                        "line": 113
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#coverageSegments tr')\nExpected: \u001b[32m4\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#coverageSegments tr')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n\n\n  111 |  await expect(page.getByRole('heading',{name:'Control de producto'})).toBeVisible();\n  112 |  await expect(page.getByRole('table',{name:'Cobertura por segmento'})).toBeVisible();\n> 113 |  await expect(page.locator('#coverageSegments tr')).toHaveCount(4);\n      |                                                     ^\n  114 |  await expect(page.locator('#coverageSegments')).toContainText('Prestadores');\n  115 |  await expect(page.locator('#coverageSegments')).toContainText('Fonasa / Sistema público');\n  116 |  await expect(page.locator('#metrics')).toContainText('LIVE pending');\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:113:53"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:43.078Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-operations-dashboa-510ad-hout-inventing-measurements-mobile/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-operations-dashboa-510ad-hout-inventing-measurements-mobile/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-operations-dashboa-510ad-hout-inventing-measurements-mobile/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 53,
+                    "line": 113
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-c9b1a8e9757bfa2cfa0b",
+          "file": "product.spec.cjs",
+          "line": 109,
+          "column": 1
+        },
+        {
+          "title": "Home V2 places unread Global and Insight in the brief, then retains subdued feed cards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1746,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:49.218Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-f8b19c900a915c0e4fbe",
+          "file": "product.spec.cjs",
+          "line": 142,
+          "column": 1
+        },
+        {
+          "title": "Expired weekly insight stays hidden while its original signal remains in history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 760,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:51.174Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-7d5422ae4bf5ef46a3fb",
+          "file": "product.spec.cjs",
+          "line": 164,
+          "column": 1
+        },
+        {
+          "title": "Feed-only share uses Web Share and clipboard fallback without analytics",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1029,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:51.953Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-1963966c8cdc579ce9d9",
+          "file": "product.spec.cjs",
+          "line": 173,
+          "column": 1
+        },
+        {
+          "title": "Global read state is shared across Home and the research page",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 5962,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalInbox .inbox-row')\nExpected: \u001b[32m9\u001b[39m\nReceived: \u001b[31m10\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalInbox .inbox-row')\u001b[22m\n\u001b[2m    9 × locator resolved to 10 elements\u001b[22m\n\u001b[2m      - unexpected value \"10\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalInbox .inbox-row')\nExpected: \u001b[32m9\u001b[39m\nReceived: \u001b[31m10\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalInbox .inbox-row')\u001b[22m\n\u001b[2m    9 × locator resolved to 10 elements\u001b[22m\n\u001b[2m      - unexpected value \"10\"\u001b[22m\n\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:194:56",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 56,
+                      "line": 194
+                    },
+                    "snippet": "  192 |  await expect(page).toHaveURL(/global\\.html#theme-/);\n  193 |  await page.locator('#globalPeriod').selectOption('all');\n> 194 |  await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(visibleCount-1);\n      |                                                        ^\n  195 |  const theme=page.locator(`#theme-${teaserId}`);\n  196 |  await expect(theme).toHaveClass(/read/);\n  197 |  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 56,
+                        "line": 194
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalInbox .inbox-row')\nExpected: \u001b[32m9\u001b[39m\nReceived: \u001b[31m10\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalInbox .inbox-row')\u001b[22m\n\u001b[2m    9 × locator resolved to 10 elements\u001b[22m\n\u001b[2m      - unexpected value \"10\"\u001b[22m\n\n\n  192 |  await expect(page).toHaveURL(/global\\.html#theme-/);\n  193 |  await page.locator('#globalPeriod').selectOption('all');\n> 194 |  await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(visibleCount-1);\n      |                                                        ^\n  195 |  const theme=page.locator(`#theme-${teaserId}`);\n  196 |  await expect(theme).toHaveClass(/read/);\n  197 |  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:194:56"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:52.998Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-read-state--ce917--Home-and-the-research-page-mobile/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-read-state--ce917--Home-and-the-research-page-mobile/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-read-state--ce917--Home-and-the-research-page-mobile/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 56,
+                    "line": 194
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-d596beb77f4efc5d7302",
+          "file": "product.spec.cjs",
+          "line": 187,
+          "column": 1
+        },
+        {
+          "title": "source suggestion is visible, concise and fail-closed without provider",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1683,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:59.720Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-764ca12cfca317766af7",
+          "file": "product.spec.cjs",
+          "line": 202,
+          "column": 1
+        },
+        {
+          "title": "source suggestion never falls back to URL serialization without JavaScript",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 364,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:01.616Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-5a66d622944a35c67bcb",
+          "file": "product.spec.cjs",
+          "line": 239,
+          "column": 1
+        },
+        {
+          "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3652,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:01.989Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-585ca14c6e739d33f57f",
+          "file": "product.spec.cjs",
+          "line": 251,
+          "column": 1
+        },
+        {
+          "title": "Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 7227,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalMetrics')\nExpected: \u001b[32m\"10 temas · no leídos \u001b[7m9\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"10 temas · no leídos \u001b[7m10\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalMetrics')\u001b[22m\n\u001b[2m    9 × locator resolved to <p class=\"inbox-meta\" id=\"globalMetrics\">10 temas · no leídos 10</p>\u001b[22m\n\u001b[2m      - unexpected value \"10 temas · no leídos 10\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalMetrics')\nExpected: \u001b[32m\"10 temas · no leídos \u001b[7m9\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"10 temas · no leídos \u001b[7m10\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalMetrics')\u001b[22m\n\u001b[2m    9 × locator resolved to <p class=\"inbox-meta\" id=\"globalMetrics\">10 temas · no leídos 10</p>\u001b[22m\n\u001b[2m      - unexpected value \"10 temas · no leídos 10\"\u001b[22m\n\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:324:47",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 47,
+                      "line": 324
+                    },
+                    "snippet": "  322 |  await expect(page.locator('#globalSort')).toBeVisible();\n  323 |  await page.locator('#globalPeriod').selectOption('all');\n> 324 |  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-1}`);\n      |                                               ^\n  325 |  await expect(page.locator('.theme')).toHaveCount(visibleCount);\n  326 |  await page.locator('[data-open]').first().click();\n  327 |  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-2}`);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 47,
+                        "line": 324
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#globalMetrics')\nExpected: \u001b[32m\"10 temas · no leídos \u001b[7m9\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"10 temas · no leídos \u001b[7m10\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#globalMetrics')\u001b[22m\n\u001b[2m    9 × locator resolved to <p class=\"inbox-meta\" id=\"globalMetrics\">10 temas · no leídos 10</p>\u001b[22m\n\u001b[2m      - unexpected value \"10 temas · no leídos 10\"\u001b[22m\n\n\n  322 |  await expect(page.locator('#globalSort')).toBeVisible();\n  323 |  await page.locator('#globalPeriod').selectOption('all');\n> 324 |  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-1}`);\n      |                                               ^\n  325 |  await expect(page.locator('.theme')).toHaveCount(visibleCount);\n  326 |  await page.locator('[data-open]').first().click();\n  327 |  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-2}`);\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:324:47"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:05.654Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-Intelligenc-9b828-d-Chile-hypotheses-distinct-mobile/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-Intelligenc-9b828-d-Chile-hypotheses-distinct-mobile/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Global-Intelligenc-9b828-d-Chile-hypotheses-distinct-mobile/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 47,
+                    "line": 324
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-abc3ff3ab114f4046462",
+          "file": "product.spec.cjs",
+          "line": 312,
+          "column": 1
+        },
+        {
+          "title": "Weekly email capture requires consent and stays closed without approved provider",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1060,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:13.544Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-e1d8bc427692eda08d1e",
+          "file": "product.spec.cjs",
+          "line": 352,
+          "column": 1
+        },
+        {
+          "title": "analytics never sends without explicit privacy approval even if a key is present",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 634,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:14.813Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-1784d17d7e1bc5aeeffb",
+          "file": "product.spec.cjs",
+          "line": 365,
+          "column": 1
+        },
+        {
+          "title": "authorized analytics fixture emits only anonymous event fields",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 767,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:15.464Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-dc9f000ba5e1993e38b7",
+          "file": "product.spec.cjs",
+          "line": 377,
+          "column": 1
+        },
+        {
+          "title": "persistent editorial contract is visible in feed and brief",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1158,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:16.242Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-0f7e5f6e8f2157c8fdd7",
+          "file": "product.spec.cjs",
+          "line": 399,
+          "column": 1
+        },
+        {
+          "title": "Pulso Isapre leads with executive table and statistics use the value ladder",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 934,
+                  "error": {
+                    "message": "Error: Estadística Trimestral de Casos GES missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
+                    "stack": "Error: Estadística Trimestral de Casos GES missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:425:51",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 51,
+                      "line": 425
+                    },
+                    "snippet": "  423 |  ]){\n  424 |    const signal=radar.signals.find(x=>(x.title||'').includes(needle));\n> 425 |    expect(signal,needle+' missing from snapshot').toBeTruthy();\n      |                                                   ^\n  426 |    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);\n  427 |    const card=page.locator('article[data-card]').filter({hasText:needle});\n  428 |    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 51,
+                        "line": 425
+                      },
+                      "message": "Error: Estadística Trimestral de Casos GES missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  423 |  ]){\n  424 |    const signal=radar.signals.find(x=>(x.title||'').includes(needle));\n> 425 |    expect(signal,needle+' missing from snapshot').toBeTruthy();\n      |                                                   ^\n  426 |    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);\n  427 |    const card=page.locator('article[data-card]').filter({hasText:needle});\n  428 |    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:425:51"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:17.413Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Pulso-Isapre-leads-a7294-istics-use-the-value-ladder-mobile/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Pulso-Isapre-leads-a7294-istics-use-the-value-ladder-mobile/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Pulso-Isapre-leads-a7294-istics-use-the-value-ladder-mobile/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 51,
+                    "line": 425
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-391612f0bc7b34def754",
+          "file": "product.spec.cjs",
+          "line": 414,
+          "column": 1
+        },
+        {
+          "title": "committee HOLD/REJECT and failed publication contracts do not render as individual feed cards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 565,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:18.961Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-fd85c652c8fce107ec57",
+          "file": "product.spec.cjs",
+          "line": 443,
+          "column": 1
+        },
+        {
+          "title": "period is visible outside filters, persisted without duplicating metric copy, and resettable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1471,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:19.746Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-c8481b525b57bd8c9c01",
+          "file": "product.spec.cjs",
+          "line": 460,
+          "column": 1
+        },
+        {
+          "title": "Home hero is compact, one-line and exposes subscription plus Global Intelligence",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 685,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:21.232Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-24348fbb13bf27e0b81f",
+          "file": "product.spec.cjs",
+          "line": 481,
+          "column": 1
+        },
+        {
+          "title": "conversion surfaces lead with value and hide internal implementation status",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 876,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:21.931Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-a613948e9751f3560989",
+          "file": "product.spec.cjs",
+          "line": 498,
+          "column": 1
+        },
+        {
+          "title": "sources are grouped by decision value and expose freshness layers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 702,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:22.857Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-3d61b9df5fe835f79839",
+          "file": "product.spec.cjs",
+          "line": 510,
+          "column": 1
+        },
+        {
+          "title": "priority statistical releases use compact tables and collapsed traceability",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 968,
+                  "error": {
+                    "message": "Error: Estadística Trimestral de Casos GES missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
+                    "stack": "Error: Estadística Trimestral de Casos GES missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:535:32",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 32,
+                      "line": 535
+                    },
+                    "snippet": "  533 |  for(const [needle,minRows] of cases){\n  534 |    const s=radar.signals.find(x=>(x.title||'').includes(needle));\n> 535 |    expect(s,needle+' missing').toBeTruthy();\n      |                                ^\n  536 |    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);\n  537 |    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);\n  538 |    expect(s.methodology_visibility).toBe('collapsed');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 32,
+                        "line": 535
+                      },
+                      "message": "Error: Estadística Trimestral de Casos GES missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  533 |  for(const [needle,minRows] of cases){\n  534 |    const s=radar.signals.find(x=>(x.title||'').includes(needle));\n> 535 |    expect(s,needle+' missing').toBeTruthy();\n      |                                ^\n  536 |    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);\n  537 |    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);\n  538 |    expect(s.methodology_visibility).toBe('collapsed');\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:535:32"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:23.588Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-priority-statistic-8e695--and-collapsed-traceability-mobile/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-priority-statistic-8e695--and-collapsed-traceability-mobile/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-priority-statistic-8e695--and-collapsed-traceability-mobile/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 32,
+                    "line": 535
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-649c9d6c156177e30f89",
+          "file": "product.spec.cjs",
+          "line": 523,
+          "column": 1
+        },
+        {
+          "title": "Normative V2.1 puts document, subject and action in each current headline",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 4180,
+                  "error": {
+                    "message": "Error: 529\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
+                    "stack": "Error: 529\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:593:25",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 25,
+                      "line": 593
+                    },
+                    "snippet": "  591 |  for(const [number,subject,action] of expected){\n  592 |   const signal=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));\n> 593 |   expect(signal,number).toBeTruthy();\n      |                         ^\n  594 |   const title=signal.display_title;\n  595 |   expect(title).toContain(signal.normative_document_label||signal.legal_identity);\n  596 |   expect(title).toMatch(subject);expect(title).toMatch(action);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 25,
+                        "line": 593
+                      },
+                      "message": "Error: 529\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  591 |  for(const [number,subject,action] of expected){\n  592 |   const signal=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));\n> 593 |   expect(signal,number).toBeTruthy();\n      |                         ^\n  594 |   const title=signal.display_title;\n  595 |   expect(title).toContain(signal.normative_document_label||signal.legal_identity);\n  596 |   expect(title).toMatch(subject);expect(title).toMatch(action);\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:593:25"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:04:25.209Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Normative-V2-1-put-7bbc4-on-in-each-current-headline-mobile/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Normative-V2-1-put-7bbc4-on-in-each-current-headline-mobile/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-final-results/product-Normative-V2-1-put-7bbc4-on-in-each-current-headline-mobile/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 25,
+                    "line": 593
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-0c33c0447ee0030f9561",
+          "file": "product.spec.cjs",
+          "line": 572,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-11T06:03:33.434Z",
+    "duration": 56533.935999999994,
+    "expected": 32,
+    "skipped": 0,
+    "unexpected": 14,
+    "flaky": 0
+  }
+}

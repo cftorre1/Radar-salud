@@ -1,0 +1,36 @@
+{
+  "source_slug": "isp_anamed",
+  "checkpoint": "ANAMED",
+  "acceptance": "external_blocker",
+  "live_capture": false,
+  "origin_http_status": null,
+  "origin_headers_observed": false,
+  "origin_redirects_observed": false,
+  "origin_tls_observed": false,
+  "blocker": {
+    "layer": "managed_environment_egress_proxy",
+    "exact": "HTTPS CONNECT denied with HTTP/1.1 403 Forbidden and server: envoy before origin TLS negotiation; plain HTTP also denied by envoy. Browser opens return tool-layer 502 Bad Gateway or 400 Timeout fetching, without exposing origin headers.",
+    "scope": "28 GET/HEAD attempts over 7 official or legacy endpoints with bot and browser User-Agent; 24 HTTPS CONNECT denials and 4 plain-HTTP proxy denials.",
+    "evidence": "isp_anamed_transport.json"
+  },
+  "official_fallbacks_evaluated": [
+    {"url": "https://www.ispch.cl/categorias-alertas/anamed/", "result": "HTTPS CONNECT 403; browser 502; official indexed table has Fecha Publicación and current labels Alerta / Nota informativa / Publicación ISP"},
+    {"url": "https://ispch.cl/categorias-alertas/anamed/", "result": "HTTPS CONNECT 403; browser timeout; official indexed table shows dated alerts 31/26, 30/26, 29/26 on 29-09-2026"},
+    {"url": "https://www.ispch.cl/anamed/", "result": "HTTPS CONNECT 403; browser timeout; official indexed hub corroborates the dated alerts"},
+    {"url": "https://www.ispch.cl/categorias-alertas/anamed/feed/", "result": "HTTPS CONNECT 403; RSS response unavailable; no feed schema assumed"},
+    {"url": "https://www.ispch.cl/wp-json/wp/v2/", "result": "HTTPS CONNECT 403; browser tool URL inaccessible; API unavailable and schema unverified"},
+    {"url": "http://www.ispch.cl/categorias-alertas/anamed/", "result": "HTTP 403 from envoy; origin redirect unknown"},
+    {"url": "https://www.ispch.gob.cl/categorias-alertas/anamed/", "result": "Legacy configured hostname; HTTPS CONNECT 403 and browser timeout. No origin redirect verified."}
+  ],
+  "implemented": [
+    "Use official ispch.cl listing and attachment hosts identified through indexed official pages; retain HTTPS verification.",
+    "Accept current Alerta and Nota informativa labels as well as Publicación ISP; preserve separate official PDF attachments.",
+    "Bind event_date to exactly one standalone date cell in the same alert row and persist publication_date_evidence.",
+    "Reject future and impossible dates, dates only in title/upload path/unrelated elements, nonofficial URLs, HTTP, userinfo and unexpected ports.",
+    "Record failed primary listing even if official host fallback succeeds. Never inject indexed search items into runtime discovery."
+  ],
+  "fixture_provenance": "Synthetic regression HTML uses row-field structure and attachment labels observed in official indexed content. Live raw HTML and PDF bytes were not obtainable. These are not live capture fixtures.",
+  "tests": {"command": ".venv/bin/python -m pytest tests/test_isp_recovery.py -q", "result": "16 passed"},
+  "review": "Parent agent performs independent QA and integrates the scout alias plus common publication-evidence processing guard.",
+  "next_action": "In a network environment allowed to reach ispch.cl, rerun transport probe with proxies and TLS verification intact, save live HTML/PDF bytes and redirect/headers evidence, replay parser, then run discovery and PDF assessment. Keep source_health blocked until that capture succeeds."
+}

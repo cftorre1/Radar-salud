@@ -11,7 +11,10 @@ from .history import load_history,merge_history,save_history
 from .df_recovery import published_history_urls
 from .regulatory import SuperintendenciaNormativaScout
 from .regulatory_pipeline import process_superintendencia_normativa
-from .source_scouts import SusesoNormativeScout,SusesoNewsScout,SusesoFiscalizacionScout,DfHealthScout,FonasaDataHubScout,FonasaNewsScout,IspSurveillanceScout,IspAnamedAlertScout,ClinicasChileScout,CorporateNewsroomScout,DeisResourceScout
+from .source_scouts import SusesoNormativeScout,SusesoNewsScout,SusesoFiscalizacionScout,DfHealthScout,ClinicasChileScout,CorporateNewsroomScout
+from .fonasa_sources import FonasaDataHubScout,FonasaNewsScout
+from .isp_sources import IspSurveillanceScout,IspAnamedAlertScout
+from .deis_sources import DeisDocumentScout
 from .diario_oficial import DiarioOficialHealthScout
 from .public_source_pipeline import process_suseso,process_suseso_news,process_suseso_fiscalizacion,process_minsal,process_df,process_diario_oficial,process_fonasa_data_hub,process_fonasa,process_isp_surveillance,process_isp_anamed,process_clinicas_chile,process_corporate_news,process_deis
 from .analysis_cache import seed_from_history
@@ -19,6 +22,7 @@ from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
 from .processing import DeferredProcessing, RejectedProcessing
+from .public_source_evidence import failure_details, discovery_diagnostics, HOSTS as PUBLIC_DATA_SOURCES
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 
@@ -62,7 +66,7 @@ def main():
       ("isp_anamed","isp_anamed",IspAnamedAlertScout().discover,process_isp_anamed),
       ("isp_surveillance","isp_surveillance",IspSurveillanceScout().discover,process_isp_surveillance),
       ("pfizer_chile","pfizer_chile",CorporateNewsroomScout("pfizer_chile").discover,process_corporate_news),
-      ("deis","deis",DeisResourceScout().discover,process_deis),
+      ("deis","deis",DeisDocumentScout().discover,process_deis),
       ("redsalud","redsalud",CorporateNewsroomScout("redsalud").discover,process_corporate_news),
       ("bupa_chile","bupa_chile",CorporateNewsroomScout("bupa_chile").discover,process_corporate_news),
       ("indisa","indisa",CorporateNewsroomScout("indisa").discover,process_corporate_news),
@@ -87,6 +91,7 @@ def main():
     observed={}
     surfaces={}
     occupational_audit={}
+    discovery_details={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
         owner=getattr(discover,"__self__",None)
@@ -94,6 +99,12 @@ def main():
             items=discover()
             observed[name]=[dict(url=raw.url,event_date=raw.event_date,metadata=raw.metadata) for raw in items]
             surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
+            scout=getattr(discover,"__self__",None)
+            if name == "deis" and getattr(scout, "catalog", None) is not None:
+                atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
+            if name in PUBLIC_DATA_SOURCES:
+                discovery_details[name]={"diagnostics":discovery_diagnostics(scout,items)}
+                discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
             from .superintendencia_fiscalizacion import canonical_url
             published_urls={canonical_url(row.get("source_url", "")) for row in history
@@ -144,6 +155,13 @@ def main():
                     "decisions":getattr(owner,"decisions",[]),"inventory_complete":False,
                     "diagnostics":getattr(exc,"diagnostics", []), "discovered":len(partial),
                     "inventory":{k:v for k,v in inventory.items() if k != "raw_items"}}
+            if name in PUBLIC_DATA_SOURCES:
+                scout=getattr(discover,"__self__",None)
+                if name == "deis" and getattr(scout, "catalog", None) is not None:
+                    atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
+                discovery_details[name]={"error_details":failure_details(exc),
+                    "diagnostics":discovery_diagnostics(scout)}
+                discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"
     if occupational_audit:
         audit_path=root/'data/state/occupational_source_discovery.json'
         previous_audit=json.loads(audit_path.read_text()) if audit_path.exists() else {}
@@ -152,8 +170,8 @@ def main():
     run_path=root/"data/state/discovery_run.json"
     previous_run=json.loads(run_path.read_text()) if args.source and run_path.exists() else {}
     run_sources=previous_run.get("sources",{})
-    run_sources.update({name:{"discovered":found,"new":added,"technical_status":"error" if error else "ok","error_type":error,
-                             "checked_at":datetime.now(timezone.utc).isoformat(),**discovery_evidence.get(name,{})}
+    run_sources.update({name:{"discovered":found,"new":added,"technical_status":"error" if error else "degraded" if (discovery_details.get(name,{}).get("diagnostics") or {}).get("partial_failure") else "ok","error_type":error,
+                             "checked_at":datetime.now(timezone.utc).isoformat(),**discovery_evidence.get(name,{}),**discovery_details.get(name,{})}
                         for name,(found,added,error) in discoveries.items()})
     atomic_json(run_path,{
         "at":datetime.now(timezone.utc).isoformat(),
@@ -210,7 +228,16 @@ def main():
                                     df_body_reaudit_reason=exc.reason,editorial_decision='reject',feed_visibility=False)
                     save_history(history_path,history)
             from .df_resolution import defer_format
-            if item['source']=='diario_financiero' and defer_format(item, exc.reason, datetime.now(timezone.utc)):
+            source=item["source"]
+            if source in PUBLIC_DATA_SOURCES:
+                reason=str(exc)[:250]
+                diagnostics=discovery_details.setdefault(source,{}).setdefault("diagnostics",{})
+                diagnostics.setdefault("processing_deferred",[]).append({"reason":reason,**failure_details(exc)})
+                if exc.__cause__ is not None or any(term in reason.lower() for term in ("pdf","capture","contenido","readable","documento")):
+                    diagnostics["partial_failure"]=True
+                    diagnostics["evidence_status"]="capture_pending"
+                queue.finish(key,"retry",reason)
+            elif item['source']=='diario_financiero' and defer_format(item, exc.reason, datetime.now(timezone.utc)):
                 queue.save()
             else:
                 queue.finish(key,"retry",exc.reason or str(exc) or "budget_or_analysis_deferred")
@@ -240,7 +267,8 @@ def main():
             source_queue=source_items if name in FISCALIZATION_SOURCES else None,
             archived=sum(item.get("status")=="archived" for item in source_items),
             rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")),
-            **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}))
+            **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}),
+            **{k:v for k,v in discovery_details.get(name,{}).items() if v})
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()

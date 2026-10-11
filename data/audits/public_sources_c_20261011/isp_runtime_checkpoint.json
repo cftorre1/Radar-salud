@@ -1,0 +1,84 @@
+[
+  {
+    "source_slug": "isp_anamed",
+    "attempted_at_utc": "2026-10-11T04:30:18.135998+00:00",
+    "origin_tls_observed": false,
+    "live_capture": false,
+    "status": "blocked",
+    "exception_type": "RuntimeError",
+    "error": "ISP ANAMED official listings unavailable: https://www.ispch.cl/categorias-alertas/anamed/: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>; https://ispch.cl/categorias-alertas/anamed/: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>",
+    "cause_type": "URLError",
+    "cause": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "diagnostics": [
+      {
+        "channel": "ANAMED",
+        "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+        "status": "blocked",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "channel": "ANAMED",
+        "url": "https://ispch.cl/categorias-alertas/anamed/",
+        "status": "blocked",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      }
+    ],
+    "partial_failure": true
+  },
+  {
+    "source_slug": "isp_surveillance",
+    "attempted_at_utc": "2026-10-11T04:30:18.164936+00:00",
+    "origin_tls_observed": false,
+    "live_capture": false,
+    "status": "blocked",
+    "exception_type": "RuntimeError",
+    "error": "ISP surveillance has no verified dated official documents: https://www.ispch.cl/boletin/: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>; https://ispch.cl/boletin/: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>; https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>; https://ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>",
+    "cause_type": "URLError",
+    "cause": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "diagnostics": [
+      {
+        "channel": "Boletines de vigilancia de laboratorios",
+        "url": "https://www.ispch.cl/boletin/",
+        "status": "blocked",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "channel": "Boletines de vigilancia de laboratorios",
+        "url": "https://ispch.cl/boletin/",
+        "status": "blocked",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "channel": "Boletines de vigilancia de laboratorios",
+        "url": "https://www.ispch.cl/boletin/",
+        "status": "blocked",
+        "items": 0
+      },
+      {
+        "channel": "Vigilancia de virus respiratorios",
+        "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+        "status": "blocked",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "channel": "Vigilancia de virus respiratorios",
+        "url": "https://ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+        "status": "blocked",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "channel": "Vigilancia de virus respiratorios",
+        "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+        "status": "blocked",
+        "items": 0
+      }
+    ],
+    "partial_failure": true
+  }
+]

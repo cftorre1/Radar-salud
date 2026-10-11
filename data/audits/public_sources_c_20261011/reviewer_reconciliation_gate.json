@@ -1,0 +1,36 @@
+{
+  "reviewer": "independent QA agent /root/reviewer",
+  "checked_at_utc": "2026-10-11T04:49:07.477759+00:00",
+  "verdict": "reconciliation_gate_merge_pass",
+  "reviewed_before_merge_commit": true,
+  "head_sha": "0c15b1908d6e6161441cda60834d01dc7beafa01",
+  "reconciled_staging_sha": "24d4c1a8d6a70d73324207b33985378aeff36142",
+  "checks": {
+    "all_82_upstream_task_ids_and_order_preserved": true,
+    "all_81_other_upstream_tasks_byte_value_equivalent": true,
+    "new_gate_id": "source_recovery_reconciliation_gate_2026_10_11",
+    "new_gate_exactly_equals_upstream_object": true,
+    "only_updated_task": "source_repair_public_data_lane_2026_10_11",
+    "updated_source_task_equals_previously_reviewed_head": true,
+    "source_task_status": "blocked",
+    "all_other_upstream_metadata_preserved_except_updated_at": true,
+    "only_tracked_delta_from_head": "config/orchestrator_queue.json",
+    "code_tests_health_pmo_and_prior_audits_unchanged_from_head": true,
+    "unmerged_index_entries": 0,
+    "conflict_markers_in_resolved_queue": 0,
+    "working_diff_check": "passed",
+    "cached_diff_check": "passed"
+  },
+  "tests": {
+    "executed_by": "root",
+    "scope": "PMO/orchestrator",
+    "result": "11 passed",
+    "reviewer_repeated_suite": false,
+    "reason": "JSON semantic preservation was independently asserted; runtime code and health have no delta."
+  },
+  "source_task_closed": false,
+  "promotion_to_staging_main_or_production": false,
+  "continuing_operational_sources": 0,
+  "queue_sha256": "d80a6af8858a0a9e820f4eaf3d48acbbc61f77c260f86e5ae58299391fbf27fc",
+  "blocking_findings": []
+}
