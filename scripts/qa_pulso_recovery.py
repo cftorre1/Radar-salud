@@ -39,6 +39,26 @@ def digest(value):
     return hashlib.sha256(value).hexdigest()
 
 
+def explicit_media_attribution(value):
+    """Recognize a named report/citation/interview, not a publisher mention.
+
+    The first real process used passive citations and an interview attribution;
+    the old publisher-before-report regex rejected those valid statements.
+    This says nothing about whether the attributed facts are correct.
+    """
+    if not isinstance(value, str):
+        return False
+    publisher = r"(?:pulso(?:\s*/\s*la tercera)?|la tercera)"
+    reporting = r"(?:report[aó](?:n|ron)?|inform[aó](?:n|ron)?|public[aó](?:n|ron)?|señal[aó](?:n|ron)?)"
+    patterns = (
+        r"\bseg[uú]n\s+(?:" + reporting + r"\s+)?" + publisher + r"\b",
+        publisher + r"\s+" + reporting + r"\b",
+        r"\b(?:reportad[oa]s?|citad[oa]s?)\s+por\s+" + publisher + r"\b",
+        r"\bentrevista\s+con\s+" + publisher + r"\b",
+    )
+    return any(re.search(pattern, value, re.I) for pattern in patterns)
+
+
 def normalized_url(value):
     if not isinstance(value, str):
         return None
@@ -1054,7 +1074,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                 published = historical.get(url, {})
                 text = " ".join(str(published.get(key) or "") for key in ("title", "what_happened", "why_it_matters"))
                 if (published.get("evidence_maturity") != "media_reported"
-                        or not re.search(r"seg[uú]n\s+(?:pulso|la tercera)|(?:pulso|la tercera).*(?:report|inform|public|señal)", str(published.get("what_happened") or ""), re.I)
+                        or not explicit_media_attribution(published.get("what_happened"))
                         or published.get("publication_date") != row.get("publication_date")):
                     fail("processing", "published_media_attribution_or_real_date_invalid", url=url)
                 if "presupuesto-salud-2027-rebajas" in url and not re.search(r"propuest|proyect|discusi|tramit", text, re.I):

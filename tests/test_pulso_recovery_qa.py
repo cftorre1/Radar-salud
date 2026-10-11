@@ -512,6 +512,33 @@ def test_published_threshold_attribution_and_serialized_feed_presence_are_checke
     assert {"media_editorial_threshold_changed", "published_media_attribution_or_real_date_invalid", "reported_history_or_feed_presence_not_actual"} <= codes(evidence)
 
 
+REAL_ATTRIBUTIONS = json.loads((Path(__file__).parent / "fixtures/pulso_runtime_model_real/attribution_2026_10_11.json").read_text())
+
+
+@pytest.mark.parametrize("record", REAL_ATTRIBUTIONS["records"], ids=lambda row: row["source_url"].split("/")[-2])
+def test_actual_passive_citation_and_interview_attribution_are_not_false_rejected(evidence, record):
+    """Only the observed model wording is reused in the synthetic gate fixture."""
+    assert REAL_ATTRIBUTIONS["committed_snapshot_sha"] == "90e99ad30e6eeaf470480e7847a7a814334a2b7b"
+    assert record["evidence_maturity"] == "media_reported"
+    publish_first(evidence)
+    for row in (evidence["history"][0], evidence["snapshot"]["signals"][0]):
+        row["what_happened"] = record["what_happened"]
+    assert qa.evaluate(**evidence)["processing_qa"] == "PASS"
+    # Naming an official source alone cannot preserve the media attribution.
+    evidence["history"][0]["what_happened"] = record["what_happened"].replace("Pulso/La Tercera", "el ministerio").replace("Pulso", "el ministerio")
+    assert "published_media_attribution_or_real_date_invalid" in codes(evidence)
+
+
+@pytest.mark.parametrize("text", [
+    None, "", "El Gobierno aprobó oficialmente el nuevo presupuesto.",
+    "Pulso aparece en un enlace. El ministerio informó que el presupuesto fue aprobado.",
+    "Según un informe del Gobierno, aumentó el presupuesto. La Tercera aparece en el pie de página.",
+    "La ministra declaró a otro medio que Pulso no había informado sobre esta medida.",
+])
+def test_attribution_requires_an_explicit_report_citation_or_interview(text):
+    assert not qa.explicit_media_attribution(text)
+
+
 def test_proposed_budget_cannot_be_presented_as_enacted(evidence):
     publish_first(evidence, url=BASE + "presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido/")
     evidence["history"][0].update(title="Presupuesto salud 2027", what_happened="Según Pulso / La Tercera, el presupuesto 2027 reduce el fondo de alto costo.")
