@@ -1,0 +1,1110 @@
+[
+  {
+    "class": "unexpected_stall",
+    "finding": "Development could stop for hours after a failure without proactive recovery or escalation.",
+    "id": "silent_stall_2026_09_27",
+    "preventive_controls": [
+      "liveness_or_recovery_rule",
+      "observability_or_dashboard_metric",
+      "work_agent_contract"
+    ],
+    "root_cause": "Previous loop treated workflow failure as terminal evidence rather than as an input to an autonomous recovery cycle.",
+    "source": "Toba",
+    "specific_fix": "Autopilot V1 watchdog and anti-silence recovery state.",
+    "status": "implemented_pending_integration"
+  },
+  {
+    "class": "missed_agent_finding",
+    "finding": "Human review often finds deeper product issues that agents did not anticipate.",
+    "id": "human_finds_what_agents_miss_2026_09_27",
+    "preventive_controls": [
+      "reviewer_rule",
+      "existing_agent_role_expansion",
+      "agent_creation_rule"
+    ],
+    "root_cause": "Review loops over-weighted correctness and regression protection, under-weighting strategic coherence and continuous improvement.",
+    "source": "Toba",
+    "specific_fix": "Mandatory Improvement Review after functional PASS.",
+    "status": "implemented_pending_integration"
+  },
+  {
+    "class": "regression_contract_design",
+    "finding": "Browser QA anchored a normative card to mutable descriptive heading copy; editorial title reconciliation made the selector fail although the underlying TEA content remained correct.",
+    "id": "mutable_copy_selector_2026_09_27",
+    "preventive_controls": [
+      "browser_qa_assertion",
+      "reviewer_rule"
+    ],
+    "preventive_rule": "Entity/document identity selectors must prefer stable IDs, document numbers, canonical URLs or data attributes; descriptive copy belongs in separate semantic assertions.",
+    "root_cause": "QA selector encoded presentation copy instead of stable domain identity.",
+    "source": "Autopilot recovery",
+    "specific_fix": "Anchor the TEA browser contract to stable normative identity (Resolución Exenta IF/N°11156 + Circular IF/Nº528) while retaining substantive assertions on RND, deadlines and effective date.",
+    "status": "implemented_in_recovery_branch_pending_validation"
+  },
+  {
+    "class": "time_semantics_regression",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: prueba desktop/mobile con reloj fijo al final del día; tarjeta semanal e Inbox deduplicados correctamente."
+    ],
+    "finding": "La fecha sin hora 2026-09-14 se excluía del período de 14 días según la hora UTC del 2026-09-28, dejando la tarjeta semanal fuera del período cerca de su límite.",
+    "id": "date_only_timezone_boundary_2026_09_27",
+    "preventive_controls": [
+      "deterministic_test",
+      "browser_qa_assertion",
+      "data_validation_rule"
+    ],
+    "preventive_rule": "Date-only source dates must never be compared as UTC-midnight instants without explicit normalization; product windows are calendar-day semantics in the product timezone.",
+    "root_cause": "Recency logic interpreted YYYY-MM-DD as UTC midnight, mixing date-only business semantics with an instant-based UTC clock.",
+    "source": "Autopilot recovery",
+    "specific_fix": "Comparar fechas YYYY-MM-DD por día calendario UTC y congelar constructor Date + Date.now() en browser QA a las 23:59.",
+    "status": "validated_in_staging"
+  },
+  {
+    "class": "source_of_truth_miss",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: recencia aplicada a la fuente canónica app.js; QA/rebuild y browser PASS."
+    ],
+    "finding": "A valid recency fix was first applied to web/app.js, but the QA build regenerated it from canonical root app.js, so the fix disappeared.",
+    "id": "generated_artifact_fix_2026_09_27",
+    "preventive_controls": [
+      "reviewer_rule",
+      "architecture_change"
+    ],
+    "preventive_rule": "Before editing a runtime/output file, identify whether it is generated; fixes must land in the canonical source and generated outputs must be rebuilt rather than hand-maintained.",
+    "root_cause": "The repair loop did not verify source-of-truth ownership before editing.",
+    "source": "Autopilot recovery",
+    "specific_fix": "Apply product logic changes to canonical source files and treat generated web artifacts as outputs.",
+    "status": "validated_in_staging"
+  },
+  {
+    "class": "repeated_failure_signature",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/36364084776 — SHA b39c7a5a3704cfd1b10d882a9fd3a88ffe3a22c9: tests, browser desktop/mobile, Reviewer sin hallazgos y preview PASS tras sustituir el literal histórico."
+    ],
+    "finding": "La aserción browser del panel PMO buscaba texto fijo de una falla histórica; los fallos #541, #543 y #548 persistieron aunque el read model ya mostraba otro estado.",
+    "id": "stale_pmo_browser_contract_2026_09_28",
+    "preventive_controls": [
+      "browser_qa_assertion",
+      "reviewer_rule"
+    ],
+    "preventive_rule": "Cuando QA valida una interfaz basada en cola, PMO o reportes mutables, debe derivar las expectativas de la misma respuesta estructurada y comprobar todas las entradas actuales; evitar texto histórico fijo.",
+    "root_cause": "El contrato QA duplicaba contenido mutable del baseline en una cadena literal. El Reviewer previo verificaba datos, editorial y UX, pero no comprobaba vigencia semántica de selectores/aserciones de regresión.",
+    "source": "Autopilot recovery",
+    "specific_fix": "Cambiar tests/browser/product.spec.cjs para cotejar cada descripción renderizada con pmo.open_failures del product report actual.",
+    "status": "validated_in_staging"
+  },
+  {
+    "class": "missed_agent_finding",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: 12/12 titulares con acto, materia y acción; Improvement Review PASS."
+    ],
+    "examples": [
+      "IF/N°11156",
+      "IF/N°10670",
+      "IF/N°10615",
+      "IF/N°533",
+      "IF/N°9994",
+      "IF/N°8760",
+      "IF/N°532"
+    ],
+    "finding": "Varias señales normativas eran jurídicamente identificables pero el título no permitía comprender rápidamente el contenido o impacto; además la identidad del documento no puede quedar tan discreta como fecha/fuente.",
+    "id": "normative_titles_not_understandable_2026_09_27",
+    "preventive_controls": [
+      "Regulatory Business Editor",
+      "5-second editorial comprehension gate",
+      "structured normative output contract",
+      "incomplete-title deterministic guards",
+      "mandatory regression corpus",
+      "historical recuration",
+      "plain_language_title_schema",
+      "prominent_legal_identity_badge",
+      "normative_5_second_regression_gate",
+      "opaque_future_titles_fail_closed"
+    ],
+    "queue_task": "normative_editorial_v2_2026_09_27",
+    "root_cause": "El pipeline editorial priorizó composición desde identidad jurídica y fragments de normative_subject/why_it_matters, sin un gate explícito de comprensión ejecutiva ni separación entre título editorial e identidad legal.",
+    "source": "Toba",
+    "specific_fix": "Normative Editorial V2: plain_language_title separado de legal_identity/legal_subtitle, badge prominente, Regulatory Business Editor permanente, corpus de 12 señales visibles y gate fail-closed para titular opaco.",
+    "status": "validated_in_staging"
+  },
+  {
+    "class": "missed_agent_finding",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/36429461066 — SHA 348946bfb87cac8dd045fc4f4b0e1a6ea6691c6a; 244 Python, 39 Node, 46 Playwright, Reviewer y preview PASS.",
+      "docs/IMPROVEMENT_REVIEW_STATISTICS_V2_2026_09_28.md"
+    ],
+    "finding": "Cards y detalles muestran 'Por qué importa' genéricos y estadísticas con bloques redundantes; además Series ISAPRE presenta una cifra de Prestaciones de magnitud/semántica no explicada.",
+    "id": "statistics_redundancy_semantic_validation_2026_09_27",
+    "preventive_controls": [
+      "Data Analytics/Statistics Reviewer",
+      "semantic variable/unit contract",
+      "magnitude sanity checks",
+      "incremental-value gate",
+      "evidence-layer separation",
+      "family-specific regression corpus"
+    ],
+    "queue_task": "signal_simplification_statistics_v2_2026_09_27",
+    "root_cause": "El pipeline optimizó completitud estructural y trazabilidad visible, pero no midió valor incremental de cada bloque ni validó suficientemente la semántica de la fila/variable seleccionada por parsers heurísticos.",
+    "source": "Toba",
+    "specific_fix": "Signal Simplification + Statistics V2 con tabla-first, evidencia técnica secundaria y validación semántica/unidad fail-closed.",
+    "status": "validated_in_staging"
+  },
+  {
+    "class": "flaky_browser_contract",
+    "evidence": {
+      "sha": "1ca766b258d5000e37ab0f09a7773315dd46e61c",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36366375881"
+    },
+    "finding": "El QA móvil consultaba el recuento de fuentes inmediatamente tras abrir el modal, antes de terminar el render asíncrono; el DOM podía mostrar 0 filas aunque el contenido llegara a continuación.",
+    "id": "async_sources_browser_race_2026_09_28",
+    "preventive_controls": [
+      "browser_test_waits_for_observable_state",
+      "dynamic_content_assertion"
+    ],
+    "root_cause": "La prueba trataba una condición temporal de red/render como sincrónica.",
+    "source": "Autopilot V1 recovery",
+    "specific_fix": "Usar expect.poll para esperar que el registro visible supere ambos umbrales.",
+    "status": "implemented_validated"
+  },
+  {
+    "class": "pipeline_contract_persistence",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: contrato V2.1 persistido en snapshot final; 12/12 titulares; Reviewer PASS."
+    ],
+    "finding": "Normative Editorial V2 podía transformar títulos durante el pipeline, pero el snapshot versionado/final seguía conservando display_title jurídicos antiguos o truncados; los tests dependían además de frases demasiado específicas.",
+    "id": "normative_v2_canonical_persistence_gap_2026_09_28",
+    "preventive_controls": [
+      "canonical-transformation authority per content contract",
+      "post-export contract validation on final snapshot",
+      "stable identity selectors by source_url/document number",
+      "semantic title assertions separated from locator identity",
+      "pipeline persistence regression test"
+    ],
+    "queue_task": "normative_editorial_v2_2026_09_27",
+    "root_cause": "La autoridad canónica de la recuración normativa no estaba suficientemente definida entre overrides, export_web_snapshot y snapshot final. El QA comprobaba partes del contrato, pero no que los campos finales persistidos fueran la fuente efectiva de UI.",
+    "source": "Pedro QA",
+    "specific_fix": "Persistir titular V2.1, identidad/subtítulo legal y contexto en snapshot final; validar exportación y UI en corpus de 12 actos.",
+    "status": "validated_in_staging"
+  },
+  {
+    "class": "autonomy_failure",
+    "finding": "Despite Autopilot V1 infrastructure, progress still depended on Toba asking for status because monitoring automations could not continue GitHub writes/reasoning autonomously.",
+    "id": "autopilot_manual_followup_regression_2026_09_28",
+    "preventive_controls": [
+      "real Work execution lane required before claiming autonomy",
+      "autonomy acceptance test: fail→repair/switch→continue without human prompt",
+      "owner-followup count KPI",
+      "do not mark Autopilot operationally complete on monitoring-only evidence"
+    ],
+    "queue_task": "pele_work_activation_2026_09_27",
+    "root_cause": "Monitoring and execution were conflated. The hourly automation is an observer, not a durable write-capable Work execution lane. Pelé Work was specified but not actually activated/observed.",
+    "source": "Toba",
+    "status": "blocked_human_activation_required"
+  },
+  {
+    "class": "editorial_architecture_overcorrection",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/36421011711 — 677702acda24c1a97ef114cb37b3f7fc835a5142: contrato V2.1 persistido en snapshot final; 12/12 titulares; Reviewer PASS."
+    ],
+    "finding": "Separating legal identity from the headline made normative cards easier to read but harder to recognize as actual circulars/resolutions; document identity became too quiet and context became necessary to understand the act.",
+    "id": "normative_identity_overseparation_2026_09_28",
+    "preventive_controls": [
+      "document-first headline contract",
+      "committee gate: document + subject + action",
+      "allow longer mobile titles when needed",
+      "semantic reviewer over rigid title regex",
+      "full stock recuration"
+    ],
+    "queue_task": "normative_editorial_v2_2026_09_27",
+    "root_cause": "Normative V2 optimized executive readability by treating legal identity as a separate visual layer, but for regulatory intelligence the document itself is part of the core meaning and should remain in the headline.",
+    "source": "Toba mobile review",
+    "specific_fix": "Mantener tipo y número del acto dentro del titular junto con materia y acción; admitir longitud móvil suficiente y exigir contexto adicional.",
+    "status": "validated_in_staging"
+  },
+  {
+    "attempts": 2,
+    "class": "statistics_parser_schema_false_negative",
+    "evidence": [
+      "Consolidación final confirmada en https://github.com/cftorre1/Radar-salud/actions/runs/36429461066; salida estadística y Reviewer PASS."
+    ],
+    "finding": "El parser estricto de GES no detectó el esquema de la hoja 2026 y detuvo el build antes de publicar salidas.",
+    "id": "ges_workbook_multilevel_header_recovery_2026_09_28",
+    "max_attempts": 3,
+    "preventive_controls": [
+      "multirow_header_schema_validation",
+      "official_period_sheet_contract",
+      "statistics_reviewer_denominator_checks"
+    ],
+    "root_cause": "Se asumió que nombre de asegurador y métrica 'casos' aparecen en una única celda de encabezado.",
+    "source": "Autopilot QA recovery",
+    "specific_fix": "Combinar encabezados superiores, propagar etiquetas de grupos sobre celdas combinadas, seleccionar la serie acumulada a marzo de 2026 y usar el nombre textual oficial de la patología.",
+    "status": "recovered"
+  },
+  {
+    "attempts": 3,
+    "class": "statistical_series_semantic_ambiguity",
+    "evidence": [
+      "Consolidación final confirmada en https://github.com/cftorre1/Radar-salud/actions/runs/36429461066; salida estadística y Reviewer PASS."
+    ],
+    "finding": "La serie de cartera ofreció dos filas agregadas elegibles para Beneficiarios.",
+    "id": "series_beneficiary_duplicate_total_recovery_2026_09_28",
+    "max_attempts": 3,
+    "preventive_controls": [
+      "variable_identity_in_row_label",
+      "ambiguous_aggregate_fail_closed",
+      "series_unit_and_scale_reviewer"
+    ],
+    "root_cause": "El filtro semántico aceptaba cualquier fila total de un libro cuyo nombre contenía Beneficiarios.",
+    "source": "Autopilot QA recovery",
+    "specific_fix": "Restringir a la hoja Promedio Anual de Cartera; validar el total Beneficiarios mediante reconciliación con los agregados cotizantes + cargas (tolerancia de redondeo 2); registrar tipo stock promedio anual y unidad personas.",
+    "status": "recovered"
+  },
+  {
+    "attempts": 2,
+    "class": "statistical_series_sheet_identity_mismatch",
+    "evidence": [
+      "Consolidación final confirmada en https://github.com/cftorre1/Radar-salud/actions/runs/36429461066; salida estadística y Reviewer PASS."
+    ],
+    "finding": "La serie Casos GES no está en una hoja cuyo nombre coincida literalmente con el nombre esperado.",
+    "id": "series_ges_sheet_identity_recovery_2026_09_28",
+    "max_attempts": 3,
+    "preventive_controls": [
+      "explicit_series_sheet_contract",
+      "variable_type_and_unit_validation",
+      "official_workbook_identity"
+    ],
+    "root_cause": "El parser equiparó el nombre de variable a un token del título de pestaña.",
+    "source": "Autopilot QA recovery",
+    "specific_fix": "Usar la pestaña oficial Casos Resumen, cuyo encabezado la identifica como casos GES informados por Isapres y Fonasa; mantener controles de unidad, escala y rótulo total.",
+    "status": "recovered"
+  },
+  {
+    "attempts": 1,
+    "class": "statistical_series_aggregate_scope_ambiguity",
+    "evidence": [
+      "Consolidación final confirmada en https://github.com/cftorre1/Radar-salud/actions/runs/36429461066; salida estadística y Reviewer PASS."
+    ],
+    "finding": "El parser trató dos filas 'Subtotal' como total y seleccionó también un agregado del sistema sin etiquetar el alcance.",
+    "id": "series_ges_subtotal_false_positive_recovery_2026_09_28",
+    "max_attempts": 3,
+    "preventive_controls": [
+      "exact_aggregate_label_token",
+      "insurer_population_scope_label",
+      "adversarial_subtotal_fixture"
+    ],
+    "root_cause": "Búsqueda por substring 'total' aceptaba 'subtotal' y ocultaba el alcance combinado.",
+    "source": "Autopilot QA recovery",
+    "specific_fix": "Exigir token Total completo, no Subtotal; exponer tipo de serie como flujo anual combinado Isapres+Fonasa.",
+    "status": "recovered"
+  },
+  {
+    "attempts": 2,
+    "class": "statistical_release_detail_unreachable",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/36429461066 — tabla ejecutiva abre detalle en desktop/móvil; tabla visible, metodología cerrada por defecto, sin bloque redundante, sin overflow móvil."
+    ],
+    "finding": "El renderer no ofrecía abrir el detalle estadístico si data_insights estaba vacío, aunque existía una tabla ejecutiva validada.",
+    "id": "statistical_summary_table_detail_button_recovery_2026_09_28",
+    "max_attempts": 3,
+    "preventive_controls": [
+      "detail_depth_includes_validated_tables",
+      "desktop_mobile_detail_accessibility",
+      "compact_factual_card_contract"
+    ],
+    "root_cause": "El cálculo de profundidad solo revisaba key points e insights narrativos, no summary_table.",
+    "source": "Autopilot QA recovery",
+    "specific_fix": "Tratar una tabla de análisis estadístico con filas como contenido de detalle; actualizar copy assertions para fuentes oficiales.",
+    "status": "validated_in_staging"
+  },
+  {
+    "attempts": 1,
+    "class": "pmo_evidence_anchor_mismatch",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/36430160293 — fallo test_validated_requires_full_evidence_for_exact_candidate; 243 pass, 1 fallo por mismatch del ancla.",
+      "https://github.com/cftorre1/Radar-salud/actions/runs/36430841007 — restaurar reference_staging_sha separó ancla histórica del candidate por tarea; 244 Python, 39 Node, 46 browser, Reviewer y preview/smoke PASS."
+    ],
+    "finding": "El nuevo Statistics V2 evidence se registró correctamente, pero cambiar reference_staging_sha movió el ancla histórica usada por el test PMO staging_qa y quebró su coincidencia exacta de candidato.",
+    "id": "pmo_reference_anchor_recovery_2026_09_28",
+    "max_attempts": 3,
+    "preventive_controls": [
+      "deterministic_test",
+      "pmo_evidence_catalog_by_scope",
+      "reference_sha_anchor_review"
+    ],
+    "preventive_rule": "Al añadir evidencia de una tarea, actualizar su clave independiente en evidence_catalog; no mover anclas de evidencia baseline salvo reconciliación explícita de todas las entradas dependientes.",
+    "root_cause": "Se confundió el SHA de evidencia específica de tarea con reference_staging_sha, que ancla otra evidencia baseline y no debe reemplazarse en una actualización local de catálogo.",
+    "source": "Autopilot Pato update recovery",
+    "specific_fix": "Restaurar el reference_staging_sha histórico; conservar Statistics V2 en su propia entrada del evidence_catalog y mantener current_staging_candidate_sha separado.",
+    "status": "validated_in_staging"
+  },
+  {
+    "at": "2026-10-11T00:00:00-03:00",
+    "evidence": [
+      "Source Audit Executor ran repeatedly with 12 P0 unresolved.",
+      "DF/Pulso repair defects were only found after owner status prompt.",
+      "Controller dispatched one audit executor, not parallel repair workers.",
+      "Autonomous Recovery remained failure-triggered and unreliable for code mutation."
+    ],
+    "preventive_controls": [
+      "Split P0 backlog into independent repair lanes by source family.",
+      "Detect repeated identical audit state and classify as autonomy stall.",
+      "Do not count repeated audit SUCCESS as useful progress.",
+      "Require each lane to produce mutation, blocker, or explicit no-op evidence before next cycle."
+    ],
+    "root_cause": "Architecture optimized for monitoring and serialized execution, not parallel autonomous repair.",
+    "severity": "critical",
+    "status": "open",
+    "summary": "Owner follow-up exposed that repeated source-audit runs were measuring the same unresolved state while repair lanes were not progressing in parallel.",
+    "type": "owner_detected_autonomy_stall"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:autonomy_architecture_redesign_2026_10_07",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: autonomy_architecture_redesign_2026_10_07",
+    "id": "autonomy_observed_2d73ac1fefa2034c383e05011ac0cdba22f5be0eda73c1ffc90d1cdedc1a1037",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "autonomy_architecture_redesign_2026_10_07"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:autonomy_continuity_hardening_v1_1_2026_09_29",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: autonomy_continuity_hardening_v1_1_2026_09_29",
+    "id": "autonomy_observed_64264d1d1e2407d0751baf5b76a406831b9f17dfb563d2b57d71c7982b46bf50",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "autonomy_continuity_hardening_v1_1_2026_09_29"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:beta_gate5_test_ops_golive_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: beta_gate5_test_ops_golive_2026_10_11",
+    "id": "autonomy_observed_fed08cc1bb34e2c31b30afccf8453d9dbbb96bf80ec69008b677c86a350350ca",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "beta_gate5_test_ops_golive_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:beta_sources_completion_today_2026_09_29",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: beta_sources_completion_today_2026_09_29",
+    "id": "autonomy_observed_6bd64490a02224f69ad15528ef5ce06e5e146a52f564c191d577d47584bb139e",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "beta_sources_completion_today_2026_09_29"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:coverage_balance_sources_epidemiology_v1_2026_09_28",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: coverage_balance_sources_epidemiology_v1_2026_09_28",
+    "id": "autonomy_observed_673c68300fa194260456fe0e76ab1f10ea97633cc5547300b51521d52bb8a4f1",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "coverage_balance_sources_epidemiology_v1_2026_09_28"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:independent_auditor_and_autonomy_controller_2026_10_07",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: independent_auditor_and_autonomy_controller_2026_10_07",
+    "id": "autonomy_observed_bc8e4714819f517191b36240df45a191cac8459422589cc0d3bd2ffb5a5f9bd5",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "independent_auditor_and_autonomy_controller_2026_10_07"
+  },
+  {
+    "blocker_fingerprint": "queue_blocked_by:05a7024a80c40aba4f08e6eb93c65de7feb3201c430a3a3a856868ac4f2c0f5a",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: pele_work_activation_2026_09_27",
+    "id": "autonomy_observed_5f9e1d58d7d6f8b944615f113ec691503b99e480097953dd06ed0af352adfa70",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "pele_work_activation_2026_09_27"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:pulso_latercera_exhaustive_discovery_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: pulso_latercera_exhaustive_discovery_2026_10_11",
+    "id": "autonomy_observed_df09f3e97740926c8941fc2f7263c6894995fe8f8e55e2171716e392e98cf095",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "pulso_latercera_exhaustive_discovery_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:source_audit_issue5_iteration1_recovery_2026_10_09",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_audit_issue5_iteration1_recovery_2026_10_09",
+    "id": "autonomy_observed_6c7ac9c77999ab8076a8170dce2b472f0b69a9aedb3ff619e2e0fdb33394c3bb",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_audit_issue5_iteration1_recovery_2026_10_09"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:source_audit_issue5_iteration2_balance_2026_10_09",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_audit_issue5_iteration2_balance_2026_10_09",
+    "id": "autonomy_observed_dc2afca7f2861ae693a4f2921dd55d1dcc6dd9c5ee2a0c1c354d542aed8ae81e",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_audit_issue5_iteration2_balance_2026_10_09"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:source_audit_issue5_iteration4_autonomy_2026_10_09",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_audit_issue5_iteration4_autonomy_2026_10_09",
+    "id": "autonomy_observed_5516b4f7a7b95689d2f28d96e913a65aa047d57e601ab1013fb6bdbb8e34b888",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_audit_issue5_iteration4_autonomy_2026_10_09"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:source_audit_issue5_iteration5_expansion_2026_10_09",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_audit_issue5_iteration5_expansion_2026_10_09",
+    "id": "autonomy_observed_87d1504351ec108f4757ce1a3d5890585c46aea7041c577c1ec9c20c9324c750",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_audit_issue5_iteration5_expansion_2026_10_09"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:source_audit_issue5_master_2026_10_09",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_audit_issue5_master_2026_10_09",
+    "id": "autonomy_observed_176add00993251166da6cdfac3d5cdf84b088449c67da1e7ba55184bca32936c",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_audit_issue5_master_2026_10_09"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:source_recovery_reconciliation_gate_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_recovery_reconciliation_gate_2026_10_11",
+    "id": "autonomy_observed_1869846c1037739f989e6afc191e6e7e0d05c6320034ee953e462a4933d2f808",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_recovery_reconciliation_gate_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:source_runtime_audit_2026_10_02",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_runtime_audit_2026_10_02",
+    "id": "autonomy_observed_0d7362659395583bc7a85fe5c52d4001994cd589d440e07d1e516d7262146cb9",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_runtime_audit_2026_10_02"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_cenabast_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_cenabast_2026_10_11",
+    "id": "autonomy_observed_77d9bed983197045cc28f9b3760f78aa46aba818440cd2759a346f540e97dd16",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_cenabast_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_cmf_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_cmf_2026_10_11",
+    "id": "autonomy_observed_4b418c73abc4ee55c75ff3772cb1f8ba635bc583d85bd523ce3c777ef25146f1",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_cmf_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_dipres_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_dipres_2026_10_11",
+    "id": "autonomy_observed_ebe609f2e0d44d94eb89077b1ed62aaa25439dae58badb1cc9e00bed6b0f06e2",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_dipres_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_fne_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_fne_2026_10_11",
+    "id": "autonomy_observed_b11be0829866814823c84b8a0a2cb4f35d6260517ed11d11940966ad5e25f6e5",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_fne_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_innovation_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_innovation_2026_10_11",
+    "id": "autonomy_observed_dda1edf5ec58136a6894cfe2fe954091447eedbe182ee6262042ead50a650d22",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_innovation_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_isapres_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_isapres_2026_10_11",
+    "id": "autonomy_observed_5b18d1dc00b4a08125c2cab67a6be21ea335fa3734f8a6b7f3e246b0a197f63c",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_isapres_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_legal_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_legal_2026_10_11",
+    "id": "autonomy_observed_2439cf645c751923a50a3defb65b79449f7bc025bcf8c5498133f323d62ec4ad",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_legal_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_occupational_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_occupational_2026_10_11",
+    "id": "autonomy_observed_9b1e11d27cf5b88d642409eef652eab7a2ac05261843b4b880efdfd1dadc487a",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_occupational_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_paho_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_paho_2026_10_11",
+    "id": "autonomy_observed_65a9122bd9c4f01f9fc3b77161f1f040d047c851ec296ea954acc184a1310652",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_paho_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_procurement_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_procurement_2026_10_11",
+    "id": "autonomy_observed_a8ed9fa24c319e9ff413609c2990b82b4ac34ed51535465edd806e89c57074f2",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_procurement_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_provider_data_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_provider_data_2026_10_11",
+    "id": "autonomy_observed_b0b765df4baa11e92a1cfdda7c48e834695db39410f8a0aecbdb3435ce5c0add",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_provider_data_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_providers_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_providers_2026_10_11",
+    "id": "autonomy_observed_daa7d3f74a3ba4a81c3d82d1c9f4ecdda658d248c64aefd39b25ad1d474fe0a1",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_providers_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_reuters_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_reuters_2026_10_11",
+    "id": "autonomy_observed_cd634c7cbc0317ba5e7141acb0b8a0d8dbff3f8462ebd7c89e20fa8501d997ea",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_reuters_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_socioeconomic_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_socioeconomic_2026_10_11",
+    "id": "autonomy_observed_b55006bd7cad9fa0e9938829aa8150c7b97533db290355334b39cfe7f66268cc",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_socioeconomic_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_who_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+        "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+        "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_who_2026_10_11",
+    "id": "autonomy_observed_d3f7913c48a3c1c898f8223b49d55f24c89a2f6e8fceaefcd75ca86ba11de8a0",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_who_2026_10_11"
+  }
+]

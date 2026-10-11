@@ -1,0 +1,2364 @@
+{
+  "authority": {
+    "infra_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+    "learning_ledger_blob_sha": "c3b4b20cb41f055330cd61b840e1fbdf55e167a3",
+    "learning_ledger_sha256": "71895dc22a30aab65e5cf63c2ecdd4bbde66d7981f8df995d4ed59763996b724",
+    "queue_blob_sha": "a9cb6a30acf74d5865d63907e3f70a813aa292fd",
+    "queue_sha256": "341f2f8115d91e6e541ee601b2e8c564c1e1596a2424b0cd7fd1c1086e5f03bb",
+    "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+    "state_control_sha256": "46b635b54aa9dffdfebb6b72cdf45c1d2aea2eb612c99ec1f7d846ef83b0299f",
+    "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+  },
+  "canonical_queue_updated": false,
+  "derived_runtime_tasks": [
+    {
+      "attempts": 1,
+      "blocker_evidence_count": 1,
+      "blocker_fingerprint": "bf7c16dcf9fbbb751840c43b368c1af73694cc230014e680157aba2988b69aae",
+      "candidate_review": {
+        "candidate_branch": null,
+        "candidate_commit": null,
+        "evidence_path": null,
+        "evidence_sha256": null,
+        "semantic_fingerprint": null,
+        "status": null,
+        "superseded": null
+      },
+      "candidate_reviews": {},
+      "evidence_revision": "cd534a8ff0a554691ff9a4db65aef14543976cf12d8c9bf124df78dd62628340",
+      "failure_signature": null,
+      "failure_verified": false,
+      "family": "editorial",
+      "fence": 2,
+      "input_fingerprint": "e57973cb3de1a7666f5aac7cfaa64ae8ab6ea9d932f6e6cc90f2229e0389df8d",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:48:23.562198Z",
+      "lease": {
+        "claimed_at": null,
+        "expires_at": null,
+        "fence": null,
+        "heartbeat_at": null,
+        "owner": null,
+        "recovery_deadline_at": null,
+        "token_sha256": null
+      },
+      "material_progress_at": "2026-10-11T05:30:10.391517Z",
+      "reason": "input_or_evidence_changed",
+      "recovery_episode": "8478a2a1f1cc6fd528bb6f2703de3cc2dfa2e0a47c81510053a34cc3ba8b2897",
+      "recovery_reclaims": 0,
+      "status": "READY",
+      "task_id": "editorial_repair_lane_2026_10_11"
+    },
+    {
+      "attempts": 1,
+      "blocker_evidence_count": 5,
+      "blocker_fingerprint": "8f341b91f986d72025c1389ca080c9ce330fde0f0ef4f071656c8e043aaa86ca",
+      "candidate_review": {
+        "candidate_branch": null,
+        "candidate_commit": null,
+        "evidence_path": null,
+        "evidence_sha256": null,
+        "semantic_fingerprint": null,
+        "status": null,
+        "superseded": null
+      },
+      "candidate_reviews": {},
+      "evidence_revision": "bd7095a39b49d80e9f5a45b6769a418443a7e74d4bf8d4bcb4dc72b561a99926",
+      "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+      "failure_verified": true,
+      "family": "staging_qa",
+      "fence": 2,
+      "input_fingerprint": "3c75e89e52098d836b1a51b09b79b21210d6c52851b813a1973c56a9499bb42e",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:48:23.562198Z",
+      "lease": {
+        "claimed_at": null,
+        "expires_at": null,
+        "fence": null,
+        "heartbeat_at": null,
+        "owner": null,
+        "recovery_deadline_at": null,
+        "token_sha256": null
+      },
+      "material_progress_at": "2026-10-11T05:31:52.114953Z",
+      "reason": "input_or_evidence_changed",
+      "recovery_episode": "90a4ad6fa469cbfe57b3e35656ab261cbbb7c48b086d499c4b9a19d0932e0128",
+      "recovery_reclaims": 0,
+      "status": "READY",
+      "task_id": "staging_qa_failed_run_38113830124"
+    }
+  ],
+  "kind": "queue_runtime_projection",
+  "observation": {
+    "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+    "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+    "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+    "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+  },
+  "owner_followups": "UNKNOWN",
+  "schema_version": 2,
+  "tasks": [
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "workflow_isolation_2026_09_24"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "intelligence_inbox_cards_v22"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "excel_insights_v1"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "cancelled",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "sources_chile_mvp"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "cancelled",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "global_intelligence_lite"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "email_subscription_mvp"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "blocked",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "analytics_behavior_mvp"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "intelligence_inbox_cards_v22",
+        "global_intelligence_lite",
+        "excel_insights_v1"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "free_premium_mvp"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "blocked",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "presence_trust_technical"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "blocked",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "live_evidence_parallel"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "orchestrator_continuous_consumer"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "orchestrator_continuous_consumer"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "orchestrator_event_trigger"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "mvp_product_refinements_2026_09_24"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "model_quality_experiment_global_free_2026_09_24"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "free_value_features_and_model_cost_observability_2026_09_24"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "blocked",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "anonymous_source_suggestions_2026_09_24"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "home_compaction_responsive_2026_09_24"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "home_compaction_responsive_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "home_architecture_v2_prototype_2026_09_24"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "home_architecture_v2_prototype_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "home_architecture_v2_implementation_2026_09_24"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "blocked",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "alicantosalud_domain_cutover_2026_09_24"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "home_architecture_v2_implementation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Reviewer",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "home_v2_expert_audit_2026_09_25"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "home_v2_expert_audit_2026_09_25"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "home_v2_expert_recommendations_implementation_2026_09_25"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "blocked",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "workspace_domain_home_execution_2026_09_25"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "home_v2_expert_recommendations_implementation_2026_09_25"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "home_v2_special_cards_refinement_2026_09_25"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "home_v2_special_cards_refinement_2026_09_25"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "home_v2_final_polish_2026_09_25"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "home_v2_final_polish_2026_09_25"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "home_v2_share_deeplink_polish_2026_09_25"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "home_v2_final_polish_2026_09_25"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "news_content_expert_audit_2026_09_25"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "workflow_isolation_2026_09_24"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "model_quality_experiment_preflight_2026_09_25"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "home_v2_special_cards_refinement_2026_09_25"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "cancelled",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "overnight_content_sources_experiments_release_2026_09_25"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "overnight_content_sources_experiments_release_2026_09_25"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "admin_portal_expert_audit_2026_09_26"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "admin_portal_expert_audit_2026_09_26"
+      ],
+      "next_action": null,
+      "owner": "Direction+Experts",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "product_risk_gap_audit_2026_09_26"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "news_content_expert_audit_2026_09_25",
+        "home_v2_final_polish_2026_09_25",
+        "editorial_90d_learning_rules_2026_09_26"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "content_value_epidemiology_admin_iteration_2026_09_26"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "news_content_expert_audit_2026_09_25"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "editorial_90d_learning_rules_2026_09_26"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "content_value_epidemiology_admin_iteration_2026_09_26",
+        "editorial_90d_learning_rules_2026_09_26"
+      ],
+      "next_action": null,
+      "owner": "Builder/Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "content_contract_pulso_normative_weekly_analysis_2026_09_26"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "admin_portal_expert_audit_2026_09_26"
+      ],
+      "next_action": null,
+      "owner": "Builder/Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "admin_dashboard_read_model_v1_2026_09_26"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "content_contract_pulso_normative_weekly_analysis_2026_09_26",
+        "admin_dashboard_read_model_v1_2026_09_26",
+        "editorial_committee_insight_sitewide_v3_2026_09_26"
+      ],
+      "next_action": null,
+      "owner": "Builder+Work+Reviewer",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "preproduction_consolidation_2026_09_26"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "editorial_90d_learning_rules_2026_09_26"
+      ],
+      "next_action": null,
+      "owner": "Builder+Work+Reviewer",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "editorial_committee_insight_sitewide_v3_2026_09_26"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "model_quality_experiment_preflight_2026_09_25"
+      ],
+      "next_action": null,
+      "owner": "Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "openai_runtime_integration_2026_09_26"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "preproduction_consolidation_2026_09_26"
+      ],
+      "next_action": null,
+      "owner": "Builder",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "home_period_visibility_refinement_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": null,
+      "owner": "Builder+Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "sources_chile_diario_estadisticas_v2_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": null,
+      "owner": "Builder+Work",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "global_premium_beta_expansion_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "orchestrator_event_trigger"
+      ],
+      "next_action": null,
+      "owner": "Director-Orchestrator+Autonomous Executor",
+      "queue_status": "blocked",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "orchestrator_autonomous_executor_v2_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": null,
+      "owner": "Director-Orchestrator+Reviewer",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "closed_beta_readiness_reconciliation_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": null,
+      "owner": "Work+Reviewer",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "normative_title_dedup_v1_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": null,
+      "owner": "Work+Data Analytics+Reviewer",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "statistics_deep_analysis_tables_v1_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": null,
+      "owner": "Paolo + Pele",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "autopilot_v1_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "next_action": "Mantener Work ejecutando backlog crítico hasta cerrar coverage_balance_sources_epidemiology_v1_2026_09_28; no detenerse tras PASS/FAIL si existe otro subfrente ejecutable.",
+      "owner": "Pele",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "queue_blocked_by:05a7024a80c40aba4f08e6eb93c65de7feb3201c430a3a3a856868ac4f2c0f5a",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "0f18cf002af64d264e083a42d0864d25d0f957ab91377109e3847317f99a8339",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "0f18cf002af64d264e083a42d0864d25d0f957ab91377109e3847317f99a8339",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "31239ddfcabb5d5c9f20d52fcdf327161d700857e43631de9c6ec04104b6fb22",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "pele_work_activation_2026_09_27"
+      },
+      "task_id": "pele_work_activation_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "next_action": null,
+      "owner": "Paolo + Pele + Editorial Committee",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "normative_editorial_v2_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "next_action": null,
+      "owner": "Pele + Data/BI Committee + Editorial Committee",
+      "queue_status": "validated",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "signal_simplification_statistics_v2_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "normative_editorial_v2_2026_09_27",
+        "signal_simplification_statistics_v2_2026_09_27"
+      ],
+      "next_action": null,
+      "owner": "Paolo + Pele",
+      "queue_status": "blocked",
+      "runtime": {
+        "status": "NOT_OBSERVED"
+      },
+      "task_id": "release_after_editorial_stats_email_qa_2026_09_27"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "next_action": "Ejecutar Fonasa/GRD ahora; al cerrar QA/Reviewer, continuar automáticamente Prestadores Data → redes adicionales → mutualidades → Early Signals → revisión integrada.",
+      "owner": "Pele + Source Intelligence + Editorial/Data Committee",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:coverage_balance_sources_epidemiology_v1_2026_09_28",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "3c092c737554630e4046ae90daf2e6497d6c753128b097067c812148d4e14e1e",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "3c092c737554630e4046ae90daf2e6497d6c753128b097067c812148d4e14e1e",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "235d32233451d3ca0205c9482095425d51c99916839569eb3a840d4e97545e70",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "coverage_balance_sources_epidemiology_v1_2026_09_28"
+      },
+      "task_id": "coverage_balance_sources_epidemiology_v1_2026_09_28"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "next_action": "Aplicar task lease/heartbeat durante cada subfrente de coverage; no interrumpir desarrollo por hardening. Registrar transiciones, stalls y recovery en paralelo.",
+      "owner": "Pele + Paolo + Pato",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:autonomy_continuity_hardening_v1_1_2026_09_29",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "f64bc243b89062eb8c4042e67d399c5d466fc17b8b45c0d61d4e65cf20e206ce",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "f64bc243b89062eb8c4042e67d399c5d466fc17b8b45c0d61d4e65cf20e206ce",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "3b8b4a9552edfcad0f7ccc3724701de0d806fb28ced8805456ae4099b18cd82f",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "autonomy_continuity_hardening_v1_1_2026_09_29"
+      },
+      "task_id": "autonomy_continuity_hardening_v1_1_2026_09_29"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "next_action": "Ejecutar Fonasa/GRD y continuar automáticamente.",
+      "owner": "Pele + Paolo + Pato",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:beta_sources_completion_today_2026_09_29",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "3ce1d91f1f92768f6905691ee4e1683f1ed7954d0bb0bf7a2680564d3b2301a0",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "3ce1d91f1f92768f6905691ee4e1683f1ed7954d0bb0bf7a2680564d3b2301a0",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "d2afc5bf9239ebd3911906cfeb680b60eb0aedf6e94d2aeaa4263abdb91204d2",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "beta_sources_completion_today_2026_09_29"
+      },
+      "task_id": "beta_sources_completion_today_2026_09_29"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Reparar polling diario core + DF + Pulso/La Tercera; luego SUSESO/SIS fiscalización y fuentes bloqueadas.",
+      "owner": "Pele + Paolo + Source Intelligence",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:source_runtime_audit_2026_10_02",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "087f851b0792898fafe56c4924bf2fd1efa5b1eca576837082500a891e307184",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "087f851b0792898fafe56c4924bf2fd1efa5b1eca576837082500a891e307184",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "b59c31a8e8a6b2198d7fe806538c1c25ffb02035d378bc7223d92b7c3d1c13ea",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "source_runtime_audit_2026_10_02"
+      },
+      "task_id": "source_runtime_audit_2026_10_02"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Ejecutar auditoría inicial; reparar P0 sin esperar a Toba.",
+      "owner": "Paolo + Auditor + Pele",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:independent_auditor_and_autonomy_controller_2026_10_07",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "413e1ea5bbc1b89069d4c82e230bd35ba6759ada18633104c560471b39a2edf3",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "413e1ea5bbc1b89069d4c82e230bd35ba6759ada18633104c560471b39a2edf3",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "6318e081496dbd7ba074f2e97b5af621c29a2ead2f34bff30b7e901bb812b88c",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "independent_auditor_and_autonomy_controller_2026_10_07"
+      },
+      "task_id": "independent_auditor_and_autonomy_controller_2026_10_07"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Habilitar Autonomous Executor, lanzar kickoff y auditar primer pickup.",
+      "owner": "Autonomy Architect + Paolo + Auditor",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:autonomy_architecture_redesign_2026_10_07",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "3d4897c81991ddaecffcdd784890edde74c84c19c679005f6ef315a24dce9253",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "3d4897c81991ddaecffcdd784890edde74c84c19c679005f6ef315a24dce9253",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "c61a38ee84cfbed29f3c01e9645a539738f9cc6fed776c2f3884961d85c485fe",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "autonomy_architecture_redesign_2026_10_07"
+      },
+      "task_id": "autonomy_architecture_redesign_2026_10_07"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Ejecutar source_audit_issue5_iteration1_recovery_2026_10_09 y autonomía en paralelo.",
+      "owner": "Pele + Paolo + Source Intelligence + Auditor",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:source_audit_issue5_master_2026_10_09",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "f8e7c546a8fc546be06c23b98fdf2c77458890e25862a176d5c7b23efb29438e",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "f8e7c546a8fc546be06c23b98fdf2c77458890e25862a176d5c7b23efb29438e",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "cf942b0661750d6bcbb1988985499466007e6c247524a9cd82af8ddb304c7f2e",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "source_audit_issue5_master_2026_10_09"
+      },
+      "task_id": "source_audit_issue5_master_2026_10_09"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Esperar QA de commits DF/Pulso; ejecutar Daily Radar y verificar live_pending/publicación/rechazo trazable. Si PASS, avanzar a FONASA/ISP/DEIS.",
+      "owner": "Pele + Source Intelligence",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:source_audit_issue5_iteration1_recovery_2026_10_09",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "360d0734bf51f160fe3b489d84f469e52486948c367784b0d882f2f16e9407a1",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "360d0734bf51f160fe3b489d84f469e52486948c367784b0d882f2f16e9407a1",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "9cba6c8204976e15c36b69d578e121a89db6fc6a67c8ba098bbde0b0aac910ea",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "source_audit_issue5_iteration1_recovery_2026_10_09"
+      },
+      "task_id": "source_audit_issue5_iteration1_recovery_2026_10_09"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ],
+      "next_action": "Iniciar tras cierre P0 técnico.",
+      "owner": "Pele + Source Intelligence + Editorial Committee",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:source_audit_issue5_iteration2_balance_2026_10_09",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "aadaf274c56c6b0c2421640d89e029620433f747c1d9eab2e74a76b18ea96939",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "aadaf274c56c6b0c2421640d89e029620433f747c1d9eab2e74a76b18ea96939",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "5aba57a7f8aa859dc131c182aa0788e655832a4ce02844d3bcbd7982ae470f27",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "source_audit_issue5_iteration2_balance_2026_10_09"
+      },
+      "task_id": "source_audit_issue5_iteration2_balance_2026_10_09"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ],
+      "next_action": "Resolver P1 de atribución en regeneración (Work3 #9); conservar top3/evidencia/modelo del Insight aprobado separados del intento nuevo. Vigencia revalidada parcialmente; QA, telemetría y Bupa siguen abiertos. Ver último independent_review_cuts.",
+      "owner": "Pele + Editorial/Data Committee",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 0,
+        "blocker_fingerprint": null,
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "6c6446ba30572890f38580dfd884e4132cc67d6d1135463d4ff97a1322328580",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": "editorial",
+        "fence": 0,
+        "input_fingerprint": "e57973cb3de1a7666f5aac7cfaa64ae8ab6ea9d932f6e6cc90f2229e0389df8d",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": null,
+        "reason": null,
+        "recovery_episode": null,
+        "recovery_reclaims": 0,
+        "status": "READY",
+        "task_id": "source_audit_issue5_iteration3_editorial_2026_10_09"
+      },
+      "task_id": "source_audit_issue5_iteration3_editorial_2026_10_09"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Crear Editorial Executor y probar pickup real.",
+      "owner": "Autonomy Architect + Paolo + Pele + Auditor",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:source_audit_issue5_iteration4_autonomy_2026_10_09",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "554e7979670b20f0559e3416452a8aad15b13ae8c8c91e08a1a6f4d620acedef",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "554e7979670b20f0559e3416452a8aad15b13ae8c8c91e08a1a6f4d620acedef",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "e6f8a091a339da27663dd924412994424a07128518baafcb1fb103579f3c87b6",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "source_audit_issue5_iteration4_autonomy_2026_10_09"
+      },
+      "task_id": "source_audit_issue5_iteration4_autonomy_2026_10_09"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "next_action": "Auditoría Work 4 completa. Preparar w4_isapres_2026_10_11; preservar dependencias core para activación. No declarar implementados los 15 paquetes.",
+      "owner": "Pele + Source Intelligence + Market Intelligence",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:source_audit_issue5_iteration5_expansion_2026_10_09",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "ff39c3973dac215096c2a8ebcd59152bba6a1b0cab62042b7da5de857d533956",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "ff39c3973dac215096c2a8ebcd59152bba6a1b0cab62042b7da5de857d533956",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "a5062237250f020a1cc78759c343e03042e43ea9f610ff65896f6b3b9edad678",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "source_audit_issue5_iteration5_expansion_2026_10_09"
+      },
+      "task_id": "source_audit_issue5_iteration5_expansion_2026_10_09"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Exercise repairs in Daily Radar and verify output.",
+      "owner": "Pele + Media Source Worker",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 1,
+        "blocker_evidence_count": 4,
+        "blocker_fingerprint": "d2d27f8eeef6fda0c6e1e364cbcc5fe76574c514b9b7a4ab61cf9b153a58ea46",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "054adb0e6539e78999298aa06480a89524e067fe3bbb5cc364ed6a1ded8b7cd2",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": "media",
+        "fence": 2,
+        "input_fingerprint": "42fb21f5270cd94f4d0bf866e547633e1228aacd3708a8cb8d2455a2060d4d54",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:48:23.562198Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:31:06.688919Z",
+        "reason": "input_or_evidence_changed",
+        "recovery_episode": "89e0f126de52a26f534efaf00ae2c323a6bcaad097025f0a92ad66abc4918729",
+        "recovery_reclaims": 0,
+        "status": "READY",
+        "task_id": "source_repair_media_lane_2026_10_11"
+      },
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Diagnose current fetch failures and patch independently.",
+      "owner": "Pele + Public Data Worker",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 1,
+        "blocker_evidence_count": 16,
+        "blocker_fingerprint": "515619ca1a7eec29dde322c407fbb70a0a5a67190a29a097a45ceaea8d2f2036",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "f7d8e3d291c03a9ef8d3c1d26d9a77e30e969995413dd10f2368df5a15de7156",
+        "failure_signature": "17745ae2b3a25337b03f94a2a71b1337eeda0719b240300a9c77ce419ff5f40f",
+        "failure_verified": true,
+        "family": "public_data",
+        "fence": 2,
+        "input_fingerprint": "1e2c6131b8d28fa80cc0459265704b718a2c798291e4296c3d219f0d000a61f7",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:48:23.562198Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:33:46.478925Z",
+        "reason": "input_or_evidence_changed",
+        "recovery_episode": "56c8f7005119133113a57f211e59e4a6ac84b4e4c34c2e63eae4b99e04447f6a",
+        "recovery_reclaims": 0,
+        "status": "READY",
+        "task_id": "source_repair_public_data_lane_2026_10_11"
+      },
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Reconcile 2026 fiscalization surfaces.",
+      "owner": "Pele + Regulatory Worker",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 1,
+        "blocker_evidence_count": 4,
+        "blocker_fingerprint": "c886151bc00844ae6fa0db13b2cacc88dca94480b257deed3e8d347d847345e8",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "4fc4eb00b709abb28c9cdf71e1d27adb2acbb40a1a2730a114e47ddf7454b0fb",
+        "failure_signature": "63bd80fe6868312bdb1eab311620090fb6334bb22f65a03cda132a932b4e4563",
+        "failure_verified": true,
+        "family": "fiscalization",
+        "fence": 2,
+        "input_fingerprint": "f0e6e1b69edb073ae2630ae7815e89f8cbeacacec0743dbcc5bd770fea8debe3",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:48:23.562198Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:30:37.653656Z",
+        "reason": "input_or_evidence_changed",
+        "recovery_episode": "2876059f5603465e0c5299337218e94c1bc8704fd3fd49737157df577bdf876a",
+        "recovery_reclaims": 0,
+        "status": "READY",
+        "task_id": "source_repair_fiscalization_lane_2026_10_11"
+      },
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Repair runtime parsers in parallel.",
+      "owner": "Pele + Occupational Health Worker",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 1,
+        "blocker_evidence_count": 10,
+        "blocker_fingerprint": "ff9f64afa2ebf9fe9e8014e49004710fac22355056550a5f486465e0dfd6f5af",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "32c1e2a748f602d9c728c58ff4296d73dc00fea3fcdaefe6b289a9a51cdbfd4d",
+        "failure_signature": "72996ac38587716785fbb2512ec610775123f89cd0f6d40aea1f479e890d0a5f",
+        "failure_verified": true,
+        "family": "mutualities",
+        "fence": 2,
+        "input_fingerprint": "c273d57aadf9bed3f4aef1dc6a29f5db7054882478ebfe881bf58590d6c3fee6",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:48:23.562198Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:32:13.788608Z",
+        "reason": "input_or_evidence_changed",
+        "recovery_episode": "c2382bbea984f57cc561e3f3223a8b2e9260c961296fe185577e63a7c218f5e8",
+        "recovery_reclaims": 0,
+        "status": "READY",
+        "task_id": "source_repair_mutualities_lane_2026_10_11"
+      },
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Extraer registro oficial de Isapres y fijar códigos 63,67,76,78,80,81,94,99,107,108, tipo abierta/cerrada, alias, grupo y vigencia.",
+      "owner": "Data Intelligence + Market Intelligence",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_isapres_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "1d677e0713b07a0c7144fe3a193b31af5d058accebdcbc5c09f3ed4f0946e629",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "1d677e0713b07a0c7144fe3a193b31af5d058accebdcbc5c09f3ed4f0946e629",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "9829f867c40d17863cf83c0460f0f79ab13ef16645d4ff42687637b394670a42",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_isapres_2026_10_11"
+      },
+      "task_id": "w4_isapres_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Crear inventario de emisores/grupos con RUT verificado (comenzar CLC 93930000, ILC, grupos de prestadores e Isapres); documentar filiales fuera del perímetro reportante.",
+      "owner": "Financial Intelligence + Source Engineering",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_cmf_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "485c5e139c7c9cc6cd8781772d9b38585d6068457406ad0077b03ead2874242b",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "485c5e139c7c9cc6cd8781772d9b38585d6068457406ad0077b03ead2874242b",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "0463f5519e61c2a70c91e3835381d2459badb9bc611e9cdf7031a4d29083ea3d",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_cmf_2026_10_11"
+      },
+      "task_id": "w4_cmf_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Descubrir proyecto 2027 y series de ejecución por Partida/Capítulo/Programa de Salud y FONASA; extraer URL de cada archivo desde índice oficial.",
+      "owner": "Public Finance + Data Intelligence",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_dipres_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "3624b26fa2fa01fd42ef45530d278d21fc34c90d567a388875216a7a52f3894e",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "3624b26fa2fa01fd42ef45530d278d21fc34c90d567a388875216a7a52f3894e",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "3d52752d3912d2158b859a5f6d9032d9252427728814d38a5db7de1784b27c6d",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_dipres_2026_10_11"
+      },
+      "task_id": "w4_dipres_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Descubrir noticias/operaciones de concentración FNE con filtros de actores sanitarios y enlaces a resoluciones públicas.",
+      "owner": "Competition Intelligence + Source Engineering",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_fne_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "9d8d1223d0d6034a053e9f0829c4ef1a10bcc4c11717fec33a6100ea67cab99d",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "9d8d1223d0d6034a053e9f0829c4ef1a10bcc4c11717fec33a6100ea67cab99d",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "68af68accca1b35c7085744e16ceec5e734566b0bdd1ee17eef0f8f92d948272",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_fne_2026_10_11"
+      },
+      "task_id": "w4_fne_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Implementar listado/detalle de prensa CENABAST; conservar tablas y referencias de abastecimiento con extracción mínima.",
+      "owner": "Supply Chain Intelligence + Source Engineering",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_cenabast_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "6d43333ad20be58b467ff1e70353e5b27743c41f554bb94e9d3ac0a70f8cd21c",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "6d43333ad20be58b467ff1e70353e5b27743c41f554bb94e9d3ac0a70f8cd21c",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "c5295fc453e484870ce34bf6d21bb1e1fc6445ee576af78478dcf3f3f5c8cee1",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_cenabast_2026_10_11"
+      },
+      "task_id": "w4_cenabast_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Revisar src/radar_salud/mercado_publico.py y documentación oficial ChileCompra; comprobar disponibilidad de ticket autorizado sin mostrar secretos. No usar ClaveÚnica ni ticket de terceros.",
+      "owner": "Procurement Intelligence + Source Engineering",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_procurement_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "25c62c095572efd2c4ad46a44a33247088097239d3d8edfcb305a720922faea3",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "25c62c095572efd2c4ad46a44a33247088097239d3d8edfcb305a720922faea3",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "a5c013f42eb4035c137fb77738a455455d40a2a3bc590f44179f6cc972399e9b",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_procurement_2026_10_11"
+      },
+      "task_id": "w4_procurement_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Implementar discovery desde WHO news-room y detalle; priorizar guías, emergencias, epidemiología y cambios de política.",
+      "owner": "Global Intelligence + Source Engineering",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_who_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "fb1fdb77eed414769e24ae706356263d01e3fa755676cb9f1876ba33a509db57",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "fb1fdb77eed414769e24ae706356263d01e3fa755676cb9f1876ba33a509db57",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "f3f06489347d3384ca04c7f6a54de4912f0d5e43bb1f7ac58fa198fb8f17af6f",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_who_2026_10_11"
+      },
+      "task_id": "w4_who_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Auditar ruta pública/contratada permitida de Reuters; documentar condiciones de uso, estabilidad del índice y derechos de extracción/resumen antes de automatizar.",
+      "owner": "Global Intelligence + Source Engineering",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_reuters_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "d46d007e89c4293f0fe0064092a0b5038bab989584672ed43c73e9dbeffb9da1",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "d46d007e89c4293f0fe0064092a0b5038bab989584672ed43c73e9dbeffb9da1",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "7cdbbf9a9b5d29d58e4606ec1d2fba620a94e74cb1feae5c5ef9679f4c094ed8",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_reuters_2026_10_11"
+      },
+      "task_id": "w4_reuters_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Probar rutas oficiales públicas documentadas de informes técnicos/influenza y repositorio alternativo oficial; registrar HTTP, fecha y límites.",
+      "owner": "Epidemiology Intelligence + Source Engineering",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_paho_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "047c11feb19e8ad4487e7dfb210b923739d489e0842735e3b964b8db4c037ea9",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "047c11feb19e8ad4487e7dfb210b923739d489e0842735e3b964b8db4c037ea9",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "eab01e76913e7dac7572a08788d9f7da2d94ef51aafcb4236cdf247c7e69ae0b",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_paho_2026_10_11"
+      },
+      "task_id": "w4_paho_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "BCN: enlazar normas originadas en DO/SIS con idNorma, fecha original, vigencia, versión y cambios; no crear una noticia por regeneración de PDF.",
+      "owner": "Legal Intelligence + Source Engineering",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_legal_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "37ae65534de454df0cdc3bd19344633aebcefc9db39da79f24a6406c8cb13384",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "37ae65534de454df0cdc3bd19344633aebcefc9db39da79f24a6406c8cb13384",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "4343ece0dc2180b75aa2462f7d0053848b6355f84c064c495f0e6878992d35cd",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_legal_2026_10_11"
+      },
+      "task_id": "w4_legal_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Muestrear ventana completa 90 días por newsroom con paginación, fechas verificadas, motivos de rechazo y cobertura.",
+      "owner": "Provider Intelligence + Source Engineering",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_providers_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "293732084a1fee4c9ae8f6a90afbb2e3723bea7c13fa53e91a2bf6a0fafad591",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "293732084a1fee4c9ae8f6a90afbb2e3723bea7c13fa53e91a2bf6a0fafad591",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "2ecb9c9fa89bc9efa7f5b0af6e7fdab5fc9d9a370fc08e80e07a41c415daa1f8",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_providers_2026_10_11"
+      },
+      "task_id": "w4_providers_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "w4_fne_2026_10_11"
+      ],
+      "next_action": "Interclínica: extraer memorias 2025/2024/2023 por URL/hash, instalaciones, control y magnitudes comparables; guardar fecha de publicación desconocida cuando corresponda.",
+      "owner": "Provider Intelligence + Data Intelligence",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_provider_data_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "cb4f663115553c942c8d4247307248b56b32e4312e41a6d2a36143830e0f4b13",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "cb4f663115553c942c8d4247307248b56b32e4312e41a6d2a36143830e0f4b13",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "eabdaed28307ab96f1a2d2dfc3a4c1fa89e73ba635813f86c01992e507688103",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_provider_data_2026_10_11"
+      },
+      "task_id": "w4_provider_data_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "INE: usar release calendar y archivo IPC para división Salud, además de población/proyecciones verificadas; conservar base, territorio y frecuencia.",
+      "owner": "Data Intelligence",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_socioeconomic_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "87b04727dcea074ab7d1e9cfcc161190abe412061dd3a95ddc88a8165756d7aa",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "87b04727dcea074ab7d1e9cfcc161190abe412061dd3a95ddc88a8165756d7aa",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "4780ada0e4e927769d2d0a770ddcda3176d2f09ee88f597928c481023fa49829",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_socioeconomic_2026_10_11"
+      },
+      "task_id": "w4_socioeconomic_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "ISL: detectar infografías/estadísticas mensuales y memorias, normalizar trabajadores/empleadores/atenciones por período y definición.",
+      "owner": "Occupational Intelligence + Data Intelligence",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_occupational_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "8aaddf40804bcf3c8cc3c5f45d20294cb213a9a397c9223b203b28deaef3c12b",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "8aaddf40804bcf3c8cc3c5f45d20294cb213a9a397c9223b203b28deaef3c12b",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "42395920685debe39cc6ee457a06ba424929e5691a1bc1b5394fad7d7c204a26",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_occupational_2026_10_11"
+      },
+      "task_id": "w4_occupational_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "w4_cenabast_2026_10_11"
+      ],
+      "next_action": "Calificar publicaciones DHTAC/UDD y bienes públicos/noticias CENS; fijar entidades y tipos: investigación, piloto, evaluación, despliegue, financiamiento.",
+      "owner": "Technology Intelligence + Source Engineering",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:w4_innovation_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "c36d980502515a4f277d0df2af38f985ad54176b4c87c8665d1656083e2bbd6b",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "c36d980502515a4f277d0df2af38f985ad54176b4c87c8665d1656083e2bbd6b",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "e847e78d051b0097e00f9fe93ecb8b8cad1318214feeb8077e171c66f81b66bf",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "w4_innovation_2026_10_11"
+      },
+      "task_id": "w4_innovation_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Conciliar PRs #10-#13 con issues #5-#9 y queue; no cerrar ninguna fuente hasta merge + QA + runtime.",
+      "owner": "Paolo + Pato + Reviewer",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:source_recovery_reconciliation_gate_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "54a0143933e979a58303a87df995946205515e7243ba5ee44af917546e49e408",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "54a0143933e979a58303a87df995946205515e7243ba5ee44af917546e49e408",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "c8440ecfcb1660f8bf14708fe8ca26771fe76be97aaf50476cf3cea797292ac6",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "source_recovery_reconciliation_gate_2026_10_11"
+      },
+      "task_id": "source_recovery_reconciliation_gate_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [
+        "source_recovery_reconciliation_gate_2026_10_11"
+      ],
+      "next_action": "Después de beta atractivo en staging, ejecutar checklist humano/operacional y preparar promoción explícita.",
+      "owner": "Dirección + Paolo + Pato + Legal/Privacy + Growth Ops",
+      "queue_status": "approved",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:beta_gate5_test_ops_golive_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "7157228f3e96d2d02421b0eb4d0b47243a648a526c579668747c04861ba7eaba",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "7157228f3e96d2d02421b0eb4d0b47243a648a526c579668747c04861ba7eaba",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "a987a3e8e0275d38970e7987c3adff36f44be1a8b2577aa16ab80da6f538e18d",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "beta_gate5_test_ops_golive_2026_10_11"
+      },
+      "task_id": "beta_gate5_test_ops_golive_2026_10_11"
+    },
+    {
+      "approval_is_unchanged": true,
+      "depends_on": [],
+      "next_action": "Ampliar superficies y paginación, luego reconciliar contra set externo reciente antes de considerar PR #10 integrable.",
+      "owner": "Codex B + Media Source Worker + Reviewer",
+      "queue_status": "in_progress",
+      "runtime": {
+        "attempts": 0,
+        "blocker_evidence_count": 1,
+        "blocker_fingerprint": "unsupported_executor:pulso_latercera_exhaustive_discovery_2026_10_11",
+        "candidate_review": {
+          "candidate_branch": null,
+          "candidate_commit": null,
+          "evidence_path": null,
+          "evidence_sha256": null,
+          "semantic_fingerprint": null,
+          "status": null,
+          "superseded": null
+        },
+        "candidate_reviews": {},
+        "evidence_revision": "717c8888b58f663654751bcf3ee7bca1c0c184637e5cdd8c743135f603554d4a",
+        "failure_signature": null,
+        "failure_verified": false,
+        "family": null,
+        "fence": 0,
+        "input_fingerprint": "717c8888b58f663654751bcf3ee7bca1c0c184637e5cdd8c743135f603554d4a",
+        "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "last_ready_at": "2026-10-11T05:29:09.013956Z",
+        "lease": {
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
+        },
+        "material_progress_at": "2026-10-11T05:29:09.013956Z",
+        "reason": null,
+        "recovery_episode": "97acc9e8faa4d2f339b1449aa975e05a62d4ebf3fc3e32c62393f929b5318803",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
+        "task_id": "pulso_latercera_exhaustive_discovery_2026_10_11"
+      },
+      "task_id": "pulso_latercera_exhaustive_discovery_2026_10_11"
+    }
+  ]
+}

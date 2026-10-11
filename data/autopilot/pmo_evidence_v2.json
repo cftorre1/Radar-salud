@@ -1,0 +1,91 @@
+{
+  "authority": {
+    "infra_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+    "learning_ledger_blob_sha": "c3b4b20cb41f055330cd61b840e1fbdf55e167a3",
+    "learning_ledger_sha256": "71895dc22a30aab65e5cf63c2ecdd4bbde66d7981f8df995d4ed59763996b724",
+    "queue_blob_sha": "a9cb6a30acf74d5865d63907e3f70a813aa292fd",
+    "queue_sha256": "341f2f8115d91e6e541ee601b2e8c564c1e1596a2424b0cd7fd1c1086e5f03bb",
+    "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+    "state_control_sha256": "46b635b54aa9dffdfebb6b72cdf45c1d2aea2eb612c99ec1f7d846ef83b0299f",
+    "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+  },
+  "canonical_pmo_updated": false,
+  "criteria": {
+    "autonomous_pickup": {
+      "declared_pickups": 6,
+      "reason": "Worker event/actor causality has not been independently verified.",
+      "status": "NOT_PROVEN"
+    },
+    "durable_mutation": {
+      "status": "NOT_OBSERVED"
+    },
+    "failure_repaired": {
+      "event_ids": [],
+      "status": "NOT_OBSERVED"
+    },
+    "failure_repaired_or_evidenced_escalation": {
+      "escalated_task_ids": [],
+      "repaired_event_ids": [],
+      "satisfies_legacy_stage_a_repair": false,
+      "status": "NOT_OBSERVED"
+    },
+    "independent_transition": {
+      "status": "NOT_OBSERVED"
+    },
+    "legacy_stage_a": {
+      "metrics": {
+        "autonomous_pickups": 6,
+        "material_event_count": 6,
+        "max_material_gap_seconds": 893.417809,
+        "mode": "live",
+        "observed_seconds": 1133.665237,
+        "owner_observation_verified": false,
+        "owner_restarts": 0
+      },
+      "observed_until": "2026-10-11T05:48:39.896734Z",
+      "reasons": [
+        "four_real_wall_hours_not_observed",
+        "owner_intervention_observation_not_verified",
+        "durable_verified_mutation_not_observed",
+        "real_failure_verified_repair_not_observed",
+        "automatic_independent_transition_not_observed",
+        "owner_prompt_source_not_connected"
+      ],
+      "status": "NOT_PROVEN"
+    },
+    "owner_followups": {
+      "count": null,
+      "status": "UNKNOWN"
+    },
+    "useful_work_window": {
+      "is_live_proof": false,
+      "metrics": {
+        "autonomous_pickups": 6,
+        "material_event_count": 6,
+        "max_material_gap_seconds": 893.417809,
+        "mode": "live",
+        "observed_seconds": 1133.665237,
+        "owner_observation_verified": false,
+        "owner_restarts": 0
+      }
+    }
+  },
+  "kind": "autonomy_pmo_evidence",
+  "legacy_stage_a_status": "NOT_PROVEN",
+  "material_event_count": 36,
+  "material_signature": "784d171f6dee83507917f9aaaf7da447afd08e7e6e2984de2b3b6086fda9b03c",
+  "observation": {
+    "path": "data/autopilot/evidence/observation-bb8e57e5bdfe483a9fb696b76fee0e57.json",
+    "sha256": "d2123ec6f98e2ecbbfb8a03d8b29f41ab4cea870057f46e6c49fccc9831a2523",
+    "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+    "state_sha": "0361a05a2b32eeaf0e8af3e12c2245237e1a3093"
+  },
+  "owner_followup_count": null,
+  "owner_followups": "UNKNOWN",
+  "schema_version": 2,
+  "stalls": [],
+  "task_counts": {
+    "BLOCKED": 30,
+    "READY": 7
+  }
+}
