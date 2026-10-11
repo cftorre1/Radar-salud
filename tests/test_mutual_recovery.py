@@ -9,6 +9,7 @@ import pytest
 from radar_salud.mutual_sources import (
     DETAIL_PAGE, PAGE, MutualNewsScout, _OfficialRedirect, _detail_url,
     fetch_mutual_html, parse_detail, parse_listing,
+    same_article_url,
 )
 from radar_salud.occupational_sources import SourceDiscoveryError
 
@@ -43,6 +44,14 @@ def listing(*branches):
 def detail(published="9 oct. 2026", title=TITLE, body=BODY, *, metadata="", prefix="", suffix=""):
     header_date = f'<div class="fecha">{published}</div>' if published is not None else ""
     return f'<html><head>{metadata}</head><body>{prefix}<article><h1>{title}</h1>{header_date}<p>{body}</p></article>{suffix}</body></html>'
+
+
+def native_detail(published="9 oct. 2026", title=TITLE, body=BODY, related="", metadata=""):
+    header_date = f'<div class="fecha-noticia">{published}</div>' if published is not None else ""
+    return (f'<html><head>{metadata}</head><div class="noticias"><div class="noticia-conteiner">'
+            f'<div class="cabecera-noticia"><h1 class="titulo-noticia">{title}</h1>{header_date}</div>'
+            f'<div class="noticia-body"><div class="noticia-content"><div class="text-noticia"><p>{body}</p>'
+            f'</div></div></div></div><div class="noticias-relacionadas">{related}</div></div></html>')
 
 
 def scout(mapping, **kwargs):
@@ -99,6 +108,61 @@ def test_detail_native_publication_header_has_explicit_evidence():
     assert parsed["event_date"] == "2026-10-09"
     assert parsed["evidence"] == {"url": detail_url("one"), "kind": "publisher:mutual_div_fecha",
                                    "value": "9 oct. 2026", "date": "2026-10-09"}
+
+
+def test_live_native_markup_binds_header_and_excludes_related_materiality():
+    body = "Los trabajadores asistieron a una jornada de sensibilización y recibieron consejos de autocuidado. " * 3
+    title = "Mutual impulsa jornada de autocuidado"
+    related = ('<div class="title-noticias">Noticias relacionadas</div>'
+               '<div class="card-noticia-relacionada"><div class="fecha-noticia-relacionada">30 ene. 2026</div>'
+               '<p>Mutual inaugura nueva clínica con inversión de $100 millones.</p></div>')
+    html = native_detail(title=title, body=body, related=related)
+    parsed = parse_detail(html, detail_url("one"), as_of=TODAY)
+    assert parsed["body"] == body.strip() and "inversión" not in parsed["body"]
+    assert parsed["event_date"] == "2026-10-09"
+    assert parsed["evidence"]["kind"] == "publisher:mutual_detail_fecha"
+    source, _ = scout({PAGE: listing(branch(0, card("one", title=title))), detail_url("one"): html})
+    report = source.discover_inventory()
+    assert report["coverage_complete"] and report["rows"][0]["status"] == "rejected"
+
+
+def test_native_related_dates_do_not_supply_missing_article_publication():
+    parsed = parse_detail(native_detail(None, related='<div class="fecha-noticia">9 oct. 2026</div>'),
+                          detail_url("one"), as_of=TODAY)
+    assert parsed["event_date"] is None and parsed["reason"] == "missing_publication_date"
+
+
+def test_native_conflicting_metadata_and_header_date_fail_closed():
+    parsed = parse_detail(native_detail(metadata='<meta property="article:published_time" content="2026-10-08">'),
+                          detail_url("one"), as_of=TODAY)
+    assert parsed["event_date"] is None and parsed["reason"] == "conflicting_publication_dates"
+
+
+def test_native_container_structure_changes_are_pending_not_generic_fallback():
+    html = native_detail().replace('class="text-noticia"', 'class="changed-body"')
+    parsed = parse_detail(html, detail_url("one"), as_of=TODAY)
+    assert parsed["event_date"] is None and parsed["reason"] == "article_structure_unrecognized"
+
+
+@pytest.mark.parametrize("final", [
+    PAGE + "noticias_detalle/one/",
+    PAGE + "noticias_detalle/one/!ut/p/z1/OBSERVED/dz/d5/STATE/",
+    detail_url("one"),
+])
+def test_official_query_to_permalink_redirect_preserves_exact_article_identity(final):
+    assert same_article_url(detail_url("one"), final)
+
+
+@pytest.mark.parametrize("final", [
+    PAGE + "noticias_detalle/another/",
+    PAGE + "noticias_detalle/one/private/",
+    PAGE + "noticias_detalle/one/?article=another",
+    PAGE,
+    PAGE.replace("www.mutual.cl", "example.test") + "noticias_detalle/one/",
+    "https://www.mutual.cl/portal/privado/noticias_detalle/one/",
+])
+def test_unrelated_or_unofficial_redirect_never_preserves_article_identity(final):
+    assert not same_article_url(detail_url("one"), final)
 
 
 def test_dates_in_navigation_related_cards_and_body_are_not_header_evidence():

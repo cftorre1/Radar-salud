@@ -13,7 +13,7 @@ from collections import deque
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 from html.parser import HTMLParser
-from urllib.parse import parse_qs, urljoin, urlsplit, urlunsplit
+from urllib.parse import parse_qs, unquote, urljoin, urlsplit, urlunsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from .models import RawItem
@@ -131,6 +131,29 @@ def _detail_url(href):
     return urlunsplit(("https", "www.mutual.cl", urlsplit(PAGE).path, parsed.query, ""))
 
 
+def same_article_url(requested, final):
+    """Accept observed official query-to-permalink redirects for the same item.
+
+    Mutual's 302 maps the decoded WCM article slug to an official permalink
+    followed by opaque IBM state. A different slug, private route or host never
+    preserves identity. This helper does not discover or invent a new URL.
+    """
+    if not _official(final) or not _detail_url(requested):
+        return False
+    if requested == final:
+        return True
+    content = parse_qs(urlsplit(requested).query)["urile"][0]
+    slug = content.rstrip("/").rsplit("/", 1)[-1]
+    prefix = urlsplit(PAGE).path + "noticias_detalle/"
+    path = unquote(urlsplit(final).path)
+    if not path.startswith(prefix):
+        return False
+    remainder = path[len(prefix):]
+    parts = remainder.split("/", 1)
+    return (parts[0] == slug and not urlsplit(final).query
+            and len(parts) == 2 and (parts[1] == "" or parts[1].startswith("!ut/p/")))
+
+
 def parse_listing(html, page_url=PAGE, *, as_of=None):
     """Expose observed category cards and next URLs for live capture loaders."""
     assert_not_challenge(html, page_url)
@@ -190,24 +213,39 @@ def parse_detail(html, url, *, as_of=None):
     title, published, body, kind = article.result(today=as_of)
     evidence = article.publication_evidence(today=as_of)
     tree = _Tree(html)
+    containers = [node for node in tree.root.walk() if "noticia-conteiner" in node.classes()]
+    if containers:
+        if len(containers) != 1:
+            return {"title": title, "event_date": None, "body": "", "reason": "ambiguous_article_container"}
+        headers = [node for node in containers[0].walk() if "cabecera-noticia" in node.classes()]
+        bodies = [node for node in containers[0].walk() if "text-noticia" in node.classes()]
+        titles = [node.text() for header in headers for node in header.walk()
+                  if node.tag == "h1" and "titulo-noticia" in node.classes()]
+        if len(headers) != 1 or len(titles) != 1 or len(bodies) != 1:
+            return {"title": title, "event_date": None, "body": "", "reason": "article_structure_unrecognized"}
+        title, body = titles[0], bodies[0].text()
+        native = [node.text() for node in headers[0].walk() if "fecha-noticia" in node.classes()]
+        native_kind = "publisher:mutual_detail_fecha"
+    else:
     # Only a visible header field after the selected H1 and before article body
     # can complement publisher metadata. Unrelated cards and later event dates
     # never supply publication evidence.
-    native, in_header = [], False
-    for node in tree.root.walk():
-        if node.ignored_ancestor():
-            continue
-        if node.tag == "h1":
-            if in_header:
+        native, in_header = [], False
+        native_kind = "publisher:mutual_div_fecha"
+        for node in tree.root.walk():
+            if node.ignored_ancestor():
+                continue
+            if node.tag == "h1":
+                if in_header:
+                    break
+                in_header = node.text() == title
+                continue
+            if not in_header:
+                continue
+            if node.tag in ("p", "h2", "h3", "h4", "h5", "h6") and node.text():
                 break
-            in_header = node.text() == title
-            continue
-        if not in_header:
-            continue
-        if node.tag in ("p", "h2", "h3", "h4", "h5", "h6") and node.text():
-            break
-        if node.tag == "div" and "fecha" in node.classes():
-            native.append(node.text())
+            if node.tag == "div" and "fecha" in node.classes():
+                native.append(node.text())
     native_dates = [valid_date(value, today=as_of) for value in native]
     if any(day is None for day in native_dates):
         return {"title": title, "event_date": None, "body": body, "reason": "invalid_publication_date"}
@@ -218,7 +256,7 @@ def parse_detail(html, url, *, as_of=None):
         return {"title": title, "event_date": None, "body": body, "reason": kind}
     if not published and native_dates:
         published = native_dates[0]
-        evidence = {"url": url, "kind": "publisher:mutual_div_fecha", "value": native[0], "date": published}
+        evidence = {"url": url, "kind": native_kind, "value": native[0], "date": published}
     return {"title": title, "event_date": published, "body": body, "evidence": evidence,
             "reason": "verified_publication" if published else "missing_publication_date"}
 

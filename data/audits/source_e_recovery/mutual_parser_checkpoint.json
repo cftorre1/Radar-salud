@@ -57,14 +57,21 @@
   "implemented_contract": {
     "interface": "MutualNewsScout(fetcher=None, as_of=None, max_pages=100).discover_inventory(); discover() returns raw_items",
     "publication_evidence": "Explicit native card field bound to exact IBM query article URL, strict detail title/body identity, and listing/detail SHA256; any declared detail date must agree",
-    "prohibited_inference": ["CMS modification timestamp", "sitemap lastmod", "data period", "event date in prose", "related news date", "path year"],
+    "prohibited_inference": [
+      "CMS modification timestamp",
+      "sitemap lastmod",
+      "data period",
+      "event date in prose",
+      "related news date",
+      "path year"
+    ],
     "paging": "Only observed official category nextPage anchors; independent branches; repeated states, limits and missing branches leave coverage incomplete",
     "materiality": "Shared occupational_sources deterministic gate; rejected editorial noise retains verified capture evidence",
     "honest_health": "No source-health edits in this checkpoint; pending detail, parse or category coverage leaves coverage_complete=false"
   },
   "regression_tests": {
     "command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py",
-    "result": "42 passed after follow-up coverage hardening",
+    "result": "55 passed, including native article scoping and exact query-to-permalink identity",
     "shared_command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py tests/test_occupational_sources.py tests/test_occupational_integrity.py",
     "shared_result": "114 passed, 3 shared-test failures from concurrent materiality and runtime adapter changes; root and common-module owner notified"
   },
@@ -80,9 +87,36 @@
     "known_live_validation_pending": "Targeted parent Actions Run3 must determine actual detail markup and correct observed p0 resolution base"
   },
   "next_actions": [
-    "Validate actual detail HTML selectors from targeted fresh Actions capture",
-    "Validate observed server nextPage p0 route against publisher state URL base and confirm distinct category page content",
-    "Run complete 90-day Actions inventory with hashed listing/detail captures and reconcile all rows",
-    "Independent root reviewer checks publication binding and honest source_health"
-  ]
+    "Validate alternate theme-base server paging from fresh parent Run4 captures",
+    "Use native scoped parser and same-article redirect guard in next full Actions inventory",
+    "Independent root reviewer checks evidence and honest source_health"
+  ],
+  "live_detail_validation": {
+    "run_id": "38115788047",
+    "request_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fsalud-mental-y-autocuidado-mutual-de-seguridad-impulsa-jornada-en-division-de-salud-del-ejercito",
+    "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/salud-mental-y-autocuidado-mutual-de-seguridad-impulsa-jornada-en-division-de-salud-del-ejercito/!ut/p/z1/jVJda8JAEPwt_oBj93KfPpoKNdWk0nBN715Kak4JahSxFvvrG6EU1Hpx3wZmdndmFxy8gWvKQ70o9_WmKVcttk6-MzqWCdNR1E9jhVJlXAs9ofgcQXFOmKKhKOMsHWtkLDEUXECvZVifC36fHm_UALv0r2BjsMP088MuLpe5duvCswpw5_P-iSNEyAXrIvBfQmAL27pQt10oKA61_wLTbHbr9sT5qeN2VldgfTWfeSoZ6UvhCfdKEs2whWKuBPdeaE9hhPAUTPX0FQ9_mToK27UxpjmS5cvoO87Ioxn0ej9GYrq5/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+    "redirect_count": 1,
+    "http_status": 200,
+    "tls_verified": true,
+    "sha256": "5aa63bebd74e94b4b119b728f9e068f5ca389f5bc2037f531ea2841c961460bc",
+    "artifact": "data/audits/source_e_recovery/actions/38115788047/0373bc415094137b062c-1.body",
+    "native_title_selector": "div.noticia-conteiner > div.cabecera-noticia > h1.titulo-noticia",
+    "native_date_selector": "div.cabecera-noticia > div.fecha-noticia",
+    "native_body_selector": "div.noticia-conteiner div.text-noticia",
+    "publication_date": "2026-10-09",
+    "original_date": "9 oct. 2026",
+    "body_chars": 1202,
+    "materiality_accepted": false,
+    "materiality_reason": "no_verifiable_material_change",
+    "related_cards_excluded": true,
+    "same_article_redirect": "Decoded WCM query slug equals official final noticias_detalle path article slug; opaque IBM state may vary"
+  },
+  "observed_paging_failure": {
+    "run_id": "38115788047",
+    "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GB=/",
+    "http_status": 200,
+    "reason": "HTML responds as Noticias but contains no native card components; stable-route+p0 is not verified archive continuation",
+    "artifact": "data/audits/source_e_recovery/actions/38115788047/52c97d93417e2932036d-0.body",
+    "next_action": "Parent Run4 probes exact observed alternate theme base with relative nextPage; do not claim 90-day completeness before verified traversal"
+  }
 }
