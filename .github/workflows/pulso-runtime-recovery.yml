@@ -60,6 +60,7 @@ jobs:
           tests/test_pulso_actual323_three_semantic_review.py tests/test_pulso_followup_hanta_dipres_review.py
           tests/test_pulso_final_paid_guard_revalidation.py tests/test_pulso_revalidated_idempotence.py
           tests/test_pulso_actual323_two_pending_diagnosis.py tests/test_pulso_actual_final2_independent_review.py
+          tests/test_pulso_final_paid_revalidation_qa.py
       - name: Read optional prior and additional original capture runs
         id: prior_capture
         run: |
