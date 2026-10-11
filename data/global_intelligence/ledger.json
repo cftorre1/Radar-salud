@@ -174,6 +174,216 @@
         }
       },
       "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38142629053/inventory.json"
+    },
+    {
+      "run_id": "38144109753",
+      "generated_at": "2026-10-11T13:43:08.614238+00:00",
+      "as_of": "2026-10-11",
+      "sources": {
+        "who": {
+          "name": "WHO",
+          "checked_at": "2026-10-11T13:42:13.215451+00:00",
+          "status": "warning",
+          "technical_status": "ok",
+          "coverage_status": "complete",
+          "outcome": "READY_FOR_INTEGRATION",
+          "operation_mode": "isolated_qualification",
+          "recurrent_operation_proven": false,
+          "cadence_seconds": 86400,
+          "cadence_validation_pending": true,
+          "coverage_completeness": "complete",
+          "coverage_window_days": 90,
+          "coverage_from": "2026-07-14",
+          "coverage_to": "2026-10-11",
+          "pages_checked": 7,
+          "recent_items": 84,
+          "discovery_recall_90": {
+            "basis": "independent_native_index_control_on_declared_surfaces",
+            "inventory_90_url_count": 241,
+            "detected": 241,
+            "omitted_urls": [],
+            "recall": 1.0,
+            "whole_source_archive_claim": false
+          },
+          "unique_language_urls_90": 241,
+          "unique_items": 241,
+          "counts": {
+            "30": 84,
+            "90": 241
+          },
+          "indexed_counts": {
+            "30": 84,
+            "90": 241
+          },
+          "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+          "material_items": 148,
+          "published": 0,
+          "rejected": 4,
+          "deferred": 237,
+          "pending_date_items": 0,
+          "technical_failures": [],
+          "discovered": 241,
+          "new": 241,
+          "parser_routes": [
+            "news",
+            "publications",
+            "disease_outbreak_news"
+          ],
+          "boundary_evidence": [
+            {
+              "section": "news",
+              "stop": "verified_older_boundary",
+              "pages": 3
+            },
+            {
+              "section": "publications",
+              "stop": "verified_older_boundary",
+              "pages": 3
+            },
+            {
+              "section": "disease_outbreak_news",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            }
+          ],
+          "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38144109753/inventory.json",
+          "source_quality_disposition": "pass_data",
+          "publication_activation": false,
+          "content_freshness": "recent",
+          "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+        },
+        "paho": {
+          "name": "PAHO",
+          "checked_at": "2026-10-11T13:43:08.605207+00:00",
+          "status": "warning",
+          "technical_status": "ok",
+          "coverage_status": "incomplete",
+          "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
+          "operation_mode": "isolated_qualification",
+          "recurrent_operation_proven": false,
+          "cadence_seconds": 86400,
+          "cadence_validation_pending": true,
+          "coverage_completeness": "incomplete",
+          "coverage_window_days": 90,
+          "coverage_from": "2026-07-14",
+          "coverage_to": "2026-10-11",
+          "pages_checked": 27,
+          "recent_items": 139,
+          "discovery_recall_90": {
+            "basis": "independent_native_index_control_on_declared_surfaces",
+            "inventory_90_url_count": 206,
+            "detected": 206,
+            "omitted_urls": [],
+            "recall": 1.0,
+            "whole_source_archive_claim": false
+          },
+          "unique_language_urls_90": 206,
+          "unique_items": 172,
+          "counts": {
+            "30": 139,
+            "90": 172
+          },
+          "indexed_counts": {
+            "30": 139,
+            "90": 172
+          },
+          "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+          "material_items": 74,
+          "published": 0,
+          "rejected": 6,
+          "deferred": 166,
+          "pending_date_items": 0,
+          "technical_failures": [],
+          "discovered": 172,
+          "new": 172,
+          "parser_routes": [
+            "regional_news",
+            "regional_news_es",
+            "chile_news",
+            "chile_news_es",
+            "epidemiological_alerts",
+            "technical_reports"
+          ],
+          "boundary_evidence": [
+            {
+              "section": "regional_news",
+              "stop": "repeated_pagination_page",
+              "pages": 11
+            },
+            {
+              "section": "regional_news_es",
+              "stop": "repeated_pagination_page",
+              "pages": 11
+            },
+            {
+              "section": "chile_news",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            },
+            {
+              "section": "chile_news_es",
+              "stop": "verified_older_boundary",
+              "pages": 2
+            },
+            {
+              "section": "epidemiological_alerts",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            },
+            {
+              "section": "technical_reports",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            }
+          ],
+          "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38144109753/inventory.json",
+          "source_quality_disposition": "hold_external",
+          "publication_activation": false,
+          "content_freshness": "recent",
+          "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+        },
+        "reuters": {
+          "name": "Reuters",
+          "checked_at": null,
+          "status": "error",
+          "technical_status": "not_polled_license_hold",
+          "coverage_status": "not_permitted",
+          "outcome": "EXTERNAL_BLOCKER_PROVEN",
+          "operation_mode": "manual_curated_only",
+          "recurrent_operation_proven": false,
+          "coverage_completeness": "unmeasured_without_permitted_route",
+          "coverage_window_days": 90,
+          "counts": {
+            "30": null,
+            "90": null
+          },
+          "recent_items": null,
+          "unique_items": null,
+          "material_items": null,
+          "published": 0,
+          "rejected": 0,
+          "deferred": 0,
+          "discovered": 0,
+          "new": 0,
+          "pages_checked": 0,
+          "technical_failures": [
+            {
+              "code": "prior_written_consent_required",
+              "evidence_ref": "data/audits/global_source_recovery_2026_10_11/probes/38141320771/reuters_robots.body"
+            }
+          ],
+          "manual_reference_control": {
+            "total": 8,
+            "30": 8,
+            "90": 8,
+            "collector_recall": null
+          },
+          "reason": "Reuters prohibits automated collection of content/data/information without prior written consent; no authorized contracted route is configured or documented for Alicanto.",
+          "publication_activation": false,
+          "editorial_outcome": "rights_hold"
+        }
+      },
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38144109753/inventory.json"
     }
   ]
 }

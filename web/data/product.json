@@ -101,37 +101,46 @@
     },
     "global_who": {
       "name": "WHO",
-      "checked_at": "2026-10-11T13:20:25.901447+00:00",
+      "checked_at": "2026-10-11T13:42:13.215451+00:00",
       "status": "warning",
-      "technical_status": "error",
-      "coverage_status": "incomplete",
-      "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
+      "technical_status": "ok",
+      "coverage_status": "complete",
+      "outcome": "READY_FOR_INTEGRATION",
       "operation_mode": "isolated_qualification",
       "recurrent_operation_proven": false,
       "cadence_seconds": 86400,
       "cadence_validation_pending": true,
-      "coverage_completeness": "incomplete",
+      "coverage_completeness": "complete",
       "coverage_window_days": 90,
       "coverage_from": "2026-07-14",
       "coverage_to": "2026-10-11",
       "pages_checked": 7,
       "recent_items": 84,
+      "discovery_recall_90": {
+        "basis": "independent_native_index_control_on_declared_surfaces",
+        "inventory_90_url_count": 241,
+        "detected": 241,
+        "omitted_urls": [],
+        "recall": 1.0,
+        "whole_source_archive_claim": false
+      },
+      "unique_language_urls_90": 241,
       "unique_items": 241,
       "counts": {
         "30": 84,
         "90": 241
       },
-      "material_items": 146,
+      "indexed_counts": {
+        "30": 84,
+        "90": 241
+      },
+      "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+      "material_items": 148,
       "published": 0,
       "rejected": 4,
       "deferred": 237,
       "pending_date_items": 0,
-      "technical_failures": [
-        {
-          "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON620",
-          "error": "ValueError: index_detail_title_mismatch"
-        }
-      ],
+      "technical_failures": [],
       "discovered": 241,
       "new": 241,
       "parser_routes": [
@@ -156,58 +165,84 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38142629053/inventory.json",
-      "source_quality_disposition": "hold_external",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38144109753/inventory.json",
+      "source_quality_disposition": "pass_data",
       "publication_activation": false,
       "content_freshness": "recent",
       "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
     },
     "global_paho": {
       "name": "PAHO",
-      "checked_at": "2026-10-11T13:20:58.208886+00:00",
+      "checked_at": "2026-10-11T13:43:08.605207+00:00",
       "status": "warning",
       "technical_status": "ok",
-      "coverage_status": "complete",
-      "outcome": "READY_FOR_INTEGRATION",
+      "coverage_status": "incomplete",
+      "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
       "operation_mode": "isolated_qualification",
       "recurrent_operation_proven": false,
       "cadence_seconds": 86400,
       "cadence_validation_pending": true,
-      "coverage_completeness": "complete",
+      "coverage_completeness": "incomplete",
       "coverage_window_days": 90,
       "coverage_from": "2026-07-14",
       "coverage_to": "2026-10-11",
-      "pages_checked": 12,
-      "recent_items": 79,
-      "unique_items": 97,
-      "counts": {
-        "30": 79,
-        "90": 97
+      "pages_checked": 27,
+      "recent_items": 139,
+      "discovery_recall_90": {
+        "basis": "independent_native_index_control_on_declared_surfaces",
+        "inventory_90_url_count": 206,
+        "detected": 206,
+        "omitted_urls": [],
+        "recall": 1.0,
+        "whole_source_archive_claim": false
       },
-      "material_items": 46,
+      "unique_language_urls_90": 206,
+      "unique_items": 172,
+      "counts": {
+        "30": 139,
+        "90": 172
+      },
+      "indexed_counts": {
+        "30": 139,
+        "90": 172
+      },
+      "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+      "material_items": 74,
       "published": 0,
-      "rejected": 5,
-      "deferred": 92,
+      "rejected": 6,
+      "deferred": 166,
       "pending_date_items": 0,
       "technical_failures": [],
-      "discovered": 97,
-      "new": 97,
+      "discovered": 172,
+      "new": 172,
       "parser_routes": [
         "regional_news",
+        "regional_news_es",
         "chile_news",
+        "chile_news_es",
         "epidemiological_alerts",
         "technical_reports"
       ],
       "boundary_evidence": [
         {
           "section": "regional_news",
-          "stop": "native_archive_exhausted",
-          "pages": 9
+          "stop": "repeated_pagination_page",
+          "pages": 11
+        },
+        {
+          "section": "regional_news_es",
+          "stop": "repeated_pagination_page",
+          "pages": 11
         },
         {
           "section": "chile_news",
           "stop": "verified_older_boundary",
           "pages": 1
+        },
+        {
+          "section": "chile_news_es",
+          "stop": "verified_older_boundary",
+          "pages": 2
         },
         {
           "section": "epidemiological_alerts",
@@ -220,8 +255,8 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38142629053/inventory.json",
-      "source_quality_disposition": "pass_data",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38144109753/inventory.json",
+      "source_quality_disposition": "hold_external",
       "publication_activation": false,
       "content_freshness": "recent",
       "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
