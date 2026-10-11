@@ -597,7 +597,7 @@ class _RedSaludArticle(HTMLParser):
             stamp=re.search(r'(\d{1,2}\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]+\s+20\d{2})\s*$', ' '.join(self._before)[-120:])
             dates={x for x in self._visible_date_stamps if x}
             self.header_date=next(iter(dates)) if len(dates)==1 else _date(stamp.group(1)) if stamp and not dates else None
-        elif self._after_h1 and lower in ("h2","p"):self._field="body";self._parts=[]
+        elif self._after_h1 and lower in ("h2","h3","p","li"):self._field="body";self._parts=[]
     def handle_data(self,data):
         if self._script:self._json.append(data)
         if self._date_span:self._date_parts.append(data)
@@ -612,8 +612,12 @@ class _RedSaludArticle(HTMLParser):
             self._consume_json("".join(self._json));self._script=False
         elif lower=="h1" and self._field=="h1":
             visible=" ".join(" ".join(self._parts).split());self.title=visible;self._after_h1=True;self._field=None
-        elif lower in ("h2","p") and self._field=="body":
-            self.body+=" "+" ".join(" ".join(self._parts).split());self._field=None
+        elif lower in ("h2","h3","p","li") and self._field=="body":
+            value=" ".join(" ".join(self._parts).split())
+            if lower in ('h2','h3') and value.casefold() in ('conoce otras de nuestras noticias','artículos relacionados'):
+                self._after_h1=False
+            else:self.body+=" "+value
+            self._field=None
         elif lower=="footer":self._after_h1=False
     def _consume_json(self,text):
         try:data=json.loads(text)

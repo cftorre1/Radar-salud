@@ -121,7 +121,7 @@ def detail_evidence(slug, url, html):
         stamp=re.match(r'^(\d{2}/\d{2}/20\d{2})(?:\s|$)',body)
         if stamp:stamps.append({'kind':'verified_component_publication_header','value':stamp.group(1),'date':_date(stamp.group(1))})
     elif slug in CuratedBetaSourceScout.SOURCES:
-        a=_ProviderPublication();a.feed(html);stamp,provenance=a.publication()
+        a=_ProviderPublication(url);a.feed(html);stamp,provenance=a.publication()
         if stamp:stamps.append({'kind':provenance,'value':stamp,'date':stamp})
     return {'detail_title':title,'date_stamps':stamps,'article_schemas':schemas,
             'date_modified':meta.meta.get('article:modified_time'),

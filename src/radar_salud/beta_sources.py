@@ -137,7 +137,7 @@ class CuratedBetaSourceScout:
                     from .public_source_pipeline import _VisibleArticle
                     article=_VisibleArticle();article.feed(detail)
                     body=' '.join(article.text)
-                    stamp = _ProviderPublication();stamp.feed(detail)
+                    stamp = _ProviderPublication(url);stamp.feed(detail)
                     published, provenance = stamp.publication()
                 else:
                     published = _date(meta.published) or _date(body[:6500]) or _date(listing_title)
@@ -234,8 +234,14 @@ class _ProviderPublication(HTMLParser):
     standalone stamp immediately after H1. Body and related-item dates cannot
     supply a missing publication date.
     """
-    def __init__(self):
+    def __init__(self,url=None):
         super().__init__();self.meta=None;self.header=None;self._before=[];self._h1=False;self._after=False;self._seen_title=False
+        self.url=url
+        from .public_source_pipeline import _RedSaludArticle
+        self._article=_RedSaludArticle(url) if url else None
+    def feed(self,data):
+        super().feed(data)
+        if self._article:self._article.feed(data)
     def handle_starttag(self, tag, attrs):
         attrs=dict(attrs);tag=tag.lower()
         if tag=='meta' and (attrs.get('property') or attrs.get('name') or '').lower() in ('article:published_time','datepublished'):
@@ -261,6 +267,16 @@ class _ProviderPublication(HTMLParser):
     def publication(self):
         from .public_source_pipeline import _date
         meta=_date(self.meta)
+        if self._article:
+            self._article.finish()
+            def identity(item):
+                value=item.get('url') or item.get('mainEntityOfPage') or item.get('@id')
+                if isinstance(value,dict):value=value.get('@id') or value.get('url')
+                return urljoin(self.url,str(value)).split('#')[0].rstrip('/') if value else None
+            own=any(identity(item)==self.url.split('#')[0].rstrip('/') for item in self._article.schemas)
+            schema=_date(self._article.published) if own else None
+            if schema and ((meta and meta!=schema) or (self.header and self.header!=schema)):return None,'conflicting_stamps'
+            if schema and not meta and not self.header:return schema,'url_associated_jsonld_datePublished'
         if meta and self.header and meta!=self.header:return None,'conflicting_stamps'
         return (meta,'article:published_time') if meta else (self.header,'verified_article_header' if self.header else 'unverified')
 
@@ -359,7 +375,7 @@ def process_curated_beta_source(raw, cfg):
         if gate and gate!='passed':
             raise DeferredProcessing(f'Provider source quality gate not passed: {gate}')
         if (not raw.event_date or raw.metadata.get('publication_date_source')
-                not in ('article:published_time','verified_article_header')):
+                not in ('article:published_time','verified_article_header','url_associated_jsonld_datePublished')):
             raise DeferredProcessing('Provider publication date unverified')
         from .processing import OutsideBackfillHorizon
         published=date.fromisoformat(raw.event_date)
@@ -370,7 +386,7 @@ def process_curated_beta_source(raw, cfg):
         try:
             detail=fetch_html(raw.url)
         except Exception as exc:raise DeferredProcessing(f'Provider detail unavailable: {raw.url}: {type(exc).__name__}') from exc
-        stamp=_ProviderPublication();stamp.feed(detail)
+        stamp=_ProviderPublication(raw.url);stamp.feed(detail)
         verified,_=stamp.publication()
         if verified!=raw.event_date:raise DeferredProcessing(f'Provider listing/detail publication date mismatch: {raw.url}')
         article=_VisibleArticle();article.feed(detail)
@@ -398,7 +414,7 @@ def process_curated_beta_source(raw, cfg):
                 or evidence.get('relationship')!='programme_announcement_before_execution'):
             raise DeferredProcessing('Supporting provider evidence identity unverified')
         try:
-            page=fetch_html(evidence['url']);stamp=_ProviderPublication();stamp.feed(page)
+            page=fetch_html(evidence['url']);stamp=_ProviderPublication(evidence['url']);stamp.feed(page)
             article=_VisibleArticle();article.feed(page)
         except Exception as exc:raise DeferredProcessing('Supporting provider original unavailable') from exc
         verified,_=stamp.publication()

@@ -75,6 +75,27 @@ def test_provider_header_date_does_not_borrow_from_body_or_related_cards():
         assert p.publication()[0]==expected
 
 
+def test_provider_jsonld_requires_own_url_and_ignores_modified():
+    from radar_salud.beta_sources import _ProviderPublication
+    import json
+    url='https://www.davila.cl/novedades/current'
+    schema={'@type':'NewsArticle','url':url,'datePublished':'2026-10-05','dateModified':'2026-10-11'}
+    def parser(value):
+        p=_ProviderPublication(url);p.feed('<h1>Current article</h1><script type="application/ld+json">'+json.dumps(value)+'</script>');return p
+    assert parser(schema).publication()==('2026-10-05','url_associated_jsonld_datePublished')
+    schema['url']=url+'/other'
+    assert parser(schema).publication()[0] is None
+    schema.pop('datePublished');schema['url']=url
+    assert parser(schema).publication()[0] is None
+
+
+def test_redsalud_capacity_lists_are_read_without_related_cards():
+    from radar_salud.public_source_pipeline import _RedSaludArticle
+    p=_RedSaludArticle();p.feed('<h1>New urgency unit</h1><p>Operational change.</p><ul><li>26 boxes</li><li>874 m²</li></ul><h2>Conoce otras de nuestras noticias</h2><p>Unrelated investment.</p>');p.finish()
+    assert '26 boxes' in p.body and '874 m²' in p.body
+    assert 'Unrelated investment' not in p.body
+
+
 @pytest.mark.parametrize('slug,name,processor,url',[
     ('indisa','Clínica INDISA','corporate','https://www.indisa.cl/blog/convenio'),
     ('red_davila','Red Dávila','beta','https://www.davila.cl/novedades/convenio'),
