@@ -142,6 +142,230 @@ def legacy_qa_duplicate_state():
     return state
 
 
+def source_observation(variant="1", *, product="a" * 64):
+    """Parsed source facts retain all failures while capture bytes rotate."""
+    q = queue("media")
+    q["tasks"][0].update(input_fingerprint="scoped-executor", product_input_fingerprint=product,
+                         evidence_revision="revision-" + variant)
+    row = {"slug": "diario_financiero", "technical_status": "error", "discovered": 0, "dated": 0,
+        "inventory_hash": "9" * 64, "samples": [], "error": "HTTPError: HTTP 403 Forbidden",
+        "requests": [{"url": "https://source.example/news", "status": "FAIL", "error": "HTTP 403 Forbidden",
+                      "response_sha256": variant * 64, "response_bytes": int(variant) * 100},
+                     {"url": "https://source.example/archive", "status": "PASS",
+                      "response_sha256": variant * 64, "response_bytes": int(variant) * 200}]}
+    gate = {"command": ["python", "scout", "--diagnose-source", "diario_financiero"], "returncode": 1,
+            "status": "FAIL", "failure_hash": variant * 64, "log_sha256": variant * 64,
+            "log_path": "capture-" + variant + ".log", "source_urls": [x["url"] for x in row["requests"]]}
+    recovery = {"automated_recovery": {"status": "BLOCKED", "reason": "Approved parser repair plan absent"}}
+    report = {"status": "BLOCKED", "real_failure": {**source_failure(), "observed_at": variant,
+              "failure_signature": "producer-" + variant}, "failure_action": "blocked", "blockers": [
+        {"kind": "technical", "reason": "Scoped live discovery failed: diario_financiero",
+         "fingerprint": variant * 64, "evidence": [gate, row, recovery]},
+        {"kind": "acceptance", "reason": "Explicit acceptance missing", "fingerprint": "a" * 64,
+         "evidence": [{"task_id": MEDIA, "family": "media", "diagnostics_are_acceptance": False}]}]}
+    if variant != "1":
+        row["requests"].reverse()
+        gate["source_urls"].reverse()
+        report["blockers"].reverse()
+    return q, report
+
+
+def legacy_source_duplicate_state(*, bindings=True):
+    """Simulated historical authority; production imports verify actual Git."""
+    state = {"tasks": {}, "material_events": [], "lease_events": [], "pending_transitions": []}
+    for index in range(2):
+        q, report = source_observation(str(index + 1))
+        current = reconcile({}, q, BASE + timedelta(minutes=index))
+        task = current["tasks"][MEDIA]
+        blockers = engine._blockers(report)
+        details = {"fingerprint": engine._hash([b["fingerprint"] for b in blockers]),
+            "reason": "; ".join(b["reason"] for b in blockers), "blockers": deepcopy(blockers),
+            "evidence": [x for b in blockers for x in b["evidence"]],
+            "real_failure": deepcopy(report["real_failure"]), "failure_action": "blocked"}
+        at = engine._iso(BASE + timedelta(minutes=index))
+        event = {"id": "legacy-source-" + str(index), "task_id": MEDIA, "family": "media",
+                 "kind": "blocker", "at": at, "details": details}
+        state["material_events"].append(event)
+        state["pending_transitions"].append({"task_id": MEDIA, "family": "media", "event_id": event["id"], "at": at})
+        task.update(status="BLOCKED", blocker=deepcopy(details), material_progress_at=at,
+                    material_watch_started_at=at, recovery_episode=event["id"])
+        state["tasks"][MEDIA] = task
+        if bindings:
+            state.setdefault("material_event_product_bindings", {})[event["id"]] = {
+                "schema_version": 1, "verified": True, "task_id": MEDIA, "family": "media",
+                "event_sha256": engine._hash(event), "input_sha": SHA, "product_input_fingerprint": "a" * 64,
+                "proof": {"state_commit": str(index + 1) * 40, "control_sha256": str(index + 1) * 64,
+                    "worker_result": {"path": "data/autopilot/evidence/worker-" + str(index) + ".json", "sha256": "e" * 64}}}
+    transition = {"id": "real-transition", "task_id": MEDIA, "family": "media", "kind": "transition",
+        "at": engine._iso(BASE + timedelta(seconds=30)), "details": {"independent": True}}
+    state["material_events"].insert(1, transition)
+    return state, q
+
+
+class SourceMaterialIdentityTests(unittest.TestCase):
+    def test_capture_clock_body_bytes_order_and_producer_signature_are_not_new_problem(self):
+        q, report = source_observation()
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], report, BASE)
+        old = deepcopy(state["material_events"])
+        q, report = source_observation("2")
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=1))
+        state = finish(state, MEDIA, lease["token"], report, BASE + timedelta(minutes=1))
+        self.assertEqual(state["material_events"], old)
+        self.assertEqual(old[0]["details"]["product_input_fingerprint"], "a" * 64)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "BLOCKED")
+
+    def test_real_urls_errors_inventory_dates_content_and_product_remain_material(self):
+        changes = (
+            lambda q, row: row["requests"][0].update(url="https://source.example/new"),
+            lambda q, row: row["requests"][0].update(status="FAIL", error="HTTP 404 Not Found"),
+            lambda q, row: row.update(error="UnicodeEncodeError: URI contains non-ASCII"),
+            lambda q, row: row.update(inventory_hash="b" * 64),
+            lambda q, row: row.update(samples=[{"title": "New bulletin", "date": "2026-10-11", "content_hash": "c" * 64}]),
+            lambda q, row: row.update(samples=[{"assertion": "effective_at", "observed_at": "2026-10-11T00:00:00Z"}]),
+            lambda q, row: q["tasks"][0].update(product_input_fingerprint="d" * 64),
+        )
+        for change in changes:
+            with self.subTest(change=change):
+                q, report = source_observation()
+                state, lease = claim({}, q, "media", "worker", BASE)
+                state = finish(state, MEDIA, lease["token"], report, BASE)
+                q, report = source_observation("2")
+                row = next(b["evidence"][1] for b in report["blockers"] if b["kind"] == "technical")
+                change(q, row)
+                state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=1))
+                state = finish(state, MEDIA, lease["token"], report, BASE + timedelta(minutes=1))
+                self.assertEqual(len([e for e in state["material_events"] if e["kind"] == "blocker"]), 2)
+
+    def test_source_assertion_dates_and_content_hashes_are_not_observation_metadata(self):
+        old = {"samples": [{"publication_date": "2026-10-10", "observed_at": "2026-10-10T00:00:00Z", "sha256": "a" * 64}]}
+        for change in ({"publication_date": "2026-10-11"}, {"observed_at": "2026-10-11T00:00:00Z"}, {"sha256": "b" * 64}):
+            new = deepcopy(old)
+            new["samples"][0].update(change)
+            self.assertNotEqual(engine._source_problem(old), engine._source_problem(new))
+
+    def test_opaque_or_malformed_source_rows_cannot_erase_capture_evidence(self):
+        for damage in (lambda row: row.update(slug="unknown"), lambda row: row["requests"].append({}),
+                       lambda row: row.pop("technical_status")):
+            q, report = source_observation()
+            technical = report["blockers"][0]
+            damage(technical["evidence"][1])
+            details = {"blockers": [technical], "evidence": technical["evidence"]}
+            self.assertIsNone(engine._source_blocker_identity(details, "a" * 64, "media"))
+            self.assertIn("failure_hash", engine._source_problem(technical["evidence"][0]))
+
+    def test_legacy_sources_require_trusted_historical_product_bindings(self):
+        state, q = legacy_source_duplicate_state(bindings=False)
+        corrected = reconcile(state, q, BASE + timedelta(minutes=2))
+        self.assertEqual(len(effective_material_events(corrected)), 3)
+        self.assertEqual(corrected["material_event_corrections"], [])
+
+    def test_bound_legacy_duplicate_retires_credit_preserves_raw_and_rolls_back_watch(self):
+        state, q = legacy_source_duplicate_state()
+        original = deepcopy(state["material_events"])
+        corrected = reconcile(state, q, BASE + timedelta(minutes=2))
+        self.assertEqual(corrected["material_events"], original)
+        self.assertEqual([x["id"] for x in effective_material_events(corrected)], ["legacy-source-0", "real-transition"])
+        self.assertEqual(corrected["material_event_corrections"][0]["kind"], "duplicate_source_blocker")
+        task = corrected["tasks"][MEDIA]
+        self.assertEqual(task["material_progress_at"], original[1]["at"])
+        self.assertEqual(task["material_watch_started_at"], original[1]["at"])
+        self.assertEqual(task["recovery_episode"], "real-transition")
+        self.assertEqual([x["event_id"] for x in corrected["pending_transitions"]], ["legacy-source-0"])
+        again = reconcile(corrected, q, BASE + timedelta(minutes=3))
+        self.assertEqual(corrected["material_event_corrections"], again["material_event_corrections"])
+
+    def test_historical_binding_tamper_and_product_change_fail_closed(self):
+        changes = (
+            lambda b: b.update(event_sha256="f" * 64), lambda b: b.update(task_id="other"),
+            lambda b: b.update(family="public_data"), lambda b: b.update(verified=False),
+            lambda b: b.update(product_input_fingerprint="b" * 64),
+            lambda b: b["proof"].update(state_commit="bad"),
+            lambda b: b["proof"]["worker_result"].update(path="data/autopilot/evidence/../worker.json"),
+            lambda b: b["proof"]["worker_result"].update(sha256="bad"),
+        )
+        for change in changes:
+            with self.subTest(change=change):
+                state, q = legacy_source_duplicate_state()
+                change(state["material_event_product_bindings"]["legacy-source-1"])
+                corrected = reconcile(state, q, BASE + timedelta(minutes=2))
+                self.assertEqual(len(effective_material_events(corrected)), 3)
+
+    def test_frozen_correction_survives_future_product_movement_but_not_raw_tampering(self):
+        state, q = legacy_source_duplicate_state()
+        corrected = reconcile(state, q, BASE + timedelta(minutes=2))
+        moved = deepcopy(corrected)
+        moved["tasks"][MEDIA]["product_input_fingerprint"] = "b" * 64
+        moved.pop("material_event_product_bindings")
+        self.assertEqual(len(effective_material_events(moved)), 2)
+        component = next(b for b in moved["material_events"][0]["details"]["blockers"] if b["kind"] == "technical")
+        component["evidence"][1]["inventory_hash"] = "c" * 64
+        self.assertEqual(len(effective_material_events(moved)), 3)
+
+    def test_frozen_historical_proof_cannot_be_substituted_after_correction(self):
+        state, q = legacy_source_duplicate_state()
+        corrected = reconcile(state, q, BASE + timedelta(minutes=2))
+        for change in (lambda b: b["proof"].update(control_sha256="f" * 64),
+                       lambda b: b["proof"].update(state_commit="f" * 40),
+                       lambda b: b["proof"]["worker_result"].update(sha256="f" * 64),
+                       lambda b: b.update(family="public_data")):
+            altered = deepcopy(corrected)
+            change(altered["material_event_corrections"][0]["bindings"][0])
+            self.assertEqual(len(effective_material_events(altered)), 3)
+
+    def test_probe_guard_only_is_not_a_real_source_failure_despite_legacy_verified_flag(self):
+        q, report = source_observation()
+        row = report["blockers"][0]["evidence"][1]
+        row.update(error="RuntimeError: bounded_probe_budget:24 requests per source", technical_status="error")
+        row["requests"] = [{"url": "https://source.example/news", "status": "UNVERIFIED", "error": "bounded_probe_budget:24 requests per source"}]
+        self.assertFalse(engine.source_failure_evidenced(report["real_failure"], report["blockers"]))
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], report, BASE)
+        self.assertNotIn("last_failure", state["tasks"][MEDIA])
+        self.assertEqual(state["failure_history"], {})
+        legacy = {"kind": "closure", "family": "media", "details": {**passed(), "input_sha": SHA,
+            "real_failure": report["real_failure"], "failure_action": "repaired", "failure_evidence": report["blockers"]}}
+        self.assertFalse(engine._repaired_failure_event(legacy))
+
+    def test_correcting_budget_classification_and_skipping_false_recovery_is_not_new_credit(self):
+        q, report = source_observation()
+        old = report["blockers"][0]
+        row = old["evidence"][1]
+        row.update(error="RuntimeError: bounded_probe_budget:24 requests per source",
+                   requests=[{"url": "https://source.example/news", "status": "PASS", "response_sha256": "a" * 64},
+                             {"url": "https://source.example/omitted", "status": "UNVERIFIED", "error": "bounded_probe_budget:24 requests per source"}])
+        newer = deepcopy(old)
+        newer.update(kind="instrumentation", reason="Scoped coverage INCOMPLETE: internal request budget reached: diario_financiero")
+        newer["evidence"][1].update(technical_status="incomplete", probe_complete=False,
+            failure_origin="instrumentation_limit", probe_budget={"max_requests": 24, "unexecuted_requests": 1})
+        newer["evidence"][2] = {"automated_recovery": {"attempted": False, "reason": "Instrumentation limit is not a demonstrated source failure"}}
+        old_identity = engine._source_blocker_identity({"blockers": [old], "evidence": old["evidence"]}, "a" * 64, "media")
+        new_identity = engine._source_blocker_identity({"blockers": [newer], "evidence": newer["evidence"]}, "a" * 64, "media")
+        self.assertEqual(old_identity, new_identity)
+        # An actually executed previously omitted URL changes the retained
+        # coverage evidence and may establish a newly evidenced problem.
+        newer["evidence"][1]["requests"][1].update(status="FAIL", error="HTTP 403 Forbidden")
+        self.assertNotEqual(old_identity, engine._source_blocker_identity(
+            {"blockers": [newer], "evidence": newer["evidence"]}, "a" * 64, "media"))
+
+    def test_mixed_guard_and_real_http_or_parser_failure_is_still_verified(self):
+        for error in ("HTTP 403 Forbidden", "UnicodeEncodeError: URI contains non-ASCII"):
+            q, report = source_observation()
+            row = report["blockers"][0]["evidence"][1]
+            row["requests"].append({"url": "https://source.example/omitted", "status": "UNVERIFIED", "error": "bounded_probe_budget:24"})
+            row["error"] = error
+            self.assertTrue(engine.source_failure_evidenced(report["real_failure"], report["blockers"]))
+
+    def test_guard_only_legacy_last_failure_cannot_become_repaired_on_postmerge_closure(self):
+        q, report = source_observation()
+        row = report["blockers"][0]["evidence"][1]
+        row.update(error="bounded_probe_budget:24", requests=[])
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state["tasks"][MEDIA].update(last_failure=report["real_failure"], blocker={"evidence": [row]})
+        closed = finish(state, MEDIA, lease["token"], passed(), BASE)
+        self.assertNotIn("failure_action", closed["material_events"][0]["details"])
+
+
 class AutonomyEngineTests(unittest.TestCase):
     def test_hosted_run_task_sha_and_raw_log_churn_cannot_credit_same_problem(self):
         q, report = qa_observation("123", SHA)

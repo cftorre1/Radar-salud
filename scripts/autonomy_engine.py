@@ -27,6 +27,9 @@ SOURCE_TASKS = {
     "source_repair_fiscalization_lane_2026_10_11": "fiscalization",
     "source_repair_mutualities_lane_2026_10_11": "mutualities",
 }
+SOURCE_SLUGS = {"diario_financiero", "pulso_latercera", "fonasa", "fonasa_datos_abiertos",
+                "isp_anamed", "isp_surveillance", "deis", "superintendencia_fiscalizacion",
+                "suseso_fiscalizacion", "clinicas_achs_salud", "achs_seguro_laboral", "mutual_seguridad", "ist"}
 EDITORIAL_TASK = "source_audit_issue5_iteration3_editorial_2026_10_09"
 EDITORIAL_REPAIR_TASK = "editorial_repair_lane_2026_10_11"
 FAMILIES = tuple(SOURCE_TASKS.values()) + ("editorial", "staging_qa")
@@ -201,13 +204,173 @@ def _staging_event_binding(event, state):
             "failure": deepcopy(failure)}
 
 
+def _source_row(value):
+    return (isinstance(value, dict) and value.get("slug") in SOURCE_SLUGS
+            and isinstance(value.get("requests"), list) and "technical_status" in value
+            and all(isinstance(request, dict) and request.get("url") and request.get("status")
+                    for request in value["requests"])
+            and isinstance(value.get("discovered"), int) and isinstance(value.get("dated"), int)
+            and (isinstance(value.get("inventory_hash"), str) or isinstance(value.get("samples"), list)))
+
+
+def _source_rows(value):
+    if _source_row(value):
+        yield value
+    elif isinstance(value, dict):
+        for item in value.values():
+            yield from _source_rows(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _source_rows(item)
+
+
+def _source_probe_incomplete(row):
+    if not _source_row(row):
+        return False
+    return (any(request.get("status") == "UNVERIFIED"
+                and "bounded_probe_budget" in str(request.get("error", "")) for request in row["requests"])
+            and not any(request.get("status") == "FAIL" for request in row["requests"])
+            and not (row.get("error") and "bounded_probe_budget" not in str(row["error"])))
+
+
+def source_failure_evidenced(failure, evidence=None):
+    """Known incomplete instrumentation is not a publisher/parser failure.
+
+    Historical verified flags are retained. Structured source diagnostics,
+    when present, must demonstrate a failure independent of the probe guard.
+    """
+    if not _failure_proof(failure):
+        return False
+    if failure.get("kind") != "source_runtime":
+        return True
+    if (failure.get("failure_origin") == "instrumentation_limit"
+            or "bounded_probe_budget" in str(failure.get("error", ""))):
+        return False
+    rows = [row for row in _source_rows(evidence)
+            if row.get("slug") == failure.get("source_slug")]
+    if not rows:
+        return True
+    for row in rows:
+        independent_error = row.get("error") and "bounded_probe_budget" not in str(row["error"])
+        if independent_error or any(
+                request.get("status") == "FAIL"
+                and "bounded_probe_budget" not in str(request.get("error", ""))
+                for request in row["requests"] if isinstance(request, dict)):
+            return True
+    return False
+
+
+def _source_problem(value, *, covered=False, request_capture=False, path=()):
+    """Retain parsed source meaning; capture churn alone cannot prove novelty."""
+    if isinstance(value, dict):
+        covered = covered or _source_row(value) or any(_source_rows(value))
+        incomplete = _source_probe_incomplete(value)
+        result = {}
+        observation = (_source_row(value) or path[-1:] in {("requests",), ("real_failure",)}
+                       or "command" in value or "automated_recovery" in value)
+        for key, item in value.items():
+            if _source_row(value) and key in {"probe_complete", "probe_budget", "failure_origin"}:
+                # These classifications are derived from the exact requests,
+                # retained below; correcting a label is no new source problem.
+                continue
+            if incomplete and key == "technical_status":
+                item = "incomplete"
+            if observation and key in {"observed_at", "generated_at", "checked_at", "reviewed_at", "started_at", "finished_at",
+                       "duration", "duration_seconds", "elapsed_seconds", "log_path", "log_sha256", "trace_path", "trace_sha256"}:
+                continue
+            if key == "fingerprint" and "reason" in value and "evidence" in value:
+                continue
+            if key in {"captured_stdout_sha256", "captured_stdout_bytes", "failure_sha256", "failure_hash", "source_evidence_sha256"}:
+                if covered or isinstance(value.get("output"), str):
+                    continue
+            if (key in {"response_sha256", "response_bytes"} and request_capture and path[-1:] == ("requests",)
+                    and isinstance(value.get("url"), str) and value.get("status")):
+                continue
+            if key in {"output", "stdout"} and isinstance(item, str):
+                if _source_row(value.get("source_evidence")) and "--diagnose-source" in value.get("command", []):
+                    item = "<retained-structured-source-evidence>"
+                else:
+                    item = re.sub(r"\bin \d+(?:\.\d+)?s\b", "in <duration>", item)
+            normalized = _source_problem(item, covered=covered,
+                request_capture=request_capture or (key == "requests" and _source_row(value)), path=path + (key,))
+            if key in {"requests", "evidence", "source_urls"} and isinstance(normalized, list):
+                normalized = sorted(normalized, key=_hash)
+            result[key] = normalized
+        return result
+    if isinstance(value, list):
+        return [_source_problem(item, covered=covered, request_capture=request_capture, path=path) for item in value]
+    if isinstance(value, str) and path[-1:] == ("command",) and value.startswith("--junitxml="):
+        return "--junitxml=<artifact>"
+    return value
+
+
+def _source_blocker_identity(blocker, product_fingerprint, family):
+    if (family not in SOURCE_TASKS.values() or not HASH_RE.fullmatch(str(product_fingerprint))
+            or not any(_source_rows(blocker.get("evidence", [])))):
+        return None
+    problems = []
+    for component in blocker.get("blockers") or [blocker]:
+        evidence = component.get("evidence", [])
+        rows = list(_source_rows(evidence))
+        covered = bool(rows)
+        incomplete = bool(rows) and all(_source_probe_incomplete(row) for row in rows)
+        problem = {key: component[key] for key in ("kind", "reason", "human_required") if key in component}
+        if incomplete:
+            problem.update(kind="instrumentation", reason="Scoped source coverage incomplete: " + ",".join(sorted({row["slug"] for row in rows})))
+        if "source_urls" in component:
+            problem["source_urls"] = sorted(component["source_urls"])
+        problem["evidence"] = sorted({_hash(_source_problem(item, covered=covered)) for item in evidence
+                                      if not (incomplete and isinstance(item, dict) and "automated_recovery" in item)})
+        problems.append(_hash(problem))
+    return {"family": family, "product_input_fingerprint": product_fingerprint,
+            "source_problem_signature": _hash(sorted(set(problems))), "problems": sorted(set(problems))}
+
+
+def _source_event_binding(event, state):
+    if event.get("kind") != "blocker" or event.get("family") not in SOURCE_TASKS.values():
+        return None
+    details = event.get("details", {})
+    product = details.get("product_input_fingerprint")
+    if product:
+        return {"task_id": event["task_id"], "family": event["family"], "product_input_fingerprint": product}
+    # Legacy product identity must come from immutable historical state and its
+    # original worker report, verified by the trusted caller before this reducer.
+    binding = state.get("material_event_product_bindings", {}).get(event.get("id"))
+    if not isinstance(binding, dict):
+        return None
+    proof = binding.get("proof") or {}
+    worker = proof.get("worker_result") or {}
+    path = worker.get("path", "")
+    if (binding.get("schema_version") != 1 or binding.get("verified") is not True
+            or binding.get("task_id") != event.get("task_id") or binding.get("family") != event.get("family")
+            or binding.get("event_sha256") != _hash(event)
+            or not SHA_RE.fullmatch(str(binding.get("input_sha")))
+            or not HASH_RE.fullmatch(str(binding.get("product_input_fingerprint")))
+            or not SHA_RE.fullmatch(str(proof.get("state_commit")))
+            or not HASH_RE.fullmatch(str(proof.get("control_sha256")))
+            or not HASH_RE.fullmatch(str(worker.get("sha256")))
+            or not re.fullmatch(r"data/autopilot/evidence/[A-Za-z0-9][A-Za-z0-9_.-]*\.json", str(path))):
+        return None
+    return deepcopy(binding)
+
+
+def _event_blocker_binding(event, state):
+    return _staging_event_binding(event, state) if event.get("family") == "staging_qa" else _source_event_binding(event, state)
+
+
+def _bound_blocker_identity(event, binding):
+    if event.get("family") == "staging_qa":
+        return _staging_blocker_identity(event["details"], binding.get("product_input_fingerprint"), binding.get("failure"))
+    return _source_blocker_identity(event["details"], binding.get("product_input_fingerprint"), event.get("family"))
+
+
 def effective_material_events(state):
     """Return original events excluding only verifiable append-only corrections."""
     events = state.get("material_events", [])
     by_id = {event.get("id"): (index, event) for index, event in enumerate(events)}
     removed = set()
     for correction in state.get("material_event_corrections", []):
-        if not isinstance(correction, dict) or correction.get("kind") != "duplicate_staging_blocker":
+        if not isinstance(correction, dict) or correction.get("kind") not in {"duplicate_staging_blocker", "duplicate_source_blocker"}:
             continue
         invalid = by_id.get(correction.get("event_id"))
         retained = by_id.get(correction.get("retained_event_id"))
@@ -217,23 +380,33 @@ def effective_material_events(state):
             continue
         bindings = correction.get("bindings", [])
         if (not isinstance(bindings, list) or len(bindings) != 2
-                or any(not isinstance(binding, dict) for binding in bindings)):
+                or any(not isinstance(binding, dict) for binding in bindings)
+                or (correction["kind"] == "duplicate_source_blocker"
+                    and correction.get("bindings_sha256") != _hash(bindings))):
             continue
         identities = []
         for event, binding in zip((retained[1], invalid[1]), bindings):
-            if (event.get("family") != "staging_qa" or event.get("kind") != "blocker"
+            source = correction["kind"] == "duplicate_source_blocker"
+            if (event.get("kind") != "blocker"
+                    or (source and event.get("family") not in SOURCE_TASKS.values())
+                    or (source and binding.get("family") != event.get("family"))
+                    or (not source and event.get("family") != "staging_qa")
                     or binding.get("task_id") != event.get("task_id")
-                    or binding.get("failure") != event.get("details", {}).get("real_failure")
+                    or (not source and binding.get("failure") != event.get("details", {}).get("real_failure"))
                     or (event.get("details", {}).get("product_input_fingerprint")
                         and event["details"]["product_input_fingerprint"] != binding.get("product_input_fingerprint"))):
                 break
-            identities.append(_staging_blocker_identity(event["details"],
-                              binding.get("product_input_fingerprint"), binding.get("failure")))
+            if source and not event.get("details", {}).get("product_input_fingerprint"):
+                frozen = _source_event_binding(event, {"material_event_product_bindings": {event["id"]: binding}})
+                if not frozen:
+                    break
+            identities.append(_bound_blocker_identity(event, binding))
         if (len(bindings) == len(identities) == 2 and identities[0]
                 and identities[0] == identities[1]
                 and _hash(identities[0]) == correction.get("canonical_signature")
                 and identities[0]["product_input_fingerprint"] == correction.get("product_input_fingerprint")
-                and identities[0]["failure_signature"] == correction.get("failure_signature")):
+                and identities[0].get("failure_signature") == correction.get("failure_signature")
+                and identities[0].get("source_problem_signature") == correction.get("source_problem_signature")):
             removed.add(invalid[1]["id"])
     return [event for event in events if event.get("id") not in removed]
 
@@ -247,10 +420,10 @@ def _correct_duplicate_staging_blockers(state, now):
     for event in state.get("material_events", []):
         if not event.get("id") or event["id"] in already_corrected:
             continue
-        binding = _staging_event_binding(event, state)
+        binding = _event_blocker_binding(event, state)
         if not binding:
             continue
-        identity = _staging_blocker_identity(event["details"], binding["product_input_fingerprint"], binding["failure"])
+        identity = _bound_blocker_identity(event, binding)
         if not identity:
             continue
         signature = _hash(identity)
@@ -258,13 +431,17 @@ def _correct_duplicate_staging_blockers(state, now):
             seen[signature] = (event, binding)
             continue
         retained, retained_binding = seen[signature]
-        correction = {"kind": "duplicate_staging_blocker", "event_id": event["id"],
+        source = event.get("family") in SOURCE_TASKS.values()
+        correction = {"kind": "duplicate_source_blocker" if source else "duplicate_staging_blocker", "event_id": event["id"],
             "retained_event_id": retained["id"], "at": _iso(now),
             "event_sha256": _hash(event), "retained_event_sha256": _hash(retained),
-            "canonical_signature": signature, "failure_signature": identity["failure_signature"],
+            "canonical_signature": signature,
             "product_input_fingerprint": identity["product_input_fingerprint"],
             "bindings": [deepcopy(retained_binding), deepcopy(binding)],
-            "reason": "Same demonstrated failure, product and evidenced problem; transport aliases do not earn new progress."}
+            "reason": "Same product and structured evidenced problem; capture aliases do not earn new progress."}
+        correction["source_problem_signature" if source else "failure_signature"] = identity["source_problem_signature" if source else "failure_signature"]
+        if source:
+            correction["bindings_sha256"] = _hash(correction["bindings"])
         correction["id"] = _hash({key: correction[key] for key in ("kind", "event_id", "retained_event_id", "canonical_signature")})
         if not any(item.get("id") == correction["id"] for item in corrections):
             corrections.append(correction)
@@ -388,6 +565,19 @@ def _block(state, task, blocker, now, *, terminal=False):
                     break
             blocker = {**blocker, "product_input_fingerprint": task["product_input_fingerprint"],
                        "canonical_material_signature": _hash(identity)}
+    elif task.get("family") in SOURCE_TASKS.values():
+        identity = _source_blocker_identity(blocker, task.get("product_input_fingerprint"), task["family"])
+        if identity:
+            new = True
+            for event in effective_material_events(state):
+                binding = _source_event_binding(event, state)
+                if binding and identity == _bound_blocker_identity(event, binding):
+                    new = False
+                    break
+        # Freeze every new source blocker product binding, including a blocked
+        # executor without structured source evidence. Never reinterpret it
+        # using a later task fingerprint.
+        blocker = {**blocker, "product_input_fingerprint": task.get("product_input_fingerprint")}
     task["status"] = "BLOCKED"
     task["lease"] = None
     task["blocker"] = deepcopy(blocker)
@@ -726,7 +916,8 @@ def candidate_validated(report):
 def _source_repair_proven(report):
     failure = report.get("real_failure") or {}
     slug = failure.get("source_slug")
-    return (failure.get("kind") == "source_runtime" and slug
+    return (source_failure_evidenced(failure, report.get("evidence"))
+            and failure.get("kind") == "source_runtime" and slug
             and slug in (report.get("live_scope") or [])
             and report.get("targeted_validated") is True and report.get("live_validated") is True
             and _gates_pass({"gates": report.get("directed_gates") or report.get("gates")})
@@ -736,7 +927,7 @@ def _source_repair_proven(report):
 def _repaired_failure_event(event):
     details = event.get("details", {})
     failure = details.get("real_failure")
-    if not (_failure_proof(failure)
+    if not (source_failure_evidenced(failure, details.get("failure_evidence", details.get("evidence")))
             and details.get("failure_action") == "repaired"):
         return False
     if failure.get("kind") == "source_runtime":
@@ -834,8 +1025,10 @@ def finish(state, task_id, token, report, now):
     # Bind family-based proof requirements even when the caller omits family.
     report = {**report, "family": task["family"]}
     real_failure = task.get("failure") if _failure_proof(task.get("failure")) else report.get("real_failure")
-    if _failure_proof(real_failure) and real_failure.get("failure_signature"):
+    if source_failure_evidenced(real_failure, report.get("evidence") or report.get("blockers")) and real_failure.get("failure_signature"):
         task["last_failure"] = deepcopy(real_failure)
+        if real_failure.get("kind") == "source_runtime":
+            task["last_failure_evidence"] = deepcopy(report.get("evidence") or report.get("blockers"))
         key = _hash([real_failure["failure_signature"], task["input_fingerprint"]])
         history = result.setdefault("failure_history", {}).setdefault(key, {
             "failure_signature": real_failure["failure_signature"],
@@ -906,11 +1099,13 @@ def finish(state, task_id, token, report, now):
             "gates": deepcopy(report["gates"]), "candidate_commit": report.get("candidate_commit"),
             "validated": True, "input_sha": task["input_sha"]}
         last_failure = task.get("last_failure")
-        if (task["family"] in SOURCE_TASKS.values() and _failure_proof(last_failure)
+        failure_evidence = task.get("last_failure_evidence") or (task.get("blocker") or {}).get("evidence")
+        if (task["family"] in SOURCE_TASKS.values() and source_failure_evidenced(last_failure, failure_evidence)
                 and last_failure.get("kind") == "source_runtime"
                 and _source_postmerge_proven(report["acceptance_proof"], task["input_sha"])):
             closure_details["real_failure"] = deepcopy(last_failure)
             closure_details["failure_action"] = "repaired"
+            closure_details["failure_evidence"] = deepcopy(failure_evidence)
         event = _event(result, task, "closure", now, closure_details)
         result["pending_transitions"].append({"task_id": task_id, "family": task["family"],
             "event_id": event["id"], "at": event["at"]})
