@@ -6,8 +6,8 @@
     "queue_blob_sha": "839728922ad473867429ff96f3ff2ebbdf001b4b",
     "queue_sha256": "d6d1338359a937d45015cfa88a7f1da88cd262f311bfcf37391f400348ee088f",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_control_sha256": "0cff666d321368d931b8b44ce85c94a44abd05445dbfbe094212cd5eadd724f6",
-    "state_sha": "c186d7f01015d8a41756880e781b168fe095fd97"
+    "state_control_sha256": "2477726a144fd645a350921276b0b4d66604ae12898d86ace1a0633fb6483b8f",
+    "state_sha": "b75dde0957908719daa6e0a94c77cd59a8fa3a8c"
   },
   "canonical_pmo_updated": false,
   "corrected_material_event_count": 1,
@@ -27,7 +27,10 @@
     },
     "failure_repaired_or_evidenced_escalation": {
       "escalated_task_ids": [
-        "staging_qa_failed_run_38113830124"
+        "source_repair_fiscalization_lane_2026_10_11",
+        "source_repair_mutualities_lane_2026_10_11",
+        "staging_qa_failed_run_38113830124",
+        "staging_qa_failed_run_38116961282"
       ],
       "repaired_event_ids": [],
       "satisfies_legacy_stage_a_repair": false,
@@ -39,14 +42,14 @@
     "legacy_stage_a": {
       "metrics": {
         "autonomous_pickups": 19,
-        "material_event_count": 22,
+        "material_event_count": 26,
         "max_material_gap_seconds": 1118.82727,
         "mode": "live",
-        "observed_seconds": 3460.020463,
+        "observed_seconds": 3503.695181,
         "owner_observation_verified": false,
         "owner_restarts": 0
       },
-      "observed_until": "2026-10-11T06:27:26.251960Z",
+      "observed_until": "2026-10-11T06:28:09.926678Z",
       "reasons": [
         "four_real_wall_hours_not_observed",
         "owner_intervention_observation_not_verified",
@@ -64,18 +67,18 @@
       "is_live_proof": false,
       "metrics": {
         "autonomous_pickups": 19,
-        "material_event_count": 22,
+        "material_event_count": 26,
         "max_material_gap_seconds": 1118.82727,
         "mode": "live",
-        "observed_seconds": 3460.020463,
+        "observed_seconds": 3503.695181,
         "owner_observation_verified": false,
         "owner_restarts": 0
       }
     }
   },
-  "effective_material_event_count": 52,
+  "effective_material_event_count": 56,
   "kind": "autonomy_pmo_evidence",
-  "last_material_progress_at": "2026-10-11T06:26:38.718338Z",
+  "last_material_progress_at": "2026-10-11T06:27:57.119852Z",
   "legacy_stage_a_status": "NOT_PROVEN",
   "material_event_correction_count": 1,
   "material_event_correction_signature": "2ddc94ec8940ef91e48a0d8a06d2a06cce9526f80008b283b58b0b3a7a56796a",
@@ -118,24 +121,24 @@
       "retained_event_sha256": "241f2f3c95ac6fd2dd38df1802e4b4c536fabb8b9d94122a90937215a33350b0"
     }
   ],
-  "material_event_count": 52,
-  "material_signature": "3cd1d28fbc61081b481936a9a647d5f2f91e9049249fd07d6dbfb5fdcf9952d6",
+  "material_event_count": 56,
+  "material_signature": "fb72302468c9db241de3f2eb00f54c51e5dba3eea423dd4fd60ba18f54b57206",
   "observation": {
-    "path": "data/autopilot/evidence/observation-ee37268c04ff490eb33f92db11a1240b.json",
-    "sha256": "fe7c7bdbadc01e8547cb3131585e3258fe5f12802d26d9c716ca9d603283a97a",
+    "path": "data/autopilot/evidence/observation-44c0442ed9dc48ad962441271f681e8d.json",
+    "sha256": "56235adb5188db65ecac3c3e30cf939005463bd8365ccd8b4d8fda2e9823509f",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_sha": "c186d7f01015d8a41756880e781b168fe095fd97"
+    "state_sha": "b75dde0957908719daa6e0a94c77cd59a8fa3a8c"
   },
   "owner_followup_count": null,
   "owner_followups": "UNKNOWN",
-  "raw_last_material_progress_at": "2026-10-11T06:26:38.718338Z",
-  "raw_material_event_count": 53,
-  "raw_material_signature": "40baa78aaab99e3c53b7d148811b726c3662bda8a1001b5649485cae8c96e925",
+  "raw_last_material_progress_at": "2026-10-11T06:27:57.119852Z",
+  "raw_material_event_count": 57,
+  "raw_material_signature": "63585a2ac3c56a42eb708f4d606038bc401917813f1eec26eae5f68b55f5ba70",
   "schema_version": 2,
   "stalls": [],
   "task_counts": {
-    "BLOCKED": 32,
+    "BLOCKED": 36,
     "READY": 1,
-    "RUNNING": 5
+    "RUNNING": 1
   }
 }
