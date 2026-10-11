@@ -1024,7 +1024,172 @@ def verify_processing_selection(report, discovery, queue, root, enumerated):
     return checks, findings
 
 
-def evaluate(report, control, *, root, discovery, queue, history, snapshot, telemetry=(), control_sha=None, captures=(), phase="auto"):
+def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queue, history, snapshot, telemetry):
+    """A zero-call replay can pass only after bound, genuine paid processing.
+
+    Recompute the helper's observations independently. A status or PASS label
+    in a mutable compact JSON is insufficient to exempt the positive-AI check.
+    """
+    if baseline is None and proof is None:
+        return {}, []
+    findings = []
+    def require(condition, reason):
+        if not condition:
+            raise ValueError(reason)
+    def compact(value):
+        if isinstance(value, dict):
+            return {key: ({"utf8_sha256": digest(item.encode()), "characters": len(item)}
+                          if key in {"page_text", "raw_text"} and isinstance(item, str) else compact(item))
+                    for key, item in value.items() if key not in {"last_checked_at", "cache_hit"}}
+        return [compact(item) for item in value] if isinstance(value, list) else value
+    def signal_hashes(signals):
+        rows = {}
+        for signal in signals:
+            key = json.dumps([signal.get("source_url"), signal.get("event_date")], ensure_ascii=False)
+            require(key not in rows, "duplicate_effective_signal_identity")
+            rows[key] = object_digest(signal)
+        return rows
+    try:
+        require(isinstance(baseline, dict) and isinstance(proof, dict), "both_baseline_and_actual_replay_proof_required")
+        require(baseline.get("schema_version") == "pulso_idempotence_v1"
+                and baseline.get("mode") == "genuine_processing_baseline" and baseline.get("read_only") is True,
+                "invalid_paid_idempotence_baseline")
+        require(baseline.get("payload_sha256") == object_digest({k: v for k, v in baseline.items() if k != "payload_sha256"}),
+                "baseline_payload_changed")
+        quality = baseline["processing_qa"]
+        require(quality.get("phase") == "real_core_processing" and quality.get("requested_phase") == "processing"
+                and quality.get("verdict") == "PASS_AUTOMATED_PROCESSING_REQUIRES_INDEPENDENT_REVIEW"
+                and quality.get("discovery_qa") == quality.get("processing_qa") == "PASS"
+                and quality.get("acceptance") == "PENDING_INDEPENDENT_EDITORIAL_AND_FINAL_SHA_REVIEW",
+                "genuine_paid_processing_qa_missing")
+        paid, current = baseline["baseline_execution"], report.get("last_core_execution") or report["execution"]
+        old_delta, error = budget_delta(paid)
+        require(not error and old_delta == baseline["paid_budget_delta"] and old_delta["fast"]["successful"] > 0,
+                "genuine_positive_paid_ledger_missing")
+        require(quality["checks"].get("actual_ai_budget_delta") == old_delta
+                and quality["checks"].get("actual_fast_response_events") == old_delta["fast"]["attempted"]
+                and quality["checks"].get("processing_selection", {}).get("sha256") == PROCESSING_COHORT_SHA256
+                and quality["checks"]["processing_selection"].get("selected_urls") == 113,
+                "paid_qa_not_bound_to_actual_ledger_and_cohort")
+        first_start, first_end = stamp(paid.get("started_at")), stamp(paid.get("finished_at"))
+        start, end = stamp(current.get("started_at")), stamp(current.get("finished_at"))
+        require(paid.get("mode") == "real_core_processing" and paid.get("engine_called") is True
+                and paid.get("engine_completed") is True and first_start and first_end and start and end
+                and first_start <= first_end < start <= end and paid.get("ai_guardrails_modified") is False,
+                "paid_baseline_or_second_core_not_genuine_and_fresh")
+        cohort = json.loads((root / PROCESSING_COHORT_PATH).read_bytes())
+        require(digest((root / PROCESSING_COHORT_PATH).read_bytes()) == PROCESSING_COHORT_SHA256
+                and baseline["selection"].get("sha256") == PROCESSING_COHORT_SHA256
+                and baseline["selection"].get("count") == 113 and baseline["selection"].get("urls") == cohort["urls"]
+                and paid.get("processing_selection", {}).get("sha256") == PROCESSING_COHORT_SHA256
+                and paid["processing_selection"].get("selected_urls") == cohort["urls"],
+                "paid_baseline_not_bound_to_immutable_113_core_selection")
+        fingerprint = baseline["runtime_fingerprint"]
+        files = fingerprint["files"]
+        required = {str(path.relative_to(root)) for path in (root / "src/radar_salud").glob("*.py")}
+        required.update({"scripts/qa_pulso_recovery.py", "scripts/audit_pulso_runtime.py", "scripts/pulso_idempotence.py",
+            "scripts/export_web_snapshot.py", "scripts/retain_pulso_runtime_fixtures.py",
+            "scripts/apply_pulso_editorial_review.py", "scripts/pulso_recovery_command.py", "scripts/product_report.py", "pyproject.toml",
+            ".github/workflows/daily-radar.yml", ".github/workflows/pulso-runtime-recovery.yml"})
+        required.update("config/" + name for name in ("sources.json", "beta_source_configs.json",
+            "source_quality_gate.json", "media_early_signal_gate.json", "model_routing_v1.json", "taxonomy_v2.json",
+            "editorial_rules_v2.json", "editorial_copy_overrides_v1.json", "editorial_intelligence_committee_v1.json",
+            "normative_editorial_v2.json"))
+        require(required <= set(files) and object_digest(files) == fingerprint.get("sha256")
+                and fingerprint.get("git_or_marker_sha_used") is False
+                and all(digest(local_capture_path(root, path).read_bytes()) == sha for path, sha in files.items())
+                and paid.get("runtime_fingerprint") == current.get("runtime_fingerprint") == fingerprint
+                and re.fullmatch(r"[0-9a-f]{40}", str(paid.get("code_sha", "")))
+                and re.fullmatch(r"[0-9a-f]{40}", str(current.get("code_sha", "")))
+                and proof.get("runtime_fingerprint") == fingerprint,
+                "genuine_paid_and_replay_implementation_or_policy_changed")
+        require(proof.get("schema_version") == "pulso_idempotence_v1" and proof.get("mode") == "after_genuine_core"
+                and proof.get("verdict") == "PASS" and not proof.get("findings") and proof.get("read_only") is True
+                and proof.get("baseline_sha256") == baseline["payload_sha256"], "actual_replay_proof_missing_or_failed")
+        delta, error = budget_delta(current)
+        require(not error and not any(v for tier in delta.values() for v in tier.values())
+                and proof.get("actual_budget_delta") == delta and current.get("processing_attempts_increased") == 0
+                and discovery.get("processing_attempts") == 0,
+                "actual_replay_consumed_model_budget_or_attempts")
+        events = [row for row in telemetry if stamp(row.get("at")) and first_start <= stamp(row["at"]) <= first_end]
+        ids = [row.get("response_id") for row in events if row.get("success") is True]
+        require(ids == baseline["paid_successful_response_ids"] and all(isinstance(value, str) and value for value in ids)
+                and len(set(ids)) == len(ids), "baseline_paid_response_ids_not_in_actual_telemetry")
+        for tier in ("fast", "deep"):
+            tier_events = [row for row in events if row.get("kind") == tier]
+            require(len(tier_events) == old_delta[tier]["attempted"]
+                    and sum(row.get("success") is True for row in tier_events) == old_delta[tier]["successful"],
+                    "baseline_paid_telemetry_ledger_mismatch")
+        old = baseline["semantic"]
+        require([object_digest(row) for row in telemetry] == old["response_event_sha256s"]
+                and [row.get("response_id") for row in telemetry if row.get("success") is True] == old["actual_response_ids"],
+                "replay_response_events_changed")
+        require(signal_hashes(history) == old["history"] and signal_hashes(snapshot.get("signals", [])) == old["feed"],
+                "replay_changed_effective_history_or_serialized_feed")
+        ledgers = {path.name: json.loads(path.read_bytes()) for path in (root / "data/ai_usage").glob("????-??.json")}
+        require(ledgers == old["ledgers"] and ledgers[first_end.strftime("%Y-%m") + ".json"] == paid["budget_after"]["month"],
+                "replay_monthly_paid_ledger_changed")
+        current_queue = {}
+        for key, item in queue.items():
+            if item.get("source") != SOURCE:
+                continue
+            url = item.get("raw", {}).get("url")
+            require(url not in current_queue, "duplicate_source_queue_identity")
+            metadata = item.get("raw", {}).get("metadata", {})
+            current_queue[url] = dict(fingerprint=key, status=item.get("status"), attempts=item.get("attempts", 0),
+                semantic_sha256=object_digest(compact(item)), retry_at=item.get("retry_at"),
+                publication_date=item.get("raw", {}).get("event_date"), lane=item.get("lane"), reason=item.get("reason"),
+                assessment=metadata.get("editorial_assessment"), editorial_hold=metadata.get("editorial_hold"),
+                body_sha256=metadata.get("article_body_sha256"), body_characters=metadata.get("article_body_characters"),
+                source_quality_gate=metadata.get("source_quality_gate"),
+                editorial_review_sha256=object_digest(metadata["editorial_review"]) if metadata.get("editorial_review") else None)
+        require(all(current_queue.get(url) == item for url, item in old["source_queue"].items()),
+                "replay_changed_existing_queue_state_or_original_proof")
+        primary = {}
+        for row in report.get("matrix", []):
+            if row.get("current_core_detected"):
+                primary[row["url"]] = dict(publication_date=row.get("publication_date"),
+                    publication_date_verified=row.get("publication_date_verified"),
+                    current_core_verified_health=row.get("current_core_verified_health"),
+                    metadata_only_candidate=row.get("metadata_only_candidate"),
+                    publisher_exception_reason=row.get("publisher_exception_reason"),
+                    body_sha256s=sorted({trace["article_body_sha256"] for trace in row.get("current_discovery_trace", [])
+                                        if trace.get("article_body_sha256")}))
+        require(primary and all(primary.get(url) == row for url, row in old["source_primary"].items()),
+                "replay_changed_existing_primary_dates_or_content_coverage")
+        references = {cohort["inputs"][key]["path"] for key in
+                      ("frozen_control", "independent_primary_review", "expanded_negative_review")}
+        reviews = [row.get("editorial_review", {}) for row in history]
+        reviews.extend(item.get("raw", {}).get("metadata", {}).get("editorial_review", {}) for item in queue.values())
+        references.update(row["review_file"] for row in reviews if isinstance(row, dict) and isinstance(row.get("review_file"), str))
+        require({path: digest(local_capture_path(root, path).read_bytes()) for path in references} == old["referenced_proof_files"],
+                "replay_changed_independent_body_reviews_or_editorial_provenance")
+        added = set(current_queue) - set(old["source_queue"])
+        require(not added & set(cohort["urls"]) and all(current_queue[url]["attempts"] == 0
+                and current_queue[url]["status"] in {"pending", "archived"} for url in added),
+                "replay_processed_new_unselected_discovery")
+        selected = current.get("processing_selection", {})
+        require(selected == discovery.get("processing_selection") and not selected.get("ready_selected_urls")
+                and not selected.get("skipped_in_progress_urls"), "actual_terminal_skip_not_proven")
+        require(proof.get("selected_partition") == dict(terminal_urls=sorted(selected["skipped_terminal_urls"]),
+                held_not_due_urls=sorted(selected["skipped_not_due_urls"])), "actual_replay_partition_mismatch")
+        observed = proof["observed_files"]
+        required_observations = {"data/audits/pulso_runtime_2026_10_11.json", "data/state/discovery_run.json",
+            "data/state/pending_queue.json", "data/history/superintendencia_signals.json", "web/data/radar_today.json",
+            "data/ai_usage/responses.jsonl", PROCESSING_COHORT_PATH}
+        require(required_observations <= set(observed) and all(
+            digest(local_capture_path(root, path).read_bytes()) == observed[path] for path in required_observations),
+            "actual_replay_file_bytes_not_bound")
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+        findings.append(dict(domain="processing", code="genuine_idempotent_replay_not_verified", reason=str(error)))
+        return {}, findings
+    return dict(baseline_sha256=baseline["payload_sha256"], paid_successful_response_ids=len(ids), selected_urls=113,
+                actual_attempts=0, actual_ai_calls=0, unchanged_history_and_feed=True,
+                unchanged_existing_queue=True, additional_unselected_discovery=len(added)), []
+
+
+def evaluate(report, control, *, root, discovery, queue, history, snapshot, telemetry=(), control_sha=None, captures=(), phase="auto",
+             idempotence_baseline=None, idempotence_proof=None):
     findings, checks = [], {}
     def fail(domain, code, **evidence):
         findings.append(dict(domain=domain, code=code, **evidence))
@@ -1292,7 +1457,12 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                 or len(str(metadata.get("page_text") or "").strip()) < 160):
             fail("discovery", "queue_primary_detail_evidence_unverified", url=url)
     if processing:
-        if not delta.get("fast", {}).get("attempted") or not delta.get("fast", {}).get("successful"):
+        replay_checks, replay_findings = verify_genuine_idempotence(idempotence_baseline, idempotence_proof,
+            root=root, report=report, discovery=discovery, queue=queue, history=history, snapshot=snapshot, telemetry=telemetry)
+        findings.extend(replay_findings)
+        if replay_checks:
+            checks["genuine_selected_core_idempotence"] = replay_checks
+        if not replay_checks and (not delta.get("fast", {}).get("attempted") or not delta.get("fast", {}).get("successful")):
             fail("processing", "no_actual_successful_fast_editorial_analysis")
         events = [row for row in telemetry if stamp(row.get("at")) and start and end and start <= stamp(row["at"]) <= end and row.get("kind") == "fast"]
         if len(events) != delta.get("fast", {}).get("attempted") or sum(row.get("success") is True for row in events) != delta.get("fast", {}).get("successful"):
@@ -1373,6 +1543,8 @@ def main():
     modes.add_argument("--discovery", action="store_true", help="Check discovery only; never infer end-to-end acceptance")
     modes.add_argument("--processing", action="store_true", help="Require a genuine processing execution and editorial outcomes")
     parser.add_argument("--capture-artifact", type=Path, default=Path(".scratch/pulso-prior-capture"))
+    parser.add_argument("--idempotence-baseline", type=Path, help="A retained passing genuine paid-processing baseline")
+    parser.add_argument("--idempotence-proof", type=Path, help="Observations of the subsequent genuine zero-call core run")
     args = parser.parse_args()
     root = args.root.resolve()
     def path(value):
@@ -1380,6 +1552,9 @@ def main():
     def read(value):
         return json.loads(path(Path(value)).read_text())
     try:
+        if (args.idempotence_baseline or args.idempotence_proof) and (not args.processing
+                or not args.idempotence_baseline or not args.idempotence_proof):
+            raise ValueError("idempotence_requires_processing_and_both_bound_evidence_files")
         report, control = read(args.report), read(args.control)
         history = read("data/history/superintendencia_signals.json")
         history = history.get("signals", []) if isinstance(history, dict) else history
@@ -1390,7 +1565,9 @@ def main():
                           snapshot=read("web/data/radar_today.json"), telemetry=telemetry,
                           control_sha=digest(path(args.control).read_bytes()),
                           captures=capture_records(root, path(args.capture_artifact)),
-                          phase="processing" if args.processing else "discovery" if args.discovery else "auto")
+                          phase="processing" if args.processing else "discovery" if args.discovery else "auto",
+                          idempotence_baseline=read(args.idempotence_baseline) if args.idempotence_baseline else None,
+                          idempotence_proof=read(args.idempotence_proof) if args.idempotence_proof else None)
         if not args.discovery and (report.get("last_core_execution") or report.get("execution", {})).get("mode") == "real_core_processing":
             if report.get("feed_evidence", {}).get("sha256") != digest((root / "web/data/radar_today.json").read_bytes()):
                 result["findings"].append(dict(domain="processing", code="serialized_feed_hash_changed_after_audit"))
