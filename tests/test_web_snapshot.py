@@ -286,10 +286,30 @@ def test_material_statistical_releases_use_value_ladder_instead_of_disappearing(
 def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():
     payload=json.loads(Path("web/data/radar_today.json").read_text())
     rows=[m._normative_contract(s) for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
-    assert len(rows)>=12
+    # A rolling snapshot is not a publication quota. The original twelve-act
+    # cohort remains covered separately, including IF/529 after it ages out.
+    cohort=json.loads(Path("tests/fixtures/normative_v2_original_12.json").read_text())["signals"]
+    original=[m._normative_contract(s) for s in cohort]
+    assert len(original)>=12
+    assert {s["source_url"] for s in original}=={s["source_url"] for s in cohort}
+    rows=rows+original
     assert all(x["normative_editorial"]["plain_language_title"]==x["display_title"] for x in rows)
     assert all(x["normative_editorial"]["legal_identity"]==x["normative_document_label"] for x in rows)
     assert all(x["legal_subtitle"] for x in rows)
     assert any(x["source_url"].endswith("n9994/") and "Afiliación electrónica" in x["display_title"] and "rechaza" in x["display_title"] and "Circular IF/N°532" in x["display_title"] for x in rows)
     unknown={"event_type":"REGULATION","title":"Circular IF/N°123456","source_title_full":"Circular IF/N°123456","source_url":"https://x/n123456","signal_types":["Normativa"]}
     assert m._normative_contract(unknown)["normative_title_review_required"] is True
+
+
+def test_normative_original_cohort_ages_out_without_losing_history():
+    cohort=json.loads(Path("tests/fixtures/normative_v2_original_12.json").read_text())["signals"]
+    # The original twelve were in range in September; an October anchor puts
+    # July 10 outside 90 days. Dates and the historical cohort are unchanged.
+    anchor=sig("Recent material health event",event="2026-10-10",url="https://x/anchor")
+    out=m.curate([*cohort,anchor],resolve_external=False)
+    expected={s["source_url"] for s in cohort if s["event_date"]>="2026-07-12"}
+    assert {s["source_url"] for s in out if "Normativa" in s.get("signal_types",[])}==expected
+    july10=next(s for s in cohort if s["source_url"].endswith("circular-if-n529/"))
+    assert july10["event_date"]=="2026-07-10"
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    assert any(s["source_url"]==july10["source_url"] and s["event_date"]==july10["event_date"] for s in history)

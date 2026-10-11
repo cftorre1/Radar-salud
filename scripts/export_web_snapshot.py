@@ -441,13 +441,15 @@ def _statistical_value_ladder(s):
     elif level=="publication_inventory":
         if inventory:
             r["card_what"]=f"La publicación reúne {len(docs)} archivos oficiales sobre "+", ".join(inventory)+"."
-            r["card_why"]="Aunque aún no exista un insight calculado, permite conocer qué estadísticas públicas están disponibles y decidir qué serie revisar."
         elif docs:
             r["card_what"]=f"La publicación incorpora {len(docs)} archivos estadísticos oficiales."
-            r["card_why"]="Alicanto la mantiene visible para que puedas saber qué información pública existe sin abrir cada archivo."
         else:
             r["card_what"]=r.get("what_happened") or f"Se publicó {title}."
-            r["card_why"]="Alicanto la mantiene visible como fuente estadística pública; aún no existe un análisis reproducible para esta entrega."
+        r["card_why"]=""
+        r["card_why_optional"]=True
+        r["methodology_visibility"]="collapsed"
+        r["incremental_value_gate"]={"inventory":"Official document links and topic coverage only; no calculated statistical finding"}
+        r["statistical_methodology"]={"source_url":r.get("source_url"),"scope":"document_inventory_only","analysis_status":"not_performed"}
     elif level=="deep_analysis" and not r.get("card_what"):
         r["card_what"]=r.get("what_happened")
         r["card_why"]=r.get("why_it_matters")

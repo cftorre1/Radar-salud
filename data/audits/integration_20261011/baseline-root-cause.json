@@ -1,0 +1,47 @@
+{
+  "baseline_staging_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+  "normative": {
+    "root_cause": "Obsolete fixed population assertion on a rolling 90-day snapshot",
+    "original_cohort_sha": "2865202",
+    "original_cohort_count": 12,
+    "current_count": 11,
+    "aged_out_url": "https://www.superdesalud.gob.cl/normativa/circular-if-n529/",
+    "event_date": "2026-07-10",
+    "latest_event_day": "2026-10-10",
+    "age_days": 92,
+    "preserved_in_history": true,
+    "fix": "Preserve >=12 assertion on frozen genuine cohort and independently check the exact rolling set; no threshold reduced, no content fabricated"
+  },
+  "statistics": {
+    "affected_source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+    "actual_value_level": "publication_inventory",
+    "obsolete_expectations": [
+      "invalid_statistical_table",
+      "untraceable_statistical_evidence",
+      "bulletin_coverage",
+      "bulletin_missing_pdf",
+      "bulletin_stock_flow_confusion"
+    ],
+    "actual_defects_corrected": [
+      "methodology_not_collapsed",
+      "missing_incremental_value_gate",
+      "generic_why_required"
+    ],
+    "basis": "Inventory already exposes all four official document links, contains no statistical table or computed findings. Deep-analysis requirements applied unconditionally; numeric table and stock/flow checks remain strict for analysis. Inventory now declares no analysis performed, document scope, incremental value and optional impact; generic copy removed. Negative tests prevent relabeling analysis as inventory to bypass evidence."
+  },
+  "validation": {
+    "focused_tests": "40 passed",
+    "reviewer_after": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "browser_and_hosted_qa": "pending"
+  },
+  "release": {
+    "main_untouched": true,
+    "production_untouched": true,
+    "promotion": false
+  }
+}
