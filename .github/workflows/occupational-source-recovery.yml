@@ -78,7 +78,7 @@ jobs:
           git config user.name 'Alicanto source evidence'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "data/audits/source_e_recovery/actions/${GITHUB_RUN_ID}"
-          for file in data/state/pending_queue.json data/state/occupational_source_discovery.json data/history/superintendencia_signals.json data/source_health.json web/data/source_health.json web/data/product.json; do
+          for file in data/state/pending_queue.json data/state/occupational_source_discovery.json data/history/superintendencia_signals.json data/source_health.json web/data/source_health.json web/data/product.json web/data/radar_today.json; do
             if test -f "$file"; then git add "$file"; fi
           done
           if test -d data/ai_usage; then git add data/ai_usage; fi

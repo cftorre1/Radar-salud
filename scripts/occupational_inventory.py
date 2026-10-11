@@ -80,13 +80,22 @@ def reconcile(root, reports, loader, *, apply=False, assessment_state=None):
             raw = raw_by_url.get(url)
             key = fingerprint(raw) if raw else None
             previous = baseline.get(key, baseline_by_url.get(url, {}))
+            if previous.get("source") not in (None, slug):
+                previous = {}
             row["alicanto_before"] = previous.get("status", "not_detected")
             in_scope = row.get("within_90_days") and row.get("status") != "excluded_role"
             row["omitted_before"] = bool(in_scope and not previous and url not in history_by_url)
             row["ingestion_mode"] = "BACKFILL" if raw else None
             row["editorial_score"] = None
             if not raw:
-                if previous.get("status") == "published" or url in history_by_url:
+                # A shared newsroom contains other ACHS lanes. Their accepted
+                # publications cannot be counted as clinical output.
+                if row.get("status") == "excluded_role":
+                    row.update(alicanto_status="excluded", processing_reason=row.get("reason"))
+                    continue
+                historical = history_by_url.get(url, {})
+                owned_history = slug in (historical.get("watch_tags") or [])
+                if previous.get("status") == "published" or owned_history:
                     row.update(alicanto_status="published", processing_reason="previous_publication_preserved",
                                current_capture_gap=row.get("reason"))
                     continue
@@ -123,6 +132,14 @@ def reconcile(root, reports, loader, *, apply=False, assessment_state=None):
                     row["editorial_score"] = raw.metadata["editorial_assessment"]["score"]
                     queue.items[key]["editorial_assessment"] = raw.metadata["editorial_assessment"]
                 if result:
+                    from radar_salud.occupational_snapshot import prepare_signal
+                    result, gate_reason = prepare_signal(result)
+                    if result is None:
+                        queue.finish(key, "rejected", "publication_gate_" + gate_reason)
+                        row.update(alicanto_status="rejected", processing_reason="publication_gate_" + gate_reason)
+                        queue.items[key]["raw"] = asdict(raw)
+                        queue.save()
+                        continue
                     from radar_salud.history import merge_history, save_history
                     result.update(detected_at=item["detected_at"], ingestion_mode=item["lane"])
                     history_rows = merge_history(history_rows, [result])
@@ -148,6 +165,7 @@ def reconcile(root, reports, loader, *, apply=False, assessment_state=None):
             except Exception as exc:
                 queue.finish(key, "retry", type(exc).__name__)
                 row.update(alicanto_status="deferred", processing_reason=str(exc))
+            queue.save()
             totals[row["alicanto_status"]] += 1
         report["reconciliation"] = {
             "omitted_before": sum(bool(r.get("omitted_before")) for r in report["rows"]),
@@ -170,7 +188,9 @@ def save_health(root, reports):
         state = report["reconciliation"]["states"]
         complete = report.get("coverage_complete", False)
         error_count = len(report.get("errors", []))
-        outcome = "OPERATIVE_VALIDATED" if complete and not error_count and not any(state.get(k) for k in ("deferred", "pending", "pending_reassessment", "discovered", "processing", "retry")) else "OPERATIVE_DEGRADED"
+        feed = report.get("feed_reconciliation", {})
+        feed_deferred = len(feed.get("deferred", {}))
+        outcome = "OPERATIVE_VALIDATED" if complete and not error_count and not feed_deferred and not any(state.get(k) for k in ("deferred", "pending", "pending_reassessment", "discovered", "processing", "retry")) else "OPERATIVE_DEGRADED"
         if not report["rows"] and error_count:
             outcome = "VALIDATION_PENDING"
         row = dict(existing, name=CuratedBetaSourceScout.SOURCES[slug]["name"], checked_at=report.get("capture_checked_at") or datetime.now(timezone.utc).isoformat(),
@@ -178,7 +198,8 @@ def save_health(root, reports):
                    technical_status="error" if not report["rows"] and error_count else "partial" if error_count else "ok", coverage_status="complete" if complete else "partial",
                    coverage_window=report["window"], pages_checked=len(report["pages"]),
                    recent_items=metrics, unique_items=metrics.get("90", {}).get("expected_role", 0), material_items=sum(r.get("status") == "candidate" for r in report["rows"]),
-                   published=state.get("published", 0), rejected=state.get("rejected", 0), deferred=state.get("deferred", 0),
+                   published=feed.get("published", state.get("published", 0)), accepted_history=state.get("published", 0),
+                   rejected=state.get("rejected", 0), deferred=state.get("deferred", 0) + feed_deferred, feed_reconciliation=feed,
                    pending=sum(state.get(k, 0) for k in ("pending", "pending_reassessment", "discovered", "processing", "retry")), technical_failures=report.get("errors", []), coverage_completeness=complete,
                    capture_environment="github_actions", capture_run_id=os.getenv("GITHUB_RUN_ID"),
                    oldest_capture_at=report.get("oldest_capture_at"), latest_capture_at=report.get("capture_checked_at"),
@@ -206,7 +227,7 @@ def commit_source_checkpoint(root, output, slug):
     paths = [str(output.resolve().relative_to(root.resolve())), "data/state/pending_queue.json",
              "data/history/superintendencia_signals.json", "data/source_health.json",
              "web/data/source_health.json", "data/ai_usage", "data/telemetry"]
-    paths.append("web/data/product.json")
+    paths.extend(["web/data/product.json", "web/data/radar_today.json"])
     existing = [p for p in paths if (root / p).exists()]
     candidate = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
     for args in (["git", "add", "--", *existing],
@@ -275,6 +296,9 @@ def main():
         report["capture_checked_at"] = max(stamps, default=None)
         report["oldest_capture_at"] = min(stamps, default=None)
         totals.update(reconcile(root, {slug:report}, loader, apply=args.apply, assessment_state=assessment_state))
+        if args.apply:
+            from radar_salud.occupational_snapshot import export_snapshot
+            export_snapshot(root, {slug:report}, as_of=as_of)
         atomic_json(output / (slug + "_inventory_checkpoint.json"), report)
         if args.apply:
             save_health(root, {slug:report})

@@ -62,6 +62,15 @@ def test_missing_current_capture_preserves_previous_publication(tmp_path):
     assert reports['ist']['reconciliation']['states']['published']==1
 
 
+def test_shared_newsroom_foreign_role_never_counts_as_published(tmp_path):
+    setup(tmp_path,raw(),status='published')
+    reports=report()
+    reports['ist']['rows'][0].update(status='excluded_role',reason='other publisher lane')
+    reconcile(tmp_path,reports,Loader(),apply=True)
+    assert reports['ist']['rows'][0]['alicanto_status']=='excluded'
+    assert reports['ist']['reconciliation']['states'].get('published',0)==0
+
+
 def test_changed_input_readonly_reports_reassessment_without_mutation(tmp_path):
     setup(tmp_path,raw('old advice'));path=tmp_path/'data/state/pending_queue.json';before=path.read_bytes()
     reports=report(raw());reconcile(tmp_path,reports,Loader(),apply=False)
