@@ -484,10 +484,12 @@ def test_current_run6_ist_api_closes_calendar_bounds_and_verifies_report_publica
     assert result["metrics"]["90"]["dated_articles"] == 20 and len(result["raw_items"]) == 20
     assert result["unknown_publication_dates"] == 1
     pending = [row for row in result["rows"] if row["status"] == "pending"]
-    assert len(pending) == 1 and pending[0]["reason"] == "api_visible_publication_date_conflict"
+    assert {row["reason"] for row in pending} == {"api_visible_publication_date_conflict", "required_supporting_document_pending"}
+    assert len(pending) == 2
     report = next(row for row in result["rows"] if row["url"] == IST_REPORT)
     assert report["publication_date"] == "2026-07-14" and report["data_period"] == "2025"
     assert report["publication_evidence"]["date"] == report["api_publication_evidence"]["date"]
     assert report["publication_evidence"]["url"] == IST_REPORT
+    assert report["status"] == "pending" and report["reason"] == "required_supporting_document_pending"
     assert loader.evidence(IST_REPORT)["tls_verified"]
     assert not result["coverage_complete"]
