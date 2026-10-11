@@ -16,6 +16,7 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
+from threading import Lock
 from urllib.error import HTTPError
 from urllib.parse import quote, urljoin, urlparse, urlunparse
 from urllib.request import Request, HTTPRedirectHandler, build_opener
@@ -135,7 +136,7 @@ class Inventory:
     def __init__(self,slug,as_of,root,limit=240,exhaustive=False):
         self.slug=slug;self.as_of=as_of;self.cutoff=as_of-timedelta(days=90)
         self.root=root;self.limit=limit;self.cache={};self.requests=[];self.items={};self.notes=[];self.archive_index=[]
-        self.exhaustive=exhaustive
+        self.exhaustive=exhaustive;self._request_lock=Lock()
         if slug=='clinicas_chile':
             self.scout=ClinicasChileScout();self.page=self.scout.PAGES[0][1];self.pattern=r'/(?:noticias/)?[^/]+/?'
         elif slug in CorporateNewsroomScout.SOURCES:
@@ -154,9 +155,11 @@ class Inventory:
         if not self.own(url):
             self.notes.append({'reason':'alternative_outside_reviewed_official_host','url':url});return None
         if url in self.cache:return self.cache[url]
-        if len(self.requests)>=self.limit:
-            self.notes.append({'reason':'request_limit_reached','url':url});return None
         now=datetime.now(timezone.utc).isoformat(); row={'url':url,'kind':kind,'captured_at':now,'user_agent':UA,'tls_verified':True}
+        with self._request_lock:
+            if len(self.requests)>=self.limit:
+                self.notes.append({'reason':'request_limit_reached','url':url});return None
+            self.requests.append(row)
         encoded=quote(url,safe=':/?&=%+#;,@!$()*[]')
         redirects=RedirectRecorder()
         try:
@@ -177,7 +180,7 @@ class Inventory:
         except Exception as exc:
             row.update(status=None,error_type=type(exc).__name__,error=str(exc)[:300]);text=None
         row['redirects']=redirects.chain
-        self.requests.append(row);self.cache[url]=text
+        self.cache[url]=text
         if text:
             private=self.root/'work/provider_inventory/private'/self.slug
             private.mkdir(parents=True,exist_ok=True)
@@ -291,6 +294,35 @@ class Inventory:
                     self.add(target,'',url,'Library entry')
         self.xml_pages_checked=len(visited)
 
+    def verify_detail(self,item):
+        if urlparse(item['url']).path.lower().endswith(('.pdf','.xls','.xlsx','.csv')):
+            item['date_reason']='document_release_unverified; upload path and body period excluded';return
+        existing={x['date'] for x in item['date_stamps'] if x.get('date')}
+        # Sitemap-only old articles need an original detail date; no lastmod
+        # cutoff is used to manufacture a chronological inventory.
+        html=self.fetch(item['url'],'article_detail')
+        if not html:
+            item['access_error']=next((x for x in reversed(self.requests) if x['url']==item['url']),{'error':'request_limit_reached'});return
+        detail=detail_evidence(self.slug,item['url'],html)
+        if self.slug=='pfizer_chile' and item['title'] and detail['detail_title'] and item['title'].casefold()!=detail['detail_title'].casefold():
+            item['listing_title_before_detail_verification']=item['title']
+            item['date_stamps']=[x for x in item['date_stamps'] if x['kind'] not in ('listing_date','dated_news_listing')]
+            item['listing_identity_mismatch']=True
+        item['date_stamps'].extend(detail.pop('date_stamps'));item.update(detail)
+        if item.get('detail_title'):item['title']=item['detail_title']
+        stamps={x['date'] for x in item['date_stamps'] if x.get('date')}
+        item['publication_date']=next(iter(stamps)) if len(stamps)==1 else None
+        item['date_reason']='verified_original_publication' if len(stamps)==1 else 'conflicting_publication_stamps' if stamps else 'publication_date_not_exposed'
+        if self.slug=='redsalud' and len(stamps)>1:
+            article=_RedSaludArticle(item['url']);article.feed(html);article.finish()
+            canonical_host=urlparse(article.canonical_url or '').netloc.removeprefix('www.')
+            if (canonical_host==self.host and '/observatorio/noticias/' in (article.canonical_url or '')
+                    and article.canonical_schema_match and article.header_date==_date(article.published)):
+                item.update(publication_date=article.header_date,date_reason='canonical_identity_jsonld_and_visible_header_agree')
+        stamp=item['publication_date']
+        item['in_30_days']=bool(stamp and 0<=(self.as_of-date.fromisoformat(stamp)).days<=30) if stamp else None
+        item['in_90_days']=bool(stamp and 0<=(self.as_of-date.fromisoformat(stamp)).days<=90) if stamp else None
+
     def run(self):
         self.pagination=set();self.listing(self.page)
         if self.slug=='clinicas_chile':
@@ -314,34 +346,12 @@ class Inventory:
         # Include the audited holdings even when listing parsing fails.
         audit=json.loads((self.root/f'data/audits/providers_2026_10_11/{self.slug}.json').read_text())
         for item in audit['original_items']:self.add(item['url'],item['title'],audit['surfaces'][0]['url'],item.get('channel','Noticias'))
-        for item in list(self.items.values()):
-            if urlparse(item['url']).path.lower().endswith(('.pdf','.xls','.xlsx','.csv')):
-                item['date_reason']='document_release_unverified; upload path and body period excluded';continue
-            existing={x['date'] for x in item['date_stamps'] if x.get('date')}
-            # Sitemap-only old articles need an original detail date; no lastmod
-            # cutoff is used to manufacture a chronological inventory.
-            html=self.fetch(item['url'],'article_detail')
-            if not html:
-                item['access_error']=next((x for x in reversed(self.requests) if x['url']==item['url']),{'error':'request_limit_reached'});continue
-            detail=detail_evidence(self.slug,item['url'],html)
-            if self.slug=='pfizer_chile' and item['title'] and detail['detail_title'] and item['title'].casefold()!=detail['detail_title'].casefold():
-                item['listing_title_before_detail_verification']=item['title']
-                item['date_stamps']=[x for x in item['date_stamps'] if x['kind'] not in ('listing_date','dated_news_listing')]
-                item['listing_identity_mismatch']=True
-            item['date_stamps'].extend(detail.pop('date_stamps'));item.update(detail)
-            if item.get('detail_title'):item['title']=item['detail_title']
-            stamps={x['date'] for x in item['date_stamps'] if x.get('date')}
-            item['publication_date']=next(iter(stamps)) if len(stamps)==1 else None
-            item['date_reason']='verified_original_publication' if len(stamps)==1 else 'conflicting_publication_stamps' if stamps else 'publication_date_not_exposed'
-            if self.slug=='redsalud' and len(stamps)>1:
-                article=_RedSaludArticle(item['url']);article.feed(html);article.finish()
-                canonical_host=urlparse(article.canonical_url or '').netloc.removeprefix('www.')
-                if (canonical_host==self.host and '/observatorio/noticias/' in (article.canonical_url or '')
-                        and article.canonical_schema_match and article.header_date==_date(article.published)):
-                    item.update(publication_date=article.header_date,date_reason='canonical_identity_jsonld_and_visible_header_agree')
-            stamp=item['publication_date']
-            item['in_30_days']=bool(stamp and 0<=(self.as_of-date.fromisoformat(stamp)).days<=30) if stamp else None
-            item['in_90_days']=bool(stamp and 0<=(self.as_of-date.fromisoformat(stamp)).days<=90) if stamp else None
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            for number,_ in enumerate(pool.map(self.verify_detail,list(self.items.values())),1):
+                if number%25==0:
+                    atomic_json(self.root/f'data/audits/provider_inventory_2026_10_11/_partial_{self.slug}.json',
+                        {'slug':self.slug,'capture_status':'in_progress','coverage_complete':False,
+                         'items':list(self.items.values()),'requests':self.requests,'verified_details':number})
         dates=[x['publication_date'] for x in self.items.values() if x.get('publication_date')]
         result={'version':2,'slug':self.slug,'as_of':str(self.as_of),'captured_at':datetime.now(timezone.utc).isoformat(),
             'requests':self.requests,'notes':self.notes,'items':list(self.items.values()),'archive_index':self.archive_index,
