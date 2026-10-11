@@ -4,6 +4,7 @@ The fixtures are explicitly SHA-bound projections of complete bodies retained
 by the real core run, not fabricated publisher HTML. Original raw gzip bytes
 are preserved in the associated Actions artifact for independent revalidation.
 """
+import gzip
 import hashlib
 import json
 from copy import deepcopy
@@ -13,11 +14,27 @@ import pytest
 
 from radar_salud import beta_sources, llm_analysis
 from radar_salud.models import RawItem
-from radar_salud.pulso_source import complete_article_body
+from radar_salud.pulso_source import complete_article_body, extract_article
 
 
 FIXTURE = Path(__file__).parent / 'fixtures/pulso_materiality_real/verified_primary_body_projections.json'
 REAL = json.loads(FIXTURE.read_text())['fixtures']
+
+
+def test_mask_obligation_projection_matches_independently_recaptured_original_html():
+    entry = next(row for row in REAL if row['name'] == 'care_obligation')
+    originals = Path(__file__).parent / 'fixtures/pulso_runtime_real'
+    record = next(row for row in json.loads((originals / 'manifest.json').read_text())['fixtures']
+                  if row['url'] == entry['url'])
+    compressed = (originals / record['path']).read_bytes()
+    assert hashlib.sha256(compressed).hexdigest() == record['gzip_sha256']
+    payload = gzip.decompress(compressed)
+    assert hashlib.sha256(payload).hexdigest() == record['sha256']
+    title, body, metadata = extract_article(payload.decode('utf-8'), entry['url'])
+    assert title == entry['title'] and body == entry['body']
+    assert hashlib.sha256(body.encode()).hexdigest() == entry['metadata']['article_body_sha256']
+    assert metadata['publication_date'] == entry['publication_date'] == '2026-09-01'
+    assert beta_sources._material('media', title, body)
 
 
 @pytest.mark.parametrize('entry', REAL, ids=lambda entry: entry['name'])

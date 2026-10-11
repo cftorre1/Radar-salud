@@ -99,7 +99,7 @@
     }
   ],
   "limitations": [
-    "Original gz responses are preserved in Actions artifact38115982275 and not available locally at this checkpoint. Cached complete-body SHA matches source extraction proof; independent raw HTML revalidation awaits full-corpus Actions projection.",
+    "Original cold gz responses are preserved in Actions artifact38115982275 and not available locally at this checkpoint. One independently recaptured mask-obligation original is now locally revalidated byte-for-byte and yields identical complete primary-body SHA and publication date; other cold originals await full-corpus projection.",
     "Cold core explicitly performed discovery_only, no AI attempts. Materiality eligibility is not a score, a publication decision or end-to-end acceptance.",
     "The source queue includes three legacy financial candidates absent from current discovery and incomplete bodies; queued49of79 controls does not replace actual discovered46of79 recall.",
     "All754queued bodies were programmatically compared. Full semantic editorial review of rejected/pending corpus requires original captures and actual decisions; no complete ReviewerPASS is asserted."
@@ -20017,8 +20017,21 @@
     }
   ],
   "validation": {
-    "targeted_tests": "88 passed",
+    "targeted_tests": "89 passed",
     "real_original_control_cross_check": "Independent Reviewer re-extracted58available original controls;57eligibleafterfirsttworules,oneindividualclinicalincidentrejected. FullcoldoriginalHTMLprojectionpending.",
     "score_threshold": 72
-  }
+  },
+  "original_fixture_rechecks": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "path": "tests/fixtures/pulso_runtime_real/8005d3bd4577194f26fbe104d039968189ee4140695fd0f34f5b4a556d457505.html.gz",
+      "original_http_sha256": "8005d3bd4577194f26fbe104d039968189ee4140695fd0f34f5b4a556d457505",
+      "gzip_sha256": "4a52733751063b41d67b51254537182b072ff880e7e6c464467befdc696a9dfe",
+      "captured_at": "2026-10-11T06:16:06.370625+00:00",
+      "primary_body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+      "primary_body_matches_cold_projection": true,
+      "publication_date_matches": true,
+      "gate_threshold": 72
+    }
+  ]
 }
