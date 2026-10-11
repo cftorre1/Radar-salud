@@ -17,6 +17,7 @@ from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
 from .processing import DeferredProcessing
+from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 
 def main():
     from .models import RawItem
@@ -64,6 +65,7 @@ def main():
       ("suseso_news","suseso_news",SusesoNewsScout().discover,process_suseso_news),
       ("suseso_fiscalizacion","suseso_fiscalizacion",SusesoFiscalizacionScout().discover,process_suseso_fiscalizacion),
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
+      ("pulso_latercera","pulso_latercera",CuratedBetaSourceScout("pulso_latercera").discover,process_curated_beta_source),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
     discoveries={}
