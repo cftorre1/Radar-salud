@@ -216,6 +216,23 @@ def main():
         finally:
             sys.argv = argv
         report["processing"]["ai_credentials_present"] = bool(os.getenv("OPENAI_API_KEY"))
+        if args.reuse_originals:
+            # A cache replay is processing evidence, not a fresh publisher poll.
+            # Preserve actual original capture times in the public health facet.
+            health_path=root/"data/source_health.json"
+            health=json.loads(health_path.read_text())
+            facet=health['sources']['diario_financiero']
+            polls=[report['originals'].get(url,{}).get('captured_at') for url in DfHealthScout.PAGES]
+            polls=[stamp for stamp in polls if stamp]
+            facet.update(runtime_checked_at=facet.get('checked_at'),source_poll_mode=report['mode'],
+                         original_listing_capture_times={url:report['originals'].get(url,{}).get('captured_at') for url in DfHealthScout.PAGES},
+                         coverage_complete_30_days=False,coverage_complete_90_days=False)
+            if polls:facet['checked_at']=max(polls)
+            atomic_json(health_path,health)
+            watermark_path=root/'data/state/discovery_watermarks.json'
+            after=json.loads(watermark_path.read_text())
+            if 'diario_financiero' in watermarks:after['diario_financiero']=watermarks['diario_financiero']
+            atomic_json(watermark_path,after)
         queue = PendingQueue(queue.path)
         history = load_history(root / "data/history/superintendencia_signals.json")
     # Curate the real history using the same feed gates, without unrelated fetches.

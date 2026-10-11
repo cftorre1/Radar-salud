@@ -372,5 +372,25 @@
     "evidence": "tests/test_df_recovery.py; tests/test_source_health_facets.py; 34 targeted PASS",
     "remaining": "Original-site runtime and independent semantic review required; replay is not coverage proof",
     "owner_time_saved": "Future regressions diagnosed by exact reason; no recurring manual date/queue reconstruction required."
+  },
+  {
+    "id": "df_article_recommendation_contamination_2026_10_11",
+    "source": "Codex A real runtime audit",
+    "class": "missed_capture_defect",
+    "finding": "Generic paragraph/article fallback mixed DF primary content with recommendation cards and newsletters; unrelated news acquired health terms and real IA published wrong-story summaries.",
+    "root_cause": "Synthetic markup tested dates but did not reproduce DF CUERPO and article.card siblings. Threshold tests alone cannot certify the evidence used by a real model.",
+    "specific_fix": "Select primary DF body, require a material health consequence in the same statement, trace withdrawal/reassessment of contaminated decisions, and reject non-article URLs.",
+    "preventive_controls": [
+      "deterministic_test",
+      "data_validation_rule",
+      "editorial_rule"
+    ],
+    "evidence": [
+      "Original hash manifest tests/fixtures/df_original_manifest.json",
+      "ebc0db2/d26ee89/e51ce83; 42 focused tests PASS",
+      "Actual primary-body runtime 38113493822 awaiting outcomes review"
+    ],
+    "status": "implemented_runtime_review_open",
+    "owner_time_saved": "No owner intervention requested; runtime discovery and recovery were autonomous."
   }
 ]
