@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "verified_at": "2026-10-11T05:10:59.204276+00:00",
+  "reviewed_code_commit": "250c650f2ba00d2066506e61f03b3e730ca69b6c",
+  "main_base_sha": "a1ac3aa378d5b74e3bf3f50af9120a77c777b611",
+  "latest_staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+  "test_results": {
+    "autonomy_unittest": {
+      "status": "PASS",
+      "tests": 193,
+      "seconds": 34.85,
+      "log_sha256": "3c283eb43901edd6fe49e9c76679c2808396e23a7acea28a6279829e15791fa6"
+    },
+    "actionlint": {
+      "status": "PASS",
+      "version": "1.7.7",
+      "workflows": 5,
+      "diagnostics": []
+    },
+    "independent_contract_checks": {
+      "status": "PASS",
+      "count": 20
+    },
+    "product_and_original_gates_unchanged": true
+  },
+  "code_file_sha256": {
+    ".github/workflows/autonomous-recovery.yml": "2a3fc6d2059214ec8f72ba3e8dd3d893919557baf6effb6b46c488bf22c662fa",
+    ".github/workflows/autonomy-controller.yml": "4b7c6ca1ba43b82ee4b796a48b4f8afe50138897b91b6509adf4d4f8dd35a8c1",
+    ".github/workflows/candidate-review.yml": "ad5831ac448853bbb7aabf4b8c80efcad2b9704978d5150f2fb3e4330c4ddfb8",
+    ".github/workflows/repair-lanes.yml": "2d6d5a276e9e86272b51b7bcdb58ff08ba85afb6d74f43cacd2103141ceca7ca",
+    ".github/workflows/source-audit-executor.yml": "e02c53d1a6cb06f3fda01176843f2e61af914725ef018d67d87d4778fcb182b4",
+    "scripts/autonomy_candidate_context.py": "bd807865cb24cabd7f9b37f9aa922220dc549be913a2c213985ec345b0a543c8",
+    "scripts/autonomy_candidate_review.py": "edcda0b92d0f5f425763f56c7708b78042350a02c3cab06a27e2892cc5d2c489",
+    "scripts/autonomy_engine.py": "8550d2d8fe36f3924b7a7ba24ff56fb4b2f6d09fa9c11756406e18d55c70c1ea",
+    "scripts/autonomy_failure_input.py": "95a6d74f751b6a0c1b68186fa373fadd64d7aed13ba2de12486672da2675e4bf",
+    "scripts/autonomy_lane_runner.py": "d5b39b807a12d551c273bd8409d6eb16d2822ff90bf528eb7978db3c9a896238",
+    "scripts/autonomy_recovery.py": "162e8f3e2613dae7de92dab49e557820b89333f0a38462de3df20280339ff519",
+    "scripts/autonomy_runtime.py": "18b8b8f1e76118b2cb99aeeb1b06c34936579d6886202258848b727e94a22761",
+    "scripts/autonomy_state_store.py": "2b1207301d1bd6f824ac1f3baffafe1bd541d73b27399125c7c92db9fd9a6497",
+    "tests/test_autonomy_candidate_context.py": "bd326ac7648196e703a6e9c8b874cf5e1e685aa753f617951d7042913d8f32d3",
+    "tests/test_autonomy_candidate_review.py": "179956b0e510e8ee8b9b09257d602d058d6bd81c3b398562c3afc137c59c7f87",
+    "tests/test_autonomy_engine.py": "5ad1c5357eaedfec79002282ac19c4274353c73d8c28f04351881ad42f59a521",
+    "tests/test_autonomy_failure_input.py": "11a3f5b94bfd62f98dadd1ade4df9d8fdf5ec57692b3f222db6f406e4a413541",
+    "tests/test_autonomy_lane_runner.py": "9b180da8ed15e04b39d980f00927d0bb05e2a88562e7de422c1f4cca1c87777e",
+    "tests/test_autonomy_recovery.py": "479b38ce3d31dc8a9b6250de7105aeeb9d6170b282d432b6c95c35a3d2823181",
+    "tests/test_autonomy_runtime.py": "f16d9845c44cba3a477ef9d4488b65df0182263a6cbbdb9da6db54417dfea320",
+    "tests/test_autonomy_state_store.py": "105791f6746b7567646197e13692d155116036e2897dcbb4683f2dbeaa5884eb"
+  },
+  "live_acceptance": {
+    "status": "NOT_PROVEN",
+    "unproved": [
+      "Four actual consecutive hours of useful autonomous progress",
+      "Live hosted pickup after deploying reviewed infrastructure",
+      "Real failure repair plus automatic independent transition in hosted authority",
+      "End-to-end candidate review and externally authorized staging integration",
+      "Verified immutable observation covering Actions and owner prompt events throughout acceptance window"
+    ],
+    "owner_observation": "No trusted Work/chat owner-prompt event source is connected; empty counters cannot attest absence."
+  },
+  "real_blockers": [
+    {
+      "kind": "staging_normative_gate",
+      "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "reason": "11 normative rows fail unchanged minimum of 12; no product or test-gate weakening authorized/performed."
+    },
+    {
+      "kind": "managed_cloud_source_network",
+      "reason": "Local source destinations are outside network allowlist; DF/Pulso HTTP403 is platform evidence, not publisher or hosted-access evidence."
+    },
+    {
+      "kind": "model_repair_policy",
+      "reason": "Current ai_builder_enabled=false/no new paid calls is honored; no shared approved reservation is invented."
+    }
+  ],
+  "publication": {
+    "status": "LOCAL_CHECKPOINT_READY",
+    "authorized_target": "cftorre1/Radar-salud:main autonomy infrastructure only",
+    "production_promotion": false,
+    "reviewed_payload": "Autonomy workflows, scripts, directed tests and repository documentation; no work/context/raw source evidence or secrets."
+  }
+}

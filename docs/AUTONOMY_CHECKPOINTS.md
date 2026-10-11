@@ -328,3 +328,24 @@ changes, ignored export clocks and unchanged independent parser fingerprints.
 
 Next hypothesis: the final hosted payload retries only on actual new repair or
 acceptance inputs, and continues other families when the same fault is blocked.
+
+## 17. Final independent verification and publication checkpoint
+
+Final code reviewed: `250c650f2ba00d2066506e61f03b3e730ca69b6c`.
+The independent suite passed 193 tests in 34.850 seconds. Actionlint passed all
+five autonomy workflows. Twenty independent checks confirm relevant retries,
+fenced leases, durable candidate continuation, material content identity and
+strict source/owner acceptance. Product bytes and original gates are unchanged.
+The committed JSON verification records code-file hashes and exact proof limits.
+
+Actual staging remains blocked by eleven normative rows against the unchanged
+twelve-row test at `73aff5c…`. No content was invented and no gate relaxed.
+Local source access is restricted by the managed cloud allowlist; paid model
+repair is disabled by policy. Hosted access and recovery have not been observed.
+Four real hours and complete owner-event observation remain NOT_PROVEN.
+
+Next hypothesis: publishing this concrete, reviewed infrastructure payload to
+the explicitly authorized main ref starts useful hosted pickup while independent
+work continues. If platform approval/authentication blocks publication, retain
+all commits, a patch, a Git bundle and the exact continuation instructions; never
+substitute local fixture success for hosted acceptance.
