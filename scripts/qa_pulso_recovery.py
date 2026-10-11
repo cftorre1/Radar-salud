@@ -1024,6 +1024,40 @@ def verify_processing_selection(report, discovery, queue, root, enumerated):
     return checks, findings
 
 
+def technical_processing_deferral(item, row):
+    """Read failed processing evidence independently of a retry label.
+
+    A future retry time or a renamed queue reason does not turn an invalid
+    primary identity, failed model proof or unavailable analysis into a settled
+    editorial decision. Publisher exceptions are checked separately and do not
+    belong to the body-reviewed processing cohort.
+    """
+    metadata = item.get("raw", {}).get("metadata", {})
+    assessment = metadata.get("editorial_assessment") or {}
+    validation = metadata.get("pulso_editorial_proof_validation")
+    binding = metadata.get("primary_item_binding")
+    failures = []
+    if isinstance(validation, dict) and validation.get("decision") == "deferred":
+        failures.append("pulso_editorial_proof_validation_deferred")
+    if isinstance(binding, dict) and binding.get("verified") is False:
+        failures.append("primary_item_binding_unverified")
+    if metadata.get("analysis_input_complete") is False:
+        failures.append("complete_analysis_input_unverified")
+    if metadata.get("article_body_complete") is False:
+        failures.append("complete_primary_article_body_unverified")
+    if item.get("status") in {"pending", "retry", "processing"}:
+        technical = {"analysis_unavailable", "article_verification_failed", "budget_or_analysis_deferred",
+                     "analysis_complete_primary_body_not_proven", "fast_analysis_capacity_exhausted",
+                     "publisher_liveblog_entry_dates_unverified"}
+        reasons = (assessment.get("reason"), item.get("reason"), metadata.get("editorial_hold"),
+                   row.get("exact_reason"))
+        for reason in reasons:
+            if isinstance(reason, str) and (reason in technical or reason.startswith(
+                    ("pulso_editorial_", "pulso_primary_", "processing_not_attempted:"))):
+                failures.append(reason)
+    return sorted(set(failures))
+
+
 def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queue, history, snapshot, telemetry):
     """A zero-call replay can pass only after bound, genuine paid processing.
 
@@ -1479,6 +1513,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
             fail("processing", "unresolved_media_attribution_or_feed_loss")
         if report.get("unresolved_pending_operational_reasons"):
             fail("processing", "pending_operational_reasons_unresolved")
+        selected_urls = set((execution.get("processing_selection") or {}).get("selected_urls", []))
         for url in actual:
             row = rows.get(url, {})
             reason = row.get("exact_reason") or ""
@@ -1493,11 +1528,16 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
             item = current_queue[url][0][1]
             assessment = item.get("raw", {}).get("metadata", {}).get("editorial_assessment") or {}
             score = assessment.get("relevance_score")
+            if url in selected_urls:
+                technical_failures = technical_processing_deferral(item, row)
+                if technical_failures:
+                    fail("processing", "selected_reviewed_text_processing_evidence_unresolved", url=url,
+                         failures=technical_failures, status=item.get("status"), reason=reason)
             if score is not None and assessment.get("threshold") != 72:
                 fail("processing", "media_editorial_threshold_changed", url=url, assessment=assessment)
-            if url in controls and controls[url].get("recall_expected") and WINDOWS["30"][0] <= controls[url].get("publication_date", "") <= WINDOWS["30"][1]:
+            if url in controls and controls[url].get("recall_expected"):
                 if item.get("status") not in {"published", "rejected"}:
-                    fail("processing", "recent_important_control_not_editorially_processed", url=url, reason=reason)
+                    fail("processing", "important_control_not_editorially_processed", url=url, reason=reason)
             if item.get("status") == "published":
                 gate_analysis_reason = assessment.get("analysis_reason")
                 if url in reviewed_outputs:

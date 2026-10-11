@@ -500,7 +500,7 @@ def test_recent_control_pending_for_budget_is_not_end_to_end_processing(evidence
     process(evidence)
     evidence["queue"]["0"]["status"] = "pending"
     evidence["report"]["matrix"][0]["exact_reason"] = "processing_not_attempted:fast_analysis_capacity_exhausted"
-    assert "recent_important_control_not_editorially_processed" in codes(evidence)
+    assert "important_control_not_editorially_processed" in codes(evidence)
 
 
 def test_published_threshold_attribution_and_serialized_feed_presence_are_checked(evidence):
@@ -550,7 +550,7 @@ def test_deferred_exact_reason_and_feed_freshness_cannot_be_generic(evidence):
     evidence["queue"]["0"].update(status="retry", reason="analysis_unavailable")
     evidence["report"]["matrix"][0].update(exact_reason="budget_or_analysis_deferred", editorial_outcome="deferred")
     evidence["report"]["feed_evidence"]["generated_after_current_history"] = False
-    assert {"deferred_without_exact_assessment", "actual_serialized_feed_missing_or_stale", "recent_important_control_not_editorially_processed"} <= codes(evidence)
+    assert {"deferred_without_exact_assessment", "actual_serialized_feed_missing_or_stale", "important_control_not_editorially_processed"} <= codes(evidence)
 
 
 def append_publisher_exception(data, kind):
@@ -941,4 +941,68 @@ def test_recent_important_text_cannot_pass_as_retry_with_new_analysis_failure_re
     item.update(status="retry", reason=reason)
     item["raw"]["metadata"]["editorial_assessment"] = dict(decision="pending", reason=reason)
     evidence["report"]["matrix"][0].update(exact_reason=reason, editorial_outcome="deferred")
-    assert "recent_important_control_not_editorially_processed" in codes(evidence)
+    assert "important_control_not_editorially_processed" in codes(evidence)
+
+
+@pytest.mark.parametrize("index", [0, 28, 29, 78])
+@pytest.mark.parametrize("status", ["pending", "retry", "archived"])
+def test_all79_controls_need_a_terminal_editorial_decision_even_with_future_retry(evidence, index, status):
+    process(evidence)
+    item = evidence["queue"][str(index)]
+    item.update(status=status, reason="retry_not_due", retry_after="2027-01-01T00:00:00Z")
+    item["raw"]["metadata"]["editorial_assessment"] = dict(decision="pending", reason="retry_not_due")
+    evidence["report"]["matrix"][index].update(exact_reason="retry_not_due", editorial_outcome="deferred")
+    result = qa.evaluate(**evidence)
+    assert result["processing_qa"] == "FAIL"
+    assert any(row["code"] == "important_control_not_editorially_processed"
+               and row["url"] == item["raw"]["url"] for row in result["findings"])
+
+
+@pytest.mark.parametrize("status", ["retry", "published", "rejected"])
+@pytest.mark.parametrize("evidence_field,value,expected", [
+    ("pulso_editorial_proof_validation", {"decision": "deferred", "reason": "pulso_editorial_future_status_mismatch"},
+     "pulso_editorial_proof_validation_deferred"),
+    ("primary_item_binding", {"verified": False, "reason": "renamed_editorial_retry"},
+     "primary_item_binding_unverified"),
+    ("analysis_input_complete", False, "complete_analysis_input_unverified"),
+    ("article_body_complete", False, "complete_primary_article_body_unverified"),
+])
+def test_selected_processing_cannot_hide_failed_evidence_behind_alias_or_terminal_label(evidence, status, evidence_field, value, expected):
+    process(evidence)
+    item = evidence["queue"]["78"]
+    item.update(status=status, reason="retry_not_due")
+    item["raw"]["metadata"]["editorial_assessment"].update(decision="pending", reason="retry_not_due")
+    item["raw"]["metadata"][evidence_field] = value
+    row = evidence["report"]["matrix"][78]
+    row.update(exact_reason="retry_not_due", editorial_outcome="deferred")
+    failures = qa.technical_processing_deferral(item, row)
+    assert expected in failures
+
+
+def test_selected_deferred_validation_is_checked_by_processing_reader_even_when_aliased(evidence):
+    process(evidence)
+    item = evidence["queue"]["78"]
+    url = item["raw"]["url"]
+    selected = dict(selected_urls=[url])
+    evidence["report"]["last_core_execution"]["processing_selection"] = selected
+    evidence["discovery"]["processing_selection"] = deepcopy(selected)
+    item["raw"]["metadata"]["pulso_editorial_proof_validation"] = dict(
+        decision="deferred", reason="pulso_editorial_model_binding_mismatch")
+    result = qa.evaluate(**evidence)
+    # This minimal, deliberately invalid selection cannot claim membership
+    # acceptance. The processing reader must also report the actual failed
+    # validator instead of trusting the otherwise terminal rejection label.
+    assert any(row["code"] == "selected_reviewed_text_processing_evidence_unresolved"
+               and row["url"] == url and "pulso_editorial_proof_validation_deferred" in row["failures"]
+               for row in result["findings"])
+
+
+@pytest.mark.parametrize("reason", ["pulso_editorial_future_status_mismatch",
+    "pulso_editorial_model_binding_mismatch", "pulso_editorial_analysis_invalid_schema",
+    "pulso_primary_item_identity_or_date_mismatch", "analysis_unavailable",
+    "processing_not_attempted:fast_analysis_capacity_exhausted"])
+def test_selected_technical_defer_is_not_an_editorial_hold(evidence, reason):
+    item = evidence["queue"]["78"]
+    item.update(status="retry", reason="retry_not_due", retry_after="2027-01-01T00:00:00Z")
+    item["raw"]["metadata"]["editorial_assessment"] = dict(decision="pending", reason=reason)
+    assert reason in qa.technical_processing_deferral(item, {"exact_reason": "retry_not_due"})
