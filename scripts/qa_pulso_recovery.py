@@ -531,7 +531,7 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
             if reader.get("proposed_category"):
                 approved["category"] = reader["proposed_category"]
             if (proposed != approved or not set(proposed) <= {"what_happened", "why_it_matters", "category"}
-                    or proposed.get("category", "Prestadores") != "Prestadores"
+                    or proposed.get("category", "Prestadores") not in {"Prestadores", "Regulación & Legal"}
                     or record.get("event_status") != reader.get("event_status")
                     or record.get("event_status") not in {"reported", "proposed", "planned", "historical"}
                     or not explicit_media_attribution(proposed.get("what_happened"))):

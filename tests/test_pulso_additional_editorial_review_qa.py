@@ -143,6 +143,45 @@ def test_registered_future_pair_requires_same_genuine_paid_producer_without_code
     assert failures == [] and len(proofs) == 5
 
 
+@pytest.mark.parametrize("category", ["Prestadores", "Regulación & Legal"])
+def test_paid_category_correction_requires_exact_independent_approved_category(real_originals, category):
+    document, reader, path, reader_path = make_generic(real_originals)
+    record, parent = document["records"][1], reader["all_signals"][1]
+    assert record["decision"] == parent["decision"] == "correct"
+    record["proposed"]["category"] = category
+    parent["proposed_category"] = category
+    bind_generic(real_originals, document, reader, path, reader_path)
+    apply_temporary(real_originals, path)
+    proofs, failures = qa.verify_additional_editorial_reviews(**real_originals)
+    assert failures == [] and len(proofs) == 5
+    corrected = next(row for row in real_originals["history"] if row["source_url"] == record["url"])
+    assert corrected["category"] == category
+
+
+def test_even_synchronized_paid_review_cannot_authorize_unknown_category(real_originals):
+    document, reader, path, reader_path = make_generic(real_originals)
+    apply_temporary(real_originals, path)
+    record, parent = document["records"][1], reader["all_signals"][1]
+    record["proposed"]["category"] = parent["proposed_category"] = "Unapproved category"
+    bind_generic(real_originals, document, reader, path, reader_path)
+    review_sha = qa.digest((real_originals["root"] / path).read_bytes())
+    for item in real_originals["queue"].values():
+        proof = item["raw"]["metadata"]["editorial_review"]
+        own = next(row for row in document["records"] if row["url"] == item["raw"]["url"])
+        proof.update(review_sha256=review_sha, record_sha256=qa.object_digest(own))
+        assessment = item["raw"]["metadata"]["editorial_assessment"]
+        if "review_sha256" in assessment:
+            assessment["review_sha256"] = review_sha
+    for signal in real_originals["history"]:
+        item = next(item for item in real_originals["queue"].values() if item["raw"]["url"] == signal["source_url"])
+        signal["editorial_review"] = deepcopy(item["raw"]["metadata"]["editorial_review"])
+        signal["editorial_assessment"] = deepcopy(item["raw"]["metadata"]["editorial_assessment"])
+        if signal["source_url"] == record["url"]:
+            signal["category"] = "Unapproved category"
+    real_originals["snapshot"]["signals"] = deepcopy(real_originals["history"])
+    assert any(row.get("error") == "editorial_corrected_copy_not_independently_bound" for row in errors(real_originals))
+
+
 @pytest.mark.parametrize("attack", ["no_registration", "wrong_registration", "missing_producer", "mutable_head",
     "producer_hash", "duplicate_reader", "fabricated_signal", "fabricated_assessment", "reader_copy", "empty_quotes",
     "raised_score", "extra_correction_field", "wrong_body", "wrong_response", "unacknowledged_record"])
