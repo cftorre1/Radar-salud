@@ -28,7 +28,9 @@ def exclusion(raw):
     title = raw.title.lower()
     if "/opinion/" in url or "opinión" in section or "opinion" in section or title.startswith(("columna:", "columna de")):
         return "media_opinion_or_column"
-    if any(x in url for x in ("/brand", "/contenido-patrocinado/", "/patrocinado/")):
+    author = str(raw.metadata.get('article_author', '')).casefold()
+    if (any(x in url for x in ("/brand", "/contenido-patrocinado/", "/patrocinado/"))
+            or 'brandcorner' in author or 'brandcorner' in section):
         return "media_branded_content"
     return None
 

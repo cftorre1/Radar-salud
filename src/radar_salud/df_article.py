@@ -186,6 +186,8 @@ def parse_df_article(html, url):
             "page_text": body,
             "article_title": node.get("headline") or p.meta.get("og:title") or "",
             "article_section": node.get("articleSection") or p.meta.get("article:section") or "",
+            "article_author": (node.get('author', {}).get('name', '') if isinstance(node.get('author'), dict)
+                               else node.get('author') if isinstance(node.get('author'), str) else p.meta.get('author', '')),
             "primary_image_urls":[urljoin(url,src) for src in p.images],
             "primary_media_urls":[urljoin(url,src) for src in p.media],
             "publication_date_source": chosen["source"] if chosen else None,
