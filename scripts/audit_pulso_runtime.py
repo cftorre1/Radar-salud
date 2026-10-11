@@ -578,11 +578,22 @@ def main():
     # Retained raw responses survive warm-cache runs, while the live observer
     # remains scoped to the current HTTP execution. Never call them fresh polls.
     preserved_requests = []
-    for record in preserved.get("requests", []):
-        retained = dict(record)
-        if record.get("gzip_file"):
-            retained["gzip_file"] = str(Path("tests/fixtures/pulso_runtime_real") / record["gzip_file"])
-        preserved_requests.append(retained)
+    preserved_manifests = []
+    for directory in ("pulso_runtime_real", "pulso_editorial_exception_real", "pulso_targeted_primary_real"):
+        relative = Path("tests/fixtures") / directory
+        fixture_manifest = root / relative / "manifest.json"
+        fixture = read_json(fixture_manifest, {})
+        if fixture_manifest.exists():
+            preserved_manifests.append(dict(path=str(relative / "manifest.json"),
+                sha256=hashlib.sha256(fixture_manifest.read_bytes()).hexdigest(), status=fixture.get("status")))
+        for record in fixture.get("requests", []):
+            retained = dict(record)
+            if record.get("gzip_file"):
+                retained["gzip_file"] = str(relative / record["gzip_file"])
+            retained["original_capture_manifest_sha256"] = (
+                record.get("original_capture_manifest_sha256") or (
+                    hashlib.sha256(fixture_manifest.read_bytes()).hexdigest() if fixture_manifest.exists() else None))
+            preserved_requests.append(retained)
     joined_captures = dict(captures, requests=captures.get("requests", []) + preserved_requests)
     report = join_report(discovery, after, history, feed, control, baseline=baseline, captures=joined_captures)
     candidate_urls = {url for row in candidate if (url := normalized_url(row.get("source_url")))}
@@ -603,6 +614,7 @@ def main():
                   capture_manifest=str(capture_path / "manifest.json"),
                   preserved_original_fixture_manifest=str(preserved_path) if preserved_path.exists() else None,
                   preserved_original_fixture_status=preserved.get("status"),
+                  preserved_original_fixture_manifests=preserved_manifests,
                   unrelated_queue_unchanged=(prior.get("unrelated_queue_unchanged") if args.report_only else
                       unrelated_before == digest_json({key: row for key, row in after.items() if row.get("source") != SOURCE})),
                   feed_method="actual serialized web/data/radar_today.json; full-history curate(resolve_external=False) eligibility recorded separately; no injected rows",
