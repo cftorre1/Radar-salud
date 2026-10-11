@@ -54,6 +54,10 @@ def fetch(url, output):
         'content_type', 'size_download', 'exitcode', 'errormsg', 'http_version']
     network = {k: network.get(k) for k in keep}
     content = body.read_bytes() if body.exists() else b''
+    if content.startswith(b'%PDF'):
+        renamed = body.with_suffix('.pdf')
+        body.rename(renamed)
+        body = renamed
     text = content.decode('utf-8', errors='replace')
     waf = [term for term in ['access denied', 'captcha', 'cloudflare', 'request rejected', 'proxy error'] if term in text.lower()]
     status = int(network.get('http_code') or 0)
@@ -85,6 +89,19 @@ def probe(output, as_of):
     seeds += [dict(url=url, source='suseso_fiscalizacion', scope=actor, kind='related_actor_taxonomy') for actor,url in SUSESO]
     seeds += [dict(url='https://www.suseso.gob.cl/601/w3-channel.html',source='suseso',kind='navigation'),
         dict(url='https://www.superdesalud.gob.cl/fiscalizacion/',source='superintendencia_fiscalizacion',kind='navigation')]
+    # Independent official enforcement and alternative result indexes. The actor
+    # taxonomy at /612 is a normative index, not the /609 enforcement channel.
+    seeds += [dict(url=url, source=source, kind='navigation') for source, url in [
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-channel.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/605/w3-propertyname-536.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/612/w3-propertyvalue-30973.html'),
+        ('superintendencia_fiscalizacion', 'https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/informes-de-fiscalizacion-3218/'),
+        ('superintendencia_fiscalizacion', 'https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/sanciones-aplicadas-5113/'),
+        ('superintendencia_fiscalizacion', 'https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/'),
+        ('superintendencia_fiscalizacion', 'https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-entidades-acreditadoras-7059/'),
+        ('superintendencia_fiscalizacion', 'https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-agentes-de-ventas-7441/'),
+        ('superintendencia_fiscalizacion', 'https://www.superdesalud.gob.cl/app/themes/supersalud-bloom/assets/dist/datatables.js'),
+    ]]
     receipts=[]; inventory=[]; navigation=[]
     with ThreadPoolExecutor(max_workers=3) as pool:
         results=list(pool.map(lambda seed: fetch(seed['url'],captures), seeds))

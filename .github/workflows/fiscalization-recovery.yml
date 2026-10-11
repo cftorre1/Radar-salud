@@ -30,5 +30,13 @@ jobs:
         if: always()
         with:
           name: fiscalization-runtime-${{ github.event.pull_request.head.sha }}
-          path: artifacts/fiscalization-runtime/
+          path: |
+            artifacts/fiscalization-runtime/
+            !artifacts/fiscalization-runtime/**/*.pdf
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fiscalization-documents-${{ github.event.pull_request.head.sha }}
+          path: artifacts/fiscalization-runtime/**/*.pdf
           retention-days: 30
