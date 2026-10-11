@@ -38,7 +38,10 @@ RUNTIME_CONFIGS = (
 TERMINAL = {"published", "rejected", "archived"}
 IMMUTABLE_COHORT_INPUTS = ("frozen_control", "independent_primary_review", "expanded_negative_review")
 TECHNICAL_HOLDS = {"analysis_unavailable", "article_verification_failed", "budget_or_analysis_deferred",
-                   "analysis_complete_primary_body_not_proven", "fast_analysis_capacity_exhausted"}
+                   "analysis_complete_primary_body_not_proven", "fast_analysis_capacity_exhausted",
+                   "publisher_liveblog_entry_dates_unverified"}
+INCREMENTAL_REVIEW = "data/audits/pulso_incremental_review_2026_10_11.json"
+INCREMENTAL_REVIEW_SHA256 = "e5cee8d34839a905e391e85d6187db8bcdae09c0dde7f688cc71a9f04f093ddd"
 
 
 def digest(value):
@@ -145,27 +148,139 @@ def source_queue(queue):
                          assessment=metadata.get("editorial_assessment"), editorial_hold=metadata.get("editorial_hold"),
                          body_sha256=metadata.get("article_body_sha256"), body_characters=metadata.get("article_body_characters"),
                          source_quality_gate=metadata.get("source_quality_gate"),
+                         editorial_proof_validation=metadata.get("pulso_editorial_proof_validation"),
+                         primary_item_binding=metadata.get("primary_item_binding"),
+                         analysis_input_complete=metadata.get("analysis_input_complete"),
+                         article_body_complete=metadata.get("article_body_complete"),
                          editorial_review_sha256=digest(metadata["editorial_review"]) if metadata.get("editorial_review") else None)
     return rows
 
 
-def selected_partition(rows, urls, now):
+def processing_evidence_failures(row):
+    failures = []
+    validation, binding = row.get("editorial_proof_validation"), row.get("primary_item_binding")
+    if isinstance(validation, dict) and validation.get("decision") == "deferred":
+        failures.append("editorial_proof_validation_deferred")
+    if isinstance(binding, dict) and binding.get("verified") is False:
+        failures.append("primary_item_binding_unverified")
+    for field in ("analysis_input_complete", "article_body_complete"):
+        if row.get(field) is False:
+            failures.append(field + "_unverified")
+    if row["status"] not in TERMINAL:
+        assessment = row.get("assessment") or {}
+        for reason in (assessment.get("reason"), row.get("editorial_hold"), row.get("reason")):
+            if isinstance(reason, str) and (reason in TECHNICAL_HOLDS or reason.startswith(
+                    ("pulso_editorial_", "pulso_primary_", "processing_not_attempted:"))):
+                failures.append(reason)
+    return sorted(set(failures))
+
+
+def reviewed_hold_bindings(context):
+    """A static duplicate triage is insufficient without its live canonical item.
+
+    Check persisted primary/copy proof only. This never releases a hold, supplies
+    a date, or interprets an unresolved model decision as editorial approval.
+    """
+    document = context.get("incremental_review_files", {}).get(INCREMENTAL_REVIEW)
+    if not isinstance(document, dict):
+        return {}
+    policy = document.get("editorial_policy", {})
+    if (context.get("referenced_proof_files", {}).get(INCREMENTAL_REVIEW) != INCREMENTAL_REVIEW_SHA256
+            or document.get("source_id") != SOURCE or document.get("schema_version") != 1
+            or document.get("verdict") != "PASS_INCREMENTAL_TRIAGE_NOT_PUBLICATION_APPROVAL"
+            or policy.get("media_materiality_threshold") != 72
+            or policy.get("threshold_changed") is not False or policy.get("publication_approved") is not False):
+        return {}
+    history = context["history"]
+    history = history.get("signals", []) if isinstance(history, dict) else history
+    bindings = {}
+    for item in context["queue"].values():
+        if item.get("source") != SOURCE or item.get("status") in TERMINAL:
+            continue
+        raw = item.get("raw", {})
+        metadata = raw.get("metadata", {})
+        review = metadata.get("incremental_review") or {}
+        url, day = raw.get("url"), raw.get("event_date")
+        entries = [entry for entry in document.get("reviews", []) if entry.get("source_url") == url]
+        if len(entries) != 1 or not isinstance(review, dict):
+            continue
+        entry = entries[0]
+        reason = metadata.get("editorial_assessment", {}).get("reason")
+        body = metadata.get("page_text")
+        if (review.get("review_ref") != INCREMENTAL_REVIEW
+                or review.get("review_sha256") != INCREMENTAL_REVIEW_SHA256
+                or review.get("decision") != entry.get("decision") or entry.get("decision") != "keep_hold"
+                or review.get("publication_approved") is not False or entry.get("publication_approved") is not False
+                or reason != entry.get("reason") or metadata.get("editorial_hold") != reason
+                or metadata.get("article_verified") is not True or metadata.get("primary_identity_verified") is not True
+                or metadata.get("publication_date_verified") is not True or metadata.get("source_quality_gate") != "passed"
+                or metadata.get("canonical_url") != url or day != entry.get("publication_date")
+                or metadata.get("publication_date") != day or review.get("verified_publication_date") != day
+                or not isinstance(body, str) or len(body.strip()) < 160
+                or digest(body.encode()) != metadata.get("article_body_sha256")
+                or review.get("verified_body_sha256") != metadata.get("article_body_sha256")
+                or not re.fullmatch(r"[0-9a-f]{64}", str(metadata.get("html_sha256", "")))
+                or review.get("verified_html_sha256") != metadata.get("html_sha256")
+                or not stamp(metadata.get("captured_at"))
+                or review.get("verified_captured_at") != metadata.get("captured_at")):
+            continue
+        compared = entry.get("compared_signal", {})
+        target_url, target_day = compared.get("source_url"), compared.get("publication_date")
+        target_queue = [(key, value) for key, value in context["queue"].items()
+                        if value.get("raw", {}).get("url") == target_url]
+        target_history = [value for value in history if value.get("source_url") == target_url
+                          and value.get("event_date") == target_day]
+        if len(target_queue) != 1 or len(target_history) != 1:
+            continue
+        target_key, target = target_queue[0]
+        target_raw, signal = target.get("raw", {}), target_history[0]
+        target_meta = target_raw.get("metadata", {})
+        target_body = target_meta.get("page_text")
+        target_copy = target_meta.get("analysis_model_output") or target_meta
+        score = signal.get("editorial_relevance")
+        if (target.get("status") != "published" or target_raw.get("event_date") != target_day
+                or target_meta.get("canonical_url") != target_url or target_meta.get("publication_date") != target_day
+                or target_meta.get("publication_date_verified") is not True
+                or target_meta.get("article_verified") is not True or target_meta.get("primary_identity_verified") is not True
+                or target_meta.get("article_body_complete") is not True or target_meta.get("source_quality_gate") != "passed"
+                or not re.fullmatch(r"[0-9a-f]{64}", str(target_meta.get("html_sha256", "")))
+                or not stamp(target_meta.get("captured_at"))
+                or not isinstance(target_body, str) or len(target_body.strip()) < 160
+                or digest(target_body.encode()) != target_meta.get("article_body_sha256")
+                or signal.get("editorial_decision") == "reject" or signal.get("feed_visibility") is False
+                or signal.get("source_type") != "official" and signal.get("evidence_maturity") != "media_reported"
+                or type(score) is not int or score < 72 or not isinstance(target_copy, dict)
+                or any(not isinstance(signal.get(field), str) or len(signal[field].strip()) < 20
+                       or signal[field] != target_copy.get(field) for field in ("what_happened", "why_it_matters"))):
+            continue
+        bindings[url] = dict(review_ref=INCREMENTAL_REVIEW, review_sha256=INCREMENTAL_REVIEW_SHA256,
+                             reason=reason, primary_publication_date=day,
+                             primary_body_sha256=metadata["article_body_sha256"], primary_html_sha256=metadata["html_sha256"],
+                             target_url=target_url, target_publication_date=target_day,
+                             target_queue_fingerprint=target_key, target_body_sha256=target_meta["article_body_sha256"],
+                             target_html_sha256=target_meta["html_sha256"], target_captured_at=target_meta["captured_at"],
+                             target_signal_sha256=digest(signal))
+    return bindings
+
+
+def selected_partition(rows, urls, now, *, reviewed_holds=None):
     terminal, held = [], []
     for url in urls:
         require(url in rows, "selected_queue_identity_missing:" + url)
         row = rows[url]
         require(type(row["attempts"]) is int and row["attempts"] >= 0, "invalid_queue_attempts")
+        require(not processing_evidence_failures(row), "selected_non_editorial_or_unresolved_hold:" + url)
         if row["status"] in TERMINAL:
             terminal.append(url)
             continue
         assessment = row.get("assessment") or {}
         reason = assessment.get("reason") or row.get("editorial_hold") or row.get("reason")
         require(row["status"] in {"pending", "retry"} and isinstance(reason, str) and reason
-                and reason not in TECHNICAL_HOLDS and not reason.startswith("pulso_editorial_proof_"),
+                and reason not in TECHNICAL_HOLDS
+                and url in (reviewed_holds or {}) and reviewed_holds[url].get("reason") == reason,
                 "selected_non_editorial_or_unresolved_hold:" + url)
         retry = stamp(row.get("retry_at"))
-        future = row.get("lane") == "BACKFILL" and (row.get("publication_date") or "")[:10] > now.date().isoformat()
-        require((retry is not None and retry > now) or future, "selected_editorial_hold_is_due:" + url)
+        require(retry is not None and retry > now, "selected_editorial_hold_is_due:" + url)
         held.append(url)
     return {"terminal_urls": sorted(terminal), "held_not_due_urls": sorted(held)}
 
@@ -201,6 +316,18 @@ def read_context(root, *, selection=DEFAULT_SELECTION, report=DEFAULT_REPORT, qa
     reviewed = [row.get("editorial_review", {}) for row in history]
     reviewed.extend(item.get("raw", {}).get("metadata", {}).get("editorial_review", {}) for item in values["queue"].values())
     references.update(review["review_file"] for review in reviewed if isinstance(review, dict) and isinstance(review.get("review_file"), str))
+    incremental_review_files = {}
+    for item in values["queue"].values():
+        review = item.get("raw", {}).get("metadata", {}).get("incremental_review")
+        if item.get("source") != SOURCE or not isinstance(review, dict):
+            continue
+        relative = review.get("review_ref")
+        require(relative == INCREMENTAL_REVIEW and review.get("review_sha256") == INCREMENTAL_REVIEW_SHA256,
+                "incremental_review_reference_unverified")
+        raw = (root / relative).read_bytes()
+        require(digest(raw) == review["review_sha256"], "incremental_review_file_changed")
+        references.add(relative)
+        incremental_review_files[relative] = json.loads(raw)
     proof_files = {}
     for relative in sorted(references):
         path = (root / relative).resolve()
@@ -211,6 +338,7 @@ def read_context(root, *, selection=DEFAULT_SELECTION, report=DEFAULT_REPORT, qa
     core_execution = values["report"].get("last_core_execution") or values["report"].get("execution", {})
     values.update(events=events, ledgers=ledgers, observed_files=hashes, runtime_fingerprint=fingerprint,
                   referenced_proof_files=proof_files,
+                  incremental_review_files=incremental_review_files,
                   cohort_declared_reference_provenance=inputs,
                   recorded_core_runtime_fingerprint=core_checkout_files(root, core_execution.get("code_sha"), fingerprint["files"]))
     return values
@@ -254,6 +382,7 @@ def core_proof(context):
                 "immutable_selected_queue_fingerprint_changed:" + url)
         raw = context["queue"][current[url]["fingerprint"]]["raw"]
         metadata = raw.get("metadata", {})
+        require(not processing_evidence_failures(current[url]), "selected_non_editorial_or_unresolved_hold:" + url)
         body = metadata.get("page_text")
         require(isinstance(body, str) and digest(body.encode()) == metadata.get("article_body_sha256") == item.get("body_sha256")
                 and len(body) == item.get("body_characters") and raw.get("event_date") == item.get("publication_date"),
@@ -289,6 +418,7 @@ def semantic_snapshot(context):
         source_primary[row["url"]] = facts
     require(source_primary, "current_source_primary_inventory_missing")
     return dict(source_queue=rows, source_primary=source_primary,
+                reviewed_hold_bindings=reviewed_hold_bindings(context),
                 history=signal_index(context["history"]), feed=signal_index(context["feed"]),
                 referenced_proof_files=context.get("referenced_proof_files", {}),
                 ledgers=context["ledgers"], response_event_sha256s=[digest(event) for event in context["events"]],
@@ -316,7 +446,7 @@ def capture_baseline(context, *, now=None):
             and selection_check.get("selected_urls") == 113,
             "passing_qa_not_bound_to_full_processing_cohort")
     snapshot = semantic_snapshot(context)
-    partition = selected_partition(snapshot["source_queue"], urls, now)
+    partition = selected_partition(snapshot["source_queue"], urls, now, reviewed_holds=snapshot["reviewed_hold_bindings"])
     bundle = dict(schema_version=SCHEMA, mode="genuine_processing_baseline", at=now.isoformat(), read_only=True,
                   baseline_execution=execution, paid_budget_delta=delta,
                   paid_successful_response_ids=[event["response_id"] for event in events if event.get("success") is True],
@@ -365,7 +495,8 @@ def preflight(bundle, context, *, now=None):
             and bundle["selection"]["urls"] == context["selection"]["urls"], "immutable_113_selection_changed")
     snapshot = semantic_snapshot(context)
     require(snapshot == bundle["semantic"], "runtime_state_changed_since_passing_baseline")
-    partition = selected_partition(snapshot["source_queue"], bundle["selection"]["urls"], now)
+    partition = selected_partition(snapshot["source_queue"], bundle["selection"]["urls"], now,
+                                   reviewed_holds=snapshot["reviewed_hold_bindings"])
     require(partition == bundle["selection"]["current_partition"], "selected_terminal_or_not_due_partition_changed")
     return dict(schema_version=SCHEMA, mode="before_genuine_core", verdict="PASS", read_only=True,
                 baseline_sha256=bundle["payload_sha256"], selected=113, partition=partition,
@@ -392,7 +523,8 @@ def compare(bundle, context, *, now=None):
         check(execution.get("processing_attempts_increased") == 0
               and context["discovery"].get("processing_attempts") == 0, "second_core_processing_attempts_nonzero")
         recorded = execution["processing_selection"]
-        partition = selected_partition(source_queue(context["queue"]), urls, now)
+        partition = selected_partition(source_queue(context["queue"]), urls, now,
+                                       reviewed_holds=reviewed_hold_bindings(context))
         check(not recorded.get("ready_selected_urls") and not recorded.get("skipped_in_progress_urls")
               and sorted(recorded.get("skipped_terminal_urls", [])) == partition["terminal_urls"]
               and sorted(recorded.get("skipped_not_due_urls", [])) == partition["held_not_due_urls"],
@@ -401,7 +533,8 @@ def compare(bundle, context, *, now=None):
         findings.append(dict(code="genuine_second_core_proof_invalid", reason=str(error)))
         delta, partition = {}, {}
     after, before = semantic_snapshot(context), bundle["semantic"]
-    for key in ("history", "feed", "referenced_proof_files", "ledgers", "response_event_sha256s", "actual_response_ids"):
+    for key in ("history", "feed", "referenced_proof_files", "reviewed_hold_bindings", "ledgers",
+                "response_event_sha256s", "actual_response_ids"):
         check(after[key] == before[key], "changed_" + key)
     added = {}
     for key in ("source_queue", "source_primary"):

@@ -6,6 +6,7 @@ failed paid run is separately checked to ensure it cannot become a baseline.
 from copy import deepcopy
 from datetime import datetime, timezone
 import importlib.util
+import json
 from pathlib import Path
 
 import pytest
@@ -57,7 +58,7 @@ def unit_context():
                                publication_date="2026-10-01", publication_date_verified=True,
                                current_discovery_trace=[{"article_body_sha256": audit.digest(b"unit primary text")}]) for url in urls])
     delta = audit.budget_delta(execution)
-    return dict(selection=cohort, report=report,
+    context = dict(selection=cohort, report=report,
         processing_qa=dict(phase="real_core_processing", requested_phase="processing", verdict="PASS_AUTOMATED_PROCESSING_REQUIRES_INDEPENDENT_REVIEW",
                            acceptance="PENDING_INDEPENDENT_EDITORIAL_AND_FINAL_SHA_REVIEW", discovery_qa="PASS", processing_qa="PASS",
                            findings=[], checks={"actual_ai_budget_delta": delta, "actual_fast_response_events": 1,
@@ -71,6 +72,49 @@ def unit_context():
         observed_files={audit.DEFAULT_SELECTION: selection_sha, audit.DEFAULT_REPORT: "unit-report-sha", audit.DEFAULT_QA: "unit-qa-sha"},
         runtime_fingerprint={"files": {"engine.py": "unit-engine-sha", "source.py": "unit-source-sha"}, "sha256": "unit-runtime", "git_or_marker_sha_used": False},
         recorded_core_runtime_fingerprint={"files": {"engine.py": "unit-engine-sha", "source.py": "unit-source-sha"}, "sha256": "unit-runtime", "git_or_marker_sha_used": False})
+    # An explicit reviewed hold, not a generic retry label. All primary/target
+    # snapshots below remain transparent unit values, not publisher evidence.
+    document = json.loads((ROOT / audit.INCREMENTAL_REVIEW).read_bytes())
+    entry = next(row for row in document["reviews"] if row["decision"] == "keep_hold")
+    url, day = entry["source_url"], entry["publication_date"]
+    body = "Unit primary budget example; this is no original publisher text. " * 5
+    body_sha = audit.digest(body.encode())
+    cohort["urls"][-1] = url
+    cohort["items"][-1].update(url=url, body_sha256=body_sha, body_characters=len(body), publication_date=day)
+    held["reason"] = entry["reason"]
+    held["raw"].update(url=url, event_date=day)
+    held["raw"]["metadata"].update(
+        page_text=body, article_body_sha256=body_sha, article_verified=True,
+        primary_identity_verified=True, publication_date_verified=True,
+        publication_date=day, canonical_url=url, source_quality_gate="passed",
+        html_sha256="0" * 64, captured_at="2026-10-11T14:00:30Z", editorial_hold=entry["reason"],
+        editorial_assessment={"decision": "pending", "reason": entry["reason"]},
+        incremental_review=dict(review_ref=audit.INCREMENTAL_REVIEW, review_sha256=audit.INCREMENTAL_REVIEW_SHA256,
+            decision="keep_hold", publication_approved=False, verified_publication_date=day,
+            verified_body_sha256=body_sha, verified_html_sha256="0" * 64, verified_captured_at="2026-10-11T14:00:30Z"))
+    target = entry["compared_signal"]
+    copy = dict(what_happened="Unit canonical budget statement, not actual publication evidence.",
+                why_it_matters="Unit canonical target consequence, not an actual editorial judgment.")
+    queue["unit-canonical-target"] = dict(source="minsal", status="published", attempts=1,
+        lane="BACKFILL", raw=dict(url=target["source_url"], event_date=target["publication_date"],
+            metadata=dict(page_text=body, article_body_sha256=body_sha, article_verified=True,
+                primary_identity_verified=True, article_body_complete=True,
+                html_sha256="1" * 64, captured_at="2026-10-11T14:00:30Z",
+                canonical_url=target["source_url"], publication_date=target["publication_date"],
+                publication_date_verified=True, source_quality_gate="passed", **copy)))
+    target_signal = dict(source_url=target["source_url"], event_date=target["publication_date"],
+                         source_type="official", editorial_relevance=92, **copy)
+    context["history"]["signals"].append(target_signal)
+    context["feed"]["signals"].append(deepcopy(target_signal))
+    context["report"]["matrix"][-1].update(url=url, publication_date=day,
+                                            current_discovery_trace=[{"article_body_sha256": body_sha}])
+    selection_sha = audit.digest(cohort)
+    selected.update(sha256=selection_sha, file_sha256=selection_sha)
+    context["observed_files"][audit.DEFAULT_SELECTION] = selection_sha
+    context["processing_qa"]["checks"]["processing_selection"]["sha256"] = selection_sha
+    context["referenced_proof_files"] = {audit.INCREMENTAL_REVIEW: audit.INCREMENTAL_REVIEW_SHA256}
+    context["incremental_review_files"] = {audit.INCREMENTAL_REVIEW: document}
+    return context
 
 
 def unit_second_core(context):
@@ -161,7 +205,7 @@ def test_contract_second_core_ignores_feed_wrapper_time_but_retains_full_signal_
     result = audit.compare(baseline, after, now=NOW.replace(minute=5))
     assert result["verdict"] == "PASS" and result["findings"] == []
     assert result["actual_budget_delta"]["fast"] == {"attempted": 0, "successful": 0, "failed": 0}
-    assert result["history_signal_count"] == result["feed_signal_count"] == 112
+    assert result["history_signal_count"] == result["feed_signal_count"] == 113
     for field, value in (("what_happened", "changed copy"), ("publication_date", "2026-10-02"), ("editorial_relevance", 71),
                          ("editorial_review", {"review_sha256": "changed"})):
         changed = deepcopy(after)
@@ -224,3 +268,74 @@ def test_runtime_fingerprint_covers_new_implementation_and_policy_without_marker
     assert result["sha256"] == audit.digest(result["files"])
     assert result["git_or_marker_sha_used"] is False
     assert not any("orchestrator_queue" in path or "run-pulso" in path for path in result["files"])
+
+
+@pytest.mark.parametrize("reason", [
+    "pulso_editorial_model_binding_mismatch", "pulso_editorial_future_status_mismatch",
+    "pulso_editorial_human_scope_conflicts_with_non_human_quote", "pulso_editorial_incremental_value_uncertain",
+    "pulso_primary_item_identity_or_date_mismatch", "processing_not_attempted:required_fast_budget_exhausted",
+    "publisher_liveblog_entry_dates_unverified",
+])
+def test_generic_retry_alias_does_not_conceal_unresolved_processing_reason(reason):
+    context = unit_context()
+    held = context["queue"]["unit-fingerprint-112"]
+    held["reason"] = reason
+    held["raw"]["metadata"]["editorial_assessment"]["reason"] = "retry_not_due"
+    with pytest.raises(ValueError, match="non_editorial_or_unresolved_hold"):
+        audit.capture_baseline(context, now=NOW)
+
+
+@pytest.mark.parametrize("status", ["retry", "published", "rejected"])
+@pytest.mark.parametrize("field,value", [
+    ("pulso_editorial_proof_validation", {"decision": "deferred", "reason": "unit-binding-failure"}),
+    ("primary_item_binding", {"verified": False}),
+    ("analysis_input_complete", False), ("article_body_complete", False),
+])
+def test_failed_processing_metadata_cannot_be_hidden_by_terminal_status_or_alias(status, field, value):
+    context = unit_context()
+    row = context["queue"]["unit-fingerprint-0"]
+    row.update(status=status, reason="retry_not_due", retry_at="2026-10-11T18:00:00Z")
+    row["raw"]["metadata"][field] = value
+    before = deepcopy(row)
+    with pytest.raises(ValueError, match="non_editorial_or_unresolved_hold"):
+        audit.capture_baseline(context, now=NOW)
+    assert row == before  # Detection never resets or rewrites terminal records.
+
+
+@pytest.mark.parametrize("change", [
+    lambda c: c["queue"]["unit-fingerprint-112"]["raw"]["metadata"].pop("incremental_review"),
+    lambda c: c["queue"]["unit-fingerprint-112"]["raw"]["metadata"]["incremental_review"].update(verified_body_sha256="f" * 64),
+    lambda c: c["queue"]["unit-fingerprint-112"]["raw"]["metadata"]["incremental_review"].update(verified_publication_date="2026-10-06"),
+    lambda c: c["queue"]["unit-fingerprint-112"]["raw"]["metadata"]["incremental_review"].update(decision="release_hold_for_editorial_analysis"),
+    lambda c: c["queue"]["unit-canonical-target"].update(status="retry"),
+    lambda c: c["queue"]["unit-canonical-target"]["raw"].update(event_date=None),
+    lambda c: c["queue"]["unit-canonical-target"]["raw"]["metadata"].update(article_body_sha256="f" * 64),
+    lambda c: c["queue"]["unit-canonical-target"]["raw"]["metadata"].update(canonical_url="https://example.org/wrong-target"),
+    lambda c: c["queue"]["unit-canonical-target"]["raw"]["metadata"].pop("html_sha256"),
+    lambda c: c["history"]["signals"][-1].update(editorial_relevance=71),
+    lambda c: c["history"]["signals"][-1].update(what_happened="A changed unbound canonical statement"),
+    lambda c: c["history"]["signals"].append(deepcopy(c["history"]["signals"][-1])),
+    lambda c: c["referenced_proof_files"].update({audit.INCREMENTAL_REVIEW: "f" * 64}),
+])
+def test_reviewed_hold_requires_exact_primary_and_actual_published_canonical_proof(change):
+    context = unit_context()
+    url = context["selection"]["urls"][-1]
+    assert url in audit.reviewed_hold_bindings(context)
+    change(context)
+    assert url not in audit.reviewed_hold_bindings(context)
+    with pytest.raises(ValueError, match="non_editorial_or_unresolved_hold|duplicate_effective_signal_identity"):
+        audit.capture_baseline(context, now=NOW)
+
+
+def test_real_incremental_review_reference_is_preserved_without_claiming_current_target_proof():
+    context = audit.read_context(ROOT)
+    metadata = [item.get("raw", {}).get("metadata", {}) for item in context["queue"].values()
+                if item.get("source") == audit.SOURCE]
+    reviews = [value["incremental_review"] for value in metadata if value.get("incremental_review")]
+    assert reviews
+    assert context["referenced_proof_files"][audit.INCREMENTAL_REVIEW] == audit.INCREMENTAL_REVIEW_SHA256
+    assert context["incremental_review_files"][audit.INCREMENTAL_REVIEW]["editorial_policy"]["publication_approved"] is False
+    for url, binding in audit.reviewed_hold_bindings(context).items():
+        target = context["queue"][binding["target_queue_fingerprint"]]
+        assert target["status"] == "published"
+        assert target["raw"]["event_date"] == binding["target_publication_date"]
