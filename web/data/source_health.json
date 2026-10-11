@@ -382,16 +382,16 @@
     },
     "clinicas_achs_salud": {
       "name": "Achs Salud / Clínicas",
-      "checked_at": "2026-10-11T07:44:12.099084+00:00",
+      "checked_at": "2026-10-11T07:58:45.954966+00:00",
       "last_signal_at": null,
-      "discovered": 13,
+      "discovered": 2,
       "new": 0,
       "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 25,
       "deferred": 0,
-      "rejected": 16,
+      "rejected": 5,
       "status": "warning",
       "error": [
         {
@@ -493,6 +493,132 @@
         {
           "code": "publication_editorial_date_conflict",
           "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaportada.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaportada.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaportada.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaportada.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaatacama.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaatacama.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaatacama.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaatacama.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaloscoihues.cl/noticias",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaloscoihues.cl/noticias"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaloscoihues.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaloscoihues.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicamaitenes.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicamaitenes.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicamaitenes.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicamaitenes.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicalircay.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicalircay.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicalircay.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicalircay.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicalosandes.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicalosandes.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicalosandes.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicalosandes.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicasur.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicasur.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicasur.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicasur.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicapuertomontt.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicapuertomontt.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicapuertomontt.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicapuertomontt.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinica-curico.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinica-curico.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinica-curico.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinica-curico.cl/"
         }
       ],
       "technical_status": "partial",
@@ -506,7 +632,7 @@
         "start_30": "2026-09-11",
         "start_90": "2026-07-13"
       },
-      "pages_checked": 170,
+      "pages_checked": 3,
       "recent_items": {
         "30": {
           "start": "2026-09-11",
@@ -528,22 +654,22 @@
         "90": {
           "start": "2026-07-13",
           "end": "2026-10-11",
-          "dated_articles": 39,
-          "expected_role": 16,
+          "dated_articles": 28,
+          "expected_role": 5,
           "candidates": 2,
-          "rejected": 14,
+          "rejected": 3,
           "excluded_role": 23,
           "pending": 0,
           "unknown_date_items": 25,
           "complete": false,
           "content_kinds": {
-            "news": 19,
+            "news": 17,
             "prevention": 8,
-            "study": 12
+            "study": 3
           }
         }
       },
-      "unique_items": 16,
+      "unique_items": 5,
       "material_items": 2,
       "technical_failures": [
         {
@@ -645,15 +771,141 @@
         {
           "code": "publication_editorial_date_conflict",
           "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaportada.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaportada.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaportada.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaportada.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaatacama.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaatacama.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaatacama.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaatacama.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaloscoihues.cl/noticias",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaloscoihues.cl/noticias"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaloscoihues.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaloscoihues.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicamaitenes.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicamaitenes.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicamaitenes.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicamaitenes.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicalircay.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicalircay.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicalircay.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicalircay.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicalosandes.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicalosandes.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicalosandes.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicalosandes.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicasur.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicasur.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicasur.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicasur.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicapuertomontt.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicapuertomontt.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicapuertomontt.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicapuertomontt.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinica-curico.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinica-curico.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinica-curico.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinica-curico.cl/"
         }
       ],
       "coverage_completeness": false,
       "capture_environment": "github_actions",
-      "capture_run_id": "38122111500",
+      "capture_run_id": "38122998011",
       "count_basis": "unique official item URLs in rolling 90 days; mirrored newsroom URLs remain inventory rows; published includes previously reconciled items",
       "latest_detected_at": "2026-10-01",
       "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00",
-      "latest_capture_at": "2026-10-11T07:44:12.099084+00:00",
+      "latest_capture_at": "2026-10-11T07:58:45.954966+00:00",
       "accepted_history": 0,
       "feed_reconciliation": {
         "published": 0,
@@ -1152,5 +1404,5 @@
     }
   },
   "generated_at": "2026-10-10T22:24:44.409620+00:00",
-  "occupational_sources_checked_at": "2026-10-11T08:08:57.838985+00:00"
+  "occupational_sources_checked_at": "2026-10-11T08:09:01.464865+00:00"
 }
