@@ -1,0 +1,26 @@
+{
+  "checkpoint": "deduplicated_occupational_merge_counts",
+  "captured_at_utc": "2026-10-11T06:22:02.306675+00:00",
+  "problem": "The same URL from two surfaces was retained once but contributed twice to summed counters.",
+  "behavior": "Rows and RawItems deduplicate independently, including duplicates within each input. 30/90-day counts are rebuilt from the final unique publication-date rows, status and configured accepted roles; stale window flags and input totals are ignored.",
+  "date_rule": "A publication_date must validate against the merged as_of day. event_date cannot substitute for a missing publication date. Unknown/future publication or pending rows keep coverage incomplete.",
+  "as_of": "Parent as_of propagation changes in occupational_recovery.py were preserved. Merging two different as_of days is rejected before mutation.",
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/test_occupational_merge.py",
+    "tests/test_occupational_engine_recovery.py",
+    "tests/test_achs_clinics.py",
+    "tests/test_occupational_inventory.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "stdout": "..................................................................       [100%]\n66 passed in 0.28s\n",
+  "stderr": "",
+  "files_sha256": {
+    "src/radar_salud/occupational_recovery.py": "31775514bc84a2139737c104982ddb18eefd3d3576e3680d4df868d361709022",
+    "tests/test_occupational_merge.py": "eff97b21a51da67d664e1d645f0a178de3d83ffe38f9f4d4b10fd96dc34f2fd3"
+  },
+  "next_action": "Await current nine-clinic Actions Run6 captures; replay the merged report and verify unique row totals against actual live source decisions."
+}
