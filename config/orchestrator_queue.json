@@ -4138,6 +4138,43 @@
       "last_progress_at": "2026-10-11T04:45:00Z",
       "current_subfront": "reconcile_work_findings_and_codex_prs",
       "next_action": "Conciliar PRs #10-#13 con issues #5-#9 y queue; no cerrar ninguna fuente hasta merge + QA + runtime."
+    },
+    {
+      "id": "beta_gate5_test_ops_golive_2026_10_11",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Dirección + Paolo + Pato + Legal/Privacy + Growth Ops",
+      "source": "Dirección",
+      "objective": "Cerrar testeo operacional, cumplimiento y go-live después del beta atractivo, incluyendo analytics, newsletter, correo, source suggestions, evidencia LIVE y promoción explícita.",
+      "depends_on": [
+        "source_recovery_reconciliation_gate_2026_10_11"
+      ],
+      "instructions": [
+        "Analytics: aprobar tratamiento/aviso de privacidad, definir eventos permitidos, retención y metadatos; habilitar captura sólo después de aprobación y validar dashboard/telemetría end-to-end.",
+        "Newsletter/MailerLite: crear/habilitar cuenta y grupos, aportar IDs/API key vía secreto, confirmar plan/API, configurar doble opt-in, activar captura/envío sólo tras privacidad aprobada y ejecutar prueba end-to-end.",
+        "Source Suggestions: definir hosting/backend durable, almacenamiento y destinatario interno; implementar API real y prueba de persistencia/entrega.",
+        "Correo: completar MX, SPF, DKIM, DMARC, alias operativo y verificar Authentication-Results reales.",
+        "LIVE Evidence: mantener gate abierto hasta observar evento LIVE externo genuino; no simular ni degradar gates.",
+        "Legal: aprobar Privacidad y Términos antes de activación pública de captura/analytics/newsletter.",
+        "Credenciales/API: registrar por fuente cualquier necesidad de cuenta/API/secret; escalar sólo cuando sea imprescindible y con propósito claro.",
+        "Gasto externo: toda nueva contratación/proveedor requiere decisión explícita de Dirección.",
+        "Producción/main: promoción sólo por autorización explícita de Dirección después de staging PASS, reviewer PASS, smoke desktop/mobile y rollback preparado.",
+        "No considerar beta comercial cerrada hasta completar o aceptar explícitamente los blockers humanos de esta puerta."
+      ],
+      "evidence_required": [
+        "analytics real con consentimiento/política y eventos validados",
+        "newsletter double opt-in end-to-end",
+        "source suggestions backend durable operativo",
+        "SPF/DKIM/DMARC PASS y alias operativo",
+        "evidencia LIVE genuina o dependencia externa explícita",
+        "Privacidad y Términos aprobados",
+        "inventario de credenciales/APIs y blockers",
+        "registro de decisiones de gasto externo",
+        "release checklist completo",
+        "autorización explícita Dirección para main/producción"
+      ],
+      "approved_at": "2026-10-11",
+      "next_action": "Después de beta atractivo en staging, ejecutar checklist humano/operacional y preparar promoción explícita."
     }
   ],
   "execution_policy": {
