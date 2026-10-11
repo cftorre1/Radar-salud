@@ -1734,6 +1734,52 @@ def archived_editorial_input(root, specification, required_path):
     return json.loads(result.stdout)
 
 
+def frozen323_followup_review_binding(root, path, audit_sha, reader, paid, reconstructed):
+    """Read the separately frozen receipt omitted by two older reader rows.
+
+    These exact reviews retained complete publisher/model bytes and a second
+    independent reader retained the complete dual receipt. Other review files
+    still have to declare their full dual binding themselves.
+    """
+    reader_path = "data/audits/pulso_actual323_three_primary_semantic_review_2026_10_11.json"
+    peer_path = "data/audits/pulso_actual323_ilc_mask_independent_second_peer_2026_10_11.json"
+    if (path != "data/audits/pulso_actual323_ilc_mask_editorial_review_2026_10_11.json"
+            or audit_sha != "8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c"
+            or "revalidated_followup_paid_response" in (reader.get("original_output_binding") or {})):
+        return False
+    raw = local_capture_path(root, reader_path).read_bytes()
+    peer_raw = local_capture_path(root, peer_path).read_bytes()
+    if (digest(raw) != "7646fca3839727228c5b603175056320454e4ad3f74e8eb0708d0c6b66e33d66"
+            or digest(peer_raw) != "cd826b140ad60154f34bb278a08248265883313c5d0eab39eb2077dd2ce95ecd"):
+        raise ValueError("editorial_frozen323_separate_dual_receipt_bytes_changed")
+    parent, peer = json.loads(raw), json.loads(peer_raw)
+    key = (reader.get("url"), reader.get("publication_date"))
+    parents = [row for row in parent["all_signals"] if (row["url"], row["publication_date"]) == key]
+    rows = [row for row in peer["all_signals"] if (row["url"], row["publication_date"]) == key]
+    metadata = paid["raw"]["metadata"]
+    if (len(parent["all_signals"]) != 2 or len(peer["all_signals"]) != 2
+            or len(parents) != 1 or parents[0] != reader or len(rows) != 1
+            or peer.get("producer_commit") != FINAL_PAID_PRODUCER
+            or peer.get("first_reader") != dict(path=reader_path, sha256=digest(raw))
+            or peer.get("template") != dict(path=path, sha256=audit_sha)
+            or reconstructed.get("publication_execution_code") != FINAL_PAID_CODE
+            or reconstructed.get("original_producer") != FOLLOWUP_PAID_PRODUCER):
+        raise ValueError("editorial_frozen323_separate_dual_receipt_identity_changed")
+    row = rows[0]
+    if (row["first_reader_record_sha256"] != object_digest(reader)
+            or row["original_queue_entry_sha256"] != object_digest(paid)
+            or row["original_full_primary_body"] != metadata["page_text"]
+            or row["original_full_model_output"] != metadata["analysis_model_output"]
+            or row["original_model_response_binding"] != metadata["analysis_model_output"]["_pulso_analysis_meta"]
+            or row["original_full_signal"] != reader["original_full_signal"]
+            or row["revalidation_receipt"] != metadata[FOLLOWUP_PAID_RECEIPT]
+            or object_digest(row["revalidation_receipt"]) != reconstructed["actual_receipt_sha256"]
+            or any(row.get(field) is not True for field in (
+                "full_original_body_read", "full_actual_model_output_read", "full_signal_read"))):
+        raise ValueError("editorial_frozen323_separate_dual_receipt_primary_or_model_changed")
+    return True
+
+
 def verify_additional_editorial_reviews(queue, history, snapshot, root):
     """Read separate full-body reviews of genuinely paid publications.
 
@@ -2110,7 +2156,9 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
             if binding.get("revalidated_final_paid_response") != revalidated_final_paid_response:
                 raise ValueError("editorial_final_revalidated_response_dual_provenance_changed")
             if binding.get("revalidated_followup_paid_response") != revalidated_followup_paid_response:
-                raise ValueError("editorial_followup_revalidated_response_dual_provenance_changed")
+                if (revalidated_followup_paid_response is None or not frozen323_followup_review_binding(
+                        root, path, audit_sha, reader, paid, revalidated_followup_paid_response)):
+                    raise ValueError("editorial_followup_revalidated_response_dual_provenance_changed")
             request = "Fuente: Pulso / La Tercera\nTítulo: " + paid["raw"]["title"] + "\nContenido:\n" + body
             if (paid.get("status") != "published" or type(paid.get("attempts")) is not int or paid["attempts"] < 1
                     or paid["raw"].get("source_slug") != SOURCE or paid["raw"].get("source_type") != "press_high_trust"
