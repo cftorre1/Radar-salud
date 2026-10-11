@@ -6,8 +6,8 @@
     "queue_blob_sha": "839728922ad473867429ff96f3ff2ebbdf001b4b",
     "queue_sha256": "d6d1338359a937d45015cfa88a7f1da88cd262f311bfcf37391f400348ee088f",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_control_sha256": "f706915c6d94be097efd1b1abbe21319102f073f39e795aa49f1a6e4e583436a",
-    "state_sha": "057f29979d0dd5ec0690de315349754f5b2eb5c2"
+    "state_control_sha256": "137a002bd3d0862878b16a5e25429099fb7f610c95453f17d472a01467a87cf2",
+    "state_sha": "a4810d63ef7393c2364574ae75c748e27b2de89f"
   },
   "canonical_queue_updated": false,
   "derived_runtime_tasks": [
@@ -118,7 +118,7 @@
         "claimed_at": "2026-10-11T07:05:00.589490Z",
         "expires_at": "2026-10-11T07:15:00.589490Z",
         "fence": 6,
-        "heartbeat_at": "2026-10-11T07:05:00.589490Z",
+        "heartbeat_at": "2026-10-11T07:06:11.601177Z",
         "owner": "38120110728-1-staging_qa",
         "recovery_deadline_at": "2026-10-11T07:15:00.589490Z",
         "token_sha256": "0d980c6b4c40ee2e602586ce94953080614a06bddae2997b6fb4c5189d040358"
@@ -134,10 +134,10 @@
   ],
   "kind": "queue_runtime_projection",
   "observation": {
-    "path": "data/autopilot/evidence/observation-92b5ffa89a894b30ac65d98f018a2fea.json",
-    "sha256": "5fbd3671119c109ec87cd390dc52d7351322f945de30545e94db15c279f6de5e",
+    "path": "data/autopilot/evidence/observation-a2d5ede20a124aceb82f3958fb81190a.json",
+    "sha256": "90844a4407f8328b684fe501cc641fd0ec1e8cf5bc8453492cdb0c96c366783b",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_sha": "057f29979d0dd5ec0690de315349754f5b2eb5c2"
+    "state_sha": "a4810d63ef7393c2364574ae75c748e27b2de89f"
   },
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
@@ -1493,7 +1493,7 @@
           "claimed_at": "2026-10-11T07:04:59.263384Z",
           "expires_at": "2026-10-11T07:14:59.263384Z",
           "fence": 9,
-          "heartbeat_at": "2026-10-11T07:04:59.263384Z",
+          "heartbeat_at": "2026-10-11T07:06:06.777029Z",
           "owner": "38120110728-1-public_data",
           "recovery_deadline_at": "2026-10-11T07:14:59.263384Z",
           "token_sha256": "238bdeba4d777cf11afc2700ee0efeda660a7bc76d29b2e05965224fdc7a3474"
@@ -1565,7 +1565,7 @@
       "runtime": {
         "attempts": 4,
         "blocker_evidence_count": 10,
-        "blocker_fingerprint": "c9f403304c18cd3f027043db67f2d1783a4b3cde2b27f592bf044c55993e4f4c",
+        "blocker_fingerprint": "6c11f6974cd4912ae9e3f59d1a9576236bbc8d7e71e6660877fb385cebd7330d",
         "candidate_review": {
           "candidate_branch": null,
           "candidate_commit": null,
@@ -1576,9 +1576,9 @@
           "superseded": null
         },
         "candidate_reviews": {},
-        "canonical_material_progress_at": "2026-10-11T05:50:36.986244Z",
+        "canonical_material_progress_at": "2026-10-11T07:06:00.551910Z",
         "evidence_revision": "9400bdb61e0ff4ae153d091b6fb186e2d9aacc191e19721fc460d6dcd51f9d8a",
-        "failure_signature": "72996ac38587716785fbb2512ec610775123f89cd0f6d40aea1f479e890d0a5f",
+        "failure_signature": "2e1711ae92e4fa6ad4208c85a0931a781a450d387b26709550de273b401d909a",
         "failure_verified": true,
         "family": "mutualities",
         "fence": 9,
@@ -1586,20 +1586,20 @@
         "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
         "last_ready_at": "2026-10-11T07:04:08.198661Z",
         "lease": {
-          "claimed_at": "2026-10-11T07:04:56.960108Z",
-          "expires_at": "2026-10-11T07:14:56.960108Z",
-          "fence": 9,
-          "heartbeat_at": "2026-10-11T07:04:56.960108Z",
-          "owner": "38120110728-1-mutualities",
-          "recovery_deadline_at": "2026-10-11T07:14:56.960108Z",
-          "token_sha256": "193d138a07d6a5790d831b601b090ae8df3a1edea517053eb8ad8b3d4cb3425a"
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
+          "recovery_deadline_at": null,
+          "token_sha256": null
         },
-        "material_progress_at": "2026-10-11T05:50:36.986244Z",
-        "raw_material_progress_at": "2026-10-11T06:27:48.472273Z",
+        "material_progress_at": "2026-10-11T07:06:00.551910Z",
+        "raw_material_progress_at": "2026-10-11T07:06:00.551910Z",
         "reason": "no_material_progress_30m",
-        "recovery_episode": "99495489654606fbc8c19c3a3eb94f649720bddbcd40f83d20b46a56b9baea90",
-        "recovery_reclaims": 1,
-        "status": "RUNNING",
+        "recovery_episode": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+        "recovery_reclaims": 0,
+        "status": "BLOCKED",
         "task_id": "source_repair_mutualities_lane_2026_10_11"
       },
       "task_id": "source_repair_mutualities_lane_2026_10_11"
