@@ -1,0 +1,37 @@
+const {test,expect}=require('@playwright/test');
+
+test('fiscalization reconciliation preserves act dates and separates reviewed normativa',async({page})=>{
+ const errors=[];page.on('pageerror',error=>errors.push(error.message));
+ await page.goto('/');
+ await page.locator('#filterDetails summary').click();
+ await page.locator('#period').selectOption('90');
+ const radar=await (await page.request.get('/data/radar_today.json')).json();
+ const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));
+ expect(pulse).toBeTruthy();
+ expect(pulse.publication_date).toBe('2026-09-15');
+ expect(pulse.event_date_basis).toBe('publication');
+ expect(pulse.source_alternatives).toHaveLength(3);
+ expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);
+ const pulseCard=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});
+ await expect(pulseCard).toContainText('Clínica Los Carrera');
+ await pulseCard.locator('[data-detail]').click();
+ await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
+ await expect(page.locator('#detailBody')).toContainText('200 UF');
+ await expect(page.locator('#detailBody')).toContainText('15 de septiembre');
+ await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ const instruction=radar.signals.find(signal=>signal.source_url?.endsWith('w3-article-791293.html'));
+ expect(instruction.signal_types).toEqual(['Normativa']);
+ expect(instruction.scopes).toEqual(expect.arrayContaining(['Isapres','COMPIN']));
+ expect(instruction.ingestion_mode).toBe('BACKFILL');
+ const instructionCard=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:instruction.display_title,exact:true})});
+ await expect(instructionCard).toBeVisible();
+ await instructionCard.locator('[data-detail]').click();
+ await expect(page.locator('#detailBody .normative-context')).toContainText('30 de septiembre');
+ await expect(page.locator('#detailBody a[href="https://www.suseso.gob.cl/612/w3-article-791293.html"]').first()).toBeVisible();
+ await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ expect(radar.signals.some(signal=>signal.source_url?.includes('ip-n-7462'))).toBe(false);
+ const amendment=radar.signals.find(signal=>signal.source_url?.includes('if-n9774'));
+ expect(amendment.event_type).toBe('SANCTION_AMENDMENT');
+ expect(amendment.event_date).toBe('2026-08-20');
+ expect(errors).toEqual([]);
+});
