@@ -3,11 +3,12 @@ from __future__ import annotations
 import argparse, hashlib, json, os, re, subprocess
 from threading import Lock
 from pathlib import Path
-from datetime import datetime, timezone
-from urllib.parse import urlsplit, urljoin
+from datetime import datetime, timezone, date, timedelta
+from zoneinfo import ZoneInfo
+from urllib.parse import urlsplit, urljoin, parse_qs, urlencode, urlunsplit
 from html.parser import HTMLParser
 from concurrent.futures import ThreadPoolExecutor
-HOSTS={"www.superdesalud.gob.cl","superdesalud.gob.cl","www.cmfchile.cl","cmfchile.cl","www.dipres.gob.cl","dipres.gob.cl"}
+HOSTS={"www.superdesalud.gob.cl","superdesalud.gob.cl","www.cmfchile.cl","cmfchile.cl","www.dipres.gob.cl","dipres.gob.cl","ilcinversiones.cl"}
 CMF_LOCK = Lock()
 def utcnow():
     return datetime.now(timezone.utc).isoformat()
@@ -80,11 +81,38 @@ class Links(HTMLParser):
         if tag=='a' and self.href is not None:
             self.links.append((self.href,' '.join(''.join(self.label).split())));self.href=None
 
+def period_seeds(seeds, as_of):
+    """Refresh the actual search window; quarter selection is not a release date."""
+    result=[]
+    reference=as_of-timedelta(days=45)
+    quarter=(reference.month-1)//3
+    end_month=quarter*3 or 12
+    end_year=reference.year if quarter else reference.year-1
+    financial=[(end_year,end_month),(end_year if end_month>3 else end_year-1,end_month-3 if end_month>3 else 12)]
+    by_rut={}
+    for original in seeds:
+        seed=dict(original)
+        if seed['kind']=='essential_90d':
+            values={k:v[0] for k,v in parse_qs(seed['post']).items()}
+            start=as_of-timedelta(days=89)
+            values.update(dd=f'{start.day:02d}',mm=f'{start.month:02d}',aa=str(start.year),
+                          dd2=f'{as_of.day:02d}',mm2=f'{as_of.month:02d}',aa2=str(as_of.year))
+            seed['post']=urlencode(values)
+        if seed['kind']=='financial_period':
+            parts=urlsplit(seed['url']);values={k:v[0] for k,v in parse_qs(parts.query).items()}
+            index=by_rut.get(values['rut'],0);by_rut[values['rut']]=index+1
+            year,month=financial[index%2];values.update(aa=str(year),mm=f'{month:02d}')
+            seed['url']=urlunsplit(parts._replace(query=urlencode(values)))
+        result.append(seed)
+    return result
+
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--seeds',type=Path,default=Path('config/source_expansion_runtime.json'));args=p.parse_args()
-    seeds=json.loads(args.seeds.read_text())['seeds']; receipts=[];seen=set();todo=seeds
+    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--seeds',type=Path,default=Path('config/source_expansion_runtime.json'));p.add_argument('--as-of',type=date.fromisoformat,default=datetime.now(ZoneInfo('America/Santiago')).date());args=p.parse_args()
+    seeds=period_seeds(json.loads(args.seeds.read_text())['seeds'],args.as_of); receipts=[];seen=set();todo=seeds;truncated=[]
     for depth in range(3):
-        batch=list({(s['url'],s.get('post')):s for s in todo if (s['url'],s.get('post')) not in seen}.values())[:180]
+        pending=list({(s['url'],s.get('post')):s for s in todo if (s['url'],s.get('post')) not in seen}.values())
+        batch=pending[:180];truncated.extend(pending[180:])
         todo=[];seen.update((s['url'],s.get('post')) for s in batch)
         with ThreadPoolExecutor(max_workers=3) as pool:
             results=list(pool.map(lambda seed:fetch(seed['url'],args.output/'captures',seed.get('post')),batch))
@@ -108,5 +136,5 @@ def main():
                 if relevant and host in HOSTS:todo.append({'url':u,'package':seed['package'],'kind':label[:100]})
             (args.output/'receipts.json').write_text(json.dumps({'captured_at':utcnow(),'bounded_depth':2,'page_cap_per_depth':180,'coverage_complete':False,'receipts':receipts},ensure_ascii=False,indent=2)+'\n')
     args.output.mkdir(parents=True,exist_ok=True)
-    (args.output/'receipts.json').write_text(json.dumps({'captured_at':utcnow(),'bounded_depth':2,'page_cap_per_depth':180,'coverage_complete':False,'receipts':receipts},ensure_ascii=False,indent=2)+'\n')
+    (args.output/'receipts.json').write_text(json.dumps({'captured_at':utcnow(),'as_of':args.as_of.isoformat(),'bounded_depth':2,'page_cap_per_depth':180,'unfetched_due_to_cap':truncated,'coverage_complete':False,'receipts':receipts},ensure_ascii=False,indent=2)+'\n')
 if __name__=='__main__':main()

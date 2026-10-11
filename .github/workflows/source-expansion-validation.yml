@@ -19,8 +19,20 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -e . pytest
+      - name: Source-specific positive and adversarial tests
+        run: python -m pytest -q tests/test_source_expansion_*.py
+      - name: Public scanned issuer documents
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils tesseract-ocr
       - name: Capture official public surfaces with verified TLS
         run: python scripts/probe_source_expansion.py --output artifacts/expansion
+      - name: Execute adapters, replay retained stock and reconcile originals independently
+        run: python scripts/validate_market_source_runtime.py --capture-dir artifacts/expansion --output artifacts/qualification
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: expansion-runtime-review
+          path: artifacts/qualification
+          retention-days: 14
       - uses: actions/upload-artifact@v4
         if: always()
         with:
