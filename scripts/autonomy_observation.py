@@ -140,6 +140,13 @@ def _last_by_task(events):
     return result
 
 
+def _failure_verified(task):
+    blocker = task.get("blocker") or {}
+    failure = task.get("failure") or task.get("last_failure") or blocker.get("real_failure")
+    evidence = task.get("last_failure_evidence") or blocker
+    return bool(engine.source_failure_evidenced(failure, evidence))
+
+
 def _rows(state, events, raw_events):
     if len(state.get("tasks", {})) > MAX_TASKS:
         raise ObservationError("State exceeds the bounded task projection")
@@ -159,7 +166,7 @@ def _rows(state, events, raw_events):
             "blocker_evidence_count": len((task.get("blocker") or {}).get("evidence", [])),
             "recovery_reclaims": task.get("recovery_reclaims", 0), "recovery_episode": task.get("recovery_episode"),
             "attempts": task.get("attempts", 0), "failure_signature": (task.get("last_failure") or task.get("failure") or {}).get("failure_signature"),
-            "failure_verified": bool(engine._failure_proof(task.get("failure") or task.get("last_failure") or (task.get("blocker") or {}).get("real_failure"))),
+            "failure_verified": _failure_verified(task),
             "candidate_review": _safe({key: (task.get("candidate_review") or {}).get(key) for key in review_keys}),
             "candidate_reviews": {commit: _safe({key: review.get(key) for key in review_keys})
                 for commit, review in sorted((task.get("candidate_reviews") or {}).items(),

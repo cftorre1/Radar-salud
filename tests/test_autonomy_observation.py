@@ -82,6 +82,52 @@ class ObservationTests(unittest.TestCase):
         self.assertEqual(reviews["a" * 40]["evidence_sha256"], "2" * 64)
         self.assertEqual(reviews["a" * 40]["status"], "BLOCKED")
 
+    def test_probe_guard_only_blocker_does_not_certify_a_source_failure_escalation(self):
+        initial = state()
+        failure = {"kind": "source_runtime", "verified": True,
+            "source_url": "https://source.example/news", "source_slug": "diario_financiero",
+            "failure_signature": "legacy-formally-verified", "trace_path": "source.log",
+            "trace_sha256": "7" * 64, "observed_at": BASE.isoformat()}
+        source = {"slug": "diario_financiero", "technical_status": "error",
+            "error": "RuntimeError: bounded_probe_budget: 24 requests per source",
+            "requests": [{"url": "https://source.example/news", "status": "PASS"},
+                         {"url": "https://source.example/detail", "status": "UNVERIFIED",
+                          "error": "bounded_probe_budget"}],
+            "discovered": 64, "dated": 0, "inventory_hash": "8" * 64}
+        task = initial["tasks"][MEDIA]
+        task.update(status="BLOCKED", lease=None, last_failure=deepcopy(failure),
+                    blocker={"fingerprint": "probe-guard", "real_failure": deepcopy(failure),
+                             "evidence": [{"source_evidence": deepcopy(source)}]})
+        original = deepcopy(initial)
+        observed = build(initial).value
+        self.assertFalse(observed["tasks"][0]["failure_verified"])
+        criterion = observed["criteria"]["failure_repaired_or_evidenced_escalation"]
+        self.assertEqual(criterion["status"], "NOT_OBSERVED")
+        self.assertEqual(criterion["escalated_task_ids"], [])
+        self.assertFalse(criterion["satisfies_legacy_stage_a_repair"])
+        self.assertEqual(initial, original)
+        self.assertEqual(observed["criteria"]["legacy_stage_a"]["status"], "NOT_PROVEN")
+        # A real request failure alongside the same probe guard remains visible.
+        source["requests"].append({"url": "https://source.example/detail", "status": "FAIL",
+                                   "error": "HTTPError: HTTP Error 403: Forbidden"})
+        task["blocker"]["evidence"] = [{"source_evidence": deepcopy(source)}]
+        observed = build(initial).value
+        self.assertTrue(observed["tasks"][0]["failure_verified"])
+        self.assertEqual(observed["criteria"]["failure_repaired_or_evidenced_escalation"]["escalated_task_ids"], [MEDIA])
+        self.assertFalse(observed["criteria"]["failure_repaired_or_evidenced_escalation"]["satisfies_legacy_stage_a_repair"])
+
+    def test_stored_guard_origin_does_not_become_verified_when_diagnostics_are_absent(self):
+        initial = state()
+        initial["tasks"][MEDIA].update(status="BLOCKED", lease=None,
+            last_failure={"kind": "source_runtime", "verified": True,
+                "source_url": "https://source.example/news", "source_slug": "diario_financiero",
+                "failure_signature": "probe-budget", "failure_origin": "instrumentation_limit",
+                "trace_path": "source.log", "trace_sha256": "7" * 64, "observed_at": BASE.isoformat()},
+            blocker={"fingerprint": "probe-budget", "evidence": [{"trace_sha256": "7" * 64}]})
+        observed = build(initial).value
+        self.assertFalse(observed["tasks"][0]["failure_verified"])
+        self.assertEqual(observed["criteria"]["failure_repaired_or_evidenced_escalation"]["status"], "NOT_OBSERVED")
+
     def test_owner_followups_unknown_even_with_empty_lists_or_authored_attestation(self):
         initial = state(); initial["acceptance"]["owner_observation"] = {"verified": True}
         result = build(initial).value
