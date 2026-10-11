@@ -156,3 +156,19 @@ def test_pulso_rediscovery_rehydrates_same_url_without_resetting_capture_attempt
     terminal = json.loads(json.dumps(queue.items[key]))
     queue.discover("pulso_latercera", [verified], now=now)
     assert queue.items[key] == terminal  # No automatic reopening of editorial decisions.
+
+
+def test_known_possible_duplicate_waits_for_incremental_review_without_consuming_analysis(monkeypatch):
+    from radar_salud.beta_sources import process_curated_beta_source
+    from radar_salud.processing import DeferredProcessing
+    raw = RawItem("pulso_latercera", "Presupuesto de salud para reducir listas de espera",
+                  "https://www.latercera.com/nacional/noticia/presupuesto-salud/", "Pulso / La Tercera", "press_high_trust",
+                  datetime.now(timezone.utc).date().isoformat(), BODY,
+                  {"article_verified": True, "page_text": BODY, "market_role": "media",
+                   "editorial_hold": "possible_duplicate_requires_incremental_review"})
+    def unexpected(**kwargs):
+        raise AssertionError("Held duplicates must not consume analysis budget")
+    monkeypatch.setattr(llm_analysis, "analyze_news", unexpected)
+    with pytest.raises(DeferredProcessing, match="incremental-value"):
+        process_curated_beta_source(raw, {})
+    assert raw.metadata["editorial_assessment"]["reason"] == "possible_duplicate_requires_incremental_review"

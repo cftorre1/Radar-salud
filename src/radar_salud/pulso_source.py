@@ -161,7 +161,7 @@ def extract_article(html, expected_url):
                 link = node.get("url") or node.get("mainEntityOfPage") or node.get("@id")
                 if isinstance(link, dict):
                     link = link.get("@id")
-                if link and article_url(link, expected) != expected:
+                if not link or article_url(link, expected) != expected:
                     continue
                 articles.append(node)
         except (ValueError, TypeError):

@@ -1,0 +1,476 @@
+{
+  "schema_version": "1.0",
+  "source": "pulso_latercera",
+  "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+  "verdict": "NOT_CLOSED_PARTIAL_RECONCILIATION",
+  "method": "Rendered original article bylines and sector listings compared by normalized exact URL against baseline queue/history/feed. Search snippets never establish publication date.",
+  "windows": {
+    "30_days": [
+      "2026-09-12",
+      "2026-10-11"
+    ],
+    "90_days": [
+      "2026-07-14",
+      "2026-10-11"
+    ],
+    "inclusion": "inclusive calendar dates"
+  },
+  "counts": {
+    "baseline_pulso_queue": 0,
+    "verified_byline_candidates": 11,
+    "in_30_day_sample": 7,
+    "in_90_day_sample": 11,
+    "published_by_this_inventory": 0,
+    "rejected_by_this_inventory": 0,
+    "pending_after_inventory": 11
+  },
+  "source_pages": [
+    "https://www.latercera.com/canal/pulso/",
+    "https://www.latercera.com/canal/nacional/",
+    "https://www.latercera.com/etiqueta/isapres/",
+    "https://www.latercera.com/etiqueta/salud/",
+    "https://www.latercera.com/etiqueta/fonasa/",
+    "https://www.latercera.com/etiqueta/clinicas/"
+  ],
+  "seen_reconciliation": "No Pulso seen ledger exists at baseline; beta samples do not prove core seen status.",
+  "items": [
+    {
+      "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+      "title": "Senior housing: Los grupos que dominan el negocio de las residencias para adultos mayores",
+      "publication_date": "2026-10-10",
+      "listing_date": null,
+      "date_discrepancy": false,
+      "event_occurrence_date": "2026-08-05",
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "investment",
+        "M&A",
+        "competition",
+        "providers"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Inversión y entrada de grupos empresariales en cuidados de larga duración; revisar magnitud y estado de cada proyecto.",
+      "notes": "FNE notification reported in the story; publication on October 10 does not make the August notification a new October event.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": true,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "7bfc4ad998061775d555d47d72f51fd34f9eddaf51181d339f55b90a79ea011f",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "title": "Clínica UC Christus de San Carlos de Apoquindo termina traslado de pacientes ante suspensión de operaciones por aluvión",
+      "publication_date": "2026-10-10",
+      "listing_date": null,
+      "date_discrepancy": false,
+      "event_occurrence_date": "2026-10-08",
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "providers",
+        "capacity",
+        "continuity"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Cierre temporal y redistribución de pacientes; candidato material de capacidad y continuidad asistencial.",
+      "notes": "Disaster on October 8; the completed transfers and closure update are reported October 10.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": true,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "94214f41868a2bdb4052f5954bce686ee3a87aa60d008b2d7ebba1ceca199d1b",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+      "title": "Presupuesto Salud 2027: rebajas al ajuar del recién nacido y a la ley Ricarte Soto, y foco en atención primaria",
+      "publication_date": "2026-10-07",
+      "listing_date": "2026-10-07",
+      "date_discrepancy": false,
+      "event_occurrence_date": null,
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "financing",
+        "regulation",
+        "waiting_lists"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Desglose de propuesta presupuestaria con posibles recortes; evaluar valor incremental frente al anuncio general de MINSAL.",
+      "notes": "Proposal for 2027, not an enacted appropriation or money already spent.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": true,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [
+        {
+          "source_url": "https://www.minsal.cl/salud-aumentara-su-presupuesto-en-47-para-2027-ministra-chomali-destaca-foco-en-gestion-eficiencia-y-reduccion-de-listas-de-espera/",
+          "publication_date": "2026-10-01",
+          "relationship": "possible_same_budget_announcement; incremental details require review"
+        }
+      ],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "f6452437b7a9a85ed286ed014c1c3b200798bc64e766b4b0ca6ad32e589a3461",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+      "title": "Chomali destaca alza de 4,7% en presupuesto de Salud y apunta como prioridad reducir listas de espera, oncología y APS",
+      "publication_date": "2026-10-05",
+      "listing_date": null,
+      "date_discrepancy": false,
+      "event_occurrence_date": null,
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "financing",
+        "waiting_lists",
+        "regulation"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Posible duplicado del anuncio de MINSAL del 1 de octubre; requiere revisión incremental antes de publicación.",
+      "notes": "Do not repeat the generic 4.7% announcement automatically.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": true,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [
+        {
+          "source_url": "https://www.minsal.cl/salud-aumentara-su-presupuesto-en-47-para-2027-ministra-chomali-destaca-foco-en-gestion-eficiencia-y-reduccion-de-listas-de-espera/",
+          "publication_date": "2026-10-01",
+          "relationship": "possible_same_budget_announcement; incremental details require review"
+        }
+      ],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "a58988d996549164f9ef27cf474ed8c4a30ff07e212b4fc59c03d8e3bb1d7004",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+      "title": "Empresas Banmédica ejecuta cambio en su estructura organizacional y designa nuevo gerente general de Clínica Santa María",
+      "publication_date": "2026-09-29",
+      "listing_date": "2026-09-29",
+      "date_discrepancy": false,
+      "event_occurrence_date": "2026-10-01",
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "providers",
+        "competition",
+        "governance"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Reorganización del área prestadora; distinguir cambio operativo de nombramiento sin consecuencia material.",
+      "notes": "Future effective date of reported restructuring, distinct from September publication.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": true,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "9d3dfcc1f530d1a63e7a27133c3b0fd19c12d2fcf9d518282a955b98d84c5834",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+      "title": "Chomali por listas de espera: “Yo no esperaba que disminuyeran, lo que yo espero es que disminuyan los tiempos”",
+      "publication_date": "2026-09-23",
+      "listing_date": null,
+      "date_discrepancy": false,
+      "event_occurrence_date": null,
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "waiting_lists",
+        "payer_provider_agreement"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Evaluar el convenio Plan Enlace y su aporte operacional, separándolo de declaraciones generales de la autoridad.",
+      "notes": "The article also reports payer-provider collaboration; no inference that promised surgeries already occurred.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": true,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "3f432d78c49713a8cf9d3e5e1a6675dbdd56bc006dfac9abda8eca7d23aaff54",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-santiago-y-expertos-ponen-panos-frios-al-optimismo-del-minsal-por-avances-en-listas-de-espera/",
+      "title": "Colmed Santiago y expertos ponen paños fríos al optimismo del Minsal por avances en listas de espera",
+      "publication_date": "2026-09-22",
+      "listing_date": null,
+      "date_discrepancy": false,
+      "event_occurrence_date": null,
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "waiting_lists",
+        "capacity"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Contraste sobre listas de espera; revisar cifras y período frente a la fuente primaria antes de amplificar opiniones.",
+      "notes": "Data references the second quarter; publication is September 22.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": true,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "ee071f62af588481e9f79f99d97d43e3cf2b9c64fa382c114255a3a91786eec2",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
+      "title": "Isapres ofrecen los planes más baratos en cinco años gracias a la ley corta y menor gasto en licencias",
+      "publication_date": "2026-08-30",
+      "listing_date": "2026-08-30",
+      "date_discrepancy": false,
+      "event_occurrence_date": null,
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "insurance",
+        "pricing",
+        "competition",
+        "regulation"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Cambios de precios y oferta de planes: candidato de aseguramiento; validar metodología y atribución a la plataforma citada.",
+      "notes": "Comparisons include new plans and historical price baselines; not all existing contracts fell by the same percentage.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": false,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "5d98184f9464920d03dbd44b7cd1c8e87280f1fcdeb019015ee78775557ad725",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+      "title": "Isapres han pagado en un año y medio el 21% de la deuda que tenían con sus afiliados tras fallo de la Suprema",
+      "publication_date": "2026-08-20",
+      "listing_date": "2026-08-19",
+      "date_discrepancy": true,
+      "event_occurrence_date": null,
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "insurance",
+        "financing",
+        "regulation"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Restituciones a afiliados y deuda remanente; candidato material con datos de junio y fecha de artículo distinta del listado.",
+      "notes": "Article byline is August 20; tag listing is August 19. Preserve both; obtain original HTML/timestamps to resolve the offset.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": false,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "aeb39b2baf730d97e3b368b0b37062507899facea7c028a41459e2160f395008",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+      "title": "Isapres aumentan su fuerza de ventas 45% en un año y a marzo ya superan los cuatro mil vendedores",
+      "publication_date": "2026-07-23",
+      "listing_date": "2026-07-22",
+      "date_discrepancy": true,
+      "event_occurrence_date": null,
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "insurance",
+        "competition"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Cambio competitivo en fuerza comercial; evaluar cifras trimestrales y evitar presentarlas como medición de octubre.",
+      "notes": "Article byline is July 23; tag listing is July 22; underlying data is the first quarter.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": false,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "4253ceb9ffdc3a75a20c1f4b9a9902900cc3e97134aef098183a298f8cb0be4d",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "title": "Isapres logran detener la fuga de cotizantes tras 53 meses consecutivos a la baja y se asoma el punto de inflexión",
+      "publication_date": "2026-07-14",
+      "listing_date": "2026-07-13",
+      "date_discrepancy": true,
+      "event_occurrence_date": null,
+      "recorded_at": "2026-10-11T04:36:44.044688+00:00",
+      "capture_method": "web_connector_rendered_article",
+      "exact_origin_capture_timestamp": null,
+      "origin_html_fixture": null,
+      "category": [
+        "insurance",
+        "competition"
+      ],
+      "materiality_assessment": "candidate_requires_editorial_gate",
+      "assessment": "Cambio de suscripciones netas de mayo; contrastar con la noticia posterior de DF antes de publicar otra señal.",
+      "notes": "Article byline July 14 versus listing July 13. Net signed contracts are not the same measure as effective member stock.",
+      "evidence_maturity": "media_reported",
+      "gate_minimum_relevance": 72,
+      "window_30_days": false,
+      "window_90_days": true,
+      "baseline_queue": [],
+      "baseline_history": [],
+      "baseline_feed": [],
+      "related_coverage": [
+        {
+          "source_url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes",
+          "publication_date": "2026-09-09",
+          "relationship": "related_membership_inflection; distinguish net signings from member stock before dedupe"
+        }
+      ],
+      "disposition": "pending_core_article_verification_and_editorial_analysis",
+      "queue_fingerprint": "ccd805b80c41f550102629fb84b7fb64e177dba298fa11f34679c88faa4b8b8b",
+      "queue_after_inventory": {
+        "status": "pending",
+        "lane": "BACKFILL",
+        "attempts": 0,
+        "reason": "awaiting_core_article_verification_and_editorial_analysis",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00"
+      }
+    }
+  ],
+  "outside_window_control": {
+    "url": "https://www.latercera.com/pulso/noticia/fne-da-luz-verde-a-la-compra-de-empresas-banmedica-por-parte-de-patria-y-linzor-capital/",
+    "publication_date": "2026-04-15",
+    "disposition": "context_only_not_queued_as_recent",
+    "note": "Reached through the September Banmedica article; the old M&A approval is not an October event."
+  },
+  "limitations": [
+    "This is an 11-candidate sample, not exhaustive reconciliation of 30/90-day publisher inventory.",
+    "Tag pages expose a Ver más button; archived pages/API pagination and all relevant taxonomies remain unverified.",
+    "Network policy denies original HTML retrieval in the execution environment; new parser has adversarial examples, no captured original HTML fixture.",
+    "Rendered-page tool does not expose the exact origin fetch timestamp. Artifact recording time is not asserted to be publisher capture time.",
+    "Byline/listing date differences remain open until original metadata/timestamps are compared.",
+    "Materiality, novelty and event equivalence require editorial assessment. No cards were forced into history/feed."
+  ]
+}

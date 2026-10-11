@@ -50,6 +50,12 @@ def test_related_json_ld_date_does_not_date_primary_article():
         extract_article(html, URL)
 
 
+def test_json_ld_without_primary_article_identity_cannot_supply_a_date():
+    html = article().replace(f'"url": "{URL}", ', '')
+    with pytest.raises(ValueError, match="invalid_publication"):
+        extract_article(html, URL)
+
+
 def test_publication_calendar_date_preserves_publisher_offset():
     assert publication_day("2026-10-11T01:30:00Z") == "2026-10-11"
     assert publication_day("2026-10-10T22:30:00-03:00") == "2026-10-10"
