@@ -650,7 +650,7 @@
     },
     "redsalud": {
       "name": "RedSalud",
-      "checked_at": "2026-10-11T06:29:37.817654+00:00",
+      "checked_at": "2026-10-11T14:33:49.742734+00:00",
       "last_signal_at": "2026-09-21",
       "discovered": 45,
       "new": 0,
@@ -668,6 +668,14 @@
       "latest_original_at": "2026-10-07",
       "editorial_outcome": "not_evaluated",
       "evaluation_performed": false,
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
       "provider_audit": {
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/redsalud.json",
@@ -726,19 +734,26 @@
         "relevant_90d_total": null,
         "publicable_confirmed": 2,
         "publicable_total": null
+      },
+      "integration_state": "INTEGRATED_DEGRADED",
+      "integration_evidence": {
+        "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+        "runtime_run": 38147271657,
+        "preview_run": 38147510597,
+        "artifact": "data/audits/integration_20261011/postmerge-redsalud/summary.json"
       }
     },
     "bupa_chile": {
       "name": "Bupa Chile",
-      "checked_at": "2026-10-11T06:29:37.818508+00:00",
+      "checked_at": "2026-10-11T14:33:55.005367+00:00",
       "last_signal_at": "2026-08-13",
       "discovered": 51,
       "new": 0,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 27,
-      "pending": 27,
-      "deferred": 4,
+      "backfill_pending": 17,
+      "pending": 17,
+      "deferred": 1,
       "rejected": 22,
       "status": "warning",
       "error": null,
@@ -748,6 +763,14 @@
       "latest_original_at": "2026-09-10",
       "editorial_outcome": "not_evaluated",
       "evaluation_performed": false,
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
       "provider_audit": {
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/bupa_chile.json",
@@ -803,11 +826,18 @@
         "relevant_90d_total": null,
         "publicable_confirmed": 2,
         "publicable_total": null
+      },
+      "integration_state": "EXTERNAL_BLOCKER_PROVEN",
+      "integration_evidence": {
+        "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+        "runtime_run": 38147271657,
+        "preview_run": 38147510597,
+        "artifact": "data/audits/integration_20261011/postmerge-bupa_chile/summary.json"
       }
     },
     "pfizer_chile": {
       "name": "Pfizer Chile",
-      "checked_at": "2026-10-11T06:29:37.809900+00:00",
+      "checked_at": "2026-10-11T14:33:42.531858+00:00",
       "last_signal_at": null,
       "discovered": 3,
       "new": 0,
@@ -822,9 +852,17 @@
       "technical_status": "ok",
       "coverage_status": "unverified",
       "content_freshness": "stale_external_surface",
-      "latest_original_at": "2023-01-22",
+      "latest_original_at": "2023-06-08",
       "editorial_outcome": "not_evaluated",
       "evaluation_performed": false,
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
       "provider_audit": {
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/pfizer_chile.json",
@@ -882,11 +920,18 @@
         "relevant_90d_total": null,
         "publicable_confirmed": 0,
         "publicable_total": null
+      },
+      "integration_state": "INTEGRATED_DEGRADED",
+      "integration_evidence": {
+        "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+        "runtime_run": 38147271657,
+        "preview_run": 38147510597,
+        "artifact": "data/audits/integration_20261011/postmerge-pfizer_chile/summary.json"
       }
     },
     "indisa": {
       "name": "Clínica INDISA",
-      "checked_at": "2026-10-11T06:29:37.819355+00:00",
+      "checked_at": "2026-10-11T14:33:37.137973+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -894,7 +939,7 @@
       "live_pending": 0,
       "backfill_pending": 2,
       "pending": 2,
-      "deferred": 1,
+      "deferred": 2,
       "rejected": 0,
       "status": "error",
       "error": "HTTPError",
@@ -904,6 +949,14 @@
       "latest_original_at": "2026-09-11",
       "editorial_outcome": "not_evaluated",
       "evaluation_performed": false,
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
       "provider_audit": {
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/indisa.json",
@@ -961,6 +1014,13 @@
         "relevant_90d_total": null,
         "publicable_confirmed": 0,
         "publicable_total": null
+      },
+      "integration_state": "EXTERNAL_BLOCKER_PROVEN",
+      "integration_evidence": {
+        "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+        "runtime_run": 38147271657,
+        "preview_run": 38147510597,
+        "artifact": "data/audits/integration_20261011/postmerge-indisa/summary.json"
       }
     },
     "fonasa_datos_abiertos": {
@@ -1246,7 +1306,7 @@
     },
     "red_davila": {
       "name": "Red Dávila",
-      "checked_at": "2026-10-11T06:29:37.821039+00:00",
+      "checked_at": "2026-10-11T14:34:02.384970+00:00",
       "last_signal_at": null,
       "discovered": 11,
       "new": 0,
@@ -1264,6 +1324,14 @@
       "latest_original_at": "2026-10-05",
       "editorial_outcome": "not_evaluated",
       "evaluation_performed": false,
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
       "provider_audit": {
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/red_davila.json",
@@ -1322,28 +1390,43 @@
         "relevant_90d_total": 6,
         "publicable_confirmed": 0,
         "publicable_total": 0
+      },
+      "integration_state": "INTEGRATED_DEGRADED",
+      "integration_evidence": {
+        "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+        "runtime_run": 38147271657,
+        "preview_run": 38147510597,
+        "artifact": "data/audits/integration_20261011/postmerge-red_davila/summary.json"
       }
     },
     "andes_salud": {
       "name": "Andes Salud",
-      "checked_at": "2026-10-11T06:29:37.821868+00:00",
+      "checked_at": "2026-10-11T14:35:33.402077+00:00",
       "last_signal_at": "2026-09-23",
       "discovered": 24,
       "new": 0,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 20,
-      "pending": 20,
+      "backfill_pending": 10,
+      "pending": 10,
       "deferred": 0,
-      "rejected": 1,
-      "status": "warning",
+      "rejected": 11,
+      "status": "ok",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "observed",
       "content_freshness": "older",
       "latest_original_at": "2026-10-05",
-      "editorial_outcome": "not_evaluated",
-      "evaluation_performed": false,
+      "editorial_outcome": "rejected",
+      "evaluation_performed": true,
+      "processed_rejections": 5,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
       "provider_audit": {
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/andes_salud.json",
@@ -1400,6 +1483,13 @@
         "relevant_90d_total": 4,
         "publicable_confirmed": 3,
         "publicable_total": 3
+      },
+      "integration_state": "INTEGRATED_VALIDATED",
+      "integration_evidence": {
+        "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+        "runtime_run": 38147271657,
+        "preview_run": 38147510597,
+        "artifact": "data/audits/integration_20261011/postmerge-andes_salud/summary.json"
       }
     },
     "clinicas_achs_salud": {
@@ -2175,7 +2265,7 @@
     },
     "clinicas_chile": {
       "name": "Clínicas de Chile A.G.",
-      "checked_at": "2026-10-11T06:29:37.820211+00:00",
+      "checked_at": "2026-10-11T14:34:27.644605+00:00",
       "last_signal_at": "2026-10-02",
       "discovered": 39,
       "new": 0,
@@ -2183,7 +2273,7 @@
       "live_pending": 0,
       "backfill_pending": 31,
       "pending": 31,
-      "deferred": 14,
+      "deferred": 24,
       "rejected": 4,
       "status": "warning",
       "error": null,
@@ -2193,6 +2283,14 @@
       "latest_original_at": "2026-10-02",
       "editorial_outcome": "not_evaluated",
       "evaluation_performed": false,
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
       "provider_audit": {
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/clinicas_chile.json",
@@ -2253,10 +2351,17 @@
         "relevant_90d_total": null,
         "publicable_confirmed": 1,
         "publicable_total": null
+      },
+      "integration_state": "INTEGRATED_DEGRADED",
+      "integration_evidence": {
+        "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+        "runtime_run": 38147271657,
+        "preview_run": 38147510597,
+        "artifact": "data/audits/integration_20261011/postmerge-clinicas_chile/summary.json"
       }
     }
   },
-  "generated_at": "2026-10-11T14:34:56.693908+00:00",
+  "generated_at": "2026-10-11T14:40:23.112019+00:00",
   "occupational_sources_checked_at": "2026-10-11T08:09:52.626810+00:00",
   "public_data_sources_checked_at": "2026-10-11T05:38:00.741627+00:00"
 }
