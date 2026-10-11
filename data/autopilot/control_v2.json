@@ -36,7 +36,8 @@
     "d376918943783127d5fa995e69312ab0f3c08b1465d0c16b91a463c87cdc6133",
     "cf2e904b4db2164535400a106a35266a3a3b1506e806303b2f016651755feb1b",
     "ef8d1b08d14f23323a074cb1de621a35b0a88e53133b7c0d32126988f7fa141c",
-    "355ce5e7bef4a35d9b6350e104cb69a9edbd482151827c6da1c018f01f519e91"
+    "355ce5e7bef4a35d9b6350e104cb69a9edbd482151827c6da1c018f01f519e91",
+    "422df2599ca23578085129c4046931b4a08e6fc02c19612673306e20751d1228"
   ],
   "lease_events": [
     {
@@ -838,9 +839,50 @@
       "id": "97acc9e8faa4d2f339b1449aa975e05a62d4ebf3fc3e32c62393f929b5318803",
       "kind": "blocker",
       "task_id": "pulso_latercera_exhaustive_discovery_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:30:10.391517Z",
+      "details": {
+        "blockers": [
+          {
+            "evidence": [
+              {
+                "diagnostics_are_acceptance": false,
+                "family": "editorial",
+                "task_id": "editorial_repair_lane_2026_10_11"
+              }
+            ],
+            "fingerprint": "b6e31bb69a8b64d5e26cafdff26bd026bb5a8b0be6ace37ae25cd55fe343bbd2",
+            "human_required": false,
+            "kind": "acceptance",
+            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+            "source_urls": []
+          }
+        ],
+        "evidence": [
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "editorial",
+            "task_id": "editorial_repair_lane_2026_10_11"
+          }
+        ],
+        "fingerprint": "bf7c16dcf9fbbb751840c43b368c1af73694cc230014e680157aba2988b69aae",
+        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256"
+      },
+      "family": "editorial",
+      "id": "8478a2a1f1cc6fd528bb6f2703de3cc2dfa2e0a47c81510053a34cc3ba8b2897",
+      "kind": "blocker",
+      "task_id": "editorial_repair_lane_2026_10_11"
     }
   ],
-  "pending_transitions": [],
+  "pending_transitions": [
+    {
+      "at": "2026-10-11T05:30:10.391517Z",
+      "event_id": "8478a2a1f1cc6fd528bb6f2703de3cc2dfa2e0a47c81510053a34cc3ba8b2897",
+      "family": "editorial",
+      "task_id": "editorial_repair_lane_2026_10_11"
+    }
+  ],
   "schema_version": 2,
   "tasks": {
     "autonomy_architecture_redesign_2026_10_07": {
@@ -1110,7 +1152,40 @@
       "approved": true,
       "attempts": 1,
       "audit_counts": {},
-      "blocker_signatures": [],
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "71953bd2a85e80b21e51c619d377b52a8a486e68742a7e0f5667ea921b82714a"
+      ],
+      "blocker": {
+        "blockers": [
+          {
+            "evidence": [
+              {
+                "diagnostics_are_acceptance": false,
+                "family": "editorial",
+                "task_id": "editorial_repair_lane_2026_10_11"
+              }
+            ],
+            "fingerprint": "b6e31bb69a8b64d5e26cafdff26bd026bb5a8b0be6ace37ae25cd55fe343bbd2",
+            "human_required": false,
+            "kind": "acceptance",
+            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+            "source_urls": []
+          }
+        ],
+        "evidence": [
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "editorial",
+            "task_id": "editorial_repair_lane_2026_10_11"
+          }
+        ],
+        "fingerprint": "bf7c16dcf9fbbb751840c43b368c1af73694cc230014e680157aba2988b69aae",
+        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256"
+      },
+      "blocker_signatures": [
+        "422df2599ca23578085129c4046931b4a08e6fc02c19612673306e20751d1228"
+      ],
       "created_at": "2026-10-11T05:29:09.013956Z",
       "depends_on": [],
       "evidence_revision": "71953bd2a85e80b21e51c619d377b52a8a486e68742a7e0f5667ea921b82714a",
@@ -1121,23 +1196,17 @@
       "input_fingerprint": "303086a280a1ad3c5642e7fd891a8459dfe67ced08bf55ce5ce14e55e100ee17",
       "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
       "last_ready_at": "2026-10-11T05:29:09.013956Z",
-      "lease": {
-        "claimed_at": "2026-10-11T05:30:03.587886Z",
-        "expires_at": "2026-10-11T05:40:07.983008Z",
-        "fence": 1,
-        "heartbeat_at": "2026-10-11T05:30:07.983008Z",
-        "owner": "38114913138-1-editorial",
-        "token": "da8f363c3340fe19eb90d9f661c3ca8e717616b2d5eb9e2f7b4a0b94f5d0e468"
-      },
-      "material_watch_started_at": "2026-10-11T05:30:03.587886Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:30:10.391517Z",
+      "material_watch_started_at": "2026-10-11T05:30:10.391517Z",
       "objective": "Repair existing reviewed editorial artifacts; retain independent parent acceptance.",
       "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
       "priority": "critical",
       "queue_status": "in_progress",
-      "recovery_episode": "24c645006868d65c51760d21a2534037b660647537d1e49f7e5b74afa1c55b41",
+      "recovery_episode": "8478a2a1f1cc6fd528bb6f2703de3cc2dfa2e0a47c81510053a34cc3ba8b2897",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T05:30:03.587886Z",
-      "status": "RUNNING"
+      "state_changed_at": "2026-10-11T05:30:10.391517Z",
+      "status": "BLOCKED"
     },
     "independent_auditor_and_autonomy_controller_2026_10_07": {
       "approved": true,
