@@ -1,0 +1,364 @@
+{
+  "captured_at": "2026-10-11T06:18:32.563490+00:00",
+  "runtime": "github_actions",
+  "commit": "0f6fa561192c69c902ca37b446bbc66d80190a08",
+  "run_id": "38117618594",
+  "probes": [
+    {
+      "source": "fonasa_financing_official_reference",
+      "url": "https://www.dipres.gob.cl/597/articles-387786_doc_pdf.pdf",
+      "host": "www.dipres.gob.cl",
+      "captured_at": "2026-10-11T06:18:28.018222+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "163.247.45.21"
+        ]
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "final_url": "https://www.dipres.gob.cl/597/articles-387786_doc_pdf.pdf",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:28 GMT",
+        "Server": "Apache",
+        "Last-Modified": "Wed, 29 Oct 2025 22:44:53 GMT",
+        "ETag": "\"3d316-64253e189d6bf\"",
+        "Content-Length": "250646",
+        "Content-Type": "application/pdf"
+      },
+      "sha256": "d9a1fc365bc409406922f7a09d406f9019c5eac93dd3f2c9fd3945953cd2eda2",
+      "bytes": 250646,
+      "body_path": "captures/d9a1fc365bc409406922f7a09d406f9019c5eac93dd3f2c9fd3945953cd2eda2.pdf",
+      "waf_challenge": false,
+      "outcome": "captured"
+    },
+    {
+      "source": "fonasa_financing_official_reference",
+      "url": "https://www.dipres.gob.cl/597/articles-390193_doc_pdf.pdf",
+      "host": "www.dipres.gob.cl",
+      "captured_at": "2026-10-11T06:18:28.018662+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "163.247.45.21"
+        ]
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "final_url": "https://www.dipres.gob.cl/597/articles-390193_doc_pdf.pdf",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:28 GMT",
+        "Server": "Apache",
+        "Last-Modified": "Sat, 31 Jan 2026 00:11:11 GMT",
+        "ETag": "\"300e875-649a3ed5d1fa9\"",
+        "Content-Length": "50391157",
+        "Content-Type": "application/pdf"
+      },
+      "outcome": "transport_or_parser",
+      "error_type": "ValueError",
+      "error": "Capture exceeded 8 MiB"
+    },
+    {
+      "source": "fonasa_financing_official_reference",
+      "url": "https://www.minsal.cl/wp-content/uploads/2026/07/Cuenta_Publica_2026_lista_publicacion.pdf",
+      "host": "www.minsal.cl",
+      "captured_at": "2026-10-11T06:18:28.019116+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "108.162.193.85",
+          "172.64.33.85",
+          "173.245.59.85",
+          "2606:4700:58::adf5:3b55",
+          "2803:f800:50::6ca2:c155",
+          "2a06:98c1:50::ac40:2155"
+        ]
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "final_url": "https://www.minsal.cl/wp-content/uploads/2026/07/Cuenta_Publica_2026_lista_publicacion.pdf",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:28 GMT",
+        "Content-Type": "application/pdf",
+        "Content-Length": "475865",
+        "server": "cloudflare",
+        "last-modified": "Wed, 29 Jul 2026 19:18:26 GMT",
+        "etag": "\"742d9-657c4d1d8c40c\""
+      },
+      "sha256": "3d8219e57cf37776f0f36258b196727ed5aed13826feaae0f70734afbd1b565d",
+      "bytes": 475865,
+      "body_path": "captures/3d8219e57cf37776f0f36258b196727ed5aed13826feaae0f70734afbd1b565d.pdf",
+      "waf_challenge": false,
+      "outcome": "captured"
+    },
+    {
+      "source": "fonasa_datos_abiertos_official_alternative",
+      "url": "https://datos.gob.cl/api/3/action/package_search?q=fonasa&rows=100",
+      "host": "datos.gob.cl",
+      "captured_at": "2026-10-11T06:18:28.019395+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "32.190.7.150",
+          "34.215.51.180",
+          "44.237.239.55"
+        ]
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "final_url": "https://datos.gob.cl/api/3/action/package_search?q=fonasa&rows=100",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:28 GMT",
+        "Content-Type": "application/json;charset=utf-8",
+        "Content-Length": "73641"
+      },
+      "sha256": "386fba011671a2242637c9243b3855188ad92e8b873979b6285ff66d3513cc1e",
+      "bytes": 73641,
+      "body_path": "captures/386fba011671a2242637c9243b3855188ad92e8b873979b6285ff66d3513cc1e.html",
+      "waf_challenge": false,
+      "outcome": "captured"
+    },
+    {
+      "source": "fonasa_datos_abiertos_official_alternative",
+      "url": "https://datos.gob.cl/api/3/action/package_search?fq=organization%3Afondo_nacional_de_salud&rows=100",
+      "host": "datos.gob.cl",
+      "captured_at": "2026-10-11T06:18:28.020812+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "32.190.7.150",
+          "34.215.51.180",
+          "44.237.239.55"
+        ]
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "final_url": "https://datos.gob.cl/api/3/action/package_search?fq=organization%3Afondo_nacional_de_salud&rows=100",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:28 GMT",
+        "Content-Type": "application/json;charset=utf-8",
+        "Content-Length": "53939"
+      },
+      "sha256": "16a36dc92d59e1da36982c7b864e908b371d3529a0c5bc5d87cedad11b023490",
+      "bytes": 53939,
+      "body_path": "captures/16a36dc92d59e1da36982c7b864e908b371d3529a0c5bc5d87cedad11b023490.html",
+      "waf_challenge": false,
+      "outcome": "captured"
+    },
+    {
+      "source": "deis_recent_dataset_samples",
+      "url": "https://datos.gob.cl/api/3/action/package_search?q=DEIS&rows=100",
+      "host": "datos.gob.cl",
+      "captured_at": "2026-10-11T06:18:28.021379+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "32.190.7.150",
+          "34.215.51.180",
+          "44.237.239.55"
+        ]
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "final_url": "https://datos.gob.cl/api/3/action/package_search?q=DEIS&rows=100",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:28 GMT",
+        "Content-Type": "application/json;charset=utf-8",
+        "Content-Length": "39059"
+      },
+      "sha256": "972013294a6609f0d50d91985809e91e6ba6634c51db4ffd930868a1c54fc392",
+      "bytes": 39059,
+      "body_path": "captures/972013294a6609f0d50d91985809e91e6ba6634c51db4ffd930868a1c54fc392.html",
+      "waf_challenge": false,
+      "outcome": "captured"
+    },
+    {
+      "source": "deis_recent_dataset_samples",
+      "url": "https://datos.gob.cl/dataset/3bf4cf7c-f638-4735-9a01-f65faae4beca/resource/2c44d782-3365-44e3-aefb-2c8b8363a1bc/download/establecimientos_20261006.csv",
+      "host": "datos.gob.cl",
+      "captured_at": "2026-10-11T06:18:28.301748+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "32.190.7.150",
+          "34.215.51.180",
+          "44.237.239.55"
+        ]
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "final_url": "https://datos.gob.cl/dataset/3bf4cf7c-f638-4735-9a01-f65faae4beca/resource/2c44d782-3365-44e3-aefb-2c8b8363a1bc/download/establecimientos_20261006.csv",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:29 GMT",
+        "Content-Type": "text/csv",
+        "Content-Length": "2524897",
+        "Last-Modified": "Wed, 07 Oct 2026 02:00:09 GMT",
+        "ETag": "\"1791338409.379-2524897-1930826417\""
+      },
+      "sha256": "244426f9201ecfaa4f8dc964d3ee7479a65eef565c37b9ddf05d22cac31343a6",
+      "bytes": 2524897,
+      "body_path": "captures/244426f9201ecfaa4f8dc964d3ee7479a65eef565c37b9ddf05d22cac31343a6.html",
+      "waf_challenge": false,
+      "outcome": "captured"
+    },
+    {
+      "source": "deis_recent_dataset_samples",
+      "url": "https://datos.gob.cl/dataset/a756323f-85ba-4759-87dc-f5d5e63868cc/resource/657cc933-eac8-4bfc-b004-c4d6dcd988a8/download/indicadores_rem20_20260925.csv",
+      "host": "datos.gob.cl",
+      "captured_at": "2026-10-11T06:18:28.576699+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "32.190.7.150",
+          "34.215.51.180",
+          "44.237.239.55"
+        ]
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "final_url": "https://datos.gob.cl/dataset/a756323f-85ba-4759-87dc-f5d5e63868cc/resource/657cc933-eac8-4bfc-b004-c4d6dcd988a8/download/indicadores_rem20_20260925.csv",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:28 GMT",
+        "Content-Type": "text/csv",
+        "Content-Length": "27248718",
+        "Last-Modified": "Fri, 25 Sep 2026 04:00:23 GMT",
+        "ETag": "\"1790308823.824-27248718-2215449425\""
+      },
+      "outcome": "transport_or_parser",
+      "error_type": "ValueError",
+      "error": "Capture exceeded 8 MiB"
+    }
+  ],
+  "browser_user_agent_retries": [
+    {
+      "source": "fonasa_financing_official_reference",
+      "url": "https://www.dipres.gob.cl/597/articles-387786_doc_pdf.pdf",
+      "host": "www.dipres.gob.cl",
+      "captured_at": "2026-10-11T06:18:30.886382+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "163.247.45.21"
+        ]
+      },
+      "user_agent": "Mozilla/5.0",
+      "final_url": "https://www.dipres.gob.cl/597/articles-387786_doc_pdf.pdf",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:31 GMT",
+        "Server": "Apache",
+        "Last-Modified": "Wed, 29 Oct 2025 22:44:53 GMT",
+        "ETag": "\"3d316-64253e189d6bf\"",
+        "Content-Length": "250646",
+        "Content-Type": "application/pdf"
+      },
+      "sha256": "d9a1fc365bc409406922f7a09d406f9019c5eac93dd3f2c9fd3945953cd2eda2",
+      "bytes": 250646,
+      "body_path": "captures/d9a1fc365bc409406922f7a09d406f9019c5eac93dd3f2c9fd3945953cd2eda2.pdf",
+      "waf_challenge": false,
+      "outcome": "captured"
+    },
+    {
+      "source": "fonasa_datos_abiertos_official_alternative",
+      "url": "https://datos.gob.cl/api/3/action/package_search?q=fonasa&rows=100",
+      "host": "datos.gob.cl",
+      "captured_at": "2026-10-11T06:18:30.886466+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "32.190.7.150",
+          "34.215.51.180",
+          "44.237.239.55"
+        ]
+      },
+      "user_agent": "Mozilla/5.0",
+      "final_url": "https://datos.gob.cl/api/3/action/package_search?q=fonasa&rows=100",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:31 GMT",
+        "Content-Type": "application/json;charset=utf-8",
+        "Content-Length": "73641"
+      },
+      "sha256": "386fba011671a2242637c9243b3855188ad92e8b873979b6285ff66d3513cc1e",
+      "bytes": 73641,
+      "body_path": "captures/386fba011671a2242637c9243b3855188ad92e8b873979b6285ff66d3513cc1e.html",
+      "waf_challenge": false,
+      "outcome": "captured"
+    },
+    {
+      "source": "deis_recent_dataset_samples",
+      "url": "https://datos.gob.cl/api/3/action/package_search?q=DEIS&rows=100",
+      "host": "datos.gob.cl",
+      "captured_at": "2026-10-11T06:18:30.886539+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": 200,
+      "origin_tls_observed": true,
+      "dns": {
+        "addresses": [
+          "32.190.7.150",
+          "34.215.51.180",
+          "44.237.239.55"
+        ]
+      },
+      "user_agent": "Mozilla/5.0",
+      "final_url": "https://datos.gob.cl/api/3/action/package_search?q=DEIS&rows=100",
+      "headers": {
+        "Date": "Sun, 11 Oct 2026 06:18:31 GMT",
+        "Content-Type": "application/json;charset=utf-8",
+        "Content-Length": "39059"
+      },
+      "sha256": "972013294a6609f0d50d91985809e91e6ba6634c51db4ffd930868a1c54fc392",
+      "bytes": 39059,
+      "body_path": "captures/972013294a6609f0d50d91985809e91e6ba6634c51db4ffd930868a1c54fc392.html",
+      "waf_challenge": false,
+      "outcome": "captured"
+    }
+  ],
+  "tls_diagnostics": [
+    {
+      "host": "datos.gob.cl",
+      "tcp": "connected",
+      "tls": "verified",
+      "captured_at": "2026-10-11T06:18:32.151379+00:00",
+      "tls_version": "TLSv1.3"
+    },
+    {
+      "host": "www.dipres.gob.cl",
+      "tcp": "connected",
+      "tls": "verified",
+      "captured_at": "2026-10-11T06:18:32.151718+00:00",
+      "tls_version": "TLSv1.2"
+    },
+    {
+      "host": "www.minsal.cl",
+      "tcp": "connected",
+      "tls": "verified",
+      "captured_at": "2026-10-11T06:18:32.152060+00:00",
+      "tls_version": "TLSv1.3"
+    }
+  ],
+  "proxy_configured": false,
+  "ai_calls": 0,
+  "ingestion_state_mutated": false
+}

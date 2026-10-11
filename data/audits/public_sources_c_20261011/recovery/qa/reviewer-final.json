@@ -1,0 +1,74 @@
+{
+  "reviewer": "deterministic-reviewer",
+  "candidate_sha": "d43469b7dd9a5de4d765215d92f7bd43f6d5e09b",
+  "reviewed_at": "2026-10-11T06:40:39.239714+00:00",
+  "findings": [
+    {
+      "category": "statistics",
+      "code": "invalid_statistical_table",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Every visible statistical row must map to the declared columns",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "methodology_not_collapsed",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Technical traceability must be available in a collapsed layer",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "missing_incremental_value_gate",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Visible blocks need an explicit incremental value decision",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "generic_why_required",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Statistical cards must allow omission of generic impact copy",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "untraceable_statistical_evidence",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Data evidence must link to an official source",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "bulletin_coverage",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "June 2026 audit must include accreditation, mediation, complaints and RNPI",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "bulletin_missing_pdf",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "All four official June 2026 bulletin PDFs must be traceable",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "bulletin_stock_flow_confusion",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Stock, cumulative flow and monthly flow must be labelled separately",
+      "severity": "critical"
+    }
+  ],
+  "checks": {
+    "data": true,
+    "editorial": true,
+    "statistics": false,
+    "ux": true
+  },
+  "limitations": [
+    "Semantic/legal accuracy is not certified by deterministic checks.",
+    "Browser evidence is required separately for desktop/mobile.",
+    "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+  ]
+}

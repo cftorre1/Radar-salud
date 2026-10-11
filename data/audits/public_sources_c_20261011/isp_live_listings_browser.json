@@ -1,0 +1,16 @@
+{
+  "channel": "search_service_web_run",
+  "is_live_capture": false,
+  "note": "Search results are indexed evidence, not live HTTP captures. Open results preserve tool-layer failures; those status numbers are not proven origin HTTP statuses.",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Internal Error ()\n【turn510185view0】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.ispch.gob.cl/categorias-alertas/anamed/\",\"lineno\":null}); Total lines: 1\nL0: Failed to fetch https://www.ispch.gob.cl/categorias-alertas/anamed/: (400) Timeout fetching\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn510185view1】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.ispch.cl/categorias-alertas/anamed/\",\"lineno\":null}); Total lines: 1\nL0: Failed to fetch https://www.ispch.cl/categorias-alertas/anamed/: (502) Bad Gateway\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn510185view2】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.ispch.cl/boletin/\",\"lineno\":null}); Total lines: 1\nL0: Failed to fetch https://www.ispch.cl/boletin/: (502) Bad Gateway\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn510185view3】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.ispch.cl/virusrespiratorios/\",\"lineno\":null}); Total lines: 1\nL0: Failed to fetch https://www.ispch.cl/virusrespiratorios/: (502) Bad Gateway\n"
+      }
+    ],
+    "isError": false
+  },
+  "saved_at_utc": "2026-10-11T04:24:52.048198+00:00",
+  "tool_observation_timestamp": "not exposed by browser"
+}

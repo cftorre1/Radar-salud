@@ -6,7 +6,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: integration-commander-source-runtime
+  group: integration-commander-source-runtime-${{ github.sha }}
   cancel-in-progress: false
 jobs:
   targets:

@@ -3,6 +3,7 @@ from radar_salud import public_source_pipeline as pipeline
 from radar_salud.processing import DeferredProcessing
 from radar_salud.sources import load_sources,source_index
 from pathlib import Path
+import pytest
 
 
 def test_official_discovery_rejects_external_or_listing_links():
@@ -17,14 +18,14 @@ def test_official_discovery_rejects_external_or_listing_links():
 
 def test_fonasa_rejects_undated_and_defers_unassessed(monkeypatch):
     raw=FonasaNewsScout().discover_from_html('<a href="/noticias/cobertura/">Fonasa informa nuevas coberturas verificables</a>')[0]
-    monkeypatch.setattr(pipeline,'fetch_html',lambda _: '<meta name="description" content="Detalle institucional con contenido verificable y suficiente sobre cambios de cobertura, prestadores, beneficiarios y alcance de las prestaciones del sistema de salud. La publicación describe medidas y fechas que requieren evaluación antes de su publicación.">')
+    monkeypatch.setattr(pipeline,'fetch_official_html',lambda *_: '<meta name="description" content="Detalle institucional con contenido verificable y suficiente sobre cambios de cobertura, prestadores, beneficiarios y alcance de las prestaciones del sistema de salud. La publicación describe medidas y fechas que requieren evaluación antes de su publicación.">')
     cfg=source_index(load_sources(Path('config/sources.json')))['fonasa']
     assert pipeline.process_fonasa(raw,cfg) is None
     raw.event_date='2026-09-24'
+    raw.metadata.update(publication_date_source='article:published_time', publication_date_evidence={'kind':'article:published_time','value':'2026-09-24','date':'2026-09-24','url':raw.url})
     monkeypatch.setattr(pipeline,'analyze_official_news',lambda **_:None)
-    try:pipeline.process_fonasa(raw,cfg)
-    except DeferredProcessing:pass
-    else:raise AssertionError('FONASA must defer rather than fabricate assessment')
+    with pytest.raises(DeferredProcessing,match='evaluación IA'):
+        pipeline.process_fonasa(raw,cfg)
 
 
 def test_scout_dates_only_from_detail_metadata(monkeypatch):
@@ -34,21 +35,21 @@ def test_scout_dates_only_from_detail_metadata(monkeypatch):
             return '<a href="/noticias/cobertura/">Fonasa anuncia cobertura relevante para beneficiarios</a>'
         return '<meta property="article:published_time" content="2026-09-24T10:00:00-03:00">'
     monkeypatch.setattr(source_scouts,'fetch_html',fetch)
-    assert FonasaNewsScout().discover()[0].event_date=='2026-09-24'
+    assert FonasaNewsScout(fetcher=source_scouts.fetch_html).discover()[0].event_date=='2026-09-24'
     monkeypatch.setattr(source_scouts,'fetch_html',lambda url: fetch(url) if url.endswith('/noticias/') else '<title>Sin fecha verificable</title>')
-    assert FonasaNewsScout().discover()[0].event_date is None
+    assert FonasaNewsScout(fetcher=source_scouts.fetch_html).discover()[0].event_date is None
 
 
 def test_detail_fetch_failure_is_not_technical_success_or_editorial_rejection(monkeypatch):
     from radar_salud import source_scouts
     monkeypatch.setattr(source_scouts,'fetch_html',lambda url: '<a href="/noticias/cobertura/">Fonasa informa nuevas coberturas verificables</a>' if url.endswith('/noticias/') else (_ for _ in ()).throw(TimeoutError()))
-    try:FonasaNewsScout().discover()
+    try:FonasaNewsScout(fetcher=source_scouts.fetch_html).discover()
     except RuntimeError:pass
     else:raise AssertionError('partial fetch cannot be healthy discovery')
     raw=FonasaNewsScout().discover_from_html('<a href="/noticias/cobertura/">Fonasa informa nuevas coberturas verificables</a>')[0]
     raw.event_date='2026-09-24'
-    monkeypatch.setattr(pipeline,'fetch_html',lambda _: (_ for _ in ()).throw(TimeoutError()))
+    raw.metadata.update(publication_date_source='article:published_time', publication_date_evidence={'kind':'article:published_time','value':'2026-09-24','date':'2026-09-24','url':raw.url})
+    monkeypatch.setattr(pipeline,'fetch_official_html',lambda *_: (_ for _ in ()).throw(TimeoutError()))
     cfg=source_index(load_sources(Path('config/sources.json')))['fonasa']
-    try:pipeline.process_fonasa(raw,cfg)
-    except DeferredProcessing:pass
-    else:raise AssertionError('transient fetch must retry')
+    with pytest.raises(DeferredProcessing,match='capture unavailable'):
+        pipeline.process_fonasa(raw,cfg)

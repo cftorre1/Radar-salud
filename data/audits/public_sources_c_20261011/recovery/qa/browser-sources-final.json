@@ -1,0 +1,379 @@
+{
+  "config": {
+    "configFile": "/workspace/work/c-public-sources/work/qa/browser-candidate.cjs",
+    "rootDir": "/workspace/work/c-public-sources/tests/browser",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json",
+        {
+          "outputFile": "/workspace/work/c-public-sources/work/qa/browser-candidate.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/workspace/work/c-public-sources/work/qa/browser-candidate-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/workspace/work/c-public-sources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/workspace/work/c-public-sources/work/qa/browser-candidate-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/workspace/work/c-public-sources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 2,
+    "webServer": {
+      "command": "python -m http.server 8785 --directory web",
+      "cwd": "/workspace/work/c-public-sources",
+      "url": "http://127.0.0.1:8785",
+      "reuseExistingServer": false
+    }
+  },
+  "suites": [
+    {
+      "title": "product.spec.cjs",
+      "file": "product.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Home V2 loads, filters persist and compact triage remains stable",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6636,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:26:2",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 2,
+                      "line": 26
+                    },
+                    "snippet": "  24 |  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\\d+/g).map(Number);\n  25 |  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();\n> 26 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);\n     |  ^\n  27 |  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');\n  28 |  if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();\n  29 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 2,
+                        "line": 26
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  24 |  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\\d+/g).map(Number);\n  25 |  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();\n> 26 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);\n     |  ^\n  27 |  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');\n  28 |  if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();\n  29 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:26:2"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:01:10.300Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 2,
+                    "line": 26
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-eabca2fcc564d7522582",
+          "file": "product.spec.cjs",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "source suggestion is visible, concise and fail-closed without provider",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1848,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:01:17.975Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-51ec581420799c74e1d3",
+          "file": "product.spec.cjs",
+          "line": 202,
+          "column": 1
+        },
+        {
+          "title": "source suggestion never falls back to URL serialization without JavaScript",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 520,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:01:20.046Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-fd5a366b658a34580dbb",
+          "file": "product.spec.cjs",
+          "line": 239,
+          "column": 1
+        },
+        {
+          "title": "Home V2 loads, filters persist and compact triage remains stable",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 6689,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:26:2",
+                    "location": {
+                      "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                      "column": 2,
+                      "line": 26
+                    },
+                    "snippet": "  24 |  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\\d+/g).map(Number);\n  25 |  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();\n> 26 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);\n     |  ^\n  27 |  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');\n  28 |  if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();\n  29 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                        "column": 2,
+                        "line": 26
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m6\u001b[39m\nReceived:   \u001b[31m5\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  24 |  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\\d+/g).map(Number);\n  25 |  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();\n> 26 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);\n     |  ^\n  27 |  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');\n  28 |  if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();\n  29 |  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);\n    at /workspace/work/c-public-sources/tests/browser/product.spec.cjs:26:2"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:01:10.275Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-mobile/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-mobile/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/work/c-public-sources/work/qa/browser-candidate-results/product-Home-V2-loads-filt-12584-mpact-triage-remains-stable-mobile/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/work/c-public-sources/tests/browser/product.spec.cjs",
+                    "column": 2,
+                    "line": 26
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-6046d8a6d54bb3a84fa5",
+          "file": "product.spec.cjs",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "source suggestion is visible, concise and fail-closed without provider",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1675,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:01:17.986Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-764ca12cfca317766af7",
+          "file": "product.spec.cjs",
+          "line": 202,
+          "column": 1
+        },
+        {
+          "title": "source suggestion never falls back to URL serialization without JavaScript",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 512,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:01:19.852Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6a8d8023b9fbc1186866-5a66d622944a35c67bcb",
+          "file": "product.spec.cjs",
+          "line": 239,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-11T06:01:09.488Z",
+    "duration": 11159.937,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

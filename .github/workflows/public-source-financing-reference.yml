@@ -1,0 +1,31 @@
+name: Public financing official reference probe
+on:
+  push:
+    branches: [codex/c-public-sources-20261011]
+    paths:
+      - '.github/workflows/public-source-financing-reference.yml'
+      - 'config/fonasa_financing_runtime_endpoints.json'
+permissions:
+  contents: read
+jobs:
+  probe:
+    if: github.ref == 'refs/heads/codex/c-public-sources-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - name: Capture official GRD and financing references only
+        run: python scripts/recover_public_sources_runtime.py --probe-only --endpoints config/fonasa_financing_runtime_endpoints.json --output artifacts/financing-reference
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: financing-reference-${{ github.run_id }}
+          path: artifacts/financing-reference/
+          retention-days: 14

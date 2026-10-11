@@ -1,0 +1,41 @@
+{
+  "source_slug": "fonasa",
+  "checkpoint_at_utc": "2026-10-11T04:24:21Z",
+  "base": "staging cadb6c2",
+  "result": "blocked_live_validation",
+  "current_captures": 0,
+  "verified_publication_dates": 0,
+  "blocker": {
+    "shell": "Approved egress proxy replies HTTP 403 Forbidden, server envoy, CONNECT tunnel failed (curl exit 56) before origin/TLS for https://www.fonasa.gob.cl/noticias/.",
+    "independent_navigation": "The web navigation tool reports (403) Forbidden for the configured newsroom, www.fonasa.cl and the legacy /sites/fonasa/noticias route; it exposes no headers or attribution of denial.",
+    "origin_denial_proven": false,
+    "tls_certificate_problem_proven": false,
+    "user_agent_effect_proven": false,
+    "html_change_proven": false
+  },
+  "evaluated_fallbacks": [
+    {"url": "https://www.fonasa.cl/sites/fonasa/noticias", "result": "navigation_reports_403"},
+    {"url": "https://www.fonasa.cl/noticias/", "result": "navigation_tool_inaccessible_no_origin_status"},
+    {"url": "https://datosabiertos.fonasa.cl/noticias/", "result": "navigation_reports_403_and_shell_proxy_denies_connect"},
+    {"url": "https://www.fonasa.gob.cl/feed/", "result": "navigation_tool_inaccessible_no_origin_status"},
+    {"url": "https://www.fonasa.gob.cl/wp-json/wp/v2/posts?per_page=1", "result": "navigation_tool_inaccessible_no_origin_status"},
+    {"url": "https://www.fonasa.cl/feed/", "result": "navigation_tool_inaccessible_no_origin_status"},
+    {"url": "https://www.fonasa.cl/wp-json/wp/v2/posts?per_page=1", "result": "navigation_tool_inaccessible_no_origin_status"}
+  ],
+  "repair": [
+    "Discovery fails explicitly when no official article links exist; empty discovery is no longer a healthy absence.",
+    "Publication dates come only from explicit article published/datePublished metadata or URL-matched article JSON-LD.",
+    "Invalid, future and conflicting dates fail closed; title/body/data-period/modified dates are ignored.",
+    "Detail transport failure preserves exact URL/stage/exception/status diagnostics and aborts discovery.",
+    "No unverified alternative route enabled; no TLS verification bypass."
+  ],
+  "tests": {
+    "command": "PYTHONPATH=src .venv/bin/python -m pytest -q tests/test_fonasa_recovery.py tests/test_fonasa_source.py",
+    "result": "17 passed in 0.07s",
+    "fixture_provenance": "synthetic parser regression contracts, not current live HTML"
+  },
+  "evidence_files": ["fonasa_browser_probe.json", "fonasa_transport_probe.json"],
+  "next_action": "From an allowed external execution runner, rerun HEAD/GET with redirects and verified TLS, capture raw official listing/detail bytes plus publication metadata; evaluate canonical/news/API/feed/PDF paths before marking operational.",
+  "source_health_proposal": {"technical_status": "error", "coverage_status": "unverified", "editorial_outcome": "not_evaluated", "error": "Live validation blocked: approved proxy CONNECT 403 before FONASA origin; independent navigation also reports 403. No current official capture."},
+  "reviewer": "pending independent QA by root"
+}

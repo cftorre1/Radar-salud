@@ -2,15 +2,21 @@
   "sources": [
     "diario_financiero",
     "superintendencia_fiscalizacion",
-    "suseso_fiscalizacion"
+    "suseso_fiscalizacion",
+    "deis",
+    "fonasa",
+    "fonasa_datos_abiertos",
+    "isp_anamed",
+    "isp_surveillance"
   ],
   "origin_prs": [
     11,
     15,
     19,
-    22
+    22,
+    13
   ],
-  "purpose": "Repeat failed native historical baseline comparison after full-history checkout fix; occupational per-source runtime1996b4e continues independently. No automatic state import or production publication.",
+  "purpose": "Revalidate native full-history comparison and public source transport on independent copied stocks; prior occupational matrix continues independently. No state publication.",
   "expectations": {
     "clinicas_achs_salud": {
       "allow_partial_capture": true,
@@ -23,6 +29,22 @@
     "ist": {
       "allow_partial_capture": true,
       "minimum_discovered": 1
+    },
+    "fonasa": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    },
+    "fonasa_datos_abiertos": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    },
+    "isp_anamed": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    },
+    "isp_surveillance": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
     }
   }
 }
