@@ -107,3 +107,34 @@ def test_failed_detail_is_audited_without_discarding_readable_articles():
 def test_health_anchor_excludes_generic_finance_but_includes_senior_care():
     assert not health_anchor("Banco aumenta capital para inversión inmobiliaria")
     assert health_anchor("Senior housing: inversión y competencia entre residencias para adultos mayores")
+
+
+def test_general_headline_is_opened_and_health_body_discovered():
+    generic = "Gobierno anuncia plan laboral y recursos adicionales para proveedores"
+    calls = []
+    scout = CuratedBetaSourceScout("pulso_latercera")
+    def load(url):
+        calls.append(url)
+        return article(title=generic)
+    items = scout.discover_from_html(f'<a href="{URL}">{generic}</a>', load)
+    assert calls == [URL]
+    assert items[0].title == generic
+
+
+def test_other_factual_sections_are_allowed_but_opinion_metadata_is_excluded():
+    for section in ("politica", "sociales", "sustentabilidad", "que-pasa", "servicios"):
+        url = URL.replace("/nacional/", f"/{section}/")
+        assert article_url(url) == url
+        assert extract_article(article(url=url), url)[2]["section"] == section
+    with pytest.raises(ValueError, match="excluded_opinion_content"):
+        extract_article(article(articleSection="Opinión"), URL)
+
+
+def test_non_health_detail_is_explained_exclusion_not_fetch_failure():
+    scout = CuratedBetaSourceScout("pulso_latercera")
+    body = "El banco invierte en oficinas y activos inmobiliarios. " * 8
+    with pytest.raises(RuntimeError, match="no verified"):
+        scout.discover_from_html(f'<a href="{URL}">Inversiones y deuda</a>',
+                                 lambda url: article(title="Banco anuncia inversiones inmobiliarias", body=body))
+    assert scout.discovery_audit[-1]["status"] == "excluded"
+    assert scout.discovery_audit[-1]["reason"] == "no_health_anchor"

@@ -16,7 +16,8 @@ from .models import RawItem
 from .scouts import fetch_html
 
 HOSTS = {"www.latercera.com", "latercera.com"}
-ARTICLE_PATH = re.compile(r"/(?:pulso|nacional)/noticia/[^/]+(?:/[A-Za-z0-9]{26})?/?")
+ARTICLE_PATH = re.compile(r"/[a-z0-9-]+/noticia/[^/]+(?:/[A-Za-z0-9]{26})?/?")
+EXCLUDED_SECTIONS = {"opinion", "editorial", "columnas", "cartas-al-director"}
 LISTINGS = (
     "https://www.latercera.com/canal/pulso/",
     "https://www.latercera.com/canal/nacional/",
@@ -30,7 +31,8 @@ LISTINGS = (
 def article_url(value, base=LISTINGS[0]):
     parsed = urlparse(urljoin(base, value or ""))
     if (parsed.scheme != "https" or parsed.netloc not in HOSTS
-            or not ARTICLE_PATH.fullmatch(parsed.path)):
+            or not ARTICLE_PATH.fullmatch(parsed.path)
+            or parsed.path.split('/')[1] in EXCLUDED_SECTIONS):
         return None
     return "https://www.latercera.com" + parsed.path.rstrip("/") + "/"
 
@@ -41,7 +43,10 @@ def health_anchor(text):
         r"medicamento|farmac|aseguramiento|seguro de salud|"
         r"banm[eé]dica|bupa|redsalud|consalud|colmena|cruz blanca|"
         r"masvida|uc christus|listas? de espera|senior housing|"
-        r"residencias? (?:para|de) adultos mayores|eleam",
+        r"residencias? (?:para|de) adultos mayores|eleam|"
+        r"vacun|c[aá]ncer|oncolog|sanitari|atenci[oó]n primaria|"
+        r"epidemi|trasplante|discapacidad|ley ricarte soto|cenabast|"
+        r"insulina|diabetes|compin|licencias m[eé]dicas|ficha cl[ií]nica",
         text or "", re.I))
 
 
@@ -187,7 +192,10 @@ def extract_article(html, expected_url):
         body = " ".join(node["articleBody"].split())
     if len(title) < 18 or len(body) < 160:
         raise ValueError("incomplete_article_evidence")
-    return title, body, dict(publication_date=published, publication_timestamp=timestamp,
+    section = node.get("articleSection") or parser.metas.get("article:section") or expected.split('/')[3]
+    if re.search(r"opini[oó]n|editorial|columna", str(section), re.I):
+        raise ValueError("excluded_opinion_content")
+    return title, body, dict(section=section, publication_date=published, publication_timestamp=timestamp,
                             publication_date_source=date_source, canonical_url=expected,
                             article_verified=True)
 
@@ -199,7 +207,7 @@ def discover_listing(html, base, detail_loader, audit, visited):
     links = {}
     for href, title in parser.links:
         url = article_url(href, base)
-        if url and health_anchor(title):
+        if url:
             links.setdefault(url, title)
     out = []
     for url in links:
@@ -209,12 +217,15 @@ def discover_listing(html, base, detail_loader, audit, visited):
         try:
             title, body, metadata = extract_article(detail_loader(url), url)
             if not health_anchor(title + " " + body):
-                raise ValueError("no_health_anchor")
+                audit.append(dict(url=url, listing=base, status="excluded", reason="no_health_anchor",
+                                  publication_date=metadata["publication_date"], section=metadata["section"]))
+                continue
             metadata.update(discovered_from=base, page_text=body[:18000], market_role="media",
                             source_quality_gate="passed", captured_at=datetime.now(ZoneInfo("UTC")).isoformat())
             out.append(RawItem("pulso_latercera", title, url, "Pulso / La Tercera", "press_high_trust",
                                event_date=metadata["publication_date"], raw_text=body[:1800], metadata=metadata))
-            audit.append(dict(url=url, listing=base, status="discovered", publication_date=metadata["publication_date"]))
+            audit.append(dict(url=url, listing=base, status="discovered", section=metadata["section"],
+                              publication_date=metadata["publication_date"]))
         except Exception as exc:
             audit.append(dict(url=url, listing=base, status="detail_error", reason=str(exc), error_type=type(exc).__name__))
     return out
