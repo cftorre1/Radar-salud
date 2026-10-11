@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "slug": "bupa_chile",
+  "as_of": "2026-10-11",
+  "timezone": "America/Santiago",
+  "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
+  "audit_path": "data/audits/providers_2026_10_11/bupa_chile.json",
+  "status": "reconciled_with_exact_blockers",
+  "coverage": "partial_30_and_90_inventory",
+  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "source_quality_gate": "passed",
+  "surfaces": [
+    {
+      "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa",
+      "result": "New cards use root-level URLs; old discovery accepted only sala-de-prensa and truncated at 15."
+    }
+  ],
+  "blockers": [
+    "runtime_original_http_CONNECT_403",
+    "investment_and_bank_campaign_publication_date_not_exposed",
+    "assessment_pending_existing_gates"
+  ],
+  "original_items": [
+    {
+      "title": "Bupa acelera su crecimiento en el sector oriente de Santiago con inversión de US$15 millones en nueva infraestructura",
+      "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+      "publication_date": null,
+      "date_evidence": "unverified",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Bupa atribuye inversión aproximada de US$15 millones: centro La Dehesa, adquisición de Huinganal y expansión prevista de Mindplace. No se importa fecha desde prensa ni desde inauguración."
+    },
+    {
+      "title": "Chile tendrá su primera base genómica de referencia: Bupa lanza 1000 genomas",
+      "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+      "publication_date": "2026-08-13",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Original con sello jueves 13 agosto 2026; proyecto 2026–2030 con Sanitas. Evaluar materialidad como red/alianza de investigación; no confundir horizonte del proyecto con publicación."
+    },
+    {
+      "title": "Bupa Chile y BancoEstado impulsan campaña para acercar la prevención",
+      "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
+      "publication_date": null,
+      "date_evidence": "unverified",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Convenio/campaña de acceso en red. Octubre 1–31 es vigencia promocional, no fecha de publicación. Gate material y fecha siguen pendientes."
+    },
+    {
+      "title": "Personas damnificadas recibirán atención gratuita en clínicas privadas",
+      "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas",
+      "publication_date": "2026-08-13",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": false,
+      "evidence": "Ya publicado en historia; vigencia actual no verificada. No multiplicar señales del mismo SAFED."
+    }
+  ],
+  "notes": [
+    "Raíz permitida sólo con procedencia de tarjeta del newsroom oficial; conserva identidad, H1, fecha, cuerpo350 y score78.",
+    "Artículos robóticos de mayo y centro de Coquimbo antiguo no se reintroducen como señales 90 días. Fecha aprendida en detalle también respeta el horizonte."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:20.504095+00:00",
+    "changes": [
+      {
+        "key": "e1fc070079becba6e8407518a333578e2e3a25505345a33bdda93c4182dac283",
+        "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+        "action": "admit_backfill"
+      },
+      {
+        "key": "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353",
+        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+        "action": "admit_backfill"
+      },
+      {
+        "key": "bec250b2d5f59d9c77da0c22fe6265d4c72f69c5d814f25c64a08f0be985a4b1",
+        "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
+        "action": "admit_backfill"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 0,
+    "material_candidates_90_days": 2,
+    "publication_date_unknown": 2,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 5,
+      "rejected": 12,
+      "published": 1
+    },
+    "items": [
+      {
+        "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+        "publication_date": null,
+        "in_30_days": null,
+        "in_90_days": null,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "e1fc070079becba6e8407518a333578e2e3a25505345a33bdda93c4182dac283",
+            "status": "pending",
+            "reason": "unverified_publication_date",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+        "publication_date": "2026-08-13",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353",
+            "status": "pending",
+            "reason": "audited_recovery_pending_assessment",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
+        "publication_date": null,
+        "in_30_days": null,
+        "in_90_days": null,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "bec250b2d5f59d9c77da0c22fe6265d4c72f69c5d814f25c64a08f0be985a4b1",
+            "status": "pending",
+            "reason": "unverified_publication_date",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas",
+        "publication_date": "2026-08-13",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "e8e7a13bc1f7c7ea9390d11915843599c4ca82b6e25f9a3c366a4d60ae316f71",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 1,
+        "visible_count": 1
+      }
+    ]
+  }
+}

@@ -228,16 +228,27 @@
       "new": 0,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 2,
-      "pending": 2,
+      "backfill_pending": 5,
+      "pending": 5,
       "deferred": 0,
       "rejected": 12,
-      "status": "ok",
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "unverified",
       "content_freshness": "older",
-      "editorial_outcome": "pending"
+      "editorial_outcome": "pending",
+      "provider_audit": {
+        "as_of": "2026-10-11",
+        "path": "data/audits/providers_2026_10_11/bupa_chile.json",
+        "blockers": [
+          "runtime_original_http_CONNECT_403",
+          "investment_and_bank_campaign_publication_date_not_exposed",
+          "assessment_pending_existing_gates"
+        ],
+        "latest_verified_original_at": "2026-08-13",
+        "recovered_pending": 3
+      }
     },
     "pfizer_chile": {
       "name": "Pfizer Chile",
