@@ -220,14 +220,19 @@ def test_daily_df_replay_real_processor_to_history_feed_and_second_run(tmp_path,
     (state / "discovery_watermarks.json").write_text(json.dumps({"diario_financiero": CAPTURE.isoformat()}))
     queue = PendingQueue(state / "pending_queue.json")
     queue.discover("diario_financiero", [_raw()], now=CAPTURE, last_discovered_at="2026-10-09T22:00:00+00:00")
-    unrelated = RawItem("minsal", "Other source pending", "https://example.org/untouched", "MINSAL", "official")
+    unrelated = RawItem("minsal", "Other source pending", "https://example.org/untouched", "MINSAL", "official", "2026-01-01")
     queue.discover("minsal", [unrelated], now=CAPTURE)
+    queue.items[fingerprint(unrelated)]["status"] = "pending"  # Old retained state of a different source.
+    queue.save()
+    minsal_discovery={"discovered":7,"new":0,"technical_status":"ok","checked_at":CAPTURE.isoformat()}
+    (state / "discovery_run.json").write_text(json.dumps({"sources":{"minsal":minsal_discovery}}))
     original_key = fingerprint(_raw())
     low_url = "https://www.df.cl/empresas/salud/inversion-secundaria"
-    listing = f'<a href="{URL}">{_raw().title}</a><a href="{low_url}">Clínica anuncia una inversión secundaria</a>'
+    deferred_url = "https://www.df.cl/empresas/salud/analisis-pendiente"
+    listing = f'<a href="{URL}">{_raw().title}</a><a href="{low_url}">Clínica anuncia una inversión secundaria</a><a href="{deferred_url}">Clínica con análisis pendiente de inversión</a>'
     detail = '<meta name="cXenseParse:recs:publishtime" content="2026-10-10T16:29:59Z"><article><p>' + _raw(dated=True).metadata["page_text"] + '</p></article>'
     monkeypatch.setattr("radar_salud.source_scouts.fetch_html", lambda url: listing if url in DfHealthScout.PAGES else detail)
-    monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news", lambda **kw: _analysis(71 if "secundaria" in kw["title"] else 90))
+    monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news", lambda **kw: None if "pendiente" in kw["title"] else _analysis(71 if "secundaria" in kw["title"] else 90))
     monkeypatch.setattr("radar_salud.paths.project_root", lambda: tmp_path)
     monkeypatch.setattr("radar_salud.pending_queue.now_utc", lambda: NOW)
     monkeypatch.setattr(sys, "argv", ["engine_cli", "--source", "diario_financiero", "--limit", "5"])
@@ -236,6 +241,7 @@ def test_daily_df_replay_real_processor_to_history_feed_and_second_run(tmp_path,
     assert queue.items[original_key]["status"] == "published"
     assert queue.items[original_key]["lane"] == "LIVE"
     assert queue.items[fingerprint(unrelated)]["status"] == "pending"
+    assert json.loads((state / "discovery_run.json").read_text())["sources"]["minsal"] == minsal_discovery
     rejected = next(v for v in queue.items.values() if v["raw"]["url"] == low_url)
     assert rejected["reason"] == "media_score_below_72"
     assert rejected["raw"]["metadata"]["editorial_assessment"]["score"] == 71
@@ -248,6 +254,10 @@ def test_daily_df_replay_real_processor_to_history_feed_and_second_run(tmp_path,
     assert len(feed) == 1 and feed[0]["source_url"] == URL
     seen = json.loads((state / "diario_financiero_seen.json").read_text())
     assert original_key in seen
+    deferred_key, deferred = next((key, value) for key, value in queue.items.items() if value["raw"]["url"] == deferred_url)
+    assert deferred["status"] == "retry" and deferred["reason"] == "df_analysis_deferred"
+    assert deferred["raw"]["event_date"] == "2026-10-10"
+    assert deferred_key not in seen
     engine_cli.main()
     assert json.loads((state / "discovery_run.json").read_text())["sources"]["diario_financiero"]["new"] == 0
     assert PendingQueue(queue.path).items[original_key]["attempts"] == 1
