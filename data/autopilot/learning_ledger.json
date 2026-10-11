@@ -3766,5 +3766,67 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "editorial_repair_lane_2026_10_11"
+  },
+  {
+    "acceptance_boundary": "Zero new publications does not prove zero model calls or unchanged queue statuses.",
+    "class": "runtime_reconciliation",
+    "evidence": [
+      "data/audits/integration_20261011/independent-reception-review.json",
+      "data/audits/integration_20261011/provider-runtime-cost-reconciliation.json"
+    ],
+    "finding": "Read-only live runtime can spend budget and advance rejection/archive backlog while accepted stock is idempotent.",
+    "id": "native_runtime_copied_budget_and_queue_progress_20261011",
+    "source": "Integration Commander",
+    "specific_fix": "Preserve peer reviewed32-transition import and actual +1 Fast receipt once; describe accepted-stock idempotence separately from queue status progress."
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:source_audit_issue5_iteration2_balance_2026_10_09",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-a50eb21dfd934c2aa0ed2e6dc57f20ba.json",
+        "sha256": "905a89e80a62b62135d27da4a9c16399aef3bca84ffe60407e4291a2a5578a27",
+        "staging_sha": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "state_sha": "2ef311e39ccb47a589fcfdc98aaaa6fc107ecfdd"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_audit_issue5_iteration2_balance_2026_10_09",
+    "id": "autonomy_observed_01ac80840508e54eb1818923f95ebba0157eaa3ca5cadf03e030d43232684d51",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_audit_issue5_iteration2_balance_2026_10_09"
+  },
+  {
+    "blocker_fingerprint": "6c11f6974cd4912ae9e3f59d1a9576236bbc8d7e71e6660877fb385cebd7330d",
+    "class": "observed_stall",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-a50eb21dfd934c2aa0ed2e6dc57f20ba.json",
+        "sha256": "905a89e80a62b62135d27da4a9c16399aef3bca84ffe60407e4291a2a5578a27",
+        "staging_sha": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "state_sha": "2ef311e39ccb47a589fcfdc98aaaa6fc107ecfdd"
+      }
+    ],
+    "finding": "Observed canonical task STALLED: source_repair_mutualities_lane_2026_10_11",
+    "id": "autonomy_observed_cb7c750f6002158b48b7bf9fda055768864f690ec4cd2b7a16f23c30fd30ce58",
+    "observed_status": "STALLED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_repair_mutualities_lane_2026_10_11"
   }
 ]
