@@ -18,6 +18,8 @@ NOVELTY = ("new_material_information", "repetition_or_context", "uncertain")
 FUTURE_SOURCE = re.compile(r"\b(?:habr[aá]|permitir[aá]n?|ser[aá]n?|podr[ií]an?|previst[oa]s?|"
                            r"se prev[eé]|se propone(?:n)?|incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?)\b", re.I)
 FORMAL_BUDGET_PROJECT = re.compile(r"\bproyecto de (?:ley de )?presupuestos?\b", re.I)
+REFERENCED_BUDGET_PROJECT = re.compile(
+    r"\ben (?:el|este) proyecto\b[^.;!?]{0,80}\bpresupuesto\b", re.I)
 # Approval/enactment is an actual legislative step when it explicitly governs
 # this same formal budget project. A bare project reference is still a proposal.
 ACTUAL_BUDGET_LEGISLATIVE_STEP = re.compile(
@@ -131,7 +133,9 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
         return verdict("deferred", "pulso_editorial_future_claims_invalid")
     if not future and (claims or any(
             FUTURE_SOURCE.search(proof[field])
-            or (FORMAL_BUDGET_PROJECT.search(proof[field])
+            or ((FORMAL_BUDGET_PROJECT.search(proof[field])
+                 or (FORMAL_BUDGET_PROJECT.search(body)
+                     and REFERENCED_BUDGET_PROJECT.search(proof[field])))
                 and not ACTUAL_BUDGET_LEGISLATIVE_STEP.search(proof[field])) for field in (
             "event_status_quote", "action_quote", "consequence_quote"))):
         return verdict("deferred", "pulso_editorial_future_status_mismatch")

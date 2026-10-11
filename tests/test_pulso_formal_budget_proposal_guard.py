@@ -22,6 +22,14 @@ def test_original_oct5_formal_budget_project_cannot_be_presented_as_implemented_
     assert result['publication_approved'] is False
 
 
+def test_original_budget_reference_cannot_evade_formal_context_by_shortening_status_quote():
+    ai=deepcopy(COUNTER_ANALYSIS)
+    ai['pulso_editorial_proof']['event_status_quote']=ai['pulso_editorial_proof']['action_quote']
+    assert 'en el proyecto tienen' in ai['pulso_editorial_proof']['event_status_quote']
+    result=validate_pulso_editorial_proof(ai,BODY)
+    assert result['decision']=='deferred'
+    assert result['reason']=='pulso_editorial_future_status_mismatch'
+
 def test_same_original_proposed_budget_remains_eligible_with_complete_prospective_copy():
     ai=deepcopy(COUNTER_ANALYSIS);proof=ai['pulso_editorial_proof']
     proof['event_status']='proposal'
