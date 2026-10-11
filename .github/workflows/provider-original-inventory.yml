@@ -1,0 +1,37 @@
+name: Provider original 30-90 inventory
+on:
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'scripts/provider_inventory.py'
+      - '.github/workflows/provider-original-inventory.yml'
+permissions:
+  contents: read
+concurrency:
+  group: provider-original-inventory-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  inventory:
+    if: startsWith(github.head_ref, 'codex/f-prestadores-gremio-') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - name: Verify publication evidence isolation
+        run: python -m pytest -q tests/test_provider_inventory.py
+      - name: Inventory official archives without AI or admission
+        if: hashFiles('data/audits/provider_inventory_v2_receipt_2026_10_11.json') == ''
+        run: timeout --signal=TERM 25m python scripts/provider_inventory.py
+      - name: Preserve resumable public inventory metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: provider-original-inventory-${{ github.event.pull_request.head.sha }}
+          path: data/audits/provider_inventory_2026_10_11
+          retention-days: 30

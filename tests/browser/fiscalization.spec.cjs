@@ -3,6 +3,7 @@ const {test,expect}=require('@playwright/test');
 test('fiscalization reconciliation preserves act dates and separates reviewed normativa',async({page})=>{
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
  await page.goto('/');
+ await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
@@ -43,6 +44,7 @@ test('fiscalization reconciliation preserves act dates and separates reviewed no
 
 test('recovered registers retain offices, actors, effects and issuance dates in grouped details',async({page},testInfo)=>{
  const errors=[];page.on('pageerror',error=>errors.push(error.message));await page.goto('/');
+ await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
  const register=radar.signals.find(s=>s.source_record_id==='suseso_emisores:rolling90');
