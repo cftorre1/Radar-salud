@@ -422,3 +422,38 @@ def test_public_feed_accepts_frontend_data_envelope():
     from radar_salud.pulso_source import parse_public_feed
     entries, count, next_cursor = parse_public_feed(json.dumps({'data': json.loads(ans_feed())}))
     assert len(entries) == 24 and count == 10000 and next_cursor == 24
+
+
+
+def test_all_primary_control_factual_sections_have_explicit_historical_feeds():
+    from radar_salud.pulso_source import PUBLIC_FEEDS
+    controls = json.loads((Path(__file__).parents[1] / 'data/audits/pulso_external_control_2026_10_11.json').read_text())
+    required = {item['section'] for item in controls['articles'] if item.get('recall_expected') and item.get('in_90_day_window')}
+    configured = {name for kind, name in PUBLIC_FEEDS if kind == 'section'}
+    assert 'horizontes' in required
+    assert required <= configured
+
+
+def test_api_archive_overlap_returns_one_canonical_article_with_occurrence_diagnostics(tmp_path):
+    url = 'https://www.latercera.com/nacional/noticia/gobierno-0/'
+    def loader(value):
+        if '/canal/' in value:
+            return 'Fusion.deployment="1284";'
+        if '/pf/api/' in value:
+            return ans_feed(count=1, size=1)
+        if value == SITEMAP_INDEX:
+            return xml_index()
+        if value == SITEMAP_PAGE:
+            return xml_page(0, count=1, lastmod='2026-10-09T15:00:00Z')
+        if '/arc/outboundfeeds/' in value:
+            return f'<urlset xmlns="{NS}" />'
+        return html_article(value)
+    audit = []
+    items = discover_pulso(loader, audit, cache_path=tmp_path/'cache.json', today=TODAY,
+                           include_listings=False, feeds=[('section','nacional')])
+    assert [item.url for item in items] == [url]
+    summary = next(item for item in audit if item['status']=='discovery_inventory')
+    assert summary == dict(status='discovery_inventory', unique_health_urls=1,
+                           inventory_health_occurrences=2, duplicate_inventory_occurrences=1)
+    occurrences = [item for item in audit if item['status']=='discovered']
+    assert [item['duplicate_inventory_url'] for item in occurrences] == [False, True]

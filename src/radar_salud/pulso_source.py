@@ -640,7 +640,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
 
 PUBLIC_FEEDS = tuple(("section", name) for name in (
     "pulso", "nacional", "politica", "tendencias", "que-pasa", "paula", "sustentabilidad",
-    "lt-board", "sociales", "servicios", "tecnologia", "la-tercera-pm",
+    "lt-board", "sociales", "servicios", "tecnologia", "la-tercera-pm", "horizontes",
 )) + tuple(("tag", name) for name in (
     "salud", "isapres", "fonasa", "clinicas", "hospitales", "listas-de-espera", "banmedica",
 ))
@@ -894,4 +894,14 @@ def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=Non
     unique = {}
     for item in out:
         unique.setdefault(item.url, item)
+    diagnosed, inventory_discoveries = set(), 0
+    for entry in audit:
+        if entry.get("status") != "discovered" or not entry.get("url"):
+            continue
+        inventory_discoveries += 1
+        entry["duplicate_inventory_url"] = entry["url"] in diagnosed
+        diagnosed.add(entry["url"])
+    audit.append(dict(status="discovery_inventory", unique_health_urls=len(unique),
+                      inventory_health_occurrences=inventory_discoveries,
+                      duplicate_inventory_occurrences=inventory_discoveries - len(diagnosed)))
     return sorted(unique.values(), key=lambda item: item.event_date, reverse=True)
