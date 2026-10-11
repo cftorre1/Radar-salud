@@ -71,3 +71,22 @@ def test_verified_rediscovery_updates_retry_without_bypassing_gate(tmp_path):
     stored=queue.items[key]
     assert stored['raw']['event_date']=='2026-10-02' and stored['lane']=='BACKFILL'
     assert stored['detected_at']==detected and stored['raw']['metadata']['source_quality_gate']=='pending_90_day_audit'
+
+
+def test_clinicas_large_script_cache_cannot_hide_visible_article(monkeypatch):
+    title='Clínicas de Chile y CENS revisan regulación de salud digital'
+    body='Los prestadores revisan interoperabilidad, gobierno de datos y obligaciones de ciberseguridad. '*12
+    raw=RawItem('clinicas_chile',title,'https://www.clinicasdechile.cl/noticias/cens/',
+                'Clínicas de Chile A.G.','sector_association','2026-10-02',
+                metadata={'clinicas_channel':'Noticias','publication_date_source':'dated_news_listing','page_text':'fbq script '*3000})
+    html='<script>'+('fbq pixel tracking; '*3000)+'</script><style>nav bad stylesheet</style><nav>Menú</nav>'+f'<h1>{title}</h1><p>{body}</p><footer>Opinión ajena</footer>'
+    monkeypatch.setattr('radar_salud.public_source_pipeline.fetch_html',lambda _:html)
+    captured=[]
+    def assess(**kwargs):captured.append(kwargs['text']);return None
+    monkeypatch.setattr('radar_salud.public_source_pipeline.analyze_news',assess)
+    with pytest.raises(DeferredProcessing,match='pending assessment'):process_clinicas_chile(raw,{})
+    assert 'interoperabilidad' in captured[0]
+    assert all(term not in captured[0] for term in ('fbq','stylesheet','Opinión ajena'))
+    from radar_salud.public_source_pipeline import _Meta
+    meta=_Meta();meta.feed(html)
+    assert 'fbq' not in ' '.join(meta.text) and 'interoperabilidad' in ' '.join(meta.text)

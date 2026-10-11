@@ -134,6 +134,9 @@ class CuratedBetaSourceScout:
                 body = " ".join(meta.text)
                 provenance = "legacy_detail_date"
                 if self.cfg['role'].startswith('provider'):
+                    from .public_source_pipeline import _VisibleArticle
+                    article=_VisibleArticle();article.feed(detail)
+                    body=' '.join(article.text)
                     stamp = _ProviderPublication();stamp.feed(detail)
                     published, provenance = stamp.publication()
                 else:
@@ -308,7 +311,20 @@ def process_curated_beta_source(raw, cfg):
         published=date.fromisoformat(raw.event_date)
         if published>date.today():raise DeferredProcessing('Provider future publication date')
         if (date.today()-published).days>90:raise OutsideBackfillHorizon(raw.event_date)
-    raw = enrich(raw)
+    if role.startswith('provider'):
+        from .public_source_pipeline import _VisibleArticle
+        try:
+            detail=fetch_html(raw.url)
+        except Exception as exc:raise DeferredProcessing(f'Provider detail unavailable: {raw.url}: {type(exc).__name__}') from exc
+        stamp=_ProviderPublication();stamp.feed(detail)
+        verified,_=stamp.publication()
+        if verified!=raw.event_date:raise DeferredProcessing(f'Provider listing/detail publication date mismatch: {raw.url}')
+        article=_VisibleArticle();article.feed(detail)
+        if not article.title or (raw.title.casefold() not in article.title.casefold() and article.title.casefold() not in raw.title.casefold()):
+            raise DeferredProcessing(f'Provider listing/detail headline mismatch: {raw.url}')
+        raw.metadata['page_text']=' '.join(article.text)[:18000]
+        raw.raw_text=raw.metadata['page_text'][:1800]
+    else:raw = enrich(raw)
     if raw.metadata.get("fetch_error"):
         raise DeferredProcessing(f"Provider detail unavailable: {raw.url}: {raw.metadata['fetch_error']}")
     body = raw.metadata.get("page_text") or raw.raw_text or ""

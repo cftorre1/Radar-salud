@@ -337,7 +337,7 @@ class ClinicasChileScout:
                 "publication_date_source":"dated_news_listing" if event_date else "unverified"}))
         return out
     def discover(self):
-        from .public_source_pipeline import _Meta, _date
+        from .public_source_pipeline import _VisibleArticle, _date
         out=[];seen=set();self.discovery_errors=[]
         for channel,page in self.PAGES:
             # The library lists 3/3/4 pages. Scan each channel from page 1;
@@ -358,7 +358,7 @@ class ClinicasChileScout:
                     except Exception as exc:
                         self.discovery_errors.append(f"{channel}: {raw.url}: {type(exc).__name__}")
                         out.append(raw);continue
-                    meta=_Meta();meta.feed(detail)
+                    article=_VisibleArticle();article.feed(detail)
                     stamp=_PublishedMeta();stamp.feed(detail)
                     # _Meta includes several historical date names; only the
                     # explicit article property can replace the listing stamp.
@@ -368,7 +368,7 @@ class ClinicasChileScout:
                         raw.event_date=None;raw.metadata["publication_date_source"]="conflicting_stamps"
                     elif verified:
                         raw.event_date=verified;raw.metadata["publication_date_source"]="article:published_time"
-                    raw.metadata["page_text"]=" ".join(meta.text)[:18000]
+                    raw.metadata["page_text"]=" ".join(article.text)[:18000]
                     raw.raw_text=raw.metadata["page_text"][:1800]
                 out.append(raw)
         if not out:raise RuntimeError("Clínicas de Chile hubs unavailable or empty: "+"; ".join(self.discovery_errors))

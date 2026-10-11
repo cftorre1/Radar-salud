@@ -51,6 +51,8 @@ def admit(queue, audit, cfg, now):
         if matches:
             key,item=matches[0]
             if item['status'] in ('published','archived'):continue
+            if audit['slug']=='clinicas_chile':
+                item['raw']['metadata'].pop('page_text',None);item['raw']['raw_text']=''
             if item['raw'].get('metadata',{}).get('recovery_audit')==audit['audit_path']:continue
             item['audit_prior_state']={'status':item['status'],'reason':item.get('reason')}
             old_gate=item['raw'].get('metadata',{}).get('source_quality_gate')
@@ -153,6 +155,16 @@ def run(root, slug=None, apply=False, live=False, limit=12):
             if name=='clinicas_chile':h.update(last_signal_at=None,content_freshness='unknown')
             if name in ('red_davila','andes_salud'):
                 h.update(evaluation_performed=False,editorial_outcome='not_evaluated',collection_mode='discovery_only')
+            assessed=[v for v in live_results if v['source']==name and v['outcome'] in ('published','rejected')]
+            published=[v['signal'] for v in assessed if v['outcome']=='published']
+            if live:
+                h['audited_assessment']={'at':now.isoformat(),'evaluated':len(assessed),'published':len(published),
+                    'last_signal_at':max([v.get('event_date') for v in published if v.get('event_date')] or ['']) or None,
+                    'outcome':'published' if published else 'rejected' if assessed else 'not_evaluated'}
+                # These fields describe this bounded assessment, while the
+                # unchanged checked_at still identifies the previous full poll.
+                h.update(evaluation_performed=bool(assessed),editorial_outcome=h['audited_assessment']['outcome'],published=len(published),collection_mode='audited_candidates_only')
+                if published:h['last_signal_at']=max([v.get('event_date') for v in published if v.get('event_date')]+[h.get('last_signal_at') or ''])
             if name=='pfizer_chile':h['content_freshness']='stale_external_surface'
             h['provider_audit']={'as_of':audit['as_of'],'path':audit['audit_path'],'blockers':audit['blockers'],
                 'latest_verified_original_at':max([x.get('publication_date') for x in audit['original_items'] if x.get('publication_date')] or ['']) or None,

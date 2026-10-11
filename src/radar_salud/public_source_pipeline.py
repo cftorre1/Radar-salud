@@ -12,16 +12,20 @@ MONTHS={"enero":"01","febrero":"02","marzo":"03","abril":"04","mayo":"05","junio
 MONTHS.update({"ene":"01","feb":"02","mar":"03","abr":"04","may":"05","jun":"06","jul":"07","ago":"08","sep":"09","sept":"09","oct":"10","nov":"11","dic":"12"})
 
 class _Meta(HTMLParser):
-    def __init__(self):super().__init__();self.description="";self.published="";self.text=[];self.ogtitle=""
+    def __init__(self):super().__init__();self.description="";self.published="";self.text=[];self.ogtitle="";self._ignored=0
     def handle_starttag(self,tag,attrs):
+        if tag.lower() in ('script','style','noscript'):self._ignored+=1
         if tag.lower()!="meta":return
         a={k.lower():v for k,v in attrs};key=(a.get("name") or a.get("property") or "").lower();content=a.get("content") or ""
         if key in ("description","og:description","twitter:description") and content and not self.description:self.description=" ".join(content.split())
         if key=="og:title" and content and not self.ogtitle:self.ogtitle=" ".join(content.split())
         if key in ("article:published_time","date","datepublished","publishdate") and content and not self.published:self.published=content
     def handle_data(self,data):
+        if self._ignored:return
         t=" ".join(data.split())
         if t:self.text.append(t)
+    def handle_endtag(self,tag):
+        if tag.lower() in ('script','style','noscript'):self._ignored=max(0,self._ignored-1)
 
 def _date(text):
     if not text:return None
@@ -364,6 +368,30 @@ def process_isp_anamed(raw,cfg):
 
 
 
+class _VisibleArticle(HTMLParser):
+    """Visible article text after H1, excluding executable/style/navigation text."""
+    def __init__(self):
+        super().__init__();self.title='';self.text=[];self._heading=False;self._parts=[];self._ready=False;self._ignored=0;self._ended=False
+    def handle_starttag(self,tag,attrs):
+        tag=tag.lower()
+        if tag in ('script','style','noscript','nav','footer','header'):self._ignored+=1
+        if not self._ignored and tag=='h1' and not self.title:
+            self._heading=True;self._parts=[]
+    def handle_endtag(self,tag):
+        tag=tag.lower()
+        if tag in ('script','style','noscript','nav','footer','header'):
+            self._ignored=max(0,self._ignored-1)
+        if tag=='h1' and self._heading:
+            self.title=' '.join(' '.join(self._parts).split());self._heading=False;self._ready=True
+    def handle_data(self,data):
+        if self._ignored or self._ended:return
+        text=' '.join(data.split())
+        if self._heading:self._parts.append(text)
+        elif self._ready and text:
+            if text.casefold() in ('enlaces de salud','últimas publicaciones','conoce más novedades'):self._ended=True
+            else:self.text.append(text)
+
+
 def process_clinicas_chile(raw,cfg):
     """Clínicas de Chile sector intelligence with channel-aware materiality."""
     if (not raw.event_date or raw.metadata.get("publication_date_source")
@@ -380,8 +408,16 @@ def process_clinicas_chile(raw,cfg):
     if parsed.endswith(".pdf"):
         try:text=extract_pdf_text(raw.url,max_pages=10)
         except Exception as exc:raise DeferredProcessing("Clínicas de Chile PDF unreadable") from exc
-    elif not text:
-        raw=enrich(raw);text=raw.metadata.get("page_text") or raw.raw_text or ""
+    elif channel=='Noticias':
+        # Older queue cache may contain scripts before the article. Always
+        # resolve a fresh visible body; a cache must not mask a fetch failure.
+        try:
+            article=_VisibleArticle();article.feed(fetch_html(raw.url))
+        except Exception as exc:raise DeferredProcessing(f"Clínicas de Chile article unavailable: {type(exc).__name__}") from exc
+        if not article.title or (raw.title.casefold() not in article.title.casefold() and article.title.casefold() not in raw.title.casefold()):
+            raise DeferredProcessing('Clínicas de Chile headline mismatch')
+        text=' '.join(article.text)
+        raw.metadata['page_text']=text[:18000];raw.raw_text=text[:1800]
     if len(text)<160:
         raise DeferredProcessing("Clínicas de Chile without sufficient readable content")
     kind="noticia sectorial" if channel=="Noticias" else "documento sectorial; extraer hallazgo material, no resumir por publicar"
