@@ -14,6 +14,7 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit, urlunsplit
+from zoneinfo import ZoneInfo
 
 from radar_salud.pulso_source import extract_article
 
@@ -93,6 +94,19 @@ def api_page_key(url):
         return None
 
 
+def api_inventory_day(value):
+    """Match the API traversal calendar; never establish a final article date."""
+    try:
+        if len(value) == 10:
+            return datetime.fromisoformat(value).date().isoformat()
+        stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if stamp.tzinfo is None:
+            return None
+        return stamp.astimezone(ZoneInfo("America/Santiago")).date().isoformat()
+    except (ValueError, TypeError, AttributeError):
+        return None
+
+
 def discovery_evidence(discovery_path, artifact_dir=None):
     paths = [discovery_path] if discovery_path is not None and discovery_path.exists() else []
     if artifact_dir is not None and artifact_dir.exists():
@@ -163,9 +177,11 @@ def preserve_api_proof(sources, evidence, output, requests):
                     if (not isinstance(nodes, list) or len(nodes) != page.get("primary_entries")
                             or document.get("count") != page.get("count") or document.get("next") != page.get("next")):
                         raise ValueError("original_api_inventory_or_cursor_mismatch")
-                    from radar_salud.pulso_source import publication_day
-                    days = [publication_day(node.get("first_publish_date") or "") for node in nodes]
+                    timestamps = [node.get("first_publish_date") for node in nodes]
+                    days = [api_inventory_day(value or "") for value in timestamps]
                     if page.get("inventory_day_max") and (None in days or max(days) != page["inventory_day_max"]):
+                        raise ValueError("original_api_publication_boundary_mismatch")
+                    if page.get("inventory_day_min") and (None in days or min(days) != page["inventory_day_min"]):
                         raise ValueError("original_api_publication_boundary_mismatch")
                     relative = compact["sha256"] + ".json.gz"
                     destination = output / relative
@@ -175,7 +191,10 @@ def preserve_api_proof(sources, evidence, output, requests):
                     compact.update(gzip_file=relative, raw_payload_retained=True,
                                    capture_provenance="preserved_original_public_api_response")
                     requests[(compact["url"], compact["sha256"])] = compact
-                    item.update(proof_status="verified_original_boundary_json", http=compact)
+                    item.update(proof_status="verified_original_boundary_json", http=compact,
+                                inventory_calendar="America/Santiago",
+                                original_first_publish_timestamps=timestamps,
+                                original_inventory_days_santiago=days)
                     break
                 except Exception as error:
                     errors.append({"error_type": type(error).__name__, "reason": str(error),
@@ -195,6 +214,7 @@ def preserve_api_proof(sources, evidence, output, requests):
     return {"status": "PUBLIC_API_HTTP_AND_BOUNDARY_PROOF_AVAILABLE_NOT_SOURCE_ACCEPTANCE" if complete else "PUBLIC_API_PROOF_PARTIAL",
             "discovery_at": discovery_at, "discovery_run_sha256": discovery_hash,
             "required_feeds": required, "runtime_coverage": runtime,
+            "inventory_calendar": "America/Santiago for API first_publish_date traversal only; final article dates require original primary byline corroboration",
             "http_chain_sha256": sha256(chain_bytes), "feeds": feeds,
             "raw_payload_retention": "Exact observed first and last three API responses per feed; interior pages retain observed HTTP metadata only."}
 

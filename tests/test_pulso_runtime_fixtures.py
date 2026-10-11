@@ -125,12 +125,12 @@ def test_downloaded_artifact_restores_only_selected_raw_originals_not_runtime_st
     assert state.read_text() == '{"sentinel":"do not restore"}'
 
 
-def api_capture_chain(tmp_path):
+def api_capture_chain(tmp_path, first_publish="2026-07-09T10:00:00Z", inventory_day="2026-07-09"):
     """Synthetic unit input exercises retention; it is never saved as an original fixture."""
     source, control, article, _ = original_capture(tmp_path)
     records, pages = [article], []
     for offset in range(0, 144, 24):
-        document = {"content_elements": [{"_id": str(offset), "first_publish_date": "2026-07-09T10:00:00Z"}],
+        document = {"content_elements": [{"_id": str(offset), "first_publish_date": first_publish}],
                     "count": 500, "next": offset + 24}
         payload = json.dumps(document).encode()
         compressed = gzip.compress(payload, mtime=0)
@@ -142,7 +142,7 @@ def api_capture_chain(tmp_path):
                             gzip_sha256=hashlib.sha256(compressed).hexdigest(), gzip_file=filename))
         pages.append(dict(status="public_feed_page", feed="tag:salud", offset=offset, next=offset+24,
                           primary_entries=1, count=500, json_sha256=records[-1]["sha256"],
-                          inventory_day_min="2026-07-09", inventory_day_max="2026-07-09"))
+                          inventory_day_min=inventory_day, inventory_day_max=inventory_day))
     source.write_text(json.dumps({"source": "pulso_latercera", "requests": records}))
     discovery = tmp_path / "discovery_run.json"
     discovery.write_text(json.dumps({"at": "2026-10-11T06:00:00Z", "source_details": {"pulso_latercera": pages + [
@@ -181,6 +181,26 @@ def test_public_api_chain_proof_survives_warm_cache_without_refetch_or_new_captu
     assert second["public_api_proof"]["http_chain_sha256"] == first["public_api_proof"]["http_chain_sha256"]
     assert second["public_api_proof"]["status"] == first["public_api_proof"]["status"]
     assert second["counts"] == {"verified_original": 1}
+
+
+def test_midnight_api_inventory_uses_santiago_without_rewriting_original_timestamp_or_primary_date(tmp_path):
+    timestamp = "2026-07-10T00:30:00Z"
+    source, control, discovery, records, _ = api_capture_chain(tmp_path, first_publish=timestamp,
+                                                             inventory_day="2026-07-09")
+    output = tmp_path / "fixtures"
+    result = retain.retain(control, source, output, discovery_path=discovery)
+    proof = result["public_api_proof"]
+    assert proof["status"] == "PUBLIC_API_HTTP_AND_BOUNDARY_PROOF_AVAILABLE_NOT_SOURCE_ACCEPTANCE"
+    assert proof["inventory_calendar"].startswith("America/Santiago for API")
+    for page in proof["feeds"][0]["pages"]:
+        if page["raw_payload_required"]:
+            assert page["original_first_publish_timestamps"] == [timestamp]
+            assert page["original_inventory_days_santiago"] == ["2026-07-09"]
+            observed = next(row for row in records if row["url"] == page["http"]["url"])
+            assert page["http"]["sha256"] == observed["sha256"]
+            assert (output / page["http"]["gzip_file"]).read_bytes() == (source.parent / observed["gzip_file"]).read_bytes()
+    assert result["fixtures"][0]["publication_date"] == "2026-10-10"
+    assert result["fixtures"][0]["expected_publication_date"] == "2026-10-10"
 
 
 @pytest.mark.parametrize("failure", ["missing_http", "wrong_cursor", "wrong_boundary_date", "wrong_raw_hash"])
