@@ -144,3 +144,54 @@ def test_medical_report_execution_month_never_becomes_daily_publication():
     raw=RawItem('suseso_fiscalizacion','Informe 2026/IFIS10','https://www.suseso.gob.cl/609/w3-article-786875.html','SUSESO','official',None,metadata={'document_class':'enforcement_report_candidate','execution_period':'2026 / Junio','publication_date':None,'emission_date':None})
     with pytest.raises(DeferredProcessing,match='execution_period_is_not_publication'):
         process_suseso_fiscalizacion(raw,{'base_confidence':100})
+
+
+def test_archived_office_with_current_suspension_is_recovered_without_new_dates(tmp_path):
+    raw,=parse_enforcement_listing(professional_table(1).replace('02/10/2026','17/06/2026'),*ENFORCEMENT_PAGES[0])
+    queue=PendingQueue(tmp_path/'queue.json');at=datetime(2026,10,11,tzinfo=timezone.utc)
+    queue.discover(raw.source_slug,[raw],now=at)
+    key=fingerprint(raw);item=queue.items[key]
+    item.update(status='archived',reason='outside_90_day_backfill')
+    original_detection=item['detected_at'];queue.save()
+    queue.discover(raw.source_slug,[raw],now=at)
+    assert queue.items[key]['status']=='pending'
+    assert queue.items[key]['lane']=='BACKFILL'
+    assert queue.items[key]['detected_at']==original_detection
+    assert queue.items[key]['raw']['event_date']=='2026-06-17'
+    assert queue.items[key]['raw']['metadata']['publication_date'] is None
+    assert queue.enforce_backfill_horizon(now=at)==0
+    row=process_professional_sanction(raw,{'base_confidence':100})
+    from radar_salud.editorial_gate import publication_ready
+    assert publication_ready(row)[0]
+    queue.finish(key,'published',now=at)
+    queue.discover(raw.source_slug,[raw],now=at)
+    assert queue.items[key]['status']=='published'
+
+
+def test_expired_or_unverified_suspension_does_not_bypass_historical_horizon(tmp_path):
+    from radar_salud.pending_queue import beyond_backfill_horizon
+    from radar_salud.suseso_fiscalizacion import current_professional_suspension
+    raw,=parse_enforcement_listing(professional_table(1).replace('02/10/2026','17/06/2026').replace('07/10/2026','18/06/2026').replace('04/01/2027','18/09/2026'),*ENFORCEMENT_PAGES[0])
+    at=datetime(2026,10,11,tzinfo=timezone.utc)
+    assert beyond_backfill_horizon(raw,at)
+    raw.metadata['suspension_end']='2027-01-04'
+    raw.metadata['date_conflicts']=['incomplete_or_inconsistent_register_row']
+    assert beyond_backfill_horizon(raw,at)
+    raw.metadata['date_conflicts']=[]
+    assert not current_professional_suspension('https://example.org/register',raw.metadata,at.date())
+
+
+def test_active_old_office_is_context_in_recent_register_without_inflating_counts():
+    from datetime import date
+    spec=importlib.util.spec_from_file_location('register_stock_export',Path('scripts/export_web_snapshot.py'))
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    new,=parse_enforcement_listing(professional_table(1),*ENFORCEMENT_PAGES[0])
+    old,=parse_enforcement_listing(professional_table(1).replace('03209','00040').replace('02/10/2026','09/01/2026'),*ENFORCEMENT_PAGES[0])
+    rows=[process_professional_sanction(raw,{'base_confidence':100}) for raw in (new,old)]
+    pulse,=module.curate(rows,resolve_external=False,as_of=date(2026,10,11))
+    assert pulse['counts']=={'30':1,'90':1}
+    assert len(pulse['source_alternatives'])==1
+    context,=pulse['historical_sanction_context']
+    assert context['source_record_id']=='O-02-S-00040-2026'
+    assert context['event_date']=='2026-01-09' and context['publication_date'] is None
+    assert 'no se suman a las novedades' in pulse['what_happened']

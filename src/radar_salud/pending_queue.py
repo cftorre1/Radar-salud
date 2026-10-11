@@ -49,6 +49,8 @@ def lane(raw, now, last_discovered_at=None):
         return "BACKFILL"
 
 def beyond_backfill_horizon(raw, now, days=90):
+    if current_sanction_stock(raw, now):
+        return False
     try:
         published = datetime.fromisoformat(raw.event_date[:10]).date()
         return (now.date() - published).days > days
@@ -58,6 +60,12 @@ def beyond_backfill_horizon(raw, now, days=90):
             try:return (now.date()-datetime.fromisoformat(bound).date()).days>days
             except (TypeError,ValueError):pass
         return False
+
+def current_sanction_stock(raw, now):
+    from .suseso_fiscalizacion import current_professional_suspension
+    return (raw.source_slug == 'suseso_fiscalizacion'
+        and raw.event_date == raw.metadata.get('emission_date')
+        and current_professional_suspension(raw.url, raw.metadata, now.date()))
 
 class PendingQueue:
     def __init__(self, path):
@@ -118,6 +126,13 @@ class PendingQueue:
                         archived = item["lane"] == "BACKFILL" and beyond_backfill_horizon(raw, now)
                         item.update(status="archived" if archived else "pending",
                             reason="outside_90_day_backfill" if archived else None, retry_at=None)
+                if (item['status'] == 'archived' and item.get('reason') == 'outside_90_day_backfill'
+                    and current_sanction_stock(raw, now)):
+                    item.setdefault('rediscovery_repairs', []).append({
+                        'at': now.isoformat(), 'previous_status': 'archived',
+                        'previous_reason': item['reason'],
+                        'reason': 'historical_office_with_current_suspension_stock_context'})
+                    item.update(status='pending', lane='BACKFILL', reason=None, retry_at=None)
                 continue
             if key in self.items or key in seen or (source in FISCALIZATION_SOURCES and legacy_fingerprint(raw) in seen):
                 continue
@@ -140,6 +155,9 @@ class PendingQueue:
                 continue
             if item.get("lane") == "BACKFILL" and item.get("status") in ("pending", "retry", "processing"):
                 raw = item.get("raw", {})
+                from .models import RawItem
+                if raw.get('source_slug') == 'suseso_fiscalizacion' and current_sanction_stock(RawItem(**raw), now):
+                    continue
                 try:
                     published = datetime.fromisoformat(str(raw.get("event_date"))[:10]).date()
                 except (TypeError, ValueError):

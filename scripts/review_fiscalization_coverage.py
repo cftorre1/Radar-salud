@@ -41,7 +41,7 @@ def recent(day,days):
 def run(runtime,root=Path('.')):
     manifest=json.loads((runtime/'manifest.json').read_text());reconciliation=json.loads((root/'data/audits/fiscalizacion/native_reconciliation_2026_10_11.json').read_text())
     reviews=json.loads((root/'config/fiscalization_editorial_reviews.json').read_text());failures=[]
-    sis={};professional={};undated=set();official_news={}
+    sis={};professional={};professional_validity={};undated=set();official_news={}
     for receipt in manifest['receipts']:
         url=receipt['url']
         if url not in {r['url'] for rows in reconciliation['native_engine']['surfaces'].values() for r in rows}:continue
@@ -68,6 +68,7 @@ def run(runtime,root=Path('.')):
             for cells in parser.rows:
                 if len(cells)==10 and re.fullmatch(r'O-\d{2}-[A-Z]+-\d+-20\d{2}',cells[4]['text']):
                     identity=cells[4]['text'];professional[identity]=iso(cells[5]['text'])
+                    professional_validity[identity]=(iso(cells[8]['text']),iso(cells[9]['text']))
         elif url.endswith('814414.html'):
             for cells in parser.rows:
                 if len(cells)>=5:
@@ -88,6 +89,13 @@ def run(runtime,root=Path('.')):
     history_ids={identity(r) for r in history if 'Fiscalización' in r.get('signal_types',[])}
     feed_ids={identity(r) for r in feed if 'Fiscalización' in r.get('signal_types',[])}
     feed_ids.update(identity(alt) for r in feed if 'Fiscalización' in r.get('signal_types',[]) for alt in r.get('source_alternatives',[]))
+    context_ids={identity(alt) for r in feed if 'Fiscalización' in r.get('signal_types',[]) for alt in r.get('historical_sanction_context',[])}
+    old_current={('https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html',key) for key,day in professional.items()
+        if not recent(day,90) and all(professional_validity[key]) and professional_validity[key][0]<=AS_OF.isoformat()<=professional_validity[key][1]}
+    for missing in old_current-history_ids:failures.append('missing_current_historical_stock_history:'+str(missing))
+    for missing in old_current-context_ids:failures.append('missing_current_historical_stock_context:'+str(missing))
+    if len(old_current)!=reconciliation.get('current_historical_sanction_stock',{}).get('published'):
+        failures.append('current_historical_stock_count_mismatch')
     counts={}
     for days in (30,90):
         sis_ids={(url,None) for url,v in sis.items() if recent(v['publication'],days) or recent(v['emission'],days)}
@@ -108,7 +116,7 @@ def run(runtime,root=Path('.')):
     for days,values in exact.items():
         for slug,label in (('superintendencia_fiscalizacion','sis'),('suseso_fiscalizacion','suseso')):
             if reconciliation['exact_calendar_windows'][slug][days]['official_confirmed']!=values[label]:failures.append('exact_calendar_count_mismatch')
-    return dict(historical_listing_inventory_differences=sorted(expected_stock-set(sis)),reviewer='independent_read_only_official_html_reconciliation',verdict='PASS' if not failures else 'FAIL',failures=failures,counts=counts,sis_unique_listing_urls=len(sis),professional_offices=len(professional),exact_calendar_windows=exact,official_news_inventory=len(official_news),date_uncertain_reports=len(undated),coverage_complete=False,limits=['Bounded dated coverage; daily publication dates of ten reports remain unknown.','Primary legal readings are explicit editorial reviews with matching native PDF hashes; this script does not certify legal interpretation.','Global QA and existing product Reviewer remain independent release gates.'])
+    return dict(historical_listing_inventory_differences=sorted(expected_stock-set(sis)),reviewer='independent_read_only_official_html_reconciliation',verdict='PASS' if not failures else 'FAIL',failures=failures,counts=counts,sis_unique_listing_urls=len(sis),professional_offices=len(professional),current_historical_stock=len(old_current),exact_calendar_windows=exact,official_news_inventory=len(official_news),date_uncertain_reports=len(undated),coverage_complete=False,limits=['Bounded dated coverage; daily publication dates of ten reports remain unknown.','Primary legal readings are explicit editorial reviews with matching native PDF hashes; this script does not certify legal interpretation.','Global QA and existing product Reviewer remain independent release gates.'])
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--runtime',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();result=run(a.runtime);a.output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(json.dumps(result,ensure_ascii=False));raise SystemExit(bool(result['failures']))

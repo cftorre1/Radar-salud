@@ -21,6 +21,23 @@ ENFORCEMENT_PAGES = [
 ]
 
 
+def current_professional_suspension(url, metadata, as_of):
+    """A current restriction is stock context, never a new issue/publication date."""
+    if (canonical_url(url) != ENFORCEMENT_PAGES[0][1]
+        or metadata.get('document_class') != 'enforcement_sanction'
+        or metadata.get('actor_evidence') != 'official_sanction_register'
+        or metadata.get('date_conflicts')
+        or not re.fullmatch(r'O-\d{2}-[A-Z]+-\d+-20\d{2}', metadata.get('source_record_id') or '')):
+        return False
+    from datetime import date
+    try:
+        emitted, start, end = (date.fromisoformat(metadata[key]) for key in
+            ('emission_date', 'suspension_start', 'suspension_end'))
+        return emitted <= as_of and start <= as_of <= end
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
 def parse_actor_listing(html, actor, page):
     parser = _TableParser()
     parser.feed(html)

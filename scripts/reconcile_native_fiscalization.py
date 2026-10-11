@@ -140,7 +140,8 @@ def reconcile(runtime,root=Path('.'),apply=False):
     for row in history:
         if row.get('source_url') in selected_norms:
             row.update(publication_date=None,emission_date=row['event_date'],event_date_basis='emission')
-    ledger=[];unknown=[];stock=[]
+    from radar_salud.suseso_fiscalizacion import current_professional_suspension
+    ledger=[];unknown=[];stock=[];current_historical_stock=[]
     for raw in inventory:
         key=fingerprint(RawItem(**raw));item=queue.get(key);meta=raw['metadata']
         hkey=raw['url']+('|record:'+meta['source_record_id'] if meta.get('source_record_id') else '')
@@ -153,6 +154,9 @@ def reconcile(runtime,root=Path('.'),apply=False):
         receipt=dict(source=raw['source_slug'],url=raw['url'],source_record_id=meta.get('source_record_id'),title=raw['title'],document_class=kind or meta.get('fiscalization_kind'),decision=decision,reason=reason,
             event_date=raw.get('event_date'),publication_date=meta.get('publication_date'),emission_date=meta.get('emission_date'),notification_date=meta.get('notification_date'),modification_date=meta.get('modification_date'),fact_date=meta.get('fact_date'),fact_period=meta.get('fact_period'),execution_period=meta.get('execution_period'),event_date_basis=meta.get('event_date_basis'),actor=meta.get('regulated_entity'),actor_category=meta.get('scope') or meta.get('fiscalized_actors'),amount=meta.get('sanction_amount'),unit=meta.get('sanction_unit'),effect=meta.get('sanction_effect'),validity=meta.get('validity_text'),detected_at=(item or row or {}).get('detected_at'),baseline_detected=hkey in baseline_ids or (raw['source_slug'],canonical_url(raw['url'])) in baseline_qids,baseline_published=hkey in baseline_ids,
             materiality=(row or {}).get('why_it_matters'),what_happened=(row or {}).get('what_happened') or raw['raw_text'],primary_documents=meta.get('attachments',[]))
+        if not recent(raw,90) and raw['source_slug']=='suseso_fiscalizacion' and current_professional_suspension(raw['url'],meta,AS_OF):
+            receipt['reason']='historical_office_with_current_suspension; BACKFILL_stock_context_not_recent_activity'
+            current_historical_stock.append(receipt)
         stock.append({k:receipt[k] for k in ('source','url','source_record_id','title','document_class','decision','reason','event_date','publication_date','emission_date','actor_category','baseline_detected')})
         if kind=='enforcement_report_candidate':unknown.append(receipt)
         if recent(raw,90):ledger.append(receipt)
@@ -173,6 +177,9 @@ def reconcile(runtime,root=Path('.'),apply=False):
         legacy_suseso=dict(count=len(legacy_su),classification_counts=dict(Counter(r['document_kind'] for r in legacy_su)),decisions=legacy_su),
         legacy_sis=dict(classification_counts=dict(Counter(('report' if raw['metadata'].get('fiscalization_kind')=='report' else raw['metadata'].get('sanction_effect') or 'unknown') for raw in inventory if raw['source_slug']=='superintendencia_fiscalizacion' and raw['url'] in legacy_urls)),discovered_urls=2696,pagination_duplicate_urls=0,administrative_exclusions=administrative,verified_primary_alias=alias_review,unique_enforcement_listing_urls=2695,unique_after_one_verified_primary_alias=2694,all_legal_act_identities_certified=False),
         stock_classification_counts={s:dict(Counter((r['document_class'] or 'unknown')+':'+r['decision'] for r in stock if r['source']==s)) for s in SOURCES})
+    report['current_historical_sanction_stock']={'count':len(current_historical_stock),
+        'published':sum(r['decision']=='published' for r in current_historical_stock),
+        'decisions':current_historical_stock,'counted_as_recent_activity':False}
     if missing_verified_alias:report['legacy_sis']['classification_counts']['sanction']+=1
     report['legacy_sis'].update(original_representations={'document_urls':2684,'thumbnail_assets':11,'administrative_subrogation':1},thumbnail_asset_identity_repairs=asset_reviews)
     report['window_semantics']={'primary':'inclusive elapsed date age: 0..30 and 0..90; matches the existing application filter','30_start':'2026-09-11','90_start':'2026-07-13','exact_calendar_30_start':'2026-09-12','exact_calendar_90_start':'2026-07-14'}
@@ -193,6 +200,9 @@ def reconcile(runtime,root=Path('.'),apply=False):
             own=[v for v in queue.values() if v['source']==source]
             source_health.update(window_semantics=report['window_semantics'],exact_calendar_windows=report['exact_calendar_windows'][source],archived=sum(v['status']=='archived' for v in own),pending=sum(v['status'] in ('retry','pending','processing') for v in own),checked_at=max(r['completed_at'] for r in receipts),unique_items=sum(r['source']==source and r['decision']!='deduplicated' for r in stock),pages_checked=sum(not r['body_file'].endswith('.pdf') for r in receipts),documents_checked=sum(r['body_file'].endswith('.pdf') for r in receipts),http_receipts_checked=len(receipts),items_recent=windows[source]['90']['official_confirmed'],items_material=windows[source]['90']['material'],items_recent_enforcement=windows[source]['90']['official_confirmed'],windows=windows[source],coverage_complete=False,coverage_reason=('Seven official results indexes fully reconciled in 30/90-day dated windows; coverage outside these indexes and all historical legal-act identities not certified.' if source.startswith('superintendencia') else 'Dated sanctions and official news fully reconciled. Publication dates remain unknown for 439 historical-execution programme rows and ten medical result reports; no site-wide absence claim.'),publication_date_uncertain_reports=sum(r['source']==source and r['document_class'] in ('enforcement_report_candidate','historical_enforcement_report') for r in stock),bounded_dated_coverage_complete=True,final_state='OPERATIVE_DEGRADED',status='warning',rejected=sum(v['status']=='rejected' for v in own),deferred=sum(v['status']=='retry' for v in own),deferred_date_uncertain=sum(v['raw']['metadata'].get('document_class')=='enforcement_report_candidate' for v in own),rejection_reasons=dict(Counter(v.get('reason') for v in own if v['status']=='rejected')),reconciliation=dict(at=manifest['completed_at'],native_live_validated=True,runtime_url=manifest['github_run_url'],runtime_sha=manifest['started_from_sha'],stock_preserves_detected_at=True,backfill_only=True),zero_published_reason='idempotent replay; all confirmed recent material acts already persisted')
             health['sources'][source]=source_health
+            if source=='suseso_fiscalizacion':
+                source_health['historical_sanctions_with_current_suspension']=len(current_historical_stock)
+                source_health['historical_current_stock_published']=sum(r['decision']=='published' for r in current_historical_stock)
         health['generated_at']=manifest['completed_at'];atomic_json(root/'data/source_health.json',health);atomic_json(root/'web/data/source_health.json',health)
         spec=importlib.util.spec_from_file_location('native_scope_export',root/'scripts/export_web_snapshot.py');exporter=importlib.util.module_from_spec(spec);spec.loader.exec_module(exporter)
         from radar_salud.editorial_copy import apply_reviewed_copy
