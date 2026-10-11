@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T13:41:48.647967+00:00",
+  "updated_at": "2026-10-11T14:05:53.481344+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -4023,9 +4023,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T08:44:04.852434+00:00",
+      "last_progress_at": "2026-10-11T14:05:53.481344+00:00",
       "current_subfront": "publisher_date_and_archive_gaps_after_scoped_technical_validation",
-      "next_action": "Retain degraded discovery for known surfaces. Complete 90-day acceptance only after an authoritative publisher date resolves Duelo/TPS and a functioning official Mutual archive or equivalent dated official listing establishes the missing boundary. Never infer dates, total coverage or source-wide WAF blockage. Preserve these11 records and their original captures; retry only ordinary permitted official endpoints when connectivity becomes available. The independent connectivity diagnostic and source health retain actual HTTP0/no TLS/timeout evidence.",
+      "next_action": "Runtime post-merge en curso; revisión por subfuente y conciliación del stock antes de cambiar outcome.",
       "branch": "codex/e-salud-laboral-20261011",
       "pull_request": "https://github.com/cftorre1/Radar-salud/pull/12",
       "progress": "Scoped implementation and Reviewer validated; 5 reviewed branch-only BACKFILLs. Official ACHS Seguro, central ACHS Salud, Mutual and IST surfaces accessible; clinic subpublisher availability separately recorded. 110 verified official URLs (102 title/date groups); 107 queued, three nonmaterial blog rejections durable only in inventory. 90-day complete acceptance remains partial for three sources.",
@@ -4104,7 +4104,11 @@
       "global_90_day_acceptance": false,
       "external_source_blocker_proven": false,
       "pr_closed": false,
-      "production_updated": false
+      "production_updated": false,
+      "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "integration_pr": 20,
+      "runtime_run": 38145632535,
+      "integration_outcome": "NOT_READY"
     },
     {
       "id": "w4_isapres_2026_10_11",
@@ -4775,9 +4779,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T13:41:48.647967+00:00",
-      "current_subfront": "salud_laboral_candidate",
-      "next_action": "Integrate strict baseline PR17 and current-poll health/weekly provenance PR19 with combined QA. Continue source PR12/13/14 in staging; preserve undated reports and legal coverage gaps. Pulso only READY.",
+      "last_progress_at": "2026-10-11T14:05:53.481344+00:00",
+      "current_subfront": "post_merge_PR20",
+      "next_action": "Validar runtime de la integración actual y continuar los siguientes frentes seguros. Pulso requiere READY explícito.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -4884,6 +4888,152 @@
           "final_outcome": "INTEGRATED_DEGRADED",
           "reason": "Repaired text discovery, publisher dates and stock integration validated; 19 multimedia items and partial site coverage retain warning. No full multimedia/absolute site coverage claim.",
           "next_action": "Fix cumulative rejection interpretation in the shared health producer, then integrate PR15; retain the 19 publisher text/OCR holds. Pulso remains NOT_READY."
+        }
+      },
+      "integrated_source_rows": {
+        "achs_seguro_laboral": {
+          "source": "achs_seguro_laboral",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_mutualities_lane_2026_10_11",
+          "pr": 12,
+          "branch": "codex/e-salud-laboral-20261011",
+          "candidate_sha": "49923320f84b8bf06b61d0fc408f8d9a7befd053",
+          "integration": "merged_PR20",
+          "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+          "qa": {
+            "run": 38145313219,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38145313219,
+            "status": "PASS",
+            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+          },
+          "runtime_post_merge": {
+            "run": 38145632535,
+            "status": "IN_PROGRESS"
+          },
+          "final_state": "NOT_READY",
+          "owner": "Pele + Occupational Health Worker",
+          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "candidate_qa": {
+            "python": "818PASS/1SKIP",
+            "node": "42PASS",
+            "reviewer": "PASS deterministic",
+            "preserved_prior_history": 886,
+            "added_history": 5
+          }
+        },
+        "clinicas_achs_salud": {
+          "source": "clinicas_achs_salud",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_mutualities_lane_2026_10_11",
+          "pr": 12,
+          "branch": "codex/e-salud-laboral-20261011",
+          "candidate_sha": "49923320f84b8bf06b61d0fc408f8d9a7befd053",
+          "integration": "merged_PR20",
+          "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+          "qa": {
+            "run": 38145313219,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38145313219,
+            "status": "PASS",
+            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+          },
+          "runtime_post_merge": {
+            "run": 38145632535,
+            "status": "IN_PROGRESS"
+          },
+          "final_state": "NOT_READY",
+          "owner": "Pele + Occupational Health Worker",
+          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "candidate_qa": {
+            "python": "818PASS/1SKIP",
+            "node": "42PASS",
+            "reviewer": "PASS deterministic",
+            "preserved_prior_history": 886,
+            "added_history": 5
+          }
+        },
+        "mutual_seguridad": {
+          "source": "mutual_seguridad",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_mutualities_lane_2026_10_11",
+          "pr": 12,
+          "branch": "codex/e-salud-laboral-20261011",
+          "candidate_sha": "49923320f84b8bf06b61d0fc408f8d9a7befd053",
+          "integration": "merged_PR20",
+          "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+          "qa": {
+            "run": 38145313219,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38145313219,
+            "status": "PASS",
+            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+          },
+          "runtime_post_merge": {
+            "run": 38145632535,
+            "status": "IN_PROGRESS"
+          },
+          "final_state": "NOT_READY",
+          "owner": "Pele + Occupational Health Worker",
+          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "candidate_qa": {
+            "python": "818PASS/1SKIP",
+            "node": "42PASS",
+            "reviewer": "PASS deterministic",
+            "preserved_prior_history": 886,
+            "added_history": 5
+          }
+        },
+        "ist": {
+          "source": "ist",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_mutualities_lane_2026_10_11",
+          "pr": 12,
+          "branch": "codex/e-salud-laboral-20261011",
+          "candidate_sha": "49923320f84b8bf06b61d0fc408f8d9a7befd053",
+          "integration": "merged_PR20",
+          "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+          "qa": {
+            "run": 38145313219,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38145313219,
+            "status": "PASS",
+            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+          },
+          "runtime_post_merge": {
+            "run": 38145632535,
+            "status": "IN_PROGRESS"
+          },
+          "final_state": "NOT_READY",
+          "owner": "Pele + Occupational Health Worker",
+          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "candidate_qa": {
+            "python": "818PASS/1SKIP",
+            "node": "42PASS",
+            "reviewer": "PASS deterministic",
+            "preserved_prior_history": 886,
+            "added_history": 5
+          }
         }
       }
     },

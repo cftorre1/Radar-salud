@@ -1167,7 +1167,18 @@
         "next_action": "Keep source degraded; resolve undated reports / remaining legal-act identity limits without date fabrication",
         "production_changes": false
       }
-    ]
+    ],
+    "integration_PR20_2026_10_11": {
+      "kind": "staging_integration",
+      "origin_pr": 12,
+      "integration_pr": 20,
+      "sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "qa_run": 38145313219,
+      "runtime_run": 38145632535,
+      "result": "MERGED_RUNTIME_PENDING",
+      "matrix": "data/pmo/integration_release_2026_10_11.json",
+      "scope": "staging only; no source closure or autonomy acceptance inferred"
+    }
   },
   "blocks": [
     {
@@ -3801,7 +3812,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T13:41:48.647967+00:00",
+  "updated_at": "2026-10-11T14:05:53.481344+00:00",
   "closed_beta": {
     "status": "pending_validation",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
