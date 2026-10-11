@@ -281,7 +281,9 @@ def additional_document_facts(primary_text, document_text, *, max_chars=1900):
             break
         if not novel:
             continue
-        for neighbor in range(max(0, index - 1), min(len(lines), index + 2)):
+        # PDF line wrapping often places attribution and the data period a few
+        # lines before a measurement. Keep that context with the actual value.
+        for neighbor in range(max(0, index - 3), min(len(lines), index + 3)):
             if neighbor not in used:
                 selected.append(lines[neighbor])
                 used.add(neighbor)
