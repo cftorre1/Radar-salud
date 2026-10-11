@@ -57,3 +57,22 @@ def test_mama_period_fix_and_hanta_prior_alert_comparison_are_independent_of_lex
     assert comparator['prior_alert_literal_quote'] in comparator['full_original_primary_body']
     assert '39%' not in comparator['full_original_primary_body']
     assert audit['publication_approved'] is False and audit['AI_calls'] == 0 and audit['state_mutated'] is False
+
+
+def test_hanta_dipres_second_peer_matches_frozen_writer_and_both_pending_findings():
+    path = ROOT / 'data/audits/pulso_actual323_hanta_dipres_independent_second_peer_2026_10_11.json'
+    peer = json.loads(path.read_text())
+    for field in ('first_reader', 'publication_template', 'pending_diagnosis'):
+        ref = peer[field]
+        assert hashlib.sha256((ROOT / ref['path']).read_bytes()).hexdigest() == ref['sha256']
+    publication, pending = peer['rows']
+    assert publication['actual_status'] == 'published' and publication['decision'] == 'correct'
+    assert publication['actual_score'] == 84
+    assert pending['actual_status'] == 'retry' and pending['actual_score'] == 78
+    assert pending['publication_approved'] is False
+    diag = json.loads(PATH.read_text())
+    assert pending['immutable_actual_model_primary_pin_sha256'] == next(r for r in diag['rows'] if r['row'] == 4)['immutable_actual_model_primary_pin_sha256']
+    template = json.loads((ROOT / peer['publication_template']['path']).read_text())
+    assert publication['proposed_what_happened'] == template['records'][0]['proposed']['what_happened']
+    assert publication['proposed_why_it_matters'] == template['records'][0]['proposed']['why_it_matters']
+    assert peer['pending_publication_approved'] is False and peer['AI_calls'] == 0
