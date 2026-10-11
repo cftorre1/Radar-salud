@@ -386,3 +386,12 @@ def test_capture_defect_reaudit_nonhealth_rejects_without_spending_ai(tmp_path):
     changes = repair_contaminated_evidence(queue, [corrected], [], NOW)
     assert changes[0]['reason'] == 'df_unrelated_to_health'
     assert queue.items[key]['status'] == 'rejected'
+
+
+def test_live_df_watermark_uses_same_chile_calendar_as_publication():
+    from radar_salud.pending_queue import lane
+    raw = _raw(dated=True)
+    # UTC is October 11, while the publisher's calendar still reads October 10.
+    assert lane(raw, datetime(2026, 10, 11, 2, tzinfo=timezone.utc), '2026-10-11T01:00:00Z') == 'LIVE'
+    raw.event_date = '2026-10-11'
+    assert lane(raw, datetime(2026, 10, 11, 2, tzinfo=timezone.utc), '2026-10-11T01:00:00Z') == 'BACKFILL'

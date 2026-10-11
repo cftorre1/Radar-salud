@@ -31,8 +31,16 @@ def lane(raw, now, last_discovered_at=None):
         return "BACKFILL"
     try:
         published = datetime.fromisoformat(raw.event_date[:10]).date()
-        watermark = datetime.fromisoformat(last_discovered_at.replace("Z", "+00:00")).date()
-        return "LIVE" if watermark <= published <= now.date() and (now.date() - published).days <= 7 else "BACKFILL"
+        stamp = datetime.fromisoformat(last_discovered_at.replace("Z", "+00:00"))
+        current_day=now.date()
+        if raw.source_slug=="diario_financiero":
+            from zoneinfo import ZoneInfo
+            # DF publishes Chile calendar days. A UTC midnight watermark must
+            # not turn a still-current Chile article into historical backfill.
+            if stamp.tzinfo:stamp=stamp.astimezone(ZoneInfo("America/Santiago"))
+            if now.tzinfo:current_day=now.astimezone(ZoneInfo("America/Santiago")).date()
+        watermark = stamp.date()
+        return "LIVE" if watermark <= published <= current_day and (current_day - published).days <= 7 else "BACKFILL"
     except (TypeError, ValueError):
         return "BACKFILL"
 
