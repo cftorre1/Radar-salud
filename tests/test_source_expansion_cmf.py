@@ -74,3 +74,17 @@ def test_review_cannot_reuse_changed_document_or_cross_issuer():
     doc['issuer_entity_id']=review['issuer_entity_id']
     assert apply_verified_primary(doc,review) and doc['disposition']=='deferred'
     assert doc['verified_event']['amount']['value']==80119759016
+
+
+def test_native_primary_group_table_requires_labelled_identity_not_logo_order():
+    from radar_salud.cmf_sources import parse_issuer_health_group
+    with ZipFile(ROOT/'data/audits/source_expansion/native_runtime_indexes.zip') as z:
+        r=next(r for r in json.loads(z.read('receipts.json'))['receipts'] if r['kind']=='issuer_group_report')
+        html=z.read(r['body_file']).decode()
+    meta=dict(source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at'])
+    relationships=parse_issuer_health_group(html,**meta)
+    consalud=next(r for r in relationships if r['entity_id']=='cl:isapre:107')
+    assert consalud['ownership_pct']==99.9 and consalud['effective_from'] is None
+    assert not consalud['subsidiary_performance_attribution']
+    with pytest.raises(ValueError,match='identity'):
+        parse_issuer_health_group(html.replace('title="Consalud"','title="RedSalud"'),**meta)

@@ -168,3 +168,35 @@ def apply_verified_primary(doc, review):
     doc['disposition']=review['publication_disposition'];doc['reason']=review['publication_reason']
     doc.setdefault('materiality',{})['material']=not review.get('supporting_update',False)
     return True
+
+
+def parse_issuer_health_group(html, *, source_url, sha256, fetched_at):
+    """Only explicitly labelled ownership rows; logos/order never establish control."""
+    if urlsplit(source_url).hostname!='ilcinversiones.cl':raise ValueError('Unsupported primary group report')
+    mapping={'consalud':('Consalud','cl:isapre:107'),
+             'redsalud':('RedSalud','cl:rut:76020458-7'),
+             'vida-camara':('Vida Cámara',None)}
+    result=[]
+    for table in re.findall(r'<table\b[^>]*>(.*?)</table>',html,re.I|re.S):
+        if 'participacion en propiedad' not in fold(' '.join(read(table).text)):continue
+        for row in re.findall(r'<tr\b[^>]*>(.*?)</tr>',table,re.I|re.S):
+            cells=re.findall(r'<td\b[^>]*>(.*?)</td>',row,re.I|re.S)
+            if len(cells)!=5:continue
+            # This primary table uses malformed <a/> closing tags.
+            links=re.findall(r'\bhref="([^"]+)"',cells[0],re.I)
+            keys=[parse_qs(urlsplit(h).query).get('e',[None])[0] for h in links if urlsplit(h).hostname=='ilcinversiones.cl']
+            key=next((key for key in keys if key in mapping),None)
+            if not key:continue
+            titles=re.findall(r'\btitle="([^"]+)"',cells[0],re.I)
+            name,entity_id=mapping[key]
+            if not titles or fold(titles[0])!=fold(name):raise ValueError('Group row identity mismatch')
+            pct=' '.join(read(cells[2]).text).strip()
+            if not re.fullmatch(r'\d+[,.]\d+%',pct):raise ValueError('Ownership percentage missing')
+            result.append(dict(parent_entity_id='cl:rut:94139000-5',entity_name=name,entity_id=entity_id,
+                ownership_pct=float(pct[:-1].replace(',','.')),source_url=source_url,source_sha256=sha256,
+                observed_at=fetched_at,reporting_period=None,effective_from=None,
+                relation='issuer_reported_ownership',date_reason='Undated company ownership table; incorporation year is not an effective control date',
+                subsidiary_performance_attribution=False))
+    if {r['entity_name'] for r in result}!={'Consalud','RedSalud','Vida Cámara'}:
+        raise ValueError('Primary company health ownership table incomplete')
+    return result

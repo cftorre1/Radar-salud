@@ -9,7 +9,7 @@ from .isapre_universe import parse_registry, release_metadata, parse_portfolio, 
 from .pending_queue import atomic_json
 from .source_health import record_data_adapter
 from .cmf_sources import parse_actor, parse_essential_index, financial_documents, financial_results, classify_primary
-from .cmf_sources import parse_shareholders, apply_verified_primary
+from .cmf_sources import parse_shareholders, apply_verified_primary, parse_issuer_health_group
 from urllib.parse import parse_qs, urlsplit
 
 
@@ -86,6 +86,21 @@ def collect_cmf(captures, root):
             actors.append(parse_actor(captures.html(r),source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at']))
     actors=list({a['entity_id']:a for a in actors}.values())
     by_rut={a['rut'].split('-')[0]:a for a in actors}
+    group_relationships=[]
+    for r in receipts:
+        if r['kind']=='issuer_group_report' and r['transport_ok']:
+            group_relationships=parse_issuer_health_group(captures.html(r),source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at'])
+            ilc=by_rut.get('94139000')
+            if ilc:ilc['issuer_reported_health_relationships']=group_relationships
+            universe_path=root/'data/entities/isapres.json'
+            if universe_path.exists():
+                universe=json.loads(universe_path.read_text())
+                for entity in universe['entities']:
+                    relation=next((r for r in group_relationships if r['entity_id']==entity['canonical_id']),None)
+                    if relation:
+                        entity['group_control']=relation
+                        entity['group_control_reason']='Majority ownership explicitly reported by issuer; no effective date or subsidiary event inferred'
+                atomic_json(universe_path,universe)
     for r in receipts:
         if not r['transport_ok']: continue
         rut=parse_qs(urlsplit(r['url']).query).get('rut',[None])[0]
@@ -163,6 +178,7 @@ def collect_cmf(captures, root):
                     financial_observations=len(observations),statement_documents=len(statements),primary_documents_verified=sum(d.get('primary_verified',False) for d in documents),
                     primary_documents_reverified=sum(d.get('primary_fetched_this_poll',False) for d in documents),
                     actor_coverage=actor_coverage,material_events=len(events), transport_failures=[{'url':r['url'],'http':r['network']['http_code'],'reason':r['network'].get('errormsg')} for r in receipts if not r['transport_ok']])
+    evidence['issuer_reported_health_relationships']=len(group_relationships)
     record_data_adapter(root,'cmf_health_ecosystem',evidence)
     return evidence
 
