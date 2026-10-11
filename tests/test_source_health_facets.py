@@ -30,6 +30,7 @@ def test_fiscalization_counts_do_not_certify_coverage_and_history_repairs_last_s
     assert row['status']=='warning' and row['coverage_status']=='unverified'
     assert row['last_signal_at']=='2026-09-08' and row['published_total']==1
     assert row['editorial_outcome']=='no_new_publications_existing_history'
+    assert row['published']==0 and row['archived']==2516
 
 
 def test_fiscalization_windows_use_office_identity_and_never_suspension_dates(tmp_path):
@@ -51,7 +52,6 @@ def test_fiscalization_windows_use_office_identity_and_never_suspension_dates(tm
     assert row['windows']['30']['published']==2
     assert row['parse_errors']==0 and row['coverage_complete'] is False
     assert row['zero_published_reason']=='evaluated_rejections_or_existing_published_history'
-    assert row['published']==0 and row['archived']==2516
 
 
 def test_fiscalization_partial_receipt_and_observation_are_separate_from_publication(tmp_path):
