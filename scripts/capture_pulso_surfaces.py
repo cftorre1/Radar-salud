@@ -37,6 +37,19 @@ EXTENDED_BOUNDARIES = (
     BASE + "/arc/outboundfeeds/sitemap/?outputType=xml&from=19000",
     BASE + "/arc/outboundfeeds/news-sitemap/?outputType=xml&from=10000",
 )
+RSS_PROBES = {
+    BASE + "/arc/outboundfeeds/rss/?outputType=xml&from=100": "rss_from_100.xml",
+    BASE + "/arc/outboundfeeds/rss/?outputType=xml&from=10000": "rss_from_10000.xml",
+    BASE + "/arc/outboundfeeds/rss/?outputType=xml&from=15000": "rss_from_15000.xml",
+    BASE + "/arc/outboundfeeds/rss/?outputType=xml&section=/pulso": "rss_section_pulso.xml",
+    BASE + "/arc/outboundfeeds/rss/?outputType=xml&section=/pulso&from=9900": "rss_section_pulso_from_9900.xml",
+    BASE + "/arc/outboundfeeds/rss/?outputType=xml&section=/nacional": "rss_section_nacional.xml",
+    BASE + "/arc/outboundfeeds/rss/?outputType=xml&section=/politica": "rss_section_politica.xml",
+    BASE + "/arc/outboundfeeds/rss/?outputType=xml&category=nacional": "rss_category_nacional.xml",
+    BASE + "/arc/outboundfeeds/rss/category/nacional/?outputType=xml": "rss_path_category_nacional.xml",
+    BASE + "/arc/outboundfeeds/rss/category/pulso/?outputType=xml": "rss_path_category_pulso.xml",
+}
+SECTION_SITEMAP_PROBE = BASE + "/arc/outboundfeeds/sitemap/?outputType=xml&section=/nacional&from=9900"
 XML_FIXTURES = {
     BASE + "/robots.txt": "robots.txt",
     SITEMAPS[0]: "sitemap_index.xml",
@@ -49,6 +62,8 @@ XML_FIXTURES = {
     EXTENDED_BOUNDARIES[1]: "sitemap_boundary_15000.xml",
     EXTENDED_BOUNDARIES[2]: "sitemap_boundary_19000.xml",
     EXTENDED_BOUNDARIES[3]: "news_sitemap_boundary_10000.xml",
+    **RSS_PROBES,
+    SECTION_SITEMAP_PROBE: "sitemap_section_nacional_from_9900.xml",
 }
 ARTICLE_FIXTURES = (
     BASE + "/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
@@ -60,6 +75,8 @@ SEEDS = (
     (SITEMAP_BOUNDARY, "sitemap_boundary", "observed_100_page_index_last_child"),
     *((url, "sitemap_boundary", "derived_from_observed_100_offset_pagination_unverified_extension")
       for url in EXTENDED_BOUNDARIES),
+    *((url, "feed_probe", "public_feed_parameter_or_route_hypothesis_unverified") for url in RSS_PROBES),
+    (SECTION_SITEMAP_PROBE, "sitemap_section_probe", "public_section_parameter_hypothesis_unverified"),
     *((BASE + path, "listing", "configured_or_known_taxonomy") for path in (
         "/canal/pulso/", "/canal/nacional/", "/etiqueta/salud/",
         "/etiqueta/isapres/", "/etiqueta/fonasa/", "/etiqueta/clinicas/",
@@ -180,6 +197,27 @@ def describe(payload: bytes, url: str, content_type: str) -> dict:
         # Only each <url>/<sitemap>'s direct primary <loc> enumerates an article
         # or child sitemap. Image/video locations never become article URLs.
         locations = list(dict.fromkeys(entry["url"] for entry in entries))
+        if root_type == "rss":
+            content_namespace = "http://purl.org/rss/1.0/modules/content/"
+            for item in root.findall("channel/item"):
+                location = item.findtext("link")
+                target = official_url(location.strip(), url) if location else None
+                if not target:
+                    continue
+                body = item.findtext(f"{{{content_namespace}}}encoded", default="")
+                entries.append({
+                    "url": target,
+                    "title": item.findtext("title"),
+                    "guid": item.findtext("guid"),
+                    "pubDate": item.findtext("pubDate"),
+                    "category": [node.text for node in item.findall("category") if node.text],
+                    "description": item.findtext("description"),
+                    "content_encoded_characters": len(body),
+                    "content_encoded_sha256": hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                    "content_encoded_excerpt": body[:1200],
+                    "body_evidence": "full content:encoded unchanged in hashed XML gzip; manifest excerpt only",
+                })
+            locations = list(dict.fromkeys(entry["url"] for entry in entries))
     except (ET.ParseError, ValueError):
         pass
     observed_endpoints = list(dict.fromkeys(

@@ -79,3 +79,26 @@ def test_empty_archive_page_is_observed_without_inventing_article_entries():
     assert observed["xml_root"] == "urlset"
     assert observed["xml_location_count"] == 0
     assert observed["xml_locations"] == observed["xml_entries"] == []
+
+
+def test_rss_enumerates_all_primary_articles_with_date_and_body_provenance():
+    xml = b'''<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel>
+      <item><title>Untitled strategic signal</title><link>https://www.latercera.com/pulso/noticia/one/</link>
+      <guid>https://www.latercera.com/pulso/noticia/one/</guid><pubDate>Sat, 10 Oct 2026 23:35:58 +0000</pubDate>
+      <category>Pulso</category><description>Issuer debt restructuring</description>
+      <content:encoded><![CDATA[<p>Full primary article body about hospital financing.</p>]]></content:encoded></item>
+      <item><title>Second signal</title><link>https://www.latercera.com/nacional/noticia/two/</link>
+      <pubDate>Fri, 09 Oct 2026 12:00:00 +0000</pubDate><category>Nacional</category>
+      <content:encoded><![CDATA[<p>Second primary body</p>]]></content:encoded></item>
+      <item><link>https://evil.test/article/</link></item></channel></rss>'''
+    observed = probe.describe(xml, probe.BASE, "application/xml")
+    assert observed["xml_root"] == "rss"
+    assert observed["xml_location_count"] == 2
+    entries = observed["xml_entries"]
+    assert entries[0]["pubDate"] == "Sat, 10 Oct 2026 23:35:58 +0000"
+    assert entries[0]["category"] == ["Pulso"]
+    body = "<p>Full primary article body about hospital financing.</p>"
+    assert entries[0]["content_encoded_excerpt"] == body
+    assert entries[0]["content_encoded_characters"] == len(body)
+    assert entries[0]["content_encoded_sha256"] == hashlib.sha256(body.encode()).hexdigest()
+    assert "publication_date" not in entries[0]
