@@ -1,12 +1,12 @@
 {
   "schema_version": "2.0",
-  "recorded_at": "2026-10-11T07:39:30.177969+00:00",
+  "recorded_at": "2026-10-11T08:17:19.062511+00:00",
   "status": "IN_PROGRESS_NOT_ACCEPTED",
   "source": "pulso_latercera",
   "owner": "Codex B / Senior Source Recovery Engineer",
   "branch": "codex/b-pulso-runtime-20261011",
   "base_staging_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
-  "current_product_candidate": "eea2ad6050afd5300d8622f7b38c773b281c1db0",
+  "current_product_candidate": "30ae39417924e6c407b9712b1da668c14bbdd8a0",
   "previous_handoff": "Historical pre-exhaustive record is preserved in git. Its CONNECT403 limitation is resolved through authorized GitHub Actions and is not a current source blocker.",
   "pr": "https://github.com/cftorre1/Radar-salud/pull/10",
   "issues_must_remain_open": [
@@ -14,13 +14,38 @@
     6
   ],
   "active_run": {
-    "id": 38120291133,
+    "run_id": 38121971530,
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121971530",
+    "code_sha": "8e2f2172f5ea083c2af217947ebbffe986f56dc3",
     "phase": "discovery_only",
-    "code_sha": "86c3cd1d2697a6f814261eea6a563279b4b062ee",
-    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120291133",
-    "status_at_checkpoint": "HTTP enumeration completed; original preservation completed; independent QA running",
-    "acceptance": "NOT_ACCEPTED_PENDING_ACTUAL_RESULTS",
-    "known_code_failure": "Discovery returns date-unresolved articles; old final sort compares None with str and may fail before core registration. Never credit internal positive traces unless actual hook returned inventory. New candidate fixes sorting and independently checks actual registration."
+    "core_source_present": true,
+    "source_inventory_returned_to_core": true,
+    "current_core_discovered_urls": 1732,
+    "current_core_verified_health_urls": 1688,
+    "metadata_only_candidates": 44,
+    "source_queue_urls": 1736,
+    "history_urls": 0,
+    "published_in_feed": 0,
+    "control_30": {
+      "detected": 29,
+      "expected": 29,
+      "recall": 1.0
+    },
+    "control_90": {
+      "detected": 79,
+      "expected": 79,
+      "recall": 1.0
+    },
+    "directed_discovery_qa": "FAIL",
+    "findings": {
+      "publisher_exception_original_not_verified": 43,
+      "publisher_conflict_falsely_labeled_verified_date": 11,
+      "publisher_exception_exact_editorial_hold_missing": 11,
+      "publisher_exception_capture_freshness_unproven": 6,
+      "queue_primary_detail_evidence_unverified": 2,
+      "original_primary_capture_not_verified": 1
+    },
+    "acceptance": "NOT_ACCEPTED_PENDING_REPAIRED_ACTUAL_QA_AND_PROCESSING"
   },
   "evidence": [
     "data/audits/pulso_external_control_2026_10_11.json",
@@ -44,7 +69,11 @@
     "data/audits/pulso_primary_exception_processing_review_2026_10_11.json",
     "data/audits/pulso_publisher_taxonomy_processing_review_2026_10_11.json",
     "data/audits/pulso_editorial_originals_independent_review_2026_10_11.json",
-    "tests/fixtures/pulso_editorial_exception_real/manifest.json"
+    "tests/fixtures/pulso_editorial_exception_real/manifest.json",
+    "data/audits/pulso_actual_core_checkpoint_2026_10_11.json",
+    "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+    "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+    "data/audits/pulso_cache_checkpoint_performance_2026_10_11.json"
   ],
   "control": {
     "frozen_urls": 236,
@@ -60,33 +89,31 @@
       "2026-10-10"
     ],
     "runtime_recall": {
-      "30": "18/29 (62.1%), FAIL",
-      "90": "46/79 (58.2%), FAIL"
+      "30": "29/29 (100%) in actual returned core; directed proof QA remains FAIL",
+      "90": "79/79 (100%) in actual returned core; directed proof QA remains FAIL"
     }
   },
   "validation": {
     "directed_tests": "Source228, publisher192, independent QA96, runtime24, independent ALL58/liveblog3 PASS at their checkpoint commits.",
-    "full_python": "789 PASS / 1 SKIP at eea2ad6050afd5300d8622f7b38c773b281c1db0 (2026-10-11 07:36 UTC); credentialed live test intentionally skipped; real HTML fixtures and source tests ran.",
-    "acceptance": "NOT_RESOLVED_NO_MERGE; actualdatarecall/process/finalReviewer/stagingPASS pending",
+    "full_python": "1164 PASS / 1 SKIP at09bfe3f; newer final source guards/union fixtures must be validated",
+    "acceptance": "NOT_RESOLVED_NO_MERGE; corrected discovery proof, actualprocessing, history/feed/finalReviewer/staging pending",
     "general_candidate_qa": "Actions38121032463 tests + staging + deterministic Reviewer PASS at b91de5223e74757a97453de815f5b1c3b69a227f; later taxonomy/processor/QA repairs need final candidate checks."
   },
   "current_agents": {
-    "historical_discovery": "Source checkpoint2344089 complete: native calendars, retries, pagination, full bodies, exact primary taxonomy, video/date/sponsor exceptions; audit sparse listing trace contract pending.",
-    "publisher_surfaces": "Checkpointeea2ad6: ALL101 semantic rejections reviewed and3 precise false negatives corrected; ALL12 original taxonomy and ALL24 unavailable/date-held originals replayed without AI; actual processing still pending.",
-    "adversarial_review": "Checkpointf9e3449: independent hash/identity/calendar/body review of ALL58 original exception documents and ALL110 liveblog updates. New actual warm/runtime/semantic outcomes not accepted.",
-    "actions_route": "Investigating concurrent stagingeee5dbb; original fixtures58 captured successfully in38120291103; main untouched.",
-    "external_control": "Frozen29/79 controls preserved; later semantic processing review pending.",
-    "browser_pagination": "Real serialized candidate feed/UI awaits actual Pulso publication."
+    "historical_discovery": "Adapting tests to89 retained union original documents while preserving immutable cold58 witnesses.",
+    "publisher_surfaces": "ALL1706 original body SHA projections and ALL287 semantic prefilter rejections durable in5402dde;16 additional precise admissions, editorial72 unchanged.",
+    "adversarial_review": "ALL79 primary originals/full331754chars durableb7cbeac; cache guards and new actual QA pending. No final source PASS.",
+    "actions_route": "Verified bundle transport1b81ede enables importing genuine ownbranch data without local git credentials; preserving all19 date conflict originals.",
+    "external_control": "ALL287 negatives reviewed;250defensible,17uncertain,20analysis candidates,4scope disagreements explicitly retained. Actual outcomes pending.",
+    "browser_pagination": "Actual serialized feed/UI pending real publication."
   },
   "resume_order": [
-    "All checkpoint commits are isolated on codex/b-pulso-runtime-20261011. Preserve all other orchestrator tasks and staged histories; issue6 remains open, main untouched.",
-    "ColdActions38115982275 genuine core discovered751, recall18/29 and46/79; only4/20feedscomplete and no publication. Never count these as accepted.",
-    "Full corpus capturedActions38118983728:3358retained identities,2994HTML,2453broad-health original projections; full bodies/hash evidence durable. These counts include old/current-day and nonmaterial articles, not90-day accepted coverage.",
-    "Finish video/date-conflict/taxonomy primary identity exceptions and precise materiality false-negative repairs with real original fixtures; preserve fullbody160/editorial72 and no fabricated dates/transcripts.",
-    "Preserve all warm originals/cache/state from38120291133 even if old sorting causes SourceTypeError. SourceTypeError means zero actual returned inventory, not trace-based recall. Next38121971530 runs genuine corrected core on latest isolated own branch using prior original artifact38120291133, no restoring artificial queue/budgets. Check20feeds/29+79controls actual returned inventory and original dates; explicit date/content/sponsor holds never credited as verified health.",
-    "Audit actual warm pagination/recall, every exception and omission; independent directed discoveryQA and Reviewer required before phase process.",
-    "Process existing real queue with Daily budgets fast120/deep15 and unchanged monthlylimits; recent Pulso ordering only within existing slots. Trace publish/reject/defer; never reopen terminals or publish by quota.",
-    "Review all actual published primary bodies/attribution/proposals/periods; export real history/feed/product and genuine desktop/mobile UIQA. Final SHA tests/staging/Reviewer and PR/issue5/queue update required. No merge/production or issue6closure."
+    "Repeat genuine corrected discovery_only using38121971530 original artifact and all retained union fixtures. Require directed actual QA and independent Reviewer before processing real queue with existing budgets. Then reconcile every material recent outcome and real history/feed/UI/staging.",
+    "Import genuine ownbranch tracked state/corpus/fixtures from verified bundle. Preserve latest staging tasks and all paid ledgers. Local old state must not overwrite remote1736 queue.",
+    "All79 controls must be primary-date verified; unresolved publisher dates and unavailable video bodies stay exact holds with complete originals, never fabricated dates/transcripts.",
+    "Process actual queue using fast120/deep15 and unchanged monthly limits. Recent ordering only within existing Pulso lane/attempt slots; preserve terminal decisions and duplicate holds.",
+    "Audit all actual published full originals and model/history output, with media_reported, proposal/period distinctions and reported numeric inconsistencies; no quota.",
+    "Join actual history to serialized feed/product and real desktop/mobile UI. Final SHA tests, independent Reviewer, directed QA and staging PASS required before any acceptance. No merge/main/production/issue6closure."
   ],
   "main_production": "Untouched; isolated branch only; no merge/deployment performed",
   "queued_report_run": {
@@ -186,5 +213,7 @@
   "concurrent_staging_observation": {
     "sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
     "status": "Merged latest staging; source/core unaffected; all other task/governance/PMO evidence preserved."
-  }
+  },
+  "actual_corrected_core_checkpoint": "data/audits/pulso_actual_core_checkpoint_2026_10_11.json",
+  "next_prior_capture_run_id": 38121971530
 }

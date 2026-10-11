@@ -4382,9 +4382,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T07:38:07.608837+00:00",
-      "current_subfront": "actual_warm_originals_preserved_corrected_core_queued",
-      "next_action": "Preserve actual warm38120291133 originals/cache and audit actual returned core count; known old null-date sort cannot count trace inventory. Corrected genuine core38121971530 queued; require20feeds and frozen29/79 independently verified before unchanged gate72 real processing. NOT_RESOLVED.",
+      "last_progress_at": "2026-10-11T08:17:19.062511+00:00",
+      "current_subfront": "actual_core_1732_controls_29_79_primary_proof_qa_repairs",
+      "next_action": "Repeat genuine corrected discovery_only using38121971530 original artifact and all retained union fixtures. Require directed actual QA and independent Reviewer before processing real queue with existing budgets. Then reconcile every material recent outcome and real history/feed/UI/staging.",
       "branch": "codex/b-pulso-runtime-20261011",
       "baseline_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
       "current_hypothesis": "Normal public frontend pagination spans factual sections and health tags; verify sustained primary-byline July boundary and frozen control in actual core.",
@@ -4410,22 +4410,26 @@
         "data/audits/pulso_primary_exception_processing_review_2026_10_11.json",
         "data/audits/pulso_publisher_taxonomy_processing_review_2026_10_11.json",
         "data/audits/pulso_editorial_originals_independent_review_2026_10_11.json",
-        "tests/fixtures/pulso_editorial_exception_real/manifest.json"
+        "tests/fixtures/pulso_editorial_exception_real/manifest.json",
+        "data/audits/pulso_actual_core_checkpoint_2026_10_11.json",
+        "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "data/audits/pulso_cache_checkpoint_performance_2026_10_11.json"
       ],
-      "candidate_sha": "eea2ad6050afd5300d8622f7b38c773b281c1db0",
+      "candidate_sha": "30ae39417924e6c407b9712b1da668c14bbdd8a0",
       "pr": 10,
       "acceptance": "NOT_RESOLVED_NO_MERGE",
-      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38120291133",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38121971530",
       "baseline_start_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
       "last_staging_sync_at": "2026-10-11T07:39:30.177969+00:00",
       "queued_reconciliation_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38121971530",
       "validation_checkpoint": {
-        "full_python": "789 PASS / 1 SKIP at eea2ad6050afd5300d8622f7b38c773b281c1db0 (2026-10-11 07:36 UTC); credentialed live test intentionally skipped; real HTML fixtures and source tests ran.",
+        "full_python": "1164 PASS / 1 SKIP at09bfe3f; newer final source guards/union fixtures must be validated",
         "general_qa_run": 38121032463,
         "general_qa_head": "b91de5223e74757a97453de815f5b1c3b69a227f",
         "general_qa_result": "tests + staging + deterministic Reviewer PASS; final new source/processor candidate remains pending",
         "next_general_qa_run": 38120295274,
-        "source_acceptance": "NOT_ACCEPTED_PENDING_REAL_INVENTORY_AND_OUTCOMES"
+        "source_acceptance": "NOT_ACCEPTED_PENDING_REPAIRED_ACTUAL_QA_AND_PROCESSING"
       },
       "actual_cold_runtime": {
         "at": "2026-10-11T06:38:17.272986+00:00",
@@ -4484,6 +4488,40 @@
         ],
         "control_denominator": "Frozen b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374 unchanged29/79",
         "independent_primary_review": "Raw HTML originals retained for12 failed controls; all21 absent originals rechecked independently with exact original byline and Nacional section; rechecks do not count as core discovery."
+      },
+      "actual_corrected_runtime": {
+        "run_id": 38121971530,
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121971530",
+        "code_sha": "8e2f2172f5ea083c2af217947ebbffe986f56dc3",
+        "phase": "discovery_only",
+        "core_source_present": true,
+        "source_inventory_returned_to_core": true,
+        "current_core_discovered_urls": 1732,
+        "current_core_verified_health_urls": 1688,
+        "metadata_only_candidates": 44,
+        "source_queue_urls": 1736,
+        "history_urls": 0,
+        "published_in_feed": 0,
+        "control_30": {
+          "detected": 29,
+          "expected": 29,
+          "recall": 1.0
+        },
+        "control_90": {
+          "detected": 79,
+          "expected": 79,
+          "recall": 1.0
+        },
+        "directed_discovery_qa": "FAIL",
+        "findings": {
+          "publisher_exception_original_not_verified": 43,
+          "publisher_conflict_falsely_labeled_verified_date": 11,
+          "publisher_exception_exact_editorial_hold_missing": 11,
+          "publisher_exception_capture_freshness_unproven": 6,
+          "queue_primary_detail_evidence_unverified": 2,
+          "original_primary_capture_not_verified": 1
+        },
+        "acceptance": "NOT_ACCEPTED_PENDING_REPAIRED_ACTUAL_QA_AND_PROCESSING"
       }
     }
   ],
