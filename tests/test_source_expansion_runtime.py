@@ -30,7 +30,8 @@ def test_primary_hash_bound_review_groups_updates_without_false_close(captures,t
     assert len(events)==5
     red=next(e for e in events if 'vida_camara' in e['event_id'])
     assert len(red['primary_disclosures'])==4 and red['stage']=='shareholders_meeting_called'
-    assert red['effective_date']=='2026-10-13'
+    assert red['scheduled_meeting_date']=='2026-10-13' and red['effective_date'] is None
+    assert red['amount']['kind']=='proposed_non_cash_capital_increase'
     bionet=next(e for e in events if 'bionet' in e['event_id'])
     assert bionet['stage']=='non_binding_offer_accepted_subject_to_conditions'
     assert bionet['amount']['currency']=='UF' and not any(d['subsidiary_attribution'] for d in docs)
