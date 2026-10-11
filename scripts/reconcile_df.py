@@ -42,6 +42,7 @@ def main():
     ap.add_argument("--minutes", type=int, default=12)
     ap.add_argument("--reuse-originals", action="store_true",help="Replay previously captured originals; retain their original capture timestamps")
     ap.add_argument("--capture-fixtures", action="store_true",help="Save publisher markup samples for date/body regressions")
+    ap.add_argument("--capture-only",action="store_true",help="Reconcile/capture without consuming an AI processing slot")
     args = ap.parse_args()
     root = Path(__file__).resolve().parents[1]
     branch = subprocess.check_output(["git", "branch", "--show-current"], cwd=root, text=True).strip()
@@ -178,8 +179,11 @@ def main():
         argv = sys.argv
         sys.argv = ["engine_cli", "--source", "diario_financiero", "--limit", str(args.process_limit)]
         try:
-            engine_cli.main()
-            report["processing"]["engine_executed"] = True
+            if args.capture_only:
+                report["processing"].update(engine_executed=False,reason="explicit_capture_only; prior actual processing outcomes retained")
+            else:
+                engine_cli.main()
+                report["processing"]["engine_executed"] = True
         except Exception as exc:
             report["processing"].update(engine_executed=False, error_type=type(exc).__name__, error=str(exc)[:250])
         finally:
