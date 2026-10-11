@@ -44,16 +44,33 @@ def mutation(**overrides):
 
 
 def passed(task_id=MEDIA):
-    return {"status": "PASS", "validated": True, "gates": gates(), "acceptance_proof": [{
+    proof = {
         "verified": True, "task_id": task_id, "candidate_sha": SHA, "verdict": "PASS",
         "path": "evidence/acceptance.json", "sha256": "d" * 64,
         "checks": ["publication_trace", "editorial_acceptance"],
-        "evidence": [{"path": "evidence/source.json", "sha256": "e" * 64}]}]}
+        "evidence": [{"path": "evidence/source.json", "sha256": "e" * 64}]}
+    if task_id in SOURCE_TASKS:
+        runtime = {"kind": "runtime_after_merge", "path": "evidence/runtime-after-merge.json",
+                   "sha256": "9" * 64}
+        proof.update(staging_merge_sha=SHA, origin_staging_sha=SHA,
+                     runtime_after_merge=[runtime], checks={name: True for name in (
+                         "external_reconciliation_30d", "external_reconciliation_90d",
+                         "publication_trace", "source_health", "qa_pass",
+                         "independent_review_pass", "runtime_after_merge_pass")})
+        proof["evidence"].append(deepcopy(runtime))
+    return {"status": "PASS", "validated": True, "gates": gates(), "acceptance_proof": [proof]}
 
 
 def failure(run_id="123"):
     return {"run_id": run_id, "conclusion": "failure", "head_sha": SHA,
             "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/" + run_id}
+
+
+def source_failure():
+    return {"kind": "source_runtime", "verified": True,
+            "source_url": "https://source.example/news", "source_slug": "diario_financiero",
+            "failure_signature": "parser-failure", "trace_path": "trace.json",
+            "trace_sha256": "7" * 64, "observed_at": BASE.isoformat()}
 
 
 def partial():
@@ -583,6 +600,60 @@ class AutonomyEngineTests(unittest.TestCase):
         state = finish(state, MEDIA, lease["token"], passed(), BASE)
         self.assertEqual(state["tasks"][MEDIA]["status"], "CLOSED")
 
+    def test_source_closure_rejects_legacy_generic_proof_without_staging_runtime_binding(self):
+        state, lease = claim({}, queue("media"), "media", "worker", BASE)
+        legacy = passed()
+        proof = legacy["acceptance_proof"][0]
+        for field in ("staging_merge_sha", "origin_staging_sha", "runtime_after_merge"):
+            proof.pop(field)
+        proof["checks"] = ["publication_trace", "editorial_acceptance"]
+        with self.assertRaises(ReportError):
+            finish(state, MEDIA, lease["token"], legacy, BASE)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "RUNNING")
+        self.assertEqual(state["material_events"], [])
+
+    def test_source_closure_requires_full_staging_sha_and_identical_hashed_runtime_reference(self):
+        state, lease = claim({}, queue("media"), "media", "worker", BASE)
+        invalid_proofs = []
+        for field, value in (("staging_merge_sha", "b" * 40), ("staging_merge_sha", "abc123"),
+                             ("origin_staging_sha", "abc123"), ("runtime_after_merge", []),
+                             ("runtime_after_merge", [{"kind": "runtime_after_merge", "path": "run.json"}]),
+                             ("runtime_after_merge", [{"kind": "candidate_live", "path": "run.json", "sha256": "9" * 64}])):
+            report = passed()
+            report["acceptance_proof"][0][field] = value
+            invalid_proofs.append(report)
+        for field in ("staging_merge_sha", "origin_staging_sha", "runtime_after_merge"):
+            report = passed()
+            report["acceptance_proof"][0].pop(field)
+            invalid_proofs.append(report)
+        report = passed()
+        report["acceptance_proof"][0]["checks"]["runtime_after_merge_pass"] = False
+        invalid_proofs.append(report)
+        for change in ({"path": "different-runtime.json"}, {"sha256": "8" * 64},
+                       {"kind": "candidate_live"}):
+            report = passed()
+            report["acceptance_proof"][0]["evidence"][-1].update(change)
+            invalid_proofs.append(report)
+        for report in invalid_proofs:
+            with self.subTest(proof=report["acceptance_proof"][0]):
+                with self.assertRaises(ReportError):
+                    finish(state, MEDIA, lease["token"], report, BASE)
+        self.assertEqual(state["material_events"], [])
+
+    def test_source_closure_carries_actual_last_failure_as_verified_repair(self):
+        state, lease = claim({}, queue("media"), "media", "worker", BASE)
+        actual = source_failure()
+        state["tasks"][MEDIA]["last_failure"] = deepcopy(actual)
+        state = finish(state, MEDIA, lease["token"], passed(), BASE)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "CLOSED")
+        self.assertEqual([event["kind"] for event in state["material_events"]], ["closure"])
+        details = state["material_events"][0]["details"]
+        self.assertEqual(details["real_failure"], actual)
+        self.assertEqual(details["failure_action"], "repaired")
+        self.assertEqual(details["acceptance_proof"][0]["staging_merge_sha"], SHA)
+        result = evaluate_acceptance(state, BASE, wall_now=BASE)
+        self.assertNotIn("real_failure_verified_repair_not_observed", result["reasons"])
+
     def test_transition_credited_once_after_terminal_to_different_independent_task(self):
         q = queue()
         state, lease = claim({}, q, "media", "worker", BASE)
@@ -614,12 +685,10 @@ class AutonomyEngineTests(unittest.TestCase):
         result = evaluate_acceptance(state, BASE, wall_now=BASE)
         self.assertIn("real_failure_verified_repair_not_observed", result["reasons"])
 
-    def test_source_repaired_label_requires_target_bound_live_and_directed_proof(self):
+    def test_source_isolated_candidate_keeps_target_bound_progress_without_claiming_staging_repair(self):
         q = queue("media")
         state, lease = claim({}, q, "media", "worker", BASE)
-        real = {"kind": "source_runtime", "verified": True, "source_url": "https://source.example/news",
-                "source_slug": "diario_financiero", "failure_signature": "parser-failure",
-                "trace_path": "trace.json", "trace_sha256": "7" * 64, "observed_at": BASE.isoformat()}
+        real = source_failure()
         report = partial()
         report.update(real_failure=real, failure_action="repaired", live_scope=["diario_financiero"])
         for override in ({"live_scope": ["unrelated_source"]}, {"live_gate": None}, {"targeted_validated": False}):
@@ -630,10 +699,13 @@ class AutonomyEngineTests(unittest.TestCase):
             else:
                 unbound = finish(state, MEDIA, lease["token"], invalid, BASE)
                 self.assertNotEqual(unbound["material_events"][0]["details"].get("failure_action"), "repaired")
-        repaired = finish(state, MEDIA, lease["token"], report, BASE)
-        self.assertEqual(repaired["material_events"][0]["details"]["failure_action"], "repaired")
-        result = evaluate_acceptance(repaired, BASE, wall_now=BASE)
-        self.assertNotIn("real_failure_verified_repair_not_observed", result["reasons"])
+        candidate = finish(state, MEDIA, lease["token"], report, BASE)
+        self.assertEqual(candidate["tasks"][MEDIA]["status"], "READY")
+        self.assertEqual([event["kind"] for event in candidate["material_events"]], ["mutation"])
+        self.assertEqual(candidate["material_events"][0]["details"]["failure_action"], "candidate_failure_resolved")
+        self.assertEqual(candidate["material_events"][0]["details"]["real_failure"], real)
+        result = evaluate_acceptance(candidate, BASE, wall_now=BASE)
+        self.assertIn("real_failure_verified_repair_not_observed", result["reasons"])
 
     def test_blocked_requires_evidence_and_not_just_reason(self):
         state, lease = claim({}, queue("media"), "media", "worker", BASE)
@@ -681,6 +753,56 @@ class AcceptanceTests(unittest.TestCase):
         state["material_events"][1]["details"].update(validated=False, gates=partial()["gates"], partial_candidate=True)
         result = evaluate_acceptance(state, end, wall_now=end)
         self.assertIn("real_failure_verified_repair_not_observed", result["reasons"])
+
+    def test_legacy_source_premerge_repaired_events_cannot_pass_stage_a(self):
+        end = BASE + timedelta(hours=4)
+        for kind in ("mutation", "closure"):
+            with self.subTest(kind=kind):
+                state = self.observed_state()
+                report = partial()
+                legacy_proof = passed()["acceptance_proof"][0]
+                for field in ("staging_merge_sha", "origin_staging_sha", "runtime_after_merge"):
+                    legacy_proof.pop(field)
+                state["material_events"][1].update(kind=kind, family="media", task_id=MEDIA,
+                    details={**report, "real_failure": source_failure(), "failure_action": "repaired",
+                             "live_scope": ["diario_financiero"], "input_sha": SHA,
+                             "acceptance_proof": [legacy_proof]})
+                result = evaluate_acceptance(state, end, wall_now=end)
+                self.assertEqual(result["status"], "NOT_PROVEN")
+                self.assertEqual(result["reasons"], ["real_failure_verified_repair_not_observed"])
+
+    def test_actual_isolated_source_candidate_is_material_but_does_not_pass_stage_a(self):
+        at = BASE + timedelta(minutes=20)
+        control, lease = claim({}, queue("media"), "media", "worker", at)
+        report = partial()
+        report.update(real_failure=source_failure(), failure_action="repaired", live_scope=["diario_financiero"])
+        control = finish(control, MEDIA, lease["token"], report, at)
+        event = control["material_events"][0]
+        self.assertEqual(event["kind"], "mutation")
+        self.assertEqual(event["details"]["failure_action"], "candidate_failure_resolved")
+        state = self.observed_state()
+        state["material_events"][1] = event
+        end = BASE + timedelta(hours=4)
+        result = evaluate_acceptance(state, end, wall_now=end)
+        self.assertEqual(result["status"], "NOT_PROVEN")
+        self.assertEqual(result["reasons"], ["real_failure_verified_repair_not_observed"])
+        self.assertEqual(result["metrics"]["material_event_count"], len(state["material_events"]))
+
+    def test_actual_postmerge_source_closure_can_satisfy_stage_a_repair_requirement(self):
+        at = BASE + timedelta(minutes=20)
+        control, lease = claim({}, queue("media"), "media", "worker", at)
+        control["tasks"][MEDIA]["last_failure"] = source_failure()
+        control = finish(control, MEDIA, lease["token"], passed(), at)
+        event = control["material_events"][0]
+        self.assertEqual(event["kind"], "closure")
+        self.assertEqual(event["details"]["failure_action"], "repaired")
+        self.assertEqual(event["details"]["real_failure"], source_failure())
+        state = self.observed_state()
+        state["material_events"][1] = event
+        end = BASE + timedelta(hours=4)
+        result = evaluate_acceptance(state, end, wall_now=end)
+        self.assertEqual(result["status"], "PASS")
+        self.assertEqual(result["reasons"], [])
 
     def test_simulation_never_satisfies_live_acceptance(self):
         end = BASE + timedelta(hours=4)

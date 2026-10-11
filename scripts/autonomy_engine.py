@@ -521,19 +521,47 @@ def _source_repair_proven(report):
 def _repaired_failure_event(event):
     details = event.get("details", {})
     failure = details.get("real_failure")
-    if not (event.get("kind") == "mutation" and _failure_proof(failure)
+    if not (_failure_proof(failure)
             and details.get("failure_action") == "repaired"):
         return False
     if failure.get("kind") == "source_runtime":
-        return bool(_source_repair_proven(details))
+        return bool(event.get("kind") == "closure" and details.get("validated") is True
+                    and _gates_pass(details) and _source_postmerge_proven(
+                        details.get("acceptance_proof"), details.get("input_sha")))
     # A partial isolated candidate can retain the original staging failure.
     # Old events with an optimistic repaired label must not satisfy Stage A.
-    return bool(details.get("validated") is True and _gates_pass(details))
+    return bool(event.get("kind") == "mutation" and details.get("validated") is True and _gates_pass(details))
+
+
+def _source_postmerge_proven(proofs, input_sha):
+    if not isinstance(input_sha, str) or not SHA_RE.fullmatch(input_sha):
+        return False
+    if not isinstance(proofs, list) or not proofs:
+        return False
+    for proof in proofs:
+        if not (isinstance(proof, dict) and proof.get("verified") is True
+                and proof.get("candidate_sha") == input_sha and proof.get("staging_merge_sha") == input_sha
+                and SHA_RE.fullmatch(str(proof.get("origin_staging_sha", "")))
+                and isinstance(proof.get("checks"), dict)
+                and proof["checks"].get("runtime_after_merge_pass") is True):
+            return False
+        runtime = proof.get("runtime_after_merge")
+        evidence = proof.get("evidence")
+        if not isinstance(runtime, list) or not runtime or not isinstance(evidence, list):
+            return False
+        for reference in runtime:
+            if not (isinstance(reference, dict) and reference.get("kind") == "runtime_after_merge"
+                    and reference.get("path") and HASH_RE.fullmatch(str(reference.get("sha256", "")))
+                    and any(isinstance(item, dict) and item.get("kind") == "runtime_after_merge"
+                            and item.get("path") == reference["path"]
+                            and item.get("sha256") == reference["sha256"] for item in evidence)):
+                return False
+    return True
 
 
 def _closure_proven(report, task):
     proofs = report.get("acceptance_proof")
-    return (report.get("status", "").upper() == "PASS"
+    generic = (report.get("status", "").upper() == "PASS"
             and report.get("validated") is True and _gates_pass(report)
             and isinstance(proofs, list) and bool(proofs) and all(
                 isinstance(proof, dict) and proof.get("verified") is True
@@ -545,6 +573,11 @@ def _closure_proven(report, task):
                     and evidence.get("path") and HASH_RE.fullmatch(str(evidence.get("sha256", "")))
                     for evidence in proof["evidence"])
                 for proof in proofs))
+    if not generic:
+        return False
+    if task["family"] in SOURCE_TASKS.values():
+        return _source_postmerge_proven(proofs, task["input_sha"])
+    return True
 
 
 def _mutation(report):
@@ -624,14 +657,15 @@ def finish(state, task_id, token, report, now):
             "validated", "targeted_validated", "live_validated", "live_scope")}
         details["input_fingerprint"] = task["input_fingerprint"]
         details["parent_input_sha"] = task["input_sha"]
-        if (_failure_proof(task.get("failure")) and report.get("validated") is True
+        if (task["family"] == "staging_qa" and _failure_proof(task.get("failure"))
+                and (task["failure"] or {}).get("kind") != "source_runtime" and report.get("validated") is True
                 and _gates_pass(report)):
             details["real_failure"] = deepcopy(task["failure"])
             details["failure_action"] = "repaired"
         elif (_failure_proof(report.get("real_failure")) and report.get("failure_action") == "repaired"
               and _source_repair_proven(report)):
             details["real_failure"] = deepcopy(report["real_failure"])
-            details["failure_action"] = "repaired"
+            details["failure_action"] = "candidate_failure_resolved"
         _event(result, task, "mutation", now, details)
     if blockers:
         # One terminal event is enough for a subsequent independent transition.
@@ -650,9 +684,17 @@ def finish(state, task_id, token, report, now):
         task["status"] = "CLOSED"
         task["lease"] = None
         task["closed_at"] = _iso(now)
-        event = _event(result, task, "closure", now, {
+        closure_details = {
             "acceptance_proof": deepcopy(report["acceptance_proof"]),
-            "gates": deepcopy(report["gates"]), "candidate_commit": report.get("candidate_commit")})
+            "gates": deepcopy(report["gates"]), "candidate_commit": report.get("candidate_commit"),
+            "validated": True, "input_sha": task["input_sha"]}
+        last_failure = task.get("last_failure")
+        if (task["family"] in SOURCE_TASKS.values() and _failure_proof(last_failure)
+                and last_failure.get("kind") == "source_runtime"
+                and _source_postmerge_proven(report["acceptance_proof"], task["input_sha"])):
+            closure_details["real_failure"] = deepcopy(last_failure)
+            closure_details["failure_action"] = "repaired"
+        event = _event(result, task, "closure", now, closure_details)
         result["pending_transitions"].append({"task_id": task_id, "family": task["family"],
             "event_id": event["id"], "at": event["at"]})
     elif mutation:

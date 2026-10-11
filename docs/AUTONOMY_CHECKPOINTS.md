@@ -235,3 +235,21 @@ protected production refs and exact incorporated-candidate continuation.
 
 Next hypothesis: the main workflow triggers can exercise this already committed
 runtime on GitHub, with independent families continuing despite staging QA.
+
+## 12. Source governance enforced at the reducer boundary
+
+Decision: legacy source PASS reports cannot bypass staging/runtime requirements.
+The reducer requires the verified task/SHA-bound staging merge and hashed
+post-merge runtime proof that the runner has checked against actual Git ancestry.
+A pre-merge parser fix remains a useful isolated mutation with
+`candidate_failure_resolved`; source repair is credited only after verified
+post-merge closure. Preserved real failure evidence links that eventual closure
+to the original failure. Partial candidates cannot bypass this rule.
+
+Directed validation: 53 engine tests passed. They reject generic legacy source
+closures and optimistic pre-merge repair events while accepting verified
+post-merge source closure and unchanged full-PASS staging recovery. Four-hour
+fixtures test the evaluator contract only; live acceptance remains unproven.
+
+Next hypothesis: owner-intervention observation and actual JSON content hashes
+can make the four-hour evaluator resistant to empty counters and timestamp churn.
