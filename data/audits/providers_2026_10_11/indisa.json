@@ -1,12 +1,47 @@
 {
-  "version": 1,
+  "version": 3,
   "slug": "indisa",
   "as_of": "2026-10-11",
   "timezone": "America/Santiago",
   "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
   "audit_path": "data/audits/providers_2026_10_11/indisa.json",
-  "status": "reconciled_with_exact_blockers",
-  "coverage": "partial_30_and_90_inventory",
+  "status": "EXTERNAL_BLOCKER_PROVEN",
+  "coverage": {
+    "outcome": "EXTERNAL_BLOCKER_PROVEN",
+    "coverage_complete": false,
+    "coverage_reason": "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof.",
+    "archive_depth": {
+      "official_routes_attempted": 25,
+      "ordinary_browser_targets": 2
+    },
+    "owner": "Publisher INDISA / Source Engineering",
+    "next_action": "Restore original public newsroom/details from maintenance, then reconcile full90 archive and review the pending90 source gate before evaluating Esencial/FundaElbo. Cached dates alone cannot clear the gate.",
+    "pages_checked": 20,
+    "latest_original_publication": "2026-09-11",
+    "discovered": 3,
+    "unique": 3,
+    "recent_30d": 1,
+    "recent_90d": 1,
+    "publication_date_unknown": 1,
+    "material_30d": 1,
+    "material_90d": 1,
+    "material_date_unknown": 1,
+    "material": 2,
+    "material_unknown": 0,
+    "published": 0,
+    "rejected": 0,
+    "deferred": 2,
+    "detected_material": 2,
+    "omitted_material": 0,
+    "parse_errors": 0,
+    "access_errors": 19,
+    "inventory": "data/audits/provider_inventory_2026_10_11/indisa.json",
+    "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+    "relevant_30d_total": null,
+    "relevant_90d_total": null,
+    "publicable_confirmed": 0,
+    "publicable_total": null
+  },
   "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "pending_90_day_audit",
   "surfaces": [
@@ -16,10 +51,477 @@
     }
   ],
   "blockers": [
-    "actions_original_HTTP_403",
-    "pending_90_day_audit_inventory_pages_2_to_4_unverified"
+    "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof."
   ],
   "original_items": [
+    {
+      "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
+      "title": "Clínica INDISA fortalece su propuesta de atención preferente junto a Isapre Esencial",
+      "publication_date": "2026-09-11",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "previously_verified_original_header_current_publisher_in_maintenance",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "7d441f50ec7e88f725f7bb7501c0c9949c49fbf7206dc2dfbd16a7ba6ee8f8bd",
+            "status": "retry",
+            "reason": "publisher_maintenance_external_blocker_proven",
+            "lane": "BACKFILL",
+            "deferred_detail": "Publisher maintenance: ordinary Chrome renders PÁGINA EN MANTENCIÓN for listing and article; RadarBot403 across original alternatives. Gate pending_90_day_audit retained.",
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "retry",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:39.795607+00:00",
+          "body_sha256": null,
+          "date_stamps": [
+            {
+              "kind": "previous_original_reader_verified_header",
+              "date": "2026-09-11",
+              "value": "2026-09-11",
+              "evidence": "data/audits/providers_2026_10_11/indisa.json"
+            }
+          ],
+          "date_reason": "previously_verified_original_header_current_publisher_in_maintenance",
+          "access_error": {
+            "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
+            "kind": "article_detail",
+            "captured_at": "2026-10-11T05:53:39.795670+00:00",
+            "user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+            "tls_verified": true,
+            "status": 403,
+            "error_type": "HTTPError",
+            "error": "HTTP Error 403: Forbidden",
+            "server": "cloudflare",
+            "response_sha256": "1348df74e441ba8a2adc1cb66c5dbc9d6b7081989bdd8d8ccd9e602be60f718c",
+            "response_bytes": 200000,
+            "waf_markers": [],
+            "redirects": []
+          }
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/indisa.json"
+    },
+    {
+      "url": "https://www.indisa.cl/blog/conoce-el-nuevo-seguro-catastrofico-indisa-junto-a-consorcio",
+      "title": "Conoce el nuevo seguro catastrófico INDISA junto a Consorcio",
+      "publication_date": "2026-06-04",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "previously_verified_original_header_current_publisher_in_maintenance",
+      "materiality": "outside_window",
+      "recover": false,
+      "queue_admission_completed": false,
+      "current_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+      "alicanto": {
+        "materiality": "outside_window",
+        "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": false,
+        "queue": [],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "not_detected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:39.795634+00:00",
+          "body_sha256": null,
+          "date_stamps": [
+            {
+              "kind": "previous_original_reader_verified_header",
+              "date": "2026-06-04",
+              "value": "2026-06-04",
+              "evidence": "data/audits/providers_2026_10_11/indisa.json"
+            }
+          ],
+          "date_reason": "previously_verified_original_header_current_publisher_in_maintenance",
+          "access_error": {
+            "url": "https://www.indisa.cl/blog/conoce-el-nuevo-seguro-catastrofico-indisa-junto-a-consorcio",
+            "kind": "article_detail",
+            "captured_at": "2026-10-11T05:53:39.882569+00:00",
+            "user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+            "tls_verified": true,
+            "status": 403,
+            "error_type": "HTTPError",
+            "error": "HTTP Error 403: Forbidden",
+            "server": "cloudflare",
+            "response_sha256": "1348df74e441ba8a2adc1cb66c5dbc9d6b7081989bdd8d8ccd9e602be60f718c",
+            "response_bytes": 200000,
+            "waf_markers": [],
+            "redirects": []
+          }
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/indisa.json"
+    },
+    {
+      "url": "https://www.indisa.cl/blog/clinica-indisa-impulsa-acuerdo-con-fundaelbo-para-acercar-el-convenio-escolar-a-quienes-construyen-su-futuro",
+      "title": "Clínica INDISA impulsa acuerdo con Fundaelbo",
+      "publication_date": null,
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "original_publication_unverified_due_to_access_error",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "06bc70bf71af17a1b9b4600f99e5951afccab71ce43f2dc9a17c9b4e014e8220",
+            "status": "retry",
+            "reason": "publisher_maintenance_external_blocker_proven",
+            "lane": "BACKFILL",
+            "deferred_detail": "Original article/date unavailable while publisher in maintenance; pending90-day source gate preserved, no assessment performed.",
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "retry",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:39.795653+00:00",
+          "body_sha256": null,
+          "date_stamps": [],
+          "date_reason": null,
+          "access_error": {
+            "url": "https://www.indisa.cl/blog/clinica-indisa-impulsa-acuerdo-con-fundaelbo-para-acercar-el-convenio-escolar-a-quienes-construyen-su-futuro",
+            "kind": "article_detail",
+            "captured_at": "2026-10-11T05:53:39.972323+00:00",
+            "user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+            "tls_verified": true,
+            "status": 403,
+            "error_type": "HTTPError",
+            "error": "HTTP Error 403: Forbidden",
+            "server": "cloudflare",
+            "response_sha256": "1348df74e441ba8a2adc1cb66c5dbc9d6b7081989bdd8d8ccd9e602be60f718c",
+            "response_bytes": 200000,
+            "waf_markers": [],
+            "redirects": []
+          }
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/indisa.json"
+    }
+  ],
+  "notes": [
+    "Preserva pending_90_day_audit y BACKFILL. El acuerdo Esencial está exactamente a 30 días del corte inclusivo.",
+    "Parser requiere sello de publicación específico o meta explícita. Fechas médicas/eventos/footer no sirven."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:21.616310+00:00",
+    "changes": [
+      {
+        "key": "7d441f50ec7e88f725f7bb7501c0c9949c49fbf7206dc2dfbd16a7ba6ee8f8bd",
+        "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
+        "action": "admit_backfill"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "full original inventory with unknown totals explicit",
+    "summary": {
+      "outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof.",
+      "archive_depth": {
+        "official_routes_attempted": 25,
+        "ordinary_browser_targets": 2
+      },
+      "owner": "Publisher INDISA / Source Engineering",
+      "next_action": "Restore original public newsroom/details from maintenance, then reconcile full90 archive and review the pending90 source gate before evaluating Esencial/FundaElbo. Cached dates alone cannot clear the gate.",
+      "pages_checked": 20,
+      "latest_original_publication": "2026-09-11",
+      "discovered": 3,
+      "unique": 3,
+      "recent_30d": 1,
+      "recent_90d": 1,
+      "publication_date_unknown": 1,
+      "material_30d": 1,
+      "material_90d": 1,
+      "material_date_unknown": 1,
+      "material": 2,
+      "material_unknown": 0,
+      "published": 0,
+      "rejected": 0,
+      "deferred": 2,
+      "detected_material": 2,
+      "omitted_material": 0,
+      "parse_errors": 0,
+      "access_errors": 19,
+      "inventory": "data/audits/provider_inventory_2026_10_11/indisa.json",
+      "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+      "relevant_30d_total": null,
+      "relevant_90d_total": null,
+      "publicable_confirmed": 0,
+      "publicable_total": null
+    },
+    "items": [
+      {
+        "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
+        "title": "Clínica INDISA fortalece su propuesta de atención preferente junto a Isapre Esencial",
+        "publication_date": "2026-09-11",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "previously_verified_original_header_current_publisher_in_maintenance",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": true,
+          "queue": [
+            {
+              "key": "7d441f50ec7e88f725f7bb7501c0c9949c49fbf7206dc2dfbd16a7ba6ee8f8bd",
+              "status": "retry",
+              "reason": "publisher_maintenance_external_blocker_proven",
+              "lane": "BACKFILL",
+              "deferred_detail": "Publisher maintenance: ordinary Chrome renders PÁGINA EN MANTENCIÓN for listing and article; RadarBot403 across original alternatives. Gate pending_90_day_audit retained.",
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": false,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "retry",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:39.795607+00:00",
+            "body_sha256": null,
+            "date_stamps": [
+              {
+                "kind": "previous_original_reader_verified_header",
+                "date": "2026-09-11",
+                "value": "2026-09-11",
+                "evidence": "data/audits/providers_2026_10_11/indisa.json"
+              }
+            ],
+            "date_reason": "previously_verified_original_header_current_publisher_in_maintenance",
+            "access_error": {
+              "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
+              "kind": "article_detail",
+              "captured_at": "2026-10-11T05:53:39.795670+00:00",
+              "user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+              "tls_verified": true,
+              "status": 403,
+              "error_type": "HTTPError",
+              "error": "HTTP Error 403: Forbidden",
+              "server": "cloudflare",
+              "response_sha256": "1348df74e441ba8a2adc1cb66c5dbc9d6b7081989bdd8d8ccd9e602be60f718c",
+              "response_bytes": 200000,
+              "waf_markers": [],
+              "redirects": []
+            }
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/indisa.json"
+      },
+      {
+        "url": "https://www.indisa.cl/blog/conoce-el-nuevo-seguro-catastrofico-indisa-junto-a-consorcio",
+        "title": "Conoce el nuevo seguro catastrófico INDISA junto a Consorcio",
+        "publication_date": "2026-06-04",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "previously_verified_original_header_current_publisher_in_maintenance",
+        "materiality": "outside_window",
+        "recover": false,
+        "queue_admission_completed": false,
+        "current_reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+        "alicanto": {
+          "materiality": "outside_window",
+          "reason": "Verified original publication predates2026-07-13. Not a30/90 omission; no body/event/upload date used.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": false,
+          "queue": [],
+          "seen_ledger_match": false,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "not_detected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:39.795634+00:00",
+            "body_sha256": null,
+            "date_stamps": [
+              {
+                "kind": "previous_original_reader_verified_header",
+                "date": "2026-06-04",
+                "value": "2026-06-04",
+                "evidence": "data/audits/providers_2026_10_11/indisa.json"
+              }
+            ],
+            "date_reason": "previously_verified_original_header_current_publisher_in_maintenance",
+            "access_error": {
+              "url": "https://www.indisa.cl/blog/conoce-el-nuevo-seguro-catastrofico-indisa-junto-a-consorcio",
+              "kind": "article_detail",
+              "captured_at": "2026-10-11T05:53:39.882569+00:00",
+              "user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+              "tls_verified": true,
+              "status": 403,
+              "error_type": "HTTPError",
+              "error": "HTTP Error 403: Forbidden",
+              "server": "cloudflare",
+              "response_sha256": "1348df74e441ba8a2adc1cb66c5dbc9d6b7081989bdd8d8ccd9e602be60f718c",
+              "response_bytes": 200000,
+              "waf_markers": [],
+              "redirects": []
+            }
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/indisa.json"
+      },
+      {
+        "url": "https://www.indisa.cl/blog/clinica-indisa-impulsa-acuerdo-con-fundaelbo-para-acercar-el-convenio-escolar-a-quienes-construyen-su-futuro",
+        "title": "Clínica INDISA impulsa acuerdo con Fundaelbo",
+        "publication_date": null,
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "original_publication_unverified_due_to_access_error",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": true,
+          "queue": [
+            {
+              "key": "06bc70bf71af17a1b9b4600f99e5951afccab71ce43f2dc9a17c9b4e014e8220",
+              "status": "retry",
+              "reason": "publisher_maintenance_external_blocker_proven",
+              "lane": "BACKFILL",
+              "deferred_detail": "Original article/date unavailable while publisher in maintenance; pending90-day source gate preserved, no assessment performed.",
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": false,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "retry",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:39.795653+00:00",
+            "body_sha256": null,
+            "date_stamps": [],
+            "date_reason": null,
+            "access_error": {
+              "url": "https://www.indisa.cl/blog/clinica-indisa-impulsa-acuerdo-con-fundaelbo-para-acercar-el-convenio-escolar-a-quienes-construyen-su-futuro",
+              "kind": "article_detail",
+              "captured_at": "2026-10-11T05:53:39.972323+00:00",
+              "user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+              "tls_verified": true,
+              "status": 403,
+              "error_type": "HTTPError",
+              "error": "HTTP Error 403: Forbidden",
+              "server": "cloudflare",
+              "response_sha256": "1348df74e441ba8a2adc1cb66c5dbc9d6b7081989bdd8d8ccd9e602be60f718c",
+              "response_bytes": 200000,
+              "waf_markers": [],
+              "redirects": []
+            }
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/indisa.json"
+      }
+    ]
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 0,
+      "technical_status": "error",
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "indisa",
+        "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
+        "outcome": "retry",
+        "blocker": "INDISA article temporarily unavailable"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof.",
+  "baseline": {
+    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+    "queue_states": {},
+    "health": {
+      "technical_status": "error",
+      "editorial_outcome": "not_evaluated",
+      "last_signal_at": null,
+      "published": 0,
+      "pending": 0,
+      "rejected": 0
+    }
+  },
+  "checkpoint_commit": "3050106",
+  "initial_checkpoint_status": "reconciled_with_exact_blockers",
+  "initial_original_items": [
     {
       "title": "Clínica INDISA fortalece su propuesta de atención preferente junto a Isapre Esencial",
       "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
@@ -48,21 +550,11 @@
       "evidence": "Tarjeta observada; falta detalle/fecha verificable. No inventar fecha para cerrar inventario."
     }
   ],
-  "notes": [
-    "Preserva pending_90_day_audit y BACKFILL. El acuerdo Esencial está exactamente a 30 días del corte inclusivo.",
-    "Parser requiere sello de publicación específico o meta explícita. Fechas médicas/eventos/footer no sirven."
+  "blockers_before_exhaustive_audit": [
+    "actions_original_HTTP_403",
+    "pending_90_day_audit_inventory_pages_2_to_4_unverified"
   ],
-  "recovery_checkpoint": {
-    "at": "2026-10-11T04:41:21.616310+00:00",
-    "changes": [
-      {
-        "key": "7d441f50ec7e88f725f7bb7501c0c9949c49fbf7206dc2dfbd16a7ba6ee8f8bd",
-        "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
-        "action": "admit_backfill"
-      }
-    ]
-  },
-  "reconciliation": {
+  "initial_reconciliation": {
     "scope": "verified original items; lower bound where inventory is blocked",
     "material_candidates_30_days": 1,
     "material_candidates_90_days": 1,
@@ -113,46 +605,13 @@
       }
     ]
   },
-  "environment_blockers": {
-    "local_original_collector": "CONNECT_403_restricted_original_hosts",
-    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
-  },
-  "runtime_checkpoint": {
-    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
-    "probe": {
-      "discovered": 0,
-      "technical_status": "error",
-      "error_type": "HTTPError",
-      "error": "HTTP Error 403: Forbidden",
-      "evaluation_performed": false
-    },
-    "promotion": "none"
-  },
-  "assessment_checkpoints": {
-    "results": [
-      {
-        "source": "indisa",
-        "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
-        "outcome": "retry",
-        "blocker": "INDISA article temporarily unavailable"
-      }
-    ],
-    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
-    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
-    "repeated_paid_calls": 0
-  },
-  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null",
-  "baseline": {
-    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
-    "queue_states": {},
-    "health": {
-      "technical_status": "error",
-      "editorial_outcome": "not_evaluated",
-      "last_signal_at": null,
-      "published": 0,
-      "pending": 0,
-      "rejected": 0
-    }
-  },
-  "checkpoint_commit": "3050106"
+  "outcome": "EXTERNAL_BLOCKER_PROVEN",
+  "original_items_role": "Current candidate reconciliation. Initial evidence is preserved separately; terminal results are not replayed.",
+  "latest_original_inventory": "data/audits/provider_inventory_2026_10_11/indisa.json",
+  "piece_decisions": "data/audits/provider_editorial_decisions_2026_10_11.json",
+  "last_runtime_evidence": "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
+  "next_action": "Restore original public newsroom/details from maintenance, then reconcile full90 archive and review the pending90 source gate before evaluating Esencial/FundaElbo. Cached dates alone cannot clear the gate.",
+  "blocker_owner": "Publisher INDISA / Source Engineering",
+  "current_checkpoint_test": "55 passed, 1 skipped; provider/beta/publication/gremio/source-health focal suite on 2026-10-11",
+  "merged_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104"
 }
