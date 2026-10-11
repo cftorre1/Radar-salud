@@ -455,6 +455,7 @@ def test_real_df_listings_select_primary_cards_and_observable_health_pagination(
     fixtures = Path(__file__).parent / 'fixtures'
     tag = DfListing();tag.feed((fixtures / 'df_health_tag_real.html').read_text())
     assert tag.has_primary_layout
+    assert any(card['listing_day']=='2026-10-08' and any('ricarte-soto' in (u or '') for u,t in card['links']) for card in tag.primary_cards)
     assert ('/tags/salud/p/2', '2') in tag.pagination
     assert any('clinica-san-carlos' in (u or '') for u, title in tag.primary_links)
     def fetch(url):

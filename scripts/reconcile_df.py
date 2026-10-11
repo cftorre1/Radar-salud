@@ -188,6 +188,7 @@ def main():
                 controls=[m[0][:700] for m in re.finditer(r'<(?:button|a|div)\b[^>]*(?:pagin|cargar|load.more|ver.mas)[^>]*>',html,re.I)]
                 scripts=re.findall(r'<script\b[^>]*src=["\']([^"\']+)',html,re.I)
                 report["listing_pages"].append({"url": page, "fetch": "ok", "health_candidate_urls": list(dict.fromkeys(page_articles)),
+                    "primary_card_listing_days":[card['listing_day'] for card in listing.primary_cards],
                     "observed_archive_controls":controls[:12],"observed_script_urls":[urljoin(page,s) for s in scripts if 'df.cl' in urljoin(page,s)]})
                 # Follow adjacent archive pages before the footer's jump to page
                 # 25; both are observable links, but the former covers the gap.
@@ -294,6 +295,11 @@ def main():
                        "history_present": normalized in history_by_url, "feed_present": normalized in feed_urls,
                        "disposition": disposition})
     windows = {}
+    report['coverage']['observed_archive_boundaries']=[{'url':page['url'],
+        'oldest_listing_day':min([d for d in page.get('primary_card_listing_days',[]) if d],default=None),
+        'unknown_primary_card_days':sum(not d for d in page.get('primary_card_listing_days',[])),
+        'note':'Listing labels establish observed bounds only; detail publication evidence and primary text remain required.'}
+        for page in report['listing_pages']]
     for days in (30, 90):
         start = (today - timedelta(days=days - 1)).isoformat()
         rows = [row for row in matrix if row["publication_day"] and start <= row["publication_day"] <= today.isoformat()]
