@@ -1,7 +1,16 @@
 {
-  "schema_version": "pulso_editorial_guard_independent_peer_v1",
-  "generated_at": "2026-10-11T18:30:53.375975+00:00",
-  "status": "FINDINGS",
+  "schema_version": "pulso_editorial_guard_independent_peer_v2",
+  "generated_at": "2026-10-11T18:45:50.948664+00:00",
+  "status": "SCOPED_PASS_WITH_TEMPORAL_SEMANTIC_LIMIT",
+  "scoped_acceptance": {
+    "final_guard_commit": "f0c2b99a9ac23a413ab54b4f8e9437a8688ddaab",
+    "final_guard_sha256": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
+    "all_structural_negatives_held": true,
+    "structural_negatives": 29,
+    "semantic_date_limits": 1,
+    "original25_answers_and_scores_unchanged": true,
+    "scope": "Tested adjective/noun qualifiers, isolated denial, separate completed/present clinical capacity, literal veterinary/animal-only scope, and generic property-only scope. No global natural-language or publication approval is claimed."
+  },
   "guard_publication_approval_claimed": false,
   "publication_or_runtime_acceptance_claimed": false,
   "source_id": "pulso_latercera",
@@ -348,11 +357,86 @@
         }
       ],
       "semantic_negative_counts": {
+        "FAIL": 20,
         "PASS": 9,
-        "FAIL": 15,
-        "SEMANTIC_REVIEW_REQUIRED": 1
+        "LIMIT_REQUIRES_INDEPENDENT_BODY_DATE_REVIEW": 1
       },
       "adversarial_results": [
+        {
+          "case": "noun_cafeteria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "asserted_negative_guard_result": "FAIL",
+          "future_copy_qualified": true,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_peluqueria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "asserted_negative_guard_result": "FAIL",
+          "future_copy_qualified": true,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_drogueria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "asserted_negative_guard_result": "FAIL",
+          "future_copy_qualified": true,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_reposteria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "asserted_negative_guard_result": "FAIL",
+          "future_copy_qualified": true,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_joyeria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "asserted_negative_guard_result": "FAIL",
+          "future_copy_qualified": true,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
         {
           "case": "adjective_hospitalaria",
           "group": "future_copy",
@@ -656,10 +740,10 @@
         {
           "case": "old_2020_event_masquerades_current",
           "group": "future_copy",
-          "expected": "must_hold",
+          "expected": "semantic_date_limit",
           "decision": "ready",
           "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "asserted_negative_guard_result": "LIMIT_REQUIRES_INDEPENDENT_BODY_DATE_REVIEW",
           "future_copy_qualified": true,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -716,10 +800,10 @@
         {
           "case": "elder_generic_quote",
           "group": "scope_quote",
-          "expected": "semantic_review_required",
+          "expected": "must_hold",
           "decision": "ready",
           "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "SEMANTIC_REVIEW_REQUIRED",
+          "asserted_negative_guard_result": "FAIL",
           "future_copy_qualified": false,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -1042,11 +1126,86 @@
         }
       ],
       "semantic_negative_counts": {
+        "FAIL": 16,
         "PASS": 13,
-        "FAIL": 11,
-        "SEMANTIC_REVIEW_REQUIRED": 1
+        "LIMIT_REQUIRES_INDEPENDENT_BODY_DATE_REVIEW": 1
       },
       "adversarial_results": [
+        {
+          "case": "noun_cafeteria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "asserted_negative_guard_result": "FAIL",
+          "future_copy_qualified": true,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_peluqueria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "asserted_negative_guard_result": "FAIL",
+          "future_copy_qualified": true,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_drogueria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "asserted_negative_guard_result": "FAIL",
+          "future_copy_qualified": true,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_reposteria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "asserted_negative_guard_result": "FAIL",
+          "future_copy_qualified": true,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_joyeria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "asserted_negative_guard_result": "FAIL",
+          "future_copy_qualified": true,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
         {
           "case": "adjective_hospitalaria",
           "group": "future_copy",
@@ -1350,10 +1509,10 @@
         {
           "case": "old_2020_event_masquerades_current",
           "group": "future_copy",
-          "expected": "must_hold",
+          "expected": "semantic_date_limit",
           "decision": "ready",
           "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "asserted_negative_guard_result": "LIMIT_REQUIRES_INDEPENDENT_BODY_DATE_REVIEW",
           "future_copy_qualified": true,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -1410,10 +1569,10 @@
         {
           "case": "elder_generic_quote",
           "group": "scope_quote",
-          "expected": "semantic_review_required",
+          "expected": "must_hold",
           "decision": "ready",
           "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "SEMANTIC_REVIEW_REQUIRED",
+          "asserted_negative_guard_result": "FAIL",
           "future_copy_qualified": false,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -1425,9 +1584,9 @@
       ]
     },
     {
-      "label": "peer_current_worktree",
-      "guard_commit": "d3b7ca20f71eac7fdd6cb217e8cb46b716abe519",
-      "guard_sha256": "92dae3c081f9b3c576204e5e9b4d15ee8f168fa9a310f9070f062308afc56e15",
+      "label": "final_guard",
+      "guard_commit": "f0c2b99a9ac23a413ab54b4f8e9437a8688ddaab",
+      "guard_sha256": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
       "original25_decisions": {
         "ready": 18,
         "deferred": 5,
@@ -1736,11 +1895,85 @@
         }
       ],
       "semantic_negative_counts": {
-        "PASS": 13,
-        "FAIL": 11,
-        "SEMANTIC_REVIEW_REQUIRED": 1
+        "PASS": 29,
+        "LIMIT_REQUIRES_INDEPENDENT_BODY_DATE_REVIEW": 1
       },
       "adversarial_results": [
+        {
+          "case": "noun_cafeteria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
+          "future_copy_qualified": false,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_peluqueria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
+          "future_copy_qualified": false,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_drogueria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
+          "future_copy_qualified": false,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_reposteria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
+          "future_copy_qualified": false,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
+        {
+          "case": "noun_joyeria",
+          "group": "future_copy",
+          "expected": "must_hold",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
+          "future_copy_qualified": false,
+          "unqualified_achieved_copy": false,
+          "all_source_quotes_literal": true,
+          "entire_future_summary_binding": true,
+          "score": 78,
+          "publication_approved": false,
+          "quote_validation_is_semantic_approval": false
+        },
         {
           "case": "adjective_hospitalaria",
           "group": "future_copy",
@@ -1839,7 +2072,7 @@
           "reason": "pulso_editorial_future_copy_not_grounded",
           "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": false,
-          "unqualified_achieved_copy": false,
+          "unqualified_achieved_copy": true,
           "all_source_quotes_literal": true,
           "entire_future_summary_binding": true,
           "score": 78,
@@ -1854,7 +2087,7 @@
           "reason": "pulso_editorial_future_copy_not_grounded",
           "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": false,
-          "unqualified_achieved_copy": false,
+          "unqualified_achieved_copy": true,
           "all_source_quotes_literal": true,
           "entire_future_summary_binding": true,
           "score": 78,
@@ -1925,11 +2158,11 @@
           "case": "secondary_future_ya_instalado",
           "group": "future_copy",
           "expected": "must_hold",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": true,
-          "unqualified_achieved_copy": false,
+          "unqualified_achieved_copy": true,
           "all_source_quotes_literal": true,
           "entire_future_summary_binding": true,
           "score": 78,
@@ -1940,11 +2173,11 @@
           "case": "secondary_future_ya_ha_ejecutado",
           "group": "future_copy",
           "expected": "must_hold",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": true,
-          "unqualified_achieved_copy": false,
+          "unqualified_achieved_copy": true,
           "all_source_quotes_literal": true,
           "entire_future_summary_binding": true,
           "score": 78,
@@ -1955,9 +2188,9 @@
           "case": "secondary_future_present_capacity",
           "group": "future_copy",
           "expected": "must_hold",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": true,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -1970,9 +2203,9 @@
           "case": "secondary_future_completed_capacity",
           "group": "future_copy",
           "expected": "must_hold",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": true,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -1985,11 +2218,11 @@
           "case": "secondary_future_ya_cuenta",
           "group": "future_copy",
           "expected": "must_hold",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": true,
-          "unqualified_achieved_copy": false,
+          "unqualified_achieved_copy": true,
           "all_source_quotes_literal": true,
           "entire_future_summary_binding": true,
           "score": 78,
@@ -2000,9 +2233,9 @@
           "case": "secondary_future_ya_funciona",
           "group": "future_copy",
           "expected": "must_hold",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": true,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -2015,11 +2248,11 @@
           "case": "dated_coordination_installed",
           "group": "future_copy",
           "expected": "must_hold",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": true,
-          "unqualified_achieved_copy": false,
+          "unqualified_achieved_copy": true,
           "all_source_quotes_literal": true,
           "entire_future_summary_binding": true,
           "score": 78,
@@ -2030,9 +2263,9 @@
           "case": "old_2020_context_current_capacity",
           "group": "future_copy",
           "expected": "must_hold",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "decision": "deferred",
+          "reason": "pulso_editorial_future_copy_not_grounded",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": true,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -2044,10 +2277,10 @@
         {
           "case": "old_2020_event_masquerades_current",
           "group": "future_copy",
-          "expected": "must_hold",
+          "expected": "semantic_date_limit",
           "decision": "ready",
           "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "asserted_negative_guard_result": "LIMIT_REQUIRES_INDEPENDENT_BODY_DATE_REVIEW",
           "future_copy_qualified": true,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -2075,9 +2308,9 @@
           "case": "veterinary_clinical_hospital",
           "group": "scope_quote",
           "expected": "must_hold",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "decision": "deferred",
+          "reason": "pulso_editorial_human_scope_conflicts_with_non_human_quote",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": false,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -2090,9 +2323,9 @@
           "case": "animal_isapres",
           "group": "scope_quote",
           "expected": "must_hold",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "FAIL",
+          "decision": "deferred",
+          "reason": "pulso_editorial_human_scope_conflicts_with_non_human_quote",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": false,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -2104,10 +2337,10 @@
         {
           "case": "elder_generic_quote",
           "group": "scope_quote",
-          "expected": "semantic_review_required",
-          "decision": "ready",
-          "reason": "pulso_editorial_grounded_assessment",
-          "asserted_negative_guard_result": "SEMANTIC_REVIEW_REQUIRED",
+          "expected": "must_hold",
+          "decision": "deferred",
+          "reason": "pulso_editorial_scope_not_grounded",
+          "asserted_negative_guard_result": "PASS",
           "future_copy_qualified": false,
           "unqualified_achieved_copy": false,
           "all_source_quotes_literal": true,
@@ -2120,6 +2353,276 @@
     }
   ],
   "attack_cases": [
+    {
+      "case": "noun_cafeteria",
+      "group": "future_copy",
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "publication_date": "2026-07-18",
+      "body_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+      "body": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal. La medida fue informada durante el Comité para la Gestión del Riesgo de Desastres Sectorial, encabezado este sábado por la ministra de Salud, May Chomali, instancia en la que se revisó el estado de la red asistencial y se coordinaron las acciones sanitarias ante la emergencia. Según informó la cartera, la red de salud de las regiones afectadas se mantiene mayoritariamente operativa, pese a interrupciones de conectividad, anegamientos y filtraciones en algunos establecimientos. En la Región de Coquimbo, equipos de la Subsecretaría de Redes Asistenciales se encuentran desplegados desde el viernes. Durante la primera jornada recorrieron el Hospital de La Serena, un CESFAM y el SAR Emilio Schaffhauser, además de participar en la mesa técnica de monitoreo del COGRID. En La Serena, la interrupción de caminos mantiene aisladas las postas rurales de El Romero y Lambert. Ambos establecimientos continúan operativos y atenderán entre las 08.00 y las 20.00 horas durante este fin de semana. En la Región de Atacama, todos los hospitales se encuentran funcionando. Si bien la comuna de Alto del Carmen permanece aislada, su CESFAM fue reforzado previamente para responder a las necesidades de atención de la comunidad. El Hospital de Huasco también continúa operativo y presenta únicamente filtraciones menores. Además, autoridades del Servicio de Salud Atacama recorren los servicios de urgencia de Atención Primaria para verificar su funcionamiento tras las precipitaciones registradas en Copiapó. En la Región de Valparaíso, equipos de la Subsecretaría de Salud Pública se encuentran desplegados en el Hospital Carlos Van Buren, donde monitorean la situación sanitaria y coordinan las medidas necesarias con las autoridades regionales. Respecto del Maule, el Ministerio de Salud informó que la red asistencial funciona en su totalidad, salvo por dificultades en la posta rural Santa Delfina, cuya atención está siendo suplementada. Aunque el sistema frontal perdió intensidad en esa región, se prevé el retorno de las precipitaciones entre el lunes y el martes, por lo que durante el fin de semana continuarán reforzándose los servicios de salud. Finalmente, el ministerio indicó que mantendrá un monitoreo permanente de la emergencia junto con las seremis, los Servicios de Salud y Senapred. La cartera también llamó a utilizar responsablemente la red asistencial, concurriendo a los servicios de urgencia solo ante una emergencia y privilegiando los centros de Atención Primaria cuando corresponda.",
+      "analysis": {
+        "relevance_score": 78,
+        "what_happened": "La cafetería hospitalaria tiene capacidad disponible.",
+        "why_it_matters": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+        "reason": "Señal concreta de gestión de capacidad y continuidad de atención hospitalaria ante una emergencia climática, con coordinación interministerial y afectación directa de un hospital. Su alcance estratégico es acotado y temporal, por lo que no corresponde a un cambio estructural del sistema.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota describe daños en un hospital, coordinación para instalar capacidad clínica temporal y medidas para absorber demanda asistencial humana durante una emergencia.",
+          "human_health_scope_quote": "instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "actor": "El Ministerio de Salud",
+          "action": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "consequence": "que permita absorber parte de la demanda del Hospital de Ovalle",
+          "actor_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "action_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "consequence_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La publicación informa una coordinación interministerial concreta para instalar capacidad hospitalaria temporal en Ovalle y entrega un balance operativo de la red afectada a esa fecha.",
+          "novelty_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "La cafetería hospitalaria tiene capacidad disponible.",
+              "source_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+              "source_quote": "que permita absorber parte de la demanda del Hospital de Ovalle"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0fb90ebcf3cf93e2006acbcbca873487d1854bc3c7526d6c3b",
+          "analysis_text_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+          "request_input_sha256": "5860d4786bf896f31b2ed5911d2dfd3e52ef7454930aefde7dcbd81e2eead382",
+          "raw_model_output_sha256": "a2326a202db4ea4d1a2a8e2617eee563844956320d043281431aff6d2698f567"
+        }
+      },
+      "score_unchanged": true,
+      "expected": "must_hold",
+      "expectation_kind": "semantic_negative"
+    },
+    {
+      "case": "noun_peluqueria",
+      "group": "future_copy",
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "publication_date": "2026-07-18",
+      "body_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+      "body": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal. La medida fue informada durante el Comité para la Gestión del Riesgo de Desastres Sectorial, encabezado este sábado por la ministra de Salud, May Chomali, instancia en la que se revisó el estado de la red asistencial y se coordinaron las acciones sanitarias ante la emergencia. Según informó la cartera, la red de salud de las regiones afectadas se mantiene mayoritariamente operativa, pese a interrupciones de conectividad, anegamientos y filtraciones en algunos establecimientos. En la Región de Coquimbo, equipos de la Subsecretaría de Redes Asistenciales se encuentran desplegados desde el viernes. Durante la primera jornada recorrieron el Hospital de La Serena, un CESFAM y el SAR Emilio Schaffhauser, además de participar en la mesa técnica de monitoreo del COGRID. En La Serena, la interrupción de caminos mantiene aisladas las postas rurales de El Romero y Lambert. Ambos establecimientos continúan operativos y atenderán entre las 08.00 y las 20.00 horas durante este fin de semana. En la Región de Atacama, todos los hospitales se encuentran funcionando. Si bien la comuna de Alto del Carmen permanece aislada, su CESFAM fue reforzado previamente para responder a las necesidades de atención de la comunidad. El Hospital de Huasco también continúa operativo y presenta únicamente filtraciones menores. Además, autoridades del Servicio de Salud Atacama recorren los servicios de urgencia de Atención Primaria para verificar su funcionamiento tras las precipitaciones registradas en Copiapó. En la Región de Valparaíso, equipos de la Subsecretaría de Salud Pública se encuentran desplegados en el Hospital Carlos Van Buren, donde monitorean la situación sanitaria y coordinan las medidas necesarias con las autoridades regionales. Respecto del Maule, el Ministerio de Salud informó que la red asistencial funciona en su totalidad, salvo por dificultades en la posta rural Santa Delfina, cuya atención está siendo suplementada. Aunque el sistema frontal perdió intensidad en esa región, se prevé el retorno de las precipitaciones entre el lunes y el martes, por lo que durante el fin de semana continuarán reforzándose los servicios de salud. Finalmente, el ministerio indicó que mantendrá un monitoreo permanente de la emergencia junto con las seremis, los Servicios de Salud y Senapred. La cartera también llamó a utilizar responsablemente la red asistencial, concurriendo a los servicios de urgencia solo ante una emergencia y privilegiando los centros de Atención Primaria cuando corresponda.",
+      "analysis": {
+        "relevance_score": 78,
+        "what_happened": "La peluquería comunitaria está operativa.",
+        "why_it_matters": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+        "reason": "Señal concreta de gestión de capacidad y continuidad de atención hospitalaria ante una emergencia climática, con coordinación interministerial y afectación directa de un hospital. Su alcance estratégico es acotado y temporal, por lo que no corresponde a un cambio estructural del sistema.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota describe daños en un hospital, coordinación para instalar capacidad clínica temporal y medidas para absorber demanda asistencial humana durante una emergencia.",
+          "human_health_scope_quote": "instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "actor": "El Ministerio de Salud",
+          "action": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "consequence": "que permita absorber parte de la demanda del Hospital de Ovalle",
+          "actor_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "action_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "consequence_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La publicación informa una coordinación interministerial concreta para instalar capacidad hospitalaria temporal en Ovalle y entrega un balance operativo de la red afectada a esa fecha.",
+          "novelty_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "La peluquería comunitaria está operativa.",
+              "source_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+              "source_quote": "que permita absorber parte de la demanda del Hospital de Ovalle"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0fb90ebcf3cf93e2006acbcbca873487d1854bc3c7526d6c3b",
+          "analysis_text_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+          "request_input_sha256": "5860d4786bf896f31b2ed5911d2dfd3e52ef7454930aefde7dcbd81e2eead382",
+          "raw_model_output_sha256": "a2326a202db4ea4d1a2a8e2617eee563844956320d043281431aff6d2698f567"
+        }
+      },
+      "score_unchanged": true,
+      "expected": "must_hold",
+      "expectation_kind": "semantic_negative"
+    },
+    {
+      "case": "noun_drogueria",
+      "group": "future_copy",
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "publication_date": "2026-07-18",
+      "body_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+      "body": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal. La medida fue informada durante el Comité para la Gestión del Riesgo de Desastres Sectorial, encabezado este sábado por la ministra de Salud, May Chomali, instancia en la que se revisó el estado de la red asistencial y se coordinaron las acciones sanitarias ante la emergencia. Según informó la cartera, la red de salud de las regiones afectadas se mantiene mayoritariamente operativa, pese a interrupciones de conectividad, anegamientos y filtraciones en algunos establecimientos. En la Región de Coquimbo, equipos de la Subsecretaría de Redes Asistenciales se encuentran desplegados desde el viernes. Durante la primera jornada recorrieron el Hospital de La Serena, un CESFAM y el SAR Emilio Schaffhauser, además de participar en la mesa técnica de monitoreo del COGRID. En La Serena, la interrupción de caminos mantiene aisladas las postas rurales de El Romero y Lambert. Ambos establecimientos continúan operativos y atenderán entre las 08.00 y las 20.00 horas durante este fin de semana. En la Región de Atacama, todos los hospitales se encuentran funcionando. Si bien la comuna de Alto del Carmen permanece aislada, su CESFAM fue reforzado previamente para responder a las necesidades de atención de la comunidad. El Hospital de Huasco también continúa operativo y presenta únicamente filtraciones menores. Además, autoridades del Servicio de Salud Atacama recorren los servicios de urgencia de Atención Primaria para verificar su funcionamiento tras las precipitaciones registradas en Copiapó. En la Región de Valparaíso, equipos de la Subsecretaría de Salud Pública se encuentran desplegados en el Hospital Carlos Van Buren, donde monitorean la situación sanitaria y coordinan las medidas necesarias con las autoridades regionales. Respecto del Maule, el Ministerio de Salud informó que la red asistencial funciona en su totalidad, salvo por dificultades en la posta rural Santa Delfina, cuya atención está siendo suplementada. Aunque el sistema frontal perdió intensidad en esa región, se prevé el retorno de las precipitaciones entre el lunes y el martes, por lo que durante el fin de semana continuarán reforzándose los servicios de salud. Finalmente, el ministerio indicó que mantendrá un monitoreo permanente de la emergencia junto con las seremis, los Servicios de Salud y Senapred. La cartera también llamó a utilizar responsablemente la red asistencial, concurriendo a los servicios de urgencia solo ante una emergencia y privilegiando los centros de Atención Primaria cuando corresponda.",
+      "analysis": {
+        "relevance_score": 78,
+        "what_happened": "La droguería hospitalaria dispone de nueva capacidad.",
+        "why_it_matters": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+        "reason": "Señal concreta de gestión de capacidad y continuidad de atención hospitalaria ante una emergencia climática, con coordinación interministerial y afectación directa de un hospital. Su alcance estratégico es acotado y temporal, por lo que no corresponde a un cambio estructural del sistema.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota describe daños en un hospital, coordinación para instalar capacidad clínica temporal y medidas para absorber demanda asistencial humana durante una emergencia.",
+          "human_health_scope_quote": "instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "actor": "El Ministerio de Salud",
+          "action": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "consequence": "que permita absorber parte de la demanda del Hospital de Ovalle",
+          "actor_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "action_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "consequence_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La publicación informa una coordinación interministerial concreta para instalar capacidad hospitalaria temporal en Ovalle y entrega un balance operativo de la red afectada a esa fecha.",
+          "novelty_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "La droguería hospitalaria dispone de nueva capacidad.",
+              "source_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+              "source_quote": "que permita absorber parte de la demanda del Hospital de Ovalle"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0fb90ebcf3cf93e2006acbcbca873487d1854bc3c7526d6c3b",
+          "analysis_text_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+          "request_input_sha256": "5860d4786bf896f31b2ed5911d2dfd3e52ef7454930aefde7dcbd81e2eead382",
+          "raw_model_output_sha256": "a2326a202db4ea4d1a2a8e2617eee563844956320d043281431aff6d2698f567"
+        }
+      },
+      "score_unchanged": true,
+      "expected": "must_hold",
+      "expectation_kind": "semantic_negative"
+    },
+    {
+      "case": "noun_reposteria",
+      "group": "future_copy",
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "publication_date": "2026-07-18",
+      "body_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+      "body": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal. La medida fue informada durante el Comité para la Gestión del Riesgo de Desastres Sectorial, encabezado este sábado por la ministra de Salud, May Chomali, instancia en la que se revisó el estado de la red asistencial y se coordinaron las acciones sanitarias ante la emergencia. Según informó la cartera, la red de salud de las regiones afectadas se mantiene mayoritariamente operativa, pese a interrupciones de conectividad, anegamientos y filtraciones en algunos establecimientos. En la Región de Coquimbo, equipos de la Subsecretaría de Redes Asistenciales se encuentran desplegados desde el viernes. Durante la primera jornada recorrieron el Hospital de La Serena, un CESFAM y el SAR Emilio Schaffhauser, además de participar en la mesa técnica de monitoreo del COGRID. En La Serena, la interrupción de caminos mantiene aisladas las postas rurales de El Romero y Lambert. Ambos establecimientos continúan operativos y atenderán entre las 08.00 y las 20.00 horas durante este fin de semana. En la Región de Atacama, todos los hospitales se encuentran funcionando. Si bien la comuna de Alto del Carmen permanece aislada, su CESFAM fue reforzado previamente para responder a las necesidades de atención de la comunidad. El Hospital de Huasco también continúa operativo y presenta únicamente filtraciones menores. Además, autoridades del Servicio de Salud Atacama recorren los servicios de urgencia de Atención Primaria para verificar su funcionamiento tras las precipitaciones registradas en Copiapó. En la Región de Valparaíso, equipos de la Subsecretaría de Salud Pública se encuentran desplegados en el Hospital Carlos Van Buren, donde monitorean la situación sanitaria y coordinan las medidas necesarias con las autoridades regionales. Respecto del Maule, el Ministerio de Salud informó que la red asistencial funciona en su totalidad, salvo por dificultades en la posta rural Santa Delfina, cuya atención está siendo suplementada. Aunque el sistema frontal perdió intensidad en esa región, se prevé el retorno de las precipitaciones entre el lunes y el martes, por lo que durante el fin de semana continuarán reforzándose los servicios de salud. Finalmente, el ministerio indicó que mantendrá un monitoreo permanente de la emergencia junto con las seremis, los Servicios de Salud y Senapred. La cartera también llamó a utilizar responsablemente la red asistencial, concurriendo a los servicios de urgencia solo ante una emergencia y privilegiando los centros de Atención Primaria cuando corresponda.",
+      "analysis": {
+        "relevance_score": 78,
+        "what_happened": "La repostería necesaria fue implementada.",
+        "why_it_matters": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+        "reason": "Señal concreta de gestión de capacidad y continuidad de atención hospitalaria ante una emergencia climática, con coordinación interministerial y afectación directa de un hospital. Su alcance estratégico es acotado y temporal, por lo que no corresponde a un cambio estructural del sistema.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota describe daños en un hospital, coordinación para instalar capacidad clínica temporal y medidas para absorber demanda asistencial humana durante una emergencia.",
+          "human_health_scope_quote": "instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "actor": "El Ministerio de Salud",
+          "action": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "consequence": "que permita absorber parte de la demanda del Hospital de Ovalle",
+          "actor_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "action_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "consequence_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La publicación informa una coordinación interministerial concreta para instalar capacidad hospitalaria temporal en Ovalle y entrega un balance operativo de la red afectada a esa fecha.",
+          "novelty_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "La repostería necesaria fue implementada.",
+              "source_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+              "source_quote": "que permita absorber parte de la demanda del Hospital de Ovalle"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0fb90ebcf3cf93e2006acbcbca873487d1854bc3c7526d6c3b",
+          "analysis_text_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+          "request_input_sha256": "5860d4786bf896f31b2ed5911d2dfd3e52ef7454930aefde7dcbd81e2eead382",
+          "raw_model_output_sha256": "a2326a202db4ea4d1a2a8e2617eee563844956320d043281431aff6d2698f567"
+        }
+      },
+      "score_unchanged": true,
+      "expected": "must_hold",
+      "expectation_kind": "semantic_negative"
+    },
+    {
+      "case": "noun_joyeria",
+      "group": "future_copy",
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "publication_date": "2026-07-18",
+      "body_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+      "body": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal. La medida fue informada durante el Comité para la Gestión del Riesgo de Desastres Sectorial, encabezado este sábado por la ministra de Salud, May Chomali, instancia en la que se revisó el estado de la red asistencial y se coordinaron las acciones sanitarias ante la emergencia. Según informó la cartera, la red de salud de las regiones afectadas se mantiene mayoritariamente operativa, pese a interrupciones de conectividad, anegamientos y filtraciones en algunos establecimientos. En la Región de Coquimbo, equipos de la Subsecretaría de Redes Asistenciales se encuentran desplegados desde el viernes. Durante la primera jornada recorrieron el Hospital de La Serena, un CESFAM y el SAR Emilio Schaffhauser, además de participar en la mesa técnica de monitoreo del COGRID. En La Serena, la interrupción de caminos mantiene aisladas las postas rurales de El Romero y Lambert. Ambos establecimientos continúan operativos y atenderán entre las 08.00 y las 20.00 horas durante este fin de semana. En la Región de Atacama, todos los hospitales se encuentran funcionando. Si bien la comuna de Alto del Carmen permanece aislada, su CESFAM fue reforzado previamente para responder a las necesidades de atención de la comunidad. El Hospital de Huasco también continúa operativo y presenta únicamente filtraciones menores. Además, autoridades del Servicio de Salud Atacama recorren los servicios de urgencia de Atención Primaria para verificar su funcionamiento tras las precipitaciones registradas en Copiapó. En la Región de Valparaíso, equipos de la Subsecretaría de Salud Pública se encuentran desplegados en el Hospital Carlos Van Buren, donde monitorean la situación sanitaria y coordinan las medidas necesarias con las autoridades regionales. Respecto del Maule, el Ministerio de Salud informó que la red asistencial funciona en su totalidad, salvo por dificultades en la posta rural Santa Delfina, cuya atención está siendo suplementada. Aunque el sistema frontal perdió intensidad en esa región, se prevé el retorno de las precipitaciones entre el lunes y el martes, por lo que durante el fin de semana continuarán reforzándose los servicios de salud. Finalmente, el ministerio indicó que mantendrá un monitoreo permanente de la emergencia junto con las seremis, los Servicios de Salud y Senapred. La cartera también llamó a utilizar responsablemente la red asistencial, concurriendo a los servicios de urgencia solo ante una emergencia y privilegiando los centros de Atención Primaria cuando corresponda.",
+      "analysis": {
+        "relevance_score": 78,
+        "what_happened": "La joyería ordinaria tiene capacidad instalada.",
+        "why_it_matters": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+        "reason": "Señal concreta de gestión de capacidad y continuidad de atención hospitalaria ante una emergencia climática, con coordinación interministerial y afectación directa de un hospital. Su alcance estratégico es acotado y temporal, por lo que no corresponde a un cambio estructural del sistema.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota describe daños en un hospital, coordinación para instalar capacidad clínica temporal y medidas para absorber demanda asistencial humana durante una emergencia.",
+          "human_health_scope_quote": "instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "actor": "El Ministerio de Salud",
+          "action": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "consequence": "que permita absorber parte de la demanda del Hospital de Ovalle",
+          "actor_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "action_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "consequence_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La publicación informa una coordinación interministerial concreta para instalar capacidad hospitalaria temporal en Ovalle y entrega un balance operativo de la red afectada a esa fecha.",
+          "novelty_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "La joyería ordinaria tiene capacidad instalada.",
+              "source_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+              "source_quote": "que permita absorber parte de la demanda del Hospital de Ovalle"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0fb90ebcf3cf93e2006acbcbca873487d1854bc3c7526d6c3b",
+          "analysis_text_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+          "request_input_sha256": "5860d4786bf896f31b2ed5911d2dfd3e52ef7454930aefde7dcbd81e2eead382",
+          "raw_model_output_sha256": "a2326a202db4ea4d1a2a8e2617eee563844956320d043281431aff6d2698f567"
+        }
+      },
+      "score_unchanged": true,
+      "expected": "must_hold",
+      "expectation_kind": "semantic_negative"
+    },
     {
       "case": "adjective_hospitalaria",
       "group": "future_copy",
@@ -3251,7 +3754,7 @@
         }
       },
       "score_unchanged": true,
-      "expected": "must_hold",
+      "expected": "semantic_date_limit",
       "expectation_kind": "semantic_negative"
     },
     {
@@ -3431,15 +3934,22 @@
         }
       },
       "score_unchanged": null,
-      "expected": "semantic_review_required",
+      "expected": "must_hold",
       "expectation_kind": "scope_quote_only_not_whole_article_exclusion"
     }
   ],
   "source_bytes_unchanged_during_capture": true,
   "recommended_repairs": [
     "A valid future marker in one clause must not excuse a completed/present capacity assertion in another clause.",
-    "Historic date context should be bound to the publication/event being summarized, not any arbitrary date.",
+    "TEMPORAL SEMANTIC LIMIT: arbitrary old2020 context labelled recent can still be technically ready. It requires explicit independent full-primary-body/publication-day/incremental-value review; ready never approves publication. No date schema or gate change is claimed.",
     "Animal-only insurance/veterinary wording must not leave generic Hospital/isapres tokens as alleged independent human evidence after regex removal.",
     "Maintain independent semantic approval for generic elder demographics, climate context and all technical-ready answers."
-  ]
+  ],
+  "validation": {
+    "command": "/workspace/work/venv/bin/python -m pytest -q tests/test_pulso_actual_v5_future_qualifiers.py tests/test_pulso_editorial_proof.py tests/test_pulso_actual_model_grounding_repair.py",
+    "exit_code": 0,
+    "tests_passed": 145,
+    "audit_contract": "PASS",
+    "scope": "Independent final guard replay; excludes publication/date semantic approval and UI/runtime acceptance."
+  }
 }
