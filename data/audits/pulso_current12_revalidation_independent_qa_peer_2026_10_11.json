@@ -1,0 +1,1031 @@
+{
+  "schema_version": "pulso_current12_independent_qa_peer_v1",
+  "generated_at": "2026-10-11T20:26:24.415685+00:00",
+  "reviewed_head": "ab327ab23d6b450f0dbd2fccefde4e6299fc8a04",
+  "status": "SCOPED_QA_CODE_PASS",
+  "gate_threshold": 72,
+  "source_id": "pulso_latercera",
+  "publication_approved": false,
+  "actual_current12_core_execution_approved": false,
+  "actual_current12_replay_approved": false,
+  "actual_current12_ui_approved": false,
+  "source_state_or_runtime_edits": false,
+  "inputs": {
+    "scripts/qa_pulso_recovery.py": "3a94d3a9531e0d1b6618b8aabf212fa93c33570eefdf62d6de3c4425d9aa7007",
+    "tests/test_pulso_current_paid_revalidation_qa.py": "9afc590c672d95aeafba64efb26418a92150b211ac324facbaa82a589c105c09",
+    "src/radar_salud/pulso_current_paid_revalidation.py": "fb4741d618b756cdc10e50354ab7a5a872d430ada77e66243663606129603945",
+    "src/radar_salud/pulso_paid_revalidation.py": "57c838db696cf5e8d5f9b9b3763bc33a84ce021636fc5af7567ad1f6f8263e18",
+    "src/radar_salud/pulso_editorial_proof.py": "e39663acbe8d952039373c04763c05f613d365459cc9a98feb314f2a60567dd3",
+    "src/radar_salud/beta_sources.py": "a0a47e804cc4f630fe33e74eb7ee31c846baa08da8e2debdcdb7519536f459c9",
+    "data/state/pending_queue.json": "55caf3abb5910b79bbef9a5543a10c7f32d22910ed15f24eabf6aaa1ead35e70",
+    "data/ai_usage/responses.jsonl": "d421299b6f6fbe440c166bb13ad686ba0896ccfc0cbfeda400f49932c9781037",
+    "data/history/superintendencia_signals.json": "6e574a39de24bdbd50e17d9ce3eabbdc3dc1081b8c64337fbaa785fbc47a01c6",
+    "web/data/radar_today.json": "f37fdde18658e2f328addc5e5f35b4b10ffbdc1775462ca4c625fd223828ff83",
+    "data/audits/pulso_current12_paid_guard_revalidation_manifest_2026_10_11.json": "3f27a3a4450e0fbf074fadc8da380f674c18d35ab20e896971a2b19d7c55cc1b",
+    "data/audits/pulso_actual_mixed12_full_primary_model_diagnosis_2026_10_11.json": "a87dbac7e8c60484545fc166591ebc000f8d8e7917bd08cfb416ad1038f82690",
+    "data/audits/pulso_mixed12_independent_peer_2026_10_11.json": "9f7dba641312afa5b8ea18ed99916080367b74531c9741dc9d0f1437b848b665",
+    "data/ai_usage/2026-10.json": "e6692992c104bf34f21a857f9542103d6229888d2ccdda70784289d2a36680a5"
+  },
+  "original908_producer": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "original908_code": "29731f04d998659e5892c109871f54ef0c7f8eef",
+  "original908_fingerprint": "73b012deb1cd6729e55527f87569825136d5f5523617029ff862640eadea366d",
+  "checks": [
+    {
+      "check": "all12_immutable_failed908_deferred_is_history_only_never_terminal_credit",
+      "result": "PASS",
+      "records": 12
+    },
+    {
+      "check": "all37_prior_terminal_replayed_with_real908_guard_and_window",
+      "result": "PASS",
+      "records": 37,
+      "legitimate_curated_copy_does_not_relabel_model_run": true,
+      "editorial_semantic_publication_application_approval": false
+    },
+    {
+      "check": "pre_fix_current_claim_erasure_legacy_fallback_reproduced_and_fixed",
+      "result": "PASS",
+      "records": 12,
+      "legacy_fallback_reproduced_before_fix": 10,
+      "current_required_after_fix": 12
+    },
+    {
+      "check": "primary_archive_type_attempt_guard_window_telemetry_tampering_denied",
+      "result": "PASS",
+      "cases": 118
+    },
+    {
+      "check": "original25_actual_ledger_and_unique_successful_response_ids_intact",
+      "result": "PASS",
+      "ledger_delta": {
+        "fast": {
+          "attempted": 25,
+          "successful": 25,
+          "failed": 0
+        },
+        "deep": {
+          "attempted": 0,
+          "successful": 0,
+          "failed": 0
+        }
+      }
+    },
+    {
+      "check": "actual_live37_historical_models_remain_bound_to908_after_external_curation",
+      "result": "PASS",
+      "records": 37,
+      "statuses": {
+        "published": 28,
+        "rejected": 9
+      },
+      "new_model_or_guard_window_credit": false
+    }
+  ],
+  "current12": [
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "publication_date": "2026-07-14",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_076f622e58de0a41006acbe11d38c887d19561679bb35b32f0",
+      "original_body_sha256": "35ce3696d5b7b638452ffe3aa8783bfaef251cb7809efae3962f51aac3f2dffb",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "publication_date": "2026-10-05",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_04a03e33bbaa716c006acbdec2545887d191f848ed738c3f91",
+      "original_body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "publication_date": "2026-09-19",
+      "route": "reuse_code_fn",
+      "original_response_id": "resp_0e50639ca2d6d50c006acbdf64d6a887d196d998ddad64ae35",
+      "original_body_sha256": "4af8fea9489b451652e9469649bc3d3871f9241dc5cb86bb80f15ad33321d936",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "publication_date": "2026-09-09",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_07a6aaeb47fa7799006acbdf8bfd2887d1b160cb548e61d58c",
+      "original_body_sha256": "beac60d96524a37fb805e27c0d2f68e5405bbbc747980b7da2f46d166ef12509",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "publication_date": "2026-09-01",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_0079d69e0f29d1ca006acbe014589087d1a704aa2898561df1",
+      "original_body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "publication_date": "2026-09-01",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_0e60c3c9cebecfb1006acbe0252a7487d18c735ec87404fd90",
+      "original_body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "publication_date": "2026-08-25",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_041db95dab0bb263006acbe038228887d195f84385b8fbfc25",
+      "original_body_sha256": "5b4257997dd4ba1264324b70ee8e699f76ac249b0f0feb94411e317f078f3742",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": false
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "publication_date": "2026-08-14",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_027913cd5b1f22af006acbe06c0f7087d18207ce40f3f204ee",
+      "original_body_sha256": "6c61fb4a54bd3a08384a3675c8fbe2cff609c3b81cdb6be43a84a953a18c78ff",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "publication_date": "2026-07-29",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_000e83371c01286b006acbe0c030b087d1ab5f7c19b1a92990",
+      "original_body_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "publication_date": "2026-10-01",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_016a0e5fab913667006acbdf06489887d183655f69f0b1709c",
+      "original_body_sha256": "654cb94da13ac182977ef39a58cf721d83a478aa47a35b4522ce35a7cea5a3f9",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_065ad4c920775a9e006acbdf4d64d887d1a5d84ab1e7567dc3",
+      "original_body_sha256": "9113e0fd67a716d5a03a5f50bd0dba68dcb391278e16be3e3a900bbc0eebd982",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "publication_date": "2026-07-15",
+      "route": "reuse_code_fn",
+      "original_response_id": "resp_0cecf8a0516932cc006acbe103492087d195562467d0f14c62",
+      "original_body_sha256": "498322790b34aff91b51dd1768968c41a53ac050657007091f75181bdbb30356",
+      "final_authority_result": "PASS_IN_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "genuine_new_response": false,
+      "reused_original_response": true
+    }
+  ],
+  "original_authority_erasure_reproduction": {
+    "qa_commit": "12f491ce0d6bddf0d7d599bf4333f43ef00d1d8a",
+    "qa_file_sha256": "a493351a711d6dc9b20ca38888b70dd7d7572e76a1b91f85250dba7e1d3b5010",
+    "results": [
+      {
+        "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+        "erased_current_claims": true,
+        "previous_current_result": "None",
+        "previous_legacy_result": "PASS",
+        "final_current_result": "DENY:current_paid_required_authority_missing"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+        "erased_current_claims": true,
+        "previous_current_result": "None",
+        "previous_legacy_result": "PASS",
+        "final_current_result": "DENY:current_paid_required_authority_missing"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+        "erased_current_claims": true,
+        "previous_current_result": "None",
+        "previous_legacy_result": "PASS",
+        "final_current_result": "DENY:current_paid_required_authority_missing"
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+        "erased_current_claims": true,
+        "previous_current_result": "None",
+        "previous_legacy_result": "PASS",
+        "final_current_result": "DENY:current_paid_required_authority_missing"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+        "erased_current_claims": true,
+        "previous_current_result": "None",
+        "previous_legacy_result": "PASS",
+        "final_current_result": "DENY:current_paid_required_authority_missing"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+        "erased_current_claims": true,
+        "previous_current_result": "None",
+        "previous_legacy_result": "PASS",
+        "final_current_result": "DENY:current_paid_required_authority_missing"
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+        "erased_current_claims": true,
+        "previous_current_result": "None",
+        "previous_legacy_result": "PASS",
+        "final_current_result": "DENY:current_paid_required_authority_missing"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+        "erased_current_claims": true,
+        "previous_current_result": "None",
+        "previous_legacy_result": "PASS",
+        "final_current_result": "DENY:current_paid_required_authority_missing"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+        "erased_current_claims": true,
+        "previous_current_result": "None",
+        "previous_legacy_result": "PASS",
+        "final_current_result": "DENY:current_paid_required_authority_missing"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+        "erased_current_claims": true,
+        "previous_current_result": "None",
+        "previous_legacy_result": "PASS",
+        "final_current_result": "DENY:current_paid_required_authority_missing"
+      }
+    ],
+    "unit_current_execution_and_new_fast_response_synthetic": true
+  },
+  "mutations": [
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "attack": "new_response_absent_from_actual_telemetry",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "new_response_absent_from_actual_telemetry",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_unchanged908_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_unchanged908_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "attack": "new_response_absent_from_actual_telemetry",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "new_response_absent_from_actual_telemetry",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "new_response_absent_from_actual_telemetry",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "attack": "new_response_absent_from_actual_telemetry",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "attack": "new_response_absent_from_actual_telemetry",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "new_response_absent_from_actual_telemetry",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "attack": "new_response_absent_from_actual_telemetry",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "new_response_absent_from_actual_telemetry",
+      "result": "DENY",
+      "reason": "current_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "attack": "erase_all_current_claims",
+      "result": "DENY",
+      "reason": "current_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "attack": "archived908_body",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "attack": "old981_archive",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "current_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "attack": "attempt_boolean",
+      "result": "DENY",
+      "reason": "current_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "attack": "guard_fingerprint",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "current_paid_unchanged908_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "attack": "verdict_or_response_outside_execution_window",
+      "result": "DENY",
+      "reason": "current_paid_unchanged908_answer_or_current_guard_receipt_changed"
+    }
+  ],
+  "limitations": [
+    "New FAST model responses and current execution envelopes are explicitly synthetic temporary test fixtures; no external model/publisher call was made.",
+    "Actual immutable source bodies, original paid outputs, old execution ledger and dual semantic references were read unchanged. No tests write product history/feed/queue.",
+    "This approves the bounded QA authority checks only; it does not approve publications, semantic correctness, current12 genuine core, genuine zero-AI replay, final-SHA Reviewer or desktop/mobile UI.",
+    "The old37 curation check only preserves provenance binding; independent editorial applications and whole-body semantics remain separate acceptance requirements."
+  ],
+  "checked_repository_current_ledger": {
+    "deep": {
+      "attempted": 14,
+      "successful": 14,
+      "failed": 0
+    },
+    "fast": {
+      "attempted": 504,
+      "successful": 504,
+      "failed": 0
+    }
+  },
+  "validation": {
+    "command": "/workspace/work/venv/bin/python -m pytest -q tests/test_pulso_current_paid_revalidation_qa.py tests/test_pulso_paid_revalidation_qa.py tests/test_pulso_processing_selection_qa.py tests/test_pulso_recovery_qa.py",
+    "result": "242 passed in 72.50s",
+    "qa_file_sha256": "3a94d3a9531e0d1b6618b8aabf212fa93c33570eefdf62d6de3c4425d9aa7007",
+    "qa_commit": "ab327ab23d6b450f0dbd2fccefde4e6299fc8a04"
+  },
+  "peer_harness_sha256": "82f757dd4e1f4e9d305cf6cbaff2689e88c54fb33b042e6949c66a83863c59f2",
+  "reproduction_recipe": "Use frozen12 QA-owner temporary case fixture reordered by actual row URL for all12, external publisher/model forbidden; erase current STAMP/RECEIPT/ATTEMPTS plus CURRENT_PAID_REVISION. Archived QA12f accepts missing current and legacy accepts the 10 new-FAST unit cases; final QAab327 rejects missing current for all12, even with origin omitted. Full mutation cases and denial reasons are recorded below."
+}
