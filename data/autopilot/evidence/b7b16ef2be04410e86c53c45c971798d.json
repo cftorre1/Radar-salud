@@ -1,0 +1,48 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 23,
+      "material_event_count": 26,
+      "max_material_gap_seconds": 7303.821611,
+      "mode": "live",
+      "observed_seconds": 14400.0,
+      "original_started_at": "2026-10-11T05:29:46.231497Z",
+      "owner_observation_verified": false,
+      "owner_prompts": 0,
+      "owner_restarts": 0,
+      "total_elapsed_seconds": 35385.845175,
+      "window_started_at": "2026-10-11T11:19:32.076672Z"
+    },
+    "observed_until": "2026-10-11T15:19:32.076672Z",
+    "reasons": [
+      "owner_intervention_observation_not_verified",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed",
+      "material_progress_gap_exceeded_30m"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {
+    "mutualities": {
+      "evidence_revision": "a892411287e975a1afce4db3aa80c672eed8c8047f269ef20411b4cf0eea4079",
+      "failure": null,
+      "family": "mutualities",
+      "input_sha": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    }
+  },
+  "generated_at": "2026-10-11T15:19:32.076672+00:00",
+  "input_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "kind": "controller_observation",
+  "operation_id": "b7b16ef2be04410e86c53c45c971798d",
+  "stalled_tasks": [
+    {
+      "family": "mutualities",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 1,
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    }
+  ]
+}
