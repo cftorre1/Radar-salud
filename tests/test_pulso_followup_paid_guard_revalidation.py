@@ -164,61 +164,25 @@ def test_real3_reuse_same_followup_paid_answer_and_normal_media_pipeline_zero_ca
         assert receipt["new_validation"]["decision"] == "ready" and receipt["publication_approved"] is False
 
 
-def test_real2_new_fast_receive_bound_context_and_unchanged_full_input(tmp_path, actual, monkeypatch):
+def test_historical2_contract_context_survives_but_final_authority_blocks_new_api(tmp_path, actual, monkeypatch):
+    """Earlier context remains historical; exact two URLs now require final authority."""
     queue = admitted(tmp_path, actual)
-    class RequestObserved(Exception):
-        pass
-    calls = []
-    def spy(**kwargs):
-        calls.append(kwargs)
-        raise RequestObserved()
-    monkeypatch.setattr(llm_analysis, "analyze_news", spy)
+    def forbidden(**kwargs):
+        pytest.fail("Superseded followup permission must never dispatch another FAST")
+    monkeypatch.setattr(llm_analysis, "analyze_news", forbidden)
     rows = [row for row in actual[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect"]
     assert len(rows) == 2
     for pin in rows:
         raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
-        old = deepcopy(raw.metadata["analysis_model_output"])
-        with pytest.raises(RequestObserved):
+        before = deepcopy(raw.metadata)
+        assert current.verified_processing_mode(raw)[0]["new_model_request"] is True
+        assert current.reassessment_context(raw) == pin["reassessment_context"]
+        with pytest.raises(DeferredProcessing, match="evidence_unverified"):
             beta_sources.process_curated_beta_source(raw, {})
-        assert raw.metadata["analysis_model_output"] == old
-        assert calls[-1]["text"] == raw.metadata["page_text"]
-        assert calls[-1]["full_text"] is True and calls[-1]["pulso_editorial_proof"] is True
-        assert pin["reassessment_context"]["context_text"] in calls[-1]["kind"]
-        assert current.digest(calls[-1]["text"].encode()) == pin["body_sha256"]
-    assert len(calls) == 2
-
-
-def test_current_new_fast_deferral_keeps_both_paid_chains_and_later_due_retry(tmp_path, actual, monkeypatch):
-    """Actual article/model, explicitly synthetic unit API IDs, no paid events."""
-    queue = admitted(tmp_path, actual)
-    pin = next(row for row in actual[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect")
-    key = pin["queue_fingerprint"]
-    before = deepcopy(queue.items[key])
-    model = deepcopy(before["raw"]["metadata"]["analysis_model_output"])
-    calls = []
-    def unit_model(**request):
-        calls.append(request)
-        answer = deepcopy(model)
-        answer["pulso_editorial_proof"]["actor"] = "explicit unit actor absent from source quote"
-        answer["_pulso_analysis_meta"]["response_id"] = "explicit-unit-followup5-new-id-" + str(len(calls))
-        answer["_pulso_analysis_meta"]["raw_model_output_sha256"] = current.digest({k:v for k,v in answer.items() if k != "_pulso_analysis_meta"})
-        return answer
-    monkeypatch.setattr(llm_analysis, "analyze_news", unit_model)
-    for attempt in range(2):
-        queue.start(key)
-        raw = RawItem(**deepcopy(queue.items[key]["raw"]))
-        with pytest.raises(DeferredProcessing, match="actor_not_grounded"):
-            beta_sources.process_curated_beta_source(raw, {})
-        queue.items[key]["raw"] = asdict(raw)
-        queue.finish(key, "retry", "pulso_editorial_actor_not_grounded", now=NOW)
-        meta = queue.items[key]["raw"]["metadata"]
-        assert queue.items[key]["attempts"] == before["attempts"] + attempt + 1
-        assert len(meta[current.NEW_FAST_RECEIPTS]) == attempt + 1
-        assert len(meta[previous.NEW_FAST_RECEIPTS]) == attempt + 3
-        assert len(meta[prior_current.NEW_FAST_RECEIPTS]) == attempt + 2
-        assert meta[previous.NEW_FAST_RECEIPTS][0] == before["raw"]["metadata"][previous.NEW_FAST_RECEIPTS][0]
-        assert meta["evidence_revisions"][-1]["previous_processing_raw"] == current.paid_raw(actual[1]["held"][key]["raw"])
-    assert len(calls) == 2
+        assert raw.metadata["analysis_model_output"] == before["analysis_model_output"]
+        for field in (current.NEW_FAST_RECEIPTS, previous.NEW_FAST_RECEIPTS, prior_current.NEW_FAST_RECEIPTS):
+            assert raw.metadata.get(field) == before.get(field)
+        assert current.digest(raw.metadata["page_text"].encode()) == pin["body_sha256"]
 
 
 def test_false_ready_result_cannot_become_a_current_validator_receipt(tmp_path, actual):
@@ -278,13 +242,13 @@ def test_hanta_context_is_full_published_august8_proof_and_never_an_editorial_de
 
 
 @pytest.mark.parametrize("cohort", [0, 1])
-@pytest.mark.parametrize("generation", ["original981", "original908", "original66", "new_attempt1", "new_attempt2"])
-def test_all_five_generations_require_followup_authority_even_after_response_id_changes(
+@pytest.mark.parametrize("generation", ["original981", "original908", "original66", "original323"])
+def test_all_four_paid_generations_require_latest_authority_even_after_response_changes(
         tmp_path, actual, monkeypatch, cohort, generation):
-    """New IDs are explicit unit outputs; no publisher/model requests occur."""
+    """All models are genuine immutable paid answers; no new response is made."""
+    from radar_salud import pulso_final_paid_revalidation as final
     pin = [row for row in actual[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect"][cohort]
     key = pin["queue_fingerprint"]
-    queue = admitted(tmp_path, actual)
     if generation == "original981":
         raw = RawItem(**deepcopy(previous._producer(str(ROOT))[key]["raw"]))
     elif generation == "original908":
@@ -292,24 +256,7 @@ def test_all_five_generations_require_followup_authority_even_after_response_id_
     elif generation == "original66":
         raw = RawItem(**deepcopy(actual[1]["held"][key]["raw"]))
     else:
-        original_model = deepcopy(queue.items[key]["raw"]["metadata"]["analysis_model_output"])
-        calls = []
-        def unit_model(**request):
-            calls.append(request)
-            answer = deepcopy(original_model)
-            answer["pulso_editorial_proof"]["actor"] = "explicit unit actor absent from actual source quote"
-            answer["_pulso_analysis_meta"]["response_id"] = "explicit-unit-erasure-" + str(len(calls))
-            answer["_pulso_analysis_meta"]["raw_model_output_sha256"] = current.digest({
-                field:value for field,value in answer.items() if field != "_pulso_analysis_meta"})
-            return answer
-        monkeypatch.setattr(llm_analysis, "analyze_news", unit_model)
-        for _ in range(int(generation[-1])):
-            queue.start(key)
-            raw = RawItem(**deepcopy(queue.items[key]["raw"]))
-            with pytest.raises(DeferredProcessing, match="actor_not_grounded"):
-                beta_sources.process_curated_beta_source(raw, {})
-            queue.items[key]["raw"] = asdict(raw)
-            queue.finish(key, "retry", "pulso_editorial_actor_not_grounded", now=NOW)
+        raw = RawItem(**deepcopy(final.producer(str(ROOT))["held"][key]["raw"]))
         for field in (current.STAMP, current.RECEIPT, current.NEW_FAST_RECEIPTS):
             raw.metadata.pop(field, None)
         raw.metadata["evidence_revisions"] = [revision for revision in raw.metadata["evidence_revisions"]
@@ -317,7 +264,7 @@ def test_all_five_generations_require_followup_authority_even_after_response_id_
         assert previous.verified_paid_processing_mode(raw)[0]["new_model_request"] is True
         assert prior_current.verified_processing_mode(raw)[0]["new_model_request"] is True
     assert not current.has_claim(raw.metadata)
-    assert current.known_original_candidate(raw)
+    assert current.known_original_candidate(raw) and final.known_original_candidate(raw)
     old_model = deepcopy(raw.metadata["analysis_model_output"])
     def forbidden(**kwargs):
         pytest.fail("Erased authority must defer before another API request or legacy context fallback")

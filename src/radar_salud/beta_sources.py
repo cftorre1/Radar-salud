@@ -832,9 +832,19 @@ def process_curated_beta_source(raw, cfg):
         paid_revalidation = None
         current_paid_revalidation = None
         followup_paid_revalidation = None
+        final_paid_revalidation = None
+        from . import pulso_final_paid_revalidation as final_paid
         from . import pulso_followup_paid_revalidation as followup_paid
         from . import pulso_current_paid_revalidation as current_paid
-        if followup_paid.has_claim(raw.metadata) or followup_paid.known_original_candidate(raw):
+        if final_paid.has_claim(raw.metadata) or final_paid.known_original_candidate(raw):
+            try:
+                final_paid_revalidation, _ = final_paid.verified_processing_mode(raw)
+                ai = final_paid.unchanged_output(raw)
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif followup_paid.has_claim(raw.metadata) or followup_paid.known_original_candidate(raw):
             try:
                 followup_paid_revalidation, _ = followup_paid.verified_processing_mode(raw)
                 context = followup_paid.reassessment_context(raw)
@@ -902,7 +912,14 @@ def process_curated_beta_source(raw, cfg):
                                      input_text_sha256=raw.metadata["analysis_input_body_sha256"],
                                      request_input_sha256=raw.metadata["analysis_request_input_sha256"]):
             validation.update(decision="deferred",reason="pulso_editorial_model_binding_mismatch")
-        if followup_paid_revalidation is not None:
+        if final_paid_revalidation is not None:
+            try:
+                raw.metadata[final_paid.RECEIPT] = final_paid.revalidation_receipt(raw, ai, validation)
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif followup_paid_revalidation is not None:
             try:
                 if followup_paid_revalidation["new_model_request"]:
                     from . import pulso_paid_revalidation as original_paid

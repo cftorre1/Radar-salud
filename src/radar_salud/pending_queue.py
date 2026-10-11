@@ -193,6 +193,19 @@ def _same_pulso_model_request(previous_raw, fresh):
             and binding.get("source_name") == fresh.source_name)
 
 
+def _final_paid_revalidation_pulso_admission(raw, previous):
+    """Revalidate the two exact c2db answers without another model request."""
+    if (previous.get("status") not in {"pending", "retry"}
+            or type(previous.get("attempts")) is not int or previous["attempts"] != 5):
+        return None
+    from .pulso_final_paid_revalidation import verified_admission
+    from .pulso_source import complete_article_body
+    candidate = deepcopy(raw)
+    candidate.metadata.setdefault("article_body_complete", complete_article_body(candidate.metadata))
+    evidence = verified_admission(candidate, previous)
+    return (candidate, evidence) if evidence is not None else None
+
+
 def _followup_paid_revalidation_pulso_admission(raw, previous):
     """Release exactly the five reviewed de514 answers, once and unchanged."""
     if (previous.get("status") not in {"pending", "retry"}
@@ -321,6 +334,10 @@ class PendingQueue:
                         if followup_paid is not None:
                             raw, followup_paid_evidence = followup_paid
                             metadata = raw.metadata
+                        final_paid = _final_paid_revalidation_pulso_admission(raw, previous) if factual_verified else None
+                        if final_paid is not None:
+                            raw, final_paid_evidence = final_paid
+                            metadata = raw.metadata
                         publisher_holds = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
                                            "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy",
                                            "publisher_liveblog_entry_dates_unverified", "publisher_sponsored_text_unavailable"}
@@ -339,7 +356,7 @@ class PendingQueue:
                         changed = (old.get("event_date") != raw.event_date
                                    or old.get("title") != raw.title or old_meta.get("page_text") != metadata.get("page_text")
                                    or resolved_publisher_hold
-                                   or admission is not None or code_repair is not None or paid_revalidation is not None or current_paid is not None or followup_paid is not None
+                                   or admission is not None or code_repair is not None or paid_revalidation is not None or current_paid is not None or followup_paid is not None or final_paid is not None
                                    or any(old_meta.get(field) != metadata.get(field) for field in proof_fields))
                         if changed:
                             same_processing_input = factual_verified and _same_pulso_model_request(old, raw)
@@ -347,7 +364,8 @@ class PendingQueue:
                                 at=now.isoformat(), previous_publication_date=old.get("event_date"),
                                 verified_publication_date=raw.event_date, previous_title=old.get("title"),
                                 verified_title=raw.title, previous_capture_method=old_meta.get("capture_method"),
-                                reason=("verified_followup_paid_guard_revalidation_admission" if followup_paid is not None
+                                reason=("verified_final_paid_guard_revalidation_admission" if final_paid is not None
+                                        else "verified_followup_paid_guard_revalidation_admission" if followup_paid is not None
                                         else "verified_current_paid_guard_revalidation_admission" if current_paid is not None
                                         else "verified_paid_guard_revalidation_admission" if paid_revalidation is not None
                                         else "verified_editorial_code_repair_analysis_admission" if code_repair is not None
@@ -375,7 +393,8 @@ class PendingQueue:
                                             "paid_guard_new_fast_attempt_receipts", "current_paid_guard_revalidation_admission",
                                             "current_paid_guard_revalidation_receipt", "current_paid_new_fast_attempt_receipts",
                                             "followup_paid_guard_revalidation_admission", "followup_paid_guard_revalidation_receipt",
-                                            "followup_paid_new_fast_attempt_receipts"):
+                                            "followup_paid_new_fast_attempt_receipts", "final_paid_guard_revalidation_admission",
+                                            "final_paid_guard_revalidation_receipt"):
                                         previous["raw"]["metadata"][field] = deepcopy(value)
                                 revisions[-1]["retained_processing_input_unchanged"] = True
                             if admission is not None:
@@ -424,6 +443,15 @@ class PendingQueue:
                                     status_preserved=previous["status"], attempts_preserved=previous["attempts"],
                                     detected_at_preserved=previous["detected_at"], fingerprint_preserved=pulso_urls[url])
                                 previous["raw"]["metadata"]["followup_paid_guard_revalidation_admission"] = deepcopy(followup_paid_evidence)
+                                previous["retry_at"] = None
+                            if final_paid is not None:
+                                revisions[-1].update(
+                                    final_paid_guard_revalidation_admission=deepcopy(final_paid_evidence),
+                                    previous_retry_at=previous.get("retry_at"),
+                                    body_completeness_derived_from_verified_hash=body_completeness_derived,
+                                    status_preserved=previous["status"], attempts_preserved=previous["attempts"],
+                                    detected_at_preserved=previous["detected_at"], fingerprint_preserved=pulso_urls[url])
+                                previous["raw"]["metadata"]["final_paid_guard_revalidation_admission"] = deepcopy(final_paid_evidence)
                                 previous["retry_at"] = None
                             for field in ("editorial_hold", "event_equivalence_review"):
                                 # A newly proven factual primary article can resolve a
