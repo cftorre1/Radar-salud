@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from email.utils import parsedate_to_datetime
 from html.parser import HTMLParser
-from time import sleep
+from time import monotonic, sleep
 from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qs, urlencode, urljoin, urlparse
 from zoneinfo import ZoneInfo
@@ -1128,6 +1128,23 @@ def parse_public_feed(value):
     return entries, value.get("count"), value.get("next")
 
 
+def _checkpoint_feed_cache(path, cache, last_saved, *, force=False):
+    """Persist the first verified page, periodic progress and each feed end.
+
+    A warm cache can exceed 50 MB. Rewriting it on every inventory page adds
+    minutes without preserving additional original evidence. Checkpoints remain
+    atomic and periodic; completed and failed feeds always persist their final
+    verified details before the next surface starts.
+    """
+    from .pending_queue import atomic_json
+    now = monotonic()
+    if force or last_saved is None or now - last_saved >= 30:
+        cache["updated_at"] = datetime.now(ZoneInfo("UTC")).isoformat()
+        atomic_json(path, cache)
+        return monotonic()
+    return last_saved
+
+
 def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None,
                           workers=4, feeds=None, max_feed_pages=250):
     """Recover the 90-day horizon through ordinary public frontend pagination.
@@ -1135,11 +1152,11 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
     All new factual URLs are opened in detail. API first_publish_date is only
     chronology corroboration; final publication remains the primary byline.
     """
-    from .pending_queue import atomic_json
     today = today or datetime.now(ZoneInfo("America/Santiago")).date()
     cutoff = today - timedelta(days=90)
     cache = _load_cache(cache_path)
     articles = cache["articles"]
+    last_saved = None
     visited = visited if visited is not None else set()
     out, summaries = [], []
     feeds = PUBLIC_FEEDS if feeds is None else feeds
@@ -1255,8 +1272,7 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                               inventory_day_min=min(primary_dates).isoformat() if primary_dates else None,
                               inventory_day_max=max(primary_dates).isoformat() if primary_dates else None,
                               verified_details=len(detail_dates), boundary_pages=old_pages))
-            cache["updated_at"] = datetime.now(ZoneInfo("UTC")).isoformat()
-            atomic_json(cache_path, cache)
+            last_saved = _checkpoint_feed_cache(cache_path, cache, last_saved)
             if old_pages >= 3:
                 complete, termination = not errors, "three_publication_ordered_detail_verified_old_pages"
                 break
@@ -1287,6 +1303,7 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                            row.get("feed") == kind + ":" + name and row.get("source_content_unavailable_reason")
                            and row.get("status") == "discovered_metadata_only" for row in audit),
                        termination=termination, verified_publication_day_min=min(observed_dates).isoformat() if observed_dates else None)
+        last_saved = _checkpoint_feed_cache(cache_path, cache, last_saved, force=True)
         summaries.append(summary)
         audit.append(summary)
         if not complete:
