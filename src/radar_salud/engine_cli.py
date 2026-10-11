@@ -31,6 +31,7 @@ def main():
     ap.add_argument("--source","--only-source",dest="source",action="append",help="Process only the named source(s); default is all core sources")
     ap.add_argument("--reset-state",action="store_true")
     args=ap.parse_args()
+    args.source=list(dict.fromkeys((args.source or []) + args.only_source))
     if args.reset_state:
         ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
     root=project_root()

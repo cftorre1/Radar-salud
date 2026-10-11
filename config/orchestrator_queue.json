@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T09:36:35.151546+00:00",
+  "updated_at": "2026-10-11T13:34:28.611883+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3513,7 +3513,7 @@
       "started_at": "2026-10-11",
       "last_progress_at": "2026-10-11",
       "current_subfront": "validate_df_and_pulso_runtime",
-      "next_action": "Exercise repairs in Daily Radar and verify output.",
+      "next_action": "DF integrado con runtime validado y limitaciones preservadas; PR10 continúa en su rama hasta READY_FOR_INTEGRATION.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3663,7 +3663,22 @@
             9
           ]
         }
-      ]
+      ],
+      "integration_outcomes": {
+        "diario_financiero": {
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+          "runtime_run": 38142527704,
+          "preview_run": 38142527882,
+          "deferred_multimedia": 19,
+          "coverage_complete": false
+        },
+        "pulso_latercera": {
+          "state": "NOT_READY",
+          "pr": 10,
+          "next_action": "Terminar procesamiento real, QA dirigido, Reviewer y handoff READY_FOR_INTEGRATION."
+        }
+      }
     },
     {
       "id": "source_repair_public_data_lane_2026_10_11",
@@ -3713,7 +3728,7 @@
       "started_at": "2026-10-11",
       "last_progress_at": "2026-10-11T07:39:26.902569+00:00",
       "current_subfront": "bounded_coverage_validated_global_gates_and_dates_pending",
-      "next_action": "Resolve source date uncertainty and inherited global QA/Reviewer gates; integrate PR #15 safely to staging only after gates, rerun core and close Work 3 SUSESO omission with exact 20/72 office reconciliation. No staging/main state was changed.",
+      "next_action": "Verify actual SIS/SUSESO runtime and native 30/90-day receipts on staging9920e3d. Preserve uncertain reports and historical stock without changing act dates; keep issue8 open.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -4470,7 +4485,7 @@
       "id": "source_recovery_reconciliation_gate_2026_10_11",
       "status": "in_progress",
       "priority": "critical",
-      "owner": "Paolo + Pato + Reviewer",
+      "owner": "Integration Director + Pato + Reviewer",
       "source": "Dirección",
       "objective": "Conciliar todo hallazgo, issue, PR Codex, tarea Work y evidencia de fuente para que ningún compromiso quede olvidado ni se cierre sin llegar efectivamente a staging validado.",
       "depends_on": [],
@@ -4493,9 +4508,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T04:45:00Z",
-      "current_subfront": "reconcile_work_findings_and_codex_prs",
-      "next_action": "Integrate PR15 then PR12/13/14 with post-merge source runtime; PR10 only when READY_FOR_INTEGRATION.",
+      "last_progress_at": "2026-10-11T13:34:28.611883+00:00",
+      "current_subfront": "SIS_SUSESO_PR18_candidate_global_QA",
+      "next_action": "Verify SIS/SUSESO post-merge runtime on staging9920e3d; integrate PR17 strict primary-PDF baseline and poll health fix. Continue PR12/13/14 with parallel owner; PR10 only READY_FOR_INTEGRATION.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -4583,7 +4598,8 @@
           "reason": "Repaired text discovery, publisher dates and stock integration validated; 19 multimedia items and partial site coverage retain warning. No full multimedia/absolute site coverage claim.",
           "next_action": "Fix cumulative rejection interpretation in the shared health producer, then integrate PR15; retain the 19 publisher text/OCR holds. Pulso remains NOT_READY."
         }
-      }
+      },
+      "integration_matrix": "data/pmo/integration_release_2026_10_11.json"
     },
     {
       "id": "beta_gate5_test_ops_golive_2026_10_11",
