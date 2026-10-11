@@ -211,12 +211,18 @@ class CanaryGitTests(unittest.TestCase):
 
         def writer(name):
             store = GitStateStore(self.remote.as_uri(), initial_backoff=0)
+            # Distinct hosted runs propose different pickup evidence/tokens,
+            # so this exercises a real conflict and reducer retry. Identical
+            # candidates are covered separately by the state-store Git test.
+            run_id = 123 if name == "first" else 124
             def reduce(snapshot):
                 calls[name] += 1
                 if calls[name] == 1:
                     barrier.wait(timeout=10)
                 return canary._advance(snapshot, version=canary.VERSION,
-                    context={**CONTEXT, "infrastructure_sha": self.product_sha}, observed_at=BASE)
+                    context={**CONTEXT, "infrastructure_sha": self.product_sha, "run_id": run_id,
+                             "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/" + str(run_id)},
+                    observed_at=BASE)
             return store.transact(reduce)
 
         with ThreadPoolExecutor(max_workers=2) as pool:

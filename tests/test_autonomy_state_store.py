@@ -83,6 +83,58 @@ class StateStoreTests(unittest.TestCase):
         self.assertEqual(state.read_json("data/autopilot/evidence/a.json"), {"writer": "a"})
         self.assertEqual(state.read_json("data/autopilot/evidence/b.json"), {"writer": "b"})
 
+    def test_identical_candidate_up_to_date_push_is_not_a_second_remote_write(self):
+        barrier = threading.Barrier(2)
+        first_published = threading.Event()
+        pushes = {}
+        initial = self.store().read_snapshot().commit
+
+        def writer(name):
+            store = self.store()
+            # Identical candidate identity is explicit, independent of wall
+            # clock scheduling or how long the two commit-tree calls take.
+            store.environment.update(GIT_AUTHOR_DATE="2026-10-11T00:00:00+00:00",
+                                     GIT_COMMITTER_DATE="2026-10-11T00:00:00+00:00")
+            original_git = store._git
+
+            def ordered_push(git_dir, *args, **kwargs):
+                if args[:2] != ("push", "--porcelain"):
+                    return original_git(git_dir, *args, **kwargs)
+                if name == "second":
+                    self.assertTrue(first_published.wait(timeout=10))
+                result = original_git(git_dir, *args, **kwargs)
+                pushes[name] = {"refspec": args[-1], "stdout": result.stdout,
+                                "returncode": result.returncode}
+                if name == "first":
+                    first_published.set()
+                return result
+
+            def reduce(snapshot):
+                barrier.wait(timeout=10)
+                return Mutation({"data/autopilot/episode.json": '{"episode":"once","generation":1}\n',
+                                 "data/autopilot/evidence/fixed-episode.json": '{"event":"once"}\n'},
+                                "one fixed episode")
+
+            with patch.object(store, "_git", side_effect=ordered_push):
+                return store.transact(reduce)
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            futures = [pool.submit(writer, name) for name in ("first", "second")]
+            first, second = [future.result(timeout=20) for future in futures]
+        self.assertEqual(pushes["first"]["refspec"], pushes["second"]["refspec"])
+        self.assertEqual(pushes["second"]["returncode"], 0)
+        self.assertTrue(any(line.startswith(b"=\t") for line in pushes["second"]["stdout"].splitlines()))
+        self.assertTrue(first.changed)
+        self.assertFalse(second.changed)
+        self.assertEqual(first.commit, second.commit)
+        self.assertEqual([first.attempts, second.attempts], [1, 1])
+        self.assertEqual([first.value, second.value], ["one fixed episode"] * 2)
+        self.assertEqual(self.git("--git-dir", str(self.remote), "rev-list", "--count",
+                                  initial + "..refs/heads/autopilot-state"), "1")
+        snapshot = self.store().read_snapshot()
+        self.assertEqual(snapshot.read_json("data/autopilot/episode.json"), {"episode": "once", "generation": 1})
+        self.assertEqual(snapshot.read_json("data/autopilot/evidence/fixed-episode.json"), {"event": "once"})
+
     def test_reducer_revalidates_fencing_after_competing_claim(self):
         # The engine owns lease rules; prove a rejected old-token write is
         # re-evaluated rather than blindly replayed on the winner's commit.
@@ -117,6 +169,25 @@ class StateStoreTests(unittest.TestCase):
         self.assertEqual(calls, [1, 2])
         self.assertEqual(self.store().read_snapshot().read_json("data/autopilot/lease.json"),
                          {"token": "new", "generation": 2})
+
+    def test_success_without_recognized_exact_target_ref_status_fails_closed(self):
+        before = self.store().read_snapshot().commit
+        for output in (b"Done\n", b"=\tsha:refs/heads/unrelated\t[up to date]\n",
+                       b"=\trefs/heads/autopilot-state\t[up to date]\n",
+                       b"?\tsha:refs/heads/autopilot-state\tunknown\n",
+                       b"=\tsha:refs/heads/autopilot-state\t[up to date]\n"
+                       b" \tsha:refs/heads/autopilot-state\told..new\n"):
+            with self.subTest(output=output):
+                store = self.store()
+                original_git = store._git
+                def unexpected_push(git_dir, *args, **kwargs):
+                    if args[:2] == ("push", "--porcelain"):
+                        return subprocess.CompletedProcess(args, 0, output, b"")
+                    return original_git(git_dir, *args, **kwargs)
+                with patch.object(store, "_git", side_effect=unexpected_push), \
+                     self.assertRaisesRegex(StateStoreError, "recognized target-ref"):
+                    store.transact(lambda snapshot: Mutation({"data/autopilot/new.json": "{}"}))
+                self.assertEqual(self.store().read_snapshot().commit, before)
 
     def test_published_evidence_cannot_be_replaced(self):
         store = self.store()

@@ -283,6 +283,25 @@ class GitStateStore:
                 writes[path] = content
         return writes
 
+    def _push_changed(self, result: subprocess.CompletedProcess) -> bool:
+        """A successful identical push can be up-to-date without a ref write."""
+        target = f"refs/heads/{self.branch}".encode()
+        statuses = []
+        for line in result.stdout.splitlines():
+            parts = line.split(b"\t", 2)
+            if (len(parts) == 3 and b":" in parts[1]
+                    and parts[1].rsplit(b":", 1)[0]
+                    and parts[1].rsplit(b":", 1)[-1] == target):
+                statuses.append(parts[0])
+        if statuses == [b"="]:
+            return False
+        if statuses in ([b" "], [b"*"]):
+            return True
+        # A missing, duplicated or unknown target status must not fabricate a
+        # durable write from exit code zero alone. Do not echo authenticated
+        # remote text from Git's transport output.
+        raise StateStoreError("Successful Git push lacks one recognized target-ref porcelain status")
+
     def transact(
         self,
         mutator: Callable[[Snapshot], Mutation],
@@ -294,6 +313,8 @@ class GitStateStore:
         The reducer can run more than once and must not perform external side
         effects. Generate operation IDs once outside it. Validate lease tokens,
         expiry and fencing inside it using the snapshot passed to that attempt.
+        ``changed`` is false when a successful push confirms that an identical
+        concurrent candidate was already published, with no new ref update.
         """
         last_error = ""
         with tempfile.TemporaryDirectory(prefix="alicanto-state-") as git_dir:
@@ -321,7 +342,7 @@ class GitStateStore:
                 pushed = self._git(git_dir, "push", "--porcelain", "origin",
                                    f"{candidate}:refs/heads/{self.branch}", check=False)
                 if pushed.returncode == 0:
-                    return TransactionResult(mutation.value, candidate, attempt, True)
+                    return TransactionResult(mutation.value, candidate, attempt, self._push_changed(pushed))
                 last_error = self._error_detail(pushed)
                 if attempt < self.max_attempts:
                     ceiling = min(self.max_backoff, self.initial_backoff * 2 ** (attempt - 1))
