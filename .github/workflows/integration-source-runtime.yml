@@ -26,6 +26,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -38,7 +39,7 @@ jobs:
             python scripts/probe_fiscalization_runtime.py --as-of 2026-10-11 --output work/fiscalization-runtime
             python scripts/replay_fiscalization_runtime.py --captures work/fiscalization-runtime --output work/fiscalization-runtime/isolated-replay
             python scripts/review_fiscalization_coverage.py --runtime work/fiscalization-runtime --output work/fiscalization-runtime/coverage-review.json
-            python scripts/reconcile_native_fiscalization.py --runtime work/fiscalization-runtime
+            python scripts/reconcile_native_fiscalization.py --runtime work/fiscalization-runtime > work/fiscalization-runtime/native-reconciliation-summary.json
           fi
       - uses: actions/upload-artifact@v4
         if: always()

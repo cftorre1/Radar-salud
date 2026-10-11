@@ -50,7 +50,60 @@
       },
       "final_outcome": "INTEGRATED_DEGRADED",
       "reason": "Repaired text discovery, publisher dates and stock integration validated; 19 multimedia items and partial site coverage retain warning. No full multimedia/absolute site coverage claim.",
-      "next_action": "Fix cumulative rejection interpretation in the shared health producer, then integrate PR15; retain the 19 publisher text/OCR holds. Pulso remains NOT_READY."
+      "next_action": "Fix cumulative rejection interpretation in the shared health producer, then integrate PR15; retain the 19 publisher text/OCR holds. Pulso remains NOT_READY.",
+      "latest_producer_validation": {
+        "at": "2026-10-11T14:04:25.065669+00:00",
+        "staging_sha": "cb46eea750b65937d12a90bd30b3c6e8bef5da18",
+        "pr": 19,
+        "qa_runs": [
+          38144851522,
+          38144848628
+        ],
+        "preview_run": 38145086035,
+        "preview_result": "PASS",
+        "runtime_run": 38145085754,
+        "workflow_result": "FAIL_AUXILIARY_RECONCILIATION_MISSING_HISTORICAL_COMMIT",
+        "core_two_poll_result": "PASS",
+        "core_idempotent": true,
+        "core_unrelated_stock_preserved": true,
+        "reviewer_result": "PASS",
+        "native_original_coverage_result": "PASS",
+        "native_exact_calendar_counts": {
+          "30": {
+            "sis": 14,
+            "suseso": 20
+          },
+          "90": {
+            "sis": 28,
+            "suseso": 74
+          }
+        },
+        "artifact_id": 11705035168,
+        "artifact_sha256": "8c7770178bc4d2f9db08ee13f5414988df1ff0743c3498b60bacc3fa77b4a45a",
+        "root_cause": "Default checkout depth1 did not contain cadb6c2 needed by native historical baseline comparison; collector/core/native coverage Reviewer passed before this step.",
+        "fix": "Set fetch-depth0 and persist reconciliation JSON. Local full-history reconstruction against the downloaded native artifact passes; repeat full staging workflow after bounded merge.",
+        "outcomes": {
+          "diario_financiero": {
+            "editorial_outcome": "no_new_signals",
+            "processed_rejections": 0,
+            "published": 0,
+            "coverage_status": "format_gap"
+          },
+          "superintendencia_fiscalizacion": {
+            "editorial_outcome": "no_new_publications_existing_history",
+            "processed_rejections": 0,
+            "published": 0,
+            "coverage_status": "listed_surface_parsed"
+          },
+          "suseso_fiscalizacion": {
+            "editorial_outcome": "pending",
+            "processed_rejections": 0,
+            "published": 0,
+            "coverage_status": "gap"
+          }
+        },
+        "production_changes": false
+      }
     },
     {
       "issue": [
@@ -120,7 +173,60 @@
       "window_evidence": "native reviewed original dated surfaces; runtime inclusive window counts separately preserved",
       "coverage_complete": false,
       "next_action": "Keep source degraded; resolve undated reports / remaining legal-act identity limits without date fabrication",
-      "production_changes": false
+      "production_changes": false,
+      "latest_producer_validation": {
+        "at": "2026-10-11T14:04:25.065669+00:00",
+        "staging_sha": "cb46eea750b65937d12a90bd30b3c6e8bef5da18",
+        "pr": 19,
+        "qa_runs": [
+          38144851522,
+          38144848628
+        ],
+        "preview_run": 38145086035,
+        "preview_result": "PASS",
+        "runtime_run": 38145085754,
+        "workflow_result": "FAIL_AUXILIARY_RECONCILIATION_MISSING_HISTORICAL_COMMIT",
+        "core_two_poll_result": "PASS",
+        "core_idempotent": true,
+        "core_unrelated_stock_preserved": true,
+        "reviewer_result": "PASS",
+        "native_original_coverage_result": "PASS",
+        "native_exact_calendar_counts": {
+          "30": {
+            "sis": 14,
+            "suseso": 20
+          },
+          "90": {
+            "sis": 28,
+            "suseso": 74
+          }
+        },
+        "artifact_id": 11705035168,
+        "artifact_sha256": "8c7770178bc4d2f9db08ee13f5414988df1ff0743c3498b60bacc3fa77b4a45a",
+        "root_cause": "Default checkout depth1 did not contain cadb6c2 needed by native historical baseline comparison; collector/core/native coverage Reviewer passed before this step.",
+        "fix": "Set fetch-depth0 and persist reconciliation JSON. Local full-history reconstruction against the downloaded native artifact passes; repeat full staging workflow after bounded merge.",
+        "outcomes": {
+          "diario_financiero": {
+            "editorial_outcome": "no_new_signals",
+            "processed_rejections": 0,
+            "published": 0,
+            "coverage_status": "format_gap"
+          },
+          "superintendencia_fiscalizacion": {
+            "editorial_outcome": "no_new_publications_existing_history",
+            "processed_rejections": 0,
+            "published": 0,
+            "coverage_status": "listed_surface_parsed"
+          },
+          "suseso_fiscalizacion": {
+            "editorial_outcome": "pending",
+            "processed_rejections": 0,
+            "published": 0,
+            "coverage_status": "gap"
+          }
+        },
+        "production_changes": false
+      }
     },
     {
       "issue": [
@@ -190,7 +296,60 @@
       "window_evidence": "native reviewed original dated surfaces; runtime inclusive window counts separately preserved",
       "coverage_complete": false,
       "next_action": "Keep source degraded; resolve undated reports / remaining legal-act identity limits without date fabrication",
-      "production_changes": false
+      "production_changes": false,
+      "latest_producer_validation": {
+        "at": "2026-10-11T14:04:25.065669+00:00",
+        "staging_sha": "cb46eea750b65937d12a90bd30b3c6e8bef5da18",
+        "pr": 19,
+        "qa_runs": [
+          38144851522,
+          38144848628
+        ],
+        "preview_run": 38145086035,
+        "preview_result": "PASS",
+        "runtime_run": 38145085754,
+        "workflow_result": "FAIL_AUXILIARY_RECONCILIATION_MISSING_HISTORICAL_COMMIT",
+        "core_two_poll_result": "PASS",
+        "core_idempotent": true,
+        "core_unrelated_stock_preserved": true,
+        "reviewer_result": "PASS",
+        "native_original_coverage_result": "PASS",
+        "native_exact_calendar_counts": {
+          "30": {
+            "sis": 14,
+            "suseso": 20
+          },
+          "90": {
+            "sis": 28,
+            "suseso": 74
+          }
+        },
+        "artifact_id": 11705035168,
+        "artifact_sha256": "8c7770178bc4d2f9db08ee13f5414988df1ff0743c3498b60bacc3fa77b4a45a",
+        "root_cause": "Default checkout depth1 did not contain cadb6c2 needed by native historical baseline comparison; collector/core/native coverage Reviewer passed before this step.",
+        "fix": "Set fetch-depth0 and persist reconciliation JSON. Local full-history reconstruction against the downloaded native artifact passes; repeat full staging workflow after bounded merge.",
+        "outcomes": {
+          "diario_financiero": {
+            "editorial_outcome": "no_new_signals",
+            "processed_rejections": 0,
+            "published": 0,
+            "coverage_status": "format_gap"
+          },
+          "superintendencia_fiscalizacion": {
+            "editorial_outcome": "no_new_publications_existing_history",
+            "processed_rejections": 0,
+            "published": 0,
+            "coverage_status": "listed_surface_parsed"
+          },
+          "suseso_fiscalizacion": {
+            "editorial_outcome": "pending",
+            "processed_rejections": 0,
+            "published": 0,
+            "coverage_status": "gap"
+          }
+        },
+        "production_changes": false
+      }
     }
   ],
   "pending_prs": [
