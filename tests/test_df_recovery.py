@@ -513,3 +513,15 @@ def test_verified_publication_date_rehydrates_technical_row_without_claiming_bod
     assert queue.items[key]['raw']['event_date'] == '2026-10-10'
     assert queue.items[key]['lane'] == 'LIVE'
     assert queue.items[key]['status'] == 'retry'
+
+
+def test_captured_nontext_format_defers_without_refetch_or_model(monkeypatch):
+    from radar_salud.public_source_pipeline import process_df
+    from radar_salud.processing import DeferredProcessing
+    from test_press_pipeline import DF_CFG
+    monkeypatch.setattr('radar_salud.public_source_pipeline.enrich', lambda raw: pytest.fail('Known captured format must not refetch'))
+    monkeypatch.setattr('radar_salud.public_source_pipeline.analyze_news', lambda **kw: pytest.fail('No readable body must not call AI'))
+    for field, reason in [('primary_image_urls','df_image_only_requires_ocr'), ('primary_media_urls','df_media_transcript_unavailable')]:
+        raw=_raw(dated=True);raw.metadata.update(page_text='', **{field: ['https://www.df.cl/asset']})
+        with pytest.raises(DeferredProcessing) as error:process_df(raw,DF_CFG)
+        assert error.value.reason == reason

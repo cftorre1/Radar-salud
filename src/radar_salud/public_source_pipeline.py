@@ -218,7 +218,8 @@ def _health_relevance(title,text):
 def process_df(raw,cfg):
     from .df_media_gate import policy, exclusion, material, assessment_exclusion
     from .editorial_gate import publication_ready
-    if not raw.metadata.get("publication_date_source") or not raw.metadata.get("page_text"):
+    known_format=bool(raw.metadata.get('primary_image_urls') or raw.metadata.get('primary_media_urls'))
+    if not raw.metadata.get("publication_date_source") or (not raw.metadata.get("page_text") and not known_format):
         raw=enrich(raw)
     if raw.metadata.get("fetch_error"):
         raise DeferredProcessing("DF detail capture failed",reason="df_detail_fetch_failed")
