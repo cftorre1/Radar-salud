@@ -6,8 +6,8 @@
     "queue_blob_sha": "a9cb6a30acf74d5865d63907e3f70a813aa292fd",
     "queue_sha256": "341f2f8115d91e6e541ee601b2e8c564c1e1596a2424b0cd7fd1c1086e5f03bb",
     "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
-    "state_control_sha256": "8c39248ae2b328a702e08413c17acba91efc489d13c4fbf4c0029479b7630438",
-    "state_sha": "544e0b2c4265b53869f3f10c39dede9adb981ca1"
+    "state_control_sha256": "01bec048a584e3f06b4d46340027cf244cdba4de6e4e8bc0ffc69d3dd8777f98",
+    "state_sha": "1bb7b3ede802e0d8d0ad2ded429f57b33b968465"
   },
   "canonical_queue_updated": false,
   "derived_runtime_tasks": [
@@ -52,7 +52,7 @@
     {
       "attempts": 2,
       "blocker_evidence_count": 5,
-      "blocker_fingerprint": "8f341b91f986d72025c1389ca080c9ce330fde0f0ef4f071656c8e043aaa86ca",
+      "blocker_fingerprint": "c5fc935a7ce6d59e421147a744ba1cde3d06a0d3810efb61c2835c977630ff3e",
       "candidate_review": {
         "candidate_branch": null,
         "candidate_commit": null,
@@ -72,28 +72,28 @@
       "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
       "last_ready_at": "2026-10-11T05:48:23.562198Z",
       "lease": {
-        "claimed_at": "2026-10-11T05:49:13.525174Z",
-        "expires_at": "2026-10-11T06:00:31.213362Z",
-        "fence": 3,
-        "heartbeat_at": "2026-10-11T05:50:31.213362Z",
-        "owner": "38115967398-1-staging_qa",
+        "claimed_at": null,
+        "expires_at": null,
+        "fence": null,
+        "heartbeat_at": null,
+        "owner": null,
         "recovery_deadline_at": null,
-        "token_sha256": "b7bbe1b624440379e0b5cad834f89f0faf5d584abf95e4731934a19b44974c6f"
+        "token_sha256": null
       },
-      "material_progress_at": "2026-10-11T05:49:13.525174Z",
+      "material_progress_at": "2026-10-11T05:50:35.118637Z",
       "reason": "input_or_evidence_changed",
-      "recovery_episode": "816c4aff5ed395acfb74647f99301a0497bd5bba733030074f20b8fd7271fe60",
+      "recovery_episode": "3ad0c44e63fe44935060eddf38232b36cfe19f891d75dbed152fcb6e93fd1951",
       "recovery_reclaims": 0,
-      "status": "RUNNING",
+      "status": "BLOCKED",
       "task_id": "staging_qa_failed_run_38113830124"
     }
   ],
   "kind": "queue_runtime_projection",
   "observation": {
-    "path": "data/autopilot/evidence/observation-fe8d39b8f67541dba74e84d3e8e780f2.json",
-    "sha256": "98ef1a118c4cfb1596a6fdd074596b5578aa4c3875874b7f7a8cc612d39d60f6",
+    "path": "data/autopilot/evidence/observation-af972876fa534498a936ad539dd2a5b7.json",
+    "sha256": "29d72b93b5833e4f8d8e1a06eb18eb86152dcd7309308413406e5a6e3cf7582e",
     "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
-    "state_sha": "544e0b2c4265b53869f3f10c39dede9adb981ca1"
+    "state_sha": "1bb7b3ede802e0d8d0ad2ded429f57b33b968465"
   },
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
@@ -1351,7 +1351,7 @@
       "runtime": {
         "attempts": 2,
         "blocker_evidence_count": 4,
-        "blocker_fingerprint": "d2d27f8eeef6fda0c6e1e364cbcc5fe76574c514b9b7a4ab61cf9b153a58ea46",
+        "blocker_fingerprint": "87fc9aadce7714824d9da1a36c3a2266a78a66f44266b38f600ff1b6cce33bdf",
         "candidate_review": {
           "candidate_branch": null,
           "candidate_commit": null,
@@ -1371,19 +1371,19 @@
         "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
         "last_ready_at": "2026-10-11T05:48:23.562198Z",
         "lease": {
-          "claimed_at": "2026-10-11T05:49:16.755596Z",
-          "expires_at": "2026-10-11T06:00:21.495030Z",
-          "fence": 3,
-          "heartbeat_at": "2026-10-11T05:50:21.495030Z",
-          "owner": "38115967398-1-media",
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
           "recovery_deadline_at": null,
-          "token_sha256": "c2bc6a768f42347b39ac9cc2df1713686926dfa1cd8a7796709135776d8b67e7"
+          "token_sha256": null
         },
-        "material_progress_at": "2026-10-11T05:49:16.755596Z",
+        "material_progress_at": "2026-10-11T05:50:57.212073Z",
         "reason": "input_or_evidence_changed",
-        "recovery_episode": "7e5a76aa718b90b5e588a2faa48296ba0f8330cda3416d049f89fd6a31677757",
+        "recovery_episode": "d2266ac74b33c02287f562e745fc03fb43996e92df4f86465a554d3b96590734",
         "recovery_reclaims": 0,
-        "status": "RUNNING",
+        "status": "BLOCKED",
         "task_id": "source_repair_media_lane_2026_10_11"
       },
       "task_id": "source_repair_media_lane_2026_10_11"
@@ -1489,7 +1489,7 @@
       "runtime": {
         "attempts": 2,
         "blocker_evidence_count": 10,
-        "blocker_fingerprint": "ff9f64afa2ebf9fe9e8014e49004710fac22355056550a5f486465e0dfd6f5af",
+        "blocker_fingerprint": "0fd18c5c18af039521787f8b27d79521e1cc29f179f5082bee4397f7c7e0b938",
         "candidate_review": {
           "candidate_branch": null,
           "candidate_commit": null,
@@ -1509,19 +1509,19 @@
         "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
         "last_ready_at": "2026-10-11T05:48:23.562198Z",
         "lease": {
-          "claimed_at": "2026-10-11T05:49:28.097246Z",
-          "expires_at": "2026-10-11T06:00:29.145133Z",
-          "fence": 3,
-          "heartbeat_at": "2026-10-11T05:50:29.145133Z",
-          "owner": "38115967398-1-mutualities",
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
           "recovery_deadline_at": null,
-          "token_sha256": "c27d29f205c76f7c073c66d27a1429955e80649e0c3abbf0f59b515ea4be2d87"
+          "token_sha256": null
         },
-        "material_progress_at": "2026-10-11T05:49:28.097246Z",
+        "material_progress_at": "2026-10-11T05:50:36.986244Z",
         "reason": "input_or_evidence_changed",
-        "recovery_episode": "c9b32c9443b31447318347cce0d7853b504d329359844955fecff1f18843b697",
+        "recovery_episode": "99495489654606fbc8c19c3a3eb94f649720bddbcd40f83d20b46a56b9baea90",
         "recovery_reclaims": 0,
-        "status": "RUNNING",
+        "status": "BLOCKED",
         "task_id": "source_repair_mutualities_lane_2026_10_11"
       },
       "task_id": "source_repair_mutualities_lane_2026_10_11"
