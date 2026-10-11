@@ -339,3 +339,53 @@ def test_real_incremental_review_reference_is_preserved_without_claiming_current
         target = context["queue"][binding["target_queue_fingerprint"]]
         assert target["status"] == "published"
         assert target["raw"]["event_date"] == binding["target_publication_date"]
+
+
+def addendum_reference_queue():
+    # Temporary admission metadata cites the two genuine immutable audits;
+    # it is not a model output or a claim that paid processing has occurred.
+    return {"unit-reference-only": {"source": audit.SOURCE, "raw": {"metadata": {
+        "incremental_review": {"review_ref": audit.INCREMENTAL_REVIEW,
+                               "review_sha256": audit.INCREMENTAL_REVIEW_SHA256},
+        "incremental_review_addendum": {"review_ref": audit.INCREMENTAL_ADDENDUM,
+            "review_sha256": audit.INCREMENTAL_ADDENDUM_SHA256,
+            "prior_review_ref": audit.INCREMENTAL_REVIEW,
+            "prior_review_sha256": audit.INCREMENTAL_REVIEW_SHA256,
+            "decision": "release_hold_for_editorial_analysis", "publication_approved": False}}}}}
+
+
+def test_new_analysis_addendum_preserves_both_original_pinned_audits():
+    documents = audit.incremental_proof_files(ROOT, addendum_reference_queue())
+    assert set(documents) == {audit.INCREMENTAL_REVIEW, audit.INCREMENTAL_ADDENDUM}
+    addendum = documents[audit.INCREMENTAL_ADDENDUM]
+    assert addendum["prior_review"] == dict(ref=audit.INCREMENTAL_REVIEW,
+        sha256=audit.INCREMENTAL_REVIEW_SHA256,
+        decision="keep_hold", reason="duplicate_budget_announcement_no_verified_material_increment",
+        preserved_unchanged=True)
+    assert addendum["editorial_policy"]["analysis_release_only"] is True
+    assert addendum["editorial_policy"]["publication_approved"] is False
+
+
+@pytest.mark.parametrize("change", [
+    lambda m: m.pop("incremental_review"),
+    lambda m: m["incremental_review_addendum"].update(review_ref="../../unverified.json"),
+    lambda m: m["incremental_review_addendum"].update(review_sha256="0" * 64),
+    lambda m: m["incremental_review_addendum"].update(prior_review_sha256="0" * 64),
+    lambda m: m["incremental_review_addendum"].update(decision="publish"),
+    lambda m: m["incremental_review_addendum"].update(publication_approved=True),
+])
+def test_incremental_addendum_cannot_erase_prior_review_or_become_approval(change):
+    queue = addendum_reference_queue()
+    change(queue["unit-reference-only"]["raw"]["metadata"])
+    with pytest.raises(ValueError, match="incremental_.*unverified"):
+        audit.incremental_proof_files(ROOT, queue)
+
+
+def test_incremental_addendum_file_bytes_must_remain_pinned(tmp_path):
+    for relative in (audit.INCREMENTAL_REVIEW, audit.INCREMENTAL_ADDENDUM):
+        target = tmp_path / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / relative).read_bytes())
+    (tmp_path / audit.INCREMENTAL_ADDENDUM).write_bytes((ROOT / audit.INCREMENTAL_ADDENDUM).read_bytes() + b"\n")
+    with pytest.raises(ValueError, match="incremental_review_addendum_file_changed"):
+        audit.incremental_proof_files(tmp_path, addendum_reference_queue())

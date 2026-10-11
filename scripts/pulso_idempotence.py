@@ -42,6 +42,8 @@ TECHNICAL_HOLDS = {"analysis_unavailable", "article_verification_failed", "budge
                    "publisher_liveblog_entry_dates_unverified"}
 INCREMENTAL_REVIEW = "data/audits/pulso_incremental_review_2026_10_11.json"
 INCREMENTAL_REVIEW_SHA256 = "e5cee8d34839a905e391e85d6187db8bcdae09c0dde7f688cc71a9f04f093ddd"
+INCREMENTAL_ADDENDUM = "data/audits/pulso_oct5_incremental_addendum_2026_10_11.json"
+INCREMENTAL_ADDENDUM_SHA256 = "589ba50032521924803ef8ce94f40e3854930edcadddf7fc1223d9df81714160"
 
 
 def digest(value):
@@ -285,6 +287,37 @@ def selected_partition(rows, urls, now, *, reviewed_holds=None):
     return {"terminal_urls": sorted(terminal), "held_not_due_urls": sorted(held)}
 
 
+def incremental_proof_files(root, queue):
+    """Preserve both immutable reviews; a release never erases earlier evidence."""
+    documents = {}
+    for item in queue.values():
+        if item.get("source") != SOURCE:
+            continue
+        metadata = item.get("raw", {}).get("metadata", {})
+        for field, relative, expected in (
+            ("incremental_review", INCREMENTAL_REVIEW, INCREMENTAL_REVIEW_SHA256),
+            ("incremental_review_addendum", INCREMENTAL_ADDENDUM, INCREMENTAL_ADDENDUM_SHA256),
+        ):
+            review = metadata.get(field)
+            if review is None:
+                continue
+            require(isinstance(review, dict) and review.get("review_ref") == relative
+                    and review.get("review_sha256") == expected, field + "_reference_unverified")
+            if field == "incremental_review_addendum":
+                prior = metadata.get("incremental_review")
+                require(isinstance(prior, dict) and prior.get("review_ref") == INCREMENTAL_REVIEW
+                        and prior.get("review_sha256") == INCREMENTAL_REVIEW_SHA256
+                        and review.get("prior_review_ref") == INCREMENTAL_REVIEW
+                        and review.get("prior_review_sha256") == INCREMENTAL_REVIEW_SHA256
+                        and review.get("decision") == "release_hold_for_editorial_analysis"
+                        and review.get("publication_approved") is False,
+                        "incremental_addendum_prior_review_unverified")
+            raw = (root / relative).read_bytes()
+            require(digest(raw) == expected, field + "_file_changed")
+            documents[relative] = json.loads(raw)
+    return documents
+
+
 def read_context(root, *, selection=DEFAULT_SELECTION, report=DEFAULT_REPORT, qa=DEFAULT_QA):
     paths = dict(selection=selection, report=report, processing_qa=qa,
                  discovery="data/state/discovery_run.json", queue="data/state/pending_queue.json",
@@ -316,18 +349,8 @@ def read_context(root, *, selection=DEFAULT_SELECTION, report=DEFAULT_REPORT, qa
     reviewed = [row.get("editorial_review", {}) for row in history]
     reviewed.extend(item.get("raw", {}).get("metadata", {}).get("editorial_review", {}) for item in values["queue"].values())
     references.update(review["review_file"] for review in reviewed if isinstance(review, dict) and isinstance(review.get("review_file"), str))
-    incremental_review_files = {}
-    for item in values["queue"].values():
-        review = item.get("raw", {}).get("metadata", {}).get("incremental_review")
-        if item.get("source") != SOURCE or not isinstance(review, dict):
-            continue
-        relative = review.get("review_ref")
-        require(relative == INCREMENTAL_REVIEW and review.get("review_sha256") == INCREMENTAL_REVIEW_SHA256,
-                "incremental_review_reference_unverified")
-        raw = (root / relative).read_bytes()
-        require(digest(raw) == review["review_sha256"], "incremental_review_file_changed")
-        references.add(relative)
-        incremental_review_files[relative] = json.loads(raw)
+    incremental_review_files = incremental_proof_files(root, values["queue"])
+    references.update(incremental_review_files)
     proof_files = {}
     for relative in sorted(references):
         path = (root / relative).resolve()
