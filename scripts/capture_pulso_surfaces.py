@@ -30,6 +30,16 @@ SITEMAPS = (
     BASE + "/arc/outboundfeeds/news-sitemap-index/?outputType=xml",
     BASE + "/arc/outboundfeeds/sitemap/?outputType=xml",
 )
+SITEMAP_BOUNDARY = BASE + "/arc/outboundfeeds/sitemap/?outputType=xml&from=9900"
+XML_FIXTURES = {
+    BASE + "/robots.txt": "robots.txt",
+    SITEMAPS[0]: "sitemap_index.xml",
+    SITEMAPS[1]: "news_sitemap_index.xml",
+    SITEMAPS[2]: "sitemap_first_page.xml",
+    BASE + "/arc/outboundfeeds/news-sitemap/?outputType=xml": "news_sitemap_first_page.xml",
+    BASE + "/arc/outboundfeeds/rss/?outputType=xml": "rss.xml",
+    SITEMAP_BOUNDARY: "sitemap_boundary_9900.xml",
+}
 ARTICLE_FIXTURES = (
     BASE + "/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
     BASE + "/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
@@ -37,6 +47,7 @@ ARTICLE_FIXTURES = (
 SEEDS = (
     (BASE + "/robots.txt", "robots", "publisher_declaration"),
     *((url, "sitemap", "robots_declaration_verified_independently") for url in SITEMAPS),
+    (SITEMAP_BOUNDARY, "sitemap_boundary", "observed_100_page_index_last_child"),
     *((BASE + path, "listing", "configured_or_known_taxonomy") for path in (
         "/canal/pulso/", "/canal/nacional/", "/etiqueta/salud/",
         "/etiqueta/isapres/", "/etiqueta/fonasa/", "/etiqueta/clinicas/",
@@ -125,13 +136,38 @@ def describe(payload: bytes, url: str, content_type: str) -> dict:
     parser.feed(text)
     links = list(dict.fromkeys(u for link in parser.links if (u := official_url(link, url))))
     locations = []
+    entries = []
     root_type = None
     try:
         root = ET.fromstring(payload)
         root_type = root.tag.rsplit("}", 1)[-1]
-        locations = list(dict.fromkeys(
-            u for node in root.iter() if node.tag.rsplit("}", 1)[-1] == "loc"
-            and node.text and (u := official_url(node.text.strip(), url))))
+        sitemap_namespace = "http://www.sitemaps.org/schemas/sitemap/0.9"
+        news_namespace = "http://www.google.com/schemas/sitemap-news/0.9"
+
+        def value(node, name, namespace=sitemap_namespace):
+            child = node.find(f"{{{namespace}}}{name}")
+            if child is None:
+                child = node.find(name)
+            return child.text.strip() if child is not None and child.text else None
+
+        for node in root:
+            if node.tag not in {"url", "sitemap", f"{{{sitemap_namespace}}}url",
+                                f"{{{sitemap_namespace}}}sitemap"}:
+                continue
+            location = value(node, "loc")
+            target = official_url(location, url) if location else None
+            if not target:
+                continue
+            entry = {"url": target, "lastmod": value(node, "lastmod")}
+            news = node.find(f"{{{news_namespace}}}news")
+            if news is not None:
+                entry.update(publication_date=value(news, "publication_date", news_namespace),
+                             title=value(news, "title", news_namespace),
+                             keywords=value(news, "keywords", news_namespace))
+            entries.append(entry)
+        # Only each <url>/<sitemap>'s direct primary <loc> enumerates an article
+        # or child sitemap. Image/video locations never become article URLs.
+        locations = list(dict.fromkeys(entry["url"] for entry in entries))
     except (ET.ParseError, ValueError):
         pass
     observed_endpoints = list(dict.fromkeys(
@@ -153,6 +189,7 @@ def describe(payload: bytes, url: str, content_type: str) -> dict:
         "xml_root": root_type,
         "xml_location_count": len(locations),
         "xml_locations": locations,
+        "xml_entries": entries,
         "content_type": content_type,
     }
 
@@ -227,12 +264,14 @@ def capture(output: Path, *, maximum: int = 45, seconds: int = 600,
                     if kind in {"listing", "pagination"}:
                         queue.extend((u, "pagination", "observed_archive_link")
                                      for u in record["observed"]["pagination_links"][:2])
-                    if fixture_dir and url in {BASE + "/etiqueta/salud/", BASE + "/canal/pulso/", *ARTICLE_FIXTURES}:
+                    if fixture_dir and url in {BASE + "/etiqueta/salud/", BASE + "/canal/pulso/", *ARTICLE_FIXTURES, *XML_FIXTURES}:
                         fixture_dir.mkdir(parents=True, exist_ok=True)
-                        name = "pulso_listing" if url == BASE + "/canal/pulso/" else (
-                            "salud_listing" if "/etiqueta/" in url else (
-                                "senior_housing" if "/pulso/" in url else "uc_christus"))
-                        fixture_path = fixture_dir / f"{name}.html.gz"
+                        name = XML_FIXTURES.get(url)
+                        if name is None:
+                            name = "pulso_listing.html" if url == BASE + "/canal/pulso/" else (
+                                "salud_listing.html" if "/etiqueta/" in url else (
+                                    "senior_housing.html" if "/pulso/" in url else "uc_christus.html"))
+                        fixture_path = fixture_dir / f"{name}.gz"
                         fixture_path.write_bytes(gzip.compress(payload, mtime=0))
                         report["fixtures"].append({"path": str(fixture_path), "url": url,
                             "captured_at": record["captured_at"], "sha256": record["sha256"],

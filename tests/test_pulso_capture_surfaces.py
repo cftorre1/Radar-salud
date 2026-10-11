@@ -50,3 +50,23 @@ def test_declared_wildcard_query_exclusions_are_enforced():
     assert probe.publisher_excluded(probe.BASE + "/search/?q=salud")
     assert probe.publisher_excluded(probe.BASE + "/pf/api/v3/content/fetch")
     assert not probe.publisher_excluded(probe.BASE + "/arc/outboundfeeds/rss/?outputType=xml")
+
+
+def test_sitemap_primary_urls_exclude_images_and_keep_news_publication_evidence():
+    xml = b'''<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+      xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+      <url><loc>https://www.latercera.com/nacional/noticia/clinica/</loc>
+      <lastmod>2026-10-11T08:00:00Z</lastmod>
+      <news:news><news:publication_date>2026-10-10T10:00:00-03:00</news:publication_date>
+      <news:title>Clinica title</news:title><news:keywords>salud, prestadores</news:keywords></news:news>
+      <image:image><image:loc>https://www.latercera.com/resizer/image.jpg</image:loc></image:image>
+      </url></urlset>'''
+    observed = probe.describe(xml, probe.BASE, "application/xml")
+    assert observed["xml_location_count"] == 1
+    assert observed["xml_locations"] == [probe.BASE + "/nacional/noticia/clinica/"]
+    assert observed["xml_entries"] == [{
+        "url": probe.BASE + "/nacional/noticia/clinica/",
+        "lastmod": "2026-10-11T08:00:00Z",
+        "publication_date": "2026-10-10T10:00:00-03:00",
+        "title": "Clinica title", "keywords": "salud, prestadores"}]
