@@ -883,6 +883,72 @@
       "retained_event_id": "925d0100631445e1a44175810614a5befcdf121779b029ae9f46c4fe4a455e0e",
       "retained_event_sha256": "8c39d5289f76091aad6036ea40de069298ca33dabc492ceb56dddf1b6b4ec1ae",
       "source_problem_signature": "1216e2ccbd7861a35ca0fe8790933f268db58d7d81a36424ff5564c29f48de60"
+    },
+    {
+      "at": "2026-10-11T09:13:22.246797Z",
+      "binding": {
+        "destination": {
+          "declared_repair_inputs": {},
+          "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+          "failure": {
+            "conclusion": "failure",
+            "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+            "head_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+            "run_id": 38123952091,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38123952091"
+          },
+          "family": "staging_qa",
+          "input_fingerprint": "b4bf579f780e291cef38328053a2795414830b7441956b8d66ac98ef7bc734db",
+          "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+          "task_id": "staging_qa_failed_run_38123952091"
+        },
+        "event_sha256": "498547d4f63204877ac391abfc5129eaa598ffc890ad42f3c18b34832b451828",
+        "prior": {
+          "attempts": 1,
+          "completed_at": "2026-10-11T07:06:30.278098Z",
+          "declared_repair_inputs": {},
+          "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+          "failure": {
+            "conclusion": "failure",
+            "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+            "head_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+            "run_id": 38116961282,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282"
+          },
+          "family": "staging_qa",
+          "history_key": "22b3658760134cf4791788a496e133b1a2a445f95743fb542d808f709ad50cad",
+          "input_fingerprint": "b4bf579f780e291cef38328053a2795414830b7441956b8d66ac98ef7bc734db",
+          "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+          "task_id": "staging_qa_failed_run_38116961282"
+        },
+        "proof": {
+          "before_control_sha256": "eaed3d08caa81761d53d96f7f515fa4368a2ec5c05d1c0846927973af6057992",
+          "before_state_commit": "bf8e94288ed48baf3b52607ec19309385b9d37e9",
+          "claim_control_sha256": "d3e0564243198ac458abcb50ccb64f50baba87aa14eec08bf7e4b1a89b4e04c3",
+          "claim_state_commit": "5a10bac3620a22dddffdf9981d33f37f33da4a61",
+          "evidence": {
+            "path": "data/autopilot/evidence/alias-transition-binding-52149826685173f5132d40b1b1e65905d25756645c0068b99a7b78ddec8d18db.json",
+            "sha256": "08b72a33aa4059383dc7cbde63494e7aa2452d46fcaebeaeca54c919181701e6"
+          },
+          "prior_worker_result": {
+            "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+            "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453"
+          }
+        },
+        "schema_version": 1,
+        "terminal_event_id": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+        "terminal_event_sha256": "2ed9d38034f7a28cb43693792f1013a279c04b1cd51de5dad4a9db2039469f4a",
+        "verified": true
+      },
+      "binding_sha256": "efa4b32876a9219dbeb112c9c190285be5634e5bf3a852cb50a939ac55cae849",
+      "canonical_signature": "23a449c7d100e30ed0021b4b1d6cf69ae9e78906a9181a59489f566d3ddcd5b3",
+      "event_id": "007b67424c875e2c69e2d229bfe23f834ac0c89c26a3c5bff2b3b01a192c5c17",
+      "event_sha256": "498547d4f63204877ac391abfc5129eaa598ffc890ad42f3c18b34832b451828",
+      "id": "55f50b230cb7c77074a0acf2e9cb7af50b203336d3b72becf2b7808e2cfc49e8",
+      "kind": "duplicate_alias_transition",
+      "reason": "A previously attempted unchanged QA failure under a new run ID is a pickup, not new work.",
+      "terminal_event_id": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+      "terminal_event_sha256": "2ed9d38034f7a28cb43693792f1013a279c04b1cd51de5dad4a9db2039469f4a"
     }
   ],
   "material_event_product_bindings": {
@@ -69420,7 +69486,14 @@
       "task_id": "staging_qa_failed_run_38123952091"
     }
   ],
-  "pending_transitions": [],
+  "pending_transitions": [
+    {
+      "at": "2026-10-11T07:06:00.551910Z",
+      "event_id": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+      "family": "mutualities",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    }
+  ],
   "schema_version": 2,
   "tasks": {
     "autonomy_architecture_redesign_2026_10_07": {
@@ -69453,6 +69526,45 @@
         "8dbccfdbadd59be1a96490071b2da278144804e78978e19ecc8a0927ff5e8329"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "No main/producción",
+          "No gasto nuevo",
+          "No credenciales nuevas",
+          "No legal/privacidad",
+          "No cambios irreversibles"
+        ],
+        "independent_review": {
+          "artifact": "data/audits/work3_adversarial_2026_10_11.json",
+          "backlog_issues": [
+            "https://github.com/cftorre1/Radar-salud/issues/7"
+          ],
+          "finding_ids": [
+            "work3_live_validation_skipped_success",
+            "work3_recovery_corrupt_patch_loop",
+            "work3_latest_qa_snapshot_gate"
+          ],
+          "next_action": "Resolve listed causes and criteria; retain original evidence. No approval based on workflow status alone.",
+          "reviewed_at": "2026-10-11T04:00:00Z",
+          "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+          "reviewer": "Work 3",
+          "supplement_artifact": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+          "supplement_finding_ids": [],
+          "supplement_recorded_at": "2026-10-11T04:09:18.225117+00:00",
+          "verdict": "open_findings_not_validated"
+        },
+        "instructions": [
+          "Leer docs/AGENT_AUTONOMY_ARCHITECT.md y config/autonomy_architect_policy.json.",
+          "Auditar trigger→executor→evidence→recovery de todas las capas actuales.",
+          "Separar claramente vigilancia de ejecución: todo watchdog debe apuntar a un executor real.",
+          "Reactivar y modernizar el Autonomous Executor como lane de escritura sobre staging.",
+          "Usar Pelé/Work para tareas largas/complejas, pero nunca como único motor de avance.",
+          "El Auditor valida progreso y fuentes; el Arquitecto audita también al Auditor y al orquestador.",
+          "Implementar acceptance Stage A 4h sin owner restart, luego 24h y 7d.",
+          "Convertir cada owner prompt de reactivación en defecto de arquitectura y control preventivo.",
+          "No cerrar la tarea con documentación solamente: exigir evidencia de ejecución autónoma real."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "3d4897c81991ddaecffcdd784890edde74c84c19c679005f6ef315a24dce9253",
       "executor_fingerprint": null,
@@ -69474,7 +69586,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c61a38ee84cfbed29f3c01e9645a539738f9cc6fed776c2f3884961d85c485fe",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "autonomy_continuity_hardening_v1_1_2026_09_29": {
@@ -69507,6 +69619,21 @@
         "b76b31322853f6526b20a18a2efb1facf403d68591de44c0c2ce9f1c2d5994ec"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "No inventar actividad para cumplir heartbeat.",
+          "No mantener Work ocupado con tareas sin valor sólo para consumir cuota.",
+          "No saltarse QA/Reviewer ni guardrails para mantener actividad."
+        ],
+        "instructions": [
+          "Aplicar config/autopilot_v1_policy.json V1.1 y docs/PELE_WORK_CONTRACT.md.",
+          "Reducir stale threshold de trabajo ejecutable a 30 minutos.",
+          "Registrar started_at/last_progress_at/current_subfront/next_action al tomar y avanzar tareas.",
+          "Tratar preguntas manuales de Toba para reiniciar trabajo como autonomy defects.",
+          "Ejecutar acceptance window de 4h con pickup→failure/recovery→next task sin restart humano.",
+          "Actualizar Pato con owner_followup_count, stale_recoveries, autonomous_transitions y useful_work_window."
+        ]
+      },
       "depends_on": [
         "autopilot_v1_2026_09_27"
       ],
@@ -69530,7 +69657,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "3b8b4a9552edfcad0f7ccc3724701de0d806fb28ced8805456ae4099b18cd82f",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "beta_gate5_test_ops_golive_2026_10_11": {
@@ -69563,6 +69690,20 @@
         "ef8d1b08d14f23323a074cb1de621a35b0a88e53133b7c0d32126988f7fa141c"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "instructions": [
+          "Analytics: aprobar tratamiento/aviso de privacidad, definir eventos permitidos, retención y metadatos; habilitar captura sólo después de aprobación y validar dashboard/telemetría end-to-end.",
+          "Newsletter/MailerLite: crear/habilitar cuenta y grupos, aportar IDs/API key vía secreto, confirmar plan/API, configurar doble opt-in, activar captura/envío sólo tras privacidad aprobada y ejecutar prueba end-to-end.",
+          "Source Suggestions: definir hosting/backend durable, almacenamiento y destinatario interno; implementar API real y prueba de persistencia/entrega.",
+          "Correo: completar MX, SPF, DKIM, DMARC, alias operativo y verificar Authentication-Results reales.",
+          "LIVE Evidence: mantener gate abierto hasta observar evento LIVE externo genuino; no simular ni degradar gates.",
+          "Legal: aprobar Privacidad y Términos antes de activación pública de captura/analytics/newsletter.",
+          "Credenciales/API: registrar por fuente cualquier necesidad de cuenta/API/secret; escalar sólo cuando sea imprescindible y con propósito claro.",
+          "Gasto externo: toda nueva contratación/proveedor requiere decisión explícita de Dirección.",
+          "Producción/main: promoción sólo por autorización explícita de Dirección después de staging PASS, reviewer PASS, smoke desktop/mobile y rollback preparado.",
+          "No considerar beta comercial cerrada hasta completar o aceptar explícitamente los blockers humanos de esta puerta."
+        ]
+      },
       "depends_on": [
         "source_recovery_reconciliation_gate_2026_10_11"
       ],
@@ -69586,7 +69727,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a987a3e8e0275d38970e7987c3adff36f44be1a8b2577aa16ab80da6f538e18d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "beta_sources_completion_today_2026_09_29": {
@@ -69619,6 +69760,45 @@
         "92f9c8cb376c8b5c85406d2871c3990112e2926c6665777b1364c93916de42ca"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "No sacrificar calidad/evidencia por velocidad.",
+          "No activar fuentes con ruido alto sólo para completar cobertura.",
+          "No tocar secretos, gastos, privacidad, auth, pagos ni producción.",
+          "No dejar trabajo ejecutable idle >30 minutos."
+        ],
+        "instructions": [
+          "Usar coverage_balance_sources_epidemiology_v1_2026_09_28 como backlog maestro de fuentes.",
+          "Ejecutar en orden: Fonasa/GRD, Prestadores Data, expansión de redes, mutualidades, Media Early Signals, integración final.",
+          "No esperar aprobación humana entre subfrentes salvo gasto/credenciales/legal/privacidad/producción.",
+          "Después de cada subfrente: commit real, QA relevante, heartbeat queue/PMO y pickup inmediato del siguiente.",
+          "Si un subfrente se bloquea externamente, registrar evidencia y seguir con otro ejecutable.",
+          "Aplicar Autopilot V1.1 no-idle y acceptance rules durante toda la ejecución.",
+          "No publicar producción por esta tarea; dejar staging listo y validado para beta.",
+          "CORREGIR dashboard de fuentes: no mostrar 'sin señal reciente' como equivalente a cero cuando technical_status=error; mostrar explícitamente 'error de consulta / cobertura no verificada' para Fonasa e ISP/ANAMED.",
+          "CORREGIR health gate: fuente con discovered=0 y freshness unknown (ej. DEIS) no puede aparecer simplemente saludable; clasificar como coverage_gap/warning hasta probar discovery útil.",
+          "CORREGIR Diario Oficial: source_health registra 2 publicaciones el 29-09-2026 pero dashboard muestra 'aún no visible'. Reconciliar definición y cálculo de 'Última seleccionada' con señales efectivamente publicadas/seleccionadas.",
+          "UNIFICAR display de Superintendencia de Salud en dashboard: una sola entidad visible 'Superintendencia de Salud' con subcanales Estadísticas, Normativa y Fiscalización. Mantener slugs/parsers separados internamente.",
+          "CORREGIR nombres oficiales completos en UI: Departamento de Estadísticas e Información de Salud (DEIS), Instituto de Salud Pública / ANAMED, Fondo Nacional de Salud (FONASA), Superintendencia de Salud.",
+          "REVISAR sanciones Isapre: eliminar la ventana fija de 30 días. El pulso debe recalcularse con el período de revisión activo (p. ej. 14/30/90 días; y síntesis histórica separada para Todo el histórico). Publicar sanciones de TODAS las Isapres, incluida ISALUD, aplicando criterios editoriales idénticos y trazables.",
+          "Agregar test de consistencia dashboard: last_detected, last_selected/published y estado técnico deben provenir de una semántica única y no contradecir source_health.",
+          "Implementar pulso de sanciones dinámico según período activo de revisión y tests para 14/30/90 días + histórico.",
+          "Eliminar cualquier exclusión específica de ISALUD en sanciones/juicios/fallos; cobertura de todas las Isapres bajo criterios equivalentes.",
+          "Aplicar regla editorial evidence-first: hechos separados de inferencias/hipótesis, sin juicios de valor ni interpretaciones sin respaldo; exigir trazabilidad de toda implicancia y neutralidad equivalente entre actores.",
+          "INSIGHT SEMANAL: corregir stale data y selección. Relevancia estratégica es criterio #1; gancho comercial #2; utilidad decisional #3; evidencia #4. Reevaluar en cada refresh, sin weekly lock que impida reemplazar por señal superior.",
+          "SUSESO: tratar last_signal_at=2026-01-13 pese a 7.602 discovered como coverage/parser gap. Auditar listing→fecha→seen-state→process_suseso; no aceptar 'sin novedades' hasta reconciliar publicaciones 2026 recientes.",
+          "SUSESO COVERAGE: mantener una sola entidad visible 'Superintendencia de Seguridad Social (SUSESO)' pero con canales internos separados: normativa, noticias y biblioteca/investigaciones.",
+          "SUSESO NEWS ya cableado: portada /601 + artículos /605; captar licencias médicas, Ley Karin, riesgos psicosociales, mutualidades, Fonasa/cajas, fiscalización, prevención, salud mental y SST.",
+          "SUSESO NORMATIVA: incluir portada /601 como superficie adicional para descubrir Circulares/Dictámenes recientes; validar Circular 3926 del 23-09-2026.",
+          "SUSESO RESEARCH: integrar biblioteca /619 como backfill/intelligence channel; no usar sólo el año del período como fecha de publicación. Requerir fecha exacta o mantener no-visible hasta poder verificar temporalidad.",
+          "SUSESO: agregar explícitamente superficies https://www.suseso.gob.cl/612/w3-article-790656.html (última normativa), https://www.suseso.gob.cl/612/w3-propertyvalue-10371.html (circulares), https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html (fiscalizados Isapres) y https://www.suseso.gob.cl/612/w3-propertyvalue-30982.html (fiscalizados COMPIN).",
+          "Mantener una sola entidad visible SUSESO; separar internamente canales normativa, noticias, fiscalización Isapres/COMPIN e investigaciones.",
+          "CLÍNICAS DE CHILE: integrar/evaluar como subcanales explícitos dentro de una sola entidad visible 'Clínicas de Chile A.G.': Noticias https://www.clinicasdechile.cl/noticias/ ; Memorias https://www.clinicasdechile.cl/knowledgebase_category/memorias/ ; Estudios y análisis https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/page/3/?mostrar=6 ; Documentos https://www.clinicasdechile.cl/knowledgebase_category/documentos/ . Aplicar materiality gate distinto por canal: noticias para early/business signals; memorias/estudios/documentos para intelligence/backfill y feed sólo si existe cambio material o hallazgo accionable.",
+          "ISP: ampliar cobertura oficial con Boletines de vigilancia de laboratorios https://www.ispch.gob.cl/boletin/ e Informes de Vigilancia de Virus Respiratorios https://www.ispch.gob.cl/virusrespiratorios/ . Mantener separado laboratorio/epidemiología de presión asistencial MINSAL y evitar doble conteo de la misma semana.",
+          "FONASA: usar https://datosabiertos.fonasa.cl/ como hub oficial alternativo/principal mientras newsroom tradicional falle. Integrar/evaluar subcanales: Noticias https://datosabiertos.fonasa.cl/noticias/ ; Biblioteca / Cuenta Pública https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/ ; Estadísticas / boletines https://datosabiertos.fonasa.cl/boletines-estadisticos/ ; Análisis documentos https://datosabiertos.fonasa.cl/analysis/ . Priorizar GRD, MLE, MCC, PAD, listas de espera, producción, compras/derivaciones, convenios, financiamiento y relación público-privada.",
+          "Para estas entidades, mostrar una sola fuente visible por institución y manejar internamente subcanales con health/coverage separado. El dashboard debe poder resumir la entidad y expandir subcanales si se requiere auditoría."
+        ]
+      },
       "depends_on": [
         "autopilot_v1_2026_09_27"
       ],
@@ -69642,7 +69822,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "d2afc5bf9239ebd3911906cfeb680b60eb0aedf6e94d2aeaa4263abdb91204d2",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "coverage_balance_sources_epidemiology_v1_2026_09_28": {
@@ -69675,6 +69855,45 @@
         "ace5c953c3f070011ed8c1ddc2b05e7a20333e43232c27d28d908b4067f2df09"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "Fuente primaria > secundaria cuando ambas estén disponibles.",
+          "No inventar cobertura Fonasa si el endpoint directo está bloqueado.",
+          "No incorporar blogs clínicos educativos o campañas promocionales como inteligencia de mercado salvo señal estratégica clara.",
+          "No imponer cuotas iguales de noticias por segmento.",
+          "No activar servicios pagos ni cambiar secretos.",
+          "No tocar producción hasta QA/Reviewer del paquete correspondiente."
+        ],
+        "instructions": [
+          "No reducir artificialmente señales Isapre para lograr equilibrio. Medir cobertura útil por segmento y aumentar fuentes/señales de Prestadores y Fonasa.",
+          "P0 EPIDEMIOLOGÍA: promover a feed visible el frente ya provider-ready de ISP Vigilancia de Virus Respiratorios + MINSAL Campaña de Invierno. Crear una señal/pulso epidemiológico sólo cuando exista cambio material semanal.",
+          "El Pulso Epidemiológico debe conectar semana epidemiológica, positividad, virus predominantes, tendencia vs semana previa, urgencias/hospitalizaciones respiratorias y ocupación de camas cuando estén disponibles; separar claramente laboratorio ISP de presión asistencial MINSAL.",
+          "Etiquetar epidemiología para que sea útil transversalmente a Prestadores, Fonasa y aseguradores; no tratarla como noticia genérica.",
+          "P0 PRESTADORES SECTOR: integrar Clínicas de Chile A.G. como fuente sectorial, con filtro estricto para financiamiento, sostenibilidad, relación con Fonasa/Isapres, capacidad, inversión, innovación, regulación y alianzas; excluir columnas/opinión o eventos sin señal de negocio salvo valor excepcional.",
+          "P0 PRESTADORES CORPORATIVOS: mantener RedSalud y Bupa; evaluar e integrar INDISA, Clínica Alemana y UC CHRISTUS con filtro de negocio. Priorizar alianzas con aseguradores/Fonasa, nuevas redes/capacidad, inversión, tecnología clínica/digital, modelos de atención, convenios y cambios estratégicos; evitar contenido educativo/promocional.",
+          "P0 FONASA: mientras noticias directas Fonasa sigan bloqueadas técnicamente, construir cobertura Fonasa desde fuentes oficiales accesibles: MINSAL, Superintendencia de Salud, documentos/datos abiertos/GRD/MLE/MCC de Fonasa cuando exista endpoint o archivo oficial accesible. Mantener atribución primaria y no presentar una fuente secundaria como Fonasa directo.",
+          "P0 FONASA/PRESTADORES: detectar señales de interacción público-privada: MLE, MCC, SAFED, listas de espera, compras/derivaciones, convenios, PAD/GRD, Ley de Urgencia y redes preferentes.",
+          "P1 PRESTADORES DATA: explotar mejor Boletín IP/Intendencia de Prestadores ya integrado: acreditación, solicitudes en trámite, reclamos, sanciones/fiscalización y cambios de capacidad/calidad, con tablas/insights claros.",
+          "Crear coverage dashboard por segmento: Isapres, Prestadores, Fonasa/Sistema Público y Transversal. Medir fuentes activas, señales detectadas, seleccionadas, publicadas y edad de la última señal; usarlo como diagnóstico, no como cuota editorial.",
+          "No publicar una fuente nueva por llenar un hueco. Aplicar Source Quality Gate: actualidad, estabilidad técnica, trazabilidad, densidad de señal de negocio y bajo ruido.",
+          "Para cada nueva fuente, hacer backfill 90 días, auditoría de valor, fixture y test de parser/fecha/URL/canonical, QA editorial y Reviewer antes de dejarla LIVE.",
+          "Normative V2.1 y Statistics V2 continúan en paralelo; este frente no debe esperar MailerLite, privacidad ni backend de sugerencias.",
+          "Ampliar lista de prestadores/redes a evaluar e integrar con Source Quality Gate: Clínica Dávila, Clínica Las Condes, Clínicas Achs Salud, RedSalud, Andes Salud, Interclínicas; además evaluar otras redes relevantes con presencia nacional/regional y señal de negocio material, evitando duplicar marcas ya cubiertas por holdings.",
+          "Separar claramente ACHS como prestador (Clínicas Achs Salud) de ACHS Seguro Laboral como mutualidad/organismo administrador; no mezclar señal comercial asistencial con seguridad laboral.",
+          "Agregar mutualidades/seguro laboral como frente específico: ACHS Seguro Laboral, Mutual de Seguridad CChC e IST. Priorizar normativa SUSESO, fiscalización, accidentabilidad, enfermedades profesionales, salud mental laboral, prestaciones médicas, inversiones/capacidad asistencial y cambios estratégicos.",
+          "Agregar La Tercera como portal de noticias, con filtro estricto de salud/negocio/regulación para evitar ruido político/general. Tratarla como fuente secundaria complementaria, nunca por sobre fuente primaria cuando exista.",
+          "Crear subfrente específico GRD/financiamiento hospitalario y compra estratégica: FONASA GRD, MINSAL/Subsecretaría de Redes, DIPRES/Ley de Presupuestos e informes de ejecución. Capturar presupuesto, cobertura hospitalaria, producción valorizada, precio base, complejidad, convenios, compras a privados, listas de espera y mecanismos de pago.",
+          "Priorizar señales GRD que conecten financiamiento, producción, complejidad, eficiencia, redes público-privadas y oportunidades/riesgos para prestadores. No publicar explicaciones introductorias si no hay cambio material.",
+          "Incluir como potenciales fuentes complementarias para Prestadores, sujeto a auditoría de 90 días y materialidad: Clínica Santa María, Clínica Universidad de los Andes y Hospital Clínico UC/Marcoleta si aportan señal estratégica diferenciada. No activar automáticamente.",
+          "Crear una capa explícita de EARLY SIGNALS para medios confiables: su función no es sólo corroborar fuentes oficiales, sino detectar antes startups, nuevas empresas, pilotos, alianzas, M&A, inversiones, nuevas tecnologías/modelos de atención, cambios ejecutivos, rondas de capital, expansión de redes y discusiones regulatorias/estratégicas incipientes.",
+          "Agregar El Mercurio / Economía y Negocios como fuente candidata de alta prioridad para early signals; evaluar también Pulso-La Tercera y mantener Diario Financiero. Considerar Emol Economía/Negocios sólo si aporta señal diferenciada y no duplica sistemáticamente El Mercurio.",
+          "Las señales de prensa pueden publicarse antes de una fuente oficial si el medio es confiable, el hecho está claramente atribuido y no se presenta como confirmación oficial cuando no la hay. Etiquetar evidencia/origen de forma explícita.",
+          "Crear estados de madurez para señales tempranas: media_reported → company_confirmed → official_confirmed, cuando aplique. Si aparece posteriormente una fuente primaria, conectar y elevar la señal en lugar de duplicarla.",
+          "Distinguir rumor/especulación de anuncio/entrevista/declaración directa. Rumores sin evidencia material no se publican; entrevistas, anuncios de ejecutivos o reportes empresariales con datos concretos sí pueden gatillar una señal temprana.",
+          "Añadir radar de entidades emergentes: cuando un medio detecte una nueva empresa/startup/alianza relevante (ej. Salud AI), registrar entidad, actores, propuesta de valor, modelo de negocio, estado de madurez, socios/inversionistas mencionados y temas a monitorear.",
+          "Revisar filtros actuales de medios, especialmente Diario Financiero, para evitar sobre-rechazo de señales estratégicas tempranas. No exigir el mismo patrón de evidencia que a normativa/estadística; aplicar un Media Early Signal Gate separado."
+        ]
+      },
       "depends_on": [
         "autopilot_v1_2026_09_27"
       ],
@@ -69698,7 +69917,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "235d32233451d3ca0205c9482095425d51c99916839569eb3a840d4e97545e70",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "editorial_repair_lane_2026_10_11": {
@@ -69740,6 +69959,33 @@
         "422df2599ca23578085129c4046931b4a08e6fc02c19612673306e20751d1228"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "independent_review": {
+          "artifact": "data/audits/work3_adversarial_2026_10_11.json",
+          "backlog_issues": [
+            "https://github.com/cftorre1/Radar-salud/issues/9"
+          ],
+          "finding_ids": [
+            "work3_bupa_factual_tense_mismatch"
+          ],
+          "next_action": "Resolve listed causes and criteria; retain original evidence. No approval based on workflow status alone.",
+          "reviewed_at": "2026-10-11T04:00:00Z",
+          "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+          "reviewer": "Work 3",
+          "supplement_artifact": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+          "supplement_finding_ids": [
+            "work3_public_telemetry_stale"
+          ],
+          "supplement_recorded_at": "2026-10-11T04:09:18.225117+00:00",
+          "verdict": "open_findings_not_validated"
+        },
+        "instructions": [
+          "Regenerar Insight semanal con freshness gate real y top3 auditado.",
+          "Una pieza vieja sale del módulo semanal sin borrarse del histórico.",
+          "Revisar 90 días para conexiones entre noticias, cifras, regulación y decisiones de negocio.",
+          "No forzar frecuencia si no existe evidencia suficiente."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "b0dbdad905f55972c1d722b7e89bade577979f5e11737b15ec280551cae3282d",
       "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
@@ -69794,6 +70040,25 @@
         "d35be2e9c551cd0f85811ed06d6f77822741f2bfd40a0eccb06e02f73ad23be0"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "No main/producción sin Dirección",
+          "No gasto nuevo",
+          "No secretos/credenciales nuevos sin autorización",
+          "No degradar gates editoriales para fabricar señales"
+        ],
+        "instructions": [
+          "Adoptar docs/AGENT_AUDITOR_CONTRACT.md y config/auditor_policy.json como contrato del Auditor independiente.",
+          "Auditar inmediatamente source_runtime_audit_2026_10_02 y autonomy_continuity_hardening_v1_1_2026_09_29 contra evidencia real, no status declarados.",
+          "Generar matriz completa active/degraded/blocked/secondary/remove para todas las fuentes conversadas.",
+          "P0 fuentes: reparar daily runtime core; DF; Pulso/La Tercera; SUSESO normativa/fiscalización; Superintendencia fiscalización.",
+          "P1 fuentes: FONASA, ISP/ANAMED, DEIS, INDISA, Dávila, Clínicas ACHS, ACHS Seguro Laboral, Mutual, IST y Andes Salud.",
+          "Tras cada repair: ejecutar discovery real, revisar reason distribution, snapshot, QA y Reviewer.",
+          "No detenerse por una fuente bloqueada; saltar a otra independiente.",
+          "Registrar todo owner prompt de status/restart como autonomy defect.",
+          "La autonomía no pasa hasta completar 4h de progreso útil con al menos una recuperación real y una transición automática sin Toba."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "413e1ea5bbc1b89069d4c82e230bd35ba6759ada18633104c560471b39a2edf3",
       "executor_fingerprint": null,
@@ -69815,7 +70080,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "6318e081496dbd7ba074f2e97b5af621c29a2ead2f34bff30b7e901bb812b88c",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "pele_work_activation_2026_09_27": {
@@ -69842,6 +70107,21 @@
         "a5dc1f1756bdb15afb61613c5e2a8a0f084f984bce74c6414d7433ed569db3ba"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "No main/producción sin Dirección.",
+          "No gasto/credenciales/estrategia/legal/privacidad sin escalación.",
+          "No cerrar este blocker hasta observar al menos una ejecución real de Work con escritura/evidencia durable."
+        ],
+        "instructions": [
+          "Use docs/PELE_WORK_CONTRACT.md as master contract and comply with Autonomy V1.1 no-idle/task-lease rules.",
+          "Consume approved backlog continuously while executable work exists.",
+          "Persist started_at, last_progress_at, current_subfront and next_action in queue/PMO.",
+          "On PASS immediately take the next executable subfront/task.",
+          "On FAIL attempt bounded recovery; if blocked, record evidence and switch to other independent work.",
+          "Do not consider activation validated until autonomy acceptance test passes."
+        ]
+      },
       "depends_on": [
         "autopilot_v1_2026_09_27"
       ],
@@ -69864,7 +70144,7 @@
       "queue_status": "in_progress",
       "recovery_episode": "31239ddfcabb5d5c9f20d52fcdf327161d700857e43631de9c6ec04104b6fb22",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "pulso_latercera_exhaustive_discovery_2026_10_11": {
@@ -69897,6 +70177,18 @@
         "355ce5e7bef4a35d9b6350e104cb69a9edbd482151827c6da1c018f01f519e91"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "instructions": [
+          "No aceptar los 11 candidatos actuales como universo; tratarlos sólo como muestra.",
+          "Inventariar todas las superficies relevantes de latercera.com: Pulso, Nacional, etiquetas, archivo/paginación, búsqueda/sitemap/feed si existe, y otras secciones que publiquen salud material.",
+          "Eliminar dependencia exclusiva de links visibles en primera página y de un prefiltro de título que pueda impedir abrir artículos cuyo valor sanitario aparece en cuerpo/subtítulo.",
+          "Implementar paginación/archivo o superficie equivalente para cubrir 30 y 90 días.",
+          "Comparar inventario contra búsquedas externas independientes y sitio original; documentar omisiones y causas.",
+          "Mantener exclusión de Opinión y contenido no factual salvo decisión editorial explícita.",
+          "No publicar por cuota; después del discovery aplicar gate editorial vigente.",
+          "Cierre sólo con recall auditado sobre muestra externa, runtime real, QA y Reviewer."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "717c8888b58f663654751bcf3ee7bca1c0c184637e5cdd8c743135f603554d4a",
       "executor_fingerprint": null,
@@ -69918,7 +70210,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "97acc9e8faa4d2f339b1449aa975e05a62d4ebf3fc3e32c62393f929b5318803",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration1_recovery_2026_10_09": {
@@ -69951,6 +70243,38 @@
         "6f43244f428a66c182aeca7b19eafb74b651161d54377faf6dfcd76d580a12a8"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "independent_review": {
+          "artifact": "data/audits/work3_adversarial_2026_10_11.json",
+          "backlog_issues": [
+            "https://github.com/cftorre1/Radar-salud/issues/6",
+            "https://github.com/cftorre1/Radar-salud/issues/8"
+          ],
+          "finding_ids": [
+            "work3_df_existing_queue_not_rehydrated",
+            "work3_beta_discovery_is_not_publication",
+            "work3_pulso_nacional_scope_gap"
+          ],
+          "next_action": "Resolve listed causes and criteria; retain original evidence. No approval based on workflow status alone.",
+          "reviewed_at": "2026-10-11T04:00:00Z",
+          "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+          "reviewer": "Work 3",
+          "supplement_artifact": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+          "supplement_finding_ids": [
+            "work3_df_real_html_date_null",
+            "work3_andes_first_five_misses_alliance"
+          ],
+          "supplement_recorded_at": "2026-10-11T04:09:18.225117+00:00",
+          "verdict": "open_findings_not_validated"
+        },
+        "instructions": [
+          "Reconciliar por fuente web original 30 y 90 días versus discovered/seen/rejected/pending/published.",
+          "Clasificar cada omisión como captura, fecha, filtro/materialidad, publicación o ausencia genuina.",
+          "Reparar primero DF y Pulso/La Tercera, luego FONASA/ISP/DEIS, SIS/SUSESO fiscalización y errores ACHS/Mutual.",
+          "No bajar gates editoriales para aumentar volumen.",
+          "Después de cada reparación ejecutar test dirigido y luego QA/Reviewer."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "360d0734bf51f160fe3b489d84f469e52486948c367784b0d882f2f16e9407a1",
       "executor_fingerprint": null,
@@ -69972,7 +70296,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "9cba6c8204976e15c36b69d578e121a89db6fc6a67c8ba098bbde0b0aac910ea",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration2_balance_2026_10_09": {
@@ -70005,6 +70329,35 @@
         "229b4ac3e176f4c1f54f324ab5ba174b4329d16b9eafc93202a4cdd8710f76e9"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "independent_review": {
+          "artifact": "data/audits/work3_adversarial_2026_10_11.json",
+          "backlog_issues": [
+            "https://github.com/cftorre1/Radar-salud/issues/8",
+            "https://github.com/cftorre1/Radar-salud/issues/9"
+          ],
+          "finding_ids": [
+            "work3_beta_discovery_is_not_publication"
+          ],
+          "next_action": "Resolve listed causes and criteria; retain original evidence. No approval based on workflow status alone.",
+          "reviewed_at": "2026-10-11T04:00:00Z",
+          "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+          "reviewer": "Work 3",
+          "supplement_artifact": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+          "supplement_finding_ids": [
+            "work3_andes_first_five_misses_alliance",
+            "work3_public_telemetry_stale"
+          ],
+          "supplement_recorded_at": "2026-10-11T04:09:18.225117+00:00",
+          "verdict": "open_findings_not_validated"
+        },
+        "instructions": [
+          "Auditar RedSalud, Bupa, INDISA, Dávila, Andes Salud, Clínicas de Chile, IST y Pfizer.",
+          "Construir universo de isapres y prestadores adicionales de alto valor.",
+          "Auditar rechazos y detectar señales perdidas por filtros excesivos.",
+          "Mantener una sola entidad visible por institución con subcanales internos cuando corresponda."
+        ]
+      },
       "depends_on": [
         "source_audit_issue5_iteration1_recovery_2026_10_09"
       ],
@@ -70028,7 +70381,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "5aba57a7f8aa859dc131c182aa0788e655832a4ce02844d3bcbd7982ae470f27",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration3_editorial_2026_10_09": {
@@ -70038,6 +70391,33 @@
       "awaiting_dependencies": true,
       "blocker_signatures": [],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "independent_review": {
+          "artifact": "data/audits/work3_adversarial_2026_10_11.json",
+          "backlog_issues": [
+            "https://github.com/cftorre1/Radar-salud/issues/9"
+          ],
+          "finding_ids": [
+            "work3_bupa_factual_tense_mismatch"
+          ],
+          "next_action": "Resolve listed causes and criteria; retain original evidence. No approval based on workflow status alone.",
+          "reviewed_at": "2026-10-11T04:00:00Z",
+          "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+          "reviewer": "Work 3",
+          "supplement_artifact": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+          "supplement_finding_ids": [
+            "work3_public_telemetry_stale"
+          ],
+          "supplement_recorded_at": "2026-10-11T04:09:18.225117+00:00",
+          "verdict": "open_findings_not_validated"
+        },
+        "instructions": [
+          "Regenerar Insight semanal con freshness gate real y top3 auditado.",
+          "Una pieza vieja sale del módulo semanal sin borrarse del histórico.",
+          "Revisar 90 días para conexiones entre noticias, cifras, regulación y decisiones de negocio.",
+          "No forzar frecuencia si no existe evidencia suficiente."
+        ]
+      },
       "depends_on": [
         "source_audit_issue5_iteration1_recovery_2026_10_09"
       ],
@@ -70088,6 +70468,33 @@
         "1710ee166ab769c470935d020ab9cbc8f21896864fcfa9fea3f665b06ada672a"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "independent_review": {
+          "artifact": "data/audits/work3_adversarial_2026_10_11.json",
+          "backlog_issues": [
+            "https://github.com/cftorre1/Radar-salud/issues/7"
+          ],
+          "finding_ids": [
+            "work3_live_validation_skipped_success",
+            "work3_recovery_corrupt_patch_loop",
+            "work3_latest_qa_snapshot_gate"
+          ],
+          "next_action": "Resolve listed causes and criteria; retain original evidence. No approval based on workflow status alone.",
+          "reviewed_at": "2026-10-11T04:00:00Z",
+          "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+          "reviewer": "Work 3",
+          "supplement_artifact": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+          "supplement_finding_ids": [],
+          "supplement_recorded_at": "2026-10-11T04:09:18.225117+00:00",
+          "verdict": "open_findings_not_validated"
+        },
+        "instructions": [
+          "Conectar issue #5 y sus tareas con un Executor GitHub-native staging-only.",
+          "Todo FAIL o fuente estancada debe generar tarea durable, intento de reparación y evidencia.",
+          "El executor debe tomar el siguiente subfrente aprobado automáticamente después de PASS o blocker.",
+          "Mantener límite de intentos y no tocar producción."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "554e7979670b20f0559e3416452a8aad15b13ae8c8c91e08a1a6f4d620acedef",
       "executor_fingerprint": null,
@@ -70109,7 +70516,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "e6f8a091a339da27663dd924412994424a07128518baafcb1fb103579f3c87b6",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration5_expansion_2026_10_09": {
@@ -70142,6 +70549,13 @@
         "9f800ecb75fabded039d89d621adc4f44b386f911e031864d3f9f5ec42794bb4"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "instructions": [
+          "Evaluar ChileCompra, Poder Judicial, BCN/LeyChile, CMF, DIPRES, INE/CASEN/CEP, universidades, innovación, healthtech y cobertura internacional recurrente.",
+          "Cada fuente debe tener propósito analítico y source quality gate.",
+          "No activar por volumen."
+        ]
+      },
       "depends_on": [
         "source_audit_issue5_iteration1_recovery_2026_10_09",
         "source_audit_issue5_iteration2_balance_2026_10_09"
@@ -70166,7 +70580,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a5062237250f020a1cc78759c343e03042e43ea9f610ff65896f6b3b9edad678",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_master_2026_10_09": {
@@ -70199,6 +70613,35 @@
         "67d25e5d812fa76da8d504a19d9c40fd3473f225b43e90231ee0ac1b856b8e7d"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "independent_review": {
+          "artifact": "data/audits/work3_adversarial_2026_10_11.json",
+          "backlog_issues": [
+            "https://github.com/cftorre1/Radar-salud/issues/6",
+            "https://github.com/cftorre1/Radar-salud/issues/7",
+            "https://github.com/cftorre1/Radar-salud/issues/8",
+            "https://github.com/cftorre1/Radar-salud/issues/9"
+          ],
+          "finding_ids": [
+            "work3_pmo_readiness_stale"
+          ],
+          "next_action": "Resolve listed causes and criteria; retain original evidence. No approval based on workflow status alone.",
+          "reviewed_at": "2026-10-11T04:00:00Z",
+          "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+          "reviewer": "Work 3",
+          "supplement_artifact": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+          "supplement_finding_ids": [],
+          "supplement_recorded_at": "2026-10-11T04:09:18.225117+00:00",
+          "verdict": "open_findings_not_validated"
+        },
+        "instructions": [
+          "Usar GitHub issue #5 como backlog maestro y config/orchestrator_queue.json como cola ejecutable.",
+          "No declarar una fuente sana sólo por HTTP 200 o workflow PASS; distinguir captura, fecha, selección, publicación y ausencia genuina de material.",
+          "Ejecutar las cinco iteraciones hijas en orden de prioridad, permitiendo autonomía en paralelo cuando no exista dependencia.",
+          "Registrar evidencia durable por fuente y mantener issue #5 actualizada con avances verificables.",
+          "No tocar main/producción salvo workflows de autonomía ya autorizados; las reparaciones de producto/fuentes van a staging."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "f8e7c546a8fc546be06c23b98fdf2c77458890e25862a176d5c7b23efb29438e",
       "executor_fingerprint": null,
@@ -70220,7 +70663,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "cf942b0661750d6bcbb1988985499466007e6c247524a9cd82af8ddb304c7f2e",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "source_recovery_reconciliation_gate_2026_10_11": {
@@ -70253,6 +70696,18 @@
         "cf2e904b4db2164535400a106a35266a3a3b1506e806303b2f016651755feb1b"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "instructions": [
+          "Usar issue #5 como backlog maestro de cobertura y las issues #6-#9 como hallazgos P0 derivados.",
+          "Registrar para cada hallazgo: issue origen, task_id, worker/Work/Codex responsable, branch/PR, SHA mergeado a staging, QA, Reviewer, evidencia fuente y estado final.",
+          "Un PR abierto o un commit en rama no cuenta como implementación hasta merge seguro a staging.",
+          "Una fuente no cuenta como reparada hasta runtime real posterior al merge y evidencia de publicación/rechazo/ausencia genuina.",
+          "No cerrar un issue por documentación בלבד; exigir evidencia de resultado.",
+          "Antes de cerrar cualquier iteración, revisar todas las issues abiertas y todos los tasks approved/in_progress relacionados para evitar orphaned backlog.",
+          "Después de cada merge de Codex, actualizar queue/PMO/issue y seleccionar el siguiente hallazgo independiente.",
+          "Los hallazgos nuevos de Work/Reviewer se incorporan a esta conciliación aunque no existieran en el baseline inicial."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "54a0143933e979a58303a87df995946205515e7243ba5ee44af917546e49e408",
       "executor_fingerprint": null,
@@ -70274,7 +70729,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c8440ecfcb1660f8bf14708fe8ca26771fe76be97aaf50476cf3cea797292ac6",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "source_repair_fiscalization_lane_2026_10_11": {
@@ -75271,6 +75726,13 @@
         "5f2f0cd183376d4c11817da25b8072b385584238e1a49036a4e4b3b45eac4472"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "instructions": [
+          "Reconcile discovered inventory with 2026 dated material.",
+          "Fix date parsing/selection semantics without lowering relevance gates.",
+          "Ensure zero-publication states explain absence vs pipeline defect."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "2c92af3b8a8b8319366d819aa4f039a6c8016ccdf6e7ef4d2139a03dc289e8ae",
       "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
@@ -76493,6 +76955,33 @@
         "004af652f23fe8201060b6534bdb272b7ef7ee28d571cf8a3ceee949091095bd"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "independent_review": {
+          "artifact": "data/audits/work3_adversarial_2026_10_11.json",
+          "backlog_issues": [
+            "https://github.com/cftorre1/Radar-salud/issues/6"
+          ],
+          "finding_ids": [
+            "work3_df_existing_queue_not_rehydrated",
+            "work3_pulso_nacional_scope_gap"
+          ],
+          "next_action": "Resolve listed causes and criteria; retain original evidence. No approval based on workflow status alone.",
+          "reviewed_at": "2026-10-11T04:00:00Z",
+          "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+          "reviewer": "Work 3",
+          "supplement_artifact": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+          "supplement_finding_ids": [
+            "work3_df_real_html_date_null"
+          ],
+          "supplement_recorded_at": "2026-10-11T04:09:18.225117+00:00",
+          "verdict": "open_findings_not_validated"
+        },
+        "instructions": [
+          "Validate DF LIVE classification after date-binding repair.",
+          "Run Pulso/La Tercera through Daily Radar core.",
+          "Close only with publication/rejection trace and source-health evidence."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "2e6e2de74f7ab074a36c2453dc534f58b6f34199d15500ff0a3a774df58b617d",
       "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
@@ -78522,6 +79011,13 @@
         "ef7c74e22ce0ee200c0116c47aca7e63677f580d429cb06d247b84c844086cf9"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "instructions": [
+          "Identify current newsroom structure and parser failure signature.",
+          "Repair discovery selectors/date extraction.",
+          "Keep institutional marketing filters intact."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "9400bdb61e0ff4ae153d091b6fb186e2d9aacc191e19721fc460d6dcd51f9d8a",
       "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
@@ -80923,6 +81419,13 @@
         "3eed8f02d57fac95a4d8ce4c69178bbf561c0f13c245fe8cfd34c8d035e2caa7"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "instructions": [
+          "Diagnose HTTP/URL failures with current endpoints and fetch behavior.",
+          "Repair or document external blocker per source.",
+          "Preserve fail-closed date/evidence rules."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "7315d917f1f7476343d24d1c5226e2a60e74c5b8c619e97916ce0ddf60c1f149",
       "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
@@ -81611,6 +82114,29 @@
         "8a12cb3c874d9cfef9d068be96845f6646053eff5b3583d52209b6c8de10d11f"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "instructions": [
+          "PRIORIDAD 0: reconciliar ciclo diario core. Muchas fuentes base tienen checked_at congelado en 2026-09-30 mientras validaciones beta corren 2026-10-02. Toda fuente activa debe tener polling diario verificable o un estado explícito de blocker.",
+          "DIARIO FINANCIERO: corregir frescura y sobre-rechazo. La sección DF Salud publica contenido nuevo (incluye nota 01-10-2026 sobre bono electrónico/huella) pero source_health queda en 22-09 y 116 rechazadas. Auditar discovery, date extraction, seen-state y Media Early Signal Gate.",
+          "PULSO/LA TERCERA: pasar de beta validation a integración daily/live. Hay señal estratégica 29-09-2026 sobre reestructuración Empresas Banmédica/Clínica Santa María que no está en feed.",
+          "SUSESO: mantener noticias + normativa + fiscalización. Circular 3926 debe estar visible con contrato normativo específico. Fiscalización Isapres/COMPIN no puede quedar en discovered=38/published=0 sin explicación por ítem.",
+          "SUPERINTENDENCIA DE SALUD FISCALIZACIÓN: source_health no puede mostrar last_signal_at 2025-10-24 cuando la web tiene sanciones a prestadores en septiembre 2026 y sanciones Isapre en julio 2026. Reconciliar health semantics, date parsing y pulso por período.",
+          "FONASA: direct newsroom y Datos Abiertos siguen HTTPError. Implementar alternativa técnica estable o declarar blocker visible; compensar con MINSAL/SIS/DIPRES sólo con atribución correcta.",
+          "ISP: ANAMED sigue URLError. Vigilancia respiratoria oficial tiene informes 2026 recientes; integrar al ciclo diario y separar de MINSAL care-pressure.",
+          "DEIS: discovered=0 no es saludable. Cambiar a coverage_gap y localizar superficies de datos/publicaciones con fechas verificables.",
+          "CLÍNICAS DE CHILE: canales Noticias/Memorias/Estudios/Documentos deben estar en daily runtime; última noticia visible en web 28-08-2026, por lo que no inventar frescura posterior.",
+          "RED DÁVILA: beta runtime falla RuntimeError pese a listing oficial accesible y fechado. Corregir parser.",
+          "ANDES SALUD: discovery funciona; aplicar gate de negocio para distinguir contenido clínico educativo de alianzas/inversión/expansión. Señal 24-09 MetLife y 08-09 clínica Talca son materialmente relevantes.",
+          "CLÍNICAS ACHS SALUD / ACHS SEGURO LABORAL / MUTUAL: parsers beta fallan RuntimeError; reparar antes de considerarlas activas.",
+          "IST: discovery devuelve contenido viejo (newest_event_date 2016-11-02) aunque el newsroom existe. Corregir selector/date parsing.",
+          "RED SALUD: discovery activo; mantener filtro estricto. Contenido reciente 29-30 sep parece principalmente corporativo/promocional, mientras convenio Nueva Masvida 21-09 sí es señal.",
+          "INDISA: runner da HTTPError aunque la web pública tiene contenido 11-09-2026 sobre alianza con Isapre Esencial. Corregir acceso/parser.",
+          "DIARIO OFICIAL: no se observa evidencia de falla de cobertura hoy; mantener monitoreo y reconciliar last_selected/dashboard.",
+          "EL MERCURIO/E&N y EMOL: mantener como secundarios/corroboración si no existe listing determinístico estable; no declararlos activos hasta tener discovery reproducible.",
+          "Para cada fuente: registrar web_latest_verified, engine_checked_at, engine_latest_detected, selected/published, failure_reason y decisión active/secondary/blocked.",
+          "No considerar una fuente 'activa' sólo porque un test aislado o Source Quality Gate pase: debe existir ejecución real en daily runtime y evidencia de una señal reciente o de ausencia genuina."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "087f851b0792898fafe56c4924bf2fd1efa5b1eca576837082500a891e307184",
       "executor_fingerprint": null,
@@ -81632,7 +82158,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "b59c31a8e8a6b2198d7fe806538c1c25ffb02035d378bc7223d92b7c3d1c13ea",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "staging_qa_failed_run_38113830124": {
@@ -92644,6 +93170,7 @@
       },
       "blocker_signatures": [],
       "created_at": "2026-10-11T08:12:43.086256Z",
+      "declared_repair_inputs": {},
       "depends_on": [],
       "evidence_revision": "64c7a19863b485a45ee6e1e90df459328ba5322f7db7c8f98ce3fc67a21e2488",
       "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
@@ -92668,14 +93195,13 @@
       },
       "last_ready_at": "2026-10-11T08:12:43.086256Z",
       "lease": null,
-      "material_progress_at": "2026-10-11T08:13:24.898567Z",
       "material_watch_started_at": "2026-10-11T08:13:24.898567Z",
       "objective": "Recover the demonstrated staging gate; preserve product contracts.",
       "pickup_ready_since": "2026-10-11T08:12:43.086256Z",
       "priority": "critical",
       "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
       "queue_status": "approved",
-      "recovery_episode": "007b67424c875e2c69e2d229bfe23f834ac0c89c26a3c5bff2b3b01a192c5c17",
+      "recovery_episode": "e2ecb328c3e24ed1a2fe8209954661ef4327250f3db2ccf18f4f5dc1b28eb1f0",
       "recovery_reclaims": 0,
       "state_changed_at": "2026-10-11T08:14:42.041899Z",
       "status": "BLOCKED"
@@ -92710,6 +93236,21 @@
         "2b045e8118d71dca72f52054bdacd23149261efc7b8886b2cb6e4d3bcd5089fd"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_cenabast_2026_10_11.",
+          "Implementar listado/detalle de prensa CENABAST; conservar tablas y referencias de abastecimiento con extracción mínima.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "6d43333ad20be58b467ff1e70353e5b27743c41f554bb94e9d3ac0a70f8cd21c",
       "executor_fingerprint": null,
@@ -92731,7 +93272,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c5295fc453e484870ce34bf6d21bb1e1fc6445ee576af78478dcf3f3f5c8cee1",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_cmf_2026_10_11": {
@@ -92764,6 +93305,21 @@
         "791b979b31195b2c59369836ff0dd46d43156ab8ba331377aa7a23716cf4dd0b"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_cmf_2026_10_11.",
+          "Crear inventario de emisores/grupos con RUT verificado (comenzar CLC 93930000, ILC, grupos de prestadores e Isapres); documentar filiales fuera del perímetro reportante.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "485c5e139c7c9cc6cd8781772d9b38585d6068457406ad0077b03ead2874242b",
       "executor_fingerprint": null,
@@ -92785,7 +93341,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "0463f5519e61c2a70c91e3835381d2459badb9bc611e9cdf7031a4d29083ea3d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_dipres_2026_10_11": {
@@ -92818,6 +93374,21 @@
         "15b1236d8a1e8f5454d5558cc912bcb043119326898dc52d5cbfd30fa5b1bc11"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_dipres_2026_10_11.",
+          "Descubrir proyecto 2027 y series de ejecución por Partida/Capítulo/Programa de Salud y FONASA; extraer URL de cada archivo desde índice oficial.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "3624b26fa2fa01fd42ef45530d278d21fc34c90d567a388875216a7a52f3894e",
       "executor_fingerprint": null,
@@ -92839,7 +93410,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "3d52752d3912d2158b859a5f6d9032d9252427728814d38a5db7de1784b27c6d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_fne_2026_10_11": {
@@ -92872,6 +93443,21 @@
         "1f6ee3501796403db93fd31f92f33ce171b1aafbafd8e861c604a01786dd7a77"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_fne_2026_10_11.",
+          "Descubrir noticias/operaciones de concentración FNE con filtros de actores sanitarios y enlaces a resoluciones públicas.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "9d8d1223d0d6034a053e9f0829c4ef1a10bcc4c11717fec33a6100ea67cab99d",
       "executor_fingerprint": null,
@@ -92893,7 +93479,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "68af68accca1b35c7085744e16ceec5e734566b0bdd1ee17eef0f8f92d948272",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_innovation_2026_10_11": {
@@ -92926,6 +93512,21 @@
         "d376918943783127d5fa995e69312ab0f3c08b1465d0c16b91a463c87cdc6133"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_innovation_2026_10_11.",
+          "Calificar publicaciones DHTAC/UDD y bienes públicos/noticias CENS; fijar entidades y tipos: investigación, piloto, evaluación, despliegue, financiamiento.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [
         "w4_cenabast_2026_10_11"
       ],
@@ -92949,7 +93550,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "e847e78d051b0097e00f9fe93ecb8b8cad1318214feeb8077e171c66f81b66bf",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_isapres_2026_10_11": {
@@ -92982,6 +93583,21 @@
         "7a8ac6344bf01afb5fe301328473bd53a7adc7ff5d75f5b24593778e5aaccb62"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_isapres_2026_10_11.",
+          "Extraer registro oficial de Isapres y fijar códigos 63,67,76,78,80,81,94,99,107,108, tipo abierta/cerrada, alias, grupo y vigencia.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "1d677e0713b07a0c7144fe3a193b31af5d058accebdcbc5c09f3ed4f0946e629",
       "executor_fingerprint": null,
@@ -93003,7 +93619,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "9829f867c40d17863cf83c0460f0f79ab13ef16645d4ff42687637b394670a42",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_legal_2026_10_11": {
@@ -93036,6 +93652,21 @@
         "ae5460e90df86f28e8a3e94dd78103dbb9b3b04d187eefed1256bb1c2fcb4569"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_legal_2026_10_11.",
+          "BCN: enlazar normas originadas en DO/SIS con idNorma, fecha original, vigencia, versión y cambios; no crear una noticia por regeneración de PDF.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "37ae65534de454df0cdc3bd19344633aebcefc9db39da79f24a6406c8cb13384",
       "executor_fingerprint": null,
@@ -93057,7 +93688,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "4343ece0dc2180b75aa2462f7d0053848b6355f84c064c495f0e6878992d35cd",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_occupational_2026_10_11": {
@@ -93090,6 +93721,21 @@
         "1fa34e475ea7581305118e5675759af7ef85346b6f6dab6fab3ba7891dc569fb"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_occupational_2026_10_11.",
+          "ISL: detectar infografías/estadísticas mensuales y memorias, normalizar trabajadores/empleadores/atenciones por período y definición.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "8aaddf40804bcf3c8cc3c5f45d20294cb213a9a397c9223b203b28deaef3c12b",
       "executor_fingerprint": null,
@@ -93111,7 +93757,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "42395920685debe39cc6ee457a06ba424929e5691a1bc1b5394fad7d7c204a26",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_paho_2026_10_11": {
@@ -93144,6 +93790,21 @@
         "057fb9a8940b8cddc842fb6262e1180dd64d6402bfb70a18697830bbdac19dac"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_paho_2026_10_11.",
+          "Probar rutas oficiales públicas documentadas de informes técnicos/influenza y repositorio alternativo oficial; registrar HTTP, fecha y límites.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "047c11feb19e8ad4487e7dfb210b923739d489e0842735e3b964b8db4c037ea9",
       "executor_fingerprint": null,
@@ -93165,7 +93826,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "eab01e76913e7dac7572a08788d9f7da2d94ef51aafcb4236cdf247c7e69ae0b",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_procurement_2026_10_11": {
@@ -93198,6 +93859,21 @@
         "8522fa59cd5e1e0ba9c4f776da3db8eb2548c8202815af4516fe1475a7ddb828"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_procurement_2026_10_11.",
+          "Revisar src/radar_salud/mercado_publico.py y documentación oficial ChileCompra; comprobar disponibilidad de ticket autorizado sin mostrar secretos. No usar ClaveÚnica ni ticket de terceros.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "25c62c095572efd2c4ad46a44a33247088097239d3d8edfcb305a720922faea3",
       "executor_fingerprint": null,
@@ -93219,7 +93895,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a5c013f42eb4035c137fb77738a455455d40a2a3bc590f44179f6cc972399e9b",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_provider_data_2026_10_11": {
@@ -93252,6 +93928,21 @@
         "9ce03a1ec4e4033a1f80684af936af49a7525dcef5234c3635aad32f2b8bda04"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_provider_data_2026_10_11.",
+          "Interclínica: extraer memorias 2025/2024/2023 por URL/hash, instalaciones, control y magnitudes comparables; guardar fecha de publicación desconocida cuando corresponda.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [
         "w4_fne_2026_10_11"
       ],
@@ -93275,7 +93966,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "eabdaed28307ab96f1a2d2dfc3a4c1fa89e73ba635813f86c01992e507688103",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_providers_2026_10_11": {
@@ -93308,6 +93999,21 @@
         "c40cf7c768c21065e13cb4c48dcd2991979afecb055fb33929e02e0ae5ad5a88"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_providers_2026_10_11.",
+          "Muestrear ventana completa 90 días por newsroom con paginación, fechas verificadas, motivos de rechazo y cobertura.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "293732084a1fee4c9ae8f6a90afbb2e3723bea7c13fa53e91a2bf6a0fafad591",
       "executor_fingerprint": null,
@@ -93329,7 +94035,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "2ecb9c9fa89bc9efa7f5b0af6e7fdab5fc9d9a370fc08e80e07a41c415daa1f8",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_reuters_2026_10_11": {
@@ -93362,6 +94068,21 @@
         "7e06396d20e716a11e2bee1468d1370218a04a18a9a41ef6d88da36439561f31"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_reuters_2026_10_11.",
+          "Auditar ruta pública/contratada permitida de Reuters; documentar condiciones de uso, estabilidad del índice y derechos de extracción/resumen antes de automatizar.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "d46d007e89c4293f0fe0064092a0b5038bab989584672ed43c73e9dbeffb9da1",
       "executor_fingerprint": null,
@@ -93383,7 +94104,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "7cdbbf9a9b5d29d58e4606ec1d2fba620a94e74cb1feae5c5ef9679f4c094ed8",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_socioeconomic_2026_10_11": {
@@ -93416,6 +94137,21 @@
         "ac242e8463d698381836bb646716efff8c53347d2f9667223426f1a8a1503262"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_socioeconomic_2026_10_11.",
+          "INE: usar release calendar y archivo IPC para división Salud, además de población/proyecciones verificadas; conservar base, territorio y frecuencia.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "87b04727dcea074ab7d1e9cfcc161190abe412061dd3a95ddc88a8165756d7aa",
       "executor_fingerprint": null,
@@ -93437,7 +94173,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "4780ada0e4e927769d2d0a770ddcda3176d2f09ee88f597928c481023fa49829",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     },
     "w4_who_2026_10_11": {
@@ -93470,6 +94206,21 @@
         "18a7ea836fb9c9209b2f2a9a3a514d23292d94085ac413f6b6a4abd3bc90e69a"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
+      "declared_repair_inputs": {
+        "constraints": [
+          "staging_only",
+          "no_production_or_main",
+          "no_auto_promotion",
+          "no_new_spend_or_credentials",
+          "No confundir prioridad con fuente active/healthy; fallos de acceso quedan hold_external."
+        ],
+        "instructions": [
+          "Leer config/source_expansion_backlog_2026_10_11.json y ejecutar el paquete w4_who_2026_10_11.",
+          "Implementar discovery desde WHO news-room y detalle; priorizar guías, emergencias, epidemiología y cambios de política.",
+          "Preparación/calificación independiente permitida; promoción runtime sujeta a dependencias de recuperación/balance core.",
+          "No alterar la disposición de otros equipos ni duplicar sus reparaciones; anexar evidencia y continuar una tarea desbloqueada."
+        ]
+      },
       "depends_on": [],
       "evidence_revision": "fb1fdb77eed414769e24ae706356263d01e3fa755676cb9f1876ba33a509db57",
       "executor_fingerprint": null,
@@ -93491,7 +94242,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "f3f06489347d3384ca04c7f6a54de4912f0d5e43bb1f7ac58fa198fb8f17af6f",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T08:16:15.976839Z",
+      "state_changed_at": "2026-10-11T09:13:22.246797Z",
       "status": "BLOCKED"
     }
   }
