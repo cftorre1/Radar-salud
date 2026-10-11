@@ -30,13 +30,39 @@ def editorial_input(raw):
     meta = value.get("metadata", {})
     fields = {k: value.get(k) for k in ("source_slug", "url", "title", "event_date", "raw_text")}
     fields.update({k: meta.get(k) for k in ("page_text", "market_role", "provider_subtype", "materiality_accepted", "materiality_reason")})
+    from radar_salud.occupational_sources import classify_content_kind
+    fields["content_kind"] = meta.get("content_kind") or classify_content_kind(meta.get("materiality_reason"), value.get("title", ""), meta.get("page_text", ""))
+    # A new capture hash or a duplicate infographic is not a changed analysis
+    # input. Only genuinely additional, revalidated document excerpts count.
+    if meta.get("supporting_documents"):
+        from types import SimpleNamespace
+        from radar_salud.occupational_documents import verified_document_text, additional_document_facts
+        from radar_salud.beta_sources import CuratedBetaSourceScout
+        try:
+            hosts = CuratedBetaSourceScout.SOURCES[value["source_slug"]]["hosts"]
+            text = verified_document_text(SimpleNamespace(**value), hosts)
+            facts = additional_document_facts(meta.get("page_text", ""), text)
+            if facts:
+                fields["additional_document_text_sha256"] = hashlib.sha256(facts.encode()).hexdigest()
+        except Exception:
+            # The processor defers corrupt evidence; it never becomes an
+            # authenticated fact merely to invalidate an existing decision.
+            pass
     return hashlib.sha256(json.dumps(fields, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
 
 def refresh_item(item, raw):
     fresh = editorial_input(raw)
-    previous = item.get("editorial_input_sha256") or editorial_input(item.get("raw", {}))
+    previous = editorial_input(item.get("raw", {}))
     changed = fresh != previous
+    if not changed and item.get("status") == "published":
+        # Discovery refreshes source evidence. Preserve the accepted editorial
+        # output only while the exact assessed input is unchanged.
+        old_meta = item.get("raw", {}).get("metadata", {})
+        for name in ("what_happened", "why_it_matters", "signal_types", "scopes",
+                     "watch_tags", "scores", "editorial_assessment", "editorial_review"):
+            if name in old_meta:
+                raw.metadata[name] = copy.deepcopy(old_meta[name])
     if changed:
         item.setdefault("revisions", []).append({"editorial_input_sha256": previous,
             "status": item.get("status"), "reason": item.get("reason"),

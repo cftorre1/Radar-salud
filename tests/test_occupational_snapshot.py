@@ -26,7 +26,9 @@ def fixture(tmp_path):
         p = tmp_path / path; p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(json.dumps(payload))
     reports = {SLUG: {"rows": [{"url": signal["source_url"], "status": "candidate",
-                              "publication_date": signal["event_date"], "alicanto_status": "published"}]}}
+                              "publication_date": signal["event_date"], "alicanto_status": "published",
+                              "market_role": item['raw']['metadata']['market_role'],
+                              "provider_subtype": item['raw']['metadata'].get('provider_subtype')}]}}
     return reports, original, signal, key
 
 
@@ -62,6 +64,35 @@ def test_queue_cannot_claim_published_with_unreadable_capture(tmp_path):
     result = export_snapshot(tmp_path, reports, as_of="2026-10-11")
     assert result["published"] == 0 and result["deferred"]
     assert json.loads((tmp_path / "web/data/radar_today.json").read_text()) == original
+
+
+def test_fresh_same_input_preserves_accepted_copy_and_review_before_export(tmp_path):
+    from radar_salud.models import RawItem
+    from scripts.occupational_inventory import refresh_item
+    reports, _, signal, key = fixture(tmp_path)
+    p = tmp_path / "data/state/pending_queue.json"
+    queue = json.loads(p.read_text()); item = queue[key]
+    item["raw"]["metadata"]["editorial_review"] = {"decision": "accept", "reviewer": "independent"}
+    fresh = copy.deepcopy(item["raw"])
+    for name in ("what_happened", "why_it_matters", "editorial_assessment", "editorial_review"):
+        fresh["metadata"].pop(name, None)
+    assert not refresh_item(item, RawItem(**fresh))
+    assert item["raw"]["metadata"]["editorial_review"]["decision"] == "accept"
+    assert item["raw"]["metadata"]["why_it_matters"] == signal["why_it_matters"]
+    p.write_text(json.dumps(queue))
+    assert export_snapshot(tmp_path, reports, as_of="2026-10-11")["published"] == 1
+
+
+def test_matching_queue_and_history_still_cannot_forge_the_inventory_role(tmp_path):
+    reports, original, signal, key = fixture(tmp_path)
+    p = tmp_path / 'data/state/pending_queue.json'
+    queue = json.loads(p.read_text()); queue[key]['raw']['metadata']['market_role'] = 'provider_achs'
+    p.write_text(json.dumps(queue))
+    signal['market_role'] = 'provider_achs'
+    (tmp_path / 'data/history/superintendencia_signals.json').write_text(json.dumps({'signals':[signal]}))
+    result = export_snapshot(tmp_path, reports, as_of='2026-10-11')
+    assert result['published'] == 0 and result['deferred']
+    assert json.loads((tmp_path / 'web/data/radar_today.json').read_text()) == original
 
 
 def test_public_gate_preserves_existing_editorial_rejection():

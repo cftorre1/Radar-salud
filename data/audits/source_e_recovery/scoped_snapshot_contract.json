@@ -8,14 +8,16 @@
   ],
   "tests": {
     "command": ".venv/bin/python -m pytest tests/test_occupational_snapshot.py tests/test_occupational_reconcile.py -q",
-    "result": "15 passed"
+    "result": "17 passed"
   },
   "closed_findings": [
     "shared ACHS newsroom excluded-role publications no longer count as clinical publications",
     "a successful editorial assessment must also pass publication_ready and committee before queue acknowledgement",
     "saved capture and current inventory date, publisher role, score and assessed copy are revalidated before scoped snapshot export",
     "all unrelated feed objects and global collection timestamps preserved",
-    "deferred queue states saved before checkpoints"
+    "deferred queue states saved before checkpoints",
+    "Reviewer refresh repro: preserve reviewed publication copy only while current assessed input remains identical; recompute old input under current fingerprint schema",
+    "Reviewer coherent-forgery repro: enforce publisher role against native inventory and configured lane, not only history/queue equality"
   ],
   "next_action": "Independent Reviewer corrects historic Mutual deadline wording, then next Actions run exports verified signals and reevaluates actual document facts. No production deploy."
 }

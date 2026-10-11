@@ -51,6 +51,8 @@ def export_snapshot(root, reports, *, as_of):
         item = by_url[url]
         try:
             raw = RawItem(**item["raw"])
+            source_cfg = CuratedBetaSourceScout.SOURCES[slug]
+            accepted_roles = source_cfg.get("accepted_roles", (source_cfg["role"],))
             day = valid_date(signal.get("publication_date"), today=today)
             if (item.get("status") != "published" or raw.source_slug != slug
                     or day != raw.event_date or signal.get("event_date") != day
@@ -59,12 +61,15 @@ def export_snapshot(root, reports, *, as_of):
                     or inventory_row.get("alicanto_status") != "published"
                     or signal.get("title") != raw.title
                     or signal.get("market_role") != raw.metadata.get("market_role")
+                    or signal.get("market_role") != inventory_row.get("market_role")
+                    or signal.get("market_role") not in accepted_roles
+                    or raw.metadata.get("provider_subtype") != inventory_row.get("provider_subtype")
                     or int(signal.get("editorial_relevance", 0)) < 75
                     or signal.get("editorial_relevance") != item.get("editorial_assessment", {}).get("score")
                     or signal.get("what_happened") != raw.metadata.get("what_happened")
                     or signal.get("why_it_matters") != raw.metadata.get("why_it_matters")):
                 raise ValueError("publication_queue_inventory_mismatch")
-            hosts = CuratedBetaSourceScout.SOURCES[slug]["hosts"]
+            hosts = source_cfg["hosts"]
             verify_capture(raw, hosts)
             from .occupational_documents import verified_document_text
             verified_document_text(raw, hosts)
