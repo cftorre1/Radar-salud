@@ -10,6 +10,8 @@ import pytest
 from radar_salud import beta_sources, llm_analysis
 from radar_salud.models import RawItem
 from radar_salud.pulso_source import _verified_detail
+from pulso_editorial_test_support import valid_assessment
+from pulso_editorial_real_test_witnesses import real_witness
 
 
 REAL = Path(__file__).parent / 'fixtures/pulso_runtime_real'
@@ -50,8 +52,9 @@ def test_both_original_omitted_controls_reach_full_body_analysis_and_still_rejec
     calls = []
     def assess(**kwargs):
         calls.append(kwargs)
-        return dict(relevance_score=71, what_happened='', why_it_matters='',
-                    reason='Contexto sin suficiente valor incremental para publicación.')
+        return valid_assessment(dict(relevance_score=71, what_happened='', why_it_matters='',
+                    reason='Contexto sin suficiente valor incremental para publicación.'),
+                    kwargs, witness=real_witness(kwargs))
     monkeypatch.setattr(llm_analysis, 'analyze_news', assess)
     assert beta_sources.process_curated_beta_source(raw, {}) is None
     assert len(calls) == 1 and calls[0]['text'] == body and calls[0]['full_text']
@@ -99,7 +102,9 @@ def test_additional_sha_bound_primary_actions_reach_full_body_analysis_without_s
     calls = []
     def assess(**kwargs):
         calls.append(kwargs)
-        return dict(relevance_score=71, what_happened='', why_it_matters='', reason='Incremento insuficiente sobre eventos previos.')
+        return valid_assessment(dict(relevance_score=71, what_happened='', why_it_matters='',
+                    reason='Incremento insuficiente sobre eventos previos.'),
+                    kwargs, witness=real_witness(kwargs))
     monkeypatch.setattr(llm_analysis, 'analyze_news', assess)
     assert beta_sources.process_curated_beta_source(raw, {}) is None
     assert len(calls) == 1 and calls[0]['text'] == body and calls[0]['full_text']

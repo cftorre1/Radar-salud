@@ -14,6 +14,8 @@ from radar_salud.pulso_source import (_verified_detail, article_body_evidence,
                                     publisher_taxonomy_requires_revalidation,
                                     verified_sponsored_content)
 from pulso_fixture_witnesses import cold_urls
+from pulso_editorial_test_support import valid_assessment
+from pulso_editorial_real_test_witnesses import real_witness
 
 
 REAL = Path(__file__).parent / 'fixtures/pulso_editorial_exception_real'
@@ -157,8 +159,9 @@ def test_untrusted_legacy_opinion_label_is_replaced_by_original_factual_taxonomy
         return original(entry, root)
     def assess(**kwargs):
         assessed.append(kwargs)
-        return {'relevance_score': 71, 'reason': 'Bajo el umbral editorial vigente.',
-                'what_happened': '', 'why_it_matters': ''}
+        return valid_assessment({'relevance_score': 71, 'reason': 'Bajo el umbral editorial vigente.',
+                'what_happened': '', 'why_it_matters': ''},
+                kwargs, witness=real_witness(kwargs))
     monkeypatch.setattr(beta_sources, 'fetch_html', fetch)
     monkeypatch.setattr(llm_analysis, 'analyze_news', assess)
     assert beta_sources.process_curated_beta_source(raw, {}) is None

@@ -15,6 +15,8 @@ import pytest
 from radar_salud import beta_sources, llm_analysis
 from radar_salud.models import RawItem
 from radar_salud.pulso_source import complete_article_body, extract_article
+from pulso_editorial_test_support import valid_assessment
+from pulso_editorial_real_test_witnesses import real_witness
 
 
 FIXTURE = Path(__file__).parent / 'fixtures/pulso_materiality_real/verified_primary_body_projections.json'
@@ -51,8 +53,9 @@ def test_original_network_report_reaches_analysis_with_full_primary_evidence_and
     calls = []
     def assess(**kwargs):
         calls.append(kwargs)
-        return dict(relevance_score=71, what_happened='', why_it_matters='',
-                    reason='No agrega un cambio incremental sobre antecedentes previos.')
+        return valid_assessment(dict(relevance_score=71, what_happened='', why_it_matters='',
+                    reason='No agrega un cambio incremental sobre antecedentes previos.'),
+                    kwargs, witness=real_witness(kwargs))
     monkeypatch.setattr(llm_analysis, 'analyze_news', assess)
     raw = RawItem('pulso_latercera', entry['title'], entry['url'], 'Pulso / La Tercera',
                   'press_high_trust', entry['publication_date'], body[:1800], metadata)
