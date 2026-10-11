@@ -4316,9 +4316,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T06:10:20.095337+00:00",
+      "last_progress_at": "2026-10-11T06:22:42.737893+00:00",
       "current_subfront": "actual_core_capture_and_independent_qa",
-      "next_action": "Finish coldcore38115982275; queuedreport38116857374 retains actualcontrolHTML. Reconcile29/79 before process. Currentstaging governance merged preserving all othertasks; finalactualQA/Reviewer stillrequired.",
+      "next_action": "Complete cold core run38115982275; report38117836258 retains primary controls and API boundaries and executes independent directed QA. Reconcile every29/79 control and actual feed completeness before processing. Latest staging merged; general QA PASS is not source acceptance.",
       "branch": "codex/b-pulso-runtime-20261011",
       "baseline_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "current_hypothesis": "Normal public frontend pagination spans factual sections and health tags; verify sustained primary-byline July boundary and frozen control in actual core.",
@@ -4328,15 +4328,27 @@
         "tests/fixtures/pulso_real/manifest.json",
         "data/audits/pulso_browser_pagination/manifest.json",
         "data/audits/pulso_incremental_review_2026_10_11.json",
-        "data/audits/pulso_runtime_2026_10_11.json"
+        "data/audits/pulso_runtime_2026_10_11.json",
+        "data/audits/pulso_surface_research_2026_10_11.json",
+        "data/audits/pulso_candidate_qa_2026_10_11.json",
+        "scripts/qa_pulso_recovery.py",
+        "tests/fixtures/pulso_runtime_real/manifest.json"
       ],
-      "candidate_sha": "55d7dccf77924018ed6967072e0c1d6ff365434a",
+      "candidate_sha": "c5b51f0d6341e3fcfc23b47ba8c03531ea98137d",
       "pr": 10,
       "acceptance": "NOT_RESOLVED_NO_MERGE",
       "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115982275",
       "baseline_start_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
       "last_staging_sync_at": "2026-10-11T06:10:20.095337+00:00",
-      "queued_reconciliation_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38116857374"
+      "queued_reconciliation_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117836258",
+      "validation_checkpoint": {
+        "full_python": "440 PASS / 3 SKIP",
+        "general_qa_run": 38117198596,
+        "general_qa_head": "8c38828aa5f22263652a4c099f4816c2af2097f9",
+        "general_qa_result": "tests + staging + deterministic Reviewer PASS before new source outcomes",
+        "next_general_qa_run": 38117838299,
+        "source_acceptance": "NOT_ACCEPTED_PENDING_REAL_INVENTORY_AND_OUTCOMES"
+      }
     }
   ],
   "execution_policy": {

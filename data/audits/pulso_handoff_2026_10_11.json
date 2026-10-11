@@ -1,12 +1,12 @@
 {
   "schema_version": "2.0",
-  "recorded_at": "2026-10-11T06:10:20.095337+00:00",
+  "recorded_at": "2026-10-11T06:22:42.737893+00:00",
   "status": "IN_PROGRESS_NOT_ACCEPTED",
   "source": "pulso_latercera",
   "owner": "Codex B / Senior Source Recovery Engineer",
   "branch": "codex/b-pulso-runtime-20261011",
   "base_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-  "current_product_candidate": "55d7dccf77924018ed6967072e0c1d6ff365434a",
+  "current_product_candidate": "c5b51f0d6341e3fcfc23b47ba8c03531ea98137d",
   "previous_handoff": "Historical pre-exhaustive record is preserved in git. Its CONNECT403 limitation is resolved through authorized GitHub Actions and is not a current source blocker.",
   "pr": "https://github.com/cftorre1/Radar-salud/pull/10",
   "issues_must_remain_open": [
@@ -25,7 +25,10 @@
     "data/audits/pulso_browser_pagination/manifest.json",
     "tests/fixtures/pulso_real/manifest.json",
     "data/audits/pulso_surface_research_2026_10_11.json",
-    "data/audits/pulso_incremental_review_2026_10_11.json"
+    "data/audits/pulso_incremental_review_2026_10_11.json",
+    "data/audits/pulso_candidate_qa_2026_10_11.json",
+    "scripts/qa_pulso_recovery.py",
+    "tests/fixtures/pulso_runtime_real/manifest.json"
   ],
   "control": {
     "frozen_urls": 236,
@@ -44,15 +47,16 @@
   },
   "validation": {
     "directed_tests": "Independent77PASS at bbcbe55; agent15PASS runtime export increment e49f662",
-    "full_python": "411PASS/2SKIP aftercurrentstagingintegration; one livekey skip and one corpuspending skip; npm earlierPASS",
-    "acceptance": "NOT_RESOLVED_NO_MERGE; actualdatarecall/process/finalReviewer/stagingPASS pending"
+    "full_python": "440 PASS / 3 SKIP at c5b51f0: live credential test and two original runtime corpus tests await real captures; workflow YAML parsed successfully.",
+    "acceptance": "NOT_RESOLVED_NO_MERGE; actualdatarecall/process/finalReviewer/stagingPASS pending",
+    "general_candidate_qa": "Actual tests/staging/Reviewer PASS on 8c38828 PR merge candidate a1bfcc9; durable pulso_candidate_qa_2026_10_11.json. New source evidence and final SHA still require independent acceptance."
   },
   "current_agents": {
-    "historical_discovery": "Source-required fast budget stop before queue.start in preparation",
-    "actions_route": "Real feed export/report added e49f662; refine fast-only pending reason",
-    "external_control": "Safe audited incremental-hold application helper in preparation",
-    "adversarial_review": "Independent code/data Reviewer awaiting real artifacts",
-    "browser_pagination": "Expiry-aware baseline QA repair; strict statistical quality preserved"
+    "historical_discovery": "Read-only compatibility audit of source pagination evidence vs independent QA",
+    "actions_route": "c5b51f0 API proof retainer committed and pushed",
+    "external_control": "Read-only frozen-control evidence audit; semantic outcome review awaits processing",
+    "adversarial_review": "1885eed independent directed QA implemented; actual data run pending",
+    "publisher_surfaces": "Full-corpus materiality review prepared, body/noise audit in progress"
   },
   "resume_order": [
     "Check active run38115982275 and fetch/rebase isolated remote branch; do not start duplicate paid processing.",
@@ -65,10 +69,10 @@
   ],
   "main_production": "Untouched; isolated branch only; no merge/deployment performed",
   "queued_report_run": {
-    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116857374",
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38117836258",
     "phase": "report_only",
     "prior_capture_run_id": 38115982275,
-    "scope": "Originalfixturepreservation and updatedreconciliation only; noAI/coldcrawl repetition"
+    "scope": "Retain exact original HTML and API boundary fixtures plus HTTP cursor-chain proof; latest reconciliation and independent directed QA. No AI or repeated cold crawl."
   },
   "staging_sync": {
     "mode": "preserve_checkpoint_ancestry_merge",
