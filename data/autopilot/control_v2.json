@@ -310,7 +310,8 @@
     "c78c358f45cb7b47607dd588f51a6de0e8cc68c769477250fd6c08914db83e33",
     "252fd19d8ed661fe6721f4ef2a4ee97587084af85ef8f7847a0c1f3f1da41d22",
     "227e7afde26f88d7a211bbb051b4915df8d0d075a4c637997614212dd5e21edb",
-    "0e07aa734c7938fe10dff87fc6e8acbb026e26c8c63724c47b5fb25e83c9e2dc"
+    "0e07aa734c7938fe10dff87fc6e8acbb026e26c8c63724c47b5fb25e83c9e2dc",
+    "2ec80636e2e3d59d161be8ef23c2e8056b3597b84baba5e5d898e3df58e15a56"
   ],
   "lease_events": [
     {
@@ -923,6 +924,14 @@
       "fence": 16,
       "kind": "pickup",
       "owner": "38151653654-1-mutualities",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T15:44:53.889181Z",
+      "family": "mutualities",
+      "fenced_token": "3f5f0127db127fdddf3eaa29619d0d0f127bfa1bac4d5b6e41650fbf2aee7fa9",
+      "kind": "stalled",
+      "reason": "no_material_progress_30m",
       "task_id": "source_repair_mutualities_lane_2026_10_11"
     }
   ],
@@ -84980,9 +84989,89 @@
       "id": "b616e4db40e6a92f1f5b2336751d1c74d91bbc3418d87ad17ecdd3c1f5ad1bd5",
       "kind": "blocker",
       "task_id": "source_audit_issue5_iteration2_balance_2026_10_09"
+    },
+    {
+      "at": "2026-10-11T15:44:53.889181Z",
+      "details": {
+        "evidence": [
+          {
+            "input_fingerprint": "f43e9ca087fa0107f9c6e882ad625863fbf5c53d3f161d1ddde6e7d9aecf598e",
+            "material_watch_started_at": "2026-10-11T07:06:00.551910Z",
+            "recovery_episode": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+            "recovery_reclaims": 3,
+            "stalled_leases": [
+              {
+                "at": "2026-10-11T06:25:47.641878Z",
+                "family": "mutualities",
+                "kind": "stalled",
+                "ready_since": "2026-10-11T06:25:47.641878Z",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              },
+              {
+                "at": "2026-10-11T07:04:08.198661Z",
+                "family": "mutualities",
+                "kind": "stalled",
+                "ready_since": "2026-10-11T07:04:08.198661Z",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              },
+              {
+                "at": "2026-10-11T15:07:18.917675Z",
+                "family": "mutualities",
+                "kind": "stalled",
+                "ready_since": "2026-10-11T15:07:18.917675Z",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              },
+              {
+                "at": "2026-10-11T15:19:32.076672Z",
+                "family": "mutualities",
+                "fenced_token": "89ed3192a8044891ab72c512902fd6701ebf6656463510c2086ab93ffbad3cf7",
+                "kind": "stalled",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              },
+              {
+                "at": "2026-10-11T15:32:11.879839Z",
+                "family": "mutualities",
+                "fenced_token": "0fa0f1f1354afe480cd9d758201fb9198624b8e0d410b8b76f3b4d735d794dd7",
+                "kind": "stalled",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              },
+              {
+                "at": "2026-10-11T15:44:53.889181Z",
+                "family": "mutualities",
+                "fenced_token": "3f5f0127db127fdddf3eaa29619d0d0f127bfa1bac4d5b6e41650fbf2aee7fa9",
+                "kind": "stalled",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              }
+            ],
+            "task_id": "source_repair_mutualities_lane_2026_10_11"
+          }
+        ],
+        "fingerprint": "recovery_budget_exhausted:84b1be630eb2ce5d647c754073da04f584e9299ce8652133d1cefd164acdb881",
+        "human_required": false,
+        "kind": "stall_recovery_budget",
+        "product_input_fingerprint": "791130c7234d81aee2dd47c85cfcad2aa629000e457043811712e81664f7c67b",
+        "reason": "Three lease recovery pickups without material progress are exhausted."
+      },
+      "family": "mutualities",
+      "id": "809a4c1b8027b0bb512f20f1542db2bdd13f305787ce5759338366514b88adb4",
+      "kind": "blocker",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
     }
   ],
-  "pending_transitions": [],
+  "pending_transitions": [
+    {
+      "at": "2026-10-11T15:44:53.889181Z",
+      "event_id": "809a4c1b8027b0bb512f20f1542db2bdd13f305787ce5759338366514b88adb4",
+      "family": "mutualities",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    }
+  ],
   "schema_version": 2,
   "tasks": {
     "autonomy_architecture_redesign_2026_10_07": {
@@ -85075,7 +85164,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c61a38ee84cfbed29f3c01e9645a539738f9cc6fed776c2f3884961d85c485fe",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "autonomy_continuity_hardening_v1_1_2026_09_29": {
@@ -85146,7 +85235,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "3b8b4a9552edfcad0f7ccc3724701de0d806fb28ced8805456ae4099b18cd82f",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "beta_gate5_test_ops_golive_2026_10_11": {
@@ -85216,7 +85305,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a987a3e8e0275d38970e7987c3adff36f44be1a8b2577aa16ab80da6f538e18d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "beta_sources_completion_today_2026_09_29": {
@@ -85311,7 +85400,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "d2afc5bf9239ebd3911906cfeb680b60eb0aedf6e94d2aeaa4263abdb91204d2",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "coverage_balance_sources_epidemiology_v1_2026_09_28": {
@@ -85406,7 +85495,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "235d32233451d3ca0205c9482095425d51c99916839569eb3a840d4e97545e70",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "editorial_repair_lane_2026_10_11": {
@@ -85569,7 +85658,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "6318e081496dbd7ba074f2e97b5af621c29a2ead2f34bff30b7e901bb812b88c",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "pele_work_activation_2026_09_27": {
@@ -85633,7 +85722,7 @@
       "queue_status": "in_progress",
       "recovery_episode": "31239ddfcabb5d5c9f20d52fcdf327161d700857e43631de9c6ec04104b6fb22",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "pulso_latercera_exhaustive_discovery_2026_10_11": {
@@ -85699,7 +85788,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "97acc9e8faa4d2f339b1449aa975e05a62d4ebf3fc3e32c62393f929b5318803",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration1_recovery_2026_10_09": {
@@ -85785,7 +85874,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "9cba6c8204976e15c36b69d578e121a89db6fc6a67c8ba098bbde0b0aac910ea",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration2_balance_2026_10_09": {
@@ -85871,7 +85960,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "b616e4db40e6a92f1f5b2336751d1c74d91bbc3418d87ad17ecdd3c1f5ad1bd5",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration3_editorial_2026_10_09": {
@@ -86006,7 +86095,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "e6f8a091a339da27663dd924412994424a07128518baafcb1fb103579f3c87b6",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration5_expansion_2026_10_09": {
@@ -86070,7 +86159,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a5062237250f020a1cc78759c343e03042e43ea9f610ff65896f6b3b9edad678",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_master_2026_10_09": {
@@ -86153,7 +86242,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "cf942b0661750d6bcbb1988985499466007e6c247524a9cd82af8ddb304c7f2e",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "source_recovery_reconciliation_gate_2026_10_11": {
@@ -86219,7 +86308,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c8440ecfcb1660f8bf14708fe8ca26771fe76be97aaf50476cf3cea797292ac6",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "source_repair_fiscalization_lane_2026_10_11": {
@@ -87050,2004 +87139,81 @@
       "attempts": 7,
       "audit_counts": {},
       "blocked_revision": [
-        "c4819844e413d31ede792521a2c137392c4ae104",
-        "9400bdb61e0ff4ae153d091b6fb186e2d9aacc191e19721fc460d6dcd51f9d8a"
+        "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+        "a892411287e975a1afce4db3aa80c672eed8c8047f269ef20411b4cf0eea4079"
       ],
       "blocker": {
-        "blockers": [
+        "evidence": [
           {
-            "evidence": [
+            "input_fingerprint": "f43e9ca087fa0107f9c6e882ad625863fbf5c53d3f161d1ddde6e7d9aecf598e",
+            "material_watch_started_at": "2026-10-11T07:06:00.551910Z",
+            "recovery_episode": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+            "recovery_reclaims": 3,
+            "stalled_leases": [
               {
-                "command": [
-                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                  "--diagnose-source",
-                  "clinicas_achs_salud"
-                ],
-                "failure_hash": "f03aea778587ba67df5a9f66b897856181f02a23598720a7c5c75f31e241caee",
-                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-clinicas_achs_salud.log",
-                "log_sha256": "d7a6e0ae4c39acc6a0fa218aa5355e18d57fe6b0c2b78db69d093dc3c181a3b2",
-                "returncode": 1,
-                "source_urls": [
-                  "https://www.achs.cl/centro-de-noticias",
-                  "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral",
-                  "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad",
-                  "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
-                  "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion",
-                  "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                ],
-                "status": "FAIL"
-              },
-              {
-                "dated": 0,
-                "discovered": 0,
-                "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items",
-                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                "newest_event_date": null,
-                "publication_verified": false,
-                "requests": [
-                  {
-                    "response_bytes": 94674,
-                    "response_sha256": "aa2934233b2f339dd3bfcad2012c25d4ecea2702b9d18911f78e0466d9998043",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias"
-                  },
-                  {
-                    "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                    "status": "FAIL",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                  },
-                  {
-                    "response_bytes": 85424,
-                    "response_sha256": "c6e59807f9789bcb55c16faa082547a978b2dd1f16410e5da233a800df60d68f",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                  },
-                  {
-                    "response_bytes": 85723,
-                    "response_sha256": "620f9fcd21c15b8ac2ac5602dee8bb208ccf0000650b84e7f0f60b836d916f2a",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                  },
-                  {
-                    "response_bytes": 84157,
-                    "response_sha256": "5c19cf9441a6bde3917a0f293e61ee97a45520d92b681fe5dc337ad6f509dc54",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                  },
-                  {
-                    "response_bytes": 90550,
-                    "response_sha256": "d2dd5af5a553be2c58cb5575344dd1abde5d56baee1738c24126056c0de92c10",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                  }
-                ],
-                "samples": [],
-                "scope": "discovery_only",
-                "slug": "clinicas_achs_salud",
-                "technical_status": "error"
-              },
-              {
-                "automated_recovery": {
-                  "baseline_full_gate": {
-                    "captured_stdout_bytes": 2221,
-                    "captured_stdout_sha256": "9eaa7bcd8153a2e43f4492c49756bb2d72920e81e6681c4a311ba67fa56101f4",
-                    "command": [
-                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                      "-m",
-                      "pytest",
-                      "-q"
-                    ],
-                    "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 5.17s\n",
-                    "returncode": 1
-                  },
-                  "blocker": "Exact parser repair did not recover the demonstrated live failure",
-                  "changed_paths": [],
-                  "context": [
-                    {
-                      "editable": true,
-                      "path": "src/radar_salud/beta_sources_fast.py",
-                      "sha256": "b888cb884c9ecebbcb572ab588ed1ce14d463458a5382a387b9f656afa6073cd"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/beta_sources.py",
-                      "sha256": "79232a0d0fdf83c9b91312971577d86ce11700c825dbf6cdb0c86885f6ee9634"
-                    },
-                    {
-                      "editable": true,
-                      "path": "src/radar_salud/scouts.py",
-                      "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/models.py",
-                      "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/llm_analysis.py",
-                      "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/pipeline.py",
-                      "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/processing.py",
-                      "sha256": "4aa0f0b4c8d4889f1ce250b1c8fc3f5c8d8102e550150476759c47bdf9e352df"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/public_source_pipeline.py",
-                      "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
-                    }
-                  ],
-                  "deterministic_planning": {
-                    "diagnostic": null,
-                    "evidence": [
-                      {
-                        "failure_sha256": "56f192e561b5b45de9c7f7a000243484fa4324644ef8c86e6c0e207c7db64eb8",
-                        "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-                        "observed_sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572",
-                        "path": "src/radar_salud/scouts.py",
-                        "request": {
-                          "codepoint": "U+00E9",
-                          "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                        },
-                        "source_result_sha256": "1f689699e2812ef5f4e3d04984589e41a3ac6bc1fd83b53225d653c58ca92031",
-                        "source_slug": "clinicas_achs_salud",
-                        "task_id": "source_repair_mutualities_lane_2026_10_11"
-                      }
-                    ],
-                    "material_progress": false,
-                    "paid_calls": 0,
-                    "plan": {
-                      "replacements": [
-                        {
-                          "new": "def fetch_html(url: str, timeout: int = 20) -> str:\n    if not url.isascii():\n        from urllib.parse import quote, urlsplit\n        parsed = urlsplit(url)\n        if parsed.scheme in {\"http\", \"https\"}:\n            boundary = url.find(\"://\") + 3 + len(parsed.netloc)\n            prefix, target = url[:boundary], url[boundary:]\n            url = prefix + \"\".join(char if char.isascii() else quote(char, safe=\"\") for char in target)\n    req = Request(url, headers={\"User-Agent\": \"RadarSaludBot/0.1 (+public-source-monitor)\"})\n    with urlopen(req, timeout=timeout) as resp:\n        charset = resp.headers.get_content_charset() or \"utf-8\"\n        return resp.read().decode(charset, errors=\"replace\")\n",
-                          "old": "def fetch_html(url: str, timeout: int = 20) -> str:\n    req = Request(url, headers={\"User-Agent\": \"RadarSaludBot/0.1 (+public-source-monitor)\"})\n    with urlopen(req, timeout=timeout) as resp:\n        charset = resp.headers.get_content_charset() or \"utf-8\"\n        return resp.read().decode(charset, errors=\"replace\")\n",
-                          "path": "src/radar_salud/scouts.py",
-                          "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                        }
-                      ],
-                      "schema_version": 1
-                    },
-                    "product_files_written": false,
-                    "status": "PLANNED",
-                    "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1"
-                  },
-                  "evidence": [
-                    {
-                      "captured_stdout_bytes": 2050,
-                      "captured_stdout_sha256": "2ea7eff780a8d2b84bb95963f1f2a8398c8a46fbc4fcef03307ad0b680d2686b",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                        "--diagnose-source",
-                        "clinicas_achs_salud"
-                      ],
-                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"clinicas_achs_salud\", \"technical_status\": \"error\", \"error\": \"RuntimeError: Clínicas Achs Salud has no dated, verified detail items\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.achs.cl/centro-de-noticias\", \"status\": \"PASS\", \"response_sha256\": \"cbd542621b7b649d8ddb7d2a5e01d11d4a5d1a249816e3f1db54e28b1e802f82\", \"response_bytes\": 94674}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral\", \"status\": \"FAIL\", \"error\": \"UnicodeEncodeError: 'ascii' codec can't encode character '\\\\xe9' in position 42: ordinal not in range(128)\"}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad\", \"status\": \"PASS\", \"response_sha256\": \"d93c753b6647a67d12f57fe8e5732a181c91a9105a86d4941dec7563f110f7f8\", \"response_bytes\": 85424}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral\", \"status\": \"PASS\", \"response_sha256\": \"834e9e477b5e3a85fe182bdc23375f8f355ab4b0455c9ba05ecd5a39e1b3aafd\", \"response_bytes\": 85723}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion\", \"status\": \"PASS\", \"response_sha256\": \"9174c3b81e5ee029ce5a2fc671badc94f52ba01bea123c55f448a1d9f60512a2\", \"response_bytes\": 84157}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias\", \"status\": \"PASS\", \"response_sha256\": \"7d4f46e03f1b74c61c8c9dafca7df99731c997c064901ffa7acdce47f41dec62\", \"response_bytes\": 90550}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                      "returncode": 1,
-                      "source_evidence": {
-                        "dated": 0,
-                        "discovered": 0,
-                        "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items",
-                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                        "newest_event_date": null,
-                        "publication_verified": false,
-                        "requests": [
-                          {
-                            "response_bytes": 94674,
-                            "response_sha256": "cbd542621b7b649d8ddb7d2a5e01d11d4a5d1a249816e3f1db54e28b1e802f82",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias"
-                          },
-                          {
-                            "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                            "status": "FAIL",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                          },
-                          {
-                            "response_bytes": 85424,
-                            "response_sha256": "d93c753b6647a67d12f57fe8e5732a181c91a9105a86d4941dec7563f110f7f8",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                          },
-                          {
-                            "response_bytes": 85723,
-                            "response_sha256": "834e9e477b5e3a85fe182bdc23375f8f355ab4b0455c9ba05ecd5a39e1b3aafd",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                          },
-                          {
-                            "response_bytes": 84157,
-                            "response_sha256": "9174c3b81e5ee029ce5a2fc671badc94f52ba01bea123c55f448a1d9f60512a2",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                          },
-                          {
-                            "response_bytes": 90550,
-                            "response_sha256": "7d4f46e03f1b74c61c8c9dafca7df99731c997c064901ffa7acdce47f41dec62",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                          }
-                        ],
-                        "samples": [],
-                        "scope": "discovery_only",
-                        "slug": "clinicas_achs_salud",
-                        "technical_status": "error"
-                      },
-                      "source_evidence_sha256": "8911948da54ad08a40ce0b397ea1828fca1c001e93884556ec943ba72c3a9f4f"
-                    },
-                    {
-                      "captured_stdout_bytes": 99,
-                      "captured_stdout_sha256": "ac87e1d114bc5da7dd44f223cf00c22a045e85083baebcbc249b1b2718004f94",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "-m",
-                        "pytest",
-                        "-q",
-                        "tests/test_beta_source_package.py",
-                        "tests/test_corporate_newsrooms.py",
-                        "tests/test_live_evidence_replay.py"
-                      ],
-                      "output": "..................                                                       [100%]\n18 passed in 0.29s\n",
-                      "returncode": 0
-                    },
-                    {
-                      "captured_stdout_bytes": 2221,
-                      "captured_stdout_sha256": "9eaa7bcd8153a2e43f4492c49756bb2d72920e81e6681c4a311ba67fa56101f4",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "-m",
-                        "pytest",
-                        "-q"
-                      ],
-                      "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 5.17s\n",
-                      "returncode": 1
-                    },
-                    {
-                      "captured_stdout_bytes": 2043,
-                      "captured_stdout_sha256": "26b5b5c2c6f7c0bc611ca77de504854e2c932cdb580140afccbef8cf85f8968e",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                        "--diagnose-source",
-                        "clinicas_achs_salud"
-                      ],
-                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"clinicas_achs_salud\", \"technical_status\": \"error\", \"error\": \"RuntimeError: Clínicas Achs Salud has no dated, verified detail items\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.achs.cl/centro-de-noticias\", \"status\": \"PASS\", \"response_sha256\": \"35bf5309e55fa2dc3f02cfc30b87ce993e6b0f17c68dd0521a076a8107d08465\", \"response_bytes\": 94674}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral\", \"status\": \"PASS\", \"response_sha256\": \"e36dd2eb554e8857f3e47e304d7836b7e1edd4de723a961704bea941711b594b\", \"response_bytes\": 85695}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad\", \"status\": \"PASS\", \"response_sha256\": \"497983114570d8b41d08b9b04558222a32f809b23079cbb9b872f4ec61a93254\", \"response_bytes\": 85424}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral\", \"status\": \"PASS\", \"response_sha256\": \"dc5623161bffd9a85c573badc56ef61001ad97772fb989150f8c6a44d86579a6\", \"response_bytes\": 85723}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion\", \"status\": \"PASS\", \"response_sha256\": \"055f540eebbeefecd04fd796f2803724e4cc8fabca4d8c517e24b3faa9f22661\", \"response_bytes\": 84157}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias\", \"status\": \"PASS\", \"response_sha256\": \"6cf36b727423e1737ed7d5b89293b49064906602397bb2a196f5729e377cec9d\", \"response_bytes\": 90550}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                      "returncode": 1,
-                      "source_evidence": {
-                        "dated": 0,
-                        "discovered": 0,
-                        "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items",
-                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                        "newest_event_date": null,
-                        "publication_verified": false,
-                        "requests": [
-                          {
-                            "response_bytes": 94674,
-                            "response_sha256": "35bf5309e55fa2dc3f02cfc30b87ce993e6b0f17c68dd0521a076a8107d08465",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias"
-                          },
-                          {
-                            "response_bytes": 85695,
-                            "response_sha256": "e36dd2eb554e8857f3e47e304d7836b7e1edd4de723a961704bea941711b594b",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                          },
-                          {
-                            "response_bytes": 85424,
-                            "response_sha256": "497983114570d8b41d08b9b04558222a32f809b23079cbb9b872f4ec61a93254",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                          },
-                          {
-                            "response_bytes": 85723,
-                            "response_sha256": "dc5623161bffd9a85c573badc56ef61001ad97772fb989150f8c6a44d86579a6",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                          },
-                          {
-                            "response_bytes": 84157,
-                            "response_sha256": "055f540eebbeefecd04fd796f2803724e4cc8fabca4d8c517e24b3faa9f22661",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                          },
-                          {
-                            "response_bytes": 90550,
-                            "response_sha256": "6cf36b727423e1737ed7d5b89293b49064906602397bb2a196f5729e377cec9d",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                          }
-                        ],
-                        "samples": [],
-                        "scope": "discovery_only",
-                        "slug": "clinicas_achs_salud",
-                        "technical_status": "error"
-                      },
-                      "source_evidence_sha256": "3599814caf12791d54f536ce9a11665114fe283532625d76943dcea1bfd3ff6e"
-                    }
-                  ],
-                  "failure_sha256": "d7a6e0ae4c39acc6a0fa218aa5355e18d57fe6b0c2b78db69d093dc3c181a3b2",
-                  "live_baseline": {
-                    "dated": 0,
-                    "discovered": 0,
-                    "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items",
-                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "response_bytes": 94674,
-                        "response_sha256": "cbd542621b7b649d8ddb7d2a5e01d11d4a5d1a249816e3f1db54e28b1e802f82",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias"
-                      },
-                      {
-                        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                        "status": "FAIL",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                      },
-                      {
-                        "response_bytes": 85424,
-                        "response_sha256": "d93c753b6647a67d12f57fe8e5732a181c91a9105a86d4941dec7563f110f7f8",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                      },
-                      {
-                        "response_bytes": 85723,
-                        "response_sha256": "834e9e477b5e3a85fe182bdc23375f8f355ab4b0455c9ba05ecd5a39e1b3aafd",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                      },
-                      {
-                        "response_bytes": 84157,
-                        "response_sha256": "9174c3b81e5ee029ce5a2fc671badc94f52ba01bea123c55f448a1d9f60512a2",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                      },
-                      {
-                        "response_bytes": 90550,
-                        "response_sha256": "7d4f46e03f1b74c61c8c9dafca7df99731c997c064901ffa7acdce47f41dec62",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                      }
-                    ],
-                    "samples": [],
-                    "scope": "discovery_only",
-                    "slug": "clinicas_achs_salud",
-                    "technical_status": "error"
-                  },
-                  "material_progress": false,
-                  "repair_strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
-                  "rolled_back": true,
-                  "signature": null,
-                  "source_run_id": null,
-                  "source_slug": "clinicas_achs_salud",
-                  "status": "BLOCKED",
-                  "validated": false
-                }
-              }
-            ],
-            "fingerprint": "4c62ed748ef877a6ef4fd7246fe51b3645cda7da12516fa23ba181f0d42fe5f3",
-            "human_required": false,
-            "kind": "technical",
-            "reason": "Scoped live discovery failed: clinicas_achs_salud",
-            "source_urls": [
-              "https://www.achs.cl/centro-de-noticias",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-            ]
-          },
-          {
-            "evidence": [
-              {
-                "diagnostics_are_acceptance": false,
+                "at": "2026-10-11T06:25:47.641878Z",
                 "family": "mutualities",
+                "kind": "stalled",
+                "ready_since": "2026-10-11T06:25:47.641878Z",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              },
+              {
+                "at": "2026-10-11T07:04:08.198661Z",
+                "family": "mutualities",
+                "kind": "stalled",
+                "ready_since": "2026-10-11T07:04:08.198661Z",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              },
+              {
+                "at": "2026-10-11T15:07:18.917675Z",
+                "family": "mutualities",
+                "kind": "stalled",
+                "ready_since": "2026-10-11T15:07:18.917675Z",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              },
+              {
+                "at": "2026-10-11T15:19:32.076672Z",
+                "family": "mutualities",
+                "fenced_token": "89ed3192a8044891ab72c512902fd6701ebf6656463510c2086ab93ffbad3cf7",
+                "kind": "stalled",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              },
+              {
+                "at": "2026-10-11T15:32:11.879839Z",
+                "family": "mutualities",
+                "fenced_token": "0fa0f1f1354afe480cd9d758201fb9198624b8e0d410b8b76f3b4d735d794dd7",
+                "kind": "stalled",
+                "reason": "no_material_progress_30m",
+                "task_id": "source_repair_mutualities_lane_2026_10_11"
+              },
+              {
+                "at": "2026-10-11T15:44:53.889181Z",
+                "family": "mutualities",
+                "fenced_token": "3f5f0127db127fdddf3eaa29619d0d0f127bfa1bac4d5b6e41650fbf2aee7fa9",
+                "kind": "stalled",
+                "reason": "no_material_progress_30m",
                 "task_id": "source_repair_mutualities_lane_2026_10_11"
               }
             ],
-            "fingerprint": "ad6acaf8fe76151004dabf624da79b00e045bdef3ffbf06d65a7c2738ffb167e",
-            "human_required": false,
-            "kind": "acceptance",
-            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
-            "source_urls": []
-          },
-          {
-            "evidence": [
-              {
-                "command": [
-                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                  "--diagnose-source",
-                  "mutual_seguridad"
-                ],
-                "failure_hash": "e4b01e8b03c71c6e18f365fc97f351e84422c746ba1e01a7088c1c9b2f78114e",
-                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-mutual_seguridad.log",
-                "log_sha256": "9af86a0b0fd5adcef5321c60ba39de9c2ca49578acf201f690998b87b0eb0dc9",
-                "returncode": 1,
-                "source_urls": [
-                  "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/"
-                ],
-                "status": "FAIL"
-              },
-              {
-                "dated": 0,
-                "discovered": 0,
-                "error": "RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items",
-                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                "newest_event_date": null,
-                "publication_verified": false,
-                "requests": [
-                  {
-                    "response_bytes": 1050,
-                    "response_sha256": "20211296328f48ca0f6230d62c187f31c7b5280213256c22a367e56315fdc6ac",
-                    "status": "PASS",
-                    "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/"
-                  }
-                ],
-                "samples": [],
-                "scope": "discovery_only",
-                "slug": "mutual_seguridad",
-                "technical_status": "error"
-              },
-              {
-                "automated_recovery": {
-                  "baseline_full_gate": {
-                    "captured_stdout_bytes": 2221,
-                    "captured_stdout_sha256": "d64711731ebd253e2dd255de984e8ec5af35f88cd30b945f90e7628b2d860c65",
-                    "command": [
-                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                      "-m",
-                      "pytest",
-                      "-q"
-                    ],
-                    "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.44s\n",
-                    "returncode": 1
-                  },
-                  "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
-                  "blocker_kind": "executor_capability_missing",
-                  "changed_paths": [],
-                  "context": [
-                    {
-                      "editable": true,
-                      "path": "src/radar_salud/beta_sources_fast.py",
-                      "sha256": "b888cb884c9ecebbcb572ab588ed1ce14d463458a5382a387b9f656afa6073cd"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/beta_sources.py",
-                      "sha256": "79232a0d0fdf83c9b91312971577d86ce11700c825dbf6cdb0c86885f6ee9634"
-                    },
-                    {
-                      "editable": true,
-                      "path": "src/radar_salud/scouts.py",
-                      "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/models.py",
-                      "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/llm_analysis.py",
-                      "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/pipeline.py",
-                      "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/processing.py",
-                      "sha256": "4aa0f0b4c8d4889f1ce250b1c8fc3f5c8d8102e550150476759c47bdf9e352df"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/public_source_pipeline.py",
-                      "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
-                    }
-                  ],
-                  "deterministic_planning": {
-                    "diagnostic": {
-                      "human_required": false,
-                      "kind": "executor_capability_missing",
-                      "reason": "No deterministic strategy is registered for this source/failure"
-                    },
-                    "evidence": [],
-                    "material_progress": false,
-                    "paid_calls": 0,
-                    "plan": null,
-                    "product_files_written": false,
-                    "status": "UNSUPPORTED",
-                    "strategy": null
-                  },
-                  "evidence": [
-                    {
-                      "captured_stdout_bytes": 611,
-                      "captured_stdout_sha256": "d546093c70ef9b0407ccbc6a58ff2856b0e5fd9da5e43b6b4d124a49f96ccb59",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                        "--diagnose-source",
-                        "mutual_seguridad"
-                      ],
-                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"mutual_seguridad\", \"technical_status\": \"error\", \"error\": \"RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/\", \"status\": \"PASS\", \"response_sha256\": \"cda0dd945cc3d0160e4c2df2df55374e25c2bc11e338f4017afda7b0828179af\", \"response_bytes\": 1054}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                      "returncode": 1,
-                      "source_evidence": {
-                        "dated": 0,
-                        "discovered": 0,
-                        "error": "RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items",
-                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                        "newest_event_date": null,
-                        "publication_verified": false,
-                        "requests": [
-                          {
-                            "response_bytes": 1054,
-                            "response_sha256": "cda0dd945cc3d0160e4c2df2df55374e25c2bc11e338f4017afda7b0828179af",
-                            "status": "PASS",
-                            "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/"
-                          }
-                        ],
-                        "samples": [],
-                        "scope": "discovery_only",
-                        "slug": "mutual_seguridad",
-                        "technical_status": "error"
-                      },
-                      "source_evidence_sha256": "ef011681b24de0db11f02902905688bfb88cf338dac1c5431da43b873814f615"
-                    },
-                    {
-                      "captured_stdout_bytes": 99,
-                      "captured_stdout_sha256": "ae596ef7445f35e38581e7f71c2fd1b93bbc5b957e488bccc29f2c07bfeedc05",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "-m",
-                        "pytest",
-                        "-q",
-                        "tests/test_beta_source_package.py",
-                        "tests/test_corporate_newsrooms.py",
-                        "tests/test_live_evidence_replay.py"
-                      ],
-                      "output": "..................                                                       [100%]\n18 passed in 0.28s\n",
-                      "returncode": 0
-                    },
-                    {
-                      "captured_stdout_bytes": 2221,
-                      "captured_stdout_sha256": "d64711731ebd253e2dd255de984e8ec5af35f88cd30b945f90e7628b2d860c65",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "-m",
-                        "pytest",
-                        "-q"
-                      ],
-                      "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.44s\n",
-                      "returncode": 1
-                    }
-                  ],
-                  "failure_sha256": "9af86a0b0fd5adcef5321c60ba39de9c2ca49578acf201f690998b87b0eb0dc9",
-                  "live_baseline": {
-                    "dated": 0,
-                    "discovered": 0,
-                    "error": "RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items",
-                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "response_bytes": 1054,
-                        "response_sha256": "cda0dd945cc3d0160e4c2df2df55374e25c2bc11e338f4017afda7b0828179af",
-                        "status": "PASS",
-                        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/"
-                      }
-                    ],
-                    "samples": [],
-                    "scope": "discovery_only",
-                    "slug": "mutual_seguridad",
-                    "technical_status": "error"
-                  },
-                  "material_progress": false,
-                  "signature": null,
-                  "source_run_id": null,
-                  "source_slug": "mutual_seguridad",
-                  "status": "BLOCKED",
-                  "validated": false
-                }
-              }
-            ],
-            "fingerprint": "311b889733c9eb0ce6ac4d220fd286454970430a9e93ecea9a2fea720d3df603",
-            "human_required": false,
-            "kind": "technical",
-            "reason": "Scoped live discovery failed: mutual_seguridad",
-            "source_urls": [
-              "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/"
-            ]
-          },
-          {
-            "evidence": [
-              {
-                "command": [
-                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                  "--diagnose-source",
-                  "achs_seguro_laboral"
-                ],
-                "failure_hash": "dbf5d83c1af8f38db73407f26646a198eba75577b917a1485ecf1858eba1d862",
-                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-achs_seguro_laboral.log",
-                "log_sha256": "e1bf7d8245cad7127e24631274ff0c96086a5f763b7c5f6293724da281d34c26",
-                "returncode": 1,
-                "source_urls": [
-                  "https://www.achs.cl/centro-de-noticias",
-                  "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral",
-                  "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad",
-                  "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
-                  "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion",
-                  "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                ],
-                "status": "FAIL"
-              },
-              {
-                "dated": 0,
-                "discovered": 0,
-                "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items",
-                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                "newest_event_date": null,
-                "publication_verified": false,
-                "requests": [
-                  {
-                    "response_bytes": 94674,
-                    "response_sha256": "1cbe3cb9bef302dc68ed5534b02cab0dc2b51bc5df9f1619cc7d9b9d92a03549",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias"
-                  },
-                  {
-                    "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                    "status": "FAIL",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                  },
-                  {
-                    "response_bytes": 85424,
-                    "response_sha256": "1d040ce89745aab0135a64c7c79cbd32974d4ebcb237768edcaf7b3abc99501b",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                  },
-                  {
-                    "response_bytes": 85723,
-                    "response_sha256": "6db2dc9a7d899a40f553b5367f196fc6543fe053c002a42efee1ce95e2566601",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                  },
-                  {
-                    "response_bytes": 84157,
-                    "response_sha256": "30de6856869fcca6e5497e3cb8c93e6f42e7c42e7882869f8278efde07b4cd1c",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                  },
-                  {
-                    "response_bytes": 90550,
-                    "response_sha256": "6518c855b5a4fadde047358ab917f183f7b2bbbb6317dd5f12a95dae1c542d51",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                  }
-                ],
-                "samples": [],
-                "scope": "discovery_only",
-                "slug": "achs_seguro_laboral",
-                "technical_status": "error"
-              },
-              {
-                "automated_recovery": {
-                  "baseline_full_gate": {
-                    "captured_stdout_bytes": 2221,
-                    "captured_stdout_sha256": "a289d4d24fadc5b506a656182a85003efc0b499aa455364d4ff6201aa01c6aae",
-                    "command": [
-                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                      "-m",
-                      "pytest",
-                      "-q"
-                    ],
-                    "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.50s\n",
-                    "returncode": 1
-                  },
-                  "blocker": "Exact parser repair did not recover the demonstrated live failure",
-                  "changed_paths": [],
-                  "context": [
-                    {
-                      "editable": true,
-                      "path": "src/radar_salud/beta_sources_fast.py",
-                      "sha256": "b888cb884c9ecebbcb572ab588ed1ce14d463458a5382a387b9f656afa6073cd"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/beta_sources.py",
-                      "sha256": "79232a0d0fdf83c9b91312971577d86ce11700c825dbf6cdb0c86885f6ee9634"
-                    },
-                    {
-                      "editable": true,
-                      "path": "src/radar_salud/scouts.py",
-                      "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/models.py",
-                      "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/llm_analysis.py",
-                      "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/pipeline.py",
-                      "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/processing.py",
-                      "sha256": "4aa0f0b4c8d4889f1ce250b1c8fc3f5c8d8102e550150476759c47bdf9e352df"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/public_source_pipeline.py",
-                      "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
-                    }
-                  ],
-                  "deterministic_planning": {
-                    "diagnostic": null,
-                    "evidence": [
-                      {
-                        "failure_sha256": "9029b823c5efcadab91476e427db38f5ec2ce2ce0d6b279cca1ecf71bb0c3181",
-                        "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-                        "observed_sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572",
-                        "path": "src/radar_salud/scouts.py",
-                        "request": {
-                          "codepoint": "U+00E9",
-                          "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                        },
-                        "source_result_sha256": "c23fc45094342980d9b22c7b0105cdc768fbcb934d8675889423176f9e09577a",
-                        "source_slug": "achs_seguro_laboral",
-                        "task_id": "source_repair_mutualities_lane_2026_10_11"
-                      }
-                    ],
-                    "material_progress": false,
-                    "paid_calls": 0,
-                    "plan": {
-                      "replacements": [
-                        {
-                          "new": "def fetch_html(url: str, timeout: int = 20) -> str:\n    if not url.isascii():\n        from urllib.parse import quote, urlsplit\n        parsed = urlsplit(url)\n        if parsed.scheme in {\"http\", \"https\"}:\n            boundary = url.find(\"://\") + 3 + len(parsed.netloc)\n            prefix, target = url[:boundary], url[boundary:]\n            url = prefix + \"\".join(char if char.isascii() else quote(char, safe=\"\") for char in target)\n    req = Request(url, headers={\"User-Agent\": \"RadarSaludBot/0.1 (+public-source-monitor)\"})\n    with urlopen(req, timeout=timeout) as resp:\n        charset = resp.headers.get_content_charset() or \"utf-8\"\n        return resp.read().decode(charset, errors=\"replace\")\n",
-                          "old": "def fetch_html(url: str, timeout: int = 20) -> str:\n    req = Request(url, headers={\"User-Agent\": \"RadarSaludBot/0.1 (+public-source-monitor)\"})\n    with urlopen(req, timeout=timeout) as resp:\n        charset = resp.headers.get_content_charset() or \"utf-8\"\n        return resp.read().decode(charset, errors=\"replace\")\n",
-                          "path": "src/radar_salud/scouts.py",
-                          "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                        }
-                      ],
-                      "schema_version": 1
-                    },
-                    "product_files_written": false,
-                    "status": "PLANNED",
-                    "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1"
-                  },
-                  "evidence": [
-                    {
-                      "captured_stdout_bytes": 2049,
-                      "captured_stdout_sha256": "a8029fd0971fedc40f103009f8c031d4240309e04518af542f4701bab39ff572",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                        "--diagnose-source",
-                        "achs_seguro_laboral"
-                      ],
-                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"achs_seguro_laboral\", \"technical_status\": \"error\", \"error\": \"RuntimeError: Achs Seguro Laboral has no dated, verified detail items\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.achs.cl/centro-de-noticias\", \"status\": \"PASS\", \"response_sha256\": \"aae87542be2a9b3f58c8d1bee9ea2daad024b7530e4a5cdc225bafb885ae8213\", \"response_bytes\": 94674}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral\", \"status\": \"FAIL\", \"error\": \"UnicodeEncodeError: 'ascii' codec can't encode character '\\\\xe9' in position 42: ordinal not in range(128)\"}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad\", \"status\": \"PASS\", \"response_sha256\": \"02afad47ab15bbe3366eb99764b4f86b2aa46dc5b43b8e5ef97280a41ac09658\", \"response_bytes\": 85424}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral\", \"status\": \"PASS\", \"response_sha256\": \"08d89251b818a65c9d523dc1ea93af6b5b1eef2150c3d70f04e4e81580808848\", \"response_bytes\": 85723}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion\", \"status\": \"PASS\", \"response_sha256\": \"f9de6533e0a03071297e0e1d9c19ada8f91a75e59141fb89cf2b8811f61bb8b7\", \"response_bytes\": 84157}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias\", \"status\": \"PASS\", \"response_sha256\": \"fdbbb9dfc85e276db276d78ce71e133eea4de2e00c5fc286a5e3b5d1c1caccea\", \"response_bytes\": 90550}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                      "returncode": 1,
-                      "source_evidence": {
-                        "dated": 0,
-                        "discovered": 0,
-                        "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items",
-                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                        "newest_event_date": null,
-                        "publication_verified": false,
-                        "requests": [
-                          {
-                            "response_bytes": 94674,
-                            "response_sha256": "aae87542be2a9b3f58c8d1bee9ea2daad024b7530e4a5cdc225bafb885ae8213",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias"
-                          },
-                          {
-                            "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                            "status": "FAIL",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                          },
-                          {
-                            "response_bytes": 85424,
-                            "response_sha256": "02afad47ab15bbe3366eb99764b4f86b2aa46dc5b43b8e5ef97280a41ac09658",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                          },
-                          {
-                            "response_bytes": 85723,
-                            "response_sha256": "08d89251b818a65c9d523dc1ea93af6b5b1eef2150c3d70f04e4e81580808848",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                          },
-                          {
-                            "response_bytes": 84157,
-                            "response_sha256": "f9de6533e0a03071297e0e1d9c19ada8f91a75e59141fb89cf2b8811f61bb8b7",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                          },
-                          {
-                            "response_bytes": 90550,
-                            "response_sha256": "fdbbb9dfc85e276db276d78ce71e133eea4de2e00c5fc286a5e3b5d1c1caccea",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                          }
-                        ],
-                        "samples": [],
-                        "scope": "discovery_only",
-                        "slug": "achs_seguro_laboral",
-                        "technical_status": "error"
-                      },
-                      "source_evidence_sha256": "4857dcd971a07eeac36cfe5d05bc12fb8ab80921531a7563c7c363dd18894e75"
-                    },
-                    {
-                      "captured_stdout_bytes": 99,
-                      "captured_stdout_sha256": "750629578324cd1a852a4ef10c37b6fefb2d779d15da0bf14eee1b49db0b8fce",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "-m",
-                        "pytest",
-                        "-q",
-                        "tests/test_beta_source_package.py",
-                        "tests/test_corporate_newsrooms.py",
-                        "tests/test_live_evidence_replay.py"
-                      ],
-                      "output": "..................                                                       [100%]\n18 passed in 0.26s\n",
-                      "returncode": 0
-                    },
-                    {
-                      "captured_stdout_bytes": 2221,
-                      "captured_stdout_sha256": "a289d4d24fadc5b506a656182a85003efc0b499aa455364d4ff6201aa01c6aae",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "-m",
-                        "pytest",
-                        "-q"
-                      ],
-                      "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.50s\n",
-                      "returncode": 1
-                    },
-                    {
-                      "captured_stdout_bytes": 2042,
-                      "captured_stdout_sha256": "e95b0d975248e733a04d12fd9c94ca49cc6cfc37706fff203f9a02c691b429a2",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                        "--diagnose-source",
-                        "achs_seguro_laboral"
-                      ],
-                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"achs_seguro_laboral\", \"technical_status\": \"error\", \"error\": \"RuntimeError: Achs Seguro Laboral has no dated, verified detail items\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.achs.cl/centro-de-noticias\", \"status\": \"PASS\", \"response_sha256\": \"3099dd9df232757793db64179831939461bab1282894c5cbe0a19c1cbd81d1a9\", \"response_bytes\": 94674}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral\", \"status\": \"PASS\", \"response_sha256\": \"1fa9b812dc050f296756a01293fb4703cc8fd353e58b727cee0f3f56d5364643\", \"response_bytes\": 85695}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad\", \"status\": \"PASS\", \"response_sha256\": \"c610043ea2e74af78d8d9c351ac9fbb0a684b5271a2a8aade133b4a66d2a7baf\", \"response_bytes\": 85424}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral\", \"status\": \"PASS\", \"response_sha256\": \"1e97e8c67482dd9d21f78730fb741bac519a7883ba32f50c4d875caf1ef36d8b\", \"response_bytes\": 85723}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion\", \"status\": \"PASS\", \"response_sha256\": \"638b8b76468d28a9e69684bd8e38c819f92e8ae2da9b2dcf7afcf4541c8d4637\", \"response_bytes\": 84157}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias\", \"status\": \"PASS\", \"response_sha256\": \"d867ff424c582e1f60c1fc7e2960bddda1d85530e7e90d731232f863319a2735\", \"response_bytes\": 90550}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                      "returncode": 1,
-                      "source_evidence": {
-                        "dated": 0,
-                        "discovered": 0,
-                        "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items",
-                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                        "newest_event_date": null,
-                        "publication_verified": false,
-                        "requests": [
-                          {
-                            "response_bytes": 94674,
-                            "response_sha256": "3099dd9df232757793db64179831939461bab1282894c5cbe0a19c1cbd81d1a9",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias"
-                          },
-                          {
-                            "response_bytes": 85695,
-                            "response_sha256": "1fa9b812dc050f296756a01293fb4703cc8fd353e58b727cee0f3f56d5364643",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                          },
-                          {
-                            "response_bytes": 85424,
-                            "response_sha256": "c610043ea2e74af78d8d9c351ac9fbb0a684b5271a2a8aade133b4a66d2a7baf",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                          },
-                          {
-                            "response_bytes": 85723,
-                            "response_sha256": "1e97e8c67482dd9d21f78730fb741bac519a7883ba32f50c4d875caf1ef36d8b",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                          },
-                          {
-                            "response_bytes": 84157,
-                            "response_sha256": "638b8b76468d28a9e69684bd8e38c819f92e8ae2da9b2dcf7afcf4541c8d4637",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                          },
-                          {
-                            "response_bytes": 90550,
-                            "response_sha256": "d867ff424c582e1f60c1fc7e2960bddda1d85530e7e90d731232f863319a2735",
-                            "status": "PASS",
-                            "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                          }
-                        ],
-                        "samples": [],
-                        "scope": "discovery_only",
-                        "slug": "achs_seguro_laboral",
-                        "technical_status": "error"
-                      },
-                      "source_evidence_sha256": "4a20eed0e8508f3b34b205b2c3907cbe553aeb3a481d5dd5b4e75c1cf199042a"
-                    }
-                  ],
-                  "failure_sha256": "e1bf7d8245cad7127e24631274ff0c96086a5f763b7c5f6293724da281d34c26",
-                  "live_baseline": {
-                    "dated": 0,
-                    "discovered": 0,
-                    "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items",
-                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "response_bytes": 94674,
-                        "response_sha256": "aae87542be2a9b3f58c8d1bee9ea2daad024b7530e4a5cdc225bafb885ae8213",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias"
-                      },
-                      {
-                        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                        "status": "FAIL",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                      },
-                      {
-                        "response_bytes": 85424,
-                        "response_sha256": "02afad47ab15bbe3366eb99764b4f86b2aa46dc5b43b8e5ef97280a41ac09658",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                      },
-                      {
-                        "response_bytes": 85723,
-                        "response_sha256": "08d89251b818a65c9d523dc1ea93af6b5b1eef2150c3d70f04e4e81580808848",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                      },
-                      {
-                        "response_bytes": 84157,
-                        "response_sha256": "f9de6533e0a03071297e0e1d9c19ada8f91a75e59141fb89cf2b8811f61bb8b7",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                      },
-                      {
-                        "response_bytes": 90550,
-                        "response_sha256": "fdbbb9dfc85e276db276d78ce71e133eea4de2e00c5fc286a5e3b5d1c1caccea",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                      }
-                    ],
-                    "samples": [],
-                    "scope": "discovery_only",
-                    "slug": "achs_seguro_laboral",
-                    "technical_status": "error"
-                  },
-                  "material_progress": false,
-                  "repair_strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
-                  "rolled_back": true,
-                  "signature": null,
-                  "source_run_id": null,
-                  "source_slug": "achs_seguro_laboral",
-                  "status": "BLOCKED",
-                  "validated": false
-                }
-              }
-            ],
-            "fingerprint": "c8b4b03689dbfc9bc6fd0db43834a5a2fe951b9ea61f482f7ba2f160c54780fc",
-            "human_required": false,
-            "kind": "technical",
-            "reason": "Scoped live discovery failed: achs_seguro_laboral",
-            "source_urls": [
-              "https://www.achs.cl/centro-de-noticias",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-            ]
-          }
-        ],
-        "evidence": [
-          {
-            "command": [
-              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-              "--diagnose-source",
-              "clinicas_achs_salud"
-            ],
-            "failure_hash": "f03aea778587ba67df5a9f66b897856181f02a23598720a7c5c75f31e241caee",
-            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-clinicas_achs_salud.log",
-            "log_sha256": "d7a6e0ae4c39acc6a0fa218aa5355e18d57fe6b0c2b78db69d093dc3c181a3b2",
-            "returncode": 1,
-            "source_urls": [
-              "https://www.achs.cl/centro-de-noticias",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-            ],
-            "status": "FAIL"
-          },
-          {
-            "dated": 0,
-            "discovered": 0,
-            "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items",
-            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-            "newest_event_date": null,
-            "publication_verified": false,
-            "requests": [
-              {
-                "response_bytes": 94674,
-                "response_sha256": "aa2934233b2f339dd3bfcad2012c25d4ecea2702b9d18911f78e0466d9998043",
-                "status": "PASS",
-                "url": "https://www.achs.cl/centro-de-noticias"
-              },
-              {
-                "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                "status": "FAIL",
-                "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-              },
-              {
-                "response_bytes": 85424,
-                "response_sha256": "c6e59807f9789bcb55c16faa082547a978b2dd1f16410e5da233a800df60d68f",
-                "status": "PASS",
-                "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-              },
-              {
-                "response_bytes": 85723,
-                "response_sha256": "620f9fcd21c15b8ac2ac5602dee8bb208ccf0000650b84e7f0f60b836d916f2a",
-                "status": "PASS",
-                "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-              },
-              {
-                "response_bytes": 84157,
-                "response_sha256": "5c19cf9441a6bde3917a0f293e61ee97a45520d92b681fe5dc337ad6f509dc54",
-                "status": "PASS",
-                "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-              },
-              {
-                "response_bytes": 90550,
-                "response_sha256": "d2dd5af5a553be2c58cb5575344dd1abde5d56baee1738c24126056c0de92c10",
-                "status": "PASS",
-                "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-              }
-            ],
-            "samples": [],
-            "scope": "discovery_only",
-            "slug": "clinicas_achs_salud",
-            "technical_status": "error"
-          },
-          {
-            "automated_recovery": {
-              "baseline_full_gate": {
-                "captured_stdout_bytes": 2221,
-                "captured_stdout_sha256": "9eaa7bcd8153a2e43f4492c49756bb2d72920e81e6681c4a311ba67fa56101f4",
-                "command": [
-                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                  "-m",
-                  "pytest",
-                  "-q"
-                ],
-                "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 5.17s\n",
-                "returncode": 1
-              },
-              "blocker": "Exact parser repair did not recover the demonstrated live failure",
-              "changed_paths": [],
-              "context": [
-                {
-                  "editable": true,
-                  "path": "src/radar_salud/beta_sources_fast.py",
-                  "sha256": "b888cb884c9ecebbcb572ab588ed1ce14d463458a5382a387b9f656afa6073cd"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/beta_sources.py",
-                  "sha256": "79232a0d0fdf83c9b91312971577d86ce11700c825dbf6cdb0c86885f6ee9634"
-                },
-                {
-                  "editable": true,
-                  "path": "src/radar_salud/scouts.py",
-                  "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/models.py",
-                  "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/llm_analysis.py",
-                  "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/pipeline.py",
-                  "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/processing.py",
-                  "sha256": "4aa0f0b4c8d4889f1ce250b1c8fc3f5c8d8102e550150476759c47bdf9e352df"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/public_source_pipeline.py",
-                  "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
-                }
-              ],
-              "deterministic_planning": {
-                "diagnostic": null,
-                "evidence": [
-                  {
-                    "failure_sha256": "56f192e561b5b45de9c7f7a000243484fa4324644ef8c86e6c0e207c7db64eb8",
-                    "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-                    "observed_sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572",
-                    "path": "src/radar_salud/scouts.py",
-                    "request": {
-                      "codepoint": "U+00E9",
-                      "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                    },
-                    "source_result_sha256": "1f689699e2812ef5f4e3d04984589e41a3ac6bc1fd83b53225d653c58ca92031",
-                    "source_slug": "clinicas_achs_salud",
-                    "task_id": "source_repair_mutualities_lane_2026_10_11"
-                  }
-                ],
-                "material_progress": false,
-                "paid_calls": 0,
-                "plan": {
-                  "replacements": [
-                    {
-                      "new": "def fetch_html(url: str, timeout: int = 20) -> str:\n    if not url.isascii():\n        from urllib.parse import quote, urlsplit\n        parsed = urlsplit(url)\n        if parsed.scheme in {\"http\", \"https\"}:\n            boundary = url.find(\"://\") + 3 + len(parsed.netloc)\n            prefix, target = url[:boundary], url[boundary:]\n            url = prefix + \"\".join(char if char.isascii() else quote(char, safe=\"\") for char in target)\n    req = Request(url, headers={\"User-Agent\": \"RadarSaludBot/0.1 (+public-source-monitor)\"})\n    with urlopen(req, timeout=timeout) as resp:\n        charset = resp.headers.get_content_charset() or \"utf-8\"\n        return resp.read().decode(charset, errors=\"replace\")\n",
-                      "old": "def fetch_html(url: str, timeout: int = 20) -> str:\n    req = Request(url, headers={\"User-Agent\": \"RadarSaludBot/0.1 (+public-source-monitor)\"})\n    with urlopen(req, timeout=timeout) as resp:\n        charset = resp.headers.get_content_charset() or \"utf-8\"\n        return resp.read().decode(charset, errors=\"replace\")\n",
-                      "path": "src/radar_salud/scouts.py",
-                      "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                    }
-                  ],
-                  "schema_version": 1
-                },
-                "product_files_written": false,
-                "status": "PLANNED",
-                "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1"
-              },
-              "evidence": [
-                {
-                  "captured_stdout_bytes": 2050,
-                  "captured_stdout_sha256": "2ea7eff780a8d2b84bb95963f1f2a8398c8a46fbc4fcef03307ad0b680d2686b",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                    "--diagnose-source",
-                    "clinicas_achs_salud"
-                  ],
-                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"clinicas_achs_salud\", \"technical_status\": \"error\", \"error\": \"RuntimeError: Clínicas Achs Salud has no dated, verified detail items\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.achs.cl/centro-de-noticias\", \"status\": \"PASS\", \"response_sha256\": \"cbd542621b7b649d8ddb7d2a5e01d11d4a5d1a249816e3f1db54e28b1e802f82\", \"response_bytes\": 94674}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral\", \"status\": \"FAIL\", \"error\": \"UnicodeEncodeError: 'ascii' codec can't encode character '\\\\xe9' in position 42: ordinal not in range(128)\"}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad\", \"status\": \"PASS\", \"response_sha256\": \"d93c753b6647a67d12f57fe8e5732a181c91a9105a86d4941dec7563f110f7f8\", \"response_bytes\": 85424}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral\", \"status\": \"PASS\", \"response_sha256\": \"834e9e477b5e3a85fe182bdc23375f8f355ab4b0455c9ba05ecd5a39e1b3aafd\", \"response_bytes\": 85723}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion\", \"status\": \"PASS\", \"response_sha256\": \"9174c3b81e5ee029ce5a2fc671badc94f52ba01bea123c55f448a1d9f60512a2\", \"response_bytes\": 84157}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias\", \"status\": \"PASS\", \"response_sha256\": \"7d4f46e03f1b74c61c8c9dafca7df99731c997c064901ffa7acdce47f41dec62\", \"response_bytes\": 90550}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                  "returncode": 1,
-                  "source_evidence": {
-                    "dated": 0,
-                    "discovered": 0,
-                    "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items",
-                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "response_bytes": 94674,
-                        "response_sha256": "cbd542621b7b649d8ddb7d2a5e01d11d4a5d1a249816e3f1db54e28b1e802f82",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias"
-                      },
-                      {
-                        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                        "status": "FAIL",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                      },
-                      {
-                        "response_bytes": 85424,
-                        "response_sha256": "d93c753b6647a67d12f57fe8e5732a181c91a9105a86d4941dec7563f110f7f8",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                      },
-                      {
-                        "response_bytes": 85723,
-                        "response_sha256": "834e9e477b5e3a85fe182bdc23375f8f355ab4b0455c9ba05ecd5a39e1b3aafd",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                      },
-                      {
-                        "response_bytes": 84157,
-                        "response_sha256": "9174c3b81e5ee029ce5a2fc671badc94f52ba01bea123c55f448a1d9f60512a2",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                      },
-                      {
-                        "response_bytes": 90550,
-                        "response_sha256": "7d4f46e03f1b74c61c8c9dafca7df99731c997c064901ffa7acdce47f41dec62",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                      }
-                    ],
-                    "samples": [],
-                    "scope": "discovery_only",
-                    "slug": "clinicas_achs_salud",
-                    "technical_status": "error"
-                  },
-                  "source_evidence_sha256": "8911948da54ad08a40ce0b397ea1828fca1c001e93884556ec943ba72c3a9f4f"
-                },
-                {
-                  "captured_stdout_bytes": 99,
-                  "captured_stdout_sha256": "ac87e1d114bc5da7dd44f223cf00c22a045e85083baebcbc249b1b2718004f94",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "-m",
-                    "pytest",
-                    "-q",
-                    "tests/test_beta_source_package.py",
-                    "tests/test_corporate_newsrooms.py",
-                    "tests/test_live_evidence_replay.py"
-                  ],
-                  "output": "..................                                                       [100%]\n18 passed in 0.29s\n",
-                  "returncode": 0
-                },
-                {
-                  "captured_stdout_bytes": 2221,
-                  "captured_stdout_sha256": "9eaa7bcd8153a2e43f4492c49756bb2d72920e81e6681c4a311ba67fa56101f4",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "-m",
-                    "pytest",
-                    "-q"
-                  ],
-                  "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 5.17s\n",
-                  "returncode": 1
-                },
-                {
-                  "captured_stdout_bytes": 2043,
-                  "captured_stdout_sha256": "26b5b5c2c6f7c0bc611ca77de504854e2c932cdb580140afccbef8cf85f8968e",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                    "--diagnose-source",
-                    "clinicas_achs_salud"
-                  ],
-                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"clinicas_achs_salud\", \"technical_status\": \"error\", \"error\": \"RuntimeError: Clínicas Achs Salud has no dated, verified detail items\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.achs.cl/centro-de-noticias\", \"status\": \"PASS\", \"response_sha256\": \"35bf5309e55fa2dc3f02cfc30b87ce993e6b0f17c68dd0521a076a8107d08465\", \"response_bytes\": 94674}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral\", \"status\": \"PASS\", \"response_sha256\": \"e36dd2eb554e8857f3e47e304d7836b7e1edd4de723a961704bea941711b594b\", \"response_bytes\": 85695}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad\", \"status\": \"PASS\", \"response_sha256\": \"497983114570d8b41d08b9b04558222a32f809b23079cbb9b872f4ec61a93254\", \"response_bytes\": 85424}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral\", \"status\": \"PASS\", \"response_sha256\": \"dc5623161bffd9a85c573badc56ef61001ad97772fb989150f8c6a44d86579a6\", \"response_bytes\": 85723}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion\", \"status\": \"PASS\", \"response_sha256\": \"055f540eebbeefecd04fd796f2803724e4cc8fabca4d8c517e24b3faa9f22661\", \"response_bytes\": 84157}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias\", \"status\": \"PASS\", \"response_sha256\": \"6cf36b727423e1737ed7d5b89293b49064906602397bb2a196f5729e377cec9d\", \"response_bytes\": 90550}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                  "returncode": 1,
-                  "source_evidence": {
-                    "dated": 0,
-                    "discovered": 0,
-                    "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items",
-                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "response_bytes": 94674,
-                        "response_sha256": "35bf5309e55fa2dc3f02cfc30b87ce993e6b0f17c68dd0521a076a8107d08465",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias"
-                      },
-                      {
-                        "response_bytes": 85695,
-                        "response_sha256": "e36dd2eb554e8857f3e47e304d7836b7e1edd4de723a961704bea941711b594b",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                      },
-                      {
-                        "response_bytes": 85424,
-                        "response_sha256": "497983114570d8b41d08b9b04558222a32f809b23079cbb9b872f4ec61a93254",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                      },
-                      {
-                        "response_bytes": 85723,
-                        "response_sha256": "dc5623161bffd9a85c573badc56ef61001ad97772fb989150f8c6a44d86579a6",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                      },
-                      {
-                        "response_bytes": 84157,
-                        "response_sha256": "055f540eebbeefecd04fd796f2803724e4cc8fabca4d8c517e24b3faa9f22661",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                      },
-                      {
-                        "response_bytes": 90550,
-                        "response_sha256": "6cf36b727423e1737ed7d5b89293b49064906602397bb2a196f5729e377cec9d",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                      }
-                    ],
-                    "samples": [],
-                    "scope": "discovery_only",
-                    "slug": "clinicas_achs_salud",
-                    "technical_status": "error"
-                  },
-                  "source_evidence_sha256": "3599814caf12791d54f536ce9a11665114fe283532625d76943dcea1bfd3ff6e"
-                }
-              ],
-              "failure_sha256": "d7a6e0ae4c39acc6a0fa218aa5355e18d57fe6b0c2b78db69d093dc3c181a3b2",
-              "live_baseline": {
-                "dated": 0,
-                "discovered": 0,
-                "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items",
-                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                "newest_event_date": null,
-                "publication_verified": false,
-                "requests": [
-                  {
-                    "response_bytes": 94674,
-                    "response_sha256": "cbd542621b7b649d8ddb7d2a5e01d11d4a5d1a249816e3f1db54e28b1e802f82",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias"
-                  },
-                  {
-                    "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                    "status": "FAIL",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                  },
-                  {
-                    "response_bytes": 85424,
-                    "response_sha256": "d93c753b6647a67d12f57fe8e5732a181c91a9105a86d4941dec7563f110f7f8",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                  },
-                  {
-                    "response_bytes": 85723,
-                    "response_sha256": "834e9e477b5e3a85fe182bdc23375f8f355ab4b0455c9ba05ecd5a39e1b3aafd",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                  },
-                  {
-                    "response_bytes": 84157,
-                    "response_sha256": "9174c3b81e5ee029ce5a2fc671badc94f52ba01bea123c55f448a1d9f60512a2",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                  },
-                  {
-                    "response_bytes": 90550,
-                    "response_sha256": "7d4f46e03f1b74c61c8c9dafca7df99731c997c064901ffa7acdce47f41dec62",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                  }
-                ],
-                "samples": [],
-                "scope": "discovery_only",
-                "slug": "clinicas_achs_salud",
-                "technical_status": "error"
-              },
-              "material_progress": false,
-              "repair_strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
-              "rolled_back": true,
-              "signature": null,
-              "source_run_id": null,
-              "source_slug": "clinicas_achs_salud",
-              "status": "BLOCKED",
-              "validated": false
-            }
-          },
-          {
-            "diagnostics_are_acceptance": false,
-            "family": "mutualities",
             "task_id": "source_repair_mutualities_lane_2026_10_11"
-          },
-          {
-            "command": [
-              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-              "--diagnose-source",
-              "mutual_seguridad"
-            ],
-            "failure_hash": "e4b01e8b03c71c6e18f365fc97f351e84422c746ba1e01a7088c1c9b2f78114e",
-            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-mutual_seguridad.log",
-            "log_sha256": "9af86a0b0fd5adcef5321c60ba39de9c2ca49578acf201f690998b87b0eb0dc9",
-            "returncode": 1,
-            "source_urls": [
-              "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/"
-            ],
-            "status": "FAIL"
-          },
-          {
-            "dated": 0,
-            "discovered": 0,
-            "error": "RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items",
-            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-            "newest_event_date": null,
-            "publication_verified": false,
-            "requests": [
-              {
-                "response_bytes": 1050,
-                "response_sha256": "20211296328f48ca0f6230d62c187f31c7b5280213256c22a367e56315fdc6ac",
-                "status": "PASS",
-                "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/"
-              }
-            ],
-            "samples": [],
-            "scope": "discovery_only",
-            "slug": "mutual_seguridad",
-            "technical_status": "error"
-          },
-          {
-            "automated_recovery": {
-              "baseline_full_gate": {
-                "captured_stdout_bytes": 2221,
-                "captured_stdout_sha256": "d64711731ebd253e2dd255de984e8ec5af35f88cd30b945f90e7628b2d860c65",
-                "command": [
-                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                  "-m",
-                  "pytest",
-                  "-q"
-                ],
-                "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.44s\n",
-                "returncode": 1
-              },
-              "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
-              "blocker_kind": "executor_capability_missing",
-              "changed_paths": [],
-              "context": [
-                {
-                  "editable": true,
-                  "path": "src/radar_salud/beta_sources_fast.py",
-                  "sha256": "b888cb884c9ecebbcb572ab588ed1ce14d463458a5382a387b9f656afa6073cd"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/beta_sources.py",
-                  "sha256": "79232a0d0fdf83c9b91312971577d86ce11700c825dbf6cdb0c86885f6ee9634"
-                },
-                {
-                  "editable": true,
-                  "path": "src/radar_salud/scouts.py",
-                  "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/models.py",
-                  "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/llm_analysis.py",
-                  "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/pipeline.py",
-                  "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/processing.py",
-                  "sha256": "4aa0f0b4c8d4889f1ce250b1c8fc3f5c8d8102e550150476759c47bdf9e352df"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/public_source_pipeline.py",
-                  "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
-                }
-              ],
-              "deterministic_planning": {
-                "diagnostic": {
-                  "human_required": false,
-                  "kind": "executor_capability_missing",
-                  "reason": "No deterministic strategy is registered for this source/failure"
-                },
-                "evidence": [],
-                "material_progress": false,
-                "paid_calls": 0,
-                "plan": null,
-                "product_files_written": false,
-                "status": "UNSUPPORTED",
-                "strategy": null
-              },
-              "evidence": [
-                {
-                  "captured_stdout_bytes": 611,
-                  "captured_stdout_sha256": "d546093c70ef9b0407ccbc6a58ff2856b0e5fd9da5e43b6b4d124a49f96ccb59",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                    "--diagnose-source",
-                    "mutual_seguridad"
-                  ],
-                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"mutual_seguridad\", \"technical_status\": \"error\", \"error\": \"RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/\", \"status\": \"PASS\", \"response_sha256\": \"cda0dd945cc3d0160e4c2df2df55374e25c2bc11e338f4017afda7b0828179af\", \"response_bytes\": 1054}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                  "returncode": 1,
-                  "source_evidence": {
-                    "dated": 0,
-                    "discovered": 0,
-                    "error": "RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items",
-                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "response_bytes": 1054,
-                        "response_sha256": "cda0dd945cc3d0160e4c2df2df55374e25c2bc11e338f4017afda7b0828179af",
-                        "status": "PASS",
-                        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/"
-                      }
-                    ],
-                    "samples": [],
-                    "scope": "discovery_only",
-                    "slug": "mutual_seguridad",
-                    "technical_status": "error"
-                  },
-                  "source_evidence_sha256": "ef011681b24de0db11f02902905688bfb88cf338dac1c5431da43b873814f615"
-                },
-                {
-                  "captured_stdout_bytes": 99,
-                  "captured_stdout_sha256": "ae596ef7445f35e38581e7f71c2fd1b93bbc5b957e488bccc29f2c07bfeedc05",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "-m",
-                    "pytest",
-                    "-q",
-                    "tests/test_beta_source_package.py",
-                    "tests/test_corporate_newsrooms.py",
-                    "tests/test_live_evidence_replay.py"
-                  ],
-                  "output": "..................                                                       [100%]\n18 passed in 0.28s\n",
-                  "returncode": 0
-                },
-                {
-                  "captured_stdout_bytes": 2221,
-                  "captured_stdout_sha256": "d64711731ebd253e2dd255de984e8ec5af35f88cd30b945f90e7628b2d860c65",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "-m",
-                    "pytest",
-                    "-q"
-                  ],
-                  "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.44s\n",
-                  "returncode": 1
-                }
-              ],
-              "failure_sha256": "9af86a0b0fd5adcef5321c60ba39de9c2ca49578acf201f690998b87b0eb0dc9",
-              "live_baseline": {
-                "dated": 0,
-                "discovered": 0,
-                "error": "RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items",
-                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                "newest_event_date": null,
-                "publication_verified": false,
-                "requests": [
-                  {
-                    "response_bytes": 1054,
-                    "response_sha256": "cda0dd945cc3d0160e4c2df2df55374e25c2bc11e338f4017afda7b0828179af",
-                    "status": "PASS",
-                    "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/"
-                  }
-                ],
-                "samples": [],
-                "scope": "discovery_only",
-                "slug": "mutual_seguridad",
-                "technical_status": "error"
-              },
-              "material_progress": false,
-              "signature": null,
-              "source_run_id": null,
-              "source_slug": "mutual_seguridad",
-              "status": "BLOCKED",
-              "validated": false
-            }
-          },
-          {
-            "command": [
-              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-              "--diagnose-source",
-              "achs_seguro_laboral"
-            ],
-            "failure_hash": "dbf5d83c1af8f38db73407f26646a198eba75577b917a1485ecf1858eba1d862",
-            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-achs_seguro_laboral.log",
-            "log_sha256": "e1bf7d8245cad7127e24631274ff0c96086a5f763b7c5f6293724da281d34c26",
-            "returncode": 1,
-            "source_urls": [
-              "https://www.achs.cl/centro-de-noticias",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion",
-              "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-            ],
-            "status": "FAIL"
-          },
-          {
-            "dated": 0,
-            "discovered": 0,
-            "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items",
-            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-            "newest_event_date": null,
-            "publication_verified": false,
-            "requests": [
-              {
-                "response_bytes": 94674,
-                "response_sha256": "1cbe3cb9bef302dc68ed5534b02cab0dc2b51bc5df9f1619cc7d9b9d92a03549",
-                "status": "PASS",
-                "url": "https://www.achs.cl/centro-de-noticias"
-              },
-              {
-                "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                "status": "FAIL",
-                "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-              },
-              {
-                "response_bytes": 85424,
-                "response_sha256": "1d040ce89745aab0135a64c7c79cbd32974d4ebcb237768edcaf7b3abc99501b",
-                "status": "PASS",
-                "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-              },
-              {
-                "response_bytes": 85723,
-                "response_sha256": "6db2dc9a7d899a40f553b5367f196fc6543fe053c002a42efee1ce95e2566601",
-                "status": "PASS",
-                "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-              },
-              {
-                "response_bytes": 84157,
-                "response_sha256": "30de6856869fcca6e5497e3cb8c93e6f42e7c42e7882869f8278efde07b4cd1c",
-                "status": "PASS",
-                "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-              },
-              {
-                "response_bytes": 90550,
-                "response_sha256": "6518c855b5a4fadde047358ab917f183f7b2bbbb6317dd5f12a95dae1c542d51",
-                "status": "PASS",
-                "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-              }
-            ],
-            "samples": [],
-            "scope": "discovery_only",
-            "slug": "achs_seguro_laboral",
-            "technical_status": "error"
-          },
-          {
-            "automated_recovery": {
-              "baseline_full_gate": {
-                "captured_stdout_bytes": 2221,
-                "captured_stdout_sha256": "a289d4d24fadc5b506a656182a85003efc0b499aa455364d4ff6201aa01c6aae",
-                "command": [
-                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                  "-m",
-                  "pytest",
-                  "-q"
-                ],
-                "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.50s\n",
-                "returncode": 1
-              },
-              "blocker": "Exact parser repair did not recover the demonstrated live failure",
-              "changed_paths": [],
-              "context": [
-                {
-                  "editable": true,
-                  "path": "src/radar_salud/beta_sources_fast.py",
-                  "sha256": "b888cb884c9ecebbcb572ab588ed1ce14d463458a5382a387b9f656afa6073cd"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/beta_sources.py",
-                  "sha256": "79232a0d0fdf83c9b91312971577d86ce11700c825dbf6cdb0c86885f6ee9634"
-                },
-                {
-                  "editable": true,
-                  "path": "src/radar_salud/scouts.py",
-                  "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/models.py",
-                  "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/llm_analysis.py",
-                  "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/pipeline.py",
-                  "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/processing.py",
-                  "sha256": "4aa0f0b4c8d4889f1ce250b1c8fc3f5c8d8102e550150476759c47bdf9e352df"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/public_source_pipeline.py",
-                  "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
-                }
-              ],
-              "deterministic_planning": {
-                "diagnostic": null,
-                "evidence": [
-                  {
-                    "failure_sha256": "9029b823c5efcadab91476e427db38f5ec2ce2ce0d6b279cca1ecf71bb0c3181",
-                    "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-                    "observed_sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572",
-                    "path": "src/radar_salud/scouts.py",
-                    "request": {
-                      "codepoint": "U+00E9",
-                      "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                    },
-                    "source_result_sha256": "c23fc45094342980d9b22c7b0105cdc768fbcb934d8675889423176f9e09577a",
-                    "source_slug": "achs_seguro_laboral",
-                    "task_id": "source_repair_mutualities_lane_2026_10_11"
-                  }
-                ],
-                "material_progress": false,
-                "paid_calls": 0,
-                "plan": {
-                  "replacements": [
-                    {
-                      "new": "def fetch_html(url: str, timeout: int = 20) -> str:\n    if not url.isascii():\n        from urllib.parse import quote, urlsplit\n        parsed = urlsplit(url)\n        if parsed.scheme in {\"http\", \"https\"}:\n            boundary = url.find(\"://\") + 3 + len(parsed.netloc)\n            prefix, target = url[:boundary], url[boundary:]\n            url = prefix + \"\".join(char if char.isascii() else quote(char, safe=\"\") for char in target)\n    req = Request(url, headers={\"User-Agent\": \"RadarSaludBot/0.1 (+public-source-monitor)\"})\n    with urlopen(req, timeout=timeout) as resp:\n        charset = resp.headers.get_content_charset() or \"utf-8\"\n        return resp.read().decode(charset, errors=\"replace\")\n",
-                      "old": "def fetch_html(url: str, timeout: int = 20) -> str:\n    req = Request(url, headers={\"User-Agent\": \"RadarSaludBot/0.1 (+public-source-monitor)\"})\n    with urlopen(req, timeout=timeout) as resp:\n        charset = resp.headers.get_content_charset() or \"utf-8\"\n        return resp.read().decode(charset, errors=\"replace\")\n",
-                      "path": "src/radar_salud/scouts.py",
-                      "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                    }
-                  ],
-                  "schema_version": 1
-                },
-                "product_files_written": false,
-                "status": "PLANNED",
-                "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1"
-              },
-              "evidence": [
-                {
-                  "captured_stdout_bytes": 2049,
-                  "captured_stdout_sha256": "a8029fd0971fedc40f103009f8c031d4240309e04518af542f4701bab39ff572",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                    "--diagnose-source",
-                    "achs_seguro_laboral"
-                  ],
-                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"achs_seguro_laboral\", \"technical_status\": \"error\", \"error\": \"RuntimeError: Achs Seguro Laboral has no dated, verified detail items\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.achs.cl/centro-de-noticias\", \"status\": \"PASS\", \"response_sha256\": \"aae87542be2a9b3f58c8d1bee9ea2daad024b7530e4a5cdc225bafb885ae8213\", \"response_bytes\": 94674}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral\", \"status\": \"FAIL\", \"error\": \"UnicodeEncodeError: 'ascii' codec can't encode character '\\\\xe9' in position 42: ordinal not in range(128)\"}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad\", \"status\": \"PASS\", \"response_sha256\": \"02afad47ab15bbe3366eb99764b4f86b2aa46dc5b43b8e5ef97280a41ac09658\", \"response_bytes\": 85424}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral\", \"status\": \"PASS\", \"response_sha256\": \"08d89251b818a65c9d523dc1ea93af6b5b1eef2150c3d70f04e4e81580808848\", \"response_bytes\": 85723}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion\", \"status\": \"PASS\", \"response_sha256\": \"f9de6533e0a03071297e0e1d9c19ada8f91a75e59141fb89cf2b8811f61bb8b7\", \"response_bytes\": 84157}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias\", \"status\": \"PASS\", \"response_sha256\": \"fdbbb9dfc85e276db276d78ce71e133eea4de2e00c5fc286a5e3b5d1c1caccea\", \"response_bytes\": 90550}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                  "returncode": 1,
-                  "source_evidence": {
-                    "dated": 0,
-                    "discovered": 0,
-                    "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items",
-                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "response_bytes": 94674,
-                        "response_sha256": "aae87542be2a9b3f58c8d1bee9ea2daad024b7530e4a5cdc225bafb885ae8213",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias"
-                      },
-                      {
-                        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                        "status": "FAIL",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                      },
-                      {
-                        "response_bytes": 85424,
-                        "response_sha256": "02afad47ab15bbe3366eb99764b4f86b2aa46dc5b43b8e5ef97280a41ac09658",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                      },
-                      {
-                        "response_bytes": 85723,
-                        "response_sha256": "08d89251b818a65c9d523dc1ea93af6b5b1eef2150c3d70f04e4e81580808848",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                      },
-                      {
-                        "response_bytes": 84157,
-                        "response_sha256": "f9de6533e0a03071297e0e1d9c19ada8f91a75e59141fb89cf2b8811f61bb8b7",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                      },
-                      {
-                        "response_bytes": 90550,
-                        "response_sha256": "fdbbb9dfc85e276db276d78ce71e133eea4de2e00c5fc286a5e3b5d1c1caccea",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                      }
-                    ],
-                    "samples": [],
-                    "scope": "discovery_only",
-                    "slug": "achs_seguro_laboral",
-                    "technical_status": "error"
-                  },
-                  "source_evidence_sha256": "4857dcd971a07eeac36cfe5d05bc12fb8ab80921531a7563c7c363dd18894e75"
-                },
-                {
-                  "captured_stdout_bytes": 99,
-                  "captured_stdout_sha256": "750629578324cd1a852a4ef10c37b6fefb2d779d15da0bf14eee1b49db0b8fce",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "-m",
-                    "pytest",
-                    "-q",
-                    "tests/test_beta_source_package.py",
-                    "tests/test_corporate_newsrooms.py",
-                    "tests/test_live_evidence_replay.py"
-                  ],
-                  "output": "..................                                                       [100%]\n18 passed in 0.26s\n",
-                  "returncode": 0
-                },
-                {
-                  "captured_stdout_bytes": 2221,
-                  "captured_stdout_sha256": "a289d4d24fadc5b506a656182a85003efc0b499aa455364d4ff6201aa01c6aae",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "-m",
-                    "pytest",
-                    "-q"
-                  ],
-                  "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.50s\n",
-                  "returncode": 1
-                },
-                {
-                  "captured_stdout_bytes": 2042,
-                  "captured_stdout_sha256": "e95b0d975248e733a04d12fd9c94ca49cc6cfc37706fff203f9a02c691b429a2",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                    "--diagnose-source",
-                    "achs_seguro_laboral"
-                  ],
-                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"achs_seguro_laboral\", \"technical_status\": \"error\", \"error\": \"RuntimeError: Achs Seguro Laboral has no dated, verified detail items\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.achs.cl/centro-de-noticias\", \"status\": \"PASS\", \"response_sha256\": \"3099dd9df232757793db64179831939461bab1282894c5cbe0a19c1cbd81d1a9\", \"response_bytes\": 94674}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral\", \"status\": \"PASS\", \"response_sha256\": \"1fa9b812dc050f296756a01293fb4703cc8fd353e58b727cee0f3f56d5364643\", \"response_bytes\": 85695}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad\", \"status\": \"PASS\", \"response_sha256\": \"c610043ea2e74af78d8d9c351ac9fbb0a684b5271a2a8aade133b4a66d2a7baf\", \"response_bytes\": 85424}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral\", \"status\": \"PASS\", \"response_sha256\": \"1e97e8c67482dd9d21f78730fb741bac519a7883ba32f50c4d875caf1ef36d8b\", \"response_bytes\": 85723}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion\", \"status\": \"PASS\", \"response_sha256\": \"638b8b76468d28a9e69684bd8e38c819f92e8ae2da9b2dcf7afcf4541c8d4637\", \"response_bytes\": 84157}, {\"url\": \"https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias\", \"status\": \"PASS\", \"response_sha256\": \"d867ff424c582e1f60c1fc7e2960bddda1d85530e7e90d731232f863319a2735\", \"response_bytes\": 90550}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                  "returncode": 1,
-                  "source_evidence": {
-                    "dated": 0,
-                    "discovered": 0,
-                    "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items",
-                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "response_bytes": 94674,
-                        "response_sha256": "3099dd9df232757793db64179831939461bab1282894c5cbe0a19c1cbd81d1a9",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias"
-                      },
-                      {
-                        "response_bytes": 85695,
-                        "response_sha256": "1fa9b812dc050f296756a01293fb4703cc8fd353e58b727cee0f3f56d5364643",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                      },
-                      {
-                        "response_bytes": 85424,
-                        "response_sha256": "c610043ea2e74af78d8d9c351ac9fbb0a684b5271a2a8aade133b4a66d2a7baf",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                      },
-                      {
-                        "response_bytes": 85723,
-                        "response_sha256": "1e97e8c67482dd9d21f78730fb741bac519a7883ba32f50c4d875caf1ef36d8b",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                      },
-                      {
-                        "response_bytes": 84157,
-                        "response_sha256": "638b8b76468d28a9e69684bd8e38c819f92e8ae2da9b2dcf7afcf4541c8d4637",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                      },
-                      {
-                        "response_bytes": 90550,
-                        "response_sha256": "d867ff424c582e1f60c1fc7e2960bddda1d85530e7e90d731232f863319a2735",
-                        "status": "PASS",
-                        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                      }
-                    ],
-                    "samples": [],
-                    "scope": "discovery_only",
-                    "slug": "achs_seguro_laboral",
-                    "technical_status": "error"
-                  },
-                  "source_evidence_sha256": "4a20eed0e8508f3b34b205b2c3907cbe553aeb3a481d5dd5b4e75c1cf199042a"
-                }
-              ],
-              "failure_sha256": "e1bf7d8245cad7127e24631274ff0c96086a5f763b7c5f6293724da281d34c26",
-              "live_baseline": {
-                "dated": 0,
-                "discovered": 0,
-                "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items",
-                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                "newest_event_date": null,
-                "publication_verified": false,
-                "requests": [
-                  {
-                    "response_bytes": 94674,
-                    "response_sha256": "aae87542be2a9b3f58c8d1bee9ea2daad024b7530e4a5cdc225bafb885ae8213",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias"
-                  },
-                  {
-                    "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 42: ordinal not in range(128)",
-                    "status": "FAIL",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral"
-                  },
-                  {
-                    "response_bytes": 85424,
-                    "response_sha256": "02afad47ab15bbe3366eb99764b4f86b2aa46dc5b43b8e5ef97280a41ac09658",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad"
-                  },
-                  {
-                    "response_bytes": 85723,
-                    "response_sha256": "08d89251b818a65c9d523dc1ea93af6b5b1eef2150c3d70f04e4e81580808848",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral"
-                  },
-                  {
-                    "response_bytes": 84157,
-                    "response_sha256": "f9de6533e0a03071297e0e1d9c19ada8f91a75e59141fb89cf2b8811f61bb8b7",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion"
-                  },
-                  {
-                    "response_bytes": 90550,
-                    "response_sha256": "fdbbb9dfc85e276db276d78ce71e133eea4de2e00c5fc286a5e3b5d1c1caccea",
-                    "status": "PASS",
-                    "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias"
-                  }
-                ],
-                "samples": [],
-                "scope": "discovery_only",
-                "slug": "achs_seguro_laboral",
-                "technical_status": "error"
-              },
-              "material_progress": false,
-              "repair_strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
-              "rolled_back": true,
-              "signature": null,
-              "source_run_id": null,
-              "source_slug": "achs_seguro_laboral",
-              "status": "BLOCKED",
-              "validated": false
-            }
           }
         ],
-        "failure_action": "blocked",
-        "fingerprint": "6c11f6974cd4912ae9e3f59d1a9576236bbc8d7e71e6660877fb385cebd7330d",
-        "product_input_fingerprint": "2e3290ad7072100d541e44a68bb7504073a1bfafc853fe40278a33fe84a47c2e",
-        "real_failure": {
-          "failure_signature": "2e1711ae92e4fa6ad4208c85a0931a781a450d387b26709550de273b401d909a",
-          "kind": "source_runtime",
-          "observed_at": "2026-10-11T07:05:47.704253+00:00",
-          "source_slug": "mutual_seguridad",
-          "source_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
-          "trace_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-mutual_seguridad.log",
-          "trace_sha256": "9af86a0b0fd5adcef5321c60ba39de9c2ca49578acf201f690998b87b0eb0dc9",
-          "verified": true
-        },
-        "reason": "Scoped live discovery failed: clinicas_achs_salud; Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256; Scoped live discovery failed: mutual_seguridad; Scoped live discovery failed: achs_seguro_laboral"
+        "fingerprint": "recovery_budget_exhausted:84b1be630eb2ce5d647c754073da04f584e9299ce8652133d1cefd164acdb881",
+        "human_required": false,
+        "kind": "stall_recovery_budget",
+        "product_input_fingerprint": "791130c7234d81aee2dd47c85cfcad2aa629000e457043811712e81664f7c67b",
+        "reason": "Three lease recovery pickups without material progress are exhausted."
       },
       "blocker_signatures": [
         "61dfd66d4bb555a68be378060a4d3775b09cbf3ce7da40b18b66cb09e64c9b20",
         "a71ffae0bd758c59483eebc78b0db6d1b0572d0375a72d95712b9dc09c8aedfa",
         "9c1f5b82415f08a20a3e0febfdf40e0a194b96d60154fddcff748d1424e9531b",
-        "ef7c74e22ce0ee200c0116c47aca7e63677f580d429cb06d247b84c844086cf9"
+        "ef7c74e22ce0ee200c0116c47aca7e63677f580d429cb06d247b84c844086cf9",
+        "2ec80636e2e3d59d161be8ef23c2e8056b3597b84baba5e5d898e3df58e15a56"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
       "declared_repair_inputs": {
@@ -89062,7 +87228,7 @@
       "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
       "failure": null,
       "family": "mutualities",
-      "fence": 16,
+      "fence": 17,
       "id": "source_repair_mutualities_lane_2026_10_11",
       "input_fingerprint": "f43e9ca087fa0107f9c6e882ad625863fbf5c53d3f161d1ddde6e7d9aecf598e",
       "input_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
@@ -90051,17 +88217,9 @@
         }
       ],
       "last_ready_at": "2026-10-11T15:07:18.917675Z",
-      "lease": {
-        "claimed_at": "2026-10-11T15:33:18.899776Z",
-        "expires_at": "2026-10-11T15:43:18.899776Z",
-        "fence": 16,
-        "heartbeat_at": "2026-10-11T15:43:12.620957Z",
-        "owner": "38151653654-1-mutualities",
-        "recovery_deadline_at": "2026-10-11T15:43:18.899776Z",
-        "token": "3f5f0127db127fdddf3eaa29619d0d0f127bfa1bac4d5b6e41650fbf2aee7fa9"
-      },
-      "material_progress_at": "2026-10-11T07:06:00.551910Z",
-      "material_watch_started_at": "2026-10-11T07:06:00.551910Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T15:44:53.889181Z",
+      "material_watch_started_at": "2026-10-11T15:44:53.889181Z",
       "objective": "Recover and reconcile ACHS Salud/Clínicas, ACHS Seguro Laboral, Mutual de Seguridad and IST with live origins and honest 30/90 coverage.",
       "pending_input_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
       "pickup_ready_since": "2026-10-11T15:07:18.917675Z",
@@ -90069,10 +88227,10 @@
       "product_input_fingerprint": "791130c7234d81aee2dd47c85cfcad2aa629000e457043811712e81664f7c67b",
       "queue_status": "in_progress",
       "reason": "no_material_progress_30m",
-      "recovery_episode": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+      "recovery_episode": "809a4c1b8027b0bb512f20f1542db2bdd13f305787ce5759338366514b88adb4",
       "recovery_reclaims": 3,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
-      "status": "RUNNING"
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
+      "status": "BLOCKED"
     },
     "source_repair_public_data_lane_2026_10_11": {
       "approved": true,
@@ -92067,7 +90225,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "b59c31a8e8a6b2198d7fe806538c1c25ffb02035d378bc7223d92b7c3d1c13ea",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "staging_qa_failed_run_38113830124": {
@@ -107114,7 +105272,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c5295fc453e484870ce34bf6d21bb1e1fc6445ee576af78478dcf3f3f5c8cee1",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_cmf_2026_10_11": {
@@ -107183,7 +105341,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "0463f5519e61c2a70c91e3835381d2459badb9bc611e9cdf7031a4d29083ea3d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_dipres_2026_10_11": {
@@ -107252,7 +105410,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "3d52752d3912d2158b859a5f6d9032d9252427728814d38a5db7de1784b27c6d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_fne_2026_10_11": {
@@ -107321,7 +105479,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "68af68accca1b35c7085744e16ceec5e734566b0bdd1ee17eef0f8f92d948272",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_innovation_2026_10_11": {
@@ -107392,7 +105550,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "e847e78d051b0097e00f9fe93ecb8b8cad1318214feeb8077e171c66f81b66bf",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_isapres_2026_10_11": {
@@ -107461,7 +105619,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "9829f867c40d17863cf83c0460f0f79ab13ef16645d4ff42687637b394670a42",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_legal_2026_10_11": {
@@ -107530,7 +105688,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "4343ece0dc2180b75aa2462f7d0053848b6355f84c064c495f0e6878992d35cd",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_occupational_2026_10_11": {
@@ -107599,7 +105757,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "42395920685debe39cc6ee457a06ba424929e5691a1bc1b5394fad7d7c204a26",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_paho_2026_10_11": {
@@ -107668,7 +105826,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "eab01e76913e7dac7572a08788d9f7da2d94ef51aafcb4236cdf247c7e69ae0b",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_procurement_2026_10_11": {
@@ -107737,7 +105895,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a5c013f42eb4035c137fb77738a455455d40a2a3bc590f44179f6cc972399e9b",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_provider_data_2026_10_11": {
@@ -107808,7 +105966,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "eabdaed28307ab96f1a2d2dfc3a4c1fa89e73ba635813f86c01992e507688103",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_providers_2026_10_11": {
@@ -107877,7 +106035,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "2ecb9c9fa89bc9efa7f5b0af6e7fdab5fc9d9a370fc08e80e07a41c415daa1f8",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_reuters_2026_10_11": {
@@ -107946,7 +106104,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "7cdbbf9a9b5d29d58e4606ec1d2fba620a94e74cb1feae5c5ef9679f4c094ed8",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_socioeconomic_2026_10_11": {
@@ -108015,7 +106173,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "4780ada0e4e927769d2d0a770ddcda3176d2f09ee88f597928c481023fa49829",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     },
     "w4_who_2026_10_11": {
@@ -108084,7 +106242,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "f3f06489347d3384ca04c7f6a54de4912f0d5e43bb1f7ac58fa198fb8f17af6f",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T15:33:18.899776Z",
+      "state_changed_at": "2026-10-11T15:44:53.889181Z",
       "status": "BLOCKED"
     }
   }
