@@ -9,8 +9,27 @@ ACHS = "/centro-de-noticias/noticia/2026/"
 
 
 @pytest.fixture(autouse=True)
-def audit_calendar(monkeypatch):
+def audit_calendar(monkeypatch, tmp_path):
     monkeypatch.setattr("radar_salud.occupational_sources.chile_today", lambda: date(2026, 10, 11))
+    monkeypatch.setattr("radar_salud.occupational_evidence.project_root", lambda: tmp_path)
+    original = CuratedBetaSourceScout.discover_from_html
+    def captured(self, html, detail_loader=None):
+        cache = {}
+        def load(url):
+            if url not in cache:
+                cache[url] = detail_loader(url)
+            return cache[url]
+        rows = original(self, html, load)
+        import hashlib
+        for raw in rows:
+            body = cache[raw.url].encode()
+            path = tmp_path / "data/audits/source_e_recovery/fixture" / (hashlib.sha256(raw.url.encode()).hexdigest() + ".body")
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(body)
+            raw.metadata["capture_evidence"] = {"url": raw.url, "final_url": raw.url, "http_status": 200,
+                                                 "tls_verified": True, "sha256": hashlib.sha256(body).hexdigest(), "artifact": str(path)}
+        return rows
+    monkeypatch.setattr(CuratedBetaSourceScout, "discover_from_html", captured)
 
 
 def detail(title, published="24/09/2026", body=None, meta=""):
@@ -20,7 +39,7 @@ def detail(title, published="24/09/2026", body=None, meta=""):
     return (f'<meta property="article:published_time" content="{meta}">' if meta else "") + (
         '<nav>10/08/2016 Clínicas Achs Salud Fonasa prevención</nav>'
         '<script>"datePublished": "2016-11-02"</script>'
-        f'<h1>{title}</h1><div>{published}</div><p>{body}</p>'
+        f'<h1>{title}</h1><div class="publication-date">{published}</div><p>{body}</p>'
         '<h2>Últimas publicaciones</h2><p>05/10/2026 Clínica Atacama Achs Salud inaugura pabellón</p>'
         '<footer>Fonasa, convenios, mutualidades</footer>')
 
@@ -125,7 +144,7 @@ def test_quantified_work_accidents_are_material_but_advice_is_not():
 def test_processing_reuses_scoped_detail_and_rejects_before_llm(monkeypatch):
     scout = CuratedBetaSourceScout("achs_seguro_laboral")
     rows = scout.discover_from_html(f'<a href="{ACHS}campana">Ver detalle</a>',
-                                   lambda url: detail("Campaña por salud mental laboral"))
+                                   lambda url: detail("Campaña por salud mental laboral", body="Jornada de difusión de consejos generales de bienestar. " * 5))
     def forbidden(*args, **kwargs):
         raise AssertionError("must not fetch or call paid analysis for rejected material")
     monkeypatch.setattr("radar_salud.public_source_pipeline.fetch_html", forbidden)
@@ -171,7 +190,12 @@ def test_proxy_denial_records_executor_blocker_not_origin_http_status(monkeypatc
     from urllib.error import URLError
     def denied(url):
         raise URLError("Tunnel connection failed: 403 Forbidden")
-    monkeypatch.setattr("radar_salud.beta_sources.fetch_html", denied)
+    class DeniedLoader:
+        def __init__(self, *args, **kwargs):
+            pass
+        def __call__(self, url):
+            return denied(url)
+    monkeypatch.setattr("radar_salud.occupational_capture.CaptureLoader", DeniedLoader)
     with pytest.raises(SourceDiscoveryError) as exc:
         CuratedBetaSourceScout("mutual_seguridad").discover()
     assert exc.value.code == "executor_proxy_denied"
@@ -220,7 +244,7 @@ def test_core_collector_continues_after_mutual_blocker_and_records_noise_rejecti
                 raise SourceDiscoveryError("external_waf_challenge", self.cfg["page"])
             if self.slug == "achs_seguro_laboral":
                 return self.discover_from_html(f'<a href="{ACHS}campana">Ver detalle</a>',
-                                               lambda url: detail("Campaña por salud mental laboral"))
+                                               lambda url: detail("Campaña por salud mental laboral", body="Jornada de difusión de consejos generales de bienestar. " * 5))
             return []
     for name in ("SuperintendenciaStatsScout", "SuperintendenciaNormativaScout", "SuperintendenciaFiscalizacionScout",
                  "MinsalNewsScout", "SusesoNormativeScout", "SusesoNewsScout", "SusesoFiscalizacionScout", "DfHealthScout",

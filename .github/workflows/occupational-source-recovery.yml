@@ -14,7 +14,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: occupational-source-recovery-${{ github.ref }}
+  group: alicanto-staging-writer
   cancel-in-progress: false
 
 jobs:
@@ -32,8 +32,17 @@ jobs:
           python scripts/occupational_access_probe.py --environment github_actions --output "data/audits/source_e_recovery/actions/${GITHUB_RUN_ID}" --targets-json config/occupational_recovery_routes.json
       - name: Build complete scoped inventories and reconcile durable decisions
         if: hashFiles('scripts/occupational_inventory.py') != ''
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          RADAR_FAST_MODEL: gpt-5.6-luna
+          RADAR_FAST_PER_RUN: 30
+          RADAR_FAST_PER_MONTH: 1500
+          RADAR_DEEP_PER_RUN: 0
         run: |
           pip install -e .
+          git fetch origin staging
+          git show FETCH_HEAD:data/ai_usage/$(date -u +%Y-%m).json > /tmp/occupational-staging-ai-usage.json
+          python scripts/occupational_inventory.py --sync-budget /tmp/occupational-staging-ai-usage.json
           python scripts/occupational_inventory.py --output "data/audits/source_e_recovery/actions/${GITHUB_RUN_ID}/inventory" --apply
       - uses: actions/upload-artifact@v4
         if: always()
@@ -49,9 +58,11 @@ jobs:
           git config user.name 'Alicanto source evidence'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "data/audits/source_e_recovery/actions/${GITHUB_RUN_ID}"
-          for file in data/state/pending_queue.json data/state/occupational_source_discovery.json data/source_health.json web/data/source_health.json; do
+          for file in data/state/pending_queue.json data/state/occupational_source_discovery.json data/history/superintendencia_signals.json data/source_health.json web/data/source_health.json; do
             if test -f "$file"; then git add "$file"; fi
           done
+          if test -d data/ai_usage; then git add data/ai_usage; fi
+          if test -d data/telemetry; then git add data/telemetry; fi
           git commit -m "audit(occupational): capture public origins in Actions ${GITHUB_RUN_ID}"
           git pull --rebase origin codex/e-salud-laboral-20261011
           git push origin HEAD:codex/e-salud-laboral-20261011
