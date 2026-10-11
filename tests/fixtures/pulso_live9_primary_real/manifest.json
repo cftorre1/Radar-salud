@@ -17,12 +17,29 @@
     "queue_path": "data/state/pending_queue.json",
     "queue_sha256": "d44cfa10569f34cf1e1f8a7746d26bd71728d069679c89b756387381123eddf8"
   },
+  "verified_supplemental_original_artifacts": [
+    {
+      "artifact_run_id": 38159032940,
+      "artifact_id": 11710432466,
+      "artifact_zip_sha256": "57eec3e2b193d4dd6b7894faf112f459710258ce074e27ab7fd3e5ecf11db52b"
+    },
+    {
+      "artifact_run_id": 38172352115,
+      "artifact_id": 11714388920,
+      "artifact_zip_sha256": "23ba2e30ff5dbe3dacde409badf63c278c2b51308843c3d21b678894e423b001"
+    },
+    {
+      "artifact_run_id": 38181190464,
+      "artifact_id": 11718153077,
+      "artifact_zip_sha256": "7fa4b6850451f9aa7093446072fdb14a62bb5b63e351248300ba52cceb3d210d"
+    }
+  ],
   "current_artifact_run_id": 38183583899,
   "current_artifact_id": 11718992843,
   "current_artifact_zip_sha256": "9346939527e5ece2c6ff82c8e0659489e9ae26c6af1034527b29b9d6570d3c02",
-  "retained_at": "2026-10-11T23:40:35.606183+00:00",
+  "retained_at": "2026-10-11T23:44:32.381605+00:00",
   "targets": 9,
-  "retained_originals": 4,
+  "retained_originals": 9,
   "refreshed_primary_targets": 1,
   "retained_refreshed_originals": 1,
   "requests": [
@@ -111,9 +128,10 @@
       "expected_html_sha256": "2b26c82563487d7d05a31e18d78c81fb637e14feaaa503cd79886fd6106122af",
       "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
       "queue_fingerprint": "76cdc28597009114d576b7e20314a93ed1390c31008b831ba7b2f47968ee40a7",
-      "target_stage": "original_discovery_primary",
       "artifact_run_id": 38149773071,
-      "artifact_id": 11707255596
+      "artifact_id": 11707255596,
+      "artifact_zip_sha256": "481a48062b1a689a370df5040a211889ba59d664f0f0b9a2fad5728e86d0c26e",
+      "target_stage": "original_discovery_primary"
     },
     {
       "url": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
@@ -201,9 +219,10 @@
       "expected_html_sha256": "9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049",
       "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
       "queue_fingerprint": "bbc92593ad927019d68a04f3427e469aedea0e236c2532af9da9af0dfc38309b",
-      "target_stage": "original_discovery_primary",
       "artifact_run_id": 38149773071,
-      "artifact_id": 11707255596
+      "artifact_id": 11707255596,
+      "artifact_zip_sha256": "481a48062b1a689a370df5040a211889ba59d664f0f0b9a2fad5728e86d0c26e",
+      "target_stage": "original_discovery_primary"
     },
     {
       "url": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
@@ -293,9 +312,10 @@
       "expected_html_sha256": "7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3",
       "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
       "queue_fingerprint": "cab108224d311493028b294814e4e971ec29e91168face4427bc9ebf8b58f9e1",
-      "target_stage": "original_discovery_primary",
       "artifact_run_id": 38149773071,
-      "artifact_id": 11707255596
+      "artifact_id": 11707255596,
+      "artifact_zip_sha256": "481a48062b1a689a370df5040a211889ba59d664f0f0b9a2fad5728e86d0c26e",
+      "target_stage": "original_discovery_primary"
     },
     {
       "url": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
@@ -386,9 +406,473 @@
       "expected_html_sha256": "298e026ace0051f53e23f58b2904026a9a40293726660e0c1cc9a5ae9b8d9105",
       "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
       "queue_fingerprint": "163e2e80aec2d66306c976c8de5b8aaf03eda3e0438ae9c8a6a67c6fe490396a",
-      "target_stage": "original_discovery_primary",
       "artifact_run_id": 38149773071,
-      "artifact_id": 11707255596
+      "artifact_id": 11707255596,
+      "artifact_zip_sha256": "481a48062b1a689a370df5040a211889ba59d664f0f0b9a2fad5728e86d0c26e",
+      "target_stage": "original_discovery_primary"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+      "requested_at": "2026-10-11T17:20:11.504091+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+      "content_type": "text/html; charset=utf-8",
+      "charset": "utf-8",
+      "captured_at": "2026-10-11T17:20:11.827104+00:00",
+      "bytes": 440863,
+      "sha256": "5b772d61fa3df4799765d58d05a009075f591f5d8492bfc74ba3ea56af05716b",
+      "returned_text_utf8_sha256": "5b772d61fa3df4799765d58d05a009075f591f5d8492bfc74ba3ea56af05716b",
+      "observed": {
+        "canonical": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+        "metadata": {
+          "og:url": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+          "og:title": "Universidad Católica lamenta muerte de Penélope Knuth tras accidente en Valparaíso - La Tercera",
+          "article:section": "Nacional",
+          "article:modified_time": "2026-10-11T16:14:42.766Z",
+          "article:published_time": "2026-10-11T16:02:51.913Z"
+        },
+        "json_ld": [
+          {
+            "@type": "NewsArticle",
+            "@id": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/#article",
+            "url": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+              "name": "Universidad Católica lamenta muerte de Penélope Knuth tras accidente en Valparaíso",
+              "primaryImageOfPage": {
+                "@type": "ImageObject",
+                "width": 1600,
+                "height": 900,
+                "url": "https://www.latercera.com/resizer/v2/2VI3BHUQHNFBPE7FK5AVDWHLTY.JPG?auth=4f0aac23b6bffd1b2b1186b55eb55b2c892a21b181c6f482a8096c61c06f88fd&height=900&width=1600&smart=true",
+                "description": "Casa Central Universidad Católica"
+              }
+            },
+            "headline": "Universidad Católica lamenta muerte de Penélope Knuth tras accidente en Valparaíso",
+            "datePublished": "2026-10-11T16:02:51.913Z",
+            "dateModified": "2026-10-11T16:14:42.766Z",
+            "articleSection": "Nacional",
+            "keywords": [
+              "Valparaíso",
+              "Universidad Católica",
+              "Penélope Knuth",
+              "Accidente"
+            ]
+          },
+          {
+            "@type": "BreadcrumbList"
+          },
+          {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://www.latercera.com/#organization",
+            "url": "https://www.latercera.com/"
+          },
+          {
+            "@type": "WebSite",
+            "url": "https://www.latercera.com/"
+          }
+        ]
+      },
+      "primary_article": {
+        "title": "Universidad Católica lamenta muerte de Penélope Knuth tras accidente en Valparaíso",
+        "publication_date": "2026-10-11",
+        "publication_timestamp": "2026-10-11T16:02:51.913Z",
+        "publication_date_source": "visible_article_byline",
+        "section": "Nacional",
+        "health_relevant": true
+      },
+      "gzip_file": "tests/fixtures/pulso_live9_primary_real/5b772d61fa3df4799765d58d05a009075f591f5d8492bfc74ba3ea56af05716b.html.gz",
+      "gzip_sha256": "d87e8fcc1848e859c05b5f1ad06851bebe3575484d25d54cf34f72fdb0f3e422",
+      "retention_reason": "verified_primary_health_article",
+      "original_capture_gzip_file": "responses/5b772d61fa3df4799765d58d05a009075f591f5d8492bfc74ba3ea56af05716b.gz",
+      "original_capture_manifest_sha256": "87b9bf360a6b3966dfedc09ebbb750123f940cce6dd13742bcf0c04e8a90fecb",
+      "original_capture_manifest_path": "data/audits/pulso_runtime_capture/manifest.json",
+      "capture_provenance": "preserved_original_http_response",
+      "primary_identity_verified": true,
+      "publication_date_verified": true,
+      "publication_date": "2026-10-11",
+      "publication_date_source": "visible_article_byline",
+      "primary_body_sha256": "6ec4e6d5db14ab4c9f3f2f3e369bcebb67ae997977ad9a6a00b5e08ac76f5885",
+      "primary_body_characters": 3189,
+      "expected_html_sha256": "5b772d61fa3df4799765d58d05a009075f591f5d8492bfc74ba3ea56af05716b",
+      "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
+      "queue_fingerprint": "48c017ec9f9ca492c3f0ae7bebe9684c98225101a2e128aeee60d4895b7b0657",
+      "artifact_run_id": 38159032940,
+      "artifact_id": 11710432466,
+      "artifact_zip_sha256": "57eec3e2b193d4dd6b7894faf112f459710258ce074e27ab7fd3e5ecf11db52b",
+      "target_stage": "original_discovery_primary"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+      "requested_at": "2026-10-11T17:20:11.753540+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+      "content_type": "text/html; charset=utf-8",
+      "charset": "utf-8",
+      "captured_at": "2026-10-11T17:20:12.027437+00:00",
+      "bytes": 449448,
+      "sha256": "1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25",
+      "returned_text_utf8_sha256": "1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25",
+      "observed": {
+        "canonical": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+        "metadata": {
+          "og:url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+          "og:title": "Aluvión en Las Condes: municipio reporta 2.015 viviendas afectadas y 933 atenciones en vacunatorios - La Tercera",
+          "article:section": "Nacional",
+          "article:modified_time": "2026-10-11T15:16:25.221Z",
+          "article:published_time": "2026-10-11T15:16:25.081Z"
+        },
+        "json_ld": [
+          {
+            "@type": "NewsArticle",
+            "@id": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/#article",
+            "url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+              "name": "Aluvión en Las Condes: municipio reporta 2.015 viviendas afectadas y 933 atenciones en vacunatorios",
+              "primaryImageOfPage": {
+                "@type": "ImageObject",
+                "width": 1600,
+                "height": 900,
+                "url": "https://www.latercera.com/resizer/v2/F5DBD6YVWJBEXLVBW7PTELWFWU.jpg?auth=58cbcb402409d66a4c1a44a163307da8df39424273c9e7165686b94cea5083e6&height=900&width=1600&smart=true",
+                "description": "Aluvión en Las Condes: municipio reporta 2.015 viviendas afectadas y 933 atenciones en vacunatorios"
+              }
+            },
+            "headline": "Aluvión en Las Condes: municipio reporta 2.015 viviendas afectadas y 933 atenciones en vacunatorios",
+            "datePublished": "2026-10-11T15:16:25.081Z",
+            "dateModified": "2026-10-11T15:16:25.221Z",
+            "articleSection": "Nacional",
+            "keywords": [
+              "Las Condes",
+              "Aluvión",
+              "San Carlos de Apoquindo",
+              "Catalina San Martín",
+              "Vacunación",
+              "Nacional"
+            ]
+          },
+          {
+            "@type": "BreadcrumbList"
+          },
+          {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://www.latercera.com/#organization",
+            "url": "https://www.latercera.com/"
+          },
+          {
+            "@type": "WebSite",
+            "url": "https://www.latercera.com/"
+          }
+        ]
+      },
+      "primary_article": {
+        "title": "Aluvión en Las Condes: municipio reporta 2.015 viviendas afectadas y 933 atenciones en vacunatorios",
+        "publication_date": "2026-10-11",
+        "publication_timestamp": "2026-10-11T15:16:25.081Z",
+        "publication_date_source": "visible_article_byline",
+        "section": "Nacional",
+        "health_relevant": true
+      },
+      "gzip_file": "tests/fixtures/pulso_live9_primary_real/1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25.html.gz",
+      "gzip_sha256": "bae19c804b2bf9975f85a9f8ddec1c6db75c8289716b1a5e8c948cb4b238e459",
+      "retention_reason": "verified_primary_health_article",
+      "original_capture_gzip_file": "responses/1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25.gz",
+      "original_capture_manifest_sha256": "87b9bf360a6b3966dfedc09ebbb750123f940cce6dd13742bcf0c04e8a90fecb",
+      "original_capture_manifest_path": "data/audits/pulso_runtime_capture/manifest.json",
+      "capture_provenance": "preserved_original_http_response",
+      "primary_identity_verified": true,
+      "publication_date_verified": true,
+      "publication_date": "2026-10-11",
+      "publication_date_source": "visible_article_byline",
+      "primary_body_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+      "primary_body_characters": 4866,
+      "expected_html_sha256": "1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25",
+      "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
+      "queue_fingerprint": "1f3c9b4fdad8a36de23c44b6e8ca57b9870177e1fb6dd52bb5cde1e095441392",
+      "artifact_run_id": 38159032940,
+      "artifact_id": 11710432466,
+      "artifact_zip_sha256": "57eec3e2b193d4dd6b7894faf112f459710258ce074e27ab7fd3e5ecf11db52b",
+      "target_stage": "original_discovery_primary"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+      "requested_at": "2026-10-11T20:34:02.855746+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+      "content_type": "text/html; charset=utf-8",
+      "charset": "utf-8",
+      "captured_at": "2026-10-11T20:34:02.990860+00:00",
+      "bytes": 432280,
+      "sha256": "c80e39904f0edea2f0abbd94c81d5c979361d9c6aadc17d21c50bf336f098a95",
+      "returned_text_utf8_sha256": "c80e39904f0edea2f0abbd94c81d5c979361d9c6aadc17d21c50bf336f098a95",
+      "observed": {
+        "canonical": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+        "metadata": {
+          "og:url": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+          "og:title": "Abogado de Aliste Vega apunta a penal de Rancagua y evalúa acciones legales contra el Estado tras su muerte - La Tercera",
+          "article:section": "Nacional",
+          "article:modified_time": "2026-10-11T19:50:58.263Z",
+          "article:published_time": "2026-10-11T19:50:58.129Z"
+        },
+        "json_ld": [
+          {
+            "@type": "NewsArticle",
+            "@id": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/#article",
+            "url": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+              "name": "Abogado de Aliste Vega apunta a penal de Rancagua y evalúa acciones legales contra el Estado tras su muerte",
+              "primaryImageOfPage": {
+                "@type": "ImageObject",
+                "width": 1600,
+                "height": 900,
+                "url": "https://www.latercera.com/resizer/v2/MPHAK5ZXAVHF5AUSIAOPFLD7P4.JPG?auth=6ffa1bffe8293eca5816223b88d3cd2978fe0abc0573e3dab1069f77520199af&height=900&width=1600&smart=true",
+                "description": "Abogado de Aliste Vega apunta a penal de Rancagua y evalúa acciones legales contra el Estado tras su muerte"
+              }
+            },
+            "headline": "Abogado de Aliste Vega apunta a penal de Rancagua y evalúa acciones legales contra el Estado tras su muerte",
+            "datePublished": "2026-10-11T19:50:58.129Z",
+            "dateModified": "2026-10-11T19:50:58.263Z",
+            "articleSection": "Nacional",
+            "keywords": [
+              "Juan Aliste Vega",
+              "Estado",
+              "Nacional",
+              "Gendarmería de Chile",
+              "Indulto"
+            ]
+          },
+          {
+            "@type": "BreadcrumbList"
+          },
+          {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://www.latercera.com/#organization",
+            "url": "https://www.latercera.com/"
+          },
+          {
+            "@type": "WebSite",
+            "url": "https://www.latercera.com/"
+          }
+        ]
+      },
+      "primary_article": {
+        "title": "Abogado de Aliste Vega apunta a penal de Rancagua y evalúa acciones legales contra el Estado tras su muerte",
+        "publication_date": "2026-10-11",
+        "publication_timestamp": "2026-10-11T19:50:58.129Z",
+        "publication_date_source": "visible_article_byline",
+        "section": "Nacional",
+        "health_relevant": true
+      },
+      "gzip_file": "tests/fixtures/pulso_live9_primary_real/c80e39904f0edea2f0abbd94c81d5c979361d9c6aadc17d21c50bf336f098a95.html.gz",
+      "gzip_sha256": "e4fc2bec49205b2ac38eb718cf68dd69bf02d7c18d97b49eeef941dcc85efd31",
+      "retention_reason": "verified_primary_health_article",
+      "original_capture_gzip_file": "responses/c80e39904f0edea2f0abbd94c81d5c979361d9c6aadc17d21c50bf336f098a95.gz",
+      "original_capture_manifest_sha256": "c580009389bb0ee3282c016a4cfe73d5a6ff151b557e3ecf2cb8fb436e24e090",
+      "original_capture_manifest_path": "data/audits/pulso_runtime_capture/manifest.json",
+      "capture_provenance": "preserved_original_http_response",
+      "primary_identity_verified": true,
+      "publication_date_verified": true,
+      "publication_date": "2026-10-11",
+      "publication_date_source": "visible_article_byline",
+      "primary_body_sha256": "bc1b361e5a23f3225e35d27dd4e42d1488a8408deb93ebbbd6952657e009ee9b",
+      "primary_body_characters": 2761,
+      "expected_html_sha256": "c80e39904f0edea2f0abbd94c81d5c979361d9c6aadc17d21c50bf336f098a95",
+      "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
+      "queue_fingerprint": "d3f50bfb73fb868ff68b8a68d9997de170ce61234b1a344b782f7d1508fcc676",
+      "artifact_run_id": 38172352115,
+      "artifact_id": 11714388920,
+      "artifact_zip_sha256": "23ba2e30ff5dbe3dacde409badf63c278c2b51308843c3d21b678894e423b001",
+      "target_stage": "original_discovery_primary"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+      "requested_at": "2026-10-11T20:35:47.948373+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+      "content_type": "text/html; charset=utf-8",
+      "charset": "utf-8",
+      "captured_at": "2026-10-11T20:35:48.379772+00:00",
+      "bytes": 454461,
+      "sha256": "9bd23f2f884108a559433654f0614fcce2af6a725dacf2693f2968c260772ce3",
+      "returned_text_utf8_sha256": "9bd23f2f884108a559433654f0614fcce2af6a725dacf2693f2968c260772ce3",
+      "observed": {
+        "canonical": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+        "metadata": {
+          "og:url": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+          "og:title": "Muerte de Aliste Vega reabre debate por indultos: de exigir “celeridad” en tramitación a advertir límites por lesa humanidad - La Tercera",
+          "article:section": "Política",
+          "article:modified_time": "2026-10-11T20:34:06.636Z",
+          "article:published_time": "2026-10-11T19:10:33.088Z"
+        },
+        "json_ld": [
+          {
+            "@type": "NewsArticle",
+            "@id": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/#article",
+            "url": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+              "name": "Muerte de Aliste Vega reabre debate por indultos: de exigir “celeridad” en tramitación a advertir límites por lesa humanidad",
+              "primaryImageOfPage": {
+                "@type": "ImageObject",
+                "width": 1600,
+                "height": 900,
+                "url": "https://www.latercera.com/resizer/v2/SASFQXPLBRE2FNUGEUZDSAWY4Q.JPG?auth=4518ca1bdec7b55d436a09ac63db4a6c17f530eced7fd425d8c1b920630077d4&height=900&width=1600&smart=true",
+                "description": "Muerte de Aliste Vega reaviva debate por indultos humanitarios: Republicanos los defiende y Carmona marca límites"
+              }
+            },
+            "headline": "Muerte de Aliste Vega reabre debate por indultos: de exigir “celeridad” en tramitación a advertir límites por lesa humanidad",
+            "datePublished": "2026-10-11T19:10:33.088Z",
+            "dateModified": "2026-10-11T20:34:06.636Z",
+            "articleSection": "Política",
+            "keywords": [
+              "Juan Aliste Vega",
+              "Indultos",
+              "Nacional",
+              "Política",
+              "Oficialismo",
+              "Republicanos",
+              "Carmona"
+            ]
+          },
+          {
+            "@type": "BreadcrumbList"
+          },
+          {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://www.latercera.com/#organization",
+            "url": "https://www.latercera.com/"
+          },
+          {
+            "@type": "WebSite",
+            "url": "https://www.latercera.com/"
+          }
+        ]
+      },
+      "primary_article": {
+        "title": "Muerte de Aliste Vega reabre debate por indultos: de exigir “celeridad” en tramitación a advertir límites por lesa humanidad",
+        "publication_date": "2026-10-11",
+        "publication_timestamp": "2026-10-11T19:10:33.088Z",
+        "publication_date_source": "visible_article_byline",
+        "section": "Política",
+        "health_relevant": true
+      },
+      "gzip_file": "tests/fixtures/pulso_live9_primary_real/9bd23f2f884108a559433654f0614fcce2af6a725dacf2693f2968c260772ce3.html.gz",
+      "gzip_sha256": "1217d9e1a466bab8115a960d1ec6871d787635d632f8a7b13728748a8326246d",
+      "retention_reason": "verified_primary_health_article",
+      "original_capture_gzip_file": "responses/9bd23f2f884108a559433654f0614fcce2af6a725dacf2693f2968c260772ce3.gz",
+      "original_capture_manifest_sha256": "c580009389bb0ee3282c016a4cfe73d5a6ff151b557e3ecf2cb8fb436e24e090",
+      "original_capture_manifest_path": "data/audits/pulso_runtime_capture/manifest.json",
+      "capture_provenance": "preserved_original_http_response",
+      "primary_identity_verified": true,
+      "publication_date_verified": true,
+      "publication_date": "2026-10-11",
+      "publication_date_source": "visible_article_byline",
+      "primary_body_sha256": "46827634e3ce478bc5df6c182322871810c0a4c4e543f25ed859f67b995688b2",
+      "primary_body_characters": 4824,
+      "expected_html_sha256": "9bd23f2f884108a559433654f0614fcce2af6a725dacf2693f2968c260772ce3",
+      "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
+      "queue_fingerprint": "e7b3ca96c457220c2864feae3f174889348b408fd6496ffd51e24bd53e6132c6",
+      "artifact_run_id": 38172352115,
+      "artifact_id": 11714388920,
+      "artifact_zip_sha256": "23ba2e30ff5dbe3dacde409badf63c278c2b51308843c3d21b678894e423b001",
+      "target_stage": "original_discovery_primary"
+    },
+    {
+      "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+      "requested_at": "2026-10-11T22:52:15.073900+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+      "content_type": "text/html; charset=utf-8",
+      "charset": "utf-8",
+      "captured_at": "2026-10-11T22:52:15.605326+00:00",
+      "bytes": 433966,
+      "sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
+      "returned_text_utf8_sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
+      "observed": {
+        "canonical": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+        "metadata": {
+          "og:url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+          "og:title": "Renocido actor Gabriel Prieto fallece a los 65 años - La Tercera",
+          "article:section": "Culto",
+          "article:modified_time": "2026-10-11T22:47:50.004Z",
+          "article:published_time": "2026-10-11T22:47:49.888Z"
+        },
+        "json_ld": [
+          {
+            "@type": "NewsArticle",
+            "@id": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/#article",
+            "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+              "name": "Renocido actor Gabriel Prieto fallece a los 65 años ",
+              "primaryImageOfPage": {
+                "@type": "ImageObject",
+                "width": 1600,
+                "height": 900,
+                "url": "https://www.latercera.com/resizer/v2/EPBC5NIKJNDGNOCQCCLTS3E54A.jpg?auth=edf94f37facb0a67be2395945495e8e56b63bacdd5be1f691f97fb58e410fd14&height=900&width=1600&focal=600%2C158",
+                "description": "Gabriel Prieto"
+              }
+            },
+            "headline": "Renocido actor Gabriel Prieto fallece a los 65 años ",
+            "datePublished": "2026-10-11T22:47:49.888Z",
+            "dateModified": "2026-10-11T22:47:50.004Z",
+            "articleSection": "Culto",
+            "keywords": [
+              "Gabriel Prieto",
+              "Fallecimiento",
+              "Actor",
+              "Covid-19",
+              "Culto",
+              "ChileActores"
+            ]
+          },
+          {
+            "@type": "BreadcrumbList"
+          },
+          {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://www.latercera.com/#organization",
+            "url": "https://www.latercera.com/"
+          },
+          {
+            "@type": "WebSite",
+            "url": "https://www.latercera.com/"
+          }
+        ]
+      },
+      "primary_article": {
+        "title": "Renocido actor Gabriel Prieto fallece a los 65 años",
+        "publication_date": "2026-10-11",
+        "publication_timestamp": "2026-10-11T22:47:49.888Z",
+        "publication_date_source": "visible_article_byline",
+        "section": "Culto",
+        "health_relevant": true
+      },
+      "gzip_file": "tests/fixtures/pulso_live9_primary_real/4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414.html.gz",
+      "gzip_sha256": "83462db35e4d8b69e259ccb688c947955ed59e909ae75fe68972fad17e18cb45",
+      "retention_reason": "verified_primary_health_article",
+      "original_capture_gzip_file": "responses/4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414.gz",
+      "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f",
+      "original_capture_manifest_path": "data/audits/pulso_runtime_capture/manifest.json",
+      "capture_provenance": "preserved_original_http_response",
+      "primary_identity_verified": true,
+      "publication_date_verified": true,
+      "publication_date": "2026-10-11",
+      "publication_date_source": "visible_article_byline",
+      "primary_body_sha256": "94e66cb5eac914c75172013ca91b92d2c568cd2f1ebcffe0cda9e70e29e4dfc3",
+      "primary_body_characters": 2645,
+      "expected_html_sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
+      "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
+      "queue_fingerprint": "a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280",
+      "artifact_run_id": 38181190464,
+      "artifact_id": 11718153077,
+      "artifact_zip_sha256": "7fa4b6850451f9aa7093446072fdb14a62bb5b63e351248300ba52cceb3d210d",
+      "target_stage": "original_discovery_primary"
     },
     {
       "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
@@ -483,65 +967,9 @@
       "artifact_id": 11718992843
     }
   ],
-  "missing": [
-    {
-      "url": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
-      "queue_fingerprint": "48c017ec9f9ca492c3f0ae7bebe9684c98225101a2e128aeee60d4895b7b0657",
-      "title": "Universidad Católica lamenta muerte de Penélope Knuth tras accidente en Valparaíso",
-      "publication_date": "2026-10-11",
-      "html_sha256": "5b772d61fa3df4799765d58d05a009075f591f5d8492bfc74ba3ea56af05716b",
-      "body_sha256": "6ec4e6d5db14ab4c9f3f2f3e369bcebb67ae997977ad9a6a00b5e08ac76f5885",
-      "body_characters": 3189,
-      "status": "EXACT_ORIGINAL_MISSING_OR_INVALID",
-      "errors": []
-    },
-    {
-      "url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
-      "queue_fingerprint": "1f3c9b4fdad8a36de23c44b6e8ca57b9870177e1fb6dd52bb5cde1e095441392",
-      "title": "Aluvión en Las Condes: municipio reporta 2.015 viviendas afectadas y 933 atenciones en vacunatorios",
-      "publication_date": "2026-10-11",
-      "html_sha256": "1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25",
-      "body_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
-      "body_characters": 4866,
-      "status": "EXACT_ORIGINAL_MISSING_OR_INVALID",
-      "errors": []
-    },
-    {
-      "url": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
-      "queue_fingerprint": "d3f50bfb73fb868ff68b8a68d9997de170ce61234b1a344b782f7d1508fcc676",
-      "title": "Abogado de Aliste Vega apunta a penal de Rancagua y evalúa acciones legales contra el Estado tras su muerte",
-      "publication_date": "2026-10-11",
-      "html_sha256": "c80e39904f0edea2f0abbd94c81d5c979361d9c6aadc17d21c50bf336f098a95",
-      "body_sha256": "bc1b361e5a23f3225e35d27dd4e42d1488a8408deb93ebbbd6952657e009ee9b",
-      "body_characters": 2761,
-      "status": "EXACT_ORIGINAL_MISSING_OR_INVALID",
-      "errors": []
-    },
-    {
-      "url": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
-      "queue_fingerprint": "e7b3ca96c457220c2864feae3f174889348b408fd6496ffd51e24bd53e6132c6",
-      "title": "Muerte de Aliste Vega reabre debate por indultos: de exigir “celeridad” en tramitación a advertir límites por lesa humanidad",
-      "publication_date": "2026-10-11",
-      "html_sha256": "9bd23f2f884108a559433654f0614fcce2af6a725dacf2693f2968c260772ce3",
-      "body_sha256": "46827634e3ce478bc5df6c182322871810c0a4c4e543f25ed859f67b995688b2",
-      "body_characters": 4824,
-      "status": "EXACT_ORIGINAL_MISSING_OR_INVALID",
-      "errors": []
-    },
-    {
-      "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
-      "queue_fingerprint": "a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280",
-      "title": "Renocido actor Gabriel Prieto fallece a los 65 años",
-      "publication_date": "2026-10-11",
-      "html_sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
-      "body_sha256": "94e66cb5eac914c75172013ca91b92d2c568cd2f1ebcffe0cda9e70e29e4dfc3",
-      "body_characters": 2645,
-      "status": "EXACT_ORIGINAL_MISSING_OR_INVALID",
-      "errors": []
-    }
-  ],
+  "missing": [],
   "refreshed_missing": [],
-  "verdict": "FAIL_ORIGINALS_INCOMPLETE",
+  "verdict": "PASS_ALL9_AND_UPDATED_PAID_PRIMARY_EXACT_ORIGINALS",
   "no_publisher_request": true,
   "no_model_call": true,
   "no_discovery_call": true,
