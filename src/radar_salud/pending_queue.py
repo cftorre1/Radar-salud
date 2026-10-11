@@ -5,6 +5,7 @@ checkpoints; a processing item is retryable after interruption.
 """
 import hashlib
 import json
+from copy import deepcopy
 from dataclasses import asdict
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -75,6 +76,48 @@ def current_sanction_stock(raw, now):
         and raw.event_date == raw.metadata.get('emission_date')
         and current_professional_suspension(raw.url, raw.metadata, now.date()))
 
+
+def _reviewed_pulso_admission(raw, previous):
+    """Bind a new analysis release to the exact existing reviewed hold.
+
+    Fresh primary fields always win. Only the earlier editorial context is
+    copied for the immutable addendum verifier; terminal records never enter
+    this path. The returned item grants analysis, never publication.
+    """
+    if previous.get("status") not in {"pending", "retry"}:
+        return None
+    old = previous.get("raw", {}).get("metadata", {})
+    if not old.get("editorial_hold") and not isinstance(old.get("incremental_review_addendum"), dict):
+        return None
+    assessment = old.get("editorial_assessment")
+    if old.get("editorial_hold") and (not isinstance(assessment, dict)
+            or assessment.get("decision") != "pending"
+            or assessment.get("reason") != old["editorial_hold"]):
+        return None
+    from .pulso_incremental_review import apply_incremental_review, verified_incremental_release
+    from .pulso_source import complete_article_body
+    candidate = deepcopy(raw)
+    # Normal discovery retains the complete body/hash without this processor
+    # annotation. Derive it from that proof before admission, never override
+    # an explicit incomplete primary document.
+    candidate.metadata.setdefault("article_body_complete", complete_article_body(candidate.metadata))
+    for field in ("incremental_review", "incremental_review_addendum",
+                  "editorial_review_context", "event_equivalence_review"):
+        if field in old and field not in candidate.metadata:
+            candidate.metadata[field] = deepcopy(old[field])
+    # The old queue decision must itself match the new bound release. Never
+    # replace a fresh, different hold or a different review supplied upstream.
+    if (candidate.metadata.get("incremental_review") != old.get("incremental_review")
+            or candidate.metadata.get("editorial_hold") not in (None, old.get("editorial_hold"))):
+        return None
+    if "incremental_review_addendum" not in candidate.metadata:
+        candidate.metadata["editorial_hold"] = old["editorial_hold"]
+        apply_incremental_review(candidate)
+    evidence = verified_incremental_release(candidate)
+    if evidence is None or (old.get("editorial_hold") and evidence["previous_hold"] != old["editorial_hold"]):
+        return None
+    return candidate, evidence, bool(old.get("editorial_hold"))
+
 class PendingQueue:
     def __init__(self, path):
         self.path = Path(path)
@@ -131,6 +174,18 @@ class PendingQueue:
                     if previous["status"] in ("pending", "retry", "processing") and (factual_verified or publisher_exception):
                         old = previous["raw"]
                         old_meta = old.get("metadata", {})
+                        old_assessment = old_meta.get("editorial_assessment")
+                        if (isinstance(old_assessment, dict) and old_assessment.get("decision")
+                                in {"published", "rejected", "accepted", "approved"}):
+                            # Contradictory queue bookkeeping cannot authorize
+                            # discarding an already terminal editorial decision.
+                            continue
+                        body_completeness_derived = "article_body_complete" not in metadata
+                        reviewed_release = _reviewed_pulso_admission(raw, previous) if factual_verified else None
+                        admission = reviewed_release if reviewed_release and reviewed_release[2] else None
+                        if reviewed_release is not None:
+                            raw, admission_evidence, _ = reviewed_release
+                            metadata = raw.metadata
                         publisher_holds = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
                                            "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy",
                                            "publisher_liveblog_entry_dates_unverified", "publisher_sponsored_text_unavailable"}
@@ -149,23 +204,36 @@ class PendingQueue:
                         changed = (old.get("event_date") != raw.event_date
                                    or old.get("title") != raw.title or old_meta.get("page_text") != metadata.get("page_text")
                                    or resolved_publisher_hold
+                                   or admission is not None
                                    or any(old_meta.get(field) != metadata.get(field) for field in proof_fields))
                         if changed:
                             revisions = old_meta.get("evidence_revisions", []) + [dict(
                                 at=now.isoformat(), previous_publication_date=old.get("event_date"),
                                 verified_publication_date=raw.event_date, previous_title=old.get("title"),
                                 verified_title=raw.title, previous_capture_method=old_meta.get("capture_method"),
-                                reason="verified_publisher_exception_rediscovery" if publisher_exception else "verified_article_rediscovery",
+                                reason=("approved_incremental_review_discovery_admission" if admission is not None
+                                        else "verified_publisher_exception_rediscovery" if publisher_exception
+                                        else "verified_article_rediscovery"),
                                 previous_publisher_exception_reason=old_meta.get("publisher_exception_reason"),
                                 verified_publisher_exception_reason=metadata.get("publisher_exception_reason"),
                                 lane_preserved=previous["lane"])]
                             previous["raw"] = asdict(raw)
+                            if admission is not None:
+                                revisions[-1].update(
+                                    incremental_review_addendum=deepcopy(admission_evidence),
+                                    previous_retry_at=previous.get("retry_at"),
+                                    previous_editorial_hold=old_meta["editorial_hold"],
+                                    body_completeness_derived_from_verified_hash=body_completeness_derived,
+                                    status_preserved=previous["status"], attempts_preserved=previous["attempts"],
+                                    detected_at_preserved=previous["detected_at"],
+                                    fingerprint_preserved=pulso_urls[url])
+                                previous["retry_at"] = None
                             for field in ("editorial_hold", "event_equivalence_review"):
                                 # A newly proven factual primary article can resolve a
                                 # publisher limitation. Incremental/duplicate reviews
                                 # are independent editorial decisions and remain.
-                                if (field == "editorial_hold" and factual_verified
-                                        and old_meta.get(field) in publisher_holds):
+                                if (field == "editorial_hold" and (admission is not None or (factual_verified
+                                        and old_meta.get(field) in publisher_holds))):
                                     continue
                                 if field in old_meta and field not in previous["raw"]["metadata"]:
                                     previous["raw"]["metadata"][field] = old_meta[field]
