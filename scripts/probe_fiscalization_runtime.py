@@ -115,6 +115,8 @@ def probe(output, as_of):
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-814414.html'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-715129.html'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/601/rss3-channel.rss'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/rss3-channel.rss'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/robots.txt'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/sitemap.xml'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/612/w3-article-717507.html'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/612/w3-article-583273.html'),
