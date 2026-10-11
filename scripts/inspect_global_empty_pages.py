@@ -26,6 +26,10 @@ for route in inventory['routes']:
             'h1':[n.text() for n in document.nodes('h1')],
             'view_nodes':[{'tag':n.tag,'attrs':n.attrs,'closed':n.closed,'text':n.text()[:1200]} for n in document.nodes()
                           if any(c.startswith(('view-id-','view-display-id-')) or c in {'view-empty','view-content','views-exposed-form'} for c in n.attrs.get('class','').split())],
+            'empty_contract':__import__('radar_salud.global_source_discovery',fromlist=['verified_empty_news_view']).verified_empty_news_view(document,route['route'],next(part for part in route['date_partitions'] if part['query_from'] in page['url'] and part['query_to'] in page['url'])),
+            'forbidden_or_pager_nodes':[{'tag':n.tag,'attrs':n.attrs,'closed':n.closed,'text':n.text()[:100]} for n in document.nodes() if any(c in {'pager','pager-nav','pagination','views-row','view-content','views-field-title','views-field-created','field--name-created'} or c.startswith(('pager__','js-pager__')) for c in n.attrs.get('class','').split())],
+            'pagination_rel_links':[{'attrs':a.attrs,'text':a.text()} for a in document.nodes('a') if {'next','last','prev','previous','first'}&set(a.attrs.get('rel','').split())],
+            'view_text_equals_form':[v.text()==f.text() for v in document.nodes() if v.has_class('view-id-news') for f in v.nodes('form')],
             'main_text':main[0].text()[:2000] if main else None,
             'inputs':[{k:n.attrs.get(k) for k in ('name','value')} for n in document.nodes('input') if n.attrs.get('name') in {'date[min]','date[max]'}]})
 from urllib.parse import parse_qsl,urlsplit,urlunsplit,urlencode

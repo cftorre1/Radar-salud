@@ -35,8 +35,8 @@ jobs:
       - name: Contracts, existing capture replay and independent raw audit
         run: |
           pip install -e . pytest
-          python scripts/requalify_global_metadata.py
           python scripts/inspect_global_empty_pages.py
+          python scripts/requalify_global_metadata.py
           python scripts/discover_global_sources.py --project-inventory-csv
           python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py tests/test_global_capture_audit.py tests/test_global_metadata_projection.py --junitxml=work/global-directed-qa.xml
           python scripts/replay_global_sources.py
@@ -75,6 +75,8 @@ jobs:
           path: |
             work/global-directed-qa.xml
             work/global-python-qa.xml
+            work/global-upstream-pdf-baseline.log
+            work/global-upstream-pdf-baseline.xml
             work/global-node-qa.log
             work/independent_capture_audit.json
             artifacts/
