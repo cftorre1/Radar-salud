@@ -36,6 +36,11 @@ INCREMENTAL_ADDENDUM_SHA256 = "589ba50032521924803ef8ce94f40e3854930edcadddf7fc1
 CODE_REPAIR_PINS_PATH = "config/pulso_editorial_repair_admission_2026_10_11.json"
 CODE_REPAIR_PINS_SHA256 = "7f915bf1f8b4ee14d6426a41541cf3b6c319ad2e2acd384b8cc9fefa53224731"
 CODE_REPAIR_VERSION = "pulso_editorial_proof_v5"
+PAID_REVALIDATION_PATH = "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json"
+PAID_REVALIDATION_SHA256 = "3645971793d5803c53b3a9f0f5bcb1b8e8f91ef5638b186aeaab4073645a48ff"
+PAID_REVALIDATION_PRODUCER = "981b0ff25c226d47785b77944aa53c459053aa21"
+PAID_REVALIDATION_CODE = "03bf998a4bb5840c84da6473666e932fbc5cedd9"
+PAID_REVALIDATION_FINGERPRINT = "4feb04bc17ac24d37bd5cbb07f12893f5e8202de61aa7133b8fb1a8aeb6a4118"
 FOLLOWUP_REVIEW_PINS = {
     "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json": (
         "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
@@ -277,6 +282,280 @@ def verify_code_repair_reference(raw, root, *, successful_response_ids=None, req
     return dict(pins_ref=CODE_REPAIR_PINS_PATH, pins_sha256=CODE_REPAIR_PINS_SHA256,
                 admission_id=admission_id, previous_response_id=previous_id,
                 current_response_id=current_id, analysis_release_only=True, publication_approved=False)
+
+
+def paid_revalidation_proof_files(root):
+    """Pin both semantic readers before the first genuine recovery attempt."""
+    target = local_capture_path(root, PAID_REVALIDATION_PATH)
+    if not target.exists():
+        return {}
+    payload = target.read_bytes()
+    if digest(payload) != PAID_REVALIDATION_SHA256:
+        raise ValueError("paid_revalidation_manifest_changed")
+    document = json.loads(payload)
+    references = document.get("semantic_references") or []
+    if len(references) != 2:
+        raise ValueError("paid_revalidation_two_semantic_readers_required")
+    values = {PAID_REVALIDATION_PATH: PAID_REVALIDATION_SHA256}
+    for reference in references:
+        path = reference.get("path")
+        if (not isinstance(path, str) or not re.fullmatch(r"data/audits/pulso_[A-Za-z0-9_]+\.json", path)
+                or digest(local_capture_path(root, path).read_bytes()) != reference.get("sha256")):
+            raise ValueError("paid_revalidation_separate_semantic_reader_changed")
+        values[path] = reference["sha256"]
+    if len(values) != 3:
+        raise ValueError("paid_revalidation_separate_semantic_reader_required")
+    return values
+
+
+def paid_revalidation_origin(root):
+    """Read both independent full-source reviews and the immutable paid producer.
+
+    The recovery routes authorize analysis only. They cannot change a model
+    answer, invent a Response event, or turn the original failed run into PASS.
+    """
+    root = Path(root)
+    payload = local_capture_path(root, PAID_REVALIDATION_PATH).read_bytes()
+    if digest(payload) != PAID_REVALIDATION_SHA256:
+        raise ValueError("paid_revalidation_manifest_changed")
+    document = json.loads(payload)
+    if (document.get("schema_version") != "pulso_v5_paid_guard_revalidation_manifest_v1"
+            or document.get("producer_state_commit") != PAID_REVALIDATION_PRODUCER
+            or document.get("producer_core_checkout") != PAID_REVALIDATION_CODE
+            or document.get("producer_runtime_fingerprint_sha256") != PAID_REVALIDATION_FINGERPRINT
+            or document.get("publication_approved") is not False or document.get("editorial_gate") != 72):
+        raise ValueError("paid_revalidation_original_producer_invalid")
+    paths = dict(history="data/history/superintendencia_signals.json", queue="data/state/pending_queue.json",
+        runtime_report="data/audits/pulso_runtime_2026_10_11.json", telemetry="data/ai_usage/responses.jsonl")
+    references = document.get("inputs") or {}
+    if set(references) != set(paths) or any(ref.get("commit") != PAID_REVALIDATION_PRODUCER for ref in references.values()):
+        raise ValueError("paid_revalidation_four_original_inputs_required")
+    original = {key: archived_editorial_input(root, references[key], path) for key, path in paths.items()}
+    execution = original["runtime_report"].get("last_core_execution") or original["runtime_report"]["execution"]
+    fingerprint = execution.get("runtime_fingerprint") or {}
+    start, end = stamp(execution.get("started_at")), stamp(execution.get("finished_at"))
+    delta, error = budget_delta(execution)
+    events = [event for event in original["telemetry"] if start and end and stamp(event.get("at"))
+              and start <= stamp(event["at"]) <= end]
+    ids = [event.get("response_id") for event in events]
+    if (execution.get("mode") != "real_core_processing" or execution.get("engine_called") is not True
+            or execution.get("engine_completed") is not True or execution.get("ai_guardrails_modified") is not False
+            or execution.get("code_sha") != PAID_REVALIDATION_CODE
+            or fingerprint.get("sha256") != PAID_REVALIDATION_FINGERPRINT
+            or object_digest(fingerprint.get("files")) != PAID_REVALIDATION_FINGERPRINT
+            or not start or not end or start > end or error
+            or delta.get("fast") != dict(attempted=69, successful=69, failed=0)
+            or delta.get("deep") != dict(attempted=0, successful=0, failed=0)
+            or len(events) != 69 or len(set(ids)) != 69 or any(not value for value in ids)
+            or any(event.get("kind") != "fast" or event.get("success") is not True for event in events)):
+        raise ValueError("paid_revalidation_69_genuine_original_responses_unverified")
+    rows = document.get("rows") or []
+    originals = {key: item for key, item in original["queue"].items() if item.get("source") == SOURCE
+        and item.get("status") == "retry" and item.get("raw", {}).get("metadata", {}).get("analysis_model_output", {}).get(
+            "_pulso_analysis_meta", {}).get("response_id") in ids}
+    if (len(rows) != 49 or len(originals) != 49 or len({row.get("url") for row in rows}) != 49
+            or {row.get("queue_fingerprint") for row in rows} != set(originals)):
+        raise ValueError("paid_revalidation_all49_originals_required")
+    semantic = document.get("semantic_references") or []
+    if len(semantic) != 2:
+        raise ValueError("paid_revalidation_two_semantic_readers_required")
+    covered, proof_files = set(), {PAID_REVALIDATION_PATH: PAID_REVALIDATION_SHA256}
+    for reference in semantic:
+        path = reference.get("path")
+        if (not isinstance(path, str) or not re.fullmatch(r"data/audits/pulso_[A-Za-z0-9_]+\.json", path)
+                or digest(local_capture_path(root, path).read_bytes()) != reference.get("sha256")):
+            raise ValueError("paid_revalidation_separate_semantic_reader_changed")
+        reader = json.loads(local_capture_path(root, path).read_bytes())
+        read_rows = reader.get("rows") or []
+        urls = {row.get("url") for row in read_rows}
+        if (reader.get("producer_commit") != PAID_REVALIDATION_PRODUCER
+                or len(read_rows) != reference.get("scope_count") or len(urls) != len(read_rows)
+                or urls & covered or reader.get("publication_approved", reader.get("summary", {}).get("publication_approved")) is not False):
+            raise ValueError("paid_revalidation_semantic_partition_invalid")
+        covered |= urls
+        proof_files[path] = reference["sha256"]
+    if covered != {row["url"] for row in rows}:
+        raise ValueError("paid_revalidation_full_source_reading_incomplete")
+    counts = {route: sum(row.get("runtime_route") == route for row in rows) for route in (
+        "reuse_code_fn", "reuse_below_gate_reject", "assess_contract_or_semantic_defect")}
+    if counts != dict(reuse_code_fn=18, reuse_below_gate_reject=6, assess_contract_or_semantic_defect=25):
+        raise ValueError("paid_revalidation_approved_routes_changed")
+    for row in rows:
+        context = row.get("reassessment_context")
+        if context is None:
+            continue
+        target = original["queue"].get(context.get("target_queue_fingerprint")) or {}
+        raw = target.get("raw") or {}; metadata = raw.get("metadata") or {}
+        signals = [signal for signal in original["history"]["signals"]
+                   if signal.get("source_url") == context.get("target_url")]
+        if (row["runtime_route"] != "assess_contract_or_semantic_defect"
+                or context.get("producer_state_commit") != PAID_REVALIDATION_PRODUCER
+                or target.get("status") != "published" or len(signals) != 1
+                or object_digest(target) != context.get("target_queue_entry_sha256")
+                or object_digest(raw) != context.get("target_raw_sha256")
+                or raw.get("url") != context.get("target_url")
+                or raw.get("event_date") != context.get("target_publication_date")
+                or metadata.get("page_text") != context.get("target_full_primary_body")
+                or metadata.get("article_body_sha256") != context.get("target_body_sha256")
+                or metadata.get("html_sha256") != context.get("target_html_sha256")
+                or signals[0] != context.get("target_full_original_signal")
+                or object_digest(signals[0]) != context.get("target_full_original_signal_sha256")
+                or context.get("publication_approved") is not False or context.get("rejection_approved") is not False
+                or not all(quote in row["original_full_primary_body"] for quote in context.get("source_repetition_quotes", []))
+                or not all(quote in metadata["page_text"] for quote in context.get("target_repetition_quotes", []))):
+            raise ValueError("paid_revalidation_incremental_context_not_actual_published_original")
+    return dict(document=document, originals=originals, rows={row["url"]: row for row in rows},
+                execution=execution, telemetry=original["telemetry"], successful_response_ids=set(ids), proof_files=proof_files)
+
+
+def verify_paid_guard_revalidation(item, root, *, execution, telemetry, origin=None):
+    """Independently bind an old paid answer to its new genuine core verdict.
+
+    The repaired guard receipt and old API response have separate provenance.
+    A targeted reassessment must have a new current-window Response ID. This
+    reader never imports the recovery module or its application helper.
+    """
+    raw = item.get("raw", {}); metadata = raw.get("metadata", {})
+    applied = metadata.get("paid_guard_revalidation_admission")
+    revisions = [revision for revision in metadata.get("evidence_revisions", [])
+                 if revision.get("reason") == "verified_paid_guard_revalidation_admission"]
+    receipt = metadata.get("paid_guard_revalidation_receipt")
+    if applied is None and not revisions and receipt is None:
+        return None
+    origin = origin or paid_revalidation_origin(root)
+    row = origin["rows"].get(raw.get("url"))
+    if row is None:
+        raise ValueError("paid_revalidation_original_not_in_all49")
+    original = origin["originals"][row["queue_fingerprint"]]
+    old_raw = json.loads(json.dumps(original["raw"]))
+    old_raw["metadata"].pop("evidence_revisions", None)
+    old = original["raw"]["metadata"]; model = old["analysis_model_output"]; response = model["_pulso_analysis_meta"]
+    expected = dict(schema_version="pulso_paid_guard_revalidation_admission_v1", manifest_ref=PAID_REVALIDATION_PATH,
+        manifest_sha256=PAID_REVALIDATION_SHA256, producer_state_commit=PAID_REVALIDATION_PRODUCER,
+        producer_core_checkout=PAID_REVALIDATION_CODE, producer_runtime_fingerprint_sha256=PAID_REVALIDATION_FINGERPRINT,
+        disposition=row["runtime_route"], publication_approved=False,
+        new_model_request=row["runtime_route"] == "assess_contract_or_semantic_defect", url=row["url"],
+        queue_fingerprint=row["queue_fingerprint"], publication_date=row["publication_date"], source_type=original["raw"]["source_type"],
+        original_html_sha256=row["original_html_sha256"], body_sha256=row["original_body_sha256"],
+        body_characters=len(old["page_text"]), request_input_sha256=response["request_input_sha256"],
+        analysis_input_sha256=response["analysis_text_sha256"], original_response_id=response["response_id"],
+        model_output_sha256=object_digest(model), raw_model_output_sha256=response["raw_model_output_sha256"],
+        previous_validation_sha256=object_digest(old["pulso_editorial_proof_validation"]),
+        previous_reason=original["reason"], original_paid_raw_sha256=object_digest(old_raw), original_attempts=original["attempts"])
+    if row.get("reassessment_context") is not None:
+        expected["reassessment_context_sha256"] = object_digest(row["reassessment_context"])
+    expected["admission_id"] = object_digest(expected)
+    if applied != expected or len(revisions) != 1:
+        raise ValueError("paid_revalidation_admission_or_unique_revision_changed")
+    revision = revisions[0]
+    if (revision.get("paid_guard_revalidation_admission") != expected or revision.get("previous_processing_raw") != old_raw
+            or revision.get("status_preserved") != original["status"]
+            or revision.get("attempts_preserved") != original["attempts"]
+            or revision.get("lane_preserved") != original["lane"]
+            or revision.get("detected_at_preserved") != original["detected_at"]
+            or revision.get("fingerprint_preserved") != row["queue_fingerprint"]
+            or revision.get("previous_retry_at") != original.get("retry_at")
+            or item.get("lane") != original["lane"] or item.get("detected_at") != original["detected_at"]
+            or type(item.get("attempts")) is not int or item["attempts"] < original["attempts"] + 1):
+        raise ValueError("paid_revalidation_archive_or_bookkeeping_changed")
+    body = metadata.get("page_text")
+    request = "Fuente: Pulso / La Tercera\nTítulo: " + str(raw.get("title")) + "\nContenido:\n" + str(body)
+    if (raw.get("url") != row["url"] or raw.get("title") != original["raw"]["title"]
+            or raw.get("event_date") != row["publication_date"] or raw.get("source_slug") != SOURCE
+            or raw.get("source_name") != "Pulso / La Tercera" or raw.get("source_type") != "press_high_trust"
+            or metadata.get("canonical_url") != row["url"] or metadata.get("publication_date") != row["publication_date"]
+            or metadata.get("html_sha256") != row["original_html_sha256"]
+            or not isinstance(body, str) or body != old["page_text"] or digest(body.encode()) != row["original_body_sha256"]
+            or metadata.get("article_body_sha256") != row["original_body_sha256"]
+            or digest(request.encode()) != expected["request_input_sha256"]
+            or any(metadata.get(field) is not True for field in (
+                "article_verified", "article_body_complete", "primary_identity_verified", "publication_date_verified", "analysis_input_complete"))
+            or metadata.get("source_quality_gate") != "passed" or metadata.get("market_role") != "media"
+            or metadata.get("analysis_input_format") != "full_primary_article_body"
+            or metadata.get("analysis_request_input_sha256") != expected["request_input_sha256"]
+            or metadata.get("analysis_input_body_sha256") != expected["analysis_input_sha256"]):
+        raise ValueError("paid_revalidation_current_primary_or_complete_request_changed")
+    begin, end = stamp(execution.get("started_at")), stamp(execution.get("finished_at"))
+    current = metadata.get("analysis_model_output") or {}; current_response = current.get("_pulso_analysis_meta") or {}
+    validation = metadata.get("pulso_editorial_proof_validation") or {}
+    if expected["new_model_request"]:
+        current_events = {event.get("response_id") for event in telemetry if event.get("kind") == "fast"
+            and event.get("success") is True and begin and end and stamp(event.get("at"))
+            and begin <= stamp(event["at"]) <= end}
+        if (receipt is not None or current_response.get("response_id") == expected["original_response_id"]
+                or current_response.get("response_id") not in current_events):
+            raise ValueError("paid_revalidation_contract_defect_requires_new_genuine_fast")
+        attempts = metadata.get("paid_guard_new_fast_attempt_receipts") or []
+        latest = attempts[-1] if attempts else {}
+        guard_path = "src/radar_salud/pulso_editorial_proof.py"
+        guard_sha = digest(local_capture_path(root, guard_path).read_bytes())
+        when = stamp(latest.get("assessed_at"))
+        ids = [attempt.get("new_response_id") for attempt in attempts]
+        all_actual_ids = {event.get("response_id") for event in telemetry
+                          if event.get("kind") == "fast" and event.get("success") is True}
+        if (not attempts or len(set(ids)) != len(ids) or expected["original_response_id"] in ids
+                or any(value not in all_actual_ids for value in ids)
+                or any(attempt.get("admission_id") != expected["admission_id"]
+                       or attempt.get("model_output_sha256") != object_digest(attempt.get("full_model_output"))
+                       or attempt.get("new_validation_sha256") != object_digest(attempt.get("new_validation"))
+                       or attempt.get("original_response_id") != expected["original_response_id"]
+                       or attempt.get("new_model_request") is not True or attempt.get("publication_approved") is not False
+                       for attempt in attempts)
+                or latest.get("full_model_output") != current or latest.get("new_validation") != validation
+                or latest.get("new_response_id") != current_response.get("response_id")
+                or latest.get("schema_version") != "pulso_paid_guard_new_fast_attempt_receipt_v1"
+                or latest.get("validator_guard_sha256") != guard_sha
+                or execution.get("runtime_fingerprint", {}).get("files", {}).get(guard_path) != guard_sha
+                or not when or not begin or not end or not begin <= when <= end):
+            raise ValueError("paid_revalidation_new_fast_attempt_or_guard_receipt_unverified")
+    else:
+        if current != model or current_response.get("response_id") not in origin["successful_response_ids"]:
+            raise ValueError("paid_revalidation_original_model_or_response_changed")
+        when = stamp(receipt.get("revalidated_at")) if isinstance(receipt, dict) else None
+        guard_path = "src/radar_salud/pulso_editorial_proof.py"
+        guard_sha = digest(local_capture_path(root, guard_path).read_bytes())
+        if (execution.get("runtime_fingerprint", {}).get("files", {}).get(guard_path) != guard_sha
+                or not when or not begin or not end or not begin <= when <= end):
+            raise ValueError("paid_revalidation_guard_not_bound_to_actual_execution")
+        expected_receipt = dict(schema_version="pulso_paid_guard_revalidation_receipt_v1", admission=expected,
+            producer_core_checkout=PAID_REVALIDATION_CODE, producer_state_commit=PAID_REVALIDATION_PRODUCER,
+            producer_runtime_fingerprint_sha256=PAID_REVALIDATION_FINGERPRINT,
+            original_response_id=expected["original_response_id"], original_model_output_sha256=expected["model_output_sha256"],
+            original_raw_model_output_sha256=expected["raw_model_output_sha256"],
+            previous_validation=old["pulso_editorial_proof_validation"], previous_validation_sha256=expected["previous_validation_sha256"],
+            validator_guard_sha256=guard_sha, validator_version=CODE_REPAIR_VERSION, revalidated_at=receipt["revalidated_at"],
+            new_validation=validation, new_validation_sha256=object_digest(validation), new_model_request=False,
+            original_model_output_unchanged=True, publication_approved=False, quote_validation_is_semantic_approval=False)
+        if receipt != expected_receipt:
+            raise ValueError("paid_revalidation_guard_receipt_or_old_provenance_changed")
+        if row["runtime_route"] == "reuse_below_gate_reject" and (
+                type(current.get("relevance_score")) is not int or current["relevance_score"] >= 72
+                or validation.get("decision") != "rejected" or validation.get("reason") != "editorial_relevance_below_threshold"):
+            raise ValueError("paid_revalidation_below_gate_rejection_not_actual")
+    binding = metadata.get("primary_item_binding") or {}
+    if (current_response.get("schema_version") != CODE_REPAIR_VERSION
+            or current_response.get("source_name") != "Pulso / La Tercera"
+            or current_response.get("analysis_text_sha256") != expected["analysis_input_sha256"]
+            or current_response.get("request_input_sha256") != expected["request_input_sha256"]
+            or validation.get("version") != CODE_REPAIR_VERSION or validation.get("model_response") != current_response
+            or validation.get("model_output_sha256") != object_digest(current)
+            or validation.get("analysis_text_sha256") != expected["analysis_input_sha256"]
+            or validation.get("request_input_sha256") != expected["request_input_sha256"]
+            or validation.get("proof") != current.get("pulso_editorial_proof")
+            or validation.get("publication_approved") is not False or validation.get("quote_validation_is_semantic_approval") is not False
+            or binding.get("verified") is not True or binding.get("raw_url") != row["url"]
+            or binding.get("primary_canonical_url") != row["url"]
+            or binding.get("raw_event_date") != row["publication_date"]
+            or binding.get("primary_publication_date") != row["publication_date"]):
+        raise ValueError("paid_revalidation_final_answer_or_primary_binding_missing")
+    if validation.get("decision") == "deferred":
+        raise ValueError("paid_revalidation_actual_validation_still_deferred")
+    if validation.get("decision") not in {"ready", "rejected"}:
+        raise ValueError("paid_revalidation_actual_validation_invalid")
+    return dict(manifest_ref=PAID_REVALIDATION_PATH, manifest_sha256=PAID_REVALIDATION_SHA256,
+        disposition=row["runtime_route"], original_response_id=expected["original_response_id"],
+        current_response_id=current_response["response_id"], original_producer_preserved=True,
+        old_paid_output_reused=not expected["new_model_request"], publication_approved=False)
 
 
 def archived_editorial_input(root, specification, required_path):
@@ -1824,6 +2103,7 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
                     and digest(local_capture_path(root, INCREMENTAL_REVIEW_PATH).read_bytes()) == INCREMENTAL_REVIEW_SHA256,
                     "replay_incremental_review_reference_unverified")
             references.add(INCREMENTAL_REVIEW_PATH)
+        references.update(paid_revalidation_proof_files(root))
         require({path: digest(local_capture_path(root, path).read_bytes()) for path in references} == old["referenced_proof_files"],
                 "replay_changed_independent_body_reviews_or_editorial_provenance")
         require(not old.get("reviewed_hold_bindings"), "reviewed_duplicate_hold_requires_independent_target_validation")
@@ -2147,6 +2427,13 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
         if report.get("unresolved_pending_operational_reasons"):
             fail("processing", "pending_operational_reasons_unresolved")
         selected_urls = set((execution.get("processing_selection") or {}).get("selected_urls", []))
+        paid_origin = None
+        if any(item.get("source") == SOURCE and item.get("raw", {}).get("metadata", {}).get(
+                "paid_guard_revalidation_admission") is not None for item in queue.values()):
+            try:
+                paid_origin = paid_revalidation_origin(root)
+            except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+                fail("processing", "paid_guard_revalidation_originals_unverified", error=str(error))
         for url in actual:
             row = rows.get(url, {})
             reason = row.get("exact_reason") or ""
@@ -2174,6 +2461,16 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                     checks.setdefault("immutable_code_repair_assessments", {})[url] = repair
             except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
                 fail("processing", "code_repair_old_or_new_paid_evidence_unverified", url=url, error=str(error))
+            if item.get("raw", {}).get("metadata", {}).get("paid_guard_revalidation_admission") is not None:
+                try:
+                    if paid_origin is None:
+                        raise ValueError("paid_revalidation_origin_unavailable")
+                    validation_execution = idempotence_baseline["baseline_execution"] if replay_checks else execution
+                    revalidated = verify_paid_guard_revalidation(item, root, execution=validation_execution,
+                        telemetry=telemetry, origin=paid_origin)
+                    checks.setdefault("immutable_paid_guard_revalidations", {})[url] = revalidated
+                except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+                    fail("processing", "paid_guard_revalidation_provenance_unverified", url=url, error=str(error))
             assessment = item.get("raw", {}).get("metadata", {}).get("editorial_assessment") or {}
             score = assessment.get("relevance_score")
             if url in selected_urls:
