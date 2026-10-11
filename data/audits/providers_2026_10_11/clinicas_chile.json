@@ -1,12 +1,50 @@
 {
-  "version": 1,
+  "version": 3,
   "slug": "clinicas_chile",
   "as_of": "2026-10-11",
   "timezone": "America/Santiago",
   "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
   "audit_path": "data/audits/providers_2026_10_11/clinicas_chile.json",
-  "status": "reconciled_with_exact_blockers",
-  "coverage": "news_30_and_90_boundary_observed_library_date_inventory_blocked",
+  "status": "OPERATIVE_DEGRADED",
+  "coverage": {
+    "outcome": "OPERATIVE_DEGRADED",
+    "coverage_complete": false,
+    "coverage_reason": "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified.",
+    "archive_depth": {
+      "channels": 4,
+      "memorias_pages": 3,
+      "estudios_pages": 3,
+      "documentos_pages": 4,
+      "library_sitemap_entries": 129
+    },
+    "owner": "Publisher Clínicas de Chile / Source Engineering",
+    "next_action": "Supply dated editorial release/version evidence for33PDFs and one library item, distinct from RSS entry date, reporting year, upload path and sitemaplastmod; all four requested channels remain audited.",
+    "pages_checked": 71,
+    "latest_original_publication": "2026-10-02",
+    "discovered": 68,
+    "unique": 48,
+    "recent_30d": 1,
+    "recent_90d": 3,
+    "publication_date_unknown": 34,
+    "material_30d": 1,
+    "material_90d": 1,
+    "material_date_unknown": 0,
+    "material": 1,
+    "material_unknown": 34,
+    "published": 1,
+    "rejected": 0,
+    "deferred": 0,
+    "detected_material": 1,
+    "omitted_material": 0,
+    "parse_errors": 0,
+    "access_errors": 8,
+    "inventory": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json",
+    "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+    "relevant_30d_total": null,
+    "relevant_90d_total": null,
+    "publicable_confirmed": 1,
+    "publicable_total": null
+  },
   "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "surfaces": [
@@ -28,9 +66,696 @@
     }
   ],
   "blockers": [
-    "library_publication_dates_unverified_33_discovered_documents"
+    "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified."
   ],
   "original_items": [
+    {
+      "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
+      "title": "Clínicas de Chile y CENS realizan jornada sobre el nuevo marco de la salud digital en Chile",
+      "publication_date": "2026-10-02",
+      "event_date": "2026-10-01",
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Dated sector digital-health implementation context; original70 passes news gate70. CENS activity is not a new law, regulatory release or own implementation; preserve attribution.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Dated sector digital-health implementation context; original70 passes news gate70. CENS activity is not a new law, regulatory release or own implementation; preserve attribution.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "event_date": "2026-10-01",
+        "detected": true,
+        "queue": [
+          {
+            "key": "80e59da7785740c1cdc99d3b38b100210a2b9fb7fec685e918cbd05fdec7d605",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 1,
+        "feed_count": 1,
+        "related_published_signals": [],
+        "alicanto_status": "published",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:54:19.979521+00:00",
+          "body_sha256": "286df9919153b97e2cdf368171513e8fca0e3e44183e83716eae30e3ad56321a",
+          "date_stamps": [
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-10-02",
+              "value": "2026-10-02"
+            },
+            {
+              "kind": "official_rss_pubDate",
+              "date": "2026-10-02",
+              "value": "2026-10-02"
+            },
+            {
+              "kind": "article:published_time",
+              "value": "2026-10-02T18:42:01-03:00",
+              "date": "2026-10-02"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json"
+    },
+    {
+      "url": "https://www.clinicasdechile.cl/wp-content/uploads/2026/03/Memoria-clinicas-2025-final.pdf",
+      "title": "Descargar Memoria 2025 Clínicas de Chile",
+      "publication_date": null,
+      "event_date": null,
+      "reporting_period": "2025",
+      "effective_date": null,
+      "date_evidence": "document_release_unverified; upload path and body period excluded",
+      "materiality": "document_unverified_release",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+      "alicanto": {
+        "materiality": "document_unverified_release",
+        "reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "reporting_period": "2025",
+        "detected": true,
+        "queue": [
+          {
+            "key": "3d08483661d3e13f2fa0347a6437ea7a12385ba2a8a5129213fc353fd17dbd6e",
+            "status": "retry",
+            "reason": "budget_or_analysis_deferred",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "retry",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:54:20.786397+00:00",
+          "body_sha256": null,
+          "date_stamps": [],
+          "date_reason": "document_release_unverified; upload path and body period excluded",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json"
+    },
+    {
+      "url": "https://www.clinicasdechile.cl/wp-content/uploads/2022/04/Memoria-2021-IMPRENTA_compressed.pdf",
+      "title": "Descargar Memoria 2021 Clínicas de Chile",
+      "publication_date": null,
+      "event_date": null,
+      "reporting_period": "2021",
+      "effective_date": null,
+      "date_evidence": "document_release_unverified; upload path and body period excluded",
+      "materiality": "document_unverified_release",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+      "alicanto": {
+        "materiality": "document_unverified_release",
+        "reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "reporting_period": "2021",
+        "detected": true,
+        "queue": [
+          {
+            "key": "89715197ee0f5e9dad3d0f5d0d6c8c1dc1ab32068f929cda36a514586de307b7",
+            "status": "retry",
+            "reason": "unverified_publication_date",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "retry",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:54:20.786452+00:00",
+          "body_sha256": null,
+          "date_stamps": [],
+          "date_reason": "document_release_unverified; upload path and body period excluded",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json"
+    },
+    {
+      "url": "https://www.clinicasdechile.cl/wp-content/uploads/2020/05/INFORME_final.pdf",
+      "title": "Descargar Análisis variación arancel MLE 2019",
+      "publication_date": null,
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "document_release_unverified; upload path and body period excluded",
+      "materiality": "document_unverified_release",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+      "alicanto": {
+        "materiality": "document_unverified_release",
+        "reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "reporting_period": null,
+        "detected": true,
+        "queue": [
+          {
+            "key": "92ea1ce834d278321dd5b56da1306b1c62582fab25b7a97493226f90384ca0ae",
+            "status": "retry",
+            "reason": "unverified_publication_date",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "retry",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:54:24.006728+00:00",
+          "body_sha256": null,
+          "date_stamps": [],
+          "date_reason": "document_release_unverified; upload path and body period excluded",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json"
+    },
+    {
+      "url": "https://www.clinicasdechile.cl/wp-content/uploads/2025/12/Dimensionamiento-del-Sector-Salud-en-Chile-%E2%80%93-Cifras-a-2024.pdf",
+      "title": "Dimensionamiento del sector salud en Chile: cifras a 2024",
+      "publication_date": null,
+      "event_date": null,
+      "reporting_period": "2024",
+      "effective_date": null,
+      "date_evidence": "document_release_unverified; upload path and body period excluded",
+      "materiality": "document_unverified_release",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+      "alicanto": {
+        "materiality": "document_unverified_release",
+        "reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "reporting_period": "2024",
+        "detected": true,
+        "queue": [
+          {
+            "key": "99adcb744e551234b9744fce26bf1ccc0b67aaae2ee571a993333b6d3e655f99",
+            "status": "retry",
+            "reason": "budget_or_analysis_deferred",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "retry",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:54:40.403676+00:00",
+          "body_sha256": null,
+          "date_stamps": [],
+          "date_reason": "document_release_unverified; upload path and body period excluded",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json"
+    }
+  ],
+  "notes": [
+    "Noticias: opinión de envejecimiento (28 agosto) y encuentro de sostenibilidad (24 julio) sin cambio verificable no se promueven; resto ya fuera de 90 días.",
+    "Se revisan las cuatro superficies; descargas sólo de host original, sin menús. Gate70 noticias/75 documentos intacto. No se sustituyen fechas de publicación por años de informe o citas legales.",
+    "Actions resolved web-reader pagination failures: 39 unique items (6 news, 33 library documents). CENS assessed with news gate70; two historical PDF false dates remain quarantined."
+  ],
+  "quarantine_unverified_dates": [
+    "https://www.clinicasdechile.cl/wp-content/uploads/2022/04/Memoria-2021-IMPRENTA_compressed.pdf",
+    "https://www.clinicasdechile.cl/wp-content/uploads/2020/05/INFORME_final.pdf"
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:25.006221+00:00",
+    "changes": [
+      {
+        "key": "80e59da7785740c1cdc99d3b38b100210a2b9fb7fec685e918cbd05fdec7d605",
+        "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
+        "action": "refresh_pending"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "full original inventory with unknown totals explicit",
+    "summary": {
+      "outcome": "OPERATIVE_DEGRADED",
+      "coverage_complete": false,
+      "coverage_reason": "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified.",
+      "archive_depth": {
+        "channels": 4,
+        "memorias_pages": 3,
+        "estudios_pages": 3,
+        "documentos_pages": 4,
+        "library_sitemap_entries": 129
+      },
+      "owner": "Publisher Clínicas de Chile / Source Engineering",
+      "next_action": "Supply dated editorial release/version evidence for33PDFs and one library item, distinct from RSS entry date, reporting year, upload path and sitemaplastmod; all four requested channels remain audited.",
+      "pages_checked": 71,
+      "latest_original_publication": "2026-10-02",
+      "discovered": 68,
+      "unique": 48,
+      "recent_30d": 1,
+      "recent_90d": 3,
+      "publication_date_unknown": 34,
+      "material_30d": 1,
+      "material_90d": 1,
+      "material_date_unknown": 0,
+      "material": 1,
+      "material_unknown": 34,
+      "published": 1,
+      "rejected": 0,
+      "deferred": 0,
+      "detected_material": 1,
+      "omitted_material": 0,
+      "parse_errors": 0,
+      "access_errors": 8,
+      "inventory": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json",
+      "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+      "relevant_30d_total": null,
+      "relevant_90d_total": null,
+      "publicable_confirmed": 1,
+      "publicable_total": null
+    },
+    "items": [
+      {
+        "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
+        "title": "Clínicas de Chile y CENS realizan jornada sobre el nuevo marco de la salud digital en Chile",
+        "publication_date": "2026-10-02",
+        "event_date": "2026-10-01",
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Dated sector digital-health implementation context; original70 passes news gate70. CENS activity is not a new law, regulatory release or own implementation; preserve attribution.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Dated sector digital-health implementation context; original70 passes news gate70. CENS activity is not a new law, regulatory release or own implementation; preserve attribution.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "event_date": "2026-10-01",
+          "detected": true,
+          "queue": [
+            {
+              "key": "80e59da7785740c1cdc99d3b38b100210a2b9fb7fec685e918cbd05fdec7d605",
+              "status": "published",
+              "reason": null,
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 1,
+          "feed_count": 1,
+          "related_published_signals": [],
+          "alicanto_status": "published",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:54:19.979521+00:00",
+            "body_sha256": "286df9919153b97e2cdf368171513e8fca0e3e44183e83716eae30e3ad56321a",
+            "date_stamps": [
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-10-02",
+                "value": "2026-10-02"
+              },
+              {
+                "kind": "official_rss_pubDate",
+                "date": "2026-10-02",
+                "value": "2026-10-02"
+              },
+              {
+                "kind": "article:published_time",
+                "value": "2026-10-02T18:42:01-03:00",
+                "date": "2026-10-02"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json"
+      },
+      {
+        "url": "https://www.clinicasdechile.cl/wp-content/uploads/2026/03/Memoria-clinicas-2025-final.pdf",
+        "title": "Descargar Memoria 2025 Clínicas de Chile",
+        "publication_date": null,
+        "event_date": null,
+        "reporting_period": "2025",
+        "effective_date": null,
+        "date_evidence": "document_release_unverified; upload path and body period excluded",
+        "materiality": "document_unverified_release",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+        "alicanto": {
+          "materiality": "document_unverified_release",
+          "reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "reporting_period": "2025",
+          "detected": true,
+          "queue": [
+            {
+              "key": "3d08483661d3e13f2fa0347a6437ea7a12385ba2a8a5129213fc353fd17dbd6e",
+              "status": "retry",
+              "reason": "budget_or_analysis_deferred",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": false,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "retry",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:54:20.786397+00:00",
+            "body_sha256": null,
+            "date_stamps": [],
+            "date_reason": "document_release_unverified; upload path and body period excluded",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json"
+      },
+      {
+        "url": "https://www.clinicasdechile.cl/wp-content/uploads/2022/04/Memoria-2021-IMPRENTA_compressed.pdf",
+        "title": "Descargar Memoria 2021 Clínicas de Chile",
+        "publication_date": null,
+        "event_date": null,
+        "reporting_period": "2021",
+        "effective_date": null,
+        "date_evidence": "document_release_unverified; upload path and body period excluded",
+        "materiality": "document_unverified_release",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+        "alicanto": {
+          "materiality": "document_unverified_release",
+          "reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "reporting_period": "2021",
+          "detected": true,
+          "queue": [
+            {
+              "key": "89715197ee0f5e9dad3d0f5d0d6c8c1dc1ab32068f929cda36a514586de307b7",
+              "status": "retry",
+              "reason": "unverified_publication_date",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "retry",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:54:20.786452+00:00",
+            "body_sha256": null,
+            "date_stamps": [],
+            "date_reason": "document_release_unverified; upload path and body period excluded",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json"
+      },
+      {
+        "url": "https://www.clinicasdechile.cl/wp-content/uploads/2020/05/INFORME_final.pdf",
+        "title": "Descargar Análisis variación arancel MLE 2019",
+        "publication_date": null,
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "document_release_unverified; upload path and body period excluded",
+        "materiality": "document_unverified_release",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+        "alicanto": {
+          "materiality": "document_unverified_release",
+          "reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "reporting_period": null,
+          "detected": true,
+          "queue": [
+            {
+              "key": "92ea1ce834d278321dd5b56da1306b1c62582fab25b7a97493226f90384ca0ae",
+              "status": "retry",
+              "reason": "unverified_publication_date",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "retry",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:54:24.006728+00:00",
+            "body_sha256": null,
+            "date_stamps": [],
+            "date_reason": "document_release_unverified; upload path and body period excluded",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json"
+      },
+      {
+        "url": "https://www.clinicasdechile.cl/wp-content/uploads/2025/12/Dimensionamiento-del-Sector-Salud-en-Chile-%E2%80%93-Cifras-a-2024.pdf",
+        "title": "Dimensionamiento del sector salud en Chile: cifras a 2024",
+        "publication_date": null,
+        "event_date": null,
+        "reporting_period": "2024",
+        "effective_date": null,
+        "date_evidence": "document_release_unverified; upload path and body period excluded",
+        "materiality": "document_unverified_release",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+        "alicanto": {
+          "materiality": "document_unverified_release",
+          "reason": "Official document inspected in multi-channel inventory; period/upload/lastmod are not publication. No dated editorial release matched to this file; library RSS entry chronology is recorded separately.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "reporting_period": "2024",
+          "detected": true,
+          "queue": [
+            {
+              "key": "99adcb744e551234b9744fce26bf1ccc0b67aaae2ee571a993333b6d3e655f99",
+              "status": "retry",
+              "reason": "budget_or_analysis_deferred",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": false,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "retry",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:54:40.403676+00:00",
+            "body_sha256": null,
+            "date_stamps": [],
+            "date_reason": "document_release_unverified; upload path and body period excluded",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json"
+      }
+    ]
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 39,
+      "dated": 6,
+      "latest_original_at": "2026-10-02",
+      "technical_status": "ok",
+      "errors": [],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "clinicas_chile",
+        "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
+        "outcome": "published"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified.",
+  "archived_navigation_records": [
+    {
+      "key": "984ebb0e677dc117d1101931dbd497119925785cb852796c7b073bd77993adcf",
+      "url": "https://www.clinicasdechile.cl/",
+      "title": "Logo Clinicas de Chile",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "33d63e4ed5bd3f3792a282537d848ee0089597bc0dcc33e0f49eb9d3478167d0",
+      "url": "https://www.clinicasdechile.cl",
+      "title": "Clínicas de Chile",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "fbe4871f03bb239ff4dd86854047181a72a7c5c6d9df31092f8417ec1737b306",
+      "url": "https://www.clinicasdechile.cl/quienes-somos/equipo/",
+      "title": "Equipo de trabajo",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "e4169c41ff2e6f8f5e036920cf0422330893c5729b6dd3592acb012db1ebd5bd",
+      "url": "https://www.clinicasdechile.cl/quienes-somos/consejo-medico/",
+      "title": "Consejo médico",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "2c9602d6a09b5155d64be725e6cf9776029fe3175e513c474d0ca1b6f5d2b109",
+      "url": "https://www.clinicasdechile.cl/knowledgebase_category/temas-de-coyuntura/",
+      "title": "Temas de Coyuntura",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "84d6c6315bc63a024e6b3add517676f48094908dbf8abc0e0574bb74045a0cdb",
+      "url": "https://www.clinicasdechile.cl/quienes-somos/nosotros/",
+      "title": "Quiénes Somos",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "c2bfd93f90786325c331359443ef4a602ec72b3002bdbaf260f433828f045f1b",
+      "url": "https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/page/3/?mostrar=6",
+      "title": "Quiénes Somos",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    }
+  ],
+  "baseline": {
+    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+    "queue_states": {
+      "retry": 19,
+      "rejected": 5,
+      "archived": 3,
+      "published": 2
+    },
+    "health": {
+      "technical_status": "ok",
+      "editorial_outcome": "pending",
+      "last_signal_at": "2018-02-01",
+      "published": 0,
+      "pending": 19,
+      "rejected": 5
+    }
+  },
+  "checkpoint_commit": "4274c37",
+  "initial_checkpoint_status": "reconciled_with_exact_blockers",
+  "initial_original_items": [
     {
       "title": "Clínicas de Chile y CENS realizan jornada sobre el nuevo marco de la salud digital en Chile",
       "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
@@ -81,26 +806,10 @@
       "channel": "Documentos"
     }
   ],
-  "notes": [
-    "Noticias: opinión de envejecimiento (28 agosto) y encuentro de sostenibilidad (24 julio) sin cambio verificable no se promueven; resto ya fuera de 90 días.",
-    "Se revisan las cuatro superficies; descargas sólo de host original, sin menús. Gate70 noticias/75 documentos intacto. No se sustituyen fechas de publicación por años de informe o citas legales.",
-    "Actions resolved web-reader pagination failures: 39 unique items (6 news, 33 library documents). CENS assessed with news gate70; two historical PDF false dates remain quarantined."
+  "blockers_before_exhaustive_audit": [
+    "library_publication_dates_unverified_33_discovered_documents"
   ],
-  "quarantine_unverified_dates": [
-    "https://www.clinicasdechile.cl/wp-content/uploads/2022/04/Memoria-2021-IMPRENTA_compressed.pdf",
-    "https://www.clinicasdechile.cl/wp-content/uploads/2020/05/INFORME_final.pdf"
-  ],
-  "recovery_checkpoint": {
-    "at": "2026-10-11T04:41:25.006221+00:00",
-    "changes": [
-      {
-        "key": "80e59da7785740c1cdc99d3b38b100210a2b9fb7fec685e918cbd05fdec7d605",
-        "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
-        "action": "refresh_pending"
-      }
-    ]
-  },
-  "reconciliation": {
+  "initial_reconciliation": {
     "scope": "verified original items; lower bound where inventory is blocked",
     "material_candidates_30_days": 1,
     "material_candidates_90_days": 1,
@@ -192,123 +901,13 @@
       }
     ]
   },
-  "environment_blockers": {
-    "local_original_collector": "CONNECT_403_restricted_original_hosts",
-    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
-  },
-  "runtime_checkpoint": {
-    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
-    "probe": {
-      "discovered": 39,
-      "dated": 6,
-      "latest_original_at": "2026-10-02",
-      "technical_status": "ok",
-      "errors": [],
-      "evaluation_performed": false
-    },
-    "promotion": "none"
-  },
-  "assessment_checkpoints": {
-    "results": [
-      {
-        "source": "clinicas_chile",
-        "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
-        "outcome": "published"
-      }
-    ],
-    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
-    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
-    "repeated_paid_calls": 0
-  },
-  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null",
-  "archived_navigation_records": [
-    {
-      "key": "984ebb0e677dc117d1101931dbd497119925785cb852796c7b073bd77993adcf",
-      "url": "https://www.clinicasdechile.cl/",
-      "title": "Logo Clinicas de Chile",
-      "prior": {
-        "status": "retry",
-        "reason": "budget_or_analysis_deferred",
-        "deferred_detail": null
-      }
-    },
-    {
-      "key": "33d63e4ed5bd3f3792a282537d848ee0089597bc0dcc33e0f49eb9d3478167d0",
-      "url": "https://www.clinicasdechile.cl",
-      "title": "Clínicas de Chile",
-      "prior": {
-        "status": "retry",
-        "reason": "budget_or_analysis_deferred",
-        "deferred_detail": null
-      }
-    },
-    {
-      "key": "fbe4871f03bb239ff4dd86854047181a72a7c5c6d9df31092f8417ec1737b306",
-      "url": "https://www.clinicasdechile.cl/quienes-somos/equipo/",
-      "title": "Equipo de trabajo",
-      "prior": {
-        "status": "retry",
-        "reason": "budget_or_analysis_deferred",
-        "deferred_detail": null
-      }
-    },
-    {
-      "key": "e4169c41ff2e6f8f5e036920cf0422330893c5729b6dd3592acb012db1ebd5bd",
-      "url": "https://www.clinicasdechile.cl/quienes-somos/consejo-medico/",
-      "title": "Consejo médico",
-      "prior": {
-        "status": "retry",
-        "reason": "budget_or_analysis_deferred",
-        "deferred_detail": null
-      }
-    },
-    {
-      "key": "2c9602d6a09b5155d64be725e6cf9776029fe3175e513c474d0ca1b6f5d2b109",
-      "url": "https://www.clinicasdechile.cl/knowledgebase_category/temas-de-coyuntura/",
-      "title": "Temas de Coyuntura",
-      "prior": {
-        "status": "retry",
-        "reason": "budget_or_analysis_deferred",
-        "deferred_detail": null
-      }
-    },
-    {
-      "key": "84d6c6315bc63a024e6b3add517676f48094908dbf8abc0e0574bb74045a0cdb",
-      "url": "https://www.clinicasdechile.cl/quienes-somos/nosotros/",
-      "title": "Quiénes Somos",
-      "prior": {
-        "status": "retry",
-        "reason": "budget_or_analysis_deferred",
-        "deferred_detail": null
-      }
-    },
-    {
-      "key": "c2bfd93f90786325c331359443ef4a602ec72b3002bdbaf260f433828f045f1b",
-      "url": "https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/page/3/?mostrar=6",
-      "title": "Quiénes Somos",
-      "prior": {
-        "status": "retry",
-        "reason": "budget_or_analysis_deferred",
-        "deferred_detail": null
-      }
-    }
-  ],
-  "baseline": {
-    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
-    "queue_states": {
-      "retry": 19,
-      "rejected": 5,
-      "archived": 3,
-      "published": 2
-    },
-    "health": {
-      "technical_status": "ok",
-      "editorial_outcome": "pending",
-      "last_signal_at": "2018-02-01",
-      "published": 0,
-      "pending": 19,
-      "rejected": 5
-    }
-  },
-  "checkpoint_commit": "4274c37"
+  "outcome": "OPERATIVE_DEGRADED",
+  "original_items_role": "Current candidate reconciliation. Initial evidence is preserved separately; terminal results are not replayed.",
+  "latest_original_inventory": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json",
+  "piece_decisions": "data/audits/provider_editorial_decisions_2026_10_11.json",
+  "last_runtime_evidence": "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
+  "next_action": "Supply dated editorial release/version evidence for33PDFs and one library item, distinct from RSS entry date, reporting year, upload path and sitemaplastmod; all four requested channels remain audited.",
+  "blocker_owner": "Publisher Clínicas de Chile / Source Engineering",
+  "current_checkpoint_test": "55 passed, 1 skipped; provider/beta/publication/gremio/source-health focal suite on 2026-10-11",
+  "merged_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104"
 }
