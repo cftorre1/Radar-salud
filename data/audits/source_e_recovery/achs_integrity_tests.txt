@@ -1,0 +1,39 @@
+Checkpoint: ACHS occupational extraction integrity
+UTC: 2026-10-11T05:39:26Z
+Branch: codex/e-salud-laboral-20261011
+Owned code: src/radar_salud/occupational_sources.py
+Owned regressions: tests/test_occupational_integrity.py
+
+Verification:
+  PYTHONPATH=src .venv/bin/python -m pytest -q tests/test_occupational_integrity.py
+  51 passed in 0.15s
+
+  PYTHONPATH=src .venv/bin/python -m pytest -q tests/test_occupational_integrity.py tests/test_occupational_inventory.py
+  76 passed in 0.21s
+
+  git diff --check -- src/radar_salud/occupational_sources.py tests/test_occupational_integrity.py
+  PASS (no whitespace errors)
+
+Regression coverage:
+- Whole-field dates, real calendar validation, invalid datetime rejection, explicit Chile audit date and future-date rejection.
+- Accumulate publication fields; contradictory or malformed fields fail closed without being overwritten.
+- Bare dates, event times and class token unpublished cannot supply publication evidence.
+- ACHS div.fecha restricted to publisher host, dated article URL and header before body; /noticia/1 archive is not a detail.
+- Exact publication_evidence URL/value/date/kind in raw metadata; publication_date_source equals kind.
+- Clinic actor attribution excludes incidental physician affiliation, quoted advice and out-of-hours referrals.
+- Centers retain provider_achs_centers and subtype centros; only explicitly accepted roles are included in provider source.
+- Negated opening/expansion/protocol/adherence and generic prevention are excluded; concrete campaign capacity/protocol and 700-worker adherence pass.
+- A failed or undated detail does not abort other details; exceptions carry exact diagnostics and partial_items.
+- Publisher HTTP403 is distinct from executor proxy CONNECT403; WAF and timeout errors are preserved.
+- No silent 60-item cap; a configured cap raises an incomplete-coverage diagnostic.
+- 90-day cutoff uses explicitly supplied audit day, inclusive at 2026-07-13 for 2026-10-11.
+
+Current evidence and integration boundary:
+- Origin Actions capture data/audits/source_e_recovery/actions/38114830625/report.json confirms ACHS newsroom HTTP200 with verified TLS and native listing div.fecha.
+- Initial Actions run includes listings but not article details. Native detail DOM confirmation is a follow-up checkpoint, not claimed by these synthetic regressions.
+- Independent official browser routes and sampled detail content recorded in achs_official_routes.json; no code test fixture is represented as a raw capture.
+- Earlier legacy tests/test_occupational_sources.py run: 13 failed / 14 passed because its old helper has unlabeled div dates and campaign fixtures contain actual new-treatment-guide content. Root owns fixture migration and engine health integration; legacy file deliberately untouched here.
+- Root/Reviewer must confirm partial_items ingestion retains incomplete health, strict processing guard checks publication_evidence, and archive inventory reaches the dated outside-90-day boundary. No production queue was modified by this checkpoint.
+
+Next action:
+Compare the dated native ACHS detail header against the second Actions capture, then add a raw-capture regression and rerun scoped and integration tests. Parent handles pagination, source_health, legacy fixture migration and independent Reviewer acceptance.
