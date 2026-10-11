@@ -136,6 +136,18 @@
         "c00b89e35227d74b7d06300e051b5206d93fa83d7b5a33d9bb4a5fbf8d2e8ed4"
       ]
     },
+    "783e6952edd48146c07298a9000ec33a4b4f77f167264cd48bd1d55f2b523a07": {
+      "attempts": 1,
+      "failure_signature": "efb63ec88d121e39fb7be7434a7761906175b115c4c782dd993ea9de86996792",
+      "input_fingerprint": "d75371226e619b10a92b224c3682ed272140da025d0ba735b468b2d9d5b56fd1",
+      "last_attempt_at": "2026-10-11T13:23:56.055888Z",
+      "task_ids": [
+        "source_repair_public_data_lane_2026_10_11"
+      ],
+      "tokens": [
+        "4ae642843e7487f61921fb2781a9547bdb460406a4cda56442549aec77445fcd"
+      ]
+    },
     "a78fb575249d1554b107f431da6c5bc670c4629eb1151ce3a176965bbbfea8a2": {
       "attempts": 1,
       "failure_signature": "efb63ec88d121e39fb7be7434a7761906175b115c4c782dd993ea9de86996792",
@@ -263,7 +275,8 @@
     "16a1aa18a9c64e9afcf501ae3880ec2222aec8cb0e0cf68324f22f7573cb9e54",
     "14fa25659ddc9a7bdf3a1ac100b47ed2210d06f4ad8054a87b8a0943dcf1d532",
     "af34d0ff0a28a1918a9cc272d932d5b5a52776b333b3d3cd2b88efc1df49e450",
-    "861bd6f7f2b021c7ed79849dddfbd231bb40ee1f578ad0e28596e8173ec66f38"
+    "861bd6f7f2b021c7ed79849dddfbd231bb40ee1f578ad0e28596e8173ec66f38",
+    "aa708d92b3f1ca6a0426e18a72814f58cadfe3639c3c8ad1e96de64cd41c4a1c"
   ],
   "lease_events": [
     {
@@ -75236,6 +75249,1371 @@
       "id": "d3423a9632e37a3b0a90f6826d72b772f9cd6b745effc605d3d65476c106e7ee",
       "kind": "blocker",
       "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T13:23:56.055888Z",
+      "details": {
+        "blockers": [
+          {
+            "evidence": [
+              {
+                "diagnostics_are_acceptance": false,
+                "family": "public_data",
+                "task_id": "source_repair_public_data_lane_2026_10_11"
+              }
+            ],
+            "fingerprint": "33a990209e089fd5d1d92764fe316303214b866caaafb9c871d75a72eb72347d",
+            "human_required": false,
+            "kind": "acceptance",
+            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                  "--diagnose-source",
+                  "isp_surveillance"
+                ],
+                "failure_hash": "c055fbd6a7b8ec857d8059c6aa908240d0168026d0643589d0676ab57ce35082",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_surveillance.log",
+                "log_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
+                "returncode": 1,
+                "source_urls": [
+                  "https://www.ispch.gob.cl/boletin/"
+                ],
+                "status": "FAIL"
+              },
+              {
+                "dated": 0,
+                "discovered": 0,
+                "error": "URLError: <urlopen error timed out>",
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "error": "URLError: <urlopen error timed out>",
+                    "status": "FAIL",
+                    "url": "https://www.ispch.gob.cl/boletin/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "isp_surveillance",
+                "technical_status": "error"
+              },
+              {
+                "automated_recovery": {
+                  "baseline_full_gate": {
+                    "captured_stdout_bytes": 963,
+                    "captured_stdout_sha256": "c2416567219853567c1f82fd817111aede5a1e41173586b8b317a2214276bab3",
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q"
+                    ],
+                    "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 8.54s\n",
+                    "returncode": 0
+                  },
+                  "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+                  "blocker_kind": "executor_capability_missing",
+                  "changed_paths": [],
+                  "context": [
+                    {
+                      "editable": true,
+                      "path": "src/radar_salud/source_scouts.py",
+                      "sha256": "c4b5177edf7fa616555e23051cfa1085768f9bade6284ec2bfa8f91b4dcc9095"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/models.py",
+                      "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
+                    },
+                    {
+                      "editable": true,
+                      "path": "src/radar_salud/scouts.py",
+                      "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/public_source_pipeline.py",
+                      "sha256": "036e8755100b3f4bb8fa286054534f9938567e4123aaea534703abe2bc517f39"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/df_article.py",
+                      "sha256": "5faaa204c3b597afd651d774de4b6fee193d6cce343b92845b22a32b468e701d"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/df_inventory.py",
+                      "sha256": "ab950056569612076ed36697c025427acdb2b54f90ed2cd994410dcea243b81e"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/pending_queue.py",
+                      "sha256": "6fbeb04f60ec6dfbe172b472ab32905fc5a50cec2cc2b9063a939beb22bca366"
+                    }
+                  ],
+                  "deterministic_planning": {
+                    "diagnostic": {
+                      "human_required": false,
+                      "kind": "executor_capability_missing",
+                      "reason": "No deterministic strategy is registered for this source/failure"
+                    },
+                    "evidence": [],
+                    "material_progress": false,
+                    "paid_calls": 0,
+                    "plan": null,
+                    "product_files_written": false,
+                    "status": "UNSUPPORTED",
+                    "strategy": null
+                  },
+                  "evidence": [
+                    {
+                      "captured_stdout_bytes": 468,
+                      "captured_stdout_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                        "--diagnose-source",
+                        "isp_surveillance"
+                      ],
+                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"isp_surveillance\", \"technical_status\": \"error\", \"error\": \"URLError: <urlopen error timed out>\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.ispch.gob.cl/boletin/\", \"status\": \"FAIL\", \"error\": \"URLError: <urlopen error timed out>\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
+                      "returncode": 1,
+                      "source_evidence": {
+                        "dated": 0,
+                        "discovered": 0,
+                        "error": "URLError: <urlopen error timed out>",
+                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                        "newest_event_date": null,
+                        "publication_verified": false,
+                        "requests": [
+                          {
+                            "error": "URLError: <urlopen error timed out>",
+                            "status": "FAIL",
+                            "url": "https://www.ispch.gob.cl/boletin/"
+                          }
+                        ],
+                        "samples": [],
+                        "scope": "discovery_only",
+                        "slug": "isp_surveillance",
+                        "technical_status": "error"
+                      },
+                      "source_evidence_sha256": "afb94d83b9126bca4d434fe3052d2910e968febf7b3fa85e50f9663bafd364d1"
+                    },
+                    {
+                      "captured_stdout_bytes": 99,
+                      "captured_stdout_sha256": "dba147114f275ae0f2e9c99e2ca6e034b73a99d3a3f72cbac85fef6cb2d486e1",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "-m",
+                        "pytest",
+                        "-q",
+                        "tests/test_press_pipeline.py",
+                        "tests/test_fonasa_source.py",
+                        "tests/test_isp_anamed_source.py",
+                        "tests/test_deis_source.py",
+                        "tests/test_suseso_pipeline.py"
+                      ],
+                      "output": "................                                                         [100%]\n16 passed in 0.17s\n",
+                      "returncode": 0
+                    },
+                    {
+                      "captured_stdout_bytes": 963,
+                      "captured_stdout_sha256": "c2416567219853567c1f82fd817111aede5a1e41173586b8b317a2214276bab3",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "-m",
+                        "pytest",
+                        "-q"
+                      ],
+                      "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 8.54s\n",
+                      "returncode": 0
+                    }
+                  ],
+                  "failure_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
+                  "live_baseline": {
+                    "dated": 0,
+                    "discovered": 0,
+                    "error": "URLError: <urlopen error timed out>",
+                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                    "newest_event_date": null,
+                    "publication_verified": false,
+                    "requests": [
+                      {
+                        "error": "URLError: <urlopen error timed out>",
+                        "status": "FAIL",
+                        "url": "https://www.ispch.gob.cl/boletin/"
+                      }
+                    ],
+                    "samples": [],
+                    "scope": "discovery_only",
+                    "slug": "isp_surveillance",
+                    "technical_status": "error"
+                  },
+                  "material_progress": false,
+                  "signature": null,
+                  "source_run_id": null,
+                  "source_slug": "isp_surveillance",
+                  "status": "BLOCKED",
+                  "validated": false
+                }
+              }
+            ],
+            "fingerprint": "090213370c82aaced99b1e66f027fb1d4ff19f6c2e09669ddf7b96a1a581ed04",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Scoped live discovery failed: isp_surveillance",
+            "source_urls": [
+              "https://www.ispch.gob.cl/boletin/"
+            ]
+          },
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                  "--diagnose-source",
+                  "fonasa_datos_abiertos"
+                ],
+                "failure_hash": "0611f70d93ccd102f9f04aca6499bb76f2ff30375395d4dd930895efecddc842",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-fonasa_datos_abiertos.log",
+                "log_sha256": "4caf98df3f43194eacae04b90e630e8610996d3811d42ad223e360df938c826f",
+                "returncode": 1,
+                "source_urls": [
+                  "https://datosabiertos.fonasa.cl/noticias/"
+                ],
+                "status": "FAIL"
+              },
+              {
+                "dated": 0,
+                "discovered": 0,
+                "error": "HTTPError: HTTP Error 403: Forbidden",
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "error": "HTTPError: HTTP Error 403: Forbidden",
+                    "status": "FAIL",
+                    "url": "https://datosabiertos.fonasa.cl/noticias/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "fonasa_datos_abiertos",
+                "technical_status": "error"
+              },
+              {
+                "automated_recovery": {
+                  "blocker": "External source access failed; parser repair cannot establish access: HTTPError: HTTP Error 403: Forbidden\nHTTPError: HTTP Error 403: Forbidden",
+                  "changed_paths": [],
+                  "evidence": [
+                    {
+                      "captured_stdout_bytes": 483,
+                      "captured_stdout_sha256": "4caf98df3f43194eacae04b90e630e8610996d3811d42ad223e360df938c826f",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                        "--diagnose-source",
+                        "fonasa_datos_abiertos"
+                      ],
+                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"fonasa_datos_abiertos\", \"technical_status\": \"error\", \"error\": \"HTTPError: HTTP Error 403: Forbidden\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://datosabiertos.fonasa.cl/noticias/\", \"status\": \"FAIL\", \"error\": \"HTTPError: HTTP Error 403: Forbidden\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
+                      "returncode": 1,
+                      "source_evidence": {
+                        "dated": 0,
+                        "discovered": 0,
+                        "error": "HTTPError: HTTP Error 403: Forbidden",
+                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                        "newest_event_date": null,
+                        "publication_verified": false,
+                        "requests": [
+                          {
+                            "error": "HTTPError: HTTP Error 403: Forbidden",
+                            "status": "FAIL",
+                            "url": "https://datosabiertos.fonasa.cl/noticias/"
+                          }
+                        ],
+                        "samples": [],
+                        "scope": "discovery_only",
+                        "slug": "fonasa_datos_abiertos",
+                        "technical_status": "error"
+                      },
+                      "source_evidence_sha256": "ab172356f417697c5eed059066806b23fd3f3d0bd359dc970039affa04c29d43"
+                    }
+                  ],
+                  "failure_sha256": "4caf98df3f43194eacae04b90e630e8610996d3811d42ad223e360df938c826f",
+                  "live_baseline": {
+                    "dated": 0,
+                    "discovered": 0,
+                    "error": "HTTPError: HTTP Error 403: Forbidden",
+                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                    "newest_event_date": null,
+                    "publication_verified": false,
+                    "requests": [
+                      {
+                        "error": "HTTPError: HTTP Error 403: Forbidden",
+                        "status": "FAIL",
+                        "url": "https://datosabiertos.fonasa.cl/noticias/"
+                      }
+                    ],
+                    "samples": [],
+                    "scope": "discovery_only",
+                    "slug": "fonasa_datos_abiertos",
+                    "technical_status": "error"
+                  },
+                  "material_progress": false,
+                  "signature": null,
+                  "source_run_id": null,
+                  "source_slug": "fonasa_datos_abiertos",
+                  "status": "BLOCKED",
+                  "validated": false
+                }
+              }
+            ],
+            "fingerprint": "4e0837fb230a21e9c27279beee2f2cf67f6631aff2bceeabd393972db02a9de3",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Scoped live discovery failed: fonasa_datos_abiertos",
+            "source_urls": [
+              "https://datosabiertos.fonasa.cl/noticias/"
+            ]
+          },
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                  "--diagnose-source",
+                  "fonasa"
+                ],
+                "failure_hash": "20d2ef77492152c3df18140937edd7ac45331240eeb3b933779ef33651394125",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-fonasa.log",
+                "log_sha256": "bdacb1f3e54b4db08b39e9f7324ccd69430084c61bec53677f77922bae5feb4b",
+                "returncode": 1,
+                "source_urls": [
+                  "https://www.fonasa.gob.cl/noticias/"
+                ],
+                "status": "FAIL"
+              },
+              {
+                "dated": 0,
+                "discovered": 0,
+                "error": "HTTPError: HTTP Error 403: Forbidden",
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "error": "HTTPError: HTTP Error 403: Forbidden",
+                    "status": "FAIL",
+                    "url": "https://www.fonasa.gob.cl/noticias/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "fonasa",
+                "technical_status": "error"
+              },
+              {
+                "automated_recovery": {
+                  "blocker": "External source access failed; parser repair cannot establish access: HTTPError: HTTP Error 403: Forbidden\nHTTPError: HTTP Error 403: Forbidden",
+                  "changed_paths": [],
+                  "evidence": [
+                    {
+                      "captured_stdout_bytes": 462,
+                      "captured_stdout_sha256": "bdacb1f3e54b4db08b39e9f7324ccd69430084c61bec53677f77922bae5feb4b",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                        "--diagnose-source",
+                        "fonasa"
+                      ],
+                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"fonasa\", \"technical_status\": \"error\", \"error\": \"HTTPError: HTTP Error 403: Forbidden\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.fonasa.gob.cl/noticias/\", \"status\": \"FAIL\", \"error\": \"HTTPError: HTTP Error 403: Forbidden\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
+                      "returncode": 1,
+                      "source_evidence": {
+                        "dated": 0,
+                        "discovered": 0,
+                        "error": "HTTPError: HTTP Error 403: Forbidden",
+                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                        "newest_event_date": null,
+                        "publication_verified": false,
+                        "requests": [
+                          {
+                            "error": "HTTPError: HTTP Error 403: Forbidden",
+                            "status": "FAIL",
+                            "url": "https://www.fonasa.gob.cl/noticias/"
+                          }
+                        ],
+                        "samples": [],
+                        "scope": "discovery_only",
+                        "slug": "fonasa",
+                        "technical_status": "error"
+                      },
+                      "source_evidence_sha256": "0bf1238d5ece9996a7f93a6bb55b00d21d67ce1f7f4a2d19a409bbf6171619e9"
+                    }
+                  ],
+                  "failure_sha256": "bdacb1f3e54b4db08b39e9f7324ccd69430084c61bec53677f77922bae5feb4b",
+                  "live_baseline": {
+                    "dated": 0,
+                    "discovered": 0,
+                    "error": "HTTPError: HTTP Error 403: Forbidden",
+                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                    "newest_event_date": null,
+                    "publication_verified": false,
+                    "requests": [
+                      {
+                        "error": "HTTPError: HTTP Error 403: Forbidden",
+                        "status": "FAIL",
+                        "url": "https://www.fonasa.gob.cl/noticias/"
+                      }
+                    ],
+                    "samples": [],
+                    "scope": "discovery_only",
+                    "slug": "fonasa",
+                    "technical_status": "error"
+                  },
+                  "material_progress": false,
+                  "signature": null,
+                  "source_run_id": null,
+                  "source_slug": "fonasa",
+                  "status": "BLOCKED",
+                  "validated": false
+                }
+              }
+            ],
+            "fingerprint": "fddd89b8538db7d4a1c11b9b5c7c150edd65e7a33c34cce36cd352db49134ee1",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Scoped live discovery failed: fonasa",
+            "source_urls": [
+              "https://www.fonasa.gob.cl/noticias/"
+            ]
+          },
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                  "--diagnose-source",
+                  "deis"
+                ],
+                "failure_hash": null,
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-deis.log",
+                "log_sha256": "57f68e33e59969390de26b1a93da695e16e062846d441b51ba17119c555958dc",
+                "returncode": 0,
+                "source_urls": [
+                  "https://deis.minsal.cl/"
+                ],
+                "status": "PASS"
+              },
+              {
+                "dated": 0,
+                "discovered": 0,
+                "error": null,
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "response_bytes": 257445,
+                    "response_sha256": "b0f6f922abd540476d0e8827728f160dea0bdbd17d9e4b3c17ef85829b6dc1be",
+                    "status": "PASS",
+                    "url": "https://deis.minsal.cl/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "deis",
+                "technical_status": "ok"
+              },
+              {
+                "automated_recovery": {
+                  "attempted": false,
+                  "reason": "No test failure or source recovery module installed"
+                }
+              }
+            ],
+            "fingerprint": "a54d08c42b76c6843a14a3f14681ccf8442a8c5753e3f7fd87a5981266b73f4c",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "No dated discovery proves current coverage: deis",
+            "source_urls": [
+              "https://deis.minsal.cl/"
+            ]
+          },
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                  "--diagnose-source",
+                  "isp_anamed"
+                ],
+                "failure_hash": "c0c975de283628f7ed0876397733146cade3d58e8c06847e6e338693ff12ba06",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_anamed.log",
+                "log_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+                "returncode": 1,
+                "source_urls": [
+                  "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                ],
+                "status": "FAIL"
+              },
+              {
+                "dated": 0,
+                "discovered": 0,
+                "error": "URLError: <urlopen error timed out>",
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "error": "URLError: <urlopen error timed out>",
+                    "status": "FAIL",
+                    "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "isp_anamed",
+                "technical_status": "error"
+              },
+              {
+                "automated_recovery": {
+                  "baseline_full_gate": {
+                    "captured_stdout_bytes": 963,
+                    "captured_stdout_sha256": "cf03722ec1cd0377913eed494dea9d0ffa8f665048870e6799b7ebcde6732a3a",
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q"
+                    ],
+                    "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 5.81s\n",
+                    "returncode": 0
+                  },
+                  "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+                  "blocker_kind": "executor_capability_missing",
+                  "changed_paths": [],
+                  "context": [
+                    {
+                      "editable": true,
+                      "path": "src/radar_salud/source_scouts.py",
+                      "sha256": "c4b5177edf7fa616555e23051cfa1085768f9bade6284ec2bfa8f91b4dcc9095"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/models.py",
+                      "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
+                    },
+                    {
+                      "editable": true,
+                      "path": "src/radar_salud/scouts.py",
+                      "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/public_source_pipeline.py",
+                      "sha256": "036e8755100b3f4bb8fa286054534f9938567e4123aaea534703abe2bc517f39"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/df_article.py",
+                      "sha256": "5faaa204c3b597afd651d774de4b6fee193d6cce343b92845b22a32b468e701d"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/df_inventory.py",
+                      "sha256": "ab950056569612076ed36697c025427acdb2b54f90ed2cd994410dcea243b81e"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/pending_queue.py",
+                      "sha256": "6fbeb04f60ec6dfbe172b472ab32905fc5a50cec2cc2b9063a939beb22bca366"
+                    }
+                  ],
+                  "deterministic_planning": {
+                    "diagnostic": {
+                      "human_required": false,
+                      "kind": "executor_capability_missing",
+                      "reason": "No deterministic strategy is registered for this source/failure"
+                    },
+                    "evidence": [],
+                    "material_progress": false,
+                    "paid_calls": 0,
+                    "plan": null,
+                    "product_files_written": false,
+                    "status": "UNSUPPORTED",
+                    "strategy": null
+                  },
+                  "evidence": [
+                    {
+                      "captured_stdout_bytes": 480,
+                      "captured_stdout_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                        "--diagnose-source",
+                        "isp_anamed"
+                      ],
+                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"isp_anamed\", \"technical_status\": \"error\", \"error\": \"URLError: <urlopen error timed out>\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.ispch.gob.cl/categorias-alertas/anamed/\", \"status\": \"FAIL\", \"error\": \"URLError: <urlopen error timed out>\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
+                      "returncode": 1,
+                      "source_evidence": {
+                        "dated": 0,
+                        "discovered": 0,
+                        "error": "URLError: <urlopen error timed out>",
+                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                        "newest_event_date": null,
+                        "publication_verified": false,
+                        "requests": [
+                          {
+                            "error": "URLError: <urlopen error timed out>",
+                            "status": "FAIL",
+                            "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                          }
+                        ],
+                        "samples": [],
+                        "scope": "discovery_only",
+                        "slug": "isp_anamed",
+                        "technical_status": "error"
+                      },
+                      "source_evidence_sha256": "36f554fe1c0d2a0ac634b1e11a5b2fbf85b62d705669254b91ef377d64ea28ab"
+                    },
+                    {
+                      "captured_stdout_bytes": 99,
+                      "captured_stdout_sha256": "0127026fa52388c28c751af7383c9cfdcedb768d53987355f81395a89e7531e3",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "-m",
+                        "pytest",
+                        "-q",
+                        "tests/test_press_pipeline.py",
+                        "tests/test_fonasa_source.py",
+                        "tests/test_isp_anamed_source.py",
+                        "tests/test_deis_source.py",
+                        "tests/test_suseso_pipeline.py"
+                      ],
+                      "output": "................                                                         [100%]\n16 passed in 0.18s\n",
+                      "returncode": 0
+                    },
+                    {
+                      "captured_stdout_bytes": 963,
+                      "captured_stdout_sha256": "cf03722ec1cd0377913eed494dea9d0ffa8f665048870e6799b7ebcde6732a3a",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "-m",
+                        "pytest",
+                        "-q"
+                      ],
+                      "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 5.81s\n",
+                      "returncode": 0
+                    }
+                  ],
+                  "failure_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+                  "live_baseline": {
+                    "dated": 0,
+                    "discovered": 0,
+                    "error": "URLError: <urlopen error timed out>",
+                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                    "newest_event_date": null,
+                    "publication_verified": false,
+                    "requests": [
+                      {
+                        "error": "URLError: <urlopen error timed out>",
+                        "status": "FAIL",
+                        "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                      }
+                    ],
+                    "samples": [],
+                    "scope": "discovery_only",
+                    "slug": "isp_anamed",
+                    "technical_status": "error"
+                  },
+                  "material_progress": false,
+                  "signature": null,
+                  "source_run_id": null,
+                  "source_slug": "isp_anamed",
+                  "status": "BLOCKED",
+                  "validated": false
+                }
+              }
+            ],
+            "fingerprint": "75b8678bbde17aae692b918c224e5bbdf4c1720a699a56503fd4362b29c0cee7",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Scoped live discovery failed: isp_anamed",
+            "source_urls": [
+              "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "public_data",
+            "task_id": "source_repair_public_data_lane_2026_10_11"
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "isp_surveillance"
+            ],
+            "failure_hash": "c055fbd6a7b8ec857d8059c6aa908240d0168026d0643589d0676ab57ce35082",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_surveillance.log",
+            "log_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
+            "returncode": 1,
+            "source_urls": [
+              "https://www.ispch.gob.cl/boletin/"
+            ],
+            "status": "FAIL"
+          },
+          {
+            "dated": 0,
+            "discovered": 0,
+            "error": "URLError: <urlopen error timed out>",
+            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "newest_event_date": null,
+            "publication_verified": false,
+            "requests": [
+              {
+                "error": "URLError: <urlopen error timed out>",
+                "status": "FAIL",
+                "url": "https://www.ispch.gob.cl/boletin/"
+              }
+            ],
+            "samples": [],
+            "scope": "discovery_only",
+            "slug": "isp_surveillance",
+            "technical_status": "error"
+          },
+          {
+            "automated_recovery": {
+              "baseline_full_gate": {
+                "captured_stdout_bytes": 963,
+                "captured_stdout_sha256": "c2416567219853567c1f82fd817111aede5a1e41173586b8b317a2214276bab3",
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 8.54s\n",
+                "returncode": 0
+              },
+              "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+              "blocker_kind": "executor_capability_missing",
+              "changed_paths": [],
+              "context": [
+                {
+                  "editable": true,
+                  "path": "src/radar_salud/source_scouts.py",
+                  "sha256": "c4b5177edf7fa616555e23051cfa1085768f9bade6284ec2bfa8f91b4dcc9095"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/models.py",
+                  "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
+                },
+                {
+                  "editable": true,
+                  "path": "src/radar_salud/scouts.py",
+                  "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/public_source_pipeline.py",
+                  "sha256": "036e8755100b3f4bb8fa286054534f9938567e4123aaea534703abe2bc517f39"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/df_article.py",
+                  "sha256": "5faaa204c3b597afd651d774de4b6fee193d6cce343b92845b22a32b468e701d"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/df_inventory.py",
+                  "sha256": "ab950056569612076ed36697c025427acdb2b54f90ed2cd994410dcea243b81e"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/pending_queue.py",
+                  "sha256": "6fbeb04f60ec6dfbe172b472ab32905fc5a50cec2cc2b9063a939beb22bca366"
+                }
+              ],
+              "deterministic_planning": {
+                "diagnostic": {
+                  "human_required": false,
+                  "kind": "executor_capability_missing",
+                  "reason": "No deterministic strategy is registered for this source/failure"
+                },
+                "evidence": [],
+                "material_progress": false,
+                "paid_calls": 0,
+                "plan": null,
+                "product_files_written": false,
+                "status": "UNSUPPORTED",
+                "strategy": null
+              },
+              "evidence": [
+                {
+                  "captured_stdout_bytes": 468,
+                  "captured_stdout_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                    "--diagnose-source",
+                    "isp_surveillance"
+                  ],
+                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"isp_surveillance\", \"technical_status\": \"error\", \"error\": \"URLError: <urlopen error timed out>\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.ispch.gob.cl/boletin/\", \"status\": \"FAIL\", \"error\": \"URLError: <urlopen error timed out>\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
+                  "returncode": 1,
+                  "source_evidence": {
+                    "dated": 0,
+                    "discovered": 0,
+                    "error": "URLError: <urlopen error timed out>",
+                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                    "newest_event_date": null,
+                    "publication_verified": false,
+                    "requests": [
+                      {
+                        "error": "URLError: <urlopen error timed out>",
+                        "status": "FAIL",
+                        "url": "https://www.ispch.gob.cl/boletin/"
+                      }
+                    ],
+                    "samples": [],
+                    "scope": "discovery_only",
+                    "slug": "isp_surveillance",
+                    "technical_status": "error"
+                  },
+                  "source_evidence_sha256": "afb94d83b9126bca4d434fe3052d2910e968febf7b3fa85e50f9663bafd364d1"
+                },
+                {
+                  "captured_stdout_bytes": 99,
+                  "captured_stdout_sha256": "dba147114f275ae0f2e9c99e2ca6e034b73a99d3a3f72cbac85fef6cb2d486e1",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "-m",
+                    "pytest",
+                    "-q",
+                    "tests/test_press_pipeline.py",
+                    "tests/test_fonasa_source.py",
+                    "tests/test_isp_anamed_source.py",
+                    "tests/test_deis_source.py",
+                    "tests/test_suseso_pipeline.py"
+                  ],
+                  "output": "................                                                         [100%]\n16 passed in 0.17s\n",
+                  "returncode": 0
+                },
+                {
+                  "captured_stdout_bytes": 963,
+                  "captured_stdout_sha256": "c2416567219853567c1f82fd817111aede5a1e41173586b8b317a2214276bab3",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "-m",
+                    "pytest",
+                    "-q"
+                  ],
+                  "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 8.54s\n",
+                  "returncode": 0
+                }
+              ],
+              "failure_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
+              "live_baseline": {
+                "dated": 0,
+                "discovered": 0,
+                "error": "URLError: <urlopen error timed out>",
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "error": "URLError: <urlopen error timed out>",
+                    "status": "FAIL",
+                    "url": "https://www.ispch.gob.cl/boletin/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "isp_surveillance",
+                "technical_status": "error"
+              },
+              "material_progress": false,
+              "signature": null,
+              "source_run_id": null,
+              "source_slug": "isp_surveillance",
+              "status": "BLOCKED",
+              "validated": false
+            }
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "fonasa_datos_abiertos"
+            ],
+            "failure_hash": "0611f70d93ccd102f9f04aca6499bb76f2ff30375395d4dd930895efecddc842",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-fonasa_datos_abiertos.log",
+            "log_sha256": "4caf98df3f43194eacae04b90e630e8610996d3811d42ad223e360df938c826f",
+            "returncode": 1,
+            "source_urls": [
+              "https://datosabiertos.fonasa.cl/noticias/"
+            ],
+            "status": "FAIL"
+          },
+          {
+            "dated": 0,
+            "discovered": 0,
+            "error": "HTTPError: HTTP Error 403: Forbidden",
+            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "newest_event_date": null,
+            "publication_verified": false,
+            "requests": [
+              {
+                "error": "HTTPError: HTTP Error 403: Forbidden",
+                "status": "FAIL",
+                "url": "https://datosabiertos.fonasa.cl/noticias/"
+              }
+            ],
+            "samples": [],
+            "scope": "discovery_only",
+            "slug": "fonasa_datos_abiertos",
+            "technical_status": "error"
+          },
+          {
+            "automated_recovery": {
+              "blocker": "External source access failed; parser repair cannot establish access: HTTPError: HTTP Error 403: Forbidden\nHTTPError: HTTP Error 403: Forbidden",
+              "changed_paths": [],
+              "evidence": [
+                {
+                  "captured_stdout_bytes": 483,
+                  "captured_stdout_sha256": "4caf98df3f43194eacae04b90e630e8610996d3811d42ad223e360df938c826f",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                    "--diagnose-source",
+                    "fonasa_datos_abiertos"
+                  ],
+                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"fonasa_datos_abiertos\", \"technical_status\": \"error\", \"error\": \"HTTPError: HTTP Error 403: Forbidden\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://datosabiertos.fonasa.cl/noticias/\", \"status\": \"FAIL\", \"error\": \"HTTPError: HTTP Error 403: Forbidden\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
+                  "returncode": 1,
+                  "source_evidence": {
+                    "dated": 0,
+                    "discovered": 0,
+                    "error": "HTTPError: HTTP Error 403: Forbidden",
+                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                    "newest_event_date": null,
+                    "publication_verified": false,
+                    "requests": [
+                      {
+                        "error": "HTTPError: HTTP Error 403: Forbidden",
+                        "status": "FAIL",
+                        "url": "https://datosabiertos.fonasa.cl/noticias/"
+                      }
+                    ],
+                    "samples": [],
+                    "scope": "discovery_only",
+                    "slug": "fonasa_datos_abiertos",
+                    "technical_status": "error"
+                  },
+                  "source_evidence_sha256": "ab172356f417697c5eed059066806b23fd3f3d0bd359dc970039affa04c29d43"
+                }
+              ],
+              "failure_sha256": "4caf98df3f43194eacae04b90e630e8610996d3811d42ad223e360df938c826f",
+              "live_baseline": {
+                "dated": 0,
+                "discovered": 0,
+                "error": "HTTPError: HTTP Error 403: Forbidden",
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "error": "HTTPError: HTTP Error 403: Forbidden",
+                    "status": "FAIL",
+                    "url": "https://datosabiertos.fonasa.cl/noticias/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "fonasa_datos_abiertos",
+                "technical_status": "error"
+              },
+              "material_progress": false,
+              "signature": null,
+              "source_run_id": null,
+              "source_slug": "fonasa_datos_abiertos",
+              "status": "BLOCKED",
+              "validated": false
+            }
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "fonasa"
+            ],
+            "failure_hash": "20d2ef77492152c3df18140937edd7ac45331240eeb3b933779ef33651394125",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-fonasa.log",
+            "log_sha256": "bdacb1f3e54b4db08b39e9f7324ccd69430084c61bec53677f77922bae5feb4b",
+            "returncode": 1,
+            "source_urls": [
+              "https://www.fonasa.gob.cl/noticias/"
+            ],
+            "status": "FAIL"
+          },
+          {
+            "dated": 0,
+            "discovered": 0,
+            "error": "HTTPError: HTTP Error 403: Forbidden",
+            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "newest_event_date": null,
+            "publication_verified": false,
+            "requests": [
+              {
+                "error": "HTTPError: HTTP Error 403: Forbidden",
+                "status": "FAIL",
+                "url": "https://www.fonasa.gob.cl/noticias/"
+              }
+            ],
+            "samples": [],
+            "scope": "discovery_only",
+            "slug": "fonasa",
+            "technical_status": "error"
+          },
+          {
+            "automated_recovery": {
+              "blocker": "External source access failed; parser repair cannot establish access: HTTPError: HTTP Error 403: Forbidden\nHTTPError: HTTP Error 403: Forbidden",
+              "changed_paths": [],
+              "evidence": [
+                {
+                  "captured_stdout_bytes": 462,
+                  "captured_stdout_sha256": "bdacb1f3e54b4db08b39e9f7324ccd69430084c61bec53677f77922bae5feb4b",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                    "--diagnose-source",
+                    "fonasa"
+                  ],
+                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"fonasa\", \"technical_status\": \"error\", \"error\": \"HTTPError: HTTP Error 403: Forbidden\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.fonasa.gob.cl/noticias/\", \"status\": \"FAIL\", \"error\": \"HTTPError: HTTP Error 403: Forbidden\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
+                  "returncode": 1,
+                  "source_evidence": {
+                    "dated": 0,
+                    "discovered": 0,
+                    "error": "HTTPError: HTTP Error 403: Forbidden",
+                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                    "newest_event_date": null,
+                    "publication_verified": false,
+                    "requests": [
+                      {
+                        "error": "HTTPError: HTTP Error 403: Forbidden",
+                        "status": "FAIL",
+                        "url": "https://www.fonasa.gob.cl/noticias/"
+                      }
+                    ],
+                    "samples": [],
+                    "scope": "discovery_only",
+                    "slug": "fonasa",
+                    "technical_status": "error"
+                  },
+                  "source_evidence_sha256": "0bf1238d5ece9996a7f93a6bb55b00d21d67ce1f7f4a2d19a409bbf6171619e9"
+                }
+              ],
+              "failure_sha256": "bdacb1f3e54b4db08b39e9f7324ccd69430084c61bec53677f77922bae5feb4b",
+              "live_baseline": {
+                "dated": 0,
+                "discovered": 0,
+                "error": "HTTPError: HTTP Error 403: Forbidden",
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "error": "HTTPError: HTTP Error 403: Forbidden",
+                    "status": "FAIL",
+                    "url": "https://www.fonasa.gob.cl/noticias/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "fonasa",
+                "technical_status": "error"
+              },
+              "material_progress": false,
+              "signature": null,
+              "source_run_id": null,
+              "source_slug": "fonasa",
+              "status": "BLOCKED",
+              "validated": false
+            }
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "deis"
+            ],
+            "failure_hash": null,
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-deis.log",
+            "log_sha256": "57f68e33e59969390de26b1a93da695e16e062846d441b51ba17119c555958dc",
+            "returncode": 0,
+            "source_urls": [
+              "https://deis.minsal.cl/"
+            ],
+            "status": "PASS"
+          },
+          {
+            "dated": 0,
+            "discovered": 0,
+            "error": null,
+            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "newest_event_date": null,
+            "publication_verified": false,
+            "requests": [
+              {
+                "response_bytes": 257445,
+                "response_sha256": "b0f6f922abd540476d0e8827728f160dea0bdbd17d9e4b3c17ef85829b6dc1be",
+                "status": "PASS",
+                "url": "https://deis.minsal.cl/"
+              }
+            ],
+            "samples": [],
+            "scope": "discovery_only",
+            "slug": "deis",
+            "technical_status": "ok"
+          },
+          {
+            "automated_recovery": {
+              "attempted": false,
+              "reason": "No test failure or source recovery module installed"
+            }
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "isp_anamed"
+            ],
+            "failure_hash": "c0c975de283628f7ed0876397733146cade3d58e8c06847e6e338693ff12ba06",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_anamed.log",
+            "log_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+            "returncode": 1,
+            "source_urls": [
+              "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+            ],
+            "status": "FAIL"
+          },
+          {
+            "dated": 0,
+            "discovered": 0,
+            "error": "URLError: <urlopen error timed out>",
+            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "newest_event_date": null,
+            "publication_verified": false,
+            "requests": [
+              {
+                "error": "URLError: <urlopen error timed out>",
+                "status": "FAIL",
+                "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+              }
+            ],
+            "samples": [],
+            "scope": "discovery_only",
+            "slug": "isp_anamed",
+            "technical_status": "error"
+          },
+          {
+            "automated_recovery": {
+              "baseline_full_gate": {
+                "captured_stdout_bytes": 963,
+                "captured_stdout_sha256": "cf03722ec1cd0377913eed494dea9d0ffa8f665048870e6799b7ebcde6732a3a",
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 5.81s\n",
+                "returncode": 0
+              },
+              "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+              "blocker_kind": "executor_capability_missing",
+              "changed_paths": [],
+              "context": [
+                {
+                  "editable": true,
+                  "path": "src/radar_salud/source_scouts.py",
+                  "sha256": "c4b5177edf7fa616555e23051cfa1085768f9bade6284ec2bfa8f91b4dcc9095"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/models.py",
+                  "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
+                },
+                {
+                  "editable": true,
+                  "path": "src/radar_salud/scouts.py",
+                  "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/public_source_pipeline.py",
+                  "sha256": "036e8755100b3f4bb8fa286054534f9938567e4123aaea534703abe2bc517f39"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/df_article.py",
+                  "sha256": "5faaa204c3b597afd651d774de4b6fee193d6cce343b92845b22a32b468e701d"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/df_inventory.py",
+                  "sha256": "ab950056569612076ed36697c025427acdb2b54f90ed2cd994410dcea243b81e"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/pending_queue.py",
+                  "sha256": "6fbeb04f60ec6dfbe172b472ab32905fc5a50cec2cc2b9063a939beb22bca366"
+                }
+              ],
+              "deterministic_planning": {
+                "diagnostic": {
+                  "human_required": false,
+                  "kind": "executor_capability_missing",
+                  "reason": "No deterministic strategy is registered for this source/failure"
+                },
+                "evidence": [],
+                "material_progress": false,
+                "paid_calls": 0,
+                "plan": null,
+                "product_files_written": false,
+                "status": "UNSUPPORTED",
+                "strategy": null
+              },
+              "evidence": [
+                {
+                  "captured_stdout_bytes": 480,
+                  "captured_stdout_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                    "--diagnose-source",
+                    "isp_anamed"
+                  ],
+                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"isp_anamed\", \"technical_status\": \"error\", \"error\": \"URLError: <urlopen error timed out>\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.ispch.gob.cl/categorias-alertas/anamed/\", \"status\": \"FAIL\", \"error\": \"URLError: <urlopen error timed out>\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
+                  "returncode": 1,
+                  "source_evidence": {
+                    "dated": 0,
+                    "discovered": 0,
+                    "error": "URLError: <urlopen error timed out>",
+                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                    "newest_event_date": null,
+                    "publication_verified": false,
+                    "requests": [
+                      {
+                        "error": "URLError: <urlopen error timed out>",
+                        "status": "FAIL",
+                        "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                      }
+                    ],
+                    "samples": [],
+                    "scope": "discovery_only",
+                    "slug": "isp_anamed",
+                    "technical_status": "error"
+                  },
+                  "source_evidence_sha256": "36f554fe1c0d2a0ac634b1e11a5b2fbf85b62d705669254b91ef377d64ea28ab"
+                },
+                {
+                  "captured_stdout_bytes": 99,
+                  "captured_stdout_sha256": "0127026fa52388c28c751af7383c9cfdcedb768d53987355f81395a89e7531e3",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "-m",
+                    "pytest",
+                    "-q",
+                    "tests/test_press_pipeline.py",
+                    "tests/test_fonasa_source.py",
+                    "tests/test_isp_anamed_source.py",
+                    "tests/test_deis_source.py",
+                    "tests/test_suseso_pipeline.py"
+                  ],
+                  "output": "................                                                         [100%]\n16 passed in 0.18s\n",
+                  "returncode": 0
+                },
+                {
+                  "captured_stdout_bytes": 963,
+                  "captured_stdout_sha256": "cf03722ec1cd0377913eed494dea9d0ffa8f665048870e6799b7ebcde6732a3a",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "-m",
+                    "pytest",
+                    "-q"
+                  ],
+                  "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 5.81s\n",
+                  "returncode": 0
+                }
+              ],
+              "failure_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+              "live_baseline": {
+                "dated": 0,
+                "discovered": 0,
+                "error": "URLError: <urlopen error timed out>",
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "error": "URLError: <urlopen error timed out>",
+                    "status": "FAIL",
+                    "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "isp_anamed",
+                "technical_status": "error"
+              },
+              "material_progress": false,
+              "signature": null,
+              "source_run_id": null,
+              "source_slug": "isp_anamed",
+              "status": "BLOCKED",
+              "validated": false
+            }
+          }
+        ],
+        "failure_action": "blocked",
+        "fingerprint": "b84193bb3a18a1a36e820ebd154026d923a4e22fb510b1e70174c431974ebaa9",
+        "product_input_fingerprint": "3452cd724ac0dd2efe8844f2c4153fcea9cf38055104107c825a85f6e2ac03fc",
+        "real_failure": {
+          "failure_signature": "efb63ec88d121e39fb7be7434a7761906175b115c4c782dd993ea9de86996792",
+          "kind": "source_runtime",
+          "observed_at": "2026-10-11T13:22:57.864230+00:00",
+          "source_slug": "isp_surveillance",
+          "source_url": "https://www.ispch.gob.cl/boletin/",
+          "trace_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_surveillance.log",
+          "trace_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
+          "verified": true
+        },
+        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256; Scoped live discovery failed: isp_surveillance; Scoped live discovery failed: fonasa_datos_abiertos; Scoped live discovery failed: fonasa; No dated discovery proves current coverage: deis; Scoped live discovery failed: isp_anamed"
+      },
+      "family": "public_data",
+      "id": "295031c85fa305ccf0a2c9bccc93dee6cc42b2d82ff7e6fbf650e4526ca58e79",
+      "kind": "blocker",
+      "task_id": "source_repair_public_data_lane_2026_10_11"
     }
   ],
   "pending_transitions": [
@@ -75250,6 +76628,12 @@
       "event_id": "d3423a9632e37a3b0a90f6826d72b772f9cd6b745effc605d3d65476c106e7ee",
       "family": "media",
       "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T13:23:56.055888Z",
+      "event_id": "295031c85fa305ccf0a2c9bccc93dee6cc42b2d82ff7e6fbf650e4526ca58e79",
+      "family": "public_data",
+      "task_id": "source_repair_public_data_lane_2026_10_11"
     }
   ],
   "schema_version": 2,
@@ -85284,8 +86668,8 @@
       "attempts": 5,
       "audit_counts": {},
       "blocked_revision": [
-        "c4819844e413d31ede792521a2c137392c4ae104",
-        "7315d917f1f7476343d24d1c5226e2a60e74c5b8c619e97916ce0ddf60c1f149"
+        "916fe2d4684466577ef86374cff2f4d58c377ef0",
+        "75c0fc2b1d6607e816df53ad535098b6555bc6d587824b559c86370851a0be10"
       ],
       "blocker": {
         "blockers": [
@@ -85302,269 +86686,6 @@
             "kind": "acceptance",
             "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
             "source_urls": []
-          },
-          {
-            "evidence": [
-              {
-                "command": [
-                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                  "--diagnose-source",
-                  "deis"
-                ],
-                "failure_hash": null,
-                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-deis.log",
-                "log_sha256": "341235d22f0802a47122f4962ce09019006f9ca15967b086f33ffaacff9da576",
-                "returncode": 0,
-                "source_urls": [
-                  "https://deis.minsal.cl/"
-                ],
-                "status": "PASS"
-              },
-              {
-                "dated": 0,
-                "discovered": 0,
-                "error": null,
-                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                "newest_event_date": null,
-                "publication_verified": false,
-                "requests": [
-                  {
-                    "response_bytes": 257442,
-                    "response_sha256": "1ea48bd727a0b5d6d0f7c4ac068ee2428cef573b42ed0e5e0ac61c5b6ff48cd5",
-                    "status": "PASS",
-                    "url": "https://deis.minsal.cl/"
-                  }
-                ],
-                "samples": [],
-                "scope": "discovery_only",
-                "slug": "deis",
-                "technical_status": "ok"
-              },
-              {
-                "automated_recovery": {
-                  "attempted": false,
-                  "reason": "No test failure or source recovery module installed"
-                }
-              }
-            ],
-            "fingerprint": "a54d08c42b76c6843a14a3f14681ccf8442a8c5753e3f7fd87a5981266b73f4c",
-            "human_required": false,
-            "kind": "technical",
-            "reason": "No dated discovery proves current coverage: deis",
-            "source_urls": [
-              "https://deis.minsal.cl/"
-            ]
-          },
-          {
-            "evidence": [
-              {
-                "command": [
-                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                  "--diagnose-source",
-                  "isp_anamed"
-                ],
-                "failure_hash": "c0c975de283628f7ed0876397733146cade3d58e8c06847e6e338693ff12ba06",
-                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_anamed.log",
-                "log_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
-                "returncode": 1,
-                "source_urls": [
-                  "https://www.ispch.gob.cl/categorias-alertas/anamed/"
-                ],
-                "status": "FAIL"
-              },
-              {
-                "dated": 0,
-                "discovered": 0,
-                "error": "URLError: <urlopen error timed out>",
-                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                "newest_event_date": null,
-                "publication_verified": false,
-                "requests": [
-                  {
-                    "error": "URLError: <urlopen error timed out>",
-                    "status": "FAIL",
-                    "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
-                  }
-                ],
-                "samples": [],
-                "scope": "discovery_only",
-                "slug": "isp_anamed",
-                "technical_status": "error"
-              },
-              {
-                "automated_recovery": {
-                  "baseline_full_gate": {
-                    "captured_stdout_bytes": 2221,
-                    "captured_stdout_sha256": "42f5bd0f5451434e81e0b57ba0aaef983254a066035318d6108b3b257fb81c0c",
-                    "command": [
-                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                      "-m",
-                      "pytest",
-                      "-q"
-                    ],
-                    "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 5.22s\n",
-                    "returncode": 1
-                  },
-                  "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
-                  "blocker_kind": "executor_capability_missing",
-                  "changed_paths": [],
-                  "context": [
-                    {
-                      "editable": true,
-                      "path": "src/radar_salud/source_scouts.py",
-                      "sha256": "d13e3028fa37cb849fe127ca631a1b79b88a2d17c0e8f9319a9bc2658f69976b"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/models.py",
-                      "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
-                    },
-                    {
-                      "editable": true,
-                      "path": "src/radar_salud/scouts.py",
-                      "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/public_source_pipeline.py",
-                      "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/pending_queue.py",
-                      "sha256": "2aacfc163305af71a31c5f0bdaf0d55ae5057c0be6af202c555dd2516a407c47"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/pipeline.py",
-                      "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/document_intelligence.py",
-                      "sha256": "0d5b9df5c861e5f01e03e78e85154e0ee7d2fcbebb892b9add974d9f4969c98d"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/llm_analysis.py",
-                      "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
-                    }
-                  ],
-                  "deterministic_planning": {
-                    "diagnostic": {
-                      "human_required": false,
-                      "kind": "executor_capability_missing",
-                      "reason": "No deterministic strategy is registered for this source/failure"
-                    },
-                    "evidence": [],
-                    "material_progress": false,
-                    "paid_calls": 0,
-                    "plan": null,
-                    "product_files_written": false,
-                    "status": "UNSUPPORTED",
-                    "strategy": null
-                  },
-                  "evidence": [
-                    {
-                      "captured_stdout_bytes": 480,
-                      "captured_stdout_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                        "--diagnose-source",
-                        "isp_anamed"
-                      ],
-                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"isp_anamed\", \"technical_status\": \"error\", \"error\": \"URLError: <urlopen error timed out>\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.ispch.gob.cl/categorias-alertas/anamed/\", \"status\": \"FAIL\", \"error\": \"URLError: <urlopen error timed out>\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                      "returncode": 1,
-                      "source_evidence": {
-                        "dated": 0,
-                        "discovered": 0,
-                        "error": "URLError: <urlopen error timed out>",
-                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                        "newest_event_date": null,
-                        "publication_verified": false,
-                        "requests": [
-                          {
-                            "error": "URLError: <urlopen error timed out>",
-                            "status": "FAIL",
-                            "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
-                          }
-                        ],
-                        "samples": [],
-                        "scope": "discovery_only",
-                        "slug": "isp_anamed",
-                        "technical_status": "error"
-                      },
-                      "source_evidence_sha256": "36f554fe1c0d2a0ac634b1e11a5b2fbf85b62d705669254b91ef377d64ea28ab"
-                    },
-                    {
-                      "captured_stdout_bytes": 99,
-                      "captured_stdout_sha256": "dba147114f275ae0f2e9c99e2ca6e034b73a99d3a3f72cbac85fef6cb2d486e1",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "-m",
-                        "pytest",
-                        "-q",
-                        "tests/test_press_pipeline.py",
-                        "tests/test_fonasa_source.py",
-                        "tests/test_isp_anamed_source.py",
-                        "tests/test_deis_source.py",
-                        "tests/test_suseso_pipeline.py"
-                      ],
-                      "output": "................                                                         [100%]\n16 passed in 0.17s\n",
-                      "returncode": 0
-                    },
-                    {
-                      "captured_stdout_bytes": 2221,
-                      "captured_stdout_sha256": "42f5bd0f5451434e81e0b57ba0aaef983254a066035318d6108b3b257fb81c0c",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "-m",
-                        "pytest",
-                        "-q"
-                      ],
-                      "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 5.22s\n",
-                      "returncode": 1
-                    }
-                  ],
-                  "failure_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
-                  "live_baseline": {
-                    "dated": 0,
-                    "discovered": 0,
-                    "error": "URLError: <urlopen error timed out>",
-                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "error": "URLError: <urlopen error timed out>",
-                        "status": "FAIL",
-                        "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
-                      }
-                    ],
-                    "samples": [],
-                    "scope": "discovery_only",
-                    "slug": "isp_anamed",
-                    "technical_status": "error"
-                  },
-                  "material_progress": false,
-                  "signature": null,
-                  "source_run_id": null,
-                  "source_slug": "isp_anamed",
-                  "status": "BLOCKED",
-                  "validated": false
-                }
-              }
-            ],
-            "fingerprint": "b9f9f624b6874f97fa03ebe1272dc19bd59f64e9b6992d682f752816ce8a73fb",
-            "human_required": false,
-            "kind": "technical",
-            "reason": "Scoped live discovery failed: isp_anamed",
-            "source_urls": [
-              "https://www.ispch.gob.cl/categorias-alertas/anamed/"
-            ]
           },
           {
             "evidence": [
@@ -85606,16 +86727,16 @@
               {
                 "automated_recovery": {
                   "baseline_full_gate": {
-                    "captured_stdout_bytes": 2221,
-                    "captured_stdout_sha256": "a2fa25d9c8d8fe9aa17a619ef3d83ce4ec388339b9685993a947d1e8ba62214f",
+                    "captured_stdout_bytes": 963,
+                    "captured_stdout_sha256": "c2416567219853567c1f82fd817111aede5a1e41173586b8b317a2214276bab3",
                     "command": [
                       "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
                       "-m",
                       "pytest",
                       "-q"
                     ],
-                    "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.36s\n",
-                    "returncode": 1
+                    "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 8.54s\n",
+                    "returncode": 0
                   },
                   "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
                   "blocker_kind": "executor_capability_missing",
@@ -85624,7 +86745,7 @@
                     {
                       "editable": true,
                       "path": "src/radar_salud/source_scouts.py",
-                      "sha256": "d13e3028fa37cb849fe127ca631a1b79b88a2d17c0e8f9319a9bc2658f69976b"
+                      "sha256": "c4b5177edf7fa616555e23051cfa1085768f9bade6284ec2bfa8f91b4dcc9095"
                     },
                     {
                       "editable": false,
@@ -85639,27 +86760,22 @@
                     {
                       "editable": false,
                       "path": "src/radar_salud/public_source_pipeline.py",
-                      "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
+                      "sha256": "036e8755100b3f4bb8fa286054534f9938567e4123aaea534703abe2bc517f39"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/df_article.py",
+                      "sha256": "5faaa204c3b597afd651d774de4b6fee193d6cce343b92845b22a32b468e701d"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/df_inventory.py",
+                      "sha256": "ab950056569612076ed36697c025427acdb2b54f90ed2cd994410dcea243b81e"
                     },
                     {
                       "editable": false,
                       "path": "src/radar_salud/pending_queue.py",
-                      "sha256": "2aacfc163305af71a31c5f0bdaf0d55ae5057c0be6af202c555dd2516a407c47"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/pipeline.py",
-                      "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/document_intelligence.py",
-                      "sha256": "0d5b9df5c861e5f01e03e78e85154e0ee7d2fcbebb892b9add974d9f4969c98d"
-                    },
-                    {
-                      "editable": false,
-                      "path": "src/radar_salud/llm_analysis.py",
-                      "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
+                      "sha256": "6fbeb04f60ec6dfbe172b472ab32905fc5a50cec2cc2b9063a939beb22bca366"
                     }
                   ],
                   "deterministic_planning": {
@@ -85727,16 +86843,16 @@
                       "returncode": 0
                     },
                     {
-                      "captured_stdout_bytes": 2221,
-                      "captured_stdout_sha256": "a2fa25d9c8d8fe9aa17a619ef3d83ce4ec388339b9685993a947d1e8ba62214f",
+                      "captured_stdout_bytes": 963,
+                      "captured_stdout_sha256": "c2416567219853567c1f82fd817111aede5a1e41173586b8b317a2214276bab3",
                       "command": [
                         "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
                         "-m",
                         "pytest",
                         "-q"
                       ],
-                      "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.36s\n",
-                      "returncode": 1
+                      "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 8.54s\n",
+                      "returncode": 0
                     }
                   ],
                   "failure_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
@@ -85768,7 +86884,7 @@
                 }
               }
             ],
-            "fingerprint": "af15b02277076384a4a16643bb857115fdb0bcdb75b858b048b58f6d66d63d0c",
+            "fingerprint": "090213370c82aaced99b1e66f027fb1d4ff19f6c2e09669ddf7b96a1a581ed04",
             "human_required": false,
             "kind": "technical",
             "reason": "Scoped live discovery failed: isp_surveillance",
@@ -85999,229 +87115,79 @@
             "source_urls": [
               "https://www.fonasa.gob.cl/noticias/"
             ]
-          }
-        ],
-        "evidence": [
-          {
-            "diagnostics_are_acceptance": false,
-            "family": "public_data",
-            "task_id": "source_repair_public_data_lane_2026_10_11"
           },
           {
-            "command": [
-              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-              "--diagnose-source",
-              "deis"
-            ],
-            "failure_hash": null,
-            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-deis.log",
-            "log_sha256": "341235d22f0802a47122f4962ce09019006f9ca15967b086f33ffaacff9da576",
-            "returncode": 0,
-            "source_urls": [
-              "https://deis.minsal.cl/"
-            ],
-            "status": "PASS"
-          },
-          {
-            "dated": 0,
-            "discovered": 0,
-            "error": null,
-            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-            "newest_event_date": null,
-            "publication_verified": false,
-            "requests": [
+            "evidence": [
               {
-                "response_bytes": 257442,
-                "response_sha256": "1ea48bd727a0b5d6d0f7c4ac068ee2428cef573b42ed0e5e0ac61c5b6ff48cd5",
-                "status": "PASS",
-                "url": "https://deis.minsal.cl/"
-              }
-            ],
-            "samples": [],
-            "scope": "discovery_only",
-            "slug": "deis",
-            "technical_status": "ok"
-          },
-          {
-            "automated_recovery": {
-              "attempted": false,
-              "reason": "No test failure or source recovery module installed"
-            }
-          },
-          {
-            "command": [
-              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-              "--diagnose-source",
-              "isp_anamed"
-            ],
-            "failure_hash": "c0c975de283628f7ed0876397733146cade3d58e8c06847e6e338693ff12ba06",
-            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_anamed.log",
-            "log_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
-            "returncode": 1,
-            "source_urls": [
-              "https://www.ispch.gob.cl/categorias-alertas/anamed/"
-            ],
-            "status": "FAIL"
-          },
-          {
-            "dated": 0,
-            "discovered": 0,
-            "error": "URLError: <urlopen error timed out>",
-            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-            "newest_event_date": null,
-            "publication_verified": false,
-            "requests": [
-              {
-                "error": "URLError: <urlopen error timed out>",
-                "status": "FAIL",
-                "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
-              }
-            ],
-            "samples": [],
-            "scope": "discovery_only",
-            "slug": "isp_anamed",
-            "technical_status": "error"
-          },
-          {
-            "automated_recovery": {
-              "baseline_full_gate": {
-                "captured_stdout_bytes": 2221,
-                "captured_stdout_sha256": "42f5bd0f5451434e81e0b57ba0aaef983254a066035318d6108b3b257fb81c0c",
                 "command": [
                   "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                  "-m",
-                  "pytest",
-                  "-q"
+                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                  "--diagnose-source",
+                  "deis"
                 ],
-                "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 5.22s\n",
-                "returncode": 1
+                "failure_hash": null,
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-deis.log",
+                "log_sha256": "57f68e33e59969390de26b1a93da695e16e062846d441b51ba17119c555958dc",
+                "returncode": 0,
+                "source_urls": [
+                  "https://deis.minsal.cl/"
+                ],
+                "status": "PASS"
               },
-              "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
-              "blocker_kind": "executor_capability_missing",
-              "changed_paths": [],
-              "context": [
-                {
-                  "editable": true,
-                  "path": "src/radar_salud/source_scouts.py",
-                  "sha256": "d13e3028fa37cb849fe127ca631a1b79b88a2d17c0e8f9319a9bc2658f69976b"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/models.py",
-                  "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
-                },
-                {
-                  "editable": true,
-                  "path": "src/radar_salud/scouts.py",
-                  "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/public_source_pipeline.py",
-                  "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/pending_queue.py",
-                  "sha256": "2aacfc163305af71a31c5f0bdaf0d55ae5057c0be6af202c555dd2516a407c47"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/pipeline.py",
-                  "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/document_intelligence.py",
-                  "sha256": "0d5b9df5c861e5f01e03e78e85154e0ee7d2fcbebb892b9add974d9f4969c98d"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/llm_analysis.py",
-                  "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
-                }
-              ],
-              "deterministic_planning": {
-                "diagnostic": {
-                  "human_required": false,
-                  "kind": "executor_capability_missing",
-                  "reason": "No deterministic strategy is registered for this source/failure"
-                },
-                "evidence": [],
-                "material_progress": false,
-                "paid_calls": 0,
-                "plan": null,
-                "product_files_written": false,
-                "status": "UNSUPPORTED",
-                "strategy": null
+              {
+                "dated": 0,
+                "discovered": 0,
+                "error": null,
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "response_bytes": 257445,
+                    "response_sha256": "b0f6f922abd540476d0e8827728f160dea0bdbd17d9e4b3c17ef85829b6dc1be",
+                    "status": "PASS",
+                    "url": "https://deis.minsal.cl/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "deis",
+                "technical_status": "ok"
               },
-              "evidence": [
-                {
-                  "captured_stdout_bytes": 480,
-                  "captured_stdout_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                    "--diagnose-source",
-                    "isp_anamed"
-                  ],
-                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"isp_anamed\", \"technical_status\": \"error\", \"error\": \"URLError: <urlopen error timed out>\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.ispch.gob.cl/categorias-alertas/anamed/\", \"status\": \"FAIL\", \"error\": \"URLError: <urlopen error timed out>\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                  "returncode": 1,
-                  "source_evidence": {
-                    "dated": 0,
-                    "discovered": 0,
-                    "error": "URLError: <urlopen error timed out>",
-                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "error": "URLError: <urlopen error timed out>",
-                        "status": "FAIL",
-                        "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
-                      }
-                    ],
-                    "samples": [],
-                    "scope": "discovery_only",
-                    "slug": "isp_anamed",
-                    "technical_status": "error"
-                  },
-                  "source_evidence_sha256": "36f554fe1c0d2a0ac634b1e11a5b2fbf85b62d705669254b91ef377d64ea28ab"
-                },
-                {
-                  "captured_stdout_bytes": 99,
-                  "captured_stdout_sha256": "dba147114f275ae0f2e9c99e2ca6e034b73a99d3a3f72cbac85fef6cb2d486e1",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "-m",
-                    "pytest",
-                    "-q",
-                    "tests/test_press_pipeline.py",
-                    "tests/test_fonasa_source.py",
-                    "tests/test_isp_anamed_source.py",
-                    "tests/test_deis_source.py",
-                    "tests/test_suseso_pipeline.py"
-                  ],
-                  "output": "................                                                         [100%]\n16 passed in 0.17s\n",
-                  "returncode": 0
-                },
-                {
-                  "captured_stdout_bytes": 2221,
-                  "captured_stdout_sha256": "42f5bd0f5451434e81e0b57ba0aaef983254a066035318d6108b3b257fb81c0c",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "-m",
-                    "pytest",
-                    "-q"
-                  ],
-                  "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 5.22s\n",
-                  "returncode": 1
+              {
+                "automated_recovery": {
+                  "attempted": false,
+                  "reason": "No test failure or source recovery module installed"
                 }
-              ],
-              "failure_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
-              "live_baseline": {
+              }
+            ],
+            "fingerprint": "a54d08c42b76c6843a14a3f14681ccf8442a8c5753e3f7fd87a5981266b73f4c",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "No dated discovery proves current coverage: deis",
+            "source_urls": [
+              "https://deis.minsal.cl/"
+            ]
+          },
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                  "--diagnose-source",
+                  "isp_anamed"
+                ],
+                "failure_hash": "c0c975de283628f7ed0876397733146cade3d58e8c06847e6e338693ff12ba06",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_anamed.log",
+                "log_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+                "returncode": 1,
+                "source_urls": [
+                  "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                ],
+                "status": "FAIL"
+              },
+              {
                 "dated": 0,
                 "discovered": 0,
                 "error": "URLError: <urlopen error timed out>",
@@ -86240,13 +87206,180 @@
                 "slug": "isp_anamed",
                 "technical_status": "error"
               },
-              "material_progress": false,
-              "signature": null,
-              "source_run_id": null,
-              "source_slug": "isp_anamed",
-              "status": "BLOCKED",
-              "validated": false
-            }
+              {
+                "automated_recovery": {
+                  "baseline_full_gate": {
+                    "captured_stdout_bytes": 963,
+                    "captured_stdout_sha256": "cf03722ec1cd0377913eed494dea9d0ffa8f665048870e6799b7ebcde6732a3a",
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q"
+                    ],
+                    "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 5.81s\n",
+                    "returncode": 0
+                  },
+                  "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+                  "blocker_kind": "executor_capability_missing",
+                  "changed_paths": [],
+                  "context": [
+                    {
+                      "editable": true,
+                      "path": "src/radar_salud/source_scouts.py",
+                      "sha256": "c4b5177edf7fa616555e23051cfa1085768f9bade6284ec2bfa8f91b4dcc9095"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/models.py",
+                      "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
+                    },
+                    {
+                      "editable": true,
+                      "path": "src/radar_salud/scouts.py",
+                      "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/public_source_pipeline.py",
+                      "sha256": "036e8755100b3f4bb8fa286054534f9938567e4123aaea534703abe2bc517f39"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/df_article.py",
+                      "sha256": "5faaa204c3b597afd651d774de4b6fee193d6cce343b92845b22a32b468e701d"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/df_inventory.py",
+                      "sha256": "ab950056569612076ed36697c025427acdb2b54f90ed2cd994410dcea243b81e"
+                    },
+                    {
+                      "editable": false,
+                      "path": "src/radar_salud/pending_queue.py",
+                      "sha256": "6fbeb04f60ec6dfbe172b472ab32905fc5a50cec2cc2b9063a939beb22bca366"
+                    }
+                  ],
+                  "deterministic_planning": {
+                    "diagnostic": {
+                      "human_required": false,
+                      "kind": "executor_capability_missing",
+                      "reason": "No deterministic strategy is registered for this source/failure"
+                    },
+                    "evidence": [],
+                    "material_progress": false,
+                    "paid_calls": 0,
+                    "plan": null,
+                    "product_files_written": false,
+                    "status": "UNSUPPORTED",
+                    "strategy": null
+                  },
+                  "evidence": [
+                    {
+                      "captured_stdout_bytes": 480,
+                      "captured_stdout_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                        "--diagnose-source",
+                        "isp_anamed"
+                      ],
+                      "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"isp_anamed\", \"technical_status\": \"error\", \"error\": \"URLError: <urlopen error timed out>\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.ispch.gob.cl/categorias-alertas/anamed/\", \"status\": \"FAIL\", \"error\": \"URLError: <urlopen error timed out>\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
+                      "returncode": 1,
+                      "source_evidence": {
+                        "dated": 0,
+                        "discovered": 0,
+                        "error": "URLError: <urlopen error timed out>",
+                        "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                        "newest_event_date": null,
+                        "publication_verified": false,
+                        "requests": [
+                          {
+                            "error": "URLError: <urlopen error timed out>",
+                            "status": "FAIL",
+                            "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                          }
+                        ],
+                        "samples": [],
+                        "scope": "discovery_only",
+                        "slug": "isp_anamed",
+                        "technical_status": "error"
+                      },
+                      "source_evidence_sha256": "36f554fe1c0d2a0ac634b1e11a5b2fbf85b62d705669254b91ef377d64ea28ab"
+                    },
+                    {
+                      "captured_stdout_bytes": 99,
+                      "captured_stdout_sha256": "0127026fa52388c28c751af7383c9cfdcedb768d53987355f81395a89e7531e3",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "-m",
+                        "pytest",
+                        "-q",
+                        "tests/test_press_pipeline.py",
+                        "tests/test_fonasa_source.py",
+                        "tests/test_isp_anamed_source.py",
+                        "tests/test_deis_source.py",
+                        "tests/test_suseso_pipeline.py"
+                      ],
+                      "output": "................                                                         [100%]\n16 passed in 0.18s\n",
+                      "returncode": 0
+                    },
+                    {
+                      "captured_stdout_bytes": 963,
+                      "captured_stdout_sha256": "cf03722ec1cd0377913eed494dea9d0ffa8f665048870e6799b7ebcde6732a3a",
+                      "command": [
+                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                        "-m",
+                        "pytest",
+                        "-q"
+                      ],
+                      "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 5.81s\n",
+                      "returncode": 0
+                    }
+                  ],
+                  "failure_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+                  "live_baseline": {
+                    "dated": 0,
+                    "discovered": 0,
+                    "error": "URLError: <urlopen error timed out>",
+                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                    "newest_event_date": null,
+                    "publication_verified": false,
+                    "requests": [
+                      {
+                        "error": "URLError: <urlopen error timed out>",
+                        "status": "FAIL",
+                        "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                      }
+                    ],
+                    "samples": [],
+                    "scope": "discovery_only",
+                    "slug": "isp_anamed",
+                    "technical_status": "error"
+                  },
+                  "material_progress": false,
+                  "signature": null,
+                  "source_run_id": null,
+                  "source_slug": "isp_anamed",
+                  "status": "BLOCKED",
+                  "validated": false
+                }
+              }
+            ],
+            "fingerprint": "75b8678bbde17aae692b918c224e5bbdf4c1720a699a56503fd4362b29c0cee7",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Scoped live discovery failed: isp_anamed",
+            "source_urls": [
+              "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "public_data",
+            "task_id": "source_repair_public_data_lane_2026_10_11"
           },
           {
             "command": [
@@ -86286,16 +87419,16 @@
           {
             "automated_recovery": {
               "baseline_full_gate": {
-                "captured_stdout_bytes": 2221,
-                "captured_stdout_sha256": "a2fa25d9c8d8fe9aa17a619ef3d83ce4ec388339b9685993a947d1e8ba62214f",
+                "captured_stdout_bytes": 963,
+                "captured_stdout_sha256": "c2416567219853567c1f82fd817111aede5a1e41173586b8b317a2214276bab3",
                 "command": [
                   "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
                   "-m",
                   "pytest",
                   "-q"
                 ],
-                "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.36s\n",
-                "returncode": 1
+                "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 8.54s\n",
+                "returncode": 0
               },
               "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
               "blocker_kind": "executor_capability_missing",
@@ -86304,7 +87437,7 @@
                 {
                   "editable": true,
                   "path": "src/radar_salud/source_scouts.py",
-                  "sha256": "d13e3028fa37cb849fe127ca631a1b79b88a2d17c0e8f9319a9bc2658f69976b"
+                  "sha256": "c4b5177edf7fa616555e23051cfa1085768f9bade6284ec2bfa8f91b4dcc9095"
                 },
                 {
                   "editable": false,
@@ -86319,27 +87452,22 @@
                 {
                   "editable": false,
                   "path": "src/radar_salud/public_source_pipeline.py",
-                  "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
+                  "sha256": "036e8755100b3f4bb8fa286054534f9938567e4123aaea534703abe2bc517f39"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/df_article.py",
+                  "sha256": "5faaa204c3b597afd651d774de4b6fee193d6cce343b92845b22a32b468e701d"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/df_inventory.py",
+                  "sha256": "ab950056569612076ed36697c025427acdb2b54f90ed2cd994410dcea243b81e"
                 },
                 {
                   "editable": false,
                   "path": "src/radar_salud/pending_queue.py",
-                  "sha256": "2aacfc163305af71a31c5f0bdaf0d55ae5057c0be6af202c555dd2516a407c47"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/pipeline.py",
-                  "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/document_intelligence.py",
-                  "sha256": "0d5b9df5c861e5f01e03e78e85154e0ee7d2fcbebb892b9add974d9f4969c98d"
-                },
-                {
-                  "editable": false,
-                  "path": "src/radar_salud/llm_analysis.py",
-                  "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
+                  "sha256": "6fbeb04f60ec6dfbe172b472ab32905fc5a50cec2cc2b9063a939beb22bca366"
                 }
               ],
               "deterministic_planning": {
@@ -86407,16 +87535,16 @@
                   "returncode": 0
                 },
                 {
-                  "captured_stdout_bytes": 2221,
-                  "captured_stdout_sha256": "a2fa25d9c8d8fe9aa17a619ef3d83ce4ec388339b9685993a947d1e8ba62214f",
+                  "captured_stdout_bytes": 963,
+                  "captured_stdout_sha256": "c2416567219853567c1f82fd817111aede5a1e41173586b8b317a2214276bab3",
                   "command": [
                     "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
                     "-m",
                     "pytest",
                     "-q"
                   ],
-                  "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.36s\n",
-                  "returncode": 1
+                  "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 8.54s\n",
+                  "returncode": 0
                 }
               ],
               "failure_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
@@ -86648,28 +87776,265 @@
               "status": "BLOCKED",
               "validated": false
             }
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "deis"
+            ],
+            "failure_hash": null,
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-deis.log",
+            "log_sha256": "57f68e33e59969390de26b1a93da695e16e062846d441b51ba17119c555958dc",
+            "returncode": 0,
+            "source_urls": [
+              "https://deis.minsal.cl/"
+            ],
+            "status": "PASS"
+          },
+          {
+            "dated": 0,
+            "discovered": 0,
+            "error": null,
+            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "newest_event_date": null,
+            "publication_verified": false,
+            "requests": [
+              {
+                "response_bytes": 257445,
+                "response_sha256": "b0f6f922abd540476d0e8827728f160dea0bdbd17d9e4b3c17ef85829b6dc1be",
+                "status": "PASS",
+                "url": "https://deis.minsal.cl/"
+              }
+            ],
+            "samples": [],
+            "scope": "discovery_only",
+            "slug": "deis",
+            "technical_status": "ok"
+          },
+          {
+            "automated_recovery": {
+              "attempted": false,
+              "reason": "No test failure or source recovery module installed"
+            }
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "isp_anamed"
+            ],
+            "failure_hash": "c0c975de283628f7ed0876397733146cade3d58e8c06847e6e338693ff12ba06",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_anamed.log",
+            "log_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+            "returncode": 1,
+            "source_urls": [
+              "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+            ],
+            "status": "FAIL"
+          },
+          {
+            "dated": 0,
+            "discovered": 0,
+            "error": "URLError: <urlopen error timed out>",
+            "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "newest_event_date": null,
+            "publication_verified": false,
+            "requests": [
+              {
+                "error": "URLError: <urlopen error timed out>",
+                "status": "FAIL",
+                "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+              }
+            ],
+            "samples": [],
+            "scope": "discovery_only",
+            "slug": "isp_anamed",
+            "technical_status": "error"
+          },
+          {
+            "automated_recovery": {
+              "baseline_full_gate": {
+                "captured_stdout_bytes": 963,
+                "captured_stdout_sha256": "cf03722ec1cd0377913eed494dea9d0ffa8f665048870e6799b7ebcde6732a3a",
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 5.81s\n",
+                "returncode": 0
+              },
+              "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+              "blocker_kind": "executor_capability_missing",
+              "changed_paths": [],
+              "context": [
+                {
+                  "editable": true,
+                  "path": "src/radar_salud/source_scouts.py",
+                  "sha256": "c4b5177edf7fa616555e23051cfa1085768f9bade6284ec2bfa8f91b4dcc9095"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/models.py",
+                  "sha256": "2db9d505b45d97503918f7ea84d1b4c9e1dc2c9d2e93a84461d83001eb5145bd"
+                },
+                {
+                  "editable": true,
+                  "path": "src/radar_salud/scouts.py",
+                  "sha256": "c95558478819d7db38553147919b8b960d929c8776062095913d236f20e3e572"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/public_source_pipeline.py",
+                  "sha256": "036e8755100b3f4bb8fa286054534f9938567e4123aaea534703abe2bc517f39"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/df_article.py",
+                  "sha256": "5faaa204c3b597afd651d774de4b6fee193d6cce343b92845b22a32b468e701d"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/df_inventory.py",
+                  "sha256": "ab950056569612076ed36697c025427acdb2b54f90ed2cd994410dcea243b81e"
+                },
+                {
+                  "editable": false,
+                  "path": "src/radar_salud/pending_queue.py",
+                  "sha256": "6fbeb04f60ec6dfbe172b472ab32905fc5a50cec2cc2b9063a939beb22bca366"
+                }
+              ],
+              "deterministic_planning": {
+                "diagnostic": {
+                  "human_required": false,
+                  "kind": "executor_capability_missing",
+                  "reason": "No deterministic strategy is registered for this source/failure"
+                },
+                "evidence": [],
+                "material_progress": false,
+                "paid_calls": 0,
+                "plan": null,
+                "product_files_written": false,
+                "status": "UNSUPPORTED",
+                "strategy": null
+              },
+              "evidence": [
+                {
+                  "captured_stdout_bytes": 480,
+                  "captured_stdout_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+                    "--diagnose-source",
+                    "isp_anamed"
+                  ],
+                  "output": "AUTONOMY_SOURCE_JSON={\"slug\": \"isp_anamed\", \"technical_status\": \"error\", \"error\": \"URLError: <urlopen error timed out>\", \"discovered\": 0, \"dated\": 0, \"newest_event_date\": null, \"samples\": [], \"inventory_hash\": \"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\", \"requests\": [{\"url\": \"https://www.ispch.gob.cl/categorias-alertas/anamed/\", \"status\": \"FAIL\", \"error\": \"URLError: <urlopen error timed out>\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
+                  "returncode": 1,
+                  "source_evidence": {
+                    "dated": 0,
+                    "discovered": 0,
+                    "error": "URLError: <urlopen error timed out>",
+                    "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                    "newest_event_date": null,
+                    "publication_verified": false,
+                    "requests": [
+                      {
+                        "error": "URLError: <urlopen error timed out>",
+                        "status": "FAIL",
+                        "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                      }
+                    ],
+                    "samples": [],
+                    "scope": "discovery_only",
+                    "slug": "isp_anamed",
+                    "technical_status": "error"
+                  },
+                  "source_evidence_sha256": "36f554fe1c0d2a0ac634b1e11a5b2fbf85b62d705669254b91ef377d64ea28ab"
+                },
+                {
+                  "captured_stdout_bytes": 99,
+                  "captured_stdout_sha256": "0127026fa52388c28c751af7383c9cfdcedb768d53987355f81395a89e7531e3",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "-m",
+                    "pytest",
+                    "-q",
+                    "tests/test_press_pipeline.py",
+                    "tests/test_fonasa_source.py",
+                    "tests/test_isp_anamed_source.py",
+                    "tests/test_deis_source.py",
+                    "tests/test_suseso_pipeline.py"
+                  ],
+                  "output": "................                                                         [100%]\n16 passed in 0.18s\n",
+                  "returncode": 0
+                },
+                {
+                  "captured_stdout_bytes": 963,
+                  "captured_stdout_sha256": "cf03722ec1cd0377913eed494dea9d0ffa8f665048870e6799b7ebcde6732a3a",
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "-m",
+                    "pytest",
+                    "-q"
+                  ],
+                  "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 5.81s\n",
+                  "returncode": 0
+                }
+              ],
+              "failure_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
+              "live_baseline": {
+                "dated": 0,
+                "discovered": 0,
+                "error": "URLError: <urlopen error timed out>",
+                "inventory_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+                "newest_event_date": null,
+                "publication_verified": false,
+                "requests": [
+                  {
+                    "error": "URLError: <urlopen error timed out>",
+                    "status": "FAIL",
+                    "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/"
+                  }
+                ],
+                "samples": [],
+                "scope": "discovery_only",
+                "slug": "isp_anamed",
+                "technical_status": "error"
+              },
+              "material_progress": false,
+              "signature": null,
+              "source_run_id": null,
+              "source_slug": "isp_anamed",
+              "status": "BLOCKED",
+              "validated": false
+            }
           }
         ],
         "failure_action": "blocked",
-        "fingerprint": "c77406e3f36d4e47ef4454f12033fa60efd8c84b410bed438cd98d08b412c361",
-        "product_input_fingerprint": "c481d468ac55655c78163a58f9013d8492217b793899cbb9690a6b3ce399b09c",
+        "fingerprint": "b84193bb3a18a1a36e820ebd154026d923a4e22fb510b1e70174c431974ebaa9",
+        "product_input_fingerprint": "3452cd724ac0dd2efe8844f2c4153fcea9cf38055104107c825a85f6e2ac03fc",
         "real_failure": {
           "failure_signature": "efb63ec88d121e39fb7be7434a7761906175b115c4c782dd993ea9de86996792",
           "kind": "source_runtime",
-          "observed_at": "2026-10-11T07:06:36.043848+00:00",
+          "observed_at": "2026-10-11T13:22:57.864230+00:00",
           "source_slug": "isp_surveillance",
           "source_url": "https://www.ispch.gob.cl/boletin/",
           "trace_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_surveillance.log",
           "trace_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
           "verified": true
         },
-        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256; No dated discovery proves current coverage: deis; Scoped live discovery failed: isp_anamed; Scoped live discovery failed: isp_surveillance; Scoped live discovery failed: fonasa_datos_abiertos; Scoped live discovery failed: fonasa"
+        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256; Scoped live discovery failed: isp_surveillance; Scoped live discovery failed: fonasa_datos_abiertos; Scoped live discovery failed: fonasa; No dated discovery proves current coverage: deis; Scoped live discovery failed: isp_anamed"
       },
       "blocker_signatures": [
         "ab3081f9f0e987220268ab4342b9097b0658f60999c12e464aaa6df479f542f9",
         "c753d28507ad9558d96ec8de5ed28538032d4b24d1e1b864359fcd8f09520895",
         "8693ac87ee4c720a7485821a0c9c7e3df4b8d56882664ece19ad5f86590588ba",
-        "3eed8f02d57fac95a4d8ce4c69178bbf561c0f13c245fe8cfd34c8d035e2caa7"
+        "3eed8f02d57fac95a4d8ce4c69178bbf561c0f13c245fe8cfd34c8d035e2caa7",
+        "f689dd41a769a852fea6dac14c0d3a8e825737d221e449f33788c4a90f3350c5"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
       "declared_repair_inputs": {
@@ -86691,7 +88056,7 @@
       "last_failure": {
         "failure_signature": "efb63ec88d121e39fb7be7434a7761906175b115c4c782dd993ea9de86996792",
         "kind": "source_runtime",
-        "observed_at": "2026-10-11T07:06:36.043848+00:00",
+        "observed_at": "2026-10-11T13:22:57.864230+00:00",
         "source_slug": "isp_surveillance",
         "source_url": "https://www.ispch.gob.cl/boletin/",
         "trace_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-isp_surveillance.log",
@@ -86963,16 +88328,16 @@
           "source": "isp_anamed",
           "source_recovery_attempt": {
             "baseline_full_gate": {
-              "captured_stdout_bytes": 2221,
-              "captured_stdout_sha256": "42f5bd0f5451434e81e0b57ba0aaef983254a066035318d6108b3b257fb81c0c",
+              "captured_stdout_bytes": 963,
+              "captured_stdout_sha256": "cf03722ec1cd0377913eed494dea9d0ffa8f665048870e6799b7ebcde6732a3a",
               "command": [
                 "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
                 "-m",
                 "pytest",
                 "-q"
               ],
-              "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 5.22s\n",
-              "returncode": 1
+              "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 5.81s\n",
+              "returncode": 0
             },
             "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
             "blocker_kind": "executor_capability_missing",
@@ -86981,7 +88346,7 @@
               {
                 "editable": true,
                 "path": "src/radar_salud/source_scouts.py",
-                "sha256": "d13e3028fa37cb849fe127ca631a1b79b88a2d17c0e8f9319a9bc2658f69976b"
+                "sha256": "c4b5177edf7fa616555e23051cfa1085768f9bade6284ec2bfa8f91b4dcc9095"
               },
               {
                 "editable": false,
@@ -86996,27 +88361,22 @@
               {
                 "editable": false,
                 "path": "src/radar_salud/public_source_pipeline.py",
-                "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
+                "sha256": "036e8755100b3f4bb8fa286054534f9938567e4123aaea534703abe2bc517f39"
+              },
+              {
+                "editable": false,
+                "path": "src/radar_salud/df_article.py",
+                "sha256": "5faaa204c3b597afd651d774de4b6fee193d6cce343b92845b22a32b468e701d"
+              },
+              {
+                "editable": false,
+                "path": "src/radar_salud/df_inventory.py",
+                "sha256": "ab950056569612076ed36697c025427acdb2b54f90ed2cd994410dcea243b81e"
               },
               {
                 "editable": false,
                 "path": "src/radar_salud/pending_queue.py",
-                "sha256": "2aacfc163305af71a31c5f0bdaf0d55ae5057c0be6af202c555dd2516a407c47"
-              },
-              {
-                "editable": false,
-                "path": "src/radar_salud/pipeline.py",
-                "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-              },
-              {
-                "editable": false,
-                "path": "src/radar_salud/document_intelligence.py",
-                "sha256": "0d5b9df5c861e5f01e03e78e85154e0ee7d2fcbebb892b9add974d9f4969c98d"
-              },
-              {
-                "editable": false,
-                "path": "src/radar_salud/llm_analysis.py",
-                "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
+                "sha256": "6fbeb04f60ec6dfbe172b472ab32905fc5a50cec2cc2b9063a939beb22bca366"
               }
             ],
             "deterministic_planning": {
@@ -87068,7 +88428,7 @@
               },
               {
                 "captured_stdout_bytes": 99,
-                "captured_stdout_sha256": "dba147114f275ae0f2e9c99e2ca6e034b73a99d3a3f72cbac85fef6cb2d486e1",
+                "captured_stdout_sha256": "0127026fa52388c28c751af7383c9cfdcedb768d53987355f81395a89e7531e3",
                 "command": [
                   "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
                   "-m",
@@ -87080,20 +88440,20 @@
                   "tests/test_deis_source.py",
                   "tests/test_suseso_pipeline.py"
                 ],
-                "output": "................                                                         [100%]\n16 passed in 0.17s\n",
+                "output": "................                                                         [100%]\n16 passed in 0.18s\n",
                 "returncode": 0
               },
               {
-                "captured_stdout_bytes": 2221,
-                "captured_stdout_sha256": "42f5bd0f5451434e81e0b57ba0aaef983254a066035318d6108b3b257fb81c0c",
+                "captured_stdout_bytes": 963,
+                "captured_stdout_sha256": "cf03722ec1cd0377913eed494dea9d0ffa8f665048870e6799b7ebcde6732a3a",
                 "command": [
                   "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
                   "-m",
                   "pytest",
                   "-q"
                 ],
-                "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 5.22s\n",
-                "returncode": 1
+                "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 5.81s\n",
+                "returncode": 0
               }
             ],
             "failure_sha256": "8dd80bc90965bafa18a0b55a59ec339a5f836387a218f01b4abe25b4305037df",
@@ -87144,16 +88504,16 @@
           "source": "isp_surveillance",
           "source_recovery_attempt": {
             "baseline_full_gate": {
-              "captured_stdout_bytes": 2221,
-              "captured_stdout_sha256": "a2fa25d9c8d8fe9aa17a619ef3d83ce4ec388339b9685993a947d1e8ba62214f",
+              "captured_stdout_bytes": 963,
+              "captured_stdout_sha256": "c2416567219853567c1f82fd817111aede5a1e41173586b8b317a2214276bab3",
               "command": [
                 "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
                 "-m",
                 "pytest",
                 "-q"
               ],
-              "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.36s\n",
-              "returncode": 1
+              "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 8.54s\n",
+              "returncode": 0
             },
             "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
             "blocker_kind": "executor_capability_missing",
@@ -87162,7 +88522,7 @@
               {
                 "editable": true,
                 "path": "src/radar_salud/source_scouts.py",
-                "sha256": "d13e3028fa37cb849fe127ca631a1b79b88a2d17c0e8f9319a9bc2658f69976b"
+                "sha256": "c4b5177edf7fa616555e23051cfa1085768f9bade6284ec2bfa8f91b4dcc9095"
               },
               {
                 "editable": false,
@@ -87177,27 +88537,22 @@
               {
                 "editable": false,
                 "path": "src/radar_salud/public_source_pipeline.py",
-                "sha256": "c4fbeb7761f25d971779c930eea21fb6332023bb9133bdff4452ba2c659aa96f"
+                "sha256": "036e8755100b3f4bb8fa286054534f9938567e4123aaea534703abe2bc517f39"
+              },
+              {
+                "editable": false,
+                "path": "src/radar_salud/df_article.py",
+                "sha256": "5faaa204c3b597afd651d774de4b6fee193d6cce343b92845b22a32b468e701d"
+              },
+              {
+                "editable": false,
+                "path": "src/radar_salud/df_inventory.py",
+                "sha256": "ab950056569612076ed36697c025427acdb2b54f90ed2cd994410dcea243b81e"
               },
               {
                 "editable": false,
                 "path": "src/radar_salud/pending_queue.py",
-                "sha256": "2aacfc163305af71a31c5f0bdaf0d55ae5057c0be6af202c555dd2516a407c47"
-              },
-              {
-                "editable": false,
-                "path": "src/radar_salud/pipeline.py",
-                "sha256": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280"
-              },
-              {
-                "editable": false,
-                "path": "src/radar_salud/document_intelligence.py",
-                "sha256": "0d5b9df5c861e5f01e03e78e85154e0ee7d2fcbebb892b9add974d9f4969c98d"
-              },
-              {
-                "editable": false,
-                "path": "src/radar_salud/llm_analysis.py",
-                "sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d"
+                "sha256": "6fbeb04f60ec6dfbe172b472ab32905fc5a50cec2cc2b9063a939beb22bca366"
               }
             ],
             "deterministic_planning": {
@@ -87265,16 +88620,16 @@
                 "returncode": 0
               },
               {
-                "captured_stdout_bytes": 2221,
-                "captured_stdout_sha256": "a2fa25d9c8d8fe9aa17a619ef3d83ce4ec388339b9685993a947d1e8ba62214f",
+                "captured_stdout_bytes": 963,
+                "captured_stdout_sha256": "c2416567219853567c1f82fd817111aede5a1e41173586b8b317a2214276bab3",
                 "command": [
                   "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
                   "-m",
                   "pytest",
                   "-q"
                 ],
-                "output": ".......................s................................................ [ 26%]\n........................................................................ [ 53%]\n........................................................................ [ 80%]\n.........................................F.........                      [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\n\n    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n        payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n        rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n>       assert len(rows)>=12\nE       AssertionError: assert 11 >= 12\nE        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n\ntests/test_web_snapshot.py:289: AssertionError\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12\n +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n1 failed, 265 passed, 1 skipped, 1 warning in 4.36s\n",
-                "returncode": 1
+                "output": ".......................s................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 69%]\n........................................................................ [ 92%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\ntests/test_beta_source_runtime_fast.py:11\n  /home/runner/work/Radar-salud/Radar-salud/candidate/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.integration\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n309 passed, 1 skipped, 1 warning in 8.54s\n",
+                "returncode": 0
               }
             ],
             "failure_sha256": "6df82eda22d3d1219d6e72f183130a2735da829f7410109791eb68ef3fb09eb4",
@@ -87314,7 +88669,7 @@
           ],
           "failure_hash": null,
           "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-deis.log",
-          "log_sha256": "341235d22f0802a47122f4962ce09019006f9ca15967b086f33ffaacff9da576",
+          "log_sha256": "57f68e33e59969390de26b1a93da695e16e062846d441b51ba17119c555958dc",
           "returncode": 0,
           "source_urls": [
             "https://deis.minsal.cl/"
@@ -87323,27 +88678,19 @@
         }
       ],
       "last_ready_at": "2026-10-11T13:20:24.705791Z",
-      "lease": {
-        "claimed_at": "2026-10-11T13:21:16.542065Z",
-        "expires_at": "2026-10-11T13:31:16.542065Z",
-        "fence": 12,
-        "heartbeat_at": "2026-10-11T13:23:52.471684Z",
-        "owner": "38142753731-1-public_data",
-        "recovery_deadline_at": "2026-10-11T13:31:16.542065Z",
-        "token": "4ae642843e7487f61921fb2781a9547bdb460406a4cda56442549aec77445fcd"
-      },
-      "material_progress_at": "2026-10-11T06:26:34.167333Z",
-      "material_watch_started_at": "2026-10-11T06:26:34.167333Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T13:23:56.055888Z",
+      "material_watch_started_at": "2026-10-11T13:23:56.055888Z",
       "objective": "Repair FONASA, FONASA Datos Abiertos, ISP/ANAMED, ISP Surveillance and DEIS independently from media.",
       "pickup_ready_since": "2026-10-11T13:20:24.705791Z",
       "priority": "critical",
       "product_input_fingerprint": "3452cd724ac0dd2efe8844f2c4153fcea9cf38055104107c825a85f6e2ac03fc",
       "queue_status": "in_progress",
       "reason": "no_material_progress_30m",
-      "recovery_episode": "3a4ef577818f50ca8e8e5c7260aee57d3d7ba53ec13e378a991fc8f242d474fb",
-      "recovery_reclaims": 1,
-      "state_changed_at": "2026-10-11T13:21:16.542065Z",
-      "status": "RUNNING"
+      "recovery_episode": "295031c85fa305ccf0a2c9bccc93dee6cc42b2d82ff7e6fbf650e4526ca58e79",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T13:23:56.055888Z",
+      "status": "BLOCKED"
     },
     "source_runtime_audit_2026_10_02": {
       "approved": true,
