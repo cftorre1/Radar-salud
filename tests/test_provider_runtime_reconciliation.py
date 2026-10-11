@@ -89,6 +89,17 @@ def test_provider_stale_original_survives_successful_technical_poll(tmp_path):
     assert row['content_freshness']=='stale_external_surface' and row['coverage_status']=='gap'
 
 
+def test_incomplete_original_inventory_cannot_become_healthy_from_http_success(tmp_path):
+    from radar_salud.pending_queue import atomic_json
+    coverage={'coverage_complete':False,'coverage_reason':'Publisher does not expose root article dates','pages_checked':71}
+    atomic_json(tmp_path/'data/source_health.json',{'sources':{'bupa_chile':{'provider_coverage':coverage}}})
+    record(tmp_path,'bupa_chile',name='Bupa Chile',discovered=51,new=0,published=1,rows=[{'event_date':'2026-08-13'}])
+    row=json.loads((tmp_path/'data/source_health.json').read_text())['sources']['bupa_chile']
+    assert row['technical_status']=='ok' and row['editorial_outcome']=='published'
+    assert row['status']=='warning' and row['coverage_status']=='unverified'
+    assert row['provider_coverage']==coverage
+
+
 def test_rejection_preserves_editorial_reason_and_original_gate():
     from radar_salud.provider_assessment import assessed, rejection_reason
     raw=RawItem('red_davila','Convenio público privado','https://www.davila.cl/novedades/enlace','Red Dávila','corporate','2026-08-24')

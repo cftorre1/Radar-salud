@@ -25,7 +25,9 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         try:provider_stale=(datetime.now(timezone.utc).date()-date.fromisoformat(latest_original_at[:10])).days>90
         except (ValueError,TypeError):pass
     coverage_gap=error is None and discovered==0 and not last_signal
-    status="error" if error else ("warning" if (provider_stale or not evaluation_performed or coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
+    audited_coverage=prev.get('provider_coverage')
+    incomplete=bool(audited_coverage and audited_coverage.get('coverage_complete') is not True)
+    status="error" if error else ("warning" if (incomplete or provider_stale or not evaluation_performed or coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
     try:
         age=(datetime.now(timezone.utc).date()-date.fromisoformat(str(last_signal)[:10])).days
         freshness="future" if age<0 else ("recent" if age<=7 else "older")
@@ -40,13 +42,13 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         "live_pending":live_pending,"backfill_pending":backfill_pending,"pending":pending,"deferred":deferred,"rejected":rejected,
         "status":status,"error":error,
         "technical_status":"error" if error else "ok",
-        "coverage_status":"unverified" if error else ("gap" if coverage_gap or provider_stale else "observed"),
+        "coverage_status":"unverified" if error or incomplete else ("gap" if coverage_gap or provider_stale else "observed"),
         "content_freshness":"stale_external_surface" if provider_stale else freshness,
         "latest_original_at":latest_original_at,
         "editorial_outcome":editorial,
         "evaluation_performed":evaluation_performed,
     }
-    for field in ('provider_audit','audited_assessment'):
+    for field in ('provider_audit','audited_assessment','provider_coverage'):
         if field in prev:src[slug][field]=prev[field]
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
     atomic_json(_path(root),d)
