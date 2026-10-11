@@ -1,0 +1,42 @@
+{
+  "issue": [
+    5,
+    6
+  ],
+  "task": "source_repair_media_lane_2026_10_11",
+  "pr": 11,
+  "source": "diario_financiero",
+  "pr_head": "50cef26c4d829f18b3619d41710fffdf50534e91",
+  "integration_merge_commit": "7fc33c9",
+  "candidate_sha": "f5afd2e18335bbfa8446f7f02defd1c415134a79",
+  "base_staging_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+  "effective_source_files": 58,
+  "decision": "Integrate coherent reviewed PR diff, not isolated cherry-picks. Its inherited base commits do not add unrelated product changes. Merge preserves original authors and evidence. Corrected baseline and title encodings are scoped integration repairs.",
+  "tasks_removed": [],
+  "tasks_changed": [
+    "source_repair_media_lane_2026_10_11"
+  ],
+  "unrelated_queue_rows_preserved": 2699,
+  "unrelated_history_rows_preserved": 719,
+  "global_content_unchanged": true,
+  "status": "NOT_READY until exact candidate QA and staging post-merge runtime",
+  "staging_sha": null,
+  "runtime": null,
+  "qa": {
+    "candidate_sha": "f5afd2e18335bbfa8446f7f02defd1c415134a79",
+    "run_id": 38141959353,
+    "tests": "PASS",
+    "browser": "PASS desktop/mobile",
+    "reviewer": "PASS hosted deterministic",
+    "limitation": "Semantic accuracy verified by existing original-source publication reviews; deterministic Reviewer is not medical/legal certification"
+  },
+  "runtime_harness_local_smoke": {
+    "passed": true,
+    "config_and_web_copied": true,
+    "idempotence": true,
+    "no_paid_calls": true,
+    "local_source_access": "proxy restriction, not source acceptance",
+    "hosted_final_sha_qa": "pending",
+    "staging_source_runtime": "pending"
+  }
+}

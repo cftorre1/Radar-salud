@@ -22,7 +22,8 @@ def main():
     root=repo/'work/integration-runtime'
     if root.exists():raise RuntimeError('Runtime output must start empty; do not overwrite an earlier checkpoint')
     root.mkdir(parents=True)
-    shutil.copytree(repo/'data',root/'data')
+    shutil.copytree(repo/'data',root/'data',ignore=shutil.ignore_patterns('audits'))
+    shutil.copytree(repo/'config',root/'config')
     shutil.copytree(repo/'web',root/'web')
     queue_before=read(root/'data/state/pending_queue.json',{})
     history_before=read(root/'data/history/superintendencia_signals.json',{'signals':[]})
@@ -56,7 +57,7 @@ def main():
             'history_sha256':digest(history),'history_count':len(history),'history_selected_unique':len(urls),
             'source_health':{k:v for k,v in health.items() if k in selected},'unrelated_stock_preserved':True})
         (root/'summary.json').write_text(json.dumps({'staging_sha':os.environ.get('GITHUB_SHA'),'targets':targets,
-            'actual_engine':True,'isolated_state':True,'polls':polls,'post_merge':True,
+            'actual_engine':True,'isolated_state':True,'polls':polls,'post_merge':os.environ.get('GITHUB_REF')=='refs/heads/staging',
             'editorial_outputs_require_review_before_state_import':True},ensure_ascii=False,indent=2)+'\n')
         if result.returncode:raise RuntimeError(f'Engine poll {number} failed: {result.returncode}; inspect saved log')
     assert polls[0]['published_queue_keys']==polls[1]['published_queue_keys'],'Second poll changes accepted stock; inspect before claiming idempotence'
