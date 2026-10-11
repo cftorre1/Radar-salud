@@ -12,14 +12,15 @@ from radar_salud.models import RawItem
 from radar_salud.processing import DeferredProcessing
 from radar_salud.pulso_source import (_Article, _verified_detail, article_body_evidence,
                                     verified_video_without_text)
+from pulso_fixture_witnesses import COLD_RECORDS, expected_original_hold_urls
 
 
 REAL = Path(__file__).parent / 'fixtures/pulso_thin_primary_real'
 VIDEOS = [row for row in json.loads((REAL / 'manifest.json').read_text())['requests']
           if '/videos/' in row['url']]
 EXCEPTIONS = Path(__file__).parent / 'fixtures/pulso_editorial_exception_real'
-# All twenty original current-window videos without a factual text; the other
-# /videos/ original supplies a 2,616-character transcript and is not held here.
+# Every retained current-window video without a factual text, including HTML
+# wrappers longer than160. The original 2,616-character transcript is not held.
 CURRENT_UNAVAILABLE = [row for row in json.loads((EXCEPTIONS / 'manifest.json').read_text())['requests']
                        if '/videos/' in row['url'] and (row['primary_body_chars'] < 160
                        or row['primary_body_source'] != 'url_bound_json_ld_articleBody')]
@@ -41,8 +42,10 @@ def original_video_raw(entry, root=REAL):
 
 
 @pytest.mark.parametrize('entry', CURRENT_UNAVAILABLE, ids=lambda row: row['url'].split('/')[-2])
-def test_all_twenty_original_current_video_text_holds_spend_no_analysis(entry, monkeypatch):
-    assert len(CURRENT_UNAVAILABLE) == 20
+def test_all_retained_original_current_video_text_holds_spend_no_analysis(entry, monkeypatch):
+    cold_videos = {url for url in expected_original_hold_urls(list(COLD_RECORDS.values())) if '/videos/' in url}
+    assert len(cold_videos) == 20
+    assert cold_videos.issubset(row['url'] for row in CURRENT_UNAVAILABLE)
     raw = original_video_raw(entry, EXCEPTIONS)
     monkeypatch.setattr(beta_sources, 'fetch_html', lambda *args: pytest.fail('No missing transcript retry'))
     monkeypatch.setattr(beta_sources, '_material', lambda *args: pytest.fail('No factual transcript to assess'))

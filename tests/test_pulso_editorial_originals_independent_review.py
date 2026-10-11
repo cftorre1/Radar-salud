@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+from pulso_fixture_witnesses import COLD_RECORDS, WITNESSES, assert_cold_witnesses
 
 
 ROOT = Path(__file__).parents[1]
@@ -21,8 +22,11 @@ def test_every_retained_editorial_original_is_bound_to_bytes_and_independent_pri
     report = json.loads(REPORT.read_text())
     manifest_path = ROOT / report["manifest_path"]
     manifest = json.loads(manifest_path.read_text())
-    assert sha(manifest_path.read_bytes()) == report["manifest_sha256"]
-    records = {row["url"]: row for row in manifest["requests"]}
+    # This report binds the cold checkpoint. A subsequent verified recapture
+    # can expand the live manifest without rewriting that historical proof.
+    assert report["manifest_sha256"] == WITNESSES['cold_manifest_sha256']
+    assert_cold_witnesses(manifest['requests'])
+    records = COLD_RECORDS
     originals = report["all_originals"]
     assert len(originals) == len(records) == 58
     assert {row["url"] for row in originals} == set(records)

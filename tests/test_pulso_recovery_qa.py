@@ -762,8 +762,9 @@ def test_all_four_original_publisher_conflicts_preserve_distinct_primary_byline_
     assert qa.verify_publisher_exception(row, metadata, [trace], root)[1]
 
 
-def test_all_twenty_retained_primary_videos_without_text_require_independent_original_proof():
+def test_all_retained_primary_videos_without_text_require_independent_original_proof():
     from radar_salud.pulso_source import TextUnavailableArticle, extract_article
+    from pulso_fixture_witnesses import COLD_RECORDS, expected_original_hold_urls
     root = Path(__file__).parents[1]
     folder = root / "tests/fixtures/pulso_editorial_exception_real"
     manifest = json.loads((folder / "manifest.json").read_text())
@@ -782,7 +783,10 @@ def test_all_twenty_retained_primary_videos_without_text_require_independent_ori
             assert proof["article_content_verified"] is False
             assert proof["body_characters"] < 160
             checked.append(proof)
-    assert len(checked) == 20
+    expected = {url for url in expected_original_hold_urls(manifest['requests']) if '/videos/' in url}
+    cold_videos = {url for url in expected_original_hold_urls(list(COLD_RECORDS.values())) if '/videos/' in url}
+    assert len(cold_videos) == 20 and cold_videos.issubset(expected)
+    assert {row['url'] for row in checked} == expected
     alzheimer = next(row for row in checked if "descubren-doble-avance" in row["url"])
     assert alzheimer["body_characters"] == 84
 
