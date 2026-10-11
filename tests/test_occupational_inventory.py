@@ -429,3 +429,45 @@ def test_captured_live_api_keeps_all_twenty_one_posts_and_pending_unverified_det
     tps = next(row for row in result["rows"] if row["url"] == tps_url)
     assert tps["reason"] == "api_visible_publication_date_conflict" and tps_url not in visited
     assert not result["raw_items"] and not result["coverage_complete"]
+
+
+def test_real_ist_details_recover_cms_months_without_promoting_conflict_or_missing_report():
+    audit = Path(__file__).resolve().parents[1] / "data/audits/source_e_recovery/actions"
+    capture = json.loads((audit / "38115274609/report.json").read_text())
+    api_record = next(row for row in capture["records"] if row.get("surface") == "api_90_days")
+    api_hop = api_record["hops"][-1]
+    index = json.loads((audit / "38116209530/inventory/capture_index.json").read_text())
+    repo = Path(__file__).resolve().parents[1]
+    visited = []
+
+    def load(url):
+        visited.append(url)
+        record = api_record if url == api_record["url"] else index[url]
+        hop = record["hops"][-1]
+        path = (audit / "38115274609" if record is api_record else repo / record["artifact_dir"])
+        body = (path / hop["body_file"]).read_bytes().decode("utf-8")
+        assert record["http_status"] == 200 and hop["tls"]["verified"]
+        assert hashlib.sha256(body.encode("utf-8")).hexdigest() == hop["sha256"]
+        return body
+
+    baseline = {"source_slug": "ist", "as_of": AS_OF.isoformat(), "rows": [], "raw_items": [],
+                "pages": [], "errors": [], "coverage_complete": False,
+                "metrics": {"30": {}, "90": {}}}
+    result = enrich_inventory_from_ist_api(baseline, CuratedBetaSourceScout("ist"), load,
+        api_url=api_record["url"], api_headers=api_hop["headers"])
+    assert len(result["ist_api"]["posts"]) == 21 and result["ist_api"]["response_complete"]
+    assert len(result["raw_items"]) == 19
+    assert result["metrics"]["90"]["dated_articles"] == 19
+    rows = {row["url"]: row for row in result["rows"]}
+    tps = "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/"
+    assert rows[tps]["reason"] == "api_visible_publication_date_conflict"
+    assert rows[tps]["publication_date"] is None and tps not in visited
+    assert rows[IST_REPORT]["status"] == "pending" and rows[IST_REPORT]["data_period"] == "2025"
+    assert rows[IST_REPORT]["publication_date"] is None
+    assert rows[IST_REPORT]["api_publication_evidence"]["date"] == "2026-07-14"
+    ebco = "https://ist.cl/dimos-inicio-a-la-semana-de-la-seguridad-junto-a-ebco/"
+    assert rows[ebco]["publication_date"] == "2026-10-05"
+    for item in result["raw_items"]:
+        assert item.metadata["publication_date"] == rows[item.url]["api_publication_evidence"]["date"]
+        assert item.metadata["publication_evidence"]["url"] == item.url
+    assert not result["coverage_complete"] and not result["ist_api"]["inclusive_90_day_bounds"]
