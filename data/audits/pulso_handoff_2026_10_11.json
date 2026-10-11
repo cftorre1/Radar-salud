@@ -1,12 +1,12 @@
 {
   "schema_version": "2.0",
-  "recorded_at": "2026-10-11T08:17:19.062511+00:00",
+  "recorded_at": "2026-10-11T10:59:37.669494+00:00",
   "status": "IN_PROGRESS_NOT_ACCEPTED",
   "source": "pulso_latercera",
   "owner": "Codex B / Senior Source Recovery Engineer",
   "branch": "codex/b-pulso-runtime-20261011",
   "base_staging_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
-  "current_product_candidate": "30ae39417924e6c407b9712b1da668c14bbdd8a0",
+  "current_product_candidate": "d32d17b1ee0e3bcd1c071c473b5f4a537e649c58",
   "previous_handoff": "Historical pre-exhaustive record is preserved in git. Its CONNECT403 limitation is resolved through authorized GitHub Actions and is not a current source blocker.",
   "pr": "https://github.com/cftorre1/Radar-salud/pull/10",
   "issues_must_remain_open": [
@@ -95,7 +95,7 @@
   },
   "validation": {
     "directed_tests": "Source228, publisher192, independent QA96, runtime24, independent ALL58/liveblog3 PASS at their checkpoint commits.",
-    "full_python": "1164 PASS / 1 SKIP at09bfe3f; newer final source guards/union fixtures must be validated",
+    "full_python": "1195 PASS /1SKIP at d32d17b1ee0e3bcd1c071c473b5f4a537e649c58 (guards/holds/tests); separate replay ALL89 genuine originals313PASS; finalactualQA and processing remain pending",
     "acceptance": "NOT_RESOLVED_NO_MERGE; corrected discovery proof, actualprocessing, history/feed/finalReviewer/staging pending",
     "general_candidate_qa": "Actions38121032463 tests + staging + deterministic Reviewer PASS at b91de5223e74757a97453de815f5b1c3b69a227f; later taxonomy/processor/QA repairs need final candidate checks."
   },
@@ -215,5 +215,6 @@
     "status": "Merged latest staging; source/core unaffected; all other task/governance/PMO evidence preserved."
   },
   "actual_corrected_core_checkpoint": "data/audits/pulso_actual_core_checkpoint_2026_10_11.json",
-  "next_prior_capture_run_id": 38121971530
+  "next_prior_capture_run_id": 38121971530,
+  "next_core_phase": "discovery_only"
 }
