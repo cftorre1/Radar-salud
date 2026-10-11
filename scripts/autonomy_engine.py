@@ -119,6 +119,50 @@ def _failure_proof(value):
             and str(value["run_id"]) == value["run_url"].rstrip("/").split("/")[-1])
 
 
+def _unexecuted_capability_overlay(value):
+    """Remove only the exact no-plan diagnostic added to legacy recovery.
+
+    A typed UNSUPPORTED label does not establish a new problem. Executed
+    plans, paid attempts and unknown fields stay meaningful, as do all retained
+    baseline commands, outputs, source facts and validation evidence.
+    """
+    if not isinstance(value, dict):
+        return value
+    allowed = {"baseline_full_gate", "blocker", "blocker_kind", "changed_paths", "context",
+               "deterministic_planning", "evidence", "failure_sha256", "live_baseline",
+               "material_progress", "signature", "source_run_id", "source_slug", "status", "validated"}
+    planning = value.get("deterministic_planning")
+    expected = {"diagnostic", "evidence", "material_progress", "paid_calls", "plan",
+                "product_files_written", "status", "strategy"}
+    diagnostic = planning.get("diagnostic") if isinstance(planning, dict) else None
+    if (set(value) - allowed or not isinstance(planning, dict) or set(planning) != expected
+            or value.get("status") != "BLOCKED" or value.get("validated") is not False
+            or value.get("material_progress") is not False or value.get("changed_paths") != []
+            or not isinstance(value.get("changed_paths"), list)
+            or value.get("blocker_kind") != "executor_capability_missing"
+            or value.get("blocker") != "No supported deterministic repair strategy for the reproduced failure; model lane disabled"
+            or value.get("signature") is not None or value.get("source_run_id") is not None
+            or not HASH_RE.fullmatch(str(value.get("failure_sha256")))
+            or not isinstance(value.get("baseline_full_gate"), dict)
+            or not isinstance(value.get("evidence"), list) or not value["evidence"]
+            or planning.get("status") != "UNSUPPORTED" or planning.get("plan") is not None
+            or planning.get("strategy") is not None or planning.get("evidence") != []
+            or not isinstance(planning.get("evidence"), list)
+            or planning.get("material_progress") is not False
+            or planning.get("product_files_written") is not False
+            or type(planning.get("paid_calls")) is not int or planning["paid_calls"] != 0
+            or not isinstance(diagnostic, dict)
+            or set(diagnostic) != {"human_required", "kind", "reason"}
+            or diagnostic.get("human_required") is not False
+            or diagnostic.get("kind") != "executor_capability_missing"
+            or diagnostic.get("reason") != "No deterministic strategy is registered for this source/failure"):
+        return value
+    normalized = {key: item for key, item in value.items()
+                  if key not in {"blocker_kind", "deterministic_planning"}}
+    normalized["blocker"] = "Reproduced failure requires a bounded repair plan; model lane disabled"
+    return normalized
+
+
 def _staging_problem(value, failure, path=()):
     """Material identity, separate from retained transport/validation evidence.
 
@@ -128,6 +172,7 @@ def _staging_problem(value, failure, path=()):
     remain part of this identity. Artifact/content hashes remain unchanged.
     """
     if isinstance(value, dict):
+        value = _unexecuted_capability_overlay(value)
         structured = any(key in value for key in (
             "output", "stdout", "pytest", "browser_proof", "reviewer_proof", "evidence"))
         result = {}
@@ -267,6 +312,7 @@ def source_failure_evidenced(failure, evidence=None):
 def _source_problem(value, *, covered=False, request_capture=False, path=()):
     """Retain parsed source meaning; capture churn alone cannot prove novelty."""
     if isinstance(value, dict):
+        value = _unexecuted_capability_overlay(value)
         covered = covered or _source_row(value) or any(_source_rows(value))
         incomplete = _source_probe_incomplete(value)
         result = {}

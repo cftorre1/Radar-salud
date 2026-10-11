@@ -202,6 +202,124 @@ def legacy_source_duplicate_state(*, bindings=True):
     return state, q
 
 
+def unsupported_recovery_observation(*, typed=False):
+    """Exact envelope observed in hosted QA/public runs; no repair executed."""
+    gate = {"command": ["python", "-m", "pytest", "-q"], "returncode": 1,
+            "output": "FAILED tests/test_web_snapshot.py::normative - assert 11 >= 12\n"}
+    record = {"baseline_full_gate": deepcopy(gate),
+        "blocker": "Reproduced failure requires a bounded repair plan; model lane disabled",
+        "changed_paths": [], "context": [{"path": "src/radar_salud/scouts.py", "sha256": "c" * 64}],
+        "evidence": [deepcopy(gate)], "failure_sha256": "f" * 64,
+        "material_progress": False, "signature": None, "source_run_id": None,
+        "status": "BLOCKED", "validated": False}
+    if typed:
+        record.update(blocker="No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+            blocker_kind="executor_capability_missing", deterministic_planning={
+                "diagnostic": {"human_required": False, "kind": "executor_capability_missing",
+                    "reason": "No deterministic strategy is registered for this source/failure"},
+                "evidence": [], "material_progress": False, "paid_calls": 0, "plan": None,
+                "product_files_written": False, "status": "UNSUPPORTED", "strategy": None})
+    return record
+
+
+class CapabilityDiagnosticIdentityTests(unittest.TestCase):
+    def test_exact_unexecuted_typed_overlay_preserves_legacy_problem_without_mutating_report(self):
+        old, new = unsupported_recovery_observation(), unsupported_recovery_observation(typed=True)
+        original = deepcopy(new)
+        self.assertEqual(engine._staging_problem(old, failure()), engine._staging_problem(new, failure()))
+        self.assertEqual(engine._source_problem(old), engine._source_problem(new))
+        self.assertEqual(new, original)
+
+    def test_planned_rejected_executed_paid_candidate_and_unknown_records_remain_meaningful(self):
+        changes = (
+            lambda r: r["deterministic_planning"].update(status="PLANNED"),
+            lambda r: r["deterministic_planning"].update(status="REJECTED"),
+            lambda r: r["deterministic_planning"].update(plan={"replacements": [{"new": "repair"}]}),
+            lambda r: r["deterministic_planning"].update(strategy="achs_ascii_http_uri_utf8_percent_encoding_v1"),
+            lambda r: r["deterministic_planning"].update(evidence=[{"path": "actual-plan.json"}]),
+            lambda r: r["deterministic_planning"].update(product_files_written=True),
+            lambda r: r["deterministic_planning"].update(paid_calls=1),
+            lambda r: r["deterministic_planning"].update(paid_calls=False),
+            lambda r: r["deterministic_planning"].update(paid_calls=0.0),
+            lambda r: r["deterministic_planning"].update(unknown_witness={"published_at": "2026-10-11"}),
+            lambda r: r["deterministic_planning"]["diagnostic"].update(assertion="new failure"),
+            lambda r: r.update(rolled_back=True),
+            lambda r: r.update(rolled_back=False),
+            lambda r: r.update(repair_strategy="achs_ascii_http_uri_utf8_percent_encoding_v1"),
+            lambda r: r.update(candidate_commit="b" * 40),
+            lambda r: r.update(changed_paths=["src/radar_salud/scouts.py"]),
+            lambda r: r.update(unknown_execution={"returncode": 1}),
+        )
+        old = unsupported_recovery_observation()
+        for change in changes:
+            with self.subTest(change=change):
+                new = unsupported_recovery_observation(typed=True)
+                change(new)
+                self.assertNotEqual(engine._staging_problem(old, failure()), engine._staging_problem(new, failure()))
+                self.assertNotEqual(engine._source_problem(old), engine._source_problem(new))
+
+    def test_assertions_source_urls_dates_content_and_candidate_live_evidence_are_preserved(self):
+        old = unsupported_recovery_observation()
+        changes = (
+            lambda r: r["evidence"][0].update(output="assert 10 >= 12"),
+            lambda r: r["context"][0].update(sha256="d" * 64),
+            lambda r: r["evidence"][0].update(source_url="https://source.example/new"),
+            lambda r: r["evidence"][0].update(publication_date="2026-10-11T00:00:00Z"),
+            lambda r: r["evidence"].append({"command": ["python", "--diagnose-source", "achs_seguro_laboral"],
+                "returncode": 1, "output": "Candidate LIVE still has no dated verified detail items"}),
+        )
+        for change in changes:
+            with self.subTest(change=change):
+                new = unsupported_recovery_observation(typed=True)
+                change(new)
+                self.assertNotEqual(engine._staging_problem(old, failure()), engine._staging_problem(new, failure()))
+                self.assertNotEqual(engine._source_problem(old), engine._source_problem(new))
+
+    def test_source_finish_does_not_credit_the_unexecuted_overlay_as_a_new_blocker(self):
+        q, report = source_observation()
+        report["blockers"][0]["evidence"][2] = {"automated_recovery": unsupported_recovery_observation()}
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], report, BASE)
+        original = deepcopy(state["material_events"])
+        q, report = source_observation("2")
+        technical = next(b for b in report["blockers"] if b["kind"] == "technical")
+        technical["evidence"][2] = {"automated_recovery": unsupported_recovery_observation(typed=True)}
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=1))
+        state = finish(state, MEDIA, lease["token"], report, BASE + timedelta(minutes=1))
+        self.assertEqual(state["material_events"], original)
+
+    def test_bound_native_and_legacy_overlay_corrections_are_append_only_and_idempotent(self):
+        for family in ("media", "staging_qa"):
+            with self.subTest(family=family):
+                if family == "media":
+                    state, q = legacy_source_duplicate_state()
+                else:
+                    state = legacy_qa_duplicate_state()
+                    q, _ = qa_observation("124", "b" * 40, variant="2")
+                events = [e for e in state["material_events"] if e["kind"] == "blocker"]
+                for index, event in enumerate(events):
+                    component = (next(b for b in event["details"]["blockers"] if b["kind"] == "technical")
+                                 if family == "media" else event["details"]["blockers"][0])
+                    if family == "media":
+                        component["evidence"][2] = {"automated_recovery": unsupported_recovery_observation(typed=bool(index))}
+                    else:
+                        component["evidence"][1] = unsupported_recovery_observation(typed=bool(index))
+                    event["details"]["evidence"] = [x for b in event["details"]["blockers"] for x in b["evidence"]]
+                    if family == "staging_qa" or index == 1:
+                        event["details"]["product_input_fingerprint"] = ("a" * 64 if family == "media" else "same-product")
+                    state["tasks"][event["task_id"]]["blocker"] = deepcopy(event["details"])
+                    if family == "media":
+                        state["material_event_product_bindings"][event["id"]]["event_sha256"] = engine._hash(event)
+                original = deepcopy(state["material_events"])
+                corrected = reconcile(state, q, BASE + timedelta(minutes=2))
+                self.assertEqual(corrected["material_events"], original)
+                self.assertEqual(len(corrected["material_event_corrections"]), 1)
+                self.assertNotIn(events[-1]["id"], {e["id"] for e in effective_material_events(corrected)})
+                self.assertIn(events[0]["id"], {e["id"] for e in effective_material_events(corrected)})
+                again = reconcile(corrected, q, BASE + timedelta(minutes=3))
+                self.assertEqual(again["material_event_corrections"], corrected["material_event_corrections"])
+
+
 class SourceMaterialIdentityTests(unittest.TestCase):
     def test_capture_clock_body_bytes_order_and_producer_signature_are_not_new_problem(self):
         q, report = source_observation()
