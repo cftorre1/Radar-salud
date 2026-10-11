@@ -1,0 +1,510 @@
+{
+  "schema_version": 1,
+  "reviewer": "Work 3 — Independent Adversarial Reviewer",
+  "recorded_at": "2026-10-11T04:09:18.225117+00:00",
+  "branch": "staging",
+  "reviewed_product_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+  "base_staging_sha": "645781d2f310fea2bb6b6c7b5385a93ea538c879",
+  "previous_artifact": "data/audits/work3_adversarial_2026_10_11.json",
+  "previous_artifact_commit": "645781d2f310fea2bb6b6c7b5385a93ea538c879",
+  "verdict": "COVERAGE_EDITORIAL_AND_AUTONOMY_NOT_VALIDATED",
+  "scope": {
+    "runtime_connectors_in_previous_matrix": 27,
+    "new_product_repairs_since_previous_cut": false,
+    "no_production_mutations": true,
+    "no_product_code_or_feed_mutations": true,
+    "no_workflow_dispatch": true,
+    "method": "Current-source audit, exact-URL reconciliation and isolated cached-HTML parser probes. Preserve previous report unchanged. No exhaustive 30/90-day source approval is claimed."
+  },
+  "input_hashes_sha256": {
+    "config/orchestrator_queue.json": "d842715b8f41f4b10a5fee0b7edc13f5c11fcbe755534b15b5e6eae36d7fbde0",
+    "config/pmo_baseline.json": "4149a20f9263d0a4af81c5c817a4a0d64061309f06aebb70513b7299375564fa",
+    "data/source_health.json": "eb7a18536cf7d374fea0ea0c637f0db1c1d63b6591a9181ae81e21180459480e",
+    "web/data/source_health.json": "653c3df4908751a8ac2b5c77a17c2d185f4024b2c9dc3744f0e33fe61b35c186",
+    "data/state/beta_source_validation.json": "6794ec0bcb1b28356c8f02253358fcdea23041a8c8e95bc4eac4ab299416512b",
+    "data/state/discovery_run.json": "b79bdbbb5210dbd31600a6fe298f92d70f2bc27efa76827a96a2c42b5157d2b4",
+    "data/state/pending_queue.json": "803ce81e9e4a339783d94ecc7a13140f1b6c5ccc2f657611410e13f565e9ca2d",
+    "data/history/superintendencia_signals.json": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+    "web/data/radar_today.json": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+    "web/data/product.json": "c249970672dc2adcd8af27870a5cf9c7cd49a7f644ab483d96d14c95ddc7b209",
+    "data/weekly_insight/latest.json": "7864cd923b075fe62246fc2913ac36f38f58f0b8005479b65bd78e33b730750d",
+    "data/audits/work3_adversarial_2026_10_11.json": "014e3565142795ed72a9e279701f73716efada4d29fc696e6896d20fca01a422"
+  },
+  "findings": [
+    {
+      "id": "work3_df_real_html_date_null",
+      "priority": "P0",
+      "status": "open",
+      "title": "DF repaired date expression returns null for all four real detail pages",
+      "github_issues": [
+        6
+      ],
+      "task_ids": [
+        "source_repair_media_lane_2026_10_11",
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ],
+      "evidence": {
+        "samples": [
+          {
+            "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+            "sha256": "187ab7c144656fb19021dd13b67207243fe9b895d6cf431ab158413a0c7aef52",
+            "meta_dates": [
+              {
+                "name": "cXenseParse:recs:publishtime",
+                "content": "2026-10-10T16:29:59Z"
+              }
+            ],
+            "json_dates": [
+              "2026-10-10T16:34:55Z",
+              "2026-10-10T16:29:59Z"
+            ],
+            "staging_df_parser_date": null,
+            "pipeline": {
+              "queue": [
+                {
+                  "fingerprint": "e4c639df46d35cbdccae32c3169949d3984d9b2895396e154c58492e2c9570b0",
+                  "status": "pending",
+                  "lane": "BACKFILL",
+                  "event_date": null,
+                  "attempts": 0,
+                  "reason": null
+                }
+              ],
+              "history_matches": 0,
+              "feed_matches": 0,
+              "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+            }
+          },
+          {
+            "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+            "sha256": "7be4e39bb986a59ca6f1ef866945f710f35e2a73a79cb071e93497f78f261b46",
+            "meta_dates": [
+              {
+                "name": "cXenseParse:recs:publishtime",
+                "content": "2026-10-07T22:54:15Z"
+              }
+            ],
+            "json_dates": [
+              "2026-10-08T09:45:40Z",
+              "2026-10-07T22:54:15Z"
+            ],
+            "staging_df_parser_date": null,
+            "pipeline": {
+              "queue": [
+                {
+                  "fingerprint": "f213b9402c6fa62a404a0fb20d7cdec0b7d48d3f0a83f3a36432faa2e14f6f45",
+                  "status": "rejected",
+                  "lane": "BACKFILL",
+                  "event_date": null,
+                  "attempts": 1,
+                  "reason": "processor_rejected"
+                },
+                {
+                  "fingerprint": "d8fe0749f547dabfdf1122622a357b179561389c2d9c8a91c71ac1e0eae93630",
+                  "status": "pending",
+                  "lane": "BACKFILL",
+                  "event_date": null,
+                  "attempts": 0,
+                  "reason": null
+                }
+              ],
+              "history_matches": 0,
+              "feed_matches": 0,
+              "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+            }
+          },
+          {
+            "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+            "sha256": "ee949087cd9370fda6020466e76fa92bbc0b12ddce34e110fbb8aaec343574dd",
+            "meta_dates": [
+              {
+                "name": "cXenseParse:recs:publishtime",
+                "content": "2026-09-21T22:44:03Z"
+              }
+            ],
+            "json_dates": [
+              "2026-09-22T09:43:51Z",
+              "2026-09-21T22:44:03Z"
+            ],
+            "staging_df_parser_date": null,
+            "pipeline": {
+              "queue": [
+                {
+                  "fingerprint": "4c3c7508f47023ab11cd5a87444744095c0921ee47a3cab39e549bc2324c9057",
+                  "status": "rejected",
+                  "lane": "BACKFILL",
+                  "event_date": null,
+                  "attempts": 1,
+                  "reason": "processor_rejected"
+                }
+              ],
+              "history_matches": 1,
+              "feed_matches": 1,
+              "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+            }
+          },
+          {
+            "url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+            "sha256": "3d361ccfab2582a18c47761630b9d9eaf67201a661bbcb0e84ea099b9f3fb86b",
+            "meta_dates": [
+              {
+                "name": "cXenseParse:recs:publishtime",
+                "content": "2026-10-01T15:00:42Z"
+              }
+            ],
+            "json_dates": [
+              "2026-10-01T15:03:38Z",
+              "2026-10-01T15:00:42Z"
+            ],
+            "staging_df_parser_date": null,
+            "pipeline": {
+              "queue": [
+                {
+                  "fingerprint": "504a2da6fcaddd9aab2e3f9953e3f7dc30d4b12d06a3d3724c4da00d21038e74",
+                  "status": "rejected",
+                  "lane": "BACKFILL",
+                  "event_date": null,
+                  "attempts": 1,
+                  "reason": "processor_rejected"
+                }
+              ],
+              "history_matches": 0,
+              "feed_matches": 0,
+              "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+            }
+          }
+        ],
+        "method": "Fetch originals, feed exact staging _Meta, evaluate _date(meta.published) or _date(\" \".join(meta.text)[:5000]); all four yielded None. Isolated parser reproduction, not complete Daily execution.",
+        "cause": "Publisher timestamps exist in cXenseParse metadata and JSON-LD, while _Meta does not consume those dates; header/script text precedes article body in the 5000-character fallback.",
+        "date_provenance_caveat": "Visible publication date and JSON-LD/meta timestamps are distinct evidence. For Ricarte Soto, visible 2026-10-08 conflicts with metadata 2026-10-07T22:54:15Z; preserve both and explicitly resolve provenance. Do not silently substitute crawl or modification date.",
+        "previous_related_finding": "work3_df_existing_queue_not_rehydrated"
+      },
+      "closure_criteria": [
+        "Run date extraction against real publisher HTML including DF-specific metadata/JSON-LD and document conflicting dates.",
+        "Reconcile existing null-date queue items without erasing original observations; preserve source publication date versus incident date.",
+        "Show actual processing and history/feed or a specific editorial rejection after repaired code; HTTP 200 or isolated parser success is insufficient."
+      ]
+    },
+    {
+      "id": "work3_andes_first_five_misses_alliance",
+      "priority": "P0",
+      "status": "open",
+      "title": "Operativa Andes Salud omits a recent material insurer/provider alliance",
+      "github_issues": [
+        8
+      ],
+      "task_ids": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "evidence": {
+        "original_url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+        "original_sha256": "9de48c27558ab397dec1ee61f9cc590928c952bdb190cb29fca2c72d6611f457",
+        "published_at": "2026-09-23T20:45:29+00:00",
+        "listing_sha256": "5a196527edd12b4ea25f72ac2fbdf748e4409098d4a42e9de4c9968fbf8e681c",
+        "valid_link_rank": 6,
+        "first_six_valid_links": [
+          "https://www.andessalud.cl/novedades/meningitis-sintomas-contagio-diagnostico-y-prevencion/",
+          "https://www.andessalud.cl/novedades/controles-de-salud-en-personas-mayores-cuales-son-importantes-y-cuando-realizarlos/",
+          "https://www.andessalud.cl/novedades/dia-mundial-del-corazon-claves-para-cuidar-la-salud-cardiovascular/",
+          "https://www.andessalud.cl/novedades/primavera-y-salud-cuidados-para-disfrutar-la-nueva-estacion/",
+          "https://www.andessalud.cl/novedades/cancer-de-tiroides-sintomas-factores-de-riesgo-y-como-se-diagnostica/",
+          "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/"
+        ],
+        "pipeline": {
+          "queue": [],
+          "history_matches": 0,
+          "feed_matches": 0,
+          "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+        },
+        "health": {
+          "name": "Andes Salud",
+          "checked_at": "2026-10-10T22:25:14.907821+00:00",
+          "last_signal_at": null,
+          "discovered": 5,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 0,
+          "status": "ok",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "observed",
+          "content_freshness": "unknown",
+          "editorial_outcome": "no_new_signals"
+        },
+        "code": "FastCuratedBetaSourceScout selects first MAX_DETAILS=5 valid DOM URLs before detail dates/materiality. beta_source_engine_fast does not enqueue or process discovered items and hardcodes published/new/pending/rejected to zero."
+      },
+      "closure_criteria": [
+        "Reconcile at least 30/90-day dated relevant originals beyond the first five DOM links.",
+        "Show this alliance discovered and evaluated with a reasoned outcome and history/feed presence if approved.",
+        "Label discovery-only capability distinctly and prevent beta validation from overwriting core source outcome counters."
+      ]
+    },
+    {
+      "id": "work3_public_telemetry_stale",
+      "priority": "P1",
+      "status": "open",
+      "title": "Public product telemetry and source exports disagree with current runtime",
+      "github_issues": [
+        9
+      ],
+      "task_ids": [
+        "source_audit_issue5_iteration3_editorial_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "evidence": {
+        "product_generated_at": "2026-09-24T03:50:32.729445+00:00",
+        "product_source_count": 7,
+        "runtime_source_count": 27,
+        "product_queue_status": "awaiting_first_global_discovery",
+        "product_queue": null,
+        "product_coverage_live": null,
+        "code_paths": [
+          "web/coverage.html",
+          "web/app.js",
+          "web/data/product.json",
+          "web/data/source_health.json"
+        ],
+        "source_name_bug": "canonicalSource tests substring superintendencia before suseso: Superintendencia de Seguridad Social (SUSESO) maps to Superintendencia de Salud for selectedDate calculation.",
+        "interpretation": "Observed in checked-in staging assets; no claim that a new deployment succeeded or that production serves this snapshot.",
+        "health_export_differing_slugs": [
+          "prestadores_data",
+          "red_davila",
+          "andes_salud",
+          "clinicas_achs_salud",
+          "achs_seguro_laboral",
+          "mutual_seguridad",
+          "ist",
+          "pulso_latercera"
+        ]
+      },
+      "closure_criteria": [
+        "Publish a mutually consistent snapshot with explicit generation time and correct source identity mapping.",
+        "Separate last-run discovered/published from cumulative queue counts; do not infer coverage rates by dividing unrelated scopes.",
+        "Verify displayed source count and source dates against the same snapshot."
+      ]
+    }
+  ],
+  "additional_original_samples": [
+    {
+      "source": "andes_salud",
+      "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+      "publication_date": "2026-09-23",
+      "sha256": "9de48c27558ab397dec1ee61f9cc590928c952bdb190cb29fca2c72d6611f457",
+      "assessment": "Material provider/insurer alliance: five-year renewal and target of 150000 insured by 2031. Target is not an accomplished result.",
+      "pipeline": {
+        "queue": [],
+        "history_matches": 0,
+        "feed_matches": 0,
+        "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+      }
+    },
+    {
+      "source": "indisa",
+      "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
+      "publication_date": "2026-09-11",
+      "sha256": "b81e16bb789aba9bea060237f23f1b2c475feb4cbee1204f0e6ad16fe8695bbe",
+      "assessment": "Provider/insurer preferred-care agreement. Doubling beneficiaries by end-2027 is a stated goal, not achieved growth. Inclusive 30-day date boundary.",
+      "pipeline": {
+        "queue": [],
+        "history_matches": 0,
+        "feed_matches": 0,
+        "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+      }
+    },
+    {
+      "source": "clinicas_achs_salud",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+      "publication_date": "2026-08-19",
+      "sha256": "044abb30e635c984e2537f0244fbdc026d35cb5d006bf7b079c1df553e277828",
+      "assessment": "Network modernization and expansion. Candidate within 90 days; confirm provider vs occupational-insurance lane and materiality before publishing.",
+      "pipeline": {
+        "queue": [],
+        "history_matches": 0,
+        "feed_matches": 0,
+        "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+      }
+    },
+    {
+      "source": "redsalud",
+      "url": "https://www.redsalud.cl/noticias/clinica-redsalud-vitacura-alcanza-50-cirugias-roboticas",
+      "publication_date": "2026-10-07",
+      "sha256": "068957cd736a1e8d8bfec149d57398f9c9c7f49f502b9f8eb71f5b1ffee49bff",
+      "assessment": "Robotic-surgery milestone: generic rejection requires review, but this audit does not mandate publication of every provider promotional milestone.",
+      "pipeline": {
+        "queue": [
+          {
+            "fingerprint": "f66d1d23634dc855871c33e1767e8bafff1d0a65b7b8d35025164370fdcc5ccc",
+            "status": "rejected",
+            "lane": "LIVE",
+            "event_date": "2026-10-07",
+            "attempts": 1,
+            "reason": "processor_rejected"
+          }
+        ],
+        "history_matches": 0,
+        "feed_matches": 0,
+        "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+      }
+    },
+    {
+      "source": "pulso_latercera",
+      "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+      "publication_date": "2026-10-10",
+      "sha256": "241ceed14e783861e78d48068e09810f708b3662b82614bc4d46af825c060f4d",
+      "assessment": "Senior residences market/investment candidate. Core integration is new; last runtime predates repair, so this is a post-repair acceptance target, not proof that new code executed and failed.",
+      "pipeline": {
+        "queue": [],
+        "history_matches": 0,
+        "feed_matches": 0,
+        "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+      }
+    }
+  ],
+  "open_backlog": [
+    {
+      "number": 6,
+      "scope": "DF dates and existing queue recovery; Pulso post-repair acceptance"
+    },
+    {
+      "number": 7,
+      "scope": "Skipped LIVE test reported success; corrupt-patch retry loop; QA gate"
+    },
+    {
+      "number": 8,
+      "scope": "False operative status, beta discovery-only coverage, provider omissions"
+    },
+    {
+      "number": 9,
+      "scope": "Stale weekly, source concentration and public telemetry"
+    }
+  ],
+  "distribution": {
+    "history": {
+      "30": {
+        "date_from_inclusive": "2026-09-11",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 73,
+        "by_source": {
+          "Superintendencia de Salud": 27,
+          "Ministerio de Salud": 17,
+          "Diario Oficial": 12,
+          "Diario Financiero": 4,
+          "RedSalud": 1,
+          "Superintendencia de Seguridad Social (SUSESO)": 12
+        },
+        "ingestion_mode": {
+          "unspecified": 27,
+          "BACKFILL": 26,
+          "LIVE": 20
+        }
+      },
+      "90": {
+        "date_from_inclusive": "2026-07-13",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 184,
+        "by_source": {
+          "Superintendencia de Salud": 52,
+          "Ministerio de Salud": 20,
+          "Diario Oficial": 80,
+          "Diario Financiero": 14,
+          "Bupa Chile": 1,
+          "RedSalud": 1,
+          "Superintendencia de Seguridad Social (SUSESO)": 16
+        },
+        "ingestion_mode": {
+          "unspecified": 131,
+          "BACKFILL": 33,
+          "LIVE": 20
+        }
+      }
+    },
+    "feed": {
+      "30": {
+        "date_from_inclusive": "2026-09-11",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 28,
+        "by_source": {
+          "Superintendencia de Seguridad Social (SUSESO)": 9,
+          "Ministerio de Salud": 11,
+          "Superintendencia de Salud": 4,
+          "Diario Financiero": 3,
+          "RedSalud": 1
+        },
+        "ingestion_mode": {
+          "LIVE": 4,
+          "BACKFILL": 17,
+          "unspecified": 7
+        }
+      },
+      "90": {
+        "date_from_inclusive": "2026-07-13",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 49,
+        "by_source": {
+          "Superintendencia de Seguridad Social (SUSESO)": 9,
+          "Ministerio de Salud": 11,
+          "Superintendencia de Salud": 14,
+          "Diario Financiero": 13,
+          "RedSalud": 1,
+          "Bupa Chile": 1
+        },
+        "ingestion_mode": {
+          "LIVE": 4,
+          "BACKFILL": 19,
+          "unspecified": 26
+        }
+      }
+    },
+    "counts_note": "Counts use event_date, not crawl date; history is not equivalent to public feed. Health published is last-run; queue states are cumulative. Discovered values cannot be divided by last-run published to infer coverage.",
+    "feed_7d": {
+      "date_from_inclusive": "2026-10-04",
+      "date_to_inclusive": "2026-10-11",
+      "rows": 6,
+      "by_source": {
+        "Superintendencia de Seguridad Social (SUSESO)": 3,
+        "Ministerio de Salud": 3
+      }
+    },
+    "last_30d_public_trio": {
+      "rows": 24,
+      "denominator_feed_rows": 28,
+      "percent": 85.71428571428571
+    },
+    "all_feed_lane_counts": {
+      "LIVE": 4,
+      "BACKFILL": 19,
+      "unspecified": 26
+    }
+  },
+  "editorial_unresolved": {
+    "weekly_event_date": "2026-09-14",
+    "age_days_at_cut": 27,
+    "weekly_artifact_status": "pass",
+    "staleness_behavior": "Default 14-day filter excludes old special; 30/60/90-day views can still label it weekly. Generic period filtering is not an explicit weekly freshness policy.",
+    "bupa_tense_mismatch": "See preserved first report. Existing history/feed presence must not be mistaken for faithful event lifecycle.",
+    "health_false_positives": "Broad media prefilter accepts synthetic non-health real-estate/banking investment phrases. This is a prefilter weakness, not proof of an observed downstream non-health publication. Editorial gate and actual records require separate evaluation."
+  },
+  "controls_against_overclaiming": [
+    "DF Bupa is already in history/feed; its separate rejected listing fingerprint is not an omission.",
+    "DF biometrics overlaps the official IF534 event already captured; exact-URL absence alone does not prove an absent event.",
+    "MINSAL budget 4.7% event is already represented. Additional La Tercera interpretation requires incremental value.",
+    "SUSESO Circular3926 exists in history through another SUSESO connector; do not call it uncaptured merely because fiscalizacion last_signal is null.",
+    "Bupa La Serena operating-room page is dated 2025-11-14 and is excluded from current 90-day omissions.",
+    "An initial SIS listing probe used an incorrect /para-isapres-y-fonasa-6255/ path and got 404. Reviewer setup error excluded from source assessment; correct configured /para-aseguradoras-4097/ returned 200.",
+    "External 403/502 can be environment-specific. They block independent verification, not proof of universal source outage or genuine news absence.",
+    "Builder states media implementation is done but validation remains pending; this audit rejects readiness evidence, not an invented claim of formal closure.",
+    "Seen ledgers store fingerprints; exact-URL absence in queue/history/feed does not establish unseen state without reconstructing the source-specific fingerprint. No missing seen state is manufactured.",
+    "History and feed legitimately differ through curation/grouping; no automatic omission claim from different row totals."
+  ],
+  "next_review": "Read current staging and issue5 plus issues6-9; revalidate any repaired source against these originals and newly dated evidence. Approved/in_progress task status is not independent acceptance. Do not close on changed code or workflow success alone.",
+  "limitations": [
+    "27-source baseline remains a risk inventory, not exhaustive original-publication 30/90 reconciliation.",
+    "No deployed-browser verification after failed preview; conclusions concern repository assets and observed logs.",
+    "No source approved solely by search silence, 200, exception-free parser, old signal or green workflow."
+  ]
+}

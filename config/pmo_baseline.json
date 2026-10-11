@@ -1123,6 +1123,18 @@
   ],
   "changelog": [
     {
+      "date": "2026-10-11",
+      "change": "Work 3 agrega evidencia de fechas DF nulas en HTML real, alianza Andes/MetLife omitida y telemetría pública desfasada. Backlog independiente #6–#9 vinculado a #5. Conserva estados y evidencia anteriores; no valida reparaciones ni modifica producto/producción.",
+      "evidence": [
+        "data/audits/work3_adversarial_2026_10_11.json",
+        "data/audits/work3_adversarial_2026_10_11_supplement.json",
+        "https://github.com/cftorre1/Radar-salud/issues/6",
+        "https://github.com/cftorre1/Radar-salud/issues/7",
+        "https://github.com/cftorre1/Radar-salud/issues/8",
+        "https://github.com/cftorre1/Radar-salud/issues/9"
+      ]
+    },
+    {
       "date": "2026-09-29",
       "change": "Coverage balance avanza al subfrente de prestadores: auditoría de valor documentada, INDISA implementado bajo gate explícito BACKFILL hasta completar inventario de 90 días, tres candidatos sin evidencia suficiente quedan fuera, y dashboard por segmento implementado. QA/reviewer local PASS; Actions de staging pendiente.",
       "evidence": [
@@ -1748,6 +1760,66 @@
       ],
       "task_ids": [
         "source_audit_issue5_master_2026_10_09"
+      ]
+    },
+    {
+      "id": "work3_df_real_html_date_null",
+      "severity": "critical",
+      "priority": "P0",
+      "description": "DF repaired date expression returns null for all four real detail pages",
+      "source": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "github_issues": [
+        6
+      ],
+      "task_ids": [
+        "source_repair_media_lane_2026_10_11",
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ],
+      "closure_criteria": [
+        "Run date extraction against real publisher HTML including DF-specific metadata/JSON-LD and document conflicting dates.",
+        "Reconcile existing null-date queue items without erasing original observations; preserve source publication date versus incident date.",
+        "Show actual processing and history/feed or a specific editorial rejection after repaired code; HTTP 200 or isolated parser success is insufficient."
+      ]
+    },
+    {
+      "id": "work3_andes_first_five_misses_alliance",
+      "severity": "critical",
+      "priority": "P0",
+      "description": "Operativa Andes Salud omits a recent material insurer/provider alliance",
+      "source": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "github_issues": [
+        8
+      ],
+      "task_ids": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "closure_criteria": [
+        "Reconcile at least 30/90-day dated relevant originals beyond the first five DOM links.",
+        "Show this alliance discovered and evaluated with a reasoned outcome and history/feed presence if approved.",
+        "Label discovery-only capability distinctly and prevent beta validation from overwriting core source outcome counters."
+      ]
+    },
+    {
+      "id": "work3_public_telemetry_stale",
+      "severity": "warning",
+      "priority": "P1",
+      "description": "Public product telemetry and source exports disagree with current runtime",
+      "source": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "github_issues": [
+        9
+      ],
+      "task_ids": [
+        "source_audit_issue5_iteration3_editorial_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "closure_criteria": [
+        "Publish a mutually consistent snapshot with explicit generation time and correct source identity mapping.",
+        "Separate last-run discovered/published from cumulative queue counts; do not infer coverage rates by dividing unrelated scopes.",
+        "Verify displayed source count and source dates against the same snapshot."
       ]
     }
   ],
