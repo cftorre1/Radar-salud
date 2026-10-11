@@ -59,22 +59,51 @@
     },
     "diario_financiero": {
       "name": "Diario Financiero",
-      "checked_at": "2026-10-10T22:24:44.408712+00:00",
-      "last_signal_at": "2026-09-22",
-      "discovered": 73,
-      "new": 14,
-      "published": 0,
+      "checked_at": "2026-10-11T06:52:30.383782+00:00",
+      "last_signal_at": "2026-10-10",
+      "discovered": 41,
+      "new": 0,
+      "published": 1,
       "live_pending": 0,
-      "backfill_pending": 44,
-      "pending": 44,
-      "deferred": 0,
-      "rejected": 170,
-      "status": "ok",
+      "backfill_pending": 0,
+      "pending": 0,
+      "deferred": 19,
+      "rejected": 176,
+      "status": "warning",
       "error": null,
-      "technical_status": "ok",
-      "coverage_status": "observed",
-      "content_freshness": "older",
-      "editorial_outcome": "pending"
+      "technical_status": "partial",
+      "coverage_status": "date_or_detail_gap",
+      "content_freshness": "recent",
+      "editorial_outcome": "published",
+      "dated": 41,
+      "undated": 0,
+      "detail_errors": 0,
+      "insufficient_evidence": 5,
+      "newest_event_date": "2026-10-10",
+      "deferred_multimedia": 19,
+      "unverifiable_date_dispositions": 0,
+      "last_published_event_at": "2026-10-10",
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "pending": "cumulative_queue",
+        "rejected": "cumulative_queue",
+        "deferred": "cumulative_queue"
+      },
+      "last_discovered_event_at": "2026-10-10",
+      "editorial_reviewed_at": "2026-10-11T06:55:59.923604+00:00",
+      "accepted_queue_publications": 26,
+      "review_withdrawn": 0,
+      "textual_candidates": 36,
+      "nontextual_candidates_known": 5,
+      "textual_capture_status": "verified",
+      "format_capability": {
+        "text": "runtime_verified",
+        "images": "requires_ocr",
+        "audio_video": "requires_official_text"
+      },
+      "format_facets_basis": "Derived from actual41 candidates/5 nontextual/0 undated/0 detail errors in runtime38119095016; no new polling"
     },
     "diario_oficial": {
       "name": "Diario Oficial",
@@ -514,5 +543,5 @@
       "editorial_outcome": "pending"
     }
   },
-  "generated_at": "2026-10-10T22:25:43.933396+00:00"
+  "generated_at": "2026-10-11T06:52:30.383799+00:00"
 }

@@ -2259,6 +2259,27 @@
         9
       ],
       "next_check": "Re-audit only after repairs are integrated into staging and run through real source/queue/history/feed plus QA and Reviewer."
+    },
+    {
+      "id": "df_textual_runtime_2026_10_11",
+      "status": "DF textual runtime verified; full candidate acceptance blocked",
+      "description": "21 accepted DF queue publications; recent SanCarlos/Ricarte/EmpresasSB LIVE;52 focusedPASS. Source health honest partial. Global30/90 completeness and nontext evidence not certified.",
+      "reviewed_at": "2026-10-11T05:38:41.086616+00:00",
+      "reviewed_sha": "0d8a28087ac4dffcf1dda32d73cc2eccf30fe112",
+      "artifact": "data/audits/df_qa_checkpoint_2026_10_11.json",
+      "next_check": "Resolve normative/statistical candidate gates and verify post-merge staging runtime. Main/production unchanged."
+    },
+    {
+      "id": "df_ready_for_integration_2026_10_11",
+      "at": "2026-10-11T06:58:24.316894+00:00",
+      "status": "READY_FOR_INTEGRATION",
+      "implementation_sha": "f3ad5f08a23360ab2df131d0ce80d55b5e9bf2f6",
+      "pr": 11,
+      "evidence": "data/audits/df_integration_readiness_2026_10_11.json",
+      "limitations": "Global inherited QA/SIS gates unresolved; post-merge runtime required. No issue closure or promotion.",
+      "last_progress_at": "2026-10-11T07:11:23.063060+00:00",
+      "integration_base_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "staging_reconciliation_merge_sha": "99b65b392cb12e144ca93c545bfd9fe328f59cb2"
     }
   ],
   "approved_infrastructure_changes": [

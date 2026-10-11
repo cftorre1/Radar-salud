@@ -524,6 +524,11 @@ def curate(signals,resolve_external=True):
     recent=_apply_statistical_analysis(recent)
     recent=[_statistical_value_ladder(s) for s in recent]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
+    # An explicitly reviewed DF corroboration yields to its official event when
+    # that counterpart is present. Keep both source records in durable history.
+    counterpart_urls={s.get('source_url') for s in recent}
+    recent=[s for s in recent if not (s.get('source_name')=='Diario Financiero' and s.get('df_duplicate_of')
+        and s.get('df_duplicate_of') in counterpart_urls)]
     recent=_apply_persistent_editorial_decisions(recent)
     recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or []) else s for s in recent]
     recent=[s for s in recent if s.get("feed_visibility") is not False]
