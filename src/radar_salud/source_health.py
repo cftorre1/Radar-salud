@@ -1,4 +1,5 @@
 from __future__ import annotations
+import hashlib
 import json
 from copy import deepcopy
 from datetime import date, datetime, timezone
@@ -13,6 +14,48 @@ def _load(root:Path)->dict[str,Any]:
     try:return json.loads(p.read_text(encoding="utf-8"))
     except Exception:return {"sources":{}}
 
+
+
+def _pulso_published_body_bound(row, raw):
+    """Bind current primary bytes to the persisted assessment/review body."""
+    from .llm_analysis import news_analysis_input
+    from .pulso_source import liveblog_analysis_text
+    metadata = raw.get("metadata", {})
+    body = metadata.get("page_text")
+    body_sha = metadata.get("article_body_sha256")
+    pins = []
+    if "analysis_base_article_body_sha256" in metadata:
+        pins.append(metadata["analysis_base_article_body_sha256"])
+    for review in (row.get("editorial_review"), metadata.get("editorial_review")):
+        if isinstance(review, dict) and "original_body_sha256" in review:
+            pins.append(review["original_body_sha256"])
+    validation = metadata.get("pulso_editorial_proof_validation")
+    if isinstance(validation, dict) and "primary_article_body_sha256" in validation:
+        pins.append(validation["primary_article_body_sha256"])
+    if not pins or any(pin != body_sha for pin in pins):
+        return False
+    if ("analysis_base_article_body_characters" in metadata
+            and metadata["analysis_base_article_body_characters"] != len(body)):
+        return False
+    try:
+        # Live blogs have an augmented, verified timeline request. Its input
+        # hash must match that full request, never the plain base body hash.
+        text = liveblog_analysis_text(metadata) if metadata.get("publisher_document_type") == "liveblog" else body
+        request = news_analysis_input(title=raw["title"], text=text, source_name=raw["source_name"], full_text=True)
+        text_sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
+        request_sha = hashlib.sha256(request.encode("utf-8")).hexdigest()
+    except (KeyError, TypeError, ValueError, AttributeError):
+        return False
+    for field, expected in (("analysis_input_body_sha256", text_sha),
+                            ("analysis_request_input_sha256", request_sha)):
+        if field in metadata and metadata[field] != expected:
+            return False
+    ai = metadata.get("analysis_model_output")
+    model_binding = ai.get("_pulso_analysis_meta") if isinstance(ai, dict) else None
+    if isinstance(model_binding, dict) and (model_binding.get("analysis_text_sha256") != text_sha
+            or model_binding.get("request_input_sha256") != request_sha):
+        return False
+    return True
 
 def _effective_pulso_history(history, source_queue):
     """Current published stock, bound to the same verified primary and gate."""
@@ -66,6 +109,8 @@ def _effective_pulso_history(history, source_queue):
                     or metadata.get("source_quality_gate") != "passed"
                     or metadata.get("article_body_complete") is False or not complete_article_body(metadata)
                     or (isinstance(binding, dict) and binding.get("verified") is False)):
+                continue
+            if not _pulso_published_body_bound(row, raw):
                 continue
             effective[url] = row
             break

@@ -182,3 +182,51 @@ def test_core_empty_poll_passes_full934_history_and_preserves_all897_native_reco
     current = json.loads((tmp_path / "data/source_health.json").read_bytes())["sources"]["pulso_latercera"]
     assert current["last_signal_at"] == "2026-10-10" and current["published_total"] == 17
     assert current["latest_original_at"] == "2026-10-11"
+
+
+def test_same_url_different_actual_primary_with_consistent_self_hash_cannot_claim_old_publication(tmp_path):
+    row, entry = actual_published_pair()
+    alternate = next(item for item in OBSERVED["pulso_queue"].values()
+                     if item["raw"]["metadata"].get("publisher_document_type") == "liveblog")
+    metadata = entry["raw"]["metadata"]
+    # Actual retained bodies are used; only this isolated queue copy is
+    # transplanted to reproduce the independent review's identity attack.
+    metadata["page_text"] = alternate["raw"]["metadata"]["page_text"]
+    metadata["article_body_sha256"] = hashlib.sha256(metadata["page_text"].encode()).hexdigest()
+    metadata["article_body_characters"] = len(metadata["page_text"])
+    assert metadata["article_body_sha256"] != row["editorial_review"]["original_body_sha256"]
+    current = poll(tmp_path, [row], [entry])
+    assert current["last_signal_at"] is None and current["published_total"] == 0
+
+
+@pytest.mark.parametrize("field", ["analysis_base", "history_review", "queue_review", "request", "model_text"])
+def test_any_existing_editorial_body_or_request_pin_conflict_blocks_current_signal(tmp_path, field):
+    row, entry = actual_published_pair()
+    metadata = entry["raw"]["metadata"]
+    if field == "analysis_base":
+        metadata["analysis_base_article_body_sha256"] = "0" * 64
+    elif field == "history_review":
+        row["editorial_review"]["original_body_sha256"] = "0" * 64
+    elif field == "queue_review":
+        metadata["editorial_review"]["original_body_sha256"] = "0" * 64
+    elif field == "request":
+        metadata["analysis_request_input_sha256"] = "0" * 64
+    else:
+        metadata["analysis_input_body_sha256"] = "0" * 64
+    current = poll(tmp_path, [row], [entry])
+    assert current["last_signal_at"] is None and current["published_total"] == 0
+
+
+def test_actual_legacy_without_new_binding_and_liveblog_augmented_request_remain_eligible(tmp_path):
+    row, entry = actual_published_pair()
+    assert "primary_item_binding" not in entry["raw"]["metadata"]
+    assert poll(tmp_path / "legacy", [row], [entry])["published_total"] == 1
+    live_entry = deepcopy(next(item for item in OBSERVED["pulso_queue"].values()
+                              if item["raw"]["metadata"].get("publisher_document_type") == "liveblog"
+                              and item["status"] == "published"))
+    live_row = deepcopy(next(row for row in OBSERVED["history_document"]["signals"]
+                             if row.get("source_url") == live_entry["raw"]["url"]))
+    metadata = live_entry["raw"]["metadata"]
+    assert metadata["analysis_input_body_sha256"] != metadata["analysis_base_article_body_sha256"]
+    assert metadata["analysis_base_article_body_sha256"] == live_row["editorial_review"]["original_body_sha256"]
+    assert poll(tmp_path / "liveblog", [live_row], [live_entry])["published_total"] == 1
