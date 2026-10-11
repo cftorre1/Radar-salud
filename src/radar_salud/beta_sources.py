@@ -322,11 +322,15 @@ def _material(role, title, body):
         provider_judicial_liability = ("hospital" in text and "servicio de salud" in text
             and "corte de apelaciones" in text and bool(re.search(r"conden[oó][^!?]{0,160}\bpagar\b", text))
             and "indemnización" in text and "falta de servicio" in text)
+        essential_care_transport_blocked = ("necesitaban dializarse" in text
+            and bool(re.search(r"aislad[oa]s?|bloquead[oa]s?", text))
+            and "no permitía que los helicópteros pudiesen volar para evacuarlos" in text)
         return (care_obligation or ges_coverage or care_legislation
                 or proposed_clinical_condition or provider_flood_response
                 or authorized_care_registry or clinical_service_suspension
                 or quantified_health_power_impact or modular_care_deployment or mapped_multi_provider_flood
-                or reproductive_legislative_progress or medical_insurance_inquiry or provider_judicial_liability)
+                or reproductive_legislative_progress or medical_insurance_inquiry or provider_judicial_liability
+                or essential_care_transport_blocked)
     return False
 
 

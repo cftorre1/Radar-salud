@@ -20,7 +20,8 @@ PROJECTIONS = json.loads((Path(__file__).parent / 'fixtures/pulso_expanded_mater
 REPAIRED_PROJECTIONS = ('proposed_clinical_condition_colmed', 'regional_health_power_interruption',
                         'modular_hospital_transport', 'mapped_multi_provider_flood_damage',
                         'proposed_reproductive_legislative_progress',
-                        'medical_insurance_coverage_inquiry', 'provider_judicial_financial_liability')
+                        'medical_insurance_coverage_inquiry', 'provider_judicial_financial_liability',
+                        'blocked_essential_dialysis_access')
 
 
 def original_raw(entry):
@@ -171,6 +172,17 @@ def test_original_court_award_is_new_liability_for_old_clinical_events():
     assert 'indemnización de perjuicios por falta de servicio' in entry['body']
 
 
+def test_original_isolation_blocked_clinical_access_without_counting_all_isolated_as_patients():
+    entry = next(row for row in PROJECTIONS if row['name'] == 'blocked_essential_dialysis_access')
+    assert entry['publication_date'] == '2026-07-25'
+    assert 'seremi de Cultura de Atacama' in entry['body']
+    assert 'unas 3.500 personas aisladas' in entry['body']
+    assert 'necesitaban dializarse' in entry['body']
+    assert 'no permitía que los helicópteros pudiesen volar para evacuarlos' in entry['body']
+    assert 'recién nacido a un consultorio por complicaciones de salud' in entry['body']
+    assert 'El resto de los 51 que fueron rescatados tuvo que hacerlo por tierra' in entry['body']
+
+
 @pytest.mark.parametrize(('title', 'body'), [
     ('Minsal informa sobre salud de personas mayores', 'Los ELEAM necesitan autorización sanitaria. Las familias visitan a sus parientes.'),
     ('Lista de residencias ELEAM', 'Un directorio comercial ofrece un listado de ELEAM con autorización sanitaria, disponible públicamente.'),
@@ -189,6 +201,8 @@ def test_original_court_award_is_new_liability_for_old_clinical_events():
     ('Dipreca ofrece información', 'Dipreca describe la cobertura de cirugías estéticas, sin una investigación ni procedimientos sancionatorios.'),
     ('Dipreca investiga robos', 'Existe un sumario en Dipreca por robo de computadores de oficinas administrativas.'),
     ('Hospital recuerda controversia', 'Un hospital y un servicio de salud comentan un asunto pendiente en la Corte de Apelaciones, sin resolución ni monto de indemnización.'),
+    ('Vecinos informan aislamiento', 'Varias personas quedaron aisladas por nieve. Cerca de allí hay un centro de diálisis, pero mantiene la atención habitual.'),
+    ('Pacientes hablan del invierno', 'Los pacientes necesitaban dializarse, por lo que acudieron al hospital sin impedimentos de acceso.'),
 ])
 def test_narrow_registry_and_care_suspension_rules_do_not_admit_generic_directory_or_unadopted_ideas(title, body):
     assert not beta_sources._material('media', title, body)
