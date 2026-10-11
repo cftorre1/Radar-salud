@@ -884,7 +884,8 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
         if reason in {VIDEO_HOLD, SPONSORED_HOLD} and row.get("publication_date_evidence") != (
                 "reused_verified_primary_byline_unchanged_publisher_lastmod" if row.get("primary_detail_cache_hit") else "current_verified_detail"):
             fail("discovery", "publisher_video_date_falsely_labeled_fresh_or_unverified", url=url)
-        if reason == DATE_HOLD and row.get("publication_date_evidence") != "unverified":
+        if reason == DATE_HOLD and row.get("publication_date_evidence") not in {
+                "unverified", "unresolved_primary_publisher_date_conflict"}:
             fail("discovery", "publisher_conflict_falsely_labeled_verified_date", url=url)
     for url in actual:
         row = rows.get(url, {})
