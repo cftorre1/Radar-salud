@@ -85,3 +85,22 @@ the managed cloud network allowlist; no network bypass was attempted.
 Next hypothesis: hosted workers can exercise their scoped public-source paths,
 save a useful isolated candidate despite unrelated staging failures, and route it
 to an independent reviewer rather than restart from the old tree.
+
+## 5. Durable candidate review and exact context continuation
+
+Decision: a separate executor validates the recorded isolated SHA and saves an
+immutable review. Completed reviews bind future work to that candidate while
+retaining the latest staging queue's approval, dependencies and constraints.
+A moved ref, dirty checkout or changed relevant base produces an exact blocker;
+there is no implicit merge, reset or promotion. Reviews never close source or
+editorial acceptance merely because technical checks pass.
+
+Directed validation: `python -m unittest discover -s tests -p test_autonomy_candidate_review.py -v`
+and `python -m unittest discover -s tests -p test_autonomy_candidate_context.py -v`.
+10 independent-review and 21 candidate-context tests passed with real bare Git
+repositories and real validation subprocesses. They cover preserved candidate
+code, scoped-base drift, unsafe/moved refs, review races and no model credentials.
+
+Next hypothesis: the controller can dispatch review independently, select the
+reviewed candidate on its next lease, and retain blockers without losing repairs
+or inflating useful progress. Hosted credentials and pickup remain unproved.
