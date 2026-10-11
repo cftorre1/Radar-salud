@@ -230,10 +230,15 @@ class _LiveblogEntries(HTMLParser):
             fragment = attrs.get("id", "")
             if fragment in self.entries:
                 self.duplicates.add(fragment)
-            entry = self.entries.setdefault(fragment, dict(times=[], headline=[], paragraphs=[]))
+            entry = self.entries.setdefault(fragment, dict(times=[], headline=[], paragraphs=[], heading_seen=False))
+        first_heading = (entry is not None and not entry["heading_seen"] and tag in ("h1", "h2", "h3"))
+        if first_heading:
+            # Historical liveblogs use H3; a later heading can introduce a
+            # subsection inside this same update, rather than its headline.
+            entry["heading_seen"] = True
         frame = dict(tag=tag, entry=entry,
                      blocked=parent.get("blocked", False) or tag in ("script", "style", "noscript"),
-                     heading=parent.get("heading", False) or tag in ("h1", "h2"),
+                     heading=parent.get("heading", False) or first_heading,
                      time=parent.get("time"), paragraph=parent.get("paragraph"))
         if entry is not None and tag == "time" and "liveblog-entry__date" in attrs.get("class", "").split():
             frame["time"] = dict(timestamp=attrs.get("datetime"), visible=[])
