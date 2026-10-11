@@ -1,0 +1,185 @@
+{
+  "run_id": 38120060930,
+  "candidate_sha": null,
+  "as_of": "2026-10-11",
+  "mode": "read_only_replay",
+  "paid_api_calls": 0,
+  "canonical_hashes_unchanged": {
+    "data/state/pending_queue.json": "824ae84bf8b735c2e6418d17e4c7cef0080ca0709fa6f9029b033305fe660101",
+    "data/history/superintendencia_signals.json": "72776d1b6711fce2765d98275308a474cf27e4bde3c9ffe5cba4874e0c82ec10",
+    "data/source_health.json": "68f319ba62eedcc9006ff12d971ea45cc900afddcb258b1612f09c7ac5f0284e",
+    "web/data/radar_today.json": "e1e71d60eacc5b8cce277fee9767a4f0bf85b670cdb98582f18fc1abf2ea203b",
+    "data/ai_usage/2026-10.json": "77b8acc6ebbfa13feb4c894fed1662f535e875863c0c29df6f4b8bc4b9955bf6"
+  },
+  "metrics": {
+    "achs_seguro_laboral": {
+      "30": {
+        "start": "2026-09-11",
+        "end": "2026-10-11",
+        "dated_articles": 10,
+        "expected_role": 10,
+        "candidates": 3,
+        "rejected": 7,
+        "excluded_role": 0,
+        "pending": 0,
+        "unknown_date_items": 0,
+        "complete": true,
+        "content_kinds": {
+          "news": 4,
+          "prevention": 4,
+          "study": 2
+        }
+      },
+      "90": {
+        "start": "2026-07-13",
+        "end": "2026-10-11",
+        "dated_articles": 25,
+        "expected_role": 23,
+        "candidates": 8,
+        "rejected": 15,
+        "excluded_role": 2,
+        "pending": 0,
+        "unknown_date_items": 0,
+        "complete": true,
+        "content_kinds": {
+          "news": 14,
+          "prevention": 8,
+          "study": 3
+        }
+      }
+    },
+    "clinicas_achs_salud": {
+      "30": {
+        "start": "2026-09-11",
+        "end": "2026-10-11",
+        "dated_articles": 13,
+        "expected_role": 3,
+        "candidates": 0,
+        "rejected": 3,
+        "excluded_role": 10,
+        "pending": 0,
+        "unknown_date_items": 25,
+        "complete": false,
+        "content_kinds": {
+          "news": 6,
+          "prevention": 5,
+          "study": 2
+        }
+      },
+      "90": {
+        "start": "2026-07-13",
+        "end": "2026-10-11",
+        "dated_articles": 39,
+        "expected_role": 16,
+        "candidates": 2,
+        "rejected": 14,
+        "excluded_role": 23,
+        "pending": 0,
+        "unknown_date_items": 25,
+        "complete": false,
+        "content_kinds": {
+          "news": 19,
+          "prevention": 8,
+          "study": 12
+        }
+      }
+    },
+    "ist": {
+      "30": {
+        "start": "2026-09-11",
+        "end": "2026-10-11",
+        "dated_articles": 6,
+        "expected_role": 6,
+        "candidates": 0,
+        "rejected": 6,
+        "excluded_role": 0,
+        "pending": 0,
+        "unknown_date_items": 1,
+        "complete": false,
+        "content_kinds": {
+          "news": 4,
+          "prevention": 2
+        }
+      },
+      "90": {
+        "start": "2026-07-13",
+        "end": "2026-10-11",
+        "dated_articles": 20,
+        "expected_role": 20,
+        "candidates": 1,
+        "rejected": 19,
+        "excluded_role": 0,
+        "pending": 0,
+        "unknown_date_items": 1,
+        "complete": false,
+        "content_kinds": {
+          "news": 11,
+          "prevention": 8,
+          "study": 1
+        }
+      }
+    },
+    "mutual_seguridad": {
+      "30": {
+        "start": "2026-09-11",
+        "end": "2026-10-11",
+        "dated_articles": 33,
+        "expected_role": 33,
+        "candidates": 0,
+        "rejected": 33,
+        "pending": 0,
+        "excluded_role": 0,
+        "unknown_date_items": 0,
+        "complete": false,
+        "content_kinds": {
+          "prevention": 22,
+          "news": 10,
+          "study": 1
+        }
+      },
+      "90": {
+        "start": "2026-07-13",
+        "end": "2026-10-11",
+        "dated_articles": 51,
+        "expected_role": 51,
+        "candidates": 2,
+        "rejected": 49,
+        "pending": 0,
+        "excluded_role": 0,
+        "unknown_date_items": 0,
+        "complete": false,
+        "content_kinds": {
+          "prevention": 36,
+          "news": 12,
+          "study": 1,
+          "commercial": 2
+        }
+      }
+    }
+  },
+  "material_states": {
+    "achs_seguro_laboral": {
+      "rejected": 20,
+      "published": 3,
+      "excluded": 2,
+      "outside_window": 15
+    },
+    "clinicas_achs_salud": {
+      "excluded": 23,
+      "rejected": 16,
+      "outside_window": 128,
+      "pending": 25
+    },
+    "ist": {
+      "rejected": 20,
+      "pending": 1,
+      "outside_window": 16
+    },
+    "mutual_seguridad": {
+      "rejected": 50,
+      "published": 1,
+      "outside_window": 33
+    }
+  },
+  "next_action": "Confirm native Worker continuation and independent fourth-publication review before final scope closure."
+}
