@@ -388,7 +388,7 @@ class _VisibleArticle(HTMLParser):
         text=' '.join(data.split())
         if self._heading:self._parts.append(text)
         elif self._ready and text:
-            if text.casefold() in ('enlaces de salud','últimas publicaciones','conoce más novedades'):self._ended=True
+            if text.casefold() in ('enlaces de salud','últimas publicaciones','conoce más novedades','blog andes salud'):self._ended=True
             else:self.text.append(text)
 
 

@@ -173,7 +173,48 @@ class CuratedBetaSourceScout:
         return out[:30]
 
     def discover(self):
-        return self.discover_from_html(fetch_html(self.cfg["page"]))
+        if self.slug!='andes_salud':return self.discover_from_html(fetch_html(self.cfg["page"]))
+        # The official post API exposes the full published 90-day archive,
+        # including Frutillar, which is absent from the nine-card landing page.
+        # Each candidate still resolves to its own H1/publication header.
+        import json
+        from datetime import timedelta
+        from html import escape
+        cached={}
+        def detail(url):
+            if url not in cached:cached[url]=fetch_html(url)
+            return cached[url]
+        all_items={};errors=[]
+        try:
+            for raw in self.discover_from_html(fetch_html(self.cfg['page']),detail):all_items[raw.url.rstrip('/')]=raw
+            errors.extend(self.discovery_errors)
+        except Exception as exc:errors.append('landing: '+type(exc).__name__)
+        cutoff=date.today()-timedelta(days=90)
+        for number in range(1,6):
+            api=f'https://www.andessalud.cl/wp-json/wp/v2/posts?after={cutoff}T00:00:00&before={date.today()+timedelta(days=1)}T00:00:00&per_page=100&page={number}'
+            try:
+                posts=json.loads(fetch_html(api))
+                if not isinstance(posts,list):raise ValueError('published posts array missing')
+                by_url={post['link'].rstrip('/'):post for post in posts if post.get('status')=='publish' and post.get('link')}
+                markup=''.join(f'<a href="{escape(url,quote=True)}">{escape(re.sub("<[^>]+>"," ",post.get("title",{}).get("rendered", "")))}</a>' for url,post in by_url.items())
+                if markup:
+                    raws=self.discover_from_html(markup,detail);errors.extend(self.discovery_errors)
+                    for raw in raws:
+                        post=by_url[raw.url.rstrip('/')]
+                        if str(post.get('date') or '')[:10]!=raw.event_date:
+                            errors.append(raw.url+': cms/header publication mismatch');continue
+                        raw.metadata.update(discovered_from_api=api,cms_post_id=post.get('id'),
+                                            cms_publication_date=str(post['date'])[:10])
+                        all_items[raw.url.rstrip('/')]=raw
+                    skipped=set(by_url)-{raw.url.rstrip('/') for raw in raws}
+                    if skipped:errors.extend(url+': CMS item outside reviewed path or detail verification failed' for url in sorted(skipped))
+                if len(posts)<100:break
+                if number==5:errors.append('CMS archive page bound reached')
+            except Exception as exc:
+                errors.append(api+': '+type(exc).__name__);break
+        self.discovery_errors=errors
+        if not all_items:raise RuntimeError('Andes Salud original discovery failed: '+'; '.join(errors))
+        return sorted(all_items.values(),key=lambda raw:raw.event_date or '',reverse=True)
 
 
 class _ProviderPublication(HTMLParser):
