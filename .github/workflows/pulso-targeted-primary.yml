@@ -1,0 +1,53 @@
+name: Pulso isolated targeted original primary capture
+on:
+  push:
+    branches: [codex/b-pulso-runtime-20261011]
+    paths:
+      - '.github/run-pulso-targeted-primary-now'
+      - '.github/workflows/pulso-targeted-primary.yml'
+      - 'scripts/capture_pulso_targeted_primary.py'
+permissions:
+  contents: write
+concurrency:
+  group: pulso-isolated-targeted-primary-capture
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/b-pulso-runtime-20261011
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Assert exclusive isolated branch
+        run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+      - run: pip install -e . pytest
+      - name: Verify unconditional original retention and date diagnostics
+        run: python -m pytest -q tests/test_pulso_targeted_primary_capture.py
+      - name: Capture only the three diagnosed original details
+        run: python scripts/capture_pulso_targeted_primary.py
+      - name: Preserve targeted originals exclusively on isolated branch
+        if: always()
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+          git config user.name alicanto-salud-bot
+          git config user.email alicanto-salud-bot@users.noreply.github.com
+          if test -f tests/fixtures/pulso_targeted_primary_real/manifest.json; then git add tests/fixtures/pulso_targeted_primary_real; fi
+          if test -f data/audits/pulso_targeted_primary_date_audit_2026_10_11.json; then git add data/audits/pulso_targeted_primary_date_audit_2026_10_11.json; fi
+          git diff --cached --quiet || git commit -m "audit(pulso): preserve targeted original dates and full bodies [skip ci]"
+          git fetch origin codex/b-pulso-runtime-20261011
+          git rebase origin/codex/b-pulso-runtime-20261011
+          git push origin HEAD:codex/b-pulso-runtime-20261011
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pulso-targeted-original-primary-${{ github.sha }}
+          retention-days: 90
+          path: |
+            tests/fixtures/pulso_targeted_primary_real/
+            data/audits/pulso_targeted_primary_date_audit_2026_10_11.json
+          if-no-files-found: error
