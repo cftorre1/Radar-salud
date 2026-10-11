@@ -44,7 +44,7 @@ STATISTICAL_PARSER_REGISTRY = {
 }
 
 COVERAGE_SEGMENTS = ("Isapres", "Prestadores", "Fonasa / Sistema público", "Transversal")
-_PROVIDER_SOURCES = {"redsalud", "bupa_chile", "indisa", "clinicas_de_chile"}
+_PROVIDER_SOURCES = {"redsalud", "bupa_chile", "indisa", "clinicas_chile", "red_davila", "andes_salud", "clinicas_achs_salud"}
 _PUBLIC_SOURCES = {"minsal", "minsal_respiratory_pressure", "fonasa", "deis", "isp_anamed"}
 _INSURANCE_SOURCES = {"superintendencia", "superintendencia_salud", "superintendencia_normativa",
                       "superintendencia_fiscalizacion"}

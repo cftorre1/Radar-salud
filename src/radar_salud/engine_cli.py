@@ -67,6 +67,10 @@ def main():
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
       ("pulso_latercera","pulso_latercera",CuratedBetaSourceScout("pulso_latercera").discover,process_curated_beta_source),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
+    # Gate-approved provider beta sources use the same durable queue, budget
+    # and publication path as the core. Discovery-only validation is not ingestion.
+    specs.extend((slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
+                 for slug in ("red_davila","andes_salud","clinicas_achs_salud") if slug in cfgs)
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
     discoveries={}
     # Complete discovery for every source before any budget-consuming processing.
@@ -105,13 +109,16 @@ def main():
                 produced[item["source"]].append(row)
             queue.finish(key,"published" if row else "rejected",None if row else "processor_rejected")
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
-        except DeferredProcessing:
+        except DeferredProcessing as exc:
+            item["deferred_detail"]=str(exc)
             queue.finish(key,"retry","budget_or_analysis_deferred")
         except Exception as exc:
             queue.finish(key,"retry",type(exc).__name__)
     for name,(discovered,new,error) in discoveries.items():
         counts=queue.counts(name)
-        health_record(root,name,name=name.replace("_"," ").title(),discovered=discovered,new=new,
+        source_cfg=processors[name][0]
+        label=source_cfg.get("name",name) if isinstance(source_cfg,dict) else name
+        health_record(root,name,name=label,discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
             rejected=counts["rejected"],rows=produced[name],error=error,
             live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"])

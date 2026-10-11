@@ -13,19 +13,20 @@ def _load(root:Path)->dict[str,Any]:
     except Exception:return {"sources":{}}
 
 def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,rows:list[dict]|None=None,
-           pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None)->None:
+           pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None,
+           evaluation_performed:bool=True)->None:
     d=_load(root);src=d.setdefault("sources",{});rows=rows or []
     dates=[x.get("event_date") for x in rows if x.get("event_date")]
     prev=src.get(slug) or (src.get("superintendencia_stats",{}) if slug=="superintendencia" else {})
     last_signal=max(dates+[prev.get("last_signal_at") or ""]) if dates else prev.get("last_signal_at")
     coverage_gap=error is None and discovered==0 and not last_signal
-    status="error" if error else ("warning" if (coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
+    status="error" if error else ("warning" if (not evaluation_performed or coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
     try:
         age=(datetime.now(timezone.utc).date()-date.fromisoformat(str(last_signal)[:10])).days
         freshness="future" if age<0 else ("recent" if age<=7 else "older")
     except (ValueError,TypeError):
         freshness="unknown"
-    editorial="not_evaluated" if error else ("published" if published else
+    editorial="not_evaluated" if error or not evaluation_performed else ("published" if published else
         "pending" if pending else "rejected" if rejected else "no_new_signals")
     src[slug]={
         "name":name,"checked_at":datetime.now(timezone.utc).isoformat(),
@@ -37,6 +38,7 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         "coverage_status":"unverified" if error else ("gap" if coverage_gap else "observed"),
         "content_freshness":freshness,
         "editorial_outcome":editorial,
+        "evaluation_performed":evaluation_performed,
     }
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
     atomic_json(_path(root),d)
