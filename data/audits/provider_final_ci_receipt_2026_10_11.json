@@ -1,0 +1,515 @@
+{
+  "version": 3,
+  "as_of": "2026-10-11",
+  "verified_head_sha": "affa53d72c825ac4d70c5afd658536d25907a82a",
+  "promotion": "none",
+  "paid_calls": 0,
+  "runs": [
+    {
+      "run_id": 38120892476,
+      "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892476",
+      "purpose": "actual_two_polls",
+      "jobs": [
+        {
+          "id": 114415216137,
+          "name": "recurrent",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38120892476,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q tests/test_provider_runtime_reconciliation.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Execute twice with real originals and persistent queue",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Preserve recurrent evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": 38120892460,
+      "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892460",
+      "purpose": "durable_six_outputs",
+      "jobs": [
+        {
+          "id": 114415216060,
+          "name": "checkpoint",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38120892460,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Verify audited admission gates",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Probe original sites and evaluate only audited candidates",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 6
+            },
+            {
+              "name": "Verify durable original checkpoints without repeating paid analyses",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Verify two repaired intake records without reassessing previous outcomes",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 8
+            },
+            {
+              "name": "Preserve resumable isolated checkpoint",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 9
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": 38120892417,
+      "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892417",
+      "purpose": "critical_shared_QA",
+      "jobs": [
+        {
+          "id": 114415215611,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 38120892417,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        },
+        {
+          "id": 114415269808,
+          "name": "staging",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_id": 38120892417,
+          "logs_url": null,
+          "steps": null
+        },
+        {
+          "id": 114415270170,
+          "name": "reviewer",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_id": 38120892417,
+          "logs_url": null,
+          "steps": null
+        }
+      ]
+    },
+    {
+      "run_id": 38120892489,
+      "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892489",
+      "purpose": "completion_no_paid_replay",
+      "jobs": [
+        {
+          "id": 114415216207,
+          "name": "completion",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38120892489,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q tests/test_provider_newsroom_repairs.py tests/test_provider_audit_intake.py tests/test_provider_inventory.py tests/test_andes_archive.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Process only verified original completion cases",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 6
+            },
+            {
+              "name": "Preserve unchanged terminals and new editorial outputs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": 38120892527,
+      "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892527",
+      "purpose": "followup_no_paid_replay",
+      "jobs": [
+        {
+          "id": 114415216496,
+          "name": "followup",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38120892527,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q tests/test_provider_audit_intake.py tests/test_provider_newsroom_repairs.py tests/test_provider_runtime_reconciliation.py tests/test_andes_archive.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Evaluate only verified reviewed cases",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 6
+            },
+            {
+              "name": "Preserve review result and paid usage",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": 38120892444,
+      "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892444",
+      "purpose": "davila_candidate_no_paid_replay",
+      "jobs": [
+        {
+          "id": 114415216006,
+          "name": "assess",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38120892444,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q tests/test_provider_original_reader.py tests/test_provider_newsroom_repairs.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Assess only the newly discovered dated specialty addition",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 6
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "durable_verification": {
+    "candidate_outputs": 6,
+    "paid_calls": 0,
+    "artifact_download_required": false
+  },
+  "critical_QA": {
+    "passed": 321,
+    "failed": 1,
+    "skipped": 1,
+    "failure": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review; assert11>=12",
+    "same_failure_in_baseline": true,
+    "staging_job": "skipped",
+    "reviewer_job": "skipped"
+  }
+}

@@ -1,48 +1,120 @@
 {
+  "version": 3,
   "reviewer": "/root/reviewer",
   "as_of": "2026-10-11",
-  "reviewed_runtime_and_data_sha": "cfa253f8c677e1956f69311d93b31326beb9b1ce",
+  "reviewed_head_sha": "affa53d72c825ac4d70c5afd658536d25907a82a",
+  "reviewed_runtime_and_data_sha": "8c7b246f034bb52bb7fdb540308aaf47e8fa8e1a",
   "scope_verdict": "PASS",
-  "global_acceptance": "BLOCKED",
+  "global_acceptance": "EXTERNAL_BLOCKER_PROVEN",
+  "ready_for_integration": false,
   "open_scoped_findings": [],
   "tests_executed": {
-    "focal_passed": 46,
-    "failed": 0,
+    "focal_passed": 75,
+    "focal_failed": 0,
+    "focal_skipped": 1,
+    "full_python_passed": 321,
+    "full_python_failed": 1,
+    "full_python_skipped": 1,
+    "full_python_failure_inherited": true,
     "durable_verification": "PASS",
     "paid_AI_calls": 0
   },
-  "resolved_finding": {
-    "severity": "P2",
-    "reported_at_sha": "93c8f9705ed5716d244050c4838ee0e382cca7bb",
-    "fixed_at_commit": "34f1e2d",
-    "description": "Preserve Farma for agreements with named pharmaceutical laboratories while excluding on-site clinical pharmacy/laboratory capacity.",
-    "positive_cases": [
-      "Roche",
-      "Sanofi",
-      "Merck",
-      "Biomed"
-    ],
-    "negative_case": "Talca hospital pharmacy and diagnostic laboratory"
+  "QA_verified": {
+    "browser_full_passed": 44,
+    "browser_full_failed": 6,
+    "browser_all_failures_inherited": true,
+    "browser_provider_passed": 4,
+    "browser_provider_failed": 0,
+    "candidate_only_failures": 0,
+    "statistical_critical_findings": 8,
+    "statistical_findings_exactly_equal_baseline_by": [
+      "category",
+      "code",
+      "path",
+      "severity"
+    ]
   },
   "verified": [
-    "12 audited candidates: 5 published, 3 rejected, 4 retry; all BACKFILL",
-    "fast ledger39 with no duplicate accounting; original and repair checkpoints byte-intact",
-    "two false PDF publication dates hidden; seven navigation records archived with prior state",
-    "eight source audit queue counts match queue and source health",
-    "browser44 passed/6 failed; six failures shared with baseline32 passed/14 failed; no candidate-only failure",
-    "eight deterministic statistical findings equal baseline by category/code/path/severity",
-    "governance merge changes only69 lines; CodexF adds one in_progress task without modifying other owners",
-    "handoff includes clean-checkout bootstrap and no-cost durable verification"
+    "Master, eight source facets, inventories, explicit piece decisions and backend/web health agree.",
+    "1066 URL records; 28 candidates = 8published + 16rejected + 4holds; six real recovered outputs unique in history/feed, BACKFILL, committeePASS, score/date gates intact.",
+    "738 prior history objects and 59 prior published queue rows preserved byte-equivalently; original live/repair checkpoints byte-intact.",
+    "AI ledger fast51/deep14; unchanged terminal outcomes not reassessed.",
+    "Governance compared against c4819844e413d31ede792521a2c137392c4ae104: only own taskF and PMO section changed.",
+    "Davila639 dated known news + one navigation;191 currentHTTP/Chrome403 distinguish cached original headers; degraded warning persists even after coverage complete and later publication.",
+    "Actual isolated two polls at 9a077a9b5458b573698adb37aebcf8b62a2debd4 are idempotent:0new each,8published preserved, blocked watermark/history/ledger/unrelated queue intact.",
+    "Global EXTERNAL_BLOCKER_PROVEN/acceptedfalse remains truthful; staging scheduler execution not proven."
+  ],
+  "resolved_findings": [
+    {
+      "severity": "P2",
+      "reported_at_sha": "93c8f9705ed5716d244050c4838ee0e382cca7bb",
+      "fixed_at_commit": "34f1e2d",
+      "description": "Preserve Farma for agreements with named pharmaceutical laboratories while excluding on-site clinical pharmacy/laboratory capacity.",
+      "positive_cases": [
+        "Roche",
+        "Sanofi",
+        "Merck",
+        "Biomed"
+      ],
+      "negative_case": "Talca hospital pharmacy and diagnostic laboratory"
+    },
+    {
+      "severity": "P2",
+      "fixed_at_commit": "93a57e8",
+      "description": "Ordinary Chrome fallback rejects challenge/error DOM and requires own canonical and Article identity with datePublished before AI; foreign identity cases covered by tests."
+    }
   ],
   "remaining_conditions": [
-    "Commit and push final evidence/handoff checkpoint",
-    "Keep PR draft and issue5/recovery gate open",
-    "Resolve pre-existing global Python/browser/statistics QA without reducing tests",
-    "Complete declared original inventory/publication-date/access blockers",
-    "Verify recurring staging runtime after permitted merge"
+    "Publisher date/access/chronology dependencies remain documented per source after bounded original alternatives.",
+    "Resolve shared inherited normative/statistics/browser gates before integration without reducing gates.",
+    "After authorized merge, verify actual scheduled staging runtime; isolated PR polling is separate."
   ],
-  "fulfilled_after_review": [
-    "Durable package/handoff committed and pushed as c7a0f9f",
-    "PR14 retained draft; source checkpoint CI passed without new paid evaluations"
-  ]
+  "initial_review_snapshot": {
+    "reviewer": "/root/reviewer",
+    "as_of": "2026-10-11",
+    "reviewed_runtime_and_data_sha": "cfa253f8c677e1956f69311d93b31326beb9b1ce",
+    "scope_verdict": "PASS",
+    "global_acceptance": "BLOCKED",
+    "open_scoped_findings": [],
+    "tests_executed": {
+      "focal_passed": 46,
+      "failed": 0,
+      "durable_verification": "PASS",
+      "paid_AI_calls": 0
+    },
+    "resolved_finding": {
+      "severity": "P2",
+      "reported_at_sha": "93c8f9705ed5716d244050c4838ee0e382cca7bb",
+      "fixed_at_commit": "34f1e2d",
+      "description": "Preserve Farma for agreements with named pharmaceutical laboratories while excluding on-site clinical pharmacy/laboratory capacity.",
+      "positive_cases": [
+        "Roche",
+        "Sanofi",
+        "Merck",
+        "Biomed"
+      ],
+      "negative_case": "Talca hospital pharmacy and diagnostic laboratory"
+    },
+    "verified": [
+      "12 audited candidates: 5 published, 3 rejected, 4 retry; all BACKFILL",
+      "fast ledger39 with no duplicate accounting; original and repair checkpoints byte-intact",
+      "two false PDF publication dates hidden; seven navigation records archived with prior state",
+      "eight source audit queue counts match queue and source health",
+      "browser44 passed/6 failed; six failures shared with baseline32 passed/14 failed; no candidate-only failure",
+      "eight deterministic statistical findings equal baseline by category/code/path/severity",
+      "governance merge changes only69 lines; CodexF adds one in_progress task without modifying other owners",
+      "handoff includes clean-checkout bootstrap and no-cost durable verification"
+    ],
+    "remaining_conditions": [
+      "Commit and push final evidence/handoff checkpoint",
+      "Keep PR draft and issue5/recovery gate open",
+      "Resolve pre-existing global Python/browser/statistics QA without reducing tests",
+      "Complete declared original inventory/publication-date/access blockers",
+      "Verify recurring staging runtime after permitted merge"
+    ],
+    "fulfilled_after_review": [
+      "Durable package/handoff committed and pushed as c7a0f9f",
+      "PR14 retained draft; source checkpoint CI passed without new paid evaluations"
+    ]
+  }
 }

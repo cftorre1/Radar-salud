@@ -57,7 +57,7 @@ Doce llamadas fast adicionales en la conciliación ampliada: dos follow-up, nuev
 
 ## Runtime y validación
 
-Las ocho fuentes permanecen registradas en el motor que usa Daily Radar. `provider_recurrent_checkpoint_2026_10_11.json` registra dos ejecuciones reales de `engine_cli --discovery-only --source …` con persistencia: segunda0 nuevas, mismos terminales publicados, history/ledger/unrelatedqueue intactos y watermark del publisher fallido preservado. Ambos polls sobre la cola ya consolidada ingresaron0 piezas nuevas. Cada poll verifica siete fuentes accesibles y el HTTPError original INDISA. Discovery recurrente no equivale a evaluación editorial.
+Las ocho fuentes permanecen registradas en el motor que usa Daily Radar. `provider_recurrent_checkpoint_2026_10_11.json` registra dos ejecuciones reales de `engine_cli --discovery-only --source …` con persistencia: segunda0 nuevas, mismos terminales publicados, history/ledger/unrelatedqueue intactos y watermark del publisher fallido preservado. Ambos polls sobre la cola ya consolidada ingresaron0 piezas nuevas. Cada poll verifica siete fuentes accesibles y el HTTPError original INDISA. Discovery recurrente no equivale a evaluación editorial. Última ejecución completada: [38120892476](https://github.com/cftorre1/Radar-salud/actions/runs/38120892476), checkout `affa53d`; el receipt final de CI prueba seis outputs durables y cero reanálisis pagados.
 
 No se ejecutó el scheduler de staging ni se promovió esta rama. Daily Radar ejecuta tests core antes de recoger: el fallo normativo heredado detiene ese paso; owner normativa/datos debe resolverlo antes de certificar operación periódica tras integración. Las pruebas de runtime aislado usan el motor real, no fixtures.
 
@@ -68,7 +68,7 @@ QA final: código/health de datos `8c7b246f034bb52bb7fdb540308aaf47e8fa8e1a`, br
 - Browser desktop/mobile:44 PASS,6 FAIL heredados; prestadores4/4 PASS, unicidad, fuentes/fechas, BACKFILL, contrato y health honesto.
 - Reviewer determinístico: data/editorial/UX PASS, estadísticas FAIL con los mismos ocho códigos críticos de la base; sin nuevos críticos.
 - Baseline inicial y `staging` actual tienen árboles `web`, `src` y `tests` idénticos por SHA; los cambios intermedios son governance/audits. Se preserva evidencia de14 fallos browser iniciales y los seis comunes actuales, sin rebajar tests.
-- Reviewer independiente revisó código/datos, corrigió un P2 del lector de Chrome y verificó guard/tests: exige canonical y Article propios y bloquea challenge/identidad ajena antes de AI. Su dictamen final del paquete está en `provider_qa_2026_10_11/independent-reviewer.json`.
+- Reviewer independiente revisó código/datos, detectó un P2 del lector de Chrome ya corregido y verificó las guardas y pruebas: exige canonical y Article propios y bloquea challenge/identidad ajena antes de AI. Dictamen final: **PASS scoped sobre `affa53d`**, sin hallazgos abiertos. Evidencia y pruebas propias en `provider_qa_2026_10_11/independent-reviewer.json`; no convierte los gates compartidos a PASS.
 
 ## Continuidad desde checkout limpio
 

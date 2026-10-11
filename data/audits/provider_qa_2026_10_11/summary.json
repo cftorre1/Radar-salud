@@ -88,20 +88,34 @@
     "tests": "tests/browser/providers.spec.cjs"
   },
   "CI": {
-    "verified_head_sha": "c7a0f9fe97b4b893663b46453988091f9e50af86",
-    "provider_no_paid_replay_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114618371",
-    "provider_checkpoint_status": "PASS; original/repair assessment steps skipped; durable verification passed with zero paid calls",
-    "critical_QA_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114618380",
-    "critical_QA_outcome": "FAIL same Normativa cardinality11>=12;291 passed,1failed,1skip; staging/reviewer jobs skipped",
+    "verified_head_sha": "affa53d72c825ac4d70c5afd658536d25907a82a",
+    "evidence": "../provider_final_ci_receipt_2026_10_11.json",
+    "provider_no_paid_replay_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892460",
+    "provider_checkpoint_status": "PASS; original/repair/completion/followup/new-candidate assessment steps skipped; six durable outputs verified with zero paid calls",
+    "critical_QA_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892417",
+    "critical_QA_outcome": "FAIL same inherited Normativa cardinality11>=12;321passed/1failed/1skip; staging/reviewer jobs skipped",
+    "actual_two_poll_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892476",
+    "actual_two_poll_outcome": "PASS;0new each;8published preserved;history/ledger/unrelatedqueue/blockedwatermark intact",
     "promotion": "none"
   },
   "independent_reviewer": {
-    "status": "pending_final_package",
+    "status": "PASS_scoped",
+    "reviewed_head_sha": "affa53d72c825ac4d70c5afd658536d25907a82a",
+    "open_scoped_findings": 0,
+    "global_acceptance": "EXTERNAL_BLOCKER_PROVEN",
     "evidence": "independent-reviewer.json"
   },
   "limitations": [
     "Global normative/statistics gates remain failed as in current staging.",
     "No actual staging scheduled poll or integration performed; isolated recurrent engine evidence is recorded separately.",
     "Six sources retain external original-content/date limits; exact totals are null where incomplete."
-  ]
+  ],
+  "initial_CI": {
+    "verified_head_sha": "c7a0f9fe97b4b893663b46453988091f9e50af86",
+    "provider_no_paid_replay_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114618371",
+    "provider_checkpoint_status": "PASS; original/repair assessment steps skipped; durable verification passed with zero paid calls",
+    "critical_QA_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114618380",
+    "critical_QA_outcome": "FAIL same Normativa cardinality11>=12;291 passed,1failed,1skip; staging/reviewer jobs skipped",
+    "promotion": "none"
+  }
 }
