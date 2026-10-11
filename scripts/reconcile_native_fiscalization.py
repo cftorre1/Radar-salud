@@ -57,7 +57,10 @@ def reconcile(runtime,root=Path('.'),apply=False):
     baseline_ids={_key(s) for s in old_h}
     baseline_qids={(i['source'],canonical_url(i['raw']['url'])) for i in old_q.values()}
     repairs=[]
+    asset_reviews=reviews.get('historical_listing_alias_reviews',{})
     for index,raw in enumerate(inventory):
+        assets=[asset for asset,review in asset_reviews.items() if review['document_url']==raw['url']]
+        if assets:raw['metadata']['listing_asset_aliases']=assets
         if raw['source_slug']=='superintendencia_fiscalizacion':
             raw=asdict(reviewed_primary_act(RawItem(**raw)));inventory[index]=raw
             key=canonical_url(raw['url'])
@@ -80,6 +83,8 @@ def reconcile(runtime,root=Path('.'),apply=False):
                     old.update(publication_date=raw['metadata'].get('publication_date'),
                         emission_date=raw['metadata'].get('emission_date'),
                         event_date=raw.get('event_date'),event_date_basis=raw['metadata'].get('event_date_basis'))
+                    if raw['metadata'].get('primary_document_review'):
+                        old.update({k:raw['metadata'][k] for k in ('primary_document_review','date_reconciliation','observed_listing_publication_date','date_conflicts','regulated_entity','sanction_amount','sanction_unit') if k in raw['metadata']})
         elif raw['metadata'].get('document_class')=='related_normative':
             meta=raw['metadata'];meta['emission_date']=meta.get('emission_date') or raw['event_date'];meta['publication_date']=None;meta['event_date_basis']='emission'
         k=fingerprint(RawItem(**raw))
@@ -87,6 +92,15 @@ def reconcile(runtime,root=Path('.'),apply=False):
             queue[k].setdefault('stock_reconciliation',[]).append(dict(reason='native_primary_fields_reconciled',previous_raw=queue[k]['raw'],at=manifest['completed_at']))
             queue[k]['raw']=raw
     # Explain all 38 legacy SUSESO items; their actor-taxonomy membership was normative.
+    for asset,review in asset_reviews.items():
+        asset_item=next(((k,v) for k,v in queue.items() if v['source']=='superintendencia_fiscalizacion' and canonical_url(v['raw']['url'])==asset),None)
+        document_item=next((v for v in queue.values() if v['source']=='superintendencia_fiscalizacion' and canonical_url(v['raw']['url'])==review['document_url']),None)
+        if asset_item and document_item:
+            document_item['detected_at']=min(document_item['detected_at'],asset_item[1]['detected_at'])
+            document_item.setdefault('superseded_records',[]).append(asset_item[1])
+            document_item.setdefault('legacy_keys',[]).append(asset_item[0])
+            document_item['listing_asset_identity_review']=review
+            del queue[asset_item[0]]
     legacy_su=[]
     for old_key,item in old_q.items():
         if item['source']!='suseso_fiscalizacion':continue
@@ -148,12 +162,17 @@ def reconcile(runtime,root=Path('.'),apply=False):
             rows=[r for r in ledger if r['source']==source and confirmed(r) and any(v and 0<=(AS_OF-date.fromisoformat(v)).days<=days for v in (r['publication_date'],r['emission_date'],r['event_date']))]
             windows[source][str(days)]=dict(publication_dated=sum(bool(r['publication_date'] and 0<=(AS_OF-date.fromisoformat(r['publication_date'])).days<=days) for r in rows),emission_dated=sum(bool(r['emission_date'] and 0<=(AS_OF-date.fromisoformat(r['emission_date'])).days<=days) for r in rows),official_confirmed=len(rows),detected=len(rows),baseline_detected=sum(r['baseline_detected'] for r in rows),baseline_omitted=sum(not r['baseline_detected'] for r in rows),omitted=0,material=sum(r['decision']=='published' for r in rows),published=sum(r['decision']=='published' for r in rows),rejected=sum(r['decision']=='rejected' for r in rows),deferred=sum(r['decision'] in ('retry','pending','processing') for r in rows))
     legacy_urls={canonical_url(r['url']) for r in json.loads((root/'data/audits/fiscalizacion/native_runtime_2026_10_11.json').read_text())['legacy_sis_rows']}
+    legacy_urls={asset_reviews.get(url,{}).get('document_url',url) for url in legacy_urls}
+    missing_verified_alias=duplicate not in {raw['url'] for raw in inventory}
+
     report=dict(historical_date_conflicts=repairs,as_of=AS_OF.isoformat(),runtime=manifest['github_run_url'],runtime_sha=manifest['started_from_sha'],native_engine=result,windows=windows,
         coverage_complete=False,coverage_reason='All dated rows reconciled in enumerated official surfaces. Ten medical reports lack daily publication/emission dates. Historical SIS document identity only verified where primary attachments permit; unique URLs do not certify unique legal acts.',
         final_states={s:'OPERATIVE_DEGRADED' for s in SOURCES},recent_decisions=ledger,date_uncertain_reports=unknown,
         legacy_suseso=dict(count=len(legacy_su),classification_counts=dict(Counter(r['document_kind'] for r in legacy_su)),decisions=legacy_su),
         legacy_sis=dict(classification_counts=dict(Counter(('report' if raw['metadata'].get('fiscalization_kind')=='report' else raw['metadata'].get('sanction_effect') or 'unknown') for raw in inventory if raw['source_slug']=='superintendencia_fiscalizacion' and raw['url'] in legacy_urls)),discovered_urls=2696,pagination_duplicate_urls=0,administrative_exclusions=administrative,verified_primary_alias=alias_review,unique_enforcement_listing_urls=2695,unique_after_one_verified_primary_alias=2694,all_legal_act_identities_certified=False),
         stock_classification_counts={s:dict(Counter((r['document_class'] or 'unknown')+':'+r['decision'] for r in stock if r['source']==s)) for s in SOURCES})
+    if missing_verified_alias:report['legacy_sis']['classification_counts']['sanction']+=1
+    report['legacy_sis'].update(original_representations={'document_urls':2684,'thumbnail_assets':11,'administrative_subrogation':1},thumbnail_asset_identity_repairs=asset_reviews)
     if apply:
         save_history(root/'data/history/superintendencia_signals.json',history);atomic_json(root/'data/state/pending_queue.json',queue)
         health=json.loads((root/'data/source_health.json').read_text());runtime_health=json.loads((replay/'source_health.json').read_text())
@@ -162,7 +181,7 @@ def reconcile(runtime,root=Path('.'),apply=False):
             domain='superdesalud.gob.cl' if source.startswith('super') else 'suseso.gob.cl'
             receipts=[r for r in manifest['receipts'] if domain in r['url']]
             own=[v for v in queue.values() if v['source']==source]
-            source_health.update(checked_at=max(r['completed_at'] for r in receipts),unique_items=sum(r['source']==source and r['decision']!='deduplicated' for r in stock),pages_checked=sum(not r['body_file'].endswith('.pdf') for r in receipts),documents_checked=sum(r['body_file'].endswith('.pdf') for r in receipts),http_receipts_checked=len(receipts),items_recent=windows[source]['90']['official_confirmed'],items_material=windows[source]['90']['material'],items_recent_enforcement=windows[source]['90']['official_confirmed'],windows=windows[source],coverage_complete=False,coverage_reason=report['coverage_reason'],final_state='OPERATIVE_DEGRADED',status='warning',rejected=sum(v['status']=='rejected' for v in own),deferred=sum(v['status']=='retry' for v in own),deferred_date_uncertain=sum(v['raw']['metadata'].get('document_class')=='enforcement_report_candidate' for v in own),rejection_reasons=dict(Counter(v.get('reason') for v in own if v['status']=='rejected')),reconciliation=dict(at=manifest['completed_at'],native_live_validated=True,runtime_url=manifest['github_run_url'],runtime_sha=manifest['started_from_sha'],stock_preserves_detected_at=True,backfill_only=True),zero_published_reason='idempotent replay; all confirmed recent material acts already persisted')
+            source_health.update(archived=sum(v['status']=='archived' for v in own),pending=sum(v['status'] in ('retry','pending','processing') for v in own),checked_at=max(r['completed_at'] for r in receipts),unique_items=sum(r['source']==source and r['decision']!='deduplicated' for r in stock),pages_checked=sum(not r['body_file'].endswith('.pdf') for r in receipts),documents_checked=sum(r['body_file'].endswith('.pdf') for r in receipts),http_receipts_checked=len(receipts),items_recent=windows[source]['90']['official_confirmed'],items_material=windows[source]['90']['material'],items_recent_enforcement=windows[source]['90']['official_confirmed'],windows=windows[source],coverage_complete=False,coverage_reason=('Seven official results indexes fully reconciled in 30/90-day dated windows; coverage outside these indexes and all historical legal-act identities not certified.' if source.startswith('superintendencia') else 'Dated sanctions and official news fully reconciled. Publication dates remain unknown for 439 historical-execution programme rows and ten medical result reports; no site-wide absence claim.'),publication_date_uncertain_reports=sum(r['source']==source and r['document_class'] in ('enforcement_report_candidate','historical_enforcement_report') for r in stock),bounded_dated_coverage_complete=True,final_state='OPERATIVE_DEGRADED',status='warning',rejected=sum(v['status']=='rejected' for v in own),deferred=sum(v['status']=='retry' for v in own),deferred_date_uncertain=sum(v['raw']['metadata'].get('document_class')=='enforcement_report_candidate' for v in own),rejection_reasons=dict(Counter(v.get('reason') for v in own if v['status']=='rejected')),reconciliation=dict(at=manifest['completed_at'],native_live_validated=True,runtime_url=manifest['github_run_url'],runtime_sha=manifest['started_from_sha'],stock_preserves_detected_at=True,backfill_only=True),zero_published_reason='idempotent replay; all confirmed recent material acts already persisted')
             health['sources'][source]=source_health
         health['generated_at']=manifest['completed_at'];atomic_json(root/'data/source_health.json',health);atomic_json(root/'web/data/source_health.json',health)
         spec=importlib.util.spec_from_file_location('native_scope_export',root/'scripts/export_web_snapshot.py');exporter=importlib.util.module_from_spec(spec);spec.loader.exec_module(exporter)

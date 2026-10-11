@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import shutil
 import sys
+import subprocess
 import tempfile
 
 from radar_salud import engine_cli
@@ -62,7 +63,7 @@ def replay(captures, output, repository=Path('.')):
                 queue=json.loads((root/'data/state/pending_queue.json').read_text())
                 snapshots.append(dict(history=digest(history),queue=digest(queue)))
             other_after={key:value for key,value in queue.items() if key in other_before}
-            report=dict(runtime_run_url=manifest['github_run_url'],captured_sha=manifest['started_from_sha'],
+            report=dict(processing_candidate_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True,cwd=repository).strip(),runtime_run_url=manifest['github_run_url'],captured_sha=manifest['started_from_sha'],
                 actual_collectors=True,actual_engine=True,network_mode='verified_native_capture_replay',
                 surfaces=surfaces,inventory_items=len(inventory),idempotent=snapshots[0]==snapshots[1],
                 snapshots=snapshots,other_queue_records_preserved=other_before==other_after,

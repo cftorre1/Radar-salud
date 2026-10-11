@@ -189,6 +189,10 @@ def probe(output, as_of):
             if raw['url'] in held_urls:
                 targets.add(raw['url'])
                 targets.update(a['url'] for a in raw['metadata'].get('attachments',[]))
+    editorial=Path('config/fiscalization_editorial_reviews.json')
+    if editorial.exists():
+        for url,review in json.loads(editorial.read_text()).get('primary_document_reviews',{}).items():
+            targets.update((url,review['primary_document_url']))
     # Inspect detail and primary documents for every recent candidate, including held dates.
     with ThreadPoolExecutor(max_workers=3) as pool:
         for receipt,_ in pool.map(lambda url: fetch(url,captures),sorted(targets)):

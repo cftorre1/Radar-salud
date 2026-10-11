@@ -126,6 +126,8 @@ def parse_listing(html, page_name, page_url, scope, kind):
                   "amendment" if "rebajando" in low or "reemplazando" in low else
                   "registration_cancellation" if 'cancél' in low or 'cancel' in low else
                   "warning" if any(term in low for term in ('amonesta', 'amonsta', 'censúr', 'censure')) else "sanction")
+        asset_aliases=[canonical_url(urljoin(page_url,href)) for href,_ in title_cell.get('links',[])
+            if re.search(r'\.(?:jpg|jpeg|png)(?:\?|$)',href,re.I)]
         out.append(RawItem("superintendencia_fiscalizacion", title, url,
             "Superintendencia de Salud", "official", event_date=emission_date or publication_date,
             raw_text=summary, metadata={
@@ -136,8 +138,7 @@ def parse_listing(html, page_name, page_url, scope, kind):
                 "publication_date": publication_date, "emission_date": emission_date,
                 "event_date_basis": "emission" if emission_date else "publication", "date_conflicts": conflicts,
                 "attachments": [{"url": pdf, "label": "PDF"}] if pdf else [],
-                "listing_asset_aliases": [canonical_url(urljoin(page_url,href)) for href,_ in title_cell.get('links',[])
-                    if re.search(r'\.(?:jpg|jpeg|png)(?:\?|$)',href,re.I)],
+                **({'listing_asset_aliases':asset_aliases} if asset_aliases else {}),
             }))
     return out
 
@@ -215,7 +216,7 @@ def reviewed_primary_act(raw, primary_reviews=None):
         'regulated_entity': review['regulated_entity'], 'actor_evidence': 'verified_primary_document',
         'sanction_amount': review['sanction_amount'], 'sanction_unit': review['sanction_unit'],
         'fact_date': review.get('fact_date'), 'validity_text': review.get('validity_text')}
-    for field in ('fiscalization_topic','related_entities','replaced_fine_amount','replaced_fine_unit','fact_period','key_points','why_it_matters'):
+    for field in ('fiscalization_topic','related_entities','replaced_fine_amount','replaced_fine_unit','fact_period','key_points','why_it_matters','scopes'):
         if field in review:metadata[field]=review[field]
     metadata['sanction_effect']=review.get('effect',metadata.get('sanction_effect'))
     return replace(raw, event_date=review.get('emission_date') or raw.event_date, raw_text=review.get('what_happened') or raw.raw_text, metadata=metadata)
@@ -256,7 +257,7 @@ def process_fiscalizacion(raw,cfg):
           "watch_tags":["fiscalización","informe",scope.lower()],
           "scores":{"economic":55,"regulatory":90,"scope":78,"novelty":75,"actionability":88}})
     s=build_signal(raw,cfg);row=s.to_dict()
-    row["signal_types"]=["Fiscalización"];row["scopes"]=[scope]
+    row["signal_types"]=["Fiscalización"];row["scopes"]=raw.metadata.get('primary_document_review',{}).get('scopes') or [scope]
     row["regulated_entity"]=entity;row["sanction_amount"]=amount;row["sanction_unit"]=unit
     row.update(publication_date=raw.metadata.get("publication_date"), emission_date=raw.metadata.get("emission_date"),
         event_date_basis=raw.metadata.get("event_date_basis"), date_conflicts=raw.metadata.get("date_conflicts", []),
