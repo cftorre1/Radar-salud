@@ -49,6 +49,8 @@ jobs:
           tests/test_pulso_health_anchor_compatibility.py tests/test_pulso_health_identity.py
           tests/test_pulso_source_health_history.py tests/test_pulso_qa_native_record_identity.py
           tests/test_pulso_editorial_review.py tests/test_pulso_bound_editorial_review_qa.py
+          tests/test_pulso_paid_guard_revalidation.py tests/test_pulso_v5_revalidation_manifest.py
+          tests/test_pulso_paid_revalidation_qa.py tests/test_pulso_actual49_second_reader_context.py
       - name: Read optional prior and additional original capture runs
         id: prior_capture
         run: |
