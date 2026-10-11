@@ -176,7 +176,10 @@ def test_pulso_rediscovery_rehydrates_same_url_without_resetting_capture_attempt
     before = dict(queue.items[key])
     verified = RawItem("pulso_latercera", "Clínica suspende operaciones y traslada pacientes", url + "?outputType=base-amp-type",
                        "Pulso / La Tercera", "press_high_trust", now.date().isoformat(), BODY,
-                       {"article_verified": True, "page_text": BODY, **BODY_PROOF, "market_role": "media", "source_quality_gate": "passed"})
+                       {"article_verified": True, "primary_identity_verified": True,
+                        "publication_date_verified": True, "canonical_url": url,
+                        "publication_date": now.date().isoformat(), "page_text": BODY, **BODY_PROOF,
+                        "market_role": "media", "source_quality_gate": "passed"})
     assert queue.discover("pulso_latercera", [verified], now=now, last_discovered_at=now.isoformat()) == 0
     item = queue.items[key]
     assert len(queue.items) == 1
