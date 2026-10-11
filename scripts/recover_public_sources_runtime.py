@@ -199,7 +199,7 @@ def main():
             dataset_checks.append(sample)
     (args.output / 'dataset_samples.json').write_text(json.dumps(dataset_checks, ensure_ascii=False, indent=2) + '\n')
     if not args.probe_only:
-        from check_public_sources import check
+        from check_public_sources import check, SCOUTS
         from radar_salud import public_source_transport
         native_captures = []
         original_download = public_source_transport.download_official
@@ -218,7 +218,26 @@ def main():
         isolated_root = args.output / "isolated"
         (isolated_root / "data").mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / "data/source_health.json", isolated_root / "data/source_health.json")
-        runtime = check(isolated_root, record_health=True)
+        def check_one(factory):
+            source_root = isolated_root / 'source_captures' / factory.SOURCE_SLUG
+            (source_root / 'data').mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / 'data/source_health.json', source_root / 'data/source_health.json')
+            return check(source_root, record_health=True, factories=(factory,))
+        # Each source owns an artifact-only health file; blocked ISP polls do
+        # not serialize DEIS capture and concurrent health writes cannot race.
+        with ThreadPoolExecutor(max_workers=len(SCOUTS)) as executor:
+            checks = list(executor.map(check_one, SCOUTS))
+        runtime = {'checked_at': now(), 'mode': 'discovery_and_document_verification_only',
+                   'execution': 'parallel_sources_isolated_health_roots', 'ai_calls': 0,
+                   'ingestion_state_mutated': False,
+                   'sources': {slug: row for value in checks for slug, row in value['sources'].items()},
+                   'operational_sources': sum(value['operational_sources'] for value in checks),
+                   'operative_degraded_sources': sum(value['operative_degraded_sources'] for value in checks)}
+        health = json.loads((ROOT / 'data/source_health.json').read_text())
+        for factory in SCOUTS:
+            captured_health = json.loads((isolated_root / 'source_captures' / factory.SOURCE_SLUG / 'data/source_health.json').read_text())
+            health['sources'][factory.SOURCE_SLUG] = captured_health['sources'][factory.SOURCE_SLUG]
+        (isolated_root / 'data/source_health.json').write_text(json.dumps(health, ensure_ascii=False, indent=2) + '\n')
         (args.output / "native_discovery.json").write_text(json.dumps(runtime, ensure_ascii=False, indent=2) + "\n")
         result["native_operational_sources"] = runtime["operational_sources"]
         catalog = runtime['sources']['deis'].get('catalog', {
