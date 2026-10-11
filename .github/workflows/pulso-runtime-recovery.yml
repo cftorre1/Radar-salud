@@ -36,7 +36,19 @@ jobs:
         run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
       - run: pip install -e . pytest
       - name: Directed source, primary evidence and core checks
-        run: python -m pytest -q tests/test_pulso_source.py tests/test_pulso_archive_discovery.py tests/test_pulso_real_fixtures.py tests/test_pulso_core_runtime.py tests/test_beta_core_handoff.py tests/test_pulso_runtime_audit.py tests/test_pulso_runtime_fixtures.py tests/test_pulso_recovery_qa.py tests/test_pulso_recovery_command.py tests/test_pulso_idempotence.py tests/test_pulso_idempotence_qa.py tests/test_pulso_execution_provenance.py tests/test_pulso_editorial_proof.py tests/test_pulso_oct5_incremental_addendum.py tests/test_pulso_queue_incremental_admission.py tests/test_pulso_formal_budget_proposal_guard.py
+        run: >-
+          python -m pytest -q tests/test_pulso_source.py tests/test_pulso_archive_discovery.py
+          tests/test_pulso_real_fixtures.py tests/test_pulso_core_runtime.py tests/test_beta_core_handoff.py
+          tests/test_pulso_runtime_audit.py tests/test_pulso_runtime_fixtures.py tests/test_pulso_recovery_qa.py
+          tests/test_pulso_recovery_command.py tests/test_pulso_idempotence.py tests/test_pulso_idempotence_qa.py
+          tests/test_pulso_execution_provenance.py tests/test_pulso_editorial_proof.py
+          tests/test_pulso_oct5_incremental_addendum.py tests/test_pulso_queue_incremental_admission.py
+          tests/test_pulso_formal_budget_proposal_guard.py tests/test_pulso_queue_model_evidence_continuity.py
+          tests/test_pulso_queue_code_repair_admission.py tests/test_pulso_code_repair_admission.py
+          tests/test_pulso_actual_model_grounding_repair.py tests/test_pulso_code_repair_qa.py
+          tests/test_pulso_health_anchor_compatibility.py tests/test_pulso_health_identity.py
+          tests/test_pulso_source_health_history.py tests/test_pulso_qa_native_record_identity.py
+          tests/test_pulso_editorial_review.py tests/test_pulso_bound_editorial_review_qa.py
       - name: Read optional prior original capture run
         id: prior_capture
         run: |
