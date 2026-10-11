@@ -154,6 +154,9 @@ def main():
                     reason='duplicate_verified_df_event' if counterpart else 'df_unrelated_primary_multimedia_topic',
                     updated_at=now.isoformat(),df_resolution=review)
                 if counterpart:item['duplicate_of']=counterpart
+                else:
+                    from radar_salud.scouts import SeenStore
+                    SeenStore(root/'data/state/diario_financiero_seen.json').add_many([key])
         state=(item.get('df_resolution',{}).get('state') if item['status'] in ('rejected','superseded') else None) or ('RESOLVED_PUBLISHED' if item['status']=='published' else 'RESOLVED_REJECTED' if item['status']=='rejected' else 'RESOLVED_DUPLICATE' if item['status']=='superseded' else None)
         if state is None:
             state='RESOLVED_NO_VERIFIABLE_DATE' if not date else 'DEFERRED_MULTIMEDIA'

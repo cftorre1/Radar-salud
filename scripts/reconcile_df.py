@@ -305,7 +305,8 @@ def main():
         elif entries: disposition = "legacy_generic_rejection_unresolved; no_editorial_verdict_proven"
         else: disposition = "not_in_pipeline; capture_or_evaluation_required"
         matrix.append({"url": url, "title": titles.get(url), "publication_day": date,
-                       "original": original or {"fetch": "not_attempted"}, "queue": entries,
+                       "original": {k:original[k] for k in ('fetch','sha256','captured_at','error_type') if k in original} or {"fetch":"not_attempted"},
+                       "original_evidence_ref": "originals["+url+"]", "queue": entries,
                        "history_present": normalized in history_by_url, "feed_present": normalized in feed_urls,
                        "disposition": disposition})
     windows = {}
@@ -321,6 +322,8 @@ def main():
                              "dispositions": dict(Counter(row["disposition"] for row in rows)),
                              "unknown_date_urls": sum(not row["publication_day"] for row in matrix), "complete": False}
     report.update(status="partial_reconciliation_external_validation_open", matrix=matrix, windows=windows,
+                  matrix_schema_version=2,
+                  matrix_evidence_semantics='Matrix receipts reference originals by URL; full metadata/date candidates/body excerpts are stored once.',
                   queue_counts=queue.counts("diario_financiero"),
                   recovered_records=sum(bool(item.get("recovery_observations")) for item in queue.items.values() if item["source"] == "diario_financiero"),
                   originals_ok=sum(row["fetch"] == "ok" for row in report["originals"].values()),
