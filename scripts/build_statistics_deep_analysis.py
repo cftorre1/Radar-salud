@@ -3,6 +3,7 @@ from __future__ import annotations
 import io
 import json
 import re
+from datetime import date
 from pathlib import Path
 from urllib.request import Request, urlopen
 
@@ -256,8 +257,22 @@ def bulletin():
     }
 
 
+def current_release_builders(history):
+    """Build eligible releases, not an obsolete fixed inventory on every PR."""
+    dated=[]
+    for row in history:
+        try:
+            dated.append((row.get("source_url"),date.fromisoformat(str(row.get("event_date"))[:10])))
+        except ValueError:
+            continue
+    reference=max((day for _,day in dated),default=date.today())
+    eligible={url for url,day in dated if 0 <= (reference-day).days <= 90}
+    return {url:build for url,build in ((GES_PAGE,ges),(SERIES_PAGE,series),(FIN_PAGE,financial),(BOLETIN_PAGE,bulletin)) if url in eligible}
+
+
 def main():
-    result = {"version": "2.0", "signals": {GES_PAGE: ges(), SERIES_PAGE: series(), FIN_PAGE: financial(), BOLETIN_PAGE: bulletin()}}
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text(encoding="utf-8"))["signals"]
+    result = {"version": "2.0", "signals": {url:build() for url,build in current_release_builders(history).items()}}
     OUT.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({key: {"rows": len(value["summary_table"]["rows"]), "methodology": value["methodology_visibility"]} for key, value in result["signals"].items()}, ensure_ascii=False))
 

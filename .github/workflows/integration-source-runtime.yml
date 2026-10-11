@@ -50,6 +50,14 @@ jobs:
       - run: pip install -e .
       - name: Execute real collector and core twice, preserving the staging input
         run: python scripts/integration_runtime.py
+      - name: Reconcile native fiscalization indexes against their original HTML
+        run: |
+          if python -c "import json,sys;sys.exit('suseso_fiscalizacion' not in json.load(open('config/integration_runtime_targets.json'))['sources'])"; then
+            python scripts/probe_fiscalization_runtime.py --as-of 2026-10-11 --output work/fiscalization-runtime
+            python scripts/replay_fiscalization_runtime.py --captures work/fiscalization-runtime --output work/fiscalization-runtime/isolated-replay
+            python scripts/review_fiscalization_coverage.py --runtime work/fiscalization-runtime --output work/fiscalization-runtime/coverage-review.json
+            python scripts/reconcile_native_fiscalization.py --runtime work/fiscalization-runtime
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -57,3 +65,33 @@ jobs:
           retention-days: 14
           path: |
             work/integration-runtime/
+            work/fiscalization-runtime/
+            !work/fiscalization-runtime/**/*.pdf
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-fiscalization-documents-0-${{ github.sha }}
+          path: work/fiscalization-runtime/captures/documents/0/
+          if-no-files-found: ignore
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-fiscalization-documents-1-${{ github.sha }}
+          path: work/fiscalization-runtime/captures/documents/1/
+          if-no-files-found: ignore
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-fiscalization-documents-2-${{ github.sha }}
+          path: work/fiscalization-runtime/captures/documents/2/
+          if-no-files-found: ignore
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-fiscalization-documents-3-${{ github.sha }}
+          path: work/fiscalization-runtime/captures/documents/3/
+          if-no-files-found: ignore
+          retention-days: 30

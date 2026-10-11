@@ -1,6 +1,7 @@
 from __future__ import annotations
 import argparse,hashlib,json
 from dataclasses import asdict
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from .scouts import SeenStore,SuperintendenciaStatsScout,fetch_html,save_raw_items,MinsalNewsScout
@@ -32,11 +33,9 @@ def main():
     from .paths import project_root
     ap=argparse.ArgumentParser()
     ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
-    ap.add_argument("--source",action="append",help="Process only the named source(s); default is all core sources")
+    ap.add_argument("--source","--only-source",dest="source",action="append",help="Process only the named source(s); default is all core sources")
     ap.add_argument("--reset-state",action="store_true")
-    ap.add_argument('--only-source',action='append',default=[],help='Run only named source lanes; preserve all other queue/history state')
     args=ap.parse_args()
-    args.source=list(dict.fromkeys((args.source or []) + args.only_source))
     if args.reset_state:
         ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
     root=project_root()
@@ -181,15 +180,16 @@ def main():
         "failed_sources":sum(row.get("technical_status")=="error" for row in run_sources.values()),
     })
     produced={name:[] for name in processors}
+    processed_rejections={name:0 for name in processors}
     queue.enforce_backfill_horizon(sources=set(args.source) if args.source else None)
-    ready=[(key,item) for key,item in queue.ready() if item['source'] in processors and (not args.source or
-        item['source'] in args.source or ('suseso_fiscalizacion' in args.source and item['raw'].get('metadata',{}).get('routed_from')=='suseso_fiscalizacion'))]
+    ready=[(key,item) for key,item in queue.ready() if item['source'] in processors and
+        (not args.source or item['source'] in args.source or
+         ('suseso_fiscalizacion' in args.source and item['raw'].get('metadata',{}).get('routed_from')=='suseso_fiscalizacion'))]
     for index,(key,item) in enumerate(ready):
         if args.limit and index>=args.limit:break
         deterministic = item["source"] in FISCALIZATION_SOURCES or item["raw"].get("metadata",{}).get("reviewed_normative")
         if not deterministic and not has_capacity("fast") and not has_capacity("deep"):continue
         queue.start(key)
-        from copy import deepcopy
         processing_raw=RawItem(**deepcopy(item["raw"]))
         try:
             cfg,processor=processors[item["source"]]
@@ -215,9 +215,11 @@ def main():
                                     editorial_decision='reject',feed_visibility=False)
                     save_history(history_path,history)
             queue.finish(key,"published" if row else "rejected",None if row else processing_raw.metadata.get("rejection_reason") or processing_raw.metadata.get("publication_rejection_reason") or "processor_rejected")
+            if not row:processed_rejections[item['source']]+=1
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except RejectedProcessing as exc:
             queue.finish(key,"rejected",str(exc))
+            processed_rejections[item['source']]+=1
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except DeferredProcessing as exc:
             item["raw"]=asdict(processing_raw)
@@ -260,9 +262,10 @@ def main():
         source_items=[item for item in queue.items.values() if item.get("source")==name]
         health_record(root,name,name="Diario Financiero" if name=="diario_financiero" else name.replace("_"," ").title(),discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
+            processed_rejections=processed_rejections[name],
             deferred=sum(i.get('source')==name and i['status']=='deferred' for i in queue.items.values()) if name=='diario_financiero' else 0,
             rejected=counts["rejected"],rows=produced[name],error=error,
-            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"], observed_rows=observed.get(name),surfaces=surfaces.get(name), discovery_evidence=df_evidence,
+            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"], discovery_evidence=df_evidence, observed_rows=observed.get(name),surfaces=surfaces.get(name),
             published_history=fiscal_history if name in FISCALIZATION_SOURCES else None,
             source_queue=source_items if name in FISCALIZATION_SOURCES else None,
             archived=sum(item.get("status")=="archived" for item in source_items),

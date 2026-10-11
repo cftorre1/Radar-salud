@@ -34,6 +34,15 @@ def test_df_all_undated_is_partial_not_healthy_or_fresh(tmp_path):
     assert row["counts_scope"]["rejected"]=="cumulative_queue"
 
 
+def test_df_cumulative_rejections_do_not_claim_rejection_in_an_empty_poll(tmp_path):
+    record(tmp_path,"diario_financiero",name="Diario Financiero",discovered=41,new=0,published=0,rejected=176,
+           discovery_evidence={"dated":41,"undated":0,"detail_errors":0,"insufficient_evidence":5})
+    row=json.loads((tmp_path/"data/source_health.json").read_text())["sources"]["diario_financiero"]
+    assert row["editorial_outcome"]=="no_new_signals"
+    assert row["coverage_status"]=="format_gap" and row["coverage_complete"] is False
+    assert row["counts_scope"]["rejected"]=="cumulative_queue"
+
+
 def test_fiscalization_counts_do_not_certify_coverage_and_history_repairs_last_signal(tmp_path):
     record(tmp_path,'superintendencia_fiscalizacion',name='SIS',discovered=2696,new=0,published=0,
         rows=[],published_history=[{'event_date':'2026-09-08'}],archived=2516)
@@ -63,6 +72,14 @@ def test_fiscalization_windows_use_office_identity_and_never_suspension_dates(tm
     assert row['windows']['30']['published']==2
     assert row['parse_errors']==0 and row['coverage_complete'] is False
     assert row['zero_published_reason']=='evaluated_rejections_or_existing_published_history'
+
+
+def test_current_rejections_and_cumulative_stock_have_distinct_outcomes(tmp_path):
+    record(tmp_path,'source',name='Source',discovered=3,new=0,published=0,rejected=200)
+    path=tmp_path/'data/source_health.json'
+    assert json.loads(path.read_text())['sources']['source']['editorial_outcome']=='no_new_signals'
+    record(tmp_path,'source',name='Source',discovered=3,new=1,published=0,rejected=201,processed_rejections=1)
+    assert json.loads(path.read_text())['sources']['source']['editorial_outcome']=='rejected'
 
 
 def test_fiscalization_partial_receipt_and_observation_are_separate_from_publication(tmp_path):

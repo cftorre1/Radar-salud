@@ -1,6 +1,6 @@
 {
   "date": "2026-10-11",
-  "generated_at": "2026-10-11T13:53:27.844227+00:00",
+  "generated_at": "2026-10-11T14:00:13.048461+00:00",
   "signals": [
     {
       "title": "Después de Rotter & Krauss: los negocios que buscan los Yarur para Empresas SB",
@@ -11660,18 +11660,137 @@
       ],
       "publication_ready_score": 100,
       "publication_gate_reason": "ok",
-      "statistical_value_level": "publication_inventory",
-      "card_what": "La publicación reúne 4 archivos oficiales sobre acreditación, mediación, reclamos, registro de prestadores.",
-      "card_why": "",
+      "card_what": "El Boletín IP de junio 2026 informa cortes de acreditación, mediación, reclamos y RNPI.",
       "card_why_optional": true,
-      "methodology_visibility": "collapsed",
-      "incremental_value_gate": {
-        "inventory": "Official document links and topic coverage only; no calculated statistical finding"
+      "data_insight_evidence": [
+        {
+          "text": "971 prestadores acreditados; 584 solicitudes en tramitación.",
+          "period": "30-jun-2026",
+          "formula": "cifras declaradas",
+          "sheet": "Acreditación N°2-2026",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf"
+        },
+        {
+          "text": "175 mediadores inscritos; 12.067 solicitudes acumuladas desde 2019.",
+          "period": "30-jun-2026; acumulado ene-2019 a jun-2026",
+          "formula": "stocks y flujo acumulado, reportados separadamente",
+          "sheet": "Mediación N°2-2026",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-mediacion-enero-junio-2026.pdf"
+        },
+        {
+          "text": "Promedio mensual de reclamos 1.996; 30% sobre el promedio 2025.",
+          "period": "ene–jun 2026 vs promedio 2025",
+          "formula": "promedios mensuales comparables según el boletín",
+          "sheet": "Reclamos N°2-2026",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-reclamos-enero-junio-2026.pdf"
+        },
+        {
+          "text": "1.004.982 títulos inscritos.",
+          "period": "30-jun-2026",
+          "formula": "conteo acumulado declarado",
+          "sheet": "RNPI N°2-2026",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-rnpi-enero-junio-2026.pdf"
+        }
+      ],
+      "summary_table": {
+        "title": "Boletín IP · indicadores reportados a junio de 2026",
+        "columns": [
+          "Tema",
+          "Métrica",
+          "Tipo",
+          "Período",
+          "Valor",
+          "Detalle"
+        ],
+        "rows": [
+          {
+            "cells": [
+              "Acreditación",
+              "Prestadores acreditados",
+              "Stock",
+              "30-jun-2026",
+              "971",
+              "101 (10%) con observaciones"
+            ]
+          },
+          {
+            "cells": [
+              "Acreditación",
+              "Solicitudes en tramitación",
+              "Stock",
+              "30-jun-2026",
+              "584",
+              "367 privadas · 217 públicas"
+            ]
+          },
+          {
+            "cells": [
+              "Mediación",
+              "Mediadores inscritos",
+              "Stock",
+              "30-jun-2026",
+              "175",
+              "45% en la Región Metropolitana"
+            ]
+          },
+          {
+            "cells": [
+              "Mediación",
+              "Solicitudes acumuladas",
+              "Flujo acumulado",
+              "ene-2019 a jun-2026",
+              "12.067",
+              "Total declarado por el boletín"
+            ]
+          },
+          {
+            "cells": [
+              "Reclamos",
+              "Promedio mensual",
+              "Promedio de flujo",
+              "ene–jun 2026",
+              "1.996",
+              "+30% frente al promedio mensual de 2025 (1.530)"
+            ]
+          },
+          {
+            "cells": [
+              "RNPI",
+              "Títulos inscritos",
+              "Stock acumulado",
+              "30-jun-2026",
+              "1.004.982",
+              "4.036 registros sin fecha de nacimiento"
+            ]
+          }
+        ]
       },
+      "statistical_conclusion": "",
+      "incremental_value_gate": {
+        "table": "Cuatro dominios institucionales y sus métricas, con periodo y tipo stock/flujo explícitos",
+        "conclusion": "Ninguna interpretación adicional; se presentan los resultados reportados"
+      },
+      "methodology_visibility": "collapsed",
       "statistical_methodology": {
+        "period": "corte junio de 2026",
+        "source_documents": [
+          "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf",
+          "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-mediacion-enero-junio-2026.pdf",
+          "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-reclamos-enero-junio-2026.pdf",
+          "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-rnpi-enero-junio-2026.pdf"
+        ],
         "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
-        "scope": "document_inventory_only",
-        "analysis_status": "not_performed"
+        "note": "Stock, flujo acumulado y promedio mensual se mantienen separados."
+      },
+      "statistical_value_level": "deep_analysis",
+      "analysis_trace": {
+        "method": "official_boletin_four_document_audit",
+        "source_documents": [
+          "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf",
+          "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-mediacion-enero-junio-2026.pdf",
+          "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-reclamos-enero-junio-2026.pdf",
+          "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-rnpi-enero-junio-2026.pdf"
+        ]
       },
       "related_context": [],
       "source_alternatives": [],
@@ -11692,7 +11811,7 @@
         ],
         "materiality_decision": "group",
         "public_title": "Boletín Estadístico Informativo IP – Junio 2026",
-        "what_happened": "La publicación reúne 4 archivos oficiales sobre acreditación, mediación, reclamos, registro de prestadores.",
+        "what_happened": "El Boletín IP de junio 2026 informa cortes de acreditación, mediación, reclamos y RNPI.",
         "why_it_matters": "Consolida indicadores oficiales del período; solo debería ganar espacio en portada cuando contiene cambios materiales.",
         "evidence_map": [
           {
@@ -11701,7 +11820,7 @@
           }
         ],
         "uncertainties": [],
-        "value_level": "publication_inventory",
+        "value_level": "deep_analysis",
         "publication_decision": "group",
         "critical_objections": [],
         "verdict": "PASS",
