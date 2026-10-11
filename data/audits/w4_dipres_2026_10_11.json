@@ -1,12 +1,12 @@
 {
   "task_id": "w4_dipres_2026_10_11",
   "status": "OPERATIVE_DEGRADED",
-  "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38142475913",
+  "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38144418936",
   "health": {
     "pages_checked": 182,
     "items_discovered": 116,
     "unique_items": 116,
-    "items_recent": 0,
+    "items_recent": null,
     "items_material": 5,
     "published": 0,
     "rejected": 0,
@@ -21,6 +21,7 @@
     "outcome": "OPERATIVE_DEGRADED",
     "data_documents": 116,
     "observations": 408,
+    "recency_reason": "Original PDF publication dates unknown; fiscal years and execution cutoffs do not prove recent publication",
     "programs": [
       "16.02.01",
       "16.02.02",
@@ -100,7 +101,7 @@
       2027
     ],
     "publication_reason": "Tables feed Trend/Benchmark; material changes without verified publication day stay deferred",
-    "checked_at": "2026-10-11T13:25:15.539439+00:00",
+    "checked_at": "2026-10-11T13:56:32.628644+00:00",
     "status": "warning",
     "coverage_status": "partial",
     "editorial_outcome": "data_snapshot_no_news_quota"
@@ -124,5 +125,22 @@
     "price_basis": "nominal or constant_prices plus price_base_year",
     "publication_date": "null unless explicit; fetched_at and report_generated_date never publication"
   },
-  "next_step": "Run native adapters + idempotent stock replay; expose comparable Trend/Benchmark consumers and independent coverage review"
+  "next_step": "Run native adapters + idempotent stock replay; expose comparable Trend/Benchmark consumers and independent coverage review",
+  "recorded_at": "2026-10-11T11:02:03.977582-03:00",
+  "runtime_head_sha": "c450dc0863e6c46e050e84b452618f2464501705",
+  "recurrence_validated": false,
+  "human_blocker": null,
+  "activation_dependencies": [
+    "source_audit_issue5_iteration1_recovery_2026_10_09",
+    "source_audit_issue5_iteration2_balance_2026_10_09"
+  ],
+  "evidence": [
+    "data/audits/source_expansion/native_validated.zip",
+    "data/audits/source_expansion/native_runtime_indexes.zip",
+    "data/audits/source_expansion_runtime_review_2026_10_11.json"
+  ],
+  "parsed_documents": 116,
+  "stock_observations": 408,
+  "material_variation_candidates": 5,
+  "unknown_publication_date_is_not_zero_recent_publications": true
 }

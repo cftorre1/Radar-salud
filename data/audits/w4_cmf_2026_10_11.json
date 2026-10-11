@@ -1,7 +1,7 @@
 {
   "task_id": "w4_cmf_2026_10_11",
   "status": "OPERATIVE_DEGRADED",
-  "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38142026986",
+  "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38144418936",
   "initial_official_90d": {
     "CLC": 2,
     "ILC": 1,
@@ -12,27 +12,28 @@
   "initial_official_30d": 3,
   "initial_stock_records": 9,
   "health": {
-    "pages_checked": 67,
-    "items_discovered": 3,
-    "unique_items": 3,
-    "items_recent": 0,
-    "items_material": 1,
+    "pages_checked": 105,
+    "items_discovered": 9,
+    "unique_items": 9,
+    "items_recent": 3,
+    "items_material": 7,
     "published": 0,
-    "rejected": 0,
-    "deferred": 3,
+    "rejected": 2,
+    "deferred": 7,
     "parse_errors": 0,
     "coverage_complete": false,
-    "coverage_reason": "Official 90-day issuer queries and accounting statements captured; primary editorial validation, complete health-group/reporting perimeter and separate-cadence recurrence remain pending",
-    "technical_status": "degraded",
+    "coverage_reason": "Official issuer queries and primary disclosures reconciled; reviewed BACKFILL events held for core/editorial activation; complete health-group reporting perimeter and separate-cadence recurrence remain pending",
+    "technical_status": "ok",
     "snapshot_semantics": "Data observations; published is news cards, never table rows",
     "recurrence_validated": false,
     "runtime_activation": "held_for_core_quality_gate",
     "outcome": "OPERATIVE_DEGRADED",
-    "reporting_actors": 5,
+    "reporting_actors": 6,
     "active_issuers": 4,
     "financial_observations": 42,
     "statement_documents": 24,
-    "primary_documents_verified": 3,
+    "primary_documents_verified": 9,
+    "primary_documents_reverified": 9,
     "actor_coverage": [
       {
         "issuer": "cl:rut:93930000-7",
@@ -49,156 +50,36 @@
         "coverage_reason": "dated_results",
         "query_start": "2026-07-14",
         "query_end": "2026-10-11"
+      },
+      {
+        "issuer": "cl:rut:76020458-7",
+        "registration_status": "Vigente",
+        "coverage_complete": true,
+        "coverage_reason": "dated_results",
+        "query_start": "2026-07-14",
+        "query_end": "2026-10-11"
+      },
+      {
+        "issuer": "cl:rut:92051000-0",
+        "registration_status": "Vigente",
+        "coverage_complete": true,
+        "coverage_reason": "dated_results",
+        "query_start": "2026-07-14",
+        "query_end": "2026-10-11"
+      },
+      {
+        "issuer": "cl:rut:96528990-9",
+        "registration_status": "No Vigente",
+        "coverage_complete": true,
+        "coverage_reason": "official_explicit_absence",
+        "query_start": "2026-07-14",
+        "query_end": "2026-10-11"
       }
     ],
-    "transport_failures": [
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=3&row=&rut=94139000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=1&row=&rut=76020458&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=3&row=&rut=76020458&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=1&row=&rut=92051000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=3&row=&rut=92051000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=1&row=&rut=96528990&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=3&rut=93930000&tipoentidad=RVEMI&vig=VI&aa=2026&mm=06&tipo=C&tipo_norma=IFRS",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=62&rut=93930000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=5&rut=93930000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=8&rut=93930000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=3&rut=94139000&tipoentidad=RVEMI&vig=VI&aa=2026&mm=03&tipo=C&tipo_norma=IFRS",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=62&rut=94139000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=5&rut=94139000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=8&rut=94139000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=25&row=&rut=76020458&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=3&rut=76020458&tipoentidad=RVEMI&vig=VI&aa=2026&mm=06&tipo=C&tipo_norma=IFRS",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=5&rut=76020458&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=8&rut=76020458&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=25&row=&rut=92051000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=3&rut=92051000&tipoentidad=RVEMI&vig=VI&aa=2026&mm=03&tipo=C&tipo_norma=IFRS",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=5&rut=92051000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=8&rut=92051000&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=25&row=&rut=96528990&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=3&rut=96528990&tipoentidad=RVEMI&vig=VI&aa=2026&mm=03&tipo=C&tipo_norma=IFRS",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=62&rut=96528990&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=&mercado=V&pestania=8&rut=96528990&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&mercado=V&pestania=1&rut=76005001&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&mercado=V&pestania=25&rut=76005001&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      },
-      {
-        "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&mercado=V&pestania=62&rut=76005001&tipoentidad=RVEMI&vig=VI",
-        "http": 302,
-        "reason": null
-      }
-    ],
-    "checked_at": "2026-10-11T13:15:11.610253+00:00",
+    "material_events": 5,
+    "transport_failures": [],
+    "issuer_reported_health_relationships": 3,
+    "checked_at": "2026-10-11T13:56:27.406238+00:00",
     "status": "warning",
     "coverage_status": "partial",
     "editorial_outcome": "data_snapshot_no_news_quota"
@@ -209,5 +90,26 @@
     "Reconcile complete subsidiary/control perimeter and ticker evidence",
     "Cadence recurrence and core activation dependencies remain open"
   ],
-  "next_step": "Use exact CMF registration row/vig status and serial queries; continue independent DIPRES parsing"
+  "next_step": "Use exact CMF registration row/vig status and serial queries; continue independent DIPRES parsing",
+  "recorded_at": "2026-10-11T11:02:03.977582-03:00",
+  "runtime_head_sha": "c450dc0863e6c46e050e84b452618f2464501705",
+  "recurrence_validated": false,
+  "human_blocker": null,
+  "activation_dependencies": [
+    "source_audit_issue5_iteration1_recovery_2026_10_09",
+    "source_audit_issue5_iteration2_balance_2026_10_09"
+  ],
+  "evidence": [
+    "data/audits/source_expansion/native_validated.zip",
+    "data/audits/source_expansion/native_runtime_indexes.zip",
+    "data/audits/source_expansion_runtime_review_2026_10_11.json"
+  ],
+  "material_documents": 7,
+  "unique_material_events": 5,
+  "publication_dispositions": {
+    "published": 0,
+    "rejected_supporting_documents": 2,
+    "deferred_material_documents": 7
+  },
+  "resolved_hypothesis": "Exact registration row/vig status and serial requests eliminated CMF302 failures; all nine primary disclosures extracted including five public scanned documents"
 }

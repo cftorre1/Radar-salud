@@ -7,15 +7,15 @@
       "legal_name": "CLINICA LAS CONDES S.A.",
       "commercial_name": "CLINICA LAS CONDES",
       "issuer_registration_status": "Vigente",
-      "ticker": null,
-      "ticker_reason": "CMF identification does not prove a current listed ticker",
+      "ticker": "LAS CONDES",
+      "ticker_reason": "Historical exchange disclosure; current listing/quote not certified",
       "reporting_role": "reporting_entity",
       "parent_entity_id": null,
       "subsidiary_entity_ids": [],
       "reporting_perimeter": "Document-specific: consolidated or individual; no subsidiary fact propagation",
       "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AAAwy2ACTAAABy7AAk&rut=93930000&tipoentidad=RVEMI&vig=VI",
       "source_sha256": "af3bf62a188b513d5c3b2d3414c99cb9e4eb473ba60bf9877498072b79d379d7",
-      "fetched_at": "2026-10-11T13:16:05.425241+00:00",
+      "fetched_at": "2026-10-11T13:58:18.150679+00:00",
       "reported_major_shareholders": [
         {
           "name": "INSTITUTO DE DIAGNOSTICO SA",
@@ -102,7 +102,18 @@
           "source_sha256": "45890d869caec7c241c8eee4f27e58a08d8919ada7b6e491c8665b5ffcf413ff"
         }
       ],
-      "control_evidence": null
+      "control_evidence": null,
+      "ticker_evidence": {
+        "source_url": "https://cibe.bolsadesantiago.com/Documentos/Noticias/Hechos%20Esenciales/Valor_202507140294.html",
+        "source_sha256": "ea7663e94cfd5b3deeca152e6dc9bdc8e75e4d50ebf77299565657beb8f07b37",
+        "observed_at": "2026-10-11T13:59:34.686859+00:00",
+        "current_price": null,
+        "current_quote_verified": false,
+        "entity_id": "cl:rut:93930000-7",
+        "ticker": "LAS CONDES",
+        "reference_date": "2025-07-14",
+        "validity": "Historical exchange disclosure; current listing/quote not certified"
+      }
     },
     {
       "entity_id": "cl:rut:94139000-5",
@@ -110,8 +121,8 @@
       "legal_name": "INVERSIONES LA CONSTRUCCION S.A.",
       "commercial_name": null,
       "issuer_registration_status": "Vigente",
-      "ticker": null,
-      "ticker_reason": "CMF identification does not prove a current listed ticker",
+      "ticker": "ILC",
+      "ticker_reason": "Primary issuer identifies its equity; no dated exchange listing/price inferred",
       "reporting_role": "reporting_entity",
       "parent_entity_id": null,
       "subsidiary_entity_ids": [
@@ -120,7 +131,7 @@
       "reporting_perimeter": "Document-specific: consolidated or individual; no subsidiary fact propagation",
       "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AAAwy2ACTAAABzMAAF&rut=94139000&tipoentidad=RVEMI&vig=VI",
       "source_sha256": "42189c50b5b8479f7cd863eba38db396898273328784d473b3f84aaed1229b0b",
-      "fetched_at": "2026-10-11T13:16:07.540453+00:00",
+      "fetched_at": "2026-10-11T13:58:20.142005+00:00",
       "reported_major_shareholders": [
         {
           "name": "CAMARA CHILENA DE LA CONSTRUCCION",
@@ -213,6 +224,61 @@
         "reported_period": "2026-09",
         "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=5&rut=94139000&tipoentidad=RVEMI&vig=VI&row=AAAwy2ACTAAABzMAAF",
         "source_sha256": "96d33da691a78a5160479a95093dc1e98289a3a229c5721ae4c9838128eaa745"
+      },
+      "issuer_reported_health_relationships": [
+        {
+          "parent_entity_id": "cl:rut:94139000-5",
+          "entity_name": "RedSalud",
+          "entity_id": "cl:rut:76020458-7",
+          "ownership_pct": 99.9,
+          "source_url": "https://ilcinversiones.cl/nuestras-empresas/",
+          "source_sha256": "1cb1a0cabbfe20cfdf2e763948c77724a019cf4266683c97c39959562c1cc545",
+          "observed_at": "2026-10-11T13:59:32.955801+00:00",
+          "reporting_period": null,
+          "effective_from": null,
+          "relation": "issuer_reported_ownership",
+          "date_reason": "Undated company ownership table; incorporation year is not an effective control date",
+          "subsidiary_performance_attribution": false
+        },
+        {
+          "parent_entity_id": "cl:rut:94139000-5",
+          "entity_name": "Consalud",
+          "entity_id": "cl:isapre:107",
+          "ownership_pct": 99.9,
+          "source_url": "https://ilcinversiones.cl/nuestras-empresas/",
+          "source_sha256": "1cb1a0cabbfe20cfdf2e763948c77724a019cf4266683c97c39959562c1cc545",
+          "observed_at": "2026-10-11T13:59:32.955801+00:00",
+          "reporting_period": null,
+          "effective_from": null,
+          "relation": "issuer_reported_ownership",
+          "date_reason": "Undated company ownership table; incorporation year is not an effective control date",
+          "subsidiary_performance_attribution": false
+        },
+        {
+          "parent_entity_id": "cl:rut:94139000-5",
+          "entity_name": "Vida Cámara",
+          "entity_id": null,
+          "ownership_pct": 99.9,
+          "source_url": "https://ilcinversiones.cl/nuestras-empresas/",
+          "source_sha256": "1cb1a0cabbfe20cfdf2e763948c77724a019cf4266683c97c39959562c1cc545",
+          "observed_at": "2026-10-11T13:59:32.955801+00:00",
+          "reporting_period": null,
+          "effective_from": null,
+          "relation": "issuer_reported_ownership",
+          "date_reason": "Undated company ownership table; incorporation year is not an effective control date",
+          "subsidiary_performance_attribution": false
+        }
+      ],
+      "ticker_evidence": {
+        "source_url": "https://ilcinversiones.cl/inversionistas/informacion-financiera/renta-variable/",
+        "source_sha256": "6e4400be5ec7c09708e589a4f7aec6a0fcec8168a10989f53de04f41dff8ab19",
+        "observed_at": "2026-10-11T13:59:33.737982+00:00",
+        "current_price": null,
+        "current_quote_verified": false,
+        "entity_id": "cl:rut:94139000-5",
+        "ticker": "ILC",
+        "reference_date": null,
+        "validity": "Primary issuer identifies its equity; no dated exchange listing/price inferred"
       }
     },
     {
@@ -229,7 +295,7 @@
       "reporting_perimeter": "Document-specific: consolidated or individual; no subsidiary fact propagation",
       "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AAAwy2ACTAAABzNAAU&rut=76020458&tipoentidad=RVEMI&vig=VI",
       "source_sha256": "4f3c5d4243fe22733e400f9d944db96640681f3fc9bf3d98e0b692f781eca97e",
-      "fetched_at": "2026-10-11T13:16:10.075774+00:00",
+      "fetched_at": "2026-10-11T13:58:22.124782+00:00",
       "reported_major_shareholders": [
         {
           "name": "INVERSIONES LA CONSTRUCCIÓN S.A.",
@@ -260,15 +326,15 @@
       "legal_name": "INSTITUTO DE DIAGNOSTICO S.A.",
       "commercial_name": "CLINICA INDISA",
       "issuer_registration_status": "Vigente",
-      "ticker": null,
-      "ticker_reason": "CMF identification does not prove a current listed ticker",
+      "ticker": "INDISA",
+      "ticker_reason": "Exchange market-maker roster; contract dates do not become issuer publication dates",
       "reporting_role": "reporting_entity",
       "parent_entity_id": null,
       "subsidiary_entity_ids": [],
       "reporting_perimeter": "Document-specific: consolidated or individual; no subsidiary fact propagation",
       "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AABbBQABwAAAA5ZAAK&rut=92051000&tipoentidad=RVEMI&vig=VI",
       "source_sha256": "3a917f63912f54f4fdaeed3e14fc280d5abf4cc6b051b52d8de2e6cda8f53451",
-      "fetched_at": "2026-10-11T13:16:12.186114+00:00",
+      "fetched_at": "2026-10-11T13:58:24.352424+00:00",
       "reported_major_shareholders": [
         {
           "name": "BTG PACTUAL CHILE S A C DE B",
@@ -355,7 +421,22 @@
           "source_sha256": "0d22c956fb193406c0c29ea54bdb6427449ce2ce7c5caa2d9a0c6687508604b8"
         }
       ],
-      "control_evidence": null
+      "control_evidence": null,
+      "ticker_evidence": {
+        "source_url": "https://servicioscms.bolsadesantiago.com/Documentos/Relacionado/NOMINA%20MARKET%20MAKER.pdf",
+        "source_sha256": "5cdee7133916eabf3b34e1ab5111912654ccbfbb71fbb3b9a4512dcf4839b936",
+        "observed_at": "2026-10-11T13:59:35.461946+00:00",
+        "current_price": null,
+        "current_quote_verified": false,
+        "entity_id": "cl:rut:92051000-0",
+        "ticker": "INDISA",
+        "reference_date": "2026-10-07",
+        "contracts": [
+          "INDISA                      Credicorp Capital Corredores de Bolsa SpA                             08-03-2012                                13-03-2012                    21-12-2026            (1)",
+          "INDISA                      Larraín Vial S.A. Corredora de Bolsa                                      12-03-2021                                16-03-2021                    09-02-2027            (1)"
+        ],
+        "validity": "Exchange market-maker roster; contract dates do not become issuer publication dates"
+      }
     },
     {
       "entity_id": "cl:rut:96528990-9",
@@ -371,7 +452,7 @@
       "reporting_perimeter": "Document-specific: consolidated or individual; no subsidiary fact propagation",
       "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AAAwy2ACTAAABy9AAa&rut=96528990&tipoentidad=RVEMI&vig=NV",
       "source_sha256": "295536866da078ffecf8697af78f720a31df88fb4da753210537ee357da307a5",
-      "fetched_at": "2026-10-11T13:16:14.361049+00:00",
+      "fetched_at": "2026-10-11T13:58:26.372091+00:00",
       "reported_major_shareholders": [
         {
           "name": "BORDEAUX HOLDING SPA",
@@ -480,7 +561,7 @@
       "reporting_perimeter": "Document-specific: consolidated or individual; no subsidiary fact propagation",
       "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&mercado=V&pestania=1&rut=76005001&tipoentidad=RVEMI&vig=NV&row=AAAwy2ACTAAABzMAAA&grupo=0",
       "source_sha256": "bb8b49d925f32099c3c8b7814c742a43ab0efbf79b56dad379c7be960d657be4",
-      "fetched_at": "2026-10-11T13:17:12.713630+00:00"
+      "fetched_at": "2026-10-11T13:59:26.689777+00:00"
     }
   ]
 }
