@@ -1359,6 +1359,95 @@ class AcceptanceTests(unittest.TestCase):
         state["material_events"][2]["details"] = {"independent": True}
         return state
 
+    def later_productive_state(self):
+        """Offline fixture: actual clock evidence is supplied explicitly."""
+        state = self.observed_state()
+        original = deepcopy(state["material_events"][:3])
+        latest = deepcopy(state["material_events"])
+        for event in latest:
+            event["at"] = engine._iso(engine._time(event["at"]) + timedelta(hours=6))
+        state["material_events"] = original + latest
+        state["lease_events"].extend([
+            {"kind": "stalled", "at": engine._iso(BASE + timedelta(hours=2))},
+            {"kind": "pickup", "autonomous": True, "at": engine._iso(BASE + timedelta(hours=6))}])
+        state["acceptance"]["owner_observation"].update(
+            started_at=engine._iso(BASE + timedelta(hours=6)),
+            observed_until=engine._iso(BASE + timedelta(hours=10)))
+        return state
+
+    def test_later_continuous_actual_four_hours_can_qualify_without_resetting_first_pickup(self):
+        state = self.later_productive_state()
+        before = deepcopy(state)
+        end = BASE + timedelta(hours=10)
+        result = evaluate_acceptance(state, end, wall_now=end)
+        self.assertEqual(result["status"], "PASS")
+        self.assertEqual(result["metrics"]["observed_seconds"], 4 * 3600)
+        self.assertEqual(result["metrics"]["total_elapsed_seconds"], 10 * 3600)
+        self.assertEqual(result["metrics"]["original_started_at"], engine._iso(BASE))
+        self.assertEqual(result["metrics"]["window_started_at"], engine._iso(BASE + timedelta(hours=6)))
+        self.assertEqual(result["metrics"]["material_event_count"], 13)
+        self.assertEqual(result["metrics"]["autonomous_pickups"], 1)
+        self.assertEqual(state, before)
+        self.assertTrue(any(event["kind"] == "stalled" for event in state["lease_events"]))
+
+    def test_later_window_requires_all_existing_proofs_in_the_actual_window(self):
+        end = BASE + timedelta(hours=10)
+        cases = (
+            ("autonomous_pickup_not_observed", lambda s: s.update(lease_events=s["lease_events"][:2])),
+            ("durable_verified_mutation_not_observed", lambda s: s.update(material_events=[e for e in s["material_events"]
+                if e["kind"] != "mutation" or engine._time(e["at"]) < BASE + timedelta(hours=6)])),
+            ("real_failure_verified_repair_not_observed", lambda s: s["material_events"][4]["details"].pop("failure_action")),
+            ("automatic_independent_transition_not_observed", lambda s: s["material_events"][5]["details"].update(independent=False)),
+            ("owner_intervention_observation_not_verified", lambda s: s["acceptance"]["owner_observation"].update(
+                started_at=engine._iso(BASE + timedelta(hours=6, seconds=1)))),
+            ("material_progress_gap_exceeded_30m", lambda s: s.update(material_events=s["material_events"][:6] + s["material_events"][8:])),
+        )
+        for reason, change in cases:
+            with self.subTest(reason=reason):
+                state = self.later_productive_state()
+                change(state)
+                result = evaluate_acceptance(state, end, wall_now=end)
+                self.assertEqual(result["status"], "NOT_PROVEN")
+                self.assertIn(reason, result["reasons"])
+
+    def test_timestamped_owner_interventions_outside_window_remain_history_without_poisoning_it(self):
+        state = self.later_productive_state()
+        state["acceptance"]["owner_restarts"] = [{"at": engine._iso(BASE + timedelta(hours=2)), "reason": "initial stall"}]
+        state["acceptance"]["owner_prompts"] = [{"timestamp": engine._iso(BASE + timedelta(hours=3)), "prompt": "status"}]
+        before = deepcopy(state)
+        end = BASE + timedelta(hours=10)
+        result = evaluate_acceptance(state, end, wall_now=end)
+        self.assertEqual(result["status"], "PASS")
+        self.assertEqual(result["metrics"]["owner_restarts"], 0)
+        self.assertEqual(result["metrics"]["owner_prompts"], 0)
+        self.assertEqual(state, before)
+        state["acceptance"]["owner_prompts"].append({"observed_at": engine._iso(BASE + timedelta(hours=9)), "prompt": "status"})
+        self.assertIn("owner_restart_or_followup_in_window", evaluate_acceptance(state, end, wall_now=end)["reasons"])
+
+    def test_untimed_malformed_and_future_owner_events_cannot_be_filtered_away(self):
+        end = BASE + timedelta(hours=10)
+        for record in ("status?", {}, {"at": None}, {"at": "invalid"}, {"at": False},
+                       {"at": "2026-10-10T02:00:00"}, {"at": engine._iso(end + timedelta(seconds=1))}):
+            with self.subTest(record=record):
+                state = self.later_productive_state()
+                state["acceptance"]["owner_prompts"] = [record]
+                result = evaluate_acceptance(state, end, wall_now=end)
+                self.assertEqual(result["status"], "NOT_PROVEN")
+                self.assertIn("owner_restart_or_followup_in_window", result["reasons"])
+
+    def test_old_proofs_and_document_clock_cannot_substitute_for_real_later_window(self):
+        state = self.observed_state()
+        end = BASE + timedelta(hours=10)
+        state["acceptance"]["owner_observation"].update(observed_until=engine._iso(end))
+        result = evaluate_acceptance(state, end, wall_now=end)
+        for reason in ("autonomous_pickup_not_observed", "durable_verified_mutation_not_observed",
+                       "real_failure_verified_repair_not_observed", "automatic_independent_transition_not_observed",
+                       "material_progress_gap_exceeded_30m"):
+            self.assertIn(reason, result["reasons"])
+        state["acceptance"]["started_at"] = engine._iso(end - timedelta(hours=4))
+        self.assertEqual(evaluate_acceptance(state, end, wall_now=end)["status"], "NOT_PROVEN")
+        self.assertIn("observation_time_is_in_the_future", evaluate_acceptance(state, end, wall_now=BASE)["reasons"])
+
     def test_four_real_hours_with_full_evidence_pass_evaluator(self):
         end = BASE + timedelta(hours=4)
         result = evaluate_acceptance(self.observed_state(), end, wall_now=end)

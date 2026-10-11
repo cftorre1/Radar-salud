@@ -1168,12 +1168,39 @@ def _owner_observation_verified(observation, start, end, real_now):
     return observed_start <= start <= end <= observed_until <= real_now
 
 
+def _owner_events_in_window(records, start, end, real_now):
+    """Retain unknown interventions; only verified event clocks exclude history."""
+    if records is None:
+        return []
+    if not isinstance(records, list):
+        return [records]
+    result = []
+    for record in records:
+        try:
+            if not isinstance(record, dict):
+                raise ValueError("Owner intervention has no event timestamp")
+            recorded_at = next(record[key] for key in ("at", "timestamp", "observed_at") if key in record)
+            if isinstance(recorded_at, bool):
+                raise ValueError("Boolean is not an owner event timestamp")
+            at = _time(recorded_at)
+            if at > real_now:
+                raise ValueError("Future owner intervention is not observed evidence")
+        except (StopIteration, KeyError, TypeError, ValueError, OverflowError):
+            result.append(record)
+            continue
+        if start <= at <= end:
+            result.append(record)
+    return result
+
+
 def evaluate_acceptance(state, now, *, wall_now=None):
     """Evaluate Stage A using real elapsed time; simulation never yields PASS.
 
     ``wall_now`` is injectable only for tests. The production caller must omit
     it. Material gaps include both edges of the observation window. Absence of
     owner intervention requires verified coverage of Actions and owner prompts.
+    The latest actual four-hour window can qualify after an earlier stall;
+    the original first-pickup authority and complete raw history stay intact.
     """
     now = _time(now)
     real_now = _time(wall_now) if wall_now is not None else datetime.now(timezone.utc)
@@ -1181,8 +1208,10 @@ def evaluate_acceptance(state, now, *, wall_now=None):
     reasons = []
     if acceptance.get("mode") != "live":
         reasons.append("simulation_is_not_live_acceptance")
-    start = _time(acceptance.get("started_at", now))
+    original_start = _time(acceptance.get("started_at", now))
     end = min(now, real_now)
+    start = max(original_start, end - timedelta(hours=4))
+    total_elapsed = max(0, (end - original_start).total_seconds())
     elapsed = max(0, (end - start).total_seconds())
     if now > real_now + timedelta(seconds=60):
         reasons.append("observation_time_is_in_the_future")
@@ -1192,7 +1221,9 @@ def evaluate_acceptance(state, now, *, wall_now=None):
         acceptance.get("owner_observation"), start, end, real_now)
     if not owner_observation_verified:
         reasons.append("owner_intervention_observation_not_verified")
-    if acceptance.get("owner_restarts") or acceptance.get("owner_prompts"):
+    restarts = _owner_events_in_window(acceptance.get("owner_restarts"), start, end, real_now)
+    prompts = _owner_events_in_window(acceptance.get("owner_prompts"), start, end, real_now)
+    if restarts or prompts:
         reasons.append("owner_restart_or_followup_in_window")
     events = [e for e in effective_material_events(state) if start <= _time(e["at"]) <= end]
     pickups = [e for e in state.get("lease_events", []) if e["kind"] == "pickup"
@@ -1210,9 +1241,11 @@ def evaluate_acceptance(state, now, *, wall_now=None):
     if max_gap > STALL_SECONDS:
         reasons.append("material_progress_gap_exceeded_30m")
     return {"status": "PASS" if not reasons else "NOT_PROVEN", "reasons": reasons,
-            "metrics": {"observed_seconds": elapsed, "material_event_count": len(events),
+            "metrics": {"observed_seconds": elapsed, "total_elapsed_seconds": total_elapsed,
+                        "original_started_at": _iso(original_start), "window_started_at": _iso(start),
+                        "material_event_count": len(events),
                         "autonomous_pickups": len(pickups), "max_material_gap_seconds": max_gap,
-                        "owner_restarts": len(acceptance.get("owner_restarts", [])),
+                        "owner_restarts": len(restarts), "owner_prompts": len(prompts),
                         "owner_observation_verified": owner_observation_verified,
                         "mode": acceptance.get("mode")},
             "observed_until": _iso(end)}
