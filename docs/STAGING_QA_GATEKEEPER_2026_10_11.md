@@ -1,58 +1,62 @@
-# Staging QA Gatekeeper · PR #17
+# Staging QA Gatekeeper · READY_FOR_INTEGRATION · PR #17
 
-Paquete independiente sobre `staging` `4ff51cfe3f5b61217699eb68612a9861239b72a8`, rama `codex/staging-qa-gates-20261011`. No incorpora colectores, estados ni reparaciones de DF/Pulso/FONASA/fiscalización. Mantiene los controles Reviewer originales y sus umbrales; no modifica workflows de deployment. No se hizo merge a staging/main/producción ni se cerraron issues.
+Paquete para **Integration Commander** en [PR #17](https://github.com/cftorre1/Radar-salud/pull/17), rama `codex/staging-qa-gates-20261011`. Implementación validada: `8339640f43309f908f69edae43b1b34bbbf23d24`, basada en staging actual `916fe2d4684466577ef86374cff2f4d58c377ef0`. Integrar el PR completo, incluido el commit de evidencia posterior; no seleccionar solamente el test o el snapshot.
 
-## Causa de `11 >= 12`
+[CI 38143298390](https://github.com/cftorre1/Radar-salud/actions/runs/38143298390) **PASS** sobre el candidato de merge `97322d083a4f4327d7a3d549cd55e24f843caf91`: **312 Python PASS / 1 SKIP justificado, 41 Node PASS, 48 browser desktop/mobile PASS, Reviewer original PASS con cero findings**. El skip corresponde al test beta LIVE que requiere `OPENAI_API_KEY`, ausente; no se presenta como ejecución LIVE. La lectura semántica de los originales complementa los controles deterministas.
 
-El [preview753](https://github.com/cftorre1/Radar-salud/actions/runs/38128983053) dejó265PASS/1FAIL/1SKIP y browser/Reviewer SKIPPED. Se reprodujo el fallo sobre los bytes de staging.
+Recibos, jobs, SHA de artifacts y clasificación individual: `data/audits/staging_qa_gates_2026_10_11.json`. Entrada estadística con referencias PDF/página/métrica: `config/statistical_analysis_verified_v1.json`. Queue, PMO y learning ledger registran el mismo estado y siguiente acción.
 
-La [Circular IF/N°529 original](https://www.superdesalud.gob.cl/normativa/circular-if-n529/) dice **10-jul-2026**. Los doce actos revisados siguen en history y tienen identidades únicas. El exportador usa la última fecha de publicación elegible como referencia; en esta base es9-oct, por lo que529 tiene91días y sale correctamente del feed. Al11-oct tiene93días. No se reemplazó12por11 ni se agregó un acto por cuota.
+## Por qué había 11 actos frente a la expectativa de 12
 
-| Hipótesis solicitada | Evidencia / disposición |
+El [preview 753](https://github.com/cftorre1/Radar-salud/actions/runs/38128983053), sobre staging inicial `4ff51cf`, dejó 265 PASS / 1 FAIL / 1 SKIP. El fallo detuvo browser y Reviewer. Se reprodujo sobre sus mismos datos.
+
+La [Circular IF/N°529 original](https://www.superdesalud.gob.cl/normativa/circular-if-n529/) declara **10 de julio de 2026**. Los doce actos originales revisados permanecen en history, con identidades únicas. El exportador usa la última fecha de publicación de history como referencia de su ventana: 9 de octubre en la base inicial, cuando IF529 tenía 91 días; 10 de octubre en staging reconciliado, cuando tenía 92. Su exclusión de la ventana inclusiva de 0–90 días es correcta. Al 11 de octubre tiene 93 días. No se cambia su fecha ni se añade un acto para completar una cuota.
+
+| Hipótesis | Evidencia y disposición |
 |---|---|
-| A · acto válido omitido | Ninguno entre los doce originales revisados que son elegibles; todos se comprueban por identidad, no por un recuento sustituible por otras normas. No constituye auditoría exhaustiva de todo SIS. |
-| B · filtro incorrecto |529 supera90días; su exclusión respeta el filtro existente. |
-| C · pérdida de export |Original e historia conservados; sólo sale de la ventana visible. |
-| D · expectativa obsoleta |Causa demostrada: el mínimo12y la lista browser suponían un inventario permanente. |
-| E · duplicación inflaba baseline |No hay duplicados URL/identidad entre los doce actos revisados. Referencias a529desde otra resolución no son un nuevo acto529. |
+| A · acto válido omitido | Ninguno entre los doce originales revisados que sean elegibles. Se exige presencia por identidad, sin permitir que otras normas sustituyan una omisión. Esta conclusión no pretende certificar cobertura exhaustiva de todo SIS. |
+| B · filtro incorrecto | IF529 supera 90 días; el filtro existente la excluye correctamente. |
+| C · pérdida durante export/snapshot | El original, history y fixture del conjunto de doce se conservan. Sale solamente de la ventana visible. |
+| D · expectativa obsoleta | Causa demostrada: una cuota permanente y una lista browser fija sobre datos que expiran. |
+| E · duplicación histórica | No hay duplicados URL/identidad entre los doce originales. Una referencia a IF529 desde otra norma no constituye un nuevo acto IF529. |
 
-La prueba exige que todos los actos revisados elegibles estén en el snapshot, ningún expirado reaparezca, no haya duplicados y los contratos correspondan a los campos efectivamente exportados. Conserva los doce originales en history y verifica el límite día90/día91 con reloj de fixture. Las normas opacas siguen requiriendo revisión; no se relajó su contrato editorial.
+La reparación exige todas las identidades revisadas elegibles, ausencia de las expiradas, URLs únicas y contratos de los campos realmente exportados. Evita reaplicar el contrato antes de comprobarlo, lo que habría ocultado errores del snapshot. Se conserva el fixture genuino de doce actos aportado por staging y la regresión del día 90/día 91. Las normas opacas siguen requiriendo revisión editorial. **No se cambia 12 a 11 ni se baja un umbral editorial.**
 
-## Ocho findings estadísticos
+## Los ocho findings estadísticos
 
-Los ocho se reproducían en el boletín IP junio2026. Su history conservaba cuatro documentos oficiales, pero el replay sin el archivo efímero `data/statistical_analysis_overrides_v1.json` degradaba la presentación a un inventario sin tabla/evidencia. La copia canónica de esa información estaba ausente de git. El arreglo conserva análisis revisado en `config/statistical_analysis_verified_v1.json`, con PDF/página/métrica. Inputs malformados o que intenten cambiar identidad/fecha fallan explícitamente.
+Se reprodujeron individualmente sobre el boletín IP junio de 2026. History ya contenía los cuatro documentos oficiales. El análisis derivado dependía de `data/statistical_analysis_overrides_v1.json`, generado en CI pero ausente de un checkout limpio; al exportar sin él, se perdían tabla y evidencia. Se conserva ahora una entrada canónica revisada y el runtime puede aportar análisis posterior. JSON/esquemas malformados o patches que cambien identidad/fecha fallan explícitamente.
 
-| Finding | Clasificación | Corrección comprobada |
+| Finding | Clasificación | Corrección verificable |
 |---|---|---|
-|invalid_statistical_table|Defecto de export|Seis filas, seis columnas coherentes.|
-|methodology_not_collapsed|Presentación/export|Metodología accesible en capa colapsada.|
-|missing_incremental_value_gate|Export|Valor incremental de la tabla explícito; conclusión repetida omitida.|
-|generic_why_required|Presentación/export|No se exige impacto genérico sin valor adicional.|
-|untraceable_statistical_evidence|Export|Cuatro PDF primarios en evidencia de datos.|
-|bulletin_coverage|Export|Acreditación, Mediación, Reclamos y RNPI incluidos.|
-|bulletin_missing_pdf|Proyección de evidencia|Los cuatro links que ya existían en source_documents quedan trazables desde el análisis.|
-|bulletin_stock_flow_confusion|Presentación/export|Stock, flujo acumulado2019–2026 y promedio mensual separados.|
+| `invalid_statistical_table` | Defecto de export | Seis filas con seis columnas coherentes. |
+| `methodology_not_collapsed` | Presentación/export | Metodología accesible y colapsada. |
+| `missing_incremental_value_gate` | Export | Valor incremental explícito de la tabla; conclusión repetida omitida. |
+| `generic_why_required` | Presentación/export | Impacto genérico opcional, sin texto de relleno. |
+| `untraceable_statistical_evidence` | Export | Evidencia enlazada a los cuatro PDF primarios. |
+| `bulletin_coverage` | Export | Acreditación, Mediación, Reclamos y RNPI incluidos. |
+| `bulletin_missing_pdf` | Proyección de evidencia | Los cuatro documentos que estaban en history quedan enlazados desde el análisis. |
+| `bulletin_stock_flow_confusion` | Presentación/export | Stock, flujo acumulado 2019–2026 y promedio mensual etiquetados por separado. |
 
-La revisión original acredita971prestadores/101con observaciones/584solicitudes pendientes,175mediadores/12.067solicitudes acumuladas, promedio mensual1.996frente a1.530y1.004.982títulos RNPI. Títulos no equivale a profesionales únicos;1.034.076inscripciones por entidad habilitante usa otro denominador. Son métricas reportadas por los cuatro PDF, con cortes/periodos separados; no una nueva actividad mensual inventada. Fecha del boletín3-ago, score58 y decisión editorialgroup permanecen iguales.
+Los originales acreditan 971 prestadores, 101 con observaciones y 584 solicitudes pendientes; 175 mediadores y 12.067 solicitudes acumuladas; promedio mensual de 1.996 reclamos frente a 1.530; y 1.004.982 **títulos** RNPI. Títulos no equivale a profesionales únicos. Las 1.034.076 inscripciones por entidad habilitante tienen otro denominador. Cada cifra conserva periodo, tipo y referencia de página. No se inventa actividad mensual nueva. Fecha de publicación del boletín **3 de agosto**, score **58** y decisión editorial **group** se mantienen.
 
-Tres publicaciones exigidas en browser también expiraron: [GES](https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-marzo-2026/) y [series](https://www.superdesalud.gob.cl/biblioteca-digital/series-estadisticas-del-sistema-isapre-1990-2025/) publicadas10-jul, [finanzas](https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2026/)7-jul. Los originales confirman esas fechas; no se confunden con el periodo de los datos. Builder sólo solicita releases elegibles y browser exige presencia/contrato de cada elegible, ausencia del expirado. Los tests de Reviewer siguen cubriendo las cuatro familias y rechazando errores de unidades/cálculo/documento. Un test browser con reloj histórico conserva permanentemente la cobertura de la tabla/capa metodológica, sin rejuvenecer datos en el feed real.
+Durante esta verificación, Integration Commander incorporó DF y otra interpretación de estos gates a staging. Su excepción Reviewer para `publication_inventory` evitaba controles de tabla, evidencia y tipo. Para cumplir **«NO reducir Reviewer»**, este paquete restaura `scripts/statistics_reviewer.py` byte a byte al baseline `4ff51cf`. Una regresión exige los ocho findings originales aun con la etiqueta de inventario, y comprueba que el análisis de los PDF los resuelve. No queda ningún finding pendiente ni silenciado.
 
-## Verificación y reproducción
+Tres publicaciones exigidas por browser también expiraron: [GES](https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-marzo-2026/) y [series](https://www.superdesalud.gob.cl/biblioteca-digital/series-estadisticas-del-sistema-isapre-1990-2025/), publicadas el **10 de julio**; [finanzas](https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2026/), el **7 de julio**. Sus páginas originales confirman las fechas de publicación, distintas del periodo de datos. Builder solicita solamente releases elegibles; browser comprueba presencia/contratos de las elegibles y ausencia de las expiradas. Reviewer conserva las pruebas de las cuatro familias, unidades, cálculos y documentos.
 
-Primer candidato94d8a7e: [CI38141940100](https://github.com/cftorre1/Radar-salud/actions/runs/38141940100), tests/staging/Reviewer PASS.270PythonPASS/1SKIP explícito por OPENAI_API_KEYausente en un test beta; no ejecución LIVE declarada por ese skip.41NodePASS,46browserPASS; Reviewer cero findings y data/editorial/statistics/UXPASS. La regresión posterior agrega dos ejecuciones desktop/mobile del fixture histórico. Ver receipt exacta actual en `data/audits/staging_qa_gates_2026_10_11.json` y checks del PR.
+Una regresión browser con reloj histórico conserva permanentemente la cobertura visual de la tabla y la metodología en desktop/mobile. Usa el análisis y la publicación originales; el wrapper editorial y la ruta de respuesta son fixtures de prueba. No cambia el estado editorial del feed real ni rejuvenece publicaciones.
 
-Orden canónico de QA: Python y Node; build estadísticas, epidemiología, export offline de history, Global Intelligence y product_report; browser desktop/mobile; Reviewer sobre esos mismos bytes. Los ocho fallos browser iniciales de Global/product fueron consecuencia de omitir esos prerrequisitos en la reproducción local; desaparecieron al ejecutar el build existente. No se modificó Global/product para ocultarlos.
+## Reproducción y alcance
 
-El diff de feed versionado cambia únicamente el boletín;48filas ajenas se conservan exactamente. History, pending, discovery, seen y source_health no se modificaron. Outputs temporales del build Global/product/epidemiología y runtime analysis se mantienen fuera de commits. El build canónico puede retirar la epidemiología ya vencida mediante su regla preexistente; no es reparación nueva de una fuente ni nueva publicación. Captura y SHA de esos outputs están en artifacts de CI.
+Ejecutar el workflow canónico `.github/workflows/qa.yml`: Python y Node; build estadístico, epidemiología, export offline de history, Global Intelligence y product_report; browser desktop/mobile; Reviewer sobre el mismo artifact web. El primer candidato `94d8a7e` también pasó [CI 38141940100](https://github.com/cftorre1/Radar-salud/actions/runs/38141940100), con 46 ejecuciones browser antes de añadir el fixture histórico.
 
-## Integración
+Los ocho errores locales iniciales de Global/product desaparecieron al ejecutar sus prerrequisitos existentes. No se modificó ese producto para ocultarlos. Los outputs temporales del build permanecen fuera de commits. La regla existente de epidemiología puede retirar un pulso expirado durante el build canónico: no constituye una reparación nueva de una fuente.
 
-Integrar **el PR #17 completo hasta su HEAD final** sobre staging actual, preservando el resto de tareas/PMO/ledger. No seleccionar sólo el test o sólo el snapshot: fuente de análisis, guardas de export, pruebas y evidencia forman un paquete. Commits materiales: `b6f5e03` (normativa), `94d8a7e` (estadísticas), regresión histórica y handoff posteriores. Sin reescribir historia.
+Frente a staging `916fe2d`, **72 filas ajenas del feed son idénticas**; sólo cambia la presentación del boletín. History, pending, seen, discovery, watermarks y source_health conservan sus bytes y frescura. Queue, PMO y ledger retienen toda evidencia concurrente. Se heredan las reparaciones DF ya integradas por staging, sin escribir reparaciones nuevas de DF/Pulso/FONASA/fiscalización. PR #15 fue leído para separar sus fallos heredados; no se importa su reparación.
 
-Reejecutar el workflow canónico después del merge. Luego revalidar cada PR de fuentes contra staging actualizado; este PASS técnico no cierra las brechas de cobertura, autonomía o edición de #5/#7–#9. PR #15 fue leído sólo para distinguir sus seis fallos heredados; no se incorporó su reparación. Resolver cualquier conflicto futuro del exportador preservando ambas causas y repetir todos los gates. No se requiere decisión humana para la reparación; el merge corresponde al Integration Commander.
+## Acción exacta para Integration Commander
 
-## Reconciliación con staging actual
+1. Integrar **PR #17 completo hasta su HEAD final** en staging actual, preservando tareas, PMO y ledger concurrentes. Commits materiales: `b6f5e03` normativa, `94d8a7e` estadísticas, `13e2649` fixture histórico y `8339640` reconciliación con Reviewer estricto; el último commit registra el handoff. No reescribir historia.
+2. Reejecutar QA canónico después del merge, sobre el SHA resultante y el mismo artifact revisado. Si staging vuelve a avanzar, reconciliar y repetir todos los gates.
+3. Revalidar cada PR de fuentes restante contra ese staging. Resolver conflictos del exportador preservando ambas causas y repetir QA/Reviewer.
 
-Durante la validación, staging avanzó a `916fe2d4684466577ef86374cff2f4d58c377ef0` e incorporó DF mediante Integration Commander. Se integra ese staging en la rama propia, conservando sus estados de fuentes, health, queue, PMO y ledger. El diff del candidato respecto de ese staging modifica sólo gates/estadísticas: 72 filas ajenas del feed son idénticas. No se escribió una reparación DF nueva.
-
-Staging había agregado una excepción Reviewer para `publication_inventory` que evitaba controles de tabla/evidencia/tipo del boletín. Para cumplir «NO reducir Reviewer», se restaura `scripts/statistics_reviewer.py` byte a byte al baseline `4ff51cf`. Una regresión exige los ocho findings originales aun con esa etiqueta y confirma que sólo los datos analizados desde PDF los resuelven. Se conserva también el fixture original de doce normas aportado por staging. Verificación de reconciliación: 312 Python PASS/1 SKIP y 41 Node PASS; browser/CI exacto pendiente en este checkpoint.
+Este PASS resuelve los fallos heredados de gates. Las brechas de cobertura, autonomía o edición de #5 y #7–#9 permanecen separadas; no se cierran issues ni se certifica operación LIVE adicional. No se hizo merge a staging, main o producción desde esta rama. No se solicita decisión humana para la reparación; la integración corresponde a Integration Commander.

@@ -2283,16 +2283,26 @@
     },
     {
       "id": "staging_qa_gatekeeper_2026_10_11",
-      "status": "LOCAL_AND_INITIAL_CI_PASS_FINAL_REGRESSION_PENDING",
+      "status": "READY_FOR_INTEGRATION",
       "at": "2026-10-11T13:14:40.424737+00:00",
       "pr": 17,
       "branch": "codex/staging-qa-gates-20261011",
       "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
       "normative": "Obsolete fixed live count; all reviewed identities retained, eligible ones checked, no lowered minimum",
-      "statistics": "Eight real export/presentation findings fixed with4verifiedprimaryPDFs, Reviewer unchanged",
+      "statistics": "Eight real export/presentation defects fixed against4primaryPDFs; original strict Reviewer retained and inventory bypass rejected.",
       "evidence": "data/audits/staging_qa_gates_2026_10_11.json",
       "initial_ci": "https://github.com/cftorre1/Radar-salud/actions/runs/38141940100",
-      "next_action": "Complete final historical-clock browser regression and exact-head CI; integration by Commander only."
+      "next_action": "Integration Commander: merge complete PR17 into current staging; run canonical QA after merge; revalidate remaining source PRs against that staging. No main/production promotion and no source issue closure.",
+      "last_progress_at": "2026-10-11T13:31:36.889931+00:00",
+      "validated_implementation_sha": "8339640f43309f908f69edae43b1b34bbbf23d24",
+      "integration_base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "ci": "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390",
+      "checks": {
+        "python": "312PASS/1justifiedSKIP",
+        "node": "41PASS",
+        "browser": "48PASS desktop/mobile",
+        "reviewer": "0findings/PASS"
+      }
     }
   ],
   "approved_infrastructure_changes": [

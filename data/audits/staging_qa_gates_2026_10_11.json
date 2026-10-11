@@ -2,7 +2,7 @@
   "at": "2026-10-11T12:52:18.984015+00:00",
   "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
   "branch": "codex/staging-qa-gates-20261011",
-  "status": "RECONCILED_STAGING_PYTHON_NODE_PASS_BROWSER_CI_PENDING",
+  "status": "READY_FOR_INTEGRATION",
   "preview": {
     "run_id": 38128983053,
     "job_id": 114439217514,
@@ -10,7 +10,7 @@
     "browser": "SKIPPED",
     "reviewer": "SKIPPED"
   },
-  "local_python": "267passed/0failed/1skip; full suite, no ignored test files",
+  "local_python": "312 passed / 0 failed / 1 justified skip on reconciled staging",
   "normative": {
     "observed": 11,
     "obsolete_minimum": 12,
@@ -90,9 +90,9 @@
       "severity": "critical"
     }
   ],
-  "missing_analysis_file": "data/statistical_analysis_overrides_v1.json is not versioned/present on staging; investigation of CI export overwrite follows",
-  "next_action": "Run canonical build, desktop/mobile48checks and original strict Reviewer on reconciled staging; commit/push and wait exact-head GitHub QA.",
-  "last_progress_at": "2026-10-11T13:27:49.549750+00:00",
+  "missing_analysis_file": "Root cause confirmed and repaired: verified analysis versioned as clean-checkout export input; runtime output stays optional.",
+  "next_action": "Integration Commander: merge complete PR17 into current staging; run canonical QA after merge; revalidate remaining source PRs against that staging. No main/production promotion and no source issue closure.",
+  "last_progress_at": "2026-10-11T13:31:36.889931+00:00",
   "statistics_resolution": [
     {
       "code": "invalid_statistical_table",
@@ -260,12 +260,13 @@
   },
   "scope_preservation": {
     "history_pending_seen_discovery_source_health": "Unchanged",
-    "committed_feed": "Only reviewed bulletin presentation changed;48other rows exact",
+    "committed_feed": "Only reviewed bulletin presentation differs from current staging;72otherrows identical.",
     "canonical_build": "Existing epidemiology freshness rule can retire an expired pulse, Global/product outputs regenerated as required; these temporary outputs not committed",
     "no_source_repairs_imported": true,
     "issues_closed": false,
     "merged_to_staging": false,
-    "main_production_written": false
+    "main_production_written": false,
+    "comparison_base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0"
   },
   "staging_reconciliation": {
     "base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
@@ -279,6 +280,124 @@
     "concurrent_governance_preserved": true,
     "source_state_health_unchanged_against_current_staging": true,
     "unrelated_feed_rows_preserved": 72,
-    "source_changes": "None authored by QA; DF integration already on staging inherited unchanged."
-  }
+    "source_changes": "None authored by QA; DF integration already on staging inherited unchanged.",
+    "status": "VERIFIED_FULL_LOCAL_AND_NATIVE_CI_PASS"
+  },
+  "ready_for_integration": true,
+  "validated_implementation_sha": "8339640f43309f908f69edae43b1b34bbbf23d24",
+  "validated_staging_base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+  "final_ci": {
+    "run_id": 38143298390,
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390",
+    "head_sha": "8339640f43309f908f69edae43b1b34bbbf23d24",
+    "base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+    "merge_sha": "97322d083a4f4327d7a3d549cd55e24f843caf91",
+    "conclusion": "PASS",
+    "jobs": [
+      {
+        "id": 114481384863,
+        "name": "tests",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 114481461462,
+        "name": "staging",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 114481760915,
+        "name": "reviewer",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "python": {
+      "passed": 312,
+      "failed": 0,
+      "skipped": 1,
+      "skip_reason": "Independent beta LIVE runtime test requires absent OPENAI_API_KEY; no LIVE claim"
+    },
+    "node": {
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browser": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0,
+      "projects": [
+        "desktop",
+        "mobile"
+      ]
+    },
+    "reviewer": {
+      "findings": [],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": true,
+        "ux": true
+      },
+      "original_strict_gate": true
+    },
+    "artifacts": [
+      {
+        "id": 11703856685,
+        "name": "staging-evidence-97322d083a4f4327d7a3d549cd55e24f843caf91",
+        "digest": "sha256:36e3235d2c6eec097d570e3dca29dac23d73f3ab9c1606767534621d3ddea4ae",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390/artifacts/11703856685",
+        "expires_at": "2027-01-09T13:28:20Z"
+      },
+      {
+        "id": 11703079172,
+        "name": "reviewer-97322d083a4f4327d7a3d549cd55e24f843caf91",
+        "digest": "sha256:b468bd3bf29f853e9889291910f5e7e1b4afe65acb7855803f93c96b5cf969a3",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390/artifacts/11703079172",
+        "expires_at": "2027-01-09T13:28:20Z"
+      }
+    ]
+  },
+  "final_source_preservation": {
+    "current_staging": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+    "preserved_sha256": {
+      "data/history/superintendencia_signals.json": "e4f6579902955d7426a7b2746f5cd05aa8773869b3cc7831702923909607ce38",
+      "data/state/pending_queue.json": "833b7eb468f910e5a1e14cccc41439972aab82f701dc6f420a3e7bab9a5001bd",
+      "data/state/discovery_run.json": "ca986a25a570b1704737976beb37c819f9993d9e8261d2432f746678961fd98c",
+      "data/state/diario_financiero_seen.json": "b3abf68e6ffd0e5e76f215c07cea5f7757f43aed83d7053911b3efbb306358d9",
+      "data/state/discovery_watermarks.json": "8c8aef90881268340d2b1e6923ed8ae6e7931d6871930bf26e9d80cc14436ffa",
+      "data/source_health.json": "99596d93dbdc048975b3f00fe423faffc5c63c68f16838f7ab8bfb43938289a8",
+      "web/data/source_health.json": "99596d93dbdc048975b3f00fe423faffc5c63c68f16838f7ab8bfb43938289a8"
+    },
+    "original_strict_reviewer_sha256": "73adcc6a0f0b9820b601f7f0a1e9644583361351f82084da213b2d75654e00aa",
+    "browser_report_sha256": "bf6538fd017466b13542914c65aaa6586b8029f0b6ff1e6a04d6ae70f2815861",
+    "local_reviewer": {
+      "reviewer": "deterministic-reviewer",
+      "candidate_sha": "8339640",
+      "reviewed_at": "2026-10-11T13:28:31.555281+00:00",
+      "findings": [],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": true,
+        "ux": true
+      },
+      "limitations": [
+        "Semantic/legal accuracy is not certified by deterministic checks.",
+        "Browser evidence is required separately for desktop/mobile.",
+        "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+      ]
+    },
+    "browser_stats": {
+      "startTime": "2026-10-11T13:28:46.522Z",
+      "duration": 38260.206,
+      "expected": 48,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "remaining_findings": []
 }
