@@ -256,7 +256,7 @@ def test_core_collector_continues_after_mutual_blocker_and_records_noise_rejecti
     for name in ("SuperintendenciaStatsScout", "SuperintendenciaNormativaScout", "SuperintendenciaFiscalizacionScout",
                  "MinsalNewsScout", "SusesoNormativeScout", "SusesoNewsScout", "SusesoFiscalizacionScout", "DfHealthScout",
                  "FonasaDataHubScout", "FonasaNewsScout", "IspSurveillanceScout", "IspAnamedAlertScout", "ClinicasChileScout",
-                 "DeisResourceScout", "DiarioOficialHealthScout", "CorporateNewsroomScout"):
+                 "DeisDocumentScout", "DiarioOficialHealthScout", "CorporateNewsroomScout"):
         monkeypatch.setattr(engine_cli, name, Null)
     monkeypatch.setattr(engine_cli, "CuratedBetaSourceScout", Curated)
     monkeypatch.setattr(paths, "project_root", lambda: tmp_path)
