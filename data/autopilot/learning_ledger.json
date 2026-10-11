@@ -3031,5 +3031,169 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "staging_qa_failed_run_38128983053"
+  },
+  {
+    "evidence": "tests/test_df_recovery.py; tests/test_source_health_facets.py; 34 targeted PASS",
+    "id": "df_date_queue_and_gate_2026_10_11",
+    "owner_time_saved": "Future regressions diagnosed by exact reason; no recurring manual date/queue reconstruction required.",
+    "preventive_controls": [
+      "Recorded cXense and JSON-LD/dateModified/date-conflict tests",
+      "Existing seen/null-date queue recovery tests preserve observations and decisions",
+      "Real DF processor through Daily→history/feed replay, exact rejection reasons and 72 boundary test",
+      "DF all-undated health cannot be healthy; cumulative counters labelled"
+    ],
+    "recorded_at": "2026-10-11T04:26:19.700737+00:00",
+    "remaining": "Original-site runtime and independent semantic review required; replay is not coverage proof",
+    "scope": "DF only; Codex A isolated branch",
+    "trigger": "User and independent Work3 identified material omissions missed by green tests",
+    "why_missed": "Only synthetic article:published_time covered; no real publisher metadata, no existing-null-date queue replay, no assertion that Daily DF applied configured Media Early Signal Gate. Generic processor_rejected hid capture defects."
+  },
+  {
+    "class": "missed_capture_defect",
+    "evidence": [
+      "Original hash manifest tests/fixtures/df_original_manifest.json",
+      "ebc0db2/d26ee89/e51ce83; 42 focused tests PASS",
+      "Actual primary-body runtime 38113493822 awaiting outcomes review"
+    ],
+    "finding": "Generic paragraph/article fallback mixed DF primary content with recommendation cards and newsletters; unrelated news acquired health terms and real IA published wrong-story summaries.",
+    "id": "df_article_recommendation_contamination_2026_10_11",
+    "owner_time_saved": "No owner intervention requested; runtime discovery and recovery were autonomous.",
+    "preventive_controls": [
+      "deterministic_test",
+      "data_validation_rule",
+      "editorial_rule"
+    ],
+    "root_cause": "Synthetic markup tested dates but did not reproduce DF CUERPO and article.card siblings. Threshold tests alone cannot certify the evidence used by a real model.",
+    "source": "Codex A real runtime audit",
+    "specific_fix": "Select primary DF body, require a material health consequence in the same statement, trace withdrawal/reassessment of contaminated decisions, and reject non-article URLs.",
+    "status": "implemented_runtime_review_open"
+  },
+  {
+    "class": "recovery_interaction_defect",
+    "evidence": [
+      "test_retained_withdrawn_history_does_not_acknowledge_reassessment_as_published",
+      "03605e4; 48 targeted regression tests PASS",
+      "Runtime38114333430 pending review"
+    ],
+    "finding": "After hiding contaminated DF publications, URL dedupe still treated retained rejected history as published and superseded valid reassessments.",
+    "id": "df_withdrawn_history_acknowledgement_2026_10_11",
+    "preventive_controls": [
+      "deterministic_test",
+      "data_validation_rule"
+    ],
+    "root_cause": "History crash-safety dedupe lacked a distinction between retained evidence and accepted publication. Existing tests tested each repair separately, not their interaction.",
+    "source": "Codex A runtime review",
+    "specific_fix": "Exclude withdrawn body-review records from publication acknowledgements, recover only exact affected superseded records and preserve old history snapshots across successful reassessment.",
+    "status": "implemented_runtime_review_open"
+  },
+  {
+    "class": "editorial_processing_defect",
+    "evidence": [
+      "test_cesfam_investment_title_reaches_gate_without_macro_health_contamination",
+      "Runtime38119095016:CESFAM72 BACKFILL published",
+      "data/audits/df_independent_controls_2026_10_11.json"
+    ],
+    "finding": "A material CESFAM investment/retender was absent from bounded inventory and rejected by the health/materiality conjunction because CESFAM was missing from healthcare terms.",
+    "id": "df_primary_care_taxonomy_gap_2026_10_11",
+    "preventive_controls": [
+      "deterministic_test",
+      "independent_original_control"
+    ],
+    "root_cause": "Tests used clinic/hospital vocabulary; materiality review did not exercise primary-care facility acronyms.",
+    "source": "Codex A independent coverage control",
+    "specific_fix": "Include CESFAM/CESCOSF healthcare identity, retain unchanged business gate72, reopen only the exact verified affected rejection for real assessment.",
+    "status": "validated_isolated_runtime_pending_integration"
+  },
+  {
+    "class": "evidence_preservation_defect",
+    "evidence": [
+      "test_offline_publication_review_retains_original_proof_only_for_same_body_date_and_identity",
+      "26/26 original body/date/header verified,58testsPASS"
+    ],
+    "finding": "Offline audit without local HTML replaced stronger stored original header verification with empty fallback metadata.",
+    "id": "df_offline_proof_retention_2026_10_11",
+    "preventive_controls": [
+      "deterministic_test",
+      "data_validation_rule"
+    ],
+    "root_cause": "Audit assumed every review had the full cache; previous tests verified primary extraction but not offline review after runtime.",
+    "source": "Codex A integration state review",
+    "specific_fix": "Restore exact Actions original-review receipt and retain it offline only when original hash, body hash, date and title match; keep original verification timestamp.",
+    "status": "validated_pending_integration"
+  },
+  {
+    "blocker_fingerprint": "73b2e6a31c9f0bd3a35ba8d77ca9bf969671d3f1d9ccfb5d75c83fa940c1ddb5",
+    "class": "observed_stall",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-ea6bce732bd2494aabb9db2765308ee6.json",
+        "sha256": "a141256f55959e999b6955dd80356d95643cb42d688843d52ac56ceb4991f0cd",
+        "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+        "state_sha": "f0478b97ddac7984f4015b2a0b7280a13f4fc566"
+      }
+    ],
+    "finding": "Observed canonical task STALLED: source_repair_fiscalization_lane_2026_10_11",
+    "id": "autonomy_observed_1e09da99a22e61fd7e71f326bc8b5896ae6bbf9d70a42bca07ebb305a18bdb27",
+    "observed_status": "STALLED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_repair_fiscalization_lane_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "1b25c133efaaf486138744e45870663d02158a3ba6bd806c37a8bd59d9c47d67",
+    "class": "observed_stall",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-ea6bce732bd2494aabb9db2765308ee6.json",
+        "sha256": "a141256f55959e999b6955dd80356d95643cb42d688843d52ac56ceb4991f0cd",
+        "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+        "state_sha": "f0478b97ddac7984f4015b2a0b7280a13f4fc566"
+      }
+    ],
+    "finding": "Observed canonical task STALLED: source_repair_media_lane_2026_10_11",
+    "id": "autonomy_observed_fe3fab39ea0a1184ee7d70dc7b416b3676ac18ed5ce773400f619723aaa72aa6",
+    "observed_status": "STALLED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_repair_media_lane_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "c77406e3f36d4e47ef4454f12033fa60efd8c84b410bed438cd98d08b412c361",
+    "class": "observed_stall",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-ea6bce732bd2494aabb9db2765308ee6.json",
+        "sha256": "a141256f55959e999b6955dd80356d95643cb42d688843d52ac56ceb4991f0cd",
+        "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+        "state_sha": "f0478b97ddac7984f4015b2a0b7280a13f4fc566"
+      }
+    ],
+    "finding": "Observed canonical task STALLED: source_repair_public_data_lane_2026_10_11",
+    "id": "autonomy_observed_df9dc6744b8d0f7e80dcc2a76d40b2d575ee0fadc18d96b3bc5c45f586f1fd03",
+    "observed_status": "STALLED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_repair_public_data_lane_2026_10_11"
   }
 ]
