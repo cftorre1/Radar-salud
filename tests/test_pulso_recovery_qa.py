@@ -313,6 +313,94 @@ def test_unrelated_jsonld_does_not_verify_primary_publication_date():
     assert qa.publisher_day("2026-10-11T01:00:00Z") == "2026-10-10"
 
 
+@pytest.mark.parametrize("sha,day", [
+    ("e322d80bbd4ba2876923944f298f6ac249f995b6e9da2f177372289acc2b66f3", "2026-09-04"),
+    ("8e5e353d8694aa8a8170b595b426a0c9ee9a345bc16c8f88087bb030644eddec", "2026-08-11"),
+    ("73fbc8f33b16ddbcb722b325243f68f1f8bdc535124c049ae3dc2e0aa2e27172", "2026-09-01"),
+    ("30a3338f8e2e9a149a3c5c60aa488d6a3133729316b600e7f88a76bab9e47a24", "2026-10-01"),
+    ("4721567cd9702ac79249356f271da2eb5bd1054486e9c044fa69f1ef9c654e06", "2026-09-04"),
+    ("79558fcb7fe30603a1ad4f5e3474e574406679b8fb805b5f123afccf721d6754", "2026-07-31"),
+    ("a78d7fa00eda277fad0cae0483d0fc381cdd6ed2de62b9a97ebf516f8900227a", "2026-08-05"),
+    ("a6d21de71ddd00c9345a5f462fa118f091d5a70f6ff540c4de32cadf1bf78cc7", "2026-07-23"),
+    ("e8753a163ed3f864807106a03925da5a8d5aab553c13420c97b9c98f8ea98e6c", "2026-08-20"),
+    ("cbe1194267c167fc16c898efdb26ff19986745ba23a289f0804099d62fcd54cf", "2026-07-14"),
+    ("8646b65f02a786cd7e3d434dce555f7ab10638e24db7f27fe234e8167ef2bc34", "2026-10-01"),
+    ("0f7a1ed2fc769daf4ff3af88e40d4f9ea90013dea9fe01e2633792c6b17ebeae", "2026-10-09"),
+])
+def test_original_nighttime_controls_keep_rendered_publisher_calendar(sha, day):
+    """These exact HTTP bytes caused twelve real false negative controls."""
+    root = Path(__file__).parents[1]
+    relative = f"tests/fixtures/pulso_runtime_real/{sha}.html.gz"
+    compressed = (root / relative).read_bytes()
+    parser = qa.PrimaryDates()
+    raw = gzip.decompress(compressed)
+    assert qa.digest(raw) == sha
+    parser.feed(raw.decode())
+    row = dict(url=parser.canonical, publication_date=day, primary_detail_sha256=sha,
+               original_http_captures=[dict(url=parser.canonical, status=200, sha256=sha,
+                                           gzip_sha256=qa.digest(compressed), gzip_file=relative)])
+    evidence = {}
+    assert qa.verify_primary_capture(row, root, evidence) is None
+    assert evidence["publication_date"] == day
+    assert evidence["publisher_date_convention"] == "timestamp_calendar"
+    assert all(qa.publisher_day(value) != day for value in evidence["primary_timestamps"])
+
+
+def primary_date_html(values, byline, *, byline_timestamp=None, context=""):
+    url = BASE + "primary/"
+    node = dict(**{"@type": "NewsArticle"}, url=url, datePublished=values[0])
+    metadata = "".join(f'<meta property="article:published_time" content="{value}">' for value in values[1:])
+    time = f'<time class="article-body__byline__date" datetime="{byline_timestamp or values[0]}">{byline}</time>'
+    return (f'<link rel="canonical" href="{url}">{metadata}<script type="application/ld+json">' +
+            json.dumps(node) + '</script><h1>Hospital amplía su capacidad quirúrgica</h1>' +
+            (f'<{context}>{time}</{context.split()[0]}>' if context else time))
+
+
+@pytest.mark.parametrize("context", ["nav", "aside", "footer", 'div class="latest-news"', 'div class="related"'])
+def test_navigation_dates_cannot_supply_the_primary_visible_calendar(context):
+    parser = qa.PrimaryDates()
+    # An otherwise matching timestamp in publisher navigation cannot change
+    # the primary metadata's Santiago day when no primary byline was captured.
+    parser.feed(primary_date_html(["2026-10-01T00:46:24Z"], "1 OCTUBRE 2026", context=context))
+    assert parser.days_for(BASE + "primary/") == {"2026-09-30"}
+    assert parser.bylines == []
+
+
+def test_byline_cannot_mix_calendar_conventions_or_borrow_an_event_timestamp():
+    parser = qa.PrimaryDates()
+    # Each field individually could be mapped to Oct 1, but there is no single
+    # convention under which both metadata values corroborate that day.
+    parser.feed(primary_date_html(["2026-10-01T00:46:24Z", "2026-10-02T01:00:00Z"], "1 OCTUBRE 2026"))
+    assert parser.days_for(BASE + "primary/") == set()
+    parser = qa.PrimaryDates()
+    parser.feed(primary_date_html(["2026-10-01T00:46:24Z"], "1 OCTUBRE 2026", byline_timestamp="2026-10-01T02:00:00Z"))
+    assert parser.days_for(BASE + "primary/") == set()
+
+
+def test_queue_and_original_byline_validate_the_same_real_calendar(evidence):
+    row, item = evidence["report"]["matrix"][0], evidence["queue"]["0"]
+    url, day, timestamp = row["url"], row["publication_date"], "2026-09-11T00:46:24Z"
+    raw = primary_date_html([timestamp, timestamp], "11 SEPTIEMBRE 2026").replace(BASE + "primary/", url)
+    node = {"@type": "NewsArticle", "url": url, "datePublished": timestamp,
+            "headline": "Hospital amplía capacidad para reducir listas de espera", "articleBody": item["raw"]["metadata"]["page_text"]}
+    raw += '<script type="application/ld+json">' + json.dumps(node) + '</script>'
+    raw = raw.encode()
+    capture = row["original_http_captures"][0]
+    compressed = gzip.compress(raw, mtime=0)
+    (evidence["root"] / capture["gzip_file"]).write_bytes(compressed)
+    capture.update(sha256=qa.digest(raw), returned_text_utf8_sha256=qa.digest(raw), gzip_sha256=qa.digest(compressed))
+    row.update(primary_detail_sha256=qa.digest(raw), publication_date_source="visible_article_byline")
+    item["raw"]["metadata"].update(html_sha256=qa.digest(raw), publication_timestamp=timestamp,
+        publication_date_source="visible_article_byline", visible_publication_date=day,
+        publication_evidence=[dict(source="json_ld_datePublished", timestamp=timestamp)])
+    result = qa.evaluate(**evidence)
+    assert result["discovery_qa"] == "PASS"
+    validated = next(value for value in result["checks"]["original_publication_date_validation"] if value["url"] == url)
+    assert validated["publisher_date_convention"] == "timestamp_calendar"
+    item["raw"]["metadata"]["publication_evidence"].append(dict(timestamp="2026-09-12T01:00:00Z"))
+    assert "queue_primary_detail_evidence_unverified" in codes(evidence)
+
+
 @pytest.mark.parametrize("filename", ["senior_housing.html.gz", "uc_christus.html.gz"])
 def test_independent_projection_verifies_verbatim_real_original_fixtures(filename):
     root = Path(__file__).parents[1]

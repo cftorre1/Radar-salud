@@ -60,6 +60,47 @@ def publisher_day(value):
         return None
 
 
+def timestamp_calendar_day(value):
+    """Keep the publisher's explicit ISO calendar; never infer a naive zone."""
+    if isinstance(value, str) and len(value) == 10:
+        return publisher_day(value)
+    parsed = stamp(value)
+    return parsed.date().isoformat() if parsed else None
+
+
+def date_convention(values, visible_day):
+    """All primary timestamps must corroborate one calendar convention."""
+    if not values or not visible_day:
+        return None
+    calendar = [timestamp_calendar_day(value) for value in values]
+    santiago = [publisher_day(value) for value in values]
+    calendar_matches = all(day == visible_day for day in calendar)
+    santiago_matches = all(day == visible_day for day in santiago)
+    return ("calendar_agreement" if calendar_matches and santiago_matches else
+            "timestamp_calendar" if calendar_matches else "america_santiago" if santiago_matches else None)
+
+
+def visible_byline_day(text):
+    months = {name: index for index, name in enumerate((
+        "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
+        "septiembre", "octubre", "noviembre", "diciembre"), 1)}
+    match = re.fullmatch(r"\s*(\d{1,2})\s+(?:de\s+)?(" + "|".join(months) +
+                         r")\s+(?:de\s+)?(\d{4})\s*", text.casefold())
+    try:
+        return date(int(match[3]), months[match[2]], int(match[1])).isoformat() if match else None
+    except ValueError:
+        return None
+
+
+def queue_timestamp_corroborates(metadata, day):
+    values = [entry.get("timestamp") for entry in metadata.get("publication_evidence", [])
+              if isinstance(entry, dict)] or [metadata.get("publication_timestamp")]
+    if metadata.get("publication_date_source") == "visible_article_byline":
+        return (metadata.get("visible_publication_date") == day and
+                date_convention(values, day) is not None)
+    return all(publisher_day(value) == day for value in values)
+
+
 def section_slug(value):
     if not isinstance(value, str):
         return None
@@ -75,9 +116,19 @@ class PrimaryDates(HTMLParser):
         self.canonical, self.published, self.nodes, self.parts = None, [], [], None
         self.article_depth, self.article_text, self.title_text = 0, [], []
         self.in_title, self.blocked = False, 0
+        self.contexts, self.bylines, self.byline = [], [], None
 
     def handle_starttag(self, tag, attrs):
         attr = dict(attrs)
+        classes = attr.get("class", "").split()
+        blocked_context = (self.contexts[-1][1] if self.contexts else False) or tag in {
+            "nav", "aside", "footer", "script", "style", "noscript"} or any(
+            term in attr.get("class", "") for term in ("latest-news", "related", "story-card"))
+        if tag not in {"meta", "link", "br", "hr", "img", "input", "source", "area", "base", "wbr", "embed", "param", "track", "col"}:
+            self.contexts.append((tag, blocked_context))
+        if (tag == "time" and "article-body__byline__date" in classes and not blocked_context
+                and self.title_text and attr.get("itemprop") != "dateModified"):
+            self.byline = dict(timestamp=attr.get("datetime"), text=[])
         if tag == "link" and "canonical" in attr.get("rel", "").split():
             self.canonical = normalized_url(attr.get("href"))
         if tag == "meta" and (attr.get("property") or attr.get("name")) == "article:published_time":
@@ -98,6 +149,8 @@ class PrimaryDates(HTMLParser):
             self.article_text.append(data)
         if not self.blocked and self.in_title:
             self.title_text.append(data)
+        if self.byline is not None and not self.blocked:
+            self.byline["text"].append(data)
 
     def handle_endtag(self, tag):
         if tag == "script" and self.parts is not None:
@@ -112,6 +165,13 @@ class PrimaryDates(HTMLParser):
             self.article_depth = max(0, self.article_depth - 1)
         if tag == "h1":
             self.in_title = False
+        if tag == "time" and self.byline is not None:
+            self.bylines.append(dict(timestamp=self.byline["timestamp"], text=" ".join(self.byline["text"])))
+            self.byline = None
+        for index in range(len(self.contexts) - 1, -1, -1):
+            if self.contexts[index][0] == tag:
+                del self.contexts[index:]
+                break
 
     @classmethod
     def walk(cls, node):
@@ -121,7 +181,7 @@ class PrimaryDates(HTMLParser):
             return []
         return [node] + cls.walk(node.get("@graph", []))
 
-    def days_for(self, url):
+    def publication_evidence_for(self, url):
         dates = list(self.published) if self.canonical == url else []
         for node in self.nodes:
             types = node.get("@type", [])
@@ -131,7 +191,30 @@ class PrimaryDates(HTMLParser):
             identities = (node.get("url"), node.get("@id"), entity)
             if "NewsArticle" in types and any(normalized_url(value) == url for value in identities if isinstance(value, str)):
                 dates.append(node.get("datePublished"))
-        return {publisher_day(value) for value in dates if publisher_day(value)}
+        if self.canonical == url and self.bylines:
+            visible = {visible_byline_day(value["text"]) for value in self.bylines}
+            if None in visible or len(visible) != 1:
+                return dict(reason="ambiguous_or_invalid_primary_visible_byline")
+            day = visible.pop()
+            # The captured primary <time datetime> must identify the same
+            # publication instant as URL-bound metadata, not a nearby event.
+            instants = {stamp(value) for value in dates if stamp(value)}
+            if any(not stamp(value["timestamp"]) or stamp(value["timestamp"]) not in instants for value in self.bylines):
+                return dict(reason="primary_byline_timestamp_not_bound_to_metadata")
+            convention = date_convention(dates + [value["timestamp"] for value in self.bylines], day)
+            if not convention:
+                return dict(reason="visible_byline_not_consistent_with_one_timestamp_convention")
+            return dict(publication_date=day, publisher_date_convention=convention,
+                        visible_bylines=self.bylines, primary_timestamps=dates)
+        days = {publisher_day(value) for value in dates if publisher_day(value)}
+        if len(days) == 1:
+            return dict(publication_date=days.pop(), publisher_date_convention="america_santiago_metadata_only",
+                        primary_timestamps=dates)
+        return dict(reason="missing_or_conflicting_url_bound_primary_timestamps")
+
+    def days_for(self, url):
+        day = self.publication_evidence_for(url).get("publication_date")
+        return {day} if day else set()
 
     def primary_text(self, url):
         for node in self.nodes:
@@ -158,7 +241,7 @@ def local_capture_path(root, relative):
     return target
 
 
-def verify_primary_capture(row, root):
+def verify_primary_capture(row, root, date_evidence=None):
     """Require original bytes matching the primary detail hash and URL/date."""
     url, expected = row["url"], row.get("primary_detail_sha256")
     errors = []
@@ -189,6 +272,8 @@ def verify_primary_capture(row, root):
                     raise ValueError("cached_primary_capture_provenance_missing")
                 if not SHA.fullmatch(str(record.get("original_capture_manifest_sha256", ""))):
                     raise ValueError("cached_primary_manifest_sha256_missing")
+            if date_evidence is not None:
+                date_evidence.update(parser.publication_evidence_for(url), url=url, original_html_sha256=expected)
             return None
         except (OSError, ValueError, TypeError, UnicodeError, EOFError) as error:
             errors.append(type(error).__name__ + ":" + str(error))
@@ -504,9 +589,12 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
         # Original bytes for every independent important control, not just a
         # manually chosen tiny positive sample. Other positives keep SHA traces.
         if url in controls and controls[url].get("recall_expected"):
-            error = verify_primary_capture(row, root)
+            date_evidence = {}
+            error = verify_primary_capture(row, root, date_evidence)
             if error:
                 fail("discovery", "original_primary_capture_not_verified", url=url, errors=error)
+            else:
+                checks.setdefault("original_publication_date_validation", []).append(date_evidence)
         candidates = current_queue.get(url, [])
         if len(candidates) != 1:
             fail("discovery", "canonical_queue_missing_or_duplicated", url=url, count=len(candidates))
@@ -516,7 +604,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                 or normalized_url(metadata.get("canonical_url")) != url
                 or metadata.get("publication_date") != row.get("publication_date")
                 or metadata.get("publication_date_source") not in PRIMARY_DATE_SOURCES
-                or publisher_day(metadata.get("publication_timestamp")) != row.get("publication_date")
+                or not queue_timestamp_corroborates(metadata, row.get("publication_date"))
                 or metadata.get("html_sha256") != row.get("primary_detail_sha256")
                 or len(str(metadata.get("page_text") or "").strip()) < 160):
             fail("discovery", "queue_primary_detail_evidence_unverified", url=url)
