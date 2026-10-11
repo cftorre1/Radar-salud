@@ -555,5 +555,20 @@
       "config/statistical_analysis_verified_v1.json"
     ],
     "source_closed": false
+  },
+  {
+    "id": "source_integration_collisions_2026_10_11",
+    "source": "Integration Director",
+    "class": "integration_regression_prevented",
+    "finding": "Independent source branches can silently replace source identity or discard paid editorial receipts when merged by text alone. A browser test also queried the expansion control before the independent source fetch rendered.",
+    "root_cause": "Shared slug across source lanes, concurrent state commits, asynchronous product-data loading.",
+    "specific_fix": "One canonical ACHS occupational registration; reject duplicate slugs; preserve terminal receipt objects and alternate review evidence; reconcile independent usage deltas; await source list render before expansion.",
+    "evidence": [
+      "PR20",
+      "PR21",
+      "PR23",
+      "data/audits/integration_20261011/achs-crosslane-review.json"
+    ],
+    "acceptance_boundary": "Only exact-head QA and actual post-merge source receipts support final state; no autonomy4h or coverage-completeness inference."
   }
 ]

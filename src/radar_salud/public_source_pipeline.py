@@ -14,16 +14,20 @@ MONTHS={"enero":"01","febrero":"02","marzo":"03","abril":"04","mayo":"05","junio
 MONTHS.update({"ene":"01","feb":"02","mar":"03","abr":"04","may":"05","jun":"06","jul":"07","ago":"08","sep":"09","sept":"09","oct":"10","nov":"11","dic":"12"})
 
 class _Meta(HTMLParser):
-    def __init__(self):super().__init__();self.description="";self.published="";self.text=[];self.ogtitle=""
+    def __init__(self):super().__init__();self.description="";self.published="";self.text=[];self.ogtitle="";self._ignored=0
     def handle_starttag(self,tag,attrs):
+        if tag.lower() in ('script','style','noscript'):self._ignored+=1
         if tag.lower()!="meta":return
         a={k.lower():v for k,v in attrs};key=(a.get("name") or a.get("property") or "").lower();content=a.get("content") or ""
         if key in ("description","og:description","twitter:description") and content and not self.description:self.description=" ".join(content.split())
         if key=="og:title" and content and not self.ogtitle:self.ogtitle=" ".join(content.split())
         if key in ("article:published_time","date","datepublished","publishdate") and content and not self.published:self.published=content
     def handle_data(self,data):
+        if self._ignored:return
         t=" ".join(data.split())
         if t:self.text.append(t)
+    def handle_endtag(self,tag):
+        if tag.lower() in ('script','style','noscript'):self._ignored=max(0,self._ignored-1)
 
 def _date(text):
     if not text:return None
@@ -31,12 +35,14 @@ def _date(text):
     if m:return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
     m=re.search(r"(\d{1,2})[/-](\d{1,2})[/-](20\d{2})",text)
     if m:return f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}"
-    m=re.search(r"(\d{1,2})\s+de\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+de\s+(20\d{2})",text,re.I)
+    m=re.search(r"(\d{1,2})\s+de\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+del?\s+(20\d{2})",text,re.I)
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
     m=re.search(r"(\d{1,2})\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+(20\d{2})",text,re.I)
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
     m=re.search(r"(\d{1,2})\s*([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\.?\s*(20\d{2})",text,re.I)
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
+    m=re.search(r"([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+(\d{1,2}),\s*(20\d{2})",text,re.I)
+    if m and m.group(1).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(1).lower()]}-{int(m.group(2)):02d}"
     return None
 
 def _field(text,label):
@@ -460,20 +466,56 @@ def process_isp_anamed(raw,cfg):
 
 
 
+class _VisibleArticle(HTMLParser):
+    """Visible article text after H1, excluding executable/style/navigation text."""
+    def __init__(self):
+        super().__init__();self.title='';self.text=[];self._heading=False;self._parts=[];self._ready=False;self._ignored=0;self._ended=False
+    def handle_starttag(self,tag,attrs):
+        tag=tag.lower()
+        if tag in ('script','style','noscript','nav','footer','header'):self._ignored+=1
+        if not self._ignored and tag=='h1' and not self.title:
+            self._heading=True;self._parts=[]
+    def handle_endtag(self,tag):
+        tag=tag.lower()
+        if tag in ('script','style','noscript','nav','footer','header'):
+            self._ignored=max(0,self._ignored-1)
+        if tag=='h1' and self._heading:
+            self.title=' '.join(' '.join(self._parts).split());self._heading=False;self._ready=True
+    def handle_data(self,data):
+        if self._ignored or self._ended:return
+        text=' '.join(data.split())
+        if self._heading:self._parts.append(text)
+        elif self._ready and text:
+            if text.casefold() in ('enlaces de salud','últimas publicaciones','conoce más novedades','blog andes salud'):self._ended=True
+            else:self.text.append(text)
+
+
 def process_clinicas_chile(raw,cfg):
     """Clínicas de Chile sector intelligence with channel-aware materiality."""
+    if (not raw.event_date or raw.metadata.get("publication_date_source")
+            not in ("article:published_time","dated_news_listing","verified_document_release")):
+        raise DeferredProcessing("Clínicas de Chile without verified date")
+    from datetime import date
+    from .processing import OutsideBackfillHorizon
+    published=date.fromisoformat(raw.event_date)
+    if published>date.today():raise DeferredProcessing("Clínicas de Chile future publication date")
+    if (date.today()-published).days>90:raise OutsideBackfillHorizon(raw.event_date)
     channel=raw.metadata.get("clinicas_channel") or "Noticias"
     parsed=raw.url.lower()
     text=raw.metadata.get("page_text") or raw.raw_text or ""
     if parsed.endswith(".pdf"):
         try:text=extract_pdf_text(raw.url,max_pages=10)
         except Exception as exc:raise DeferredProcessing("Clínicas de Chile PDF unreadable") from exc
-    elif not text:
-        raw=enrich(raw);text=raw.metadata.get("page_text") or raw.raw_text or ""
-    if not raw.event_date:
-        raw.event_date=_date(text[:6000]) or _date(raw.title)
-    if not raw.event_date:
-        raise DeferredProcessing("Clínicas de Chile without verified date")
+    elif channel=='Noticias':
+        # Older queue cache may contain scripts before the article. Always
+        # resolve a fresh visible body; a cache must not mask a fetch failure.
+        try:
+            article=_VisibleArticle();article.feed(fetch_html(raw.url))
+        except Exception as exc:raise DeferredProcessing(f"Clínicas de Chile article unavailable: {type(exc).__name__}") from exc
+        if not article.title or (raw.title.casefold() not in article.title.casefold() and article.title.casefold() not in raw.title.casefold()):
+            raise DeferredProcessing('Clínicas de Chile headline mismatch')
+        text=' '.join(article.text)
+        raw.metadata['page_text']=text[:18000];raw.raw_text=text[:1800]
     if len(text)<160:
         raise DeferredProcessing("Clínicas de Chile without sufficient readable content")
     kind="noticia sectorial" if channel=="Noticias" else "documento sectorial; extraer hallazgo material, no resumir por publicar"
@@ -481,9 +523,9 @@ def process_clinicas_chile(raw,cfg):
     if not ai:raise DeferredProcessing("Clínicas de Chile pending assessment")
     score=int(ai.get("relevance_score",0))
     threshold=70 if channel=="Noticias" else 75
-    if score<threshold:return None
     what=(ai.get("what_happened") or "").strip();why=(ai.get("why_it_matters") or "").strip()
-    if len(what)<45 or len(why)<35:return None
+    from .provider_assessment import assessed
+    if not assessed(raw,ai,threshold):return None
     signal_type="Noticias" if channel=="Noticias" else "Datos"
     raw.metadata.update({
       "what_happened":what,"why_it_matters":why,
@@ -493,6 +535,7 @@ def process_clinicas_chile(raw,cfg):
     })
     row=build_signal(raw,cfg).to_dict()
     row["signal_types"]=[signal_type];row["scopes"]=["Prestadores"];row["source_channel"]=channel;row["editorial_relevance"]=score
+    row['editorial_assessment']=raw.metadata['editorial_assessment']
     return row
 
 def process_corporate_news(raw,cfg):
@@ -505,10 +548,19 @@ def process_corporate_news(raw,cfg):
         "indisa":("Clínica INDISA",("www.indisa.cl","indisa.cl"),r"/blog/[^/]+/?"),
     }
     expected=canonical.get(raw.source_slug);parsed=urlparse(raw.url)
+    # Root-level Bupa articles are eligible only when linked by its reviewed
+    # newsroom card parser. Identity, H1, date, body and the 78 gate still apply.
+    root_bupa=(raw.source_slug=="bupa_chile"
+        and raw.metadata.get("discovered_from")=="https://www.bupa.cl/somos-bupa/sala-de-prensa"
+        and re.fullmatch(r"/[a-z0-9][a-z0-9-]+/?",parsed.path))
     if (not expected or raw.source_name!=expected[0] or raw.source_type!="corporate"
             or cfg.get("slug")!=raw.source_slug or cfg.get("source_type")!="corporate"
-            or parsed.scheme!="https" or parsed.netloc not in expected[1] or not re.fullmatch(expected[2],parsed.path)):
+            or parsed.scheme!="https" or parsed.netloc not in expected[1]
+            or not (re.fullmatch(expected[2],parsed.path) or root_bupa)):
         return None
+    gate=raw.metadata.get('source_quality_gate')
+    if gate and gate!='passed':
+        raise DeferredProcessing(f'Corporate source quality gate not passed: {gate}')
     if raw.source_slug=="bupa_chile":
         try:
             page=fetch_html(raw.url)
@@ -539,20 +591,31 @@ def process_corporate_news(raw,cfg):
         if not article.title or (raw.title.casefold() not in article.title.casefold()
                                  and article.title.casefold() not in raw.title.casefold()):
             raise DeferredProcessing("INDISA headline mismatch between listing and article")
-        raw.event_date=_date(article.published) or raw.event_date
+        raw.event_date=article.event_date()
         if not raw.event_date:raise DeferredProcessing("INDISA article publication date unavailable")
         raw.raw_text=article.body[:9000];raw.metadata["page_text"]=raw.raw_text
     else:
         try:page=fetch_html(raw.url)
         except Exception as exc:raise DeferredProcessing("RedSalud article temporarily unavailable") from exc
-        article=_RedSaludArticle();article.feed(page);article.finish()
+        article=_RedSaludArticle(raw.url);article.feed(page);article.finish()
         if not article.title or (raw.title.lower() not in article.title.lower()
                                  and article.title.lower() not in raw.title.lower()):
             raise DeferredProcessing("RedSalud headline mismatch between listing and article")
         detail_date=_date(article.published)
         if not detail_date:raise DeferredProcessing("RedSalud article publication date unavailable")
         if raw.metadata.get("listing_date") and raw.metadata["listing_date"]!=detail_date:
-            raise DeferredProcessing("RedSalud listing and article dates disagree")
+            # An old teaser URL can redirect to a republished Observatorio
+            # article. Only its own canonical identity AND agreeing visible
+            # publication header/JSON-LD can supersede that teaser stamp.
+            from urllib.parse import urlparse
+            canonical=urlparse(article.canonical_url or '')
+            if (canonical.scheme!='https' or canonical.netloc not in expected[1]
+                    or not canonical.path.startswith('/observatorio/noticias/')
+                    or article.header_date!=detail_date or not article.canonical_schema_match):
+                raise DeferredProcessing("RedSalud listing and article dates disagree")
+            raw.metadata.update(listing_date_before_canonical_verification=raw.metadata['listing_date'],
+                publication_date_source='canonical_article_publication',canonical_source_url=article.canonical_url,
+                publication_date_resolution='canonical_identity_jsonld_and_visible_header_agree')
         raw.event_date=detail_date;raw.raw_text=" ".join(article.body.split())[:9000];raw.metadata["page_text"]=raw.raw_text
     body=raw.metadata.get("page_text") or raw.raw_text
     if not raw.event_date:return None
@@ -563,12 +626,15 @@ def process_corporate_news(raw,cfg):
     except ValueError:
         return None
     if published>date.today():return None
+    from .processing import OutsideBackfillHorizon
+    if (date.today()-published).days>90:raise OutsideBackfillHorizon(raw.event_date)
     ai=analyze_news(title=raw.title,text=body[:9000],source_name=raw.source_name,
                     kind="comunicado corporativo; verificar alcance y evitar tono promocional")
     if not ai:raise DeferredProcessing("Corporate announcement pending assessment")
     score=int(ai.get("relevance_score",0))
     what=(ai.get("what_happened") or "").strip();why=(ai.get("why_it_matters") or "").strip()
-    if score<78 or len(what)<45 or len(why)<35:return None
+    from .provider_assessment import assessed
+    if not assessed(raw,ai,78):return None
     # Diagnostic lab tests are a clinical service, not a pharmaceutical company.
     scope_text=re.sub(r"ex[aá]menes? de laboratorio", "exámenes diagnósticos", f"{raw.title} {what}", flags=re.I)
     scopes=(["Prestadores"]+(["Isapres"] if re.search(r"\bisapre(?:s)?\b",scope_text,re.I) else [])
@@ -582,6 +648,7 @@ def process_corporate_news(raw,cfg):
         "scores":{"economic":score,"regulatory":30,"scope":score,"novelty":score,"actionability":65}})
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Noticias"],scopes=scopes,editorial_relevance=score)
+    row['editorial_assessment']=raw.metadata['editorial_assessment']
     if raw.url.rstrip('/').endswith('/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas'):
         row.update(source_title_full=raw.title,
                    title="Fonasa activa SAFED para atención gratuita en clínicas privadas tras temporal",
@@ -594,7 +661,9 @@ class _BupaArticle(HTMLParser):
     def __init__(self):
         super().__init__();self.title="";self.published="";self.body="";self._field=None;self._parts=[];self._body_depth=0
     def handle_starttag(self,tag,attrs):
-        classes=(dict(attrs).get("class") or "").split()
+        attrs=dict(attrs);classes=(attrs.get("class") or "").split()
+        if tag.lower()=="meta" and (attrs.get("property") or "").lower()=="article:published_time":
+            self.published=attrs.get("content") or self.published
         if tag.lower()=="div" and "CUERPO" in classes:self._body_depth=1
         elif self._body_depth and tag.lower()=="div":self._body_depth+=1
         if tag.lower()=="h1" and "enc-main__title" in classes:self._field="title";self._parts=[]
@@ -609,24 +678,43 @@ class _BupaArticle(HTMLParser):
 
 
 class _RedSaludArticle(HTMLParser):
-    def __init__(self):
-        super().__init__();self.title="";self.published="";self.body="";self._script=False;self._json=[];self._after_h1=False;self._field=None;self._parts=[]
+    def __init__(self,url=None):
+        super().__init__();self.url=url;self.title="";self.published="";self.body="";self._script=False;self._json=[];self._after_h1=False;self._field=None;self._parts=[]
+        self.schemas=[];self._before=[];self.header_date=None;self.canonical_url=None;self.canonical_schema_match=False
+        self._date_span=False;self._date_parts=[];self._visible_date_stamps=[]
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs);lower=tag.lower()
+        if lower=='link' and attrs.get('rel')=='canonical':self.canonical_url=attrs.get('href')
+        if not self._after_h1 and lower=='span' and 'coh-ce-9ca7c0c5' in (attrs.get('class') or '').split():
+            # Observatorio's dedicated publication span precedes its share label.
+            # A navigation/event date elsewhere cannot stand in for this field.
+            self._date_span=True;self._date_parts=[]
         if lower=="script" and attrs.get("type")=="application/ld+json":self._script=True;self._json=[]
-        elif lower=="h1":self._field="h1";self._parts=[]
-        elif self._after_h1 and lower in ("h2","p"):self._field="body";self._parts=[]
+        elif lower=="h1":
+            self._field="h1";self._parts=[]
+            dates={x for x in self._visible_date_stamps if x}
+            self.header_date=next(iter(dates)) if len(dates)==1 else None
+        elif self._after_h1 and lower in ("h2","h3","p","li"):self._field="body";self._parts=[]
     def handle_data(self,data):
         if self._script:self._json.append(data)
+        if self._date_span:self._date_parts.append(data)
         if self._field:self._parts.append(data)
+        if not self._script and not self._after_h1 and self._field!='h1':self._before.append(' '.join(data.split()))
     def handle_endtag(self,tag):
         lower=tag.lower()
+        if lower=='span' and self._date_span:
+            self._visible_date_stamps.append(_date(' '.join(self._date_parts)))
+            self._date_span=False
         if lower=="script" and self._script:
             self._consume_json("".join(self._json));self._script=False
         elif lower=="h1" and self._field=="h1":
-            visible=" ".join(" ".join(self._parts).split());self.title=self.title or visible;self._after_h1=True;self._field=None
-        elif lower in ("h2","p") and self._field=="body":
-            self.body+=" "+" ".join(" ".join(self._parts).split());self._field=None
+            visible=" ".join(" ".join(self._parts).split());self.title=visible;self._after_h1=True;self._field=None
+        elif lower in ("h2","h3","p","li") and self._field=="body":
+            value=" ".join(" ".join(self._parts).split())
+            if lower in ('h2','h3') and value.casefold() in ('conoce otras de nuestras noticias','artículos relacionados'):
+                self._after_h1=False
+            else:self.body+=" "+value
+            self._field=None
         elif lower=="footer":self._after_h1=False
     def _consume_json(self,text):
         try:data=json.loads(text)
@@ -641,10 +729,22 @@ class _RedSaludArticle(HTMLParser):
             kind=item.get("@type") or []
             kinds={kind} if isinstance(kind,str) else set(kind)
             if "NewsArticle" in kinds or "Article" in kinds:
-                self.title=str(item.get("headline") or item.get("name") or self.title)
-                self.published=str(item.get("datePublished") or self.published)
-                if item.get("articleBody"):self.body=str(item["articleBody"])
+                self.schemas.append(item)
     def finish(self):
+        from urllib.parse import urljoin
+        def canonical(value):return str(value or '').split('#')[0].rstrip('/')
+        dates=set()
+        for item in self.schemas:
+            identity=item.get('url') or item.get('mainEntityOfPage') or item.get('@id')
+            if isinstance(identity,dict):identity=identity.get('@id') or identity.get('url')
+            if identity:identity=urljoin(self.url or self.canonical_url or '',str(identity))
+            headline=str(item.get('headline') or item.get('name') or '')
+            title_match=bool(self.title and headline.casefold()==self.title.casefold())
+            identity_match=bool(identity and canonical(identity) in {canonical(self.url),canonical(self.canonical_url)}- {''})
+            if (identity and self.url and not identity_match) or not (identity_match or title_match):continue
+            if item.get('datePublished'):dates.add(str(item['datePublished']))
+            if identity_match and canonical(identity)==canonical(self.canonical_url):self.canonical_schema_match=True
+        self.published=next(iter(dates)) if len({_date(x) for x in dates})==1 else ''
         self.title=" ".join(self.title.split());self.body=" ".join(self.body.split())
 
 
@@ -676,19 +776,24 @@ class _PfizerArticle(HTMLParser):
 class _IndisaArticle(HTMLParser):
     """Extract the INDISA article headline, publication date and visible body."""
     def __init__(self):
-        super().__init__();self.title="";self.published="";self.body=[];self._capture=None;self._parts=[]
+        super().__init__();self.title="";self.published="";self.body=[];self._capture=None;self._parts=[];self._before_title=[];self._header_date=None
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs);lower=tag.lower()
         if lower=="meta":
             key=(attrs.get("property") or attrs.get("name") or "").casefold()
             value=attrs.get("content") or ""
-            if key in ("article:published_time","datepublished","date") and value and not self.published:
+            if key in ("article:published_time","datepublished") and value and not self.published:
                 self.published=value
         elif lower=="h1" and not self.title:
+            # INDISA exposes a compact publication stamp immediately before H1.
+            # Never take dates from medical/event text, related cards or the footer.
+            stamp=re.search(r"Novedades INDISA\s*•\s*(\d{1,2}/\d{1,2}/20\d{2})\s*•\s*\d+\s*min", " ".join(self._before_title)[-180:], re.I)
+            self._header_date=_date(stamp.group(1)) if stamp else None
             self._capture="title";self._parts=[]
         elif lower in ("p","li"):
             self._capture="body";self._parts=[]
     def handle_data(self,data):
+        if not self.title and self._capture!="title":self._before_title.append(" ".join(data.split()))
         if self._capture:self._parts.append(data)
     def handle_endtag(self,tag):
         lower=tag.lower()
@@ -696,11 +801,11 @@ class _IndisaArticle(HTMLParser):
             self.title=" ".join(" ".join(self._parts).split());self._capture=None
         elif self._capture=="body" and lower in ("p","li"):
             value=" ".join(" ".join(self._parts).split())
-            if value:self.body.append(value)
+            if value and self.title:self.body.append(value)
             self._capture=None
     def finish(self):
         self.title=" ".join(self.title.split());self.body=" ".join(self.body)
-    def event_date(self):return _date(self.published)
+    def event_date(self):return _date(self.published) or self._header_date
 
 
 def process_deis(raw,cfg):

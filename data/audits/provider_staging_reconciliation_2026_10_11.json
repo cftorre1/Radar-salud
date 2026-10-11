@@ -1,0 +1,49 @@
+{
+  "as_of": "2026-10-11",
+  "previous_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+  "latest_staging_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+  "isolated_merge_sha": "f1a3129a5929ef4f55ac534254cce2efd1a94843",
+  "changed_staging_paths": [
+    "config/orchestrator_queue.json",
+    "config/pmo_baseline.json",
+    "data/audits/work3_adversarial_2026_10_11T072159Z.json"
+  ],
+  "checks": {
+    "src": {
+      "prior_staging_tree": "035980448754f030dd09b834b76aec5a7bd25f20",
+      "latest_staging_tree": "035980448754f030dd09b834b76aec5a7bd25f20",
+      "equal": true
+    },
+    "web": {
+      "prior_staging_tree": "74ac7e363606a56863fd65a0f53fcaa356e36425",
+      "latest_staging_tree": "74ac7e363606a56863fd65a0f53fcaa356e36425",
+      "equal": true
+    },
+    "tests": {
+      "prior_staging_tree": "fa22c19db6e4142b521579aacb76afa291bfecde",
+      "latest_staging_tree": "fa22c19db6e4142b521579aacb76afa291bfecde",
+      "equal": true
+    },
+    "config/orchestrator_queue.json": {
+      "non_front_records_equal_latest_staging": true
+    },
+    "config/pmo_baseline.json": {
+      "non_front_records_equal_latest_staging": true
+    },
+    "data/audits/work3_adversarial_2026_10_11T072159Z.json": {
+      "byte_equal_latest_staging": true,
+      "sha256": "41f60c7be8cc9b1fd7b1c4653f89b8b0fb76f7d36c509667c8a0623259ef72c0"
+    }
+  },
+  "scope": "Only governance and an audit added by Work3; all inherited QA evidence remains applicable by tree equality. Provider executable/data tree unchanged from reviewed affa53d; final metadata checkpoint records merge proof.",
+  "staging_mutated": false,
+  "main_or_production_mutated": false,
+  "global_acceptance": "EXTERNAL_BLOCKER_PROVEN",
+  "independent_reviewer": {
+    "reviewer": "/root/reviewer",
+    "verdict": "PASS_scoped",
+    "reviewed_merge_sha": "f1a3129a5929ef4f55ac534254cce2efd1a94843",
+    "non_front_governance_and_artifact_preservation_verified": true,
+    "open_findings": []
+  }
+}

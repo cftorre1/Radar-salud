@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T14:13:46.692772+00:00",
+  "updated_at": "2026-10-11T14:34:56.693908+00:00",
   "scope": "staging_only",
   "prior_staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
   "rows": [
@@ -116,28 +116,34 @@
       "integration": "merged_PR20",
       "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
       "qa": {
-        "run": 38145313219,
+        "run": 38145632732,
         "status": "PASS"
       },
       "reviewer": {
-        "run": 38145313219,
+        "run": 38145632732,
         "status": "PASS",
-        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38145632535,
-        "status": "IN_PROGRESS"
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-achs_seguro_laboral/summary.json"
       },
-      "final_state": "NOT_READY",
+      "final_state": "INTEGRATED_VALIDATED",
       "owner": "Pele + Occupational Health Worker",
-      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "next_action": "Conservar seguimiento y reparar únicamente los límites de cobertura documentados; no certificar totalidad del sitio.",
       "candidate_qa": {
         "python": "818PASS/1SKIP",
         "node": "42PASS",
         "reviewer": "PASS deterministic",
         "preserved_prior_history": 886,
         "added_history": 5
-      }
+      },
+      "limits": [
+        "Coverage limited to reviewed official surfaces; source freshness distinct from capture time"
+      ]
     },
     {
       "source": "clinicas_achs_salud",
@@ -152,28 +158,36 @@
       "integration": "merged_PR20",
       "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
       "qa": {
-        "run": 38145313219,
+        "run": 38145632732,
         "status": "PASS"
       },
       "reviewer": {
-        "run": 38145313219,
+        "run": 38145632732,
         "status": "PASS",
-        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38145632535,
-        "status": "IN_PROGRESS"
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-clinicas_achs_salud/summary.json"
       },
-      "final_state": "NOT_READY",
+      "final_state": "INTEGRATED_DEGRADED",
       "owner": "Pele + Occupational Health Worker",
-      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "next_action": "Conservar seguimiento y reparar únicamente los límites de cobertura documentados; no certificar totalidad del sitio.",
       "candidate_qa": {
         "python": "818PASS/1SKIP",
         "node": "42PASS",
         "reviewer": "PASS deterministic",
         "preserved_prior_history": 886,
         "added_history": 5
-      }
+      },
+      "limits": [
+        "13 URLs discovered in both polls; 170 pages checked, 39 dated articles in 90 days; 25 publication/editorial date conflicts excluded; coverage incomplete.",
+        "Two material candidates in 90-day inventory did not meet the editorial admission gate; zero published signals is not proof of no source activity.",
+        "19 later PR14 queue additions retained with original review; prior occupational runtime does not certify those additions."
+      ]
     },
     {
       "source": "mutual_seguridad",
@@ -188,28 +202,34 @@
       "integration": "merged_PR20",
       "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
       "qa": {
-        "run": 38145313219,
+        "run": 38145632732,
         "status": "PASS"
       },
       "reviewer": {
-        "run": 38145313219,
+        "run": 38145632732,
         "status": "PASS",
-        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38145632535,
-        "status": "IN_PROGRESS"
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-mutual_seguridad/summary.json"
       },
-      "final_state": "NOT_READY",
+      "final_state": "INTEGRATED_DEGRADED",
       "owner": "Pele + Occupational Health Worker",
-      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "next_action": "Conservar seguimiento y reparar únicamente los límites de cobertura documentados; no certificar totalidad del sitio.",
       "candidate_qa": {
         "python": "818PASS/1SKIP",
         "node": "42PASS",
         "reviewer": "PASS deterministic",
         "preserved_prior_history": 886,
         "added_history": 5
-      }
+      },
+      "limits": [
+        "Coverage limited to reviewed official surfaces; source freshness distinct from capture time"
+      ]
     },
     {
       "source": "ist",
@@ -224,28 +244,34 @@
       "integration": "merged_PR20",
       "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
       "qa": {
-        "run": 38145313219,
+        "run": 38145632732,
         "status": "PASS"
       },
       "reviewer": {
-        "run": 38145313219,
+        "run": 38145632732,
         "status": "PASS",
-        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38145632535,
-        "status": "IN_PROGRESS"
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-ist/summary.json"
       },
-      "final_state": "NOT_READY",
+      "final_state": "INTEGRATED_DEGRADED",
       "owner": "Pele + Occupational Health Worker",
-      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "next_action": "Conservar seguimiento y reparar únicamente los límites de cobertura documentados; no certificar totalidad del sitio.",
       "candidate_qa": {
         "python": "818PASS/1SKIP",
         "node": "42PASS",
         "reviewer": "PASS deterministic",
         "preserved_prior_history": 886,
         "added_history": 5
-      }
+      },
+      "limits": [
+        "Coverage limited to reviewed official surfaces; source freshness distinct from capture time"
+      ]
     },
     {
       "source": "deis",
@@ -260,26 +286,32 @@
       "integration": "merged_PR21",
       "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
       "qa": {
-        "run": 38145944249,
+        "run": 38146250319,
         "status": "PASS"
       },
       "reviewer": {
-        "run": 38145944249,
+        "run": 38146250319,
         "status": "PASS",
-        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38146249940,
-        "status": "IN_PROGRESS"
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-deis/summary.json"
       },
-      "final_state": "NOT_READY",
+      "final_state": "INTEGRATED_DEGRADED",
       "owner": "Pele + Public Data Worker",
-      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "next_action": "Conservar seguimiento y reparar únicamente los límites de cobertura documentados; no certificar totalidad del sitio.",
       "candidate_qa": {
         "focused": "129 PASS",
         "history_preserved": 891,
         "new_editorial_signals": 0
-      }
+      },
+      "limits": [
+        "12 dated FIC publications all outside 90-day horizon; dated document lane operative. 572 catalog resources are references, not signals; publication dates must remain explicit."
+      ]
     },
     {
       "source": "fonasa",
@@ -294,26 +326,33 @@
       "integration": "merged_PR21",
       "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
       "qa": {
-        "run": 38145944249,
+        "run": 38146250319,
         "status": "PASS"
       },
       "reviewer": {
-        "run": 38145944249,
+        "run": 38146250319,
         "status": "PASS",
-        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38146249940,
-        "status": "IN_PROGRESS"
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-fonasa/summary.json"
       },
-      "final_state": "NOT_READY",
+      "final_state": "EXTERNAL_BLOCKER_PROVEN",
       "owner": "Pele + Public Data Worker",
-      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "next_action": "Conservar seguimiento y reparar únicamente los límites de cobertura documentados; no certificar totalidad del sitio.",
       "candidate_qa": {
         "focused": "129 PASS",
         "history_preserved": 891,
         "new_editorial_signals": 0
-      }
+      },
+      "limits": [
+        "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
+        "Native runner cannot observe source activity; zero discovered is not evidence of no publications."
+      ]
     },
     {
       "source": "fonasa_datos_abiertos",
@@ -328,26 +367,33 @@
       "integration": "merged_PR21",
       "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
       "qa": {
-        "run": 38145944249,
+        "run": 38146250319,
         "status": "PASS"
       },
       "reviewer": {
-        "run": 38145944249,
+        "run": 38146250319,
         "status": "PASS",
-        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38146249940,
-        "status": "IN_PROGRESS"
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-fonasa_datos_abiertos/summary.json"
       },
-      "final_state": "NOT_READY",
+      "final_state": "EXTERNAL_BLOCKER_PROVEN",
       "owner": "Pele + Public Data Worker",
-      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "next_action": "Conservar seguimiento y reparar únicamente los límites de cobertura documentados; no certificar totalidad del sitio.",
       "candidate_qa": {
         "focused": "129 PASS",
         "history_preserved": 891,
         "new_editorial_signals": 0
-      }
+      },
+      "limits": [
+        "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
+        "Native runner cannot observe source activity; zero discovered is not evidence of no publications."
+      ]
     },
     {
       "source": "isp_anamed",
@@ -362,26 +408,33 @@
       "integration": "merged_PR21",
       "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
       "qa": {
-        "run": 38145944249,
+        "run": 38146250319,
         "status": "PASS"
       },
       "reviewer": {
-        "run": 38145944249,
+        "run": 38146250319,
         "status": "PASS",
-        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38146249940,
-        "status": "IN_PROGRESS"
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-isp_anamed/summary.json"
       },
-      "final_state": "NOT_READY",
+      "final_state": "EXTERNAL_BLOCKER_PROVEN",
       "owner": "Pele + Public Data Worker",
-      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "next_action": "Conservar seguimiento y reparar únicamente los límites de cobertura documentados; no certificar totalidad del sitio.",
       "candidate_qa": {
         "focused": "129 PASS",
         "history_preserved": 891,
         "new_editorial_signals": 0
-      }
+      },
+      "limits": [
+        "RuntimeError > URLError:timed out > TimeoutError:timed out",
+        "Native runner cannot observe source activity; zero discovered is not evidence of no publications."
+      ]
     },
     {
       "source": "isp_surveillance",
@@ -396,26 +449,32 @@
       "integration": "merged_PR21",
       "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
       "qa": {
-        "run": 38145944249,
+        "run": 38146250319,
         "status": "PASS"
       },
       "reviewer": {
-        "run": 38145944249,
+        "run": 38146250319,
         "status": "PASS",
-        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38146249940,
-        "status": "IN_PROGRESS"
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-isp_surveillance/summary.json"
       },
-      "final_state": "NOT_READY",
+      "final_state": "EXTERNAL_BLOCKER_PROVEN",
       "owner": "Pele + Public Data Worker",
-      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "next_action": "Conservar seguimiento y reparar únicamente los límites de cobertura documentados; no certificar totalidad del sitio.",
       "candidate_qa": {
         "focused": "129 PASS",
         "history_preserved": 891,
         "new_editorial_signals": 0
-      }
+      },
+      "limits": [
+        "Native official surveillance endpoints and aliases time out in both polls; coverage and activity remain unverified."
+      ]
     },
     {
       "source": "redsalud",
@@ -427,14 +486,30 @@
       "pr": 14,
       "branch": "codex/f-prestadores-gremio-2026-10-11",
       "candidate_sha": "f1f66e8903640e28efa86c58c592cb1a16943734",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR23",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "qa": {
+        "run": 38146579368,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38146579368,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38147271657,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Source Intelligence + Editorial Committee",
-      "next_action": "Iniciar tras cierre P0 técnico."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "prior_history_rows": 891,
+        "new_verified_signals": 6,
+        "quarantined_false_pdf_dates": 2,
+        "focused": "31 PASS"
+      }
     },
     {
       "source": "bupa_chile",
@@ -446,14 +521,30 @@
       "pr": 14,
       "branch": "codex/f-prestadores-gremio-2026-10-11",
       "candidate_sha": "f1f66e8903640e28efa86c58c592cb1a16943734",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR23",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "qa": {
+        "run": 38146579368,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38146579368,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38147271657,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Source Intelligence + Editorial Committee",
-      "next_action": "Iniciar tras cierre P0 técnico."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "prior_history_rows": 891,
+        "new_verified_signals": 6,
+        "quarantined_false_pdf_dates": 2,
+        "focused": "31 PASS"
+      }
     },
     {
       "source": "indisa",
@@ -465,14 +556,30 @@
       "pr": 14,
       "branch": "codex/f-prestadores-gremio-2026-10-11",
       "candidate_sha": "f1f66e8903640e28efa86c58c592cb1a16943734",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR23",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "qa": {
+        "run": 38146579368,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38146579368,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38147271657,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Source Intelligence + Editorial Committee",
-      "next_action": "Iniciar tras cierre P0 técnico."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "prior_history_rows": 891,
+        "new_verified_signals": 6,
+        "quarantined_false_pdf_dates": 2,
+        "focused": "31 PASS"
+      }
     },
     {
       "source": "red_davila",
@@ -484,14 +591,30 @@
       "pr": 14,
       "branch": "codex/f-prestadores-gremio-2026-10-11",
       "candidate_sha": "f1f66e8903640e28efa86c58c592cb1a16943734",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR23",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "qa": {
+        "run": 38146579368,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38146579368,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38147271657,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Source Intelligence + Editorial Committee",
-      "next_action": "Iniciar tras cierre P0 técnico."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "prior_history_rows": 891,
+        "new_verified_signals": 6,
+        "quarantined_false_pdf_dates": 2,
+        "focused": "31 PASS"
+      }
     },
     {
       "source": "andes_salud",
@@ -503,14 +626,30 @@
       "pr": 14,
       "branch": "codex/f-prestadores-gremio-2026-10-11",
       "candidate_sha": "f1f66e8903640e28efa86c58c592cb1a16943734",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR23",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "qa": {
+        "run": 38146579368,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38146579368,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38147271657,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Source Intelligence + Editorial Committee",
-      "next_action": "Iniciar tras cierre P0 técnico."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "prior_history_rows": 891,
+        "new_verified_signals": 6,
+        "quarantined_false_pdf_dates": 2,
+        "focused": "31 PASS"
+      }
     },
     {
       "source": "clinicas_chile",
@@ -522,14 +661,30 @@
       "pr": 14,
       "branch": "codex/f-prestadores-gremio-2026-10-11",
       "candidate_sha": "f1f66e8903640e28efa86c58c592cb1a16943734",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR23",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "qa": {
+        "run": 38146579368,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38146579368,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38147271657,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Source Intelligence + Editorial Committee",
-      "next_action": "Iniciar tras cierre P0 técnico."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "prior_history_rows": 891,
+        "new_verified_signals": 6,
+        "quarantined_false_pdf_dates": 2,
+        "focused": "31 PASS"
+      }
     },
     {
       "source": "pfizer_chile",
@@ -541,14 +696,30 @@
       "pr": 14,
       "branch": "codex/f-prestadores-gremio-2026-10-11",
       "candidate_sha": "f1f66e8903640e28efa86c58c592cb1a16943734",
-      "integration": "pending",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
+      "integration": "merged_PR23",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "qa": {
+        "run": 38146579368,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38146579368,
+        "status": "PASS",
+        "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+      },
+      "runtime_post_merge": {
+        "run": 38147271657,
+        "status": "IN_PROGRESS"
+      },
       "final_state": "NOT_READY",
       "owner": "Pele + Source Intelligence + Editorial Committee",
-      "next_action": "Iniciar tras cierre P0 técnico."
+      "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+      "candidate_qa": {
+        "prior_history_rows": 891,
+        "new_verified_signals": 6,
+        "quarantined_false_pdf_dates": 2,
+        "focused": "31 PASS"
+      }
     },
     {
       "source": "pulso_latercera",
@@ -610,12 +781,36 @@
   "orphan_p0_issues": [],
   "autonomy_4h": "NOT_PROVEN",
   "weekly": "reevaluate_after_integrations",
-  "global_intelligence": "verify_30d_default_max10_diversity_no_expansion",
+  "global_intelligence": {
+    "status": "PASS_NO_REGRESSION",
+    "default_days": 30,
+    "max_visible_themes": 10,
+    "stored_themes": 14,
+    "visible_publishers": [
+      "Reuters",
+      "Deloitte",
+      "PwC",
+      "OECD",
+      "WHO"
+    ],
+    "expansion_started": false,
+    "evidence": "web/global.js visibleThemes cap and period default; hosted browser QA38145632732"
+  },
   "shared_gates": {
-    "qa": 38142527882,
+    "qa": 38145632732,
     "status": "PASS",
-    "normative": "aged original retained; frozen original cohort and eligible current set",
-    "statistics": "honest publication inventory; analysis gates remain strict",
-    "pr17": "independent improved analysis awaits integration review"
+    "integrated_via": "PR17 and PR19, retained in PR20",
+    "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+    "normative": "Original 12-act cohort remains frozen and checked; current 90-day eligibility uses the real publication cutoff; old act retained in history. No count threshold lowered.",
+    "statistics": "Four-primary-PDF reviewed numerical analysis is present in clean-checkout export; original strict statistics validation restored. Normative contract also resolves source-specific legal identities. Eight findings resolved.",
+    "superseded_interpretation": "Prior publication_inventory workaround superseded; not used for final acceptance",
+    "reviewer_sha256": "474acbcf90c395fc80b0db05d7c8062385939dd75364037e99e58cbeb494b5df"
+  },
+  "zero_orphan_p0": {
+    "checked_at": "2026-10-11T14:20:39.099976+00:00",
+    "definition": "All nonvalidated/noncancelled critical tasks have owner and concrete next_action; issue5-9 links remain tracked",
+    "active_critical_tasks": 22,
+    "orphan_tasks": [],
+    "closed_critical_tasks_excluded": true
   }
 }

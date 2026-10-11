@@ -1,0 +1,125 @@
+{
+  "version": 3,
+  "as_of": "2026-10-11",
+  "candidate_runtime_and_data_sha": "8c7b246f034bb52bb7fdb540308aaf47e8fa8e1a",
+  "last_runtime_change_sha": "8c7b246f034bb52bb7fdb540308aaf47e8fa8e1a",
+  "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "merged_staging_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+  "global_acceptance": false,
+  "source_tests": {
+    "passed": 75,
+    "failed": 0,
+    "skipped": 1,
+    "evidence": "source-tests.log"
+  },
+  "python": {
+    "passed": 321,
+    "failed": 1,
+    "skipped": 1,
+    "failure": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review;11 visible Normativa expected>=12",
+    "same_failure_in_baseline": true,
+    "evidence": "python-tests.log",
+    "baseline_passed": 265,
+    "baseline_failed": 1,
+    "baseline_evidence": "baseline-python-tests.log",
+    "current_staging_equivalent": {
+      "method": "git tree object equality for web,src,tests between original baseline and current staging; staging changes only governance/audit files",
+      "web": "74ac7e363606a56863fd65a0f53fcaa356e36425",
+      "src": "035980448754f030dd09b834b76aec5a7bd25f20",
+      "tests": "fa22c19db6e4142b521579aacb76afa291bfecde"
+    }
+  },
+  "node": {
+    "status": "PASS",
+    "evidence": "node-tests.log"
+  },
+  "browser": {
+    "passed": 44,
+    "failed": 6,
+    "total": 50,
+    "provider_passed": 4,
+    "provider_failed": 0,
+    "baseline_passed": 32,
+    "baseline_failed": 14,
+    "candidate_only_failures": [],
+    "all_six_remaining_failures_shared_with_current_staging": true,
+    "evidence": "browser-comparison.json",
+    "full_log": "browser-final.log",
+    "provider_log": "browser-provider-scoped.log",
+    "runner": "Native Chromium154 viaPlaywright desktop1440x900/mobile390x844",
+    "full_browser_tested_sha": "9a077a9b5458b573698adb37aebcf8b62a2debd4",
+    "provider_final_health_tested_sha": "8c7b246f034bb52bb7fdb540308aaf47e8fa8e1a"
+  },
+  "deterministic_reviewer": {
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": false,
+      "ux": true
+    },
+    "critical_statistics_codes": [
+      "bulletin_coverage",
+      "bulletin_missing_pdf",
+      "bulletin_stock_flow_confusion",
+      "generic_why_required",
+      "invalid_statistical_table",
+      "methodology_not_collapsed",
+      "missing_incremental_value_gate",
+      "untraceable_statistical_evidence"
+    ],
+    "baseline_critical_codes": [
+      "bulletin_coverage",
+      "bulletin_missing_pdf",
+      "bulletin_stock_flow_confusion",
+      "generic_why_required",
+      "invalid_statistical_table",
+      "methodology_not_collapsed",
+      "missing_incremental_value_gate",
+      "untraceable_statistical_evidence"
+    ],
+    "new_critical_codes": [],
+    "evidence": "deterministic-review.json"
+  },
+  "provider_QA": {
+    "status": "PASS",
+    "outputs_verified": 6,
+    "one_entity_per_institution": 8,
+    "duplicate_outputs": 0,
+    "tests": "tests/browser/providers.spec.cjs"
+  },
+  "CI": {
+    "verified_head_sha": "affa53d72c825ac4d70c5afd658536d25907a82a",
+    "evidence": "../provider_final_ci_receipt_2026_10_11.json",
+    "provider_no_paid_replay_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892460",
+    "provider_checkpoint_status": "PASS; original/repair/completion/followup/new-candidate assessment steps skipped; six durable outputs verified with zero paid calls",
+    "critical_QA_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892417",
+    "critical_QA_outcome": "FAIL same inherited Normativa cardinality11>=12;321passed/1failed/1skip; staging/reviewer jobs skipped",
+    "actual_two_poll_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38120892476",
+    "actual_two_poll_outcome": "PASS;0new each;8published preserved;history/ledger/unrelatedqueue/blockedwatermark intact",
+    "promotion": "none"
+  },
+  "independent_reviewer": {
+    "status": "PASS_scoped",
+    "reviewed_head_sha": "affa53d72c825ac4d70c5afd658536d25907a82a",
+    "open_scoped_findings": 0,
+    "global_acceptance": "EXTERNAL_BLOCKER_PROVEN",
+    "evidence": "independent-reviewer.json",
+    "post_merge_sha": "f1a3129a5929ef4f55ac534254cce2efd1a94843",
+    "post_merge_verdict": "PASS_scoped"
+  },
+  "limitations": [
+    "Global normative/statistics gates remain failed as in current staging.",
+    "No actual staging scheduled poll or integration performed; isolated recurrent engine evidence is recorded separately.",
+    "Six sources retain external original-content/date limits; exact totals are null where incomplete."
+  ],
+  "initial_CI": {
+    "verified_head_sha": "c7a0f9fe97b4b893663b46453988091f9e50af86",
+    "provider_no_paid_replay_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114618371",
+    "provider_checkpoint_status": "PASS; original/repair assessment steps skipped; durable verification passed with zero paid calls",
+    "critical_QA_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114618380",
+    "critical_QA_outcome": "FAIL same Normativa cardinality11>=12;291 passed,1failed,1skip; staging/reviewer jobs skipped",
+    "promotion": "none"
+  },
+  "prior_merged_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+  "staging_reconciliation_evidence": "data/audits/provider_staging_reconciliation_2026_10_11.json"
+}

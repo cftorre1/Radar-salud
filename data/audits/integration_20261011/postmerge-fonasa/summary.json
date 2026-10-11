@@ -1,0 +1,313 @@
+{
+  "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+  "targets": {
+    "sources": [
+      "fonasa"
+    ],
+    "origin_prs": [
+      13
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "fonasa": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "fonasa_datos_abiertos": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_anamed": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_surveillance": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:22:53.165420+00:00",
+      "finished_at": "2026-10-11T14:22:54.972598+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "fonasa": "EXTERNAL_BLOCKER_OBSERVED"
+      },
+      "discovery": {
+        "fonasa": {
+          "discovered": 0,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "FonasaDiscoveryError",
+          "checked_at": "2026-10-11T14:22:54.539723+00:00",
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "FonasaDiscoveryError"
+              },
+              {
+                "type": "HTTPError",
+                "http_status": 403,
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "reason": "Forbidden"
+              }
+            ],
+            "failure_signature": "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
+            "endpoint_failures": [
+              {
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              }
+            ]
+          },
+          "diagnostics": {
+            "surfaces": [
+              {
+                "stage": "listing",
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "channel": "Noticias",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          }
+        }
+      },
+      "queue_identity_sha256": "6c6dccd95005ad730d6c75d3998f6ab731a0fcbe74bac797def577c34745e68a",
+      "published_queue_keys": [],
+      "history_sha256": "ea2a57b1b0b2707c8f8551be4cf591ed83b620f0862ac131dbb3f6d95a755284",
+      "history_count": 891,
+      "history_selected_unique": 0,
+      "source_health": {
+        "fonasa": {
+          "name": "Fonasa",
+          "checked_at": "2026-10-11T14:22:54.544693+00:00",
+          "last_signal_at": null,
+          "discovered": 0,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 0,
+          "status": "error",
+          "error": "FonasaDiscoveryError",
+          "technical_status": "error",
+          "coverage_status": "unverified",
+          "content_freshness": "unknown",
+          "editorial_outcome": "not_evaluated",
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "FonasaDiscoveryError"
+              },
+              {
+                "type": "HTTPError",
+                "http_status": 403,
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "reason": "Forbidden"
+              }
+            ],
+            "failure_signature": "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
+            "endpoint_failures": [
+              {
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              }
+            ]
+          },
+          "discovery_diagnostics": {
+            "surfaces": [
+              {
+                "stage": "listing",
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "channel": "Noticias",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          },
+          "engine_checked_at": "2026-10-11T14:22:54.544693+00:00",
+          "poll_mode": "daily_engine"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:22:55.011900+00:00",
+      "finished_at": "2026-10-11T14:22:56.241404+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "fonasa": "EXTERNAL_BLOCKER_OBSERVED"
+      },
+      "discovery": {
+        "fonasa": {
+          "discovered": 0,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "FonasaDiscoveryError",
+          "checked_at": "2026-10-11T14:22:55.754180+00:00",
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "FonasaDiscoveryError"
+              },
+              {
+                "type": "HTTPError",
+                "http_status": 403,
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "reason": "Forbidden"
+              }
+            ],
+            "failure_signature": "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
+            "endpoint_failures": [
+              {
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              }
+            ]
+          },
+          "diagnostics": {
+            "surfaces": [
+              {
+                "stage": "listing",
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "channel": "Noticias",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          }
+        }
+      },
+      "queue_identity_sha256": "6c6dccd95005ad730d6c75d3998f6ab731a0fcbe74bac797def577c34745e68a",
+      "published_queue_keys": [],
+      "history_sha256": "ea2a57b1b0b2707c8f8551be4cf591ed83b620f0862ac131dbb3f6d95a755284",
+      "history_count": 891,
+      "history_selected_unique": 0,
+      "source_health": {
+        "fonasa": {
+          "name": "Fonasa",
+          "checked_at": "2026-10-11T14:22:55.759207+00:00",
+          "last_signal_at": null,
+          "discovered": 0,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 0,
+          "status": "error",
+          "error": "FonasaDiscoveryError",
+          "technical_status": "error",
+          "coverage_status": "unverified",
+          "content_freshness": "unknown",
+          "editorial_outcome": "not_evaluated",
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "FonasaDiscoveryError"
+              },
+              {
+                "type": "HTTPError",
+                "http_status": 403,
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "reason": "Forbidden"
+              }
+            ],
+            "failure_signature": "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
+            "endpoint_failures": [
+              {
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              }
+            ]
+          },
+          "discovery_diagnostics": {
+            "surfaces": [
+              {
+                "stage": "listing",
+                "url": "https://www.fonasa.gob.cl/noticias/",
+                "channel": "Noticias",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          },
+          "engine_checked_at": "2026-10-11T14:22:55.759207+00:00",
+          "poll_mode": "daily_engine"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+    "reviewed_at": "2026-10-11T14:22:56.603209+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 87,
+  "runtime_run": 38146249940,
+  "preview_run": 38146250319,
+  "artifact_id": 11705352270,
+  "artifact_sha256": "4f939f6705d672244b24b1e4decc81e56c670a23bb9f2ceb8b9c830429a0f678",
+  "artifact_retention": "Original full archive retained by GitHub Actions; immutable summary, poll logs, capture manifest and original source-lane evidence preserved in git",
+  "imported_at": "2026-10-11T14:30:08.169918+00:00",
+  "import_scope": "source health/discovery/watermark receipts only; accepted queue/history unchanged"
+}

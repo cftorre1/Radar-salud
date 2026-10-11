@@ -1,0 +1,269 @@
+{
+  "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+  "targets": {
+    "sources": [
+      "achs_seguro_laboral"
+    ],
+    "origin_prs": [
+      12
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "clinicas_achs_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "mutual_seguridad": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "ist": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:03:56.151864+00:00",
+      "finished_at": "2026-10-11T14:05:15.283939+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "achs_seguro_laboral": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "achs_seguro_laboral": {
+          "discovered": 23,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:05:14.779343+00:00"
+        }
+      },
+      "queue_identity_sha256": "01e693576a57c9d5ea5e5b193217491cda98b4bffccc1c772a735cea61de9514",
+      "published_queue_keys": [
+        "03293c62ff268b64f8d560eaa159c63501fb6c4763bb32784c658c90d3e3489b",
+        "59285e03a42b6dc28393c70cbb2e3defa56d4ce52ec9e9522393fbccf81bcdfb",
+        "69016c1d5b4438573957b78cae5d4beac456bf9f0716307cdd4015bdaae54410"
+      ],
+      "history_sha256": "ea2a57b1b0b2707c8f8551be4cf591ed83b620f0862ac131dbb3f6d95a755284",
+      "history_count": 891,
+      "history_selected_unique": 3,
+      "source_health": {
+        "achs_seguro_laboral": {
+          "name": "Achs Seguro Laboral",
+          "checked_at": "2026-10-11T14:05:14.785263+00:00",
+          "last_signal_at": "2026-09-24",
+          "discovered": 23,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 20,
+          "status": "ok",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "complete",
+          "content_freshness": "older",
+          "editorial_outcome": "no_new_signals",
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "coverage_window": {
+            "convention": "rolling_elapsed_days_inclusive",
+            "end": "2026-10-11",
+            "start_30": "2026-09-11",
+            "start_90": "2026-07-13"
+          },
+          "pages_checked": 2,
+          "recent_items": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 10,
+              "expected_role": 10,
+              "candidates": 3,
+              "rejected": 7,
+              "excluded_role": 0,
+              "pending": 0,
+              "unknown_date_items": 0,
+              "complete": true,
+              "content_kinds": {
+                "news": 4,
+                "prevention": 4,
+                "study": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 25,
+              "expected_role": 23,
+              "candidates": 8,
+              "rejected": 15,
+              "excluded_role": 2,
+              "pending": 0,
+              "unknown_date_items": 0,
+              "complete": true,
+              "content_kinds": {
+                "news": 14,
+                "prevention": 8,
+                "study": 3
+              }
+            }
+          },
+          "unique_items": 23,
+          "material_items": 8,
+          "technical_failures": [],
+          "coverage_completeness": true,
+          "recovery_outcome": "OPERATIVE_VALIDATED"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:05:15.325390+00:00",
+      "finished_at": "2026-10-11T14:06:27.307063+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "achs_seguro_laboral": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "achs_seguro_laboral": {
+          "discovered": 23,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:06:26.745366+00:00"
+        }
+      },
+      "queue_identity_sha256": "01e693576a57c9d5ea5e5b193217491cda98b4bffccc1c772a735cea61de9514",
+      "published_queue_keys": [
+        "03293c62ff268b64f8d560eaa159c63501fb6c4763bb32784c658c90d3e3489b",
+        "59285e03a42b6dc28393c70cbb2e3defa56d4ce52ec9e9522393fbccf81bcdfb",
+        "69016c1d5b4438573957b78cae5d4beac456bf9f0716307cdd4015bdaae54410"
+      ],
+      "history_sha256": "ea2a57b1b0b2707c8f8551be4cf591ed83b620f0862ac131dbb3f6d95a755284",
+      "history_count": 891,
+      "history_selected_unique": 3,
+      "source_health": {
+        "achs_seguro_laboral": {
+          "name": "Achs Seguro Laboral",
+          "checked_at": "2026-10-11T14:06:26.751135+00:00",
+          "last_signal_at": "2026-09-24",
+          "discovered": 23,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 20,
+          "status": "ok",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "complete",
+          "content_freshness": "older",
+          "editorial_outcome": "no_new_signals",
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "coverage_window": {
+            "convention": "rolling_elapsed_days_inclusive",
+            "end": "2026-10-11",
+            "start_30": "2026-09-11",
+            "start_90": "2026-07-13"
+          },
+          "pages_checked": 2,
+          "recent_items": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 10,
+              "expected_role": 10,
+              "candidates": 3,
+              "rejected": 7,
+              "excluded_role": 0,
+              "pending": 0,
+              "unknown_date_items": 0,
+              "complete": true,
+              "content_kinds": {
+                "news": 4,
+                "prevention": 4,
+                "study": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 25,
+              "expected_role": 23,
+              "candidates": 8,
+              "rejected": 15,
+              "excluded_role": 2,
+              "pending": 0,
+              "unknown_date_items": 0,
+              "complete": true,
+              "content_kinds": {
+                "news": 14,
+                "prevention": 8,
+                "study": 3
+              }
+            }
+          },
+          "unique_items": 23,
+          "material_items": 8,
+          "technical_failures": [],
+          "coverage_completeness": true,
+          "recovery_outcome": "OPERATIVE_VALIDATED"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+    "reviewed_at": "2026-10-11T14:06:27.686336+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 87,
+  "runtime_run": 38145632535,
+  "preview_run": 38145632732,
+  "artifact_id": 11704229990,
+  "artifact_sha256": "4212393741fa5e71b278ed5b5f5afd148ee52fd71b45a240eaad518ed3cc00d6",
+  "artifact_retention": "Original full archive retained by GitHub Actions; immutable summary, poll logs, capture manifest and original source-lane evidence preserved in git",
+  "imported_at": "2026-10-11T14:29:46.851227+00:00",
+  "import_scope": "source health/discovery/watermark receipts only; accepted queue/history unchanged"
+}
