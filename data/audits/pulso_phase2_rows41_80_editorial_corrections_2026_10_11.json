@@ -5,7 +5,7 @@
   "scope": "Seven genuinely paid publications from immutable actual981, independently read original bodies and full signals; five accepts and two bounded corrections; no new publication/score approval",
   "independent_review": {
     "path": "data/audits/pulso_phase2_rows41_80_independent_semantic_review_2026_10_11.json",
-    "sha256": "983fc66cd156c23b23f4b2689beff6754442a57b29ca7277727caef747594e26"
+    "sha256": "f23adc9983bae618ce5e8077191cb24e3acc19ab74ad887b056261040bd545e1"
   },
   "records": [
     {
@@ -305,7 +305,7 @@
         "analysis_reason": "Señal relevante de política pública y regulación de plataformas con vínculo explícito a la salud mental de menores en Chile. El proyecto estaba en tramitación y las indicaciones del Ejecutivo eran una medida anunciada, no una regulación ya implementada; por tratarse de una publicación anterior a la revisión, los estados descritos se fechan al 2026-08-26."
       },
       "original_body_sha256": "e821ed58405cc9c4cc35f9cb48efb90461c4ca41775bec5757e24081c6dfbdac",
-      "independent_review_record_sha256": "5b6db131cc0d8eb69ffdf76d3e9dbeadd1da9150c0cde41e2facc2783434ddbb",
+      "independent_review_record_sha256": "632055cc8727169068e18d9f8ede40c993390cfc40abaebf9de569f22200d5e6",
       "decision": "correct",
       "reason": "WHAT y WHY conservan el acuerdo de Meta como reporte periodístico, el plan lanzado el 25 de mayo como antecedente y el trámite e indicaciones como estado/propuesta al 26 de agosto, sin vigencia normativa al 11 de octubre. La categoría Aseguramiento es incorrecta: la decisión relatada trata regulación de plataformas y protección de salud mental infantil, sin pólizas, cotizaciones ni cobertura de seguro. Corregir sólo la categoría a Regulación & Legal; conservar copia, puntaje y evidencia.",
       "evidence_quotes": [
@@ -317,7 +317,7 @@
         "why_it_matters": "Al 2026-08-26, según la nota, el Ejecutivo impulsaba una agenda chilena de protección de niños y adolescentes frente a riesgos digitales, con posibles efectos regulatorios para las plataformas y sus diseños. La presentación de indicaciones era futura y podía incidir en la protección de la salud mental infantil y en las obligaciones de las compañías, pero la nota no acredita que esos estándares estuvieran aprobados ni vigentes al 2026-10-11.",
         "category": "Regulación & Legal"
       },
-      "event_status": "historical"
+      "event_status": "planned"
     },
     {
       "url": "https://www.latercera.com/nacional/noticia/minsal-alerta-por-peak-de-hospitalizaciones-pediatricas-por-causa-respiratoria-y-reitera-llamado-a-vacunarse/",
@@ -751,5 +751,12 @@
     "Prepared application record only. No actual queue/history/feed writes in this checkpoint.",
     "Original model outputs, source bodies and scores remain immutable.",
     "State-changing application and independent post-application QA remain parent-owned."
-  ]
+  ],
+  "future_status_preservation_refinement": {
+    "previous_template_sha256": "47c7d0594365cb8f62b84a876a32f0f83a00b7c76cad211db979d48509e2d26a",
+    "row51_event_status": "planned",
+    "preserves_original_prospective_evidence": true,
+    "what_why_category_proposals_unchanged": true,
+    "changes_applied": false
+  }
 }

@@ -7637,7 +7637,7 @@
           "text": "como Ejecutivo, presentaremos indicaciones para que la ley llegue con estándares claros y exigibles"
         }
       ],
-      "event_status": "historical",
+      "event_status": "planned",
       "producer_references": {
         "queue": {
           "path": "data/state/pending_queue.json",
@@ -8529,6 +8529,23 @@
     ],
     "semantic_decisions_changed": false,
     "source_or_model_bytes_changed": false,
+    "state_mutated": false
+  },
+  "future_status_preservation_refinement": {
+    "previous_reader_commit": "b16918a0",
+    "previous_reader_sha256": "983fc66cd156c23b23f4b2689beff6754442a57b29ca7277727caef747594e26",
+    "publication_row_index": 51,
+    "previous_record_sha256": "5b6db131cc0d8eb69ffdf76d3e9dbeadd1da9150c0cde41e2facc2783434ddbb",
+    "previous_review_event_status": "historical",
+    "review_event_status": "planned",
+    "original_published_prospective_evidence": true,
+    "expected_effective_prospective_evidence": true,
+    "source_quote": "como Ejecutivo, presentaremos indicaciones para que la ley llegue con estándares claros y exigibles",
+    "source_publication_day": "2026-08-26",
+    "exact_reason": "La acción regulatoria central atribuida al Ejecutivo era presentar indicaciones en el futuro al 26 de agosto. El plan anterior y el estado del trámite son contexto ya reportado; planned preserva la marca prospectiva original sin afirmar aprobación o ejecución. La corrección cambia exclusivamente la categoría de la copia, no transforma los anuncios en hechos consumados.",
+    "what_why_category_proposals_unchanged": true,
+    "original_source_model_signal_and_producer_hashes_unchanged": true,
+    "original188755_and_schema_completion_provenance_preserved": true,
     "state_mutated": false
   }
 }
