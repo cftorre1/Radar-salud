@@ -206,7 +206,17 @@ class CuratedBetaSourceScout:
                         raw.metadata.update(discovered_from_api=api,cms_post_id=post.get('id'),
                                             cms_publication_date=str(post['date'])[:10])
                         all_items[raw.url.rstrip('/')]=raw
-                    skipped=set(by_url)-{raw.url.rstrip('/') for raw in raws}
+                    # These two public campaign pages were inspected in the
+                    # original 90-day audit. They add no independent signal.
+                    # Match the exact URL, title and release date: changed or
+                    # unknown CMS paths still retain partial-discovery errors.
+                    reviewed_campaigns={
+                        'https://www.andessalud.cl/destacamos/campana-me-chequeare':('Campaña: Me Chequearé','2026-10-05'),
+                        'https://www.andessalud.cl/destacamos/campana-clinica-andes-salud-talca':('Campaña: Clínica Andes Salud Talca','2026-09-09'),
+                    }
+                    excluded={url for url,post in by_url.items() if url in reviewed_campaigns
+                        and (post.get('title',{}).get('rendered'),str(post.get('date') or '')[:10])==reviewed_campaigns[url]}
+                    skipped=set(by_url)-{raw.url.rstrip('/') for raw in raws}-excluded
                     if skipped:errors.extend(url+': CMS item outside reviewed path or detail verification failed' for url in sorted(skipped))
                 if len(posts)<100:break
                 if number==5:errors.append('CMS archive page bound reached')

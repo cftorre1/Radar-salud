@@ -326,7 +326,7 @@ class Inventory:
             detail=detail_evidence(self.slug,item['url'],html)
             if self.slug=='pfizer_chile' and item['title'] and detail['detail_title'] and item['title'].casefold()!=detail['detail_title'].casefold():
                 item['listing_title_before_detail_verification']=item['title']
-                item['date_stamps']=[x for x in item['date_stamps'] if x['kind']!='listing_date']
+                item['date_stamps']=[x for x in item['date_stamps'] if x['kind'] not in ('listing_date','dated_news_listing')]
                 item['listing_identity_mismatch']=True
             item['date_stamps'].extend(detail.pop('date_stamps'));item.update(detail)
             if item.get('detail_title'):item['title']=item['detail_title']

@@ -1,11 +1,11 @@
 {
-  "at": "2026-10-11T05:47:22.289484+00:00",
+  "at": "2026-10-11T06:07:28.665411+00:00",
   "runtime": "actual engine_cli; isolated PR checkout",
   "polls": [
     {
       "poll": 1,
       "discovery": {
-        "at": "2026-10-11T05:46:26.472498+00:00",
+        "at": "2026-10-11T06:05:50.842794+00:00",
         "sources": {
           "pfizer_chile": {
             "discovered": 3,
@@ -44,23 +44,23 @@
             "error_type": "partial_discovery: https://www.davila.cl/novedades/que-tipo-de-cancer-de-mama-se-puede-operar-de-manera-ambulatoria: publication_date_unverified"
           },
           "andes_salud": {
-            "discovered": 9,
-            "new": 8,
-            "technical_status": "ok",
-            "error_type": null
+            "discovered": 24,
+            "new": 20,
+            "technical_status": "error",
+            "error_type": "partial_discovery: https://www.andessalud.cl/destacamos/campana-clinica-andes-salud-talca: CMS item outside reviewed path or detail verification failed; https://www.andessalud.cl/destacamos/campana-me-chequeare: CMS item outside reviewed path or detail verification failed"
           },
           "clinicas_achs_salud": {
-            "discovered": 19,
-            "new": 18,
-            "technical_status": "error",
-            "error_type": "partial_discovery: https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral: UnicodeEncodeError"
+            "discovered": 20,
+            "new": 19,
+            "technical_status": "ok",
+            "error_type": null
           }
         },
         "successful_sources": 5,
         "failed_sources": 3
       },
-      "queue_items": 3037,
-      "new": 114,
+      "queue_items": 3051,
+      "new": 127,
       "watermarks": {
         "superintendencia": "2026-10-10T22:15:29.770584+00:00",
         "superintendencia_normativa": "2026-10-10T22:15:35.020027+00:00",
@@ -70,22 +70,22 @@
         "diario_financiero": "2026-10-10T22:23:12.862507+00:00",
         "diario_oficial": "2026-10-10T22:23:57.544549+00:00",
         "deis": "2026-10-10T22:17:14.126658+00:00",
-        "bupa_chile": "2026-10-11T05:45:25.190990+00:00",
-        "redsalud": "2026-10-11T05:45:24.531390+00:00",
-        "pfizer_chile": "2026-10-11T05:45:23.560705+00:00",
+        "bupa_chile": "2026-10-11T06:04:07.051588+00:00",
+        "redsalud": "2026-10-11T06:04:06.031419+00:00",
+        "pfizer_chile": "2026-10-11T06:03:47.477530+00:00",
         "suseso_news": "2026-10-10T22:17:57.045878+00:00",
         "suseso_fiscalizacion": "2026-10-10T22:23:10.323763+00:00",
-        "clinicas_chile": "2026-10-11T05:45:45.324141+00:00",
-        "andes_salud": "2026-10-11T05:46:10.547025+00:00"
+        "clinicas_chile": "2026-10-11T06:04:25.267192+00:00",
+        "clinicas_achs_salud": "2026-10-11T06:05:50.703100+00:00"
       },
       "partial_watermarks_preserved": true,
       "published_terminal_preserved": 7,
-      "queue_identity_sha256": "d01596b67c9521b5f3eed9f66660bfa3c6d5c58674e061c878dd0a45a13cb3e4"
+      "queue_identity_sha256": "2c16e737723aff9218eb546fc2dbc6912d93399537b3944759df751fabd4910c"
     },
     {
       "poll": 2,
       "discovery": {
-        "at": "2026-10-11T05:47:22.067182+00:00",
+        "at": "2026-10-11T06:07:28.467645+00:00",
         "sources": {
           "pfizer_chile": {
             "discovered": 3,
@@ -124,22 +124,22 @@
             "error_type": "partial_discovery: https://www.davila.cl/novedades/que-tipo-de-cancer-de-mama-se-puede-operar-de-manera-ambulatoria: publication_date_unverified"
           },
           "andes_salud": {
-            "discovered": 9,
+            "discovered": 24,
+            "new": 0,
+            "technical_status": "error",
+            "error_type": "partial_discovery: https://www.andessalud.cl/destacamos/campana-clinica-andes-salud-talca: CMS item outside reviewed path or detail verification failed; https://www.andessalud.cl/destacamos/campana-me-chequeare: CMS item outside reviewed path or detail verification failed"
+          },
+          "clinicas_achs_salud": {
+            "discovered": 20,
             "new": 0,
             "technical_status": "ok",
             "error_type": null
-          },
-          "clinicas_achs_salud": {
-            "discovered": 19,
-            "new": 0,
-            "technical_status": "error",
-            "error_type": "partial_discovery: https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral: UnicodeEncodeError"
           }
         },
         "successful_sources": 5,
         "failed_sources": 3
       },
-      "queue_items": 3037,
+      "queue_items": 3051,
       "new": 0,
       "watermarks": {
         "superintendencia": "2026-10-10T22:15:29.770584+00:00",
@@ -150,17 +150,17 @@
         "diario_financiero": "2026-10-10T22:23:12.862507+00:00",
         "diario_oficial": "2026-10-10T22:23:57.544549+00:00",
         "deis": "2026-10-10T22:17:14.126658+00:00",
-        "bupa_chile": "2026-10-11T05:46:28.558294+00:00",
-        "redsalud": "2026-10-11T05:46:27.717706+00:00",
-        "pfizer_chile": "2026-10-11T05:46:26.823075+00:00",
+        "bupa_chile": "2026-10-11T06:05:54.736804+00:00",
+        "redsalud": "2026-10-11T06:05:53.452347+00:00",
+        "pfizer_chile": "2026-10-11T06:05:51.184123+00:00",
         "suseso_news": "2026-10-10T22:17:57.045878+00:00",
         "suseso_fiscalizacion": "2026-10-10T22:23:10.323763+00:00",
-        "clinicas_chile": "2026-10-11T05:46:43.750321+00:00",
-        "andes_salud": "2026-10-11T05:47:10.820839+00:00"
+        "clinicas_chile": "2026-10-11T06:06:14.316873+00:00",
+        "clinicas_achs_salud": "2026-10-11T06:07:28.340073+00:00"
       },
       "partial_watermarks_preserved": true,
       "published_terminal_preserved": 7,
-      "queue_identity_sha256": "d01596b67c9521b5f3eed9f66660bfa3c6d5c58674e061c878dd0a45a13cb3e4"
+      "queue_identity_sha256": "2c16e737723aff9218eb546fc2dbc6912d93399537b3944759df751fabd4910c"
     }
   ],
   "idempotent": true,
@@ -169,8 +169,5 @@
   "unrelated_queue_unchanged": true,
   "editorial_assessment_performed": false,
   "coverage_claim": "recurrent discovery verified; inventory and editorial coverage remain separate",
-  "promotion": "none",
-  "commit": "ff8775f1dae451d49991bf9a219008e8981b5c32",
-  "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38115799364",
-  "job_id": 114400329869
+  "promotion": "none"
 }
