@@ -131,3 +131,41 @@ def test_pending_or_unverifiable_ledger_row_cannot_keep_raw_from_another_surface
     for item in (row(published=None, status='pending'), row(published='2026-10-12')):
         merged = _merge(report([item]), report([item], [raw()], surface='clinic_network'))
         assert not merged['raw_items'] and not merged['coverage_complete']
+
+
+def static_service_row():
+    item = row('https://clinicaatacama.cl/telemedicina/', None, 'excluded_surface')
+    item.update(type='service_page', reason='publisher_declares_static_service_page',
+                provider_subtype='clinicas', clinic_id='atacama',
+                provider_identity_url='https://www.clinicasachssalud.cl/',
+                publisher_surface_evidence={'kind': 'wordpress:static_page', 'url': item['url'],
+                    'object_id': 7579, 'official_api_url': 'https://clinicaatacama.cl/wp-json/wp/v2/pages/7579',
+                    'body_class': 'page page-id-7579'})
+    return item
+
+
+def test_verified_static_service_surface_has_no_publication_date_or_raw_and_does_not_fake_an_unknown_article():
+    service = static_service_row()
+    merged = _merge(report([row()]), report([service], [raw(service['url'])], surface='clinic_network'))
+    assert merged['coverage_complete'] and merged['technical_status'] == 'ok'
+    assert merged['excluded_non_publication_surfaces'] == 1 and merged['unknown_publication_dates'] == 0
+    assert merged['metrics']['90']['dated_articles'] == 1
+    assert merged['rows'][1]['publication_date'] is None and not merged['rows'][1]['within_90_days']
+    assert not any(item.url == service['url'] for item in merged['raw_items'])
+
+
+@pytest.mark.parametrize('field,value', [
+    ('kind', 'unlabelled_static_page'), ('url', 'https://clinicaatacama.cl/otra-pagina/'),
+    ('object_id', 7580), ('object_id', True),
+    ('official_api_url', 'https://foreign.example/wp-json/wp/v2/pages/7579'),
+    ('official_api_url', 'https://clinicaportada.cl/wp-json/wp/v2/pages/7579'),
+    ('official_api_url', 'http://clinicaatacama.cl/wp-json/wp/v2/pages/7579'),
+    ('official_api_url', 'https://clinicaatacama.cl/wp-json/wp/v2/pages/7579?preview=true'),
+    ('body_class', 'page page-id-7580'),
+])
+def test_static_surface_exception_requires_exact_official_object_identity(field, value):
+    service = static_service_row()
+    service['publisher_surface_evidence'][field] = value
+    merged = _merge(report([]), report([service], surface='clinic_network'))
+    assert not merged['coverage_complete'] and merged['unknown_publication_dates'] == 1
+    assert merged['excluded_non_publication_surfaces'] == 0

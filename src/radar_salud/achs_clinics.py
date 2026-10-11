@@ -38,6 +38,30 @@ def clinic_for_host(host):
     return next((clinic for clinic in CLINICS if host in clinic["hosts"]), None)
 
 
+def is_static_service_surface(row):
+    """Validate the explicit non-publication exception before merging rows."""
+    url = urlsplit(row.get("url") or "")
+    clinic = clinic_for_host(url.hostname)
+    evidence = row.get("publisher_surface_evidence")
+    if (not clinic or not isinstance(evidence, dict) or row.get("status") != "excluded_surface"
+            or row.get("type") != "service_page" or row.get("reason") != "publisher_declares_static_service_page"
+            or row.get("market_role") != "provider_achs" or row.get("provider_subtype") != "clinicas"
+            or row.get("clinic_id") != clinic["id"] or row.get("publication_date") is not None
+            or row.get("event_date") is not None or row.get("provider_identity_url") != NETWORK_IDENTITY_URL
+            or not _official(row["url"], clinic) or url.query or url.fragment
+            or evidence.get("kind") != "wordpress:static_page" or evidence.get("url") != row["url"]):
+        return False
+    identifier = evidence.get("object_id")
+    if not isinstance(identifier, int) or isinstance(identifier, bool) or identifier < 1:
+        return False
+    api_url = evidence.get("official_api_url")
+    if not isinstance(api_url, str) or not _official(api_url, clinic):
+        return False
+    api = urlsplit(api_url)
+    return bool(api.hostname == url.hostname and api.path == "/wp-json/wp/v2/pages/" + str(identifier)
+                and not api.query and not api.fragment and evidence.get("body_class") == "page page-id-" + str(identifier))
+
+
 class _ContentScope(HTMLParser):
     """Preserve publisher metadata and the native WordPress article body."""
     VOID = Article.VOID
@@ -193,8 +217,12 @@ class _Links(HTMLParser):
             del self.stack[index:]
 
 
-def _page_number(url):
+def _page_number(url, clinic=None):
     query = dict(parse_qsl(urlsplit(url).query))
+    # The captured Drupal pager labels ?page=0 as Página1 and ?page=1
+    # as Página2. Only this verified publisher uses the zero-based contract.
+    if clinic and clinic["id"] == "los_coihues" and query.get("page", "").isdigit():
+        return int(query["page"]) + 1
     if query.get("paged", "").isdigit():
         return int(query["paged"])
     match = re.search(r"/page/(\d+)/?$", urlsplit(url).path)
@@ -203,7 +231,7 @@ def _page_number(url):
 
 def _next_link(current, parser, clinic):
     choices, errors = [], []
-    current_number = _page_number(current)
+    current_number = _page_number(current, clinic)
     base = re.sub(r"/page/\d+/?$", "", urlsplit(current).path).rstrip("/")
     for link in parser.links + [{"href": item.get("href"), "rel": item.get("rel", "").split(), "text": ""} for item in parser.disclosed]:
         label = link.get("text", "").casefold().strip(" «»›→")
@@ -216,7 +244,7 @@ def _next_link(current, parser, clinic):
                 errors.append({"code": "unsafe_clinic_next_page", "url": url or current})
             continue
         path = re.sub(r"/page/\d+/?$", "", urlsplit(url).path).rstrip("/")
-        if path != base or _page_number(url) != current_number + 1:
+        if path != base or _page_number(url, clinic) != current_number + 1:
             if explicit:
                 errors.append({"code": "clinic_pagination_gap_or_cycle", "url": url})
             continue
@@ -245,10 +273,38 @@ def _metrics(report, today):
                                        "expected_role": len(rows), "candidates": sum(row["status"] == "candidate" for row in rows),
                                        "rejected": sum(row["status"] == "rejected" for row in rows), "excluded_role": 0,
                                        "pending": sum(row["status"] == "pending" for row in rows),
-                                       "unknown_date_items": sum(not row.get("publication_date") for row in report["rows"]),
+                                       "unknown_date_items": sum(not row.get("publication_date") and row["status"] != "excluded_surface" for row in report["rows"]),
                                        "complete": report["coverage_complete"]}
-    report["unknown_publication_dates"] = sum(not row.get("publication_date") for row in report["rows"])
+    report["unknown_publication_dates"] = sum(not row.get("publication_date") and row["status"] != "excluded_surface" for row in report["rows"])
+    report["excluded_non_publication_surfaces"] = sum(row["status"] == "excluded_surface" for row in report["rows"])
     report["technical_status"] = "ok" if report["coverage_complete"] else "partial" if report["rows"] else "blocked"
+
+
+class _StaticPublisherPage(HTMLParser):
+    """Identify a declared WP page object without dating service content."""
+    def __init__(self):
+        super().__init__()
+        self.object_id, self.links = None, []
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "body":
+            classes = set(attrs.get("class", "").split())
+            identities = [value[8:] for value in classes if re.fullmatch(r"page-id-\d+", value)]
+            if "page" in classes and "single-post" not in classes and len(identities) == 1:
+                self.object_id = identities[0]
+        elif tag == "link" and attrs.get("type") == "application/json" and "alternate" in attrs.get("rel", "").split():
+            self.links.append(attrs.get("href"))
+
+    def evidence(self, url, clinic):
+        for href in self.links:
+            parsed = urlsplit(href or "")
+            if (self.object_id and _official(href, clinic) and parsed.hostname == urlsplit(url).hostname
+                    and parsed.path == "/wp-json/wp/v2/pages/" + self.object_id
+                    and not parsed.query and not parsed.fragment):
+                return {"kind": "wordpress:static_page", "url": url, "object_id": int(self.object_id),
+                        "official_api_url": href, "body_class": "page page-id-" + self.object_id}
+        return None
 
 
 def discover_clinics_inventory(scout, loader, as_of=None, max_pages=20, manifest=None):
@@ -316,7 +372,9 @@ def discover_clinics_inventory(scout, loader, as_of=None, max_pages=20, manifest
         def detail(url, title, listing_url, listed_date=None, listing_evidence=None):
             existing = rows.get(url)
             if existing is not None:
-                if listed_date and existing.get("publication_date") != listed_date:
+                if listing_evidence:
+                    existing["listing_publication_evidence"] = listing_evidence
+                if listed_date and existing.get("publication_date") and existing["publication_date"] != listed_date:
                     existing.update(publication_date=None, event_date=None, status="pending", reason="clinic_listing_detail_date_conflict")
                     raw_by_url.pop(url, None)
                     branch["errors"].append({"code": "clinic_listing_detail_date_conflict", "url": url, "listing_evidence": listing_evidence})
@@ -331,11 +389,21 @@ def discover_clinics_inventory(scout, loader, as_of=None, max_pages=20, manifest
                 row["listing_publication_evidence"] = listing_evidence
             try:
                 html, page = load(url, clinic, "article_detail", branch)
+                publisher_page = _StaticPublisherPage()
+                publisher_page.feed(html)
+                surface_evidence = publisher_page.evidence(url, clinic)
+                if surface_evidence:
+                    row.update(status="excluded_surface", reason="publisher_declares_static_service_page",
+                               type="service_page", section="servicios_permanentes",
+                               publisher_surface_evidence=surface_evidence, detail_sha256=page["sha256"])
+                    return row
                 article = ClinicArticle(url=url)
                 article.feed(html)
                 actual_title, published, body, evidence = article.result(today=today)
                 row.update(title=actual_title or title, content_scope=article.content_scope)
-                if not published or len(actual_title) < 18 or len(body) < 160:
+                # A native publisher headline can be short ("Nuevo Mamógrafo").
+                # The scoped body and explicit publication field supply proof.
+                if not published or len(actual_title) < 5 or len(body) < 160:
                     raise ValueError(f"Clinic detail extraction unverified: {evidence}; scope={article.content_scope}")
                 if listed_date and published != listed_date:
                     raise ValueError(f"Clinic listing/detail publication conflict: listing={listed_date}, detail={published}")
@@ -423,9 +491,11 @@ def discover_clinics_inventory(scout, loader, as_of=None, max_pages=20, manifest
                 body, page = load(feed, clinic, "disclosed_feed", branch)
                 root = ElementTree.fromstring(body)
                 items = root.findall("./channel/item")
-                if not items:
-                    raise ValueError("Disclosed feed has no recognized RSS items")
+                if root.tag != "rss" or root.find("channel") is None:
+                    raise ValueError("Disclosed feed is not a recognized RSS channel")
                 page["returned_items"] = len(items)
+                if not items:
+                    page.update(empty_feed=True, coverage_complete=False)
                 for item in items:
                     url = _resolve(feed, item.findtext("link"))
                     if not url or not _official(url, clinic):
@@ -537,7 +607,7 @@ def discover_clinics_inventory(scout, loader, as_of=None, max_pages=20, manifest
         elif branch["api_collection_attempted"]:
             branch["errors"].append({"code": "clinic_api_window_incomplete", "url": branch["disclosed_apis"][-1]})
         branch["coverage_complete"] = bool((branch["outside_boundary"] and chronological or branch["api_window_complete"]) and not branch["errors"] and
-                                            all(row.get("publication_date") and row["status"] != "pending" for row in branch["rows"]))
+                                            all(row["status"] == "excluded_surface" or row.get("publication_date") and row["status"] != "pending" for row in branch["rows"]))
         if branch["route_errors"] and not branch["rows"]:
             branch["errors"].extend(branch["route_errors"])
         _metrics(branch, today)

@@ -41,5 +41,20 @@
       "exit_code": 0
     },
     "next_action": "Independent reviewer replay then origin inventory using the native clinic parser from bb6ee65 and current strict CMS date parser."
+  },
+  "static_surface_identity_checkpoint": {
+    "behavior": "An explicitly identified static clinical service page keeps publication/event datesNone, isexcluded frompublication metrics,neverkeepsRaw,anddoes not createfalseunknownarticle; genericNone stillunknown/failclosed.",
+    "required_bindings": [
+      "status excluded_surface/type service_page/reason publisher_declares_static_service_page",
+      "officialclinicHTTPS URL and matchingclinic_id/provideridentity/providerrole",
+      "wordpress:static_page evidenceurl equalsrowurl",
+      "positiveintegerobject_idnotbool; official_api_url samehostHTTPS/wp-json/wp/v2/pages/<id> noquery/fragment",
+      "matching bodyclass page page-id<id>"
+    ],
+    "regression_validation": {
+      "passed": 198,
+      "exit_code": 0
+    },
+    "source_evidence": "clinical_run6_current_replay.json"
   }
 }

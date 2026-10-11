@@ -7,7 +7,7 @@ from urllib.parse import urlencode
 
 import pytest
 
-from radar_salud.achs_clinics import CLINICS, ClinicArticle, clinic_for_host, discover_clinics_inventory
+from radar_salud.achs_clinics import CLINICS, ClinicArticle, _Links, _next_link, clinic_for_host, discover_clinics_inventory
 from radar_salud.beta_sources import CuratedBetaSourceScout
 
 AS_OF = date(2026, 10, 11)
@@ -171,6 +171,81 @@ def test_drupal_native_date_class_is_restricted_to_the_observed_clinic_publisher
                     '<article class="card-noticia"><span class="date-noticia">13/08/2026</span><h1>Otra noticia</h1></article>')
         result = parser.result(today=AS_OF)
         assert result[1] == ('2026-08-12' if clinic['id'] == 'los_coihues' else None)
+
+
+def test_observed_drupal_zero_based_next_query_is_scoped_to_los_coihues():
+    parser = _Links()
+    parser.feed('<a href="?page=0" aria-current="page">Página1</a>'
+                '<a href="?page=1" rel="next">Siguiente página</a>')
+    assert _next_link(CLINICS[2]['news'], parser, CLINICS[2]) == ('https://clinicaloscoihues.cl/noticias?page=1', [])
+    url, issues = _next_link(CLINICS[0]['news'], parser, CLINICS[0])
+    assert url is None and issues[0]['code'] == 'clinic_pagination_gap_or_cycle'
+
+
+def test_a_short_current_native_medical_headline_keeps_its_verified_publication():
+    clinic = CLINICS[0]
+    bodies = fixture([clinic])
+    current = clinic['home'] + 'nuevos-pabellones/'
+    bodies[current] = article(title='Nuevo Mamógrafo')
+    result = discover_clinics_inventory(CuratedBetaSourceScout('clinicas_achs_salud'), Loader(bodies), AS_OF, manifest=[clinic])
+    assert result['coverage_complete'] and result['rows'][0]['publication_date'] == '2026-10-10'
+    assert result['raw_items'][0].title == 'Nuevo Mamógrafo'
+
+
+def test_an_empty_advertised_rss_channel_is_observed_without_inventing_a_failure():
+    clinic = CLINICS[0]
+    bodies = fixture([clinic])
+    feed = clinic['home'] + 'noticias/feed/'
+    bodies[clinic['home']] = f'<link rel="alternate" type="application/rss+xml" href="{feed}">'
+    bodies[feed] = '<rss><channel><title>Comentarios de Noticias</title><lastBuildDate>Sun, 11 Oct 2026 06:00:00 +0000</lastBuildDate></channel></rss>'
+    result = discover_clinics_inventory(CuratedBetaSourceScout('clinicas_achs_salud'), Loader(bodies), AS_OF, manifest=[clinic])
+    branch = result['clinic_reports'][0]
+    assert result['coverage_complete'] and not branch['route_errors']
+    captured = next(page for page in result['pages'] if page['url'] == feed)
+    assert captured['returned_items'] == 0 and captured['empty_feed'] and not captured['coverage_complete']
+
+
+@pytest.mark.parametrize('api_href,excluded', [
+    ('https://clinicaportada.cl/wp-json/wp/v2/pages/7579', True),
+    ('https://clinicaportada.cl/wp-json/wp/v2/pages/7580', False),
+    ('https://foreign.example/wp-json/wp/v2/pages/7579', False),
+])
+def test_static_service_page_requires_two_matching_official_cms_declarations(api_href, excluded):
+    clinic = CLINICS[0]
+    bodies = fixture([clinic])
+    current = clinic['home'] + 'nuevos-pabellones/'
+    bodies[current] = (f'<head><meta property="article:published_time" content="2026-10-10">'
+                       f'<link rel="alternate" type="application/json" href="{api_href}"></head>'
+                       '<body class="page page-id-7579"><h1>Fonasa a un click</h1><p>Servicio permanente de telemedicina.</p></body>')
+    result = discover_clinics_inventory(CuratedBetaSourceScout('clinicas_achs_salud'), Loader(bodies), AS_OF, manifest=[clinic])
+    item = result['rows'][0]
+    assert item['publication_date'] is None and not result['raw_items']
+    if excluded:
+        assert item['status'] == 'excluded_surface' and item['type'] == 'service_page'
+        assert item['publisher_surface_evidence']['object_id'] == 7579
+        assert result['coverage_complete'] and result['unknown_publication_dates'] == 0
+        assert result['excluded_non_publication_surfaces'] == 1
+    else:
+        assert item['status'] == 'pending' and not result['coverage_complete']
+        assert result['unknown_publication_dates'] == 1
+
+
+def test_full_run6_capture_verifies_all_nine_clinics_and_keeps_static_pages_out_of_publication_counts(tmp_path):
+    from radar_salud.occupational_capture import CaptureLoader
+    base = Path(__file__).resolve().parents[1] / 'data/audits/source_e_recovery/actions/38117675962/inventory'
+    loader = CaptureLoader(tmp_path, replay=base)
+    result = discover_clinics_inventory(CuratedBetaSourceScout('clinicas_achs_salud'), loader, AS_OF)
+    assert len(result['clinic_reports']) == 9 and all(branch['coverage_complete'] for branch in result['clinic_reports'])
+    assert result['coverage_complete'] and result['unknown_publication_dates'] == 0
+    assert result['metrics']['90']['dated_articles'] == result['metrics']['90']['rejected'] == 11
+    assert result['metrics']['90']['candidates'] == 0 and len(result['raw_items']) == 11
+    service = next(row for row in result['rows'] if row['url'] == 'https://clinicaatacama.cl/telemedicina/')
+    assert service['status'] == 'excluded_surface' and service['publication_date'] is None
+    assert service['publisher_surface_evidence']['official_api_url'] == 'https://clinicaatacama.cl/wp-json/wp/v2/pages/7579'
+    assert not any(item.url == service['url'] for item in result['raw_items'])
+    mammogram = next(row for row in result['rows'] if row['url'] == 'https://www.clinicasur.cl/nuevo-mamografo/')
+    assert mammogram['publication_date'] == '2023-05-25' and mammogram['status'] == 'outside_window'
+    assert not result['errors'] and all(not branch['route_errors'] for branch in result['clinic_reports'])
 
 
 def test_observed_next_href_is_followed_and_a_page_budget_remains_partial():

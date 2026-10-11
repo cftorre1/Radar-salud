@@ -56,11 +56,13 @@ def _merge(report, extra):
     from .beta_sources import CuratedBetaSourceScout
     cfg = CuratedBetaSourceScout.SOURCES[report["source_slug"]]
     accepted_roles = cfg.get("accepted_roles", (cfg["role"],))
+    from .achs_clinics import is_static_service_surface
+    non_publication_urls = {row["url"] for row in unique_rows if is_static_service_surface(row)}
     verified_days = {row["url"]: valid_date(row.get("publication_date"), today=today) for row in unique_rows}
     blocked_urls = {row["url"] for row in unique_rows
                     if not verified_days[row["url"]] or row.get("status") == "pending"}
     report["raw_items"] = [item for item in report["raw_items"] if item.url not in blocked_urls]
-    unknown = sum(day is None for day in verified_days.values())
+    unknown = sum(day is None and url not in non_publication_urls for url, day in verified_days.items())
     report["coverage_complete"] = bool(report["coverage_complete"] and not unknown and
                                        not any(row.get("status") == "pending" for row in unique_rows))
     report["metrics"] = {}
@@ -81,6 +83,7 @@ def _merge(report, extra):
             "unknown_date_items": unknown, "complete": report["coverage_complete"],
         }
     report["unknown_publication_dates"] = unknown
+    report["excluded_non_publication_surfaces"] = len(non_publication_urls)
     report["technical_status"] = "ok" if report["coverage_complete"] else "partial" if unique_rows else "blocked"
     return report
 
