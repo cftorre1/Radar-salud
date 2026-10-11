@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-10T22:23:57.654378+00:00",
+  "at": "2026-10-11T04:35:05.983660+00:00",
   "sources": {
     "superintendencia": {
       "discovered": 740,
@@ -104,10 +104,15 @@
       "error_type": null
     },
     "diario_financiero": {
-      "discovered": 73,
-      "new": 14,
+      "discovered": 75,
+      "new": 0,
       "technical_status": "ok",
-      "error_type": null
+      "error_type": null,
+      "checked_at": "2026-10-11T04:35:05.983643+00:00",
+      "dated": 45,
+      "undated": 30,
+      "detail_errors": 0,
+      "newest_event_date": "2026-10-10"
     },
     "diario_oficial": {
       "discovered": 2,
@@ -116,6 +121,9 @@
       "error_type": null
     }
   },
+  "run_scope": [
+    "diario_financiero"
+  ],
   "successful_sources": 14,
   "failed_sources": 5
 }
