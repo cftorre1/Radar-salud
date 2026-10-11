@@ -542,6 +542,10 @@ def _source_blocker_identity(blocker, product_fingerprint, family):
     for component in blocker.get("blockers") or [blocker]:
         evidence = component.get("evidence", [])
         rows = list(_source_rows(evidence))
+        # The independently observed producer row is a direct evidence item.
+        # A recovery's nested source_evidence/live_baseline (or context data)
+        # cannot corroborate itself when deciding whether to discard it.
+        primary_rows = [item for item in evidence if _source_row(item)]
         covered = bool(rows)
         incomplete = bool(rows) and all(_source_probe_incomplete(row) for row in rows)
         problem = {key: component[key] for key in ("kind", "reason", "human_required") if key in component}
@@ -550,7 +554,7 @@ def _source_blocker_identity(blocker, product_fingerprint, family):
         if "source_urls" in component:
             problem["source_urls"] = sorted(component["source_urls"])
         problem["evidence"] = sorted({_hash(_source_problem(item, covered=covered)) for item in evidence
-                                      if not (incomplete and _redundant_incomplete_recovery(item, rows))})
+                                      if not (incomplete and _redundant_incomplete_recovery(item, primary_rows))})
         problems.append(_hash(problem))
     return {"family": family, "product_input_fingerprint": product_fingerprint,
             "source_problem_signature": _hash(sorted(set(problems))), "problems": sorted(set(problems))}

@@ -316,6 +316,48 @@ class IncompleteRecoveryIdentityTests(unittest.TestCase):
                 change(changed["blockers"][0]["evidence"][2]["automated_recovery"])
                 self.assertNotEqual(self.identity(changed), baseline)
 
+    def test_fresh_hash_bound_nested_source_facts_cannot_corroborate_themselves(self):
+        changes = (
+            lambda row: row.update(discovered=1), lambda row: row.update(dated=1),
+            lambda row: row.update(discovered=False), lambda row: row.update(inventory_hash="b" * 64),
+            lambda row: row.update(newest_event_date="2026-10-11"),
+            lambda row: row.update(samples=[{"source_url": "https://source.example/new", "title": "New bulletin",
+                "event_date": "2026-10-11", "content_hash": "c" * 64}]),
+            lambda row: row.update(samples=[{"publication_date": "2026-10-11T00:00:00Z"}]),
+            lambda row: row["requests"][0].update(url="https://source.example/changed"),
+            lambda row: row["requests"][0].update(status="FAIL", error="HTTP 403 Forbidden"),
+            lambda row: row.update(error="RuntimeError: bounded_probe_budget:25 requests per source"),
+            lambda row: row.update(publication_verified=True),
+            lambda row: row.update(scope="actual_changed_inventory"),
+        )
+        _, report = incomplete_recovery_observation()
+        baseline = self.identity(report)
+        for change in changes:
+            with self.subTest(change=change):
+                changed = deepcopy(report)
+                record = changed["blockers"][0]["evidence"][2]["automated_recovery"]
+                gate = record["evidence"][0]
+                change(gate["source_evidence"])
+                record["live_baseline"] = deepcopy(gate["source_evidence"])
+                raw = json.dumps(gate["source_evidence"], ensure_ascii=False)
+                output = "AUTONOMY_SOURCE_JSON=" + raw + "\n"
+                gate.update(output=output, source_evidence_sha256=hashlib.sha256(raw.encode()).hexdigest(),
+                    captured_stdout_sha256=hashlib.sha256(output.encode()).hexdigest(), captured_stdout_bytes=len(output.encode()))
+                record["failure_sha256"] = gate["captured_stdout_sha256"]
+                self.assertNotEqual(self.identity(changed), baseline)
+
+    def test_recovery_and_context_wrappers_are_not_independent_primary_source_rows(self):
+        _, report = incomplete_recovery_observation()
+        primary = report["blockers"][0]["evidence"].pop(1)
+        for wrapper in ({"context": {"source_evidence": primary}},
+                        {"automated_recovery": {"source_evidence": primary}}):
+            with self.subTest(wrapper=wrapper):
+                changed = deepcopy(report)
+                changed["blockers"][0]["evidence"].append(wrapper)
+                no_recovery = deepcopy(changed)
+                no_recovery["blockers"][0]["evidence"].pop(1)
+                self.assertNotEqual(self.identity(changed), self.identity(no_recovery))
+
     def test_skip_metadata_extra_field_or_integer_false_is_not_redundant(self):
         _, report = incomplete_recovery_observation()
         baseline = self.identity(report)
