@@ -179,5 +179,44 @@
     "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
     "repeated_paid_calls": 0
   },
-  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null"
+  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null",
+  "baseline": {
+    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+    "queue_states": {},
+    "health": {
+      "technical_status": "ok",
+      "editorial_outcome": "no_new_signals",
+      "last_signal_at": null,
+      "published": 0,
+      "pending": 0,
+      "rejected": 0
+    }
+  },
+  "checkpoint_commit": "fe592be",
+  "post_checkpoint_editorial_review": [
+    {
+      "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+      "fields": [
+        "scopes",
+        "watch_tags"
+      ],
+      "before_scopes": [
+        "Prestadores",
+        "Farma / medicamentos"
+      ],
+      "after_scopes": [
+        "Prestadores"
+      ],
+      "reason": "On-site pharmacy and laboratory are hospital capacity; no pharmaceutical-industry transaction or actor in this announcement."
+    },
+    {
+      "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+      "fields": [
+        "why_it_matters"
+      ],
+      "before": "Afecta a los prestadores privados, pacientes Fonasa e Isapre y a la oferta ambulatoria de la Región de Los Lagos. La expansión aumenta la capacidad de atención de Andes Salud en Puerto Varas, incorpora prestaciones diagnósticas y especialidades, y busca reducir traslados hacia otros centros. Merece atención ahora porque forma parte de un plan regional de inversión que también incluye nuevos puntos ambulatorios y un futuro Centro de Radioterapia en Puerto Montt.",
+      "after": "El proyecto ampliaría la oferta ambulatoria y diagnóstica para pacientes Fonasa e Isapre de Puerto Varas si se concreta según lo anunciado. Forma parte de un plan regional que también contempla nuevos puntos ambulatorios y un futuro Centro de Radioterapia en Puerto Montt. Los $10.000 millones corresponden a la primera etapa del plan regional; la fuente no los atribuye exclusivamente a este centro.",
+      "reason": "Preserve announced/projected capacity and assign CLP10bn to regional plan, never to this center alone."
+    }
+  ]
 }

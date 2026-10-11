@@ -89,3 +89,17 @@ def test_pending_source_quality_gate_blocks_fetch_and_assessment(monkeypatch,slu
     process=public_source_pipeline.process_corporate_news if processor=='corporate' else beta_sources.process_curated_beta_source
     with pytest.raises(DeferredProcessing,match='source quality gate not passed: pending_90_day_audit'):
         process(raw,{'slug':slug,'source_type':'corporate'})
+
+
+def test_hospital_pharmacy_and_lab_capacity_does_not_create_pharma_industry_scope(monkeypatch):
+    from radar_salud import beta_sources, llm_analysis
+    title='Clínica Andes Salud incorpora nueva capacidad hospitalaria'
+    raw=RawItem('andes_salud',title,'https://www.andessalud.cl/novedades/capacidad/','Andes Salud','corporate','2026-10-02',
+        metadata={'market_role':'provider','publication_date_source':'verified_article_header','source_quality_gate':'passed'})
+    html=f'<h1>{title}</h1><div>octubre 2, 2026</div><p>'+'El nuevo hospital incorpora 94 camas, farmacia y laboratorio para diagnóstico clínico. '*8+'</p>'
+    monkeypatch.setattr(beta_sources,'fetch_html',lambda _:html)
+    monkeypatch.setattr(llm_analysis,'analyze_news',lambda **kw:{'relevance_score':86,
+        'what_happened':'La nueva clínica incorpora camas, farmacia y laboratorio como parte de su capacidad hospitalaria.',
+        'why_it_matters':'Amplía la oferta hospitalaria y diagnóstica para pacientes de la región.'})
+    row=beta_sources.process_curated_beta_source(raw,{'base_confidence':80})
+    assert row['scopes']==['Prestadores']

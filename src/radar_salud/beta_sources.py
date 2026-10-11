@@ -349,7 +349,12 @@ def process_curated_beta_source(raw, cfg):
     if score < threshold or len(what) < 45 or len(why) < 35:
         return None
     scopes = ["Salud laboral"] if role == "mutuality" else (["Isapres", "Prestadores"] if role == "media" else ["Prestadores"])
-    inferred = _scopes(f"{raw.title} {body[:2500]}")
+    scope_text=f"{raw.title} {body[:2500]}"
+    if role.startswith('provider'):
+        # A hospital's pharmacy and diagnostic laboratory are clinical capacity.
+        # Named pharmaceutical actors/drug terms can still establish that scope.
+        scope_text=re.sub(r'\b(?:farmacias?|laboratorios?)\b','servicios clínicos',scope_text,flags=re.I)
+    inferred = _scopes(scope_text)
     for scope in inferred:
         if scope != "Sistema de salud" and scope not in scopes:
             scopes.append(scope)

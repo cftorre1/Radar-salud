@@ -7,6 +7,7 @@ on:
       - 'scripts/reconcile_providers.py'
       - 'scripts/provider_live_checkpoint.py'
       - 'scripts/provider_repair_checkpoint.py'
+      - 'scripts/export_provider_checkpoint.py'
       - 'data/audits/providers_2026_10_11/**'
       - '.github/workflows/provider-audit-checkpoint.yml'
 permissions:
@@ -41,17 +42,9 @@ jobs:
       - name: Probe original sites and evaluate only audited candidates
         if: hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') == ''
         run: timeout --signal=TERM 10m python scripts/provider_live_checkpoint.py
-      - name: Restore existing provider checkpoint without repeating paid analyses
-        if: hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') != ''
-        uses: actions/download-artifact@v4
-        with:
-          name: provider-checkpoint-8adedaa86f90a697270a9a48be6791817eca7ab6
-          run-id: 38112606335
-          github-token: ${{ github.token }}
-          path: work/prior-provider-checkpoint
-      - name: Export compact durable checkpoint into job log
-        if: hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') != ''
-        run: python scripts/export_provider_checkpoint.py
+      - name: Verify durable original checkpoints without repeating paid analyses
+        if: hashFiles('data/audits/provider_repair_receipt_2026_10_11.json') != ''
+        run: python scripts/export_provider_checkpoint.py --durable
       - name: Verify two repaired intake records without reassessing previous outcomes
         if: hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') != '' && hashFiles('data/audits/provider_repair_receipt_2026_10_11.json') == ''
         env:
