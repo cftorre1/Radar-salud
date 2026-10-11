@@ -331,7 +331,9 @@ def extract_article(html, expected_url):
                             article_verified=True)
     if re.search(r"opini[oó]n|editorial|columna", str(section), re.I):
         raise ExcludedArticle("excluded_opinion_content", title, body, metadata)
-    if len(title) < 18 or len(body) < 160:
+    # A brief primary headline is not missing evidence: real publisher stories
+    # such as "Vivir con TOC" contain complete, URL-bound factual article bodies.
+    if not title.strip() or len(body) < 160:
         raise ValueError("incomplete_article_evidence")
     return title, body, metadata
 
