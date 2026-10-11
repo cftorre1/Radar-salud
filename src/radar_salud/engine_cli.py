@@ -26,6 +26,7 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
     ap.add_argument("--reset-state",action="store_true")
+    ap.add_argument("--sources",nargs="+",help="Run selected core source slugs; other queue records remain untouched")
     args=ap.parse_args()
     if args.reset_state:
         ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
@@ -67,6 +68,10 @@ def main():
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
       ("pulso_latercera","pulso_latercera",CuratedBetaSourceScout("pulso_latercera").discover,process_curated_beta_source),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
+    if args.sources:
+        unknown=set(args.sources)-{name for name,_,_,_ in specs}
+        if unknown:ap.error("Unknown core sources: "+", ".join(sorted(unknown)))
+        specs=[spec for spec in specs if spec[0] in args.sources]
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
     discoveries={}
     discovery_details={}
@@ -94,22 +99,27 @@ def main():
         "successful_sources":sum(error is None for _,_,error in discoveries.values()),
         "failed_sources":sum(error is not None for _,_,error in discoveries.values()),
         "source_details":discovery_details,
+        "runtime":"daily_core",
+        "selected_sources":args.sources,
     })
     produced={name:[] for name in processors}
     queue.enforce_backfill_horizon()
-    for index,(key,item) in enumerate(queue.ready()):
+    ready=((key,item) for key,item in queue.ready() if item["source"] in processors)
+    for index,(key,item) in enumerate(ready):
         if args.limit and index>=args.limit:break
         if not has_capacity("fast") and not has_capacity("deep"):break
         queue.start(key)
         try:
             cfg,processor=processors[item["source"]]
-            row=processor(RawItem(**item["raw"]),cfg)
+            raw=RawItem(**item["raw"])
+            row=processor(raw,cfg)
             if row:
                 row.update(detected_at=item["detected_at"],ingestion_mode=item["lane"])
                 # Save output before terminal queue acknowledgement (crash safe replay).
                 history=merge_history(history,[row]);save_history(history_path,history)
                 produced[item["source"]].append(row)
-            queue.finish(key,"published" if row else "rejected",None if row else "processor_rejected")
+            reason=raw.metadata.get("rejection_reason") or "processor_rejected"
+            queue.finish(key,"published" if row else "rejected",None if row else reason)
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except DeferredProcessing:
             queue.finish(key,"retry","budget_or_analysis_deferred")

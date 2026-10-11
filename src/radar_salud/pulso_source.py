@@ -46,14 +46,18 @@ def health_anchor(text):
 
 
 def publication_day(value):
-    """Preserve the publisher timestamp and classify its Chile calendar date."""
+    """Use the calendar date exposed by the publisher's timestamp.
+
+    La Tercera listings and article bylines can disagree by a day. Preserve the
+    timestamp/offset; silently converting it to another timezone hides that gap.
+    """
     try:
         if len(value) == 10:
             return date.fromisoformat(value).isoformat()
         stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
         if stamp.tzinfo is None:
             return None
-        return stamp.astimezone(ZoneInfo("America/Santiago")).date().isoformat()
+        return stamp.date().isoformat()
     except (ValueError, TypeError, AttributeError):
         return None
 

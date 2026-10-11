@@ -241,6 +241,8 @@ _MEDIA_TERMS = _PROVIDER_TERMS + (
     "utilidad", "pérdida", "perdida", "capital", "bonos", "financiamiento", "fusión", "fusion",
     "participación", "participacion", "licitación", "licitacion", "tarifa", "precio", "planes",
     "cotizantes", "beneficiarios", "licencias médicas", "licencias medicas", "regulación", "regulacion",
+    "presupuesto", "deuda", "fuerza de ventas", "estructura organizacional", "suspensión de operaciones",
+    "suspende operaciones", "cierre", "traslado de pacientes", "residencias para adultos mayores",
 )
 _NOISE = (
     "seminario", "feria de bienestar", "premio", "reconoc", "conmemor", "campeonato", "charla",
@@ -250,6 +252,10 @@ _NOISE = (
 
 def _material(role, title, body):
     text = f"{title} {body}".lower()
+    if role == "media":
+        from .pulso_source import health_anchor
+        if not health_anchor(text):
+            return False
     if any(x in text for x in _NOISE) and not any(x in text for x in ("inversión", "fonasa", "isapre", "adquiere", "capital", "lista de espera")):
         return False
     terms = _MEDIA_TERMS if role == "media" else _MUTUAL_TERMS if role == "mutuality" else _PROVIDER_TERMS
@@ -264,11 +270,31 @@ def process_curated_beta_source(raw, cfg):
     from .processing import DeferredProcessing
     from .public_source_pipeline import enrich, _scopes
 
-    raw = enrich(raw)
+    if raw.source_slug == "pulso_latercera":
+        if not (raw.metadata.get("article_verified") and raw.metadata.get("page_text") and raw.event_date):
+            from .pulso_source import extract_article
+            try:
+                raw.title, body, evidence = extract_article(fetch_html(raw.url), raw.url)
+                raw.event_date = evidence["publication_date"]
+                raw.raw_text = body[:1800]
+                raw.metadata.update(evidence, page_text=body[:18000], market_role="media")
+            except Exception as exc:
+                raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "article_verification_failed", "error_type": type(exc).__name__}
+                raise DeferredProcessing("Pulso article verification failed") from exc
+    else:
+        raw = enrich(raw)
     body = raw.metadata.get("page_text") or raw.raw_text or ""
     role = raw.metadata.get("market_role") or "provider"
-    if not raw.event_date or len(body) < 160 or not _material(role, raw.title, body):
+    def reject(reason, **evidence):
+        raw.metadata["rejection_reason"] = reason
+        raw.metadata["editorial_assessment"] = dict(decision="rejected", reason=reason, **evidence)
         return None
+    if not raw.event_date:
+        return reject("missing_publication_date")
+    if len(body) < 160:
+        return reject("incomplete_article_evidence")
+    if not _material(role, raw.title, body):
+        return reject("media_materiality_prefilter" if role == "media" else "source_materiality_prefilter")
     kind = {
         "media": "prensa económica de alta confianza; señal temprana, atribuir y no convertir reporte de prensa en hecho oficial",
         "mutuality": "publicación institucional de mutualidad; filtrar marketing y priorizar cambios operacionales o de salud laboral",
@@ -277,18 +303,25 @@ def process_curated_beta_source(raw, cfg):
     }.get(role, "publicación sectorial")
     ai = analyze_news(title=raw.title, text=body[:10000], source_name=raw.source_name, kind=kind)
     if not ai:
+        raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "analysis_unavailable"}
         raise DeferredProcessing("curated beta source pending assessment")
     score = int(ai.get("relevance_score", 0))
     threshold = 72 if role == "media" else 75
     what = (ai.get("what_happened") or "").strip()
     why = (ai.get("why_it_matters") or "").strip()
-    if score < threshold or len(what) < 45 or len(why) < 35:
-        return None
-    scopes = ["Salud laboral"] if role == "mutuality" else (["Isapres", "Prestadores"] if role == "media" else ["Prestadores"])
+    if score < threshold:
+        return reject("editorial_relevance_below_threshold", relevance_score=score, threshold=threshold)
+    if len(what) < 45 or len(why) < 35:
+        return reject("incomplete_editorial_analysis", relevance_score=score, threshold=threshold)
+    if role == "media" and not re.search(r"pulso|la tercera", what, re.I):
+        what = f"Según Pulso / La Tercera, {what}"
+    scopes = ["Salud laboral"] if role == "mutuality" else (["Sistema de salud"] if role == "media" else ["Prestadores"])
     inferred = _scopes(f"{raw.title} {body[:2500]}")
     for scope in inferred:
         if scope != "Sistema de salud" and scope not in scopes:
             scopes.append(scope)
+    if role == "media" and len(scopes) > 1:
+        scopes.remove("Sistema de salud")
     raw.metadata.update({
         "what_happened": what,
         "why_it_matters": why,
@@ -311,6 +344,14 @@ def process_curated_beta_source(raw, cfg):
     if role == "media":
         row["evidence_maturity"] = "media_reported"
         row["confirmation_policy"] = "upgrade_same_signal_when_company_or_official_source_confirms"
+        row["publication_date"] = raw.metadata.get("publication_date") or raw.event_date
+        row["publication_timestamp"] = raw.metadata.get("publication_timestamp")
+        row["publication_date_source"] = raw.metadata.get("publication_date_source")
+        from .editorial_gate import publication_ready
+        accepted, reason, quality = publication_ready(row)
+        if not accepted:
+            return reject(reason, relevance_score=score, threshold=threshold, quality_score=quality)
+    raw.metadata["editorial_assessment"] = {"decision": "published", "relevance_score": score, "threshold": threshold}
     return row
 
 

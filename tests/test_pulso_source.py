@@ -50,8 +50,8 @@ def test_related_json_ld_date_does_not_date_primary_article():
         extract_article(html, URL)
 
 
-def test_publication_calendar_date_uses_chile_timezone():
-    assert publication_day("2026-10-11T01:30:00Z") == "2026-10-10"
+def test_publication_calendar_date_preserves_publisher_offset():
+    assert publication_day("2026-10-11T01:30:00Z") == "2026-10-11"
     assert publication_day("2026-10-10T22:30:00-03:00") == "2026-10-10"
     assert publication_day("2026-10-10T22:30:00") is None
 
