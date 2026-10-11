@@ -144,8 +144,8 @@ def test_document_processing_requires_live_pdf_even_when_raw_text_was_supplied(m
     item.raw_text = "Preexisting text must not count as a fresh PDF capture. " * 30
     cfg = source_index(load_sources(Path("config/sources.json")))["deis"]
     calls = []
-    monkeypatch.setattr("radar_salud.public_source_pipeline.extract_pdf_text",
-                        lambda url, **kwargs: calls.append(url) or "")
+    monkeypatch.setattr("radar_salud.public_source_pipeline.extract_public_source_pdf",
+                        lambda url, slug, **kwargs: calls.append(url) or "")
     monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_official_news",
                         lambda **kwargs: pytest.fail("An unreadable PDF must not reach assessment"))
     with pytest.raises(DeferredProcessing, match="official PDF unreadable"):
@@ -158,7 +158,7 @@ def test_captured_document_keeps_publication_provenance_while_assessment_pending
     item, = DeisDocumentScout(today=TODAY).discover_from_html(listing(document("Publicado 25/06/2026")))
     cfg = source_index(load_sources(Path("config/sources.json")))["deis"]
     body = "Manual de Orientaciones CIE-10. Corrección de la categoría Z54, convalecencia. " * 15
-    monkeypatch.setattr("radar_salud.public_source_pipeline.extract_pdf_text", lambda url, **kwargs: body)
+    monkeypatch.setattr("radar_salud.public_source_pipeline.extract_public_source_pdf", lambda url, slug, **kwargs: body)
     monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_official_news", lambda **kwargs: None)
     with pytest.raises(DeferredProcessing, match="pending assessment"):
         process_deis(item, cfg)
@@ -178,6 +178,6 @@ def test_document_provenance_tampering_is_rejected_before_capture(monkeypatch, m
         evidence["value"] = "Publicado 26/06/2026"
     else:
         evidence["url"] = "https://example.org/centrofic/"
-    monkeypatch.setattr("radar_salud.public_source_pipeline.extract_pdf_text",
+    monkeypatch.setattr("radar_salud.public_source_pipeline.extract_public_source_pdf",
                         lambda **kwargs: pytest.fail("Unverified provenance must not reach capture"))
     assert process_deis(item, cfg) is None

@@ -13,13 +13,19 @@ def _load(root:Path)->dict[str,Any]:
     except Exception:return {"sources":{}}
 
 def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,rows:list[dict]|None=None,
-           pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None)->None:
+           pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None,
+           error_details:dict|None=None,diagnostics:dict|None=None)->None:
     d=_load(root);src=d.setdefault("sources",{});rows=rows or []
     dates=[x.get("event_date") for x in rows if x.get("event_date")]
     prev=src.get(slug) or (src.get("superintendencia_stats",{}) if slug=="superintendencia" else {})
     last_signal=max(dates+[prev.get("last_signal_at") or ""]) if dates else prev.get("last_signal_at")
     coverage_gap=error is None and discovered==0 and not last_signal
+    if diagnostics and (diagnostics.get("coverage_status")=="no_verifiable_documents"
+                        or diagnostics.get("verified_publications")==0):
+        coverage_gap=True
     status="error" if error else ("warning" if (coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
+    partial=bool(diagnostics and diagnostics.get("partial_failure"))
+    if partial and not error:status="warning"
     try:
         age=(datetime.now(timezone.utc).date()-date.fromisoformat(str(last_signal)[:10])).days
         freshness="future" if age<0 else ("recent" if age<=7 else "older")
@@ -27,16 +33,26 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         freshness="unknown"
     editorial="not_evaluated" if error else ("published" if published else
         "pending" if pending else "rejected" if rejected else "no_new_signals")
+    if diagnostics and diagnostics.get("poll_mode")=="discovery_and_document_verification_only":
+        editorial="not_evaluated"
     src[slug]={
         "name":name,"checked_at":datetime.now(timezone.utc).isoformat(),
         "last_signal_at":last_signal,
         "discovered":discovered,"new":new,"published":published,
         "live_pending":live_pending,"backfill_pending":backfill_pending,"pending":pending,"deferred":deferred,"rejected":rejected,
         "status":status,"error":error,
-        "technical_status":"error" if error else "ok",
-        "coverage_status":"unverified" if error else ("gap" if coverage_gap else "observed"),
+        "technical_status":"error" if error else ("degraded" if partial else "ok"),
+        "coverage_status":"unverified" if error else ("partial" if partial else "gap" if coverage_gap else "observed"),
         "content_freshness":freshness,
         "editorial_outcome":editorial,
     }
+    if error_details:src[slug]["error_details"]=error_details
+    if diagnostics:src[slug]["discovery_diagnostics"]=diagnostics
+    if diagnostics and diagnostics.get("poll_mode"):
+        src[slug]["engine_checked_at"]=(src[slug]["checked_at"] if diagnostics["poll_mode"]=="daily_engine"
+                                        else prev.get("engine_checked_at",prev.get("checked_at")))
+        src[slug]["poll_mode"]=diagnostics["poll_mode"]
+    if diagnostics and "latest_verified_publication_date" in diagnostics:
+        src[slug]["latest_verified_publication_at"]=diagnostics["latest_verified_publication_date"]
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
     atomic_json(_path(root),d)

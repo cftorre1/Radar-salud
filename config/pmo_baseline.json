@@ -655,6 +655,17 @@
         "métricas por cuatro segmentos sin cuotas ni ceros inventados"
       ],
       "scope": "No certifica inventario INDISA completo de 90 días ni habilitación LIVE. Se revisará tras Actions de staging."
+    },
+    "public_sources_c_2026_10_11": {
+      "branch": "codex/c-public-sources-20261011",
+      "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "verdict": "engineering_pass_external_transport_blocked",
+      "artifacts": [
+        "data/audits/public_sources_c_20261011/runtime_capture.json",
+        "data/audits/public_sources_c_20261011/reviewer.json",
+        "data/audits/public_sources_c_20261011/qa.json",
+        "docs/PUBLIC_SOURCES_C_2026_10_11.md"
+      ]
     }
   },
   "blocks": [
@@ -1602,6 +1613,13 @@
         "coverage_balance_epidemiology_front",
         "docs/IMPROVEMENT_REVIEW_COVERAGE_EPIdEMIOLOGY_2026_09_28.md"
       ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Public-source C isolated lane: explicit publication provenance, official HTTPS redirects, dated DEIS classification documents and ISP publication-column coverage; current health stays error/unverified for exact external proxy403. No staging/main/production promotion.",
+      "evidence": [
+        "public_sources_c_2026_10_11"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1821,6 +1839,13 @@
         "Separate last-run discovered/published from cumulative queue counts; do not infer coverage rates by dividing unrelated scopes.",
         "Verify displayed source count and source dates against the same snapshot."
       ]
+    },
+    {
+      "id": "public_data_lane_2026_10_11_proxy_connect",
+      "severity": "warning",
+      "description": "FONASA newsroom, FONASA Datos Abiertos, ISP/ANAMED, ISP Surveillance and DEIS: 0/5 operational in direct scoped runtime replay. Enforced session proxy CONNECT403 rejects official domains before origin TLS. Browsing independently evaluates official fallbacks; no source is marked recovered. Engineering, regression tests and independent Reviewer complete; live capture blocked.",
+      "source": "data/audits/public_sources_c_20261011/runtime_capture.json",
+      "next_action": "Enable official egress hosts through supported environment configuration and replay scripts/check_public_sources.py --record-health; capture dated primary evidence before operational status."
     }
   ],
   "approved_addenda": [
@@ -3077,7 +3102,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T04:00:00Z",
+  "updated_at": "2026-10-11T04:37:57.965352+00:00",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",

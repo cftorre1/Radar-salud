@@ -1,0 +1,293 @@
+{
+  "checked_at": "2026-10-11T04:35:23.996631+00:00",
+  "mode": "discovery_and_document_verification_only",
+  "sources": {
+    "fonasa": {
+      "checked_at": "2026-10-11T04:35:24.011426+00:00",
+      "technical_status": "error",
+      "discovery_verified": false,
+      "operational": false,
+      "discovered": 0,
+      "error": "FonasaDiscoveryError",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "FonasaDiscoveryError"
+          },
+          {
+            "type": "URLError",
+            "reason": "Tunnel connection failed: 403 Forbidden"
+          },
+          {
+            "type": "OSError"
+          }
+        ],
+        "failure_signature": "FonasaDiscoveryError > URLError:Tunnel connection failed: 403 Forbidden > OSError > URLError:<urlopen error Tunnel connection failed: 403 Forbidden>",
+        "endpoint_failures": [
+          {
+            "url": "https://www.fonasa.gob.cl/noticias/",
+            "type": "URLError",
+            "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          }
+        ],
+        "transport_stage": "proxy_connect_rejected",
+        "origin_tls_observed": false
+      },
+      "diagnostics": {
+        "surfaces": [
+          {
+            "stage": "listing",
+            "url": "https://www.fonasa.gob.cl/noticias/",
+            "channel": "Noticias",
+            "exception": "URLError",
+            "message": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+            "http_status": null
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "items": []
+    },
+    "fonasa_datos_abiertos": {
+      "checked_at": "2026-10-11T04:35:24.062576+00:00",
+      "technical_status": "error",
+      "discovery_verified": false,
+      "operational": false,
+      "discovered": 0,
+      "error": "FonasaDiscoveryError",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "FonasaDiscoveryError"
+          }
+        ],
+        "failure_signature": "FonasaDiscoveryError > URLError:<urlopen error Tunnel connection failed: 403 Forbidden>; URLError:<urlopen error Tunnel connection failed: 403 Forbidden>; URLError:<urlopen error Tunnel connection failed: 403 Forbidden>; URLError:<urlopen error Tunnel connection failed: 403 Forbidden>",
+        "endpoint_failures": [
+          {
+            "url": "https://datosabiertos.fonasa.cl/noticias/",
+            "type": "URLError",
+            "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+            "type": "URLError",
+            "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+            "type": "URLError",
+            "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/analysis/",
+            "type": "URLError",
+            "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          }
+        ],
+        "transport_stage": "proxy_connect_rejected",
+        "origin_tls_observed": false
+      },
+      "diagnostics": {
+        "surfaces": [
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/noticias/",
+            "channel": "Noticias",
+            "exception": "URLError",
+            "message": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+            "http_status": null
+          },
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+            "channel": "Biblioteca / Cuenta Pública",
+            "exception": "URLError",
+            "message": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+            "http_status": null
+          },
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+            "channel": "Boletines estadísticos",
+            "exception": "URLError",
+            "message": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+            "http_status": null
+          },
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/analysis/",
+            "channel": "Análisis",
+            "exception": "URLError",
+            "message": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+            "http_status": null
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "items": []
+    },
+    "isp_anamed": {
+      "checked_at": "2026-10-11T04:35:24.085221+00:00",
+      "technical_status": "error",
+      "discovery_verified": false,
+      "operational": false,
+      "discovered": 0,
+      "error": "RuntimeError",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "RuntimeError"
+          },
+          {
+            "type": "URLError",
+            "reason": "Tunnel connection failed: 403 Forbidden"
+          },
+          {
+            "type": "OSError"
+          }
+        ],
+        "failure_signature": "RuntimeError > URLError:Tunnel connection failed: 403 Forbidden > OSError",
+        "transport_stage": "proxy_connect_rejected",
+        "origin_tls_observed": false
+      },
+      "diagnostics": {
+        "surfaces": [
+          {
+            "channel": "ANAMED",
+            "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          },
+          {
+            "channel": "ANAMED",
+            "url": "https://ispch.cl/categorias-alertas/anamed/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "items": []
+    },
+    "isp_surveillance": {
+      "checked_at": "2026-10-11T04:35:24.125690+00:00",
+      "technical_status": "error",
+      "discovery_verified": false,
+      "operational": false,
+      "discovered": 0,
+      "error": "RuntimeError",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "RuntimeError"
+          },
+          {
+            "type": "URLError",
+            "reason": "Tunnel connection failed: 403 Forbidden"
+          },
+          {
+            "type": "OSError"
+          }
+        ],
+        "failure_signature": "RuntimeError > URLError:Tunnel connection failed: 403 Forbidden > OSError",
+        "transport_stage": "proxy_connect_rejected",
+        "origin_tls_observed": false
+      },
+      "diagnostics": {
+        "surfaces": [
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://www.ispch.cl/boletin/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          },
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://ispch.cl/boletin/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          },
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://www.ispch.cl/boletin/",
+            "status": "blocked",
+            "items": 0
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "items": 0
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "items": []
+    },
+    "deis": {
+      "checked_at": "2026-10-11T04:35:24.136917+00:00",
+      "technical_status": "error",
+      "discovery_verified": false,
+      "operational": false,
+      "discovered": 0,
+      "error": "URLError",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "URLError",
+            "reason": "Tunnel connection failed: 403 Forbidden"
+          },
+          {
+            "type": "OSError"
+          }
+        ],
+        "failure_signature": "URLError:Tunnel connection failed: 403 Forbidden > OSError",
+        "transport_stage": "proxy_connect_rejected",
+        "origin_tls_observed": false
+      },
+      "diagnostics": {
+        "listing_url": "https://deis.minsal.cl/centrofic/",
+        "listing_recognized": false,
+        "fetch_error": "URLError",
+        "fetch_error_detail": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "items": []
+    }
+  },
+  "ai_calls": 0,
+  "ingestion_state_mutated": false,
+  "operational_sources": 0
+}

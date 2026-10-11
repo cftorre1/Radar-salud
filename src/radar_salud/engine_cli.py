@@ -9,7 +9,10 @@ from .distribution import UserPlan,choose_distribution
 from .history import load_history,merge_history,save_history
 from .regulatory import SuperintendenciaNormativaScout
 from .regulatory_pipeline import process_superintendencia_normativa
-from .source_scouts import SusesoNormativeScout,SusesoNewsScout,SusesoFiscalizacionScout,DfHealthScout,FonasaDataHubScout,FonasaNewsScout,IspSurveillanceScout,IspAnamedAlertScout,ClinicasChileScout,CorporateNewsroomScout,DeisResourceScout
+from .source_scouts import SusesoNormativeScout,SusesoNewsScout,SusesoFiscalizacionScout,DfHealthScout,ClinicasChileScout,CorporateNewsroomScout
+from .fonasa_sources import FonasaDataHubScout,FonasaNewsScout
+from .isp_sources import IspSurveillanceScout,IspAnamedAlertScout
+from .deis_sources import DeisDocumentScout
 from .diario_oficial import DiarioOficialHealthScout
 from .public_source_pipeline import process_suseso,process_suseso_news,process_suseso_fiscalizacion,process_minsal,process_df,process_diario_oficial,process_fonasa_data_hub,process_fonasa,process_isp_surveillance,process_isp_anamed,process_clinicas_chile,process_corporate_news,process_deis
 from .analysis_cache import seed_from_history
@@ -17,6 +20,7 @@ from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
 from .processing import DeferredProcessing
+from .public_source_evidence import failure_details, discovery_diagnostics, HOSTS as PUBLIC_DATA_SOURCES
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 
 def main():
@@ -56,7 +60,7 @@ def main():
       ("isp_anamed","isp_anamed",IspAnamedAlertScout().discover,process_isp_anamed),
       ("isp_surveillance","isp_surveillance",IspSurveillanceScout().discover,process_isp_surveillance),
       ("pfizer_chile","pfizer_chile",CorporateNewsroomScout("pfizer_chile").discover,process_corporate_news),
-      ("deis","deis",DeisResourceScout().discover,process_deis),
+      ("deis","deis",DeisDocumentScout().discover,process_deis),
       ("redsalud","redsalud",CorporateNewsroomScout("redsalud").discover,process_corporate_news),
       ("bupa_chile","bupa_chile",CorporateNewsroomScout("bupa_chile").discover,process_corporate_news),
       ("indisa","indisa",CorporateNewsroomScout("indisa").discover,process_corporate_news),
@@ -69,10 +73,15 @@ def main():
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
     discoveries={}
+    discovery_details={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
         try:
             items=discover()
+            scout=getattr(discover,"__self__",None)
+            if name in PUBLIC_DATA_SOURCES:
+                discovery_details[name]={"diagnostics":discovery_diagnostics(scout,items)}
+                discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
             seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw))}
             checked_at=datetime.now(timezone.utc).isoformat()
@@ -82,9 +91,15 @@ def main():
             discoveries[name]=(len(items),added,None)
         except Exception as exc:
             discoveries[name]=(0,0,type(exc).__name__)
+            if name in PUBLIC_DATA_SOURCES:
+                scout=getattr(discover,"__self__",None)
+                discovery_details[name]={"error_details":failure_details(exc),
+                                         "diagnostics":discovery_diagnostics(scout)}
+                discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"
     atomic_json(root/"data/state/discovery_run.json",{
         "at":datetime.now(timezone.utc).isoformat(),
-        "sources":{name:{"discovered":found,"new":added,"technical_status":"error" if error else "ok","error_type":error}
+        "sources":{name:{"discovered":found,"new":added,"technical_status":"error" if error else "degraded" if (discovery_details.get(name,{}).get("diagnostics") or {}).get("partial_failure") else "ok","error_type":error,
+                         **{k:v for k,v in discovery_details.get(name,{}).items() if v}}
                    for name,(found,added,error) in discoveries.items()},
         "successful_sources":sum(error is None for _,_,error in discoveries.values()),
         "failed_sources":sum(error is not None for _,_,error in discoveries.values()),
@@ -105,8 +120,18 @@ def main():
                 produced[item["source"]].append(row)
             queue.finish(key,"published" if row else "rejected",None if row else "processor_rejected")
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
-        except DeferredProcessing:
-            queue.finish(key,"retry","budget_or_analysis_deferred")
+        except DeferredProcessing as exc:
+            source=item["source"]
+            if source in PUBLIC_DATA_SOURCES:
+                reason=str(exc)[:250]
+                diagnostics=discovery_details.setdefault(source,{}).setdefault("diagnostics",{})
+                diagnostics.setdefault("processing_deferred",[]).append({"reason":reason,**failure_details(exc)})
+                if exc.__cause__ is not None or any(term in reason.lower() for term in ("pdf","capture","contenido","readable","documento")):
+                    diagnostics["partial_failure"]=True
+                    diagnostics["evidence_status"]="capture_pending"
+                queue.finish(key,"retry",reason)
+            else:
+                queue.finish(key,"retry","budget_or_analysis_deferred")
         except Exception as exc:
             queue.finish(key,"retry",type(exc).__name__)
     for name,(discovered,new,error) in discoveries.items():
@@ -114,7 +139,8 @@ def main():
         health_record(root,name,name=name.replace("_"," ").title(),discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
             rejected=counts["rejected"],rows=produced[name],error=error,
-            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"])
+            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"],
+            **{k:v for k,v in discovery_details.get(name,{}).items() if v})
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()

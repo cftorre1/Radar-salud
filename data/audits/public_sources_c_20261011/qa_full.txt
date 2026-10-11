@@ -1,0 +1,26 @@
+.......................s................................................ [ 19%]
+........................................................................ [ 39%]
+........................................................................ [ 59%]
+........................................................................ [ 78%]
+....................................................................F... [ 98%]
+......                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _
+
+    def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():
+        payload=json.loads(Path("web/data/radar_today.json").read_text())
+        rows=[m._normative_contract(s) for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
+>       assert len(rows)>=12
+E       AssertionError: assert 11 >= 12
+E        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])
+
+tests/test_web_snapshot.py:289: AssertionError
+=============================== warnings summary ===============================
+tests/test_beta_source_runtime_fast.py:11
+  /workspace/Radar-salud/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.integration
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review
+1 failed, 364 passed, 1 skipped, 1 warning in 2.54s

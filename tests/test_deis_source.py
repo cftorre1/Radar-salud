@@ -59,7 +59,9 @@ def test_deis_detail_and_editorial_assessment_fail_closed(monkeypatch):
     assert process_deis(raw,cfg) is None
     raw.event_date="2026-09-24"
     raw.metadata.update(resource_kind="dated_data_release",publication_date_source="article:published_time")
-    monkeypatch.setattr("radar_salud.public_source_pipeline.fetch_html",lambda _:"<p>Detalle oficial de la serie.</p>"*35)
+    raw.metadata["publication_date_evidence"]={"kind":"article:published_time","value":"2026-09-24T09:00:00-03:00",
+                                               "date":"2026-09-24","url":raw.url}
+    monkeypatch.setattr("radar_salud.public_source_pipeline.fetch_official_html",lambda *_:"<p>Detalle oficial de la serie.</p>"*35)
     monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_official_news",lambda **kw:None)
     with pytest.raises(DeferredProcessing,match="pending assessment"):
         process_deis(raw,cfg)

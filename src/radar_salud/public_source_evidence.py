@@ -84,9 +84,14 @@ def verified_publication(raw, *, today: date | None = None) -> bool:
     if not official_url(evidence.get("url"), raw.source_slug):
         return False
     if kind in DETAIL_KINDS and evidence["url"] != raw.url:
+        link_evidence=raw.metadata.get("publication_document_link_evidence") or {}
         if not (raw.source_slug == "isp_surveillance"
                 and raw.metadata.get("publication_detail_url") == evidence["url"]
+                and raw.metadata.get("document_detail_url") == evidence["url"]
                 and raw.metadata.get("publication_document_url") == raw.url
+                and isinstance(link_evidence,dict)
+                and link_evidence.get("detail_url") == evidence["url"]
+                and link_evidence.get("document_url") == raw.url
                 and str(raw.url).lower().endswith(".pdf")):
             return False
     if kind not in DETAIL_KINDS and evidence["url"] != raw.metadata.get("discovered_from"):
@@ -119,9 +124,21 @@ def failure_details(exc: Exception) -> dict:
             row["reason"] = str(current)[:300]
         chain.append(row)
         current = current.__cause__ or current.__context__
-    return {"exception_chain": chain, "failure_signature": " > ".join(
+    result={"exception_chain": chain, "failure_signature": " > ".join(
         entry["type"] + (":" + str(entry["http_status"]) if "http_status" in entry else "")
         + (":" + entry["reason"] if entry.get("reason") else "") for entry in chain)}
+    surfaces=getattr(exc,"diagnostics",None)
+    if isinstance(surfaces,list):
+        failures=[{"url":row.get("url"),"type":row.get("exception"),"reason":row.get("message")}
+                  for row in surfaces if row.get("exception")]
+        if failures:
+            result["endpoint_failures"]=failures
+            result["failure_signature"]+=" > "+"; ".join(
+                str(row["type"])+":"+str(row["reason"]) for row in failures)
+    if "Tunnel connection failed: 403" in result["failure_signature"]:
+        result["transport_stage"]="proxy_connect_rejected"
+        result["origin_tls_observed"]=False
+    return result
 
 
 def discovery_diagnostics(scout, items=None) -> dict:
