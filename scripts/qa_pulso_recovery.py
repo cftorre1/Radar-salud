@@ -57,6 +57,21 @@ CURRENT_PAID_STAMP = "current_paid_guard_revalidation_admission"
 CURRENT_PAID_RECEIPT = "current_paid_guard_revalidation_receipt"
 CURRENT_PAID_ATTEMPTS = "current_paid_new_fast_attempt_receipts"
 CURRENT_PAID_REVISION = "verified_current_paid_guard_revalidation_admission"
+FOLLOWUP_PAID_PATH = "data/audits/pulso_followup5_paid_guard_revalidation_manifest_2026_10_11.json"
+FOLLOWUP_PAID_SHA256 = "1c7389906e3855d2e622e4bc4aab91addcf1e8615e8251f03def15b447f922fa"
+FOLLOWUP_PAID_PRODUCER = "66f37ca044b4cf233bc9f649b7140ff8a69855d3"
+FOLLOWUP_PAID_CODE = "de51496ca0bfbe656c96551743e52024b9b6608e"
+FOLLOWUP_PAID_FINGERPRINT = "7f5da999f7df70bb15ef775bba83ab2ff2697f1065b99d0e48b73ec8e987efed"
+FOLLOWUP_PAID_FILES = {
+    "data/state/pending_queue.json": "03f998df22ec3410078c0f53dec6332e139799bd8febc92c547eba617f886fe0",
+    "data/audits/pulso_runtime_2026_10_11.json": "7448f3ef7e867ff49ca395f853e61b986f6b4c8c2c5207d18c08207cc6f91dec",
+    "data/ai_usage/responses.jsonl": "f5d5f4ba51d3c510997e2750d97e43d3e1d4c05196b3f2cdcb8eb5b18aec6a1b",
+    "data/history/superintendencia_signals.json": "45ec0b8571447a68465ddcedb92a843663616e6014d423554bb3e4408c4548f0",
+}
+FOLLOWUP_PAID_STAMP = "followup_paid_guard_revalidation_admission"
+FOLLOWUP_PAID_RECEIPT = "followup_paid_guard_revalidation_receipt"
+FOLLOWUP_PAID_ATTEMPTS = "followup_paid_new_fast_attempt_receipts"
+FOLLOWUP_PAID_REVISION = "verified_followup_paid_guard_revalidation_admission"
 FOLLOWUP_REVIEW_PINS = {
     "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json": (
         "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
@@ -903,6 +918,366 @@ def verify_current_paid_revalidation(item, root, *, execution, telemetry, origin
         prior981_and908_paid_provenances_preserved=True, publication_approved=False)
 
 
+def verify_followup_reassessment_context(context, entry, original):
+    raw, metadata = entry["raw"], entry["raw"]["metadata"]
+    if context is None:
+        return
+    if (context.get("source_url") != raw["url"] or context.get("source_publication_date") != raw["event_date"]
+            or context.get("source_body_sha256") != metadata["article_body_sha256"]
+            or context.get("publication_approved") is not False or context.get("rejection_approved") is not False
+            or not isinstance(context.get("context_text"), str) or not context["context_text"].strip()
+            or not context.get("source_verbatim_quotes")
+            or any(not isinstance(quote, str) or " ".join(quote.split()).casefold() not in
+                " ".join(metadata["page_text"].split()).casefold() for quote in context["source_verbatim_quotes"])):
+        raise ValueError("followup_paid_exact_primary_context_changed")
+    for target in context.get("published_comparison_targets", []):
+        old = original["data/state/pending_queue.json"][target["target_queue_fingerprint"]]
+        url, day = old["raw"]["url"], old["raw"]["event_date"]
+        signals = [signal for signal in original["data/history/superintendencia_signals.json"]["signals"]
+                   if signal.get("source_url") == url and signal.get("event_date") == day]
+        if (len(signals) != 1 or old.get("status") != "published"
+                or old["raw"]["metadata"].get("editorial_assessment", {}).get("decision") != "published"
+                or old["raw"]["metadata"]["editorial_assessment"].get("threshold") != 72
+                or target.get("target_queue_entry_sha256") != object_digest(old)
+                or target.get("target_full_primary_raw") != old["raw"]
+                or target.get("target_full_signal") != signals[0]
+                or target.get("target_signal_sha256") != object_digest(signals[0])
+                or signals[0].get("evidence_maturity") != "media_reported"
+                or signals[0].get("source_type") != "press_high_trust"
+                or signals[0].get("feed_visibility") is False
+                or type(signals[0].get("editorial_relevance")) is not int or signals[0]["editorial_relevance"] < 72):
+            raise ValueError("followup_paid_original_published_comparison_changed")
+
+
+def followup_paid_proof_files(root):
+    """Bind two current-answer readings; a historical 69 review is insufficient."""
+    path = local_capture_path(root, FOLLOWUP_PAID_PATH)
+    if not path.exists():
+        return {}
+    if digest(path.read_bytes()) != FOLLOWUP_PAID_SHA256:
+        raise ValueError("followup_paid_manifest_changed")
+    document = json.loads(path.read_bytes())
+    references = document.get("semantic_references") or []
+    if len(references) != 2 or len({ref.get("path") for ref in references}) != 2:
+        raise ValueError("followup_paid_two_independent_current_readers_required")
+    files = {FOLLOWUP_PAID_PATH: FOLLOWUP_PAID_SHA256}
+    for reference in references:
+        target = reference.get("path")
+        if (not isinstance(target, str) or not re.fullmatch(r"data/audits/pulso_[A-Za-z0-9_]+\.json", target)
+                or digest(local_capture_path(root, target).read_bytes()) != reference.get("sha256")):
+            raise ValueError("followup_paid_current_semantic_reader_changed")
+        files[target] = reference["sha256"]
+    return files
+
+
+def has_followup_paid_claim(metadata):
+    return (any(key in metadata for key in (FOLLOWUP_PAID_STAMP, FOLLOWUP_PAID_RECEIPT, FOLLOWUP_PAID_ATTEMPTS))
+            or any(isinstance(row, dict) and row.get("reason") == FOLLOWUP_PAID_REVISION
+                   for row in metadata.get("evidence_revisions", [])))
+
+
+def requires_followup_paid_authority(item, origin):
+    """A processed member of the frozen5 cannot erase its newer authority."""
+    metadata = item.get("raw", {}).get("metadata", {})
+    if has_followup_paid_claim(metadata):
+        return True
+    row = (origin or {}).get("rows", {}).get(item.get("raw", {}).get("url"))
+    if row is None:
+        return False
+    original = origin["originals"][row["queue_fingerprint"]]
+    old = original["raw"]["metadata"]
+    return (item.get("attempts") != original.get("attempts")
+            or item.get("status") not in {"pending", "retry"}
+            or any(metadata.get(field) != old.get(field) for field in (
+                "analysis_model_output", "pulso_editorial_proof_validation", "paid_guard_new_fast_attempt_receipts")))
+
+
+def followup_paid_pin(key, entry):
+    raw, meta = entry["raw"], entry["raw"]["metadata"]
+    model = meta["analysis_model_output"]; response = model["_pulso_analysis_meta"]
+    archived = json.loads(json.dumps(raw)); archived["metadata"].pop("evidence_revisions", None)
+    return dict(url=raw["url"], queue_fingerprint=key, publication_date=raw["event_date"],
+        title=raw["title"], source_name=raw["source_name"], source_type=raw["source_type"],
+        original_attempts=entry["attempts"], original_html_sha256=meta["html_sha256"],
+        body_sha256=meta["article_body_sha256"], body_characters=len(meta["page_text"]),
+        request_input_sha256=response["request_input_sha256"], analysis_input_sha256=response["analysis_text_sha256"],
+        original_response_id=response["response_id"], model_output_sha256=object_digest(model),
+        raw_model_output_sha256=response["raw_model_output_sha256"],
+        previous_validation_sha256=object_digest(meta["pulso_editorial_proof_validation"]),
+        previous_reason=entry["reason"], original_paid_raw_sha256=object_digest(archived))
+
+
+def followup_paid_origin(root, *, current_origin=None):
+    """Read 66f bytes and its failed verdict without turning that run into PASS."""
+    files = followup_paid_proof_files(root)
+    if not files:
+        raise ValueError("followup_paid_frozen_manifest_unavailable")
+    document = json.loads(local_capture_path(root, FOLLOWUP_PAID_PATH).read_bytes())
+    if (document.get("schema_version") != "pulso_followup_paid_guard_revalidation_manifest_v1"
+            or document.get("source_id") != SOURCE or document.get("producer_state_commit") != FOLLOWUP_PAID_PRODUCER
+            or document.get("producer_core_checkout") != FOLLOWUP_PAID_CODE
+            or document.get("producer_runtime_fingerprint_sha256") != FOLLOWUP_PAID_FINGERPRINT
+            or document.get("producer_files") != FOLLOWUP_PAID_FILES
+            or document.get("gate_threshold") != 72 or document.get("publication_approved") is not False):
+        raise ValueError("followup_paid_frozen_original_producer_changed")
+    original = {path: archived_editorial_input(root, dict(commit=FOLLOWUP_PAID_PRODUCER, path=path,
+                    file_sha256=sha), path) for path, sha in FOLLOWUP_PAID_FILES.items()}
+    execution = original["data/audits/pulso_runtime_2026_10_11.json"]["last_core_execution"]
+    telemetry = original["data/ai_usage/responses.jsonl"]
+    start, end = stamp(execution.get("started_at")), stamp(execution.get("finished_at"))
+    delta, error = budget_delta(execution)
+    events = [event for event in telemetry if start and end and stamp(event.get("at"))
+              and start <= stamp(event["at"]) <= end]
+    ids = {event.get("response_id") for event in events}
+    fingerprint = execution.get("runtime_fingerprint") or {}
+    if (execution.get("code_sha") != FOLLOWUP_PAID_CODE or fingerprint.get("sha256") != FOLLOWUP_PAID_FINGERPRINT
+            or object_digest(fingerprint.get("files")) != FOLLOWUP_PAID_FINGERPRINT
+            or execution.get("mode") != "real_core_processing" or execution.get("engine_called") is not True
+            or execution.get("engine_completed") is not True or execution.get("ai_guardrails_modified") is not False
+            or execution.get("processing_selection", {}).get("sha256") != PROCESSING_COHORT_SHA256
+            or not start or not end or start > end or error
+            or delta.get("fast") != dict(attempted=10, successful=10, failed=0)
+            or delta.get("deep") != dict(attempted=0, successful=0, failed=0)
+            or len(events) != 10 or len(ids) != 10 or None in ids
+            or any(event.get("kind") != "fast" or event.get("success") is not True for event in events)):
+        raise ValueError("followup_paid_original10_actual_responses_or_ledger_unverified")
+    queue = original["data/state/pending_queue.json"]
+    held = {key: item for key, item in queue.items() if item.get("source") == SOURCE and item.get("status") == "retry"
+            and item.get("raw", {}).get("metadata", {}).get("analysis_model_output", {}).get(
+                "_pulso_analysis_meta", {}).get("response_id") in ids}
+    rows = document.get("rows") or []
+    if (len(rows) != 5 or len(held) != 5 or len({row.get("url") for row in rows}) != 5
+            or {row.get("queue_fingerprint") for row in rows} != set(held)
+            or {route: sum(row.get("runtime_route") == route for row in rows) for route in (
+                "reuse_code_fn", "assess_contract_or_semantic_defect")} != dict(reuse_code_fn=3, assess_contract_or_semantic_defect=2)):
+        raise ValueError("followup_paid_exact_original5_partition_changed")
+    for reference in document["semantic_references"]:
+        reader = json.loads(local_capture_path(root, reference["path"]).read_bytes())
+        read_rows = reader.get("rows") or []
+        if (reader.get("producer_commit") != FOLLOWUP_PAID_PRODUCER
+                or len(read_rows) != 5 or {entry.get("url") for entry in read_rows} != {entry["url"] for entry in rows}):
+            raise ValueError("followup_paid_complete_current_body_model_reading_required")
+        # The second full reader also retains its exact paid fixture. Its
+        # declared byte hash links those bodies/outputs to the frozen review.
+        fixture = reader.get("actual_fixture")
+        if fixture:
+            payload = local_capture_path(root, fixture.get("path")).read_bytes()
+            if digest(payload) != fixture.get("sha256"):
+                raise ValueError("followup_paid_semantic_full_fixture_changed")
+            full = json.loads(gzip.decompress(payload))
+            if full.get("producer_commit") != FOLLOWUP_PAID_PRODUCER:
+                raise ValueError("followup_paid_semantic_fixture_wrong_producer")
+            full_rows = {entry["url"]: entry for entry in full.get("rows", [])}
+            if set(full_rows) != {entry["url"] for entry in rows}:
+                raise ValueError("followup_paid_semantic_fixture_missing_body")
+        else:
+            full_rows = {}
+        for reading in read_rows:
+            entry = next(value for value in held.values() if value["raw"]["url"] == reading["url"])
+            metadata = entry["raw"]["metadata"]
+            exact = full_rows.get(reading["url"], reading)
+            model = exact.get("original_full_model_output", exact.get("actual_full_model_output"))
+            reviewed_row = next(value for value in rows if value["url"] == reading["url"])
+            if (reading.get("publication_approved") is not False
+                    or reading.get("full_original_body_read", reading.get("full_primary_body_read")) is not True
+                    or reading.get("full_original_model_read", reading.get("full_actual_model_read")) is not True
+                    or reading.get("runtime_route") != reviewed_row["runtime_route"]
+                    or exact.get("original_full_primary_body") != metadata["page_text"]
+                    or model != metadata["analysis_model_output"]
+                    or reading.get("publication_date") != entry["raw"]["event_date"]
+                    or reading.get("original_html_sha256", reading.get("html_sha256")) != metadata["html_sha256"]
+                    or reading.get("original_body_sha256", reading.get("body_sha256")) != metadata["article_body_sha256"]
+                    or reading.get("original_response_id", reading.get("response_id")) != model["_pulso_analysis_meta"]["response_id"]):
+                raise ValueError("followup_paid_semantic_reader_not_exact_current_primary_model")
+    current_origin = current_origin or current_paid_origin(root)
+    previous_ids = {event.get("response_id") for event in telemetry if event.get("success") is True and event.get("kind") == "fast"}
+    for row in rows:
+        entry = held[row["queue_fingerprint"]]; raw, meta = entry["raw"], entry["raw"]["metadata"]
+        pin = followup_paid_pin(row["queue_fingerprint"], entry)
+        if (any(row.get(key) != value for key, value in pin.items())
+                or row.get("original_full_primary_body") != meta["page_text"]
+                or row.get("original_full_model_output") != meta["analysis_model_output"]
+                or row.get("actual_pulso_validation") != meta["pulso_editorial_proof_validation"]
+                or row.get("actual_queue_entry_sha256") != object_digest(entry)
+                or row.get("original_raw_sha256") != object_digest(raw) or row.get("original_metadata_sha256") != object_digest(meta)
+                or type(entry.get("attempts")) is not int or entry["attempts"] != 4
+                or row.get("semantic_references") != document["semantic_references"]
+                or row.get("publication_approved") is not False or row.get("runtime_route_is_publication_approval") is not False
+                or row.get("editorial_gate") != 72 or meta["pulso_editorial_proof_validation"].get("decision") != "deferred"
+                or entry.get("reason") != meta["pulso_editorial_proof_validation"].get("reason")
+                or meta.get("editorial_assessment", {}).get("decision") != "pending"
+                or meta["editorial_assessment"].get("reason") != entry["reason"]):
+            raise ValueError("followup_paid_full_original_primary_model_verdict_pin_changed")
+        # Both pre-existing admissions remain historical facts. Their original
+        # deferred result is accepted only as the premise for this exact repair.
+        try:
+            verify_code_repair_reference(raw, root, successful_response_ids=previous_ids, require_new_assessment=True)
+        except ValueError as error:
+            if str(error) != "code_repair_new_genuine_v5_validation_deferred":
+                raise
+        try:
+            verify_current_paid_revalidation(entry, root, execution=execution, telemetry=telemetry,
+                origin=current_origin, archived_execution=True)
+        except ValueError as error:
+            if str(error) != "current_paid_actual_bound_validation_still_deferred":
+                raise
+        if meta["pulso_editorial_proof_validation"] != replay_paid_guard_validation(
+                meta["analysis_model_output"], meta["page_text"], root, execution, pin, archived=True):
+            raise ValueError("followup_paid_original_verdict_not_actual_archived_guard")
+        verify_followup_reassessment_context(row.get("reassessment_context"), entry, original)
+    return dict(document=document, originals=held, queue=queue, rows={row["url"]: row for row in rows}, execution=execution,
+                telemetry=telemetry, history=original["data/history/superintendencia_signals.json"]["signals"],
+                successful_response_ids=ids, proof_files=files)
+
+
+def verify_followup_paid_revalidation(item, root, *, execution, telemetry, origin=None, archived_execution=False):
+    """Bind the new verdict to its actual paid66f answer or a new FAST call."""
+    raw, meta = item.get("raw", {}), item.get("raw", {}).get("metadata", {})
+    if origin is None and local_capture_path(root, FOLLOWUP_PAID_PATH).exists():
+        origin = followup_paid_origin(root)
+    if not has_followup_paid_claim(meta):
+        if requires_followup_paid_authority(item, origin):
+            raise ValueError("followup_paid_required_authority_missing")
+        return None
+    origin = origin or followup_paid_origin(root)
+    row = origin["rows"].get(raw.get("url"))
+    if row is None:
+        raise ValueError("followup_paid_original_not_in_exact5")
+    original = origin["originals"][row["queue_fingerprint"]]; old = original["raw"]["metadata"]
+    pin = followup_paid_pin(row["queue_fingerprint"], original)
+    expected = dict(schema_version="pulso_followup_paid_guard_revalidation_admission_v1", manifest_ref=FOLLOWUP_PAID_PATH,
+        manifest_sha256=FOLLOWUP_PAID_SHA256, producer_state_commit=FOLLOWUP_PAID_PRODUCER,
+        producer_core_checkout=FOLLOWUP_PAID_CODE, producer_runtime_fingerprint_sha256=FOLLOWUP_PAID_FINGERPRINT,
+        disposition=row["runtime_route"], new_model_request=row["runtime_route"] == "assess_contract_or_semantic_defect",
+        publication_approved=False, **{field: value for field, value in pin.items() if field not in {"title", "source_name"}})
+    if row.get("reassessment_context") is not None:
+        expected["reassessment_context_sha256"] = object_digest(row["reassessment_context"])
+    expected["admission_id"] = object_digest(expected)
+    revisions = [revision for revision in meta.get("evidence_revisions", []) if revision.get("reason") == FOLLOWUP_PAID_REVISION]
+    archive = json.loads(json.dumps(original["raw"])); archive["metadata"].pop("evidence_revisions", None)
+    if (meta.get(FOLLOWUP_PAID_STAMP) != expected or len(revisions) != 1
+            or revisions[0].get(FOLLOWUP_PAID_STAMP) != expected or revisions[0].get("previous_processing_raw") != archive
+            or any(revisions[0].get(field) != value for field, value in dict(
+                previous_retry_at=original.get("retry_at"), status_preserved=original["status"],
+                attempts_preserved=original["attempts"], lane_preserved=original["lane"],
+                detected_at_preserved=original["detected_at"], fingerprint_preserved=row["queue_fingerprint"]).items())
+            or item.get("lane") != original["lane"] or item.get("detected_at") != original["detected_at"]
+            or type(item.get("attempts")) is not int or item["attempts"] < original["attempts"] + 1
+            or meta.get("current_paid_guard_revalidation_admission") != old.get("current_paid_guard_revalidation_admission")
+            or meta.get("paid_guard_revalidation_admission") != old.get("paid_guard_revalidation_admission")
+            or meta.get("editorial_code_repair_admission") != old.get("editorial_code_repair_admission")
+            or any(revision not in meta.get("evidence_revisions", []) for revision in old.get("evidence_revisions", []))
+            or meta.get("paid_guard_new_fast_attempt_receipts", [])[:len(old["paid_guard_new_fast_attempt_receipts"])] != old["paid_guard_new_fast_attempt_receipts"]
+            or meta.get(CURRENT_PAID_ATTEMPTS, [])[:len(old[CURRENT_PAID_ATTEMPTS])] != old[CURRENT_PAID_ATTEMPTS]):
+        raise ValueError("followup_paid_admission_archive_or_historical_chain_changed")
+    body = meta.get("page_text")
+    request = "Fuente: Pulso / La Tercera\nTítulo: " + str(raw.get("title")) + "\nContenido:\n" + str(body)
+    if (raw.get("url") != pin["url"] or raw.get("title") != pin["title"] or raw.get("event_date") != pin["publication_date"]
+            or raw.get("source_slug") != SOURCE or raw.get("source_name") != pin["source_name"] or raw.get("source_type") != "press_high_trust"
+            or meta.get("canonical_url") != pin["url"] or meta.get("publication_date") != pin["publication_date"]
+            or meta.get("html_sha256") != pin["original_html_sha256"] or body != old["page_text"]
+            or digest(str(body).encode()) != pin["body_sha256"] or meta.get("article_body_sha256") != pin["body_sha256"]
+            or meta.get("analysis_base_article_body_sha256") != pin["body_sha256"]
+            or digest(request.encode()) != pin["request_input_sha256"] or meta.get("analysis_input_body_sha256") != pin["analysis_input_sha256"]
+            or meta.get("analysis_request_input_sha256") != pin["request_input_sha256"]
+            or meta.get("source_quality_gate") != "passed" or meta.get("market_role") != "media"
+            or meta.get("analysis_input_format") != "full_primary_article_body"
+            or any(meta.get(field) is not True for field in (
+                "article_verified", "article_body_complete", "primary_identity_verified", "publication_date_verified", "analysis_input_complete"))):
+        raise ValueError("followup_paid_current_primary_or_full_request_changed")
+    model = meta.get("analysis_model_output") or {}; response = model.get("_pulso_analysis_meta") or {}
+    validation = meta.get("pulso_editorial_proof_validation") or {}
+    begin, end = stamp(execution.get("started_at")), stamp(execution.get("finished_at"))
+    guard_sha = digest(execution_bound_paid_guard_bytes(root, execution, archived=archived_execution))
+    if expected["new_model_request"]:
+        receipts = meta.get(FOLLOWUP_PAID_ATTEMPTS) or []; latest = receipts[-1] if receipts else {}
+        ids = [attempt.get("new_response_id") for attempt in receipts]
+        all_ids = {event.get("response_id") for event in telemetry if event.get("kind") == "fast" and event.get("success") is True}
+        current_ids = {event.get("response_id") for event in telemetry if event.get("kind") == "fast" and event.get("success") is True
+                       and begin and end and stamp(event.get("at")) and begin <= stamp(event["at"]) <= end}
+        when = stamp(latest.get("assessed_at"))
+        legacy = meta.get("paid_guard_new_fast_attempt_receipts") or []
+        previous_current = meta.get(CURRENT_PAID_ATTEMPTS) or []
+        if (FOLLOWUP_PAID_RECEIPT in meta or not receipts or len(set(ids)) != len(ids)
+                or pin["original_response_id"] in ids or any(value not in all_ids for value in ids)
+                or response.get("response_id") not in current_ids
+                or any(attempt.get("admission_id") != expected["admission_id"]
+                    or attempt.get("original_response_id") != pin["original_response_id"]
+                    or attempt.get("model_output_sha256") != object_digest(attempt.get("full_model_output"))
+                    or attempt.get("new_validation_sha256") != object_digest(attempt.get("new_validation"))
+                    or attempt.get("schema_version") != "pulso_followup_paid_new_fast_attempt_receipt_v1"
+                    or attempt.get("full_model_output", {}).get("_pulso_analysis_meta", {}).get("response_id") != attempt.get("new_response_id")
+                    or attempt.get("new_validation", {}).get("model_response") != attempt.get("full_model_output", {}).get("_pulso_analysis_meta")
+                    or attempt.get("publication_approved") is not False or attempt.get("new_model_request") is not True
+                    for attempt in receipts)
+                or latest.get("full_model_output") != model or latest.get("new_validation") != validation
+                or latest.get("validator_guard_sha256") != guard_sha or latest.get("validator_version") != CODE_REPAIR_VERSION
+                or latest.get("new_response_id") != response.get("response_id")
+                or not when or not begin or not end or not begin <= when <= end
+                or len(legacy) < len(old["paid_guard_new_fast_attempt_receipts"]) + len(receipts)
+                or len(previous_current) < len(old[CURRENT_PAID_ATTEMPTS]) + len(receipts)
+                or any(not any(previous.get("full_model_output") == attempt["full_model_output"]
+                    and previous.get("new_validation") == attempt["new_validation"]
+                    and previous.get("new_response_id") == attempt["new_response_id"] for previous in previous_current) for attempt in receipts)
+                or any(not any(previous.get("full_model_output") == attempt["full_model_output"]
+                    and previous.get("new_validation") == attempt["new_validation"]
+                    and previous.get("new_response_id") == attempt["new_response_id"] for previous in legacy) for attempt in receipts)):
+            raise ValueError("followup_paid_contract_defect_requires_new_actual_bound_fast")
+    else:
+        receipt = meta.get(FOLLOWUP_PAID_RECEIPT)
+        when = stamp(receipt.get("revalidated_at")) if isinstance(receipt, dict) else None
+        expected_receipt = dict(schema_version="pulso_followup_paid_guard_revalidation_receipt_v1", admission=expected,
+            producer_state_commit=FOLLOWUP_PAID_PRODUCER, producer_core_checkout=FOLLOWUP_PAID_CODE,
+            producer_runtime_fingerprint_sha256=FOLLOWUP_PAID_FINGERPRINT, original_response_id=pin["original_response_id"],
+            original_model_output_sha256=pin["model_output_sha256"], original_raw_model_output_sha256=pin["raw_model_output_sha256"],
+            previous_validation=old["pulso_editorial_proof_validation"], previous_validation_sha256=pin["previous_validation_sha256"],
+            new_validation=validation, new_validation_sha256=object_digest(validation), validator_guard_sha256=guard_sha,
+            validator_version=CODE_REPAIR_VERSION, revalidated_at=(receipt or {}).get("revalidated_at"), new_model_request=False,
+            original_model_output_unchanged=True, publication_approved=False, quote_validation_is_semantic_approval=False)
+        if (model != old["analysis_model_output"] or response.get("response_id") not in origin["successful_response_ids"]
+                or FOLLOWUP_PAID_ATTEMPTS in meta or receipt != expected_receipt
+                or meta.get(CURRENT_PAID_ATTEMPTS) != old[CURRENT_PAID_ATTEMPTS]
+                or meta.get("paid_guard_new_fast_attempt_receipts") != old["paid_guard_new_fast_attempt_receipts"]
+                or not when or not begin or not end or not begin <= when <= end):
+            raise ValueError("followup_paid_unchanged66f_answer_or_current_guard_receipt_changed")
+    binding = meta.get("primary_item_binding") or {}
+    if (response.get("schema_version") != CODE_REPAIR_VERSION or response.get("source_name") != "Pulso / La Tercera"
+            or response.get("analysis_text_sha256") != pin["analysis_input_sha256"]
+            or response.get("request_input_sha256") != pin["request_input_sha256"]
+            or not SHA.fullmatch(str(response.get("raw_model_output_sha256", "")))
+            or binding.get("verified") is not True or binding.get("raw_url") != pin["url"]
+            or binding.get("primary_canonical_url") != pin["url"] or binding.get("raw_event_date") != pin["publication_date"]
+            or binding.get("primary_publication_date") != pin["publication_date"]):
+        raise ValueError("followup_paid_final_primary_or_actual_model_binding_missing")
+    if validation != replay_paid_guard_validation(model, body, root, execution, pin, archived=archived_execution):
+        raise ValueError("followup_paid_recorded_verdict_not_execution_bound_guard_result")
+    if validation.get("decision") == "deferred":
+        raise ValueError("followup_paid_actual_bound_validation_still_deferred")
+    if validation.get("decision") not in {"ready", "rejected"}:
+        raise ValueError("followup_paid_actual_validation_invalid")
+    return dict(manifest_ref=FOLLOWUP_PAID_PATH, manifest_sha256=FOLLOWUP_PAID_SHA256, disposition=row["runtime_route"],
+        original_producer=FOLLOWUP_PAID_PRODUCER, original_response_id=pin["original_response_id"],
+        current_response_id=response["response_id"], old_paid_output_reused=not expected["new_model_request"],
+        prior981_and908_and66_paid_provenances_preserved=True, publication_approved=False)
+
+
+def unchanged_current_paid_execution(item, followup_origin):
+    """The seven genuine terminal12 keep their66 guard/window after followup."""
+    if followup_origin is None or has_followup_paid_claim(item.get("raw", {}).get("metadata", {})):
+        return None
+    key = item.get("raw", {}).get("metadata", {}).get("queue_identity_fingerprint")
+    old = followup_origin["queue"].get(key)
+    if not old or old.get("status") not in {"published", "rejected"} or item.get("status") not in {"published", "rejected"}:
+        return None
+    metadata, prior = item["raw"]["metadata"], old["raw"]["metadata"]
+    if (any(item.get(field) != old.get(field) for field in ("attempts", "lane", "detected_at"))
+            or any(metadata.get(field) != prior.get(field) for field in (
+                "analysis_model_output", "pulso_editorial_proof_validation", "current_paid_guard_revalidation_admission",
+                "current_paid_guard_revalidation_receipt", "current_paid_new_fast_attempt_receipts"))):
+        return None
+    return followup_origin["execution"]
+
+
 def unchanged_previous_paid_execution(item, current_origin):
     """Terminal reuse remains bound to its real908 execution, not a later run."""
     if current_origin is None or has_current_paid_claim(item.get("raw", {}).get("metadata", {})):
@@ -1130,7 +1505,28 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
             binding = reader.get("original_output_binding") or {}
             revalidated_paid_response = None
             revalidated_current_paid_response = None
-            if not events and has_current_paid_claim(paid_metadata):
+            revalidated_followup_paid_response = None
+            if not events and has_followup_paid_claim(paid_metadata):
+                if FOLLOWUP_PAID_PRODUCER not in revalidation_origins:
+                    revalidation_origins[FOLLOWUP_PAID_PRODUCER] = followup_paid_origin(root)
+                else:
+                    followup_paid_proof_files(root)
+                origin = revalidation_origins[FOLLOWUP_PAID_PRODUCER]
+                receipt = verify_followup_paid_revalidation(paid, root, execution=execution,
+                    telemetry=archived["telemetry"], origin=origin, archived_execution=True)
+                if receipt.get("old_paid_output_reused") is not True or receipt.get("disposition") != "reuse_code_fn":
+                    raise ValueError("editorial_followup_revalidation_not_exact_frozen3_publication")
+                old_execution = origin["execution"]
+                old_begin, old_end = stamp(old_execution["started_at"]), stamp(old_execution["finished_at"])
+                events = [event for event in origin["telemetry"]
+                    if event.get("response_id") == model_response.get("response_id")
+                    and event.get("success") is True and event.get("kind") == "fast"
+                    and stamp(event.get("at")) and old_begin <= stamp(event["at"]) <= old_end]
+                revalidated_followup_paid_response = dict(original_producer=FOLLOWUP_PAID_PRODUCER,
+                    original_core_code=FOLLOWUP_PAID_CODE, publication_execution_code=execution["code_sha"],
+                    manifest_ref=FOLLOWUP_PAID_PATH, manifest_sha256=FOLLOWUP_PAID_SHA256,
+                    actual_receipt_sha256=object_digest(paid_metadata[FOLLOWUP_PAID_RECEIPT]), proof=receipt)
+            elif not events and has_current_paid_claim(paid_metadata):
                 if CURRENT_PAID_PRODUCER not in revalidation_origins:
                     revalidation_origins[CURRENT_PAID_PRODUCER] = current_paid_origin(root)
                 else:
@@ -1179,6 +1575,8 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                 raise ValueError("editorial_revalidated_response_dual_provenance_changed")
             if binding.get("revalidated_current_paid_response") != revalidated_current_paid_response:
                 raise ValueError("editorial_current_revalidated_response_dual_provenance_changed")
+            if binding.get("revalidated_followup_paid_response") != revalidated_followup_paid_response:
+                raise ValueError("editorial_followup_revalidated_response_dual_provenance_changed")
             request = "Fuente: Pulso / La Tercera\nTítulo: " + paid["raw"]["title"] + "\nContenido:\n" + body
             if (paid.get("status") != "published" or type(paid.get("attempts")) is not int or paid["attempts"] < 1
                     or paid["raw"].get("source_slug") != SOURCE or paid["raw"].get("source_type") != "press_high_trust"
@@ -2519,6 +2917,7 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
             references.add(INCREMENTAL_REVIEW_PATH)
         references.update(paid_revalidation_proof_files(root))
         references.update(current_paid_proof_files(root))
+        references.update(followup_paid_proof_files(root))
         require({path: digest(local_capture_path(root, path).read_bytes()) for path in references} == old["referenced_proof_files"],
                 "replay_changed_independent_body_reviews_or_editorial_provenance")
         require(not old.get("reviewed_hold_bindings"), "reviewed_duplicate_hold_requires_independent_target_validation")
@@ -2844,6 +3243,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
         selected_urls = set((execution.get("processing_selection") or {}).get("selected_urls", []))
         paid_origin = None
         current_origin = None
+        followup_origin = None
         if any(item.get("source") == SOURCE and has_paid_revalidation_claim(item.get("raw", {}).get("metadata", {}))
                for item in queue.values()):
             try:
@@ -2855,6 +3255,11 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                 current_origin = current_paid_origin(root, previous_origin=paid_origin)
             except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
                 fail("processing", "current_paid_originals_or_two_current_readers_unverified", error=str(error))
+        if local_capture_path(root, FOLLOWUP_PAID_PATH).exists():
+            try:
+                followup_origin = followup_paid_origin(root, current_origin=current_origin)
+            except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+                fail("processing", "followup_paid_originals_or_two_current_readers_unverified", error=str(error))
         for url in actual:
             row = rows.get(url, {})
             reason = row.get("exact_reason") or ""
@@ -2885,13 +3290,35 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                         if str(error) == "code_repair_new_genuine_v5_validation_deferred"
                         else "code_repair_old_or_new_paid_evidence_unverified")
                 fail("processing", code, url=url, error=str(error))
-            if requires_current_paid_authority(item, current_origin):
+            if requires_followup_paid_authority(item, followup_origin):
+                try:
+                    if followup_origin is None:
+                        raise ValueError("followup_paid_origin_unavailable")
+                    validation_execution = idempotence_baseline["baseline_execution"] if replay_checks else execution
+                    revalidated = verify_followup_paid_revalidation(item, root, execution=validation_execution,
+                        telemetry=telemetry, origin=followup_origin)
+                    checks.setdefault("immutable_followup_paid_guard_revalidations", {})[url] = revalidated
+                except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+                    code = ("followup_paid_actual_validation_deferred"
+                            if str(error) == "followup_paid_actual_bound_validation_still_deferred"
+                            else "followup_paid_revalidation_provenance_unverified")
+                    fail("processing", code, url=url, error=str(error))
+            elif requires_current_paid_authority(item, current_origin):
                 try:
                     if current_origin is None:
                         raise ValueError("current_paid_origin_unavailable")
                     validation_execution = idempotence_baseline["baseline_execution"] if replay_checks else execution
+                    previous_execution = unchanged_current_paid_execution(item, followup_origin)
+                    # Original66 held responses keep their actual failed validator;
+                    # only a new followup claim can establish a different verdict.
+                    if (previous_execution is None and followup_origin is not None
+                            and not requires_followup_paid_authority(item, followup_origin)
+                            and url in followup_origin["rows"]):
+                        previous_execution = followup_origin["execution"]
+                    if previous_execution is not None:
+                        validation_execution = previous_execution
                     revalidated = verify_current_paid_revalidation(item, root, execution=validation_execution,
-                        telemetry=telemetry, origin=current_origin)
+                        telemetry=telemetry, origin=current_origin, archived_execution=previous_execution is not None)
                     checks.setdefault("immutable_current_paid_guard_revalidations", {})[url] = revalidated
                 except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
                     code = ("current_paid_actual_validation_deferred"
