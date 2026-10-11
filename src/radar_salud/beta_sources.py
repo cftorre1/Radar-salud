@@ -281,7 +281,10 @@ def _material(role, title, body):
             r"red p[uú]blica(?: y privada)?|red privada", text))
         ges_coverage = bool(re.search(r"\bges\b|garant[ií]as? expl[ií]citas? de salud", text)) and bool(
             re.search(r"\bcobertura\b|incorpor", text))
-        return care_obligation or ges_coverage
+        care_legislation = bool(re.search(r"c[oó]digo sanitario", text)) and bool(
+            re.search(r"proyecto|modific|tramit", text)) and bool(re.search(
+                r"\bprestaci[oó]n\b|atenci[oó]n|interrupci[oó]n(?: voluntaria)? del embarazo", text))
+        return care_obligation or ges_coverage or care_legislation
     return False
 
 

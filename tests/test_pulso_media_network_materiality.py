@@ -54,12 +54,24 @@ def test_original_ges_announcement_preserves_its_historical_period_for_editorial
     assert 'esta patología no es GES' in entry['body']
 
 
+def test_original_clinical_legislation_remains_a_proposal_with_its_actual_dates():
+    entry = next(row for row in REAL if row['name'] == 'care_legislation')
+    assert entry['publication_date'] == '2026-07-26'
+    assert 'Fue presentado el 7 de julio' in entry['body']
+    assert 'se encuentra en tramitación en la Comisión de Salud' in entry['body']
+    assert 'el Gobierno aún no adopta una postura definitiva' in entry['body']
+    assert 'La iniciativa busca modificar el artículo 119 del Código Sanitario' in entry['body']
+    assert 'si la paciente declina escucharla, el profesional deberá negarse a practicar la interrupción' in entry['body']
+
+
 @pytest.mark.parametrize(('title', 'body'), [
     ('Ministerio de Salud presenta una guía de bienestar', 'La salud mejora con hábitos de descanso y una alimentación equilibrada.'),
     ('Salud recomienda usar mascarilla', 'El Ministerio de Salud recomienda usar mascarilla al visitar los servicios de urgencia.'),
     ('Salud: uso obligatorio de casco', 'El uso obligatorio de casco para bicicletas busca mejorar la salud en las rutas urbanas.'),
     ('Salud y gestiones culturales', 'El anuncio incorpora nuevas gestiones en una actividad de bienestar sin cambio asistencial.'),
     ('Salud celebra una actividad comunitaria', 'La comunidad recuerda las Garantías Explícitas de Salud sin cambios anunciados ni barreras actuales.'),
+    ('Salud ofrece una charla histórica', 'La charla explica el Código Sanitario y el acceso a una prestación que ya existe.'),
+    ('Salud debate un proyecto de administración de edificios', 'El proyecto modifica el Código Sanitario en materias de administración de edificios.'),
 ])
 def test_narrow_network_matches_do_not_admit_advice_or_substring_noise(title, body):
     assert not beta_sources._material('media', title, body)

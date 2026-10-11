@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_id": "pulso_latercera",
-  "audited_code_sha": "67e887eccc60808f31e38598c2eba55950817bd6",
+  "audited_code_sha": "e94eeea476e8e76d317386bf2a13dbfbe592c404",
   "run_id": 38115982275,
-  "verdict": "COMPLETE_QUEUED_BODY_COMPARISON_TWO_PREFILTER_OMISSIONS_REPAIRED_PENDING_ORIGINAL_CORPUS_AND_ACTUAL_AI",
+  "verdict": "COMPLETE_QUEUED_BODY_COMPARISON_THREE_PREFILTER_OMISSIONS_REPAIRED_PENDING_ORIGINAL_CORPUS_AND_ACTUAL_AI",
   "source_queue_sha256": "61cfa3c43ec5804252a98743fbcaa5d682f17c4cc19ba8f1fe01fcde68f55648",
   "frozen_control_sha256": "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374",
   "method": "Evaluate every Pulso raw retained by the actual cold discovery core. Compare complete saved SHA-bound primary bodies with historical model input cap5500, check body completeness proof and join current discovery/control identity. No paid analysis, publication, queue changes or recall denominator changes.",
@@ -23,7 +23,7 @@
     "historical_5500_cap_changes_materiality": 38,
     "historical_5500_cap_removes_health_anchor": 32,
     "materiality_before": 634,
-    "materiality_after": 636
+    "materiality_after": 637
   },
   "repairs": [
     {
@@ -42,6 +42,15 @@
       "body_characters": 2190,
       "primary_body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
       "evidence": "care-network mandatory use of masks in public/private urgency, dialysis and oncohematology units",
+      "decision": "permit unchanged editorial analysis; neither approved nor published"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/gobierno-se-abre-a-dialogar-por-proyecto-escucha-su-corazon-y-plantea-revisar-denuncia-obligatoria-en-casos-de-violacion/",
+      "title": "Gobierno se abre a dialogar por proyecto “Escucha su corazón” y plantea revisar denuncia obligatoria en casos de violación",
+      "publication_date": "2026-07-26",
+      "body_characters": 3360,
+      "primary_body_sha256": "1258254221448c8d8d02fb6e54bfd43709a5d52710b4506ed5de336d18b1753b",
+      "evidence": "Reported proposal modifying article119 CodeSanitary, submittedJuly7, undertramitación and executive has no definitive position; proposed clinical refusal is not current law.",
       "decision": "permit unchanged editorial analysis; neither approved nor published"
     }
   ],
@@ -17668,7 +17677,7 @@
       "assessment": null,
       "title_health": false,
       "material_before_repair": false,
-      "material_after_repair": false,
+      "material_after_repair": true,
       "current_core_detected": true,
       "frozen_control_primary_90": false,
       "original_http_bytes_locally_reverified": false,
@@ -20006,5 +20015,10 @@
       "original_http_bytes_locally_reverified": false,
       "analysis_attempted_in_cold_core": false
     }
-  ]
+  ],
+  "validation": {
+    "targeted_tests": "88 passed",
+    "real_original_control_cross_check": "Independent Reviewer re-extracted58available original controls;57eligibleafterfirsttworules,oneindividualclinicalincidentrejected. FullcoldoriginalHTMLprojectionpending.",
+    "score_threshold": 72
+  }
 }
