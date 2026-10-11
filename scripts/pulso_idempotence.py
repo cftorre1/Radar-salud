@@ -35,6 +35,7 @@ RUNTIME_CONFIGS = (
     "media_early_signal_gate.json", "model_routing_v1.json", "taxonomy_v2.json",
     "editorial_rules_v2.json", "editorial_copy_overrides_v1.json",
     "editorial_intelligence_committee_v1.json", "normative_editorial_v2.json",
+    "pulso_editorial_repair_admission_2026_10_11.json",
 )
 TERMINAL = {"published", "rejected", "archived"}
 IMMUTABLE_COHORT_INPUTS = ("frozen_control", "independent_primary_review", "expanded_negative_review")
