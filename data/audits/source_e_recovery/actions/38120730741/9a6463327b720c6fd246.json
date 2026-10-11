@@ -1,0 +1,68 @@
+{
+  "url": "https://www.clinicalircay.cl/",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T07:21:08.320143+00:00",
+  "hops": [
+    {
+      "url": "https://www.clinicalircay.cl/",
+      "http_status": 301,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 301 ",
+          "content-type": "text/html; charset=UTF-8",
+          "location": "https://clinicalircay.cl/",
+          "cache-control": "public, max-age=0",
+          "content-length": "0",
+          "date": "Sun, 11 Oct 2026 07:21:10 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "waf": null,
+      "error": null,
+      "body_file": "9a6463327b720c6fd246-0.body"
+    },
+    {
+      "url": "https://clinicalircay.cl/",
+      "http_status": 200,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 200 ",
+          "last-modified": "Fri, 09 Oct 2026 19:42:14 GMT",
+          "content-type": "text/html; charset=UTF-8",
+          "cache-control": "public, max-age=0",
+          "date": "Sun, 11 Oct 2026 07:21:11 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 645637,
+      "sha256": "301ff33ea7c93b14077e1a257bd8516a841408773cd7581df578deede32677cc",
+      "waf": null,
+      "error": null,
+      "body_file": "9a6463327b720c6fd246-1.body"
+    }
+  ],
+  "stop_reason": "response_captured",
+  "final_url": "https://clinicalircay.cl/",
+  "http_status": 200,
+  "waf": null
+}
