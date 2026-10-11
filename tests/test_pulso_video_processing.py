@@ -10,7 +10,8 @@ import pytest
 from radar_salud import beta_sources, llm_analysis
 from radar_salud.models import RawItem
 from radar_salud.processing import DeferredProcessing
-from radar_salud.pulso_source import _Article, _verified_detail, verified_video_without_text
+from radar_salud.pulso_source import (_Article, _verified_detail, article_body_evidence,
+                                    verified_video_without_text)
 
 
 REAL = Path(__file__).parent / 'fixtures/pulso_thin_primary_real'
@@ -77,6 +78,44 @@ def test_original_alzheimer_84_characters_never_becomes_251_character_wrapper_tr
         beta_sources.process_curated_beta_source(raw, {})
     assert raw.metadata['article_body_complete'] is False
     assert 'analysis_input_complete' not in raw.metadata
+
+
+def test_hash_consistent_legacy_alzheimer_wrapper_requires_original_and_exact_availability_hold(monkeypatch):
+    # Reconstruct the old cache failure from exact original bytes; the wrapper
+    # hash matches itself, but the original still supplies only84 factual chars.
+    entry = next(row for row in CURRENT_UNAVAILABLE if 'descubren-doble-avance' in row['url'])
+    compressed = (EXCEPTIONS / entry['gzip_file']).read_bytes()
+    assert hashlib.sha256(compressed).hexdigest() == entry['gzip_sha256']
+    payload = gzip.decompress(compressed)
+    assert hashlib.sha256(payload).hexdigest() == entry['sha256']
+    html = payload.decode(entry['charset'])
+    parser = _Article()
+    parser.feed(html)
+    wrapper = ' '.join(parser.body or parser.paragraphs)
+    assert len(wrapper) == 251
+    metadata = dict(canonical_url=entry['url'], publication_date='2026-09-08', section='Videos',
+                    market_role='media', article_verified=True, article_body_complete=True,
+                    body_source='url_bound_json_ld_articleBody', **article_body_evidence(wrapper))
+    raw = RawItem('pulso_latercera', entry['title'], entry['url'], 'Pulso / La Tercera',
+                   'press_high_trust', '2026-09-08', wrapper, metadata)
+    calls = []
+    def fetch(url):
+        calls.append(url)
+        return html
+    monkeypatch.setattr(beta_sources, 'fetch_html', fetch)
+    monkeypatch.setattr(beta_sources, '_material', lambda *args: pytest.fail('Wrapper must not be scored'))
+    monkeypatch.setattr(llm_analysis, '_client', lambda: pytest.fail('Wrapper must not reach Responses'))
+    monkeypatch.setattr(llm_analysis, 'analyze_news', lambda **kwargs: pytest.fail('Wrapper must not reach AI'))
+    with pytest.raises(DeferredProcessing, match='^publisher_video_text_unavailable$'):
+        beta_sources.process_curated_beta_source(raw, {})
+    assert calls == [entry['url']]
+    assert raw.event_date == '2026-09-08'
+    assert raw.metadata['page_text'] == entry['full_primary_body']
+    assert len(raw.metadata['page_text']) == 84
+    assert raw.metadata['article_body_sha256'] == entry['primary_body_sha256']
+    assert raw.metadata['html_sha256'] == entry['sha256']
+    assert raw.metadata['article_verified'] is False and raw.metadata['article_body_complete'] is False
+    assert raw.metadata['editorial_assessment'] == {'decision': 'pending', 'reason': 'publisher_video_text_unavailable'}
 
 
 @pytest.mark.parametrize('entry', VIDEOS, ids=lambda row: row['url'].split('/')[-2])

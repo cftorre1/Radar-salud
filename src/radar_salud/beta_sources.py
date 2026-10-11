@@ -305,37 +305,83 @@ def process_curated_beta_source(raw, cfg):
     from .public_source_pipeline import enrich, _scopes
 
     if raw.source_slug == "pulso_latercera":
-        from .pulso_source import (article_body_evidence, article_url, complete_article_body,
-                                   extract_article, verified_publication_date_conflict,
+        from .pulso_source import (ConflictingPublicationArticle, ExcludedArticle,
+                                   SponsoredArticle, TextUnavailableArticle,
+                                   article_body_evidence, article_url, complete_article_body,
+                                   extract_article, publisher_taxonomy_requires_revalidation,
+                                   verified_publication_date_conflict, verified_sponsored_content,
                                    verified_video_without_text)
-        if (verified_publication_date_conflict(raw.metadata)
-                and article_url(raw.url) == raw.metadata.get("canonical_url")
-                and raw.event_date is None):
-            # Preserve the conflicting primary timestamps and complete body;
-            # neither a retry nor editorial analysis can choose a true date.
-            raw.metadata["editorial_assessment"] = {
-                "decision": "pending", "reason": "publisher_conflicting_publication_dates"}
-            raise DeferredProcessing("publisher_conflicting_publication_dates")
-        if (verified_video_without_text(raw.metadata)
-                and article_url(raw.url) == raw.metadata.get("canonical_url")
-                and raw.event_date == raw.metadata.get("publication_date") and raw.event_date):
-            # A verified video identity/date cannot supply a missing transcript.
-            # Keep the exact availability hold without retrying or spending AI.
-            raw.metadata["article_body_complete"] = False
-            raw.metadata["editorial_assessment"] = {
-                "decision": "pending", "reason": "publisher_video_text_unavailable"}
-            raise DeferredProcessing("publisher_video_text_unavailable")
-        if not (raw.metadata.get("article_verified") and complete_article_body(raw.metadata) and raw.event_date):
+
+        def defer_verified_publisher_limitation():
+            if article_url(raw.url) != raw.metadata.get("canonical_url"):
+                return
+            reason = None
+            if verified_publication_date_conflict(raw.metadata) and raw.event_date is None:
+                # Preserve both primary days; no retry or model can choose one.
+                reason = "publisher_conflicting_publication_dates"
+            elif raw.event_date and raw.event_date == raw.metadata.get("publication_date"):
+                if verified_video_without_text(raw.metadata):
+                    reason = "publisher_video_text_unavailable"
+                elif verified_sponsored_content(raw.metadata):
+                    reason = "publisher_sponsored_content_review_required"
+            if reason:
+                raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": reason}
+                raise DeferredProcessing(reason)
+
+        defer_verified_publisher_limitation()
+        sponsor_flag = (raw.metadata.get("publisher_content_classification") == "sponsored"
+                        or raw.metadata.get("publisher_exception_reason") == "publisher_sponsored_content_review_required")
+        taxonomy = raw.metadata.get("publisher_taxonomy", {})
+        opinion_flag = isinstance(taxonomy, dict) and taxonomy.get("classification") == "opinion"
+        # The earlier video parser hashed its wrapper as if it were a complete
+        # article. A matching legacy hash cannot establish a transcript.
+        legacy_video = (urlparse(raw.url).path.startswith("/videos/")
+                        and raw.metadata.get("video_identity_verified") is not True)
+        if (sponsor_flag or opinion_flag or legacy_video or publisher_taxonomy_requires_revalidation(raw.metadata)
+                or not (raw.metadata.get("article_verified") and complete_article_body(raw.metadata) and raw.event_date)):
             try:
                 from datetime import datetime, timezone
                 html = fetch_html(raw.url)
-                raw.title, body, evidence = extract_article(html, raw.url)
-                raw.event_date = evidence["publication_date"]
-                raw.raw_text = body[:1800]
-                raw.metadata.update(evidence, **article_body_evidence(body), market_role="media",
-                                    source_quality_gate="passed",
-                                    html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
-                                    captured_at=datetime.now(timezone.utc).isoformat())
+                def save_primary(title, body, evidence, quality):
+                    raw.title, raw.event_date, raw.raw_text = title, evidence["publication_date"], body[:1800]
+                    taxonomy = evidence.get("publisher_taxonomy", {})
+                    if isinstance(taxonomy, dict) and taxonomy.get("classification") in {"factual", "opinion", "sponsored"}:
+                        # A fresh primary classification replaces old publisher
+                        # exceptions, while reviewed duplicate holds remain.
+                        publisher_reasons = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
+                                             "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy"}
+                        for key in ("publisher_exception_reason", "source_content_unavailable_reason",
+                                    "publisher_exclusion_reason", "editorial_hold"):
+                            if key not in evidence and raw.metadata.get(key) in publisher_reasons:
+                                raw.metadata.pop(key)
+                    raw.metadata.update(evidence, **article_body_evidence(body), market_role="media",
+                                        source_quality_gate=quality,
+                                        html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
+                                        captured_at=datetime.now(timezone.utc).isoformat())
+                try:
+                    title, body, evidence = extract_article(html, raw.url)
+                except (ConflictingPublicationArticle, TextUnavailableArticle, SponsoredArticle, ExcludedArticle) as exc:
+                    quality = ("deferred_publication_date" if isinstance(exc, ConflictingPublicationArticle) else
+                               "deferred_video_text" if isinstance(exc, TextUnavailableArticle) else
+                               "deferred_sponsored_content_review" if isinstance(exc, SponsoredArticle) else
+                               "excluded_publisher_opinion")
+                    save_primary(exc.title, exc.body, exc.metadata, quality)
+                    if isinstance(exc, ExcludedArticle):
+                        if not (str(exc) in {"publisher_opinion_taxonomy", "excluded_opinion_content"}
+                                and article_url(raw.url) == raw.metadata.get("canonical_url")
+                                and raw.metadata.get("primary_identity_verified") is True
+                                and raw.metadata.get("publication_date_verified") is True
+                                and raw.event_date):
+                            raise ValueError("unproven_publisher_opinion_exclusion") from exc
+                        raw.metadata["article_body_complete"] = complete_article_body(raw.metadata)
+                        raw.metadata["rejection_reason"] = str(exc)
+                        raw.metadata["editorial_assessment"] = {"decision": "rejected", "reason": str(exc)}
+                        return None
+                    defer_verified_publisher_limitation()
+                    raise ValueError("unproven_publisher_limitation") from exc
+                save_primary(title, body, evidence, "passed")
+            except DeferredProcessing:
+                raise
             except Exception as exc:
                 raw.metadata["article_body_complete"] = False
                 raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "article_verification_failed", "error_type": type(exc).__name__}
