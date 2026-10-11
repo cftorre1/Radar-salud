@@ -3526,5 +3526,30 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "source_repair_fiscalization_lane_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "d6cdd23264ef86212511f9788b04e5785fbfaf62b2e276ac2084ccf491ac99c1",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-46363ec07bf546adab10c7106d32c365.json",
+        "sha256": "5f1a77f4285630f427fea01a0af77a595436c490ac5b01ed90fb4a3efb2e47ce",
+        "staging_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
+        "state_sha": "9fe58a163290e0151b75410016096cdf432025b9"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_repair_media_lane_2026_10_11",
+    "id": "autonomy_observed_7f8a0bf43d8feb2c64642622b2a3dfd2b81783db8b6001ef4cb3c168c8454942",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_repair_media_lane_2026_10_11"
   }
 ]
