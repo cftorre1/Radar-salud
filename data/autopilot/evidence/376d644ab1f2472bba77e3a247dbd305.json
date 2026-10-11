@@ -1,0 +1,380 @@
+{
+  "at": "2026-10-11T14:08:05.707799+00:00",
+  "kind": "worker_result",
+  "operation_id": "376d644ab1f2472bba77e3a247dbd305",
+  "report": {
+    "acceptance_proof": [],
+    "after_hash": "5ce8c1411dbe18f5ae274d792774cd3f78f3a10b7504d9e9d5ea18f10288062c",
+    "audit_fingerprint": "a476a033c0c6e651a7805416ea80c8bf5899f9c2470c1f08d0bc369a42787b5f",
+    "before_hash": "5ce8c1411dbe18f5ae274d792774cd3f78f3a10b7504d9e9d5ea18f10288062c",
+    "blocker": {
+      "evidence": [
+        {
+          "diagnostics_are_acceptance": false,
+          "family": "editorial",
+          "task_id": "editorial_repair_lane_2026_10_11"
+        }
+      ],
+      "fingerprint": "b6e31bb69a8b64d5e26cafdff26bd026bb5a8b0be6ace37ae25cd55fe343bbd2",
+      "human_required": false,
+      "kind": "acceptance",
+      "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+      "source_urls": []
+    },
+    "blockers": [
+      {
+        "evidence": [
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "editorial",
+            "task_id": "editorial_repair_lane_2026_10_11"
+          }
+        ],
+        "fingerprint": "b6e31bb69a8b64d5e26cafdff26bd026bb5a8b0be6ace37ae25cd55fe343bbd2",
+        "human_required": false,
+        "kind": "acceptance",
+        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+        "source_urls": []
+      }
+    ],
+    "changed_paths": [],
+    "evidence": [
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+          "tests/test_weekly_freshness.py",
+          "tests/test_editorial_audit_90d.py",
+          "tests/test_editorial_rules_v2.py",
+          "tests/test_quality_editorial.py"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+        "log_sha256": "7e38d21746dcdca26d33e54bbdc868e2030484b8c8858adad660b9ba04e03062",
+        "name": "targeted_deterministic_tests",
+        "pytest": {
+          "cases": [
+            {
+              "name": "tests.test_weekly_freshness::test_expired_september_insight_never_revives_from_generation_date",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_seven_calendar_dates_and_chile_expiry_boundary",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_model_pass_without_business_review_and_invalid_dates_fail_closed",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_fresh_news_cannot_rejuvenate_old_normative_anchor",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_structurally_valid_model_output_remains_a_draft",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_generation_attempt_never_changes_reviewed_publication_provenance",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_stale_reviewed_publication_hides_ranking_and_model_with_new_draft",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_audit_90d::test_audit_90d_covers_all_43_snapshot_signals_and_29_additional",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_audit_90d::test_audit_90d_is_individual_traceable_and_matches_simulation",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_rules_config_has_complete_weights_and_taxonomy",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_editorial_fixtures_regress_expected_decisions",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_pipeline_gate_enforces_v2_decision_when_assessment_is_present",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_empty_v2_structure_cannot_bypass_pipeline_gate",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_special_piece_requires_structured_refs_from_independent_sources",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_missing_evidence_degrades_before_routine_grouping",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_malformed_v2_inputs_fail_closed_without_exceptions",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_weekly_single_source_deep_dive_requires_reproducibility_and_decision_use",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_expert_normative_checklist_is_persistent_and_resolution_aware",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_publication_contract_requires_uniform_core_and_normative_identity",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_resolution_title_mentions_parent_norm_once_and_keeps_material_effect",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_statistical_override_precedes_value_ladder",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_quality_editorial::test_jsonld_is_cleaned",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_quality_editorial::test_financial_why_it_matters_is_specific",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_quality_editorial::test_ges_editorial_copy_is_specific",
+              "reason": "",
+              "status": "PASS"
+            }
+          ],
+          "collected": 24,
+          "failed": 0,
+          "passed": 24,
+          "proof": true,
+          "skipped": 0
+        },
+        "returncode": 0,
+        "status": "PASS"
+      },
+      {
+        "acceptance": false,
+        "changed_paths": [],
+        "operation": "sync_existing_reviewed_weekly",
+        "reason": "Existing reviewed freshness gate; task closure requires independent editorial acceptance",
+        "reviewed_item_available": true
+      }
+    ],
+    "evidence_revision": "cd17fcdc30a51a38b3c5f961717001683e6040ff618ba07b03b06e902e5f5c86",
+    "family": "editorial",
+    "family_live_validated": false,
+    "gates": [
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+          "tests/test_weekly_freshness.py",
+          "tests/test_editorial_audit_90d.py",
+          "tests/test_editorial_rules_v2.py",
+          "tests/test_quality_editorial.py"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+        "log_sha256": "7e38d21746dcdca26d33e54bbdc868e2030484b8c8858adad660b9ba04e03062",
+        "name": "targeted_deterministic_tests",
+        "pytest": {
+          "cases": [
+            {
+              "name": "tests.test_weekly_freshness::test_expired_september_insight_never_revives_from_generation_date",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_seven_calendar_dates_and_chile_expiry_boundary",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_model_pass_without_business_review_and_invalid_dates_fail_closed",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_fresh_news_cannot_rejuvenate_old_normative_anchor",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_structurally_valid_model_output_remains_a_draft",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_generation_attempt_never_changes_reviewed_publication_provenance",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_weekly_freshness::test_stale_reviewed_publication_hides_ranking_and_model_with_new_draft",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_audit_90d::test_audit_90d_covers_all_43_snapshot_signals_and_29_additional",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_audit_90d::test_audit_90d_is_individual_traceable_and_matches_simulation",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_rules_config_has_complete_weights_and_taxonomy",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_editorial_fixtures_regress_expected_decisions",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_pipeline_gate_enforces_v2_decision_when_assessment_is_present",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_empty_v2_structure_cannot_bypass_pipeline_gate",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_special_piece_requires_structured_refs_from_independent_sources",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_missing_evidence_degrades_before_routine_grouping",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_malformed_v2_inputs_fail_closed_without_exceptions",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_weekly_single_source_deep_dive_requires_reproducibility_and_decision_use",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_expert_normative_checklist_is_persistent_and_resolution_aware",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_publication_contract_requires_uniform_core_and_normative_identity",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_resolution_title_mentions_parent_norm_once_and_keeps_material_effect",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_editorial_rules_v2::test_statistical_override_precedes_value_ladder",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_quality_editorial::test_jsonld_is_cleaned",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_quality_editorial::test_financial_why_it_matters_is_specific",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_quality_editorial::test_ges_editorial_copy_is_specific",
+              "reason": "",
+              "status": "PASS"
+            }
+          ],
+          "collected": 24,
+          "failed": 0,
+          "passed": 24,
+          "proof": true,
+          "skipped": 0
+        },
+        "returncode": 0,
+        "status": "PASS"
+      }
+    ],
+    "generated_at": "2026-10-11T14:07:53.759267+00:00",
+    "ignored_observation_paths": [],
+    "input_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
+    "live_validated": false,
+    "material_progress": {
+      "blocker_candidate": true,
+      "mutation_candidate": false,
+      "requires_durable_comparison": true,
+      "verified_closure": false,
+      "workflow_success": false
+    },
+    "raw_after_hash": "3815f0fb8312ad7f51f9e93a8d2d10c296728b23d19cae661d86b7206730959b",
+    "raw_before_hash": "3815f0fb8312ad7f51f9e93a8d2d10c296728b23d19cae661d86b7206730959b",
+    "raw_changed_paths": [],
+    "run_id": "38145840753-1-editorial",
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38145840753",
+    "semantic_hash": "8c0be0e62296e0cbce513e8082b65c3a139f0ef17ca8cbcfa30e4c28fbcfc41b",
+    "semantic_noop": false,
+    "semantic_unknown_paths": [],
+    "source_results": [],
+    "status": "BLOCKED",
+    "targeted_validated": true,
+    "task_id": "editorial_repair_lane_2026_10_11",
+    "validated": true,
+    "version": 1,
+    "workflow_success_is_progress": false
+  }
+}
