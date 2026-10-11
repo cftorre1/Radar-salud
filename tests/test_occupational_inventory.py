@@ -1,10 +1,14 @@
-"""Synthetic pagination regressions; these fixtures are not live captures."""
+"""Synthetic pagination regressions plus a captured native IST API replay."""
 from datetime import date, timedelta
+import json
+import hashlib
+from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 
 import pytest
 
 from radar_salud.beta_sources import CuratedBetaSourceScout
-from radar_salud.occupational_inventory import discover_inventory
+from radar_salud.occupational_inventory import discover_inventory, enrich_inventory_from_ist_api, ist_api_url
 
 
 AS_OF = date(2026, 10, 11)
@@ -254,3 +258,174 @@ def test_unsafe_or_malformed_starting_archives_are_reported_without_fetching(arc
     assert result["stop_reason"] == "unsafe_archive_url"
     assert result["pages"][0]["status"] == "blocked"
     assert not visited
+
+
+IST_FIRST = "https://ist.cl/nueva-guia/"
+IST_OLD = "https://ist.cl/nota-anterior/"
+IST_REPORT = "https://ist.cl/reporte-sostenibilidad-2025/"
+
+
+def ist_baseline(published="2026-10-10"):
+    scout = CuratedBetaSourceScout("ist")
+    load, _ = loader_for({scout.cfg["page"]: listing([IST_FIRST, IST_OLD], ist=True),
+                          IST_FIRST: detail(published=published), IST_OLD: detail(published="2026-07-12")})
+    return scout, discover_inventory(scout, load, AS_OF)
+
+
+def api_post(url=IST_FIRST, identifier=1, published="2026-10-10T11:00:00", visible="10/10/2026",
+             title="Nueva guía de tratamiento en salud mental laboral", categories=(14,)):
+    return {"id": identifier, "link": url, "status": "publish", "date": published,
+            "date_gmt": "2026-10-12T00:00:00", "modified": "2026-10-11T12:00:00",
+            "categories": list(categories), "title": {"rendered": title},
+            "content": {"rendered": (f"<p>{visible}</p>" if visible else "") + f"<h1>{title}</h1><p>{BODY}</p>"}}
+
+
+def report_post():
+    return api_post(IST_REPORT, 2, "2026-07-14T14:52:49", visible="",
+                    title="Reporte Sostenibilidad 2025", categories=(1,))
+
+
+def test_api_adds_official_report_with_verified_detail_and_keeps_data_period_separate():
+    scout, baseline = ist_baseline()
+    endpoint = ist_api_url(AS_OF)
+    load, _ = loader_for({endpoint: json.dumps([api_post(), report_post()]),
+                          IST_REPORT: detail("Reporte de Sostenibilidad IST 2025", "2026-07-14")})
+    result = enrich_inventory_from_ist_api(baseline, scout, load, api_url=endpoint,
+                                         api_headers={"X-WP-Total": "2", "X-WP-TotalPages": "1"})
+    assert result["coverage_complete"] and result["ist_api"]["response_complete"]
+    assert result["ist_api"]["additional_urls"] == [IST_REPORT]
+    row = next(row for row in result["rows"] if row["url"] == IST_REPORT)
+    assert row["publication_date"] == "2026-07-14" and row["data_period"] == "2025"
+    assert row["type"] == "report" and row["section"] == "publicaciones_institucionales"
+    item = next(item for item in result["raw_items"] if item.url == IST_REPORT)
+    assert item.event_date == "2026-07-14"
+    assert item.metadata["publication_evidence"]["url"] == IST_REPORT
+    assert item.metadata["api_publication_evidence"]["value"] == "2026-07-14T14:52:49"
+    assert len(baseline["rows"]) == 2 and len(result["rows"]) == 3
+    assert result["metrics"]["90"]["dated_articles"] == 2
+
+
+def test_api_visible_header_date_conflict_removes_existing_raw_and_leaves_pending():
+    scout, baseline = ist_baseline("2026-08-12")
+    endpoint = ist_api_url(AS_OF)
+    post = api_post(published="2026-08-12T11:38:53", visible="10/08/2026")
+    load, visited = loader_for({endpoint: json.dumps([post])})
+    result = enrich_inventory_from_ist_api(baseline, scout, load, api_headers={"x-wp-total": "1", "x-wp-totalpages": "1"})
+    row = next(row for row in result["rows"] if row["url"] == IST_FIRST)
+    assert row["publication_date"] is None and row["status"] == "pending"
+    assert row["reason"] == "api_visible_publication_date_conflict"
+    assert not result["raw_items"] and not result["coverage_complete"]
+    assert visited == [endpoint]
+
+
+def test_api_missing_headers_still_discovers_details_but_does_not_claim_complete_capture():
+    scout, baseline = ist_baseline()
+    endpoint = ist_api_url(AS_OF)
+    load, _ = loader_for({endpoint: json.dumps([api_post(), report_post()]),
+                          IST_REPORT: detail("Reporte de Sostenibilidad IST 2025", "2026-07-14")})
+    result = enrich_inventory_from_ist_api(baseline, scout, load)
+    assert IST_REPORT in result["ist_api"]["additional_urls"]
+    assert any(item.url == IST_REPORT for item in result["raw_items"])
+    assert not result["ist_api"]["response_complete"] and not result["coverage_complete"]
+    assert any(error["code"] == "api_total_headers_missing" for error in result["errors"])
+
+
+def test_api_pagination_uses_verified_total_contract_and_preserves_first_page_on_failure():
+    scout, baseline = ist_baseline()
+    endpoint = ist_api_url(AS_OF).replace("per_page=100", "per_page=1")
+    second = endpoint + "&page=2"
+    headers = lambda url: [{"x-wp-total": "2", "x-wp-totalpages": "2"}]
+    load, visited = loader_for({endpoint: json.dumps([api_post()]), second: json.dumps([report_post()]),
+                               IST_REPORT: detail("Reporte de Sostenibilidad IST 2025", "2026-07-14")})
+    result = enrich_inventory_from_ist_api(baseline, scout, load, api_url=endpoint, api_headers=headers)
+    assert result["coverage_complete"] and second in visited
+    assert [page["page_number"] for page in result["ist_api"]["pages"]] == [1, 2]
+    load, _ = loader_for({endpoint: json.dumps([api_post()]), second: TimeoutError("API page two timeout")})
+    partial = enrich_inventory_from_ist_api(baseline, scout, load, api_url=endpoint, api_headers=headers)
+    assert not partial["coverage_complete"] and not partial["ist_api"]["response_complete"]
+    assert partial["raw_items"][0].url == IST_FIRST
+    assert partial["errors"][-1]["url"] == second
+
+
+def test_api_date_gmt_and_modified_never_replace_missing_native_publication_date():
+    scout, baseline = ist_baseline()
+    endpoint = ist_api_url(AS_OF)
+    load, _ = loader_for({endpoint: json.dumps([api_post(published=None, visible="")])})
+    result = enrich_inventory_from_ist_api(baseline, scout, load, api_headers={"x-wp-total": "1", "x-wp-totalpages": "1"})
+    assert not result["raw_items"]
+    assert result["rows"][0]["publication_date"] is None
+    assert result["rows"][0]["reason"] == "api_publication_date_invalid"
+
+
+def test_old_native_publication_modified_recently_cannot_keep_a_current_raw_item():
+    scout, baseline = ist_baseline()
+    endpoint = ist_api_url(AS_OF)
+    load, _ = loader_for({endpoint: json.dumps([api_post(published="2016-08-25T10:22:31", visible="25/08/2016")])})
+    result = enrich_inventory_from_ist_api(baseline, scout, load, api_headers={"x-wp-total": "1", "x-wp-totalpages": "1"})
+    assert not result["raw_items"] and not result["coverage_complete"]
+    assert result["rows"][0]["publication_date"] is None
+    assert result["rows"][0]["reason"] == "api_publication_outside_requested_window"
+
+
+def test_api_does_not_use_a_landing_page_date_or_native_date_to_promote_unverified_detail():
+    scout, baseline = ist_baseline()
+    endpoint = ist_api_url(AS_OF)
+    load, _ = loader_for({endpoint: json.dumps([api_post(), report_post()]),
+                          IST_REPORT: detail("Reporte de Sostenibilidad IST 2025", "2016-08-25")})
+    result = enrich_inventory_from_ist_api(baseline, scout, load, api_headers={"x-wp-total": "2", "x-wp-totalpages": "1"})
+    row = next(row for row in result["rows"] if row["url"] == IST_REPORT)
+    assert row["status"] == "pending" and row["publication_date"] is None
+    assert all(item.url != IST_REPORT for item in result["raw_items"])
+    assert row["reason"] == "api_detail_publication_unverified"
+
+
+def test_observed_midnight_lower_bound_is_a_complete_response_with_explicit_window_limit():
+    scout, baseline = ist_baseline()
+    endpoint = "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00"
+    load, _ = loader_for({endpoint: json.dumps([api_post()])})
+    result = enrich_inventory_from_ist_api(baseline, scout, load, api_url=endpoint,
+                                         api_headers={"x-wp-total": "1", "x-wp-totalpages": "1"})
+    assert result["ist_api"]["response_complete"]
+    assert not result["ist_api"]["inclusive_90_day_bounds"] and not result["coverage_complete"]
+    assert parse_qs(urlsplit(ist_api_url(AS_OF)).query)["after"] == ["2026-07-12T23:59:59"]
+
+
+@pytest.mark.parametrize("endpoint", ["https://foreign.example/wp-json/wp/v2/posts?per_page=100",
+                                      "http://ist.cl/wp-json/wp/v2/posts?per_page=100",
+                                      ist_api_url(AS_OF) + "&page=2"])
+def test_api_route_and_starting_page_guards_prevent_any_request(endpoint):
+    scout, baseline = ist_baseline()
+    load, visited = loader_for({})
+    with pytest.raises(ValueError):
+        enrich_inventory_from_ist_api(baseline, scout, load, api_url=endpoint)
+    assert not visited
+
+
+def test_captured_live_api_keeps_all_twenty_one_posts_and_pending_unverified_details():
+    base = Path(__file__).resolve().parents[1] / "data/audits/source_e_recovery/actions/38115274609"
+    capture = json.loads((base / "report.json").read_text())
+    record = next(row for row in capture["records"] if row.get("surface") == "api_90_days")
+    hop = record["hops"][-1]
+    body = (base / hop["body_file"]).read_text()
+    assert record["http_status"] == 200 and hop["tls"]["verified"]
+    assert hashlib.sha256(body.encode("utf-8")).hexdigest() == hop["sha256"]
+    scout = CuratedBetaSourceScout("ist")
+    report = {"source_slug": "ist", "as_of": AS_OF.isoformat(), "rows": [], "raw_items": [],
+              "pages": [], "errors": [], "coverage_complete": False,
+              "metrics": {"30": {}, "90": {}}}
+    visited = []
+    def load(url):
+        visited.append(url)
+        if url == record["url"]:
+            return body
+        raise LookupError("Linked detail was not captured in this route-probe run")
+    result = enrich_inventory_from_ist_api(report, scout, load, api_url=record["url"], api_headers=hop["headers"])
+    assert result["ist_api"]["response_complete"]
+    assert len(result["ist_api"]["posts"]) == 21 and len(result["rows"]) == 21
+    report_row = next(row for row in result["rows"] if row["url"] == IST_REPORT)
+    assert report_row["api_publication_evidence"]["date"] == "2026-07-14"
+    assert report_row["data_period"] == "2025" and report_row["status"] == "pending"
+    tps_url = "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/"
+    tps = next(row for row in result["rows"] if row["url"] == tps_url)
+    assert tps["reason"] == "api_visible_publication_date_conflict" and tps_url not in visited
+    assert not result["raw_items"] and not result["coverage_complete"]

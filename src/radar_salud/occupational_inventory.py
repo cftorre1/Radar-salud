@@ -7,11 +7,14 @@ Every date and editorial decision comes from the shared detail-page extractor.
 from __future__ import annotations
 
 import hashlib
+import copy
+import json
 import re
 from datetime import date, datetime, timedelta
+from html import unescape
 from html.parser import HTMLParser
 from types import SimpleNamespace
-from urllib.parse import urljoin, urlsplit, urlunsplit
+from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 
 from . import occupational_sources as sources
 
@@ -345,3 +348,258 @@ def discover_inventory(scout, loader, as_of=None, max_pages=20):
     report["technical_status"] = ("ok" if report["coverage_complete"] else
                                    "partial" if report["rows"] else "blocked")
     return report
+
+
+def ist_api_url(as_of=None):
+    """Use the captured WordPress contract with inclusive calendar boundaries.
+
+    WordPress ``after`` is exclusive, so the lower bound is one second before
+    the first included day. ``before`` is the next day's midnight.
+    """
+    today = _calendar(as_of)
+    lower = today - timedelta(days=91)
+    query = urlencode({"per_page": 100, "after": lower.isoformat() + "T23:59:59",
+                       "before": (today + timedelta(days=1)).isoformat() + "T00:00:00"})
+    return "https://ist.cl/wp-json/wp/v2/posts?" + query
+
+
+class _IstHeaderDateObservation(HTMLParser):
+    """Observe a date before H1 in REST-rendered content, without dating it."""
+    def __init__(self):
+        super().__init__()
+        self.stopped, self.parts, self.observations = False, None, []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "h1":
+            self.stopped = True
+        elif tag == "p" and not self.stopped:
+            self.parts = []
+
+    def handle_data(self, value):
+        if self.parts is not None and not self.stopped:
+            self.parts.append(value)
+
+    def handle_endtag(self, tag):
+        if tag == "p" and self.parts is not None:
+            value = " ".join(" ".join(self.parts).split())
+            if re.fullmatch(r"\d{1,2}/\d{1,2}/\d{4}", value):
+                self.observations.append(value)
+            self.parts = None
+
+
+def _api_headers(headers):
+    result = {}
+    for values in headers if isinstance(headers, list) else [headers or {}]:
+        result.update({key.casefold(): value for key, value in values.items()})
+    return result
+
+
+def _api_route(url, scout):
+    if not _official(url, scout.cfg) or urlsplit(url).path != "/wp-json/wp/v2/posts":
+        raise ValueError("IST API must use the official HTTPS posts route")
+    pairs = parse_qsl(urlsplit(url).query)
+    if len(dict(pairs)) != len(pairs):
+        raise ValueError("Duplicate API query parameters are not supported")
+    query = dict(pairs)
+    if (set(query) - {"per_page", "after", "before", "page"} or
+            not 1 <= int(query.get("per_page", "0")) <= 100 or int(query.get("page", "1")) < 1):
+        raise ValueError("IST API query must use the captured date-window/pagination contract")
+    for key in ("after", "before"):
+        value = query.get(key, "")
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}", value):
+            raise ValueError("IST API requires explicit local publication bounds")
+        datetime.fromisoformat(value)
+    return query
+
+
+def enrich_inventory_from_ist_api(report, scout, loader, *, api_url=None,
+                                  api_headers=None, as_of=None, max_api_pages=20):
+    """Compare the complete native API listing and verify additional details.
+
+    ``api_headers`` may be a mapping, a list of response-header mappings, or a
+    callable returning either for a captured URL. The loader owns transport and
+    TLS verification. Native ``date`` is local publication time; ``modified``
+    and ``date_gmt`` never supply a publication day. A visible header date that
+    conflicts with native publication leaves the item pending.
+
+    API evidence alone does not create a RawItem. Its linked official detail
+    must pass the shared article extractor and match the native publication day.
+    Existing HTML evidence and errors are retained. This helper does not turn an
+    incomplete HTML inventory into a claim of complete source coverage.
+    """
+    if scout.slug != "ist":
+        raise ValueError("The native WordPress comparison is limited to IST")
+    if not isinstance(max_api_pages, int) or isinstance(max_api_pages, bool) or max_api_pages < 1:
+        raise ValueError("max_api_pages must be a positive integer")
+    today = _calendar(as_of or report.get("as_of"))
+    if report.get("source_slug") != "ist" or report.get("as_of") != today.isoformat():
+        raise ValueError("IST API comparison must match the inventory source and as_of day")
+    starts = {days: today - timedelta(days=days) for days in (30, 90)}
+    result = copy.deepcopy(report)
+    api = {"pages": [], "posts": [], "errors": [], "response_complete": False,
+           "publication_field": "date", "ignored_date_fields": ["modified", "modified_gmt", "date_gmt"]}
+    result["ist_api"] = api
+    current, seen_posts, seen_ids, totals = api_url or ist_api_url(today), set(), set(), None
+    first_query = _api_route(current, scout)
+    if first_query.get("page", "1") != "1":
+        raise ValueError("IST API comparison must start at page one")
+    expected_lower = (starts[90] - timedelta(days=1)).isoformat() + "T23:59:59"
+    api["inclusive_90_day_bounds"] = (first_query["after"] == expected_lower and
+                                       first_query["before"] == (today + timedelta(days=1)).isoformat() + "T00:00:00")
+    if not api["inclusive_90_day_bounds"]:
+        api["errors"].append({"code": "api_calendar_bounds_unverified", "url": current,
+                              "expected_after_exclusive": expected_lower,
+                              "expected_before_exclusive": (today + timedelta(days=1)).isoformat() + "T00:00:00"})
+    original_urls = {row["url"] for row in result["rows"]}
+    rows_by_url = {row["url"]: row for row in result["rows"]}
+    for page_index in range(max_api_pages):
+        try:
+            query = _api_route(current, scout)
+            text = loader(current)
+            posts = json.loads(text)
+            if not isinstance(posts, list):
+                raise ValueError("IST API response must be a post list")
+            headers = _api_headers(api_headers(current) if callable(api_headers) else api_headers)
+            if not {"x-wp-total", "x-wp-totalpages"} <= headers.keys():
+                api["errors"].append({"code": "api_total_headers_missing", "url": current})
+                total, total_pages = None, None
+            else:
+                total, total_pages = int(headers["x-wp-total"]), int(headers["x-wp-totalpages"])
+            page_number = int(query.get("page", "1"))
+            if total is not None and (total < 0 or total_pages < 0 or total_pages != (total + int(query["per_page"]) - 1) // int(query["per_page"])):
+                raise ValueError("Inconsistent IST API total/page headers")
+            if totals is not None and totals != (total, total_pages):
+                raise ValueError("IST API totals changed between captured pages")
+            totals = total, total_pages
+            api["pages"].append({"url": current, "page_number": page_number, "total": total,
+                                  "total_pages": total_pages, "returned_posts": len(posts),
+                                  "sha256": hashlib.sha256(text.encode("utf-8")).hexdigest()})
+            for post in posts:
+                if not isinstance(post, dict):
+                    raise ValueError("Malformed IST API post")
+                url = _resolve(current, post.get("link"), article=True)
+                if (not url or not _official(url, scout.cfg) or
+                        not re.fullmatch(scout.cfg["path"], urlsplit(url).path)):
+                    raise ValueError("IST API contains a nonofficial article link")
+                if (url in seen_posts or not isinstance(post.get("id"), int) or isinstance(post.get("id"), bool)
+                        or post["id"] < 1 or post["id"] in seen_ids):
+                    raise ValueError("IST API contains duplicate links or invalid post identifiers")
+                seen_posts.add(url)
+                seen_ids.add(post["id"])
+                value = post.get("date")
+                native_day = (sources.valid_date(value, today=today) if isinstance(value, str) and
+                              re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}", value) and
+                              post.get("status") == "publish" else None)
+                observation = _IstHeaderDateObservation()
+                observation.feed(post.get("content", {}).get("rendered", ""))
+                observed_dates = [{"value": item, "date": sources.valid_date(item, today=today),
+                                   "kind": "rendered_content:date_before_h1"} for item in observation.observations]
+                native_evidence = {"kind": "wordpress:post.date", "url": current, "document_url": url,
+                                   "post_id": post["id"], "value": value, "date": native_day}
+                api_post = {"url": url, "post_id": post["id"], "title": unescape(post.get("title", {}).get("rendered", "")),
+                            "publication_date": native_day, "publication_evidence": native_evidence,
+                            "categories": post.get("categories", []), "visible_header_dates": observed_dates}
+                api["posts"].append(api_post)
+                row = rows_by_url.get(url)
+                if row is None:
+                    row = {"url": url, "title": api_post["title"], "publication_date": None, "event_date": None,
+                           "date_evidence": None, "listing_url": current, "section": "noticias" if 14 in api_post["categories"] else "publicaciones_institucionales",
+                           "type": "article" if 14 in api_post["categories"] else "report", "source_type": scout.cfg["type"],
+                           "market_role": "mutuality", "provider_subtype": None, "materiality_accepted": None,
+                           "materiality_reason": None, "status": "pending", "reason": "detail_not_attempted"}
+                    result["rows"].append(row)
+                    rows_by_url[url] = row
+                row["api_publication_evidence"] = native_evidence
+                if "reporte" in sources.fold(api_post["title"]) and re.search(r"\b20\d{2}\b", api_post["title"]):
+                    row["data_period"] = re.search(r"\b20\d{2}\b", api_post["title"])[0]
+                    row["data_period_source"] = "document_title; separate from publication date"
+                conflict = any(item["date"] != native_day for item in observed_dates)
+                if not native_day or conflict:
+                    reason = "api_visible_publication_date_conflict" if conflict and native_day else "api_publication_date_invalid"
+                    row.update(publication_date=None, event_date=None, status="pending", reason=reason,
+                               conflicting_date_observations=observed_dates)
+                    api["errors"].append({"code": reason, "url": url, "api_date": native_day, "observed_dates": observed_dates})
+                    continue
+                if not starts[90] <= date.fromisoformat(native_day) <= today:
+                    reason = "api_publication_outside_requested_window"
+                    row.update(publication_date=None, event_date=None, status="pending", reason=reason)
+                    api["errors"].append({"code": reason, "url": url, "api_date": native_day})
+                    continue
+                if row.get("publication_date") == native_day and row["status"] != "pending":
+                    continue
+                try:
+                    detail = loader(url)
+                    sources.assert_not_challenge(detail, url)
+                    article = sources.Article(url=url)
+                    article.feed(detail)
+                    title, published, body, evidence = article.result(today=today)
+                    if published != native_day or len(title) < 18 or len(body) < 160:
+                        raise sources.SourceDiscoveryError("api_detail_publication_unverified", url,
+                                                           f"native={native_day}; detail={published}; evidence={evidence}")
+                    accepted, material_reason = sources.materiality("mutuality", title, body)
+                    publication_evidence = article.publication_evidence(today=today)
+                    row.update(title=title, publication_date=published, event_date=published,
+                               date_evidence=evidence, publication_evidence=publication_evidence,
+                               detail_sha256=hashlib.sha256(detail.encode("utf-8")).hexdigest(),
+                               materiality_accepted=accepted, materiality_reason=material_reason,
+                               status="candidate" if accepted else "rejected", reason=material_reason)
+                    result["raw_items"] = [item for item in result["raw_items"] if item.url != url]
+                    result["raw_items"].append(sources.RawItem(scout.slug, title[:350], url, scout.cfg["name"], scout.cfg["type"],
+                                                              event_date=published, raw_text=body[:1800], metadata={
+                        "discovered_from": current, "page_text": body[:18000], "market_role": "mutuality",
+                        "article_extraction": "occupational_v1", "date_evidence": evidence,
+                        "publication_date": published, "publication_date_source": evidence,
+                        "publication_evidence": publication_evidence, "api_publication_evidence": native_evidence,
+                        "source_quality_gate": "audit_pending_90_day", "materiality_accepted": accepted,
+                        "materiality_reason": material_reason, "section": row["section"], "data_period": row.get("data_period")}))
+                except Exception as exc:
+                    error = _failure(exc, url, "api_detail_fetch")
+                    api["errors"].append(error)
+                    row.update(publication_date=None, event_date=None, status="pending", reason=error["code"])
+            if total_pages is None:
+                break
+            if page_number >= total_pages:
+                api["response_complete"] = len(seen_posts) == total and not any(error["code"] == "api_page_fetch_failed" for error in api["errors"])
+                if len(seen_posts) != total:
+                    api["errors"].append({"code": "api_post_count_mismatch", "url": current,
+                                          "observed_unique_posts": len(seen_posts), "header_total": total})
+                break
+            if page_index == max_api_pages - 1:
+                api["errors"].append({"code": "api_max_pages_exhausted", "url": current})
+                break
+            # page=N is the verified WordPress route contract, not an inferred HTML page.
+            query["page"] = str(page_number + 1)
+            current = urlunsplit((*urlsplit(current)[:3], urlencode(query), ""))
+        except Exception as exc:
+            api["errors"].append(_failure(exc, current, "api_page_fetch"))
+            break
+    api["additional_urls"] = sorted(seen_posts - original_urls)
+    api["html_90_day_urls_missing_from_api"] = sorted(row["url"] for row in report["rows"]
+                                                       if row.get("within_90_days") and row["url"] not in seen_posts)
+    if api["html_90_day_urls_missing_from_api"]:
+        api["errors"].append({"code": "api_html_url_set_mismatch", "url": api_url or ist_api_url(today),
+                              "missing_urls": api["html_90_day_urls_missing_from_api"]})
+    result["errors"].extend(api["errors"])
+    for row in result["rows"]:
+        published = row.get("publication_date")
+        day = date.fromisoformat(published) if published else None
+        for days in (30, 90):
+            row[f"within_{days}_days"] = bool(day and starts[days] <= day <= today)
+    pending_urls = {row["url"] for row in result["rows"] if row["status"] == "pending"}
+    result["raw_items"] = [item for item in result["raw_items"] if item.url not in pending_urls]
+    result["coverage_complete"] = bool(report["coverage_complete"] and api["response_complete"] and
+                                       api["inclusive_90_day_bounds"] and not api["html_90_day_urls_missing_from_api"] and
+                                       not pending_urls and not result["errors"])
+    if not result["coverage_complete"]:
+        result["stop_reason"] = "ist_api_comparison_incomplete"
+    for days in (30, 90):
+        rows = [row for row in result["rows"] if row[f"within_{days}_days"]]
+        result["metrics"][str(days)].update(dated_articles=len(rows), expected_role=len(rows),
+                                             candidates=sum(row["status"] == "candidate" for row in rows),
+                                             rejected=sum(row["status"] == "rejected" for row in rows),
+                                             pending=sum(row["status"] == "pending" for row in rows),
+                                             unknown_date_items=sum(not row["publication_date"] for row in result["rows"]),
+                                             complete=result["coverage_complete"])
+    result["unknown_publication_dates"] = sum(not row["publication_date"] for row in result["rows"])
+    result["technical_status"] = "ok" if result["coverage_complete"] else "partial" if result["rows"] else "blocked"
+    return result
