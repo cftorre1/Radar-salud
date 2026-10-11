@@ -10,7 +10,7 @@ import pytest
 
 from radar_salud.llm_analysis import news_analysis_input
 from radar_salud.pulso_editorial_proof import (
-    VERSION, PROOF_SCHEMA, human_health_scope_anchor, literal_quote_matches,
+    VERSION, PROOF_SCHEMA, FUTURE_SOURCE, human_health_scope_anchor, literal_quote_matches,
     model_binding_matches, validate_pulso_editorial_proof,
 )
 
@@ -124,3 +124,23 @@ def test_v5_schema_instructs_exact_short_fields_and_entire_future_summaries():
         assert "EXACTO" in PROOF_SCHEMA["properties"][field]["description"]
         assert "CONTIGUO" in PROOF_SCHEMA["properties"][field + "_quote"]["description"]
     assert "TODO" in PROOF_SCHEMA["properties"]["future_claims"]["items"]["properties"]["summary_quote"]["description"]
+
+
+@pytest.mark.parametrize("verb", ["eliminará", "llegará", "liberará", "comprará", "aumentará", "presentarán", "citará", "ejercerá", "viajará"])
+def test_regular_pending_future_grammar_is_present_in_actual_selected_evidence(verb):
+    quotes = [r["ai"]["pulso_editorial_proof"][field] for r in ROWS for field in (
+        "action_quote", "consequence_quote", "event_status_quote")]
+    assert len(quotes) == 207
+    witnesses = [quote for quote in quotes if verb in quote]
+    assert witnesses and all(FUTURE_SOURCE.search(quote) for quote in witnesses)
+
+
+def test_actual_legal_obligation_and_insurance_plan_are_not_mislabeled_future_proposals():
+    row = next(r for r in ROWS if "historica-condena-por-megafraude" in r["url"])
+    quote = row["ai"]["pulso_editorial_proof"]["action_quote"]
+    assert "deberán pagar" in quote and not FUTURE_SOURCE.search(quote)
+    row = next(r for r in ROWS if "planes-mas-baratos" in r["url"])
+    quote = row["ai"]["pulso_editorial_proof"]["consequence_quote"]
+    assert "plan" in quote and not FUTURE_SOURCE.search(quote)
+    for past in ("eliminaron", "llegó", "liberaron", "compraron", "aumentó", "presentaron", "citó", "ejerció", "viajó"):
+        assert not FUTURE_SOURCE.search(past)

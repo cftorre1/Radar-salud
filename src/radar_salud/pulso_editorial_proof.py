@@ -18,10 +18,15 @@ REPAIR_COHORT_SHA256 = "8ed358f0cd37ecc4b554ab96cd4366048b8e6180ad1c0ee0044fc5d5
 SCOPES = ("human_health_specific", "incidental_health", "non_human_health", "marketing", "opinion")
 STATUSES = ("actual", "proposal", "plan", "mixed_actual_and_future", "historical_context")
 NOVELTY = ("new_material_information", "repetition_or_context", "uncertain")
-FUTURE_SOURCE = re.compile(r"\b(?:habr[aá]|permitir[aá]n?|ser[aá]n?|podr(?:[aá]n?|[ií]an?)|previst[oa]s?|"
+# Spanish regular future inflection in the selected primary evidence, rather
+# than a growing list of health measures. A judicial/operative obligation
+# 'deberán pagar' can already be an actual binding decision and is not a plan.
+REGULAR_FUTURE_VERB = (
+    r"\b(?!deber[aá]n?\b)[a-záéíóúñü]{3,}(?:ar|er|ir)(?:é|ás?|emos|éis|án)\b")
+FUTURE_SOURCE = re.compile(REGULAR_FUTURE_VERB + r"|\b(?:habr[aá]|permitir[aá]n?|ser[aá]n?|podr(?:[aá]n?|[ií]an?)|previst[oa]s?|"
                            r"se prev[eé]|se propone(?:n)?|incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?|"
                            r"coordinaci(?:ones|[oó]n)\b[^.;!?]{0,160}\bpara instalar|"
-                           r"se estima que tendr[aá]n?)\b", re.I)
+                           r"se estima que tendr[aá]n?|se espera una inyecci[oó]n de recursos)\b", re.I)
 FORMAL_BUDGET_PROJECT = re.compile(r"\bproyecto de (?:ley de )?presupuestos?\b", re.I)
 REFERENCED_BUDGET_PROJECT = re.compile(
     r"\ben (?:el|este) proyecto\b[^.;!?]{0,80}\bpresupuesto\b", re.I)
