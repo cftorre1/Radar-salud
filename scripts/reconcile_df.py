@@ -165,7 +165,7 @@ def main():
                     url = urldefrag(urljoin(page, href))[0]
                     parsed = urlsplit(url)
                     if parsed.netloc not in ("df.cl", "www.df.cl"): continue
-                    if re.search(r"tagport_(161|121)_\d+\.html$", parsed.path):
+                    if re.search(r"tagport_(161|121|2150)_\d+\.html$", parsed.path) or re.search(r'/tags/(salud|isapres?|fonasa)/p/\d+/?$',parsed.path):
                         if url not in visited: pages.append(url)
                         continue
                     if len(title) < 18 or parsed.path.count("/") < 3: continue
@@ -176,6 +176,12 @@ def main():
                 scripts=re.findall(r'<script\b[^>]*src=["\']([^"\']+)',html,re.I)
                 report["listing_pages"].append({"url": page, "fetch": "ok", "health_candidate_urls": list(dict.fromkeys(page_articles)),
                     "observed_archive_controls":controls[:12],"observed_script_urls":[urljoin(page,s) for s in scripts if 'df.cl' in urljoin(page,s)]})
+                # Follow adjacent archive pages before the footer's jump to page
+                # 25; both are observable links, but the former covers the gap.
+                def page_number(u):
+                    m=re.search(r'(?:/p/|tagport_\d+_)(\d+)(?:\.html)?$',urlsplit(u).path)
+                    return int(m[1]) if m else 1
+                pages.sort(key=page_number)
             except Exception as exc:
                 report["listing_pages"].append({"url": page, "fetch": "error", "error_type": type(exc).__name__})
         by_url = {article_url(raw.url): raw for raw in raw_items}
@@ -245,7 +251,7 @@ def main():
     matrix = []
     for url in dict.fromkeys([*titles, *report["originals"]]):
         normalized = article_url(url)
-        if url in DfHealthScout.PAGES or url == "https://www.df.cl/senal-df" or "tagport_" in normalized: continue
+        if url in DfHealthScout.PAGES or url == "https://www.df.cl/senal-df" or "tagport_" in normalized or url in {p['url'] for p in report['listing_pages']}: continue
         entries = [{"fingerprint": key, "status": row["status"], "lane": row["lane"], "attempts": row["attempts"],
                     "reason": row.get("reason"), "event_date": row["raw"].get("event_date"), "detected_at": row["detected_at"],
                     "seen": key in seen, "assessment": row["raw"].get("metadata", {}).get("editorial_assessment"),

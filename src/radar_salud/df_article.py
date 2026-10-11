@@ -40,6 +40,7 @@ class _Article(HTMLParser):
         self.times = []
         self.header = []
         self.visible = []
+        self.publication_label = []
 
     def handle_starttag(self, tag, attrs):
         tag = tag.lower()
@@ -55,7 +56,9 @@ class _Article(HTMLParser):
             classes = attrs.get("class", "") + " " + attrs.get("id", "")
             primary = bool(re.search(r"\b(cuerpo|article-body|story-body|news-body)\b", classes, re.I))
             excluded = bool(re.search(r"\b(card|related|recommendations|newsletter|te-puede-interesar)\b", classes, re.I))
-            self.stack.append((tag, primary, tag == "article" and not excluded, excluded))
+            publication_header=tag=='header' and bool(re.search(r'\benc-main\b',classes))
+            publication_label=bool(re.search(r'\bauthor__date\b',classes))
+            self.stack.append((tag, primary, tag == "article" and not excluded, excluded, publication_header, publication_label))
 
     def handle_endtag(self, tag):
         tag = tag.lower()
@@ -79,6 +82,8 @@ class _Article(HTMLParser):
         if not value:
             return
         self.visible.append(value)
+        if any(entry[4] for entry in self.stack) and any(entry[5] for entry in self.stack):
+            self.publication_label.append(value)
         if any(entry[3] for entry in self.stack):
             return
         if any(entry[1] for entry in self.stack):
@@ -127,7 +132,7 @@ def parse_df_article(html, url):
         if node.get("datePublished"):
             candidates.append({"source": "jsonld:datePublished", "value": node["datePublished"], "day": _day(node["datePublished"])})
     # Only explicitly labelled publication text can contradict publisher metadata.
-    labelled = re.search(r"\bPublicad[oa]\s*(?::|el)\s*(.{1,100})", " ".join(p.visible), re.I)
+    labelled = re.search(r"\bPublicad[oa]\s*(?::|el)\s*(.{1,100})", " ".join(p.publication_label or p.visible), re.I)
     if labelled:
         from .public_source_pipeline import _date
         # Select the first date next to the label, not an ISO incident/modification
@@ -143,10 +148,16 @@ def parse_df_article(html, url):
     conflict = len({c["day"] for c in valid}) > 1
     chosen = valid[0] if valid and not conflict else None
     resolution=None
+    identity_verified=any(article_url(str(node.get('url') or ''))==article_url(url) for node in selected)
+    if conflict and p.publication_label and p.primary and identity_verified:
+        chosen=next((c for c in valid if c['source']=='visible:published_label'),None)
+        if chosen:
+            resolution={'rule':'primary_header_explicit_publication_label','selected_visible_day':chosen['day'],
+                        'basis':'DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary CUERPO verified. Metadata timestamps retained; discrepancy cause unknown.'}
     if conflict:
         decisions=json.loads((Path(__file__).resolve().parents[2]/"config/df_date_provenance.json").read_text())["decisions"]
         rule=decisions.get(article_url(url))
-        if rule and all(any(c["source"]==source and c["value"]==rule[field] for c in valid)
+        if not resolution and rule and all(any(c["source"]==source and c["value"]==rule[field] for c in valid)
                         for source,field in (("cxenseparse:recs:publishtime","expected_cx_timestamp"),
                                              ("jsonld:datePublished","expected_jsonld_timestamp"))):
             chosen=next((c for c in valid if c["source"]=="visible:published_label" and c["day"]==rule["selected_visible_day"]),None)

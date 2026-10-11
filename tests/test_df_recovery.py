@@ -395,3 +395,17 @@ def test_live_df_watermark_uses_same_chile_calendar_as_publication():
     assert lane(raw, datetime(2026, 10, 11, 2, tzinfo=timezone.utc), '2026-10-11T01:00:00Z') == 'LIVE'
     raw.event_date = '2026-10-11'
     assert lane(raw, datetime(2026, 10, 11, 2, tzinfo=timezone.utc), '2026-10-11T01:00:00Z') == 'BACKFILL'
+
+
+def test_conflict_resolves_only_explicit_primary_df_header_with_matching_identity():
+    body = '<div id="articleLock" class="CUERPO"><p>La clínica abrirá un nuevo centro médico con inversión confirmada.</p></div>'
+    meta = '<meta name="cXenseParse:recs:publishtime" content="2026-07-22T23:46:04Z">'
+    node = '<script type="application/ld+json">' + json.dumps({'@type': 'NewsArticle', 'url': URL, 'datePublished': '2026-07-22T23:46:04Z'}) + '</script>'
+    label = '<header class="enc-main"><p class="author__date">Publicado: Jueves 23 de julio de 2026 a las 04:00 hrs.</p></header>'
+    parsed = parse_df_article(meta + node + label + body, URL)
+    assert parsed['event_date'] == '2026-07-23'
+    assert parsed['metadata']['publication_date_conflict']
+    assert parsed['metadata']['publication_date_conflict_resolution']['rule'] == 'primary_header_explicit_publication_label'
+    assert len(parsed['metadata']['publication_date_candidates']) == 3
+    assert parse_df_article(meta + node.replace(URL, 'https://www.df.cl/other/article') + label + body, URL)['event_date'] is None
+    assert parse_df_article(meta + node + label.replace('enc-main', 'recommendations') + body, URL)['event_date'] is None
