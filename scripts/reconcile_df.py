@@ -41,6 +41,7 @@ def main():
     ap.add_argument("--max-pages", type=int, default=12)
     ap.add_argument("--minutes", type=int, default=12)
     ap.add_argument("--reuse-originals", action="store_true",help="Replay previously captured originals; retain their original capture timestamps")
+    ap.add_argument("--capture-fixtures", action="store_true",help="Save publisher markup samples for date/body regressions")
     args = ap.parse_args()
     root = Path(__file__).resolve().parents[1]
     branch = subprocess.check_output(["git", "branch", "--show-current"], cwd=root, text=True).strip()
@@ -74,6 +75,24 @@ def main():
             report["originals"][url]={**original,"event_date":parsed["event_date"],
                 "evidence":{k:v for k,v in parsed["metadata"].items() if k!="page_text"},"replayed_by_sha":report["code_sha"]}
     atomic_json(out, report)
+    if args.capture_fixtures:
+        samples={"df_san_carlos_real":"aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+                 "df_catastrofe_real":"kast-decreta-estado-de-catastrofe-tras-aluvion-en-las-condes-que-deja-al",
+                 "df_ricarte_real":"recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+                 "df_biometria_real":"super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"}
+        fixture_manifest={}
+        for name,suffix in samples.items():
+            for url,html in cache.items():
+                if url.endswith(suffix):
+                    # Retain original meta/JSON-LD/article markup; omit executable
+                    # scripts/styles/comments. These are marked as source excerpts.
+                    excerpt=re.sub(r"<script\b(?![^>]*application/ld\+json)[^>]*>.*?</script>","",html,flags=re.I|re.S)
+                    excerpt=re.sub(r"<style\b[^>]*>.*?</style>|<!--.*?-->","",excerpt,flags=re.I|re.S)
+                    path=root/"tests/fixtures"/(name+".html");path.write_bytes(excerpt.encode())
+                    fixture_manifest[name]={"url":url,"original_sha256":report["originals"][url]["sha256"],
+                         "captured_at":report["originals"][url]["captured_at"],"excerpt_sha256":hashlib.sha256(excerpt.encode()).hexdigest(),
+                         "transformation":"Removed non-JSON-LD scripts/styles/comments; retained source article/navigation/recommendation markup"}
+        atomic_json(root/"tests/fixtures/df_original_manifest.json",fixture_manifest)
     deadline = time.monotonic() + args.minutes * 60
 
     def capture(url):
