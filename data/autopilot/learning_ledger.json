@@ -379,5 +379,24 @@
       "data/audits/pulso_qa_2026_10_11.json"
     ],
     "owner_minutes_saved": "not measured; no unsupported autonomy KPI claim"
+  },
+  {
+    "id": "pulso_exhaustive_discovery_false_confidence_2026_10_11",
+    "recorded_at": "2026-10-11T05:33:53.667681+00:00",
+    "incident": "Human external control disproved first-page/title-only11candidate inventory; prior synthetic tests covered parser cases but not publisher universe or historical recall.",
+    "preventive_controls": [
+      "Frozen independent200originaldate control before implementation",
+      "Actual byte-hashed publisher HTML/XML fixtures through isolated Actions",
+      "Tests require detail opening for general headlines and factual health sections",
+      "Independent review of empty archives, page limits and timestamp calendar",
+      "Discovery-only core before paid editorial review; numeric72 gate unchanged"
+    ],
+    "evidence": [
+      "data/audits/pulso_external_control_2026_10_11.json",
+      "tests/test_pulso_real_fixtures.py",
+      "tests/test_pulso_archive_discovery.py"
+    ],
+    "status": "implemented_controls_coverage_acceptance_pending",
+    "owner_minutes_saved": "not_measured_no_claim"
   }
 ]
