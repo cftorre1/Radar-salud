@@ -1,28 +1,38 @@
 {
-  "version": 1,
-  "verified_at": "2026-10-11T05:46:35.291522+00:00",
-  "reviewed_code_commit": "4b07e433b48cbcbcc5d69584ab536e9d60058144",
+  "version": 2,
+  "verified_at": "2026-10-11T09:47:49.251794+00:00",
+  "reviewed_code_commit": "720af52a7e652adcd34afabb43dd609d154f5ca2",
   "main_base_sha": "a1ac3aa378d5b74e3bf3f50af9120a77c777b611",
-  "latest_staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+  "latest_staging_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
   "test_results": {
     "autonomy_unittest": {
       "status": "PASS",
-      "tests": 244,
-      "seconds": 39.16,
-      "log_sha256": "ed66d02bde0e070d5da59e98f016fc2b6c2aa050ef7be9f3fdbd5e9185ed7cca"
+      "tests": 361,
+      "seconds": 30.734,
+      "interpreter": ".venv/bin/python",
+      "log_sha256": "3cd81686254a05c82b412b3e59b096c5512f5fda34b4164aa96244b0bb61c9fc"
     },
     "actionlint": {
       "status": "PASS",
       "version": "1.7.7",
       "workflows": 5,
-      "diagnostics": []
+      "diagnostics": [],
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "independent_contract_checks": {
       "status": "PASS",
       "count": 20,
       "scope": "Initial twenty checks remain archived; final post-fix scope review is separate."
     },
-    "product_and_original_gates_unchanged": true
+    "product_and_original_gates_unchanged": true,
+    "independent_final_scope_control_review": {
+      "status": "PASS",
+      "commits": 54,
+      "files": 32,
+      "credential_findings": 0,
+      "product_original_gates_deployment_unchanged": true,
+      "evidence_sha256": "abaa8da56b7e7ee24090b87704859dca3e3476026ba0203560f2176308abc6e7"
+    }
   },
   "code_file_sha256": {
     ".github/workflows/autonomous-recovery.yml": "2a3fc6d2059214ec8f72ba3e8dd3d893919557baf6effb6b46c488bf22c662fa",
@@ -32,67 +42,141 @@
     ".github/workflows/source-audit-executor.yml": "e02c53d1a6cb06f3fda01176843f2e61af914725ef018d67d87d4778fcb182b4",
     "scripts/autonomy_candidate_context.py": "2d2434cae89b1a88a80b3cb415da62d19a033cbfca3a2cf03aaeced9f3378da0",
     "scripts/autonomy_candidate_review.py": "edcda0b92d0f5f425763f56c7708b78042350a02c3cab06a27e2892cc5d2c489",
-    "scripts/autonomy_engine.py": "04a3c1e40c32ac5341a28ddf131c87a42f445a7eb2f15661740d02b718f376eb",
+    "scripts/autonomy_engine.py": "852772570e3079fbbc22ee09be7c77e1c3b2e99e43bbb23e97fde7abb04318d0",
     "scripts/autonomy_failure_input.py": "95a6d74f751b6a0c1b68186fa373fadd64d7aed13ba2de12486672da2675e4bf",
     "scripts/autonomy_hosted_canary.py": "119c15b224d24efeb800455054a906a7bf7ca82bec750b621c65bd95c8a5eeb7",
-    "scripts/autonomy_lane_runner.py": "d5b39b807a12d551c273bd8409d6eb16d2822ff90bf528eb7978db3c9a896238",
-    "scripts/autonomy_observation.py": "58ab06c71c9e088c4064781e879a70d568584c00ad684ad4b1a7de6372ce7d6e",
-    "scripts/autonomy_recovery.py": "f4c51cbe2e9797d84f14465e5aea8a86764e515e46fbd8aafc675b6f5dcde395",
-    "scripts/autonomy_runtime.py": "27bc85a9b094907ece5e674cabbcf6005bd550ab58786f953c72538b454c5896",
-    "scripts/autonomy_state_store.py": "2b1207301d1bd6f824ac1f3baffafe1bd541d73b27399125c7c92db9fd9a6497",
+    "scripts/autonomy_lane_runner.py": "5e7517f86d1374db007f9935e3c5726bbd1f0725c534b15752f1b23663d8f5b8",
+    "scripts/autonomy_legacy_bindings.py": "fc4a7860f9e99fcf091b7a064f2afd85e6f40c94fd0547f9cdf7025606048f48",
+    "scripts/autonomy_observation.py": "883a91a171a9bcec7b478fafe5b0b1361971785034460dc7eea4cfe24d07f79c",
+    "scripts/autonomy_recovery.py": "845a0a060f54ba4493c0537abd5cc8b736cc6ace4ac87799c2ee49841b1f9b07",
+    "scripts/autonomy_repair_planner.py": "6d1a781ddaecf828ebdd7454ef43a3135d1a86f9066196bd872ae7c26b2377a4",
+    "scripts/autonomy_runtime.py": "26658afc0c487f4dd421cd9c27429d2bba43c88a780046e2897a062b0d046840",
+    "scripts/autonomy_state_store.py": "4a90bcc4ee1252691ea1c12173ef35953f5f3b4859f2cb58cd2a69a4af95623d",
     "tests/test_autonomy_candidate_context.py": "35b4d7afb5d212a985e2c84b05a85eae307f525197b5d3eccea20dadf58bf4f5",
     "tests/test_autonomy_candidate_review.py": "179956b0e510e8ee8b9b09257d602d058d6bd81c3b398562c3afc137c59c7f87",
-    "tests/test_autonomy_engine.py": "68e01b7bc5747a14ff9094be9209f6c79c9e020a1fe2cf331b6e6eab8535e8c0",
+    "tests/test_autonomy_engine.py": "7fd8bb18911b6ec0770238294c2a4372f13fdd95236ed61a8feeb948459e5d3d",
     "tests/test_autonomy_failure_input.py": "11a3f5b94bfd62f98dadd1ade4df9d8fdf5ec57692b3f222db6f406e4a413541",
-    "tests/test_autonomy_hosted_canary.py": "60b85f95e4c420fe0fcc70bbd8341692c5f82cb30308167afb68731100c9d737",
-    "tests/test_autonomy_lane_runner.py": "9b180da8ed15e04b39d980f00927d0bb05e2a88562e7de422c1f4cca1c87777e",
-    "tests/test_autonomy_observation.py": "9764c11b503705887d502dfd056d9bc4264120f34956b702e8573b22e497d447",
-    "tests/test_autonomy_recovery.py": "092ec79c2449fd19846d63788d8e9c4a8bf44498da857a1ee56a4cb43c75e5d9",
-    "tests/test_autonomy_runtime.py": "ad595057ae78072316440c7e1a82e4fe31c5b75cdc3e122c772104d7c77bf9c8",
-    "tests/test_autonomy_state_store.py": "105791f6746b7567646197e13692d155116036e2897dcbb4683f2dbeaa5884eb"
+    "tests/test_autonomy_hosted_canary.py": "0d9a88d64df126c37171e8208422afe32d7a1e6a3fcc71c1d32f91fd898ca1b0",
+    "tests/test_autonomy_lane_runner.py": "df686dba6188e74795a100e1de12fc2a18abf04cd9fb7179b100b846fd77efc3",
+    "tests/test_autonomy_legacy_bindings.py": "d609b54262dcb482a14fceed3d0d49a1fb4965208a8c7f502eb347c6888e125f",
+    "tests/test_autonomy_observation.py": "7b3136887e030ade0b798d58f0d58e2ce3a4924b06c591be80844c01f2f6f8a7",
+    "tests/test_autonomy_recovery.py": "0d5c24d8c0d77cccc304e5f68c10a672cd12e1edca6af3923125258fa6045931",
+    "tests/test_autonomy_repair_planner.py": "8359074d1532f9562d2eaf9be80b7f7e43e54e367141747c124bff3f81a967f1",
+    "tests/test_autonomy_runtime.py": "20cfef81bf98daca3a8cd72d99561483d65a73ecf1f50c51a9996e4b86c3636f",
+    "tests/test_autonomy_state_store.py": "4ef3e710c4296add30ab89c9a9407b6c39b6d4a2fb147f6f4330ba7c064eb889"
   },
   "live_acceptance": {
     "status": "NOT_PROVEN",
+    "four_useful_hours_proven": false,
+    "first_durable_pickup_at": "2026-10-11T05:29:46.231497Z",
+    "owner_followup_count": null,
+    "owner_prompt_coverage": "UNAVAILABLE",
+    "owner_observation": "No trusted Work/chat owner_prompt_events channel with complete immutable coverage is connected. Empty arrays cannot prove zero intervention.",
     "unproved": [
-      "Four actual consecutive hours of useful autonomous progress",
-      "Live hosted pickup after deploying reviewed infrastructure",
-      "Real failure repair plus automatic independent transition in hosted authority",
-      "End-to-end candidate review and externally authorized staging integration",
-      "Verified immutable observation covering Actions and owner prompt events throughout acceptance window"
+      "Four actual consecutive hours of useful autonomous progress with no material gap over the unchanged policy limit",
+      "Verified complete observation of Actions and owner prompt events throughout that same window",
+      "Actual product/source candidate mutation, exact-SHA review, authorized staging integration and verified source closure required by legacy Stage A"
     ],
-    "owner_observation": "No trusted Work/chat owner-prompt event source is connected; empty counters cannot attest absence."
+    "operational_recovery_or_correct_escalation": true,
+    "legacy_stage_a_verified_source_repair": false
   },
   "real_blockers": [
     {
+      "kind": "unsupported_source_repair_strategy_or_acceptance_incomplete",
+      "reason": "Tasks already authorize bounded reversible source work; missing repair_patch is not a permission requirement. The known URI strategy is automatic and non-paid. Unrecognized failures and full source acceptance remain unresolved; ai_builder_enabled=false is preserved.",
+      "minimum_intervention": "The owning approved source/editorial front supplies a supported deterministic repair or an exact bounded plan and genuine task/SHA-bound evidence. Relevant commits resume only affected families; no new Toba approval or owner restart is implied."
+    },
+    {
+      "kind": "owner_prompt_observation_unavailable",
+      "reason": "GitHub cannot attest complete Work/chat owner_prompt_events; followup count is unknown.",
+      "minimum_intervention": "Supply a trusted immutable complete event export/watermark for the actual acceptance window, paired with Actions coverage, and connect a producer verifying source and hashes to the observer. The observer remains NOT_PROVEN without that channel; do not manually invent a zero-event attestation."
+    },
+    {
+      "kind": "scheduled_controller_cadence_not_observed",
+      "reason": "The recorded schedule-only Actions API snapshot contains no scheduled new controller after the first infrastructure publication. Push and completion dispatch work; declaring a ten-minute cron does not prove delivered ticks. Cause is undetermined.",
+      "reproduction": "GET /repos/cftorre1/Radar-salud/actions/runs?event=schedule&per_page=50; compare controller head SHA/created_at with b679 publication. See hosted scheduled_controller_delivery_observation.",
+      "minimum_intervention": "Inspect GitHub scheduler delivery/workflow settings if ticks remain absent; preserve automatic push/completion dispatch. No owner restart is required or counted as evidence."
+    },
+    {
       "kind": "staging_normative_gate",
-      "staging_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
-      "reason": "11 normative rows fail unchanged minimum of 12; no product or test-gate weakening authorized/performed."
+      "staging_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+      "preview_run": 38128983053,
+      "actual_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 4.88s",
+      "reason": "Original assert 11 >= 12 remains a real failure; no rows invented, no tests weakened, no product promoted."
+    },
+    {
+      "kind": "instrumentation_coverage_limit",
+      "reason": "Our bounded diagnostic budget of 24 requests cannot prove full SUSESO/DF coverage. Exhaustion is INCOMPLETE/UNVERIFIED coverage, not a verified publisher/parser fault. Cap and honest LIVE=false remain; no source closure is asserted."
     },
     {
       "kind": "managed_cloud_source_network",
-      "reason": "Local source destinations are outside network allowlist; DF/Pulso HTTP403 is platform evidence, not publisher or hosted-access evidence."
-    },
-    {
-      "kind": "model_repair_policy",
-      "reason": "Current ai_builder_enabled=false/no new paid calls is honored; no shared approved reservation is invented."
+      "reason": "Local publisher HTTP403 is allowlist/platform evidence only; hosted evidence is recorded separately."
     }
   ],
   "publication": {
     "status": "PUBLISHED",
     "authorized_target": "cftorre1/Radar-salud:main autonomy infrastructure only",
     "production_promotion": false,
-    "reviewed_payload": "Autonomy workflows, scripts, directed tests and repository documentation; no work/context/raw source evidence or secrets.",
+    "reviewed_payload": "Autonomy workflows/scripts/tests/docs and selected sanitized work/continuity evidence; product/gates/deployment untouched.",
     "remote_main_modified_by_this_front": true,
     "published_commit": "b6794bf107a031d7dc5d1da2cd2603e9b154d932",
     "published_at": "2026-10-11T05:28:53Z",
     "corrective_code_commit": "4b07e433b48cbcbcc5d69584ab536e9d60058144",
-    "corrective_publication": "PENDING_FINAL_SCOPE_REVIEW",
+    "corrective_publication": "PUBLISHED",
     "prior_rejection": {
       "action": "git push origin HEAD:refs/heads/main",
       "commit": "620e156",
       "reason": "Automatic review requires explicit approval for the complete infrastructure code, directed tests and documentation payload and its public main publication/hosted automation trigger.",
       "resolution": "Explicit owner authorization received before normal fast-forward main publication."
-    }
+    },
+    "latest_code_publication": "720af52a7e652adcd34afabb43dd609d154f5ca2",
+    "publication_episodes": [
+      {
+        "commit": "b6794bf107a031d7dc5d1da2cd2603e9b154d932",
+        "at": "2026-10-11T05:28:53Z",
+        "controller_run": 38114913138
+      },
+      {
+        "commit": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+        "controller_created_at": "2026-10-11T05:48:09Z",
+        "controller_run": 38115967398
+      },
+      {
+        "commit": "924434014cf9c642aff3fa9914ebeae6f8291de9",
+        "controller_created_at": "2026-10-11T06:25:34Z",
+        "controller_run": 38118016823
+      },
+      {
+        "commit": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+        "controller_created_at": "2026-10-11T07:03:52Z",
+        "controller_run": 38120110728
+      },
+      {
+        "commit": "c4417f1959227444f2f841a0e0c534f25d245e99",
+        "controller_created_at": "2026-10-11T07:32:35Z",
+        "controller_run": 38121721113
+      },
+      {
+        "commit": "fc03cfb5e9106ba985d47b7c4a9db537042449ac",
+        "controller_created_at": "2026-10-11T07:52:49Z",
+        "controller_run": 38122862769
+      },
+      {
+        "commit": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+        "controller_created_at": "2026-10-11T08:03:57Z",
+        "controller_run": 38123500601
+      },
+      {
+        "main_sha": "720af52a7e652adcd34afabb43dd609d154f5ca2",
+        "automatic_run_id": 38127573265,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38127573265",
+        "event": "push",
+        "run_created_at": "2026-10-11T09:13:02Z",
+        "run_updated_at": "2026-10-11T09:13:59Z",
+        "conclusion": "success"
+      }
+    ],
+    "main_branch_protection_configured_by_this_front": false
   },
   "initial_package_validation": {
     "verified_at": "2026-10-11T05:10:59.204276+00:00",
@@ -156,6 +240,309 @@
     "verified_closures": 0,
     "verified_independent_transitions": 0,
     "repeated_controller_success_adds_material_progress": false,
-    "initial_infrastructure_defect": "Structured source JSON was truncated before parsing; exact real hosted replay and local correction are preserved, fresh hosted correction proof pending."
+    "initial_infrastructure_defect": "Structured source JSON truncated before parsing; repaired on dd2d206 and proven with the exact same hosted captured stdout SHA256."
+  },
+  "corrective_package_validation_244": {
+    "verified_at": "2026-10-11T05:46:35.291522+00:00",
+    "reviewed_code_commit": "4b07e433b48cbcbcc5d69584ab536e9d60058144",
+    "test_results": {
+      "autonomy_unittest": {
+        "status": "PASS",
+        "tests": 244,
+        "seconds": 39.16,
+        "log_sha256": "ed66d02bde0e070d5da59e98f016fc2b6c2aa050ef7be9f3fdbd5e9185ed7cca"
+      },
+      "actionlint": {
+        "status": "PASS",
+        "version": "1.7.7",
+        "workflows": 5,
+        "diagnostics": []
+      },
+      "independent_contract_checks": {
+        "status": "PASS",
+        "count": 20,
+        "scope": "Initial twenty checks remain archived; final post-fix scope review is separate."
+      },
+      "product_and_original_gates_unchanged": true
+    },
+    "code_file_sha256": {
+      ".github/workflows/autonomous-recovery.yml": "2a3fc6d2059214ec8f72ba3e8dd3d893919557baf6effb6b46c488bf22c662fa",
+      ".github/workflows/autonomy-controller.yml": "7731a5f38d102d58928bef9f6d9f0c9ed91ae036697ed46134ab20d8a2ddc282",
+      ".github/workflows/candidate-review.yml": "ad5831ac448853bbb7aabf4b8c80efcad2b9704978d5150f2fb3e4330c4ddfb8",
+      ".github/workflows/repair-lanes.yml": "faeb9bbc7497989b442674bd1a0ff21a2b71ef9f661634f8f0492982f44ac4ef",
+      ".github/workflows/source-audit-executor.yml": "e02c53d1a6cb06f3fda01176843f2e61af914725ef018d67d87d4778fcb182b4",
+      "scripts/autonomy_candidate_context.py": "2d2434cae89b1a88a80b3cb415da62d19a033cbfca3a2cf03aaeced9f3378da0",
+      "scripts/autonomy_candidate_review.py": "edcda0b92d0f5f425763f56c7708b78042350a02c3cab06a27e2892cc5d2c489",
+      "scripts/autonomy_engine.py": "04a3c1e40c32ac5341a28ddf131c87a42f445a7eb2f15661740d02b718f376eb",
+      "scripts/autonomy_failure_input.py": "95a6d74f751b6a0c1b68186fa373fadd64d7aed13ba2de12486672da2675e4bf",
+      "scripts/autonomy_hosted_canary.py": "119c15b224d24efeb800455054a906a7bf7ca82bec750b621c65bd95c8a5eeb7",
+      "scripts/autonomy_lane_runner.py": "d5b39b807a12d551c273bd8409d6eb16d2822ff90bf528eb7978db3c9a896238",
+      "scripts/autonomy_observation.py": "58ab06c71c9e088c4064781e879a70d568584c00ad684ad4b1a7de6372ce7d6e",
+      "scripts/autonomy_recovery.py": "f4c51cbe2e9797d84f14465e5aea8a86764e515e46fbd8aafc675b6f5dcde395",
+      "scripts/autonomy_runtime.py": "27bc85a9b094907ece5e674cabbcf6005bd550ab58786f953c72538b454c5896",
+      "scripts/autonomy_state_store.py": "2b1207301d1bd6f824ac1f3baffafe1bd541d73b27399125c7c92db9fd9a6497",
+      "tests/test_autonomy_candidate_context.py": "35b4d7afb5d212a985e2c84b05a85eae307f525197b5d3eccea20dadf58bf4f5",
+      "tests/test_autonomy_candidate_review.py": "179956b0e510e8ee8b9b09257d602d058d6bd81c3b398562c3afc137c59c7f87",
+      "tests/test_autonomy_engine.py": "68e01b7bc5747a14ff9094be9209f6c79c9e020a1fe2cf331b6e6eab8535e8c0",
+      "tests/test_autonomy_failure_input.py": "11a3f5b94bfd62f98dadd1ade4df9d8fdf5ec57692b3f222db6f406e4a413541",
+      "tests/test_autonomy_hosted_canary.py": "60b85f95e4c420fe0fcc70bbd8341692c5f82cb30308167afb68731100c9d737",
+      "tests/test_autonomy_lane_runner.py": "9b180da8ed15e04b39d980f00927d0bb05e2a88562e7de422c1f4cca1c87777e",
+      "tests/test_autonomy_observation.py": "9764c11b503705887d502dfd056d9bc4264120f34956b702e8573b22e497d447",
+      "tests/test_autonomy_recovery.py": "092ec79c2449fd19846d63788d8e9c4a8bf44498da857a1ee56a4cb43c75e5d9",
+      "tests/test_autonomy_runtime.py": "ad595057ae78072316440c7e1a82e4fe31c5b75cdc3e122c772104d7c77bf9c8",
+      "tests/test_autonomy_state_store.py": "105791f6746b7567646197e13692d155116036e2897dcbb4683f2dbeaa5884eb"
+    }
+  },
+  "corrective_package_validation_259": {
+    "reviewed_code_commit": "924434014cf9c642aff3fa9914ebeae6f8291de9",
+    "autonomy_unittest": {
+      "status": "PASS",
+      "tests": 259,
+      "seconds": 25.682
+    },
+    "actionlint": {
+      "status": "PASS",
+      "version": "1.7.7",
+      "workflows": 5
+    }
+  },
+  "corrective_package_validation_316": {
+    "at": "2026-10-11T06:59:12.812855+00:00",
+    "status": "PASS",
+    "code_commit": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+    "autonomy_unittest": {
+      "status": "PASS",
+      "tests": 316,
+      "seconds": 37.305,
+      "log_sha256": "1366a874d4c15dc4bbbe6ff5fff27fa4d47638e5072166f59a6c4476354edcac"
+    },
+    "actionlint": {
+      "status": "PASS",
+      "version": "1.7.7",
+      "workflows": 5,
+      "diagnostics": [],
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "code_bundle": {
+      "sha256": "d3ed299aed8ca4e4555d3ffbeefa085c2a220667214d31904d0c270f7f41be3d",
+      "restored_commit": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+      "complete_tree_matches": true,
+      "base_only_restore": true,
+      "commits": 46
+    }
+  },
+  "corrective_package_validation_330": {
+    "at": "2026-10-11T07:28:56.710276+00:00",
+    "status": "PASS",
+    "code_commit": "c4417f1959227444f2f841a0e0c534f25d245e99",
+    "autonomy_unittest": {
+      "status": "PASS",
+      "tests": 330,
+      "seconds": 28.391,
+      "interpreter": ".venv/bin/python",
+      "log_sha256": "9ccade39a66a7b9822c910ea8bfd4731b0c5e3255f6d274840a17caaf80966e7"
+    },
+    "actionlint": {
+      "status": "PASS",
+      "version": "1.7.7",
+      "workflows": 5,
+      "diagnostics": [],
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "code_bundle": {
+      "sha256": "e5aaee989798d365ffb45e0d276f9897f9ff2b59bdf07cce9124834879d218d5",
+      "restored_commit": "c4417f1959227444f2f841a0e0c534f25d245e99",
+      "complete_tree_matches": true,
+      "base_only_restore": true,
+      "commits": 49
+    }
+  },
+  "corrective_package_validation_336": {
+    "at": "2026-10-11T07:51:36.052031+00:00",
+    "status": "PASS",
+    "code_commit": "fc03cfb5e9106ba985d47b7c4a9db537042449ac",
+    "autonomy_unittest": {
+      "status": "PASS",
+      "tests": 336,
+      "seconds": 28.477,
+      "interpreter": ".venv/bin/python",
+      "log_sha256": "4714eb8a02c74f9a5b8bfe542065d790e984afbcb52f8be078ec3623ac631a6c"
+    },
+    "actionlint": {
+      "status": "PASS",
+      "version": "1.7.7",
+      "workflows": 5,
+      "diagnostics": [],
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "code_bundle": {
+      "sha256": "f754dd709af20515d0164b750e16b4c0eb78ddabf0ee6b71c73dc678ad585e81",
+      "restored_commit": "fc03cfb5e9106ba985d47b7c4a9db537042449ac",
+      "complete_tree_matches": true,
+      "base_only_restore": true,
+      "commits": 50
+    }
+  },
+  "corrective_package_validation_338": {
+    "at": "2026-10-11T08:00:52.787421+00:00",
+    "status": "PASS",
+    "code_commit": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+    "autonomy_unittest": {
+      "status": "PASS",
+      "tests": 338,
+      "seconds": 45.777,
+      "interpreter": ".venv/bin/python",
+      "log_sha256": "7d32b8a075c6f419136703db5d07c8afc28371652fc094d9039cbb5441ba554e"
+    },
+    "actionlint": {
+      "status": "PASS",
+      "version": "1.7.7",
+      "workflows": 5,
+      "diagnostics": [],
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "code_bundle": {
+      "sha256": "285bb7c25f27951b8ab24313b39ae38e2e709b9d26312e97921aebaaf43acf0c",
+      "restored_commit": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+      "complete_tree_matches": true,
+      "base_only_restore": true,
+      "commits": 51
+    }
+  },
+  "unpublished_candidate_validation_351": {
+    "at": "2026-10-11T08:43:53.387038+00:00",
+    "code_commit": "37c9529773d5fcae7d9cbf10a88e51c4d4d7a675",
+    "publication": "HOLD_NOT_PUBLISHED",
+    "status": "PASS_LOCAL_SUITE_WITH_SEPARATE_INDEPENDENT_CAP_DEFECT",
+    "autonomy_unittest": {
+      "status": "PASS",
+      "tests": 351,
+      "seconds": 30.787,
+      "log_path": "work/historical-unpublished-37c952-autonomy-351-unittest.log",
+      "log_sha256": "d07b29a5bff2a93447d04055048fc6446e9ca0804bcfce4f4a99147c7d1f1e28"
+    },
+    "actionlint": {
+      "status": "PASS",
+      "version": "1.7.7",
+      "workflows": 5
+    },
+    "code_bundle": {
+      "observed_at": "2026-10-11T08:41:25.976770+00:00",
+      "status": "PASS",
+      "base": "a1ac3aa378d5b74e3bf3f50af9120a77c777b611",
+      "checkpoint": "37c9529773d5fcae7d9cbf10a88e51c4d4d7a675",
+      "restored_commit": "37c9529773d5fcae7d9cbf10a88e51c4d4d7a675",
+      "complete_tree_matches": true,
+      "base_only_restore": true,
+      "bundle_path": "work/continuity/autonomy-final-code-52.bundle",
+      "bundle_sha256": "918be37ff1e916708bd57210f16fde9dcf5feba568a6e9f1202760b6746bb4eb",
+      "commits": 52,
+      "bundle_verification": "The bundle contains this ref:\n37c9529773d5fcae7d9cbf10a88e51c4d4d7a675 refs/heads/work\nThe bundle requires this ref:\na1ac3aa378d5b74e3bf3f50af9120a77c777b611 \nThe bundle uses this hash algorithm: sha1\n/workspace/Radar-salud/work/continuity/autonomy-final-code-52.bundle is okay\n"
+    },
+    "reason_for_hold": "Malformed and clock-only repair declarations could reset a capped identical QA failure budget; final publication requires narrow correction and another complete frozen-code suite."
+  },
+  "final_governance_reconciliation": {
+    "parent": "eb7e04631a9d25522714d7ef1be99c2b761d7c3c",
+    "paths": [
+      "config/orchestrator_queue.json",
+      "config/pmo_baseline.json",
+      "data/autopilot/learning_ledger.json",
+      "data/pmo/autonomy_acceptance_2026_10_11_final_v2.json"
+    ],
+    "acceptance": "NOT_PROVEN",
+    "proof_status": "VERIFIED",
+    "mode": "PUBLISHED_VERIFIED",
+    "state_commit": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+    "cas_attempts": 1,
+    "changed": true,
+    "verified_changed_paths": [
+      "config/orchestrator_queue.json",
+      "config/pmo_baseline.json",
+      "data/autopilot/learning_ledger.json",
+      "data/pmo/autonomy_acceptance_2026_10_11_final_v2.json"
+    ],
+    "artifact_sha256": "7f945f324059b4de2c5ad1add378b6da1ad711cdfe8ecba5090e50eb78d9fd0b",
+    "artifact_path": "data/pmo/autonomy_acceptance_2026_10_11_final_v2.json",
+    "hosted_verification": {
+      "pinned_commit": "0e1cd350865cf9010a260256617b48d60243048c",
+      "first_plan_commit": "6ba8a53bb4e72800f61855d46eb6b3b8981b73a9",
+      "first_plan_parent": "0c29dcfb8945f0df87b0d898656131eef8137550",
+      "raw_events": 63,
+      "effective_events": 55,
+      "corrections": 8,
+      "effective_kind_counts": {
+        "blocker": 43,
+        "transition": 12
+      },
+      "first_plan_counts_before": {
+        "raw_events": 63,
+        "effective_events": 56,
+        "corrections": 7,
+        "pickup_count": 26,
+        "transition_count": 13
+      },
+      "first_plan_counts_after": {
+        "raw_events": 63,
+        "effective_events": 55,
+        "corrections": 8,
+        "pickup_count": 26,
+        "transition_count": 12
+      },
+      "trusted_transition_binding_count": 1,
+      "raw_and_leases_unchanged_in_first_plan": true,
+      "immutable_evidence_verified_at_latest_pinned_state": true,
+      "canonical_counts_are_blanket_material_certification": false,
+      "acceptance": "NOT_PROVEN",
+      "counts_as_material_progress": false
+    },
+    "product_and_original_gates_unchanged": true,
+    "production_promoted": false,
+    "counts_as_material_progress": false
+  },
+  "post_governance_real_failure_observation": {
+    "source_path": "work/continuity/hosted-evidence.json",
+    "source_field": "post_governance_real_failure_observation",
+    "staging_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+    "preview_run": 38128983053,
+    "actual_assertion": "assert 11 >= 12",
+    "worker_semantic_result": "BLOCKED",
+    "active_leases_after_result": 0,
+    "new_blocker_material_credits": 0,
+    "new_transition_material_credits": 0,
+    "new_transition_is_independently_certified_material_progress": false,
+    "workflow_success_is_material_progress": false,
+    "acceptance": "NOT_PROVEN"
+  },
+  "hosted_evidence": {
+    "path": "work/continuity/hosted-evidence.json",
+    "sha256": "07af564696184ee6f821d23a428b5035a1e9ac43f652034bc62b1bf5babdc5b8"
+  },
+  "recovery_comparison": {
+    "path": "work/continuity/recovery-before-after.json",
+    "sha256": "c73ce2e404c92c3621941f935d844d8e516ba9c345efe7023ac8d749d324a717"
+  },
+  "hosted_canary": {
+    "path": "work/continuity/canary-proof.json",
+    "sha256": "cd2d860b12149e51c0bc9c78ea2675807356713714add1385e07c40dcaba6ffd",
+    "fault_injection": true,
+    "counts_as_material_progress": false
+  },
+  "learning_ledger_update": {
+    "path": "work/continuity/learning-ledger-receipt.json",
+    "sha256": "5a465af69c59fe5bcd01473c9f0fdd42d86fe4d1a3c1d93926f8b6e9c640ae44",
+    "counts_as_material_progress": false
+  },
+  "code_bundle": {
+    "sha256": "2119c02340527eba17fc0b20e9e46522ac4aba8c39eeb329140c30875fac6d36",
+    "restored_commit": "720af52a7e652adcd34afabb43dd609d154f5ca2",
+    "complete_tree_matches": true,
+    "base_only_restore": true,
+    "commits": 54
+  },
+  "prior_35_commit_bundle": {
+    "sha256": "c96e3eff28753abf49263e6294665567bd898576fcee78632788de4108fd4be6",
+    "restored_commit": "924434014cf9c642aff3fa9914ebeae6f8291de9",
+    "complete_tree_matches": true,
+    "base_only_restore": true
   }
 }

@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "counts_as_material_progress": false,
+  "acceptance": "NOT_PROVEN",
+  "original_capture_sha256": "6eb7f8eda77a165f5c315c0915b5f635ebc171e7174390fb6d3b068690837c7b",
+  "recovery": {
+    "evidence": {
+      "baseline_audit": "work/live-review/candidate-context-old-recovery-baseline-b918ac5df826.json",
+      "canonical_terminal_snapshot": "work/live-review/20261011061134Z-new-recovery-terminal-canonical-4fdbacf526da.json",
+      "duplicate_worker_log": "work/live-review/20261011061403Z-duplicate-qa-worker-no-claim-114403803292.log",
+      "metadata_publication": "work/live-review/20261011060633Z-canonical-metadata-publication-observed.json",
+      "new_QA_log": "work/live-review/20261011060705Z-new-staging-qa-114403668484.log",
+      "new_worker_log": "work/live-review/20261011061041Z-new-fenced-recovery-worker-114403765341.log"
+    },
+    "invalid_material_event_comparison": {
+      "components": [
+        {
+          "new_fingerprint": "920adab5dc583352e837fb889990cfcbde3dd199fbab8e958a00b1fe0c13d458",
+          "old_fingerprint": "ae3df584dff76cae26ade0d298c612c192b844111793ef4f80107e590051f903",
+          "per_path_diffs": [
+            {
+              "new": "02702f865e185746cdf194586722a51feb0d29c74dedda4c824273c3ebf3b547",
+              "old": "23be987ce13ced0c64081e7a57e5b5df53cabdab8f8e3948b54130391ff7e104",
+              "path": "$[1].baseline_full_gate.captured_stdout_sha256"
+            },
+            {
+              "new": "74dc6fc06622d5d441526b04be193f71814be209baafcfdbfdd7afd11210e556",
+              "old": "a8576f047f656201c9df19eead262491b2c89c0d493cbe698ed2d97a19c22424",
+              "path": "$[1].evidence[0].captured_stdout_sha256"
+            },
+            {
+              "new": "02702f865e185746cdf194586722a51feb0d29c74dedda4c824273c3ebf3b547",
+              "old": "23be987ce13ced0c64081e7a57e5b5df53cabdab8f8e3948b54130391ff7e104",
+              "path": "$[1].evidence[1].captured_stdout_sha256"
+            },
+            {
+              "new": "aba65e235507c4fd58eeb7fdb2577fe0ea8fb57d9d06c77d0e7ac8c253ffdd22",
+              "old": "dcb20ae80362ccee834642f83369c1ae4c80aa51a8d1b095482e68384b785c6e",
+              "path": "$[1].failure_sha256"
+            }
+          ],
+          "reason": "Targeted deterministic gate failed; no validated repair candidate"
+        },
+        {
+          "new_fingerprint": "86f54615f00dcad2446b738612ecf365f0a6a23f5e913d54a4985533ab23ede1",
+          "old_fingerprint": "f292dd4bb0ccab9f084dab3b8f067c22d86875b8e8e64bc81ab16ce998123903",
+          "per_path_diffs": [
+            {
+              "new": "staging_qa_failed_run_38116961282",
+              "old": "staging_qa_failed_run_38113830124",
+              "path": "$[0].task_id"
+            }
+          ],
+          "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256"
+        },
+        {
+          "new_fingerprint": "0dd2b2bfaf2afe68399526d8868437e51544c3504eb7ad82164408ef4066ca76",
+          "old_fingerprint": "aa5c771e426e14fbbb3e8c53270f4429a6de5b2c54b560560f006c4d019576c4",
+          "per_path_diffs": [
+            {
+              "new": "c4819844e413d31ede792521a2c137392c4ae104",
+              "old": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+              "path": "$[0].command[5]"
+            },
+            {
+              "new": "44a025bb893a25665e510fde9d003e44fa9568db50b9493a142e01abf5307978",
+              "old": "5c5a02ae308099074e26e8d3f9e44dedf02fe44919503e3a28b8c0474a249263",
+              "path": "$[0].failure_hash"
+            },
+            {
+              "new": "c4819844e413d31ede792521a2c137392c4ae104",
+              "old": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+              "path": "$[0].reviewer_proof.candidate_sha"
+            }
+          ],
+          "reason": "Independent candidate gate rejected or could not execute: independent_reviewer"
+        },
+        {
+          "new_fingerprint": "0dc9fe904c1350f2314a08c7fb4f8486e217418740bdbe63e28438ceae53364e",
+          "old_fingerprint": "0b9adbbcc1f153124593810e6472f3a782ab59d718c92639161494300121fd53",
+          "per_path_diffs": [
+            {
+              "new": "6a414e5e8dbcb9620c1f2f132e1804af7488fd89425630a28de66ec2047de85b",
+              "old": "984ab8f5c259018a263c813b44861b2e5a3e73647c6d16895b5f5da1ff7904f0",
+              "path": "$[0].failure_hash"
+            }
+          ],
+          "reason": "Independent candidate gate rejected or could not execute: browser_desktop_and_mobile"
+        }
+      ],
+      "new_blocker_fingerprint": "b715a79803690ffb2a4716f4b67642fb8e6eb23a28fa26f031ed0603d6154ccc",
+      "old_blocker_fingerprint": "c5fc935a7ce6d59e421147a744ba1cde3d06a0d3810efb61c2835c977630ff3e",
+      "same_combined_input_fingerprint": true,
+      "same_failure_signature": true,
+      "semantic_rule": "Snapshot of published dd2d2067 engine._semantic before correction; source clocks/raw logs retained in immutable evidence."
+    },
+    "local_evidence_sha256": {
+      "work/live-review/20261011060449Z-old-recovery-baseline-114394671952.log": "d13753785f0ddc64dbeaddd5a06cfbc7a4f0acae165bdd1a4632f73f4cf34e96",
+      "work/live-review/20261011060449Z-old-recovery-baseline-114394736720.log": "b0e6eea3c19279d44733517af9b682ca3e8378a444cfef2a5edaa74964369c24",
+      "work/live-review/20261011060705Z-new-staging-qa-114403668484.log": "0804b35ea295a99d125a1d44a589a6f656b8f031446f206e24dd041ab7182695",
+      "work/live-review/20261011061041Z-new-fenced-recovery-worker-114403765341.log": "9065290a6eecd42b61067e22a19fbe865f0dac32c2afa1b87a72018a1bba318e",
+      "work/live-review/20261011061403Z-duplicate-qa-worker-no-claim-114403803292.log": "8bbbbefb3050c4d0957cac1df1c9429190f0eb85f0a1566e9727297ef6552bbd"
+    },
+    "metrics": {
+      "acceptance": "NOT_PROVEN",
+      "actual_rejected_CAS_retry_observed": false,
+      "after_lease_events": 13,
+      "after_material_events": 49,
+      "before_lease_events": 12,
+      "before_material_events": 47,
+      "closure_count": 0,
+      "invalid_material_event_ids": [
+        "f6682fbf21e28a62f0333785de12f199ec8b884a0136d612d3ef30f1e21eb12f"
+      ],
+      "invalid_reason": "Identical failure/scope/reasons gained blocker credit because raw capture hashes, synthetic run task id and metadata-only candidate SHA changed.",
+      "mutation_count": 0,
+      "new_actual_pickups": 1,
+      "new_valid_transition_event": "3bee8124d86b6b1c33c94d6d977b6fd121e1f268d50d9f5faef6637947214bb9",
+      "source_window_owner_acceptance": "NOT_PROVEN",
+      "workflow_success_is_progress": false
+    },
+    "new": {
+      "blocker_reasons": [
+        "Independent candidate gate rejected or could not execute: browser_desktop_and_mobile",
+        "Independent candidate gate rejected or could not execute: independent_reviewer",
+        "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+        "Targeted deterministic gate failed; no validated repair candidate"
+      ],
+      "canonical_blob_sha": "d347c74d3e119abe41fc38de66e0873f6ad04869",
+      "canonical_observed_ref": "4fdbacf526da7a616a1bfdbe1bf6af4d1b4343dc",
+      "claim": {
+        "claimed_at": "2026-10-11T06:07:52.299198Z",
+        "expires_at": "2026-10-11T06:18:56.110315Z",
+        "fence": 1,
+        "heartbeat_at": "2026-10-11T06:08:56.110315Z",
+        "owner": "38117002323-1-staging_qa",
+        "token_sha256": "d0ddbc01590def144ad4907af8bc847aeb34c14e08c475983319f0ddc454f047"
+      },
+      "dispatched_at": "2026-10-11T06:06:57.7350819Z",
+      "duplicate_controller": 38116996366,
+      "duplicate_worker_job": 114403803292,
+      "duplicate_worker_outcome": "NO_EXECUTABLE_TASK",
+      "duplicate_worker_outcome_at": "2026-10-11T06:10:08.1796173Z",
+      "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+      "following_controllers": [
+        {
+          "repair": "SKIPPED",
+          "review": "SKIPPED",
+          "run_id": 38117123333
+        },
+        {
+          "repair": "SKIPPED",
+          "review": "SKIPPED",
+          "run_id": 38117177482
+        }
+      ],
+      "gate": "assert 11 >= 12",
+      "gate_at": "2026-10-11T06:06:45.6334266Z",
+      "heartbeat_blob_sha": "5addae5e2b0e076b06bcf2c3549b7850287def59",
+      "heartbeat_state_ref": "e9e6e415254a1c652dd3d338652de95f778759e7",
+      "scoped_failure_budget": {
+        "attempts": 2,
+        "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+        "input_fingerprint": "3c75e89e52098d836b1a51b09b79b21210d6c52851b813a1973c56a9499bb42e",
+        "last_attempt_at": "2026-10-11T06:09:07.790367Z",
+        "task_ids": [
+          "staging_qa_failed_run_38113830124",
+          "staging_qa_failed_run_38116961282"
+        ],
+        "token_sha256s": [
+          "b7bbe1b624440379e0b5cad834f89f0faf5d584abf95e4731934a19b44974c6f",
+          "d0ddbc01590def144ad4907af8bc847aeb34c14e08c475983319f0ddc454f047"
+        ]
+      },
+      "staging_job": 114403668484,
+      "staging_run": 38116961282,
+      "task_id": "staging_qa_failed_run_38116961282",
+      "terminal_at": "2026-10-11T06:09:07.790367Z",
+      "terminal_state_commit": "7a1c7f153a59a7967476a8faa911f7b606418e0e",
+      "terminal_status": "BLOCKED",
+      "worker_job": 114403765341,
+      "worker_run": 38117002323,
+      "wrapper_failure_run_id": 38116961282,
+      "wrapper_job": 114403745763,
+      "wrapper_main_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+      "wrapper_run": 38116996270
+    },
+    "next_hypothesis": "Repair semantic fingerprints and exclude historical invalid material credit, then verify unchanged input does not re-credit identical blockers while independent families retain their state.",
+    "observed_at": "2026-10-11 06:15:03 UTC",
+    "old": {
+      "corrupt_patch_at": "2026-10-11T05:09:31.9446135Z",
+      "corrupt_patch_line": 11,
+      "gate": "assert 11 >= 12",
+      "gate_at": "2026-10-11T05:08:59.2774929Z",
+      "push_rejected_actual_ref": "42d92b32eae1d93c4f0ea3c61f8b6210e76dbfcf",
+      "push_rejected_at": "2026-10-11T05:09:33.5229686Z",
+      "push_rejected_expected_ref": "9e669e2421a716055bfe61ac985e3aa3561f0e1f",
+      "recovery_job": 114394736720,
+      "recovery_run": 38113859321,
+      "staging_job": 114394671952,
+      "staging_run": 38113830124
+    },
+    "publication": {
+      "parent": "44ec3f30af18c5bc99f47adf4b07ca5f5782ded9",
+      "paths": [
+        "config/orchestrator_queue.json",
+        "config/pmo_baseline.json",
+        "data/autopilot/learning_ledger.json",
+        "data/pmo/autonomy_acceptance_2026_10_11.json"
+      ],
+      "product_or_gate_changes": false,
+      "sha": "c4819844e413d31ede792521a2c137392c4ae104"
+    },
+    "read_only_observer": true
+  },
+  "transport_capture_sha256": "fec11eaac8328f56725c0bc9dc3579b7b79b97aa0d7da46b208668b9d1677fa5",
+  "real_transport_repair": {
+    "observed_at": "2026-10-11 05:52:53 UTC",
+    "kind": "hosted_transport_recovery",
+    "main_ref": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+    "state_ref": "1bb7b3ede802e0d8d0ad2ded429f57b33b968465",
+    "run_id": 38115967398,
+    "job_id": 114400854282,
+    "task_id": "source_repair_fiscalization_lane_2026_10_11",
+    "before": {
+      "state_ref": "240f1317559897871ac4927684e6efde26d16ae1",
+      "run_id": 38114913138,
+      "job_id": 114397839197,
+      "error": "Live reproduction returned no structured source evidence",
+      "display_output_length": 24000,
+      "full_source_log_sha256": "17511ebd09faf49db9ae7ef295c73173d0cbacf4a2372423c3ae2327ca63e18e"
+    },
+    "after": [
+      {
+        "path": "task.blocker.blockers[0].evidence[2].automated_recovery",
+        "status": "BLOCKED",
+        "blocker": "Reproduced failure requires a bounded repair plan; model lane disabled",
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "suseso_fiscalizacion"
+            ],
+            "returncode": 1,
+            "output_length": 24000,
+            "structured_slug": "suseso_fiscalizacion",
+            "source_evidence_sha256": "0a3888d8e043fe41abbaede67f29bf786a749c99f843c91aedfa8b31499ed1c7",
+            "captured_stdout_sha256": "17511ebd09faf49db9ae7ef295c73173d0cbacf4a2372423c3ae2327ca63e18e",
+            "captured_stdout_bytes": 55588
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "tests/test_press_pipeline.py",
+              "tests/test_fonasa_source.py",
+              "tests/test_isp_anamed_source.py",
+              "tests/test_deis_source.py",
+              "tests/test_suseso_pipeline.py"
+            ],
+            "returncode": 0,
+            "output_length": 99,
+            "captured_stdout_sha256": "e36b6ac3f26f6514018446c23569d17ea08e20849d68730d4f16bfe467656eb5",
+            "captured_stdout_bytes": 99
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q"
+            ],
+            "returncode": 1,
+            "output_length": 2217,
+            "captured_stdout_sha256": "2dde11b3148bc87b00f4f2e9a82f8b4d9dbf189687f7a4bbbe2e2e84685311f2",
+            "captured_stdout_bytes": 2221
+          }
+        ]
+      },
+      {
+        "path": "task.blocker.evidence[2].automated_recovery",
+        "status": "BLOCKED",
+        "blocker": "Reproduced failure requires a bounded repair plan; model lane disabled",
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "suseso_fiscalizacion"
+            ],
+            "returncode": 1,
+            "output_length": 24000,
+            "structured_slug": "suseso_fiscalizacion",
+            "source_evidence_sha256": "0a3888d8e043fe41abbaede67f29bf786a749c99f843c91aedfa8b31499ed1c7",
+            "captured_stdout_sha256": "17511ebd09faf49db9ae7ef295c73173d0cbacf4a2372423c3ae2327ca63e18e",
+            "captured_stdout_bytes": 55588
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "tests/test_press_pipeline.py",
+              "tests/test_fonasa_source.py",
+              "tests/test_isp_anamed_source.py",
+              "tests/test_deis_source.py",
+              "tests/test_suseso_pipeline.py"
+            ],
+            "returncode": 0,
+            "output_length": 99,
+            "captured_stdout_sha256": "e36b6ac3f26f6514018446c23569d17ea08e20849d68730d4f16bfe467656eb5",
+            "captured_stdout_bytes": 99
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q"
+            ],
+            "returncode": 1,
+            "output_length": 2217,
+            "captured_stdout_sha256": "2dde11b3148bc87b00f4f2e9a82f8b4d9dbf189687f7a4bbbe2e2e84685311f2",
+            "captured_stdout_bytes": 2221
+          }
+        ]
+      }
+    ],
+    "source_closure_proven": false,
+    "stage_a_recovery_proven": false,
+    "mutation_recorded": false,
+    "remote_mutations": false,
+    "next_hypothesis": "A bounded deterministic repair plan can now consume the retained source evidence while preserving source acceptance and existing full-gate blockers."
+  },
+  "proof_limits": [
+    "The recovery wrapper SUCCESS only proves dispatch, not repair.",
+    "The product gate still fails assert 11 >= 12; no source closure or product mutation is claimed.",
+    "Historical browser aggregate equality does not establish identical individual assertions; opaque hash changes do not prove new material problems.",
+    "The real transport parsing repair is infrastructure recovery, not verified source Stage A recovery.",
+    "Historical SUSESO bounded_probe_budget is our diagnostic coverage guard, not a verified publisher/parser failure. Current source-failure readers exclude guard-only legacy evidence."
+  ],
+  "public_run_urls": [
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38113830124",
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38113859321",
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38114913138",
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398",
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282",
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38116996270",
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38117002323",
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38116996366"
+  ]
+}

@@ -447,3 +447,533 @@ actual task automatically, preserves its complete failure evidence, records a
 real independent transition and keeps the scoped staging blocker isolated. The
 canary must wait for actual elapsed time. Four useful hours and owner event
 coverage remain NOT_PROVEN.
+
+## 22. Verify real hosted transport recovery and isolated STALLED
+
+The corrective publication `dd2d206` started controller `38115967398` at
+05:48:09Z. Six families acquired new fenced leases after the relevant executor
+revision, renewed heartbeats and produced six independent task transitions.
+The original first-pickup clock was retained. Completion and scheduled audit
+controllers did not receive material credit for their green conclusions.
+
+Real fiscalization job `114400854282` now extracts SUSESO structured evidence
+from the same 55,588-byte capture that the previous worker truncated before
+parsing. Both captures hash to
+`17511ebd09faf49db9ae7ef295c73173d0cbacf4a2372423c3ae2327ca63e18e`.
+Sixteen directed source tests PASS. The original baseline still has 265 PASS,
+one FAIL and one SKIP; the historical executor reported BLOCKED because it lacked
+a supported bounded repair strategy. This implementation limitation is addressed
+in checkpoint 27. This proves infrastructure transport recovery, not source closure.
+
+The separate hosted canary reached STALLED after 183.402066 actual seconds,
+reclaimed a new generation and rejected the old worker. All six checks PASS;
+later observations verified the immutable proof and wrote no duplicate result.
+Canary control is isolated from live source tasks. Fault injection is expressly
+excluded from useful progress, source LIVE and four-hour acceptance.
+
+Directed evidence: `work/continuity/recovery-before-after.json` and
+`work/continuity/canary-proof.json`, with canonical hashes and run/job IDs.
+Next hypothesis: a real new staging failure is escalated through the family
+lease without corrupt-patch or state-write loops and leaves independent lanes free.
+
+## 23. Preserve canonical governance and compare old/new recovery
+
+CAS publication `c4819844` updates only the two authorized autonomy task records,
+PMO autonomy metadata, one learning incident and an immutable acceptance snapshot.
+The current Work 3 staging metadata was preserved. Seven targeted PMO tests PASS.
+No product byte, gate, existing task constraint, readiness or validated block
+was changed. The historical snapshot remains pending live acceptance.
+
+That metadata commit triggered a real preview run `38116961282`: the unchanged
+gate again failed `assert 11 >= 12` at 06:06:45Z. New recovery `38116996270`
+dispatched only staging_qa. Worker `38117002323` claimed at 06:07:52.299198Z,
+renewed its lease and ended BLOCKED with actual QA, Reviewer, browser and missing
+acceptance evidence. The competing controller worker returned NO_EXECUTABLE_TASK
+without claiming. Later controllers skipped repair on unchanged inputs.
+
+The previous recovery run `38113859321` failed at corrupt patch line 11 and then
+lost a Git ref race. Earlier runs failed at corrupt lines 9 and 10. The new
+existing recovery workflow replaces that diff-writing mechanism with a bounded
+family dispatch; the old patch writer is no longer a parallel execution path.
+Wrapper SUCCESS means dispatch only. No product repair or production promotion
+is asserted. Raw immutable history and original failure evidence remain visible.
+
+Next hypothesis: metadata-only run identities cannot make the identical failed
+QA problem earn another blocker credit; genuine new assertion evidence can.
+
+## 24. Repair demonstrated duplicate material credit
+
+Comparison of the two real QA episodes found one invalid extra blocker event:
+`f6682fbf21e28a62f0333785de12f199ec8b884a0136d612d3ef30f1e21eb12f`.
+Run/task IDs, candidate metadata SHA and raw capture hashes changed while the
+demonstrated failure, product identity and structured problems remained equal.
+Historical browser aggregates cannot establish individual assertion equality;
+an opaque raw-hash change alone cannot justify new material novelty.
+
+Five isolated commits repair the defect: `bc0dff4`, `8262cad`, `fd5408c`,
+`e214243` and `9244340`. Canonical problem identity preserves actual assertions,
+URLs, source content, publication dates and product changes. Only bound transport
+aliases and diagnostic clocks are removed. Browser failures now retain concrete
+case/error details. The append-only correction binds both immutable raw events
+by hashes and demonstrated product/problem; malformed corrections fail closed.
+Raw history is preserved. Observer and acceptance consume verified effective
+events, and the affected material watch returns to its real last transition.
+
+Directed validation: 76 engine tests, 16 observer tests and 29 runner tests PASS;
+complete suite 259 PASS in 25.682 seconds. Actionlint 1.7.7 PASS on all five
+workflows. Independent scope/security review confirms only infrastructure and
+tests changed, with product, original gates and deployment intact. The 35-commit
+code bundle restored the exact complete tree from the original main base.
+Publication `9244340` started hosted controller `38118016823` at 06:25:34Z.
+
+Next hypothesis: hosted planning applies the hash-bound correction automatically,
+keeps the original acceptance clock and continues only relevant independent work.
+The final pinned result and exact external continuation are recorded in the
+verification JSON and `work/continuity/hosted-evidence.json`; neither documentation
+nor a successful workflow counts as material progress or four-hour acceptance.
+
+## 25. Repair demonstrated source-credit and guard classification defects
+
+The third hosted episode produced four additional source blocker credits without
+new demonstrated problems. Diagnostic clocks, capture hashes, request ordering
+and producer-version changes were the cause. Four genuine source pairs and the
+fourteen newly recorded QA/browser cases were compared separately. The QA evidence
+is retained; it is new evidence of existing failures, not a repaired regression.
+
+Isolated commits `3d692dd`, `2492254`, `ec05e1f`, `01cc158` and `ce40f5a`
+canonicalize evidenced source problems and classify the exact bounded-probe guard
+as incomplete instrumentation coverage. Independent HTTP/Unicode/parser errors
+remain real failures. Arbitrary text mentioning the guard is not suppressed.
+Unknown source structures fail closed. Source inventories, actual URLs/statuses,
+dates, assertions and semantic content remain significant. Raw history and gates
+are unchanged; pure internal coverage exhaustion is not counted as source repair.
+
+Directed validation: 94 engine tests, 36 runner tests plus 51 subtests, and
+18 observer tests PASS. Independent four-pair historical replay and seven
+tampering checks PASS. Evidence is pinned in the final verification and hosted
+snapshot; local replay is expressly offline and earns no live progress.
+
+Next hypothesis: the first hosted plan automatically retires only the four false
+source credits, retains the existing QA correction and real new QA evidence,
+and source guard normalization alone earns no new material credit.
+
+## 26. Bind historical evidence through actual Git provenance
+
+Isolated commit `5785223` adds a conflict-safe legacy binding importer. It verifies
+each immutable worker result, unique original raw event, finish commit and parent,
+task/family/input SHA and actual product fingerprint derived from committed blobs.
+It never infers an old product from today's task or accepts a supplied verified
+attestation. Ten real-Git tests PASS, including idempotence and invalid provenance.
+
+Actual CAS `46fbcc6675f215ffb7f45522065b82afa2a8d26e` imported eight bindings and
+one immutable proof. All other control bytes, tasks, leases, history and ledger
+were preserved. Binding metadata is not material progress. Final independent
+replay keeps 58 raw events, projects 53 effective events after five corrections,
+preserves eleven transitions, the original pickup clock and new fourteen-case
+QA evidence. The hosted correction proof is recorded separately; offline counts
+do not certify GitHub application.
+
+Next hypothesis: concurrent hosted writers retain this registry and all raw
+events while planning appends verified corrections, without force pushes.
+
+## 27. Repair the missing deterministic executor capability
+
+Policy and task inspection found that bounded reversible source repair is already
+approved. Earlier checkpoint wording about a missing approved plan described the
+executor's limitation and must not be read as a new Toba permission requirement.
+The lack of acceptance_artifact still prevents closure; it does not prevent
+starting already approved repair. No paid model is enabled.
+
+Isolated commits `436cc20`, `b01a8c0`, `998f1c5` and `f2ec534` add a read-only
+planner for the actual ACHS non-ASCII URI failure and integrate it ahead of the
+optional model. It checks exact candidate SHA, task approval, source AST and
+preimage, then generates bounded JSON. Unknown problems are reported as
+executor_capability_missing before scope rejection; recognized unauthorized
+repairs fail closed. Existing recovery applies only inside an isolated candidate
+and keeps all directed, source LIVE, full QA, Reviewer and rollback requirements.
+
+Directed validation: sixteen planner tests, 41 recovery tests and 26 runtime
+tests PASS. The stdlib HTTP URI failure is reproduced before encoding, and
+Unicode authority, ASCII controls, pre-existing percent escapes and unrelated
+bytes remain protected. A generated plan is not mutation/repair evidence.
+
+Next hypothesis: hosted mutual-source execution attempts this recognized repair
+without owner restart; an unmet LIVE or QA gate rolls back and records the actual
+failure while unrelated families continue. No product promotion is authorized.
+
+## 28. Preserve history while evaluating a current real acceptance window
+
+Isolated commit `0b8b87d` selects the latest actual four-hour window while keeping
+the original first pickup and full history. Earlier work, stalls and prompts
+remain visible and cannot supply missing gates inside a later window. Mutation,
+verified source repair, independent transition, maximum material gap and complete
+Actions/owner coverage are still required in that same window. Five new directed
+window tests are included in the 94 passing engine tests; future, malformed and
+simulated observations fail closed.
+
+All eleven corrections were dependency-ordered before publication only; the
+final tree is unchanged and public history was not rewritten. Complete frozen
+code `ce40f5afaad0efb1efec3a010db86d9eb1e9d676` passed 316 tests in 37.305 seconds
+and actionlint 1.7.7 on five workflows. Independent final scope review passed
+all 46 commits/32 infrastructure paths, with zero credential findings and no
+product, original-gate or production-deployment changes. The 46-commit bundle
+restored the exact complete tree from the original main base.
+
+Normal fast-forward publication started hosted controller `38120110728` at
+07:03:52Z. Acceptance remains NOT_PROVEN; actual outcome, UTC, immutable hashes,
+raw/effective counts and limits are in work/continuity/hosted-evidence.json.
+Next hypothesis: the new real episode verifies correction, classified evidence,
+automatic relevant pickup and bounded repair behavior without false progress;
+the external owner-event channel still requires trustworthy complete coverage.
+
+The first new hosted plan `c58db62d` at 07:04:08.198661Z verified the exact
+58-to-53 projection, unchanged raw history/eight bindings and six organic
+no-material-progress STALLED detections without credit. Actual mutual finish
+`1522674e` at 07:06:00.551910Z attempted both recognized ACHS repairs. Requests
+passed in the candidate; zero dated/verified detail items still failed LIVE, so
+both attempts rolled back with no changed paths or material mutation. Other
+families continued independently. These are real hosted proofs with the exact
+limits recorded; they do not validate Stage A or four useful hours.
+
+## 29. Remove capability-label credit without losing independent evidence
+
+The fourth real hosted episode ended with raw62/effective57, 25 pickups and
+twelve actual transitions. Two additional blocker credits were invalid: public
+data and QA had only acquired a typed UNSUPPORTED diagnostic while their
+demonstrated source, normative and fourteen browser-case failures were unchanged.
+The actual ACHS repair attempt and failed LIVE/rollback evidence were distinct and
+are retained. Metadata is not a new product/source failure.
+
+Isolated commits `4731574` and `c4417f1` normalize only the exact unsupported
+no-plan/no-execution capability envelope and verify redundant source-output bytes
+against the recorded serializer, hashes, count and suffix. Independent review
+initially found that arbitrary assertion text could disappear beside parsed
+source JSON; the second commit fixes that demonstrated negative case. Unknown
+fields, plans, rejection, paid attempts, source facts, baseline assertions and
+extra diagnostic text remain meaningful. The canonical engine controls novelty
+even when a legacy producer hash is opaque. Raw events are never rewritten.
+
+Directed validation: 106 engine tests PASS; independent 46 actual-envelope and
+eleven extra source-output negatives PASS, five hash/count/assertion tampering
+cases rejected and 25 independent directed tests PASS. Pinned actual2e7658 replay
+preserves raw62, projects55 with seven corrections, retires only the two extra
+credits, preserves the prior five corrections/eight bindings and is idempotent.
+No offline replay earns material or LIVE acceptance credit.
+
+Next hypothesis: the next real hosted plan appends those two corrections without
+new claims or repeated diagnoses because execution inputs remain unchanged.
+
+## 30. Distinguish identical Git convergence from a durable new write
+
+The first complete follow-up suite exposed two missing-pytest failures from an
+incorrect root interpreter and a genuine store telemetry defect. The recovery
+tests passed under the repository venv. A deterministic real-Git reproduction
+then confirmed that a second identical commit can push successfully as up-to-date
+while the store falsely returns changed=true.
+
+Isolated commit `cc0b715` reads the exact target-ref porcelain result: `=` is a
+no-op; ordinary fast-forward/new-ref updates are writes; unknown, missing or
+duplicate success statuses fail closed. It preserves normal fast-forward CAS.
+The canary race uses distinct actual-run identities to force different candidates
+and retains its exact attempts[1,2] assertion. A separate fixed-date identical
+candidate test proves same SHA, attempts[1,1], only one changed write and one
+immutable episode. Eleven store and fifteen canary tests PASS. No gate is weakened.
+
+Frozen code `c4417f1959227444f2f841a0e0c534f25d245e99` passed 330 tests in 28.391
+seconds using `.venv/bin/python`, actionlint 1.7.7 on five workflows and fifteen
+independent critical contracts. Full diff review covers 49 commits/32 autonomy
+paths with zero credential findings and unchanged product, original gates and
+production deployment. The 49-commit bundle restored the exact complete tree
+from the original main base; earlier bundles remain preserved.
+
+Normal fast-forward publication started controller `38121721113` at 07:32:35Z.
+Next hypothesis: verified hosted correction preserves all raw evidence and
+transitions while the corrected store reports writes honestly. Acceptance stays
+NOT_PROVEN; the pinned result and exact continuation are in the final evidence.
+
+The actual fifth first plan `a703892e` at 07:32:52.798673Z applied exactly the two
+additional corrections: raw62 unchanged, effective55, seven corrections, eight
+historical bindings, 25 pickups and twelve transitions. The subsequent observer
+commit `a7495354` changed only four observation metadata paths and retained the
+same control blob. Repair and candidate jobs were SKIPPED with unchanged inputs;
+no new claims, mutation or audit-loop credit occurred. Independent verification
+checked all eight immutable evidence references and their Git blob/SHA256 hashes.
+The actual observed window ended at 07:33:14.686220Z: 7,408.454723 seconds with a
+2,216.775938-second maximum material gap. Neither meets four useful hours or the
+unchanged thirty-minute gap gate. Owner coverage remains unverified.
+
+## 31. Retain independent errors beside incomplete recovery diagnostics
+
+Independent final review reproduced a remaining false-negative: an additional
+assertion beside the historical fiscalization recovery source JSON disappeared
+when the outer source coverage was incomplete. The previous filter omitted every
+automated_recovery component under that condition. This was an infrastructure
+identity defect, not a newly observed hosted publisher failure.
+
+Isolated commit `fc03cfb` replaces that broad omission with a strict recognizer
+for the exact unexecuted guard diagnostic. Serializer/capture hashes bind the
+source output. The known legacy baseline and context use documented provenance
+digests; only pytest duration is ignored. Unknown fields, extra outputs/assertions,
+changed baseline/context, additional gates, planned/paid/candidate/rejected work
+remain evidence. The unchanged DF discovery count is recognized exactly.
+
+Directed validation: 112 engine tests PASS, including six new recovery-identity
+methods and 24 actual negative cases. Reproduction is RED on `c4417f1` and GREEN
+on `fc03cfb`. Actual fifth-state replay keeps raw62/effective55/seven corrections,
+eight bindings, 25 pickups and twelve transitions; all are idempotent. No offline
+assertion earns live progress.
+
+Frozen code `fc03cfb5e9106ba985d47b7c4a9db537042449ac` passed 336 tests in 28.477
+seconds and actionlint 1.7.7 on five workflows. Its 50-commit bundle restored the
+exact full tree from the original main base. Earlier validation and bundles remain
+preserved. The next hypothesis is that hosted observation retains canonical
+history without reopening unchanged tasks, while a genuinely new independent
+recovery error remains distinguishable. Actual publication and outcome are pinned
+in the final hosted evidence; acceptance stays NOT_PROVEN.
+
+Normal fast-forward publication was confirmed at 07:52:53.771697Z and started
+controller `38122862769` (created 07:52:49Z). Actual first plan `aa50989e`, parent
+`a7495354`, reduced at 07:53:07.227053Z: unchanged raw62/effective55/seven
+corrections, 25 pickups and twelve transitions, with empty repair/candidate
+matrices. Repair and candidate jobs were SKIPPED. The latest staged inputs were
+read from `eee5dbb0`; unrelated changes did not restart the identical diagnoses.
+Independent final review also passed 64 actual-record negative cases, retaining
+new hash-bound assertions and changed baseline/context. No new claims or
+useful-progress credit is inferred from this controller SUCCESS.
+
+## 32. Require independent primary source evidence for diagnostic equivalence
+
+A further independent negative changed the nested DF discovery count from 64 to
+65 and refreshed every real JSON, source, capture and failure hash, while the
+principal observed source row stayed at 64. The recovery had incorrectly matched
+its own nested row, so the changed evidence disappeared. This was reproduced
+against immutable `fc03cfb` code, not reported as an actual new hosted source fact.
+
+Isolated commit `15416d1` restricts corroboration to direct primary source rows in
+the component evidence. Recovery/context/wrapper data cannot corroborate itself.
+Unknown, absent or malformed independent rows fail closed. Two new test methods
+cover twelve structured fact changes and untrusted wrappers; 114 engine tests PASS.
+Independent review preserved all 29 boundary cases with fresh hashes, including
+dates, content, URLs, inventories, requests and two self-matching recoveries.
+All four proven legacy adapters and raw62/effective55/seven corrections remain
+unchanged and idempotent; eight independent directed tests also PASS.
+
+Frozen code `15416d1dee5b71f5afd4468a4e295fd3efc5ff49` passed 338 tests in 45.777
+seconds, actionlint on five workflows, 23 independent critical contracts and a
+full 51-commit/32-path scope review with zero credential findings. Product,
+original gates and deployment are unchanged. The 51-commit bundle restored the
+exact full tree. Publication was confirmed at 08:04:01.906332Z and activated
+controller `38123500601`, created 08:03:57Z.
+
+Next hypothesis: the hosted controller retains existing history and avoids
+unchanged claims; new independently evidenced recovery facts remain meaningful.
+Final actual result, canonical state, metadata reconciliation and exact blockers
+are pinned in the final continuity evidence. Stage A remains NOT_PROVEN.
+
+## 33. Reconcile governance and verify the resulting real failure
+
+Governance commit `e87e844aa9c5615381291ae925a6c6d2200f6012`, parent
+`eee5dbb0668b30605a22d86b7355b75b6a340ef6`, published four metadata paths by
+fresh staging CAS: queue, PMO baseline, learning ledger and a new immutable
+acceptance artifact. Independent review preserved all 82 unrelated queue tasks,
+Work3, approvals, product bytes, original gates, requirements and the original
+acceptance artifact. The ledger appended entry 21. Status remains NOT_PROVEN;
+documentation and governance writes earn no runtime material credit.
+
+Directed checks passed 15 governance adversarial guards, four publisher
+regressions and seven tests against the actual staging PMO module. An initial
+local PMO collection error executed zero tests; it was recorded and corrected
+before the seven actual tests passed. No false initial PASS is retained.
+
+The resulting real staging preview `38123952091` failed at 08:12:22Z with
+`assert 11 >= 12`: one failed, 265 passed, one skipped. QA, Reviewer and preview
+were not bypassed. Recovery `38123989947` dispatched the QA family; worker
+`38123995343` completed semantically BLOCKED at 08:14:42.041899Z and released
+its lease. Controller `38123990147` completed at 08:15:54Z. Shared identical
+failure budget increased from one to two of three; it did not reset across run IDs.
+
+Actual canonical state `5c0429e2` at 08:19:13.644521Z retained all earlier raw
+events and leases. One new pickup and transition produced raw63/effective56,
+with seven corrections, but no new blocker, mutation or closure. Independent
+reproduction showed that the transition was an alias retry of already attempted
+logical QA work. That credit is not certified useful progress. The next
+hypothesis is that a logical-work guard and evidence-bound append-only correction
+retain the actual bounded retry without inventing an independent transition.
+
+The prior immutable QA report records a different `evidence_revision` from the
+execution task. Read-only reproduction recovered both exact hashes: the engine
+revision binds the synthetic approved queue, failure, dependencies and input;
+the runner revision binds task objective and acceptance. These historical fields
+have different semantic bases. The report revision does not authorize lease
+fencing or finish. Correction proof preserves both values and instead verifies
+the actual claim/finish state, worker bytes and committed product/executor scopes.
+
+## 34. Bind logical QA retries to frozen work and retain honest publication holds
+
+Isolated checkpoint `37c9529` reproduced the actual alias transition
+`007b6742` and stopped equivalent run IDs from consuming the pending terminal
+event as another useful transition. Future attempts freeze logical work in
+failure-history contexts. Historical correction uses an explicit immutable
+before/claim/worker proof; today's mutable task fields cannot authorize it.
+Unknown older transitions remain unchanged. Declared instruction assertions,
+dates and durations remain exact.
+
+The prepared binding was read from actual Git snapshots and passed 20 directed
+importer/CAS tests. Its prospective reducer replay preserved all 63 raw events,
+prior seven corrections, eight product bindings, lease and failure history and
+the original acceptance window, while projecting 55 effective events, eight
+corrections and twelve transitions. This replay is local verification, not LIVE
+progress or publication evidence.
+
+Frozen `37c9529` passed 351 complete autonomy tests in 30.787 seconds and
+actionlint on five workflows. Its 52-commit bundle restored the exact tree from
+the original base. Independent review nevertheless found a concrete bypass:
+invalid or clock-only repair descriptors could reset an exhausted QA budget
+and earn a transition without executable work. Publication was held. Later
+adversarial review also identified reordered equivalent replacements and
+removal of a formerly valid action as retry-budget aliases, plus malformed
+Unicode capable of crashing reconciliation. Those local reproductions are not
+new hosted source failures.
+
+The next hypothesis is that only a structurally valid, genuinely changed
+bounded action opens a new bounded QA episode, while malformed, removed or
+equivalent action descriptors preserve proven attempt authority. The follow-up
+checkpoint must pass directed negative cases, full frozen-code validation and
+independent scope review before either checkpoint is published. The historical
+351-test PASS does not certify the independently discovered budget defect.
+
+## 35. Recognize executable repair actions and retain exhausted attempt authority
+
+Isolated commit `1d87d8c4c9bf0e659d868e250578d8e313eef8ec` changes only the
+engine and its directed tests. QA action identity recognizes the executor's
+bounded exact replacement schema and relative artifact path/hash references.
+Malformed and clock-only descriptors cannot open a fresh budget or transition.
+Equivalent replacement row order and relative artifact aliases canonicalize to
+the same work. Removing or corrupting a previously attempted action, including
+an unchanged subset of patch/artifact, retains its proven frozen attempt budget.
+Genuinely changed valid actions receive the existing bounded three attempts;
+the fourth remains blocked. Legacy empty QA and all source-family keys remain
+unchanged. The engine's hash safely retains malformed Unicode as escaped JSON
+without changing any valid UTF-8 hash.
+
+Directed engine validation passed 135 tests, including 21 logical-alias methods.
+Independent review passed 129 boundary/provenance checks, 21 methods and a
+separate 21-test/112-subtest executor parity review. Prior action removal was
+RED before this change and is GREEN at both one and three prior attempts.
+Declared domain assertions, dates, durations and genuinely new actions remain
+distinguishable. Structural recognition does not prove file existence, preimage,
+candidate syntax, real artifact content, LIVE results or any acceptance gate.
+Absolute artifact descriptors have no prospective new-budget authority in the
+pure engine; the runner still verifies actual workspace-bound evidence.
+
+The actual immutable alias-binding replay remains raw63/effective55/eight
+corrections/twelve transitions, with earlier history and window exact. Next
+hypothesis: the hosted first plan applies only that proven correction, preserves
+all raw/state provenance and does not reopen identical source or QA work.
+
+## 36. Make malformed JSON evidence writable through the real Git CAS
+
+Isolated commit `720af52a7e652adcd34afabb43dd609d154f5ca2` changes only runtime
+JSON serialization and its tests. A malformed declared string could survive
+engine validation but crash UTF-8 materialization before the durable state CAS.
+The runtime now escapes only unencodable Unicode; valid UTF-8 JSON bytes remain
+exact, and a literal escape stays distinct from the malformed value.
+
+Both new tests are RED with the exact encoder extracted from immutable
+`37c9529`: two UnicodeEncodeError exceptions. All 28 runtime integration tests
+PASS after the fix, including a real local GitStateStore transaction, parsed
+evidence round-trip, idempotent replay, zero material credit and unchanged
+product refs. This is directed local proof, not fabricated hosted recovery.
+The runtime is outside EXECUTOR_INPUTS, so this serialization repair does not
+refresh source budgets.
+
+Frozen code `720af52` passed 361 complete autonomy tests in 30.734 seconds,
+actionlint 1.7.7 on five workflows and independent 54-commit/32-path scope review
+with zero credential findings. Product, original gates and deployment remain
+unchanged. The 54-commit bundle restored the exact full tree from the original
+main base. Earlier 351-test candidate validation and its publication hold remain
+historical evidence. The next hypothesis is that trusted metadata-only binding,
+hosted correction and another genuine staging failure preserve these invariants.
+
+## 37. Publish the evidence-bound correction and verify its actual hosted effect
+
+The metadata-only binding CAS `0c29dcfb` adds one trusted transition binding and
+one immutable proof to autopilot-state. It preserves all 63 raw events, leases,
+failure history, earlier corrections and the acceptance window. After that CAS
+succeeded, local receipt hashing raised a TypeError. Read-only verification of
+the actual commit, parent, two paths and exact proof recovered the receipt;
+there was no second mutation. Original 20-test importer results stay historical.
+At current code, two old fixtures still rejected but expected different error
+messages. The separate final-contract suite uses actual declared assertions and
+retains those malformed-descriptor negatives: all 22 tests PASS.
+
+Normal fast-forward publication of code `720af52` activated controller
+`38127573265` at 09:13:02Z. Its actual first plan `6ba8a53b` at
+09:13:22.246797Z retained raw63 and pickups26, while correcting effective56 to
+55, corrections7 to8 and transitions13 to12. The alias retry remains in raw
+history and receives no independently useful transition credit. The original
+first pickup remains 05:29:46.231497Z. Observer `0e1cd350` preserved the exact
+control blob and appended metadata only. Repair/candidate were SKIPPED without
+new executable inputs. All 15 immutable SHA256/Git-blob references were verified.
+
+The eighth hosted proof records a 7,641-second maximum material gap. Merely
+passing four wall-clock hours cannot satisfy the unchanged thirty-minute gap
+limit. The complete 09:15:32Z schedule-only Actions snapshot has no new scheduled
+controller since the initial publication; push/completion dispatch works, and
+the cause of missing scheduled delivery remains UNDETERMINED. Current tool
+inventory exposes no complete trusted owner-event channel. Owner count stays
+NULL and acceptance stays NOT_PROVEN.
+
+The final-v2 private metadata preflight rejected two schema incompatibilities
+before any remote mutation: actual validation field names and the newer cadence
+counter name. Strict explicit aliases now bind the same frozen code/log hashes;
+conflicting, missing and boolean counters reject. Nineteen reconciliation tests,
+eight publisher-verifier tests and seven tests against the actual PMO module
+PASS. Independent review approved the actual four-path payload and guards.
+The next hypothesis is that fresh staging CAS preserves concurrent metadata and
+that its genuine QA failure uses the shared budget without another alias credit.
+
+## 38. Reconcile governance through fresh CAS and verify the third bounded retry
+
+The final-v2 staging CAS `4ff51cfe3f5b61217699eb68612a9861239b72a8` used fresh
+parent `eb7e0463`, not the older final-v1 parent. One CAS attempt changed exactly
+queue, PMO, learning ledger and the new immutable final-v2 acceptance artifact
+(SHA256 `7f945f324059b4de2c5ad1add378b6da1ad711cdfe8ecba5090e50eb78d9fd0b`).
+Independent actual-commit verification preserved all product bytes, original
+gates, PMO references, Work3, 82 other tasks, owned-task approvals/dependencies
+and original/final-v1 evidence. The ledger retains its 21-row exact prefix and
+appends one reconciliation entry. Metadata receives zero runtime material credit.
+
+Actual staging preview `38128983053` completed FAILURE at 09:37:16Z, retaining
+`assert 11 >= 12`: one failed, 265 passed and one skipped in 4.88 seconds.
+Recovery `38129022561` completed at 09:37:25Z and dispatched worker
+`38129027112`, which completed at 09:39:39Z. Its immutable result is BLOCKED,
+validated=false, with no changed paths or candidate. The same logical QA bucket
+`22b36587` moved from two attempts to three of three. No additional run identity
+reset the budget or earned another transition. Controller `38129022812`
+completed at 09:40:31Z; canonical state `695a7d67` retains raw63/effective55,
+eight corrections and twelve transitions. Pickup27 is operational activity,
+not useful progress. Active leases are zero, and no new raw/effective material
+event, blocker, product mutation or closure occurred.
+The final read-only snapshot `641a8963` at 09:46:17.848619Z includes later
+metadata with the same projection. Its immutable worker report SHA256 is
+`b98642321f97448c351a8ca5062e6b45945e7e4ac7d1ba3b41959771e09828a7`,
+introduced at `4ba2c1ff` on 09:39:30Z. Whole pending transitions, old family
+material clocks, raw/correction history and all bindings remain exact.
+
+The old recovery repeatedly failed on corrupt unified diffs and state ref
+races. The new recovery has no competing legacy writer: dispatch and fenced
+shared-budget handling complete, with the real product failure visible.
+The earlier same-stdout transport repair remains a verified infrastructure
+recovery, while source repair/LIVE acceptance remain unproved. Repeated wrapper
+SUCCESS is not a repair. Independent native fronts progressed despite blocked
+QA; their successes do not become this runtime's useful progress.
+
+Acceptance remains NOT_PROVEN after more than four elapsed hours. Missing
+scheduled delivery and complete owner-event observation are exact external
+blockers; source capability/coverage and the genuine editorial gate remain
+visible in their approved fronts. The next hypothesis is that genuinely changed
+approved source inputs open only their own family and produce verified mutation
+and transition, while the exhausted identical QA episode stays bounded.
+Continuation requires trusted owner export plus a verified producer and actual
+scheduler delivery, not owner restarts or fabricated zero-event attestations.

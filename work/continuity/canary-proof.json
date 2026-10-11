@@ -1,0 +1,69 @@
+{
+  "canonical_evidence": {
+    "log": {
+      "path": "data/autopilot/evidence/hosted_canary_lease-heartbeat-v1_proof.log",
+      "sha256": "360d72f38dd663831610f5a241ee889ddb7227cf60db08142a542b35c7822225"
+    },
+    "manifest": {
+      "path": "data/autopilot/evidence/hosted_canary_lease-heartbeat-v1_manifest.json",
+      "sha256": "f5072fdfc0caef7217b9b830c2f490f003bcdb9dbc4570747046994e5be1bf43"
+    },
+    "pickup": {
+      "path": "data/autopilot/evidence/hosted_canary_lease-heartbeat-v1_pickup.json",
+      "sha256": "4d1f9e2108187885dbd470fb36c0b2a323a620af111b0b8457ef85fed9de33f7"
+    },
+    "result": {
+      "path": "data/autopilot/evidence/hosted_canary_lease-heartbeat-v1_result.json",
+      "sha256": "e4af535b0f1bae144b68d1621f8943df26a929e1dc6921e942c8281cf02d1a38"
+    }
+  },
+  "canonical_state_ref": "6412b829e669eae298d40693b3d153fd2fa50904",
+  "checks": {
+    "all_checks": true,
+    "isolated_material_events_empty": true,
+    "isolated_transitions_empty": true,
+    "labels_non_material": true,
+    "log_sha": true,
+    "manifest_sha": true,
+    "pickup_sha": true,
+    "result_sha": true
+  },
+  "confirmation_job_id": 114401430687,
+  "confirmation_run_id": 38116171764,
+  "counts_as_material_progress": false,
+  "elapsed_real_seconds": 183.402066,
+  "engine_checks": {
+    "old_token_finish_rejected": true,
+    "old_worker_did_not_mutate_state": true,
+    "real_heartbeat_grace_elapsed": true,
+    "reclaimed_with_new_generation": true,
+    "stall_fenced_original_token": true,
+    "stalled_detected": true
+  },
+  "heartbeat_grace_seconds": 180,
+  "live_acceptance_evidence": false,
+  "next_hypothesis": "Independent organic tasks produce verified durable useful mutations while blocked tasks do not repeat identical audits.",
+  "observed_at": "2026-10-11T06:00:04Z",
+  "observed_until": "2026-10-11T05:51:45.814918Z",
+  "observer_remote_mutations": false,
+  "pickup_context": {
+    "execution_environment": "github_actions",
+    "infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+    "repository": "cftorre1/Radar-salud",
+    "run_attempt": 1,
+    "run_id": 38115967398,
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398"
+  },
+  "result_context": {
+    "execution_environment": "github_actions",
+    "infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+    "repository": "cftorre1/Radar-salud",
+    "run_attempt": 1,
+    "run_id": 38116123889,
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116123889"
+  },
+  "source_live_evidence": false,
+  "stage_a": "NOT_PROVEN",
+  "started_at": "2026-10-11T05:48:42.412852Z",
+  "status": "PASS"
+}
