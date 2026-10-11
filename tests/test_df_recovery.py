@@ -324,3 +324,25 @@ def test_df_missing_primary_body_does_not_use_newsletter_or_description():
     parsed = parse_df_article(html, URL)
     assert parsed['metadata']['page_text'] == ''
     assert parsed['metadata']['article_content_source'] == 'missing_primary_article'
+
+
+def test_health_materiality_requires_health_event_not_unrelated_macro_context():
+    from radar_salud.df_media_gate import material
+    assert not material('Economía crece con nuevas inversiones', 'El banco invertirá en oficinas. La salud también fue mencionada en el discurso.')
+    assert material('Clínicas cierran maternidad por baja natalidad', 'Las clínicas suspenden prestaciones obstétricas.')
+    assert material('Super de Salud dicta circular sobre bonos', 'La isapre deberá emitir el bono con cédula si falla la biometría.')
+
+
+def test_nonarticle_and_verified_nonhealth_rejections_do_not_require_fake_date(monkeypatch):
+    from radar_salud.public_source_pipeline import process_df
+    from test_press_pipeline import DF_CFG
+    monkeypatch.setattr('radar_salud.public_source_pipeline.enrich', lambda raw: raw)
+    monkeypatch.setattr('radar_salud.public_source_pipeline.analyze_news', lambda **kw: pytest.fail('Excluded content must not call AI'))
+    raw = _raw()
+    raw.url = 'https://www.df.cl/regiones/maule/empresas/p/1'
+    assert process_df(raw, DF_CFG) is None
+    assert raw.metadata['rejection_reason'] == 'df_not_article'
+    raw = _raw('Banco compra oficinas')
+    raw.metadata = {'page_text': 'El banco compra oficinas y amplía su negocio financiero. ' * 10, 'publication_date_conflict': True}
+    assert process_df(raw, DF_CFG) is None
+    assert raw.metadata['rejection_reason'] == 'df_unrelated_to_health'

@@ -222,22 +222,23 @@ def process_df(raw,cfg):
         raw=enrich(raw)
     if raw.metadata.get("fetch_error"):
         raise DeferredProcessing("DF detail capture failed",reason="df_detail_fetch_failed")
+    body=raw.metadata.get("page_text") or ""
+    raw.metadata.pop("rejection_reason",None)
+    reason=exclusion(raw)
+    title=raw.metadata.get("article_title") or raw.title
+    if not reason and len(body)>=160 and not _health_relevance(title,body):reason="df_unrelated_to_health"
+    if not reason and len(body)>=160 and not material(title,body):reason="media_no_material_event"
+    if reason:
+        raw.metadata["rejection_reason"]=reason
+        return None
     if raw.metadata.get("publication_date_conflict") and not raw.metadata.get("publication_date_conflict_resolution"):
         raise DeferredProcessing("DF publication dates conflict",reason="df_publication_date_conflict")
     if not raw.event_date:
         raise DeferredProcessing("DF has no verifiable publication date",reason="df_missing_publication_date")
-    body=raw.metadata.get("page_text") or raw.raw_text
     if len(body)<160:
         raise DeferredProcessing("DF has insufficient readable evidence",reason="df_insufficient_article_evidence")
-    raw.metadata.pop("rejection_reason",None)
-    reason=exclusion(raw)
-    if not reason and not _health_relevance(raw.title,body):reason="df_unrelated_to_health"
-    if not reason and not material(raw.title,body):reason="media_no_material_event"
-    if reason:
-        raw.metadata["rejection_reason"]=reason
-        return None
     ai=analyze_news(title=raw.metadata.get("article_title") or raw.title,text=body,source_name=raw.source_name,
-                    kind="prensa económica especializada en salud; atribuir a Diario Financiero, no convertir reporte en confirmación oficial")
+                    kind="prensa económica; exigir cambio material explícito de un actor, financiamiento, regulación o capacidad del sector salud. Macro/política genérica sin consecuencia sanitaria concreta no es señal elegible. Resumir sólo este artículo, atribuir a Diario Financiero, no convertir reporte en confirmación oficial")
     if not ai:raise DeferredProcessing("DF pendiente de evaluación IA",reason="df_analysis_deferred")
     gate=policy();threshold=int(gate["minimum_relevance_score"])
     raw.metadata["editorial_assessment"]={"score":int(ai.get("relevance_score",0)),"reason":ai.get("reason"),
