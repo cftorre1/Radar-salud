@@ -107,7 +107,7 @@ def test_new_zero_core_shape_retains_both_historical_failures_and_actual_settled
     assert len(proof["preserved_final_receipts"]) == 2
 
 
-@pytest.mark.parametrize("mutation",["ledger_old516","attempt","call","pending_body","terminal_receipt","source_policy","delete_unselected","delete_live9"])
+@pytest.mark.parametrize("mutation",["ledger_old516","attempt","call","pending_body","terminal_receipt","source_policy","delete_unselected","delete_live9","live9_body_summary","pending_body_summary","raw_body_summary"])
 def test_zero_core_never_waives_processing_or_primary_state_changes(zero_shape,mutation):
     current = dict(zero_shape); current["execution"] = copy.deepcopy(current["execution"])
     if mutation == "ledger_old516": current["execution"]["budget_after"]["month"] = current["origin"]["month"]
@@ -124,6 +124,18 @@ def test_zero_core_never_waives_processing_or_primary_state_changes(zero_shape,m
         k = (next(iter(current["origin"]["settlement"]["rows"].values()))["queue_fingerprint"]
              if mutation == "delete_live9" else next(k for k,v in current["queue"].items() if v.get("source") == qa.SOURCE and v.get("status") == "pending"))
         del current["queue"][k]
+    elif mutation in {"live9_body_summary","pending_body_summary","raw_body_summary"}:
+        current["queue"] = dict(current["queue"])
+        k = (next(iter(current["origin"]["settlement"]["rows"].values()))["queue_fingerprint"]
+             if mutation == "live9_body_summary" else next(k for k,v in current["queue"].items()
+                if v.get("source") == qa.SOURCE and v.get("status") == "pending"
+                and isinstance(v["raw"].get("raw_text") if mutation == "raw_body_summary"
+                    else v["raw"].get("metadata",{}).get("page_text"),str)))
+        item = copy.deepcopy(current["queue"][k]);current["queue"][k] = item
+        owner = item["raw"] if mutation == "raw_body_summary" else item["raw"]["metadata"]
+        field = "raw_text" if mutation == "raw_body_summary" else "page_text"
+        body = owner[field]
+        owner[field] = {"utf8_sha256":qa.digest(body.encode()),"characters":len(body)}
     elif mutation == "source_policy":
         fp = current["execution"]["runtime_fingerprint"];fp["files"]["config/media_early_signal_gate.json"] = qa.digest(b"threshold71")
         fp["sha256"] = qa.object_digest(fp["files"])

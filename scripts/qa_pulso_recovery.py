@@ -1928,8 +1928,9 @@ def unchanged_final_paid_execution(item, terminal_origin):
 def terminal_source_semantic(value):
     """Preserve every primary/model/editorial field except two cache counters."""
     if isinstance(value,dict):
-        return {key: ({"utf8_sha256":digest(item.encode()),"characters":len(item)}
-                if key in {"page_text","raw_text"} and isinstance(item,str) else terminal_source_semantic(item))
+        return {key: (({"value_type":"str","utf8_sha256":digest(item.encode()),"characters":len(item)}
+                if isinstance(item,str) else {"value_type":type(item).__name__,"value":terminal_source_semantic(item)})
+                if key in {"page_text","raw_text"} else terminal_source_semantic(item))
                 for key,item in value.items() if key not in {"last_checked_at","cache_hit"}}
     return [terminal_source_semantic(item) for item in value] if isinstance(value,list) else value
 
@@ -3764,8 +3765,9 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
             raise ValueError(reason)
     def compact(value):
         if isinstance(value, dict):
-            return {key: ({"utf8_sha256": digest(item.encode()), "characters": len(item)}
-                          if key in {"page_text", "raw_text"} and isinstance(item, str) else compact(item))
+            return {key: (({"value_type": "str", "utf8_sha256": digest(item.encode()), "characters": len(item)}
+                          if isinstance(item, str) else {"value_type": type(item).__name__, "value": compact(item)})
+                          if key in {"page_text", "raw_text"} else compact(item))
                     for key, item in value.items() if key not in {"last_checked_at", "cache_hit"}}
         return [compact(item) for item in value] if isinstance(value, list) else value
     try:
