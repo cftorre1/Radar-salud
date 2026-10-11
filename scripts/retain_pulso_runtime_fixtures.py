@@ -251,9 +251,13 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
         sources.append((output, sha256(previous_path.read_bytes()), previous["requests"]))
     evidence = discovery_evidence(discovery_path, artifact_dir)
     metadata_targets = {}
+    control_targets = {}
     for trace in evidence[2] if evidence is not None else []:
-        if trace.get("status") == "discovered_metadata_only" and (url := normalized_url(trace.get("url"))) is not None:
+        url = normalized_url(trace.get("url"))
+        if trace.get("status") == "discovered_metadata_only" and url is not None:
             metadata_targets.setdefault(url, []).append(trace)
+        if trace.get("status") == "discovered" and url in controls:
+            control_targets.setdefault(url, []).append(trace)
     candidates = {}
     metadata_candidates = {}
     debug = []
@@ -312,6 +316,13 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
         # A prior retained successful original remains useful if a later HTTP
         # attempt failed; all latest failures are recorded separately.
         entries.sort(key=lambda x: x[2].get("status") != 200)
+        expected_shas = {trace.get("html_sha256") for trace in control_targets.get(url, [])
+                         if re.fullmatch(r"[0-9a-f]{64}", str(trace.get("html_sha256", "")))}
+        # A newer observation of the same URL is not the original used by a
+        # cached current discovery. Prefer its exact primary hash, not recency.
+        if expected_shas:
+            entries.sort(key=lambda x: not expected_shas.intersection(
+                {x[2].get("sha256"), x[2].get("returned_text_utf8_sha256")}))
         result = {"url": url, "fixture_status": "missing_original_capture"}
         attempts = []
         for candidate in entries:
@@ -337,33 +348,45 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
             break
     # Metadata holds are substantive current runtime outcomes, not incidental
     # parser-debug samples. Every URL must bind to its CURRENT primary SHA.
-    metadata_rows = []
-    for url, traces in sorted(metadata_targets.items()):
-        expected_shas = {trace.get("html_sha256") for trace in traces
-                         if re.fullmatch(r"[0-9a-f]{64}", str(trace.get("html_sha256", "")))}
-        entries = [candidate for candidate in metadata_candidates.get(url, []) if candidate[2].get("status") == 200
-                   and expected_shas.intersection({candidate[2].get("sha256"), candidate[2].get("returned_text_utf8_sha256")})]
-        entries.sort(key=lambda item: item[2].get("captured_at") or "", reverse=True)
-        result = {"url": url, "fixture_status": "missing_current_metadata_hold_original"}
-        attempts = []
-        for candidate in entries:
-            result = preserve(candidate)
-            attempts.append(dict(result))
-            if result.get("original_bytes_verified"):
-                # This status verifies exact observed bytes, including a parser
-                # rejection; it grants no content/date/editorial credit.
-                result["original_parser_replay_status"] = result["fixture_status"]
-                result["fixture_status"] = "hash_verified_current_metadata_hold_original"
-                break
-        result.update(expected_current_primary_sha256s=sorted(expected_shas),
-                      source_observations=[{key: trace.get(key) for key in (
-                          "status", "reason", "publisher_exception_reason", "source_quality_gate", "possible_publication_days",
-                          "publication_date", "publication_date_verified", "primary_identity_verified", "article_verified",
-                          "article_body_complete", "source_content_unavailable_reason", "html_sha256", "captured_at",
-                          "cache_hit", "publisher_lastmod")} for trace in traces],
-                      capture_attempts=attempts, editorial_acceptance=False,
-                      source_sha_missing_or_ambiguous=len(expected_shas) != 1)
-        metadata_rows.append(result)
+    def preserve_current(targets, observed, kind):
+        current_rows = []
+        for url, traces in sorted(targets.items()):
+            expected_shas = {trace.get("html_sha256") for trace in traces
+                             if re.fullmatch(r"[0-9a-f]{64}", str(trace.get("html_sha256", "")))}
+            entries = [candidate for candidate in observed.get(url, []) if candidate[2].get("status") == 200
+                       and expected_shas.intersection({candidate[2].get("sha256"), candidate[2].get("returned_text_utf8_sha256")})]
+            entries.sort(key=lambda item: item[2].get("captured_at") or "", reverse=True)
+            result = {"url": url, "fixture_status": "missing_current_" + kind + "_original"}
+            attempts = []
+            for candidate in entries:
+                result = preserve(candidate)
+                attempts.append(dict(result))
+                if result.get("original_bytes_verified"):
+                    # This verifies observed bytes even when parser replay
+                    # rejects the page; it gives no date/editorial credit.
+                    result["original_parser_replay_status"] = result["fixture_status"]
+                    result["fixture_status"] = "hash_verified_current_" + kind + "_original"
+                    break
+            result.update(expected_current_primary_sha256s=sorted(expected_shas),
+                          source_observations=[{key: trace.get(key) for key in (
+                              "status", "reason", "publisher_exception_reason", "source_quality_gate", "possible_publication_days",
+                              "publication_date", "publication_date_verified", "primary_identity_verified", "article_verified",
+                              "article_body_complete", "source_content_unavailable_reason", "html_sha256", "captured_at",
+                              "cache_hit", "publisher_lastmod")} for trace in traces],
+                          capture_attempts=attempts, editorial_acceptance=False,
+                          source_sha_missing_or_ambiguous=len(expected_shas) != 1)
+            current_rows.append(result)
+        return current_rows
+
+    metadata_rows = preserve_current(metadata_targets, metadata_candidates, "metadata_hold")
+    current_control_rows = preserve_current(control_targets, candidates, "control_primary")
+    # Preserve already retained observed variants by URL+SHA. Rebuilding the
+    # manifest must not orphan the original a warm cache still references when
+    # a later targeted observation supplies different publisher bytes.
+    for record in previous.get("requests", []):
+        key = (normalized_url(record.get("url")), record.get("sha256"))
+        if key[0] in set(controls) | set(metadata_targets) and record.get("gzip_file") and key not in requests:
+            preserve((output, sha256(previous_path.read_bytes()), record))
     api_proof = preserve_api_proof(sources, evidence, output, requests)
     counts = dict(Counter(row["fixture_status"] for row in rows))
     manifest = {"schema_version": "1.0", "source": SOURCE,
@@ -378,6 +401,11 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
                 "current_metadata_hold_original_status": "ALL_CURRENT_METADATA_HOLD_ORIGINALS_RETAINED_NOT_EDITORIAL_ACCEPTANCE" if metadata_rows and all(
                     row["fixture_status"] == "hash_verified_current_metadata_hold_original" and not row["source_sha_missing_or_ambiguous"]
                     for row in metadata_rows) else ("CURRENT_METADATA_HOLD_ORIGINAL_RETENTION_PARTIAL" if metadata_rows else "NO_CURRENT_METADATA_HOLDS"),
+                "current_control_primary_originals": current_control_rows,
+                "current_control_primary_expected_unique_urls": len(control_targets),
+                "current_control_primary_original_status": "ALL_CURRENT_CONTROL_PRIMARY_ORIGINALS_RETAINED_NOT_EDITORIAL_ACCEPTANCE" if current_control_rows and all(
+                    row["fixture_status"] == "hash_verified_current_control_primary_original" and not row["source_sha_missing_or_ambiguous"]
+                    for row in current_control_rows) else ("CURRENT_CONTROL_PRIMARY_ORIGINAL_RETENTION_PARTIAL" if current_control_rows else "NO_CURRENT_CONTROL_PRIMARY_TRACES"),
                 "public_api_proof": api_proof,
                 "requests": list(requests.values()), "unique_original_payloads": len({row["sha256"] for row in requests.values() if row.get("gzip_file")}),
                 "acceptance_note": "These fixtures prove captured bytes and parser replay; they do not establish discovery recall or editorial acceptance."}

@@ -97,6 +97,97 @@ def test_warm_cache_retains_prior_exact_bytes_provenance_and_missing_controls(tm
     assert second["unique_original_payloads"] == 1
 
 
+CURRENT_PROCESS_ORIGINALS = (
+    ("0a5f821b373a5ff14b130f25ea528749fb9558f35caf8e0aa2466688d644ccea", "2026-10-11T07:13:51.917840+00:00",
+     "905da0ee7c1d4bd4cf882b723554df60192534a07b0d7ae0567be4f40f7b28be"),
+    ("24cfba5e77cc0c4e6587798bd064008170db416c48ab2be2cd6f331cf6c29ab7", "2026-10-11T07:07:43.257467+00:00",
+     "905da0ee7c1d4bd4cf882b723554df60192534a07b0d7ae0567be4f40f7b28be"),
+    ("c0a44670f74149cd23e4447931c535922b92a5f61fd21229ba72c94570435eb4", "2026-10-11T07:51:08.412656+00:00",
+     "7a7487d9e552b9705451373f6442610273f6c44b1c59051cde0061ffe5f87a25"),
+    ("20d5dc5a3b727c24d5de38c602c1c1374d5ffc70d95ceee3e9a6b7e68ceef904", "2026-10-11T07:49:28.090515+00:00",
+     "7a7487d9e552b9705451373f6442610273f6c44b1c59051cde0061ffe5f87a25"),
+)
+
+
+@pytest.mark.parametrize("digest,captured_at,original_manifest_sha", CURRENT_PROCESS_ORIGINALS)
+def test_real_first_process_originals_bind_exact_sha_time_and_capture_provenance(digest, captured_at, original_manifest_sha):
+    original_folder = ROOT / "tests/fixtures/pulso_runtime_real"
+    manifest = json.loads((original_folder / "manifest.json").read_text())
+    row, = [item for item in manifest["requests"] if item.get("sha256") == digest]
+    compressed, text = retain.verify_original(original_folder, row)
+    assert retain.sha256(text.encode()) == digest
+    assert retain.sha256(compressed) == row["gzip_sha256"]
+    assert row["captured_at"] == captured_at
+    assert row["original_capture_manifest_sha256"] == original_manifest_sha
+    assert row["capture_provenance"] == "preserved_original_http_response"
+    proof, = [item for item in manifest["current_control_primary_originals"] + manifest["current_metadata_hold_originals"]
+              if item.get("url") == row["url"]]
+    assert proof["expected_current_primary_sha256s"] == [digest]
+    assert proof["sha256"] == digest and proof["original_bytes_verified"] is True
+    assert proof["editorial_acceptance"] is False
+
+
+def actual_cached_control_variants(tmp_path):
+    """Two genuine HTTP observations; these caller traces never enter discovery."""
+    originals = ROOT / "tests/fixtures/pulso_runtime_real"
+    manifest = json.loads((originals / "manifest.json").read_text())
+    current_sha = CURRENT_PROCESS_ORIGINALS[0][0]
+    old, = [row for row in manifest["requests"] if row.get("sha256") == current_sha]
+    newer = max((row for row in manifest["requests"] if row.get("url") == old["url"] and row.get("sha256") != current_sha),
+                key=lambda row: row["captured_at"])
+    assert newer["captured_at"] > old["captured_at"]
+    capture = tmp_path / "capture"
+    capture.mkdir()
+    for row in (old, newer):
+        (capture / row["gzip_file"]).write_bytes((originals / row["gzip_file"]).read_bytes())
+    source = capture / "manifest.json"
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": [old, newer]}))
+    control = tmp_path / "control.json"
+    control.write_text(json.dumps({"window_90": {"start": "2026-07-13", "end": "2026-10-10"},
+        "articles": [{"url": old["url"], "recall_expected": True, "publication_date": "2026-10-01"}]}))
+    discovery = tmp_path / "discovery_run.json"
+    discovery.write_text(json.dumps({"at": "2026-10-11T13:14:04Z", "source_details": {"pulso_latercera": [
+        {"status": "discovered", "url": old["url"], "html_sha256": current_sha, "cache_hit": True},
+        {"status": "public_feed_page"}]}}))
+    return source, control, discovery, old, newer
+
+
+def test_cached_control_keeps_current_hash_when_a_newer_real_same_url_observation_exists(tmp_path):
+    source, control, discovery, current, newer = actual_cached_control_variants(tmp_path)
+    result = retain.retain(control, source, tmp_path / "fixtures", discovery_path=discovery, original_fixture_manifests=[])
+    assert result["fixtures"][0]["sha256"] == current["sha256"]
+    assert result["fixtures"][0]["captured_at"] == current["captured_at"]
+    assert result["current_control_primary_originals"][0]["sha256"] == current["sha256"]
+    assert result["current_control_primary_original_status"] == "ALL_CURRENT_CONTROL_PRIMARY_ORIGINALS_RETAINED_NOT_EDITORIAL_ACCEPTANCE"
+
+
+def test_prior_control_url_sha_variants_survive_rebuilding_manifest_and_warm_cache(tmp_path):
+    source, control, discovery, current, newer = actual_cached_control_variants(tmp_path)
+    output = tmp_path / "fixtures"
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": [newer]}))
+    first = retain.retain(control, source, output, original_fixture_manifests=[])
+    assert first["fixtures"][0]["sha256"] == newer["sha256"]
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": [current]}))
+    corrected = retain.retain(control, source, output, discovery_path=discovery, original_fixture_manifests=[])
+    assert {row["sha256"] for row in corrected["requests"]} == {current["sha256"], newer["sha256"]}
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": []}))
+    warm = retain.retain(control, source, output, discovery_path=discovery, original_fixture_manifests=[])
+    assert {row["sha256"] for row in warm["requests"]} == {current["sha256"], newer["sha256"]}
+    assert warm["current_control_primary_originals"][0]["captured_at"] == current["captured_at"]
+
+
+def test_newer_valid_control_does_not_conceal_missing_current_primary_original(tmp_path):
+    source, control, discovery, current, newer = actual_cached_control_variants(tmp_path)
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": [newer]}))
+    result = retain.retain(control, source, tmp_path / "fixtures", discovery_path=discovery, original_fixture_manifests=[])
+    assert result["fixtures"][0]["fixture_status"] == "verified_original"
+    assert result["current_control_primary_original_status"] == "CURRENT_CONTROL_PRIMARY_ORIGINAL_RETENTION_PARTIAL"
+    proof, = result["current_control_primary_originals"]
+    assert proof["fixture_status"] == "missing_current_control_primary_original"
+    assert proof["expected_current_primary_sha256s"] == [current["sha256"]]
+    assert proof["capture_attempts"] == []
+
+
 def real_metadata_observations(tmp_path):
     """Caller-unit traces over ALL genuine video bytes; never a discovery seed."""
     source, control, senior, _ = original_capture(tmp_path)
