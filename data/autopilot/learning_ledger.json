@@ -2940,5 +2940,30 @@
     "source_closed": false,
     "specific_fix": "Published infrastructure includes exact nonpaid ACHS Unicode URI planner and capability-first classification; relevant committed strategy changes permit bounded automatic retry. Keep immutable historical raw evidence and exclude internal corrections from credit.",
     "status": "infrastructure_implemented_acceptance_not_proven"
+  },
+  {
+    "blocker_fingerprint": "6405665650a49a3e21510c0920470210a3fc79bdb3b1a51f83080112248229ed",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-2fc415cf93974697bd40c5981f2506ae.json",
+        "sha256": "b85f1a9b5cd807125aade607c68db26dc2f3b40b4f9743660ff4c8aed8a6e5c6",
+        "staging_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+        "state_sha": "4fe5357eb2ddc56bfd9ae7c448eb8a2a1bdbfe9b"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: staging_qa_failed_run_38123952091",
+    "id": "autonomy_observed_fde48d42deedda00e9397e3dd829b7acd280a0406d4ce887f3bef723063d7025",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "staging_qa_failed_run_38123952091"
   }
 ]
