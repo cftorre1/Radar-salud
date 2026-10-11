@@ -78420,18 +78420,17 @@
       "ingestion_mode": "BACKFILL",
       "editorial_review": {
         "schema_version": "pulso_editorial_review_v1",
-        "review_id": "pulso-first-paid-all32-independent-original-body-review-2026-10-11",
-        "review_file": "data/audits/pulso_first_paid_editorial_corrections_2026_10_11.json",
-        "review_sha256": "35e1d8a806f99881b56c5358d904880ca6bf2aa7ddd21e7bdada8a4b740a78d2",
-        "record_sha256": "6d9c3537dfce3fccce480971f56327851782308755fbd4efe952ae1ba87b563d",
-        "original_signal_sha256": "75d0f98af73f79d8767f6075b09ebfd4080de52cd2899c12fd952d5e798f33cf",
+        "review_id": "pulso_cross_source_three_bound_duplicate_publications_2026_10_11",
+        "review_file": "data/audits/pulso_cross_source_three_duplicate_publications_editorial_group_2026_10_11.json",
+        "review_sha256": "a148a3e9bbbb71ae9430f05f6212a468760df298e3765d6549f5d141408befac",
+        "record_sha256": "ba1ba22779458dd9ec69593291fac63dc0715d2e84dc0d1b39075f64fcf2d1eb",
+        "original_signal_sha256": "588958150acc3d0a72febfb6c82727b9272905a2d39b319c1178b239bd596fcd",
         "original_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
         "publication_date": "2026-10-10",
-        "decision": "accept",
-        "reason": "Incremento operativo distinto del aluvión inicial: traslado concluido de todos pacientes, cierre por algunas semanas y redistribución de consultas/exámenes. No recuento inventado de camas/pacientes.",
+        "decision": "group",
+        "reason": "Ambos artículos y las señales efectivas describen el mismo balance operativo. La nota Pulso no añade camas, pacientes cuantificados, duración exacta, monto de inversión, nueva red de destino ni estado posterior a DF. La revisión previa de Pulso distinguía correctamente el balance del aluvión inicial, pero omitía el artículo DF del mismo 10 de octubre. Debe quedar una sola señal del evento, con la segunda observación preservada como corroboración de prensa. Ninguna convierte el comunicado citado en hecho certificado por una fuente oficial recuperada.",
         "evidence_quotes": [
-          "hemos decidido trasladar a todos los pacientes, proceso que concluyó durante esta jornada, y suspender las operaciones durante algunas semanas",
-          "las consultas, exámenes y procedimientos que estaban agendados en Clínica San Carlos de Apoquindo y Centro Médico El Alba."
+          "hemos decidido trasladar a todos los pacientes, proceso que concluyó durante esta jornada, y suspender las operaciones durante algunas semanas"
         ],
         "original_terminal_status": "published",
         "original_model_assessment": {
@@ -78441,11 +78440,43 @@
           "analysis_reason": "Es una interrupción material de capacidad hospitalaria y ambulatoria causada por un evento climático, con traslado de pacientes y suspensión temporal de operaciones. Sin embargo, no se informa daño estructural definitivo, impacto financiero ni una modificación permanente de la oferta sanitaria, por lo que corresponde a una señal relevante pero secundaria."
         },
         "original_model_what_happened": "Según Pulso / La Tercera, Clínica UC Christus informó que completó el traslado de todos los pacientes hospitalizados tras el aluvión que afectó San Carlos de Apoquindo. La clínica suspenderá sus operaciones durante algunas semanas, mientras realiza labores de despeje, limpieza y recuperación, debido a que sus servicios de apoyo no están funcionando a capacidad habitual. Las consultas, exámenes y procedimientos agendados serán redistribuidos entre otros centros de UC Christus.",
-        "original_model_why_it_matters": "Afecta temporalmente la capacidad de atención de una clínica relevante de UC Christus y obliga a redistribuir pacientes y prestaciones dentro de su red. Merece atención por el impacto operativo y de acceso durante las próximas semanas, aunque el alcance informado es local y transitorio."
+        "original_model_why_it_matters": "Afecta temporalmente la capacidad de atención de una clínica relevante de UC Christus y obliga a redistribuir pacientes y prestaciones dentro de su red. Merece atención por el impacto operativo y de acceso durante las próximas semanas, aunque el alcance informado es local y transitorio.",
+        "previous_editorial_review": {
+          "schema_version": "pulso_editorial_review_v1",
+          "review_id": "pulso-first-paid-all32-independent-original-body-review-2026-10-11",
+          "review_file": "data/audits/pulso_first_paid_editorial_corrections_2026_10_11.json",
+          "review_sha256": "35e1d8a806f99881b56c5358d904880ca6bf2aa7ddd21e7bdada8a4b740a78d2",
+          "record_sha256": "6d9c3537dfce3fccce480971f56327851782308755fbd4efe952ae1ba87b563d",
+          "original_signal_sha256": "75d0f98af73f79d8767f6075b09ebfd4080de52cd2899c12fd952d5e798f33cf",
+          "original_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+          "publication_date": "2026-10-10",
+          "decision": "accept",
+          "reason": "Incremento operativo distinto del aluvión inicial: traslado concluido de todos pacientes, cierre por algunas semanas y redistribución de consultas/exámenes. No recuento inventado de camas/pacientes.",
+          "evidence_quotes": [
+            "hemos decidido trasladar a todos los pacientes, proceso que concluyó durante esta jornada, y suspender las operaciones durante algunas semanas",
+            "las consultas, exámenes y procedimientos que estaban agendados en Clínica San Carlos de Apoquindo y Centro Médico El Alba."
+          ],
+          "original_terminal_status": "published",
+          "original_model_assessment": {
+            "decision": "published",
+            "relevance_score": 72,
+            "threshold": 72,
+            "analysis_reason": "Es una interrupción material de capacidad hospitalaria y ambulatoria causada por un evento climático, con traslado de pacientes y suspensión temporal de operaciones. Sin embargo, no se informa daño estructural definitivo, impacto financiero ni una modificación permanente de la oferta sanitaria, por lo que corresponde a una señal relevante pero secundaria."
+          },
+          "original_model_what_happened": "Según Pulso / La Tercera, Clínica UC Christus informó que completó el traslado de todos los pacientes hospitalizados tras el aluvión que afectó San Carlos de Apoquindo. La clínica suspenderá sus operaciones durante algunas semanas, mientras realiza labores de despeje, limpieza y recuperación, debido a que sus servicios de apoyo no están funcionando a capacidad habitual. Las consultas, exámenes y procedimientos agendados serán redistribuidos entre otros centros de UC Christus.",
+          "original_model_why_it_matters": "Afecta temporalmente la capacidad de atención de una clínica relevante de UC Christus y obliga a redistribuir pacientes y prestaciones dentro de su red. Merece atención por el impacto operativo y de acceso durante las próximas semanas, aunque el alcance informado es local y transitorio."
+        },
+        "duplicate_of": {
+          "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+          "event_date": "2026-10-10",
+          "queue_fingerprint": "e4c639df46d35cbdccae32c3169949d3984d9b2895396e154c58492e2c9570b0",
+          "source_id": "diario_financiero",
+          "survivor_signal_sha256": "412b7057e2f9b0b0ab66eed0779d0081c514767c38acd017fd1e11db551d56df"
+        }
       },
-      "editorial_decision": "accept",
-      "editorial_review_reason": "Incremento operativo distinto del aluvión inicial: traslado concluido de todos pacientes, cierre por algunas semanas y redistribución de consultas/exámenes. No recuento inventado de camas/pacientes.",
-      "feed_visibility": true
+      "editorial_decision": "group",
+      "editorial_review_reason": "Ambos artículos y las señales efectivas describen el mismo balance operativo. La nota Pulso no añade camas, pacientes cuantificados, duración exacta, monto de inversión, nueva red de destino ni estado posterior a DF. La revisión previa de Pulso distinguía correctamente el balance del aluvión inicial, pero omitía el artículo DF del mismo 10 de octubre. Debe quedar una sola señal del evento, con la segunda observación preservada como corroboración de prensa. Ninguna convierte el comunicado citado en hecho certificado por una fuente oficial recuperada.",
+      "feed_visibility": false
     },
     {
       "title": "El costo de no anticiparse a los riesgos climáticos en el sistema de salud",
@@ -81555,42 +81586,49 @@
       "ingestion_mode": "BACKFILL",
       "editorial_review": {
         "schema_version": "pulso_editorial_review_v1",
-        "review_id": "pulso_focus_38149773071_plan_enlace_observation_date_addendum",
-        "review_file": "data/audits/pulso_plan_enlace_temporal_correction_2026_10_11.json",
-        "review_sha256": "c9310df3284fdfffc90710a72645a9eb582db81be4f3f350b9bf099141d2c60f",
-        "record_sha256": "7f689963da4707f51b78c68b1f2d6ea931d288f7f354c899000ba8435b8ff0bc",
-        "original_signal_sha256": "b106201594e6226629041db120bd16dd612f2cbf0d5df793bc441ec3ab828c7c",
+        "review_id": "pulso_cross_source_three_bound_duplicate_publications_2026_10_11",
+        "review_file": "data/audits/pulso_cross_source_three_duplicate_publications_editorial_group_2026_10_11.json",
+        "review_sha256": "a148a3e9bbbb71ae9430f05f6212a468760df298e3765d6549f5d141408befac",
+        "record_sha256": "70b8d0c58b90ab25f20386974b0ffac5e8071dc7e538167cba1dbed2fc280afd",
+        "original_signal_sha256": "0abd116281756cfe371216a87a4f830cca352e5f0818da6d98aee392d9319f1a",
         "original_body_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
         "publication_date": "2026-09-23",
-        "decision": "correct",
-        "reason": "La cláusula sigue sin monto definido expresa un estado que el original sólo acredita al 23 de septiembre. El 11 de octubre no hay una observación primaria nueva que permita conservar el presente; tampoco se infiere que la negociación esté cerrada o aprobada. Fechar la cláusula al reporte original mantiene intactos la firma del convenio, las prestaciones potenciales y la atribución de prensa.",
+        "decision": "group",
+        "reason": "Las dos señales efectivas publican la misma firma con las mismas tres cajas. Pulso agrega la posibilidad de cirugía posterior y contexto de negociación presupuestaria 2027 sin monto, que no equivalen a capacidad contratada ni recursos nuevos. El amplio cuerpo Pulso también contiene posición ministerial sobre listas versus tiempos, pero ese foco no está publicado en el WHAT/WHY efectivo y no justifica duplicar la firma. Mantener la observación Pulso como corroboración de prensa; los límites futuros no deben ampliar el alcance del convenio oficial SUSESO. Nunca agrupar este contrato con Caja Los Andes por compartir Plan Enlace.",
         "evidence_quotes": [
-          "Consultada nuevamente por las cifras que se han mencionado, entre ellas un eventual aumento de 4% o 5%, la ministra respondió que todavía no existe un monto definido.",
-          "No tenemos cifras. Lo importante es que estamos teniendo y las comunicaciones siguen abiertas"
+          "el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración en el marco del Plan Enlace",
+          "posteriormente podría incorporar cirugías y otras prestaciones, dependiendo de las necesidades de los pacientes."
         ],
         "original_terminal_status": "published",
         "original_model_assessment": {
           "decision": "published",
+          "reason": "independent_editorial_copy_corrected",
           "relevance_score": 84,
           "threshold": 72,
-          "analysis_reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada."
+          "original_model_assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 72,
+            "analysis_reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada."
+          },
+          "review_sha256": "c9310df3284fdfffc90710a72645a9eb582db81be4f3f350b9bf099141d2c60f"
         },
         "original_model_what_happened": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
-        "original_model_why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido.",
+        "original_model_why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, según la nota del 23 de septiembre de 2026, la negociación presupuestaria para 2027 todavía no tenía un monto definido a esa fecha.",
         "previous_editorial_review": {
           "schema_version": "pulso_editorial_review_v1",
-          "review_id": "pulso_focus_38149773071_backfill_time_binding",
-          "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
-          "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
-          "record_sha256": "3ca84dc9e714581831d49bb6de09ab9aad1e548d3ef0be3256e74363901fe936",
-          "original_signal_sha256": "3480b812667ef5eaaf05027ed98dd40d83ef478c1148645cd0639ea1853738b4",
+          "review_id": "pulso_focus_38149773071_plan_enlace_observation_date_addendum",
+          "review_file": "data/audits/pulso_plan_enlace_temporal_correction_2026_10_11.json",
+          "review_sha256": "c9310df3284fdfffc90710a72645a9eb582db81be4f3f350b9bf099141d2c60f",
+          "record_sha256": "7f689963da4707f51b78c68b1f2d6ea931d288f7f354c899000ba8435b8ff0bc",
+          "original_signal_sha256": "b106201594e6226629041db120bd16dd612f2cbf0d5df793bc441ec3ab828c7c",
           "original_body_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
           "publication_date": "2026-09-23",
-          "decision": "accept",
-          "reason": "El original informa una firma concreta entre Minsal/Fonasa y tres cajas; consultas de nueva especialidad iniciales, cirugías sólo potenciales y negociación presupuestaria sin monto. La copia publicada conserva exactamente esas modalidades.",
+          "decision": "correct",
+          "reason": "La cláusula sigue sin monto definido expresa un estado que el original sólo acredita al 23 de septiembre. El 11 de octubre no hay una observación primaria nueva que permita conservar el presente; tampoco se infiere que la negociación esté cerrada o aprobada. Fechar la cláusula al reporte original mantiene intactos la firma del convenio, las prestaciones potenciales y la atribución de prensa.",
           "evidence_quotes": [
-            "el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración",
-            "El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, dependiendo de las necesidades de los pacientes."
+            "Consultada nuevamente por las cifras que se han mencionado, entre ellas un eventual aumento de 4% o 5%, la ministra respondió que todavía no existe un monto definido.",
+            "No tenemos cifras. Lo importante es que estamos teniendo y las comunicaciones siguen abiertas"
           ],
           "original_terminal_status": "published",
           "original_model_assessment": {
@@ -81600,12 +81638,44 @@
             "analysis_reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada."
           },
           "original_model_what_happened": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
-          "original_model_why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido."
+          "original_model_why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido.",
+          "previous_editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_focus_38149773071_backfill_time_binding",
+            "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
+            "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
+            "record_sha256": "3ca84dc9e714581831d49bb6de09ab9aad1e548d3ef0be3256e74363901fe936",
+            "original_signal_sha256": "3480b812667ef5eaaf05027ed98dd40d83ef478c1148645cd0639ea1853738b4",
+            "original_body_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+            "publication_date": "2026-09-23",
+            "decision": "accept",
+            "reason": "El original informa una firma concreta entre Minsal/Fonasa y tres cajas; consultas de nueva especialidad iniciales, cirugías sólo potenciales y negociación presupuestaria sin monto. La copia publicada conserva exactamente esas modalidades.",
+            "evidence_quotes": [
+              "el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración",
+              "El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, dependiendo de las necesidades de los pacientes."
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 84,
+              "threshold": 72,
+              "analysis_reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada."
+            },
+            "original_model_what_happened": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
+            "original_model_why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido."
+          }
+        },
+        "duplicate_of": {
+          "url": "https://www.suseso.gob.cl/605/w3-article-790601.html",
+          "event_date": "2026-09-23",
+          "queue_fingerprint": "3d540685334273d17a5bcfaef2fc4fe3495dae0c7039f6b9f9ac55227f896846",
+          "source_id": "suseso_news",
+          "survivor_signal_sha256": "0eeedead10fe360198f76f59cf8e25714332777223e3e6c18644f9708c0321da"
         }
       },
-      "editorial_decision": "accept",
-      "editorial_review_reason": "La cláusula sigue sin monto definido expresa un estado que el original sólo acredita al 23 de septiembre. El 11 de octubre no hay una observación primaria nueva que permita conservar el presente; tampoco se infiere que la negociación esté cerrada o aprobada. Fechar la cláusula al reporte original mantiene intactos la firma del convenio, las prestaciones potenciales y la atribución de prensa.",
-      "feed_visibility": true,
+      "editorial_decision": "group",
+      "editorial_review_reason": "Las dos señales efectivas publican la misma firma con las mismas tres cajas. Pulso agrega la posibilidad de cirugía posterior y contexto de negociación presupuestaria 2027 sin monto, que no equivalen a capacidad contratada ni recursos nuevos. El amplio cuerpo Pulso también contiene posición ministerial sobre listas versus tiempos, pero ese foco no está publicado en el WHAT/WHY efectivo y no justifica duplicar la firma. Mantener la observación Pulso como corroboración de prensa; los límites futuros no deben ampliar el alcance del convenio oficial SUSESO. Nunca agrupar este contrato con Caja Los Andes por compartir Plan Enlace.",
+      "feed_visibility": false,
       "event_status": "historical"
     },
     {
@@ -82041,19 +82111,17 @@
       "ingestion_mode": "BACKFILL",
       "editorial_review": {
         "schema_version": "pulso_editorial_review_v1",
-        "review_id": "pulso_focus_38149773071_backfill_time_binding",
-        "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
-        "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
-        "record_sha256": "40803fb15baad80dc56dbecd85d76ba16ef6c093971bbd6c0018cde7a1d4c235",
-        "original_signal_sha256": "b7287ec9c066b9c578c0e8dff5c9a409b6dd2ab4d0e20f20f82daef38744d07a",
+        "review_id": "pulso_cross_source_three_bound_duplicate_publications_2026_10_11",
+        "review_file": "data/audits/pulso_cross_source_three_duplicate_publications_editorial_group_2026_10_11.json",
+        "review_sha256": "a148a3e9bbbb71ae9430f05f6212a468760df298e3765d6549f5d141408befac",
+        "record_sha256": "c3522ee74f6d6c111afe4ffb178ea0c5c9f39908b228895823a992d137314bfd",
+        "original_signal_sha256": "f46be9ec753eae0f952ff62803fae4b6f67b2a69604314221ad82bcdaf8c23e0",
         "original_body_sha256": "2178d42717fb7d9e584b6f3bb99ba96441124f5ad4d644dae43b02ce63b39493",
         "publication_date": "2026-08-04",
-        "decision": "accept",
-        "reason": "La publicación distingue evaluación hospitalaria 2025 de fecha del artículo 2026.26 de 62 sobre 75%,15entre70y74.9%,21bajo69% y91.1% Posta coinciden con el original. Es resultado reportado de gestión, no verificación propia de calidad clínica ni causa demostrada en pacientes.",
+        "decision": "group",
+        "reason": "Las notas publican la misma evaluación de gestión hospitalaria de 2025, con 62 hospitales autogestionados, 29 indicadores y una línea base de 75%. Los intervalos de 15 hospitales entre 70% y 74,9% y 21 bajo 69% sí aparecen en WHAT de Pulso, pero detallan el mismo conjunto de resultados, sin nueva medición, política, fondos, acción o capacidad acreditada; WHY vuelve a la misma brecha de gestión. El original DF ya contiene el líder Posta Central con 91,1% y una distribución regional más amplia. Se conserva íntegra la nota y la copia Pulso en el registro histórico agrupado, incluidos esos intervalos, sin reinterpretar el límite sobre 75% frente a igual o superior, ni completar rangos omitidos. La publicación visible del evento debe quedar en una sola señal sobre el ranking, con DF como superviviente y Pulso como evidencia adicional de prensa; no se transforma el ranking reportado en una evaluación oficial corroborada de forma independiente.",
         "evidence_quotes": [
-          "dieron a conocer los resultados de la gestión hospitalaria de 2025",
-          "26 tuvieron un cumplimiento sobre el 75% que está definido como la línea base",
-          "establecimiento que logró obtener en esta medición un 91,1%"
+          "15 hospitales logaron entre el 70% y 74,9% de los indicadores, mientras que 21 hospitales de la red tuvieron resultados bajo el 69%"
         ],
         "original_terminal_status": "published",
         "original_model_assessment": {
@@ -82063,11 +82131,44 @@
           "analysis_reason": "Es una señal sectorial relevante y cuantificada sobre resultados de gestión de hospitales públicos, con alcance nacional y consecuencias para la conducción de la red. La información debe atribuirse a lo reportado por la prensa y no interpretarse como una evaluación independiente adicional."
         },
         "original_model_what_happened": "La evaluación de gestión hospitalaria de 2025 reportada por Pulso/La Tercera muestra que solo 26 de 62 hospitales autogestionados superaron la línea base de 75%; 21 quedaron bajo 69% y 15 entre 70% y 74,9%. La Posta Central lideró con 91,1%.",
-        "original_model_why_it_matters": "La Subsecretaría de Redes Asistenciales dispone de una señal comparable sobre el desempeño de la red hospitalaria pública: más de la mitad de los establecimientos autogestionados quedó bajo la meta mínima, lo que identifica una brecha de gestión con potencial efecto sobre la eficiencia operacional y la atención de pacientes."
+        "original_model_why_it_matters": "La Subsecretaría de Redes Asistenciales dispone de una señal comparable sobre el desempeño de la red hospitalaria pública: más de la mitad de los establecimientos autogestionados quedó bajo la meta mínima, lo que identifica una brecha de gestión con potencial efecto sobre la eficiencia operacional y la atención de pacientes.",
+        "previous_editorial_review": {
+          "schema_version": "pulso_editorial_review_v1",
+          "review_id": "pulso_focus_38149773071_backfill_time_binding",
+          "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
+          "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
+          "record_sha256": "40803fb15baad80dc56dbecd85d76ba16ef6c093971bbd6c0018cde7a1d4c235",
+          "original_signal_sha256": "b7287ec9c066b9c578c0e8dff5c9a409b6dd2ab4d0e20f20f82daef38744d07a",
+          "original_body_sha256": "2178d42717fb7d9e584b6f3bb99ba96441124f5ad4d644dae43b02ce63b39493",
+          "publication_date": "2026-08-04",
+          "decision": "accept",
+          "reason": "La publicación distingue evaluación hospitalaria 2025 de fecha del artículo 2026.26 de 62 sobre 75%,15entre70y74.9%,21bajo69% y91.1% Posta coinciden con el original. Es resultado reportado de gestión, no verificación propia de calidad clínica ni causa demostrada en pacientes.",
+          "evidence_quotes": [
+            "dieron a conocer los resultados de la gestión hospitalaria de 2025",
+            "26 tuvieron un cumplimiento sobre el 75% que está definido como la línea base",
+            "establecimiento que logró obtener en esta medición un 91,1%"
+          ],
+          "original_terminal_status": "published",
+          "original_model_assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 72,
+            "analysis_reason": "Es una señal sectorial relevante y cuantificada sobre resultados de gestión de hospitales públicos, con alcance nacional y consecuencias para la conducción de la red. La información debe atribuirse a lo reportado por la prensa y no interpretarse como una evaluación independiente adicional."
+          },
+          "original_model_what_happened": "La evaluación de gestión hospitalaria de 2025 reportada por Pulso/La Tercera muestra que solo 26 de 62 hospitales autogestionados superaron la línea base de 75%; 21 quedaron bajo 69% y 15 entre 70% y 74,9%. La Posta Central lideró con 91,1%.",
+          "original_model_why_it_matters": "La Subsecretaría de Redes Asistenciales dispone de una señal comparable sobre el desempeño de la red hospitalaria pública: más de la mitad de los establecimientos autogestionados quedó bajo la meta mínima, lo que identifica una brecha de gestión con potencial efecto sobre la eficiencia operacional y la atención de pacientes."
+        },
+        "duplicate_of": {
+          "url": "https://www.df.cl/regiones/arica-y-parinacota/arica-entra-al-top-ten-y-la-serena-queda-ultima-en-ranking-nacional-de",
+          "event_date": "2026-08-05",
+          "queue_fingerprint": "cf3410ec414808970332e18eaebe0fd0d2896b45996fce879f28a7078dd70808",
+          "source_id": "diario_financiero",
+          "survivor_signal_sha256": "23c14fae03041f6c7f98d25e98f65cd467c13f7ce6cbffe63f5a964f42d595e6"
+        }
       },
-      "editorial_decision": "accept",
-      "editorial_review_reason": "La publicación distingue evaluación hospitalaria 2025 de fecha del artículo 2026.26 de 62 sobre 75%,15entre70y74.9%,21bajo69% y91.1% Posta coinciden con el original. Es resultado reportado de gestión, no verificación propia de calidad clínica ni causa demostrada en pacientes.",
-      "feed_visibility": true
+      "editorial_decision": "group",
+      "editorial_review_reason": "Las notas publican la misma evaluación de gestión hospitalaria de 2025, con 62 hospitales autogestionados, 29 indicadores y una línea base de 75%. Los intervalos de 15 hospitales entre 70% y 74,9% y 21 bajo 69% sí aparecen en WHAT de Pulso, pero detallan el mismo conjunto de resultados, sin nueva medición, política, fondos, acción o capacidad acreditada; WHY vuelve a la misma brecha de gestión. El original DF ya contiene el líder Posta Central con 91,1% y una distribución regional más amplia. Se conserva íntegra la nota y la copia Pulso en el registro histórico agrupado, incluidos esos intervalos, sin reinterpretar el límite sobre 75% frente a igual o superior, ni completar rangos omitidos. La publicación visible del evento debe quedar en una sola señal sobre el ranking, con DF como superviviente y Pulso como evidencia adicional de prensa; no se transforma el ranking reportado en una evaluación oficial corroborada de forma independiente.",
+      "feed_visibility": false
     },
     {
       "title": "Kast anuncia su primer Presupuesto con alza del gasto de 1,5% y con foco en empleo, seguridad y salud",
