@@ -1,0 +1,26 @@
+{
+  "tests": "21 PASS: revision refresh, unchanged-input rejection, published preservation, replay, capture hash and TTL",
+  "findings_closed": [
+    "Scores are bound to editorial input, not just URL/title",
+    "Current raw capture refresh persists in queue",
+    "A current evidence gap never erases an earlier publication",
+    "Completed source state saves before the next source inventory"
+  ],
+  "live_run_4": {
+    "run_id": 38116209530,
+    "outcome": "success",
+    "model_attempts": 5,
+    "model_successes": 5,
+    "published": 0,
+    "scores": [
+      72,
+      73,
+      70,
+      72,
+      70
+    ],
+    "threshold": 75,
+    "reason": "All five assessed candidates scored below the unchanged editorial threshold. IST extraction and Mutual detail/paging remain subject to current parser replay; this is not acceptance."
+  },
+  "next": "Validate current parsers on saved live bytes and nine-clinic origin checkpoint, then process changed inputs only."
+}

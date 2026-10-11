@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_cache_state_incremental",
+  "checked_at": "2026-10-11T06:19:40.042801+00:00",
+  "requested_snapshot": "99d6a072ffe13c38f172ab8d618fa3ecb12736d4",
+  "head_at_report": "3dc0fd050c08b80e0f48f6ab38f0c6812f342a0e",
+  "branch": "codex/e-salud-laboral-20261011",
+  "pr": 12,
+  "verdict": "final_gate_pending_live_reconciliation_and_repros",
+  "scope": [
+    "clinicas_achs_salud",
+    "achs_seguro_laboral",
+    "mutual_seguridad",
+    "ist"
+  ],
+  "file_sha256_at_report": {
+    "scripts/occupational_inventory.py": "949865c8606c4d220707c9af7830df9ab69a6cfcfe4abcb405825662c75ce7b5",
+    "src/radar_salud/occupational_capture.py": "0013c98ef675e974d34295ea8895a98d631b3b07b7e6704e26e2798bda600de5",
+    "src/radar_salud/occupational_evidence.py": "7a60c7c095977a172f572f7f81a25d36908160eea1adb006380570e0b3668090",
+    "src/radar_salud/occupational_recovery.py": "869b6daf72554a04ecb066a42c812fcdb6812443cedfbaee820e79fc79e42c67",
+    ".github/workflows/occupational-source-recovery.yml": "fcb157d6152a414888938ff8848c335e6fc926d5d2c1a9f7b2479314354feab5"
+  },
+  "version_limit": "Root and builders continue changes during review. Findings refer to the concrete probes recorded below, not an assertion that later corrections remain broken.",
+  "closed_prior_findings": [
+    {
+      "id": "E-I05",
+      "result": "actual CLI --help exit0 verified after import fallback"
+    },
+    {
+      "id": "E-I06",
+      "result": "only model-pending DeferredProcessing maps to credentials/budget; guard errors retain exact reason"
+    },
+    {
+      "id": "E-I07",
+      "result": "Mutual non-card parsed evidence equality now required"
+    },
+    {
+      "id": "clean_checkout_clinic_import",
+      "result": "At requested99d6 clinic module was untracked and unconditional import could fail; clinic builder committed873094c during review, closing the missing dependency for future fresh checkouts."
+    }
+  ],
+  "verified_cache_bound": {
+    "method": "Temporary synthetic capture_index records, no requests/API or canonical writes",
+    "fresh_1_hour": "retained",
+    "stale_7_hours": "discarded",
+    "future_5_minutes": "discarded",
+    "naive_timestamp": "discarded",
+    "missing_timestamp": "discarded",
+    "limit_hours": 6,
+    "scope_limit": "TTL introduced during review; explicit replay remains historical and read-only probes must be qualified. Timestamp retention tests are not live coverage proof."
+  },
+  "findings": [
+    {
+      "id": "E-C01",
+      "severity": "high",
+      "area": "editorial evidence/input revision",
+      "location": "scripts/occupational_inventory.py:48; :70",
+      "status": "root_fix_planned",
+      "repro": "Existing rejected item score65, same URL/title/date but new body materially differs. apply=True gives zero processor calls, row inherits rejected/score65, queue.raw retains old body.",
+      "impact": "Current material discovery can be suppressed by an assessment of another input; durable queue does not represent the latest verified article.",
+      "bounded_control": "Attach editorial_input hash(title, body, publication_date, role) to assessment. Refresh capture provenance for same input without reanalysis. Different input becomes explicit revision pending reassessment, with prior status/score/capture retained in revision evidence. Reevaluate only within scoped cumulative30 budget and failure limit; no automatic repeated paid analysis for unchanged content."
+    },
+    {
+      "id": "E-C02",
+      "severity": "high",
+      "area": "durable queue refresh",
+      "location": "scripts/occupational_inventory.py reconcile; PendingQueue.discover",
+      "status": "root_fix_planned",
+      "repro": "Existing retry item with same URL/title but new body: CLI invokes processor against new body, finishes rejected, but queue.raw still contains old body.",
+      "impact": "New decision/assessment can be bound to obsolete body/capture on resume.",
+      "bounded_control": "Update serialized RawItem for currently verified revision before processing, preserve original detection/lane and old revision evidence, store exact assessment input hash and any current rejection reason. Preserve unrelated queue records semantically."
+    },
+    {
+      "id": "E-C03",
+      "severity": "medium",
+      "area": "historical publication versus current capture gap",
+      "location": "scripts/occupational_inventory.py:60; save_health",
+      "status": "root_fix_planned",
+      "repro": "Previously published URL retained in queue/history; current detail failed and no RawItem. Row alicanto_before=published but alicanto_status=pending; report/health published count can drop to0 while canonical publication remains.",
+      "bounded_control": "Preserve prior publication status separately from current evidence/capture state. Surface capture gap with exact reason and time; do not reinterpret existing published history as never evaluated/published."
+    },
+    {
+      "id": "E-C04",
+      "severity": "medium",
+      "area": "unique merged inventory metrics",
+      "location": "src/radar_salud/occupational_recovery.py:6",
+      "status": "delegated_parent_fix",
+      "repro": "Two surface reports with the same URL and one candidate each merge to one unique row but metrics90 dated_articles=2 and expected_role=2.",
+      "bounded_control": "Compute final metrics from final unique rows and role/window flags rather than adding surface totals after deduplication. Keep distinct per-surface metrics as separate evidence."
+    },
+    {
+      "id": "E-C05",
+      "severity": "medium",
+      "area": "capture timestamp honesty",
+      "location": "scripts/occupational_inventory.py capture_checked_at; save_health",
+      "status": "recommendation_pending",
+      "finding": "capture_checked_at=max of listing/detail capture timestamps describes the most recent response, not the age of all evidence used. Six-hour cache is bounded but can mix earlier captures with a current listing.",
+      "bounded_control": "Expose oldest_capture_at, latest_capture_at, reused_capture_count and parser_reviewed_at. Preserve original capture timestamps in all per-item evidence; qualify cached results and exact time of failures. Validate current-probe timestamps too. Consider refetching failed captures rather than caching errors for full6hours."
+    },
+    {
+      "id": "E-C06",
+      "severity": "medium",
+      "area": "aggregate monthly budget across isolated branch",
+      "location": "scripts/occupational_inventory.py --sync-budget; recovery workflow shared writer",
+      "status": "parent_accounting_followup",
+      "finding": "Shared writer plus MAX(branch,staging) is not an additive accounting guarantee after branches diverge. Base31, E+10→41, daily+20 on staging31→51, nextMAX51 although total61. Near1480 the analogous sequence permits1510 actual attempts while each branch≤1500.",
+      "bounded_control": "Keep existing1500 ceiling and shared lock, record scoped attempted delta fromac70, enforce cumulativeE allowance30 unless separately authorized, and disclose pending aggregate accounting. Do not claim MAX alone proves repository-wide aggregate monthly ceiling. Read-only staging fetch is within branch scope; no promotion is required or approved by this report."
+    }
+  ],
+  "regression_results": [
+    {
+      "command": ".venv/bin/python scripts/occupational_inventory.py --help",
+      "result": "PASS exit0"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_occupational_capture_cache.py tests/test_occupational_evidence.py tests/test_occupational_engine_recovery.py tests/test_occupational_integrity.py",
+      "result": "66 passed,1 failed",
+      "failure": "test_public_robots_denial_prevents_article_request uses fixed2026-10-11T00:00Z timestamp that has expired beyond6hourTTL; fixture expected freshcache and forbidden network callback fails",
+      "classification": "Fixture chronology regression introduced with TTL, not demonstrated production robots policy bypass. Parent repairing frozen/dynamic test clock and adding freshness cases."
+    }
+  ],
+  "parent_actions_acknowledged": [
+    "TTL fixture/calendar regression being fixed",
+    "Unique merge metrics assigned to ISP agent",
+    "Editorial input fingerprint, queue raw refresh and published/current-gap separation planned beforeRun6",
+    "Budget guarantee wording narrowed; cumulative scoped consumption to be counted fromac70"
+  ],
+  "final_gate_requirements": [
+    "Inspect committed corrected snapshot and clean-checkout import/entrypoint",
+    "Replay capture/date/redirect binding mutation cases after revision guards",
+    "Verify unchanged inputs do not pay again and changed revision stays resumable with exact evidence",
+    "Inspect complete live Actions inventories/reconciliation, per-source health and coverage gaps",
+    "Compare canonical unrelated queue/history/health rows and all scoped budget usage from baseline",
+    "PR12 remains open; no main/staging promotion authorized"
+  ],
+  "reviewer_mutations": {
+    "implementation": false,
+    "canonical_state": false,
+    "pr": false,
+    "real_network_or_analysis_calls": 0,
+    "temporary_synthetic_probes_only": true,
+    "durable_files_written": [
+      "data/audits/source_e_recovery/reviewer_cache_state.json"
+    ]
+  }
+}

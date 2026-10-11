@@ -21,7 +21,7 @@ jobs:
   public-origin-capture:
     if: github.ref == 'refs/heads/codex/e-salud-laboral-20261011'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
@@ -57,12 +57,12 @@ jobs:
           git fetch origin staging
           git show FETCH_HEAD:data/ai_usage/$(date -u +%Y-%m).json > /tmp/occupational-staging-ai-usage.json
           python scripts/occupational_inventory.py --sync-budget /tmp/occupational-staging-ai-usage.json
-          python scripts/occupational_inventory.py --output "data/audits/source_e_recovery/actions/${GITHUB_RUN_ID}/inventory" --capture-cache-latest --apply
+          python scripts/occupational_inventory.py --output "data/audits/source_e_recovery/actions/${GITHUB_RUN_ID}/inventory" --capture-cache-latest --apply --checkpoint-commits
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: occupational-public-origin-${{ github.run_id }}
-          path: data/audits/source_e_recovery/actions/
+          path: data/audits/source_e_recovery/actions/${{ github.run_id }}/
           if-no-files-found: error
           retention-days: 30
       - name: Persist public capture on the authorized isolated branch

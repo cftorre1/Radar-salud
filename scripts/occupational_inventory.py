@@ -6,6 +6,7 @@ import copy
 import hashlib
 import json
 import os
+import subprocess
 import time
 from collections import Counter
 from dataclasses import asdict
@@ -22,6 +23,30 @@ from radar_salud.occupational_sources import SOURCES, SourceDiscoveryError, chil
 from radar_salud.pending_queue import PendingQueue, atomic_json, fingerprint
 from radar_salud.processing import DeferredProcessing
 
+
+def editorial_input(raw):
+    """A capture refresh alone does not invalidate an editorial decision."""
+    value = asdict(raw) if isinstance(raw, RawItem) else raw
+    meta = value.get("metadata", {})
+    fields = {k: value.get(k) for k in ("source_slug", "url", "title", "event_date", "raw_text")}
+    fields.update({k: meta.get(k) for k in ("page_text", "market_role", "provider_subtype", "materiality_accepted", "materiality_reason")})
+    return hashlib.sha256(json.dumps(fields, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
+
+def refresh_item(item, raw):
+    fresh = editorial_input(raw)
+    previous = item.get("editorial_input_sha256") or editorial_input(item.get("raw", {}))
+    changed = fresh != previous
+    if changed:
+        item.setdefault("revisions", []).append({"editorial_input_sha256": previous,
+            "status": item.get("status"), "reason": item.get("reason"),
+            "editorial_assessment": item.get("editorial_assessment"),
+            "capture_evidence": item.get("raw", {}).get("metadata", {}).get("capture_evidence")})
+        if item.get("status") != "published":
+            item.update(status="pending", reason="editorial_input_revision_changed", retry_at=None)
+            item.pop("editorial_assessment", None)
+    item.update(raw=asdict(raw), editorial_input_sha256=fresh)
+    return changed
 
 
 def reconcile(root, reports, loader, *, apply=False):
@@ -46,6 +71,9 @@ def reconcile(root, reports, loader, *, apply=False):
         added = 0
         if apply:
             added = queue.discover(slug, raw_items)
+            for raw in raw_items:
+                refresh_item(queue.items[fingerprint(raw)], raw)
+            queue.save()
         report["newly_discovered"] = added
         for row in report["rows"]:
             url = row.get("url")
@@ -58,26 +86,33 @@ def reconcile(root, reports, loader, *, apply=False):
             row["ingestion_mode"] = "BACKFILL" if raw else None
             row["editorial_score"] = None
             if not raw:
+                if previous.get("status") == "published" or url in history_by_url:
+                    row.update(alicanto_status="published", processing_reason="previous_publication_preserved",
+                               current_capture_gap=row.get("reason"))
+                    continue
                 row["alicanto_status"] = ("pending" if row.get("status") == "pending" else
                                            "excluded" if row.get("status") == "excluded_role" else
                                            "outside_window" if not row.get("within_90_days") else "rejected")
                 row["processing_reason"] = row.get("reason")
                 continue
             item = queue.items.get(key, previous)
+            changed = bool(previous and editorial_input(previous.get("raw", {})) != editorial_input(raw))
+            row["editorial_input_changed"] = changed
             if item.get("status") == "published" or url in history_by_url:
                 row.update(alicanto_status="published", processing_reason="already_published")
                 continue
-            if item.get("status") == "rejected":
+            if item.get("status") == "rejected" and not changed:
                 row.update(alicanto_status="rejected", processing_reason=item.get("reason"), editorial_score=item.get("editorial_assessment", {}).get("score"))
                 continue
-            if item.get("status") == "archived":
+            if item.get("status") == "archived" and not changed:
                 row.update(alicanto_status="archived", processing_reason=item.get("reason"))
                 continue
             if apply and item.get("retry_at") and item["retry_at"] > datetime.now(timezone.utc).isoformat():
                 row.update(alicanto_status="deferred", processing_reason=item.get("reason"), retry_at=item["retry_at"])
                 continue
             if not apply:
-                row.update(alicanto_status=item.get("status", "discovered"), processing_reason="read_only_replay")
+                row.update(alicanto_status="pending_reassessment" if changed else item.get("status", "discovered"),
+                           processing_reason="editorial_input_revision_changed" if changed else "read_only_replay")
                 continue
             queue.start(key)
             try:
@@ -98,6 +133,8 @@ def reconcile(root, reports, loader, *, apply=False):
                     reason = raw.metadata.get("publication_rejection_reason", "processor_rejected")
                     queue.finish(key, "rejected", reason)
                     row.update(alicanto_status="rejected", processing_reason=reason)
+                queue.items[key]["raw"] = asdict(raw)
+                queue.save()
             except DeferredProcessing as exc:
                 from radar_salud.ai_budget import has_capacity
                 reason = str(exc)
@@ -155,6 +192,20 @@ def save_health(root, reports):
     atomic_json(root / "web/data/source_health.json", web)
 
 
+def commit_source_checkpoint(root, output, slug):
+    if os.getenv("GITHUB_REF") != "refs/heads/codex/e-salud-laboral-20261011":
+        raise RuntimeError("Source checkpoint commits require the authorized isolated Actions branch")
+    paths = [str(output.relative_to(root)), "data/state/pending_queue.json",
+             "data/history/superintendencia_signals.json", "data/source_health.json",
+             "web/data/source_health.json", "data/ai_usage", "data/telemetry"]
+    existing = [p for p in paths if (root / p).exists()]
+    for args in (["git", "add", "--", *existing],
+                 ["git", "commit", "-m", f"audit({slug}): inventory and reconciliation checkpoint {os.getenv('GITHUB_RUN_ID')}"],
+                 ["git", "pull", "--rebase", "origin", "codex/e-salud-laboral-20261011"],
+                 ["git", "push", "origin", "HEAD:codex/e-salud-laboral-20261011"]):
+        subprocess.run(args, cwd=root, check=True)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output")
@@ -163,6 +214,7 @@ def main():
     parser.add_argument("--capture-cache-latest", action="store_true", help="Reuse hashed detail captures; current origin probes override cached listings")
     parser.add_argument("--as-of", help="Fixed Chile calendar date for deterministic read-only replay")
     parser.add_argument("--apply", action="store_true", help="Reconcile only these lanes into durable branch state")
+    parser.add_argument("--checkpoint-commits", action="store_true", help="Persist each completed source on the authorized Actions branch")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     if args.sync_budget:
@@ -185,6 +237,8 @@ def main():
             as_of = json.loads(prior_report.read_text())["as_of_chile"]
     if args.apply and as_of != chile_today().isoformat():
         parser.error("Durable processing requires today's real Chile calendar; historical replay is read-only")
+    if args.checkpoint_commits and (not args.apply or os.getenv("GITHUB_REF") != "refs/heads/codex/e-salud-laboral-20261011"):
+        parser.error("Checkpoint commits require --apply in the isolated branch workflow")
     output = Path(args.output)
     cache = None
     if args.capture_cache_latest:
@@ -193,6 +247,9 @@ def main():
     probe = output.parent / "report.json"
     loader = CaptureLoader(output, replay=args.replay, cache=cache, probe=probe if probe.exists() else None)
     reports = {}
+    from radar_salud.ai_budget import status
+    before = copy.deepcopy(status())
+    totals = Counter()
     from radar_salud.occupational_recovery import inventory
     for slug in sorted(SOURCES):
         scout = CuratedBetaSourceScout(slug)
@@ -204,17 +261,19 @@ def main():
                       "window": {"as_of": chile_today().isoformat(), "30": "unknown", "90": "unknown"}}
         reports[slug] = report
         urls = {p["url"] for p in report["pages"]} | {r["url"] for r in report["rows"]}
-        report["capture_checked_at"] = max((loader.records[u]["captured_at"] for u in urls if u in loader.records), default=None)
-        preview = {k:v for k,v in report.items() if k != "raw_items"}
-        preview["raw_items"] = [asdict(raw) for raw in report["raw_items"]]
-        atomic_json(output / (slug + "_inventory_checkpoint.json"), preview)
+        stamps = [loader.records[u]["captured_at"] for u in urls if u in loader.records]
+        report["capture_checked_at"] = max(stamps, default=None)
+        report["oldest_capture_at"] = min(stamps, default=None)
+        totals.update(reconcile(root, {slug:report}, loader, apply=args.apply))
+        atomic_json(output / (slug + "_inventory_checkpoint.json"), report)
+        if args.apply:
+            save_health(root, {slug:report})
+        if args.checkpoint_commits:
+            commit_source_checkpoint(root, output, slug)
         print(json.dumps({"source": slug, "items": len(report["rows"]), "complete": report["coverage_complete"], "stop": report.get("stop_reason")}), flush=True)
-    from radar_salud.ai_budget import status
-    before = copy.deepcopy(status())
-    totals = reconcile(root, reports, loader, apply=args.apply)
     result = {"candidate_sha": os.getenv("CANDIDATE_SHA", os.getenv("GITHUB_SHA")), "run_id": os.getenv("GITHUB_RUN_ID"),
               "captured_at": datetime.now(timezone.utc).isoformat(), "as_of_chile": as_of,
-              "mode": "runtime_and_branch_reconciliation" if args.apply else "read_only_replay", "sources": reports, "processing": totals}
+              "mode": "runtime_and_branch_reconciliation" if args.apply else "read_only_replay", "sources": reports, "processing": dict(totals)}
     result["editorial_runtime"] = {"credentials_available": bool(os.getenv("OPENAI_API_KEY")),
                                    "model": os.getenv("RADAR_FAST_MODEL", "gpt-5.6-luna"), "budget_before": before,
                                    "budget_after": status(), "same_failure_limit": 3}
