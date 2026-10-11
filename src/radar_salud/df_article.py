@@ -48,7 +48,8 @@ class _Article(HTMLParser):
         if tag == "meta":
             key = (attrs.get("name") or attrs.get("property") or "").lower()
             self.meta.setdefault(key, attrs.get("content") or "")
-        if tag == "time" and attrs.get("datetime"):
+        if (tag == "time" and attrs.get("datetime") and attrs.get("itemprop", "").lower()=="datepublished"
+                and not any(entry[0] in ('nav','aside','footer') or entry[3] for entry in self.stack)):
             self.times.append(attrs["datetime"])
         if tag == "script":
             self.script = [] if attrs.get("type", "").lower() == "application/ld+json" else None
@@ -141,9 +142,10 @@ def parse_df_article(html, url):
         visible_day = _date(token[0]) if token else None
         if visible_day and _day(visible_day):
             candidates.append({"source": "visible:published_label", "value": labelled[1], "day": visible_day})
-    # A time element is only a fallback: many pages have clocks in their header.
+    # An explicitly marked publication time is a fallback; bare clocks and
+    # incident dates are not publication evidence even if there is only one.
     if not candidates and len(p.times) == 1:
-        candidates.append({"source": "time:datetime", "value": p.times[0], "day": _day(p.times[0])})
+        candidates.append({"source": "time:datePublished", "value": p.times[0], "day": _day(p.times[0])})
     valid = [c for c in candidates if c["day"]]
     conflict = len({c["day"] for c in valid}) > 1
     chosen = valid[0] if valid and not conflict else None

@@ -409,3 +409,10 @@ def test_conflict_resolves_only_explicit_primary_df_header_with_matching_identit
     assert len(parsed['metadata']['publication_date_candidates']) == 3
     assert parse_df_article(meta + node.replace(URL, 'https://www.df.cl/other/article') + label + body, URL)['event_date'] is None
     assert parse_df_article(meta + node + label.replace('enc-main', 'recommendations') + body, URL)['event_date'] is None
+
+
+def test_single_clock_or_incident_time_never_becomes_df_publication_date():
+    assert parse_df_article('<nav><time datetime="2026-10-11">Hoy</time></nav>', URL)['event_date'] is None
+    assert parse_df_article('<article><time datetime="2026-10-08">Fecha del incidente</time></article>', URL)['event_date'] is None
+    assert parse_df_article('<header><time datetime="2026-10-11">Reloj</time></header>', URL)['event_date'] is None
+    assert parse_df_article('<time itemprop="datePublished" datetime="2026-10-10">Publicado</time>', URL)['event_date'] == '2026-10-10'
