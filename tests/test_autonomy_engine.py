@@ -1,0 +1,481 @@
+"""Targeted state-machine tests; none of these simulations prove live autonomy."""
+
+from copy import deepcopy
+from datetime import datetime, timedelta, timezone
+import unittest
+
+from scripts.autonomy_engine import (
+    EDITORIAL_TASK, EDITORIAL_REPAIR_TASK, SOURCE_TASKS, LeaseError, ReportError, claim,
+    candidate_validated, evaluate_acceptance, finish, heartbeat, plan, reconcile,
+)
+
+
+BASE = datetime(2026, 10, 10, tzinfo=timezone.utc)
+SHA = "a" * 40
+MEDIA = next(task for task, family in SOURCE_TASKS.items() if family == "media")
+PUBLIC = next(task for task, family in SOURCE_TASKS.items() if family == "public_data")
+
+
+def queue(*families):
+    selected = families or tuple(SOURCE_TASKS.values())
+    return {"input_sha": SHA, "tasks": [
+        {"id": task, "status": "approved", "priority": "critical",
+         "objective": "Repair " + family, "depends_on": [], "evidence_revision": "v1"}
+        for task, family in SOURCE_TASKS.items() if family in selected]}
+
+
+def gates():
+    return [{"name": "targeted", "status": "PASS", "command": "python -m unittest",
+             "returncode": 0, "log_path": "evidence/test.log", "log_sha256": "f" * 64}]
+
+
+def blocked(reason="failed", fingerprint="stable", evidence=None):
+    return {"status": "BLOCKED", "blockers": [{"fingerprint": fingerprint,
+        "reason": reason, "evidence": evidence or [{"path": "evidence/failure.json", "sha256": "f" * 64}]}]}
+
+
+def mutation(**overrides):
+    report = {"status": "REPAIRED", "candidate_commit": "b" * 40,
+        "changed_paths": ["config/source.json"], "validated": True, "gates": gates(),
+        "before_hash": "1" * 64, "after_hash": "2" * 64,
+        "evidence": [{"path": "evidence/test.log", "sha256": "f" * 64}]}
+    report.update(overrides)
+    return report
+
+
+def passed(task_id=MEDIA):
+    return {"status": "PASS", "validated": True, "gates": gates(), "acceptance_proof": [{
+        "verified": True, "task_id": task_id, "candidate_sha": SHA, "verdict": "PASS",
+        "path": "evidence/acceptance.json", "sha256": "d" * 64,
+        "checks": ["publication_trace", "editorial_acceptance"],
+        "evidence": [{"path": "evidence/source.json", "sha256": "e" * 64}]}]}
+
+
+def failure(run_id="123"):
+    return {"run_id": run_id, "conclusion": "failure", "head_sha": SHA,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/" + run_id}
+
+
+def partial():
+    baseline = {**gates()[0], "status": "FAIL", "returncode": 1, "log_sha256": "3" * 64}
+    candidate = {**gates()[0], "status": "FAIL", "returncode": 1, "log_sha256": "4" * 64}
+    return mutation(validated=False, partial_candidate=True, targeted_validated=True,
+        no_new_failures=True, candidate_scope="isolated", directed_gates=gates(),
+        live_validated=True, live_gate=gates()[0],
+        gates=[gates()[0], candidate], non_regression={
+            "baseline_failures": ["5" * 64], "candidate_failures": ["5" * 64],
+            "baseline_gate": baseline, "candidate_gate": candidate})
+
+
+class AutonomyEngineTests(unittest.TestCase):
+    def test_reducers_do_not_mutate_inputs(self):
+        q = queue()
+        original = deepcopy(q)
+        initial = {}
+        state, lease = claim(initial, q, "media", "worker-1", BASE)
+        self.assertEqual(q, original)
+        self.assertEqual(initial, {})
+        preserved = deepcopy(state)
+        heartbeat(state, MEDIA, lease["token"], BASE + timedelta(seconds=60))
+        self.assertEqual(state, preserved)
+
+    def test_parallel_family_claims_and_same_family_exclusion(self):
+        q = queue()
+        state, first = claim({}, q, "media", "one", BASE)
+        state, duplicate = claim(state, q, "media", "one", BASE)
+        self.assertIsNone(duplicate)
+        state, other = claim(state, q, "public_data", "two", BASE)
+        self.assertIsNotNone(first)
+        self.assertIsNotNone(other)
+        self.assertEqual(len(state["material_events"]), 0)
+        self.assertEqual(len(state["lease_events"]), 2)
+
+    def test_pickup_and_heartbeat_are_not_material_progress(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = heartbeat(state, MEDIA, lease["token"], BASE + timedelta(minutes=1))
+        self.assertEqual(state["material_events"], [])
+        self.assertNotIn("material_progress_at", state["tasks"][MEDIA])
+
+    def test_expiration_rejects_late_heartbeat_and_finish(self):
+        state, lease = claim({}, queue("media"), "media", "worker", BASE)
+        expired = BASE + timedelta(minutes=10)
+        with self.assertRaises(LeaseError):
+            heartbeat(state, MEDIA, lease["token"], expired)
+        with self.assertRaises(LeaseError):
+            finish(state, MEDIA, lease["token"], mutation(), expired)
+
+    def test_reclaim_fences_late_old_worker_even_with_same_owner(self):
+        q = queue("media")
+        state, old = claim({}, q, "media", "worker", BASE)
+        later = BASE + timedelta(minutes=11)
+        state, new = claim(state, q, "media", "worker", later)
+        self.assertNotEqual(old["token"], new["token"])
+        self.assertGreater(new["fence"], old["fence"])
+        with self.assertRaises(LeaseError):
+            finish(state, MEDIA, old["token"], blocked(), later)
+        with self.assertRaises(LeaseError):
+            heartbeat(state, MEDIA, old["token"], later)
+        self.assertEqual(len(state["material_events"]), 0)
+
+    def test_heartbeats_cannot_hide_thirty_minute_material_stall(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        for minute in range(1, 30):
+            state = heartbeat(state, MEDIA, lease["token"], BASE + timedelta(minutes=minute))
+        at_stall = BASE + timedelta(minutes=30)
+        with self.assertRaises(LeaseError):
+            heartbeat(state, MEDIA, lease["token"], at_stall)
+        state = reconcile(state, q, at_stall)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "STALLED")
+        self.assertEqual(state["tasks"][MEDIA]["reason"], "no_material_progress_30m")
+        self.assertEqual(state["material_events"], [])
+
+    def test_missing_heartbeat_stalls_before_ten_minute_lease(self):
+        q = queue("media")
+        state, _ = claim({}, q, "media", "worker", BASE)
+        state, candidates = plan(state, q, BASE + timedelta(minutes=3))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "STALLED")
+        self.assertIn("media", candidates)
+
+    def test_queue_approval_revocation_fences_worker(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        q["tasks"][0]["status"] = "paused"
+        state = reconcile(state, q, BASE + timedelta(seconds=1))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "REVOKED")
+        with self.assertRaises(LeaseError):
+            finish(state, MEDIA, lease["token"], mutation(), BASE + timedelta(seconds=2))
+
+    def test_unrelated_staging_sha_does_not_revoke_running_parallel_lease(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        q["input_sha"] = "c" * 40
+        state = reconcile(state, q, BASE + timedelta(seconds=1))
+        self.assertEqual(state["tasks"][MEDIA]["input_sha"], SHA)
+        self.assertEqual(state["tasks"][MEDIA]["lease"]["token"], lease["token"])
+        state = finish(state, MEDIA, lease["token"], mutation(), BASE + timedelta(seconds=2))
+        state = reconcile(state, q, BASE + timedelta(seconds=3))
+        self.assertEqual(state["tasks"][MEDIA]["input_sha"], "c" * 40)
+
+    def test_relevant_evidence_change_fences_running_worker(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        q["tasks"][0]["evidence_revision"] = "v2"
+        state = reconcile(state, q, BASE + timedelta(seconds=1))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        with self.assertRaises(LeaseError):
+            heartbeat(state, MEDIA, lease["token"], BASE + timedelta(seconds=2))
+
+    def test_unsupported_approved_task_is_blocked_not_completed(self):
+        q = {"tasks": [{"id": "unknown_product_task", "status": "approved"}]}
+        state, candidates = plan({}, q, BASE)
+        self.assertEqual(candidates, {})
+        self.assertEqual(state["tasks"]["unknown_product_task"]["status"], "BLOCKED")
+        self.assertIn("unsupported_executor", state["tasks"]["unknown_product_task"]["blocker"]["fingerprint"])
+        second = reconcile(state, q, BASE + timedelta(minutes=5))
+        self.assertEqual(len(second["material_events"]), 1)
+
+    def test_staging_qa_requires_real_failed_run_metadata(self):
+        q = queue("media")
+        q["tasks"].append({"id": "staging_qa_failed_run_123", "family": "staging_qa",
+                           "status": "approved", "failure": failure()})
+        state, candidates = plan({}, q, BASE)
+        self.assertIn("media", candidates)
+        self.assertIn("staging_qa", candidates)
+        q["tasks"][-1]["failure"]["conclusion"] = "success"
+        state, candidates = plan({}, q, BASE)
+        self.assertNotIn("staging_qa", candidates)
+        self.assertEqual(state["tasks"]["staging_qa_failed_run_123"]["status"], "BLOCKED")
+
+    def test_editorial_dependency_is_not_bypassed_by_blocked_parent(self):
+        parent = "source_audit_issue5_iteration1_recovery_2026_10_09"
+        q = queue("media")
+        q["tasks"] += [{"id": parent, "status": "in_progress"},
+            {"id": EDITORIAL_TASK, "status": "in_progress", "depends_on": [parent]}]
+        state, candidates = plan({}, q, BASE)
+        self.assertNotIn("editorial", candidates)
+        self.assertIn("media", candidates)
+        q["tasks"][-2]["status"] = "validated"
+        _, candidates = plan(state, q, BASE)
+        self.assertIn("editorial", candidates)
+
+    def test_independent_editorial_subtask_does_not_close_parent(self):
+        q = queue("media")
+        q["tasks"] += [{"id": EDITORIAL_TASK, "status": "in_progress", "depends_on": [MEDIA]},
+                       {"id": EDITORIAL_REPAIR_TASK, "status": "approved", "depends_on": [],
+                        "provenance": {"parent_task_id": EDITORIAL_TASK}}]
+        state, lease = claim({}, q, "editorial", "worker", BASE)
+        self.assertEqual(lease["task_id"], EDITORIAL_REPAIR_TASK)
+        state = finish(state, EDITORIAL_REPAIR_TASK, lease["token"], passed(EDITORIAL_REPAIR_TASK), BASE)
+        self.assertEqual(state["tasks"][EDITORIAL_REPAIR_TASK]["status"], "CLOSED")
+        self.assertEqual(state["tasks"][EDITORIAL_TASK]["status"], "READY")
+
+    def test_queue_blocked_by_revokes_lease_and_removal_releases_task(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        q["tasks"][0]["blocked_by"] = ["legal_review"]
+        state, candidates = plan(state, q, BASE + timedelta(seconds=1))
+        self.assertNotIn("media", candidates)
+        with self.assertRaises(LeaseError):
+            heartbeat(state, MEDIA, lease["token"], BASE + timedelta(seconds=2))
+        q["tasks"][0]["blocked_by"] = []
+        _, candidates = plan(state, q, BASE + timedelta(seconds=3))
+        self.assertIn("media", candidates)
+
+    def test_blocker_leaves_independent_families_available(self):
+        q = queue()
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], blocked(), BASE + timedelta(seconds=1))
+        state, candidates = plan(state, q, BASE + timedelta(seconds=2))
+        self.assertNotIn("media", candidates)
+        self.assertEqual(set(candidates), {"public_data", "fiscalization", "mutualities"})
+
+    def test_three_identical_audits_block_without_crediting_success(self):
+        q = queue("media")
+        state = {}
+        for attempt in range(3):
+            at = BASE + timedelta(minutes=attempt)
+            state, lease = claim(state, q, "media", "worker", at)
+            state = finish(state, MEDIA, lease["token"], {"status": "SUCCESS",
+                "audit_fingerprint": "same-findings", "generated_at": str(at)}, at)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "BLOCKED")
+        self.assertEqual([e["kind"] for e in state["material_events"]], ["blocker"])
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=4))
+        self.assertIsNone(lease)
+        q["tasks"][0]["evidence_revision"] = "changed-proof"
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=5))
+        self.assertIsNotNone(lease)
+
+    def test_observation_timestamp_changes_do_not_reopen_auditor_loop(self):
+        q = queue("media")
+        q["tasks"][0].pop("evidence_revision")
+        q["tasks"][0]["independent_review"] = {"artifact": "audit.json", "reviewed_at": "old"}
+        state = {}
+        for attempt in range(3):
+            state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=attempt))
+            state = finish(state, MEDIA, lease["token"], {"status": "SUCCESS"},
+                           BASE + timedelta(minutes=attempt))
+        q["tasks"][0]["independent_review"]["reviewed_at"] = "new"
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=4))
+        self.assertIsNone(lease)
+
+    def test_same_blocker_not_new_material_after_unrelated_input_change(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], blocked(), BASE)
+        q["input_sha"] = "c" * 40
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=1))
+        state = finish(state, MEDIA, lease["token"], blocked(), BASE + timedelta(minutes=1))
+        self.assertEqual(len(state["material_events"]), 1)
+        q["input_sha"] = "d" * 40
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=2))
+        state = finish(state, MEDIA, lease["token"], blocked(evidence=[{"http_status": 503}]),
+                       BASE + timedelta(minutes=2))
+        self.assertEqual(len(state["material_events"]), 2)
+
+    def test_alias_and_reordering_identical_blockers_cannot_manufacture_progress(self):
+        q = queue("media")
+        one = blocked(fingerprint="one")["blockers"][0]
+        two = blocked(fingerprint="two", evidence=[{"status": 503}])["blockers"][0]
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], {"status": "BLOCKED", "blocker": one,
+                       "blockers": [one, two]}, BASE)
+        q["input_sha"] = "c" * 40
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=1))
+        state = finish(state, MEDIA, lease["token"], {"status": "BLOCKED", "blocker": two,
+                       "blockers": [two, one]}, BASE + timedelta(minutes=1))
+        self.assertEqual(len(state["material_events"]), 1)
+
+    def test_mutation_requires_durable_commit_hashes_and_executed_gates(self):
+        state, lease = claim({}, queue("media"), "media", "worker", BASE)
+        for invalid in (mutation(candidate_commit=None), mutation(after_hash="1" * 64),
+                        mutation(gates=["PASS"]), mutation(validated=False)):
+            with self.assertRaises(ReportError):
+                finish(state, MEDIA, lease["token"], invalid, BASE)
+        state = finish(state, MEDIA, lease["token"], mutation(), BASE)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertEqual(state["material_events"][0]["kind"], "mutation")
+
+    def test_isolated_candidate_with_baseline_failure_can_make_durable_progress(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        report = partial()
+        state = finish(state, MEDIA, lease["token"], report, BASE)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertEqual(state["material_events"][0]["details"]["candidate_scope"], "isolated")
+        self.assertNotIn("closure", [event["kind"] for event in state["material_events"]])
+
+    def test_partial_candidate_requires_hashed_non_regression_and_live_directed_pass(self):
+        report = partial()
+        report["family"] = "media"
+        self.assertTrue(candidate_validated(report))
+        for field, invalid in (("non_regression", "tests unchanged"), ("directed_gates", ["PASS"]),
+                               ("live_gate", None), ("candidate_scope", "staging")):
+            changed = {**report, field: invalid}
+            self.assertFalse(candidate_validated(changed))
+        changed = deepcopy(report)
+        changed["non_regression"]["candidate_failures"] = ["6" * 64]
+        self.assertFalse(candidate_validated(changed))
+        changed = deepcopy(report)
+        changed["non_regression"]["baseline_gate"].pop("log_sha256")
+        self.assertFalse(candidate_validated(changed))
+        changed = deepcopy(report)
+        changed["non_regression"]["candidate_failures"] = []
+        changed["non_regression"]["candidate_gate"]["returncode"] = 0
+        self.assertTrue(candidate_validated(changed))
+
+    def test_generic_explicit_approved_executor_family_can_pick_next_task(self):
+        q = {"input_sha": SHA, "tasks": [{"id": "source_repair_media_new_scope", "status": "approved",
+                                             "executor_family": "media", "depends_on": []}]}
+        _, lease = claim({}, q, "media", "worker", BASE)
+        self.assertEqual(lease["task_id"], "source_repair_media_new_scope")
+
+    def test_failure_budget_is_shared_across_new_github_run_ids(self):
+        q = queue("media")
+        state = {}
+        for attempt in range(3):
+            run_id = str(123 + attempt)
+            proof = {**failure(run_id), "failure_signature": "same-test-contract"}
+            q["tasks"].append({"id": "staging_qa_failed_run_" + run_id, "family": "staging_qa",
+                "status": "approved", "failure": proof, "input_fingerprint": "same-relevant-code"})
+            at = BASE + timedelta(minutes=attempt)
+            state, lease = claim(state, q, "staging_qa", "worker", at)
+            state = finish(state, lease["task_id"], lease["token"], blocked(), at)
+        run_id = "126"
+        q["tasks"].append({"id": "staging_qa_failed_run_" + run_id, "family": "staging_qa",
+            "status": "approved", "failure": {**failure(run_id), "failure_signature": "same-test-contract"},
+            "input_fingerprint": "same-relevant-code"})
+        state, candidates = plan(state, q, BASE + timedelta(minutes=4))
+        self.assertNotIn("staging_qa", candidates)
+        self.assertIn("media", candidates)
+        # The same real failure is not repeatedly credited as new progress.
+        failures = [event for event in state["material_events"] if event["kind"] == "blocker"
+                    and event["details"].get("fingerprint") == state["tasks"]["staging_qa_failed_run_123"]["blocker"]["fingerprint"]]
+        self.assertEqual(len(failures), 1)
+        q["tasks"][-1]["input_fingerprint"] = "repaired-relevant-code"
+        _, candidates = plan(state, q, BASE + timedelta(minutes=5))
+        self.assertIn("staging_qa", candidates)
+
+    def test_known_source_failure_budget_does_not_reset_on_unrelated_staging_sha(self):
+        q = queue("media")
+        q["tasks"][0]["input_fingerprint"] = "same-media-parser"
+        real = {"kind": "source_runtime", "verified": True, "source_url": "https://source.example/news",
+                "failure_signature": "same-request-failure", "trace_path": "trace.json",
+                "trace_sha256": "7" * 64, "observed_at": BASE.isoformat()}
+        state = {}
+        for attempt in range(3):
+            q["input_sha"] = str(attempt) * 40
+            at = BASE + timedelta(minutes=attempt)
+            state, lease = claim(state, q, "media", "worker", at)
+            report = {**blocked(), "real_failure": real, "failure_action": "blocked"}
+            state = finish(state, MEDIA, lease["token"], report, at)
+        q["input_sha"] = "9" * 40
+        state, candidates = plan(state, q, BASE + timedelta(minutes=4))
+        self.assertNotIn("media", candidates)
+        self.assertIn("failure_budget_exhausted", state["tasks"][MEDIA]["blocker"]["fingerprint"])
+
+    def test_same_candidate_or_unchanged_semantic_result_is_not_new_mutation(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], mutation(), BASE)
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=1))
+        state = finish(state, MEDIA, lease["token"], mutation(candidate_commit="c" * 40),
+                       BASE + timedelta(minutes=1))
+        self.assertEqual(len(state["material_events"]), 1)
+
+    def test_pass_requires_hash_bound_explicit_acceptance_artifact(self):
+        state, lease = claim({}, queue("media"), "media", "worker", BASE)
+        for proof in ([], ["tests green"], [{"verified": True, "path": "fake"}]):
+            invalid = passed()
+            invalid["acceptance_proof"] = proof
+            with self.assertRaises(ReportError):
+                finish(state, MEDIA, lease["token"], invalid, BASE)
+        report = passed()
+        report["acceptance_proof"][0]["candidate_sha"] = "wrong-input"
+        with self.assertRaises(ReportError):
+            finish(state, MEDIA, lease["token"], report, BASE)
+        state = finish(state, MEDIA, lease["token"], passed(), BASE)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "CLOSED")
+
+    def test_transition_credited_once_after_terminal_to_different_independent_task(self):
+        q = queue()
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], blocked(), BASE)
+        state, _ = claim(state, q, "public_data", "worker2", BASE + timedelta(seconds=1))
+        state, _ = claim(state, q, "fiscalization", "worker3", BASE + timedelta(seconds=2))
+        transitions = [e for e in state["material_events"] if e["kind"] == "transition"]
+        self.assertEqual(len(transitions), 1)
+        self.assertEqual(transitions[0]["details"]["from_task_id"], MEDIA)
+        self.assertEqual(transitions[0]["task_id"], PUBLIC)
+
+    def test_real_failed_run_blocker_carries_recovery_proof(self):
+        q = {"input_sha": SHA, "tasks": [{"id": "staging_qa_failed_run_123",
+             "status": "approved", "family": "staging_qa", "failure": failure()}]}
+        state, lease = claim({}, q, "staging_qa", "worker", BASE)
+        state = finish(state, lease["task_id"], lease["token"], blocked(), BASE)
+        details = state["material_events"][0]["details"]
+        self.assertEqual(details["real_failure"]["run_id"], "123")
+        self.assertEqual(details["failure_action"], "blocked")
+
+    def test_blocked_requires_evidence_and_not_just_reason(self):
+        state, lease = claim({}, queue("media"), "media", "worker", BASE)
+        for invalid in ({"status": "BLOCKED"}, {"status": "BLOCKED", "blockers": ["error"]},
+                        {"status": "BLOCKED", "blockers": [{"fingerprint": "x", "reason": "y"}]}):
+            with self.assertRaises(ReportError):
+                finish(state, MEDIA, lease["token"], invalid, BASE)
+
+
+class AcceptanceTests(unittest.TestCase):
+    def observed_state(self, mode="live"):
+        state = {"acceptance": {"mode": mode, "started_at": BASE.isoformat(),
+                                "owner_restarts": [], "owner_prompts": []},
+                 "material_events": [], "lease_events": [{"kind": "pickup", "autonomous": True,
+                                                           "at": BASE.isoformat()}]}
+        for minute in range(0, 241, 20):
+            event = {"kind": "mutation", "at": (BASE + timedelta(minutes=minute)).isoformat(),
+                     "details": {}}
+            state["material_events"].append(event)
+        state["material_events"][1]["kind"] = "blocker"
+        state["material_events"][1]["details"] = {"real_failure": failure(), "failure_action": "blocked"}
+        state["material_events"][2]["kind"] = "transition"
+        state["material_events"][2]["details"] = {"independent": True}
+        return state
+
+    def test_four_real_hours_with_full_evidence_pass_evaluator(self):
+        end = BASE + timedelta(hours=4)
+        result = evaluate_acceptance(self.observed_state(), end, wall_now=end)
+        self.assertEqual(result["status"], "PASS")
+        self.assertEqual(result["metrics"]["max_material_gap_seconds"], 1200)
+
+    def test_simulation_never_satisfies_live_acceptance(self):
+        end = BASE + timedelta(hours=4)
+        result = evaluate_acceptance(self.observed_state("simulation"), end, wall_now=end)
+        self.assertIn("simulation_is_not_live_acceptance", result["reasons"])
+
+    def test_future_clock_cannot_fake_four_elapsed_hours(self):
+        result = evaluate_acceptance(self.observed_state(), BASE + timedelta(hours=4), wall_now=BASE)
+        self.assertIn("four_real_wall_hours_not_observed", result["reasons"])
+        self.assertIn("observation_time_is_in_the_future", result["reasons"])
+
+    def test_owner_followup_or_material_gap_invalidates_acceptance(self):
+        end = BASE + timedelta(hours=4)
+        state = self.observed_state()
+        state["acceptance"]["owner_prompts"] = ["novedades?"]
+        state["material_events"] = state["material_events"][:3]
+        result = evaluate_acceptance(state, end, wall_now=end)
+        self.assertIn("owner_restart_or_followup_in_window", result["reasons"])
+        self.assertIn("material_progress_gap_exceeded_30m", result["reasons"])
+
+    def test_heartbeat_success_only_does_not_prove_acceptance(self):
+        end = BASE + timedelta(hours=4)
+        state = self.observed_state()
+        state["material_events"] = []
+        result = evaluate_acceptance(state, end, wall_now=end)
+        self.assertIn("durable_verified_mutation_not_observed", result["reasons"])
+        self.assertIn("real_failure_recovery_or_evidenced_blocker_not_observed", result["reasons"])
+        self.assertIn("automatic_independent_transition_not_observed", result["reasons"])
+
+
+if __name__ == "__main__":
+    unittest.main()

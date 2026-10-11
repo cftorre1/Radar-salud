@@ -45,3 +45,25 @@ ephemeral local usage counters cannot authorize concurrent paid calls.
 Next hypothesis: workers can retain directed, non-regressing candidate repairs
 while global QA is blocked; a separate candidate reviewer must consume the pinned
 candidate instead of silently returning to the old staging tree.
+
+## 3. Fenced leases, useful progress and bounded loops
+
+Decision: six concurrent executor families have atomic 10-minute task leases,
+60-second renewals, 3-minute missing-heartbeat detection and a 30-minute material
+stall limit. Heartbeats and pickup do not count as material progress. Approval
+revocation and relevant input changes fence old tokens. Unrelated staging commits
+do not cancel a live worker.
+
+Directed validation: `python -m unittest discover -s tests -p test_autonomy_engine.py -v`.
+35 tests passed, covering independent claims, lost tokens, expiry, STALLED while
+heartbeats continue, repeated/reordered blockers, globally repeated failures,
+explicit acceptance proof, scoped non-regression and real-clock Stage A checks.
+The four-hour evaluator test injects a clock; it is not live Stage A evidence.
+
+Only a durable verified mutation, a new evidenced blocker, a verified closure, or
+an actual independent task transition earns progress. Identical audits are capped
+at three; unchanged blocked tasks remain open without synthetic progress.
+
+Next hypothesis: hosted Actions can use the same lease/CAS contract and continue
+another family immediately after a PASS or blocker, with independent candidate
+review and explicit unresolved-task evidence.
