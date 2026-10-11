@@ -7,10 +7,15 @@ import json
 import os
 import re
 import subprocess
+import sys
 from html import unescape
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urljoin
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from radar_salud.global_discovery_common import USER_AGENT
 
 TARGETS = [
     ("who_robots", "https://www.who.int/robots.txt"),
@@ -30,9 +35,7 @@ TARGETS = [
     ("reuters_service_robots", "https://reutersagency.com/robots.txt"),
     ("reuters_service", "https://reutersagency.com/"),
 ]
-USER_AGENT = "AlicantoHealthDiscovery/1.0 (+https://github.com/cftorre1/Radar-salud; metadata research)"
-
-def run(output: Path) -> dict:
+def run(output: Path, extended: bool = False) -> dict:
     output.mkdir(parents=True, exist_ok=True)
     def probe(target):
         key, url = target
@@ -59,8 +62,26 @@ def run(output: Path) -> dict:
                 "ssl_verify_result": transport.get("ssl_verify_result"), "safe_headers": safe_headers,
                 "error": result.stderr[:500], "body_sha256": hashlib.sha256(raw).hexdigest(),
                 "body_bytes": len(raw), "body_file": body.name, "user_agent": USER_AGENT}
+    targets = [target for target in TARGETS if target[0] != "reuters_terms"]
+    if extended:
+        targets = [("who_robots", "https://www.who.int/robots.txt"), ("paho_robots", "https://www.paho.org/robots.txt")]
+        prior = Path("data/audits/global_source_recovery_2026_10_11/probes/38141320771")
+        for name in ("who_news", "who_publications", "who_emergencies"):
+            text = (prior / (name + ".body")).read_text()
+            match = re.search(r'hubsfiltering\([^,]+,\s*"[^"]+",\s*"([^"]+)"', text)
+            if not match:
+                raise ValueError("official API link not found")
+            targets.append((name + "_api", urljoin("https://www.who.int", match[1]) + "&$skip=0&$top=50"))
+        targets += [
+            ("who_detail", "https://www.who.int/news/item/09-10-2026-who-urges-shift-from-institutional-to-community-based-mental-health-care"),
+            ("paho_rss", "https://www.paho.org/en/rss.xml"),
+            ("paho_chile_filter", "https://www.paho.org/en/news?c%5B%5D=65"),
+            ("paho_terms", "https://www.paho.org/en/terms-and-conditions-use-site"),
+            ("reuters_service_license", "https://reutersagency.com/license-reuters-content/"),
+            ("reuters_service_api", "https://www.reutersagency.com/content-delivery-platforms/api-integrations/"),
+        ]
     with ThreadPoolExecutor(max_workers=3) as pool:
-        records = list(pool.map(probe, TARGETS))
+        records = list(pool.map(probe, targets))
     report = {"checked_at": datetime.now(timezone.utc).isoformat(),
               "run_id": os.environ.get("GITHUB_RUN_ID"), "head_sha": os.environ.get("GITHUB_SHA"),
               "reuters_journalism_requested": False, "records": records}
@@ -89,4 +110,6 @@ def run(output: Path) -> dict:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=Path("work/global-surface-probes"))
-    run(parser.parse_args().output)
+    parser.add_argument("--extended", action="store_true")
+    args = parser.parse_args()
+    run(args.output, args.extended)

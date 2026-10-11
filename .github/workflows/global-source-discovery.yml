@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Bounded official surface and licensing probes
-        run: python scripts/probe_global_sources.py
+        run: python scripts/probe_global_sources.py --extended
       - name: Persist only official listing and policy evidence to the isolated branch
         if: always()
         run: |
