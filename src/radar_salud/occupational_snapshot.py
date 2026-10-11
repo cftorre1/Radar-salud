@@ -94,9 +94,10 @@ def export_snapshot(root, reports, *, as_of):
             continue
         for row in report["rows"]:
             url = row["url"]
-            if url in accepted:
+            owned = current.get(url, (None,))[0] == slug and row.get("status") != "excluded_role"
+            if url in accepted and owned:
                 row["feed_state"] = "published"
-            elif url in rejected:
+            elif url in rejected and owned:
                 row.update(feed_state="deferred", feed_reason=rejected[url])
         report["feed_reconciliation"] = {
             "published": sum(r.get("feed_state") == "published" for r in report["rows"]),

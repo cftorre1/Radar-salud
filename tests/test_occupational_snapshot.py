@@ -95,6 +95,15 @@ def test_matching_queue_and_history_still_cannot_forge_the_inventory_role(tmp_pa
     assert json.loads((tmp_path / 'web/data/radar_today.json').read_text()) == original
 
 
+def test_multi_source_export_does_not_attribute_shared_urls_to_clinics(tmp_path):
+    reports, _, signal, _ = fixture(tmp_path)
+    reports['clinicas_achs_salud'] = {'rows':[{'url':signal['source_url'], 'status':'excluded_role',
+        'publication_date':signal['event_date'], 'market_role':'mutuality', 'alicanto_status':'excluded'}]}
+    assert export_snapshot(tmp_path,reports,as_of='2026-10-11')['published'] == 1
+    assert reports[SLUG]['feed_reconciliation']['published'] == 1
+    assert reports['clinicas_achs_salud']['feed_reconciliation']['published'] == 0
+
+
 def test_public_gate_preserves_existing_editorial_rejection():
     signal = {"title": "An actual operational change with adequate detail", "source_url": "https://ist.cl/news/",
               "event_date": "2026-10-10", "what_happened": "A concrete operational change with more than forty five characters.",
