@@ -1381,6 +1381,41 @@
       "artifact": "data/audits/integration_20261011/source-matrix.json",
       "review": "data/audits/integration_20261011/independent-reception-review.json",
       "scope": "staging only; per-source postmerge evidence; honest limits, no autonomy4h or production acceptance"
+    },
+    "global_official_discovery_qualification_2026_10_11": {
+      "kind": "github_actions",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38153425336",
+      "qa_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38156977778",
+      "result": "qualified_with_explicit_source_holds",
+      "scope": "Isolated official metadata discovery and 30/90 reconciliation. Does not certify daily recurrence, richer research UI, licensing, editorial publication, core promotion or production.",
+      "checks": [
+        "184 directed Python + 94 adversarial subcases",
+        "1178 deterministic Python PASS; 0 failures in Actions",
+        "43 Node",
+        "12 desktop/mobile",
+        "PASS independent raw audit",
+        "PASS zero-network replay"
+      ],
+      "validated_requirements": [],
+      "evidence": [
+        "data/audits/w4_who_2026_10_11.json",
+        "data/audits/w4_paho_2026_10_11.json",
+        "data/audits/w4_reuters_2026_10_11.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
+      ],
+      "fresh_capture_sha": "f7de051a645e21e293b6d1439341e508e5b0c403",
+      "tested_commit": "aee4ed3dff0c6cd900751e89a219548b261308a1",
+      "sha": "f7de051a645e21e293b6d1439341e508e5b0c403"
     }
   },
   "blocks": [
@@ -1543,15 +1578,16 @@
       "critical": true,
       "evidence": [
         "global_intelligence_lite_qa",
-        "mvp_product_refinements_global_editorial_qa"
+        "mvp_product_refinements_global_editorial_qa",
+        "global_official_discovery_qualification_2026_10_11"
       ],
       "dependencies": [
         "fuentes internacionales con acceso público",
         "separación Global Theme/Trend Chile"
       ],
       "missing": [
-        "Monitoreo recurrente de fuentes internacionales para operación continua.",
-        "Auth/pricing/pagos solo para etapa comercial; no bloquean Beta cerrada."
+        "Auth/pricing/pagos solo para etapa comercial; no bloquean Beta cerrada.",
+        "Daily source operation requires two complete fresh captures separated by 24h, core recovery/balance acceptance and remaining technical/rights holds. Isolated resume is not cadence proof."
       ],
       "requirements": [
         {
@@ -1568,7 +1604,19 @@
           "label": "Capa PREMIUM distinguible de Trend Chile",
           "status": "Implementado"
         }
-      ]
+      ],
+      "source_qualification": {
+        "branch": "codex/global-intelligence-recurrent-20261011",
+        "run_id": "38153425336",
+        "outcomes": {
+          "who": "READY_FOR_INTEGRATION",
+          "paho": "READY_FOR_INTEGRATION",
+          "reuters": "EXTERNAL_BLOCKER_PROVEN"
+        },
+        "source_activation": false,
+        "cadence_proven": false,
+        "new_cards": 0
+      }
     },
     {
       "id": "coverage",
@@ -2398,6 +2446,26 @@
       "evidence": [
         "public_sources_c_2026_10_11",
         "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Global source qualification on isolated branch: official discovery, dated archive reconciliation and rights blocker; Global block remains Implementado, not operationally validated or promoted.",
+      "evidence": [
+        "data/audits/w4_who_2026_10_11.json",
+        "data/audits/w4_paho_2026_10_11.json",
+        "data/audits/w4_reuters_2026_10_11.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
       ]
     }
   ],

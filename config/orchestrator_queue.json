@@ -4839,7 +4839,7 @@
     },
     {
       "id": "w4_who_2026_10_11",
-      "status": "in_progress",
+      "status": "blocked",
       "priority": "medium",
       "expansion_priority": "P1",
       "owner": "Global Intelligence + Source Engineering",
@@ -4871,18 +4871,35 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Implementar discovery desde WHO news-room y detalle; priorizar guías, emergencias, epidemiología y cambios de política.",
+      "next_action": "Run the isolated fresh workflow no earlier than 2026-10-12T16:07:31.827873+00:00; require complete coverage under the identical contract. Keep core recovery/balance, commercial rights and editorial gates; no production activation.",
       "evidence": [
         "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "config/source_expansion_backlog_2026_10_11.json",
+        "data/audits/w4_who_2026_10_11.json",
+        "docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
       ],
       "external_blockers": [],
-      "progress": "72 targeted contracts PASS. WHO429/RetryAfter3600 preserved; thread-safe persisted circuit prevents further pressure. PAHO official date[min]/date[max] alternative verified in Actions38146631942; dated inventory recovery follows; cadence and final QA remain pending.",
+      "progress": "READY_FOR_INTEGRATION; verified 30/90={'30': 84, '90': 241}; published 0. Evidence data/audits/global_source_recovery_2026_10_11/runs/38153425336; Reviewer PASS_SCOPED_WITH_OPERATIONAL_HOLDS. Cadence and core promotion not inferred from resume/replay.",
       "started_at": "2026-10-11T12:54:57.247296+00:00",
-      "last_progress_at": "2026-10-11T14:34:24.511063+00:00",
+      "last_progress_at": "2026-10-11T17:01:09.833937+00:00",
       "work_branch": "codex/global-intelligence-recurrent-20261011",
-      "current_subfront": "runtime_qualification_and_dated_archive_reconciliation",
-      "current_hypothesis": "Prove official HTTP/robots/publication evidence in isolated Actions; Reuters collection disabled until permitted route established."
+      "current_subfront": "isolated_source_qualification_complete_promotion_on_hold",
+      "current_hypothesis": "Metadata qualification is separate from approved Global cards and recurrent production acceptance.",
+      "technical_holds": [],
+      "pending_acceptance_gates": [
+        "Two complete fresh live runs at least 86400 seconds apart with identical coverage contract not yet proven; core activation dependencies unresolved."
+      ]
     },
     {
       "id": "w4_reuters_2026_10_11",
@@ -4918,33 +4935,46 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Accredit Reuters/LSEG service, prior written consent and authorized commercial metadata/reproduction scope through a secure channel; configure only the licensed route.",
+      "next_action": "Accredit written Reuters consent, service entitlement and licensed commercial use scope; only then configure contracted discovery. Keep editorial fallback without automated journalism/title/metadata requests.",
       "evidence": [
         "data/audits/source_expansion_matrix_2026_10_11.json",
         "config/source_expansion_backlog_2026_10_11.json",
         "data/audits/w4_reuters_2026_10_11.json",
         "config/global_discovery.json",
-        "docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md"
+        "docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
       ],
       "external_blockers": [
-        "Prior written Reuters consent and an entitled contracted delivery route are not configured/documented for Alicanto."
+        "Written Reuters permission and entitled delivery route not configured/documented."
       ],
-      "progress": "EXTERNAL_BLOCKER_PROVEN. Official robots200 prohibits automated data/information without prior written consent; contracted Agency/Connect/API evaluated. Eight manual references retained; inventory/recall unknown; no article requests.",
+      "progress": "EXTERNAL_BLOCKER_PROVEN; verified 30/90={'30': None, '90': None}; published 0. Evidence data/audits/global_source_recovery_2026_10_11/runs/38153425336; Reviewer PASS_SCOPED_WITH_OPERATIONAL_HOLDS. Cadence and core promotion not inferred from resume/replay.",
       "started_at": "2026-10-11T12:54:57.247296+00:00",
-      "last_progress_at": "2026-10-11T14:34:24.511063+00:00",
+      "last_progress_at": "2026-10-11T17:01:09.833937+00:00",
       "work_branch": "codex/global-intelligence-recurrent-20261011",
-      "current_subfront": "permitted_access_and_rights_blocker_proven",
-      "current_hypothesis": "No automated Reuters journalism/title/metadata collection without written consent."
+      "current_subfront": "isolated_source_qualification_complete_promotion_on_hold",
+      "current_hypothesis": "Metadata qualification is separate from approved Global cards and recurrent production acceptance.",
+      "technical_holds": [],
+      "pending_acceptance_gates": []
     },
     {
       "id": "w4_paho_2026_10_11",
-      "status": "in_progress",
+      "status": "blocked",
       "priority": "medium",
       "expansion_priority": "P1",
       "owner": "Epidemiology Intelligence + Source Engineering",
       "source": "Usuario Work 4 / issue #5 / matriz data/audits/source_expansion_matrix_2026_10_11.json",
       "parent_task_id": "source_audit_issue5_iteration5_expansion_2026_10_09",
-      "objective": "OPS: resolver acceso público a vigilancia regional. No hay referencias OPS en themes.json ni conector; sí material reciente indexado, con 403 al abrir en esta auditoría.",
+      "objective": "OPS recurrente oficial: recuperar noticias Chile/Américas, alertas e informes técnicos; dated archive qualification supersedes the historical executor 403 diagnosis.",
       "depends_on": [],
       "activation_dependencies": [
         "source_audit_issue5_iteration1_recovery_2026_10_09",
@@ -4970,20 +5000,36 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Probar rutas oficiales públicas documentadas de informes técnicos/influenza y repositorio alternativo oficial; registrar HTTP, fecha y límites.",
+      "next_action": "Run a first complete fresh isolated capture under coverage contract4, then a second complete fresh capture with a distinct run ID at least 86400 seconds later. Captured-byte coverage qualification is not a fresh cadence anchor. Keep core, rights and editorial activation gates.",
       "evidence": [
         "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "config/source_expansion_backlog_2026_10_11.json",
+        "data/audits/w4_paho_2026_10_11.json",
+        "docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
       ],
-      "external_blockers": [
-        "403 en listado y PDF desde entorno de consulta."
-      ],
-      "progress": "72 targeted contracts PASS. WHO429/RetryAfter3600 preserved; thread-safe persisted circuit prevents further pressure. PAHO official date[min]/date[max] alternative verified in Actions38146631942; dated inventory recovery follows; cadence and final QA remain pending.",
+      "external_blockers": [],
+      "progress": "READY_FOR_INTEGRATION; verified 30/90={'30': 185, '90': 530}; published 0. Evidence data/audits/global_source_recovery_2026_10_11/runs/38153425336; Reviewer PASS_SCOPED_WITH_OPERATIONAL_HOLDS. Cadence and core promotion not inferred from resume/replay.",
       "started_at": "2026-10-11T12:54:57.247296+00:00",
-      "last_progress_at": "2026-10-11T14:34:24.511063+00:00",
+      "last_progress_at": "2026-10-11T17:01:09.833937+00:00",
       "work_branch": "codex/global-intelligence-recurrent-20261011",
-      "current_subfront": "runtime_qualification_and_dated_archive_reconciliation",
-      "current_hypothesis": "Prove official HTTP/robots/publication evidence in isolated Actions; Reuters collection disabled until permitted route established."
+      "current_subfront": "isolated_source_qualification_complete_promotion_on_hold",
+      "current_hypothesis": "Metadata qualification is separate from approved Global cards and recurrent production acceptance.",
+      "technical_holds": [],
+      "pending_acceptance_gates": [
+        "First complete truly fresh capture under coverage contract4 is pending; captured-byte qualification is not a cadence anchor.",
+        "Two complete fresh live runs at least 86400 seconds apart with identical coverage contract not yet proven; core activation dependencies unresolved."
+      ]
     },
     {
       "id": "w4_legal_2026_10_11",

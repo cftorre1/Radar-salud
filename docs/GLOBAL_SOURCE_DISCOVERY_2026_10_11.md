@@ -1,151 +1,190 @@
 # Discovery oficial de Global Intelligence
 
-Rama `codex/global-intelligence-recurrent-20261011`, basada en staging `4ff51cf`.
-Calificación aislada; ninguna integración, merge, publicación ni despliegue en staging,
-main o producción. Los 14 temas curados y su exportación permanecen intactos.
+Rama `codex/global-intelligence-recurrent-20261011`, basada originalmente en staging `4ff51cf` e integrada con `bc723e0` en la rama aislada.
+Calificación aislada. Sin merge, activación, publicación o despliegue en staging,
+main o producción. Los 14 temas curados y su exportación permanecen idénticos en bytes.
 
 ## Resultado y reconciliación
 
-Ventanas de días calendario inclusivas, con corte local Chile 2026-10-11:
+Corte Chile 2026-10-11, ventanas de días calendario inclusivas:
 30 días = 2026-09-12–2026-10-11; 90 días = 2026-07-14–2026-10-11.
-El día 31/91 no se incluye. Captura, evento, vigencia, período del informe y
-publicación son campos distintos.
+Fecha de publicación, captura, evento, vigencia y período estadístico son campos distintos.
 
-| Fuente | Detalles verificados 30 / 90 | Control nativo observado 90 | Resultado |
+| Fuente | Detalles únicos verificados 30 / 90 | Control nativo observado 90 | Outcome |
 | --- | --- | --- | --- |
-| WHO | 84 / 241 | 241 URLs, 241 detectadas, 0 omitidas | READY_FOR_INTEGRATION, cadencia pendiente |
-| PAHO | 139 / 172 contenidos únicos | 206 URLs de idioma, 206 detectadas, 0 omitidas | IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS |
-| Reuters | No medible sin ruta autorizada | 8 referencias preexistentes curadas; no universo periodístico | EXTERNAL_BLOCKER_PROVEN por acceso/derechos |
+| WHO | 84 / 241 | 241 URLs, 241 detectadas, 0 omitidas | READY_FOR_INTEGRATION |
+| PAHO | 185 / 530 | 673 URLs, 673 detectadas, 0 omitidas | READY_FOR_INTEGRATION |
+| Reuters | No medible sin ruta autorizada | 8 referencias curadas preexistentes; no universo periodístico | EXTERNAL_BLOCKER_PROVEN por permiso/licencia |
 
-Los números corresponden al [runtime 2](https://github.com/cftorre1/Radar-salud/actions/runs/38144109753).
-El JSON de cada ejecución es la autoridad del corte; contiene inventario, fechas
-originales, secciones, clasificación, estado, motivos, entidades y procedencia.
-El CSV es una proyección para revisión. El baseline tenía WHO 2 referencias de
-junio fuera de 90 días, PAHO 0 y Reuters 8; no tenía recolector periódico ni health
-de estas fuentes. El nuevo circuito recuperó discovery, no tarjetas publicadas.
+Evidencia de corte: [runtime 38153425336](https://github.com/cftorre1/Radar-salud/actions/runs/38153425336),
+`data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json` y capture_manifest originales. La metadata final está en
+`data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json` y `data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.csv`; conserva el origen de cada campo. Cada fila conserva URL, título,
+fecha original, sección, tipo/materialidad candidata, estado, motivo, entidades y receipts.
+WHO indexado 30/90: 84/241 identidades; PAHO indexado: 185/530 identidades tras unir traducciones.
+WHO candidatos materiales verificados en 90 días: 148, rechazado 4, diferido 237;
+PAHO candidatos materiales verificados en 90 días: 229, rechazado 14, diferido 516.
+Los conteos verificados excluyen detalles inaccesibles y fechas no acreditadas.
 
-Recall se mide con un segundo lector de los índices oficiales, independiente del
-DOM del collector, comparando conjuntos de URLs antes de deduplicar idiomas.
-Es recall de las superficies declaradas/capturadas, no de toda la producción del
-publisher. El denominador de artículos históricos ausentes del índice es desconocido.
-La salud distingue conteos indexados, detalles verificados, ventanas 30/90,
-URLs por idioma, materialidad candidata, diferidos, rechazos, errores y páginas.
-`new` es delta de identidades contra la ejecución anterior, sin inferir LIVE Chile.
+El baseline tenía WHO dos referencias de junio fuera de 90 días, PAHO cero y Reuters
+ocho. La recuperación de PAHO frente al archivo sin filtro añadió 358 identidades,
+46 dentro de 30 días y 152 potencialmente materiales. WHO recuperó la verificación
+de 63 detalles que habían recibido 429; las identidades ya estaban indexadas.
+
+El baseline no tenía discovery recurrente para estas fuentes. Se recupera descubrimiento
+de candidatos, sin atribuirles publicación o impacto empresarial probado. `new` mide
+identidades ausentes del inventario anterior; no implica una señal LIVE chilena.
+
+El denominador de recall viene de un segundo lector independiente de los índices
+oficiales, antes de unir idiomas. Se mide recall de superficies declaradas/capturadas,
+no toda la producción del publisher. Un recall observado de 1.0 no resuelve un archivo
+truncado, una fecha contradictoria o un detalle bloqueado. Ambas ventanas quedan completas para las superficies declaradas WHO y PAHO.
 
 ## WHO
 
-Tres superficies oficiales: noticias, publicaciones y Disease Outbreak News.
-Las páginas oficiales declaran APIs Sitefinity públicas; el collector deriva esos
-endpoints del HTML vigente y pagina con `$top`/`$skip` hasta superar la ventana.
-Las siete páginas de runtime 2 alcanzaron límites ordenados anteriores a 90 días.
-No se requiere API key ni login. El RSS candidato `/rss-feeds` devolvió 404 y no
-se usa para fingir continuidad.
+Noticias, publicaciones y Disease Outbreak News, con APIs Sitefinity públicas
+derivadas del HTML oficial vigente. Paginación `$top`/`$skip` hasta límites anteriores
+a 90 días. No API key/login. El candidato RSS `/rss-feeds` respondió 404.
+PublicationDateAndTime y FormatedDate/FormattedDate deben concordar. DON619 publicado
+08/10 conserva el inicio de evento 14/05 separado. DON620 tiene URL/canonical/fecha
+10/10 concordantes; sólo se admite la variación del artículo inglés en el sufijo
+"the Russian Federation", sin relajar equivalencia general de titulares.
 
-PublicationDateAndTime y FormatedDate/FormattedDate deben concordar. DON619
-publicado 08/10 conserva inicio de evento 14/05 en otro campo. DON620 fue
-rechazado en runtime 1 por título; el diagnóstico vivo corroboró misma URL,
-canon y fecha 10/10, con la única variación del artículo inglés en “the Russian
-Federation”. La compatibilidad se limita a ese sufijo de DON, sin equivalencia
-general de titulares.
+El runtime 38145510005 recibió 63 respuestas 429 en detalles. El primer Retry-After
+3600, observado 2026-10-11T14:02:51.835710Z, impuso cooldown hasta 15:02:51.835710Z.
+Ese collector anterior continuó solicitudes: se corrigió con bloqueo serial,
+circuito persistente por origen y pruebas de cola/redirect. El collector vigente
+se detiene en el primer 429, conserva su evidencia y continúa otro publisher.
+No rota identidad/IP, no reintenta dentro del plazo y no evade WAF. El resultado
+actual conserva 0 fallos técnicos y checked_at
+`2026-10-11T16:07:31.827873+00:00`; la salud no borra una degradación por haber respondido el índice.
 
-WHO/PAHO comparten grupo institucional `WHO_UN_SYSTEM`; dos referencias entre
-ellas no prueban corroboración independiente. La política WHO CC BY-NC-SA 3.0 IGO
-requiere permiso para reproducción comercial: este circuito conserva metadata
-y enlaces y exige revisión de derechos antes de preparar material publicable.
-El fixture público de detalle retiene sólo H1/fecha/canonical; los cuerpos originales
-son capturas de QA, no contenido del producto.
+WHO/PAHO comparten `WHO_UN_SYSTEM`: no son corroboración independiente entre sí.
+La licencia WHO CC BY-NC-SA 3.0 IGO requiere permiso para reproducción comercial.
+Sólo metadata/enlaces en el producto; derechos/editorial son gates previos a cualquier publicación.
+Los fixtures públicos de detalle contienen sólo H1/fecha/canonical. Cuerpos originales
+son evidencia de runtime, sin reproducción en el producto.
 
 ## PAHO
 
-Noticias regionales EN/ES, filtros oficiales Chile `c[]=65` EN/ES, alertas
-epidemiológicas y documentos técnicos en español. La ficha técnica de influenza
-de semana epidemiológica 37 tiene publicación 25/09: la semana no sustituye la
-fecha y su año permanece desconocido cuando el título no lo acredita.
+Seis superficies: noticias regionales EN/ES, Chile EN/ES `c[]=65`, alertas
+epidemiológicas y documentos técnicos ES. La ficha influenza semana 37 publicada
+25/09 conserva el período separado y no infiere año del período a partir de captura.
+El filtro Chile es ámbito taxonómico, sin inventar consecuencia local.
+Traducciones sólo se unen mediante enlaces recíprocos oficiales; conservan todos
+los títulos, URLs, fechas y receipts. Conflictos de fechas quedan pendientes.
+Las reglas de ruido/materialidad normalizan español con acentos; prioridad de
+discovery no equivale a score editorial ni aprobación de publicación. La selección
+bilingüe usa la prioridad máxima de títulos oficiales verificados, conserva la
+clasificación de cada miembro y deja conflictos candidate/routine pendientes.
+Los miembros sin detalle o con fechas conflictivas no elevan prioridad.
 
-Las traducciones se unen sólo cuando ambas páginas declaran enlaces recíprocos
-de idioma. Se conservan todos los títulos, URLs, fechas y capturas. Fechas
-discordantes dejan el grupo pendiente. El filtro Chile es ámbito taxonómico,
-sin inventar un efecto local. El idioma español tiene reglas propias de ruido y
-materialidad; el rango numérico es prioridad de discovery, no score editorial.
+El archivo sin filtro anuncia page8, devuelve filas distintas en page9 y repite
+page9 en page10 antes de alcanzar julio. No acredita cobertura 30/90.
+Se encontró el formulario GET público `date[min]`/`date[max]`, comprobado vivo en
+diagnóstico 38146631942. El collector recorre intervalos de siete días, verifica
+el eco del formulario y fechas editoriales de cada fila, solapa un día para límites
+de medianoche y divide intervalos saturados. Prueba el parámetro de página observado
+más allá del fin nativo observado. El cierre exige vista/formulario cerrados,
+fechas comprobadas y un probe vacío posterior. Para paginadores numerados exige
+nav/ul/li anidados, páginas contiguas, único activo con aria-current, todos los enlaces
+ligados al mismo origen/path/rango y último índice menor que ocho; el cap en cualquier
+página anterior fuerza subdivisión. Una repetición permanece incompleta.
+La captura fresca retuvo el paginador terminal en la página posterior vacía:
+23 particiones quedaron sin calificar en el inventario original. El HTML real
+usa h4.visually-hidden#pagination-heading; fixtures EN/ES conservan su árbol
+y los hashes originales. La calificación
+separada exige GET n+1, finalURL idéntica, paginador íntegro/clamped n<8 idéntico
+al anterior positivo, mismo rango/formulario, cero tarjetas/fechas/metadatos de
+publicación, ningún otro paginador/control y texto sólo de formulario/nav.
+El auditor independiente verifica cada condición sobre bytes guardados.
+Preserva recibos y fechas de todas las observaciones; cualquier
+contradicción deja fecha pendiente. Particiones sin visitar o que alcanzan el límite
+de páginas quedan explícitamente incompletas. Nunca toma el rango solicitado como
+fecha de publicación ni considera cero contenidos cuando no hay evidencia.
 
-La navegación anuncia page8 como última. Pruebas HTTP200 muestran page9 con
-noticias distintas (CMS 01–09/09) y page10 repitiendo page9. El collector prueba
-el parámetro público observado dentro del límite de páginas y declara brecha
-cuando se repite antes de llegar a julio. Los archivos Chile, alertas y técnicos
-sí alcanzan límites anteriores a 90 días. La ventana regional de 90 sigue siendo
-un límite inferior; no se certifica completitud histórica.
-
-Fallos históricos 403 de Work4 no se mantienen como blocker HTTP actual:
-las seis superficies y los detalles respondieron en Actions con TLS verificado.
-Fallbacks evaluados: RSS oficial devuelve diez entradas recientes (30/09–09/10),
-insuficientes para 90 días; once sitemaps oficiales HTTP200 sin URLs periodísticas
-con indicios de fechas de la ventana actual, con muestras antiguas 2014–2024.
-`lastmod` del sitemap nunca se interpreta como publicación. La búsqueda pública
-está excluida por robots y no se consulta. Estas rutas no resuelven el histórico
-faltante. Siguiente acción: archivo/export oficial PAHO con fechas editoriales o
-aclaración del proveedor sobre el truncamiento; no extrapolar cero contenidos.
+Los 403 históricos de Work4/executor no sustentan un blocker HTTP del publisher:
+Actions recibió contenido real con TLS verificado. Fallbacks evaluados: RSS oficial
+de diez entradas recientes insuficiente para 90 días; once sitemaps con 20.013 URLs
+principalmente antiguas y sin indicios periodísticos actuales; `lastmod` no es fecha
+de publicación. El footer enlaza el repositorio oficial `iris.paho.org`, HTTP200,
+sin API/fechas de noticias en su landing; no reemplaza la reconciliación del newsroom.
+La búsqueda está excluida por robots y no se solicita.
 
 ## Reuters y fallback editorial
 
-Robots HTTP200 dice: “Collection of content, data and/or information ... through
-automated means is prohibited unless you have prior written consent from Reuters”.
-El wildcard declara `Disallow: /`. Abarca títulos y metadata; un sitemap listado
-no concede autorización. No se consultaron noticias, archivos ni sitemaps Reuters.
-El bloqueo del executor no se usa como fundamento de este veredicto.
+Robots HTTP200 prohíbe colección automatizada de contenido, datos o información
+sin consentimiento escrito previo de Reuters; wildcard `Disallow: /`. Abarca títulos
+y metadata. No se consultaron periodismo, archivos, feeds ni sitemaps Reuters.
+El CONNECT403 del executor no fundamenta el bloqueo. Las páginas oficiales Reuters
+Agency/Connect/API describen contratación/licencia; no conceden ruta abierta para
+Alicanto. Los términos del portal respondieron 401, como evidencia adicional.
+No hay entitlement/ruta configurada o documentada en repo/entorno; no se afirma
+ausencia de contratos fuera de estos registros. Desbloqueo: acreditar servicio,
+consentimiento y alcance comercial; credenciales por canal seguro, nunca en logs.
 
-Las páginas de servicio/licencia Reuters Agency y entrega Reuters Connect/API
-fueron evaluadas: presentan contratación y solicitud de licencia, sin una ruta
-abierta que otorgue permiso de automatización para Alicanto. Los términos del
-portal principal respondieron 401; ese resultado no reemplaza la política explícita.
-No hay entitlement o ruta configurada/documentada en repo/entorno. No se afirma
-que Alicanto carezca de todo contrato fuera de estos registros. Para desbloquear
-se requiere acreditar servicio, autorización escrita y alcance de uso; las
-credenciales se gestionan por canal seguro, sin incluirlas en evidencia o logs.
+Fallback editorial: un editor aporta manualmente enlace y descripción original
+apoyada por fuentes primarias independientes verificadas. Sin fetch de Reuters ni
+extracción automática de títulos, metadata, cuerpo o citas. Revisión de derechos
+y editorial obligatoria. Las ocho referencias curadas no son un inventario ni recall.
+`data/audits/w4_reuters_2026_10_11.json` contiene policy y rutas evaluadas.
 
-Fallback: un editor puede aportar manualmente un enlace y una descripción original
-apoyada por fuentes primarias independientes verificadas. No fetch de Reuters,
-extracción automática de título/metadata, cuerpo, citas o reproducción. La referencia
-queda en revisión de derechos/editorial. Las ocho referencias curadas no son un
-inventario real ni un denominador de recall y se conservan sin ampliarlas.
+## Frecuencia e integración
 
-## Frecuencia, integración y publicación
+El hook candidato Global corre después de core, con `always`, límite de 50 minutos y sin
+clave AI; checkpoint incluso si core falla. Sólo actualiza sus tres filas de source health,
+sin alterar cobertura LIVE Chile. El job permite 95 minutos; la frecuencia existente es
+días hábiles a las 09:30 UTC. Este hook no se ejecutó en staging y no activa fuentes en producción.
+La calificación aislada tiene ramas de escritura restringidas y cero modelos pagados.
 
-El candidato agrega discovery independiente al workflow diario existente, antes
-de tests core, con timeout de seis minutos y sin clave AI. Sus resultados se
-checkpointan incluso si falla core; la salud Global se remira tras los exports
-core. El piloto existente corre días hábiles a 09:30 UTC. Este hook está sólo en
-la rama candidata y no se ejecutó sobre staging. El workflow aislado sólo puede
-escribir esta rama, no despliega y no usa modelos de pago.
+Cadencia probada requiere dos capturas live **completas y frescas**, IDs distintos,
+contrato idéntico y al menos 86.400 segundos. Ledger registra modo/reutilización;
+legacy sin esos campos, resume de campaña y replay no prueban cadencia. Reutilizar
+bytes exige identidad/hash/TLS/UA y edad máxima de una hora al cargar y usar contenido.
+Los timestamps originales se conservan; una ejecución nueva no rejuvenece la evidencia.
+WHO/PAHO recurrent_operation_proven siguen falsos hasta satisfacer esa prueba.
+WHO conserva su anchor fresco bajo contrato 2. PAHO cambió a contrato 4: la proyección
+no cuenta como primera captura fresca completa. Requiere una primera live completa
+bajo contrato 4 y después otra distinta al menos 24 h más tarde; el timestamp next_cadence
+no garantiza aceptación. Las dependencias core recuperación/balance continúan
+preservadas y no aceptadas aquí.
 
-El ledger exige dos capturas live completas de IDs distintos y contrato de cobertura
-idéntico, separadas al menos 86400 segundos para declarar cadencia probada. Los runs
-de contratos anteriores no se reutilizan para certificar superficies nuevas. Ejecuciones contiguas y replay
-no satisfacen ese criterio; las ejecuciones iniciales no permiten afirmar operación
-diaria. El health declara checked_at real y el momento mínimo para la próxima
-validación. Las dependencias de recuperación/balance core siguen preservadas y
-la exposición/publicación permanece desactivada.
+Default de 30 días, máximo 10 temas por materialidad, sin cuota. Cero nuevas tarjetas:
+discovery no incluye análisis sustantivo aprobado; todos los candidatos requieren
+consecuencia empresarial acreditada, corroboración independiente, derechos y aprobación
+editorial. El exporter sólo exporta la colección aprobada. Hipótesis Chile permanece
+separada de hechos globales y de señales chilenas.
 
-Se entregan hasta diez temas candidatos de 30 días ordenados por materialidad,
-sin cuota. Todos requieren consecuencia empresarial verificada, corroboración
-independiente, derechos y aprobación editorial. La aplicación conserva el default
-30 y máximo 10. El exporter existente sólo exporta la colección aprobada, nunca
-el inventario de discovery. Cero nuevas tarjetas es el resultado correcto de esta
-calificación: aún no existen análisis sustantivos aprobados para estos candidatos.
-Los temas globales y sus hipótesis Chile no se convierten en señales chilenas.
+## QA y evidencia durable
 
-## Evidencia y QA
+Manifest: URL inicial/final, redirects, HTTP, headers seguros, hash/bytes, UA y TLS.
+Cada redirect verifica robots/cooldown del destino. No cookies, Authorization,
+credenciales o cuerpos periodísticos Reuters. Fechas inválidas, futuras, contradictorias
+o desconocidas quedan pendientes; `dateModified` no rejuvenece publicación.
 
-`data/audits/global_source_recovery_2026_10_11/` conserva baseline, probes HTTP/TLS,
-políticas, diagnósticos de títulos/pagers/sitemaps y runs JSON/CSV/manifest/replay.
-Los manifests contienen hash, bytes, URL inicial/final, redirects, headers seguros,
-User-Agent y TLS; no cookies, Authorization, credenciales o cuerpos de Reuters.
-Cada redirect verifica el robots de destino. Fechas futuras, inválidas, contradictorias
-o desconocidas quedan pendientes; `dateModified` no rejuvenece una publicación.
+QA dirigida 184 PASS + 94 subcasos; Python determinístico
+1178 PASS y 0 fallos en Actions sobre el candidato integrado con `bc723e08200ada1cfb0146c6ce6da0d6f1ad11af`;
+Node 43 PASS; Global desktop/mobile
+12 PASS. La suite excluye el runtime vivo beta ajeno.
+El fallo histórico de Normativa fue corregido upstream. Los dos fallos locales de hashes del PDF de IST se reprodujeron aisladamente con
+test/audit/PDF idénticos a bc723e0 y pypdf6.10. En Actions la suite completa pasa;
+no se afirman fallos allí. No hay regresiones de Global ni cambios a ese frente.
+Los cuatro fallos browser del baseline incluyen el supuesto de inclusión en el
+teaser de diez temas y encabezados research ausentes del renderer Lite intacto.
+Se verifica el comportamiento real de lectura/filtros/fuentes/hechos/hipótesis y el
+grupo Global separado de cobertura Chile. No se certifica una UI research más amplia.
 
-El replay usa raíz temporal y verifica cero requests, cero AI/publicaciones,
-igualdad de inventario/control/selección y hashes intactos de nueve proyecciones
-canónicas. QA dirigida, determinística completa, Node y browser Global desktop/mobile
-quedan en los checkpoints de ejecución. El único fallo heredado reproducido en
-staging `4ff51cf` exige doce actos normativos visibles cuando el snapshot tiene once;
-tests/exporter/snapshot de ese frente permanecen byteidénticos. No se altera el
-stock normativo para hacer pasar esta misión Global.
+Replay PASS, cero red/AI/publicaciones y diez hashes canónicos intactos;
+auditor independiente de bytes PASS, sin imports
+del collector ni red, verifica índice/control, detalles, alias, fechas, particiones,
+HTTP/TLS/robots/redirect/hash. Reviewer: `PASS_SCOPED_WITH_OPERATIONAL_HOLDS` con límites operacionales
+explícitos. Evidencia `data/audits/global_source_recovery_2026_10_11/runs/38153425336/` y `reviewer_final.json`; outcomes por fuente en
+`data/audits/w4_who_2026_10_11.json`, `w4_paho_2026_10_11.json`, `w4_reuters_2026_10_11.json`.
+La recalificación posterior usa cero red, modo `projection_replay`,
+inventario original y ledger intactos, y reporte before/after en
+`data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json`. La calificación
+final de cobertura está en `data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json`
+y su report.json, sin cambiar identidades/fechas/counts; preserva también la QA
+de metadata en `data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_qa/38155456354/`. No prueba otra
+captura ni cadencia. QA final: [run 38156977778](https://github.com/cftorre1/Radar-salud/actions/runs/38156977778);
+la calificación fresca original conserva sus cuatro reportes en `data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/`.
+Queue sólo actualiza esas tres tareas. PMO conserva Global Implementado, sin promoción.
