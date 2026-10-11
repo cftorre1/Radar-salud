@@ -1,330 +1,330 @@
-qa / tests	UNKNOWN STEP	﻿2026-10-11T02:48:13.4349817Z Current runner version: '2.337.0'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4374883Z ##[group]Runner Image Provisioner
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4375791Z Hosted Compute Agent
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4376542Z Version: 20261002.596
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4377205Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4377976Z Build Date: 2026-10-02T22:28:27Z
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4378692Z Worker ID: {82d6ca25-de7c-406a-a7a4-8627d9b7f4e5}
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4379415Z Region: westus
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4380053Z Cloud: Azure
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4380991Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4382774Z ##[group]Operating System
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4383470Z Ubuntu
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4384046Z 24.04.5
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4384619Z LTS
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4385149Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4385702Z ##[group]Runner Image
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4386380Z Image: ubuntu-24.04
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4386966Z Version: 20261004.327.1
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4388322Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261004.327/images/ubuntu/Ubuntu2404-Readme.md
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4389893Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261004.327
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4391479Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4392688Z ##[group]GITHUB_TOKEN Permissions
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4394906Z Contents: read
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4395532Z Metadata: read
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4396537Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4398587Z Secret source: Actions
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4399694Z Cache mode: write
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4400681Z Prepare workflow directory
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4755490Z Prepare all required actions
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.4829341Z Getting action download info
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.8259579Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:13.9558554Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.0310956Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.2247130Z Uses: cftorre1/Radar-salud/.github/workflows/qa.yml@refs/heads/staging (4fa7ddb50e03e749b68d85bf98b1fe9b8c15542f)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.2251862Z Complete job name: qa / tests
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3029600Z ##[group]Run actions/checkout@v4
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3030702Z with:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3031190Z   repository: cftorre1/Radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3034934Z   token: ***
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3035393Z   ssh-strict: true
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3035847Z   ssh-user: git
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3036303Z   persist-credentials: true
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3036810Z   clean: true
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3037267Z   sparse-checkout-cone-mode: true
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3037803Z   fetch-depth: 1
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3038244Z   fetch-tags: false
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3038698Z   show-progress: true
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3039160Z   lfs: false
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3039582Z   submodules: false
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3040036Z   set-safe-directory: true
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3040950Z   allow-unsafe-pr-checkout: false
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.3041859Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4076592Z Syncing repository: cftorre1/Radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4079124Z ##[group]Getting Git version info
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4080647Z Working directory is '/home/runner/work/Radar-salud/Radar-salud'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4082369Z [command]/usr/bin/git version
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4165989Z git version 2.55.0
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4188385Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4203598Z Temporarily overriding HOME='/home/runner/work/_temp/cefce338-bc73-48c7-9693-b652051ecb9a' before making global git config changes
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4206241Z Adding repository directory to the temporary git global config as a safe directory
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4210218Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Radar-salud/Radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4268622Z Deleting the contents of '/home/runner/work/Radar-salud/Radar-salud'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4274295Z ##[group]Initializing the repository
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4277967Z [command]/usr/bin/git init /home/runner/work/Radar-salud/Radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4383784Z hint: Using 'master' as the name for the initial branch. This default branch name
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4385431Z hint: will change to "main" in Git 3.0. To configure the initial branch name
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4387116Z hint: to use in all of your new repositories, which will suppress this warning,
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4388500Z hint: call:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4389616Z hint:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4390867Z hint: 	git config --global init.defaultBranch <name>
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4392081Z hint:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4393214Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4394983Z hint: 'development'. The just-created branch can be renamed via this command:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4396452Z hint:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4397234Z hint: 	git branch -m <name>
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4398078Z hint:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4399172Z hint: Disable this message with "git config set advice.defaultBranchName false"
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4401477Z Initialized empty Git repository in /home/runner/work/Radar-salud/Radar-salud/.git/
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4404550Z [command]/usr/bin/git remote add origin https://github.com/cftorre1/Radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4451693Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4453062Z ##[group]Disabling automatic garbage collection
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4456329Z [command]/usr/bin/git config --local gc.auto 0
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4488885Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4490308Z ##[group]Setting up auth
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4497348Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4531099Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4892610Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.4934665Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.5194416Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.5233181Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.5483154Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.5526030Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.5527560Z ##[group]Fetching the repository
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:14.5539860Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +4fa7ddb50e03e749b68d85bf98b1fe9b8c15542f:refs/remotes/origin/staging
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.6406990Z From https://github.com/cftorre1/Radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.6408422Z  * [new ref]         4fa7ddb50e03e749b68d85bf98b1fe9b8c15542f -> origin/staging
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.6412790Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.6414329Z ##[group]Determining the checkout info
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.6417487Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.6419794Z [command]/usr/bin/git sparse-checkout disable
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.6474812Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.6521328Z ##[group]Checking out the ref
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.6522893Z [command]/usr/bin/git checkout --progress --force -B staging refs/remotes/origin/staging
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7089751Z Switched to a new branch 'staging'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7094156Z branch 'staging' set up to track 'origin/staging'.
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7102682Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7145085Z [command]/usr/bin/git log -1 --format=%H
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7172585Z 4fa7ddb50e03e749b68d85bf98b1fe9b8c15542f
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7565027Z ##[group]Run actions/setup-python@v5
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7566467Z with:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7567705Z   python-version: 3.11
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7568889Z   check-latest: false
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7579476Z   token: ***
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7580716Z   update-environment: true
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7581990Z   allow-prereleases: false
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7583231Z   freethreaded: false
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.7584351Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.8986664Z ##[group]Installed versions
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9128635Z (node:2297) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9132932Z (Use `node --trace-deprecation ...` to show where the warning was created)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9135773Z Successfully set up CPython (3.11.17)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9138876Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9368677Z ##[group]Run pip install -e . pytest
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9370867Z ^[[36;1mpip install -e . pytest^[[0m
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9802428Z shell: /usr/bin/bash -e {0}
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9803614Z env:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9804778Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9806656Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9808457Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9810055Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9811982Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9813626Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:15.9815021Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:18.7424092Z Obtaining file:///home/runner/work/Radar-salud/Radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:18.7437904Z   Installing build dependencies: started
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:19.6381775Z   Installing build dependencies: finished with status 'done'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:19.6387445Z   Checking if build backend supports build_editable: started
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:19.9786061Z   Checking if build backend supports build_editable: finished with status 'done'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:19.9794560Z   Getting requirements to build editable: started
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.2885942Z   Getting requirements to build editable: finished with status 'done'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.2894714Z   Preparing editable metadata (pyproject.toml): started
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.4581462Z   Preparing editable metadata (pyproject.toml): finished with status 'done'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.5514113Z Collecting pytest
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.5984398Z   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.6201631Z Collecting pypdf>=5.0.0 (from radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.6239504Z   Downloading pypdf-6.20.0-py3-none-any.whl.metadata (7.6 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.6419279Z Collecting openpyxl>=3.1.0 (from radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.6459792Z   Downloading openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.9068723Z Collecting openai>=1.0.0 (from radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.9105065Z   Downloading openai-3.28.0-py3-none-any.whl.metadata (44 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.9292688Z Collecting iniconfig>=1.0.1 (from pytest)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.9328903Z   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.9465040Z Collecting packaging>=22 (from pytest)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.9498819Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.9619277Z Collecting pluggy<2,>=1.5 (from pytest)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.9656104Z   Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.9834066Z Collecting pygments>=2.7.2 (from pytest)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:20.9869846Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.0053703Z Collecting anyio<5,>=4.10.0 (from openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.0101886Z   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.0210957Z Collecting httpx2<3,>=2.12.0 (from openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.0278724Z   Downloading httpx2-2.13.1-py3-none-any.whl.metadata (9.8 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.1108698Z Collecting jiter<1,>=0.16.0 (from openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.1144370Z   Downloading jiter-0.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.2111571Z Collecting pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13 (from openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.2144283Z   Downloading pydantic-2.14.0-py3-none-any.whl.metadata (131 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.2319498Z Collecting sniffio (from openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.2364980Z   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.2585511Z Collecting typing-extensions<5,>=4.14 (from openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.2627005Z   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.2764172Z Collecting idna>=2.8 (from anyio<5,>=4.10.0->openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.2798775Z   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.2941857Z Collecting httpcore2==2.13.1 (from httpx2<3,>=2.12.0->openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.2997757Z   Downloading httpcore2-2.13.1-py3-none-any.whl.metadata (26 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.3121271Z Collecting truststore>=0.10 (from httpx2<3,>=2.12.0->openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.3159071Z   Downloading truststore-0.10.4-py3-none-any.whl.metadata (4.4 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.3277012Z Collecting h11>=0.16 (from httpcore2==2.13.1->httpx2<3,>=2.12.0->openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.3317931Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.3429282Z Collecting annotated-types>=0.6.0 (from pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13->openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.3464396Z   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.9779881Z Collecting pydantic-core==2.50.0 (from pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13->openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.9834797Z   Downloading pydantic_core-2.50.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:21.9971565Z Collecting typing-inspection>=0.4.4 (from pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13->openai>=1.0.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0009236Z   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0130928Z Collecting et-xmlfile (from openpyxl>=3.1.0->radar-salud==0.1.0)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0178754Z   Downloading et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0275712Z Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0359831Z Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0414952Z Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0467332Z Downloading openai-3.28.0-py3-none-any.whl (2.2 MB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0593216Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 190.5 MB/s  0:00:00
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0626656Z Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0698804Z Downloading httpx2-2.13.1-py3-none-any.whl (95 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0756853Z Downloading httpcore2-2.13.1-py3-none-any.whl (83 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0817003Z Downloading jiter-0.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (346 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0874634Z Downloading pydantic-2.14.0-py3-none-any.whl (487 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.0939573Z Downloading pydantic_core-2.50.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1087922Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 151.4 MB/s  0:00:00
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1121298Z Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1175677Z Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1228762Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1280942Z Downloading idna-3.20-py3-none-any.whl (69 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1340708Z Downloading openpyxl-3.1.5-py2.py3-none-any.whl (250 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1397359Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1455392Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1534890Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 166.4 MB/s  0:00:00
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1569170Z Downloading pypdf-6.20.0-py3-none-any.whl (401 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1631212Z Downloading truststore-0.10.4-py3-none-any.whl (18 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1683733Z Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1735241Z Downloading et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.1789588Z Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.2424598Z Building wheels for collected packages: radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.2432828Z   Building editable for radar-salud (pyproject.toml): started
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.4298045Z   Building editable for radar-salud (pyproject.toml): finished with status 'done'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.4303386Z   Created wheel for radar-salud: filename=radar_salud-0.1.0-0.editable-py3-none-any.whl size=1298 sha256=940a6c4e25e1bf1e4731d66537c4cb13bfcbce4b3c1bc7b30b5fa4556dc1a360
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.4305085Z   Stored in directory: /tmp/pip-ephem-wheel-cache-un_tv6ny/wheels/db/9f/32/47ab3e40cea9cb6d57b25a88ed1a741e9292afcfaf90515a78
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.4317532Z Successfully built radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:22.4825855Z Installing collected packages: typing-extensions, truststore, sniffio, pypdf, pygments, pluggy, packaging, jiter, iniconfig, idna, h11, et-xmlfile, annotated-types, typing-inspection, pytest, pydantic-core, openpyxl, httpcore2, anyio, pydantic, httpx2, openai, radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.0005977Z 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.0022596Z Successfully installed annotated-types-0.8.0 anyio-4.15.1 et-xmlfile-2.0.0 h11-0.16.0 httpcore2-2.13.1 httpx2-2.13.1 idna-3.20 iniconfig-2.3.1 jiter-0.17.0 openai-3.28.0 openpyxl-3.1.5 packaging-26.3 pluggy-1.6.0 pydantic-2.14.0 pydantic-core-2.50.0 pygments-2.21.0 pypdf-6.20.0 pytest-9.1.1 radar-salud-0.1.0 sniffio-1.3.1 truststore-0.10.4 typing-extensions-4.16.0 typing-inspection-0.4.4
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.0940052Z ##[group]Run python -m pytest -q
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.0940653Z ^[[36;1mpython -m pytest -q^[[0m
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.1006101Z shell: /usr/bin/bash -e {0}
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.1006361Z env:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.1006644Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.1007117Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.1007573Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.1007980Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.1008371Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.1008773Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:27.1009109Z ##[endgroup]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:29.2957935Z .......................s................................................ [ 27%]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:30.1961415Z ...........................................F............................ [ 54%]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:30.3363930Z ........................................................................ [ 82%]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4268019Z .........................................F....                           [100%]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4269233Z =================================== FAILURES ===================================
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4270150Z ___________ test_deterministic_live_replay_through_feed_and_coverage ___________
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4271526Z 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4272278Z tmp_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_deterministic_live_replay0')
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4273708Z monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f512c7ab410>
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4274452Z 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4275087Z     def test_deterministic_live_replay_through_feed_and_coverage(tmp_path,monkeypatch):
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4276666Z         now=datetime.now(timezone.utc)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4277507Z         state=tmp_path/"data/state";state.mkdir(parents=True)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4278814Z         (state/"discovery_watermarks.json").write_text(json.dumps({"minsal":(now-timedelta(days=1)).isoformat()}))
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4279914Z         items=[RawItem("minsal",title,f"https://example.org/{suffix}","Ministerio de Salud","official",event)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4281093Z             for title,suffix,event in (("Acto reciente de prueba","live",now.date().isoformat()),
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4282506Z                                        ("Acto histórico de prueba","backfill",(now-timedelta(days=12)).date().isoformat()),
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4283281Z                                        ("Acto sin fecha de prueba","undated",None))]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4283760Z         class Scout:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4284105Z             def __init__(self,*args,**kwargs):pass
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4284577Z             def discover(self,*args,**kwargs):return []
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4285016Z         class Minsal(Scout):
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4285368Z             def discover(self):return items
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4286200Z         for name in ("SuperintendenciaStatsScout","SuperintendenciaNormativaScout","SuperintendenciaFiscalizacionScout",
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4288076Z                      "SusesoNormativeScout","SusesoNewsScout","SusesoFiscalizacionScout","DfHealthScout","FonasaDataHubScout","FonasaNewsScout","IspSurveillanceScout","IspAnamedAlertScout","ClinicasChileScout","DeisResourceScout","DiarioOficialHealthScout"):
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4289163Z             monkeypatch.setattr(engine_cli,name,Scout)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4289575Z         monkeypatch.setattr(engine_cli,"CorporateNewsroomScout",Scout)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4290032Z         monkeypatch.setattr(engine_cli,"MinsalNewsScout",Minsal)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4290791Z         monkeypatch.setattr(engine_cli,"load_sources",lambda path:[])
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4291345Z         monkeypatch.setattr(engine_cli,"source_index",lambda sources:{name:object() for name in (
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4292246Z             "superintendencia_salud","superintendencia_normativa","superintendencia_fiscalizacion",
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4293328Z             "minsal","fonasa","fonasa_datos_abiertos","isp_anamed","isp_surveillance","pfizer_chile","deis","redsalud","bupa_chile","indisa","clinicas_chile","suseso","suseso_news","suseso_fiscalizacion","diario_financiero","diario_oficial")})
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4294289Z         monkeypatch.setattr(paths,"project_root",lambda:tmp_path)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4294744Z         monkeypatch.setattr(engine_cli,"seed_from_history",lambda root:None)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4295224Z         monkeypatch.setattr(engine_cli,"has_capacity",lambda kind:True)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4295717Z         monkeypatch.setattr(engine_cli,"health_record",lambda *args,**kwargs:None)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4296124Z         def process(raw,cfg):
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4296392Z             if not raw.event_date:return None
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4296913Z             return {"title":raw.title,"source_name":raw.source_name,"source_url":raw.url,"source_type":raw.source_type,
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4297848Z                     "event_date":raw.event_date,"what_happened":f"El Ministerio de Salud informó {raw.title.lower()} con fecha comprobable.",
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4298835Z                     "why_it_matters":"Permite verificar el efecto de una publicación fechada sin atribuirle efectos que la fuente no establece.",
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4299638Z                     "key_points":["La publicación corresponde a un acto identificado y verificable."],
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4300271Z                     "signal_types":["Noticias"],"scopes":["Sistema de salud"],"radar_score":78,"confidence_score":95}
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4301097Z         monkeypatch.setattr(engine_cli,"process_minsal",process)
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4301543Z         monkeypatch.setattr(sys,"argv",["engine_cli","--limit","3"])
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4301908Z >       engine_cli.main()
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4302232Z 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4302347Z tests/test_live_evidence_replay.py:59: 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4302692Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4303043Z src/radar_salud/engine_cli.py:70: in main
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4303444Z     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4303861Z                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4304215Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4304449Z 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4304573Z .0 = <list_iterator object at 0x7f512f592620>
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4304773Z 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4304968Z >   processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4305348Z                       ^^^^^^^^^
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4305600Z E   KeyError: 'pulso_latercera'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4305763Z 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4305880Z src/radar_salud/engine_cli.py:70: KeyError
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4306313Z _ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4306640Z 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4306891Z     def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4307429Z         payload=json.loads(Path("web/data/radar_today.json").read_text())
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4308052Z         rows=[m._normative_contract(s) for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4308548Z >       assert len(rows)>=12
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4308808Z E       AssertionError: assert 11 >= 12
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4310005Z E        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4311211Z 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4311356Z tests/test_web_snapshot.py:289: AssertionError
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4311716Z =============================== warnings summary ===============================
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4312226Z tests/test_beta_source_runtime_fast.py:11
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4313359Z   /home/runner/work/Radar-salud/Radar-salud/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4314476Z     @pytest.mark.integration
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4314643Z 
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4314847Z -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4315328Z =========================== short test summary info ============================
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4316165Z FAILED tests/test_live_evidence_replay.py::test_deterministic_live_replay_through_feed_and_coverage - KeyError: 'pulso_latercera'
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4317104Z FAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4318618Z  +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.4319613Z 2 failed, 259 passed, 1 skipped, 1 warning in 3.50s
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.5214935Z ##[error]Process completed with exit code 1.
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.5376055Z Post job cleanup.
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6221344Z [command]/usr/bin/git version
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6265242Z git version 2.55.0
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6309019Z Temporarily overriding HOME='/home/runner/work/_temp/36cd2401-ddbc-42c8-91a3-9406caeaec67' before making global git config changes
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6311040Z Adding repository directory to the temporary git global config as a safe directory
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6315408Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Radar-salud/Radar-salud
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6353841Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6390125Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6648954Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6675605Z http.https://github.com/.extraheader
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6686246Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6722059Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.6991312Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.7021836Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.7411619Z Cleaning up orphan processes
-qa / tests	UNKNOWN STEP	2026-10-11T02:48:31.7723704Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+qa / tests	UNKNOWN STEP	﻿2026-10-11T02:48:45.0496852Z Current runner version: '2.337.0'
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0523208Z ##[group]Runner Image Provisioner
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0524683Z Hosted Compute Agent
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0525294Z Version: 20261002.596
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0526005Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0526726Z Build Date: 2026-10-02T22:28:27Z
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0527423Z Worker ID: {d0c923df-e5f8-4cf4-9b7b-1d723f24c6f6}
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0528209Z Region: westcentralus
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0528776Z Cloud: Azure
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0529428Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0531290Z ##[group]Operating System
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0531919Z Ubuntu
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0532526Z 24.04.5
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0533028Z LTS
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0533573Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0534391Z ##[group]Runner Image
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0535029Z Image: ubuntu-24.04
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0535654Z Version: 20261004.327.1
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0536976Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261004.327/images/ubuntu/Ubuntu2404-Readme.md
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0538619Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261004.327
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0539622Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0540789Z ##[group]GITHUB_TOKEN Permissions
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0542982Z Contents: read
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0544327Z Metadata: read
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0544891Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0547186Z Secret source: Actions
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0548132Z Cache mode: write
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0548967Z Prepare workflow directory
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0903556Z Prepare all required actions
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.0953030Z Getting action download info
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.3807651Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.7565911Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:45.8379363Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.0434104Z Uses: cftorre1/Radar-salud/.github/workflows/qa.yml@refs/heads/staging (9960f8bfdea6b4fb6802c143a534657518ffdbb8)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.0439031Z Complete job name: qa / tests
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1338203Z ##[group]Run actions/checkout@v4
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1339240Z with:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1339762Z   repository: cftorre1/Radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1344172Z   token: ***
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1344682Z   ssh-strict: true
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1345186Z   ssh-user: git
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1345693Z   persist-credentials: true
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1346241Z   clean: true
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1346740Z   sparse-checkout-cone-mode: true
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1347327Z   fetch-depth: 1
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1347810Z   fetch-tags: false
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1348310Z   show-progress: true
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1348818Z   lfs: false
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1349291Z   submodules: false
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1349800Z   set-safe-directory: true
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1350375Z   allow-unsafe-pr-checkout: false
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.1351273Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2519699Z Syncing repository: cftorre1/Radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2522253Z ##[group]Getting Git version info
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2523309Z Working directory is '/home/runner/work/Radar-salud/Radar-salud'
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2525115Z [command]/usr/bin/git version
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2612754Z git version 2.55.0
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2639561Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2659092Z Temporarily overriding HOME='/home/runner/work/_temp/2d7adbf9-6a5a-4530-9621-6627357131a7' before making global git config changes
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2662433Z Adding repository directory to the temporary git global config as a safe directory
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2667589Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Radar-salud/Radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2732734Z Deleting the contents of '/home/runner/work/Radar-salud/Radar-salud'
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2739384Z ##[group]Initializing the repository
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2745361Z [command]/usr/bin/git init /home/runner/work/Radar-salud/Radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2893038Z hint: Using 'master' as the name for the initial branch. This default branch name
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2895306Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2896993Z hint: to use in all of your new repositories, which will suppress this warning,
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2898488Z hint: call:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2899772Z hint:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2900934Z hint: 	git config --global init.defaultBranch <name>
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2902232Z hint:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2903403Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2905472Z hint: 'development'. The just-created branch can be renamed via this command:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2907011Z hint:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2907834Z hint: 	git branch -m <name>
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2908745Z hint:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2910028Z hint: Disable this message with "git config set advice.defaultBranchName false"
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2912718Z Initialized empty Git repository in /home/runner/work/Radar-salud/Radar-salud/.git/
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2918066Z [command]/usr/bin/git remote add origin https://github.com/cftorre1/Radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2986905Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2987878Z ##[group]Disabling automatic garbage collection
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.2992280Z [command]/usr/bin/git config --local gc.auto 0
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.3036406Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.3037483Z ##[group]Setting up auth
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.3045082Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.3085793Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.3510448Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.3554018Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.3796937Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.3838866Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.4084451Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.4132688Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.4134415Z ##[group]Fetching the repository
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:46.4143485Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9960f8bfdea6b4fb6802c143a534657518ffdbb8:refs/remotes/origin/staging
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4244037Z From https://github.com/cftorre1/Radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4246814Z  * [new ref]         9960f8bfdea6b4fb6802c143a534657518ffdbb8 -> origin/staging
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4252964Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4256007Z ##[group]Determining the checkout info
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4259022Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4260747Z [command]/usr/bin/git sparse-checkout disable
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4324223Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4361361Z ##[group]Checking out the ref
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4366253Z [command]/usr/bin/git checkout --progress --force -B staging refs/remotes/origin/staging
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4963000Z Switched to a new branch 'staging'
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4968974Z branch 'staging' set up to track 'origin/staging'.
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.4978288Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5028176Z [command]/usr/bin/git log -1 --format=%H
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5058331Z 9960f8bfdea6b4fb6802c143a534657518ffdbb8
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5465335Z ##[group]Run actions/setup-python@v5
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5466614Z with:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5467829Z   python-version: 3.11
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5468868Z   check-latest: false
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5479902Z   token: ***
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5480893Z   update-environment: true
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5482000Z   allow-prereleases: false
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5483071Z   freethreaded: false
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.5484216Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.6970004Z ##[group]Installed versions
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.8509445Z (node:2385) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.8512957Z (Use `node --trace-deprecation ...` to show where the warning was created)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.8515924Z Successfully set up CPython (3.11.17)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.8518985Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.8687694Z ##[group]Run pip install -e . pytest
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.8689095Z ^[[36;1mpip install -e . pytest^[[0m
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.9051238Z shell: /usr/bin/bash -e {0}
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.9052419Z env:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.9053572Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.9055751Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.9057666Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.9059381Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.9061114Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.9062861Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:47.9064503Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:48.8250734Z Obtaining file:///home/runner/work/Radar-salud/Radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:48.8266626Z   Installing build dependencies: started
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:49.8009692Z   Installing build dependencies: finished with status 'done'
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:49.8015364Z   Checking if build backend supports build_editable: started
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.1097057Z   Checking if build backend supports build_editable: finished with status 'done'
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.1105730Z   Getting requirements to build editable: started
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.4263055Z   Getting requirements to build editable: finished with status 'done'
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.4272906Z   Preparing editable metadata (pyproject.toml): started
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.6119532Z   Preparing editable metadata (pyproject.toml): finished with status 'done'
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.7627203Z Collecting pytest
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.8590605Z   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.9046999Z Collecting pypdf>=5.0.0 (from radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.9274298Z   Downloading pypdf-6.20.0-py3-none-any.whl.metadata (7.6 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.9641803Z Collecting openpyxl>=3.1.0 (from radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:50.9842209Z   Downloading openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.0928351Z Collecting openai>=1.0.0 (from radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.1129268Z   Downloading openai-3.28.0-py3-none-any.whl.metadata (44 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.1601757Z Collecting iniconfig>=1.0.1 (from pytest)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.1802533Z   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.2119760Z Collecting packaging>=22 (from pytest)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.2321922Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.2626985Z Collecting pluggy<2,>=1.5 (from pytest)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.2829315Z   Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.3178148Z Collecting pygments>=2.7.2 (from pytest)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.3386622Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.3742918Z Collecting anyio<5,>=4.10.0 (from openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.3966978Z   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.4263115Z Collecting httpx2<3,>=2.12.0 (from openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.4458505Z   Downloading httpx2-2.13.1-py3-none-any.whl.metadata (9.8 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.5692699Z Collecting jiter<1,>=0.16.0 (from openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.5893592Z   Downloading jiter-0.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.7190873Z Collecting pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13 (from openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.7394107Z   Downloading pydantic-2.14.0-py3-none-any.whl.metadata (131 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.7898308Z Collecting sniffio (from openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.8093607Z   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.8449536Z Collecting typing-extensions<5,>=4.14 (from openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.8662862Z   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.8986991Z Collecting idna>=2.8 (from anyio<5,>=4.10.0->openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.9199408Z   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.9528481Z Collecting httpcore2==2.13.1 (from httpx2<3,>=2.12.0->openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:51.9747749Z   Downloading httpcore2-2.13.1-py3-none-any.whl.metadata (26 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.0068743Z Collecting truststore>=0.10 (from httpx2<3,>=2.12.0->openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.0265880Z   Downloading truststore-0.10.4-py3-none-any.whl.metadata (4.4 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.0553388Z Collecting h11>=0.16 (from httpcore2==2.13.1->httpx2<3,>=2.12.0->openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.0749100Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.1032613Z Collecting annotated-types>=0.6.0 (from pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13->openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.1232566Z   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.8201041Z Collecting pydantic-core==2.50.0 (from pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13->openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.8399031Z   Downloading pydantic_core-2.50.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.8695458Z Collecting typing-inspection>=0.4.4 (from pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13->openai>=1.0.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.8903973Z   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.9228010Z Collecting et-xmlfile (from openpyxl>=3.1.0->radar-salud==0.1.0)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.9425124Z   Downloading et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:52.9707669Z Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.0280786Z Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.0519226Z Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.0745607Z Downloading openai-3.28.0-py3-none-any.whl (2.2 MB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.1483308Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 28.2 MB/s  0:00:00
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.1684810Z Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.1948159Z Downloading httpx2-2.13.1-py3-none-any.whl (95 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.2192609Z Downloading httpcore2-2.13.1-py3-none-any.whl (83 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.2421935Z Downloading jiter-0.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (346 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.2654650Z Downloading pydantic-2.14.0-py3-none-any.whl (487 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.2899587Z Downloading pydantic_core-2.50.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.3166064Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 80.2 MB/s  0:00:00
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.3399786Z Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.3625150Z Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.3855271Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.4078178Z Downloading idna-3.20-py3-none-any.whl (69 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.4300014Z Downloading openpyxl-3.1.5-py2.py3-none-any.whl (250 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.4529000Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.4752194Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.4835512Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 191.9 MB/s  0:00:00
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.5039937Z Downloading pypdf-6.20.0-py3-none-any.whl (401 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.5275036Z Downloading truststore-0.10.4-py3-none-any.whl (18 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.5494410Z Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.5718365Z Downloading et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.5934954Z Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.6599458Z Building wheels for collected packages: radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.6607779Z   Building editable for radar-salud (pyproject.toml): started
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.8647739Z   Building editable for radar-salud (pyproject.toml): finished with status 'done'
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.8654123Z   Created wheel for radar-salud: filename=radar_salud-0.1.0-0.editable-py3-none-any.whl size=1298 sha256=504ce41045e86846eb8cc2904c2a4e4f2808465d43d1585ed1d9cb480071f4bc
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.8656315Z   Stored in directory: /tmp/pip-ephem-wheel-cache-z9o4urey/wheels/db/9f/32/47ab3e40cea9cb6d57b25a88ed1a741e9292afcfaf90515a78
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.8669691Z Successfully built radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:53.9187783Z Installing collected packages: typing-extensions, truststore, sniffio, pypdf, pygments, pluggy, packaging, jiter, iniconfig, idna, h11, et-xmlfile, annotated-types, typing-inspection, pytest, pydantic-core, openpyxl, httpcore2, anyio, pydantic, httpx2, openai, radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.5792973Z 
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.5810150Z Successfully installed annotated-types-0.8.0 anyio-4.15.1 et-xmlfile-2.0.0 h11-0.16.0 httpcore2-2.13.1 httpx2-2.13.1 idna-3.20 iniconfig-2.3.1 jiter-0.17.0 openai-3.28.0 openpyxl-3.1.5 packaging-26.3 pluggy-1.6.0 pydantic-2.14.0 pydantic-core-2.50.0 pygments-2.21.0 pypdf-6.20.0 pytest-9.1.1 radar-salud-0.1.0 sniffio-1.3.1 truststore-0.10.4 typing-extensions-4.16.0 typing-inspection-0.4.4
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7056660Z ##[group]Run python -m pytest -q
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7057037Z ^[[36;1mpython -m pytest -q^[[0m
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7120943Z shell: /usr/bin/bash -e {0}
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7121239Z env:
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7121553Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7122087Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7122608Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7123083Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7123544Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7124217Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:57.7124620Z ##[endgroup]
+qa / tests	UNKNOWN STEP	2026-10-11T02:48:59.5955954Z .......................s................................................ [ 27%]
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:00.6128327Z ...........................................F............................ [ 54%]
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:00.7640237Z ........................................................................ [ 82%]
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7829306Z .........................................F....                           [100%]
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7830246Z =================================== FAILURES ===================================
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7833289Z ___________ test_deterministic_live_replay_through_feed_and_coverage ___________
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7834402Z 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7835063Z tmp_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_deterministic_live_replay0')
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7836550Z monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fdd6060f250>
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7837409Z 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7838093Z     def test_deterministic_live_replay_through_feed_and_coverage(tmp_path,monkeypatch):
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7839768Z         now=datetime.now(timezone.utc)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7840525Z         state=tmp_path/"data/state";state.mkdir(parents=True)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7841737Z         (state/"discovery_watermarks.json").write_text(json.dumps({"minsal":(now-timedelta(days=1)).isoformat()}))
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7843324Z         items=[RawItem("minsal",title,f"https://example.org/{suffix}","Ministerio de Salud","official",event)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7844925Z             for title,suffix,event in (("Acto reciente de prueba","live",now.date().isoformat()),
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7846958Z                                        ("Acto histórico de prueba","backfill",(now-timedelta(days=12)).date().isoformat()),
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7848075Z                                        ("Acto sin fecha de prueba","undated",None))]
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7848532Z         class Scout:
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7848861Z             def __init__(self,*args,**kwargs):pass
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7849322Z             def discover(self,*args,**kwargs):return []
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7849758Z         class Minsal(Scout):
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7850108Z             def discover(self):return items
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7850927Z         for name in ("SuperintendenciaStatsScout","SuperintendenciaNormativaScout","SuperintendenciaFiscalizacionScout",
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7852491Z                      "SusesoNormativeScout","SusesoNewsScout","SusesoFiscalizacionScout","DfHealthScout","FonasaDataHubScout","FonasaNewsScout","IspSurveillanceScout","IspAnamedAlertScout","ClinicasChileScout","DeisResourceScout","DiarioOficialHealthScout"):
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7853687Z             monkeypatch.setattr(engine_cli,name,Scout)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7854467Z         monkeypatch.setattr(engine_cli,"CorporateNewsroomScout",Scout)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7854949Z         monkeypatch.setattr(engine_cli,"MinsalNewsScout",Minsal)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7855418Z         monkeypatch.setattr(engine_cli,"load_sources",lambda path:[])
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7855988Z         monkeypatch.setattr(engine_cli,"source_index",lambda sources:{name:object() for name in (
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7857124Z             "superintendencia_salud","superintendencia_normativa","superintendencia_fiscalizacion",
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7858355Z             "minsal","fonasa","fonasa_datos_abiertos","isp_anamed","isp_surveillance","pfizer_chile","deis","redsalud","bupa_chile","indisa","clinicas_chile","suseso","suseso_news","suseso_fiscalizacion","diario_financiero","diario_oficial")})
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7859451Z         monkeypatch.setattr(paths,"project_root",lambda:tmp_path)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7859957Z         monkeypatch.setattr(engine_cli,"seed_from_history",lambda root:None)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7860484Z         monkeypatch.setattr(engine_cli,"has_capacity",lambda kind:True)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7861014Z         monkeypatch.setattr(engine_cli,"health_record",lambda *args,**kwargs:None)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7861457Z         def process(raw,cfg):
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7861734Z             if not raw.event_date:return None
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7862310Z             return {"title":raw.title,"source_name":raw.source_name,"source_url":raw.url,"source_type":raw.source_type,
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7863478Z                     "event_date":raw.event_date,"what_happened":f"El Ministerio de Salud informó {raw.title.lower()} con fecha comprobable.",
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7864984Z                     "why_it_matters":"Permite verificar el efecto de una publicación fechada sin atribuirle efectos que la fuente no establece.",
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7865966Z                     "key_points":["La publicación corresponde a un acto identificado y verificable."],
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7866666Z                     "signal_types":["Noticias"],"scopes":["Sistema de salud"],"radar_score":78,"confidence_score":95}
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7867271Z         monkeypatch.setattr(engine_cli,"process_minsal",process)
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7867734Z         monkeypatch.setattr(sys,"argv",["engine_cli","--limit","3"])
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7868116Z >       engine_cli.main()
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7868452Z 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7868574Z tests/test_live_evidence_replay.py:59: 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7868939Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7869313Z src/radar_salud/engine_cli.py:70: in main
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7869731Z     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7870176Z                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7870567Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7870826Z 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7870943Z .0 = <list_iterator object at 0x7fdd634cbdf0>
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7871157Z 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7871364Z >   processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7871768Z                       ^^^^^^^^^
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7872025Z E   KeyError: 'pulso_latercera'
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7872193Z 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7872307Z src/radar_salud/engine_cli.py:70: KeyError
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7872758Z _ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7873121Z 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7873385Z     def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7874242Z         payload=json.loads(Path("web/data/radar_today.json").read_text())
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7874885Z         rows=[m._normative_contract(s) for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7875426Z >       assert len(rows)>=12
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7875694Z E       AssertionError: assert 11 >= 12
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7877175Z E        +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7878171Z 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7878306Z tests/test_web_snapshot.py:289: AssertionError
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7878690Z =============================== warnings summary ===============================
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7879238Z tests/test_beta_source_runtime_fast.py:11
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7880509Z   /home/runner/work/Radar-salud/Radar-salud/tests/test_beta_source_runtime_fast.py:11: PytestUnknownMarkWarning: Unknown pytest.mark.integration - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7881759Z     @pytest.mark.integration
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7881927Z 
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7882142Z -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7882658Z =========================== short test summary info ============================
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7883583Z FAILED tests/test_live_evidence_replay.py::test_deterministic_live_replay_through_feed_and_coverage - KeyError: 'pulso_latercera'
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7884931Z FAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7886771Z  +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.7887883Z 2 failed, 259 passed, 1 skipped, 1 warning in 9.54s
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.9492460Z ##[error]Process completed with exit code 1.
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:07.9643215Z Post job cleanup.
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.0529358Z [command]/usr/bin/git version
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.0578787Z git version 2.55.0
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.0621240Z Temporarily overriding HOME='/home/runner/work/_temp/ef55db2f-80a7-4000-a816-66c00de93fec' before making global git config changes
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.0622571Z Adding repository directory to the temporary git global config as a safe directory
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.0628270Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Radar-salud/Radar-salud
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.0675443Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.0720617Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.1035286Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.1049483Z http.https://github.com/.extraheader
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.1088134Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.1125720Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.1442265Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.1496121Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.2005883Z Cleaning up orphan processes
+qa / tests	UNKNOWN STEP	2026-10-11T02:49:08.2344817Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
