@@ -135,6 +135,7 @@ def main():
     parser.add_argument("--probe-only", action="store_true")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
+    (args.output / "captures").mkdir(exist_ok=True)
     endpoints = json.loads((ROOT / "config/public_source_runtime_endpoints.json").read_text())
     tasks = [(slug, url) for slug, urls in endpoints.items() for url in urls]
     with ThreadPoolExecutor(max_workers=6) as executor:

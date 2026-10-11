@@ -65,3 +65,29 @@ def test_capture_is_hashed_and_does_not_export_set_cookie(monkeypatch, tmp_path)
     assert row["origin_tls_observed"]
     assert "Set-Cookie" not in row["headers"]
     assert (tmp_path / row["body_path"]).read_bytes() == b"<h1>Official bulletin</h1>"
+
+
+def test_tls_probe_never_bypasses_configured_proxy(monkeypatch):
+    monkeypatch.setattr(runtime, 'getproxies', lambda: {'https': 'configured'})
+    def forbidden(*args, **kwargs): raise AssertionError('Direct socket must not be used')
+    monkeypatch.setattr(runtime.socket, 'create_connection', forbidden)
+    row = runtime.tls_diagnostic('www.ispch.cl')
+    assert row['tcp'] == row['tls'] == 'not_attempted'
+    assert row['reason'] == 'configured_proxy_preserved_no_direct_socket_attempt'
+
+
+def test_tls_probe_preserves_certificate_failure_after_tcp_connection(monkeypatch):
+    class Connection:
+        def __enter__(self): return self
+        def __exit__(self, *args): pass
+    class Context:
+        def wrap_socket(self, connection, server_hostname):
+            raise ssl.SSLCertVerificationError('certificate expired')
+    monkeypatch.setattr(runtime, 'getproxies', lambda: {})
+    monkeypatch.setattr(runtime.socket, 'create_connection', lambda *args, **kw: Connection())
+    monkeypatch.setattr(runtime.ssl, 'create_default_context', lambda: Context())
+    row = runtime.tls_diagnostic('www.ispch.cl')
+    assert row['tcp'] == 'connected'
+    assert row['tls'] == 'not_attempted'
+    assert row['failed_stage'] == 'tls'
+    assert 'certificate expired' in row['error']
