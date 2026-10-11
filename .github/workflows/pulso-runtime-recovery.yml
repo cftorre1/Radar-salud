@@ -77,6 +77,15 @@ jobs:
           path: .scratch/pulso-prior-capture/initial-warm-38120291133
           github-token: ${{ github.token }}
           run-id: 38120291133
+      - name: Recover second-warm original bytes for unchanged cached primary hashes
+        if: steps.metadata_original_probe.outputs.needs_initial_warm_originals == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pulso-real-core-*
+          merge-multiple: true
+          path: .scratch/pulso-prior-capture/second-warm-38121971530
+          github-token: ${{ github.token }}
+          run-id: 38121971530
       - name: Bind recovered original responses without restoring state or refetching details
         if: steps.metadata_original_probe.outputs.needs_initial_warm_originals == 'true'
         run: python scripts/retain_pulso_runtime_fixtures.py --capture-artifact .scratch/pulso-prior-capture
@@ -86,12 +95,9 @@ jobs:
         run: |
           python - <<'PY'
           import json, subprocess
-          phase=json.load(open('.github/run-pulso-runtime-now'))['phase']
-          if phase not in {'discovery_only','process','report_only'}:
-              raise SystemExit('Unsupported recovery phase')
-          command=['timeout','--signal=TERM','--kill-after=45s','75m','python','scripts/audit_pulso_runtime.py','--limit','250']
-          if phase=='discovery_only': command.append('--discovery-only')
-          if phase=='report_only': command.append('--report-only')
+          from pathlib import Path
+          from scripts.pulso_recovery_command import recovery_command
+          command=recovery_command(json.load(open('.github/run-pulso-runtime-now')), Path.cwd())
           raise SystemExit(subprocess.call(command))
           PY
       - name: Preserve new original responses and reconcile their durable provenance
