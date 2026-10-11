@@ -140,6 +140,61 @@ def test_actual_run9_native_browser_click_returns_empty_news_layout_without_tran
         parse_listing(body.decode("utf8", "replace"), response["url"], as_of=TODAY)
 
 
+def test_actual_four_alternative_listings_repeat_identical_article_ids_titles_and_dates():
+    import hashlib
+    import json
+    from pathlib import Path
+    from urllib.parse import parse_qs
+    from radar_salud.mutual_sources import _Tree
+    root = Path(__file__).resolve().parents[1] / "data/audits/source_e_recovery/actions/38120060930"
+    records = [x for x in json.loads((root / "report.json").read_text())["records"]
+               if x.get("surface") == "observed_official_search_news_listing"]
+    assert len(records) == 4
+    datasets = []
+    for record in records:
+        hop = record["hops"][-1]
+        body = (root / hop["body_file"]).read_bytes()
+        assert hashlib.sha256(body).hexdigest() == hop["sha256"]
+        assert record["http_status"] == 200 and hop["tls"]["verified"] and record["waf"] is None
+        tree = _Tree(body.decode("utf8", "replace"))
+        cards = [node for node in tree.root.walk() if "card-noticia" in node.classes()]
+        dataset = {}
+        for card_node in cards:
+            nodes = list(card_node.walk())
+            title = [n.text() for n in nodes if "title-card" in n.classes()]
+            day = [n.text() for n in nodes if "fecha" in n.classes()]
+            links = [n.attrs["href"] for n in nodes if n.tag == "a" and "href-button" in n.classes()]
+            assert len(title) == len(day) == len(links) == 1
+            identity = parse_qs(urlsplit(links[0]).query)["urile"]
+            assert len(identity) == 1
+            value = (title[0], day[0])
+            assert identity[0] not in dataset or dataset[identity[0]] == value
+            dataset[identity[0]] = value
+            if "/trabajador/" in record["url"]:
+                # Worker links omit the article page selector; do not invent
+                # that selector or silently emit a synthetic company URL.
+                assert "page" not in parse_qs(urlsplit(links[0]).query)
+                assert _detail_url(urljoin(record["url"], links[0])) is None
+        if cards:
+            assert len(cards) == 119 and len(dataset) == 84
+            datasets.append(dataset)
+        else:
+            assert "/Search/Search%20Center/" in record["final_url"]
+            assert len(record["hops"]) == 2 and record["hops"][0]["http_status"] == 302
+    assert len(datasets) == 3 and datasets[0] == datasets[1] == datasets[2]
+
+
+def test_worker_browser_diagnostic_accepts_only_two_observed_entry_urls_before_import_or_request(tmp_path):
+    import asyncio
+    from scripts.mutual_public_paging_probe import OBSERVED_ENTRY_URLS, PAGE as BROWSER_PAGE, WORKER_PAGE, observe
+    assert OBSERVED_ENTRY_URLS == {BROWSER_PAGE, WORKER_PAGE}
+    assert WORKER_PAGE == "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias"
+    for unobserved in (WORKER_PAGE + "/", WORKER_PAGE + "?page=synthetic", "https://www.mutual.cl/portal/privado"):
+        with pytest.raises(ValueError, match="unobserved_public_news_entry_url"):
+            asyncio.run(observe(tmp_path, TODAY.isoformat(), unobserved))
+    assert list(tmp_path.iterdir()) == []
+
+
 @pytest.mark.parametrize("url", [
     PAGE, "http://www.mutual.cl/" + detail_url("a").split("?", 1)[1],
     detail_url("a").replace("www.mutual.cl", "www.mutual.cl.evil.test"),
