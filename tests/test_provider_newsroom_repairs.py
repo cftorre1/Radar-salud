@@ -103,3 +103,18 @@ def test_hospital_pharmacy_and_lab_capacity_does_not_create_pharma_industry_scop
         'why_it_matters':'Amplía la oferta hospitalaria y diagnóstica para pacientes de la región.'})
     row=beta_sources.process_curated_beta_source(raw,{'base_confidence':80})
     assert row['scopes']==['Prestadores']
+
+
+@pytest.mark.parametrize('actor',['Roche','Sanofi','Merck','Biomed'])
+def test_provider_agreement_with_named_laboratory_keeps_pharma_scope(monkeypatch,actor):
+    from radar_salud import beta_sources, llm_analysis
+    title=f'Andes Salud firma convenio con Laboratorio {actor}'
+    raw=RawItem('andes_salud',title,'https://www.andessalud.cl/novedades/convenio/','Andes Salud','corporate','2026-10-02',
+        metadata={'market_role':'provider','publication_date_source':'verified_article_header','source_quality_gate':'passed'})
+    html=f'<h1>{title}</h1><div>octubre 2, 2026</div><p>'+f'El convenio de inversión con Laboratorio {actor} amplía la red de prestaciones y capacidad. '*8+'</p>'
+    monkeypatch.setattr(beta_sources,'fetch_html',lambda _:html)
+    monkeypatch.setattr(llm_analysis,'analyze_news',lambda **kw:{'relevance_score':86,
+        'what_happened':f'Andes Salud suscribió un convenio de inversión con Laboratorio {actor} para ampliar prestaciones.',
+        'why_it_matters':'El acuerdo conecta una red de prestadores y un actor farmacéutico en un nuevo proyecto.'})
+    row=beta_sources.process_curated_beta_source(raw,{'base_confidence':80})
+    assert row['scopes']==['Prestadores','Farma / medicamentos']

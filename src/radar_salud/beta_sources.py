@@ -350,9 +350,11 @@ def process_curated_beta_source(raw, cfg):
         return None
     scopes = ["Salud laboral"] if role == "mutuality" else (["Isapres", "Prestadores"] if role == "media" else ["Prestadores"])
     scope_text=f"{raw.title} {body[:2500]}"
-    if role.startswith('provider'):
+    named_pharma=(re.search(r'\b(?:pfizer|roche|sanofi|merck|novartis|astrazeneca|bayer|gsk|abbott)\b',scope_text,re.I)
+        or re.search(r'\b(?:[Ll]aboratorios?|[Ff]armacias?)\s+(?!(?:[Cc]l[ií]nic[oa]s?|[Cc]entral|[Dd]e|[Dd]el)\b)[A-ZÁÉÍÓÚ][\wÁÉÍÓÚáéíóúñÑ-]+',scope_text))
+    if role.startswith('provider') and not named_pharma:
         # A hospital's pharmacy and diagnostic laboratory are clinical capacity.
-        # Named pharmaceutical actors/drug terms can still establish that scope.
+        # Keep original industry inference for named labs/pharmacy companies.
         scope_text=re.sub(r'\b(?:farmacias?|laboratorios?)\b','servicios clínicos',scope_text,flags=re.I)
     inferred = _scopes(scope_text)
     for scope in inferred:
