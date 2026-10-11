@@ -2,6 +2,7 @@
 import gzip
 import hashlib
 import json
+from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -15,6 +16,8 @@ REAL = Path(__file__).parent / 'fixtures/pulso_runtime_real'
 CONTROLS = [row for row in json.loads((REAL / 'manifest.json').read_text())['fixtures']
             if any(part in row['url'] for part in ('minsal-publica-nomina-con-los-eleam',
                        'uc-christus-san-carlos-de-apoquindo-suspende-atencion-de-urgencia'))]
+PROJECTIONS = json.loads((Path(__file__).parent / 'fixtures/pulso_expanded_materiality_real/verified_primary_body_projections.json').read_text())['fixtures']
+REPAIRED_PROJECTIONS = ('proposed_clinical_condition_colmed',)
 
 
 def original_raw(entry):
@@ -72,6 +75,41 @@ def test_original_uc_christus_is_a_reported_temporary_service_suspension_without
     assert 'hemos suspendido la atención del Servicio de Urgencia' in raw.metadata['page_text']
     assert 'durante hoy jueves 8 y mañana viernes 9 de octubre' in raw.metadata['page_text']
     assert 'no ha sido necesario realizar evacuaciones' in raw.metadata['page_text']
+
+
+@pytest.mark.parametrize('entry', [row for row in PROJECTIONS if row['name'] in REPAIRED_PROJECTIONS],
+                         ids=lambda row: row['name'])
+def test_additional_sha_bound_primary_actions_reach_full_body_analysis_without_score_override(entry, monkeypatch):
+    metadata = deepcopy(entry['metadata'])
+    body = entry['body']
+    assert hashlib.sha256(body.encode()).hexdigest() == metadata['article_body_sha256'] == entry['provenance']['body_sha256']
+    assert metadata['html_sha256'] == entry['provenance']['html_sha256']
+    assert metadata['canonical_url'] == entry['url'] and metadata['publication_date'] == entry['publication_date']
+    assert metadata['article_verified'] and metadata['publication_date_verified']
+    assert beta_sources._material('media', entry['title'], body)
+    raw = RawItem('pulso_latercera', entry['title'], entry['url'], 'Pulso / La Tercera',
+                   'press_high_trust', entry['publication_date'], body[:1800], metadata)
+    calls = []
+    def assess(**kwargs):
+        calls.append(kwargs)
+        return dict(relevance_score=71, what_happened='', why_it_matters='', reason='Incremento insuficiente sobre eventos previos.')
+    monkeypatch.setattr(llm_analysis, 'analyze_news', assess)
+    assert beta_sources.process_curated_beta_source(raw, {}) is None
+    assert len(calls) == 1 and calls[0]['text'] == body and calls[0]['full_text']
+    assert 'no convertir reporte de prensa en hecho oficial' in calls[0]['kind']
+    assert raw.metadata['analysis_input_complete'] is True
+    assert raw.metadata['analysis_input_body_sha256'] == metadata['article_body_sha256']
+    assert raw.metadata['editorial_assessment']['threshold'] == 72
+    assert raw.metadata['rejection_reason'] == 'editorial_relevance_below_threshold'
+
+
+def test_original_colmed_is_a_reported_objection_to_a_proposed_clinical_condition():
+    entry = next(row for row in PROJECTIONS if row['name'] == 'proposed_clinical_condition_colmed')
+    assert entry['publication_date'] == '2026-07-15'
+    assert 'el cual propone que los médicos ofrezcan escuchar la actividad cardíaca fetal' in entry['body']
+    assert 'condicionando la realización del procedimiento a la aceptación de esa instancia' in entry['body']
+    assert 'consentimiento informado' in entry['body']
+    assert 'ha sido rechazado desde distintos sectores' in entry['body']
 
 
 @pytest.mark.parametrize(('title', 'body'), [
