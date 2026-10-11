@@ -43,5 +43,15 @@
     "main_untouched": true,
     "production_untouched": true,
     "promotion": false
+  },
+  "browser_root_cause": {
+    "run_id": 38141322310,
+    "verdict": "40 PASS / 6 inherited FAIL before repair",
+    "expired_sources": {
+      "GES_March_2026": "2026-07-10",
+      "Series_1990_2025": "2026-07-10",
+      "Circular_IF529": "2026-07-10"
+    },
+    "fix": "Require all current eligible originals, fail on omitted eligible source, require aged sources preserved unchanged in history and absent from the current snapshot. Retain all table, semantic type, source evidence and rendering assertions for present releases."
   }
 }
