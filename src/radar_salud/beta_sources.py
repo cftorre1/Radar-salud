@@ -264,12 +264,17 @@ def process_curated_beta_source(raw, cfg):
     scoped = raw.source_slug in SOURCES
     if scoped and raw.metadata.get("article_extraction") != "occupational_v1":
         raise DeferredProcessing("occupational detail requires verified article extraction")
+    if scoped and (raw.event_date != raw.metadata.get("publication_date") or
+                   not raw.metadata.get("date_evidence")):
+        raise DeferredProcessing("occupational publication date evidence mismatch")
     if not scoped:
         raw = enrich(raw)
     body = raw.metadata.get("page_text") or raw.raw_text or ""
     role = raw.metadata.get("market_role") or "provider"
     accepted = materiality(role, raw.title, body)[0] if scoped else _material(role, raw.title, body)
     if not raw.event_date or len(body) < 160 or not accepted:
+        if scoped:
+            raw.metadata["publication_rejection_reason"] = materiality(role, raw.title, body)[1]
         return None
     kind = {
         "media": "prensa económica de alta confianza; señal temprana, atribuir y no convertir reporte de prensa en hecho oficial",
@@ -285,6 +290,8 @@ def process_curated_beta_source(raw, cfg):
     what = (ai.get("what_happened") or "").strip()
     why = (ai.get("why_it_matters") or "").strip()
     if score < threshold or len(what) < 45 or len(why) < 35:
+        if scoped:
+            raw.metadata["publication_rejection_reason"] = "editorial_score_or_summary_below_threshold"
         return None
     scopes = ["Salud laboral"] if role == "mutuality" else (["Isapres", "Prestadores"] if role == "media" else ["Prestadores"])
     inferred = _scopes(f"{raw.title} {body[:2500]}")
@@ -313,7 +320,8 @@ def process_curated_beta_source(raw, cfg):
     if scoped:
         row.update(market_role=role, publication_date=raw.event_date,
                    date_evidence=raw.metadata["date_evidence"],
-                   materiality_reason=raw.metadata["materiality_reason"])
+                   materiality_reason=raw.metadata["materiality_reason"],
+                   source_quality_gate=raw.metadata["source_quality_gate"])
     if role == "media":
         row["evidence_maturity"] = "media_reported"
         row["confirmation_policy"] = "upgrade_same_signal_when_company_or_official_source_confirms"

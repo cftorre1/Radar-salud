@@ -253,7 +253,7 @@ def discover_items(scout, html, detail_loader):
                                 "discovered_from": scout.cfg["page"], "page_text": body[:18000],
                                 "market_role": role, "article_extraction": "occupational_v1",
                                 "date_evidence": evidence, "publication_date": published,
-                                "source_quality_gate": "passed", "materiality_accepted": accepted,
+                                "source_quality_gate": "audit_pending_90_day", "materiality_accepted": accepted,
                                 "materiality_reason": reason}))
     if not attempted:
         raise SourceDiscoveryError("listing_structure_unrecognized", scout.cfg["page"])

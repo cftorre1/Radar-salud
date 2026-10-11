@@ -182,3 +182,57 @@ def test_blocked_mutual_does_not_prevent_independent_source_discovery():
             results[slug] = exc.code
     assert results["mutual_seguridad"] == "external_waf_challenge"
     assert len(results["achs_seguro_laboral"]) == 1
+
+
+def test_unreconciled_occupational_source_never_becomes_live_from_new_watermark():
+    from datetime import datetime, timezone
+    from radar_salud.pending_queue import lane
+    now = datetime.now(timezone.utc)
+    scout = CuratedBetaSourceScout("achs_seguro_laboral")
+    raw = scout.discover_from_html(f'<a href="{ACHS}guia">Ver detalle</a>',
+                                   lambda url: detail("Nueva guía de tratamiento en salud mental laboral", now.strftime("%d/%m/%Y")))[0]
+    assert lane(raw, now, now.isoformat()) == "BACKFILL"
+
+
+def test_core_collector_continues_after_mutual_blocker_and_records_noise_rejection(tmp_path, monkeypatch):
+    import json
+    import shutil
+    import sys
+    from pathlib import Path
+    from radar_salud import engine_cli, paths
+    from radar_salud.pending_queue import fingerprint
+    (tmp_path / "config").mkdir()
+    shutil.copy(Path(__file__).resolve().parents[1] / "config/sources.json", tmp_path / "config/sources.json")
+    class Null:
+        def __init__(self, *args, **kwargs):
+            pass
+        def discover(self, *args, **kwargs):
+            return []
+    class Curated(CuratedBetaSourceScout):
+        def discover(self):
+            if self.slug == "mutual_seguridad":
+                raise SourceDiscoveryError("external_waf_challenge", self.cfg["page"])
+            if self.slug == "achs_seguro_laboral":
+                return self.discover_from_html(f'<a href="{ACHS}campana">Ver detalle</a>',
+                                               lambda url: detail("Campaña por salud mental laboral"))
+            return []
+    for name in ("SuperintendenciaStatsScout", "SuperintendenciaNormativaScout", "SuperintendenciaFiscalizacionScout",
+                 "MinsalNewsScout", "SusesoNormativeScout", "SusesoNewsScout", "SusesoFiscalizacionScout", "DfHealthScout",
+                 "FonasaDataHubScout", "FonasaNewsScout", "IspSurveillanceScout", "IspAnamedAlertScout", "ClinicasChileScout",
+                 "DeisResourceScout", "DiarioOficialHealthScout", "CorporateNewsroomScout"):
+        monkeypatch.setattr(engine_cli, name, Null)
+    monkeypatch.setattr(engine_cli, "CuratedBetaSourceScout", Curated)
+    monkeypatch.setattr(paths, "project_root", lambda: tmp_path)
+    monkeypatch.setattr(engine_cli, "seed_from_history", lambda root: None)
+    monkeypatch.setattr(engine_cli, "has_capacity", lambda kind: True)
+    monkeypatch.setattr(engine_cli, "ai_budget_status", lambda: {})
+    monkeypatch.setattr(sys, "argv", ["engine_cli", "--limit", "1"])
+    engine_cli.main()
+    audit = json.loads((tmp_path / "data/state/occupational_source_discovery.json").read_text())
+    assert audit["mutual_seguridad"]["error"]["code"] == "external_waf_challenge"
+    assert audit["achs_seguro_laboral"]["technical_status"] == "ok"
+    queue = json.loads((tmp_path / "data/state/pending_queue.json").read_text())
+    assert len(queue) == 1
+    item = next(iter(queue.values()))
+    assert item["status"] == "rejected"
+    assert item["reason"] == "campaign_event_testimonial_or_recognition"

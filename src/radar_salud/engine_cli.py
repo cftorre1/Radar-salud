@@ -18,6 +18,7 @@ from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
 from .processing import DeferredProcessing
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
+from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 
 def main():
     from .models import RawItem
@@ -67,10 +68,14 @@ def main():
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
       ("pulso_latercera","pulso_latercera",CuratedBetaSourceScout("pulso_latercera").discover,process_curated_beta_source),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
+    specs += [(slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
+              for slug in sorted(OCCUPATIONAL_SOURCES)]
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
     discoveries={}
+    occupational_audit={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
+        owner=getattr(discover,"__self__",None)
         try:
             items=discover()
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
@@ -80,8 +85,17 @@ def main():
             watermarks[name]=checked_at
             atomic_json(watermark_path,watermarks)
             discoveries[name]=(len(items),added,None)
+            if name in OCCUPATIONAL_SOURCES:
+                occupational_audit[name]={"technical_status":"ok","checked_at":checked_at,
+                    "decisions":getattr(owner,"decisions",[]),"discovered":len(items),
+                    "inventory_complete":False}
         except Exception as exc:
             discoveries[name]=(0,0,type(exc).__name__)
+            if name in OCCUPATIONAL_SOURCES:
+                occupational_audit[name]={"technical_status":"error","checked_at":datetime.now(timezone.utc).isoformat(),
+                    "error":{"code":getattr(exc,"code",type(exc).__name__),"url":getattr(exc,"url",None),"message":str(exc)},
+                    "decisions":getattr(owner,"decisions",[]),"inventory_complete":False}
+    atomic_json(root/"data/state/occupational_source_discovery.json",occupational_audit)
     atomic_json(root/"data/state/discovery_run.json",{
         "at":datetime.now(timezone.utc).isoformat(),
         "sources":{name:{"discovered":found,"new":added,"technical_status":"error" if error else "ok","error_type":error}
@@ -97,13 +111,15 @@ def main():
         queue.start(key)
         try:
             cfg,processor=processors[item["source"]]
-            row=processor(RawItem(**item["raw"]),cfg)
+            raw=RawItem(**item["raw"])
+            row=processor(raw,cfg)
             if row:
                 row.update(detected_at=item["detected_at"],ingestion_mode=item["lane"])
                 # Save output before terminal queue acknowledgement (crash safe replay).
                 history=merge_history(history,[row]);save_history(history_path,history)
                 produced[item["source"]].append(row)
-            queue.finish(key,"published" if row else "rejected",None if row else "processor_rejected")
+            reason=raw.metadata.get("publication_rejection_reason") or "processor_rejected"
+            queue.finish(key,"published" if row else "rejected",None if row else reason)
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except DeferredProcessing:
             queue.finish(key,"retry","budget_or_analysis_deferred")
@@ -114,7 +130,8 @@ def main():
         health_record(root,name,name=name.replace("_"," ").title(),discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
             rejected=counts["rejected"],rows=produced[name],error=error,
-            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"])
+            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"],
+            **({"error_detail":occupational_audit[name].get("error")} if name in OCCUPATIONAL_SOURCES else {}))
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()
