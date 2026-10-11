@@ -248,3 +248,33 @@ def test_union_of_actual_capture_runs_keeps_cold_thin_originals_after_successful
     assert row["captured_at"] == record["captured_at"]
     assert row["original_capture_manifest_sha256"] == hashlib.sha256(manifest.read_bytes()).hexdigest()
     assert gzip.decompress((output / row["gzip_file"]).read_bytes()) == payload
+
+
+def test_all_observed_old_date_conflicts_are_retained_without_date_adoption_and_missing_are_explicit(tmp_path):
+    base, captures, manifest, discovery = artifact(tmp_path, [])
+    url = "https://www.latercera.com/nacional/noticia/unit-old-conflict/"
+    missing = "https://www.latercera.com/nacional/noticia/unit-missing-old-conflict/"
+    payload = synthetic_unit_html(url).replace(b"2026-10-09T12:00:00Z", b"2020-09-01T00:30:00Z").replace(
+        b"9 Octubre 2026", b"9 Octubre 2020")
+    record = captured_record(captures, url, payload)
+    manifest.write_text(json.dumps({"source": "pulso_latercera", "mode": "actual_core_http_observation_no_inventory_injection", "requests": [record]}))
+    snapshot = json.loads(discovery.read_text())
+    possible = ["2020-08-31", "2020-09-01", "2020-10-09"]
+    snapshot["source_details"]["pulso_latercera"] = [dict(url=value, status="excluded", reason="all_possible_publication_days_before_90_days",
+        publisher_exception_reason="publisher_conflicting_publication_dates", possible_publication_days=possible,
+        publication_date=None, publication_date_verified=False) for value in (url, missing)]
+    discovery.write_text(json.dumps(snapshot))
+    output = tmp_path / "editorial"
+    report = corpus.audit(base, tmp_path / "report.json", tmp_path / "thin", exception_output=output)
+    exceptions = report["editorial_and_video_exception_originals"]
+    assert exceptions["status"] == "OBSERVED_EXCEPTION_ORIGINAL_RETENTION_PARTIAL"
+    assert exceptions["missing_observed_current_discovery_date_conflict_originals"] == [missing]
+    assert len(exceptions["observed_current_discovery_date_conflict_targets"]) == 2
+    row, = exceptions["requests"]
+    assert row["original_visible_byline_outside_complete_90_window"]
+    assert row["retention_categories"] == ["observed_primary_publication_date_conflict"]
+    assert row["visible_byline_day"] == "2020-10-09"
+    assert row["observed_current_discovery_date_conflict"][0]["possible_publication_days"] == possible
+    assert row["observed_current_discovery_date_conflict"][0]["publication_date"] is None
+    assert gzip.decompress((output / row["gzip_file"]).read_bytes()) == payload
+    assert row["sha256"] == hashlib.sha256(payload).hexdigest()
