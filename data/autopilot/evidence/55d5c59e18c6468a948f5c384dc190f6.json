@@ -1,0 +1,65 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 8,
+      "material_event_count": 11,
+      "max_material_gap_seconds": 11663.605342,
+      "mode": "live",
+      "observed_seconds": 14400.0,
+      "original_started_at": "2026-10-11T05:29:46.231497Z",
+      "owner_observation_verified": false,
+      "owner_prompts": 0,
+      "owner_restarts": 0,
+      "total_elapsed_seconds": 31026.061444,
+      "window_started_at": "2026-10-11T10:06:52.292941Z"
+    },
+    "observed_until": "2026-10-11T14:06:52.292941Z",
+    "reasons": [
+      "owner_intervention_observation_not_verified",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed",
+      "material_progress_gap_exceeded_30m"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {
+    "editorial": {
+      "evidence_revision": "60ac1a73a1f52feadee2985653be279b45f419e7647c3407386d02eccbdd38e1",
+      "failure": null,
+      "family": "editorial",
+      "input_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
+      "reason": "input_or_evidence_changed",
+      "task_id": "editorial_repair_lane_2026_10_11"
+    },
+    "fiscalization": {
+      "evidence_revision": "7fa9f3edd7f93d22b1d1ec3d8b9606f5022345cebadbff24b5d3761ba514761e",
+      "failure": null,
+      "family": "fiscalization",
+      "input_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
+      "reason": "input_or_evidence_changed",
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    "media": {
+      "evidence_revision": "95f6a4130a9278dd8bfd5f93e3ab82fbe29ee284b37ad92843e382931223ea8f",
+      "failure": null,
+      "family": "media",
+      "input_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
+      "reason": "input_or_evidence_changed",
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    "public_data": {
+      "evidence_revision": "fe7165cb89a72076848c1dad08628624eb924ec8fd52a86feeabe870023650d9",
+      "failure": null,
+      "family": "public_data",
+      "input_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
+      "reason": "input_or_evidence_changed",
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    }
+  },
+  "generated_at": "2026-10-11T14:06:52.292941+00:00",
+  "input_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
+  "kind": "controller_observation",
+  "operation_id": "55d5c59e18c6468a948f5c384dc190f6",
+  "stalled_tasks": []
+}
