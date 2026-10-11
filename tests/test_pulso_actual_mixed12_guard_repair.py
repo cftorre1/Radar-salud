@@ -97,3 +97,22 @@ def test_adding_an_ellipsis_to_a_reusable_literal_scope_remains_held():
     model["pulso_editorial_proof"]["human_health_scope_quote"] = "interrupción ... del embarazo por las tres causales"
     result = validate_pulso_editorial_proof(model, request(row))
     assert result["decision"] == "deferred" and result["reason"] == "pulso_editorial_scope_quote_not_in_input"
+
+
+@pytest.mark.parametrize("prefix", ["medicina veterinaria", "Hospital Clínico Veterinario"])
+@pytest.mark.parametrize("publication_date", ["2026-07-15", "2026-09-19"])
+def test_explicit_veterinary_context_cannot_turn_patient_contacts_into_independent_human_scope(prefix, publication_date):
+    # This is a synthetic scope-only counterexample using intact real paid
+    # models; it is not a fabricated publisher capture or a paid model output.
+    row = next(row for row in ROWS if row["publication_date"] == publication_date)
+    model = deepcopy(row["ai"])
+    quote = prefix + ": pacientes contactados iniciaron su proceso de atención"
+    model["pulso_editorial_proof"]["human_health_scope_quote"] = quote
+    result = validate_pulso_editorial_proof(model, request(row) + "\n" + quote)
+    assert result["decision"] == "deferred"
+    assert result["reason"] == "pulso_editorial_human_scope_conflicts_with_non_human_quote"
+
+
+def test_explicit_independent_human_procedure_can_coexist_with_a_veterinary_reference():
+    quote = "medicina veterinaria; antes de la interrupción del embarazo por las tres causales"
+    assert human_health_scope_anchor(quote, allow_patient_contact=False)

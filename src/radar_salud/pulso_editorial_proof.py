@@ -113,20 +113,22 @@ HUMAN_CLINICAL_SCOPE = re.compile(
 # clinical services/procedures, not a generic mortality or demographic anchor.
 HUMAN_CLINICAL_BATCH_TWO = re.compile(
     r"\bmamograf[ií]a\b[^.;!?]{0,80}\bmujeres\b[^.;!?]{0,80}\borden m[eé]dica\b|"
-    r"\bpacientes contactados iniciaron su proceso de atenci[oó]n\b|"
     r"\bmascarillas?\b[^.;!?]{0,80}\bservicios de urgencia\b"
     r"[^.;!?]{0,80}\bunidades de di[aá]lisis\b[^.;!?]{0,80}\boncohematolog[ií]a\b|"
     r"\binterrupci[oó]n del embarazo por las tres causales\b", re.I)
+PATIENT_CONTACT_SCOPE = re.compile(
+    r"\bpacientes contactados iniciaron su proceso de atenci[oó]n\b", re.I)
 
 
-def human_health_scope_anchor(quote):
+def human_health_scope_anchor(quote, *, allow_patient_contact=True):
     from .pulso_source import health_anchor
     # Discovery admits housing to open the primary detail; an editorial quote
     # must establish care/clinical relevance beyond the property-sector label.
     clinical_quote = re.sub(r"\bsenior housing\b|\bresidencias? (?:para|de) adultos mayores\b",
                             "", quote, flags=re.I)
     return (health_anchor(clinical_quote) or bool(HUMAN_CLINICAL_SCOPE.search(quote))
-            or bool(HUMAN_CLINICAL_BATCH_TWO.search(quote)))
+            or bool(HUMAN_CLINICAL_BATCH_TWO.search(quote))
+            or (allow_patient_contact and bool(PATIENT_CONTACT_SCOPE.search(quote))))
 
 PROOF_SCHEMA = {
     "type": "object", "properties": {
@@ -273,7 +275,8 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
     # Preserve any independent human-health evidence in the same primary quote,
     # and defer contradictory model labels rather than infer a rejection.
     if (NON_HUMAN_HEALTH.search(scope_quote)
-            and not human_health_scope_anchor(NON_HUMAN_HEALTH.sub("", scope_quote))):
+            and not human_health_scope_anchor(
+                NON_HUMAN_HEALTH.sub("", scope_quote), allow_patient_contact=False)):
         return verdict("deferred", "pulso_editorial_human_scope_conflicts_with_non_human_quote")
     if not human_health_scope_anchor(scope_quote):
         return verdict("deferred", "pulso_editorial_scope_not_grounded")
