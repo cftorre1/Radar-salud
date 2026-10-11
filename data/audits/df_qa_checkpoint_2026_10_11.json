@@ -1,11 +1,12 @@
 {
-  "at": "2026-10-11T04:41:29.067249+00:00",
-  "candidate_sha": "84576ade99300d8651734ff470bcaabe8ebe878d",
+  "at": "2026-10-11T05:38:41.086616+00:00",
+  "candidate_sha": "0d8a28087ac4dffcf1dda32d73cc2eccf30fe112",
   "target": "staging only; draft PR11",
   "focused_tests": {
     "outcome": "PASS",
-    "passed": 34,
-    "publisher_and_model_mocked_in_replay": true
+    "passed": 52,
+    "real_markup_fixtures": 8,
+    "synthetic_pipeline_replay_explicitly_mocked": true
   },
   "full_qa": {
     "run": "https://github.com/cftorre1/Radar-salud/actions/runs/38111771457",
@@ -20,8 +21,8 @@
   },
   "local_recurated_reviewer": {
     "reviewer": "deterministic-reviewer",
-    "candidate_sha": "e703faf638c9ef0b9708b242e1bbceed95188e24",
-    "reviewed_at": "2026-10-11T04:34:55.107261+00:00",
+    "candidate_sha": "0d8a28087ac4dffcf1dda32d73cc2eccf30fe112",
+    "reviewed_at": "2026-10-11T05:36:30.273448+00:00",
     "findings": [
       {
         "category": "statistics",
@@ -110,5 +111,32 @@
     "checkpoint": "failed absent data/telemetry; original artifacts preserved; recovering in next run",
     "artifact_id": 11691902368
   },
-  "next_action": "Inspect restored real runtime on isolated branch, review originals and decisions, complete 30/90 boundaries; full candidate blocked by independent non-DF QA/statistical defects."
+  "next_action": "Resolve non-DF normative/statistical gates; DF image/OCR and multimedia transcript evidence remain explicit retries; fresh post-merge runtime required before closure.",
+  "local_full_qa": {
+    "outcome": "FAIL",
+    "passed": 298,
+    "failed": 1,
+    "skipped": 1,
+    "excluded": "tests/test_live_beta_sources.py",
+    "failure": "tests/test_web_snapshot.py:289:11 Normativa versus minimum12; same baseline failure"
+  },
+  "runtime_latest_processing": {
+    "run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114333430",
+    "originals_ok": 427,
+    "fast_calls": 19,
+    "source_poll": "fresh listings; details preserve original captures"
+  },
+  "runtime_latest_capture_only": {
+    "run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114804287",
+    "model_calls": 0
+  },
+  "acceptance": {
+    "df_closed": false,
+    "full_qa": "FAIL",
+    "reviewer": "FAIL statistics; semantic independence not certified",
+    "staging_candidate": "NOT_PASS",
+    "merge_sha": null,
+    "post_merge_runtime": null,
+    "coverage_30_90": "partial"
+  }
 }
