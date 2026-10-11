@@ -362,6 +362,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         "selected_sources": discovery.get("selected_sources"), "core_source_present": SOURCE in discovery.get("sources", {}),
         "audit_discovery_error": discovery.get("audit_discovery_error"),
         "core_source": discovery.get("sources", {}).get(SOURCE), "coverage": coverage,
+        "processing_deferrals": discovery.get("processing_deferrals", {}),
         "primary_coverage": primary_coverage,
         "complementary_archive_limits": [row for row in coverage if row.get("status") == "archive_coverage"],
         "baseline_queue": list(baseline), "windows": windows, "matrix": matrix,
@@ -409,6 +410,7 @@ def current_execution_discovery(discovery, started_at):
     stale = dict(discovery)
     stale["source_details"] = {**discovery.get("source_details", {}), SOURCE: []}
     stale["sources"] = {key: row for key, row in discovery.get("sources", {}).items() if key != SOURCE}
+    stale["processing_deferrals"] = {key: row for key, row in discovery.get("processing_deferrals", {}).items() if key != SOURCE}
     stale["audit_discovery_error"] = "discovery_not_persisted_by_current_execution"
     return stale, False
 
@@ -431,11 +433,14 @@ def annotate_pending(report, execution):
         elif execution.get("mode") == "discovery_only":
             reason = "processing_not_attempted:explicit_discovery_only"
         elif execution.get("engine_completed"):
+            deferral = report.get("processing_deferrals", {}).get(SOURCE, {})
             limit = execution.get("processing_limit", 0)
-            if limit and execution.get("processing_attempts_increased", 0) >= limit:
+            if deferral.get("required_tier") == "fast" and deferral.get("before_queue_start"):
+                reason = "processing_not_attempted:" + str(deferral.get("reason", "fast_analysis_capacity_exhausted"))
+            elif limit and execution.get("processing_attempts_increased", 0) >= limit:
                 reason = "processing_not_attempted:global_processing_limit_reached"
-            elif execution.get("model_capacity_after") == {"fast": False, "deep": False}:
-                reason = "processing_not_attempted:both_model_budget_capacities_exhausted"
+            elif execution.get("model_capacity_after", {}).get("fast") is False:
+                reason = "processing_not_attempted:fast_analysis_capacity_exhausted"
         if reason:
             row["exact_reason"] = reason
             row["operational_reason_evidence"] = "execution flags, real attempt deltas and read-only budget state; no editorial rejection inferred"

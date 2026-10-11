@@ -184,7 +184,9 @@ def test_recent_history_feed_exclusion_is_flagged_unresolved():
     ({"engine_called": True, "engine_completed": True, "mode": "real_core_processing", "processing_limit": 250,
       "processing_attempts_increased": 250, "model_capacity_after": {"fast": False, "deep": False}}, "global_processing_limit_reached"),
     ({"engine_called": True, "engine_completed": True, "mode": "real_core_processing", "processing_limit": 250,
-      "processing_attempts_increased": 45, "model_capacity_after": {"fast": False, "deep": False}}, "both_model_budget_capacities_exhausted"),
+      "processing_attempts_increased": 45, "model_capacity_after": {"fast": False, "deep": False}}, "fast_analysis_capacity_exhausted"),
+    ({"engine_called": True, "engine_completed": True, "mode": "real_core_processing", "processing_limit": 250,
+      "processing_attempts_increased": 45, "model_capacity_after": {"fast": False, "deep": True}}, "fast_analysis_capacity_exhausted"),
 ])
 def test_pending_reason_uses_observed_execution_and_preserves_unknown_editorial_gate(execution, reason):
     report = audit.join_report(discovery([trace("pending")]), {"pending": item("pending", "pending")}, [], [], control([]))
@@ -222,3 +224,19 @@ def test_serialized_candidate_feed_rows_are_not_invented_from_history():
     rows, evidence = audit.snapshot_feed({"signals": actual, "generated_at": "2026-10-11T11:00:00Z"}, 1791710000)
     assert rows == actual and evidence["serialized_feed_verified"]
     assert evidence["generated_after_current_history"]
+
+
+def test_explicit_required_fast_deferral_is_reported_before_any_queue_attempt():
+    run = discovery([trace("pending")])
+    run["processing_deferrals"] = {SOURCE: {"reason": "fast_analysis_capacity_exhausted",
+        "required_tier": "fast", "before_queue_start": True}}
+    pending = item("pending", "pending")
+    pending["attempts"] = 0
+    report = audit.join_report(run, {"pending": pending}, [], [], control([]))
+    audit.annotate_pending(report, {"mode": "real_core_processing", "engine_completed": True,
+        "engine_called": True, "model_capacity_after": {"fast": False, "deep": True}})
+    row = report["matrix"][0]
+    assert row["queue"][0]["attempts"] == 0
+    assert row["passed_gate"] is None
+    assert row["exact_reason"] == "processing_not_attempted:fast_analysis_capacity_exhausted"
+    assert not report["unresolved_pending_operational_reasons"]
