@@ -459,6 +459,9 @@ def process_corporate_news(raw,cfg):
             or parsed.scheme!="https" or parsed.netloc not in expected[1]
             or not (re.fullmatch(expected[2],parsed.path) or root_bupa)):
         return None
+    gate=raw.metadata.get('source_quality_gate')
+    if gate and gate!='passed':
+        raise DeferredProcessing(f'Corporate source quality gate not passed: {gate}')
     if raw.source_slug=="bupa_chile":
         try:
             page=fetch_html(raw.url)

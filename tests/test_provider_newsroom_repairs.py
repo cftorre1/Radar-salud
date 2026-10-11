@@ -73,3 +73,19 @@ def test_provider_header_date_does_not_borrow_from_body_or_related_cards():
     for html,expected in cases:
         p=_ProviderPublication();p.feed(html)
         assert p.publication()[0]==expected
+
+
+@pytest.mark.parametrize('slug,name,processor,url',[
+    ('indisa','Clínica INDISA','corporate','https://www.indisa.cl/blog/convenio'),
+    ('red_davila','Red Dávila','beta','https://www.davila.cl/novedades/convenio'),
+])
+def test_pending_source_quality_gate_blocks_fetch_and_assessment(monkeypatch,slug,name,processor,url):
+    from radar_salud import beta_sources, public_source_pipeline
+    raw=RawItem(slug,'Nueva capacidad y convenio de atención',url,name,'corporate','2026-10-02',
+        metadata={'source_quality_gate':'pending_90_day_audit','market_role':'provider','publication_date_source':'verified_article_header'})
+    for module in (beta_sources,public_source_pipeline):
+        monkeypatch.setattr(module,'fetch_html',lambda _:pytest.fail('Pending quality gate must block article fetch'))
+    monkeypatch.setattr(public_source_pipeline,'analyze_news',lambda **kw:pytest.fail('Pending quality gate must block paid assessment'))
+    process=public_source_pipeline.process_corporate_news if processor=='corporate' else beta_sources.process_curated_beta_source
+    with pytest.raises(DeferredProcessing,match='source quality gate not passed: pending_90_day_audit'):
+        process(raw,{'slug':slug,'source_type':'corporate'})

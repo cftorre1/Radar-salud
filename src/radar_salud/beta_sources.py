@@ -304,6 +304,9 @@ def process_curated_beta_source(raw, cfg):
 
     role = raw.metadata.get("market_role") or "provider"
     if role.startswith('provider'):
+        gate=raw.metadata.get('source_quality_gate')
+        if gate and gate!='passed':
+            raise DeferredProcessing(f'Provider source quality gate not passed: {gate}')
         if (not raw.event_date or raw.metadata.get('publication_date_source')
                 not in ('article:published_time','verified_article_header')):
             raise DeferredProcessing('Provider publication date unverified')

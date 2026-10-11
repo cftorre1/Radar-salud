@@ -240,7 +240,7 @@
       "last_signal_at": "2026-08-13",
       "discovered": 51,
       "new": 0,
-      "published": 0,
+      "published": 1,
       "live_pending": 0,
       "backfill_pending": 5,
       "pending": 5,
@@ -251,7 +251,7 @@
       "technical_status": "ok",
       "coverage_status": "unverified",
       "content_freshness": "older",
-      "editorial_outcome": "pending",
+      "editorial_outcome": "published",
       "provider_audit": {
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/bupa_chile.json",
@@ -264,19 +264,29 @@
         "recovered_pending": 3
       },
       "latest_original_at": null,
-      "evaluation_performed": false,
-      "collection_mode": "original_discovery_and_audited_candidates",
+      "evaluation_performed": true,
+      "collection_mode": "audited_candidates_only",
       "audited_assessment": {
-        "at": "2026-10-11T04:49:06.489309+00:00",
-        "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
-        "attempted": 3,
-        "published": 0,
-        "rejected": 0,
-        "retry": 3,
-        "outcome": "pending",
-        "full_90_inventory": false,
-        "promotion": "none"
-      }
+        "at": "2026-10-11T05:03:43.051938+00:00",
+        "evaluated": 1,
+        "published": 1,
+        "outcome": "published",
+        "last_signal_at": "2026-08-13",
+        "scope": "two repaired original URLs; preceding assessment preserved in history"
+      },
+      "audited_assessment_history": [
+        {
+          "at": "2026-10-11T04:49:06.489309+00:00",
+          "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+          "attempted": 3,
+          "published": 0,
+          "rejected": 0,
+          "retry": 3,
+          "outcome": "pending",
+          "full_90_inventory": false,
+          "promotion": "none"
+        }
+      ]
     },
     "pfizer_chile": {
       "name": "Pfizer Chile",
@@ -461,7 +471,7 @@
       "content_freshness": "unknown",
       "editorial_outcome": "rejected",
       "evaluation_performed": true,
-      "collection_mode": "original_discovery_and_audited_candidates",
+      "collection_mode": "audited_candidates_only",
       "provider_audit": {
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/red_davila.json",
@@ -475,16 +485,26 @@
       },
       "latest_original_at": "2026-09-30",
       "audited_assessment": {
-        "at": "2026-10-11T04:49:06.489309+00:00",
-        "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
-        "attempted": 2,
+        "at": "2026-10-11T05:03:43.051938+00:00",
+        "evaluated": 1,
         "published": 0,
-        "rejected": 1,
-        "retry": 1,
         "outcome": "rejected",
-        "full_90_inventory": false,
-        "promotion": "none"
-      }
+        "last_signal_at": null,
+        "scope": "two repaired original URLs; preceding assessment preserved in history"
+      },
+      "audited_assessment_history": [
+        {
+          "at": "2026-10-11T04:49:06.489309+00:00",
+          "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+          "attempted": 2,
+          "published": 0,
+          "rejected": 1,
+          "retry": 1,
+          "outcome": "rejected",
+          "full_90_inventory": false,
+          "promotion": "none"
+        }
+      ]
     },
     "andes_salud": {
       "name": "Andes Salud",
