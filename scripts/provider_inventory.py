@@ -18,19 +18,26 @@ from pathlib import Path
 import re
 from urllib.error import HTTPError
 from urllib.parse import quote, urljoin, urlparse, urlunparse
-from urllib.request import Request, urlopen
+from urllib.request import Request, HTTPRedirectHandler, build_opener
 import xml.etree.ElementTree as ET
 
 from radar_salud.pending_queue import atomic_json
 from radar_salud.source_scouts import CorporateNewsroomScout, ClinicasChileScout
 from radar_salud.beta_sources import CuratedBetaSourceScout, _ProviderPublication
 from radar_salud.public_source_pipeline import (
-    _BupaArticle, _IndisaArticle, _VisibleArticle, _date,
+    _BupaArticle, _IndisaArticle, _RedSaludArticle, _VisibleArticle, _date,
 )
 
 SLUGS = ('redsalud', 'bupa_chile', 'indisa', 'red_davila', 'andes_salud',
          'clinicas_chile', 'pfizer_chile', 'clinicas_achs_salud')
 UA = 'RadarSaludBot/0.1 (+public-source-monitor)'
+
+
+class RedirectRecorder(HTTPRedirectHandler):
+    def __init__(self):super().__init__();self.chain=[]
+    def redirect_request(self,req,fp,code,msg,headers,newurl):
+        self.chain.append({'from':req.full_url,'status':code,'to':newurl})
+        return super().redirect_request(req,fp,code,msg,headers,newurl)
 
 
 def canonical(url):
@@ -104,6 +111,9 @@ def detail_evidence(slug, url, html):
     elif slug=='indisa':
         a=_IndisaArticle();a.feed(html);a.finish();title=a.title or title;body=a.body or body
         if a.event_date():stamps.append({'kind':'verified_article_header','value':a.event_date(),'date':a.event_date()})
+    elif slug=='redsalud':
+        a=_RedSaludArticle(url);a.feed(html);a.finish()
+        if a.header_date:stamps.append({'kind':'verified_article_header','value':a.header_date,'date':a.header_date})
     elif slug in CuratedBetaSourceScout.SOURCES:
         a=_ProviderPublication();a.feed(html);stamp,provenance=a.publication()
         if stamp:stamps.append({'kind':provenance,'value':stamp,'date':stamp})
@@ -118,7 +128,7 @@ def detail_evidence(slug, url, html):
 class Inventory:
     def __init__(self,slug,as_of,root,limit=240):
         self.slug=slug;self.as_of=as_of;self.cutoff=as_of-timedelta(days=90)
-        self.root=root;self.limit=limit;self.cache={};self.requests=[];self.items={};self.notes=[]
+        self.root=root;self.limit=limit;self.cache={};self.requests=[];self.items={};self.notes=[];self.archive_index=[]
         if slug=='clinicas_chile':
             self.scout=ClinicasChileScout();self.page=self.scout.PAGES[0][1];self.pattern=r'/(?:noticias/)?[^/]+/?'
         elif slug in CorporateNewsroomScout.SOURCES:
@@ -141,19 +151,25 @@ class Inventory:
             self.notes.append({'reason':'request_limit_reached','url':url});return None
         now=datetime.now(timezone.utc).isoformat(); row={'url':url,'kind':kind,'captured_at':now,'user_agent':UA,'tls_verified':True}
         encoded=quote(url,safe=':/?&=%+#;,@!$()*[]')
+        redirects=RedirectRecorder()
         try:
-            with urlopen(Request(encoded,headers={'User-Agent':UA}),timeout=10) as response:
+            with build_opener(redirects).open(Request(encoded,headers={'User-Agent':UA}),timeout=10) as response:
                 data=response.read(6*1024*1024+1)
                 row.update(status=response.status,final_url=response.url,content_type=response.headers.get('Content-Type'),
                            server=response.headers.get('Server'),wp_total=response.headers.get('X-WP-Total'),
                            wp_total_pages=response.headers.get('X-WP-TotalPages'),response_sha256=hashlib.sha256(data).hexdigest())
                 if len(data)>6*1024*1024:raise ValueError('response_size_limit')
+                if not self.own(response.url):raise ValueError('unreviewed_redirect_host')
                 text=data.decode(response.headers.get_content_charset() or 'utf-8',errors='replace')
         except HTTPError as exc:
-            row.update(status=exc.code,error_type=type(exc).__name__,error=str(exc),server=exc.headers.get('Server'))
+            error_body=exc.read(200000)
+            row.update(status=exc.code,error_type=type(exc).__name__,error=str(exc),server=exc.headers.get('Server'),
+                       response_sha256=hashlib.sha256(error_body).hexdigest(),response_bytes=len(error_body),
+                       waf_markers=[token for token in ('Cloudflare','Access Denied','Forbidden','captcha','challenge') if token.lower() in error_body.decode('utf-8',errors='replace').lower()])
             text=None
         except Exception as exc:
             row.update(status=None,error_type=type(exc).__name__,error=str(exc)[:300]);text=None
+        row['redirects']=redirects.chain
         self.requests.append(row);self.cache[url]=text
         if text:
             private=self.root/'work/provider_inventory/private'/self.slug
@@ -182,7 +198,7 @@ class Inventory:
                 p=Metadata();p.feed(html);raws=[]
                 for href,title in p.links:
                     target=urljoin(url,href)
-                    if re.fullmatch(self.pattern,urlparse(target).path) and len(title)>=18:
+                    if re.fullmatch(self.pattern,urlparse(target).path):
                         self.add(target,title,url,channel)
             for raw in raws:
                 self.add(raw.url,raw.title,url,channel,raw.event_date,
@@ -192,9 +208,10 @@ class Inventory:
         p=Metadata();p.feed(html)
         for href,title in p.links:
             target=urljoin(url,href)
-            if (self.own(target) and ('/page/' in target or '?page=' in target)
-                    and urlparse(target).path.startswith(urlparse(self.page).path.rstrip('/'))):
-                self.pagination.add(target)
+            path=urlparse(target).path;listing_path=urlparse(self.page).path.rstrip('/')
+            if (self.own(target) and (path.rstrip('/')==listing_path and re.fullmatch(r'page=\d+',urlparse(target).query)
+                    or re.fullmatch(re.escape(listing_path)+r'/page/\d+/?',path))):
+                self.pagination.add(canonical(target))
         return len(self.items)-before
 
     def wordpress(self):
@@ -221,7 +238,6 @@ class Inventory:
                 for post in posts:
                     if post.get('status')!='publish' or not post.get('link'):continue
                     target=post['link']
-                    if base=='posts' and self.slug!='clinicas_chile' and not re.fullmatch(self.pattern,urlparse(target).path):continue
                     title=re.sub('<[^>]+>',' ',post.get('title',{}).get('rendered',''))
                     self.add(target,title,url,'Noticias' if base=='posts' else 'Biblioteca',iso(post.get('date')),'cms_published_post_date')
                 if number>=pages:
@@ -230,6 +246,7 @@ class Inventory:
     def xml_alternatives(self):
         robots=self.fetch('/robots.txt','robots') or ''
         xmls=[self.origin+x for x in ('/sitemap.xml','/sitemap_index.xml','/sitemap-news.xml','/feed/','/rss.xml')]
+        if self.slug=='clinicas_chile':xmls.insert(0,self.origin+'/?feed=rss2&post_type=kbe_knowledgebase')
         xmls.extend(re.findall(r'(?im)^sitemap:\s*(\S+)',robots));visited=set()
         while xmls and len(visited)<18:
             url=xmls.pop(0)
@@ -253,9 +270,18 @@ class Inventory:
                     # Bupa root pages include the entire site. Only news-card
                     # provenance can make a root article eligible.
                     if self.slug=='bupa_chile' and canonical(target) not in self.items:continue
+                    self.archive_index.append({'url':target,'sitemap':url,'lastmod':children.get('lastmod'),'date_role':'modification_only'})
+                    # A complete CMS publication inventory is the authoritative
+                    # 90-day index. Do not spend requests on hundreds of old
+                    # sitemap articles while current items remain unresolved.
+                    if self.cms_complete and canonical(target) not in self.items:continue
+                    if self.slug=='clinicas_chile' and canonical(target) not in self.items:continue
+                    if self.slug=='red_davila' and canonical(target) not in self.items:continue
                     self.add(target,'',url)
                     item=self.items[canonical(target)]
                     if children.get('lastmod'):item['sitemap_lastmod']=children['lastmod']
+                elif local=='url' and target and self.slug=='clinicas_chile' and 'knowledgebase' in target:
+                    self.add(target,'',url,'Library entry')
         self.xml_pages_checked=len(visited)
 
     def run(self):
@@ -271,6 +297,11 @@ class Inventory:
             if added==0 and self.cache.get(url):break
         for url in sorted(self.pagination)[:12]:self.listing(url)
         self.wordpress();self.xml_alternatives()
+        if self.slug=='redsalud':self.listing(self.origin+'/observatorio/noticias-clinicas')
+        if self.slug=='clinicas_chile':
+            self.fetch('/?rest_route=/wp/v2/types','cms_alternative')
+            self.fetch('/?rest_route=/wp/v2/posts&after='+str(self.cutoff)+'T00:00:00&per_page=100','cms_alternative')
+            self.fetch('/?feed=rss2&post_type=kbe_knowledgebase','library_rss')
         # Public internal search is another official alternative, never a WAF bypass.
         self.listing(self.origin+'/?s='+quote('convenio inversión clínicas'))
         # Include the audited holdings even when listing parsing fails.
@@ -291,12 +322,18 @@ class Inventory:
             stamps={x['date'] for x in item['date_stamps'] if x.get('date')}
             item['publication_date']=next(iter(stamps)) if len(stamps)==1 else None
             item['date_reason']='verified_original_publication' if len(stamps)==1 else 'conflicting_publication_stamps' if stamps else 'publication_date_not_exposed'
+            if self.slug=='redsalud' and len(stamps)>1:
+                article=_RedSaludArticle(item['url']);article.feed(html);article.finish()
+                canonical_host=urlparse(article.canonical_url or '').netloc.removeprefix('www.')
+                if (canonical_host==self.host and '/observatorio/noticias/' in (article.canonical_url or '')
+                        and article.canonical_schema_match and article.header_date==_date(article.published)):
+                    item.update(publication_date=article.header_date,date_reason='canonical_identity_jsonld_and_visible_header_agree')
             stamp=item['publication_date']
             item['in_30_days']=bool(stamp and 0<=(self.as_of-date.fromisoformat(stamp)).days<=30) if stamp else None
             item['in_90_days']=bool(stamp and 0<=(self.as_of-date.fromisoformat(stamp)).days<=90) if stamp else None
         dates=[x['publication_date'] for x in self.items.values() if x.get('publication_date')]
-        result={'version':1,'slug':self.slug,'as_of':str(self.as_of),'captured_at':datetime.now(timezone.utc).isoformat(),
-            'requests':self.requests,'notes':self.notes,'items':list(self.items.values()),
+        result={'version':2,'slug':self.slug,'as_of':str(self.as_of),'captured_at':datetime.now(timezone.utc).isoformat(),
+            'requests':self.requests,'notes':self.notes,'items':list(self.items.values()),'archive_index':self.archive_index,
             'cms_complete':self.cms_complete,'xml_pages_checked':self.xml_pages_checked,
             'pages_checked':len(self.requests),'discovered':len(self.items),'unique':len(self.items),
             'latest_original_at':max(dates) if dates else None,
