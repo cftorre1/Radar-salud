@@ -16,7 +16,7 @@ from .analysis_cache import seed_from_history
 from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
-from .processing import DeferredProcessing
+from .processing import DeferredProcessing, RejectedProcessing
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 
 def main():
@@ -104,6 +104,9 @@ def main():
                 history=merge_history(history,[row]);save_history(history_path,history)
                 produced[item["source"]].append(row)
             queue.finish(key,"published" if row else "rejected",None if row else "processor_rejected")
+            SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
+        except RejectedProcessing as exc:
+            queue.finish(key,"rejected",str(exc))
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except DeferredProcessing:
             queue.finish(key,"retry","budget_or_analysis_deferred")

@@ -43,3 +43,50 @@ def test_sis_invalid_table_date_and_navigation_cannot_prove_discovery():
     rows = [['31/02/2026', '', '<a href="/normativa/1">Resolución Exenta IP/N°1</a>', 'Multa', 'GES'],
             ['15/09/2026', '', '<a href="/">Inicio de fiscalización</a>', 'Menú', 'GES']]
     assert parse_listing(listing(rows), *PAGES[2]) == []
+
+
+def suseso_table(extra=''):
+    return '<script>var fake="2020-01-01";</script><table><tr><th>Fecha</th><th>Título</th><th>Temas</th><th>Descriptores</th></tr><tr><td>29/09/2026</td><td><a href="/612/w3-article-791293.html">Dictamen O-02-S-03153-2026</a></td><td>Licencias médicas</td><td>Procedimiento</td></tr>' + extra + '</table>'
+
+
+def test_suseso_uses_row_date_and_unions_compin_isapre_memberships(monkeypatch):
+    from radar_salud.suseso_fiscalizacion import SusesoFiscalizacionScout
+    monkeypatch.setattr('radar_salud.suseso_fiscalizacion.fetch_html', lambda url: suseso_table())
+    raw, = SusesoFiscalizacionScout().discover()
+    assert raw.event_date == '2026-09-29'
+    assert raw.metadata['fiscalized_actors'] == ['COMPIN', 'Isapres']
+    assert len(raw.metadata['listing_urls']) == 2
+    assert raw.metadata['document_class'] == 'related_normative'
+
+
+def test_suseso_related_normative_rejected_before_ai_or_detail_fetch():
+    import pytest
+    from radar_salud.processing import RejectedProcessing
+    from radar_salud.suseso_fiscalizacion import parse_actor_listing, PAGES
+    from radar_salud.public_source_pipeline import process_suseso_fiscalizacion
+    raw, = parse_actor_listing(suseso_table(), *PAGES[0])
+    with pytest.raises(RejectedProcessing, match='related_normative_not_enforcement'):
+        process_suseso_fiscalizacion(raw, {})
+
+
+def test_suseso_partial_surface_keeps_other_actor_and_exposes_failure(monkeypatch):
+    from radar_salud.suseso_fiscalizacion import SusesoFiscalizacionScout
+    def fetch(url):
+        if '30981' in url: raise TimeoutError()
+        return suseso_table()
+    monkeypatch.setattr('radar_salud.suseso_fiscalizacion.fetch_html', fetch)
+    scout = SusesoFiscalizacionScout()
+    raw, = scout.discover()
+    assert raw.metadata['fiscalized_actors'] == ['COMPIN']
+    assert [row['status'] for row in scout.surface_results] == ['error', 'parsed']
+
+
+def test_suseso_retains_undated_documents_and_does_not_limit_recent_coverage(monkeypatch):
+    from radar_salud.suseso_fiscalizacion import SusesoFiscalizacionScout
+    html = suseso_table(''.join(f'<tr><td>29/09/2026</td><td><a href="/612/w3-article-{800000+i}.html">Dictamen {i}-2026</a></td><td>Licencias</td></tr>' for i in range(45)) + '<tr><td></td><td><a href="/612/w3-article-999999.html">Informe sin fecha</a></td></tr>')
+    monkeypatch.setattr('radar_salud.suseso_fiscalizacion.fetch_html', lambda url: html)
+    scout = SusesoFiscalizacionScout()
+    items = scout.discover()
+    assert len(items) == 47
+    assert sum(raw.event_date is None for raw in items) == 1
+    assert scout.surface_results[0]['undated'] == 1

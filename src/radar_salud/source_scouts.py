@@ -83,37 +83,7 @@ class SusesoNewsScout:
         return out[:30]
 
 
-class SusesoFiscalizacionScout:
-    """Official SUSESO fiscalized-actor surfaces, separated from normative acts."""
-    SOURCE_SLUG="suseso_fiscalizacion";SOURCE_NAME="Superintendencia de Seguridad Social (SUSESO)";SOURCE_TYPE="official"
-    PAGES=[
-        ("Isapres","https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html"),
-        ("COMPIN","https://www.suseso.gob.cl/612/w3-propertyvalue-30982.html"),
-    ]
-    def discover(self):
-        from .public_source_pipeline import _Meta, _date
-        out=[];seen=set()
-        for actor,page in self.PAGES:
-            html=fetch_html(page);p=_A();p.feed(html)
-            for href,title in p.links:
-                if not href or len(title)<12:continue
-                url=urljoin(page,href);parsed=urlparse(url)
-                if parsed.netloc not in ("www.suseso.gob.cl","suseso.gob.cl"):continue
-                if not re.fullmatch(r"/612/w3-article-\d+\.html",parsed.path) or url in seen:continue
-                seen.add(url)
-                try:
-                    meta=_Meta();meta.feed(fetch_html(url))
-                    body=" ".join(meta.text)
-                    event_date=_date(meta.published) or _date(body[:5000])
-                except Exception:
-                    continue
-                if not event_date:continue
-                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                                   event_date=event_date,raw_text=(meta.description or body[:1800]),
-                                   metadata={"discovered_from":page,"fiscalized_actor":actor,"page_text":body[:18000]}))
-        if not out:raise RuntimeError("SUSESO fiscalizacion surfaces have no dated detail items")
-        out.sort(key=lambda x:x.event_date or "",reverse=True)
-        return out[:40]
+from .suseso_fiscalizacion import SusesoFiscalizacionScout
 
 
 class DfHealthScout:
