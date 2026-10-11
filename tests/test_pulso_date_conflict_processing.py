@@ -50,7 +50,8 @@ def test_bound_primary_conflict_is_pending_before_fetch_materiality_or_ai(monkey
         assert raw.metadata[key] == before[key]
 
 
-@pytest.mark.parametrize('tamper', ['identity', 'body_hash', 'byline', 'evidence', 'raw_url', 'raw_date'])
+@pytest.mark.parametrize('tamper', ['identity', 'body_hash', 'byline', 'evidence', 'raw_url', 'raw_date',
+                                   'chosen_timestamp', 'article_verified'])
 def test_unproven_conflict_flag_cannot_bypass_original_verification(tamper, monkeypatch):
     raw = conflict_raw()
     if tamper == 'identity':
@@ -63,8 +64,12 @@ def test_unproven_conflict_flag_cannot_bypass_original_verification(tamper, monk
         raw.metadata['publication_evidence'] = []
     elif tamper == 'raw_url':
         raw.url = 'https://www.latercera.com/nacional/noticia/other/'
-    else:
+    elif tamper == 'raw_date':
         raw.event_date = '2026-07-30'
+    elif tamper == 'chosen_timestamp':
+        raw.metadata['publication_timestamp'] = '2026-08-06T21:20:49.55Z'
+    else:
+        raw.metadata['article_verified'] = True
     calls = []
     def unavailable(url):
         calls.append(url)
