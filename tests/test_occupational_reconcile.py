@@ -71,6 +71,14 @@ def test_shared_newsroom_foreign_role_never_counts_as_published(tmp_path):
     assert reports['ist']['reconciliation']['states'].get('published',0)==0
 
 
+def test_previous_published_decision_keeps_score_without_a_new_assessment(tmp_path,monkeypatch):
+    setup(tmp_path,raw(),status='published')
+    monkeypatch.setattr('scripts.occupational_inventory.process_curated_beta_source',lambda *a: (_ for _ in ()).throw(AssertionError('repeat analysis')))
+    reports=report(raw());reconcile(tmp_path,reports,Loader(),apply=True)
+    assert reports['ist']['rows'][0]['alicanto_status']=='published'
+    assert reports['ist']['rows'][0]['editorial_score']==65
+
+
 def test_changed_input_readonly_reports_reassessment_without_mutation(tmp_path):
     setup(tmp_path,raw('old advice'));path=tmp_path/'data/state/pending_queue.json';before=path.read_bytes()
     reports=report(raw());reconcile(tmp_path,reports,Loader(),apply=False)

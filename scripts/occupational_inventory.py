@@ -134,7 +134,10 @@ def reconcile(root, reports, loader, *, apply=False, assessment_state=None):
             changed = bool(previous and editorial_input(previous.get("raw", {})) != editorial_input(raw))
             row["editorial_input_changed"] = changed
             if item.get("status") == "published" or url in history_by_url:
-                row.update(alicanto_status="published", processing_reason="already_published")
+                assessment = item.get("editorial_assessment", {})
+                row.update(alicanto_status="published", processing_reason="already_published",
+                           editorial_score=assessment.get("score", history_by_url.get(url, {}).get("editorial_relevance")),
+                           editorial_reason=assessment.get("reason"), editorial_threshold=assessment.get("threshold", 75))
                 continue
             if item.get("status") == "rejected" and not changed:
                 row.update(alicanto_status="rejected", processing_reason=item.get("reason"), editorial_score=item.get("editorial_assessment", {}).get("score"))
@@ -156,6 +159,8 @@ def reconcile(root, reports, loader, *, apply=False, assessment_state=None):
                 result = process_curated_beta_source(raw, configs[slug])
                 if raw.metadata.get("editorial_assessment"):
                     row["editorial_score"] = raw.metadata["editorial_assessment"]["score"]
+                    row["editorial_reason"] = raw.metadata["editorial_assessment"].get("reason")
+                    row["editorial_threshold"] = raw.metadata["editorial_assessment"].get("threshold", 75)
                     queue.items[key]["editorial_assessment"] = raw.metadata["editorial_assessment"]
                 if result:
                     from radar_salud.occupational_snapshot import prepare_signal
