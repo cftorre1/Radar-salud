@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T11:16:32.929548-03:00",
+  "updated_at": "2026-10-11T14:13:46.692772+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3701,9 +3701,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T06:35:32.562316+00:00",
+      "last_progress_at": "2026-10-11T14:13:46.692772+00:00",
       "current_subfront": "branch_runtime_outcomes_proven_pending_postmerge_staging_gate",
-      "next_action": "Integración/Reviewer: revisar PR #13, hacer merge seguro a staging cuando sus gates lo permitan y repetir runtime real de DEIS después del merge. Mantener independientes los blockers FONASA ALB403 e ISP TCP443; sus propietarios oficiales deben habilitar acceso o export actual. No cerrar issue #5 con evidencia sólo de rama.",
+      "next_action": "Runtime post-merge en curso; revisión por subfuente y conciliación del stock antes de cambiar outcome.",
       "blocked_by": [],
       "progress": "Recuperación efectiva en la rama: DEIS OPERATIVE_DEGRADED con 12 documentos fechados, 10 PDF legibles, 5 catálogos/572 recursos y 5 datasets oficiales nacionales; cuatro EXTERNAL_BLOCKER_PROVEN desde Codex + GitHub, con alternativas oficiales. 137 tests dirigidos; 389 PASS/1 fallo heredado/1 SKIP; Node41; browser 32/14 igual baseline; Reviewer sin nuevos hallazgos. Sin merge/deploy ni publicaciones nuevas. Final runtime 38117670184 at 55e31b1 confirms all five native scouts and XLSX/CSV samples: 14,641 sheet rows, 5,782 establishments, 168,474 hospital-indicator rows, with no editorial date fabricated.",
       "evidence": [
@@ -3744,7 +3744,11 @@
       },
       "validated_code_sha": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
       "staging_tracking_integrated_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-      "postmerge_runtime_verified": false
+      "postmerge_runtime_verified": false,
+      "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "integration_pr": 21,
+      "runtime_run": 38146249940,
+      "integration_outcome": "NOT_READY"
     },
     {
       "id": "source_repair_fiscalization_lane_2026_10_11",
@@ -4797,8 +4801,8 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:05:53.481344+00:00",
-      "current_subfront": "post_merge_PR20",
+      "last_progress_at": "2026-10-11T14:13:46.692772+00:00",
+      "current_subfront": "post_merge_PR21",
       "next_action": "Validar runtime de la integración actual y continuar los siguientes frentes seguros. Pulso requiere READY explícito.",
       "independent_review_cuts": [
         {
@@ -5051,6 +5055,176 @@
             "reviewer": "PASS deterministic",
             "preserved_prior_history": 886,
             "added_history": 5
+          }
+        },
+        "deis": {
+          "source": "deis",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_public_data_lane_2026_10_11",
+          "pr": 13,
+          "branch": "codex/c-public-sources-20261011",
+          "candidate_sha": "0858af8e39d1b1a42ed4b9b82fe0ca173d0faf88",
+          "integration": "merged_PR21",
+          "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+          "qa": {
+            "run": 38145944249,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38145944249,
+            "status": "PASS",
+            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+          },
+          "runtime_post_merge": {
+            "run": 38146249940,
+            "status": "IN_PROGRESS"
+          },
+          "final_state": "NOT_READY",
+          "owner": "Pele + Public Data Worker",
+          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "candidate_qa": {
+            "focused": "129 PASS",
+            "history_preserved": 891,
+            "new_editorial_signals": 0
+          }
+        },
+        "fonasa": {
+          "source": "fonasa",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_public_data_lane_2026_10_11",
+          "pr": 13,
+          "branch": "codex/c-public-sources-20261011",
+          "candidate_sha": "0858af8e39d1b1a42ed4b9b82fe0ca173d0faf88",
+          "integration": "merged_PR21",
+          "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+          "qa": {
+            "run": 38145944249,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38145944249,
+            "status": "PASS",
+            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+          },
+          "runtime_post_merge": {
+            "run": 38146249940,
+            "status": "IN_PROGRESS"
+          },
+          "final_state": "NOT_READY",
+          "owner": "Pele + Public Data Worker",
+          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "candidate_qa": {
+            "focused": "129 PASS",
+            "history_preserved": 891,
+            "new_editorial_signals": 0
+          }
+        },
+        "fonasa_datos_abiertos": {
+          "source": "fonasa_datos_abiertos",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_public_data_lane_2026_10_11",
+          "pr": 13,
+          "branch": "codex/c-public-sources-20261011",
+          "candidate_sha": "0858af8e39d1b1a42ed4b9b82fe0ca173d0faf88",
+          "integration": "merged_PR21",
+          "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+          "qa": {
+            "run": 38145944249,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38145944249,
+            "status": "PASS",
+            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+          },
+          "runtime_post_merge": {
+            "run": 38146249940,
+            "status": "IN_PROGRESS"
+          },
+          "final_state": "NOT_READY",
+          "owner": "Pele + Public Data Worker",
+          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "candidate_qa": {
+            "focused": "129 PASS",
+            "history_preserved": 891,
+            "new_editorial_signals": 0
+          }
+        },
+        "isp_anamed": {
+          "source": "isp_anamed",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_public_data_lane_2026_10_11",
+          "pr": 13,
+          "branch": "codex/c-public-sources-20261011",
+          "candidate_sha": "0858af8e39d1b1a42ed4b9b82fe0ca173d0faf88",
+          "integration": "merged_PR21",
+          "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+          "qa": {
+            "run": 38145944249,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38145944249,
+            "status": "PASS",
+            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+          },
+          "runtime_post_merge": {
+            "run": 38146249940,
+            "status": "IN_PROGRESS"
+          },
+          "final_state": "NOT_READY",
+          "owner": "Pele + Public Data Worker",
+          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "candidate_qa": {
+            "focused": "129 PASS",
+            "history_preserved": 891,
+            "new_editorial_signals": 0
+          }
+        },
+        "isp_surveillance": {
+          "source": "isp_surveillance",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_public_data_lane_2026_10_11",
+          "pr": 13,
+          "branch": "codex/c-public-sources-20261011",
+          "candidate_sha": "0858af8e39d1b1a42ed4b9b82fe0ca173d0faf88",
+          "integration": "merged_PR21",
+          "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+          "qa": {
+            "run": 38145944249,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38145944249,
+            "status": "PASS",
+            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+          },
+          "runtime_post_merge": {
+            "run": 38146249940,
+            "status": "IN_PROGRESS"
+          },
+          "final_state": "NOT_READY",
+          "owner": "Pele + Public Data Worker",
+          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "candidate_qa": {
+            "focused": "129 PASS",
+            "history_preserved": 891,
+            "new_editorial_signals": 0
           }
         }
       }
