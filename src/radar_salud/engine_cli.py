@@ -94,6 +94,10 @@ def main():
                     "undated":sum(not raw.event_date for raw in items),
                     "detail_errors":sum(bool(raw.metadata.get("fetch_error")) for raw in items),
                     "insufficient_evidence":sum(len(raw.metadata.get("page_text", ""))<160 for raw in items),
+                    "textual_candidates":sum(len(raw.metadata.get('page_text',''))>=160 for raw in items),
+                    "nontextual_candidates_known":sum(len(raw.metadata.get('page_text',''))<160 and bool(raw.metadata.get('primary_image_urls') or raw.metadata.get('primary_media_urls')) for raw in items),
+                    "textual_capture_status":"partial" if any(raw.metadata.get('fetch_error') or (len(raw.metadata.get('page_text',''))>=160 and not raw.event_date) for raw in items) else "verified",
+                    "format_capability":{"text":"runtime_verified","images":"requires_ocr","audio_video":"requires_official_text"},
                     "newest_event_date":max([raw.event_date for raw in items if raw.event_date],default=None)}
         except Exception as exc:
             discoveries[name]=(0,0,type(exc).__name__)
@@ -170,6 +174,7 @@ def main():
             if name=="diario_financiero" else None)
         health_record(root,name,name="Diario Financiero" if name=="diario_financiero" else name.replace("_"," ").title(),discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
+            deferred=sum(i.get('source')==name and i['status']=='deferred' for i in queue.items.values()) if name=='diario_financiero' else 0,
             rejected=counts["rejected"],rows=produced[name],error=error,
             live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"],discovery_evidence=df_evidence)
     print({"queue":queue.counts(),"budget":ai_budget_status()})

@@ -43,7 +43,7 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         row=src[slug]
         row.update(discovery_evidence)
         row["counts_scope"]={"discovered":"this_run","new":"this_run","published":"this_run",
-                             "pending":"cumulative_queue","rejected":"cumulative_queue"}
+                             "pending":"cumulative_queue","deferred":"cumulative_queue","rejected":"cumulative_queue"}
         row["coverage_status"]="unverified" if error else "partial_inventory"
         # An all-undated inventory cannot be healthy merely because HTTP worked.
         if not error and (discovery_evidence.get("undated",0) or discovery_evidence.get("detail_errors",0)
