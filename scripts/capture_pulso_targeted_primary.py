@@ -1,4 +1,4 @@
-"""Capture three original details for date and full-body diagnosis only.
+"""Capture selected original details for date and full-body diagnosis only.
 
 No discovery inventory, queue, engine, AI, history or publishing is invoked.
 Original bytes are retained before any parser runs, including HTTP error HTML.
@@ -24,6 +24,8 @@ CONTROL_URLS = (
     "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
 )
 RSS_URL = "https://www.latercera.com/nacional/noticia/mas-de-2000-viviendas-afectadas-las-condes-despliega-maquinaria-y-equipos-de-emergencia-para-retirar-barro-tras-aluvion/"
+DIAGNOSTIC_URL = "https://www.latercera.com/branded/noticia/empresas-x-chile-el-movimiento-empresarial-que-busca-fomentar-el-empleo-juvenil-impulsando-practicas-tp/"
+DIAGNOSTIC_RUN_ID = 38134030226
 
 
 def digest(payload):
@@ -62,7 +64,9 @@ def targets(control_path, rss_manifest):
                  target_reason="frozen_original_byline_vs_midnight_utc_chile_day", inventory_source="independent_frozen_control")
             for url in CONTROL_URLS] + [dict(url=RSS_URL, title=rss["title"],
                 rss_publication_timestamp=rss["pubDate"], target_reason="full_primary_body_health_evidence_after_5500",
-                inventory_source="captured_official_rss_not_final_date_evidence")]
+                inventory_source="captured_official_rss_not_final_date_evidence"),
+                dict(url=DIAGNOSTIC_URL, target_reason="core_detail_error_incomplete_article_evidence",
+                     inventory_source="core_diagnostic_not_frozen_control", source_run_id=DIAGNOSTIC_RUN_ID)]
 
 
 def date_projection(kind, timestamp):
@@ -170,7 +174,9 @@ def main():
     report = {"schema_version": "1.0", "source": "pulso_latercera", "mode": "original_detail_capture_without_analysis_discovery_queue_or_publishing",
               "captured_at": datetime.now(timezone.utc).isoformat(), "ai_calls": 0,
               "control_sha256": digest(args.control.read_bytes()), "rss_manifest_sha256": digest(args.rss_manifest.read_bytes()),
-              "status": "THREE_ORIGINAL_RESPONSES_CAPTURED_NOT_SOURCE_ACCEPTANCE" if all(
+              "target_count": len(rows),
+              "captured_response_count": sum(bool(row.get("original_bytes_retained")) for row in rows),
+              "status": "ORIGINAL_RESPONSES_CAPTURED_NOT_SOURCE_ACCEPTANCE" if all(
                   row.get("status") == 200 and row.get("original_bytes_retained") for row in rows) else "TARGETED_CAPTURE_PARTIAL",
               "requests": rows, "acceptance_note": "Capture retains original bytes even if the current parser rejects them; RSS dates remain provisional."}
     args.output.mkdir(parents=True, exist_ok=True)

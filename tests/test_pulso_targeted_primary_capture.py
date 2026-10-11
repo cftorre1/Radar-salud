@@ -85,10 +85,47 @@ def test_http_error_body_is_preserved_instead_of_becoming_missing_bytes(tmp_path
     assert gzip.decompress((tmp_path / record["gzip_file"]).read_bytes()) == payload
 
 
-def test_targets_bind_two_frozen_controls_and_one_actual_rss_inventory_entry():
+def test_targets_preserve_controls_and_rss_and_add_only_a_core_diagnostic():
     selected = capture.targets(ROOT / "data/audits/pulso_external_control_2026_10_11.json",
                                ROOT / "data/audits/pulso_capture/manifest.json")
-    assert [row["url"] for row in selected] == list(capture.CONTROL_URLS) + [capture.RSS_URL]
+    assert [row["url"] for row in selected] == list(capture.CONTROL_URLS) + [capture.RSS_URL, capture.DIAGNOSTIC_URL]
     assert [row["expected_publication_date"] for row in selected[:2]] == ["2026-10-01", "2026-10-09"]
     assert selected[2]["rss_publication_timestamp"] == "Fri, 09 Oct 2026 12:32:14 +0000"
     assert "expected_publication_date" not in selected[2]
+    diagnostic = selected[3]
+    assert diagnostic["source_run_id"] == 38134030226
+    assert diagnostic["inventory_source"] == "core_diagnostic_not_frozen_control"
+    assert diagnostic["target_reason"] == "core_detail_error_incomplete_article_evidence"
+    assert "expected_publication_date" not in diagnostic
+    assert "rss_publication_timestamp" not in diagnostic
+    frozen = json.loads((ROOT / "data/audits/pulso_external_control_2026_10_11.json").read_bytes())
+    assert diagnostic["url"] not in {row["url"] for row in frozen["articles"]}
+
+
+def test_manifest_reports_actual_capture_count_without_three_target_assumption(tmp_path, monkeypatch, capsys):
+    control = ROOT / "data/audits/pulso_external_control_2026_10_11.json"
+    rss_manifest = ROOT / "data/audits/pulso_capture/manifest.json"
+    selected = capture.targets(control, rss_manifest)
+    fixture = next(row for row in json.loads((ROOT / "tests/fixtures/pulso_real/manifest.json").read_text())["fixtures"]
+                   if "senior-housing" in row["url"])
+    payload = gzip.decompress((ROOT / fixture["path"]).read_bytes())
+    real_capture_target = capture.capture_target
+    monkeypatch.setattr(capture, "capture_target", lambda target, output: real_capture_target(
+        target, output, opener=lambda request, timeout: response(payload, target["url"])))
+    # One genuine fixture response exercises transport retention for each target;
+    # its identity is deliberately rejected by the diagnostic parser.
+    def reject(*args):
+        raise ValueError("diagnosed_current_parser_rejection")
+    monkeypatch.setattr(capture, "inspect_primary", reject)
+    output = tmp_path / "originals"
+    audit = tmp_path / "audit.json"
+    monkeypatch.setattr("sys.argv", ["capture_pulso_targeted_primary.py", "--control", str(control),
+                                    "--rss-manifest", str(rss_manifest), "--output", str(output), "--audit", str(audit)])
+    capture.main()
+    report = json.loads(audit.read_bytes())
+    assert report["target_count"] == report["captured_response_count"] == len(selected) == 4
+    assert report["status"] == "ORIGINAL_RESPONSES_CAPTURED_NOT_SOURCE_ACCEPTANCE"
+    assert [row["url"] for row in report["requests"]] == [row["url"] for row in selected]
+    assert all(row["audit_error"]["reason"] == "diagnosed_current_parser_rejection" for row in report["requests"])
+    assert all(gzip.decompress((output / row["gzip_file"]).read_bytes()) == payload for row in report["requests"])
+    assert json.loads(capsys.readouterr().out)["ai_calls"] == 0

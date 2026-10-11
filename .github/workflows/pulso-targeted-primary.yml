@@ -67,7 +67,7 @@ jobs:
           subprocess.run([sys.executable, 'scripts/audit_pulso_primary_corpus.py', '--capture-artifact',
                           '.scratch/pulso-primary-corpus', '--output', output], check=True)
           PY
-      - name: Capture only the three diagnosed original details
+      - name: Capture the four diagnosed original details
         run: python scripts/capture_pulso_targeted_primary.py
       - name: Preserve targeted originals exclusively on isolated branch
         if: always()
