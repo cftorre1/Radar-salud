@@ -85,10 +85,11 @@ def test_http_error_body_is_preserved_instead_of_becoming_missing_bytes(tmp_path
     assert gzip.decompress((tmp_path / record["gzip_file"]).read_bytes()) == payload
 
 
-def test_targets_preserve_controls_and_rss_and_add_only_a_core_diagnostic():
+def test_targets_preserve_original_four_and_add_only_three_actual_core_liveblog_diagnostics():
     selected = capture.targets(ROOT / "data/audits/pulso_external_control_2026_10_11.json",
                                ROOT / "data/audits/pulso_capture/manifest.json")
-    assert [row["url"] for row in selected] == list(capture.CONTROL_URLS) + [capture.RSS_URL, capture.DIAGNOSTIC_URL]
+    assert [row["url"] for row in selected] == (list(capture.CONTROL_URLS) + [capture.RSS_URL, capture.DIAGNOSTIC_URL]
+                                              + list(capture.LIVEBLOG_DIAGNOSTIC_URLS))
     assert [row["expected_publication_date"] for row in selected[:2]] == ["2026-10-01", "2026-10-09"]
     assert selected[2]["rss_publication_timestamp"] == "Fri, 09 Oct 2026 12:32:14 +0000"
     assert "expected_publication_date" not in selected[2]
@@ -100,6 +101,12 @@ def test_targets_preserve_controls_and_rss_and_add_only_a_core_diagnostic():
     assert "rss_publication_timestamp" not in diagnostic
     frozen = json.loads((ROOT / "data/audits/pulso_external_control_2026_10_11.json").read_bytes())
     assert diagnostic["url"] not in {row["url"] for row in frozen["articles"]}
+    for liveblog in selected[4:]:
+        assert liveblog["source_run_id"] == 38141096276
+        assert liveblog["inventory_source"] == "core_diagnostic_not_frozen_control"
+        assert liveblog["target_reason"] == "core_liveblog_entry_headline_mismatch"
+        assert "expected_publication_date" not in liveblog
+        assert "rss_publication_timestamp" not in liveblog
 
 
 def test_manifest_reports_actual_capture_count_without_three_target_assumption(tmp_path, monkeypatch, capsys):
@@ -118,12 +125,18 @@ def test_manifest_reports_actual_capture_count_without_three_target_assumption(t
         raise ValueError("diagnosed_current_parser_rejection")
     monkeypatch.setattr(capture, "inspect_primary", reject)
     output = tmp_path / "originals"
+    output.mkdir()
+    # Synthetic previous manifest tests byte preservation, not site evidence.
+    previous = b'{"requests":[],"captured_at":"earlier-fixture-capture"}\n'
+    (output / 'manifest.json').write_bytes(previous)
     audit = tmp_path / "audit.json"
     monkeypatch.setattr("sys.argv", ["capture_pulso_targeted_primary.py", "--control", str(control),
                                     "--rss-manifest", str(rss_manifest), "--output", str(output), "--audit", str(audit)])
     capture.main()
     report = json.loads(audit.read_bytes())
-    assert report["target_count"] == report["captured_response_count"] == len(selected) == 4
+    assert report["target_count"] == report["captured_response_count"] == len(selected) == 7
+    assert report['previous_manifest_sha256'] == hashlib.sha256(previous).hexdigest()
+    assert (output / report['previous_manifest_file']).read_bytes() == previous
     assert report["status"] == "ORIGINAL_RESPONSES_CAPTURED_NOT_SOURCE_ACCEPTANCE"
     assert [row["url"] for row in report["requests"]] == [row["url"] for row in selected]
     assert all(row["audit_error"]["reason"] == "diagnosed_current_parser_rejection" for row in report["requests"])

@@ -26,6 +26,12 @@ CONTROL_URLS = (
 RSS_URL = "https://www.latercera.com/nacional/noticia/mas-de-2000-viviendas-afectadas-las-condes-despliega-maquinaria-y-equipos-de-emergencia-para-retirar-barro-tras-aluvion/"
 DIAGNOSTIC_URL = "https://www.latercera.com/branded/noticia/empresas-x-chile-el-movimiento-empresarial-que-busca-fomentar-el-empleo-juvenil-impulsando-practicas-tp/"
 DIAGNOSTIC_RUN_ID = 38134030226
+LIVEBLOG_DIAGNOSTIC_RUN_ID = 38141096276
+LIVEBLOG_DIAGNOSTIC_URLS = (
+    "https://www.latercera.com/nacional/noticia/sistema-frontal-en-chile-en-vivo-sigue-las-lluvias-alertas-de-senapred-y-cortes-de-luz-este-sabado/",
+    "https://www.latercera.com/nacional/noticia/sistema-frontal-en-chile-en-vivo-sigue-las-lluvias-alertas-de-senapred-cortes-de-luz-y-el-estado-de-rutas/",
+    "https://www.latercera.com/nacional/noticia/sistema-frontal-en-chile-en-vivo-monitorea-las-lluvias-alertas-y-la-emergencia-en-el-norte-este-domingo/",
+)
 
 
 def digest(payload):
@@ -66,7 +72,10 @@ def targets(control_path, rss_manifest):
                 rss_publication_timestamp=rss["pubDate"], target_reason="full_primary_body_health_evidence_after_5500",
                 inventory_source="captured_official_rss_not_final_date_evidence"),
                 dict(url=DIAGNOSTIC_URL, target_reason="core_detail_error_incomplete_article_evidence",
-                     inventory_source="core_diagnostic_not_frozen_control", source_run_id=DIAGNOSTIC_RUN_ID)]
+                     inventory_source="core_diagnostic_not_frozen_control", source_run_id=DIAGNOSTIC_RUN_ID)] + [
+                dict(url=url, target_reason="core_liveblog_entry_headline_mismatch",
+                     inventory_source="core_diagnostic_not_frozen_control",
+                     source_run_id=LIVEBLOG_DIAGNOSTIC_RUN_ID) for url in LIVEBLOG_DIAGNOSTIC_URLS]
 
 
 def date_projection(kind, timestamp):
@@ -181,8 +190,16 @@ def main():
               "requests": rows, "acceptance_note": "Capture retains original bytes even if the current parser rejects them; RSS dates remain provisional."}
     args.output.mkdir(parents=True, exist_ok=True)
     args.audit.parent.mkdir(parents=True, exist_ok=True)
+    # A fresh HTTP capture never replaces the provenance of an older variant.
+    # Hash-named original gzip files already remain in this same directory.
+    manifest_path = args.output / "manifest.json"
+    if manifest_path.exists():
+        previous = manifest_path.read_bytes()
+        previous_file = "manifest-" + digest(previous) + ".json"
+        (args.output / previous_file).write_bytes(previous)
+        report.update(previous_manifest_file=previous_file, previous_manifest_sha256=digest(previous))
     serialized = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
-    (args.output / "manifest.json").write_text(serialized)
+    manifest_path.write_text(serialized)
     args.audit.write_text(serialized)
     print(json.dumps({"status": report["status"], "http_statuses": [row["status"] for row in rows], "ai_calls": 0}))
 
