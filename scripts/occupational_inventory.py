@@ -60,7 +60,7 @@ def refresh_item(item, raw):
         # output only while the exact assessed input is unchanged.
         old_meta = item.get("raw", {}).get("metadata", {})
         for name in ("what_happened", "why_it_matters", "signal_types", "scopes",
-                     "watch_tags", "scores", "editorial_assessment", "editorial_review"):
+                     "watch_tags", "scores", "editorial_assessment", "editorial_review", "data_period"):
             if name in old_meta:
                 raw.metadata[name] = copy.deepcopy(old_meta[name])
     if changed:

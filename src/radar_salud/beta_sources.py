@@ -393,7 +393,9 @@ def process_curated_beta_source(raw, cfg):
     row["editorial_relevance"] = score
     row["source_quality_gate"] = "passed"
     if scoped:
-        row.update(market_role=role, publication_date=raw.event_date,
+        row.update(source_slug=raw.source_slug, market_role=role,
+                   provider_subtype=raw.metadata.get("provider_subtype"),
+                   data_period=raw.metadata.get("data_period"), publication_date=raw.event_date,
                    date_evidence=raw.metadata["date_evidence"],
                    publication_evidence=raw.metadata.get("publication_evidence") or raw.metadata.get("publication_date_evidence"),
                    capture_evidence=raw.metadata.get("capture_evidence"),

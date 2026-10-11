@@ -46,6 +46,18 @@ def test_verified_annual_values_have_bounded_separate_context_and_threshold(capt
     assert "BACKFILL" in calls[0]["kind"] and "continúa abierta hoy" in calls[0]["kind"]
 
 
+def test_accepted_study_retains_publication_day_and_separate_data_period(captured_documents, monkeypatch):
+    raw, loader, _ = prepared(captured_documents, content=pdf_bytes("En 2025 protegimos 496 mil trabajadores y atendimos 45 mil pacientes."))
+    raw.metadata['data_period'] = '2025'
+    attach_documents(raw, loader)
+    monkeypatch.setattr('radar_salud.llm_analysis.analyze_news', lambda **kw: {'relevance_score':80,
+        'what_happened':'El reporte publicado en julio informa la actividad de 2025 y 496 mil trabajadores protegidos.',
+        'why_it_matters':'La cobertura institucional permite evaluar el alcance de los servicios de salud laboral.'})
+    signal = process_curated_beta_source(raw, {})
+    assert signal['data_period'] == '2025' and signal['publication_date'] == signal['event_date'] == '2026-07-14'
+    assert signal['source_slug'] == 'ist' and signal['content_kind'] == 'study'
+
+
 def test_tampered_document_never_reaches_ai(captured_documents, monkeypatch):
     raw, loader, _ = prepared(captured_documents)
     attach_documents(raw, loader)
@@ -109,3 +121,9 @@ def test_editorial_hash_changes_for_actual_verified_new_facts_only(captured_docu
     raw.metadata = before
     raw.metadata["supporting_documents"][0]["extracted_text"] += " forged workers"
     assert editorial_input(raw) == original
+
+
+def test_measurement_keeps_wrapped_source_attribution_and_data_period():
+    text = "(SUSESO) muestran un aumento en el periodo\n2019-2024. La tasa reconocida de\nsalud mental aumento de42,7 por\ncada 100.000 personas trabajadoras protegidas en2019\na98,1 en2024."
+    facts = additional_document_facts("", text)
+    assert "SUSESO" in facts and "2019-2024" in facts and "100.000" in facts
