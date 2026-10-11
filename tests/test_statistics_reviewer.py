@@ -76,26 +76,14 @@ def test_statistics_reviewer_accepts_semantically_labeled_release_tables():
     assert review_statistics(releases()) == []
 
 
-def test_document_inventory_is_reviewed_as_inventory_without_inventing_statistics():
-    from scripts.export_web_snapshot import _statistical_value_ladder
-    row=_statistical_value_ladder({"source_name":"Superintendencia de Salud","signal_types":["Datos"],
-        "title":"Boletín Estadístico Informativo IP – Junio 2026","source_url":URLS["bulletin"],
-        "source_documents":[{"url":url} for url in FILES]})
-    assert review_statistics([row])==[]
-    assert row["card_why"]=="" and row["card_why_optional"] is True
-    assert row["statistical_methodology"]["analysis_status"]=="not_performed"
-    row["source_documents"]=row["source_documents"][:-1]
-    assert "bulletin_missing_pdf" in {f["code"] for f in review_statistics([row])}
-
-
-def test_inventory_label_cannot_bypass_statistical_evidence_checks():
-    row=releases()[3]
-    row["statistical_value_level"]="publication_inventory"
-    codes={f["code"] for f in review_statistics([row])}
-    assert {"inventory_claims_analysis","untraceable_statistical_inventory","inventory_analysis_status","bulletin_missing_pdf"}<=codes
-    row["statistical_value_level"]="deep_analysis"
-    row.pop("summary_table")
-    assert "invalid_statistical_table" in {f["code"] for f in review_statistics([row])}
+def test_statistics_build_only_requests_current_release_inputs_at_day90_boundary():
+    history=[{"source_url":builder.GES_PAGE,"event_date":"2026-07-10"},
+             {"source_url":builder.BOLETIN_PAGE,"event_date":"2026-08-03"},
+             {"source_url":"https://fixture.example/reference","event_date":"2026-10-08"}]
+    assert set(builder.current_release_builders(history))=={builder.GES_PAGE,builder.BOLETIN_PAGE}
+    history[-1]["event_date"]="2026-10-09"
+    assert set(builder.current_release_builders(history))=={builder.BOLETIN_PAGE}
+    assert history[0]["event_date"]=="2026-07-10"
 
 
 def test_statistics_reviewer_fails_closed_on_outlier_and_unitless_prestaciones():
@@ -185,3 +173,23 @@ def test_ges_parser_handles_multilevel_insurer_headers_and_uses_source_problem_n
     assert result["summary_table"]["rows"][0]["cells"][0] == "Problema de salud validado 6"
     assert result["summary_table"]["rows"][0]["cells"][3] == 162
     assert result["statistical_methodology"]["sheet"] == "Año 2026"
+
+
+def test_inventory_label_does_not_exempt_known_bulletin_from_inherited_gates():
+    import json
+    history = json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    original = next(s for s in history if s.get("source_url") == URLS["bulletin"])
+    expected = {
+        "invalid_statistical_table", "methodology_not_collapsed",
+        "missing_incremental_value_gate", "generic_why_required",
+        "untraceable_statistical_evidence", "bulletin_coverage",
+        "bulletin_missing_pdf", "bulletin_stock_flow_confusion",
+    }
+    labeled = dict(original, statistical_value_level="publication_inventory")
+    assert {f["code"] for f in review_statistics([labeled])} == expected
+    verified = json.loads(Path("config/statistical_analysis_verified_v1.json").read_text())["signals"][URLS["bulletin"]]
+    analyzed = dict(original, **verified)
+    assert review_statistics([analyzed]) == []
+    analyzed.pop("summary_table")
+    analyzed["statistical_value_level"] = "publication_inventory"
+    assert "invalid_statistical_table" in {f["code"] for f in review_statistics([analyzed])}

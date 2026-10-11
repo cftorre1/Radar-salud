@@ -945,7 +945,199 @@
       "global_90_day_acceptance": false,
       "production_updated": false,
       "pr_closed": false
-    }
+    },
+    "integration_commander_df_20261011": {
+      "issue": [
+        5,
+        6
+      ],
+      "task": "source_repair_media_lane_2026_10_11",
+      "pr": 11,
+      "source": "diario_financiero",
+      "origin_head_sha": "50cef26c4d829f18b3619d41710fffdf50534e91",
+      "integrated_commit": "7fc33c9f6bfae2d65a29e0c733f56b5edfe163ba",
+      "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "qa": {
+        "run_id": 38142344995,
+        "sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+        "python_passed": 309,
+        "python_skipped": 1,
+        "node_passed": 41,
+        "browser_passed": 46,
+        "failed": 0,
+        "reviewer": "PASS, zero findings"
+      },
+      "postmerge_runtime": {
+        "run_id": 38142527704,
+        "artifact_id": 11703507513,
+        "artifact_sha256": "27c88b9b8db5aa0452d76fce37dfc370ee97b460b0e9ccdead4328838e3f7dc9",
+        "two_actual_engine_polls": true,
+        "discovered_each": 41,
+        "dated_each": 41,
+        "detail_errors": 0,
+        "new_each": 0,
+        "published_each": 0,
+        "idempotence": true,
+        "unrelated_stock_preserved": true,
+        "history_rows": 771,
+        "feed_rows": 73,
+        "reviewer": "PASS"
+      },
+      "editorial_outcome": {
+        "published_stock": 26,
+        "deferred_multimedia": 19,
+        "current_poll": "no_new_signals",
+        "LIVE_recent_stock_preserved": true,
+        "new_paid_calls": 0,
+        "queue_history_feed_seen_dedupe": "PASS",
+        "materiality_threshold": 72
+      },
+      "final_outcome": "INTEGRATED_DEGRADED",
+      "reason": "Repaired text discovery, publisher dates and stock integration validated; 19 multimedia items and partial site coverage retain warning. No full multimedia/absolute site coverage claim.",
+      "next_action": "Fix cumulative rejection interpretation in the shared health producer, then integrate PR15; retain the 19 publisher text/OCR holds. Pulso remains NOT_READY."
+    },
+    "integration_commander_sis_suseso_20261011": [
+      {
+        "issue": [
+          5,
+          8
+        ],
+        "task": "source_repair_fiscalization_lane_2026_10_11",
+        "pr": 15,
+        "integration_pr": 18,
+        "source": "superintendencia_fiscalizacion",
+        "integrated_commit": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "status": "INTEGRATED_DEGRADED",
+        "qa": "https://github.com/cftorre1/Radar-salud/actions/runs/38143763798",
+        "preview": "https://github.com/cftorre1/Radar-salud/actions/runs/38143952494",
+        "reviewer": {
+          "runtime": {
+            "reviewer": "deterministic-reviewer",
+            "candidate_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+            "reviewed_at": "2026-10-11T13:39:18.720261+00:00",
+            "findings": [],
+            "checks": {
+              "data": true,
+              "editorial": true,
+              "statistics": true,
+              "ux": true
+            },
+            "limitations": [
+              "Semantic/legal accuracy is not certified by deterministic checks.",
+              "Browser evidence is required separately for desktop/mobile.",
+              "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+            ]
+          },
+          "bounded_native": "data/audits/fiscalizacion/coverage_reviewer_native_2026_10_11.json"
+        },
+        "runtime": {
+          "run_id": 38143952220,
+          "artifact_id": 11703837683,
+          "sha256": "41952fdd8f6a1456d830c8465fbf9d85305b23e60afd82cd0f62a90cc6ca0586",
+          "polls": 2,
+          "discovery": [
+            {
+              "discovered": 3343,
+              "new": 0,
+              "technical_status": "ok",
+              "error_type": null,
+              "checked_at": "2026-10-11T13:38:47.288295+00:00"
+            },
+            {
+              "discovered": 3343,
+              "new": 0,
+              "technical_status": "ok",
+              "error_type": null,
+              "checked_at": "2026-10-11T13:39:13.180788+00:00"
+            }
+          ],
+          "idempotent": true,
+          "unrelated_stock_preserved": true
+        },
+        "editorial_outcome": "no_new_publications_existing_history",
+        "raw_runtime_editorial_outcome": "rejected",
+        "poll_outcome_producer_fix": "54491a9 candidate awaiting staging combined QA",
+        "exact_calendar_window_material": {
+          "30": 14,
+          "90": 28
+        },
+        "window_evidence": "native reviewed original dated surfaces; runtime inclusive window counts separately preserved",
+        "coverage_complete": false,
+        "next_action": "Keep source degraded; resolve undated reports / remaining legal-act identity limits without date fabrication",
+        "production_changes": false
+      },
+      {
+        "issue": [
+          5,
+          8
+        ],
+        "task": "source_repair_fiscalization_lane_2026_10_11",
+        "pr": 15,
+        "integration_pr": 18,
+        "source": "suseso_fiscalizacion",
+        "integrated_commit": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "status": "INTEGRATED_DEGRADED",
+        "qa": "https://github.com/cftorre1/Radar-salud/actions/runs/38143763798",
+        "preview": "https://github.com/cftorre1/Radar-salud/actions/runs/38143952494",
+        "reviewer": {
+          "runtime": {
+            "reviewer": "deterministic-reviewer",
+            "candidate_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+            "reviewed_at": "2026-10-11T13:39:18.720261+00:00",
+            "findings": [],
+            "checks": {
+              "data": true,
+              "editorial": true,
+              "statistics": true,
+              "ux": true
+            },
+            "limitations": [
+              "Semantic/legal accuracy is not certified by deterministic checks.",
+              "Browser evidence is required separately for desktop/mobile.",
+              "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+            ]
+          },
+          "bounded_native": "data/audits/fiscalizacion/coverage_reviewer_native_2026_10_11.json"
+        },
+        "runtime": {
+          "run_id": 38143952220,
+          "artifact_id": 11703837683,
+          "sha256": "41952fdd8f6a1456d830c8465fbf9d85305b23e60afd82cd0f62a90cc6ca0586",
+          "polls": 2,
+          "discovery": [
+            {
+              "discovered": 1273,
+              "new": 0,
+              "technical_status": "ok",
+              "error_type": null,
+              "checked_at": "2026-10-11T13:38:47.288308+00:00"
+            },
+            {
+              "discovered": 1273,
+              "new": 0,
+              "technical_status": "ok",
+              "error_type": null,
+              "checked_at": "2026-10-11T13:39:13.180801+00:00"
+            }
+          ],
+          "idempotent": true,
+          "unrelated_stock_preserved": true
+        },
+        "editorial_outcome": "pending_10_undated_medical_reports_no_new_publication",
+        "raw_runtime_editorial_outcome": "pending",
+        "poll_outcome_producer_fix": "54491a9 candidate awaiting staging combined QA",
+        "exact_calendar_window_material": {
+          "30": 20,
+          "90": 74
+        },
+        "window_evidence": "native reviewed original dated surfaces; runtime inclusive window counts separately preserved",
+        "coverage_complete": false,
+        "next_action": "Keep source degraded; resolve undated reports / remaining legal-act identity limits without date fabrication",
+        "production_changes": false
+      }
+    ]
   },
   "blocks": [
     {
@@ -2470,6 +2662,29 @@
       "last_progress_at": "2026-10-11T07:11:23.063060+00:00",
       "integration_base_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "staging_reconciliation_merge_sha": "99b65b392cb12e144ca93c545bfd9fe328f59cb2"
+    },
+    {
+      "id": "staging_qa_gatekeeper_2026_10_11",
+      "status": "READY_FOR_INTEGRATION",
+      "at": "2026-10-11T13:14:40.424737+00:00",
+      "pr": 17,
+      "branch": "codex/staging-qa-gates-20261011",
+      "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+      "normative": "Obsolete fixed live count; all reviewed identities retained, eligible ones checked, no lowered minimum",
+      "statistics": "Eight real export/presentation defects fixed against4primaryPDFs; original strict Reviewer retained and inventory bypass rejected.",
+      "evidence": "data/audits/staging_qa_gates_2026_10_11.json",
+      "initial_ci": "https://github.com/cftorre1/Radar-salud/actions/runs/38141940100",
+      "next_action": "Integration Commander: merge complete PR17 into current staging; run canonical QA after merge; revalidate remaining source PRs against that staging. No main/production promotion and no source issue closure.",
+      "last_progress_at": "2026-10-11T13:31:36.889931+00:00",
+      "validated_implementation_sha": "8339640f43309f908f69edae43b1b34bbbf23d24",
+      "integration_base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "ci": "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390",
+      "checks": {
+        "python": "312PASS/1justifiedSKIP",
+        "node": "41PASS",
+        "browser": "48PASS desktop/mobile",
+        "reviewer": "0findings/PASS"
+      }
     }
   ],
   "approved_infrastructure_changes": [
