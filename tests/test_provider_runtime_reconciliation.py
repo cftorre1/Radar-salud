@@ -63,3 +63,11 @@ def test_sector_association_counts_as_provider():
     spec = importlib.util.spec_from_file_location("provider_report", ROOT / "scripts/product_report.py")
     module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
     assert module._source_segments("clinicas_chile", {"system_domain": "PROVIDERS"}) == {"Prestadores"}
+
+
+def test_partial_poll_error_keeps_real_publication_outcome(tmp_path):
+    record(tmp_path,'redsalud',name='RedSalud',discovered=4,new=1,published=1,
+           rows=[{'event_date':'2026-10-02'}],error='partial_discovery: page=4: HTTPError')
+    row=json.loads((tmp_path/'data/source_health.json').read_text())['sources']['redsalud']
+    assert row['technical_status']=='error' and row['coverage_status']=='unverified'
+    assert row['editorial_outcome']=='published'

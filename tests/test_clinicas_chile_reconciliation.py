@@ -56,3 +56,18 @@ def test_clinicas_partial_library_failure_preserves_news_and_exact_error(monkeyp
     assert any('Memorias:' in error and 'OSError' in error for error in scout.discovery_errors)
     scout.discover()
     assert len(scout.discovery_errors)==10
+
+
+def test_verified_rediscovery_updates_retry_without_bypassing_gate(tmp_path):
+    from radar_salud.pending_queue import PendingQueue
+    raw=RawItem('clinicas_chile','Noticia de gremio con fecha inicialmente ausente',
+                'https://www.clinicasdechile.cl/noticia-auditada/','Clínicas de Chile A.G.','sector_association',
+                metadata={'publication_date_source':'unverified','source_quality_gate':'pending_90_day_audit'})
+    queue=PendingQueue(tmp_path/'queue.json');queue.discover('clinicas_chile',[raw])
+    key=next(iter(queue.items));queue.finish(key,'retry','without_verified_date')
+    detected=queue.items[key]['detected_at']
+    raw.event_date='2026-10-02';raw.metadata.update(publication_date_source='dated_news_listing',source_quality_gate='passed')
+    assert queue.discover('clinicas_chile',[raw])==0
+    stored=queue.items[key]
+    assert stored['raw']['event_date']=='2026-10-02' and stored['lane']=='BACKFILL'
+    assert stored['detected_at']==detected and stored['raw']['metadata']['source_quality_gate']=='pending_90_day_audit'

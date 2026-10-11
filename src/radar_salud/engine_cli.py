@@ -16,7 +16,7 @@ from .analysis_cache import seed_from_history
 from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
-from .processing import DeferredProcessing
+from .processing import DeferredProcessing, OutsideBackfillHorizon
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 
 def main():
@@ -103,7 +103,10 @@ def main():
         queue.start(key)
         try:
             cfg,processor=processors[item["source"]]
-            row=processor(RawItem(**item["raw"]),cfg)
+            raw=RawItem(**item["raw"])
+            row=processor(raw,cfg)
+            from dataclasses import asdict
+            item["raw"]=asdict(raw)
             if row:
                 row.update(detected_at=item["detected_at"],ingestion_mode=item["lane"])
                 # Save output before terminal queue acknowledgement (crash safe replay).
@@ -111,6 +114,9 @@ def main():
                 produced[item["source"]].append(row)
             queue.finish(key,"published" if row else "rejected",None if row else "processor_rejected")
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
+        except OutsideBackfillHorizon as exc:
+            item["raw"]["event_date"]=str(exc)
+            queue.finish(key,"archived","outside_90_day_backfill")
         except DeferredProcessing as exc:
             item["deferred_detail"]=str(exc)
             queue.finish(key,"retry","budget_or_analysis_deferred")

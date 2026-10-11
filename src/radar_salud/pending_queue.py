@@ -58,7 +58,21 @@ class PendingQueue:
         added = 0
         for raw in items:
             key = fingerprint(raw)
-            if key in self.items or key in seen:
+            if key in self.items:
+                item=self.items[key]
+                # A failed detail fetch may have enqueued an undated news card.
+                # Rediscovery can add its now-verified stamp without changing
+                # queue identity, detection time, lane or source-quality gate.
+                if (raw.source_slug=="clinicas_chile" and item.get("status") in ("pending","retry")
+                        and not item["raw"].get("event_date") and raw.event_date
+                        and raw.metadata.get("publication_date_source") in ("article:published_time","dated_news_listing")):
+                    old_gate=item["raw"].get("metadata",{}).get("source_quality_gate")
+                    item["raw"]["event_date"]=raw.event_date
+                    item["raw"]["metadata"].update(raw.metadata)
+                    if old_gate:item["raw"]["metadata"]["source_quality_gate"]=old_gate
+                    item["retry_at"]=None
+                continue
+            if key in seen:
                 continue
             item_lane = lane(raw, now, last_discovered_at)
             archived = item_lane == "BACKFILL" and beyond_backfill_horizon(raw, now)

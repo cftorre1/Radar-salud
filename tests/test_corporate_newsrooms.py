@@ -75,10 +75,10 @@ def test_pfizer_misrouted_listing_fails_closed_and_valid_detail_is_backfill(monk
         "relevance_score":82,
         "what_happened":"Pfizer y actores públicos y privados reunieron soluciones chilenas de salud digital en un encuentro sectorial.",
         "why_it_matters":"La muestra permite identificar casos de uso locales sin establecer una tendencia de adopción general."})
-    row=process_corporate_news(raw,cfg)
-    assert row["event_date"]=="2023-06-08"
-    assert row["source_name"]=="Pfizer Chile"
-    assert row["scopes"]==["Farma / medicamentos","Healthtech"]
+    from radar_salud.processing import OutsideBackfillHorizon
+    with pytest.raises(OutsideBackfillHorizon,match="2023-06-08"):
+        process_corporate_news(raw,cfg)
+    assert raw.event_date=="2023-06-08"
     assert len(raw.raw_text)>350 and raw.raw_text.startswith("Las principales start-up")
     assert "WELCOME" not in raw.raw_text and "Términos y condiciones" not in raw.raw_text
 
@@ -138,6 +138,13 @@ def test_corporate_identity_url_config_and_short_body_fail_closed(monkeypatch):
 
 
 def test_real_bupa_article_date_and_body_are_bound_to_one_story(monkeypatch):
+    # Freeze the clock while verifying a real older fixture. The separate
+    # horizon test verifies that today's intake archives this publication.
+    import datetime
+    class FixtureDate(datetime.date):
+        @classmethod
+        def today(cls):return cls(2026,5,8)
+    monkeypatch.setattr(datetime,"date",FixtureDate)
     raw=RawItem("bupa_chile","Clínica Bupa Santiago incorpora cirugía robótica y amplía el acceso a intervenciones de alta precisión en Chile",
                 "https://www.bupa.cl/sala-de-prensa/clinica-bupa-santiago-incorpora-cirugia-robotica","Bupa Chile","corporate")
     cfg=source_index(load_sources(Path("config/sources.json")))["bupa_chile"]

@@ -50,3 +50,25 @@ def test_redsalud_discovers_beyond_first_page_without_duplicate_pinned_card(monk
     monkeypatch.setattr("radar_salud.source_scouts.fetch_html", pages.__getitem__)
     items = CorporateNewsroomScout("redsalud").discover()
     assert len(items) == 5 and len({raw.url for raw in items}) == 5
+
+
+def test_corporate_date_learned_in_detail_obeys_backfill_horizon(monkeypatch):
+    from radar_salud.processing import OutsideBackfillHorizon
+    title='Bupa acelera inversión y nueva capacidad clínica'
+    raw=RawItem('bupa_chile',title,'https://www.bupa.cl/sala-de-prensa/inversion', 'Bupa Chile','corporate')
+    html=f'<meta property="article:published_time" content="2025-09-01"><h1 class="enc-main__title">{title}</h1><div class="CUERPO"><p>'+'Nueva capacidad y adquisición de clínicas. '*20+'</p></div>'
+    monkeypatch.setattr('radar_salud.public_source_pipeline.fetch_html',lambda _:html)
+    monkeypatch.setattr('radar_salud.public_source_pipeline.analyze_news',lambda **kw:pytest.fail('Old backfill must not consume assessment'))
+    with pytest.raises(OutsideBackfillHorizon,match='2025-09-01'):
+        process_corporate_news(raw,{'slug':'bupa_chile','source_type':'corporate'})
+
+
+def test_provider_header_date_does_not_borrow_from_body_or_related_cards():
+    from radar_salud.beta_sources import _ProviderPublication
+    cases=[('<div>Novedades 20/08/2026</div><h1>Plan Enlace</h1><p>Julio 2025.</p>','2026-08-20'),
+           ('<h1>Centro Puerto Varas</h1><ul><li>agosto 24, 2026</li></ul><p>2030.</p>','2026-08-24'),
+           ('<h1>SAFED</h1><div>28/08/2026</div><p>19 agosto.</p>','2026-08-28'),
+           ('<nav>19/08/2026</nav><h1>Undated</h1><p>Evento 24/08/2026</p><h2>Relacionadas</h2><div>28/09/2026</div>',None)]
+    for html,expected in cases:
+        p=_ProviderPublication();p.feed(html)
+        assert p.publication()[0]==expected

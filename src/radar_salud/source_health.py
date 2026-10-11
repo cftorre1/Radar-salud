@@ -26,7 +26,7 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         freshness="future" if age<0 else ("recent" if age<=7 else "older")
     except (ValueError,TypeError):
         freshness="unknown"
-    editorial="not_evaluated" if error or not evaluation_performed else ("published" if published else
+    editorial="published" if published else "not_evaluated" if error or not evaluation_performed else (
         "pending" if pending else "rejected" if rejected else "no_new_signals")
     src[slug]={
         "name":name,"checked_at":datetime.now(timezone.utc).isoformat(),

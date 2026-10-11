@@ -35,6 +35,8 @@ def _date(text):
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
     m=re.search(r"(\d{1,2})\s*([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\.?\s*(20\d{2})",text,re.I)
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
+    m=re.search(r"([A-Za-zÁÉÍÓÚáéíóúñÑ]+)\s+(\d{1,2}),\s*(20\d{2})",text,re.I)
+    if m and m.group(1).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(1).lower()]}-{int(m.group(2)):02d}"
     return None
 
 def _field(text,label):
@@ -367,6 +369,11 @@ def process_clinicas_chile(raw,cfg):
     if (not raw.event_date or raw.metadata.get("publication_date_source")
             not in ("article:published_time","dated_news_listing","verified_document_release")):
         raise DeferredProcessing("Clínicas de Chile without verified date")
+    from datetime import date
+    from .processing import OutsideBackfillHorizon
+    published=date.fromisoformat(raw.event_date)
+    if published>date.today():raise DeferredProcessing("Clínicas de Chile future publication date")
+    if (date.today()-published).days>90:raise OutsideBackfillHorizon(raw.event_date)
     channel=raw.metadata.get("clinicas_channel") or "Noticias"
     parsed=raw.url.lower()
     text=raw.metadata.get("page_text") or raw.raw_text or ""
@@ -470,6 +477,8 @@ def process_corporate_news(raw,cfg):
     except ValueError:
         return None
     if published>date.today():return None
+    from .processing import OutsideBackfillHorizon
+    if (date.today()-published).days>90:raise OutsideBackfillHorizon(raw.event_date)
     ai=analyze_news(title=raw.title,text=body[:9000],source_name=raw.source_name,
                     kind="comunicado corporativo; verificar alcance y evitar tono promocional")
     if not ai:raise DeferredProcessing("Corporate announcement pending assessment")

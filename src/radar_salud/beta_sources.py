@@ -113,6 +113,7 @@ class CuratedBetaSourceScout:
         parser = _Links()
         parser.feed(html)
         out = []
+        self.discovery_errors = []
         seen = set()
         for href, listing_title in parser.links:
             if not href:
@@ -131,14 +132,21 @@ class CuratedBetaSourceScout:
                 meta = _Meta()
                 meta.feed(detail)
                 body = " ".join(meta.text)
-                published = _date(meta.published) or _date(body[:6500]) or _date(listing_title)
+                provenance = "legacy_detail_date"
+                if self.cfg['role'].startswith('provider'):
+                    stamp = _ProviderPublication();stamp.feed(detail)
+                    published, provenance = stamp.publication()
+                else:
+                    published = _date(meta.published) or _date(body[:6500]) or _date(listing_title)
                 if not published or date.fromisoformat(published) > date.today():
+                    self.discovery_errors.append(f"{url}: publication_date_unverified")
                     continue
                 title = meta.ogtitle or listing_title
                 title = re.sub(r"\s+", " ", title).strip()
                 if len(title) < 18:
                     continue
-            except Exception:
+            except Exception as exc:
+                self.discovery_errors.append(f"{url}: {type(exc).__name__}")
                 continue
             out.append(RawItem(
                 self.slug,
@@ -153,15 +161,54 @@ class CuratedBetaSourceScout:
                     "page_text": body[:18000],
                     "market_role": self.cfg["role"],
                     "source_quality_gate": "passed",
+                    "publication_date_source": provenance,
                 },
             ))
         if not out:
-            raise RuntimeError(f"{self.cfg['name']} has no dated, verified detail items")
+            raise RuntimeError(f"{self.cfg['name']} has no dated, verified detail items: "+"; ".join(self.discovery_errors))
         out.sort(key=lambda x: x.event_date or "", reverse=True)
         return out[:30]
 
     def discover(self):
         return self.discover_from_html(fetch_html(self.cfg["page"]))
+
+
+class _ProviderPublication(HTMLParser):
+    """Only explicit publication metadata or the isolated article-header stamp.
+
+    Dávila places 'Novedades dd/mm/yyyy' before H1. Andes and Achs place a
+    standalone stamp immediately after H1. Body and related-item dates cannot
+    supply a missing publication date.
+    """
+    def __init__(self):
+        super().__init__();self.meta=None;self.header=None;self._before=[];self._h1=False;self._after=False;self._seen_title=False
+    def handle_starttag(self, tag, attrs):
+        attrs=dict(attrs);tag=tag.lower()
+        if tag=='meta' and (attrs.get('property') or attrs.get('name') or '').lower() in ('article:published_time','datepublished'):
+            self.meta=attrs.get('content')
+        elif tag=='h1' and not self._seen_title:
+            from .public_source_pipeline import _date
+            match=re.search(r'Novedades\s+(\d{1,2}/\d{1,2}/20\d{2})\s*$', ' '.join(self._before)[-180:])
+            if match:self.header=_date(match.group(1))
+            self._h1=True;self._seen_title=True
+        elif self._after and tag in ('p','h2','h3','nav','footer','aside'):
+            self._after=False
+    def handle_endtag(self, tag):
+        if tag.lower()=='h1' and self._h1:self._h1=False;self._after=True
+    def handle_data(self, data):
+        text=' '.join(data.split())
+        if not text:return
+        if self._after:
+            from .public_source_pipeline import _date
+            if re.fullmatch(r'(?:\d{1,2}/\d{1,2}/20\d{2}|[A-Za-zÁÉÍÓÚáéíóúñÑ]+ \d{1,2}, 20\d{2})',text):
+                self.header=_date(text)
+            self._after=False
+        elif not self._h1:self._before.append(text)
+    def publication(self):
+        from .public_source_pipeline import _date
+        meta=_date(self.meta)
+        if meta and self.header and meta!=self.header:return None,'conflicting_stamps'
+        return (meta,'article:published_time') if meta else (self.header,'verified_article_header' if self.header else 'unverified')
 
 
 class PrestadoresDataScout:
@@ -252,11 +299,19 @@ def process_curated_beta_source(raw, cfg):
     from .processing import DeferredProcessing
     from .public_source_pipeline import enrich, _scopes
 
+    role = raw.metadata.get("market_role") or "provider"
+    if role.startswith('provider'):
+        if (not raw.event_date or raw.metadata.get('publication_date_source')
+                not in ('article:published_time','verified_article_header')):
+            raise DeferredProcessing('Provider publication date unverified')
+        from .processing import OutsideBackfillHorizon
+        published=date.fromisoformat(raw.event_date)
+        if published>date.today():raise DeferredProcessing('Provider future publication date')
+        if (date.today()-published).days>90:raise OutsideBackfillHorizon(raw.event_date)
     raw = enrich(raw)
     if raw.metadata.get("fetch_error"):
         raise DeferredProcessing(f"Provider detail unavailable: {raw.url}: {raw.metadata['fetch_error']}")
     body = raw.metadata.get("page_text") or raw.raw_text or ""
-    role = raw.metadata.get("market_role") or "provider"
     if not raw.event_date or len(body) < 160 or not _material(role, raw.title, body):
         return None
     kind = {
