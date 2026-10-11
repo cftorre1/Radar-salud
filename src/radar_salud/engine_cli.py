@@ -155,7 +155,8 @@ def main():
     atomic_json(root/"data/state/discovery_run.json",discovery_run)
     for name,(discovered,new,error) in discoveries.items():
         counts=queue.counts(name)
-        health_record(root,name,name=name.replace("_"," ").title(),discovered=discovered,new=new,
+        health_name=processors[name][0]["name"] if name=="pulso_latercera" else name.replace("_"," ").title()
+        health_record(root,name,name=health_name,discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
             rejected=counts["rejected"],rows=produced[name],error=error,
             live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"])
