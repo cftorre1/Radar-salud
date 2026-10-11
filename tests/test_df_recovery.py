@@ -262,3 +262,17 @@ def test_daily_df_replay_real_processor_to_history_feed_and_second_run(tmp_path,
     assert json.loads((state / "discovery_run.json").read_text())["sources"]["diario_financiero"]["new"] == 0
     assert PendingQueue(queue.path).items[original_key]["attempts"] == 1
     assert len(json.loads((tmp_path / "data/history/superintendencia_signals.json").read_text())["signals"]) == 1
+
+
+def test_original_html_hash_validation_preserves_crlf_and_rejects_tampering(tmp_path):
+    import hashlib
+    import importlib.util
+    from pathlib import Path
+    spec=importlib.util.spec_from_file_location("df_original_hash",Path(__file__).resolve().parents[1]/"scripts/reconcile_df.py")
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    payload=b'<article>\r\n<p>Verified source</p>\r\n</article>'
+    path=tmp_path/"original.html";path.write_bytes(payload)
+    assert module.read_captured_html(path,hashlib.sha256(payload).hexdigest()).encode()==payload
+    path.write_bytes(payload+b'tampered')
+    with pytest.raises(ValueError,match="hash mismatch"):
+        module.read_captured_html(path,hashlib.sha256(payload).hexdigest())

@@ -71,6 +71,7 @@ jobs:
           git config user.email alicanto-salud-bot@users.noreply.github.com
           git add config/orchestrator_queue.json data/audits/df_reconciliation_*.json data/state data/history data/source_health.json data/ai_usage web/data
           git add data/audits/df_runtime_restoration_2026_10_11.json
+          git add data/audits/df_original_capture_2026_10_11.json
           git diff --cached --quiet || git commit -m "audit(df): preserve isolated runtime originals and outcomes [skip ci]"
           git push origin HEAD:codex/df-end-to-end-20261011
           gh issue comment 5 --repo cftorre1/Radar-salud --body-file work/df-runtime-comment.md

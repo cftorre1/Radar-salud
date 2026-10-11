@@ -19,11 +19,17 @@ def main():
     run_id="38111768459"
     path=root/"config/orchestrator_queue.json";tasks=json.loads(path.read_text())
     df=next(t for t in tasks["tasks"] if t["id"]=="source_repair_media_lane_2026_10_11")["df_execution"]
-    if df.get("runtime_restored")==run_id:return
     report_path=artifact/"data/audits/df_reconciliation_2026_10_11.json"
     report=json.loads(report_path.read_text())
     if report.get("code_sha")!="d68d444e04b43e6a08de9be31f2f04983d40f41f":
         raise ValueError("Unexpected original checkpoint SHA")
+    shutil.copytree(artifact/"work/df-originals",root/"work/df-originals",dirs_exist_ok=True)
+    preserved=root/"data/audits/df_original_capture_2026_10_11.json"
+    if not preserved.exists():shutil.copyfile(report_path,preserved)
+    current=root/"data/audits/df_reconciliation_2026_10_11.json"
+    if current.exists() and not json.loads(current.read_text()).get("originals"):
+        shutil.copyfile(report_path,current)
+    if df.get("runtime_restored")==run_id:return
     cfg=source_index(load_sources(root/"config/sources.json"))["diario_financiero"]
     state=json.loads((artifact/"data/state/pending_queue.json").read_text())
     history=load_history(root/"data/history/superintendencia_signals.json")

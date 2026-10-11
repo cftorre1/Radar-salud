@@ -26,6 +26,13 @@ from radar_salud.scouts import fetch_html
 from radar_salud.source_scouts import DfHealthScout, _A
 
 
+def read_captured_html(path, expected_sha256):
+    payload=path.read_bytes()
+    if hashlib.sha256(payload).hexdigest()!=expected_sha256:
+        raise ValueError("Captured DF HTML hash mismatch")
+    return payload.decode("utf-8")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--live", action="store_true")
@@ -52,7 +59,6 @@ def main():
               "status": "in_progress", "originals": {}, "listing_pages": [], "processing": {},
               "coverage": {"complete_30_days": False, "complete_90_days": False,
                            "limitation": "Bounded DF health/tag/Señal DF inventory plus all retained DF queue/history URLs; unenumerated originals remain unverified."}}
-    atomic_json(out, report)
     queue = PendingQueue(root / "data/state/pending_queue.json")
     history = load_history(root / "data/history/superintendencia_signals.json")
     titles = {item["raw"]["url"]: item["raw"]["title"] for item in queue.items.values() if item["source"] == "diario_financiero"}
@@ -61,13 +67,13 @@ def main():
     for url,original in prior.get("originals",{}).items():
         digest=original.get("sha256");path=artifacts/(str(digest)+".html")
         if original.get("fetch")=="ok" and path.exists():
-            html=path.read_text()
-            if hashlib.sha256(html.encode()).hexdigest()!=digest:raise ValueError("Captured DF HTML hash mismatch")
+            html=read_captured_html(path,digest)
             cache[url]=html
             # Re-evaluate date/body with current code, preserve capture provenance.
             parsed=parse_df_article(html,url)
             report["originals"][url]={**original,"event_date":parsed["event_date"],
                 "evidence":{k:v for k,v in parsed["metadata"].items() if k!="page_text"},"replayed_by_sha":report["code_sha"]}
+    atomic_json(out, report)
     deadline = time.monotonic() + args.minutes * 60
 
     def capture(url):
