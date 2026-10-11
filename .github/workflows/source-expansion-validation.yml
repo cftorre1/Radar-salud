@@ -2,8 +2,6 @@ name: Source expansion isolated native validation
 on:
   pull_request:
     branches: [staging]
-  push:
-    branches: [codex/w4-market-intelligence-expansion-20261011]
   workflow_dispatch:
 permissions:
   contents: read
@@ -36,6 +34,24 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: expansion-documents
-          path: artifacts/expansion/captures/documents
+          name: expansion-documents-0
+          path: artifacts/expansion/captures/documents/0
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: expansion-documents-1
+          path: artifacts/expansion/captures/documents/1
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: expansion-documents-2
+          path: artifacts/expansion/captures/documents/2
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: expansion-documents-3
+          path: artifacts/expansion/captures/documents/3
           retention-days: 14

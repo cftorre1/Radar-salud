@@ -82,7 +82,12 @@ def main():
             results=list(pool.map(lambda seed:fetch(seed['url'],args.output/'captures',seed.get('post')),batch))
         for seed,(receipt,html) in zip(batch,results):
             receipt.update(package=seed['package'],kind=seed.get('kind','discovered'),depth=depth)
-            parser=Links();parser.feed(html);receipt['links']=[{'url':urljoin(seed['url'],h),'label':t} for h,t in parser.links if urlsplit(urljoin(seed['url'],h)).hostname in HOSTS]
+            discovery_html=html
+            if seed['package']=='dipres' and re.search(r'alt-multipropertyvalues-2518[345]',seed['url']):
+                start=html.find('pvid-14626 cid')
+                end=html.find('pv-pid-0',start+1)
+                discovery_html=html[start:end] if start>=0 and end>start else ''
+            parser=Links();parser.feed(discovery_html);receipt['links']=[{'url':urljoin(seed['url'],h),'label':t} for h,t in parser.links if h and urlsplit(urljoin(seed['url'],h)).hostname in HOSTS]
             receipts.append(receipt)
             print(seed['package'],receipt['network']['http_code'],receipt['bytes'],seed['url'],flush=True)
             if not receipt['transport_ok'] or depth==2:continue
@@ -90,9 +95,10 @@ def main():
                 u=link['url']; label=link['label']; host=urlsplit(u).hostname
                 relevant=False
                 if seed['package']=='isapres': relevant=bool(re.search(r'\.xlsx?(?:$|\?)|/(?:biblioteca-digital|publicaciones)/.*(?:cartera|financ|beneficiar|isapre)',u,re.I))
-                if seed['package']=='cmf': relevant=bool(re.search(r'hechos_esenciales|hechos.*archivo|hes_|safec_ifrs_verarchivo',u,re.I)) or bool(re.search(r'\.pdf$',u,re.I))
-                if seed['package']=='dipres': relevant=bool(re.search(r'articles-.*(?:pdf|xlsx|csv)|/(?:alt|aux)-multipropertyvalues-',u))
+                if seed['package']=='cmf': relevant=bool(re.search(r'ver_sgd|hechos_esenciales|hechos.*archivo|hes_|safec_ifrs_verarchivo',u,re.I)) or bool(re.search(r'\.pdf$',u,re.I))
+                if seed['package']=='dipres': relevant=bool(re.search(r'/(?:alt|aux)-multipropertyvalues-',u)) or bool(re.search(r'articles-.*(?:pdf|xlsx|csv)',u) and re.search('Proyecto de Ley|Comparativo|Ejecuci.n',label,re.I))
                 if relevant and host in HOSTS:todo.append({'url':u,'package':seed['package'],'kind':label[:100]})
+            (args.output/'receipts.json').write_text(json.dumps({'captured_at':utcnow(),'bounded_depth':2,'page_cap_per_depth':180,'coverage_complete':False,'receipts':receipts},ensure_ascii=False,indent=2)+'\n')
     args.output.mkdir(parents=True,exist_ok=True)
     (args.output/'receipts.json').write_text(json.dumps({'captured_at':utcnow(),'bounded_depth':2,'page_cap_per_depth':180,'coverage_complete':False,'receipts':receipts},ensure_ascii=False,indent=2)+'\n')
 if __name__=='__main__':main()
