@@ -212,9 +212,8 @@
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/redsalud.json",
         "blockers": [
-          "runtime_original_http_CONNECT_403",
-          "90_day_pagination_incomplete_or_cache_inconsistent",
-          "assessment_pending_existing_gates"
+          "90_day_inventory_dates_not_fully_persisted_after_five_page_probe",
+          "listing_detail_publication_date_conflict_2026_08_27_vs_2026_09_04"
         ],
         "latest_verified_original_at": "2026-09-21",
         "recovered_pending": 1
@@ -242,8 +241,8 @@
       "new": 0,
       "published": 1,
       "live_pending": 0,
-      "backfill_pending": 5,
-      "pending": 5,
+      "backfill_pending": 4,
+      "pending": 4,
       "deferred": 0,
       "rejected": 12,
       "status": "warning",
@@ -256,12 +255,11 @@
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/bupa_chile.json",
         "blockers": [
-          "runtime_original_http_CONNECT_403",
-          "investment_and_bank_campaign_publication_date_not_exposed",
-          "assessment_pending_existing_gates"
+          "51_listing_cards_undated_full_90_day_detail_inventory_incomplete",
+          "investment_and_bank_campaign_publication_date_not_exposed"
         ],
         "latest_verified_original_at": "2026-08-13",
-        "recovered_pending": 3
+        "recovered_pending": 2
       },
       "latest_original_at": null,
       "evaluation_performed": true,
@@ -310,7 +308,6 @@
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/pfizer_chile.json",
         "blockers": [
-          "runtime_original_http_CONNECT_403",
           "stale_external_newsroom_latest_2023_06_08",
           "healthtech_card_links_to_wrong_article"
         ],
@@ -354,9 +351,8 @@
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/indisa.json",
         "blockers": [
-          "runtime_original_http_CONNECT_403",
-          "pending_90_day_audit_inventory_pages_2_to_4_unverified",
-          "assessment_pending_existing_gates"
+          "actions_original_HTTP_403",
+          "pending_90_day_audit_inventory_pages_2_to_4_unverified"
         ],
         "latest_verified_original_at": "2026-09-11",
         "recovered_pending": 1
@@ -460,10 +456,10 @@
       "new": 0,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 1,
-      "pending": 1,
+      "backfill_pending": 0,
+      "pending": 0,
       "deferred": 0,
-      "rejected": 1,
+      "rejected": 2,
       "status": "error",
       "error": "https://www.davila.cl/novedades/que-tipo-de-cancer-de-mama-se-puede-operar-de-manera-ambulatoria: publication_date_unverified; https://www.davila.cl/novedades/operativo-medico-sotero: publication_date_unverified",
       "technical_status": "error",
@@ -476,12 +472,12 @@
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/red_davila.json",
         "blockers": [
-          "runtime_original_http_CONNECT_403",
-          "older_than_visible_listing_90_day_boundary_unverified",
-          "assessment_pending_existing_gates"
+          "first_listing_only_90_day_pagination_boundary_unverified",
+          "2026_10_05_cancer_article_publication_stamp_unverified",
+          "two_original_urls_editorially_rejected_without_persisted_subreason"
         ],
         "latest_verified_original_at": "2026-08-24",
-        "recovered_pending": 1
+        "recovered_pending": 0
       },
       "latest_original_at": "2026-09-30",
       "audited_assessment": {
@@ -530,9 +526,7 @@
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/andes_salud.json",
         "blockers": [
-          "runtime_original_http_CONNECT_403",
-          "newsroom_listing_and_90_day_pagination_unverified",
-          "assessment_pending_existing_gates"
+          "first_listing_only_90_day_pagination_boundary_unverified"
         ],
         "latest_verified_original_at": "2026-09-23",
         "recovered_pending": 0
@@ -572,9 +566,9 @@
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/clinicas_achs_salud.json",
         "blockers": [
-          "runtime_original_http_CONNECT_403",
-          "older_listing_90_day_boundary_unverified",
-          "assessment_pending_existing_gates"
+          "first_listing_only_90_day_boundary_unverified",
+          "partial_discovery_unicode_url_comiee_and_2026_09_03_HTTPError",
+          "assessment_rejected_without_persisted_subreason"
         ],
         "latest_verified_original_at": "2026-08-28",
         "recovered_pending": 0
@@ -697,8 +691,8 @@
       "new": 0,
       "published": 1,
       "live_pending": 0,
-      "backfill_pending": 21,
-      "pending": 21,
+      "backfill_pending": 14,
+      "pending": 14,
       "deferred": 0,
       "rejected": 4,
       "status": "warning",
@@ -711,10 +705,7 @@
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/clinicas_chile.json",
         "blockers": [
-          "runtime_original_http_CONNECT_403",
-          "library_publication_dates_unverified",
-          "library_pagination_memorias_2_3_estudios_2_3_documentos_2_3_4_unavailable",
-          "assessment_pending_existing_gates"
+          "library_publication_dates_unverified_33_discovered_documents"
         ],
         "latest_verified_original_at": "2026-10-02",
         "recovered_pending": 0

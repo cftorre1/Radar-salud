@@ -6,8 +6,8 @@
   "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
   "audit_path": "data/audits/providers_2026_10_11/clinicas_chile.json",
   "status": "reconciled_with_exact_blockers",
-  "coverage": "news_visible_30_and_90_reconciled_libraries_blocked",
-  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "coverage": "news_30_and_90_boundary_observed_library_date_inventory_blocked",
+  "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "surfaces": [
     {
@@ -16,22 +16,19 @@
     },
     {
       "url": "https://www.clinicasdechile.cl/knowledgebase_category/memorias/",
-      "result": "6 first-page downloads incl. Memoria2025; pages2–3 inaccessible through web tool; no release dates shown."
+      "result": "All 3 listing pages fetched in Actions, no discovery error; 33 unique library downloads across the three channels. Publication dates absent; body years and URL directories are not release dates."
     },
     {
       "url": "https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/",
-      "result": "6 first-page downloads incl. Dimensionamiento2024; pages2–3 inaccessible; dataset years are not release dates."
+      "result": "All 3 listing pages fetched in Actions, no discovery error; 33 unique library downloads across the three channels. Publication dates absent; body years and URL directories are not release dates."
     },
     {
       "url": "https://www.clinicasdechile.cl/knowledgebase_category/documentos/",
-      "result": "6 first-page downloads; pages2–4 inaccessible; no exact release dates shown."
+      "result": "All 4 listing pages fetched in Actions, no discovery error; 33 unique library downloads across the three channels. Publication dates absent; body years and URL directories are not release dates."
     }
   ],
   "blockers": [
-    "runtime_original_http_CONNECT_403",
-    "library_publication_dates_unverified",
-    "library_pagination_memorias_2_3_estudios_2_3_documentos_2_3_4_unavailable",
-    "assessment_pending_existing_gates"
+    "library_publication_dates_unverified_33_discovered_documents"
   ],
   "original_items": [
     {
@@ -86,7 +83,8 @@
   ],
   "notes": [
     "Noticias: opinión de envejecimiento (28 agosto) y encuentro de sostenibilidad (24 julio) sin cambio verificable no se promueven; resto ya fuera de 90 días.",
-    "Se revisan las cuatro superficies; descargas sólo de host original, sin menús. Gate70 noticias/75 documentos intacto. No se sustituyen fechas de publicación por años de informe o citas legales."
+    "Se revisan las cuatro superficies; descargas sólo de host original, sin menús. Gate70 noticias/75 documentos intacto. No se sustituyen fechas de publicación por años de informe o citas legales.",
+    "Actions resolved web-reader pagination failures: 39 unique items (6 news, 33 library documents). CENS assessed with news gate70; two historical PDF false dates remain quarantined."
   ],
   "quarantine_unverified_dates": [
     "https://www.clinicasdechile.cl/wp-content/uploads/2022/04/Memoria-2021-IMPRENTA_compressed.pdf",
@@ -109,7 +107,7 @@
     "publication_date_unknown": 4,
     "queue_counts": {
       "live_pending": 0,
-      "backfill_pending": 21,
+      "backfill_pending": 14,
       "rejected": 4,
       "published": 1
     },
@@ -129,7 +127,7 @@
           }
         ],
         "history_count": 1,
-        "visible_count": 0
+        "visible_count": 1
       },
       {
         "url": "https://www.clinicasdechile.cl/wp-content/uploads/2026/03/Memoria-clinicas-2025-final.pdf",
@@ -193,5 +191,106 @@
         "visible_count": 0
       }
     ]
-  }
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 39,
+      "dated": 6,
+      "latest_original_at": "2026-10-02",
+      "technical_status": "ok",
+      "errors": [],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "clinicas_chile",
+        "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
+        "outcome": "published"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null",
+  "archived_navigation_records": [
+    {
+      "key": "984ebb0e677dc117d1101931dbd497119925785cb852796c7b073bd77993adcf",
+      "url": "https://www.clinicasdechile.cl/",
+      "title": "Logo Clinicas de Chile",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "33d63e4ed5bd3f3792a282537d848ee0089597bc0dcc33e0f49eb9d3478167d0",
+      "url": "https://www.clinicasdechile.cl",
+      "title": "Clínicas de Chile",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "fbe4871f03bb239ff4dd86854047181a72a7c5c6d9df31092f8417ec1737b306",
+      "url": "https://www.clinicasdechile.cl/quienes-somos/equipo/",
+      "title": "Equipo de trabajo",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "e4169c41ff2e6f8f5e036920cf0422330893c5729b6dd3592acb012db1ebd5bd",
+      "url": "https://www.clinicasdechile.cl/quienes-somos/consejo-medico/",
+      "title": "Consejo médico",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "2c9602d6a09b5155d64be725e6cf9776029fe3175e513c474d0ca1b6f5d2b109",
+      "url": "https://www.clinicasdechile.cl/knowledgebase_category/temas-de-coyuntura/",
+      "title": "Temas de Coyuntura",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "84d6c6315bc63a024e6b3add517676f48094908dbf8abc0e0574bb74045a0cdb",
+      "url": "https://www.clinicasdechile.cl/quienes-somos/nosotros/",
+      "title": "Quiénes Somos",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    },
+    {
+      "key": "c2bfd93f90786325c331359443ef4a602ec72b3002bdbaf260f433828f045f1b",
+      "url": "https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/page/3/?mostrar=6",
+      "title": "Quiénes Somos",
+      "prior": {
+        "status": "retry",
+        "reason": "budget_or_analysis_deferred",
+        "deferred_detail": null
+      }
+    }
+  ]
 }

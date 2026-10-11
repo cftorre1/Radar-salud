@@ -7,7 +7,7 @@
   "audit_path": "data/audits/providers_2026_10_11/redsalud.json",
   "status": "reconciled_with_exact_blockers",
   "coverage": "partial_30_and_90_inventory",
-  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "surfaces": [
     {
@@ -20,9 +20,8 @@
     }
   ],
   "blockers": [
-    "runtime_original_http_CONNECT_403",
-    "90_day_pagination_incomplete_or_cache_inconsistent",
-    "assessment_pending_existing_gates"
+    "90_day_inventory_dates_not_fully_persisted_after_five_page_probe",
+    "listing_detail_publication_date_conflict_2026_08_27_vs_2026_09_04"
   ],
   "original_items": [
     {
@@ -131,5 +130,43 @@
         "visible_count": 0
       }
     ]
-  }
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 45,
+      "dated": 45,
+      "latest_original_at": "2026-10-07",
+      "technical_status": "ok",
+      "errors": [],
+      "evaluation_performed": false
+    },
+    "promotion": "none",
+    "article_date_probe": {
+      "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
+      "article_headline": "Nueva Unidad de Trasplante de Médula Ósea: Alta Complejidad y Nueva Vida",
+      "article_date_raw": "2026-09-04T13:14:32-0400",
+      "article_date": "2026-09-04",
+      "audited_listing_date": "2026-08-27",
+      "body_characters": 6421
+    }
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "redsalud",
+        "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
+        "outcome": "retry",
+        "blocker": "RedSalud listing and article dates disagree"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null"
 }

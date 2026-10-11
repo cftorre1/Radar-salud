@@ -326,7 +326,7 @@ class ClinicasChileScout:
             document=bool(re.fullmatch(r"/wp-content/uploads/.+\.(?:pdf|xlsx?|csv)",parsed.path,re.I))
             if channel=="Noticias":
                 if (len(title)<25 or document or not re.fullmatch(r"/(?:noticias/)?[^/]+/?",parsed.path)
-                        or parsed.path.rstrip("/") in ("/noticias","/quienes-somos","/asociados","/seminarios","/biblioteca","/contacto")):
+                        or parsed.path.rstrip("/") in ("/noticias","/quienes-somos","/asociados","/seminarios","/biblioteca","/contacto","/equipo-de-trabajo","/consejo-medico","/temas-de-coyuntura")):
                     continue
             elif not (document and title.casefold().startswith("descargar")):
                 continue

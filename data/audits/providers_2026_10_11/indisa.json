@@ -7,7 +7,7 @@
   "audit_path": "data/audits/providers_2026_10_11/indisa.json",
   "status": "reconciled_with_exact_blockers",
   "coverage": "partial_30_and_90_inventory",
-  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "pending_90_day_audit",
   "surfaces": [
     {
@@ -16,9 +16,8 @@
     }
   ],
   "blockers": [
-    "runtime_original_http_CONNECT_403",
-    "pending_90_day_audit_inventory_pages_2_to_4_unverified",
-    "assessment_pending_existing_gates"
+    "actions_original_HTTP_403",
+    "pending_90_day_audit_inventory_pages_2_to_4_unverified"
   ],
   "original_items": [
     {
@@ -113,5 +112,34 @@
         "visible_count": 0
       }
     ]
-  }
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 0,
+      "technical_status": "error",
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "indisa",
+        "url": "https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial",
+        "outcome": "retry",
+        "blocker": "INDISA article temporarily unavailable"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null"
 }

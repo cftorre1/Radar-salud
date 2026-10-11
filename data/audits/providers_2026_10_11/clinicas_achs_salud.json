@@ -7,7 +7,7 @@
   "audit_path": "data/audits/providers_2026_10_11/clinicas_achs_salud.json",
   "status": "reconciled_with_exact_blockers",
   "coverage": "partial_90_inventory_visible_30_reviewed",
-  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "market_role": "provider_achs",
   "surfaces": [
@@ -17,9 +17,9 @@
     }
   ],
   "blockers": [
-    "runtime_original_http_CONNECT_403",
-    "older_listing_90_day_boundary_unverified",
-    "assessment_pending_existing_gates"
+    "first_listing_only_90_day_boundary_unverified",
+    "partial_discovery_unicode_url_comiee_and_2026_09_03_HTTPError",
+    "assessment_rejected_without_persisted_subreason"
   ],
   "original_items": [
     {
@@ -95,5 +95,37 @@
         "visible_count": 0
       }
     ]
-  }
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 18,
+      "dated": 18,
+      "latest_original_at": "2026-09-28",
+      "technical_status": "partial",
+      "errors": [
+        "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral: UnicodeEncodeError",
+        "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-participa-como-aliado-estrategico-en-el-tercer-encuentro-del-ano-de-la-red-de-seguridad-escolar: HTTPError"
+      ],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "clinicas_achs_salud",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "outcome": "rejected"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null"
 }

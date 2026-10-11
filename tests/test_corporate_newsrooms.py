@@ -54,6 +54,9 @@ def test_indisa_listing_and_detail_bind_headline_publication_date_and_provider_s
         "relevance_score":82,
         "what_happened":"Clínica INDISA relanzó su convenio preferente con Isapre Esencial para sus planes INDISA e INICIA.",
         "why_it_matters":"El acuerdo amplía alternativas de atención y detalla prestaciones, sedes, cartera actual y meta declarada."}))
+    # The discovery gate remains pending in runtime until its 90-day audit.
+    # This fixture isolates article parsing after an explicit passed gate.
+    raw.metadata['source_quality_gate']='passed'
     row=process_corporate_news(raw,cfg)
     assert row["event_date"]=="2026-09-11"
     assert row["scopes"]==["Isapres","Prestadores"]

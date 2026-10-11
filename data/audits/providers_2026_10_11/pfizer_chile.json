@@ -7,7 +7,7 @@
   "audit_path": "data/audits/providers_2026_10_11/pfizer_chile.json",
   "status": "reconciled_with_exact_blockers",
   "coverage": "zero_in_30_and_90_on_visible_original_surface",
-  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "surfaces": [
     {
@@ -16,7 +16,6 @@
     }
   ],
   "blockers": [
-    "runtime_original_http_CONNECT_403",
     "stale_external_newsroom_latest_2023_06_08",
     "healthtech_card_links_to_wrong_article"
   ],
@@ -81,5 +80,28 @@
         "visible_count": 0
       }
     ]
-  }
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 3,
+      "dated": 3,
+      "latest_original_at": "2023-06-08",
+      "technical_status": "ok",
+      "errors": [],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null"
 }

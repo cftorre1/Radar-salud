@@ -7,7 +7,7 @@
   "audit_path": "data/audits/providers_2026_10_11/bupa_chile.json",
   "status": "reconciled_with_exact_blockers",
   "coverage": "partial_30_and_90_inventory",
-  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "surfaces": [
     {
@@ -16,9 +16,8 @@
     }
   ],
   "blockers": [
-    "runtime_original_http_CONNECT_403",
-    "investment_and_bank_campaign_publication_date_not_exposed",
-    "assessment_pending_existing_gates"
+    "51_listing_cards_undated_full_90_day_detail_inventory_incomplete",
+    "investment_and_bank_campaign_publication_date_not_exposed"
   ],
   "original_items": [
     {
@@ -89,9 +88,9 @@
     "publication_date_unknown": 2,
     "queue_counts": {
       "live_pending": 0,
-      "backfill_pending": 5,
+      "backfill_pending": 4,
       "rejected": 12,
-      "published": 1
+      "published": 2
     },
     "items": [
       {
@@ -120,13 +119,13 @@
         "queue": [
           {
             "key": "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353",
-            "status": "retry",
-            "reason": "budget_or_analysis_deferred",
+            "status": "published",
+            "reason": null,
             "lane": "BACKFILL"
           }
         ],
-        "history_count": 0,
-        "visible_count": 0
+        "history_count": 1,
+        "visible_count": 1
       },
       {
         "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
@@ -163,5 +162,52 @@
         "visible_count": 1
       }
     ]
-  }
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 51,
+      "dated": 0,
+      "latest_original_at": null,
+      "technical_status": "ok",
+      "errors": [],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "bupa_chile",
+        "url": "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+        "outcome": "retry",
+        "blocker": "Bupa article publication date unavailable"
+      },
+      {
+        "source": "bupa_chile",
+        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+        "outcome": "retry",
+        "blocker": "Bupa headline mismatch between listing and article"
+      },
+      {
+        "source": "bupa_chile",
+        "url": "https://www.bupa.cl/bupa-chile-y-bancoestado-impulsan-campana-para-acercar-la-prevencion-del",
+        "outcome": "retry",
+        "blocker": "Bupa article publication date unavailable"
+      },
+      {
+        "source": "bupa_chile",
+        "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
+        "outcome": "published"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null"
 }

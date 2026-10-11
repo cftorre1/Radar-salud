@@ -7,7 +7,7 @@
   "audit_path": "data/audits/providers_2026_10_11/andes_salud.json",
   "status": "reconciled_with_exact_blockers",
   "coverage": "partial_30_and_90_inventory",
-  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "market_role": "provider",
   "surfaces": [
@@ -21,9 +21,7 @@
     }
   ],
   "blockers": [
-    "runtime_original_http_CONNECT_403",
-    "newsroom_listing_and_90_day_pagination_unverified",
-    "assessment_pending_existing_gates"
+    "first_listing_only_90_day_pagination_boundary_unverified"
   ],
   "original_items": [
     {
@@ -105,7 +103,7 @@
           }
         ],
         "history_count": 1,
-        "visible_count": 0
+        "visible_count": 1
       },
       {
         "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
@@ -122,7 +120,7 @@
           }
         ],
         "history_count": 1,
-        "visible_count": 0
+        "visible_count": 1
       },
       {
         "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
@@ -139,8 +137,47 @@
           }
         ],
         "history_count": 1,
-        "visible_count": 0
+        "visible_count": 1
       }
     ]
-  }
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 9,
+      "dated": 9,
+      "latest_original_at": "2026-10-05",
+      "technical_status": "ok",
+      "errors": [],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "andes_salud",
+        "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+        "outcome": "published"
+      },
+      {
+        "source": "andes_salud",
+        "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+        "outcome": "published"
+      },
+      {
+        "source": "andes_salud",
+        "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+        "outcome": "published"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null"
 }

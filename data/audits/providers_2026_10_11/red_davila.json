@@ -7,7 +7,7 @@
   "audit_path": "data/audits/providers_2026_10_11/red_davila.json",
   "status": "reconciled_with_exact_blockers",
   "coverage": "partial_90_inventory_visible_30_reviewed",
-  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "market_role": "provider",
   "surfaces": [
@@ -17,9 +17,9 @@
     }
   ],
   "blockers": [
-    "runtime_original_http_CONNECT_403",
-    "older_than_visible_listing_90_day_boundary_unverified",
-    "assessment_pending_existing_gates"
+    "first_listing_only_90_day_pagination_boundary_unverified",
+    "2026_10_05_cancer_article_publication_stamp_unverified",
+    "two_original_urls_editorially_rejected_without_persisted_subreason"
   ],
   "original_items": [
     {
@@ -43,7 +43,8 @@
   ],
   "notes": [
     "Una Red Dávila por slug. Promovida del catálogo beta al motor diario; no otra institución por sede.",
-    "Educación sobre cáncer, chilenidad, campañas y reconocimientos no justifican materialidad. Resonancia/fototerapia quedan sujetas a prueba de nueva capacidad, no palabras clave solas."
+    "Educación sobre cáncer, chilenidad, campañas y reconocimientos no justifican materialidad. Resonancia/fototerapia quedan sujetas a prueba de nueva capacidad, no palabras clave solas.",
+    "Intake title corrected to the original H1 and Operativos Médicos publication header verified. Reassessment completed: rejected; do not override or repay for explanation."
   ],
   "recovery_checkpoint": {
     "at": "2026-10-11T04:41:22.718201+00:00",
@@ -67,8 +68,8 @@
     "publication_date_unknown": 0,
     "queue_counts": {
       "live_pending": 0,
-      "backfill_pending": 1,
-      "rejected": 1,
+      "backfill_pending": 0,
+      "rejected": 2,
       "published": 0
     },
     "items": [
@@ -98,8 +99,8 @@
         "queue": [
           {
             "key": "c37af1410f6e19197c0f9b67dd2769765a1e3b35c0d71e9076b9059bcbf8a6a4",
-            "status": "retry",
-            "reason": "budget_or_analysis_deferred",
+            "status": "rejected",
+            "reason": "processor_rejected",
             "lane": "BACKFILL"
           }
         ],
@@ -107,5 +108,48 @@
         "visible_count": 0
       }
     ]
-  }
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 9,
+      "dated": 9,
+      "latest_original_at": "2026-09-30",
+      "technical_status": "partial",
+      "errors": [
+        "https://www.davila.cl/novedades/que-tipo-de-cancer-de-mama-se-puede-operar-de-manera-ambulatoria: publication_date_unverified",
+        "https://www.davila.cl/novedades/operativo-medico-sotero: publication_date_unverified"
+      ],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "red_davila",
+        "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+        "outcome": "rejected"
+      },
+      {
+        "source": "red_davila",
+        "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
+        "outcome": "retry",
+        "blocker": "Provider listing/detail publication date mismatch: https://www.davila.cl/novedades/operativo-medico-sotero"
+      },
+      {
+        "source": "red_davila",
+        "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
+        "outcome": "rejected"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null"
 }
