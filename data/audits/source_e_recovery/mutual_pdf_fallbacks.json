@@ -1,0 +1,120 @@
+{
+  "source_slug": "mutual_seguridad",
+  "subfront": "official_annual_report_and_hospital_statistics_fallbacks",
+  "as_of_chile": "2026-10-11",
+  "actions_run": "38117675962",
+  "listing_evidence": {
+    "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/memorias/",
+    "http_status": 200,
+    "tls_verified": true,
+    "captured_at": "2026-10-11T06:22:47.375060+00:00",
+    "artifact": "data/audits/source_e_recovery/actions/38117675962/f7905682407992869589-0.body",
+    "sha256": "cf058f3d3a5271ddb7a75f3fc8d67313db2f95ec1e824f11d37fd71aee97d7c6"
+  },
+  "observed_attachments": [
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/28973518-0f53-4887-94fb-4c163aa90de0/memoria-mutual-de-seguridad-2025.pdf?MOD=AJPERES",
+      "title": "Memoria 2025",
+      "listing_date_value": "2025",
+      "listing_date_semantics": "Annual report coverage year; not full publication date.",
+      "provenance": {
+        "listing_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/memorias/",
+        "field": "button[onclick] window.open literal PDF attachment",
+        "value": "/portal/wcm/connect/28973518-0f53-4887-94fb-4c163aa90de0/memoria-mutual-de-seguridad-2025.pdf?MOD=AJPERES",
+        "listing_sha256": "cf058f3d3a5271ddb7a75f3fc8d67313db2f95ec1e824f11d37fd71aee97d7c6"
+      },
+      "publication_date": null,
+      "date_gate": "fail_closed_no_exact_publication_day",
+      "capture_status": "observed_official_attachment_pending_capture"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/67eeddbd-d49c-4e55-bbf5-23b32e08c240/memoria-mutual-2024.pdf?MOD=AJPERES",
+      "title": "Memoria 2024",
+      "listing_date_value": "2024",
+      "listing_date_semantics": "Annual report coverage year; not full publication date.",
+      "provenance": {
+        "listing_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/memorias/",
+        "field": "button[onclick] window.open literal PDF attachment",
+        "value": "/portal/wcm/connect/67eeddbd-d49c-4e55-bbf5-23b32e08c240/memoria-mutual-2024.pdf?MOD=AJPERES",
+        "listing_sha256": "cf058f3d3a5271ddb7a75f3fc8d67313db2f95ec1e824f11d37fd71aee97d7c6"
+      },
+      "publication_date": null,
+      "date_gate": "fail_closed_no_exact_publication_day",
+      "capture_status": "captured"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/d338dbae-1d13-4bbb-b0bc-596d47ea6c4b/diseno-anuario-hospital-mutual-2024-v12.pdf?MOD=AJPERES",
+      "title": "Anuario Hospital Clínico",
+      "listing_date_value": "2024",
+      "listing_date_semantics": "Annual report coverage year; not full publication date.",
+      "provenance": {
+        "listing_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/memorias/",
+        "field": "button[onclick] window.open literal PDF attachment",
+        "value": "/portal/wcm/connect/d338dbae-1d13-4bbb-b0bc-596d47ea6c4b/diseno-anuario-hospital-mutual-2024-v12.pdf?MOD=AJPERES",
+        "listing_sha256": "cf058f3d3a5271ddb7a75f3fc8d67313db2f95ec1e824f11d37fd71aee97d7c6"
+      },
+      "publication_date": null,
+      "date_gate": "fail_closed_no_exact_publication_day",
+      "capture_status": "observed_official_attachment_pending_capture"
+    }
+  ],
+  "verified_pdf_checks": [
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/67eeddbd-d49c-4e55-bbf5-23b32e08c240/memoria-mutual-2024.pdf?MOD=AJPERES",
+      "artifact": "data/audits/source_e_recovery/actions/38117675962/da4d6b71f8b9708f6fb5-0.body",
+      "sha256": "0dc9ed396f5064558c47a429001f53b1a4468ce597bab676d047eff32fcc66b5",
+      "bytes": 12636726,
+      "http_status": 200,
+      "tls_verified": true,
+      "pdf_header_verified": true,
+      "text_extraction": "pdftotext -layout completed; PDF font-weight warnings did not stop extraction",
+      "extracted_text_sha256": "d638e6dab9440ca3ada4d653f808f18483ca52ccc16fa22ce5671648882a37aa",
+      "publication_date": null,
+      "verifiable_publication_granularity": "month",
+      "publication_month": "2025-05",
+      "explicit_publication_quote": "y el 31 de diciembre de 2024, y fue publicada en mayo de 2025.",
+      "publication_quote_pdf_page": 108,
+      "other_date_semantics": [
+        {
+          "value": "2025-05-29",
+          "field": "Directors/general manager declaration of approval/responsibility",
+          "acceptable_publication_evidence": false
+        }
+      ],
+      "date_gate": "fail_closed_no_exact_publication_day",
+      "horizon_fallback": "These older reports do not establish a current90-day news archive or publication day."
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/f8d55034-e8db-44c2-a5cc-f46874de4189/memoria-mutual-2023.pdf?MOD=AJPERES",
+      "artifact": "data/audits/source_e_recovery/actions/38117675962/8b449432693cf70fe535-0.body",
+      "sha256": "8a9eeaacf23eccafc2bd47b4bf7a49ba28c056890f86a4c466c2770539b1cb7c",
+      "bytes": 10382271,
+      "http_status": 200,
+      "tls_verified": true,
+      "pdf_header_verified": true,
+      "text_extraction": "pdftotext -layout completed; PDF font-weight warnings did not stop extraction",
+      "extracted_text_sha256": "c3fc952cf34a00e8226da97ece4b16c408edc867a0a3fd97d4150aa236c7956d",
+      "publication_date": null,
+      "verifiable_publication_granularity": null,
+      "publication_month": null,
+      "explicit_publication_quote": null,
+      "publication_quote_pdf_page": null,
+      "other_date_semantics": [
+        {
+          "value": "2024-05-23",
+          "field": "Directors/general manager declaration of approval/responsibility",
+          "acceptable_publication_evidence": false
+        }
+      ],
+      "date_gate": "fail_closed_no_exact_publication_day",
+      "horizon_fallback": "These older reports do not establish a current90-day news archive or publication day."
+    }
+  ],
+  "supersedes": {
+    "old_search_result": "2025 report absence from search never proved absence; live official listing now supplies exact2025 attachment.",
+    "old_collector_limit": "Run2 max-filesize bound superseded by Run6 verified complete2024/2023 PDF captures; never source outage."
+  },
+  "acceptance_status": "PUBLIC_OFFICIAL_FALLBACK_AVAILABLE_PUBLICATION_DAY_NOT_VERIFIED",
+  "coverage_complete": false,
+  "next_action": "Parent isolated Actions captures the exact listed2025 annual report and2024 hospital annuary attachment; inspect explicit publication field, retain fail-closed if only period/year or signing/approval dates."
+}

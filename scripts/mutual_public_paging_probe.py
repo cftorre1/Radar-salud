@@ -30,7 +30,7 @@ def public_url(url):
         path = unquote(unquote(p.path)).casefold()
         return (p.scheme == "https" and p.hostname == "www.mutual.cl"
                 and p.port in (None, 443) and not p.username and not p.password
-                and not path.startswith("/portal/privado/"))
+                and path != "/portal/privado" and not path.startswith("/portal/privado/"))
     except ValueError:
         return False
 
@@ -41,6 +41,43 @@ def safe_response_headers(headers):
 
 def now():
     return datetime.now(timezone.utc).isoformat()
+
+
+async def guard_browser_route(route, policy, output, report):
+    """Inspect executable responses before an anonymous browser receives them."""
+    request = route.request
+    if (request.method not in {"GET", "HEAD"} or not public_url(request.url)
+            or (policy and not policy.can_fetch(USER_AGENTS["identified"], request.url))):
+        await route.abort()
+        return
+    if request.resource_type in {"image", "font", "media"}:
+        await route.abort()
+        return
+    # Ignore unrelated tracking and root WAF fingerprint resources; a portal
+    # script still requires response inspection before it can execute.
+    if request.resource_type == "script" and not urlsplit(request.url).path.startswith("/portal/"):
+        await route.abort()
+        return
+    if request.resource_type not in {"document", "xhr", "fetch", "script"}:
+        await route.continue_()
+        return
+    response = await route.fetch(max_redirects=0, timeout=30000)
+    body = await response.body()
+    challenge = waf_kind(body)
+    identity = hashlib.sha256((request.url + "\n" + str(len(report["responses"]))).encode()).hexdigest()[:20]
+    body_file = identity + ".body"
+    (Path(output) / body_file).write_bytes(body)
+    report["responses"].append({"url": request.url, "response_url": response.url,
+        "resource_type": request.resource_type, "method": request.method, "captured_at": now(),
+        "http_status": response.status, "headers": safe_response_headers(response.headers),
+        "tls_verified": True, "tls_mechanism": "default_browser_certificate_validation",
+        "sha256": hashlib.sha256(body).hexdigest(), "bytes": len(body), "body_file": body_file,
+        "waf": challenge})
+    if challenge:
+        report["errors"].append({"url": request.url, "reason": challenge})
+        await route.abort()
+    else:
+        await route.fulfill(response=response, body=body)
 
 
 async def observe(output, as_of):
@@ -81,39 +118,7 @@ async def observe(output, as_of):
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context(user_agent=USER_AGENTS["identified"], ignore_https_errors=False)
         async def guard(route):
-            request = route.request
-            if (request.method not in {"GET", "HEAD"} or not public_url(request.url)
-                    or (policy and not policy.can_fetch(USER_AGENTS["identified"], request.url))):
-                await route.abort()
-                return
-            if request.resource_type in {"image", "font", "media"}:
-                await route.abort()
-                return
-            # Public content scripts are under the portal. Ignore unrelated
-            # tracking and WAF client scripts, never execute challenge resources.
-            if request.resource_type == "script" and not urlsplit(request.url).path.startswith("/portal/"):
-                await route.abort()
-                return
-            if request.resource_type not in {"document", "xhr", "fetch"}:
-                await route.continue_()
-                return
-            response = await route.fetch(max_redirects=0, timeout=30000)
-            body = await response.body()
-            challenge = waf_kind(body)
-            identity = hashlib.sha256((request.url + "\n" + str(len(report["responses"]))).encode()).hexdigest()[:20]
-            body_file = identity + ".body"
-            (output / body_file).write_bytes(body)
-            report["responses"].append({"url": request.url, "response_url": response.url,
-                "resource_type": request.resource_type, "method": request.method, "captured_at": now(),
-                "http_status": response.status, "headers": safe_response_headers(response.headers),
-                "tls_verified": True, "tls_mechanism": "default_browser_certificate_validation",
-                "sha256": hashlib.sha256(body).hexdigest(), "bytes": len(body), "body_file": body_file,
-                "waf": challenge})
-            if challenge:
-                report["errors"].append({"url": request.url, "reason": challenge})
-                await route.abort()
-            else:
-                await route.fulfill(response=response, body=body)
+            await guard_browser_route(route, policy, output, report)
         await context.route("**/*", guard)
         page = await context.new_page()
         page.set_default_timeout(15000)

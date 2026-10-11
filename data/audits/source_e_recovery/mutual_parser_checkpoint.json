@@ -71,9 +71,9 @@
   },
   "regression_tests": {
     "command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py",
-    "result": "68 passed; native evidence, repeated experimental paging cannot prove complete zero, and browser probe scoped URL/header guards verified.",
-    "shared_command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py tests/test_occupational_sources.py tests/test_occupational_integrity.py",
-    "shared_result": "Earlier 114 passed, 3 concurrent shared failures were notified; this checkpoint reruns own68, shared integration belongs to root."
+    "result": "70 Mutual passed, including executable portal-script challenge abort before fulfill and no Cookie persistence.",
+    "shared_command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py tests/test_occupational_integrity.py",
+    "shared_result": "161 Mutual + integrity passed after gate and reviewer adjustment; py_compile passed."
   },
   "follow_up_checkpoint": {
     "coverage_checks": [
@@ -146,5 +146,40 @@
     "command": "python scripts/mutual_public_paging_probe.py --output OUTPUT/mutual-browser --as-of 2026-10-11",
     "purpose": "Anonymous official robots-allowed public GET navigation; before executing document checks challenge; blocks third-party/private requests and non-GET/HEAD; stores no cookie or request headers; labels rendered DOM separately from publisher response bytes.",
     "run_status": "PENDING_PARENT_ACTIONS"
+  },
+  "actual_run4_replay_after_gate": "data/audits/source_e_recovery/mutual_run4_replay_after_gate.json",
+  "materiality_review": {
+    "shared_gate_commit": "bcdb9e2",
+    "actual_verified_articles_90_days": 51,
+    "candidates_90_days": 2,
+    "rejected_90_days": 49,
+    "actual_verified_articles_30_days": 33,
+    "candidates_30_days": 0,
+    "coverage_complete": false,
+    "candidate_semantics": [
+      "2026-08-27: Construction procurement call includes optional850m² CAM Vallenar pilot; not award or opening.",
+      "2026-07-28: Gran Américas new adherence; quantified8of9 transport companies, no worker headcount."
+    ],
+    "retained_rejection": "2026-07-17 GRC manual event has no verifiable new clinical/operational protocol impact."
+  },
+  "official_pdf_fallback_checkpoint": "data/audits/source_e_recovery/mutual_pdf_fallbacks.json",
+  "actual_run6_replay": "data/audits/source_e_recovery/mutual_run6_replay.json",
+  "latest_actual_archive_gap": {
+    "actions_run": "38117675962",
+    "initial_cards_unique": 84,
+    "verified_detail_articles_90_days": 51,
+    "candidates_90_days": 2,
+    "rejected_90_days": 49,
+    "captured_listing_pages": 15,
+    "actual_continuation_failures": 14,
+    "failure_code": "repeated_pagination_page",
+    "origin_status": "HTTP200 verified TLS; returned same initial category cards, not archive advancement",
+    "coverage_complete": false,
+    "next_action": "Parent Actions public anonymous browser diagnostic observes real native anchor/client navigation."
+  },
+  "qa_reviewer": {
+    "reviewer": "independent /root/reviewer",
+    "result": "Read-only exact diff revalidated; script challenge-response gap closed. 70 Mutual tests PASS; no network executed by reviewer.",
+    "remaining": "Live browser diagnostic and full archive coverage remain pending; no source healthy/full90-day claim."
   }
 }

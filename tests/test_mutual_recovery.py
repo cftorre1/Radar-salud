@@ -315,11 +315,58 @@ def test_browser_probe_never_persists_cookies_or_allows_private_or_unofficial_na
     assert public_url(PAGE)
     assert public_url(PAGE + "p0/OBSERVED=/")
     for url in ("http://www.mutual.cl/", "https://www.mutual.cl:444/", "https://user:pass@www.mutual.cl/",
-                "https://www.mutual.cl/portal/privado/", "https://www.mutual.cl/portal/%2570rivado/login/",
+                "https://www.mutual.cl/portal/privado", "https://www.mutual.cl/portal/privado/",
+                "https://www.mutual.cl/portal/%2570rivado/login/",
                 "https://example.test/", "https://www.mutual.cl.evil.test/"):
         assert not public_url(url)
     assert safe_response_headers({"Content-Type": "text/html", "Set-Cookie": "private", "Authorization": "secret"}) == {
         "content-type": "text/html"}
+
+
+@pytest.mark.parametrize("body,expected_abort", [
+    (b'var incident="_Incapsula_Resource"; document.location="challenge";', True),
+    (b'window.wpModules={theme:{WindowUtils:{baseURL:{}}}};', False),
+])
+def test_browser_checks_portal_script_body_before_execution_and_redacts_cookies(tmp_path, body, expected_abort):
+    import asyncio
+    import hashlib
+    from types import SimpleNamespace
+    from scripts.mutual_public_paging_probe import guard_browser_route
+
+    class Response:
+        status = 200
+        url = "https://www.mutual.cl/portal/contenthandler/public.js"
+        headers = {"content-type": "text/javascript", "set-cookie": "anonymous-session=secret"}
+        async def body(self):
+            return body
+
+    class Route:
+        request = SimpleNamespace(url=Response.url, method="GET", resource_type="script")
+        fetched = False
+        aborted = False
+        fulfilled = False
+        continued = False
+        async def fetch(self, **kwargs):
+            self.fetched = True
+            assert kwargs["max_redirects"] == 0
+            return Response()
+        async def abort(self):
+            self.aborted = True
+        async def fulfill(self, **kwargs):
+            self.fulfilled = True
+            assert kwargs["body"] == body
+        async def continue_(self):
+            self.continued = True
+
+    route, report = Route(), {"responses": [], "errors": []}
+    asyncio.run(guard_browser_route(route, None, tmp_path, report))
+    assert route.fetched and not route.continued
+    assert route.aborted == expected_abort and route.fulfilled != expected_abort
+    record = report["responses"][0]
+    assert record["sha256"] == hashlib.sha256(body).hexdigest()
+    assert (tmp_path / record["body_file"]).read_bytes() == body
+    assert record["headers"] == {"content-type": "text/javascript"}
+    assert bool(report["errors"]) == expected_abort
 
 
 def test_failed_category_keeps_other_categories_and_exact_transport_attribution():
