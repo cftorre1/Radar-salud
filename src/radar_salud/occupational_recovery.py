@@ -8,11 +8,35 @@ from .occupational_sources import valid_date
 def _merge(report, extra):
     if report.get("as_of") != extra.get("as_of"):
         raise ValueError("Cannot merge source inventories from different as_of days")
-    urls, unique_rows = set(), []
+    today = _calendar(report["as_of"])
+    urls, unique_rows, duplicate_rows = set(), [], {}
     for row in report["rows"] + extra["rows"]:
+        duplicate_rows.setdefault(row["url"], []).append(row)
         if row["url"] not in urls:
             urls.add(row["url"])
             unique_rows.append(row)
+    conflicts = []
+    for kept in unique_rows:
+        observations = []
+        for row in duplicate_rows[kept["url"]]:
+            observed = list(row.get("publication_date_observations", []))
+            if row.get("publication_date") is not None:
+                observed.append({"publication_date": row["publication_date"],
+                                 "publication_evidence": row.get("publication_evidence"),
+                                 "date_evidence": row.get("date_evidence"),
+                                 "listing_url": row.get("listing_url"),
+                                 "detail_sha256": row.get("detail_sha256")})
+            for value in observed:
+                if value not in observations:
+                    observations.append(value)
+        verified = {day for value in observations
+                    if (day := valid_date(value.get("publication_date"), today=today))}
+        if len(verified) > 1:
+            kept.update(publication_date=None, event_date=None, publication_evidence=None,
+                        date_evidence=None, materiality_accepted=None, status="pending",
+                        reason="merged_publication_date_conflict", publication_date_observations=observations)
+            conflicts.append({"code": "merged_publication_date_conflict", "url": kept["url"],
+                              "verified_dates": sorted(verified), "observations": observations})
     raw_urls, unique_raw = set(), []
     for item in report["raw_items"] + extra["raw_items"]:
         if item.url not in raw_urls:
@@ -21,13 +45,21 @@ def _merge(report, extra):
     report["rows"], report["raw_items"] = unique_rows, unique_raw
     report["pages"].extend(extra["pages"])
     report["errors"].extend(extra["errors"])
+    for conflict in conflicts:
+        if not any(error.get("code") == conflict["code"] and error.get("url") == conflict["url"]
+                   for error in report["errors"]):
+            report["errors"].append(conflict)
+    if conflicts:
+        report["stop_reason"] = "merged_publication_date_conflict"
     report.setdefault("surface_reports", {})[extra["surface_slug"]] = {k:v for k,v in extra.items() if k not in {"raw_items", "rows"}}
     report["coverage_complete"] = report["coverage_complete"] and extra["coverage_complete"]
     from .beta_sources import CuratedBetaSourceScout
     cfg = CuratedBetaSourceScout.SOURCES[report["source_slug"]]
     accepted_roles = cfg.get("accepted_roles", (cfg["role"],))
-    today = _calendar(report["as_of"])
     verified_days = {row["url"]: valid_date(row.get("publication_date"), today=today) for row in unique_rows}
+    blocked_urls = {row["url"] for row in unique_rows
+                    if not verified_days[row["url"]] or row.get("status") == "pending"}
+    report["raw_items"] = [item for item in report["raw_items"] if item.url not in blocked_urls]
     unknown = sum(day is None for day in verified_days.values())
     report["coverage_complete"] = bool(report["coverage_complete"] and not unknown and
                                        not any(row.get("status") == "pending" for row in unique_rows))

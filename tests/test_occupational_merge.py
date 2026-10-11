@@ -92,3 +92,42 @@ def test_different_as_of_days_are_rejected_before_mutating_either_report():
     with pytest.raises(ValueError, match='as_of'):
         _merge(first, report([row()], surface='extra', as_of='2026-10-10'))
     assert first == original
+
+
+def test_two_verified_dates_for_same_url_preserve_both_evidences_and_remove_raw():
+    first_row, extra_row = row(published='2026-09-24'), row(published='2026-10-01')
+    for item, listing in ((first_row, 'https://clinicaportada.cl/noticias/'),
+                          (extra_row, 'https://clinicaportada.cl/feed/')):
+        item['listing_url'] = listing
+        item['date_evidence'] = 'article:published_time'
+        item['publication_evidence'] = {'kind': 'article:published_time', 'url': URL,
+                                       'value': item['publication_date'], 'date': item['publication_date']}
+    merged = _merge(report([first_row], [raw(published='2026-09-24')]),
+                    report([extra_row], [raw(published='2026-10-01')], surface='clinic_network'))
+    assert len(merged['rows']) == 1 and merged['raw_items'] == []
+    item = merged['rows'][0]
+    assert item['status'] == 'pending' and item['reason'] == 'merged_publication_date_conflict'
+    assert item['publication_date'] is None and item['event_date'] is None
+    assert item['publication_evidence'] is None
+    assert [observation['publication_date'] for observation in item['publication_date_observations']] == ['2026-09-24', '2026-10-01']
+    assert [observation['publication_evidence'] for observation in item['publication_date_observations']] == [first_row['publication_evidence'], extra_row['publication_evidence']]
+    assert not merged['coverage_complete'] and merged['technical_status'] == 'partial'
+    assert all(metrics['dated_articles'] == metrics['candidates'] == 0 for metrics in merged['metrics'].values())
+    assert merged['unknown_publication_dates'] == 1
+    assert merged['errors'][0]['verified_dates'] == ['2026-09-24', '2026-10-01']
+
+
+def test_merge_conflict_survives_repeated_reconciliation_with_one_matching_date():
+    merged = _merge(report([row(published='2026-09-24')], [raw()]),
+                    report([row(published='2026-10-01')], [raw()], surface='first'))
+    merged = _merge(merged, report([row(published='2026-10-01')], [raw()], surface='second'))
+    assert merged['rows'][0]['status'] == 'pending' and not merged['raw_items']
+    assert len(merged['rows'][0]['publication_date_observations']) == 2
+    assert len([error for error in merged['errors'] if error['code'] == 'merged_publication_date_conflict']) == 1
+    assert not merged['coverage_complete']
+
+
+def test_pending_or_unverifiable_ledger_row_cannot_keep_raw_from_another_surface():
+    for item in (row(published=None, status='pending'), row(published='2026-10-12')):
+        merged = _merge(report([item]), report([item], [raw()], surface='clinic_network'))
+        assert not merged['raw_items'] and not merged['coverage_complete']
