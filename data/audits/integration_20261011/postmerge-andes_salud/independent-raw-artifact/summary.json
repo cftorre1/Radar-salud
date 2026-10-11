@@ -1,0 +1,299 @@
+{
+  "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+  "targets": {
+    "sources": [
+      "andes_salud"
+    ],
+    "origin_prs": [
+      14
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:33:30.579417+00:00",
+      "finished_at": "2026-10-11T14:34:37.755303+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "andes_salud": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "andes_salud": {
+          "discovered": 24,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:34:17.906701+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "59f04ea940925b9686889ee4a2451021859b2b0342c910c0c0842747bab9045f",
+        "b3556fb8caf5acaa4ffde98d1466207d5a45a161bc306d7251efc69e1992c54f",
+        "cf0ce7de00232f65af676f81e641a435151ae5f9560f5a12b73249b7fcf2204c"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 3,
+      "source_health": {
+        "andes_salud": {
+          "name": "Andes Salud",
+          "checked_at": "2026-10-11T14:34:37.197227+00:00",
+          "last_signal_at": "2026-09-23",
+          "discovered": 24,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 15,
+          "pending": 15,
+          "deferred": 0,
+          "rejected": 6,
+          "status": "ok",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "observed",
+          "content_freshness": "older",
+          "latest_original_at": "2026-10-05",
+          "editorial_outcome": "rejected",
+          "evaluation_performed": true,
+          "processed_rejections": 5,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/andes_salud.json",
+            "blockers": [],
+            "latest_verified_original_at": "2026-10-05",
+            "coverage_complete": true,
+            "outcome": "OPERATIVE_VALIDATED",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T04:49:06.489309+00:00",
+            "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+            "attempted": 3,
+            "published": 3,
+            "rejected": 0,
+            "retry": 0,
+            "outcome": "published",
+            "full_90_inventory": false,
+            "promotion": "none"
+          },
+          "provider_coverage": {
+            "outcome": "OPERATIVE_VALIDATED",
+            "coverage_complete": true,
+            "coverage_reason": "All26 published original CMS posts in90days (11in30) reconciled:4material candidates,3published,Frutillar70<75,20education and2reviewed campaigns;24news enter daily discovery.",
+            "archive_depth": {
+              "cms_pages": 1,
+              "cms_published_posts_90": 26,
+              "newsroom_articles_90": 24
+            },
+            "owner": "Integration Commander / publisher Andes Salud",
+            "next_action": "Maintain verified CMS+header discovery; three outputs are integrable only after shared beta gates are resolved.",
+            "pages_checked": 51,
+            "latest_original_publication": "2026-10-05",
+            "discovered": 30,
+            "unique": 30,
+            "recent_30d": 11,
+            "recent_90d": 26,
+            "publication_date_unknown": 0,
+            "material_30d": 1,
+            "material_90d": 4,
+            "material_date_unknown": 0,
+            "material": 4,
+            "material_unknown": 0,
+            "published": 3,
+            "rejected": 1,
+            "deferred": 0,
+            "detected_material": 4,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 9,
+            "inventory": "data/audits/provider_inventory_2026_10_11/andes_salud.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": 1,
+            "relevant_90d_total": 4,
+            "publicable_confirmed": 3,
+            "publicable_total": 3
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:34:37.795529+00:00",
+      "finished_at": "2026-10-11T14:35:33.920286+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "andes_salud": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "andes_salud": {
+          "discovered": 24,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:35:19.904718+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "59f04ea940925b9686889ee4a2451021859b2b0342c910c0c0842747bab9045f",
+        "b3556fb8caf5acaa4ffde98d1466207d5a45a161bc306d7251efc69e1992c54f",
+        "cf0ce7de00232f65af676f81e641a435151ae5f9560f5a12b73249b7fcf2204c"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 3,
+      "source_health": {
+        "andes_salud": {
+          "name": "Andes Salud",
+          "checked_at": "2026-10-11T14:35:33.402077+00:00",
+          "last_signal_at": "2026-09-23",
+          "discovered": 24,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 10,
+          "pending": 10,
+          "deferred": 0,
+          "rejected": 11,
+          "status": "ok",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "observed",
+          "content_freshness": "older",
+          "latest_original_at": "2026-10-05",
+          "editorial_outcome": "rejected",
+          "evaluation_performed": true,
+          "processed_rejections": 5,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/andes_salud.json",
+            "blockers": [],
+            "latest_verified_original_at": "2026-10-05",
+            "coverage_complete": true,
+            "outcome": "OPERATIVE_VALIDATED",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T04:49:06.489309+00:00",
+            "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+            "attempted": 3,
+            "published": 3,
+            "rejected": 0,
+            "retry": 0,
+            "outcome": "published",
+            "full_90_inventory": false,
+            "promotion": "none"
+          },
+          "provider_coverage": {
+            "outcome": "OPERATIVE_VALIDATED",
+            "coverage_complete": true,
+            "coverage_reason": "All26 published original CMS posts in90days (11in30) reconciled:4material candidates,3published,Frutillar70<75,20education and2reviewed campaigns;24news enter daily discovery.",
+            "archive_depth": {
+              "cms_pages": 1,
+              "cms_published_posts_90": 26,
+              "newsroom_articles_90": 24
+            },
+            "owner": "Integration Commander / publisher Andes Salud",
+            "next_action": "Maintain verified CMS+header discovery; three outputs are integrable only after shared beta gates are resolved.",
+            "pages_checked": 51,
+            "latest_original_publication": "2026-10-05",
+            "discovered": 30,
+            "unique": 30,
+            "recent_30d": 11,
+            "recent_90d": 26,
+            "publication_date_unknown": 0,
+            "material_30d": 1,
+            "material_90d": 4,
+            "material_date_unknown": 0,
+            "material": 4,
+            "material_unknown": 0,
+            "published": 3,
+            "rejected": 1,
+            "deferred": 0,
+            "detected_material": 4,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 9,
+            "inventory": "data/audits/provider_inventory_2026_10_11/andes_salud.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": 1,
+            "relevant_90d_total": 4,
+            "publicable_confirmed": 3,
+            "publicable_total": 3
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+    "reviewed_at": "2026-10-11T14:35:34.291697+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93
+}

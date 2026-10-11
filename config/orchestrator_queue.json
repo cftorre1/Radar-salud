@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T14:45:50.467689+00:00",
+  "updated_at": "2026-10-11T14:50:30.355604+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3227,7 +3227,7 @@
           ]
         }
       ],
-      "last_progress_at": "2026-10-11T14:41:20.711400+00:00",
+      "last_progress_at": "2026-10-11T14:50:30.355604+00:00",
       "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
       "integration_pr": 23,
       "runtime_run": 38147271657,
@@ -3241,7 +3241,184 @@
         "clinicas_chile": "INTEGRATED_DEGRADED",
         "pfizer_chile": "INTEGRATED_DEGRADED"
       },
-      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers."
+      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers.",
+      "integration_reception_summary": [
+        {
+          "source": "redsalud",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+          "qa": {
+            "run": 38147793633,
+            "status": "PASS",
+            "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
+          },
+          "runtime": {
+            "run": 38147271657,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent_published_history_and_queue_identity": true,
+            "queue_status_progress_allowed": true,
+            "artifact": "data/audits/integration_20261011/postmerge-redsalud/independent-raw-artifact/summary.json",
+            "artifact_id": 11704529405,
+            "archive_sha256": "d58af84464633512e398dda2344acdd50fbca170e4710e0b3f412626630ae16d"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-redsalud/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "bupa_chile",
+          "state": "EXTERNAL_BLOCKER_PROVEN",
+          "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+          "qa": {
+            "run": 38147793633,
+            "status": "PASS",
+            "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
+          },
+          "runtime": {
+            "run": 38147271657,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent_published_history_and_queue_identity": true,
+            "queue_status_progress_allowed": true,
+            "artifact": "data/audits/integration_20261011/postmerge-bupa_chile/independent-raw-artifact/summary.json",
+            "artifact_id": 11705139098,
+            "archive_sha256": "64fcde6a7d27c0c894469a1edada0b74167e1718d64d27c7ace2a7da48e89197"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-bupa_chile/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "indisa",
+          "state": "EXTERNAL_BLOCKER_PROVEN",
+          "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+          "qa": {
+            "run": 38147793633,
+            "status": "PASS",
+            "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
+          },
+          "runtime": {
+            "run": 38147271657,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent_published_history_and_queue_identity": true,
+            "queue_status_progress_allowed": true,
+            "artifact": "data/audits/integration_20261011/postmerge-indisa/independent-raw-artifact/summary.json",
+            "artifact_id": 11704474575,
+            "archive_sha256": "4e4f78999b2c4943fd4c3b7d2ace198af29077ec2e2da58bf97491cd9599c723"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-indisa/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "red_davila",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+          "qa": {
+            "run": 38147793633,
+            "status": "PASS",
+            "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
+          },
+          "runtime": {
+            "run": 38147271657,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent_published_history_and_queue_identity": true,
+            "queue_status_progress_allowed": true,
+            "artifact": "data/audits/integration_20261011/postmerge-red_davila/independent-raw-artifact/summary.json",
+            "artifact_id": 11705418137,
+            "archive_sha256": "81e0c1459b0ca7d5b47fa9e6bb71db160f8bee63c7f11ca959444399c973a51c"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-red_davila/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "andes_salud",
+          "state": "INTEGRATED_VALIDATED",
+          "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+          "qa": {
+            "run": 38147793633,
+            "status": "PASS",
+            "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
+          },
+          "runtime": {
+            "run": 38147271657,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent_published_history_and_queue_identity": true,
+            "queue_status_progress_allowed": true,
+            "artifact": "data/audits/integration_20261011/postmerge-andes_salud/independent-raw-artifact/summary.json",
+            "artifact_id": 11705024508,
+            "archive_sha256": "975ca08ee684a621cf09195ce60459b59c0d9a14564957b275a1b0bec57c9cd1"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-andes_salud/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "clinicas_chile",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+          "qa": {
+            "run": 38147793633,
+            "status": "PASS",
+            "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
+          },
+          "runtime": {
+            "run": 38147271657,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent_published_history_and_queue_identity": true,
+            "queue_status_progress_allowed": true,
+            "artifact": "data/audits/integration_20261011/postmerge-clinicas_chile/independent-raw-artifact/summary.json",
+            "artifact_id": 11704834695,
+            "archive_sha256": "34f56ca8ff329c9eef720485b005253803266c8d0810cbc69dac7664da5f44af"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-clinicas_chile/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "pfizer_chile",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+          "qa": {
+            "run": 38147793633,
+            "status": "PASS",
+            "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
+          },
+          "runtime": {
+            "run": 38147271657,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent_published_history_and_queue_identity": true,
+            "queue_status_progress_allowed": true,
+            "artifact": "data/audits/integration_20261011/postmerge-pfizer_chile/independent-raw-artifact/summary.json",
+            "artifact_id": 11705328505,
+            "archive_sha256": "c9eb52ddacdf9f0fa7d7cafe11652036a1c38482e731363e8dfcca3080c749a6"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-pfizer_chile/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        }
+      ]
     },
     {
       "id": "source_audit_issue5_iteration3_editorial_2026_10_09",
@@ -3537,7 +3714,7 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:41:20.711400+00:00",
+      "last_progress_at": "2026-10-11T14:50:30.355604+00:00",
       "current_subfront": "validate_df_and_pulso_runtime",
       "next_action": "Preserve DF validated integration; keep Pulso PR10 separate until explicit READY_FOR_INTEGRATION with genuine runtime, semantic review and final QA.",
       "independent_review": {
@@ -3694,7 +3871,34 @@
         "diario_financiero": "INTEGRATED_DEGRADED",
         "pulso_latercera": "NOT_READY"
       },
-      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers."
+      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers.",
+      "integration_reception_summary": [
+        {
+          "source": "diario_financiero",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+          "qa": {
+            "run": 38142527882,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38142527704,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/df-postmerge-916fe2d.json"
+          },
+          "review": null
+        },
+        {
+          "source": "pulso_latercera",
+          "state": "NOT_READY",
+          "staging_sha": null,
+          "qa": "NOT_RUN_POST_INTEGRATION",
+          "runtime": null,
+          "review": null
+        }
+      ]
     },
     {
       "id": "source_repair_public_data_lane_2026_10_11",
@@ -3717,7 +3921,7 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:41:20.711400+00:00",
+      "last_progress_at": "2026-10-11T14:50:30.355604+00:00",
       "current_subfront": "branch_runtime_outcomes_proven_pending_postmerge_staging_gate",
       "next_action": "Follow source-specific matrix limits and next_action in data/pmo/integration_release_2026_10_11.json; do not repeat accepted analysis or close external coverage as healthy.",
       "blocked_by": [],
@@ -3772,7 +3976,114 @@
         "isp_anamed": "EXTERNAL_BLOCKER_PROVEN",
         "isp_surveillance": "EXTERNAL_BLOCKER_PROVEN"
       },
-      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers."
+      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers.",
+      "integration_reception_summary": [
+        {
+          "source": "deis",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+          "qa": {
+            "run": 38146250319,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38146249940,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/postmerge-deis/summary.json"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-deis/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "fonasa",
+          "state": "EXTERNAL_BLOCKER_PROVEN",
+          "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+          "qa": {
+            "run": 38146250319,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38146249940,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/postmerge-fonasa/summary.json"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-fonasa/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "fonasa_datos_abiertos",
+          "state": "EXTERNAL_BLOCKER_PROVEN",
+          "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+          "qa": {
+            "run": 38146250319,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38146249940,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/postmerge-fonasa_datos_abiertos/summary.json"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-fonasa_datos_abiertos/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "isp_anamed",
+          "state": "EXTERNAL_BLOCKER_PROVEN",
+          "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+          "qa": {
+            "run": 38146250319,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38146249940,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/postmerge-isp_anamed/summary.json"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-isp_anamed/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "isp_surveillance",
+          "state": "EXTERNAL_BLOCKER_PROVEN",
+          "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+          "qa": {
+            "run": 38146250319,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38146249940,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/postmerge-isp_surveillance/summary.json"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-isp_surveillance/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        }
+      ]
     },
     {
       "id": "source_repair_fiscalization_lane_2026_10_11",
@@ -3795,7 +4106,7 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:41:20.711400+00:00",
+      "last_progress_at": "2026-10-11T14:50:30.355604+00:00",
       "current_subfront": "bounded_coverage_validated_global_gates_and_dates_pending",
       "next_action": "Follow source-specific matrix limits and next_action in data/pmo/integration_release_2026_10_11.json; do not repeat accepted analysis or close external coverage as healthy.",
       "independent_review_cuts": [
@@ -4033,7 +4344,43 @@
         "superintendencia_fiscalizacion": "INTEGRATED_DEGRADED",
         "suseso_fiscalizacion": "INTEGRATED_DEGRADED"
       },
-      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers."
+      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers.",
+      "integration_reception_summary": [
+        {
+          "source": "superintendencia_fiscalizacion",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+          "qa": {
+            "run": 38143952494,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38143952220,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+          },
+          "review": null
+        },
+        {
+          "source": "suseso_fiscalizacion",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+          "qa": {
+            "run": 38143952494,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38143952220,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+          },
+          "review": null
+        }
+      ]
     },
     {
       "id": "source_repair_mutualities_lane_2026_10_11",
@@ -4056,9 +4403,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:41:20.711400+00:00",
+      "last_progress_at": "2026-10-11T14:50:30.355604+00:00",
       "current_subfront": "publisher_date_and_archive_gaps_after_scoped_technical_validation",
-      "next_action": "Follow source-specific matrix limits and next_action in data/pmo/integration_release_2026_10_11.json; do not repeat accepted analysis or close external coverage as healthy.",
+      "next_action": "Obtain primary publication evidence for unresolved clinical/IST dates and distinct Mutual archive continuations; preserve provider/insurance separation and terminal below75 decisions. Verify clinical19-record provider delta in PR22 native runtime.",
       "branch": "codex/e-salud-laboral-20261011",
       "pull_request": "https://github.com/cftorre1/Radar-salud/pull/12",
       "progress": "Scoped implementation and Reviewer validated; 5 reviewed branch-only BACKFILLs. Official ACHS Seguro, central ACHS Salud, Mutual and IST surfaces accessible; clinic subpublisher availability separately recorded. 110 verified official URLs (102 title/date groups); 107 queued, three nonmaterial blog rejections durable only in inventory. 90-day complete acceptance remains partial for three sources.",
@@ -4076,9 +4423,9 @@
         "data/audits/source_e_recovery/node_no_isolation_tests.txt",
         "data/audits/source_e_recovery/browser_final_current.txt"
       ],
-      "last_checkpoint_at": "2026-10-11T08:44:04.852434+00:00",
-      "blocker": "Publisher evidence gaps: ACHS blog dates conflict (one possible 90-day item); IST TPS API/meta12Aug versus visible10Aug; Mutual archive continuations repeat listings or redirect to institutional pages. Public source access is available; no source-wide external blocker is proven. Run14 also records connection443 timeouts for all9 native clinic publishers;11 previously dated items remain historical verified inventory, not current source-health revalidation.",
-      "blocker_kind": "publisher_evidence_gaps_with_partial_clinical_transport_failure",
+      "last_checkpoint_at": "2026-10-11T14:50:30.355604+00:00",
+      "blocker": "Current publisher evidence gaps: 25 clinical publication/editorial date conflicts; Mutual repeated archive continuations; IST TPS API/meta12Aug vs visible10Aug. Latest clinical postmerge native polls completed; prior443 failures remain historical evidence only.",
+      "blocker_kind": "publisher_evidence_gaps",
       "source_outcomes": {
         "achs_seguro_laboral": {
           "outcome": "OPERATIVE_VALIDATED",
@@ -4148,7 +4495,93 @@
         "mutual_seguridad": "INTEGRATED_DEGRADED",
         "ist": "INTEGRATED_DEGRADED"
       },
-      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers."
+      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers.",
+      "integration_reception_summary": [
+        {
+          "source": "achs_seguro_laboral",
+          "state": "INTEGRATED_VALIDATED",
+          "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+          "qa": {
+            "run": 38145632732,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38145632535,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/postmerge-achs_seguro_laboral/summary.json"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-achs_seguro_laboral/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "clinicas_achs_salud",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+          "qa": {
+            "run": 38145632732,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38145632535,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/postmerge-clinicas_achs_salud/summary.json"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-clinicas_achs_salud/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "mutual_seguridad",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+          "qa": {
+            "run": 38145632732,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38145632535,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/postmerge-mutual_seguridad/summary.json"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-mutual_seguridad/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        },
+        {
+          "source": "ist",
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+          "qa": {
+            "run": 38145632732,
+            "status": "PASS"
+          },
+          "runtime": {
+            "run": 38145632535,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/postmerge-ist/summary.json"
+          },
+          "review": {
+            "at": "2026-10-11T14:50:30.355604+00:00",
+            "artifact_receipt": "data/audits/integration_20261011/postmerge-ist/independent-raw-artifact/independent-artifact-receipt.json",
+            "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+          }
+        }
+      ]
     },
     {
       "id": "w4_isapres_2026_10_11",
@@ -4819,9 +5252,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:45:50.467689+00:00",
-      "current_subfront": "post_merge_PR23",
-      "next_action": "Finish native postmerge38148412191 and preview; reconcile receipts. PulsoPR10 remainsNOT_READY until explicitREADY plus runtime/semantic/QA gates. Continue only documented residual source repairs.",
+      "last_progress_at": "2026-10-11T14:50:30.355604+00:00",
+      "current_subfront": "post_merge_all_mature_sources_reviewed",
+      "next_action": "Complete PR22 historical native revalidation and clinical delta19; keep Pulso NOT_READY until explicit READY and verified processing. Global recurring-source gap remains assigned to Work4.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -5731,7 +6164,8 @@
           "owner": "Pele + Media Source Worker",
           "next_action": "DF integrado con runtime validado y limitaciones preservadas; PR10 continúa en su rama hasta READY_FOR_INTEGRATION."
         }
-      }
+      },
+      "commander_matrix": "data/audits/integration_20261011/source-matrix.json"
     },
     {
       "id": "beta_gate5_test_ops_golive_2026_10_11",

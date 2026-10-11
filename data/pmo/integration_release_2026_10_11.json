@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T14:45:50.467689+00:00",
+  "updated_at": "2026-10-11T14:50:30.355604+00:00",
   "scope": "staging_only",
   "prior_staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
   "rows": [
@@ -37,7 +37,14 @@
       "limits": [
         "partial 30/90 inventory",
         "19 multimedia deferred"
-      ]
+      ],
+      "latest_shared_harness_validation": {
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "run": 38148412191,
+        "native_job_result": "PASS",
+        "workflow_result": "IN_PROGRESS_OTHER_SOURCES",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/receipt.json"
+      }
     },
     {
       "source": "superintendencia_fiscalizacion",
@@ -69,7 +76,14 @@
       },
       "final_state": "INTEGRATED_DEGRADED",
       "owner": "Codex D · Regulatory Source Recovery",
-      "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito."
+      "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito.",
+      "latest_shared_harness_validation": {
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "run": 38148412191,
+        "native_job_result": "PASS",
+        "workflow_result": "IN_PROGRESS_OTHER_SOURCES",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/receipt.json"
+      }
     },
     {
       "source": "suseso_fiscalizacion",
@@ -101,7 +115,14 @@
       },
       "final_state": "INTEGRATED_DEGRADED",
       "owner": "Codex D · Regulatory Source Recovery",
-      "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito."
+      "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito.",
+      "latest_shared_harness_validation": {
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "run": 38148412191,
+        "native_job_result": "PASS",
+        "workflow_result": "IN_PROGRESS_OTHER_SOURCES",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/receipt.json"
+      }
     },
     {
       "source": "achs_seguro_laboral",
@@ -143,7 +164,12 @@
       },
       "limits": [
         "Coverage limited to reviewed official surfaces; source freshness distinct from capture time"
-      ]
+      ],
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-achs_seguro_laboral/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "clinicas_achs_salud",
@@ -187,7 +213,12 @@
         "13 URLs discovered in both polls; 170 pages checked, 39 dated articles in 90 days; 25 publication/editorial date conflicts excluded; coverage incomplete.",
         "Two material candidates in 90-day inventory did not meet the editorial admission gate; zero published signals is not proof of no source activity.",
         "19 later PR14 queue additions retained with original review; prior occupational runtime does not certify those additions."
-      ]
+      ],
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-clinicas_achs_salud/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "mutual_seguridad",
@@ -229,7 +260,12 @@
       },
       "limits": [
         "Coverage limited to reviewed official surfaces; source freshness distinct from capture time"
-      ]
+      ],
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-mutual_seguridad/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "ist",
@@ -271,7 +307,12 @@
       },
       "limits": [
         "Coverage limited to reviewed official surfaces; source freshness distinct from capture time"
-      ]
+      ],
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-ist/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "deis",
@@ -311,7 +352,12 @@
       },
       "limits": [
         "12 dated FIC publications all outside 90-day horizon; dated document lane operative. 572 catalog resources are references, not signals; publication dates must remain explicit."
-      ]
+      ],
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-deis/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "fonasa",
@@ -352,7 +398,12 @@
       "limits": [
         "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
         "Native runner cannot observe source activity; zero discovered is not evidence of no publications."
-      ]
+      ],
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-fonasa/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "fonasa_datos_abiertos",
@@ -393,7 +444,12 @@
       "limits": [
         "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
         "Native runner cannot observe source activity; zero discovered is not evidence of no publications."
-      ]
+      ],
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-fonasa_datos_abiertos/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "isp_anamed",
@@ -434,7 +490,12 @@
       "limits": [
         "RuntimeError > URLError:timed out > TimeoutError:timed out",
         "Native runner cannot observe source activity; zero discovered is not evidence of no publications."
-      ]
+      ],
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-isp_anamed/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "isp_surveillance",
@@ -474,7 +535,12 @@
       },
       "limits": [
         "Native official surveillance endpoints and aliases time out in both polls; coverage and activity remain unverified."
-      ]
+      ],
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-isp_surveillance/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "redsalud",
@@ -489,22 +555,24 @@
       "integration": "merged_PR23",
       "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
       "qa": {
-        "run": 38147510597,
-        "status": "PASS"
+        "run": 38147793633,
+        "status": "PASS",
+        "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
       },
       "reviewer": {
-        "run": 38147510597,
+        "run": 38147793633,
         "status": "PASS",
-        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic and desktop/mobile; original source-piece semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38147271657,
         "status": "PASS",
         "polls": 2,
-        "idempotent": true,
-        "idempotence_scope": "published queue keys, queue identities and history",
-        "reviewed_queue_transitions": 0,
-        "artifact": "data/audits/integration_20261011/postmerge-redsalud/summary.json"
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-redsalud/independent-raw-artifact/summary.json",
+        "artifact_id": 11704529405,
+        "archive_sha256": "d58af84464633512e398dda2344acdd50fbca170e4710e0b3f412626630ae16d"
       },
       "final_state": "INTEGRATED_DEGRADED",
       "owner": "Pele + Source Intelligence + Editorial Committee",
@@ -518,7 +586,17 @@
       "limits": [
         "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately.",
         "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
-      ]
+      ],
+      "post_merge_preview_failure": {
+        "run": 38147271878,
+        "status": "FAIL",
+        "reason": "Filter changed before async feed initialization installed onchange; desktop 59/60. All assertions retained; initialized-state wait fixed in184aab04, staging ac6b31a PASS."
+      },
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-redsalud/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "bupa_chile",
@@ -533,22 +611,24 @@
       "integration": "merged_PR23",
       "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
       "qa": {
-        "run": 38147510597,
-        "status": "PASS"
+        "run": 38147793633,
+        "status": "PASS",
+        "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
       },
       "reviewer": {
-        "run": 38147510597,
+        "run": 38147793633,
         "status": "PASS",
-        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic and desktop/mobile; original source-piece semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38147271657,
         "status": "PASS",
         "polls": 2,
-        "idempotent": true,
-        "idempotence_scope": "published queue keys, queue identities and history",
-        "reviewed_queue_transitions": 10,
-        "artifact": "data/audits/integration_20261011/postmerge-bupa_chile/summary.json"
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-bupa_chile/independent-raw-artifact/summary.json",
+        "artifact_id": 11705139098,
+        "archive_sha256": "64fcde6a7d27c0c894469a1edada0b74167e1718d64d27c7ace2a7da48e89197"
       },
       "final_state": "EXTERNAL_BLOCKER_PROVEN",
       "owner": "Pele + Source Intelligence + Editorial Committee",
@@ -562,7 +642,17 @@
       "limits": [
         "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held.",
         "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
-      ]
+      ],
+      "post_merge_preview_failure": {
+        "run": 38147271878,
+        "status": "FAIL",
+        "reason": "Filter changed before async feed initialization installed onchange; desktop 59/60. All assertions retained; initialized-state wait fixed in184aab04, staging ac6b31a PASS."
+      },
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-bupa_chile/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "indisa",
@@ -577,22 +667,24 @@
       "integration": "merged_PR23",
       "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
       "qa": {
-        "run": 38147510597,
-        "status": "PASS"
+        "run": 38147793633,
+        "status": "PASS",
+        "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
       },
       "reviewer": {
-        "run": 38147510597,
+        "run": 38147793633,
         "status": "PASS",
-        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic and desktop/mobile; original source-piece semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38147271657,
         "status": "PASS",
         "polls": 2,
-        "idempotent": true,
-        "idempotence_scope": "published queue keys, queue identities and history",
-        "reviewed_queue_transitions": 2,
-        "artifact": "data/audits/integration_20261011/postmerge-indisa/summary.json"
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-indisa/independent-raw-artifact/summary.json",
+        "artifact_id": 11704474575,
+        "archive_sha256": "4e4f78999b2c4943fd4c3b7d2ace198af29077ec2e2da58bf97491cd9599c723"
       },
       "final_state": "EXTERNAL_BLOCKER_PROVEN",
       "owner": "Pele + Source Intelligence + Editorial Committee",
@@ -606,7 +698,17 @@
       "limits": [
         "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof.",
         "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
-      ]
+      ],
+      "post_merge_preview_failure": {
+        "run": 38147271878,
+        "status": "FAIL",
+        "reason": "Filter changed before async feed initialization installed onchange; desktop 59/60. All assertions retained; initialized-state wait fixed in184aab04, staging ac6b31a PASS."
+      },
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-indisa/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "red_davila",
@@ -621,22 +723,24 @@
       "integration": "merged_PR23",
       "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
       "qa": {
-        "run": 38147510597,
-        "status": "PASS"
+        "run": 38147793633,
+        "status": "PASS",
+        "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
       },
       "reviewer": {
-        "run": 38147510597,
+        "run": 38147793633,
         "status": "PASS",
-        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic and desktop/mobile; original source-piece semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38147271657,
         "status": "PASS",
         "polls": 2,
-        "idempotent": true,
-        "idempotence_scope": "published queue keys, queue identities and history",
-        "reviewed_queue_transitions": 0,
-        "artifact": "data/audits/integration_20261011/postmerge-red_davila/summary.json"
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-red_davila/independent-raw-artifact/summary.json",
+        "artifact_id": 11705418137,
+        "archive_sha256": "81e0c1459b0ca7d5b47fa9e6bb71db160f8bee63c7f11ca959444399c973a51c"
       },
       "final_state": "INTEGRATED_DEGRADED",
       "owner": "Pele + Source Intelligence + Editorial Committee",
@@ -650,7 +754,17 @@
       "limits": [
         "All640sitemapURLs reconciled:639datednews and1navigation;13verified90/3verified30,6materialcandidates all specifically rejected.411datesHTTP+37ordinaryChrome+191isolatedoriginalreaderheaders. All191reader originals are before90cutoff(latestJun29); cached freshness recorded separately from current191HTTP/Chrome403, so access remains degraded.",
         "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
-      ]
+      ],
+      "post_merge_preview_failure": {
+        "run": 38147271878,
+        "status": "FAIL",
+        "reason": "Filter changed before async feed initialization installed onchange; desktop 59/60. All assertions retained; initialized-state wait fixed in184aab04, staging ac6b31a PASS."
+      },
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-red_davila/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "andes_salud",
@@ -665,26 +779,28 @@
       "integration": "merged_PR23",
       "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
       "qa": {
-        "run": 38147510597,
-        "status": "PASS"
+        "run": 38147793633,
+        "status": "PASS",
+        "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
       },
       "reviewer": {
-        "run": 38147510597,
+        "run": 38147793633,
         "status": "PASS",
-        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic and desktop/mobile; original source-piece semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38147271657,
         "status": "PASS",
         "polls": 2,
-        "idempotent": true,
-        "idempotence_scope": "published queue keys, queue identities and history",
-        "reviewed_queue_transitions": 10,
-        "artifact": "data/audits/integration_20261011/postmerge-andes_salud/summary.json"
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-andes_salud/independent-raw-artifact/summary.json",
+        "artifact_id": 11705024508,
+        "archive_sha256": "975ca08ee684a621cf09195ce60459b59c0d9a14564957b275a1b0bec57c9cd1"
       },
       "final_state": "INTEGRATED_VALIDATED",
       "owner": "Pele + Source Intelligence + Editorial Committee",
-      "next_action": "Maintain verified CMS/header discovery and reviewed stock. Shared gates resolved; 3 reviewed outputs are integrated and genuine two-poll runtime passed within the official archive scope.",
+      "next_action": "Maintain verified CMS+header discovery; three outputs are integrable only after shared beta gates are resolved.",
       "candidate_qa": {
         "prior_history_rows": 891,
         "new_verified_signals": 6,
@@ -694,7 +810,17 @@
       "limits": [
         "All26 published original CMS posts in90days (11in30) reconciled:4material candidates,3published,Frutillar70<75,20education and2reviewed campaigns;24news enter daily discovery.",
         "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
-      ]
+      ],
+      "post_merge_preview_failure": {
+        "run": 38147271878,
+        "status": "FAIL",
+        "reason": "Filter changed before async feed initialization installed onchange; desktop 59/60. All assertions retained; initialized-state wait fixed in184aab04, staging ac6b31a PASS."
+      },
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-andes_salud/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "clinicas_chile",
@@ -709,22 +835,24 @@
       "integration": "merged_PR23",
       "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
       "qa": {
-        "run": 38147510597,
-        "status": "PASS"
+        "run": 38147793633,
+        "status": "PASS",
+        "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
       },
       "reviewer": {
-        "run": 38147510597,
+        "run": 38147793633,
         "status": "PASS",
-        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic and desktop/mobile; original source-piece semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38147271657,
         "status": "PASS",
         "polls": 2,
-        "idempotent": true,
-        "idempotence_scope": "published queue keys, queue identities and history",
-        "reviewed_queue_transitions": 10,
-        "artifact": "data/audits/integration_20261011/postmerge-clinicas_chile/summary.json"
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-clinicas_chile/independent-raw-artifact/summary.json",
+        "artifact_id": 11704834695,
+        "archive_sha256": "34f56ca8ff329c9eef720485b005253803266c8d0810cbc69dac7664da5f44af"
       },
       "final_state": "INTEGRATED_DEGRADED",
       "owner": "Pele + Source Intelligence + Editorial Committee",
@@ -738,7 +866,17 @@
       "limits": [
         "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified.",
         "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
-      ]
+      ],
+      "post_merge_preview_failure": {
+        "run": 38147271878,
+        "status": "FAIL",
+        "reason": "Filter changed before async feed initialization installed onchange; desktop 59/60. All assertions retained; initialized-state wait fixed in184aab04, staging ac6b31a PASS."
+      },
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-clinicas_chile/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "pfizer_chile",
@@ -753,22 +891,24 @@
       "integration": "merged_PR23",
       "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
       "qa": {
-        "run": 38147510597,
-        "status": "PASS"
+        "run": 38147793633,
+        "status": "PASS",
+        "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c"
       },
       "reviewer": {
-        "run": 38147510597,
+        "run": 38147793633,
         "status": "PASS",
-        "scope": "strict deterministic + desktop/mobile; original semantic review retained"
+        "scope": "strict deterministic and desktop/mobile; original source-piece semantic review retained"
       },
       "runtime_post_merge": {
         "run": 38147271657,
         "status": "PASS",
         "polls": 2,
-        "idempotent": true,
-        "idempotence_scope": "published queue keys, queue identities and history",
-        "reviewed_queue_transitions": 0,
-        "artifact": "data/audits/integration_20261011/postmerge-pfizer_chile/summary.json"
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-pfizer_chile/independent-raw-artifact/summary.json",
+        "artifact_id": 11705328505,
+        "archive_sha256": "c9eb52ddacdf9f0fa7d7cafe11652036a1c38482e731363e8dfcca3080c749a6"
       },
       "final_state": "INTEGRATED_DEGRADED",
       "owner": "Pele + Source Intelligence + Editorial Committee",
@@ -782,7 +922,17 @@
       "limits": [
         "All17observed original news URLs inspected with componentH1/body; historical publication headers recovered, broken healthtech/covax links identified. No verified2026news; undated/misrouted/legacy originals and stale newsroom prevent exact recent total.0verified is not proof of zero activity.",
         "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
-      ]
+      ],
+      "post_merge_preview_failure": {
+        "run": 38147271878,
+        "status": "FAIL",
+        "reason": "Filter changed before async feed initialization installed onchange; desktop 59/60. All assertions retained; initialized-state wait fixed in184aab04, staging ac6b31a PASS."
+      },
+      "independent_reception_review": {
+        "at": "2026-10-11T14:50:30.355604+00:00",
+        "artifact_receipt": "data/audits/integration_20261011/postmerge-pfizer_chile/independent-raw-artifact/independent-artifact-receipt.json",
+        "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      }
     },
     {
       "source": "pulso_latercera",

@@ -1,0 +1,303 @@
+{
+  "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+  "targets": {
+    "sources": [
+      "clinicas_chile"
+    ],
+    "origin_prs": [
+      14
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:33:29.262085+00:00",
+      "finished_at": "2026-10-11T14:33:58.531175+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "clinicas_chile": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "clinicas_chile": {
+          "discovered": 39,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:33:51.828741+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "80e59da7785740c1cdc99d3b38b100210a2b9fb7fec685e918cbd05fdec7d605"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 3,
+      "source_health": {
+        "clinicas_chile": {
+          "name": "Clínicas de Chile A.G.",
+          "checked_at": "2026-10-11T14:33:58.222485+00:00",
+          "last_signal_at": "2026-10-02",
+          "discovered": 39,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 31,
+          "pending": 31,
+          "deferred": 19,
+          "rejected": 4,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "unverified",
+          "content_freshness": "older",
+          "latest_original_at": "2026-10-02",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/clinicas_chile.json",
+            "blockers": [
+              "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified."
+            ],
+            "latest_verified_original_at": "2026-10-02",
+            "coverage_complete": false,
+            "outcome": "OPERATIVE_DEGRADED",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T04:49:06.489309+00:00",
+            "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+            "attempted": 1,
+            "published": 1,
+            "rejected": 0,
+            "retry": 0,
+            "outcome": "published",
+            "full_90_inventory": false,
+            "promotion": "none"
+          },
+          "provider_coverage": {
+            "outcome": "OPERATIVE_DEGRADED",
+            "coverage_complete": false,
+            "coverage_reason": "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified.",
+            "archive_depth": {
+              "channels": 4,
+              "memorias_pages": 3,
+              "estudios_pages": 3,
+              "documentos_pages": 4,
+              "library_sitemap_entries": 129
+            },
+            "owner": "Publisher Clínicas de Chile / Source Engineering",
+            "next_action": "Supply dated editorial release/version evidence for33PDFs and one library item, distinct from RSS entry date, reporting year, upload path and sitemaplastmod; all four requested channels remain audited.",
+            "pages_checked": 71,
+            "latest_original_publication": "2026-10-02",
+            "discovered": 68,
+            "unique": 48,
+            "recent_30d": 1,
+            "recent_90d": 3,
+            "publication_date_unknown": 34,
+            "material_30d": 1,
+            "material_90d": 1,
+            "material_date_unknown": 0,
+            "material": 1,
+            "material_unknown": 34,
+            "published": 1,
+            "rejected": 0,
+            "deferred": 0,
+            "detected_material": 1,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 8,
+            "inventory": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": null,
+            "relevant_90d_total": null,
+            "publicable_confirmed": 1,
+            "publicable_total": null
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:33:58.556123+00:00",
+      "finished_at": "2026-10-11T14:34:27.954825+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "clinicas_chile": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "clinicas_chile": {
+          "discovered": 39,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:34:21.866446+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "80e59da7785740c1cdc99d3b38b100210a2b9fb7fec685e918cbd05fdec7d605"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 3,
+      "source_health": {
+        "clinicas_chile": {
+          "name": "Clínicas de Chile A.G.",
+          "checked_at": "2026-10-11T14:34:27.644605+00:00",
+          "last_signal_at": "2026-10-02",
+          "discovered": 39,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 31,
+          "pending": 31,
+          "deferred": 24,
+          "rejected": 4,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "unverified",
+          "content_freshness": "older",
+          "latest_original_at": "2026-10-02",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/clinicas_chile.json",
+            "blockers": [
+              "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified."
+            ],
+            "latest_verified_original_at": "2026-10-02",
+            "coverage_complete": false,
+            "outcome": "OPERATIVE_DEGRADED",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T04:49:06.489309+00:00",
+            "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+            "attempted": 1,
+            "published": 1,
+            "rejected": 0,
+            "retry": 0,
+            "outcome": "published",
+            "full_90_inventory": false,
+            "promotion": "none"
+          },
+          "provider_coverage": {
+            "outcome": "OPERATIVE_DEGRADED",
+            "coverage_complete": false,
+            "coverage_reason": "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified.",
+            "archive_depth": {
+              "channels": 4,
+              "memorias_pages": 3,
+              "estudios_pages": 3,
+              "documentos_pages": 4,
+              "library_sitemap_entries": 129
+            },
+            "owner": "Publisher Clínicas de Chile / Source Engineering",
+            "next_action": "Supply dated editorial release/version evidence for33PDFs and one library item, distinct from RSS entry date, reporting year, upload path and sitemaplastmod; all four requested channels remain audited.",
+            "pages_checked": 71,
+            "latest_original_publication": "2026-10-02",
+            "discovered": 68,
+            "unique": 48,
+            "recent_30d": 1,
+            "recent_90d": 3,
+            "publication_date_unknown": 34,
+            "material_30d": 1,
+            "material_90d": 1,
+            "material_date_unknown": 0,
+            "material": 1,
+            "material_unknown": 34,
+            "published": 1,
+            "rejected": 0,
+            "deferred": 0,
+            "detected_material": 1,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 8,
+            "inventory": "data/audits/provider_inventory_2026_10_11/clinicas_chile.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": null,
+            "relevant_90d_total": null,
+            "publicable_confirmed": 1,
+            "publicable_total": null
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+    "reviewed_at": "2026-10-11T14:34:28.191438+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93
+}

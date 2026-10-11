@@ -570,5 +570,17 @@
       "data/audits/integration_20261011/achs-crosslane-review.json"
     ],
     "acceptance_boundary": "Only exact-head QA and actual post-merge source receipts support final state; no autonomy4h or coverage-completeness inference."
+  },
+  {
+    "id": "native_runtime_copied_budget_and_queue_progress_20261011",
+    "source": "Integration Commander",
+    "class": "runtime_reconciliation",
+    "finding": "Read-only live runtime can spend budget and advance rejection/archive backlog while accepted stock is idempotent.",
+    "specific_fix": "Preserve peer reviewed32-transition import and actual +1 Fast receipt once; describe accepted-stock idempotence separately from queue status progress.",
+    "evidence": [
+      "data/audits/integration_20261011/independent-reception-review.json",
+      "data/audits/integration_20261011/provider-runtime-cost-reconciliation.json"
+    ],
+    "acceptance_boundary": "Zero new publications does not prove zero model calls or unchanged queue statuses."
   }
 ]

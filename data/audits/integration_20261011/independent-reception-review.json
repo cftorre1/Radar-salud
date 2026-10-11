@@ -1,0 +1,523 @@
+{
+  "at": "2026-10-11T14:50:30.355604+00:00",
+  "scope": "staging_only",
+  "sources": [
+    {
+      "source": "mutual_seguridad",
+      "final_state": "INTEGRATED_DEGRADED",
+      "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "artifact_id": 11705360325,
+      "sha256": "984bd7ca39d626f174e767f5e36a80a0f2dbb8188f00ea31e69d977d1a51ac8f",
+      "poll_discovery": [
+        51,
+        51
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": null,
+      "source_health": {
+        "technical_status": "partial",
+        "coverage_status": "partial",
+        "editorial_outcome": "not_evaluated",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "ist",
+      "final_state": "INTEGRATED_DEGRADED",
+      "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "artifact_id": 11705110942,
+      "sha256": "1e2e64ca34ca9a6268418dbdd96796953e0c8b2db5265dcab24321a2667f69bb",
+      "poll_discovery": [
+        20,
+        20
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": null,
+      "source_health": {
+        "technical_status": "partial",
+        "coverage_status": "partial",
+        "editorial_outcome": "not_evaluated",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "final_state": "INTEGRATED_VALIDATED",
+      "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "artifact_id": 11704229990,
+      "sha256": "4212393741fa5e71b278ed5b5f5afd148ee52fd71b45a240eaad518ed3cc00d6",
+      "poll_discovery": [
+        23,
+        23
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": null,
+      "source_health": {
+        "technical_status": "ok",
+        "coverage_status": "complete",
+        "editorial_outcome": "no_new_signals",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "clinicas_achs_salud",
+      "final_state": "INTEGRATED_DEGRADED",
+      "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "artifact_id": 11704453577,
+      "sha256": "3831065726426e6baf5703b558481647235abf4dbc0b2e5f8c9dd452fd19c512",
+      "poll_discovery": [
+        13,
+        13
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": null,
+      "source_health": {
+        "technical_status": "partial",
+        "coverage_status": "partial",
+        "editorial_outcome": "not_evaluated",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "isp_anamed",
+      "final_state": "EXTERNAL_BLOCKER_PROVEN",
+      "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "artifact_id": 11705485800,
+      "sha256": "47da5b44916be5cb2134cdd207556a4bac00b67926d577e89105b078aa1dc841",
+      "poll_discovery": [
+        0,
+        0
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": null,
+      "source_health": {
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "editorial_outcome": "not_evaluated",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [],
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "RuntimeError"
+          },
+          {
+            "type": "URLError",
+            "reason": "timed out"
+          },
+          {
+            "type": "TimeoutError",
+            "reason": "timed out"
+          }
+        ],
+        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+      },
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "fonasa",
+      "final_state": "EXTERNAL_BLOCKER_PROVEN",
+      "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "artifact_id": 11705352270,
+      "sha256": "4f939f6705d672244b24b1e4decc81e56c670a23bb9f2ceb8b9c830429a0f678",
+      "poll_discovery": [
+        0,
+        0
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": null,
+      "source_health": {
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "editorial_outcome": "not_evaluated",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [],
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "FonasaDiscoveryError"
+          },
+          {
+            "type": "HTTPError",
+            "http_status": 403,
+            "url": "https://www.fonasa.gob.cl/noticias/",
+            "reason": "Forbidden"
+          }
+        ],
+        "failure_signature": "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
+        "endpoint_failures": [
+          {
+            "url": "https://www.fonasa.gob.cl/noticias/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          }
+        ]
+      },
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "isp_surveillance",
+      "final_state": "EXTERNAL_BLOCKER_PROVEN",
+      "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "artifact_id": 11705333501,
+      "sha256": "1e7f36ba29a732d47314b71ae9825c7a3a4b6344627f246e5eca196084569b05",
+      "poll_discovery": [
+        0,
+        0
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": null,
+      "source_health": {
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "editorial_outcome": "not_evaluated",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [],
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "RuntimeError"
+          },
+          {
+            "type": "URLError",
+            "reason": "timed out"
+          },
+          {
+            "type": "TimeoutError",
+            "reason": "timed out"
+          }
+        ],
+        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+      },
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "deis",
+      "final_state": "INTEGRATED_DEGRADED",
+      "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "artifact_id": 11705152783,
+      "sha256": "97c25c9f357f1dc90422571bff47895e3d1bf4cd39f89730922b414e5da505cc",
+      "poll_discovery": [
+        12,
+        12
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": null,
+      "source_health": {
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "editorial_outcome": "no_new_signals",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "fonasa_datos_abiertos",
+      "final_state": "EXTERNAL_BLOCKER_PROVEN",
+      "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "artifact_id": 11704289051,
+      "sha256": "fbdbaefaa1e141e4a693fe292a92a6c3646efc03b3dbdacff89c6afb6f12cd8c",
+      "poll_discovery": [
+        0,
+        0
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": null,
+      "source_health": {
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "editorial_outcome": "not_evaluated",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [],
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "FonasaDiscoveryError"
+          }
+        ],
+        "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
+        "endpoint_failures": [
+          {
+            "url": "https://datosabiertos.fonasa.cl/noticias/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/analysis/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          }
+        ]
+      },
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "red_davila",
+      "final_state": "INTEGRATED_DEGRADED",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "run": 38147271657,
+      "artifact_id": 11705418137,
+      "sha256": "81e0c1459b0ca7d5b47fa9e6bb71db160f8bee63c7f11ca959444399c973a51c",
+      "poll_discovery": [
+        11,
+        11
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": true,
+      "source_health": {
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "editorial_outcome": "not_evaluated",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [
+        "191historical original URLs remain403 in currentHTTP/Chrome; public original reader verifies each dated before2026-06-30."
+      ],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "pfizer_chile",
+      "final_state": "INTEGRATED_DEGRADED",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "run": 38147271657,
+      "artifact_id": 11705328505,
+      "sha256": "c9eb52ddacdf9f0fa7d7cafe11652036a1c38482e731363e8dfcca3080c749a6",
+      "poll_discovery": [
+        3,
+        3
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": false,
+      "source_health": {
+        "technical_status": "ok",
+        "coverage_status": "unverified",
+        "editorial_outcome": "not_evaluated",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [
+        "All17observed original news URLs inspected with componentH1/body; historical publication headers recovered, broken healthtech/covax links identified. No verified2026news; undated/misrouted/legacy originals and stale newsroom prevent exact recent total.0verified is not proof of zero activity."
+      ],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "bupa_chile",
+      "final_state": "EXTERNAL_BLOCKER_PROVEN",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "run": 38147271657,
+      "artifact_id": 11705139098,
+      "sha256": "64fcde6a7d27c0c894469a1edada0b74167e1718d64d27c7ace2a7da48e89197",
+      "poll_discovery": [
+        51,
+        51
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": false,
+      "source_health": {
+        "technical_status": "ok",
+        "coverage_status": "unverified",
+        "editorial_outcome": "not_evaluated",
+        "pending": 17,
+        "processed_rejections": 0
+      },
+      "limits": [
+        "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held."
+      ],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "andes_salud",
+      "final_state": "INTEGRATED_VALIDATED",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "run": 38147271657,
+      "artifact_id": 11705024508,
+      "sha256": "975ca08ee684a621cf09195ce60459b59c0d9a14564957b275a1b0bec57c9cd1",
+      "poll_discovery": [
+        24,
+        24
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": true,
+      "source_health": {
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "editorial_outcome": "rejected",
+        "pending": 10,
+        "processed_rejections": 5
+      },
+      "limits": [],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "clinicas_chile",
+      "final_state": "INTEGRATED_DEGRADED",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "run": 38147271657,
+      "artifact_id": 11704834695,
+      "sha256": "34f56ca8ff329c9eef720485b005253803266c8d0810cbc69dac7664da5f44af",
+      "poll_discovery": [
+        39,
+        39
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": false,
+      "source_health": {
+        "technical_status": "ok",
+        "coverage_status": "unverified",
+        "editorial_outcome": "not_evaluated",
+        "pending": 31,
+        "processed_rejections": 0
+      },
+      "limits": [
+        "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified."
+      ],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "redsalud",
+      "final_state": "INTEGRATED_DEGRADED",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "run": 38147271657,
+      "artifact_id": 11704529405,
+      "sha256": "d58af84464633512e398dda2344acdd50fbca170e4710e0b3f412626630ae16d",
+      "poll_discovery": [
+        45,
+        45
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": false,
+      "source_health": {
+        "technical_status": "ok",
+        "coverage_status": "unverified",
+        "editorial_outcome": "not_evaluated",
+        "pending": 0,
+        "processed_rejections": 0
+      },
+      "limits": [
+        "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately."
+      ],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    },
+    {
+      "source": "indisa",
+      "final_state": "EXTERNAL_BLOCKER_PROVEN",
+      "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "run": 38147271657,
+      "artifact_id": 11704474575,
+      "sha256": "4e4f78999b2c4943fd4c3b7d2ace198af29077ec2e2da58bf97491cd9599c723",
+      "poll_discovery": [
+        0,
+        0
+      ],
+      "published_each": 0,
+      "new_each": 0,
+      "coverage_complete": false,
+      "source_health": {
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "editorial_outcome": "not_evaluated",
+        "pending": 2,
+        "processed_rejections": 0
+      },
+      "limits": [
+        "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof."
+      ],
+      "error_details": null,
+      "reviewer_findings": [],
+      "idempotence_scope": "accepted queue keys, queue identity, history; rejection/archive backlog may progress"
+    }
+  ],
+  "queue_imports": "Peer import retains all32 reviewed transitions; this reception check does not reimport stock or add charges.",
+  "history_unchanged": true,
+  "published_queue_unchanged": true,
+  "paid_usage": "data/audits/integration_20261011/provider-runtime-cost-reconciliation.json",
+  "not_claimed": [
+    "complete organization-wide coverage",
+    "semantic/legal certification by deterministic Reviewer",
+    "four-hour autonomy acceptance",
+    "production promotion"
+  ]
+}
