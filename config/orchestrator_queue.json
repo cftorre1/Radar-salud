@@ -3740,7 +3740,7 @@
     },
     {
       "id": "w4_dipres_2026_10_11",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "high",
       "expansion_priority": "P0",
       "owner": "Public Finance + Data Intelligence",
@@ -3772,13 +3772,14 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Descubrir proyecto 2027 y series de ejecución por Partida/Capítulo/Programa de Salud y FONASA; extraer URL de cada archivo desde índice oficial.",
+      "next_action": "Run native adapters + idempotent stock replay; expose comparable Trend/Benchmark consumers and independent coverage review",
       "evidence": [
-        "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "data/audits/w4_dipres_2026_10_11.json",
+        "data/audits/source_expansion/native_validated.zip"
       ],
       "external_blockers": [],
-      "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+      "progress": "Native DIPRES budget/analytical/execution/investment aggregates parsed into real snapshots; projects remain projects; 2026 law rebased to 2027 used for comparisons",
+      "implementation_status": "OPERATIVE_DEGRADED"
     },
     {
       "id": "w4_fne_2026_10_11",
