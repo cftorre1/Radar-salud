@@ -18,6 +18,11 @@ OFFICIAL_HOSTS = {
     "mutual.cl", "www.mutual.cl", "ww2.mutual.cl", "ist.cl", "www.ist.cl",
     "clinicasachssalud.cl", "www.clinicasachssalud.cl",
     "proceso-devolucion-masiva.mutual.cl",
+    "www.clinicaportada.cl", "clinicaportada.cl", "clinicaatacama.cl", "www.clinicaatacama.cl",
+    "clinicaloscoihues.cl", "www.clinicaloscoihues.cl", "www.clinicamaitenes.cl", "clinicamaitenes.cl",
+    "www.clinicalircay.cl", "clinicalircay.cl", "clinicalosandes.cl", "www.clinicalosandes.cl",
+    "www.clinicasur.cl", "clinicasur.cl", "www.clinicapuertomontt.cl", "clinicapuertomontt.cl",
+    "www.clinica-curico.cl", "clinica-curico.cl",
 }
 SAFE_HEADERS = {
     "content-type", "content-length", "date", "last-modified", "etag", "location",
@@ -104,8 +109,9 @@ def capture(url, output, *, ua="identified", timeout=35):
     for hop in range(6):
         with tempfile.TemporaryDirectory() as temp:
             header_path, body_path = Path(temp) / "headers", Path(temp) / "body"
+            max_bytes = "20000000" if urlsplit(current).path.casefold().endswith(".pdf") else "6000000"
             command = ["curl", "--silent", "--show-error", "--proto", "=https", "--connect-timeout", "12",
-                       "--max-time", str(timeout), "--max-filesize", "6000000", "--max-redirs", "0",
+                       "--max-time", str(timeout), "--max-filesize", max_bytes, "--max-redirs", "0",
                        "--user-agent", USER_AGENTS[ua], "--dump-header", str(header_path),
                        "--output", str(body_path), "--write-out", "%{json}", current]
             process = subprocess.run(command, capture_output=True, text=True, timeout=timeout + 10)
