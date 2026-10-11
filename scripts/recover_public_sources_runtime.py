@@ -25,7 +25,7 @@ from radar_salud.public_source_evidence import HOSTS, failure_details
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OFFICIAL_HOSTS = set().union(*HOSTS.values()) | {"nuevo.fonasa.gob.cl", "fonasaweb.fonasa.cl"}
+OFFICIAL_HOSTS = set().union(*HOSTS.values()) | {"nuevo.fonasa.gob.cl", "fonasaweb.fonasa.cl", "datos.gob.cl"}
 HEADERS = {"User-Agent": "RadarSaludBot/0.3 (+public-source-monitor)",
            "Accept": "text/html,application/pdf,application/xml,application/json;q=0.9,*/*;q=0.5"}
 
