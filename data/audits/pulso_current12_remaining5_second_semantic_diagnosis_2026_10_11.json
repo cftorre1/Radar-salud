@@ -1,0 +1,237 @@
+{
+  "schema_version": "pulso_current12_remaining5_second_semantic_diagnosis_v1",
+  "source_id": "pulso_latercera",
+  "reviewer": "publisher_surfaces_independent_complete_primary_and_actual_model_reader",
+  "producer_commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+  "producer_code_sha": "de51496ca0bfbe656c96551743e52024b9b6608e",
+  "producer_run_id": 38172352115,
+  "inputs": {
+    "history": {
+      "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "45ec0b8571447a68465ddcedb92a843663616e6014d423554bb3e4408c4548f0"
+    },
+    "queue": {
+      "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "03f998df22ec3410078c0f53dec6332e139799bd8febc92c547eba617f886fe0"
+    },
+    "runtime_report": {
+      "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "7448f3ef7e867ff49ca395f853e61b986f6b4c8c2c5207d18c08207cc6f91dec"
+    },
+    "telemetry": {
+      "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "f5d5f4ba51d3c510997e2750d97e43d3e1d4c05196b3f2cdcb8eb5b18aec6a1b"
+    }
+  },
+  "original_guard_source_sha256": "e39663acbe8d952039373c04763c05f613d365459cc9a98feb314f2a60567dd3",
+  "actual_fixture": {
+    "path": "tests/fixtures/pulso_actual_current12_remaining5_paid_models.json.gz",
+    "sha256": "edb921df6c0f08d1e186f19ee3ef8245ccda2ae8debacec7fc21ad06e8341580"
+  },
+  "rows": [
+    {
+      "row": 2,
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "publication_date": "2026-10-05",
+      "immutable_actual_model_primary_pin_sha256": "a94d50fcee3abbbfdfcb76462ca75bae225d7dee6c58e9f066c01e71249757fc",
+      "body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+      "html_sha256": "12dd0d1641d196ac0ec694da1852736d77f93e914a5036cf4a74f247ed120b64",
+      "model_output_sha256": "19dfb41e43fa65b708d1decac3ee579e3b0df721a8b6f495f848548bc78327ba",
+      "response_id": "resp_06b321eec0a4c07f006acbf3f38d0c87d0be4b0433bf3d71cb",
+      "actual_score": 88,
+      "actual_status": "retry",
+      "actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "runtime_route": "assess_contract_or_semantic_defect",
+      "independent_reason": "The model places closed guarantees under January–July and claims an increase in activated guarantees without a baseline. The primary limits January–July to 14,301 activated guarantees and 4,400 confirmed diagnoses; 30,805 closed guarantees are stated as until the article date. A local negation validator bug is secondary and cannot authorize reuse.",
+      "full_primary_body_read": true,
+      "full_actual_model_read": true,
+      "actual_source_date_raw_reparsed": true,
+      "publication_approved": false
+    },
+    {
+      "row": 5,
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "publication_date": "2026-09-01",
+      "immutable_actual_model_primary_pin_sha256": "a9e0ee7ddb9ad0cd24837aaba1125c43bdacd7a165231f911f70d6eb0e348331",
+      "body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+      "html_sha256": "979d36ea3330af47a5de9870b7becd6808b26d8a9a14b14c0fb6805f5c8358fb",
+      "model_output_sha256": "08bc7c7fdffea478aba999ee3ddea36e76aa6e4bb12d7db64611712342d18ea4",
+      "response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+      "actual_score": 82,
+      "actual_status": "retry",
+      "actual_reason": "pulso_editorial_scope_not_grounded",
+      "runtime_route": "reuse_code_fn",
+      "independent_reason": "Exact human clinical quote links complexity of prestaciones and the named Sanatorio Alemán. The current validator lacks that clinical anchor and misreads the locally negated inversiones ya ejecutadas. Holding-company profit 165 billion is kept distinct from health subsidiaries 36,783 million; neither incorporation nor future investment is presented as newly completed.",
+      "full_primary_body_read": true,
+      "full_actual_model_read": true,
+      "actual_source_date_raw_reparsed": true,
+      "publication_approved": false
+    },
+    {
+      "row": 6,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "publication_date": "2026-09-01",
+      "immutable_actual_model_primary_pin_sha256": "e574e8e3ba1eb974beb469441651d8a9a455f7894c68826310567627d5f1ad7a",
+      "body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+      "html_sha256": "8005d3bd4577194f26fbe104d039968189ee4140695fd0f34f5b4a556d457505",
+      "model_output_sha256": "727de0a669fc995610e4f1769f8fd410f92b16d03f73268b75ab3540f9b8539a",
+      "response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+      "actual_score": 86,
+      "actual_status": "retry",
+      "actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "runtime_route": "reuse_code_fn",
+      "independent_reason": "The full exact response dates the announced extension on September 1 through September 30 and expressly declines to claim continued October 11 validity. Historical anunciaba para ese período is a legitimate announced future status, not an implemented new service. The primary mandatory-mask clinical scope is literal.",
+      "full_primary_body_read": true,
+      "full_actual_model_read": true,
+      "actual_source_date_raw_reparsed": true,
+      "publication_approved": false
+    },
+    {
+      "row": 9,
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "publication_date": "2026-07-29",
+      "immutable_actual_model_primary_pin_sha256": "d12f78a97e626331a97a8cd15a7f4f32ea0bd88247dde6d7914b5c0e3288abfb",
+      "body_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+      "html_sha256": "4d68fc88d91acb5b3eeee0a1f98f7b2e4210689c1c5897be6a99426fb92313a4",
+      "model_output_sha256": "f5987c5929a514c01e2036bdf4a70b8fb779ae70a35afeb7233d6b20706085c4",
+      "response_id": "resp_067ece23e848c255006acbf4ecaf6487d09d7334c588812e6b",
+      "actual_score": 90,
+      "actual_status": "retry",
+      "actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "runtime_route": "assess_contract_or_semantic_defect",
+      "independent_reason": "July 29 reports 46 cases, 18 deaths, 39% lethality and an announced July 2027 end date, but the same alert already has an August 8 publication. That original explicitly says the Atacama–Magallanes alert was previously decreed. The current model claims novelty without comparing this published context. Fresh contextual assessment must distinguish the July epidemiological cut from the later zoonotic-alert addition.",
+      "full_primary_body_read": true,
+      "full_actual_model_read": true,
+      "actual_source_date_raw_reparsed": true,
+      "publication_approved": false
+    },
+    {
+      "row": 11,
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "immutable_actual_model_primary_pin_sha256": "f0507a3cda82e375d0ef58f9559e34ec06411702277cec8654ab16635c3713f4",
+      "body_sha256": "9113e0fd67a716d5a03a5f50bd0dba68dcb391278e16be3e3a900bbc0eebd982",
+      "html_sha256": "caf32f5747864c378fd9f63b1c4121e8ccd9d5e1f3aab67bbfb43cbbbdda7036",
+      "model_output_sha256": "3b1088974596c9db29cdc765cfbb3b64dcf16e418b26ed53cbbc6f888badcb24",
+      "response_id": "resp_0198a8fdf4ba8f19006acbf42fb5dc87d0b54472ac2e9408f1",
+      "actual_score": 84,
+      "actual_status": "retry",
+      "actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "runtime_route": "reuse_code_fn",
+      "independent_reason": "All selected quotes and whole-field future claims are exact. The copy separates 2022–2023 purchases, April 2025 base, the 2026 report and contemplated 2026 budget adjustments. The 28 entities / 91.2% scope is multisector; health services are examples, not the whole amount. Dated recommendations are not implementation and no acredita una reasignación ya ejecutada is a local denial.",
+      "full_primary_body_read": true,
+      "full_actual_model_read": true,
+      "actual_source_date_raw_reparsed": true,
+      "publication_approved": false
+    }
+  ],
+  "all12_original_guard_and_request_checks": [
+    {
+      "row": 1,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "editorial_relevance_below_threshold",
+      "actual_guard_decision": "rejected"
+    },
+    {
+      "row": 2,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "actual_guard_decision": "deferred"
+    },
+    {
+      "row": 3,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "pulso_editorial_grounded_assessment",
+      "actual_guard_decision": "ready"
+    },
+    {
+      "row": 4,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "pulso_editorial_grounded_assessment",
+      "actual_guard_decision": "ready"
+    },
+    {
+      "row": 5,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "pulso_editorial_scope_not_grounded",
+      "actual_guard_decision": "deferred"
+    },
+    {
+      "row": 6,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "actual_guard_decision": "deferred"
+    },
+    {
+      "row": 7,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "pulso_editorial_grounded_assessment",
+      "actual_guard_decision": "ready"
+    },
+    {
+      "row": 8,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "pulso_editorial_grounded_assessment",
+      "actual_guard_decision": "ready"
+    },
+    {
+      "row": 9,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "actual_guard_decision": "deferred"
+    },
+    {
+      "row": 10,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "editorial_relevance_below_threshold",
+      "actual_guard_decision": "rejected"
+    },
+    {
+      "row": 11,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "actual_guard_decision": "deferred"
+    },
+    {
+      "row": 12,
+      "producer_guard_replay_matches": true,
+      "body_and_actual_request_binding_matches": true,
+      "actual_reason": "pulso_editorial_grounded_assessment",
+      "actual_guard_decision": "ready"
+    }
+  ],
+  "hanta_comparator": {
+    "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+    "publication_date": "2026-08-08",
+    "body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+    "model_output_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+    "signal_sha256": "3c13e5abaecea6d1e0a560f542d2045be4a2525856621dacdb98393312581889",
+    "full_original_body_read": true,
+    "prior_alert_quote": "Previamente, el Minsal había decretado alerta sanitaria por hantavirus desde las regiones de Atacama hasta la de Magallanes"
+  },
+  "required_media_gate_threshold": 72,
+  "AI_calls": 0,
+  "state_mutated": false,
+  "publication_approved": false,
+  "summary": {
+    "actual_remaining": 5,
+    "reuse_code_fn": 3,
+    "assess_contract_or_semantic_defect": 2
+  },
+  "global_acceptance": "NOT_ACCEPTED_PENDING_ACTUAL_REPROCESSING_REPLAY_FINAL_QA"
+}
