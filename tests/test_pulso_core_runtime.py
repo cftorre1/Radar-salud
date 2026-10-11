@@ -5,9 +5,10 @@ This proves registration, queue outcomes and feed propagation, not live coverage
 import importlib.util
 import json
 import sys
-from dataclasses import asdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+import pytest
 
 from radar_salud import engine_cli, llm_analysis, paths
 from radar_salud.beta_sources import CuratedBetaSourceScout, media_gate_accepts
@@ -19,7 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 BODY = "La clínica suspendió operaciones y trasladó sus pacientes a otros establecimientos de su red asistencial. El cierre temporal reduce capacidad y obliga a redistribuir consultas, procedimientos y prestaciones para asegurar continuidad."
 
 
-def test_core_pulso_publication_rejection_pending_and_feed_trace(tmp_path, monkeypatch):
+@pytest.mark.parametrize("partial", [False, True])
+def test_core_pulso_publication_rejection_pending_and_feed_trace(tmp_path, monkeypatch, partial):
     now = datetime.now(timezone.utc)
     day = (now - timedelta(days=1)).date().isoformat()
     (tmp_path / "config").mkdir()
@@ -46,6 +48,9 @@ def test_core_pulso_publication_rejection_pending_and_feed_trace(tmp_path, monke
         def __init__(self, slug):
             assert slug == "pulso_latercera"
             self.discovery_audit = [{"url": urls[0], "status": "discovered", "publication_date": day}]
+            if partial:
+                self.discovery_audit.append({"url": "https://www.latercera.com/pulso/noticia/clinica-unreadable/",
+                                             "status": "detail_error", "reason": "missing_or_invalid_publication_date"})
         def discover(self):
             return items + [unrelated]
     monkeypatch.setattr(engine_cli, "CuratedBetaSourceScout", Pulso)
@@ -71,6 +76,7 @@ def test_core_pulso_publication_rejection_pending_and_feed_trace(tmp_path, monke
     assert discovery["runtime"] == "daily_core"
     assert discovery["sources"]["pulso_latercera"]["discovered"] == 4
     assert set(discovery["sources"]) == {"pulso_latercera"}
+    assert discovery["sources"]["pulso_latercera"]["error_type"] == ("partial_discovery" if partial else None)
     queue = PendingQueue(state / "pending_queue.json")
     by_url = {item["raw"]["url"]: item for item in queue.items.values()}
     assert by_url[urls[0]]["status"] == "published"
