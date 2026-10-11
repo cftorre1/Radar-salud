@@ -183,7 +183,7 @@ def main():
             print(json.dumps({k: record.get(k) for k in ("source", "surface", "url", "user_agent", "http_status", "waf", "stop_reason")}), flush=True)
             time.sleep(1)
     report = {"environment": args.environment, "run_id": os.environ.get("GITHUB_RUN_ID"),
-              "candidate_sha": os.environ.get("GITHUB_SHA"), "captured_at": datetime.now(timezone.utc).isoformat(),
+              "candidate_sha": os.environ.get("CANDIDATE_SHA", os.environ.get("GITHUB_SHA")), "captured_at": datetime.now(timezone.utc).isoformat(),
               "public_requests_only": True, "challenge_execution": False, "cookies_sent": False,
               "headers_allowlisted_no_cookies_or_authorization": True, "records": records}
     output.mkdir(parents=True, exist_ok=True)

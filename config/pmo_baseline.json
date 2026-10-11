@@ -670,6 +670,32 @@
       "scope": "Universo de familias y 10 Isapres evaluado; 15 paquetes P0/P1. No certifica runtime, salud de fuentes, QA de producto ni readiness/release.",
       "validated_requirements": [],
       "validated_blocks": []
+    },
+    "occupational_origin_inventory_recovery_2026_10_11": {
+      "kind": "isolated_branch_live_capture",
+      "status": "in_progress",
+      "branch": "codex/e-salud-laboral-20261011",
+      "pull_request": "https://github.com/cftorre1/Radar-salud/pull/12",
+      "candidate_sha": "adabaa3",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116209530",
+      "checks": [
+        "216 scoped regression tests PASS",
+        "478 Python PASS,1 inherited normative snapshot failure",
+        "Node web suite PASS",
+        "Independent Reviewer incremental; final inventory gate pending"
+      ],
+      "findings": [
+        "GitHub Actions origins available inclMutual: no source blocker from CodexCONNECT403",
+        "IST21nativeposts vs20news plusdatedreport",
+        "ACHSclinical blog43records,3safedatedrecent generic advice +1pendingdateconflict",
+        "Nineofficialclinic routes addedfor live raw discovery"
+      ],
+      "evidence": [
+        "data/audits/source_e_recovery/reviewer_incremental.json",
+        "data/audits/source_e_recovery/python_full_current.txt",
+        "data/audits/source_e_recovery/recovery_regression_tests.txt"
+      ],
+      "next_action": "Complete Actions inventories and per-item reconciliation before final Reviewer/UIQA; retain draft PR"
     }
   },
   "blocks": [
@@ -3099,7 +3125,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T04:25:45.756169+00:00",
+  "updated_at": "2026-10-11T06:01:38.501042+00:00",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",

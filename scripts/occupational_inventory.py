@@ -193,7 +193,7 @@ def main():
     from radar_salud.ai_budget import status
     before = copy.deepcopy(status())
     totals = reconcile(root, reports, loader, apply=args.apply)
-    result = {"candidate_sha": os.getenv("GITHUB_SHA"), "run_id": os.getenv("GITHUB_RUN_ID"),
+    result = {"candidate_sha": os.getenv("CANDIDATE_SHA", os.getenv("GITHUB_SHA")), "run_id": os.getenv("GITHUB_RUN_ID"),
               "captured_at": datetime.now(timezone.utc).isoformat(), "as_of_chile": chile_today().isoformat(),
               "mode": "runtime_and_branch_reconciliation" if args.apply else "read_only_replay", "sources": reports, "processing": totals}
     result["editorial_runtime"] = {"credentials_available": bool(os.getenv("OPENAI_API_KEY")),
