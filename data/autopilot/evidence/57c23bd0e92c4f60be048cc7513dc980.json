@@ -1,0 +1,72 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 3,
+      "material_event_count": 4,
+      "max_material_gap_seconds": 13150.463598,
+      "mode": "live",
+      "observed_seconds": 14400.0,
+      "original_started_at": "2026-10-11T05:29:46.231497Z",
+      "owner_observation_verified": false,
+      "owner_prompts": 0,
+      "owner_restarts": 0,
+      "total_elapsed_seconds": 29539.203188,
+      "window_started_at": "2026-10-11T09:42:05.434685Z"
+    },
+    "observed_until": "2026-10-11T13:42:05.434685Z",
+    "reasons": [
+      "owner_intervention_observation_not_verified",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed",
+      "material_progress_gap_exceeded_30m"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {
+    "editorial": {
+      "evidence_revision": "5702eea5a170171cd68308d7352290f188b2a7d861f4676afbdbb324d406f052",
+      "failure": null,
+      "family": "editorial",
+      "input_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+      "reason": "no_material_progress_30m",
+      "task_id": "editorial_repair_lane_2026_10_11"
+    },
+    "fiscalization": {
+      "evidence_revision": "8dcd827158a62c87424bdf9195c1851a1e2c48760f2cdb7a6c6469a6e097adbf",
+      "failure": null,
+      "family": "fiscalization",
+      "input_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+      "reason": "input_or_evidence_changed",
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    "media": {
+      "evidence_revision": "e8297bd59266161ffab257482dfcc851680ce431bcabfebc153642c5900644dd",
+      "failure": null,
+      "family": "media",
+      "input_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+      "reason": "input_or_evidence_changed",
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    "public_data": {
+      "evidence_revision": "8ffa4e83e5ff6be81e95be600a670dab767b9b0c1b0dc2d2b38a6fea05b1d5bc",
+      "failure": null,
+      "family": "public_data",
+      "input_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+      "reason": "input_or_evidence_changed",
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    }
+  },
+  "generated_at": "2026-10-11T13:42:05.434685+00:00",
+  "input_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+  "kind": "controller_observation",
+  "operation_id": "57c23bd0e92c4f60be048cc7513dc980",
+  "stalled_tasks": [
+    {
+      "family": "editorial",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 2,
+      "task_id": "editorial_repair_lane_2026_10_11"
+    }
+  ]
+}
