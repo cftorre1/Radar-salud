@@ -54,7 +54,11 @@ python scripts/discover_global_sources.py --project-inventory-csv
 Replay uses a disposable root, zero network/AI/publication and checks ten canonical
 hashes including cooldown/ledger, source-health mirrors and both curated datasets.
 The independent auditor imports no collector and rederives dates, aliases, native
-index control and bounded date-partition end evidence from original bytes.
+index control and bounded date-partition end evidence from original bytes. PAHO
+numbered pagers require closed native hierarchy, exact query bindings, a unique
+active final page and a following official empty probe; cap eight forces a narrower
+date slice. Repeated pages never close coverage. Metadata-only pager fixtures bind
+to their original capture hash; no article text is reproduced.
 
 Reuters remains disabled until written automated-collection consent, service
 entitlement and commercial-use scope are documented. Do not fetch Reuters titles,

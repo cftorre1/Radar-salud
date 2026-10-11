@@ -9,7 +9,7 @@ from html import unescape
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit, urljoin
 
 from .global_discovery_common import CaptureClient, Document, canonical_url, publication_day
 from .pending_queue import atomic_json
@@ -169,11 +169,66 @@ def verified_news_view(document, route, bounds, *, empty, allow_pager=False):
 def verified_empty_news_view(document, route, bounds):
     return verified_news_view(document,route,bounds,empty=True)
 
+def native_numbered_pager(document, route, bounds, page_url):
+    """Verify the observed bilingual Drupal pager, never infer an end from no-next."""
+    if not verified_news_view(document,route,bounds,empty=False,allow_pager=True):return None
+    identity=lambda u:(urlsplit(u)[:3],sorted((k,v) for k,v in parse_qsl(urlsplit(u).query,keep_blank_values=True) if k!='page'))
+    values=[v for k,v in parse_qsl(urlsplit(page_url).query,keep_blank_values=True) if k=='page']
+    if len(values)>1 or values and not re.fullmatch(r'0|[1-9][0-9]*',values[0]):return None
+    current=int(values[0]) if values else 0
+    view=next(n for n in document.nodes() if n.has_class('view-id-news'))
+    navs=[n for n in view.nodes('nav') if n.has_class('pager-nav')]
+    if len(navs)!=1 or not navs[0].has_class('text-center') or not navs[0].closed or navs[0].attrs.get('role')!='navigation' or navs[0].attrs.get('aria-labelledby')!='pagination-heading':return None
+    nav=navs[0];lists=[n for n in nav.nodes('ul') if {'pagination','js-pager__items'}<=set(n.attrs.get('class','').split())]
+    if len(lists)!=1 or not lists[0].closed or lists[0].parent is not nav or any(not n.closed for n in nav.nodes()):return None
+    if any(hasattr(n,'tag') and n.tag!='li' for n in lists[0].children):return None
+    lis=list(lists[0].nodes('li'));numbers=[];active=[];targets=[];forward=False;controls=[]
+    if not lis or any(not li.closed or li.parent is not lists[0] or not li.has_class('pager__item') for li in lis):return None
+    allowed={'pager__item--first','pager__item--previous','pager__item--next','pager__item--last'}
+    for li in lis:
+        modifiers={c for c in li.attrs.get('class','').split() if c.startswith('pager__item--')}
+        if not modifiers<=allowed or len(modifiers)>1:return None
+        links=list(li.nodes('a'))
+        if len(links)!=1 or not links[0].closed or links[0].parent is not li:return None
+        anchor=links[0];raw_target=urlsplit(urljoin(page_url,anchor.attrs.get('href','')))
+        canonical_url(urlunsplit(raw_target))
+        if raw_target.fragment:return None
+        target=urlunsplit(raw_target)
+        vals=[v for k,v in parse_qsl(urlsplit(target).query,keep_blank_values=True) if k=='page']
+        if identity(target)!=identity(page_url) or len(vals)!=1 or not re.fullmatch(r'0|[1-9][0-9]*',vals[0]):return None
+        number=int(vals[0]);targets.append(number)
+        forward=forward or bool(modifiers&{'pager__item--next','pager__item--last'} or {'next','last'}&set(anchor.attrs.get('rel','').split()))
+        if modifiers:
+            modifier=next(iter(modifiers));controls.append(modifier)
+            if set(li.attrs.get('class','').split())!={'pager__item',modifier} or anchor.attrs.get('aria-current'):return None
+            if modifier in {'pager__item--first','pager__item--previous'}:
+                expected=0 if modifier=='pager__item--first' else current-1
+                if current<=0 or number!=expected or set(anchor.attrs.get('rel','').split())!={'prev'}:return None
+            elif modifier=='pager__item--next' and (number!=current+1 or set(anchor.attrs.get('rel','').split())!={'next'}):return None
+            elif modifier=='pager__item--last' and number<=current:return None
+            continue
+        if anchor.attrs.get('rel'):return None
+        match=re.fullmatch(r'(Page|Current page|Página|Página actual) ([1-9][0-9]*)',li.text())
+        if not match or int(match[2])-1!=number:return None
+        numbers.append(number)
+        is_active=li.has_class('is-active') and li.has_class('active')
+        if is_active:
+            label='Página actual' if '/es/' in route['url'] else 'Current page'
+            if match[1]!=label or anchor.attrs.get('aria-current')!='page' or anchor.attrs.get('title')!=label:return None
+            active.append(number)
+        elif set(li.attrs.get('class','').split())!={'pager__item'} or match[1]!=('Página' if '/es/' in route['url'] else 'Page') or anchor.attrs.get('title')!=f'Go to page {number+1}' or anchor.attrs.get('aria-current'):return None
+    expected_backward=1 if current>0 else 0
+    if any(controls.count(c)!=expected_backward for c in ('pager__item--first','pager__item--previous')) or len(controls)!=len(set(controls)):return None
+    if expected_backward and controls[:2]!=['pager__item--first','pager__item--previous']:return None
+    if len(list(nav.nodes('a')))!=len(lis) or not numbers or numbers!=list(range(max(numbers)+1)) or active!=[current]:return None
+    maximum=max(numbers+targets)
+    return {'current':current,'maximum':maximum,'terminal':not forward and current==maximum and 0<current<8}
+
 def collect_route(client, route, as_of, max_pages):
     if route.get("date_slice_days"):
         return collect_date_slices(client,route,as_of,max_pages)
     rows, pages, seen = [], [], set()
-    advertised_last=None;previous_without_next=False;previous_single_page_verified=False;previous_structure_verified=False
+    advertised_last=None;previous_without_next=False;previous_single_page_verified=False;previous_structure_verified=False;previous_numbered_end=False
     cutoff = (as_of - timedelta(days=89)).isoformat()
     complete, stop = False, "page_limit"
     url = route["url"]
@@ -217,6 +272,13 @@ def collect_route(client, route, as_of, max_pages):
                 rows.extend(found);stop="page_parse_failure: date_filter_not_corroborated";break
             if found and not verified_news_view(document,route,bounds,empty=False,allow_pager=True):
                 rows.extend(found);stop='page_parse_failure: dated_news_view_unverified';break
+            numbered=native_numbered_pager(document,route,bounds,page_url) if found else None
+            if found and numbered is None and any(any(c=='pager-nav' or c=='pager' or c.startswith(('pager__','js-pager__')) for c in n.attrs.get('class','').split()) for n in document.nodes()):
+                rows.extend(found);stop='page_parse_failure: native_numbered_pager_unverified';break
+            if numbered:
+                pages[-1]['numbered_native_pager']=numbered
+                if numbered['maximum']>=8:
+                    rows.extend(found);stop='date_partition_saturated_native_cap';break
             last_links=[a.attrs["href"] for a in document.nodes("a") if "last" in a.attrs.get("rel","").split()]
             last_pages=[]
             for value in last_links:
@@ -236,17 +298,17 @@ def collect_route(client, route, as_of, max_pages):
                     complete=True;stop='date_partition_native_empty_after_advertised_end';break
                 if page==1 and advertised_last is None and previous_single_page_verified and verified_empty_news_view(document,route,bounds):
                     complete=True;stop='date_partition_single_page_native_end_probe';break
+                if page>1 and previous_numbered_end and previous_without_next and previous_structure_verified and pages[-2]['items'] and verified_empty_news_view(document,route,bounds):
+                    complete=True;stop='date_partition_native_empty_after_numbered_end';break
                 stop='date_partition_empty_unverified';break
+            previous_numbered_end=bool(numbered and numbered['terminal'])
             previous_without_next=not next_url
             previous_structure_verified=bool(found) and verified_news_view(document,route,bounds,empty=False,allow_pager=True)
             previous_single_page_verified=page==0 and advertised_last is None and bool(found) and verified_news_view(document,route,bounds,empty=False)
         if not found:
             complete, stop = page > 0, "empty_native_page" if page > 0 else "empty_initial_page_unverified"; break
         if ids in seen:
-            if route.get("date_partition"):
-                rows.extend(found)
-                complete,stop=True,"date_partition_native_archive_exhausted_after_public_end_probe"
-            else: stop = "repeated_pagination_page"
+            stop = "date_partition_repeated_page_unverified" if route.get("date_partition") else "repeated_pagination_page"
             break
         seen.add(ids); rows.extend(found)
         dates = [item["index_published_at"] for item in found if item["index_published_at"]]

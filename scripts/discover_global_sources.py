@@ -82,7 +82,7 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
     prior_path = root / "data/global_intelligence/ledger.json"
     ledger = json.loads(prior_path.read_text()) if prior_path.exists() else {"runs": []}
     for source in ("who", "paho"):
-        contract_id=hashlib.sha256(json.dumps({"qualification_version":2,"inventory_days":90,"routes":[route for route in config["routes"] if route["source"]==source]},sort_keys=True).encode()).hexdigest()
+        contract_id=hashlib.sha256(json.dumps({"qualification_version":3 if source=="paho" else 2,"inventory_days":90,"routes":[route for route in config["routes"] if route["source"]==source]},sort_keys=True).encode()).hexdigest()
         source_items = [item for item in items if item["source"] == source]
         source_routes = [route for route in routes if route["route"]["source"] == source]
         technical = [f for f in failures if f["route"]["source"] == source] + [{"url": item["url"], "error": item["technical_error"]} for item in language_items if item["source"] == source and item.get("technical_error")]

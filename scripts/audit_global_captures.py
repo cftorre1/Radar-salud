@@ -73,14 +73,14 @@ class NativeHTML(HTMLParser):
         self.cards, self.h1, self.meta_dates, self.visible_dates = [], [], [], []
         self.canonical, self.alternates, self.documents = [], [], []
         self.forms, self.inputs, self.links, self.empty_messages = [], [], [], []
-        self.news_views, self.pager_elements = [], []
+        self.news_views, self.pager_elements, self.pager_navs = [], [], []
         self.feed(raw.decode("utf-8", errors="replace"))
         self.close()
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         classes = set(attrs.get("class", "").split())
-        if any(token == "pager" or token.startswith(("pager__", "js-pager__")) for token in classes):
+        if any(token == "pager" or token.startswith(("pager__", "js-pager__", "pager-nav")) for token in classes):
             self.pager_elements.append({"tag": tag, "attrs": attrs})
         for frame in self.stack:
             if frame.get("news_view"):
@@ -111,10 +111,19 @@ class NativeHTML(HTMLParser):
             for frame in self.stack:
                 frame["times"].append(attrs.get("datetime", ""))
         if tag not in VOID:
+            pager_parent = next((frame["pager_node"] for frame in reversed(self.stack) if frame.get("pager_node")), None)
+            pager_node = None
+            if pager_parent is not None or tag == "nav" and "pager-nav" in classes:
+                pager_node = {"tag": tag, "attrs": attrs, "children": [], "text": [], "explicitly_closed": False,
+                              "inside_news_view": any(frame.get("news_view") for frame in self.stack)}
+                if pager_parent is not None:
+                    pager_parent["children"].append(pager_node)
+                else:
+                    self.pager_navs.append(pager_node)
             self.stack.append({"tag": tag, "attrs": attrs, "classes": classes,
                                "text": [], "links": [], "times": [], "inputs": [],
                                "news_view": tag == "div" and {"news-grid", "view-news", "view-id-news", "view-display-id-news_page"} <= classes,
-                               "descendants": [], "forms": [], "outside_form_text": []})
+                               "descendants": [], "forms": [], "outside_form_text": [], "pager_node": pager_node})
 
     def handle_startendtag(self, tag, attrs):
         self.handle_starttag(tag, attrs)
@@ -127,6 +136,8 @@ class NativeHTML(HTMLParser):
                 frame["text"].append(text)
             if frame.get("news_view") and not any(parent["tag"] == "form" for parent in self.stack[position + 1:]):
                 frame["outside_form_text"].append(text)
+            if frame.get("pager_node"):
+                frame["pager_node"]["text"].append(text)
 
     def handle_endtag(self, tag):
         position = next((n for n in range(len(self.stack)-1, -1, -1) if self.stack[n]["tag"] == tag), None)
@@ -136,6 +147,8 @@ class NativeHTML(HTMLParser):
             explicitly_closed = len(self.stack) == position + 1
             frame = self.stack.pop()
             text = " ".join(" ".join(frame["text"]).split())
+            if frame.get("pager_node"):
+                frame["pager_node"]["explicitly_closed"] = explicitly_closed
             if frame["tag"] == "form":
                 form = {"attrs": frame["attrs"], "inputs": frame["inputs"], "explicitly_closed": explicitly_closed}
                 self.forms.append(form)
@@ -194,7 +207,120 @@ def independent_index(raw, route, page_url, as_of):
     return rows
 
 
-def native_empty_end_checks(ordered, page_readers, page_rows, single_page=False):
+def bound_pager_page(href, page_url):
+    """Strict full-query binding, including repeated parameters; no tracking stripping."""
+    target = urlsplit(urljoin(page_url, href))
+    base = urlsplit(page_url)
+    official_url(urlunsplit(target))
+    query = parse_qsl(target.query, keep_blank_values=True)
+    values = [value for key, value in query if key == "page"]
+    if target.fragment or target[:3] != base[:3] or len(values) != 1 or not re.fullmatch(r"0|[1-9]\d*", values[0]):
+        raise ValueError("native pager identity/page invalid")
+    if sorted((key, value) for key, value in query if key != "page") != sorted(
+            (key, value) for key, value in parse_qsl(base.query, keep_blank_values=True) if key != "page"):
+        raise ValueError("native pager full query differs")
+    return int(values[0])
+
+
+def pager_tree_nodes(node):
+    return [node] + [descendant for child in node["children"] for descendant in pager_tree_nodes(child)]
+
+
+def native_pager_cap_checks(reader, page_url):
+    anchors = [node["attrs"] for nav in reader.pager_navs for node in pager_tree_nodes(nav)
+               if node["tag"] == "a"]
+    anchors += [attrs for attrs in reader.links if "last" in attrs.get("rel", "").split()]
+    bound, under_cap = True, True
+    for attrs in anchors:
+        try:
+            number = bound_pager_page(attrs.get("href", ""), page_url)
+            under_cap = under_cap and number < 8
+        except (TypeError, ValueError):
+            bound = False
+    return {"all_pager_links_have_exact_query_and_page": bound, "all_native_pagers_below_cap_8": under_cap}
+
+
+def numbered_native_end_checks(reader, page_url):
+    """Native Drupal numbered terminal pager, distinct from an advertised last link."""
+    checks = {"numbered_unique_closed_news_nav": False, "numbered_closed_direct_list": False,
+              "numbered_items_closed_recognized": False, "numbered_query_bound_labels": False,
+              "numbered_contiguous_zero_to_current": False, "numbered_unique_final_active": False,
+              "numbered_without_forward_or_ellipsis": False, "numbered_native_cap_below_8": False}
+    if reader is None or len(reader.pager_navs) != 1:
+        return checks
+    nav = reader.pager_navs[0]
+    attrs = nav["attrs"]
+    checks["numbered_unique_closed_news_nav"] = (nav["explicitly_closed"] and nav["inside_news_view"]
+        and {"pager-nav", "text-center"} <= set(attrs.get("class", "").split())
+        and attrs.get("role") == "navigation" and attrs.get("aria-labelledby") == "pagination-heading")
+    lists = [child for child in nav["children"] if child["tag"] == "ul"]
+    all_lists = [node for node in pager_tree_nodes(nav) if node["tag"] == "ul"]
+    if len(lists) != 1 or len(all_lists) != 1:
+        return checks
+    listing = lists[0]
+    checks["numbered_closed_direct_list"] = (listing["explicitly_closed"]
+        and {"pagination", "js-pager__items"} <= set(listing["attrs"].get("class", "").split())
+        and all(child["tag"] == "li" for child in listing["children"])
+        and all(node["explicitly_closed"] for node in pager_tree_nodes(nav))
+        and len([node for node in pager_tree_nodes(nav) if node["tag"] == "a"]) == len(listing["children"]))
+    query = parse_qsl(urlsplit(page_url).query, keep_blank_values=True)
+    values = [value for key, value in query if key == "page"]
+    current = int(values[0]) if len(values) == 1 and re.fullmatch(r"0|[1-9]\d*", values[0]) else 0 if not values else -1
+    language = "es" if urlsplit(page_url).path == "/es/noticias" else "en"
+    page_label, active_label = ("Página", "Página actual") if language == "es" else ("Page", "Current page")
+    numbers, active, kinds, valid, recognized, forward = [], [], [], True, True, False
+    for item in listing["children"]:
+        classes = set(item["attrs"].get("class", "").split())
+        anchors = [child for child in item["children"] if child["tag"] == "a"]
+        descendants = pager_tree_nodes(item)
+        recognized = recognized and item["explicitly_closed"] and "pager__item" in classes and len(anchors) == 1
+        recognized = recognized and len([node for node in descendants if node["tag"] == "a"]) == 1
+        if len(anchors) != 1:
+            valid = False
+            continue
+        anchor = anchors[0]
+        attrs = anchor["attrs"]
+        text = " ".join(" ".join(anchor["text"]).split())
+        valid = valid and anchor["explicitly_closed"]
+        try:
+            number = bound_pager_page(attrs.get("href", ""), page_url)
+        except (TypeError, ValueError):
+            valid = False
+            continue
+        modifiers = {token for token in classes if token.startswith("pager__item--")}
+        if modifiers:
+            kind = next(iter(modifiers)) if len(modifiers) == 1 else "invalid"
+            kinds.append(kind)
+            if kind == "pager__item--first":
+                valid = valid and number == 0 and attrs.get("rel") == "prev" and not attrs.get("aria-current")
+                valid = valid and classes == {"pager__item", "pager__item--first"}
+            elif kind == "pager__item--previous":
+                valid = valid and number == current - 1 and attrs.get("rel") == "prev" and not attrs.get("aria-current")
+                valid = valid and classes == {"pager__item", "pager__item--previous"}
+            else:
+                forward = True
+        else:
+            numbers.append(number)
+            is_active = "is-active" in classes or "active" in classes or bool(attrs.get("aria-current"))
+            if is_active:
+                active.append(number)
+                valid = valid and {"is-active", "active"} <= classes and attrs.get("aria-current") == "page"
+                valid = valid and attrs.get("title") == active_label and text == active_label + " " + str(number + 1)
+            else:
+                valid = valid and classes == {"pager__item"} and not attrs.get("aria-current")
+                valid = valid and attrs.get("title") == "Go to page " + str(number + 1) and text == page_label + " " + str(number + 1)
+            valid = valid and not attrs.get("rel")
+    checks["numbered_items_closed_recognized"] = recognized and bool(listing["children"])
+    checks["numbered_query_bound_labels"] = valid
+    checks["numbered_contiguous_zero_to_current"] = numbers == list(range(current + 1)) and current > 0
+    checks["numbered_unique_final_active"] = active == [current] and bool(numbers) and numbers[-1] == current
+    checks["numbered_without_forward_or_ellipsis"] = (not forward and kinds == ["pager__item--first", "pager__item--previous"]
+        and not any(set(anchor.get("rel", "").split()) & {"next", "last"} for anchor in reader.links))
+    checks["numbered_native_cap_below_8"] = 0 < current < 8 and all(number < 8 for number in numbers)
+    return checks
+
+
+def native_empty_end_checks(ordered, page_readers, page_rows, single_page=False, numbered_page=False):
     """Rederive the publisher's dated native end probe from the saved pages."""
     terminal = ordered[-1]
     current = page_readers[terminal]
@@ -273,11 +399,16 @@ def native_empty_end_checks(ordered, page_readers, page_rows, single_page=False)
             last_pages.append(page_number(target))
     checks["all_native_last_links_bound_to_query"] = valid_last_bindings
     checks["native_cap_not_reached"] = all(0 <= last < 8 for last in last_pages)
+    for old_url in ordered[:-1]:
+        for code, valid in native_pager_cap_checks(page_readers[old_url], old_url).items():
+            checks[code] = checks.get(code, True) and valid
     bounds = dict(parse_qsl(urlsplit(terminal).query))
     checks["previous_native_dates_inside_query"] = bool(page_rows.get(previous_url)) and all(
         row["published_at"] and bounds.get("date[min]", "") <= row["published_at"] <= bounds.get("date[max]", "")
         for row in page_rows.get(previous_url, []))
-    if single_page:
+    if numbered_page:
+        checks.update(numbered_native_end_checks(previous, previous_url))
+    elif single_page:
         checks["single_page_positive_then_empty_only"] = len(ordered) == 2 and index == 1 and page_number(previous_url) == 0
         checks["single_page_without_advertised_last_or_pager"] = (not last_pages and prior_view is not None and not pager_nodes(prior_view)
             and previous is not None and not previous.pager_elements and not any(
@@ -459,14 +590,14 @@ def audit(captures, inventory_path, output):
                         terminal = ordered[-1]
                         if part["stop_reason"] == "date_partition_official_empty":
                             check(False, "unsupported_empty_message_completion_contract", terminal)
-                        elif part["stop_reason"] in {"date_partition_native_empty_after_advertised_end", "date_partition_single_page_native_end_probe"}:
+                        elif part["stop_reason"] in {"date_partition_native_empty_after_advertised_end", "date_partition_single_page_native_end_probe", "date_partition_native_empty_after_numbered_end"}:
                             proof = native_empty_end_checks(ordered, page_readers, page_rows,
-                                                           single_page=part["stop_reason"] == "date_partition_single_page_native_end_probe")
+                                                           single_page=part["stop_reason"] == "date_partition_single_page_native_end_probe",
+                                                           numbered_page=part["stop_reason"] == "date_partition_native_empty_after_numbered_end")
                             for code, valid in proof.items():
                                 check(valid, code, terminal)
                         elif part["stop_reason"] == "date_partition_native_archive_exhausted_after_public_end_probe":
-                            previous = ordered[:-1]
-                            check(bool(page_rows[terminal]) and any(page_rows[old] == page_rows[terminal] for old in previous), "partition_terminal_repeat_dates_and_urls", terminal)
+                            check(False, "unsupported_dated_repeated_page_completion_contract", terminal)
                         elif part["stop_reason"] == "verified_older_boundary":
                             dates = [row["published_at"] for page_url in ordered for row in page_rows[page_url]]
                             check(bool(dates) and all(dates) and dates == sorted(dates, reverse=True)

@@ -350,6 +350,7 @@ class DateArchiveClient:
         form=f'<form method="get" action="/en/news" id="views-exposed-form-news-news-page" data-drupal-selector="views-exposed-form-news-news-page"><input name="date[min]" value="{start}"><input name="date[max]" value="{end}"></form>'
         if not start: html=form
         elif self.empty: html=form+'<div class="view-empty">No news found.</div>'
+        elif int(query.get('page',['0'])[0])>0: html=form
         else:
             day=(date.fromisoformat(start)+timedelta(days=1)).isoformat()
             card=CARD.replace('2026-10-09',day).replace('9-10-2026-test',day+'-test')
@@ -365,7 +366,8 @@ def test_official_date_slices_cover_all_90_days_using_card_dates_not_query_dates
     assert result['archive_complete'] and result['stop_reason']=='verified_date_partition_coverage'
     assert result['date_partitions'][0]['from']=='2026-07-14'
     assert result['date_partitions'][-1]['to']=='2026-10-11'
-    assert all(p['native_control'] for p in result['pages'])
+    assert any(p['native_control'] for p in result['pages'])
+    assert any(not p['native_control'] for p in result['pages'])
     assert window_boundary_verified(result,AS_OF,30) and window_boundary_verified(result,AS_OF,90)
     result['date_partitions'].pop(3)
     assert not window_boundary_verified(result,AS_OF,90)
@@ -378,7 +380,7 @@ def test_date_filter_echo_is_required_and_never_substitutes_for_publication():
 def test_native_archive_cap_triggers_bounded_date_subdivision_instead_of_claiming_complete():
     result=collect_route(DateArchiveClient(saturated=True),dict(ROUTE,date_slice_days=7),AS_OF,100)
     assert result['archive_complete'] and len(result['date_partitions'])>13
-    assert all(s['stop_reason'] in {'date_partition_native_archive_exhausted_after_public_end_probe','verified_older_boundary'} for s in result['date_partitions'])
+    assert all(s['stop_reason'] in {'date_partition_single_page_native_end_probe','verified_older_boundary'} for s in result['date_partitions'])
     limited=collect_route(DateArchiveClient(saturated=True),dict(ROUTE,date_slice_days=7),AS_OF,2)
     assert not limited['archive_complete'] and limited['unvisited_partitions']>0
 
@@ -416,7 +418,8 @@ def test_overlapping_slices_preserve_each_receipt_and_close_on_conflicting_publi
             return raw,capture
     result=collect_route(Overlap(),dict(ROUTE,date_slice_days=7),AS_OF,100)
     row=next(r for r in result['items'] if r['url'].endswith('/shared'))
-    assert len(row['index_evidence'])>=4
+    assert len(row['index_evidence'])>=2
+    assert len({e['listing_url'] for e in row['index_evidence']})>=2
     assert row['index_published_at']==(None if conflict else '2026-07-20')
     if conflict:
         assert row['publication_date_error']=='conflicting_official_listing_dates' and result['date_pending']==1
@@ -526,3 +529,79 @@ def test_archive_flag_without_verified_90_day_boundary_cannot_make_source_ready(
     assert not result['network_requests'] and not result['publication_count']
     assert who['window_completeness']['90']=='incomplete_lower_bound'
     assert who['coverage_completeness']=='incomplete' and who['outcome']=='IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS'
+
+from radar_salud.global_source_discovery import native_numbered_pager
+from radar_salud.global_discovery_common import Document
+NATIVE_PAGER_FIXTURES=Path('tests/fixtures/global_discovery')
+
+@pytest.mark.parametrize('lang,current',[('en',3),('es',4)])
+def test_captured_native_numbered_pager_is_explicit_terminal_without_rel_last(lang,current):
+    pager=(NATIVE_PAGER_FIXTURES/f'paho_numbered_terminal_{lang}.html').read_text()
+    base='https://www.paho.org/'+('en/news' if lang=='en' else 'es/noticias')
+    bounds={'query_from':'2026-07-20','query_to':'2026-07-28'}
+    url=base+'?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page='+str(current)
+    html=news_view(date_card(0)+pager).replace('2026-09-14','2026-07-20').replace('2026-09-22','2026-07-28')
+    if lang=='es':html=html.replace('>News<','>Noticias<').replace('action="/en/news"','action="/es/noticias"')
+    got=native_numbered_pager(Document(html).root,dict(ROUTE,url=base),bounds,url)
+    assert got=={'current':current,'maximum':current,'terminal':True}
+
+def numbered_pager(current,maximum=1):
+    li=[]
+    for n in range(maximum+1):
+        active=n==current;label='Current page' if active else 'Page'
+        link=native_page_link(n,'').replace('></a>',f'>{label} {n+1}</a>')
+        link=link.replace('rel=""',f'title="Current page" aria-current="page"' if active else f'title="Go to page {n+1}"')
+        li.append('<li class="pager__item'+(' is-active active' if active else '')+'">'+link+'</li>')
+    if current>0:
+        for modifier,number in [('first',0),('previous',current-1)]:
+            li.insert(0 if modifier=='first' else 1,'<li class="pager__item pager__item--'+modifier+'">'+native_page_link(number,'prev')+'</li>')
+    if current<maximum:li.append('<li class="pager__item pager__item--next">'+native_page_link(current+1,'next')+'</li>')
+    return '<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"><ul class="pagination js-pager__items">'+''.join(li)+'</ul></nav>'
+
+def test_numbered_native_end_then_empty_completes_bounded_date_partition():
+    result=collect_route(FakeClient([news_view(date_card(0)+numbered_pager(0)),news_view(date_card(1)+numbered_pager(1)),news_view('')]),terminal_date_route(),AS_OF,10)
+    assert result['archive_complete'] and result['stop_reason']=='date_partition_native_empty_after_numbered_end'
+    assert result['pages'][-2]['numbered_native_pager']=={'current':1,'maximum':1,'terminal':True}
+
+@pytest.mark.parametrize('change',[
+    lambda h:h.replace('</nav>',''),lambda h:h.replace('</ul>',''),lambda h:h.replace('</li>',''),
+    lambda h:h.replace('aria-current="page"',''),lambda h:h.replace('is-active active','active'),
+    lambda h:h.replace('Current page 2','Page 2'),lambda h:h.replace('Go to page 1','Unrelated page'),
+    lambda h:h.replace('date%5Bmin%5D=2026-09-14','date%5Bmin%5D=2026-08-14'),
+    lambda h:h.replace('&amp;page=0','&amp;page=0&amp;page=0'),
+    lambda h:h.replace('&amp;page=0','&amp;page=0&amp;c%5B%5D=65'),
+    lambda h:h.replace('href="?date','href="https://www.who.int/en/news?date'),
+    lambda h:h.replace('</ul>','<li class="pager__item pager__item--next">'+native_page_link(2,'')+'</li></ul>'),
+    lambda h:h.replace('</ul>','<li class="pager__item">'+native_page_link(0,'')+'</li></ul>'),
+    lambda h:h.replace('&amp;page=0','&amp;page=0#unrelated'),
+    lambda h:h.replace('&amp;page=0','&amp;page=0&amp;utm_scope=unrelated'),
+    lambda h:h.replace('Page 1','Page 3'),lambda h:h.replace('pager__item"','pager__item pager__item--ellipsis"',1),
+])
+def test_numbered_native_end_rejects_incomplete_pager_and_conflicting_query_bindings(change):
+    result=collect_route(FakeClient([news_view(date_card(0)+numbered_pager(0)),news_view(date_card(1)+change(numbered_pager(1))),news_view('')]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete']
+
+def test_native_numbered_cap_eight_stops_before_public_end_probe():
+    client=FakeClient([news_view(date_card(0)+numbered_pager(0,8))])
+    result=collect_route(client,terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete'] and result['stop_reason']=='date_partition_saturated_native_cap'
+    assert len(client.calls)==1
+
+def test_repeated_date_partition_page_is_not_verified_native_archive_end():
+    result=collect_route(FakeClient([news_view(date_card(0)),news_view(date_card(0))]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete'] and result['stop_reason']=='date_partition_repeated_page_unverified'
+
+
+def test_invalid_early_pager_cannot_hide_cap_then_complete_on_later_pages():
+    early=numbered_pager(0,8).replace('title="Go to page 9"','title="Unrecognized page"')
+    result=collect_route(FakeClient([news_view(date_card(0)+early),news_view(date_card(1)+numbered_pager(1)),news_view('')]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete'] and result['stop_reason']=='page_parse_failure: native_numbered_pager_unverified'
+
+@pytest.mark.parametrize('modifier,number',[('first',1),('previous',1)])
+def test_native_pager_backward_controls_must_bind_first_zero_and_previous_page(modifier,number):
+    pager=numbered_pager(1)
+    broken='<li class="pager__item pager__item--'+modifier+'">'+native_page_link(number,'prev')+'</li>'
+    import re
+    pager=re.sub('<li class="pager__item pager__item--'+modifier+'">.*?</li>',broken,pager)
+    result=collect_route(FakeClient([news_view(date_card(0)+numbered_pager(0)),news_view(date_card(1)+pager),news_view('')]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete']
