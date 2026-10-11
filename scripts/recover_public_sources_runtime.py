@@ -19,13 +19,13 @@ import subprocess
 import shutil
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
-from urllib.request import HTTPRedirectHandler, Request, build_opener
+from urllib.request import HTTPRedirectHandler, Request, build_opener, getproxies
 
 from radar_salud.public_source_evidence import HOSTS, failure_details
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OFFICIAL_HOSTS = set().union(*HOSTS.values()) | {"nuevo.fonasa.gob.cl"}
+OFFICIAL_HOSTS = set().union(*HOSTS.values()) | {"nuevo.fonasa.gob.cl", "fonasaweb.fonasa.cl"}
 HEADERS = {"User-Agent": "RadarSaludBot/0.3 (+public-source-monitor)",
            "Accept": "text/html,application/pdf,application/xml,application/json;q=0.9,*/*;q=0.5"}
 
@@ -68,7 +68,7 @@ def error_stage(exc):
     return "transport_or_parser"
 
 
-def probe(slug, url, output, timeout=18):
+def probe(slug, url, output, timeout=18, user_agent=None):
     row = {"source": slug, "url": url, "host": urlsplit(url).hostname,
            "captured_at": now(), "method": "GET", "redirects": [],
            "http_status": None, "origin_tls_observed": False}
@@ -79,7 +79,11 @@ def probe(slug, url, output, timeout=18):
     except socket.gaierror as exc:
         row["dns"] = {"error": str(exc)}
     try:
-        request = Request(url, headers=HEADERS)
+        request_headers = dict(HEADERS)
+        if user_agent:
+            request_headers['User-Agent'] = user_agent
+        row['user_agent'] = request_headers['User-Agent']
+        request = Request(url, headers=request_headers)
         try:
             response = build_opener(TraceRedirects(row["redirects"])).open(request, timeout=timeout)
         except HTTPError as exc:
@@ -108,6 +112,23 @@ def probe(slug, url, output, timeout=18):
     return row
 
 
+def tls_diagnostic(host):
+    """Only for the proxy-free GitHub runtime; never bypass configured proxies."""
+    row = {'host': host, 'tcp': 'not_attempted', 'tls': 'not_attempted', 'captured_at': now()}
+    if any(key != 'no' for key in getproxies()):
+        row['reason'] = 'configured_proxy_preserved_no_direct_socket_attempt'
+        return row
+    try:
+        with socket.create_connection((host, 443), timeout=10) as connection:
+            row['tcp'] = 'connected'
+            with ssl.create_default_context().wrap_socket(connection, server_hostname=host) as secure:
+                row.update(tls='verified', tls_version=secure.version())
+    except Exception as exc:
+        row.update(error_type=type(exc).__name__, error=str(exc),
+                   failed_stage='tls' if row['tcp'] == 'connected' else 'tcp')
+    return row
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=ROOT / "work/public-source-recovery")
@@ -118,9 +139,15 @@ def main():
     tasks = [(slug, url) for slug, urls in endpoints.items() for url in urls]
     with ThreadPoolExecutor(max_workers=6) as executor:
         probes = list(executor.map(lambda pair: probe(*pair, args.output), tasks))
+        browser_retries = list(executor.map(
+            lambda pair: probe(*pair, args.output, user_agent='Mozilla/5.0'),
+            [(slug, urls[0]) for slug, urls in endpoints.items()]))
+        tls = list(executor.map(tls_diagnostic, sorted({urlsplit(url).hostname for _, url in tasks})))
     result = {"captured_at": now(), "runtime": "github_actions" if os.getenv("GITHUB_ACTIONS") else "codex",
               "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
               "run_id": os.getenv("GITHUB_RUN_ID"), "probes": probes,
+              "browser_user_agent_retries": browser_retries, "tls_diagnostics": tls,
+              "proxy_configured": any(key != 'no' for key in getproxies()),
               "ai_calls": 0, "ingestion_state_mutated": False}
     (args.output / "transport.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     if not args.probe_only:
