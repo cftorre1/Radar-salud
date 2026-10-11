@@ -880,6 +880,508 @@
         }
       },
       "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38145510005/inventory.json"
+    },
+    {
+      "run_id": "38147873198",
+      "mode": "live_resume",
+      "capture_reuse": {
+        "reused_url_count": 464,
+        "maximum_campaign_capture_age_hours": 1,
+        "does_not_prove_cadence": true
+      },
+      "generated_at": "2026-10-11T14:57:28.796874+00:00",
+      "as_of": "2026-10-11",
+      "sources": {
+        "who": {
+          "name": "WHO",
+          "checked_at": "2026-10-11T14:02:58.458371+00:00",
+          "status": "warning",
+          "technical_status": "error",
+          "coverage_status": "incomplete",
+          "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
+          "operation_mode": "isolated_qualification",
+          "discovery_scope": "global_intelligence",
+          "recurrent_operation_proven": false,
+          "cadence_seconds": 86400,
+          "cadence_validation_pending": true,
+          "coverage_contract_id": "e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56",
+          "next_cadence_validation_not_before": "2026-10-12T14:02:58.458371+00:00",
+          "coverage_completeness": "incomplete",
+          "coverage_window_days": 90,
+          "coverage_from": "2026-07-14",
+          "coverage_to": "2026-10-11",
+          "pages_checked": 7,
+          "recent_items": 81,
+          "discovery_recall_30": {
+            "basis": "independent_native_index_control_on_declared_surfaces",
+            "inventory_url_count": 84,
+            "detected": 84,
+            "omitted_urls": [],
+            "recall": 1.0,
+            "whole_source_archive_claim": false
+          },
+          "discovery_recall_90": {
+            "basis": "independent_native_index_control_on_declared_surfaces",
+            "inventory_url_count": 241,
+            "detected": 241,
+            "omitted_urls": [],
+            "recall": 1.0,
+            "whole_source_archive_claim": false
+          },
+          "window_completeness": {
+            "30": "incomplete_lower_bound",
+            "90": "incomplete_lower_bound"
+          },
+          "unique_language_urls_90": 241,
+          "unique_items": 178,
+          "counts": {
+            "30": 81,
+            "90": 178
+          },
+          "indexed_counts": {
+            "30": 84,
+            "90": 241
+          },
+          "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+          "material_items": 98,
+          "published": 0,
+          "rejected": 4,
+          "deferred": 237,
+          "pending_date_items": 0,
+          "technical_failures": [
+            {
+              "url": "https://www.who.int/publications/i/item/9789290222606",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09865",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789290222576",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789290222583",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789290222590",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789290222538",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789290222552",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789290222521",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789290222545",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789290222569",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/WHO-DGO-EVL-2025.72",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/sea-hdc-5",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789292800109",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240114562",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09861",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/who-wer10130-138-156",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09843",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09859",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09858",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09842",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09841",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09860",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09857",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240122321",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240122307",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09790",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/WHO-AFRO-2026-13439-53213-83244",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240123106",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240124370",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789292800147",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/WPR-2026-DPC-001-Mekong_Elimination_Programme_vol31",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240123298",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240123175",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240124479",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240124271",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789290316046",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240123632",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240123779",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789292800093",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240124233",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789292741754",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/35th-meeting-of-the-technical-advisory-group-(tag)-on-immunization-and-vaccine-preventable-diseases-in-the-western-pacific-region--manila--philippines--16-18-june-2026--meeting-report",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240124073",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240123656",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/WHO-DGO-EVL-2025.86",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/consultation-on-achieving-measles-and-rubella-elimination-by-2030-in-the-western-pacific--hybrid-meeting--manila--philippines--12-14-may-2026--meeting-report",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240123991",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240123151",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/sea-hdc-3",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240123557",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240116153",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789292800116",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/B09835",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240124110",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/publications/i/item/9789240124172",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON620",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON619",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON618",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON617",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON616",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON615",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON614",
+              "error": "ValueError: http_429"
+            },
+            {
+              "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON613",
+              "error": "ValueError: http_429"
+            }
+          ],
+          "discovered": 241,
+          "new": 0,
+          "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
+          "parser_routes": [
+            "news",
+            "publications",
+            "disease_outbreak_news"
+          ],
+          "boundary_evidence": [
+            {
+              "section": "news",
+              "stop": "verified_older_boundary",
+              "pages": 3
+            },
+            {
+              "section": "publications",
+              "stop": "verified_older_boundary",
+              "pages": 3
+            },
+            {
+              "section": "disease_outbreak_news",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            }
+          ],
+          "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38147873198/inventory.json",
+          "source_quality_disposition": "hold_external",
+          "publication_activation": false,
+          "content_freshness": "recent",
+          "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+        },
+        "paho": {
+          "name": "PAHO",
+          "checked_at": "2026-10-11T14:57:27.868074+00:00",
+          "status": "warning",
+          "technical_status": "ok",
+          "coverage_status": "incomplete",
+          "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
+          "operation_mode": "isolated_qualification",
+          "discovery_scope": "global_intelligence",
+          "recurrent_operation_proven": false,
+          "cadence_seconds": 86400,
+          "cadence_validation_pending": true,
+          "coverage_contract_id": "d196bb5efa3414510afd58ead8aa5d9e71776b1ad5c77b864c7e50401d79dd8b",
+          "next_cadence_validation_not_before": "2026-10-12T14:57:27.868074+00:00",
+          "coverage_completeness": "incomplete",
+          "coverage_window_days": 90,
+          "coverage_from": "2026-07-14",
+          "coverage_to": "2026-10-11",
+          "pages_checked": 125,
+          "recent_items": 185,
+          "discovery_recall_30": {
+            "basis": "independent_native_index_control_on_declared_surfaces",
+            "inventory_url_count": 243,
+            "detected": 243,
+            "omitted_urls": [],
+            "recall": 1.0,
+            "whole_source_archive_claim": false
+          },
+          "discovery_recall_90": {
+            "basis": "independent_native_index_control_on_declared_surfaces",
+            "inventory_url_count": 673,
+            "detected": 673,
+            "omitted_urls": [],
+            "recall": 1.0,
+            "whole_source_archive_claim": false
+          },
+          "window_completeness": {
+            "30": "incomplete_lower_bound",
+            "90": "incomplete_lower_bound"
+          },
+          "unique_language_urls_90": 673,
+          "unique_items": 530,
+          "counts": {
+            "30": 185,
+            "90": 530
+          },
+          "indexed_counts": {
+            "30": 185,
+            "90": 530
+          },
+          "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+          "material_items": 223,
+          "published": 0,
+          "rejected": 15,
+          "deferred": 515,
+          "pending_date_items": 0,
+          "technical_failures": [],
+          "discovered": 530,
+          "new": 358,
+          "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
+          "parser_routes": [
+            "regional_news",
+            "regional_news_es",
+            "chile_news",
+            "chile_news_es",
+            "epidemiological_alerts",
+            "technical_reports"
+          ],
+          "boundary_evidence": [
+            {
+              "section": "regional_news",
+              "stop": "date_partition_coverage_incomplete",
+              "pages": 43
+            },
+            {
+              "section": "regional_news_es",
+              "stop": "date_partition_coverage_incomplete",
+              "pages": 77
+            },
+            {
+              "section": "chile_news",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            },
+            {
+              "section": "chile_news_es",
+              "stop": "verified_older_boundary",
+              "pages": 2
+            },
+            {
+              "section": "epidemiological_alerts",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            },
+            {
+              "section": "technical_reports",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            }
+          ],
+          "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38147873198/inventory.json",
+          "source_quality_disposition": "hold_external",
+          "publication_activation": false,
+          "content_freshness": "recent",
+          "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+        },
+        "reuters": {
+          "name": "Reuters",
+          "discovery_scope": "global_intelligence",
+          "checked_at": null,
+          "status": "error",
+          "technical_status": "not_polled_license_hold",
+          "coverage_status": "not_permitted",
+          "outcome": "EXTERNAL_BLOCKER_PROVEN",
+          "operation_mode": "manual_curated_only",
+          "recurrent_operation_proven": false,
+          "coverage_completeness": "unmeasured_without_permitted_route",
+          "coverage_window_days": 90,
+          "counts": {
+            "30": null,
+            "90": null
+          },
+          "recent_items": null,
+          "unique_items": null,
+          "material_items": null,
+          "published": 0,
+          "rejected": 0,
+          "deferred": 0,
+          "discovered": 0,
+          "new": 0,
+          "pages_checked": 0,
+          "technical_failures": [
+            {
+              "code": "prior_written_consent_required",
+              "evidence_ref": "data/audits/global_source_recovery_2026_10_11/probes/38141320771/reuters_robots.body"
+            }
+          ],
+          "manual_reference_control": {
+            "total": 8,
+            "30": 8,
+            "90": 8,
+            "collector_recall": null
+          },
+          "reason": "Reuters prohibits automated collection of content/data/information without prior written consent; no authorized contracted route is configured or documented for Alicanto.",
+          "publication_activation": false,
+          "editorial_outcome": "rights_hold"
+        }
+      },
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38147873198/inventory.json"
     }
   ]
 }
