@@ -508,6 +508,29 @@ def candidate_validated(report):
     return True
 
 
+def _source_repair_proven(report):
+    failure = report.get("real_failure") or {}
+    slug = failure.get("source_slug")
+    return (failure.get("kind") == "source_runtime" and slug
+            and slug in (report.get("live_scope") or [])
+            and report.get("targeted_validated") is True and report.get("live_validated") is True
+            and _gates_pass({"gates": report.get("directed_gates") or report.get("gates")})
+            and _gates_pass({"gates": [report.get("live_gate")]}))
+
+
+def _repaired_failure_event(event):
+    details = event.get("details", {})
+    failure = details.get("real_failure")
+    if not (event.get("kind") == "mutation" and _failure_proof(failure)
+            and details.get("failure_action") == "repaired"):
+        return False
+    if failure.get("kind") == "source_runtime":
+        return bool(_source_repair_proven(details))
+    # A partial isolated candidate can retain the original staging failure.
+    # Old events with an optimistic repaired label must not satisfy Stage A.
+    return bool(details.get("validated") is True and _gates_pass(details))
+
+
 def _closure_proven(report, task):
     proofs = report.get("acceptance_proof")
     return (report.get("status", "").upper() == "PASS"
@@ -597,13 +620,16 @@ def finish(state, task_id, token, report, now):
         details = {key: deepcopy(report.get(key)) for key in (
             "candidate_commit", "candidate_branch", "changed_paths", "before_hash",
             "after_hash", "input_hash", "semantic_hash", "gates", "evidence",
-            "partial_candidate", "candidate_scope", "directed_gates", "non_regression", "live_gate")}
+            "partial_candidate", "candidate_scope", "directed_gates", "non_regression", "live_gate",
+            "validated", "targeted_validated", "live_validated", "live_scope")}
         details["input_fingerprint"] = task["input_fingerprint"]
         details["parent_input_sha"] = task["input_sha"]
-        if _failure_proof(task.get("failure")):
+        if (_failure_proof(task.get("failure")) and report.get("validated") is True
+                and _gates_pass(report)):
             details["real_failure"] = deepcopy(task["failure"])
             details["failure_action"] = "repaired"
-        elif _failure_proof(report.get("real_failure")) and report.get("failure_action") == "repaired":
+        elif (_failure_proof(report.get("real_failure")) and report.get("failure_action") == "repaired"
+              and _source_repair_proven(report)):
             details["real_failure"] = deepcopy(report["real_failure"])
             details["failure_action"] = "repaired"
         _event(result, task, "mutation", now, details)
@@ -684,10 +710,8 @@ def evaluate_acceptance(state, now, *, wall_now=None):
         reasons.append("autonomous_pickup_not_observed")
     if not any(e["kind"] == "mutation" for e in events):
         reasons.append("durable_verified_mutation_not_observed")
-    if not any(e["kind"] in {"mutation", "blocker"} and _failure_proof(
-            e["details"].get("real_failure")) and e["details"].get("failure_action")
-            in {"repaired", "blocked"} for e in events):
-        reasons.append("real_failure_recovery_or_evidenced_blocker_not_observed")
+    if not any(_repaired_failure_event(event) for event in events):
+        reasons.append("real_failure_verified_repair_not_observed")
     if not any(e["kind"] == "transition" and e["details"].get("independent") for e in events):
         reasons.append("automatic_independent_transition_not_observed")
     points = [start] + sorted(_time(e["at"]) for e in events) + [end]

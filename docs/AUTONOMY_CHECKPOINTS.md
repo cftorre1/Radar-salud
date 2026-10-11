@@ -192,3 +192,23 @@ specific failed source, so a repaired claim cannot rely on unrelated PASS logs.
 Next hypothesis: hosted source executors can record this post-merge provenance
 and independently reviewed operational outcome for each source; until then
 candidate commits remain useful work and source tasks remain open.
+
+## 10. Verified failure repair required for Stage A
+
+Decision: an evidenced blocker remains material progress and can trigger an
+independent transition, but Stage A requires a real failure actually repaired
+by a verified durable mutation. A partial staging candidate that retains the
+failed gate earns mutation credit without a repaired label. Source repairs bind
+the failed source slug to hashed executed LIVE and directed PASS gates. Legacy
+optimistic repaired labels on failed partial candidates do not pass acceptance.
+Stopping with real blockers while the remaining lanes continue is valid operation
+and remains NOT_PROVEN for Stage A.
+
+Directed validation: `python -m unittest tests.test_autonomy_engine -q`.
+47 engine tests passed. Four-hour evaluator fixtures distinguish repaired PASS
+from an otherwise complete blocker-only window, preserve blocker material credit,
+and reject partial staging or unrelated-source repaired claims. Injected clocks
+and controlled artifacts remain test evidence, not live four-hour acceptance.
+
+Next hypothesis: hosted executors can produce a genuine target-bound repaired
+failure event, followed by four real hours of useful autonomous progress.

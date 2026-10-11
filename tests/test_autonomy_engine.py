@@ -603,6 +603,38 @@ class AutonomyEngineTests(unittest.TestCase):
         self.assertEqual(details["real_failure"]["run_id"], "123")
         self.assertEqual(details["failure_action"], "blocked")
 
+    def test_partial_staging_candidate_is_material_without_claiming_failed_gate_repaired(self):
+        q = {"input_sha": SHA, "tasks": [{"id": "staging_qa_failed_run_123",
+             "status": "approved", "family": "staging_qa", "failure": failure()}]}
+        state, lease = claim({}, q, "staging_qa", "worker", BASE)
+        state = finish(state, lease["task_id"], lease["token"], partial(), BASE)
+        event = state["material_events"][0]
+        self.assertEqual(event["kind"], "mutation")
+        self.assertNotEqual(event["details"].get("failure_action"), "repaired")
+        result = evaluate_acceptance(state, BASE, wall_now=BASE)
+        self.assertIn("real_failure_verified_repair_not_observed", result["reasons"])
+
+    def test_source_repaired_label_requires_target_bound_live_and_directed_proof(self):
+        q = queue("media")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        real = {"kind": "source_runtime", "verified": True, "source_url": "https://source.example/news",
+                "source_slug": "diario_financiero", "failure_signature": "parser-failure",
+                "trace_path": "trace.json", "trace_sha256": "7" * 64, "observed_at": BASE.isoformat()}
+        report = partial()
+        report.update(real_failure=real, failure_action="repaired", live_scope=["diario_financiero"])
+        for override in ({"live_scope": ["unrelated_source"]}, {"live_gate": None}, {"targeted_validated": False}):
+            invalid = {**report, **override}
+            if override != {"live_scope": ["unrelated_source"]}:
+                with self.assertRaises(ReportError):
+                    finish(state, MEDIA, lease["token"], invalid, BASE)
+            else:
+                unbound = finish(state, MEDIA, lease["token"], invalid, BASE)
+                self.assertNotEqual(unbound["material_events"][0]["details"].get("failure_action"), "repaired")
+        repaired = finish(state, MEDIA, lease["token"], report, BASE)
+        self.assertEqual(repaired["material_events"][0]["details"]["failure_action"], "repaired")
+        result = evaluate_acceptance(repaired, BASE, wall_now=BASE)
+        self.assertNotIn("real_failure_verified_repair_not_observed", result["reasons"])
+
     def test_blocked_requires_evidence_and_not_just_reason(self):
         state, lease = claim({}, queue("media"), "media", "worker", BASE)
         for invalid in ({"status": "BLOCKED"}, {"status": "BLOCKED", "blockers": ["error"]},
@@ -621,8 +653,8 @@ class AcceptanceTests(unittest.TestCase):
             event = {"kind": "mutation", "at": (BASE + timedelta(minutes=minute)).isoformat(),
                      "details": {}}
             state["material_events"].append(event)
-        state["material_events"][1]["kind"] = "blocker"
-        state["material_events"][1]["details"] = {"real_failure": failure(), "failure_action": "blocked"}
+        state["material_events"][1]["details"] = {"real_failure": failure(), "failure_action": "repaired",
+                                                "validated": True, "gates": gates()}
         state["material_events"][2]["kind"] = "transition"
         state["material_events"][2]["details"] = {"independent": True}
         return state
@@ -632,6 +664,23 @@ class AcceptanceTests(unittest.TestCase):
         result = evaluate_acceptance(self.observed_state(), end, wall_now=end)
         self.assertEqual(result["status"], "PASS")
         self.assertEqual(result["metrics"]["max_material_gap_seconds"], 1200)
+
+    def test_four_hour_block_only_window_remains_material_but_does_not_pass_stage_a(self):
+        end = BASE + timedelta(hours=4)
+        state = self.observed_state()
+        state["material_events"][1]["kind"] = "blocker"
+        state["material_events"][1]["details"] = {"real_failure": failure(), "failure_action": "blocked"}
+        result = evaluate_acceptance(state, end, wall_now=end)
+        self.assertEqual(result["status"], "NOT_PROVEN")
+        self.assertEqual(result["reasons"], ["real_failure_verified_repair_not_observed"])
+        self.assertEqual(result["metrics"]["material_event_count"], len(state["material_events"]))
+
+    def test_legacy_partial_staging_repaired_label_does_not_prove_actual_repair(self):
+        end = BASE + timedelta(hours=4)
+        state = self.observed_state()
+        state["material_events"][1]["details"].update(validated=False, gates=partial()["gates"], partial_candidate=True)
+        result = evaluate_acceptance(state, end, wall_now=end)
+        self.assertIn("real_failure_verified_repair_not_observed", result["reasons"])
 
     def test_simulation_never_satisfies_live_acceptance(self):
         end = BASE + timedelta(hours=4)
@@ -658,7 +707,7 @@ class AcceptanceTests(unittest.TestCase):
         state["material_events"] = []
         result = evaluate_acceptance(state, end, wall_now=end)
         self.assertIn("durable_verified_mutation_not_observed", result["reasons"])
-        self.assertIn("real_failure_recovery_or_evidenced_blocker_not_observed", result["reasons"])
+        self.assertIn("real_failure_verified_repair_not_observed", result["reasons"])
         self.assertIn("automatic_independent_transition_not_observed", result["reasons"])
 
 
