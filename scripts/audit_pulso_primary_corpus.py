@@ -135,8 +135,12 @@ def primary_projection(text, url):
         body = " ".join(node["articleBody"].split())
         body_source = "url_bound_json_ld_articleBody"
     else:
-        body = " ".join(parser.body or parser.paragraphs)
-        body_source = "article_html" if body else "primary_text_missing_in_original"
+        # The article-body wrapper also contains bylines, sharing controls and
+        # tags on real publisher video pages. Only paragraphs inside a primary
+        # body container can supply missing JSON-LD article text; wrapper
+        # length never proves a transcript or a complete primary body.
+        body = " ".join(parser.body_paragraphs)
+        body_source = "article_html_primary_paragraphs" if body else "primary_text_missing_in_original"
     visible_error = None
     try:
         visible = _visible_byline_day(parser.byline_dates)
@@ -158,6 +162,7 @@ def primary_projection(text, url):
                                        for kind, value in timestamps if value],
               "primary_body_source": body_source, "primary_body_chars": len(body), "primary_body_sha256": digest(body.encode()),
               "primary_body_available": bool(body), "primary_body_below_160": len(body) < 160,
+              "primary_body_unavailable_reason": None if body else "primary_text_missing_in_original",
               "title_below_18": len(title) < 18,
               "original_metadata_description": node.get("description") or parser.metas.get("og:description"),
               "keywords": node.get("keywords", []), "full_primary_body": body}

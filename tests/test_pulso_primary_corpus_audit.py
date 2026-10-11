@@ -12,6 +12,41 @@ spec = importlib.util.spec_from_file_location("audit_pulso_primary_corpus", ROOT
 corpus = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(corpus)
 
+EXPANDED_REVIEW = json.loads((ROOT / "data/audits/pulso_expanded_editorial_originals_independent_review_2026_10_11.json").read_text())
+REVIEWED_EMPTY_VIDEO_ORIGINALS = [
+    row for row in EXPANDED_REVIEW["all_31_new_url_original_semantic_reviews"]["all_new_originals"]
+    if row.get("video_route") and row["primary_body_characters"] == 0
+]
+EMPTY_VIDEO_RAW_HASHES = {
+    "d9910df6cfc7da3453f5459150c2bc04ded5e6693781efbb3cd537e60c387555",
+    "42c828d610897ef20ad6327b93daf986d6d82a1630df8761b545ca74c27da694",
+    "736160560bd26df1a6cec68ff4b640d1f8adda12a7668809adc6ffed1888f961",
+    "fba430e4300cb136e8378f317b2d1652ab905fd41d57216a82ee7d2c0cfa2b04",
+    "c7aff3a2469b7f681a7cdadb00d3d09d802bc594bef877cd8834faf96abb62b8",
+    "a37697148aaae76a559e5b8760610a981388275d17cd626e67a935ea3f566d2a",
+    "8ff0eba1a8c050424df5a89f9b907f69ff4dfe65da00092994d8308d2aa1dd84",
+    "885e48ad40591653d7da068260397258dede667601b672a8bd6ef98e1d758b7b",
+    "deb6707161e18cfe425f25222ccf2d190a21c82a1deefe1573ce9f6478ca3a37",
+    "a5f69d072a0572c2b30f828c865b1cb5a3b31b64c41adbff2cf04ace3ae9d553",
+}
+
+
+def reviewed_original_payload(row):
+    """Use durable originals first; scratch is an exact captured-byte fallback."""
+    relative = Path(row["gzip_file"])
+    assert not relative.is_absolute() and ".." not in relative.parts
+    bases = (ROOT / "tests/fixtures/pulso_editorial_exception_real",
+             Path("/workspace/work/pulso-originals-73e23e4"))
+    original = next((base / relative for base in bases if (base / relative).is_file()), None)
+    if original is None:
+        pytest.skip("Independently reviewed original HTML unavailable: " + row["url"])
+    compressed = original.read_bytes()
+    assert hashlib.sha256(compressed).hexdigest() == row["gzip_sha256"]
+    payload = gzip.decompress(compressed)
+    assert hashlib.sha256(payload).hexdigest() == row["capture_sha256"]
+    assert len(payload) == row["raw_byte_length"]
+    return payload
+
 
 def captured_record(folder, url, payload):
     compressed = gzip.compress(payload, mtime=0)
@@ -135,8 +170,85 @@ def test_original_video_without_article_body_remains_explicit_incomplete_text(tm
     assert projection["canonical_matches_requested"]
     assert projection["primary_document_diagnosis"] == "publisher_video_route_with_primary_article_text_below_160"
     assert projection["full_primary_body"] == ""
+    assert projection["primary_body_unavailable_reason"] == "primary_text_missing_in_original"
     assert not projection["body_complete_as_original"]
     assert projection["current_parser"]["status"] == "error"
+
+
+@pytest.mark.parametrize("json_body", ["", None])
+def test_video_wrapper_length_never_substitutes_for_missing_primary_text(json_body):
+    url = "https://www.latercera.com/videos/noticia/unit-video-wrapper/"
+    html = synthetic_unit_html(url, body="", section="Videos").decode()
+    if json_body is None:
+        html = html.replace('"articleBody": ""', '"articleBody": null')
+    wrapper = ("Por autor Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios " * 8)
+    html = html.replace("<article>", f'<article><div class="article-body"><span>{wrapper}</span></div>')
+    parser = corpus._Article()
+    parser.feed(html)
+    assert len(" ".join(parser.body)) > 160 and parser.body_paragraphs == []
+    projection = corpus.primary_projection(html, url)
+    assert projection["full_primary_body"] == "" and projection["primary_body_chars"] == 0
+    assert projection["primary_body_sha256"] == hashlib.sha256(b"").hexdigest()
+    assert not projection["primary_body_available"] and not projection["body_complete_as_original"]
+    assert projection["primary_body_unavailable_reason"] == "primary_text_missing_in_original"
+    assert projection["primary_document_diagnosis"] == "publisher_video_route_with_primary_article_text_below_160"
+
+
+def test_missing_json_body_can_use_primary_html_paragraphs_without_wrapper_text():
+    url = "https://www.latercera.com/nacional/noticia/unit-html-body/"
+    body = "La clínica amplía su red de hospitales y atiende pacientes. " * 5
+    html = synthetic_unit_html(url, body="").decode().replace('"articleBody": ""', '"articleBody": null')
+    html = html.replace("<article>", '<article><div class="article-body"><span>Compartir Twitter Whatsapp</span>'
+                        f'<p class="article-body__paragraph">{body}</p></div>')
+    projection = corpus.primary_projection(html, url)
+    assert projection["full_primary_body"] == body.strip()
+    assert projection["primary_body_source"] == "article_html_primary_paragraphs"
+    assert projection["primary_body_unavailable_reason"] is None
+    assert projection["body_complete_as_original"]
+
+
+def test_independent_empty_video_regression_set_contains_all_ten_original_identities():
+    assert len(REVIEWED_EMPTY_VIDEO_ORIGINALS) == 10
+    assert {row["capture_sha256"] for row in REVIEWED_EMPTY_VIDEO_ORIGINALS} == EMPTY_VIDEO_RAW_HASHES
+
+
+@pytest.mark.parametrize("original", REVIEWED_EMPTY_VIDEO_ORIGINALS,
+                         ids=lambda row: row["url"].split("/noticia/")[-1].rstrip("/"))
+def test_all_ten_real_empty_video_bodies_exclude_wrappers_and_keep_source_content_hold(original):
+    payload = reviewed_original_payload(original)
+    html = payload.decode("utf-8")
+    parser = corpus._Article()
+    parser.feed(html)
+    assert len(" ".join(parser.body)) >= 160 and parser.body_paragraphs == []
+    projection = corpus.primary_projection(html, original["url"])
+    assert projection["canonical_matches_requested"]
+    assert projection["url_bound_article_nodes"] == projection["url_bound_video_objects"] == 1
+    assert projection["full_primary_body"] == "" and projection["primary_body_chars"] == 0
+    assert projection["primary_body_sha256"] == original["primary_body_sha256"] == hashlib.sha256(b"").hexdigest()
+    assert projection["primary_body_source"] == "primary_text_missing_in_original"
+    assert projection["primary_body_unavailable_reason"] == "primary_text_missing_in_original"
+    assert not projection["primary_body_available"] and not projection["body_complete_as_original"]
+    assert projection["primary_document_diagnosis"] == "publisher_video_route_with_primary_article_text_below_160"
+    assert projection["current_parser"]["status"] == "error"
+    assert projection["current_parser"]["reason"] == "publisher_video_text_unavailable"
+
+
+def test_real_alzheimer_original_keeps_84_primary_characters_without_wrapper_padding():
+    base = ROOT / "tests/fixtures/pulso_editorial_exception_real"
+    manifest = json.loads((base / "manifest.json").read_text())
+    raw_sha = "6c310d175c41f476e2d54622122d63e370f5c916c4b8408587dccb2952082967"
+    original = next(row for row in manifest["requests"] if row["sha256"] == raw_sha)
+    compressed = (base / original["gzip_file"]).read_bytes()
+    assert hashlib.sha256(compressed).hexdigest() == "f49f16a0d08fb386e724431e14d110154d9ce752afede6622d29015a9bd3a10f"
+    payload = gzip.decompress(compressed)
+    assert hashlib.sha256(payload).hexdigest() == raw_sha
+    projection = corpus.primary_projection(payload.decode(original.get("charset") or "utf-8"), original["url"])
+    assert projection["primary_body_source"] == "url_bound_json_ld_articleBody"
+    assert projection["primary_body_chars"] == len(projection["full_primary_body"]) == 84
+    assert projection["primary_body_sha256"] == "e47fcf71c636dcefa6e0a3c186f2decccb9c3cd29f534d197f6d04a2c9056cfe"
+    assert projection["primary_body_available"] and projection["primary_body_unavailable_reason"] is None
+    assert projection["primary_body_below_160"]
+    assert projection["current_parser"]["reason"] == "publisher_video_text_unavailable"
 
 
 def test_empty_or_metadata_only_corpus_cannot_claim_original_full_body_evidence(tmp_path):
