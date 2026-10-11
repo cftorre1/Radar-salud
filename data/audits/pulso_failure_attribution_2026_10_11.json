@@ -29,24 +29,37 @@
     },
     {
       "failure": "Ovalle coordination and SAR estimated future visits could be presented as achieved capacity",
-      "resolution_commits": ["69ef4888", "72aec4dd", "835984e9"],
+      "resolution_commits": [
+        "69ef4888",
+        "72aec4dd",
+        "835984e9"
+      ],
       "verification": "Both real unsupported-achievement mutations independently denied; no gate reduction"
     },
     {
       "failure": "Three new published BACKFILL explanations implied an unverified present-day state",
-      "resolution_commits": ["31b9fa10", "b56ec6c4"],
+      "resolution_commits": [
+        "31b9fa10",
+        "b56ec6c4"
+      ],
       "verification": "Actual history/queue/feed corrected to original observation dates; original paid copies and predecessor reviews preserved",
       "independent_evidence": "data/audits/pulso_plan_enlace_temporal_actual_confirmation_2026_10_11.json"
     },
     {
       "failure": "SourceHealth retained maximum date from withdrawn/grouped publications and admitted sameURL body self-hash transplants",
-      "resolution_commits": ["aa6bec45", "10507f62"],
+      "resolution_commits": [
+        "aa6bec45",
+        "10507f62"
+      ],
       "verification": "Independent exact934history/37Pulso queue replay yields17eligible andOct10latest; publisher original latestOct11 remains separate; all18 tamper cases denied",
       "remaining": "Regenerate source_health by genuine next core; current retained producer state is not manually refreshed"
     },
     {
       "failure": "Pulso review/idempotence readers incorrectly required all native URL/day pairs unique",
-      "resolution_commits": ["a8f409ea", "16bcfde5"],
+      "resolution_commits": [
+        "a8f409ea",
+        "16bcfde5"
+      ],
       "verification": "Three legitimate staging SUSESO office IDs at the same listing/day preserved; duplicate same office and all LaTercera URL/day collisions still denied",
       "classification": "Introduced reader assumption, not invalid staging records"
     },
@@ -83,5 +96,30 @@
     "budgets_changed": false,
     "issues5and6_open": true,
     "main_production_changed": false
+  },
+  "latest_actual_v5_checkpoint": {
+    "at": "2026-10-11T18:12:00+00:00",
+    "actual_run": 38159032940,
+    "current_failure": "49 real-paid technical/editorial holds; three small copy/category corrections independently identified in new18; final verification pending",
+    "new_paid_binding_errors": 0,
+    "introduced_ci_failure": {
+      "run": 38159042621,
+      "result": "2665 PASS / 1 SKIP / 41 setup ERROR",
+      "exact_cause": "new immutable producer review tests require git show original producer unavailable in shallow checkout",
+      "repair_commit": "f8f5ae1dff77ba0199896ec531e2b9c00018f730",
+      "repair": "full checkout history in existing three QA jobs",
+      "passing_run": 38159630798,
+      "python": "2706 PASS / 1 SKIP",
+      "node": "42 PASS",
+      "staging": "64 browser PASS",
+      "reviewer": "PASS / findings[]",
+      "scope": "CI repair checkpoint; final editorial state not accepted"
+    },
+    "inherited_ledger_receipt_gap_before_after": [
+      34,
+      34
+    ],
+    "native_history_897_unchanged": true,
+    "85_other_tasks_unchanged": true
   }
 }
