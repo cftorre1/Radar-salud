@@ -32,6 +32,9 @@ INCREMENTAL_REVIEW_PATH = "data/audits/pulso_incremental_review_2026_10_11.json"
 INCREMENTAL_REVIEW_SHA256 = "e5cee8d34839a905e391e85d6187db8bcdae09c0dde7f688cc71a9f04f093ddd"
 INCREMENTAL_ADDENDUM_PATH = "data/audits/pulso_oct5_incremental_addendum_2026_10_11.json"
 INCREMENTAL_ADDENDUM_SHA256 = "589ba50032521924803ef8ce94f40e3854930edcadddf7fc1223d9df81714160"
+CODE_REPAIR_PINS_PATH = "config/pulso_editorial_repair_admission_2026_10_11.json"
+CODE_REPAIR_PINS_SHA256 = "7f915bf1f8b4ee14d6426a41541cf3b6c319ad2e2acd384b8cc9fefa53224731"
+CODE_REPAIR_VERSION = "pulso_editorial_proof_v5"
 WINDOWS = {"30": ("2026-09-11", "2026-10-10", 29), "90": ("2026-07-13", "2026-10-10", 79)}
 REQUIRED_FEEDS = {"section:" + name for name in (
     "pulso", "nacional", "politica", "tendencias", "que-pasa", "paula", "sustentabilidad",
@@ -128,6 +131,133 @@ def verify_incremental_addendum_reference(raw, root):
         raise ValueError("incremental_addendum_applied_original_or_provenance_mismatch")
     return dict(review_ref=INCREMENTAL_ADDENDUM_PATH, review_sha256=INCREMENTAL_ADDENDUM_SHA256,
                 analysis_release_only=True, publication_approved=False)
+
+
+def verify_code_repair_reference(raw, root, *, successful_response_ids=None, require_new_assessment=False):
+    """Read one bound analysis admission and its immutable old paid response.
+
+    The historical v4 answer remains v4. A completed repair needs a distinct,
+    telemetry-backed v5 answer for the same full primary request; the permission
+    itself supplies neither an editorial decision nor publication approval.
+    """
+    metadata = raw.get("metadata", {})
+    applied = metadata.get("editorial_code_repair_admission")
+    revisions = [row for row in metadata.get("evidence_revisions", [])
+                 if row.get("reason") == "verified_editorial_code_repair_analysis_admission"]
+    if applied is None and not revisions:
+        return None
+    encoded = local_capture_path(root, CODE_REPAIR_PINS_PATH).read_bytes()
+    if digest(encoded) != CODE_REPAIR_PINS_SHA256:
+        raise ValueError("code_repair_immutable_pins_changed")
+    document = json.loads(encoded)
+    pins = {row["url"]: row for row in document["pins"]}
+    if (document.get("repair_version") != CODE_REPAIR_VERSION
+            or document.get("cohort_sha256") != PROCESSING_COHORT_SHA256
+            or document.get("producer_run_id") != 38149773071 or len(pins) != 69
+            or len(document["pins"]) != 69):
+        raise ValueError("code_repair_immutable_cohort_invalid")
+    pin = pins.get(raw.get("url"))
+    if pin is None:
+        raise ValueError("code_repair_original_not_pinned")
+    previous_id = pin["model_response"]["response_id"]
+    admission_id = digest((CODE_REPAIR_VERSION + "\n" + CODE_REPAIR_PINS_SHA256 + "\n"
+                           + pin["url"] + "\n" + pin["previous_reason"] + "\n" + previous_id).encode())
+    request_sha = pin["model_response"]["request_input_sha256"]
+    expected = dict(repair_version=CODE_REPAIR_VERSION, admission_id=admission_id,
+        pins_sha256=CODE_REPAIR_PINS_SHA256, cohort_sha256=PROCESSING_COHORT_SHA256,
+        producer_run_id=38149773071, previous_response_id=previous_id,
+        previous_model_output_sha256=pin["previous_model_output_sha256"], previous_reason=pin["previous_reason"],
+        url=pin["url"], publication_date=pin["publication_date"], article_body_sha256=pin["article_body_sha256"],
+        html_sha256=pin["html_sha256"], request_input_sha256=request_sha,
+        new_assessment_required=True, old_response_reuse=False, publication_approved=False,
+        other_editorial_and_budget_gates_still_apply=True)
+    if not isinstance(applied, dict) or applied != expected or len(revisions) != 1:
+        raise ValueError("code_repair_admission_or_unique_revision_mismatch")
+    revision = revisions[0]
+    old_raw = revision.get("previous_processing_raw") or {}
+    old = old_raw.get("metadata", {})
+    old_ai = old.get("analysis_model_output")
+    old_validation = old.get("pulso_editorial_proof_validation") or {}
+    old_assessment = old.get("editorial_assessment") or {}
+    old_binding = old.get("primary_item_binding") or {}
+    for original in (old_raw, raw):
+        primary = original.get("metadata", {})
+        body = primary.get("page_text")
+        if (original.get("url") != pin["url"] or original.get("title") != pin["title"]
+                or original.get("event_date") != pin["publication_date"]
+                or original.get("source_slug") != SOURCE or original.get("source_name") != "Pulso / La Tercera"
+                or original.get("source_type") != "press_high_trust"
+                or any(primary.get(field) is not True for field in (
+                    "article_verified", "article_body_complete", "primary_identity_verified", "publication_date_verified"))
+                or primary.get("source_quality_gate") != "passed" or primary.get("canonical_url") != pin["url"]
+                or primary.get("publication_date") != pin["publication_date"]
+                or primary.get("html_sha256") != pin["html_sha256"]
+                or not isinstance(body, str) or len(body.strip()) < 160
+                or digest(body.encode()) != pin["article_body_sha256"]
+                or primary.get("article_body_sha256") != pin["article_body_sha256"]):
+            raise ValueError("code_repair_current_or_archived_primary_mismatch")
+        request = "Fuente: Pulso / La Tercera\nTítulo: " + original["title"] + "\nContenido:\n" + body
+        if digest(request.encode()) != request_sha:
+            raise ValueError("code_repair_full_request_changed")
+    if (revision.get("code_repair_admission") != expected
+            or revision.get("status_preserved") not in {"pending", "retry"}
+            or type(revision.get("attempts_preserved")) is not int or revision["attempts_preserved"] < 1
+            or revision.get("fingerprint_preserved") != metadata.get("queue_identity_fingerprint")
+            or "previous_retry_at" not in revision
+            or revision["previous_retry_at"] is not None and not stamp(revision["previous_retry_at"])
+            or not isinstance(old_ai, dict) or object_digest(old_ai) != pin["previous_model_output_sha256"]
+            or old_ai.get("_pulso_analysis_meta") != pin["model_response"]
+            or pin["model_response"].get("schema_version") != "pulso_editorial_proof_v4"
+            or old_validation.get("version") != "pulso_editorial_proof_v4"
+            or old_validation.get("decision") != "deferred" or old_validation.get("reason") != pin["previous_reason"]
+            or old_validation.get("model_output_sha256") != pin["previous_model_output_sha256"]
+            or old_validation.get("model_response") != pin["model_response"]
+            or old_validation.get("request_input_sha256") != request_sha
+            or old_validation.get("analysis_text_sha256") != pin["article_body_sha256"]
+            or old_assessment.get("decision") != "pending" or old_assessment.get("reason") != pin["previous_reason"]
+            or old_assessment.get("threshold") != 72 or old_assessment.get("proof_version") != "pulso_editorial_proof_v4"
+            or old.get("analysis_input_complete") is not True
+            or old.get("analysis_input_format") != "full_primary_article_body"
+            or old.get("analysis_request_input_sha256") != request_sha
+            or old.get("analysis_input_body_sha256") != pin["article_body_sha256"]
+            or old_binding.get("verified") is not True
+            or old_binding.get("raw_url") != pin["url"] or old_binding.get("primary_canonical_url") != pin["url"]
+            or old_binding.get("raw_event_date") != pin["publication_date"]
+            or old_binding.get("primary_publication_date") != pin["publication_date"]):
+        raise ValueError("code_repair_archived_paid_response_or_bookkeeping_changed")
+    current_id = None
+    if require_new_assessment:
+        current = metadata.get("analysis_model_output") or {}
+        model = current.get("_pulso_analysis_meta") or {}
+        validation = metadata.get("pulso_editorial_proof_validation") or {}
+        binding = metadata.get("primary_item_binding") or {}
+        current_id = model.get("response_id")
+        if (model.get("schema_version") != CODE_REPAIR_VERSION or current_id == previous_id
+                or not isinstance(current_id, str) or not current_id.strip()
+                or successful_response_ids is None or current_id not in successful_response_ids
+                or model.get("analysis_text_sha256") != pin["article_body_sha256"]
+                or model.get("request_input_sha256") != request_sha
+                or model.get("source_name") != "Pulso / La Tercera"
+                or not isinstance(model.get("model"), str) or not model["model"].strip()
+                or not SHA.fullmatch(str(model.get("raw_model_output_sha256", "")))
+                or validation.get("version") != CODE_REPAIR_VERSION
+                or validation.get("decision") not in {"ready", "rejected"}
+                or validation.get("model_response") != model
+                or validation.get("model_output_sha256") != object_digest(current)
+                or validation.get("analysis_text_sha256") != pin["article_body_sha256"]
+                or validation.get("request_input_sha256") != request_sha
+                or metadata.get("analysis_input_complete") is not True
+                or metadata.get("analysis_input_format") != "full_primary_article_body"
+                or metadata.get("analysis_input_body_sha256") != pin["article_body_sha256"]
+                or metadata.get("analysis_request_input_sha256") != request_sha
+                or binding.get("verified") is not True
+                or binding.get("raw_url") != pin["url"] or binding.get("primary_canonical_url") != pin["url"]
+                or binding.get("raw_event_date") != pin["publication_date"]
+                or binding.get("primary_publication_date") != pin["publication_date"]):
+            raise ValueError("code_repair_new_genuine_v5_assessment_missing_or_unbound")
+    return dict(pins_ref=CODE_REPAIR_PINS_PATH, pins_sha256=CODE_REPAIR_PINS_SHA256,
+                admission_id=admission_id, previous_response_id=previous_id,
+                current_response_id=current_id, analysis_release_only=True, publication_approved=False)
 
 
 def verify_bound_editorial_review(queue, history, snapshot, root):
@@ -1625,6 +1755,15 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                     checks.setdefault("immutable_incremental_analysis_releases", {})[url] = addendum
             except (OSError, ValueError, KeyError, TypeError) as error:
                 fail("processing", "incremental_addendum_original_or_provenance_unverified", url=url, error=str(error))
+            try:
+                repair = verify_code_repair_reference(item.get("raw", {}), root,
+                    successful_response_ids={event.get("response_id") for event in telemetry
+                        if event.get("success") is True and event.get("kind") == "fast"},
+                    require_new_assessment=True)
+                if repair:
+                    checks.setdefault("immutable_code_repair_assessments", {})[url] = repair
+            except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+                fail("processing", "code_repair_old_or_new_paid_evidence_unverified", url=url, error=str(error))
             assessment = item.get("raw", {}).get("metadata", {}).get("editorial_assessment") or {}
             score = assessment.get("relevance_score")
             if url in selected_urls:
