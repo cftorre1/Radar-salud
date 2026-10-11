@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-10",
+  "updated_at": "2026-10-11",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3047,6 +3047,105 @@
       ],
       "approved_at": "2026-10-10",
       "next_action": "Ejecutar tras estabilizar P0/P1."
+    },
+    {
+      "id": "source_repair_media_lane_2026_10_11",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Pele + Media Source Worker",
+      "source": "Issue #5 autonomy split",
+      "objective": "Repair Diario Financiero and Pulso/La Tercera end-to-end in parallel with other P0 lanes.",
+      "depends_on": [],
+      "instructions": [
+        "Validate DF LIVE classification after date-binding repair.",
+        "Run Pulso/La Tercera through Daily Radar core.",
+        "Close only with publication/rejection trace and source-health evidence."
+      ],
+      "evidence_required": [
+        "DF recent item classified LIVE when eligible",
+        "Pulso present in core discovery_run",
+        "publication or explicit rejection reason",
+        "QA PASS"
+      ],
+      "approved_at": "2026-10-11",
+      "started_at": "2026-10-11",
+      "last_progress_at": "2026-10-11",
+      "current_subfront": "validate_df_and_pulso_runtime",
+      "next_action": "Exercise repairs in Daily Radar and verify output."
+    },
+    {
+      "id": "source_repair_public_data_lane_2026_10_11",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Pele + Public Data Worker",
+      "source": "Issue #5 autonomy split",
+      "objective": "Repair FONASA, FONASA Datos Abiertos, ISP/ANAMED, ISP Surveillance and DEIS independently from media.",
+      "depends_on": [],
+      "instructions": [
+        "Diagnose HTTP/URL failures with current endpoints and fetch behavior.",
+        "Repair or document external blocker per source.",
+        "Preserve fail-closed date/evidence rules."
+      ],
+      "evidence_required": [
+        "FONASA route functional or exact blocker",
+        "ISP route functional or exact blocker",
+        "DEIS dated release coverage or honest gap",
+        "targeted tests + QA"
+      ],
+      "approved_at": "2026-10-11",
+      "started_at": "2026-10-11",
+      "last_progress_at": "2026-10-11",
+      "current_subfront": "fonasa_isp_deis_repair",
+      "next_action": "Diagnose current fetch failures and patch independently."
+    },
+    {
+      "id": "source_repair_fiscalization_lane_2026_10_11",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Pele + Regulatory Worker",
+      "source": "Issue #5 autonomy split",
+      "objective": "Repair Superintendencia Fiscalización and SUSESO Fiscalización freshness/publication semantics.",
+      "depends_on": [],
+      "instructions": [
+        "Reconcile discovered inventory with 2026 dated material.",
+        "Fix date parsing/selection semantics without lowering relevance gates.",
+        "Ensure zero-publication states explain absence vs pipeline defect."
+      ],
+      "evidence_required": [
+        "2026 fiscalization dates reconciled",
+        "publication or rejection trace",
+        "health freshness semantics corrected",
+        "QA"
+      ],
+      "approved_at": "2026-10-11",
+      "started_at": "2026-10-11",
+      "last_progress_at": "2026-10-11",
+      "current_subfront": "sis_suseso_fiscalization",
+      "next_action": "Reconcile 2026 fiscalization surfaces."
+    },
+    {
+      "id": "source_repair_mutualities_lane_2026_10_11",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Pele + Occupational Health Worker",
+      "source": "Issue #5 autonomy split",
+      "objective": "Repair Clínicas ACHS, ACHS Seguro Laboral and Mutual runtime errors independently.",
+      "depends_on": [],
+      "instructions": [
+        "Identify current newsroom structure and parser failure signature.",
+        "Repair discovery selectors/date extraction.",
+        "Keep institutional marketing filters intact."
+      ],
+      "evidence_required": [
+        "runtime no longer RuntimeError or exact blocker",
+        "dated discovery sample",
+        "QA"
+      ],
+      "approved_at": "2026-10-11",
+      "started_at": "2026-10-11",
+      "last_progress_at": "2026-10-11",
+      "current_subfront": "achs_mutual_runtime",
+      "next_action": "Repair runtime parsers in parallel."
     }
   ],
   "execution_policy": {
