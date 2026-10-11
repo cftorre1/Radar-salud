@@ -349,3 +349,28 @@ the explicitly authorized main ref starts useful hosted pickup while independent
 work continues. If platform approval/authentication blocks publication, retain
 all commits, a patch, a Git bundle and the exact continuation instructions; never
 substitute local fixture success for hosted acceptance.
+
+## 18. Automatic publication approval blocker and preserved continuation
+
+The normal main push of the reviewed `620e156` checkpoint was rejected before
+execution by automatic approval review. Its stated reason: authorization for
+main autonomy workflows does not clearly cover the complete sixteen-commit
+infrastructure code/docs/tests payload and its external publication/automation.
+No connector, alternate branch or indirect publication bypass was attempted.
+Main remains unchanged by this front. The branch contains only infrastructure,
+tests and documentation; the existing deployment workflow remains manual.
+
+Explicit approval of this concrete public main infrastructure payload is the
+remaining publication requirement. The patch and Git bundle preserve every
+checkpoint; the final verification identifies the tested code and exact limits.
+After approval, verify the remote main head, use a normal fast-forward push,
+then observe actual `control_v2.json`, worker evidence and independent transitions.
+Do not count Actions conclusions as progress or invent owner-event coverage.
+
+Directed validation of this metadata-only checkpoint: JSON parse and
+git diff --check. The code remains the independently reviewed `250c650` version
+with 193 tests and five workflows validated. No hosted acceptance is claimed.
+
+Next hypothesis: approval of the full reviewed payload removes the publication
+blocker; hosted pickup can then be measured while the existing independent
+source/provider Work fronts continue in their isolated branches.

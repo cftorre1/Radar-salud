@@ -73,9 +73,13 @@
     }
   ],
   "publication": {
-    "status": "LOCAL_CHECKPOINT_READY",
+    "status": "BLOCKED_BY_AUTOMATIC_APPROVAL_REVIEW",
     "authorized_target": "cftorre1/Radar-salud:main autonomy infrastructure only",
     "production_promotion": false,
-    "reviewed_payload": "Autonomy workflows, scripts, directed tests and repository documentation; no work/context/raw source evidence or secrets."
+    "reviewed_payload": "Autonomy workflows, scripts, directed tests and repository documentation; no work/context/raw source evidence or secrets.",
+    "rejected_action": "git push origin HEAD:refs/heads/main",
+    "rejected_payload_commit": "620e156",
+    "reason": "Automatic review requires explicit approval for the complete infrastructure code, directed tests and documentation payload and its public main publication/hosted automation trigger.",
+    "remote_main_modified_by_this_front": false
   }
 }
