@@ -28,6 +28,8 @@ REQUIRED_FEEDS = {"section:" + name for name in (
     "lt-board", "sociales", "servicios", "tecnologia", "la-tercera-pm", "horizontes",
 )} | {"tag:" + name for name in ("salud", "isapres", "fonasa", "clinicas", "hospitales", "listas-de-espera", "banmedica")}
 PRIMARY_DATE_SOURCES = {"visible_article_byline", "json_ld_datePublished", "article_published_time", "article_time"}
+VIDEO_HOLD = "publisher_video_text_unavailable"
+DATE_HOLD = "publisher_conflicting_publication_dates"
 SHA = re.compile(r"[0-9a-f]{64}")
 
 
@@ -117,6 +119,7 @@ class PrimaryDates(HTMLParser):
         self.article_depth, self.article_text, self.title_text = 0, [], []
         self.in_title, self.blocked = False, 0
         self.contexts, self.bylines, self.byline = [], [], None
+        self.paragraph, self.primary_paragraphs, self.body_contexts = None, [], []
 
     def handle_starttag(self, tag, attrs):
         attr = dict(attrs)
@@ -126,6 +129,12 @@ class PrimaryDates(HTMLParser):
             term in attr.get("class", "") for term in ("latest-news", "related", "story-card"))
         if tag not in {"meta", "link", "br", "hr", "img", "input", "source", "area", "base", "wbr", "embed", "param", "track", "col"}:
             self.contexts.append((tag, blocked_context))
+            parent_body = self.body_contexts[-1][1] if self.body_contexts else False
+            body = parent_body or tag == "article" or attr.get("itemprop") == "articleBody" or any(
+                term in attr.get("class", "") for term in ("article-body__raw-html", "article-body__content", "body-chain", "article__body"))
+            self.body_contexts.append((tag, body))
+            if tag == "p" and body and not blocked_context:
+                self.paragraph = []
         if (tag == "time" and "article-body__byline__date" in classes and not blocked_context
                 and self.title_text and attr.get("itemprop") != "dateModified"):
             self.byline = dict(timestamp=attr.get("datetime"), text=[])
@@ -151,6 +160,8 @@ class PrimaryDates(HTMLParser):
             self.title_text.append(data)
         if self.byline is not None and not self.blocked:
             self.byline["text"].append(data)
+        if self.paragraph is not None and not self.blocked and not (self.contexts and self.contexts[-1][1]):
+            self.paragraph.append(data)
 
     def handle_endtag(self, tag):
         if tag == "script" and self.parts is not None:
@@ -168,9 +179,16 @@ class PrimaryDates(HTMLParser):
         if tag == "time" and self.byline is not None:
             self.bylines.append(dict(timestamp=self.byline["timestamp"], text=" ".join(self.byline["text"])))
             self.byline = None
+        if tag == "p" and self.paragraph is not None:
+            self.primary_paragraphs.append(" ".join(" ".join(self.paragraph).split()))
+            self.paragraph = None
         for index in range(len(self.contexts) - 1, -1, -1):
             if self.contexts[index][0] == tag:
                 del self.contexts[index:]
+                break
+        for index in range(len(self.body_contexts) - 1, -1, -1):
+            if self.body_contexts[index][0] == tag:
+                del self.body_contexts[index:]
                 break
 
     @classmethod
@@ -228,6 +246,41 @@ class PrimaryDates(HTMLParser):
             return " ".join(self.title_text), " ".join(self.article_text)
         return "", ""
 
+    def bound_nodes(self, url, required_type):
+        result = []
+        for node in self.nodes:
+            types = node.get("@type", [])
+            types = [types] if isinstance(types, str) else types
+            entity = node.get("mainEntityOfPage")
+            entity = entity.get("@id") if isinstance(entity, dict) else entity
+            if required_type in types and any(normalized_url(value) == url for value in (
+                    node.get("url"), node.get("@id"), entity) if isinstance(value, str)):
+                result.append(node)
+        return result
+
+    def strict_original_projection(self, url):
+        """Expose publisher facts even when no publication day can be adopted."""
+        articles = self.bound_nodes(url, "NewsArticle")
+        if self.canonical != url or len(articles) != 1:
+            raise ValueError("exception_original_identity_ambiguous_or_unbound")
+        article = articles[0]
+        values = [article.get("datePublished")] + self.published
+        if not values or any(not timestamp_calendar_day(value) or not publisher_day(value) for value in values):
+            raise ValueError("exception_original_timestamps_missing_or_invalid")
+        visible = {visible_byline_day(value["text"]) for value in self.bylines}
+        if not self.bylines or None in visible or len(visible) != 1:
+            raise ValueError("exception_original_visible_byline_missing_or_ambiguous")
+        instants = {stamp(value) for value in values if stamp(value)}
+        if any(not stamp(value["timestamp"]) or stamp(value["timestamp"]) not in instants for value in self.bylines):
+            raise ValueError("exception_original_byline_instant_unbound")
+        title = article.get("headline") or " ".join(self.title_text)
+        json_body = article.get("articleBody")
+        body = " ".join(json_body.split()) if isinstance(json_body, str) and json_body.strip() else " ".join(self.primary_paragraphs)
+        if not isinstance(title, str) or not title.strip():
+            raise ValueError("exception_original_primary_title_missing")
+        return dict(article=article, primary_timestamps=values, visible_publication_date=visible.pop(),
+                    title=title, body=body)
+
 
 def local_capture_path(root, relative):
     path = Path(relative or "")
@@ -278,6 +331,101 @@ def verify_primary_capture(row, root, date_evidence=None):
         except (OSError, ValueError, TypeError, UnicodeError, EOFError) as error:
             errors.append(type(error).__name__ + ":" + str(error))
     return errors or ["matching_original_primary_capture_missing"]
+
+
+def verify_publisher_exception(row, metadata, traces, root):
+    """Verify a bounded publisher limitation against exact original HTML.
+
+    This cannot excuse transport/parser failures or verify a textual control.
+    The returned proof explicitly keeps publication and content availability
+    separate; a conflicting original never acquires a convenient date.
+    """
+    url, expected = row.get("url"), row.get("primary_detail_sha256")
+    reason = metadata.get("publisher_exception_reason") or metadata.get("source_content_unavailable_reason")
+    errors = []
+    if reason not in {VIDEO_HOLD, DATE_HOLD}:
+        return None, ["unsupported_publisher_exception"]
+    if (metadata.get("primary_identity_verified") is not True or metadata.get("article_verified") is not False
+            or normalized_url(metadata.get("canonical_url")) != url or metadata.get("html_sha256") != expected
+            or not SHA.fullmatch(str(expected or ""))):
+        return None, ["exception_queue_identity_or_original_hash_unverified"]
+    if not traces or any(trace.get("status") != "discovered_metadata_only" or trace.get("reason") != reason
+                          or trace.get("primary_identity_verified") is not True
+                          or trace.get("article_verified") is not False
+                          or trace.get("html_sha256") != expected for trace in traces):
+        return None, ["exception_not_bound_to_actual_core_traces"]
+    for record in row.get("original_http_captures", []):
+        if (record.get("status") != 200 or normalized_url(record.get("url")) != url
+                or expected not in {record.get("sha256"), record.get("returned_text_utf8_sha256")}):
+            continue
+        try:
+            base = Path(record.get("_capture_root") or root)
+            compressed = local_capture_path(base, record.get("gzip_file")).read_bytes()
+            if record.get("gzip_sha256") and digest(compressed) != record["gzip_sha256"]:
+                raise ValueError("exception_original_gzip_hash_mismatch")
+            raw = gzip.decompress(compressed)
+            text = raw.decode(record.get("charset") or "utf-8", errors="replace")
+            if digest(raw) != record.get("sha256") or digest(text.encode()) != expected:
+                raise ValueError("exception_original_html_hash_mismatch")
+            if row.get("primary_detail_cache_hit") and (
+                    record.get("capture_provenance") != "preserved_original_http_response"
+                    or not SHA.fullmatch(str(record.get("original_capture_manifest_sha256", "")))):
+                raise ValueError("exception_cached_original_provenance_missing")
+            parser = PrimaryDates()
+            parser.feed(text)
+            projection = parser.strict_original_projection(url)
+            body, visible = projection["body"], projection["visible_publication_date"]
+            values = projection["primary_timestamps"]
+            queued_values = [entry.get("timestamp") for entry in metadata.get("publication_evidence", []) if isinstance(entry, dict)]
+            if (not queued_values or not set(values) <= set(queued_values)
+                    or any(value not in set(values) | {entry["timestamp"] for entry in parser.bylines} for value in queued_values)
+                    or metadata.get("visible_publication_date") != visible):
+                raise ValueError("exception_original_date_evidence_not_preserved")
+            if (metadata.get("page_text") != body or metadata.get("article_body_characters") != len(body)
+                    or metadata.get("article_body_sha256") != digest(body.encode())):
+                raise ValueError("exception_primary_body_hash_or_text_disagrees")
+            convention = date_convention(values + [entry["timestamp"] for entry in parser.bylines], visible)
+            if reason == VIDEO_HOLD:
+                videos = parser.bound_nodes(url, "VideoObject")
+                if (urlsplit(url).path.split("/")[1] != "videos" or len(videos) != 1
+                        or normalized_url(videos[0].get("url")) != url or videos[0].get("@id") != url + "#video"
+                        or not videos[0].get("embedUrl") or convention is None or len(body.strip()) >= 160):
+                    raise ValueError("exception_original_video_identity_date_or_unavailable_text_unverified")
+                expected_video = dict(type="VideoObject", url=videos[0].get("url"), id=videos[0].get("@id"),
+                                      embed_url=videos[0].get("embedUrl"), upload_date=videos[0].get("uploadDate"))
+                if (metadata.get("video_evidence") != expected_video or metadata.get("video_identity_verified") is not True
+                        or metadata.get("publisher_document_type") != "video" or metadata.get("article_body_complete") is not False
+                        or metadata.get("publication_date_verified") is not True or metadata.get("publication_date") != visible
+                        or row.get("publication_date") != visible or row.get("publication_date_verified") is not True
+                        or metadata.get("source_quality_gate") != "deferred_video_text"
+                        or any(trace.get("publication_date") != visible or trace.get("publication_date_verified") is not True
+                               or trace.get("article_body_complete") is not False or trace.get("video_evidence") != expected_video for trace in traces)):
+                    raise ValueError("exception_video_claims_do_not_match_original")
+                publication_verified, content_verified = True, False
+            else:
+                possible = sorted({visible} | {timestamp_calendar_day(value) for value in values}
+                                  | {publisher_day(value) for value in values})
+                if convention is not None or len(body.strip()) < 160:
+                    raise ValueError("exception_genuine_primary_date_conflict_not_proven")
+                if (metadata.get("publication_date") is not None or metadata.get("publication_timestamp") is not None
+                        or metadata.get("publication_date_verified") is not False or metadata.get("article_body_complete") is not True
+                        or metadata.get("possible_publication_days") != possible or row.get("publication_date") is not None
+                        or row.get("publication_date_verified") is not False
+                        or metadata.get("publication_date_source") != "unresolved_primary_publisher_date_conflict"
+                        or metadata.get("source_quality_gate") != "deferred_publication_date"
+                        or metadata.get("editorial_hold") != DATE_HOLD
+                        or any(trace.get("publication_date") is not None or trace.get("publication_date_verified") is not False
+                               or trace.get("possible_publication_days") != possible for trace in traces)):
+                    raise ValueError("exception_conflict_adopted_date_or_lost_original_days")
+                publication_verified, content_verified = False, True
+            return dict(url=url, reason=reason, original_html_sha256=expected,
+                        publication_date_verified=publication_verified, article_content_verified=content_verified,
+                        publication_date=visible if publication_verified else None,
+                        visible_publication_date=visible, original_primary_timestamps=values,
+                        publisher_date_convention=convention, body_characters=len(body)), None
+        except (OSError, ValueError, TypeError, KeyError, AttributeError, UnicodeError, EOFError) as error:
+            errors.append(type(error).__name__ + ":" + str(error))
+    return None, errors or ["matching_original_publisher_exception_capture_missing"]
 
 
 def budget_delta(execution):
@@ -393,8 +541,9 @@ def verify_api_pages(pages, records, root, details=()):
                         failures.append(dict(code="public_api_boundary_factual_details_incomplete", offset=page.get("offset")))
                     for url in urls:
                         traces = [row for row in details if normalized_url(row.get("url")) == url
-                                  and row.get("status") in {"discovered", "excluded"}]
+                                  and row.get("status") in {"discovered", "discovered_metadata_only", "excluded"}]
                         if (not traces or any(row.get("publication_date_source") not in PRIMARY_DATE_SOURCES
+                                              or row.get("publication_date_verified") is False
                                               or not SHA.fullmatch(str(row.get("html_sha256", "")))
                                               or not publisher_day(row.get("publication_date")) for row in traces)):
                             failures.append(dict(code="public_api_boundary_original_detail_date_unverified", offset=page.get("offset"), url=url))
@@ -411,7 +560,9 @@ def verify_api_pages(pages, records, root, details=()):
 
 def capture_records(root, artifact=None):
     """Read live, retained or downloaded original proof without restoring state."""
-    paths = [root / "data/audits/pulso_runtime_capture/manifest.json", root / "tests/fixtures/pulso_runtime_real/manifest.json"]
+    paths = [root / "data/audits/pulso_runtime_capture/manifest.json"] + [
+        root / "tests/fixtures" / directory / "manifest.json" for directory in (
+            "pulso_runtime_real", "pulso_editorial_exception_real", "pulso_thin_primary_real", "pulso_targeted_primary_real")]
     if artifact and artifact.exists():
         paths.extend(artifact.rglob("manifest.json"))
     records = []
@@ -495,6 +646,17 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
     rows = {row.get("url"): row for row in report.get("matrix", [])}
     details = discovery.get("source_details", {}).get(SOURCE, [])
     actual = {normalized_url(row.get("url")) for row in details if row.get("status") == "discovered"}
+    metadata_only = {normalized_url(row.get("url")) for row in details if row.get("status") == "discovered_metadata_only"}
+    if None in actual | metadata_only or actual & metadata_only:
+        fail("discovery", "core_inventory_identity_or_text_metadata_partition_invalid")
+    enumerated = actual | metadata_only
+    for key, expected in (("current_core_discovered_urls", len(enumerated)),
+                          ("current_core_verified_health_urls", len(actual)), ("metadata_only_candidates", len(metadata_only))):
+        if key in report.get("counts", {}) and report["counts"][key] != expected:
+            fail("discovery", "reported_inventory_partition_not_supported_by_core", field=key, expected=expected)
+    errors = [row for row in details if row.get("status") == "detail_error"]
+    if errors:
+        fail("discovery", "unresolved_transport_or_primary_parser_errors", errors=errors)
     for days, (first, last, count) in WINDOWS.items():
         expected = {url for url, article in controls.items() if url and article.get("recall_expected")
                     and first <= (article.get("publication_date") or "") <= last}
@@ -522,6 +684,8 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
     summaries = {row.get("feed"): row for row in report.get("coverage", []) if row.get("status") == "public_feed_coverage"}
     if coverage.get("status") != "runtime_coverage" or coverage.get("coverage_complete") is not True or declared != REQUIRED_FEEDS:
         fail("discovery", "primary_required_public_feed_coverage_incomplete", missing=sorted(REQUIRED_FEEDS - declared))
+    date_exception_count = 0
+    feeds_without_content = []
     for name in REQUIRED_FEEDS:
         summary = summaries.get(name, {})
         ending = summary.get("termination")
@@ -546,6 +710,28 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                      enumerated_entries=sum(row.get("primary_entries", 0) for row in pages if type(row.get("primary_entries")) is int))
         else:
             fail("discovery", "feed_cap_or_unknown_boundary", feed=name, termination=ending)
+        conflicts = [row for row in details if row.get("feed") == name and row.get("publisher_exception_reason") == DATE_HOLD]
+        videos = [row for row in details if row.get("feed") == name and row.get("status") == "discovered_metadata_only"
+                  and row.get("source_content_unavailable_reason") == VIDEO_HOLD]
+        date_exception_count += len(conflicts)
+        if conflicts or videos:
+            feeds_without_content.append(name)
+        if conflicts and (summary.get("publisher_exceptions") != len(conflicts)
+                          or summary.get("enumerated_with_editorial_exceptions") is not True
+                          or summary.get("publication_date_coverage_complete") is not False):
+            fail("discovery", "feed_date_exceptions_erased_or_falsely_verified", feed=name)
+        if (conflicts or videos) and summary.get("article_content_coverage_complete") is not False:
+            fail("discovery", "feed_exception_content_falsely_complete", feed=name)
+    if date_exception_count and (coverage.get("publisher_exceptions") != date_exception_count
+                                 or coverage.get("enumerated_with_editorial_exceptions") is not True
+                                 or coverage.get("publication_date_coverage_complete") is not False):
+        fail("discovery", "aggregate_date_exceptions_erased_or_falsely_verified")
+    if feeds_without_content and coverage.get("article_content_coverage_complete") is not False:
+        fail("discovery", "aggregate_exception_content_falsely_complete")
+    checks["coverage_dimensions"] = dict(enumeration_complete=coverage.get("coverage_complete") is True,
+        publication_dates_complete=coverage.get("publication_date_coverage_complete", not date_exception_count),
+        article_content_complete=coverage.get("article_content_coverage_complete", not feeds_without_content),
+        date_conflict_occurrences=date_exception_count, feeds_with_editorial_content_exceptions=sorted(feeds_without_content))
     current_queue = {}
     for fingerprint, item in queue.items():
         if item.get("source") == SOURCE:
@@ -558,10 +744,53 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                 or item.get("attempts", 0) < baseline.get("attempts", 0)
                 or baseline.get("status") in {"published", "rejected", "archived"} and item.get("status") != baseline["status"]):
             fail("discovery", "baseline_queue_identity_or_bookkeeping_changed", url=baseline.get("url"))
+    historical_urls = {normalized_url(row.get("source_url")) for row in history}
+    feed_urls = {normalized_url(row.get("source_url")) for row in snapshot.get("signals", [])}
+    for url in metadata_only:
+        row = rows.get(url, {})
+        traces = [trace for trace in details if normalized_url(trace.get("url")) == url
+                  and trace.get("status") == "discovered_metadata_only"]
+        if (row.get("current_core_detected") is not True or row.get("current_core_verified_health") is not False
+                or row.get("metadata_only_candidate") is not True):
+            fail("discovery", "metadata_inventory_falsely_labeled_verified_text", url=url)
+        candidates = current_queue.get(url, [])
+        if len(candidates) != 1:
+            fail("discovery", "canonical_queue_missing_or_duplicated", url=url, count=len(candidates))
+            continue
+        item = candidates[0][1]
+        raw = item.get("raw", {})
+        metadata = raw.get("metadata", {})
+        proof, error = verify_publisher_exception(row, metadata, traces, root)
+        if error:
+            fail("discovery", "publisher_exception_original_not_verified", url=url, errors=error)
+        else:
+            checks.setdefault("original_publisher_exception_validation", []).append(proof)
+        reason = metadata.get("publisher_exception_reason") or metadata.get("source_content_unavailable_reason")
+        assessment = metadata.get("editorial_assessment") or {}
+        if (raw.get("event_date") != metadata.get("publication_date") or item.get("status") not in {"pending", "retry"}
+                or assessment.get("decision") != "pending" or assessment.get("reason") != reason
+                or any(assessment.get(key) is not None for key in ("relevance_score", "analysis_reason"))
+                or row.get("exact_reason") != reason or row.get("passed_gate") is not None):
+            fail("discovery", "publisher_exception_exact_editorial_hold_missing", url=url)
+        if (url in historical_urls | feed_urls or row.get("history_present") or row.get("feed_present")
+                or row.get("editorial_outcome") not in {"pending", "deferred"}):
+            fail("discovery", "unverified_publisher_exception_published_or_terminal", url=url)
+        captured = stamp(row.get("primary_detail_captured_at"))
+        if not captured or end and captured > end or not row.get("primary_detail_cache_hit") and start and captured < start:
+            fail("discovery", "publisher_exception_capture_freshness_unproven", url=url)
+        if row.get("primary_detail_cache_hit") and not row.get("publisher_lastmod"):
+            fail("discovery", "publisher_exception_cached_original_lastmod_missing", url=url)
+        if reason == VIDEO_HOLD and row.get("publication_date_evidence") != (
+                "reused_verified_primary_byline_unchanged_publisher_lastmod" if row.get("primary_detail_cache_hit") else "current_verified_detail"):
+            fail("discovery", "publisher_video_date_falsely_labeled_fresh_or_unverified", url=url)
+        if reason == DATE_HOLD and row.get("publication_date_evidence") != "unverified":
+            fail("discovery", "publisher_conflict_falsely_labeled_verified_date", url=url)
     for url in actual:
         row = rows.get(url, {})
         if row.get("current_core_detected") is not True:
             fail("discovery", "matrix_not_bound_to_actual_discovery", url=url)
+        if row.get("metadata_only_candidate") or row.get("current_core_verified_health") is False:
+            fail("discovery", "verified_text_falsely_labeled_metadata_only", url=url)
         if row.get("publication_date_source") not in PRIMARY_DATE_SOURCES or not SHA.fullmatch(str(row.get("primary_detail_sha256", ""))):
             fail("discovery", "primary_publication_evidence_missing", url=url)
         if url in controls and controls[url].get("publication_date") != row.get("publication_date"):
@@ -673,6 +902,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                 acceptance="NOT_ACCEPTED" if findings or not processing else "PENDING_INDEPENDENT_EDITORIAL_AND_FINAL_SHA_REVIEW",
                 findings=findings, checks=checks,
                 limitations=["Frozen 29/79 controls benchmark recall; they are not a publication quota or proof of every publisher article.",
+                             "Enumeration can pass with byte-verified publisher limitations; unresolved original dates and missing video text remain explicit editorial holds, not verified health coverage.",
                              "An automated PASS cannot settle semantic editorial correctness, final staging QA, or close issues/PR acceptance."])
 
 

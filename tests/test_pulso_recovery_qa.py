@@ -486,3 +486,164 @@ def test_deferred_exact_reason_and_feed_freshness_cannot_be_generic(evidence):
     evidence["report"]["matrix"][0].update(exact_reason="budget_or_analysis_deferred", editorial_outcome="deferred")
     evidence["report"]["feed_evidence"]["generated_after_current_history"] = False
     assert {"deferred_without_exact_assessment", "actual_serialized_feed_missing_or_stale", "recent_important_control_not_editorially_processed"} <= codes(evidence)
+
+
+def append_publisher_exception(data, kind):
+    """Synthetic original bytes exercise reader rules, not publisher coverage."""
+    video = kind == "video"
+    url = "https://www.latercera.com/" + ("videos" if video else "paula") + "/noticia/verified-exception/"
+    day, timestamp = ("2026-10-07", "2026-10-07T17:55:00Z") if video else (None, "2026-08-06T15:00:00Z")
+    visible, byline = ("2026-10-07", "7 OCTUBRE 2026") if video else ("2026-07-30", "30 JULIO 2026")
+    reason = qa.VIDEO_HOLD if video else qa.DATE_HOLD
+    body = "" if video else ("El trabajo puede afectar la salud y la atención sanitaria. " * 5).strip()
+    article = {"@type": "NewsArticle", "url": url, "datePublished": timestamp,
+               "headline": "Un reporte del publisher con identidad primaria", "articleBody": body}
+    nodes = [article]
+    video_evidence = dict(type="VideoObject", url=url, id=url + "#video", embed_url="https://mdstrm.com/embed/original", upload_date=timestamp)
+    if video:
+        nodes.append({"@type": "VideoObject", "url": url, "@id": url + "#video",
+                      "embedUrl": video_evidence["embed_url"], "uploadDate": timestamp})
+    raw = (f'<link rel="canonical" href="{url}"><meta property="article:published_time" content="{timestamp}">' +
+           '<script type="application/ld+json">' + json.dumps(nodes) + '</script><h1>' + article["headline"] + '</h1>' +
+           f'<time class="article-body__byline__date" datetime="{timestamp}">{byline}</time>' +
+           ('<div class="article-body__raw-html"><iframe src="' + video_evidence["embed_url"] + '"></iframe></div>' if video else '')).encode()
+    sha = qa.digest(raw)
+    relative = f"tests/fixtures/pulso_runtime_real/{sha}.html.gz"
+    compressed = gzip.compress(raw, mtime=0)
+    (data["root"] / relative).write_bytes(compressed)
+    capture = dict(url=url, status=200, sha256=sha, returned_text_utf8_sha256=sha,
+                   gzip_file=relative, gzip_sha256=qa.digest(compressed), captured_at="2026-10-11T10:30:00Z")
+    metadata = dict(primary_identity_verified=True, article_verified=False, article_body_complete=not video,
+                    publication_date_verified=video, publication_date=day, publication_timestamp=timestamp if video else None,
+                    publication_date_source="visible_article_byline" if video else "unresolved_primary_publisher_date_conflict",
+                    visible_publication_date=visible, canonical_url=url, html_sha256=sha, page_text=body,
+                    article_body_characters=len(body), article_body_sha256=qa.digest(body.encode()),
+                    source_quality_gate="deferred_video_text" if video else "deferred_publication_date",
+                    publication_evidence=[dict(source="json_ld_datePublished", timestamp=timestamp),
+                                          dict(source="article_published_time", timestamp=timestamp)],
+                    editorial_assessment=dict(decision="pending", reason=reason))
+    if video:
+        metadata.update(publisher_document_type="video", video_identity_verified=True,
+                        source_content_unavailable_reason=reason, video_evidence=video_evidence)
+    else:
+        metadata.update(publisher_exception_reason=reason, editorial_hold=reason,
+                        possible_publication_days=["2026-07-30", "2026-08-06"])
+    feed = data["report"]["coverage"][0]["feed"]
+    trace = dict(metadata, url=url, status="discovered_metadata_only", reason=reason, feed=feed)
+    row = dict(url=url, publication_date=day, publication_date_verified=video,
+               current_core_detected=True, current_core_verified_health=False, metadata_only_candidate=True,
+               primary_detail_sha256=sha, primary_detail_captured_at="2026-10-11T10:30:00Z", primary_detail_cache_hit=False,
+               original_http_captures=[capture], publication_date_evidence="current_verified_detail" if video else "unverified",
+               exact_reason=reason, passed_gate=None, editorial_outcome="pending", history_present=False, feed_present=False)
+    data["report"]["matrix"].append(row)
+    data["report"]["publisher_editorial_exceptions"] = [row]
+    data["report"]["counts"] = dict(current_core_discovered_urls=80, current_core_verified_health_urls=79, metadata_only_candidates=1)
+    data["queue"]["exception"] = dict(source=qa.SOURCE, status="pending", attempts=0, lane="BACKFILL",
+                                      raw=dict(url=url, event_date=day, metadata=metadata))
+    data["discovery"]["source_details"][qa.SOURCE].append(trace)
+    data["report"]["primary_coverage"].update(article_content_coverage_complete=False,
+        publication_date_coverage_complete=video, publisher_exceptions=0 if video else 1, enumerated_with_editorial_exceptions=not video)
+    data["report"]["coverage"][0].update(article_content_coverage_complete=False,
+        publication_date_coverage_complete=video, publisher_exceptions=0 if video else 1, enumerated_with_editorial_exceptions=not video)
+    return row, metadata, trace
+
+
+@pytest.mark.parametrize("kind", ["video", "date_conflict"])
+def test_proven_publisher_exceptions_pass_only_enumeration_with_explicit_incomplete_dimensions(evidence, kind):
+    append_publisher_exception(evidence, kind)
+    result = qa.evaluate(**evidence)
+    assert result["findings"] == []
+    assert result["discovery_qa"] == "PASS"
+    assert result["acceptance"] == "NOT_ACCEPTED"
+    assert result["checks"]["coverage_dimensions"]["article_content_complete"] is False
+    assert result["checks"]["coverage_dimensions"]["publication_dates_complete"] is (kind == "video")
+    assert result["checks"]["window_90"]["detected"] == 79
+    proof = result["checks"]["original_publisher_exception_validation"][0]
+    assert proof["publication_date_verified"] is (kind == "video")
+    assert proof["article_content_verified"] is (kind != "video")
+
+
+@pytest.mark.parametrize("tamper", ["missing_bytes", "wrong_original_hash", "adopted_date", "invalid_visible_byline", "invented_old_days", "verified_article", "adopted_timestamp", "borrowed_timestamp", "body_hash"])
+def test_conflict_exception_cannot_hide_missing_originals_or_invent_a_convenient_date(evidence, tamper):
+    row, metadata, trace = append_publisher_exception(evidence, "date_conflict")
+    if tamper == "missing_bytes":
+        row["original_http_captures"] = []
+    elif tamper == "wrong_original_hash":
+        row["original_http_captures"][0]["sha256"] = "b" * 64
+    elif tamper == "adopted_date":
+        metadata["publication_date"] = "2026-07-30"
+    elif tamper == "invalid_visible_byline":
+        metadata["visible_publication_date"] = "not-a-date"
+    elif tamper == "invented_old_days":
+        metadata["possible_publication_days"] = ["2020-01-01"]
+    elif tamper == "verified_article":
+        metadata["article_verified"] = True
+    elif tamper == "adopted_timestamp":
+        metadata["publication_timestamp"] = "2026-07-30T15:00:00Z"
+    elif tamper == "borrowed_timestamp":
+        metadata["publication_evidence"].append(dict(timestamp="2026-07-30T15:00:00Z"))
+    else:
+        metadata["article_body_sha256"] = "b" * 64
+    assert "publisher_exception_original_not_verified" in codes(evidence)
+
+
+@pytest.mark.parametrize("tamper", ["unbound_video", "shared_wrapper_body", "content_claim", "fake_date", "missing_text_hold", "published"])
+def test_video_without_text_cannot_be_upgraded_to_verified_text_or_published(evidence, tamper):
+    row, metadata, trace = append_publisher_exception(evidence, "video")
+    if tamper == "unbound_video":
+        metadata["video_evidence"]["id"] = BASE + "other/#video"
+    elif tamper == "shared_wrapper_body":
+        metadata["page_text"] = "Compartir: Facebook WhatsApp Twitter LinkedIn." * 5
+        metadata["article_body_characters"] = len(metadata["page_text"])
+        metadata["article_body_sha256"] = qa.digest(metadata["page_text"].encode())
+    elif tamper == "content_claim":
+        metadata["article_body_complete"] = True
+    elif tamper == "fake_date":
+        metadata["publication_date"] = row["publication_date"] = "2026-10-08"
+    elif tamper == "missing_text_hold":
+        metadata["editorial_assessment"]["reason"] = "analysis_unavailable"
+    else:
+        evidence["history"].append(dict(source_url=row["url"], evidence_maturity="media_reported"))
+    result = qa.evaluate(**evidence)
+    assert result["discovery_qa"] == "FAIL"
+    assert result["acceptance"] == "NOT_ACCEPTED"
+
+
+def test_publisher_exception_does_not_excuse_transport_errors_or_frozen_control_omissions(evidence):
+    row, metadata, trace = append_publisher_exception(evidence, "video")
+    evidence["discovery"]["source_details"][qa.SOURCE].append(dict(status="detail_error", url=BASE + "unfetched/", reason="HTTP Error 503"))
+    evidence["discovery"]["source_details"][qa.SOURCE][0]["status"] = "excluded"
+    assert {"unresolved_transport_or_primary_parser_errors", "important_external_control_omissions"} <= codes(evidence)
+
+
+@pytest.mark.parametrize("dimension", ["article_content_coverage_complete", "publication_date_coverage_complete"])
+def test_exception_coverage_cannot_claim_all_content_and_dates_verified(evidence, dimension):
+    append_publisher_exception(evidence, "date_conflict")
+    evidence["report"]["coverage"][0][dimension] = True
+    evidence["report"]["primary_coverage"][dimension] = True
+    assert qa.evaluate(**evidence)["discovery_qa"] == "FAIL"
+
+
+def test_metadata_inventory_count_is_separate_from_textual_recall(evidence):
+    append_publisher_exception(evidence, "video")
+    assert qa.evaluate(**evidence)["discovery_qa"] == "PASS"
+    evidence["report"]["counts"]["current_core_verified_health_urls"] = 80
+    assert "reported_inventory_partition_not_supported_by_core" in codes(evidence)
+
+
+def test_date_conflict_can_never_corroborate_old_boundary(evidence):
+    old_boundary(evidence)
+    detail = next(row for row in evidence["discovery"]["source_details"][qa.SOURCE] if row.get("url") == BASE + "old-0/")
+    detail.update(status="discovered_metadata_only", publication_date=None, publication_date_verified=False,
+                  publisher_exception_reason=qa.DATE_HOLD)
+    assert "public_api_boundary_original_detail_date_unverified" in codes(evidence)
+
+
+def test_verified_metadata_video_date_can_corroborate_temporal_boundary(evidence):
+    old_boundary(evidence)
+    detail = next(row for row in evidence["discovery"]["source_details"][qa.SOURCE] if row.get("url") == BASE + "old-0/")
+    # Outside-window videos are excluded from queue but may retain verified
+    # primary dates. No claim of content, materiality or publication follows.
+    detail.update(publication_date_verified=True, article_body_complete=False,
+                  publisher_document_type="video", source_content_unavailable_reason=qa.VIDEO_HOLD)
+    assert qa.evaluate(**evidence)["discovery_qa"] == "PASS"
