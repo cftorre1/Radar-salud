@@ -38,7 +38,10 @@ def fetch(url, output):
         '--user-agent', 'RadarSaludBot/0.1 (+public-source-monitor)',
         '--dump-header', str(headers), '--output', str(body), '--write-out', '%{json}',
         '--verbose', url]
-    result = subprocess.run(command, capture_output=True, text=True, timeout=70)
+    try:
+        result = subprocess.run(command, capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=70)
+    except subprocess.TimeoutExpired as exc:
+        result = subprocess.CompletedProcess(command, 28, stdout='', stderr='subprocess_timeout')
     # Never retain authorization headers, cookies or proxy credential values.
     diagnostics = re.sub(r'(?im)^.*(?:authorization:|cookie:|proxy environment variable).*$', '[redacted]', result.stderr)
     trace.write_text(diagnostics)
