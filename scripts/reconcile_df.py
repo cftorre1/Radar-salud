@@ -174,7 +174,8 @@ def main():
                         continue
                     if len(title) < 18 or parsed.path.count("/") < 3 or re.search(r"/p/\d+/?$",parsed.path): continue
                     if any(x in parsed.path for x in ("/tag/", "/autor/", "/tax/", "/suscripcion", "/login")): continue
-                    if "/salud/" in parsed.path or public_source_pipeline._health_relevance(title, ""):
+                    health_surface=bool(re.search(r'/tags/(salud|isapres?|fonasa)(?:/|$)|tagport_(161|121|2150)_',urlsplit(page).path)) or page==DfHealthScout.PAGES[0]
+                    if health_surface or "/salud/" in parsed.path or public_source_pipeline._health_relevance(title, ""):
                         titles.setdefault(url, title); ordered.append(url); page_articles.append(url)
                 controls=[m[0][:700] for m in re.finditer(r'<(?:button|a|div)\b[^>]*(?:pagin|cargar|load.more|ver.mas)[^>]*>',html,re.I)]
                 scripts=re.findall(r'<script\b[^>]*src=["\']([^"\']+)',html,re.I)
