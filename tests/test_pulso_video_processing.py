@@ -10,16 +10,22 @@ import pytest
 from radar_salud import beta_sources, llm_analysis
 from radar_salud.models import RawItem
 from radar_salud.processing import DeferredProcessing
-from radar_salud.pulso_source import _verified_detail, verified_video_without_text
+from radar_salud.pulso_source import _Article, _verified_detail, verified_video_without_text
 
 
 REAL = Path(__file__).parent / 'fixtures/pulso_thin_primary_real'
 VIDEOS = [row for row in json.loads((REAL / 'manifest.json').read_text())['requests']
           if '/videos/' in row['url']]
+EXCEPTIONS = Path(__file__).parent / 'fixtures/pulso_editorial_exception_real'
+# All twenty original current-window videos without a factual text; the other
+# /videos/ original supplies a 2,616-character transcript and is not held here.
+CURRENT_UNAVAILABLE = [row for row in json.loads((EXCEPTIONS / 'manifest.json').read_text())['requests']
+                       if '/videos/' in row['url'] and (row['primary_body_chars'] < 160
+                       or row['primary_body_source'] != 'url_bound_json_ld_articleBody')]
 
 
-def original_video_raw(entry):
-    compressed = (REAL / entry['gzip_file']).read_bytes()
+def original_video_raw(entry, root=REAL):
+    compressed = (root / entry['gzip_file']).read_bytes()
     assert hashlib.sha256(compressed).hexdigest() == entry['gzip_sha256']
     payload = gzip.decompress(compressed)
     assert hashlib.sha256(payload).hexdigest() == entry['sha256']
@@ -31,6 +37,46 @@ def original_video_raw(entry):
     assert metadata['html_sha256'] == entry['sha256']
     return RawItem('pulso_latercera', result['title'], entry['url'], 'Pulso / La Tercera',
                    'press_high_trust', metadata['publication_date'], result['body'], metadata)
+
+
+@pytest.mark.parametrize('entry', CURRENT_UNAVAILABLE, ids=lambda row: row['url'].split('/')[-2])
+def test_all_twenty_original_current_video_text_holds_spend_no_analysis(entry, monkeypatch):
+    assert len(CURRENT_UNAVAILABLE) == 20
+    raw = original_video_raw(entry, EXCEPTIONS)
+    monkeypatch.setattr(beta_sources, 'fetch_html', lambda *args: pytest.fail('No missing transcript retry'))
+    monkeypatch.setattr(beta_sources, '_material', lambda *args: pytest.fail('No factual transcript to assess'))
+    monkeypatch.setattr(llm_analysis, '_client', lambda: pytest.fail('No Responses call for unavailable text'))
+    monkeypatch.setattr(llm_analysis, 'analyze_news', lambda **kwargs: pytest.fail('No AI for unavailable text'))
+    with pytest.raises(DeferredProcessing, match='^publisher_video_text_unavailable$'):
+        beta_sources.process_curated_beta_source(raw, {})
+    assert raw.metadata['article_body_complete'] is False
+    assert raw.metadata['publication_date_verified'] is True
+    assert raw.metadata['article_verified'] is False
+    assert raw.metadata['editorial_assessment'] == {'decision': 'pending', 'reason': 'publisher_video_text_unavailable'}
+    assert 'analysis_input_complete' not in raw.metadata
+
+
+def test_original_alzheimer_84_characters_never_becomes_251_character_wrapper_transcript(monkeypatch):
+    entry = next(row for row in CURRENT_UNAVAILABLE if 'descubren-doble-avance' in row['url'])
+    payload = gzip.decompress((EXCEPTIONS / entry['gzip_file']).read_bytes())
+    assert hashlib.sha256(payload).hexdigest() == entry['sha256']
+    parser = _Article()
+    parser.feed(payload.decode(entry['charset']))
+    wrapper = ' '.join(parser.body or parser.paragraphs)
+    assert len(wrapper) == 251 and 'Compartir Twitter' in wrapper and 'Más sobre:' in wrapper
+    raw = original_video_raw(entry, EXCEPTIONS)
+    assert raw.event_date == '2026-09-08'
+    assert len(raw.metadata['page_text']) == entry['primary_body_chars'] == 84
+    assert raw.metadata['page_text'] == entry['full_primary_body']
+    assert raw.metadata['article_body_sha256'] == entry['primary_body_sha256']
+    assert 'Compartir Twitter' not in raw.metadata['page_text']
+    monkeypatch.setattr(beta_sources, 'fetch_html', lambda *args: pytest.fail('No refetch can invent the missing text'))
+    monkeypatch.setattr(llm_analysis, '_client', lambda: pytest.fail('No Responses call for wrapper text'))
+    monkeypatch.setattr(llm_analysis, 'analyze_news', lambda **kwargs: pytest.fail('No AI for wrapper text'))
+    with pytest.raises(DeferredProcessing, match='^publisher_video_text_unavailable$'):
+        beta_sources.process_curated_beta_source(raw, {})
+    assert raw.metadata['article_body_complete'] is False
+    assert 'analysis_input_complete' not in raw.metadata
 
 
 @pytest.mark.parametrize('entry', VIDEOS, ids=lambda row: row['url'].split('/')[-2])

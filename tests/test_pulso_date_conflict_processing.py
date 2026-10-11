@@ -1,6 +1,9 @@
-"""Explicit synthetic conflicts test the processor boundary, without inventing originals."""
+"""Original date conflicts and explicit synthetic tampering preserve the boundary."""
+import gzip
+import hashlib
 import json
 from copy import deepcopy
+from pathlib import Path
 
 import pytest
 
@@ -12,6 +15,9 @@ from radar_salud.pulso_source import _verified_detail, verified_publication_date
 
 URL = 'https://www.latercera.com/nacional/noticia/unit-primary-conflicting-dates/'
 BODY = 'La clínica modificó prestaciones de su red y la atención hospitalaria. ' * 5
+REAL = Path(__file__).parent / 'fixtures/pulso_editorial_exception_real'
+CONFLICTS = [row for row in json.loads((REAL / 'manifest.json').read_text())['requests']
+             if 'observed_primary_publication_date_conflict' in row['retention_categories']]
 
 
 def conflict_raw():
@@ -27,13 +33,13 @@ def conflict_raw():
                    'press_high_trust', None, result['body'], result['metadata'])
 
 
-def test_bound_primary_conflict_is_pending_before_fetch_materiality_or_ai(monkeypatch):
-    raw = conflict_raw()
+def assert_conflict_deferred_without_analysis(raw, monkeypatch):
     raw.metadata.update(detected_at='2026-10-11T06:00:00Z', attempts=2, ingestion_mode='BACKFILL')
     before = deepcopy(raw.metadata)
     monkeypatch.setattr(beta_sources, 'fetch_html', lambda *args: pytest.fail('Conflict must not be retried'))
     monkeypatch.setattr(beta_sources, '_material', lambda *args: pytest.fail('Conflicting dates cannot reach materiality'))
     monkeypatch.setattr(llm_analysis, 'analyze_news', lambda **kwargs: pytest.fail('Conflicting dates cannot consume AI'))
+    monkeypatch.setattr(llm_analysis, '_client', lambda: pytest.fail('Conflicting dates cannot invoke Responses'))
     with pytest.raises(DeferredProcessing, match='^publisher_conflicting_publication_dates$'):
         beta_sources.process_curated_beta_source(raw, {})
     assert raw.event_date is None
@@ -48,6 +54,36 @@ def test_bound_primary_conflict_is_pending_before_fetch_materiality_or_ai(monkey
                 'possible_publication_days', 'publication_evidence', 'page_text', 'article_body_sha256',
                 'article_body_characters', 'html_sha256'):
         assert raw.metadata[key] == before[key]
+
+
+def test_bound_synthetic_conflict_is_pending_before_fetch_materiality_or_ai(monkeypatch):
+    assert_conflict_deferred_without_analysis(conflict_raw(), monkeypatch)
+
+
+@pytest.mark.parametrize('entry', CONFLICTS, ids=lambda row: row['url'].split('/')[-2])
+def test_all_four_original_conflicts_preserve_body_and_both_days_before_analysis(entry, monkeypatch):
+    assert len(CONFLICTS) == 4
+    assert entry['original_bytes_verified'] is True
+    compressed = (REAL / entry['gzip_file']).read_bytes()
+    assert hashlib.sha256(compressed).hexdigest() == entry['gzip_sha256']
+    payload = gzip.decompress(compressed)
+    assert hashlib.sha256(payload).hexdigest() == entry['sha256']
+    result = _verified_detail({'url': entry['url'], 'listing': 'retained-real-original'},
+                              lambda _: payload.decode(entry['charset']), None)
+    metadata = result['metadata']
+    assert verified_publication_date_conflict(metadata)
+    assert metadata['html_sha256'] == entry['sha256']
+    assert metadata['canonical_url'] == entry['canonical'] == entry['url']
+    assert metadata['page_text'] == entry['full_primary_body']
+    assert metadata['article_body_characters'] == entry['primary_body_chars']
+    assert metadata['article_body_sha256'] == entry['primary_body_sha256']
+    assert metadata['visible_publication_date'] == entry['visible_byline_day']
+    assert len(metadata['possible_publication_days']) > 1
+    assert [(row['source'], row['timestamp']) for row in metadata['publication_evidence']] == [
+        (row['source'], row['timestamp']) for row in entry['publication_evidence']]
+    raw = RawItem('pulso_latercera', result['title'], entry['url'], 'Pulso / La Tercera',
+                   'press_high_trust', None, result['body'], metadata)
+    assert_conflict_deferred_without_analysis(raw, monkeypatch)
 
 
 @pytest.mark.parametrize('tamper', ['identity', 'body_hash', 'byline', 'evidence', 'raw_url', 'raw_date',
