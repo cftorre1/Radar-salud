@@ -55,7 +55,9 @@ def fetch(url, output):
     network = {k: network.get(k) for k in keep}
     content = body.read_bytes() if body.exists() else b''
     if content.startswith(b'%PDF'):
-        renamed = body.with_suffix('.pdf')
+        document_dir = output / 'documents' / str(int(key[0], 16) // 4)
+        document_dir.mkdir(parents=True, exist_ok=True)
+        renamed = document_dir / (key + '.pdf')
         body.rename(renamed)
         body = renamed
     text = content.decode('utf-8', errors='replace')
@@ -105,6 +107,10 @@ def probe(output, as_of):
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-408634.html'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyname-566.html'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyname-535.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-806511.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-559470.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-559471.html'),
     ]]
     seeds = list({seed['url']: seed for seed in reversed(seeds)}.values())[::-1]
     receipts=[]; inventory=[]; navigation=[]

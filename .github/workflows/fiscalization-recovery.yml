@@ -37,6 +37,24 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: fiscalization-documents-${{ github.event.pull_request.head.sha }}
-          path: artifacts/fiscalization-runtime/**/*.pdf
+          name: fiscalization-documents-0-${{ github.event.pull_request.head.sha }}
+          path: artifacts/fiscalization-runtime/captures/documents/0/
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fiscalization-documents-1-${{ github.event.pull_request.head.sha }}
+          path: artifacts/fiscalization-runtime/captures/documents/1/
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fiscalization-documents-2-${{ github.event.pull_request.head.sha }}
+          path: artifacts/fiscalization-runtime/captures/documents/2/
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fiscalization-documents-3-${{ github.event.pull_request.head.sha }}
+          path: artifacts/fiscalization-runtime/captures/documents/3/
           retention-days: 30
