@@ -726,6 +726,22 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/38114913138",
         "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398"
       ]
+    },
+    "work3_followup_20261011T072159245Z": {
+      "reviewer": "Work 3",
+      "recorded_at": "2026-10-11T07:21:59.245Z",
+      "reviewed_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "artifact": "data/audits/work3_adversarial_2026_10_11T072159Z.json",
+      "verdict": "AUTONOMY_INFRASTRUCTURE_PARTIALLY_REVALIDATED_ACCEPTANCE_AND_PRODUCT_REPAIRS_NOT_PROVEN",
+      "new_finding_ids": [],
+      "partial_revalidations": [
+        "autonomy_lease_heartbeat_fencing_canary",
+        "autonomy_structured_output_before_truncation"
+      ],
+      "backlog_issues": [
+        5,
+        7
+      ]
     }
   },
   "blocks": [
@@ -1701,6 +1717,13 @@
       "change": "Autonomy infrastructure authorized and published to main. Hosted leases, heartbeats, concurrent blockers, automatic transitions and isolated STALLED fault injection observed; real transport defect fixed. Four-hour acceptance NOT_PROVEN; product and historical evidence anchors unchanged.",
       "evidence": [
         "data/pmo/autonomy_acceptance_2026_10_11.json"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Work3: revalidación parcial de fencing lease/heartbeat y transporte estructurado previo al truncamiento. Acceptance continúa NOT_PROVEN, cero mutaciones/cierres; QA staging sigue fallando. Limitación P2: el artefacto no vincula el run/job productor del PASS canary.",
+      "evidence": [
+        "data/audits/work3_adversarial_2026_10_11T072159Z.json"
       ]
     }
   ],
@@ -3235,7 +3258,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T06:01:59.671306+00:00",
+  "updated_at": "2026-10-11T07:21:59.245Z",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
