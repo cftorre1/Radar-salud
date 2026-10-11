@@ -1,0 +1,250 @@
+{
+  "at": "2026-10-11T06:58:24.316894+00:00",
+  "verdict": "READY_FOR_INTEGRATION",
+  "implementation_sha": "f3ad5f08a23360ab2df131d0ce80d55b5e9bf2f6",
+  "base_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+  "integration": {
+    "pr": 11,
+    "base": "staging",
+    "head": "codex/df-end-to-end-20261011",
+    "method": "Merge the complete PR at its final head after Integration Commander checks current staging compatibility. No cherry-pick of isolated code or data commits: queue/history/withdrawals/seen/fixtures/evidence form one verified package.",
+    "history_rewritten": false,
+    "merged": false,
+    "post_merge_runtime_required": true
+  },
+  "df_checks": {
+    "focused_tests": {
+      "passed": 58,
+      "command": "python -m pytest -q tests/test_df_recovery.py tests/test_press_pipeline.py tests/test_autopilot.py tests/test_live_evidence_replay.py tests/test_source_health_facets.py tests/test_state_persistence.py"
+    },
+    "real_runtime": {
+      "status": "PASS",
+      "run_id": 38119095016,
+      "job_id": 114410823502,
+      "code_sha": "0afe39ee0ea9e603a253f8dfc7a4a9adbb93835c",
+      "discovered": 41,
+      "dated": 41,
+      "detail_errors": 0,
+      "fast_successful": 1,
+      "deep_calls": 0,
+      "new_publication": "Iquique CESFAM72 BACKFILL; source title and original body verified; tender not yet awarded",
+      "regression_tests_in_actions": 57,
+      "artifact_id": 11694895241,
+      "artifact_digest": "sha256:580f9cbe4262ee0f94bd58ccf30b2b4b5a9f44d0a3cdecfff77909942c7b72f2"
+    },
+    "original_21_publications": "PASS:21 original batch +5 additional retained accepted rows; all26 original body/date/headline/hash/history reviewed",
+    "retry_resolution": {
+      "DEFERRED_MULTIMEDIA": 19,
+      "RESOLVED_IRRELEVANT": 18,
+      "RESOLVED_DUPLICATE": 3
+    },
+    "original_13_undated": {
+      "RESOLVED_VERIFIED_DATE": 4,
+      "RESOLVED_IRRELEVANT": 9
+    },
+    "generic_retries": 0,
+    "dedupe": "PASS:3 multimedia duplicates; DF IF534 yields to official SIS event; MELI-CruzVerde follow-up yields to launch report; both source records retained in history",
+    "editorial_false_positive_removed": "Exploratory42-person ageing analysis72 withdrawn by recorded explicit nonmaterial business verdict; threshold72 unchanged",
+    "regression": "No new failure versus staging; nonDF queue/history/health/feed records equal staging"
+  },
+  "coverage": {
+    "30_days": {
+      "start": "2026-09-12",
+      "end": "2026-10-11",
+      "dated_urls": 191,
+      "dispositions": {
+        "editorial_rejected:df_unrelated_to_health": 106,
+        "explicit_format_or_date_disposition:df_media_transcript_unavailable": 16,
+        "withdrawn_capture_defect:df_unrelated_to_health": 6,
+        "editorial_rejected:df_unrelated_primary_multimedia_topic": 18,
+        "editorial_rejected:media_no_material_event": 20,
+        "published_in_history_and_feed": 12,
+        "withdrawn_capture_defect:media_score_below_72": 2,
+        "withdrawn_capture_defect:df_insufficient_article_evidence": 1,
+        "history_present_feed_curator_excluded": 2,
+        "superseded:duplicate_verified_df_event": 1,
+        "editorial_rejected:media_score_below_72": 4,
+        "withdrawn_capture_defect:df_image_only_requires_ocr": 1,
+        "editorial_rejected:media_branded_content": 1,
+        "editorial_rejected:media_opinion_or_column": 1
+      },
+      "unknown_date_urls": 9,
+      "complete": false
+    },
+    "90_days": {
+      "start": "2026-07-14",
+      "end": "2026-10-11",
+      "dated_urls": 228,
+      "dispositions": {
+        "editorial_rejected:df_unrelated_to_health": 109,
+        "explicit_format_or_date_disposition:df_media_transcript_unavailable": 18,
+        "withdrawn_capture_defect:df_unrelated_to_health": 6,
+        "editorial_rejected:df_unrelated_primary_multimedia_topic": 18,
+        "editorial_rejected:media_no_material_event": 21,
+        "published_in_history_and_feed": 37,
+        "withdrawn_capture_defect:media_score_below_72": 2,
+        "withdrawn_capture_defect:df_insufficient_article_evidence": 1,
+        "history_present_feed_curator_excluded": 3,
+        "superseded:duplicate_verified_df_event": 2,
+        "editorial_rejected:media_score_below_72": 6,
+        "withdrawn_capture_defect:df_image_only_requires_ocr": 1,
+        "editorial_rejected:media_assessment_no_material_event": 1,
+        "editorial_rejected:media_branded_content": 1,
+        "editorial_rejected:media_opinion_or_column": 1,
+        "editorial_rejected:media_research_without_material_business_event": 1
+      },
+      "unknown_date_urls": 9,
+      "complete": false
+    },
+    "originals_ok": 441,
+    "originals_failed": 0,
+    "archive_pages_already_reviewed": 24,
+    "independent_control_urls": 12,
+    "official_surfaces": "robots,3advertised sitemaps,Medicamentos primary archive",
+    "limitations": "Bounded publisher inventory + independent controls; search is partial and biased, not an exhaustive recall measurement. Auxiliary sitemaps are excluded from the news denominator."
+  },
+  "remaining_formats": {
+    "status": "Nonblocking declared connector capability; no invented text or automatic repeated processing",
+    "audio_video_without_official_transcript": 18,
+    "primary_image_articles_requiring_verified_ocr": 1,
+    "instruction": "Resume only with attributable primary text and verified date, or reassess scope with new publisher evidence; preserve before snapshots and unchanged72gate"
+  },
+  "candidate_gates": {
+    "df": "PASS",
+    "full_python": {
+      "passed": 304,
+      "failed": 1,
+      "skipped": 1,
+      "excluded": "tests/test_live_beta_sources.py because restricted local network",
+      "failure": "tests/test_web_snapshot.py:289 (11>=12); reproduced on staging"
+    },
+    "staging_python_baseline": {
+      "passed": 264,
+      "failed": 2,
+      "skipped": 1,
+      "df_failure_repaired": "test_df_scout_binds_detail_date_before_queue_classification"
+    },
+    "node": "PASS1",
+    "reviewer": {
+      "reviewer": "deterministic-reviewer",
+      "candidate_sha": "f3ad5f0",
+      "reviewed_at": "2026-10-11T06:56:32.660444+00:00",
+      "findings": [
+        {
+          "category": "statistics",
+          "code": "invalid_statistical_table",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Every visible statistical row must map to the declared columns",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "methodology_not_collapsed",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Technical traceability must be available in a collapsed layer",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "missing_incremental_value_gate",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Visible blocks need an explicit incremental value decision",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "generic_why_required",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Statistical cards must allow omission of generic impact copy",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "untraceable_statistical_evidence",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Data evidence must link to an official source",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "bulletin_coverage",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "June 2026 audit must include accreditation, mediation, complaints and RNPI",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "bulletin_missing_pdf",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "All four official June 2026 bulletin PDFs must be traceable",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "bulletin_stock_flow_confusion",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Stock, cumulative flow and monthly flow must be labelled separately",
+          "severity": "critical"
+        }
+      ],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": false,
+        "ux": true
+      },
+      "limitations": [
+        "Semantic/legal accuracy is not certified by deterministic checks.",
+        "Browser evidence is required separately for desktop/mobile.",
+        "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+      ]
+    },
+    "inherited_reviewer_signatures": [
+      [
+        "bulletin_coverage",
+        "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+      ],
+      [
+        "bulletin_missing_pdf",
+        "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+      ],
+      [
+        "bulletin_stock_flow_confusion",
+        "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+      ],
+      [
+        "generic_why_required",
+        "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+      ],
+      [
+        "invalid_statistical_table",
+        "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+      ],
+      [
+        "methodology_not_collapsed",
+        "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+      ],
+      [
+        "missing_incremental_value_gate",
+        "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+      ],
+      [
+        "untraceable_statistical_evidence",
+        "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+      ]
+    ],
+    "global_candidate": "BLOCKED_BY_INHERITED_GATES",
+    "browser": "Local Chromium unavailable,0product executions; remote global QA must run after shared gates are fixed",
+    "independent_semantic_certification": "Not claimed; primary originals and event scope manually audited, deterministic Reviewer data/editorial/UX PASS"
+  },
+  "source_health": {
+    "checked_at": "2026-10-11T06:52:30.383782+00:00",
+    "last_signal_at": "2026-10-10",
+    "status": "warning/partial_inventory with explicit format capability",
+    "accepted_queue_publications": 26,
+    "df_feed_urls": 37,
+    "freshness_honest": true
+  },
+  "runtime_provenance_note": "New runtime receipt is this artifact/run logs. The reconciliation retains earlier inventory capture timestamps and does not renew them during matrix-only review. Later changes only scope reviewed dispositions, compact evidence, preserve offline proof and expose derived health facets; validated locally with58tests.",
+  "next_action": "Integration Commander review current staging diff, merge PR11 to staging only, run global QA/Reviewer/browser and fresh Daily runtime after merge; verify LIVE/new eligible publication, counts/format deferrals/idempotence before issue5/6 closure."
+}
