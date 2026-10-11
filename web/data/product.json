@@ -101,16 +101,16 @@
     },
     "achs_seguro_laboral": {
       "name": "Achs Seguro Laboral",
-      "checked_at": "2026-10-11T06:46:30.619331+00:00",
-      "last_signal_at": "2026-09-17",
+      "checked_at": "2026-10-11T07:05:40.693094+00:00",
+      "last_signal_at": "2026-09-24",
       "discovered": 23,
       "new": 0,
-      "published": 2,
+      "published": 3,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
-      "rejected": 21,
+      "rejected": 20,
       "status": "ok",
       "error": null,
       "technical_status": "ok",
@@ -136,7 +136,12 @@
           "excluded_role": 0,
           "pending": 0,
           "unknown_date_items": 0,
-          "complete": true
+          "complete": true,
+          "content_kinds": {
+            "news": 4,
+            "prevention": 4,
+            "study": 2
+          }
         },
         "90": {
           "start": "2026-07-13",
@@ -148,7 +153,12 @@
           "excluded_role": 2,
           "pending": 0,
           "unknown_date_items": 0,
-          "complete": true
+          "complete": true,
+          "content_kinds": {
+            "news": 14,
+            "prevention": 8,
+            "study": 3
+          }
         }
       },
       "unique_items": 23,
@@ -156,11 +166,17 @@
       "technical_failures": [],
       "coverage_completeness": true,
       "capture_environment": "github_actions",
-      "capture_run_id": "38119024441",
+      "capture_run_id": "38120060930",
       "count_basis": "unique source items in rolling 90 days; published includes previously reconciled items",
       "latest_detected_at": "2026-10-05",
       "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00",
-      "latest_capture_at": "2026-10-11T06:46:30.619331+00:00"
+      "latest_capture_at": "2026-10-11T07:05:40.693094+00:00",
+      "accepted_history": 3,
+      "feed_reconciliation": {
+        "published": 3,
+        "deferred": {},
+        "unrelated_signals_preserved": 50
+      }
     },
     "clinicas_achs_salud": {
       "name": "Achs Salud / Clínicas",
@@ -1782,5 +1798,5 @@
     ],
     "next_action": "PMO baseline y panel: validar panel y estados contra el baseline en staging"
   },
-  "occupational_sources_checked_at": "2026-10-11T06:50:59.292258+00:00"
+  "occupational_sources_checked_at": "2026-10-11T07:10:07.796184+00:00"
 }
