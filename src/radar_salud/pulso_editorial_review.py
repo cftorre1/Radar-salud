@@ -59,6 +59,9 @@ def validate_independent_binding(audit, independent, *, independent_sha256):
             raise ValueError("review_predecessor_not_independently_bound")
         if record["decision"] == "group" and (record.get("duplicate_of") or {}).get("url") != parent.get("duplicate_of"):
             raise ValueError("group_target_not_independently_reviewed")
+        if (record["decision"] == "group" and record.get("previous_editorial_review") is not None
+                and record.get("duplicate_of") != parent.get("duplicate_survivor_binding")):
+            raise ValueError("reviewed_group_survivor_not_independently_bound")
 
 
 def apply_review(history, queue, audit, *, audit_sha256, audit_path):
@@ -153,10 +156,17 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
                     or int(survivor.get("editorial_relevance") or 0) < 72
                     or (article_url(target[0]) and survivor.get("evidence_maturity") != "media_reported")):
                 raise ValueError("group_surviving_signal_not_eligible")
-            target_queue = [candidate for candidate in updated_queue.values()
+            target_queue = [(fingerprint, candidate) for fingerprint, candidate in updated_queue.items()
                             if candidate.get("raw", {}).get("url") == target[0]
                             and candidate.get("raw", {}).get("event_date") == target[1]]
-            if len(target_queue) != 1 or target_queue[0].get("status") != "published":
+            if duplicate.get("queue_fingerprint") is not None:
+                target_queue = [(fingerprint, candidate) for fingerprint, candidate in target_queue
+                                if fingerprint == duplicate["queue_fingerprint"]
+                                and candidate.get("source") == duplicate.get("source_id")]
+                if (set(duplicate) != {"url", "event_date", "queue_fingerprint", "source_id", "survivor_signal_sha256"}
+                        or canonical_sha(indexed[target]) != duplicate.get("survivor_signal_sha256")):
+                    raise ValueError("group_surviving_signal_binding_changed")
+            if len(target_queue) != 1 or target_queue[0][1].get("status") != "published":
                 raise ValueError("group_surviving_signal_not_actually_published")
         proposed = record.get("proposed") or {}
         if decision == "correct":
@@ -184,21 +194,26 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
                           original_model_why_it_matters=original["why_it_matters"])
         predecessor = record.get("previous_editorial_review")
         if predecessor is not None:
-            # An independently bound follow-up may clarify the observation date
-            # of an accepted publication. It cannot undo a rejection/group,
+            # An independently bound follow-up may clarify an observation date
+            # or group a publication against an exact surviving record. It
+            # cannot undo a rejection/group,
             # alter the original score, or replace previous review evidence.
+            reviewed_group = (decision == "group" and not proposed
+                              and isinstance(duplicate, dict)
+                              and set(duplicate) == {"url", "event_date", "queue_fingerprint", "source_id", "survivor_signal_sha256"})
+            historical_correction = (decision == "correct" and record.get("event_status") == "historical"
+                                     and set(proposed) == {"what_happened", "why_it_matters"}
+                                     and proposed["what_happened"] == original.get("what_happened"))
             if (not isinstance(predecessor, dict)
                     or predecessor != original.get("editorial_review")
                     or predecessor.get("schema_version") != "pulso_editorial_review_v1"
-                    or predecessor.get("decision") != "accept"
+                    or predecessor.get("decision") not in ({"accept", "correct"} if reviewed_group else {"accept"})
                     or predecessor.get("original_terminal_status") != "published"
                     or predecessor.get("publication_date") != day
                     or predecessor.get("original_body_sha256") != body_sha
                     or original.get("editorial_decision") != "accept"
                     or original.get("feed_visibility") is not True
-                    or decision != "correct" or record.get("event_status") != "historical"
-                    or set(proposed) != {"what_happened", "why_it_matters"}
-                    or proposed["what_happened"] != original.get("what_happened")):
+                    or not (reviewed_group or historical_correction)):
                 raise ValueError("invalid_observation_date_review_predecessor")
             provenance["previous_editorial_review"] = deepcopy(predecessor)
         if duplicate:

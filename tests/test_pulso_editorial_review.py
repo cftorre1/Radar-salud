@@ -86,6 +86,67 @@ def test_second_application_is_identical_without_queue_or_paid_replay(inputs):
     assert replay["applied_count"] == 0 and replay["unchanged_on_replay"] == 5
 
 
+def reviewed_cross_source_group(inputs, prior_decision):
+    """Unit ambiguity contract built on retained first-run publisher outputs."""
+    history, queue, _ = apply(inputs)
+    initial = next(record for record in inputs[2]["records"]
+                   if record["decision"] == prior_decision
+                   and record["url"] != next(row for row in inputs[2]["records"]
+                                             if row["decision"] == "group")["duplicate_of"]["url"])
+    original = next(row for row in history if row["source_url"] == initial["url"])
+    target_url = next(row for row in inputs[2]["records"] if row["decision"] == "group")["duplicate_of"]["url"]
+    target = next(row for row in history if row["source_url"] == target_url)
+    target_key, target_item = next((key, row) for key, row in queue.items() if row["raw"]["url"] == target_url)
+    target_item["source"] = "unit_native_published"
+    queue["unit_native_rejected"] = deepcopy(target_item)
+    queue["unit_native_rejected"].update(source="unit_native_rejected", status="rejected")
+    item = next(row for row in queue.values() if row["raw"]["url"] == initial["url"])
+    record = dict(url=initial["url"], publication_date=original["event_date"],
+                  original_signal=deepcopy(original), original_signal_sha256=canonical_sha(original),
+                  original_model_assessment=deepcopy(item["raw"]["metadata"]["editorial_assessment"]),
+                  original_body_sha256=initial["original_body_sha256"], decision="group",
+                  reason="unit_exact_cross_source_duplicate_with_pinned_survivor",
+                  evidence_quotes=initial["evidence_quotes"],
+                  previous_editorial_review=deepcopy(original["editorial_review"]),
+                  duplicate_of=dict(url=target_url, event_date=target["event_date"],
+                                    queue_fingerprint=target_key, source_id=target_item["source"],
+                                    survivor_signal_sha256=canonical_sha(target)))
+    audit = dict(schema_version="pulso_editorial_review_v1", review_id="unit_reviewed_group", records=[record])
+    return history, queue, audit
+
+
+@pytest.mark.parametrize("prior_decision", ["accept", "correct"])
+def test_reviewed_publication_can_be_grouped_with_exact_ambiguous_survivor(inputs, prior_decision):
+    state = reviewed_cross_source_group(inputs, prior_decision)
+    history, queue, audit = state
+    record = audit["records"][0]
+    native = {key: deepcopy(row) for key, row in queue.items() if row["source"].startswith("unit_native")}
+    survivor = deepcopy(next(row for row in history if row["source_url"] == record["duplicate_of"]["url"]))
+    changed, updated, report = apply(state)
+    assert report["applied_count"] == 1 and report["ai_calls"] == 0
+    assert native == {key: row for key, row in updated.items() if row["source"].startswith("unit_native")}
+    assert survivor == next(row for row in changed if row["source_url"] == survivor["source_url"])
+    grouped = next(row for row in changed if row["source_url"] == record["url"])
+    assert grouped["feed_visibility"] is False and grouped["editorial_decision"] == "group"
+    assert grouped["editorial_review"]["previous_editorial_review"] == record["previous_editorial_review"]
+    again, again_queue, replay = apply((changed, updated, audit))
+    assert (again, again_queue) == (changed, updated) and replay["applied_count"] == 0
+
+
+@pytest.mark.parametrize("change", ["fingerprint", "source", "survivor", "rejected_predecessor", "proposed", "no_pin"])
+def test_reviewed_group_cannot_replace_a_native_survivor_or_undo_withdrawal(inputs, change):
+    state = reviewed_cross_source_group(inputs, "correct")
+    record = state[2]["records"][0]
+    if change == "fingerprint": record["duplicate_of"]["queue_fingerprint"] = "unit_native_rejected"
+    if change == "source": record["duplicate_of"]["source_id"] = "unit_native_rejected"
+    if change == "survivor": record["duplicate_of"]["survivor_signal_sha256"] = "0" * 64
+    if change == "rejected_predecessor": record["previous_editorial_review"]["decision"] = "reject"
+    if change == "proposed": record["proposed"] = dict(what_happened="Altered copy")
+    if change == "no_pin": record["duplicate_of"].pop("queue_fingerprint")
+    with pytest.raises(ValueError):
+        apply(state)
+
+
 @pytest.mark.parametrize("category", ["Prestadores", "Regulación & Legal"])
 def test_bound_copy_correction_keeps_original_gate_and_can_correct_reviewed_taxonomy(inputs, category):
     history, queue, audit = deepcopy(inputs)
