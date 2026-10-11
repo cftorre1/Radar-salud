@@ -1,0 +1,41 @@
+name: Transport exact reviewed integration candidate
+on:
+  push:
+    branches: [codex/integration-transport-20261011]
+    paths: ['.integration-transport/**', '.github/workflows/integration-transport.yml']
+permissions:
+  contents: write
+concurrency:
+  group: integration-director-transport
+  cancel-in-progress: false
+jobs:
+  publish-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Verify exact bundle and publish only an authorized isolated candidate
+        shell: python
+        run: |
+          import json, os, subprocess
+          from pathlib import Path
+          assert os.environ['GITHUB_REF']=='refs/heads/codex/integration-transport-20261011'
+          c=json.loads(Path('.integration-transport/request.json').read_text())
+          allowed={'codex/integration-laboral-20261011','codex/integration-publicas-20261011','codex/integration-prestadores-20261011','codex/integration-editorial-20261011'}
+          assert c['branch'] in allowed
+          for sha in c['prerequisites']:
+              assert len(sha)==40 and all(x in '0123456789abcdef' for x in sha)
+              subprocess.run(['git','fetch','origin',sha],check=True)
+          bundle='.integration-transport/candidate.bundle'
+          actual=subprocess.check_output(['git','hash-object',bundle],text=True).strip()
+          assert actual==c['bundle_blob_sha'], 'Bundle transport corruption'
+          subprocess.run(['git','bundle','verify',bundle],check=True)
+          subprocess.run(['git','fetch',bundle,'HEAD'],check=True)
+          candidate=subprocess.check_output(['git','rev-parse','FETCH_HEAD'],text=True).strip()
+          assert candidate==c['candidate_sha'], 'Candidate moved'
+          subprocess.run(['git','merge-base','--is-ancestor',c['baseline_sha'],candidate],check=True)
+          subprocess.run(['git','push','origin',candidate+':refs/heads/'+c['branch']],check=True)
+          print(json.dumps({'published_candidate':candidate,'branch':c['branch'],'baseline':c['baseline_sha'],'staging_mutated':False,'main_mutated':False}))
