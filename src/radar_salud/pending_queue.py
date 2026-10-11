@@ -12,8 +12,18 @@ from pathlib import Path
 def now_utc():
     return datetime.now(timezone.utc)
 
-def fingerprint(raw):
+FISCALIZATION_SOURCES = {"superintendencia_fiscalizacion", "suseso_fiscalizacion"}
+
+
+def legacy_fingerprint(raw):
     return hashlib.sha256(f"{raw.source_slug}|{raw.url}|{raw.title}".encode()).hexdigest()
+
+
+def fingerprint(raw):
+    if raw.source_slug in FISCALIZATION_SOURCES:
+        from .superintendencia_fiscalizacion import canonical_url
+        return hashlib.sha256(f"{raw.source_slug}|{canonical_url(raw.url)}".encode()).hexdigest()
+    return legacy_fingerprint(raw)
 
 def atomic_json(path, value):
     path = Path(path)
@@ -56,15 +66,50 @@ class PendingQueue:
     def discover(self, source, items, seen=(), now=None, last_discovered_at=None):
         now = now or now_utc()
         added = 0
+        # URL identity is scoped to fiscalization. Legacy hashes remain evidence,
+        # and a verified rediscovery can repair stock without consuming AI twice.
+        from .superintendencia_fiscalizacion import canonical_url
+        fiscal_index = {}
+        for old_key, item in self.items.items():
+            if item.get("source") in FISCALIZATION_SOURCES:
+                fiscal_index.setdefault((item["source"], canonical_url(item["raw"]["url"])), []).append(old_key)
         for raw in items:
             key = fingerprint(raw)
-            if key in self.items or key in seen:
+            aliases = fiscal_index.get((source, canonical_url(raw.url)), []) if source in FISCALIZATION_SOURCES else []
+            if aliases:
+                records = [(old_key, self.items.pop(old_key)) for old_key in aliases]
+                rank = {"published": 5, "rejected": 4, "processing": 3, "retry": 2, "pending": 1, "archived": 0}
+                old_key, item = max(records, key=lambda pair: rank.get(pair[1].get("status"), 0))
+                legacy_keys = set(item.get("legacy_keys", [])) | {alias for alias, _ in records if alias != key}
+                if legacy_keys:
+                    item["legacy_keys"] = sorted(legacy_keys)
+                duplicates = [record for alias, record in records if alias != old_key]
+                if duplicates:
+                    item.setdefault("superseded_records", []).extend(duplicates)
+                self.items[key] = item
+                fiscal_index[(source, canonical_url(raw.url))] = [key]
+                verified_date = raw.event_date and raw.metadata.get("event_date_basis")
+                if verified_date and asdict(raw) != item["raw"]:
+                    item.setdefault("rediscovery_repairs", []).append({
+                        "at": now.isoformat(), "previous_raw": item["raw"],
+                        "previous_lane": item.get("lane"), "previous_status": item["status"],
+                        "previous_reason": item.get("reason"), "reason": "verified_fiscalization_rediscovery"})
+                    item["raw"] = asdict(raw)
+                    if item["status"] not in ("published", "rejected"):
+                        item["lane"] = lane(raw, now, last_discovered_at)
+                        archived = item["lane"] == "BACKFILL" and beyond_backfill_horizon(raw, now)
+                        item.update(status="archived" if archived else "pending",
+                            reason="outside_90_day_backfill" if archived else None, retry_at=None)
+                continue
+            if key in self.items or key in seen or (source in FISCALIZATION_SOURCES and legacy_fingerprint(raw) in seen):
                 continue
             item_lane = lane(raw, now, last_discovered_at)
             archived = item_lane == "BACKFILL" and beyond_backfill_horizon(raw, now)
             self.items[key] = dict(raw=asdict(raw), source=source, lane=item_lane,
                 status="archived" if archived else "pending", detected_at=now.isoformat(),
                 attempts=0, reason="outside_90_day_backfill" if archived else None)
+            if source in FISCALIZATION_SOURCES:
+                fiscal_index[(source, canonical_url(raw.url))] = [key]
             added += 1
         self.save()
         return added

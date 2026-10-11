@@ -90,3 +90,49 @@ def test_suseso_retains_undated_documents_and_does_not_limit_recent_coverage(mon
     assert len(items) == 47
     assert sum(raw.event_date is None for raw in items) == 1
     assert scout.surface_results[0]['undated'] == 1
+
+
+def test_fiscalization_rediscovery_recovers_archived_date_without_losing_checkpoint(tmp_path):
+    from dataclasses import asdict
+    from datetime import datetime, timezone
+    from radar_salud.models import RawItem
+    from radar_salud.pending_queue import PendingQueue, atomic_json, fingerprint, legacy_fingerprint
+    raw = RawItem('superintendencia_fiscalizacion', 'Resolución 7462 antigua', 'https://example.org/7462/', 'SIS', 'official', '2025-09-23')
+    key = legacy_fingerprint(raw)
+    atomic_json(tmp_path/'queue.json', {key:dict(raw=asdict(raw),source=raw.source_slug,lane='BACKFILL',status='archived',detected_at='2026-10-01T00:00:00+00:00',attempts=2,reason='outside_90_day_backfill')})
+    queue = PendingQueue(tmp_path/'queue.json')
+    raw.title = 'Resolución 7462 - Emisión: 23/09/2026'
+    raw.event_date = '2026-09-23';raw.metadata = {'event_date_basis':'emission'}
+    assert queue.discover(raw.source_slug,[raw],now=datetime(2026,10,11,tzinfo=timezone.utc),last_discovered_at='2026-10-10T00:00:00+00:00') == 0
+    item = queue.items[fingerprint(raw)]
+    assert len(queue.items) == 1 and item['status'] == 'pending' and item['lane'] == 'BACKFILL'
+    assert item['attempts'] == 2 and item['detected_at'].startswith('2026-10-01')
+    assert item['legacy_keys'] == [key]
+    assert item['rediscovery_repairs'][0]['previous_raw']['event_date'] == '2025-09-23'
+    assert queue.discover(raw.source_slug,[raw]) == 0
+    assert len(item['rediscovery_repairs']) == 1
+
+
+def test_fiscalization_duplicate_legacy_titles_preserve_published_decision(tmp_path):
+    from dataclasses import asdict
+    from radar_salud.models import RawItem
+    from radar_salud.pending_queue import PendingQueue, atomic_json, fingerprint, legacy_fingerprint
+    raw = RawItem('suseso_fiscalizacion','Dictamen anterior','https://example.org/1/','SUSESO','official','2026-09-29')
+    old = legacy_fingerprint(raw)
+    published = dict(raw=asdict(raw),source=raw.source_slug,lane='BACKFILL',status='published',detected_at='2026-10-01',attempts=1,reason=None)
+    raw.title = 'Dictamen renombrado';new = legacy_fingerprint(raw)
+    atomic_json(tmp_path/'q.json', {old:published, new:dict(published,raw=asdict(raw),status='pending',attempts=0)})
+    queue = PendingQueue(tmp_path/'q.json');queue.discover(raw.source_slug,[raw])
+    assert len(queue.items) == 1
+    assert queue.items[fingerprint(raw)]['status'] == 'published'
+    assert len(queue.items[fingerprint(raw)]['superseded_records']) == 1
+
+
+def test_fiscalization_legacy_seen_is_respected_and_other_source_identity_unchanged(tmp_path):
+    from radar_salud.models import RawItem
+    from radar_salud.pending_queue import PendingQueue, fingerprint, legacy_fingerprint
+    raw=RawItem('suseso_fiscalizacion','Circular 3926','https://example.org/3926','SUSESO','official','2026-09-23')
+    queue=PendingQueue(tmp_path/'q.json')
+    assert queue.discover(raw.source_slug,[raw],seen={legacy_fingerprint(raw)}) == 0
+    raw.source_slug='minsal'
+    assert fingerprint(raw) == legacy_fingerprint(raw)
