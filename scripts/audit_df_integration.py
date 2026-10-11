@@ -164,7 +164,8 @@ def main():
             if reason=='df_insufficient_article_evidence':state='RESOLVED_NO_VERIFIABLE_TEXT'
             if args.resolve:
                 # Use a before snapshot even when only the publication date changes.
-                if parsed and (raw.get('event_date')!=date or raw.get('metadata')!=metadata):
+                if parsed and (raw.get('event_date')!=date or raw.get('raw_text')!=parsed['raw_text'] or
+                        any(raw.get('metadata',{}).get(k)!=v for k,v in metadata.items())):
                     _remember(item,now,'targeted_original_format_and_date_review')
                     item['raw']={**raw,'event_date':date,'raw_text':parsed['raw_text'],
                         'metadata':{**raw.get('metadata',{}),**metadata}}
