@@ -182,6 +182,13 @@ def probe(output, as_of):
                 attachments.setdefault(attachment['url'],set()).add(raw['url'])
     targets.update(url for url, acts in attachments.items() if len(acts)>1)
     targets.update(acts_url for acts in attachments.values() if len(acts)>1 for acts_url in acts)
+    historical_audit=Path('data/audits/fiscalizacion/native_reconciliation_2026_10_11.json')
+    if historical_audit.exists():
+        held_urls={r['url'] for r in json.loads(historical_audit.read_text()).get('historical_date_conflicts',[])}
+        for raw in inventory:
+            if raw['url'] in held_urls:
+                targets.add(raw['url'])
+                targets.update(a['url'] for a in raw['metadata'].get('attachments',[]))
     # Inspect detail and primary documents for every recent candidate, including held dates.
     with ThreadPoolExecutor(max_workers=3) as pool:
         for receipt,_ in pool.map(lambda url: fetch(url,captures),sorted(targets)):
