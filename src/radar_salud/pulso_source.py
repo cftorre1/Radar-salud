@@ -5,11 +5,14 @@ neither navigation dates nor dates mentioned in the story establish publication.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import re
-from datetime import date, datetime
+import xml.etree.ElementTree as ET
+from concurrent.futures import ThreadPoolExecutor
+from datetime import date, datetime, timedelta
 from html.parser import HTMLParser
-from urllib.parse import urljoin, urlparse
+from urllib.parse import parse_qs, urljoin, urlparse
 from zoneinfo import ZoneInfo
 
 from .models import RawItem
@@ -81,6 +84,7 @@ class _Article(HTMLParser):
         self.paragraphs = []
         self.headline = []
         self.times = []
+        self.byline_dates = []
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -99,7 +103,8 @@ class _Article(HTMLParser):
         in_article = parent.get("article", False) or tag == "article"
         self.stack.append(dict(tag=tag, blocked=blocked, body=body, article=in_article,
                                paragraph=parent.get("paragraph", False) or tag == "p",
-                               heading=parent.get("heading", False) or tag == "h1"))
+                               heading=parent.get("heading", False) or tag == "h1",
+                               byline_date=parent.get("byline_date", False) or (tag == "time" and "byline" in classes)))
         if tag == "script" and a.get("type") == "application/ld+json":
             self.script = []
         if (tag == "time" and in_article and not blocked and a.get("datetime")
@@ -129,6 +134,8 @@ class _Article(HTMLParser):
         if not value:
             return
         frame = self.stack[-1]
+        if frame["byline_date"]:
+            self.byline_dates.append(value)
         if frame["heading"]:
             self.headline.append(value)
         if frame["body"]:
@@ -144,6 +151,30 @@ def _nodes(value):
     elif isinstance(value, dict):
         yield value
         yield from _nodes(value.get("@graph", []))
+
+
+_SPANISH_MONTHS = {name: index for index, name in enumerate(
+    ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"), 1)}
+
+
+def _visible_byline_day(parts):
+    text = " ".join(parts).lower()
+    match = re.search(r"\b(\d{1,2})\s+(?:de\s+)?(" + "|".join(_SPANISH_MONTHS) + r")\s+(?:de\s+)?(\d{4})\b", text)
+    if not match:
+        return None
+    try:
+        return date(int(match[3]), _SPANISH_MONTHS[match[2]], int(match[1])).isoformat()
+    except ValueError:
+        raise ValueError("invalid_visible_publication_date")
+
+
+def _publisher_day(value):
+    if len(value) == 10:
+        return publication_day(value)
+    stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if stamp.tzinfo is None:
+        return None
+    return stamp.astimezone(ZoneInfo("America/Santiago")).date().isoformat()
 
 
 def extract_article(html, expected_url):
@@ -181,11 +212,21 @@ def extract_article(html, expected_url):
     dates = [(kind, value, publication_day(value)) for kind, value in evidence if value]
     if not dates or any(not day for _, _, day in dates):
         raise ValueError("missing_or_invalid_publication_date")
-    if len({day for _, _, day in dates}) != 1:
+    visible_day = _visible_byline_day(parser.byline_dates)
+    publisher_dates = [(kind, value, _publisher_day(value)) for kind, value, _ in dates]
+    if len({day for _, _, day in publisher_dates}) != 1 or (
+            visible_day and visible_day != publisher_dates[0][2]):
         raise ValueError("conflicting_publication_dates")
-    date_source, timestamp, published = dates[0]
-    if date.fromisoformat(published) > datetime.now(ZoneInfo("America/Santiago")).date():
-        raise ValueError("future_publication_date")
+    date_source, timestamp, published = publisher_dates[0]
+    if visible_day:
+        published, date_source = visible_day, "visible_article_byline"
+    now = datetime.now(ZoneInfo("UTC"))
+    for _, value, _ in dates:
+        if len(value) == 10:
+            if date.fromisoformat(value) > now.astimezone(ZoneInfo("America/Santiago")).date():
+                raise ValueError("future_publication_date")
+        elif datetime.fromisoformat(value.replace("Z", "+00:00")) > now:
+            raise ValueError("future_publication_date")
     title = node.get("headline") or " ".join(parser.headline) or parser.metas.get("og:title", "")
     title = re.sub(r"\s+-\s+La Tercera$", "", " ".join(title.split()))
     body = " ".join(parser.body or parser.paragraphs)
@@ -202,7 +243,8 @@ def extract_article(html, expected_url):
                             description=node.get("description", ""),
                             body_source="url_bound_json_ld_articleBody" if node.get("articleBody") else "article_html",
                             publication_date=published, publication_timestamp=timestamp,
-                            publication_date_source=date_source, canonical_url=expected,
+                            publication_date_source=date_source, visible_publication_date=visible_day,
+                            publication_evidence=[dict(source=kind, timestamp=value, publisher_day=day) for kind, value, day in publisher_dates], canonical_url=expected,
                             article_verified=True)
 
 
@@ -237,16 +279,278 @@ def discover_listing(html, base, detail_loader, audit, visited):
     return out
 
 
-def discover_pulso(detail_loader=fetch_html, audit=None):
-    audit = audit if audit is not None else []
-    visited, out = set(), []
-    for listing in LISTINGS:
+SITEMAP_INDEX = "https://www.latercera.com/arc/outboundfeeds/sitemap-index/?outputType=xml"
+SITEMAP_PAGE = "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml"
+_SITEMAP_NS = "http://www.sitemaps.org/schemas/sitemap/0.9"
+_NEWS_NS = "http://www.google.com/schemas/sitemap-news/0.9"
+_CACHE_VERSION = 1
+
+
+def _archive_url(value):
+    """Archive links must stay on the publisher's public XML endpoint."""
+    parsed = urlparse(value or "")
+    if (parsed.scheme != "https" or parsed.netloc not in HOSTS
+            or parsed.path != "/arc/outboundfeeds/sitemap/"):
+        return None
+    query = parse_qs(parsed.query)
+    if query.get("outputType") != ["xml"] or set(query) - {"outputType", "from"}:
+        return None
+    offset = query.get("from", ["0"])
+    if len(offset) != 1 or not offset[0].isdigit():
+        return None
+    return SITEMAP_PAGE + ("&from=" + str(int(offset[0])) if int(offset[0]) else "")
+
+
+def parse_sitemap(html):
+    """Read primary <url>/<loc>, never an image or nested news location."""
+    root = ET.fromstring(html)
+    namespace = "{" + _SITEMAP_NS + "}"
+    if root.tag == namespace + "sitemapindex":
+        entries = []
+        for node in root.findall(namespace + "sitemap"):
+            value = node.findtext(namespace + "loc", "")
+            url = _archive_url(value)
+            if not url:
+                raise ValueError("unexpected_sitemap_child_host_or_path")
+            entries.append(dict(url=url, lastmod=node.findtext(namespace + "lastmod", "")))
+        if not entries:
+            raise ValueError("empty_sitemap_index")
+        return "index", entries
+    if root.tag != namespace + "urlset":
+        raise ValueError("unexpected_sitemap_document")
+    entries = []
+    for node in root.findall(namespace + "url"):
+        entries.append(dict(url=node.findtext(namespace + "loc", ""),
+                            lastmod=node.findtext(namespace + "lastmod", ""),
+                            archive_publication_timestamp=node.findtext(
+                                "{" + _NEWS_NS + "}news/{" + _NEWS_NS + "}publication_date", "")))
+    return "urls", entries
+
+
+def health_topics(text):
+    patterns = {
+        "insurance": r"isapre|fonasa|aseguramiento|seguros? de salud|cotizantes?",
+        "providers": r"cl[ií]nica|hospital|prestador|redsalud|uc christus|eleam|senior housing",
+        "investment_ma": r"inversi[oó]n|adquisi|compra|fusi[oó]n|capital|patria|linzor",
+        "financing": r"financi|deuda|presupuesto|recursos|gasto|bono|tarifa",
+        "regulation": r"regul|ley|superintendencia|fne|fallo|suprema|decreto|congreso",
+        "waiting_lists": r"listas? de espera|tiempos? de espera|oncolog",
+        "competition": r"competen|mercado|ventas|afiliados?|cotizantes?|cobertura",
+        "public_health": r"sanitari|vacun|c[aá]ncer|epidemi|medicamento|farmac|diabetes",
+    }
+    return [topic for topic, pattern in patterns.items() if re.search(pattern, text or "", re.I)] or ["health_general"]
+
+
+def _load_cache(path):
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+        if value.get("version") == _CACHE_VERSION and isinstance(value.get("articles"), dict):
+            return value
+    except (OSError, ValueError, TypeError):
+        pass
+    return dict(version=_CACHE_VERSION, source="pulso_latercera", articles={})
+
+
+def _verified_detail(entry, loader, cached):
+    """Only successful URL-bound article evidence is eligible for reuse."""
+    url = entry["url"]
+    now = datetime.now(ZoneInfo("UTC")).isoformat()
+    # lastmod is solely a change token: it never establishes publication date.
+    if (cached and entry.get("lastmod") and cached.get("lastmod") == entry["lastmod"]
+            and cached.get("metadata", {}).get("article_verified")
+            and cached.get("url") == url):
+        result = dict(cached)
+        result["cache_hit"] = True
+        return result
+    try:
+        html = loader(url)
+        title, body, metadata = extract_article(html, url)
+        digest = hashlib.sha256(html.encode("utf-8")).hexdigest()
+        combined = title + " " + body + " " + str(metadata.get("keywords", ""))
+        relevant = health_anchor(combined)
+        metadata.update(discovered_from=entry["listing"], page_text=body[:18000] if relevant else "",
+                        market_role="media", source_quality_gate="passed", captured_at=now,
+                        html_sha256=digest, publisher_lastmod=entry.get("lastmod", ""),
+                        topics=health_topics(combined) if relevant else [])
+        return dict(url=url, title=title, body=body[:1800] if relevant else "", metadata=metadata,
+                    relevant=relevant, lastmod=entry.get("lastmod", ""), cache_hit=False)
+    except Exception as exc:
+        return dict(url=url, status="detail_error", reason=str(exc), error_type=type(exc).__name__,
+                    listing=entry["listing"], captured_at=now)
+
+
+def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
+                     max_pages=250, boundary_pages=3):
+    """Traverse the official archive and verify every factual article in detail.
+
+    The advertised index currently exposes only 10,000 stories. Its own offset
+    endpoint is extended beyond that index. A finite page cap is a degradation,
+    not successful coverage. Modified dates are never final publication dates.
+    """
+    from .pending_queue import atomic_json
+    today = today or datetime.now(ZoneInfo("America/Santiago")).date()
+    cutoff = today - timedelta(days=90)
+    cache = _load_cache(cache_path)
+    articles = cache["articles"]
+    visited, out, primary = set(), [], {}
+    errors, pages, excluded, attempted_pages, consecutive_page_errors = 0, [], 0, 0, 0
+    terminal, boundary, termination = False, False, "unproven"
+    advertised = []
+    try:
+        kind, advertised = parse_sitemap(detail_loader(SITEMAP_INDEX))
+        if kind != "index":
+            raise ValueError("sitemap_index_not_index")
+    except Exception as exc:
+        audit.append(dict(listing=SITEMAP_INDEX, status="listing_error", reason=str(exc),
+                          error_type=type(exc).__name__))
+        return [], set(), dict(coverage_complete=False, termination="index_error")
+    page_urls = sorted({x["url"] for x in advertised},
+                       key=lambda url: int(parse_qs(urlparse(url).query).get("from", [0])[0]))
+    # The publisher's observed endpoint uses 100 articles per offset. An index
+    # with gaps is not silently interpolated as if the announced pages existed.
+    offsets = [int(parse_qs(urlparse(url).query).get("from", [0])[0]) for url in page_urls]
+    contiguous = offsets == list(range(0, max(offsets) + 1, 100))
+    if not contiguous:
+        errors += 1
+        audit.append(dict(listing=SITEMAP_INDEX, status="listing_error", reason="noncontiguous_archive_index"))
+    page_digests, older_pages = set(), 0
+    worker_count = max(1, min(int(workers), 4))
+
+    def consume_page(url):
+        nonlocal errors, excluded, older_pages, terminal, boundary, termination, attempted_pages, consecutive_page_errors
+        attempted_pages += 1
         try:
-            html = detail_loader(listing)
+            xml = detail_loader(url)
+            kind, entries = parse_sitemap(xml)
+            if kind != "urls":
+                raise ValueError("archive_page_not_urlset")
         except Exception as exc:
-            audit.append(dict(listing=listing, status="listing_error", error_type=type(exc).__name__))
-            continue
-        out.extend(discover_listing(html, listing, detail_loader, audit, visited))
+            errors += 1
+            audit.append(dict(listing=url, status="listing_error", reason=str(exc), error_type=type(exc).__name__))
+            older_pages = 0
+            consecutive_page_errors += 1
+            if consecutive_page_errors >= 3:
+                terminal, termination = True, "consecutive_archive_page_errors"
+            return
+        consecutive_page_errors = 0
+        identity = hashlib.sha256("\n".join(x["url"] for x in entries).encode()).hexdigest()
+        if entries and identity in page_digests:
+            errors += 1
+            audit.append(dict(listing=url, status="listing_error", reason="archive_offset_repeats_previous_page"))
+            termination = "repeated_page"
+            terminal = True  # stop requests, but errors keep coverage incomplete
+            return
+        page_digests.add(identity)
+        page = dict(url=url, status="archive_page", primary_entries=len(entries),
+                    xml_sha256=hashlib.sha256(xml.encode("utf-8")).hexdigest(), offset=int(
+                        parse_qs(urlparse(url).query).get("from", [0])[0]))
+        pages.append(page)
+        audit.append(page)
+        if not entries:
+            terminal, termination = True, "empty_official_archive_page"
+            return
+        candidates = []
+        for entry in entries:
+            canonical = article_url(entry["url"])
+            if not canonical:
+                excluded += 1
+                audit.append(dict(url=entry["url"], listing=url, status="excluded_path", reason="nonfactual_or_unsupported_article_path"))
+                continue
+            entry.update(url=canonical, listing=url)
+            if canonical in visited:
+                continue
+            visited.add(canonical)
+            primary[canonical] = entry
+            candidates.append(entry)
+        dates = []
+        with ThreadPoolExecutor(max_workers=worker_count) as pool:
+            results = list(pool.map(lambda entry: _verified_detail(entry, detail_loader, articles.get(entry["url"])), candidates))
+        page_errors = False
+        for entry, result in zip(candidates, results):
+            if result.get("status") == "detail_error":
+                errors += 1
+                page_errors = True
+                audit.append(result)
+                continue
+            articles[result["url"]] = {key: value for key, value in result.items() if key != "cache_hit"}
+            metadata = result["metadata"]
+            day = date.fromisoformat(metadata["publication_date"])
+            dates.append(day)
+            status = "discovered" if result["relevant"] and cutoff <= day <= today else "excluded"
+            reason = None if status == "discovered" else "no_health_anchor" if not result["relevant"] else "outside_90_day_window"
+            trace = dict(url=result["url"], listing=url, status=status, reason=reason,
+                         title=result["title"], section=metadata["section"], topics=metadata.get("topics", []),
+                         publication_date=metadata["publication_date"], publication_timestamp=metadata["publication_timestamp"],
+                         publication_date_source=metadata["publication_date_source"], html_sha256=metadata["html_sha256"],
+                         captured_at=metadata["captured_at"], publisher_lastmod=entry.get("lastmod", ""),
+                         cache_hit=result["cache_hit"], in_complete_30_days=today - timedelta(days=30) <= day < today,
+                         in_complete_90_days=cutoff <= day < today, current_day_slice=day == today)
+            audit.append(trace)
+            if status == "discovered":
+                out.append(RawItem("pulso_latercera", result["title"], result["url"], "Pulso / La Tercera",
+                                   "press_high_trust", event_date=metadata["publication_date"], raw_text=result["body"], metadata=metadata))
+        # A conservative observed boundary is based on verified detail dates,
+        # with two additional calendar days for publisher/listing drift. It is
+        # usable only beyond *all* advertised pages and after 3 full old pages.
+        # No single index lastmod, partial page or detail failure can stop it.
+        page["verified_details"] = len(dates)
+        page["detail_errors"] = int(page_errors)
+        page["publication_date_min"] = min(dates).isoformat() if dates else None
+        page["publication_date_max"] = max(dates).isoformat() if dates else None
+        full_old_page = (len(entries) == 100 and dates and not page_errors
+                         and max(dates) < cutoff - timedelta(days=2))
+        older_pages = older_pages + 1 if full_old_page else 0
+        if page["offset"] > max(offsets) and older_pages >= max(3, boundary_pages):
+            boundary, termination = True, "consecutive_detail_verified_older_pages"
+        cache["updated_at"] = datetime.now(ZoneInfo("UTC")).isoformat()
+        atomic_json(cache_path, cache)
+
+    # Advertised pages are always exhausted; reaching an old article on a
+    # landing page or early index page must not skip the remaining inventory.
+    for url in page_urls[:max_pages]:
+        consume_page(url)
+        if terminal:
+            break
+    next_offset = max(offsets) + 100
+    while not terminal and not boundary and attempted_pages < max_pages:
+        consume_page(SITEMAP_PAGE + "&from=" + str(next_offset))
+        next_offset += 100
+    if not terminal and not boundary:
+        termination = "explicit_page_limit"
+    covered_advertised = len(pages) >= len(page_urls)
+    complete = bool(contiguous and covered_advertised and (terminal or boundary) and not errors)
+    summary = dict(status="archive_coverage", mechanism="official_sitemap_offsets_detail_verification",
+                   coverage_complete=complete, advertised_pages=len(page_urls), pages_read=len(pages), pages_attempted=attempted_pages,
+                   primary_urls=len(primary), excluded_paths=excluded, errors=errors,
+                   cache_path=str(cache_path), cache_entries=len(articles), workers=worker_count,
+                   max_pages=max_pages, termination=termination,
+                   complete_30_days=dict(start=(today - timedelta(days=30)).isoformat(), end=(today - timedelta(days=1)).isoformat()),
+                   complete_90_days=dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()),
+                   current_day_slice=today.isoformat(), boundary_is_observed_not_global_completeness_proof=True)
+    audit.append(summary)
+    if not complete:
+        audit.append(dict(listing=SITEMAP_INDEX, status="listing_error", reason="archive_coverage_incomplete", termination=termination))
+    return out, visited, summary
+
+
+def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=None, workers=4,
+                   max_pages=250, include_listings=True):
+    """Normal daily source hook: historical inventory first, live surfaces second."""
+    from pathlib import Path
+    from .paths import project_root
+    detail_loader = detail_loader or fetch_html
+    audit = audit if audit is not None else []
+    cache_path = Path(cache_path) if cache_path is not None else project_root() / "data/cache/pulso_discovery.json"
+    out, visited, coverage = discover_archive(detail_loader, audit, cache_path, today=today,
+                                             workers=workers, max_pages=max_pages)
+    if include_listings:
+        for listing in LISTINGS:
+            try:
+                html = detail_loader(listing)
+            except Exception as exc:
+                audit.append(dict(listing=listing, status="surface_error", reason=str(exc), error_type=type(exc).__name__))
+                continue
+            out.extend(discover_listing(html, listing, detail_loader, audit, visited))
     if not out:
         raise RuntimeError("Pulso / La Tercera has no verified, dated health articles")
     return sorted(out, key=lambda item: item.event_date, reverse=True)
