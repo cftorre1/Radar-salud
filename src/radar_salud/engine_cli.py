@@ -18,18 +18,20 @@ from .analysis_cache import seed_from_history
 from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
-from .processing import DeferredProcessing
+from .processing import DeferredProcessing, RejectedProcessing
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 
 def main():
     from .models import RawItem
-    from .pending_queue import PendingQueue, fingerprint, atomic_json
+    from .pending_queue import PendingQueue, fingerprint, legacy_fingerprint, FISCALIZATION_SOURCES, atomic_json
     from .paths import project_root
     ap=argparse.ArgumentParser()
     ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
     ap.add_argument("--source",action="append",help="Process only the named source(s); default is all core sources")
     ap.add_argument("--reset-state",action="store_true")
+    ap.add_argument('--only-source',action='append',default=[],help='Run only named source lanes; preserve all other queue/history state')
     args=ap.parse_args()
+    args.source=list(dict.fromkeys((args.source or []) + args.only_source))
     if args.reset_state:
         ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
     root=project_root()
@@ -75,17 +77,37 @@ def main():
         if unknown:ap.error("Unknown source(s): "+", ".join(sorted(unknown)))
         specs=[spec for spec in specs if spec[0] in args.source]
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
+    if 'suseso_fiscalizacion' in processors:
+        processors.setdefault('suseso',(cfgs['suseso'],process_suseso))
     discoveries={}
     discovery_evidence={}
+    observed={}
+    surfaces={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
         try:
             items=discover()
+            observed[name]=[dict(url=raw.url,event_date=raw.event_date,metadata=raw.metadata) for raw in items]
+            surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
-            seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw))}
+            from .superintendencia_fiscalizacion import canonical_url
+            published_urls={canonical_url(row.get("source_url", "")) for row in history
+                if name in FISCALIZATION_SOURCES and "Fiscalización" in (row.get("signal_types") or []) and not row.get('source_record_id')}
+            published_records={(canonical_url(row.get('source_url','')), row['source_record_id']) for row in history
+                if name in FISCALIZATION_SOURCES and 'Fiscalización' in (row.get('signal_types') or []) and row.get('source_record_id')}
+            seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw)) or
+                (name in FISCALIZATION_SOURCES and (store.is_seen(legacy_fingerprint(raw)) or
+                    (not raw.metadata.get('source_record_id') and canonical_url(raw.url) in published_urls) or
+                    (canonical_url(raw.url), raw.metadata.get('source_record_id')) in published_records))}
             checked_at=datetime.now(timezone.utc).isoformat()
             added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name),
                                  published_urls=published_history_urls(history))
+            if name=="suseso_fiscalizacion":
+                from .suseso_fiscalizacion import reviewed_normative_candidate
+                routed=[candidate for raw in items if (candidate:=reviewed_normative_candidate(raw))]
+                # Existing normative history guards cross-channel rediscovery.
+                routed_seen={fingerprint(raw) for raw in routed if any(row.get("source_url")==raw.url for row in history)}
+                queue.discover("suseso",routed,routed_seen,last_discovered_at=watermarks.get("suseso"))
             watermarks[name]=checked_at
             atomic_json(watermark_path,watermarks)
             discoveries[name]=(len(items),added,None)
@@ -100,6 +122,7 @@ def main():
                     "format_capability":{"text":"runtime_verified","images":"requires_ocr","audio_video":"requires_official_text"},
                     "newest_event_date":max([raw.event_date for raw in items if raw.event_date],default=None)}
         except Exception as exc:
+            surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
             discoveries[name]=(0,0,type(exc).__name__)
     run_path=root/"data/state/discovery_run.json"
     previous_run=json.loads(run_path.read_text()) if args.source and run_path.exists() else {}
@@ -115,13 +138,16 @@ def main():
         "failed_sources":sum(row.get("technical_status")=="error" for row in run_sources.values()),
     })
     produced={name:[] for name in processors}
-    queue.enforce_backfill_horizon(sources=set(processors) if args.source else None)
-    ready=[(key,item) for key,item in queue.ready() if item["source"] in processors]
+    queue.enforce_backfill_horizon(sources=set(args.source) if args.source else None)
+    ready=[(key,item) for key,item in queue.ready() if item['source'] in processors and (not args.source or
+        item['source'] in args.source or ('suseso_fiscalizacion' in args.source and item['raw'].get('metadata',{}).get('routed_from')=='suseso_fiscalizacion'))]
     for index,(key,item) in enumerate(ready):
         if args.limit and index>=args.limit:break
-        if not has_capacity("fast") and not has_capacity("deep"):break
+        deterministic = item["source"] in FISCALIZATION_SOURCES or item["raw"].get("metadata",{}).get("reviewed_normative")
+        if not deterministic and not has_capacity("fast") and not has_capacity("deep"):continue
         queue.start(key)
-        processing_raw=RawItem(**item["raw"])
+        from copy import deepcopy
+        processing_raw=RawItem(**deepcopy(item["raw"]))
         try:
             cfg,processor=processors[item["source"]]
             row=processor(processing_raw,cfg)
@@ -147,6 +173,9 @@ def main():
                     save_history(history_path,history)
             queue.finish(key,"published" if row else "rejected",None if row else processing_raw.metadata.get("rejection_reason","processor_rejected"))
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
+        except RejectedProcessing as exc:
+            queue.finish(key,"rejected",str(exc))
+            SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except DeferredProcessing as exc:
             item["raw"]=asdict(processing_raw)
             if item['source']=='diario_financiero':
@@ -159,7 +188,7 @@ def main():
             if item['source']=='diario_financiero' and defer_format(item, exc.reason, datetime.now(timezone.utc)):
                 queue.save()
             else:
-                queue.finish(key,"retry",exc.reason or "budget_or_analysis_deferred")
+                queue.finish(key,"retry",exc.reason or str(exc) or "budget_or_analysis_deferred")
         except Exception as exc:
             queue.finish(key,"retry",type(exc).__name__)
     for name,(discovered,new,error) in discoveries.items():
@@ -172,11 +201,20 @@ def main():
             "last_published_event_at":max([row.get("event_date") for row in history
                 if row.get("source_name")=="Diario Financiero" and row.get("event_date") and row.get("editorial_decision")!="reject"],default=None)}
             if name=="diario_financiero" else None)
+        from collections import Counter
+        fiscal_history=[row for row in history if "Fiscalización" in (row.get("signal_types") or []) and
+            ((name=="superintendencia_fiscalizacion" and "superdesalud.gob.cl" in row.get("source_url", "")) or
+             (name=="suseso_fiscalizacion" and "suseso.gob.cl" in row.get("source_url", "")))]
+        source_items=[item for item in queue.items.values() if item.get("source")==name]
         health_record(root,name,name="Diario Financiero" if name=="diario_financiero" else name.replace("_"," ").title(),discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
             deferred=sum(i.get('source')==name and i['status']=='deferred' for i in queue.items.values()) if name=='diario_financiero' else 0,
             rejected=counts["rejected"],rows=produced[name],error=error,
-            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"],discovery_evidence=df_evidence)
+            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"], observed_rows=observed.get(name),surfaces=surfaces.get(name), discovery_evidence=df_evidence,
+            published_history=fiscal_history if name in FISCALIZATION_SOURCES else None,
+            source_queue=source_items if name in FISCALIZATION_SOURCES else None,
+            archived=sum(item.get("status")=="archived" for item in source_items),
+            rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")))
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()

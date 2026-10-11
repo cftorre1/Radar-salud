@@ -15,6 +15,22 @@ def read(path, default=None):
 def digest(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 
+def validate_discovery(targets, discovery, started_at):
+    """An engine exit code cannot stand in for fresh source execution."""
+    results={}
+    expectations=targets.get('expectations', {})
+    for source in targets['sources']:
+        row=discovery.get('sources', {}).get(source)
+        assert row and row.get('checked_at', '') >= started_at, f'{source}: missing fresh execution receipt'
+        if row.get('error_type') or row.get('technical_status')=='error':
+            assert expectations.get(source, {}).get('allow_external_blocker'), f'{source}: unexpected runtime error {row}'
+            results[source]='EXTERNAL_BLOCKER_OBSERVED'
+        else:
+            minimum=expectations.get(source, {}).get('minimum_discovered', 1)
+            assert row.get('discovered', 0) >= minimum, f'{source}: capture below required minimum'
+            results[source]='EXECUTED_WITH_CAPTURE'
+    return results
+
 def main():
     repo=Path(__file__).resolve().parents[1]
     targets=read(repo/'config/integration_runtime_targets.json')
@@ -41,6 +57,7 @@ def main():
         with (root/f'poll-{number}.log').open('w') as log:
             result=subprocess.run(command,cwd=repo,env=environment,stdout=log,stderr=subprocess.STDOUT,timeout=1200)
         discovery=read(root/'data/state/discovery_run.json',{})
+        execution_results=validate_discovery(targets,discovery,start)
         queue=read(root/'data/state/pending_queue.json',{})
         history=read(root/'data/history/superintendencia_signals.json',{'signals':[]})
         history=history.get('signals',history)
@@ -49,10 +66,11 @@ def main():
         health=read(root/'data/source_health.json',{}).get('sources',{})
         assert all(health.get(k)==v for k,v in health_before.items() if k not in selected),'Unrelated source health changed'
         published={k:v for k,v in queue.items() if v.get('source') in selected and v.get('status')=='published'}
-        urls=[v.get('source_url') for v in history if v.get('source_name') in source_names]
-        assert len(urls)==len(set(urls)),'Duplicate selected-source history URLs'
+        from radar_salud.history import _key as history_identity
+        urls=[history_identity(v) for v in history if v.get('source_name') in source_names]
+        assert len(urls)==len(set(urls)),'Duplicate selected-source history identities (URL plus official record ID)'
         polls.append({'poll':number,'started_at':start,'finished_at':datetime.now(timezone.utc).isoformat(),
-            'exit_code':result.returncode,'discovery':{k:v for k,v in discovery.get('sources',{}).items() if k in selected},
+            'exit_code':result.returncode,'execution_results':execution_results,'discovery':{k:v for k,v in discovery.get('sources',{}).items() if k in selected},
             'queue_identity_sha256':digest(sorted(queue)),'published_queue_keys':sorted(published),
             'history_sha256':digest(history),'history_count':len(history),'history_selected_unique':len(urls),
             'source_health':{k:v for k,v in health.items() if k in selected},'unrelated_stock_preserved':True})

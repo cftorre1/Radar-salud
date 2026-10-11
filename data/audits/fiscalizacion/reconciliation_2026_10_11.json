@@ -1,0 +1,1114 @@
+{
+  "as_of": "2026-10-11",
+  "observed_at": "2026-10-11T04:32:14.775607+00:00",
+  "mode": "official_web_observation_replay",
+  "baseline_commit": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "coverage_complete": false,
+  "native_validation": "blocked_environment_proxy_403",
+  "limits": [
+    "The native environment proxy denies SIS/SUSESO HTTPS with 403.",
+    "Visible recent rows reconciled; historical rows beyond inspected bounds, dynamic surfaces and site-wide completeness not certified.",
+    "A zero in these checked lists does not prove site-wide absence of enforcement."
+  ],
+  "surfaces": [
+    {
+      "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/informes-de-fiscalizacion-5126/",
+      "scope": "Prestadores / Isapres reports",
+      "latest_visible_publication": "2024-12-31",
+      "finding": "historical_listing_no_recent_report_in_inspected_rows"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-isapres-6248/",
+      "scope": "Isapres",
+      "latest_visible_publication": "2026-07-09",
+      "finding": "no_publication_in_30_or_90_day_inspected_rows"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-prestadores-6249/",
+      "scope": "Prestadores",
+      "finding": "12 trusted publication rows within 90 days and one contradictory 2025-publication/2026-emission row"
+    },
+    {
+      "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html",
+      "scope": "Isapres",
+      "finding": "related_normative_rows; not new enforcement evidence"
+    },
+    {
+      "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30982.html",
+      "scope": "COMPIN",
+      "finding": "related_normative_rows; merge actor memberships by URL"
+    }
+  ],
+  "decisions": [
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n6836-emision-08-09-2026",
+      "title": "Resolución Exenta IP/N°6836 - Emisión: 08/09/2026",
+      "publication_date": "2026-09-15",
+      "event_date": "2026-09-08",
+      "actors": [
+        "Clínica Los Carrera"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": true,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": true,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": true,
+        "event_date": "2026-09-15",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-09-08"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n6835-emision-08-09-2026",
+      "title": "Resolución Exenta IP/N°6835 - Emisión: 08/09/2026",
+      "publication_date": "2026-09-15",
+      "event_date": "2026-09-08",
+      "actors": [
+        "Clínica Los Carrera"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": true,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": true,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": true,
+        "event_date": "2026-09-15",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-09-08"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n6648-emision-03-09-2026",
+      "title": "Resolución Exenta IP/N°6648 - Emisión: 03/09/2026",
+      "publication_date": "2026-09-15",
+      "event_date": "2026-09-03",
+      "actors": [
+        "Clínica Redsalud Providencia"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": true,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": true,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": true,
+        "event_date": "2026-09-15",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-09-03"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n9774-emision-20-08-2026",
+      "title": "Resolución Exenta IF/N°9774 - Emisión: 20/08/2026",
+      "publication_date": "2026-08-20",
+      "event_date": "2026-08-20",
+      "actors": [
+        "Centro Médico y Dental Red Salud Alameda"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": true,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": false,
+        "event_date": "2026-08-20",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-08-20"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5949-emision-21-08-2026",
+      "title": "Resolución Exenta IP/N°5949 - Emisión: 21/08/2026",
+      "publication_date": "2026-08-21",
+      "event_date": "2026-08-21",
+      "actors": [
+        "Clínica Atacama ACHS Salud"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": false,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": false,
+        "event_date": "2026-08-21",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-08-21"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5948-emision-21-08-2026",
+      "title": "Resolución Exenta IP/N°5948 - Emisión: 21/08/2026",
+      "publication_date": "2026-08-21",
+      "event_date": "2026-08-21",
+      "actors": [
+        "Clínica Alemana de Temuco"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": false,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": false,
+        "event_date": "2026-08-21",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-08-21"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5946-emision-21-08-2026",
+      "title": "Resolución Exenta IP/N°5946 - Emisión: 21/08/2026",
+      "publication_date": "2026-08-21",
+      "event_date": "2026-08-21",
+      "actors": [
+        "Clínica Redsalud Santiago"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": false,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": false,
+        "event_date": "2026-08-21",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-08-21"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5945-emision-21-08-2026",
+      "title": "Resolución Exenta IP/N°5945 - Emisión: 21/08/2026",
+      "publication_date": "2026-08-21",
+      "event_date": "2026-08-21",
+      "actors": [
+        "Clínica Andes Salud Chillán"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": false,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": false,
+        "event_date": "2026-08-21",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-08-21"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n4416-emision-09-07-2026",
+      "title": "Resolución Exenta IP/N°4416 - Emisión: 09/07/2026",
+      "publication_date": "2026-08-05",
+      "event_date": "2026-07-09",
+      "actors": [
+        "Hospital Clínico Fusat"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": false,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": false
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": false,
+        "event_date": "2026-08-05",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-07-09"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n4415-emision-09-07-2026",
+      "title": "Resolución Exenta IP/N°4415 - Emisión: 09/07/2026",
+      "publication_date": "2026-08-05",
+      "event_date": "2026-07-09",
+      "actors": [
+        "Clínica Redsalud Santiago (Ex Bicentenario)"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": false,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": false
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": false,
+        "event_date": "2026-08-05",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-07-09"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n4286-emision-07-07-2026",
+      "title": "Resolución Exenta IP/N°4286 - Emisión: 07/07/2026",
+      "publication_date": "2026-07-13",
+      "event_date": "2026-07-07",
+      "actors": [
+        "Nueva Clínica Cordillera"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": false,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": false
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": false,
+        "event_date": "2026-07-13",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-07-07"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n4285-emision-07-07-2026",
+      "title": "Resolución Exenta IP/N°4285 - Emisión: 07/07/2026",
+      "publication_date": "2026-07-13",
+      "event_date": "2026-07-07",
+      "actors": [
+        "Nueva Clínica Cordillera"
+      ],
+      "scope": "Prestadores",
+      "history_before": true,
+      "feed_before": false,
+      "queue_before": [],
+      "event_windows": {
+        "30": false,
+        "90": false
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": false,
+        "event_date": "2026-07-13",
+        "queue": []
+      },
+      "decision": "correct_existing_history",
+      "reason": "published_material_act; dates_actor_effect_reconciled",
+      "previous_event_date": "2026-07-07"
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n-7462-emision-23-09-2026",
+      "title": "Resolución Exenta IP/N° 7462 - Emisión: 23/09/2026",
+      "publication_date": "2025-09-23",
+      "event_date": "2026-09-23",
+      "actors": [
+        "Clínica Sanatorio Alemán"
+      ],
+      "scope": "Prestadores",
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "2b5e08bcefdf07115eb07291ca6af3bcf4ad9d7a8d37a14e91eeda0e6e9e1c77",
+          "status": "rejected",
+          "reason": "source_date_conflict_requires_review"
+        }
+      ],
+      "event_windows": {
+        "30": true,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": false
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": [
+          {
+            "key": "3a0da1c45ec7b68d30c73ebb5051e5da7df6acb213b90b2a957a9e8c8efd2626",
+            "status": "archived",
+            "reason": "outside_90_day_backfill"
+          }
+        ]
+      },
+      "decision": "hold",
+      "reason": "source_date_conflict_requires_review"
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-790656.html",
+      "title": "Circular 3926",
+      "publication_date": "2026-09-23",
+      "event_date": "2026-09-23",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": true,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "ab96179657e4dbc1e3fdb5c5235543a21946d69b44d2bce22e146bb754c3859e",
+          "status": "published",
+          "reason": null
+        },
+        {
+          "key": "0d294f0f23ac8e3b921580c05f6adb6c117c15a03c8576f890d6e8b9f3c733d7",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": true,
+        "90": true
+      },
+      "publication_windows": {
+        "30": true,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": true,
+        "feed": false,
+        "event_date": "2026-09-23",
+        "queue": [
+          {
+            "key": "ab96179657e4dbc1e3fdb5c5235543a21946d69b44d2bce22e146bb754c3859e",
+            "status": "published",
+            "reason": null
+          }
+        ]
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "already_in_history"
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-787061.html",
+      "title": "Circular 3919",
+      "publication_date": "2026-08-05",
+      "event_date": "2026-08-05",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "d89342e2b12f5cc74ce5e076bfa45551f71a1ee6b6b8c8d10132f95de2a15b22",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-785798.html",
+      "title": "Circular 3917",
+      "publication_date": "2026-07-21",
+      "event_date": "2026-07-21",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "eb419903745681cae86bd2ca405d44c6dfbf3b9e83c8fc48d76ac420856ebfdb",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-791293.html",
+      "title": "Dictamen O-02-S-03153-2026",
+      "publication_date": "2026-09-29",
+      "event_date": "2026-09-29",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": true,
+      "feed_before": true,
+      "queue_before": [
+        {
+          "key": "f2404483e41142508bc8bc8c03a73ab3c9306678fbaf82455e42fe309d8b4831",
+          "status": "published",
+          "reason": "reviewed_fiscalization_route_to_normativa"
+        },
+        {
+          "key": "4732e48879784a357971d5a1e479ed30d78fb4cc60337bfdca6df78bf0df620a",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": true,
+        "90": true
+      },
+      "publication_windows": {
+        "30": true,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "already_published_reviewed_material_instruction",
+      "materiality_reason": "Nueva instrucción operativa transversal con obligaciones concretas; clasificada como normativa, no fiscalización."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-790778.html",
+      "title": "Dictamen O-01-S-04095-2026",
+      "publication_date": "2026-09-23",
+      "event_date": "2026-09-23",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "a1071bb803f8e5df8f2fb2035ce51f5ca2080d5162b7c388a13e61a593ed4fb7",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": true,
+        "90": true
+      },
+      "publication_windows": {
+        "30": true,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-790779.html",
+      "title": "Dictamen O-01-S-03966-2026",
+      "publication_date": "2026-09-11",
+      "event_date": "2026-09-11",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "3318718d2c4e1c0ba9510841678e6c37fc17e689e2f5e21a61bc884302ef18b7",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": true,
+        "90": true
+      },
+      "publication_windows": {
+        "30": true,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-789859.html",
+      "title": "Dictamen O-01-S-03929-2026",
+      "publication_date": "2026-09-10",
+      "event_date": "2026-09-10",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "1f29c50f43d30cadea67432d45fc97df8e3f1f2ffe785c04a087cb031ca659d0",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-791294.html",
+      "title": "Dictamen O-01-S-03926-2026",
+      "publication_date": "2026-09-10",
+      "event_date": "2026-09-10",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "382ccca9ae70ef55a3bbbd1b2b95338a6a6d9c87bc07742989bcd4252ec561f7",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-791296.html",
+      "title": "Dictamen O-01-S-03821-2026",
+      "publication_date": "2026-09-04",
+      "event_date": "2026-09-04",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "1d1cb7aee19c4a6557cea916ed9edda89f423c1bf3b306dfad11a93157c16849",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-788769.html",
+      "title": "Dictamen O-01-S-03491-2026",
+      "publication_date": "2026-08-19",
+      "event_date": "2026-08-19",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "c7e6a6be70ccd37551bf841cce374891a56d18caa5551d7cb7c68c6b7052f070",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-786872.html",
+      "title": "Dictamen O-02-DFS-02681-2026",
+      "publication_date": "2026-08-04",
+      "event_date": "2026-08-04",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "e586112739405d64badbb408b97baef524a2c4ff7582d5a1e40b27087eb88a55",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-786193.html",
+      "title": "Dictamen O-01-S-02953-2026",
+      "publication_date": "2026-07-14",
+      "event_date": "2026-07-14",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "ebc0bf76d66e4557e6fb70d122ccd7b61698c274365eba27709f611515149651",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-785449.html",
+      "title": "Dictamen O-01-DFS-02930-2026",
+      "publication_date": "2026-07-13",
+      "event_date": "2026-07-13",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "b62f4528b324a7a888df5348d68c26057491c10a471d28765295fdf4baa590ff",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-785448.html",
+      "title": "Dictamen O-01-DFS-02925-2026",
+      "publication_date": "2026-07-13",
+      "event_date": "2026-07-13",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "fdf4b5b15ee860c2ed0e59b579394070269c6a440c31f08972b7d636bdbd4782",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "url": "https://www.suseso.gob.cl/612/w3-article-785452.html",
+      "title": "Dictamen O-01-S-02937-2026",
+      "publication_date": "2026-07-13",
+      "event_date": "2026-07-13",
+      "actors": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "scope": [
+        "COMPIN",
+        "Isapres"
+      ],
+      "history_before": false,
+      "feed_before": false,
+      "queue_before": [
+        {
+          "key": "1e85a79a9e1b3a18dd9b7a9bc9456e787f0ce899a869ba7a697325fe2df632a1",
+          "status": "rejected",
+          "reason": "related_normative_not_enforcement"
+        }
+      ],
+      "event_windows": {
+        "30": false,
+        "90": true
+      },
+      "publication_windows": {
+        "30": false,
+        "90": true
+      },
+      "baseline_presence": {
+        "history": false,
+        "feed": false,
+        "event_date": null,
+        "queue": []
+      },
+      "decision": "exclude_from_fiscalization",
+      "reason": "related_normative_not_enforcement",
+      "normative_outcome": "excluded_from_this_enforcement_scope",
+      "materiality_reason": "Related circular/pronouncement is not a new sanction or verified enforcement result; no fiscalization publication. Independent normative value is not inferred from taxonomy membership."
+    }
+  ],
+  "outcome_counts": {
+    "correct_existing_history": 12,
+    "hold": 1,
+    "exclude_from_fiscalization": 15
+  },
+  "next_step": "Run native collectors in an environment allowing official domains; compare raw HTML and dated surface receipts after this SHA. Extend reconciliation to all dynamic rows. Review other SUSESO normative value independently; never label taxonomy rows as enforcement.",
+  "scoped_feed_refresh": {
+    "preserved_other_rows": 48,
+    "refreshed_rows": 3,
+    "note": "No source poll timestamp is updated by rebuilding the feed."
+  }
+}

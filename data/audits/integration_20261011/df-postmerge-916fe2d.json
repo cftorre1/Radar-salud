@@ -1,0 +1,255 @@
+{
+  "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+  "targets": {
+    "sources": [
+      "diario_financiero"
+    ],
+    "origin_prs": [
+      11
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication"
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T13:16:44.742734+00:00",
+      "finished_at": "2026-10-11T13:17:38.115089+00:00",
+      "exit_code": 0,
+      "discovery": {
+        "diario_financiero": {
+          "discovered": 41,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T13:17:37.925857+00:00",
+          "dated": 41,
+          "undated": 0,
+          "detail_errors": 0,
+          "insufficient_evidence": 5,
+          "textual_candidates": 36,
+          "nontextual_candidates_known": 5,
+          "textual_capture_status": "verified",
+          "format_capability": {
+            "text": "runtime_verified",
+            "images": "requires_ocr",
+            "audio_video": "requires_official_text"
+          },
+          "newest_event_date": "2026-10-10"
+        }
+      },
+      "queue_identity_sha256": "e6898ab0739a3b264f425eab704104e6efeef8ede76885d5a0eb717f914d67eb",
+      "published_queue_keys": [
+        "001880be88e26c954e4e02bd0e855bb3b21e478fce7b51345fb71b5784d1503f",
+        "0c5c737d91b9c1b1f9f0a2ac1bc713afbb7bc0cbf3b3e27a86d64fc14c184f70",
+        "3046fd28d8ecf63d6721eae201f3e7abcc6c4880f8992869646c63216b105369",
+        "43d5d847e5797b0c45139474ff782fa27677c78174d47b41c1cd185ab36fa5b6",
+        "48717f0ed367da031fd43a3b38f01c508500d39d915692dc2af45940b03871ca",
+        "4d26b3f9e3733e6b7262517d77a5d93ca13958c140187d9facceaeda69938d7e",
+        "504a2da6fcaddd9aab2e3f9953e3f7dc30d4b12d06a3d3724c4da00d21038e74",
+        "570e97ef3ea1eb5d0f9ef88e12ae33549ef96ad209bc40ddfdcc600f9af610a4",
+        "650b6d709594fb1bd206a70c1a5f259e661bac3d7d854bb321a5f18b7171ecb1",
+        "66e67300eb28c9297f2327efd52f3b45d5d0b513dc7c221c7635ffd0eb46ffbd",
+        "86c1ccfbdfd12d6a658a7af6d5b0c835a762f825804984f66e2cdaf1f89e690b",
+        "86e853158931f41994076ecdfccf6af50c85d5b23c67663bad2ee114fe930e20",
+        "8845d2bef246d171a5a95697533e91865e448b478ef53cc29723489592f6a5d6",
+        "8f77c0de2557f1cea4356689be85cfa2854f51de962866b8d712a519e01bef08",
+        "a54ba05695ec7d74e10b63a11645177a908894b092f8b8083bd33d18db0321fa",
+        "b420d2411971ec12a14de494d93839315f2927e08e8a8a56ed977779f1d29d3c",
+        "b4ab2492cdafa7262e33248fd01cce22814aa9a19e607b196491c78ffe44ffbf",
+        "bc7acebabe71649df9b249a24214c06510e580ee7ab8f6d7ea69c2ba99e6d70d",
+        "c08247ea91556f82b5a297063cb1f5ea4fcc9b8b75033062810f388752b39043",
+        "c8a7906bdf72ca27799f9c977ba6dd365f070bd573b790be6ed57958e6e37ced",
+        "cf3410ec414808970332e18eaebe0fd0d2896b45996fce879f28a7078dd70808",
+        "d8fe0749f547dabfdf1122622a357b179561389c2d9c8a91c71ac1e0eae93630",
+        "e4c639df46d35cbdccae32c3169949d3984d9b2895396e154c58492e2c9570b0",
+        "e7ab4bdfe5e778b632650193e9d0ef88e0351d1521b059c0e2161a27658116fc",
+        "ed4afe2f608b2062b74f9fd679a3facb2888841101c9c2a1a8db8a7fe32a04c3",
+        "ede6efc27a1ee1d6859c37124ad64a6974149a33c86c51ae2c06aa49fec30632"
+      ],
+      "history_sha256": "6d8c2338250037279e9c74680e6d909fde1a9162fcca4d5fe7e3541b557bbd13",
+      "history_count": 771,
+      "history_selected_unique": 52,
+      "source_health": {
+        "diario_financiero": {
+          "name": "Diario Financiero",
+          "checked_at": "2026-10-11T13:17:37.928540+00:00",
+          "last_signal_at": "2026-10-10",
+          "discovered": 41,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 19,
+          "rejected": 175,
+          "status": "warning",
+          "error": null,
+          "technical_status": "partial",
+          "coverage_status": "date_or_detail_gap",
+          "content_freshness": "recent",
+          "editorial_outcome": "rejected",
+          "dated": 41,
+          "undated": 0,
+          "detail_errors": 0,
+          "insufficient_evidence": 5,
+          "textual_candidates": 36,
+          "nontextual_candidates_known": 5,
+          "textual_capture_status": "verified",
+          "format_capability": {
+            "text": "runtime_verified",
+            "images": "requires_ocr",
+            "audio_video": "requires_official_text"
+          },
+          "newest_event_date": "2026-10-10",
+          "deferred_multimedia": 19,
+          "unverifiable_date_dispositions": 0,
+          "last_published_event_at": "2026-10-10",
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "pending": "cumulative_queue",
+            "deferred": "cumulative_queue",
+            "rejected": "cumulative_queue"
+          },
+          "last_discovered_event_at": "2026-10-10"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T13:17:38.134981+00:00",
+      "finished_at": "2026-10-11T13:18:27.241565+00:00",
+      "exit_code": 0,
+      "discovery": {
+        "diario_financiero": {
+          "discovered": 41,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T13:18:27.075056+00:00",
+          "dated": 41,
+          "undated": 0,
+          "detail_errors": 0,
+          "insufficient_evidence": 5,
+          "textual_candidates": 36,
+          "nontextual_candidates_known": 5,
+          "textual_capture_status": "verified",
+          "format_capability": {
+            "text": "runtime_verified",
+            "images": "requires_ocr",
+            "audio_video": "requires_official_text"
+          },
+          "newest_event_date": "2026-10-10"
+        }
+      },
+      "queue_identity_sha256": "e6898ab0739a3b264f425eab704104e6efeef8ede76885d5a0eb717f914d67eb",
+      "published_queue_keys": [
+        "001880be88e26c954e4e02bd0e855bb3b21e478fce7b51345fb71b5784d1503f",
+        "0c5c737d91b9c1b1f9f0a2ac1bc713afbb7bc0cbf3b3e27a86d64fc14c184f70",
+        "3046fd28d8ecf63d6721eae201f3e7abcc6c4880f8992869646c63216b105369",
+        "43d5d847e5797b0c45139474ff782fa27677c78174d47b41c1cd185ab36fa5b6",
+        "48717f0ed367da031fd43a3b38f01c508500d39d915692dc2af45940b03871ca",
+        "4d26b3f9e3733e6b7262517d77a5d93ca13958c140187d9facceaeda69938d7e",
+        "504a2da6fcaddd9aab2e3f9953e3f7dc30d4b12d06a3d3724c4da00d21038e74",
+        "570e97ef3ea1eb5d0f9ef88e12ae33549ef96ad209bc40ddfdcc600f9af610a4",
+        "650b6d709594fb1bd206a70c1a5f259e661bac3d7d854bb321a5f18b7171ecb1",
+        "66e67300eb28c9297f2327efd52f3b45d5d0b513dc7c221c7635ffd0eb46ffbd",
+        "86c1ccfbdfd12d6a658a7af6d5b0c835a762f825804984f66e2cdaf1f89e690b",
+        "86e853158931f41994076ecdfccf6af50c85d5b23c67663bad2ee114fe930e20",
+        "8845d2bef246d171a5a95697533e91865e448b478ef53cc29723489592f6a5d6",
+        "8f77c0de2557f1cea4356689be85cfa2854f51de962866b8d712a519e01bef08",
+        "a54ba05695ec7d74e10b63a11645177a908894b092f8b8083bd33d18db0321fa",
+        "b420d2411971ec12a14de494d93839315f2927e08e8a8a56ed977779f1d29d3c",
+        "b4ab2492cdafa7262e33248fd01cce22814aa9a19e607b196491c78ffe44ffbf",
+        "bc7acebabe71649df9b249a24214c06510e580ee7ab8f6d7ea69c2ba99e6d70d",
+        "c08247ea91556f82b5a297063cb1f5ea4fcc9b8b75033062810f388752b39043",
+        "c8a7906bdf72ca27799f9c977ba6dd365f070bd573b790be6ed57958e6e37ced",
+        "cf3410ec414808970332e18eaebe0fd0d2896b45996fce879f28a7078dd70808",
+        "d8fe0749f547dabfdf1122622a357b179561389c2d9c8a91c71ac1e0eae93630",
+        "e4c639df46d35cbdccae32c3169949d3984d9b2895396e154c58492e2c9570b0",
+        "e7ab4bdfe5e778b632650193e9d0ef88e0351d1521b059c0e2161a27658116fc",
+        "ed4afe2f608b2062b74f9fd679a3facb2888841101c9c2a1a8db8a7fe32a04c3",
+        "ede6efc27a1ee1d6859c37124ad64a6974149a33c86c51ae2c06aa49fec30632"
+      ],
+      "history_sha256": "6d8c2338250037279e9c74680e6d909fde1a9162fcca4d5fe7e3541b557bbd13",
+      "history_count": 771,
+      "history_selected_unique": 52,
+      "source_health": {
+        "diario_financiero": {
+          "name": "Diario Financiero",
+          "checked_at": "2026-10-11T13:18:27.077647+00:00",
+          "last_signal_at": "2026-10-10",
+          "discovered": 41,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 19,
+          "rejected": 175,
+          "status": "warning",
+          "error": null,
+          "technical_status": "partial",
+          "coverage_status": "date_or_detail_gap",
+          "content_freshness": "recent",
+          "editorial_outcome": "rejected",
+          "dated": 41,
+          "undated": 0,
+          "detail_errors": 0,
+          "insufficient_evidence": 5,
+          "textual_candidates": 36,
+          "nontextual_candidates_known": 5,
+          "textual_capture_status": "verified",
+          "format_capability": {
+            "text": "runtime_verified",
+            "images": "requires_ocr",
+            "audio_video": "requires_official_text"
+          },
+          "newest_event_date": "2026-10-10",
+          "deferred_multimedia": 19,
+          "unverifiable_date_dispositions": 0,
+          "last_published_event_at": "2026-10-10",
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "pending": "cumulative_queue",
+            "deferred": "cumulative_queue",
+            "rejected": "cumulative_queue"
+          },
+          "last_discovered_event_at": "2026-10-10"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+    "reviewed_at": "2026-10-11T13:18:27.469566+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 73,
+  "runtime_run": 38142527704,
+  "preview_run": 38142527882,
+  "artifact_sha256": "27c88b9b8db5aa0452d76fce37dfc370ee97b460b0e9ccdead4328838e3f7dc9"
+}

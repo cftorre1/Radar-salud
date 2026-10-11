@@ -90,8 +90,10 @@ def test_sanctions_become_two_rolling_pulses_without_losing_individual_sources()
     rows.append(dict(rows[0],title="Resolución backfill",source_url="https://x/backfill",event_date="2026-09-21",ingestion_mode="BACKFILL"))
     rows.append(dict(rows[0],title="Resolución antigua",source_url="https://x/old",event_date="2026-08-01"))
     pulses=m._sanction_pulses(rows,date(2026,9,23))
-    assert sorted(x["sanction_count"] for x in pulses if x.get("sanction_count"))==[2,3]
-    assert not [x for x in pulses if x["source_url"]=="https://x/old"]
+    assert sorted(x["sanction_count"] for x in pulses if 'últimos 30 días' in x['title'])==[2,3]
+    older,=[x for x in pulses if 'días 31 a 90' in x['title']]
+    assert older['sanction_count']==1
+    assert older['source_alternatives'][0]['url']=='https://x/old'
     assert {x["source_url"] for x in pulses if x.get("sanction_count")} <= {r["source_url"] for r in rows}
     assert all(len(x["source_alternatives"])==x["sanction_count"] for x in pulses if x.get("sanction_count"))
     assert all(x["ingestion_mode"]=="LIVE" for x in pulses if x.get("sanction_count"))
@@ -200,7 +202,7 @@ def test_all_opaque_normative_acts_get_identity_plus_subject_for_public_title():
         assert row["display_title"] != row["normative_document_label"]
         assert row["normative_document_number"] in row["display_title"]
         assert row["normative_context"] and row["normative_context"].casefold() not in row["display_title"].casefold()
-        check=cfg["records"][row["normative_document_number"].replace("IF/N°","").replace("IP/N°","").replace(".","")]
+        check=cfg.get("source_records",{}).get(row["source_url"]) or cfg["records"][row["normative_document_number"].replace("IF/N°","").replace("IP/N°","").replace(".","")]
         if check.get("resolution_review"):
             for group in ("decision_terms","affected_act_terms","effect_terms"):
                 assert any(term.casefold() in row["display_title"].casefold() for term in check["resolution_review"][group])
@@ -313,3 +315,14 @@ def test_normative_original_cohort_ages_out_without_losing_history():
     assert july10["event_date"]=="2026-07-10"
     history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
     assert any(s["source_url"]==july10["source_url"] and s["event_date"]==july10["event_date"] for s in history)
+
+
+def test_verified_publication_boundary_retains_old_issuance_without_changing_it():
+    from datetime import date
+    row=sig('Resolución IP/N°4286',event='2026-07-07',url='https://www.superdesalud.gob.cl/normativa/4286')
+    row.update(event_type='SANCTION',signal_types=['Fiscalización'],scopes=['Prestadores'],publication_date='2026-07-13',emission_date='2026-07-07',event_date_basis='emission',regulated_entity='Nueva Cordillera',sanction_amount=50,sanction_unit='UF')
+    pulse,=m.curate([row],resolve_external=False,as_of=date(2026,10,11))
+    assert pulse['source_alternatives'][0]['event_date']=='2026-07-07'
+    assert pulse['source_alternatives'][0]['publication_date']=='2026-07-13'
+    assert 'días 31 a 90' in pulse['title']
+    assert m.curate([{**row,'publication_date':'2026-07-07'}],resolve_external=False,as_of=date(2026,10,11))==[]

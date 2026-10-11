@@ -52,7 +52,7 @@ def review(web, sha):
                 continue
             path=f"data/radar_today.json#signals/{index}"
             number="".join(ch for ch in str(signal.get("normative_document_number") or signal.get("normative_document_label") or "") if ch.isdigit())
-            record=contract.get("records",{}).get(number,{})
+            record=contract.get("source_records",{}).get(signal.get("source_url")) or contract.get("records",{}).get(number,{})
             title=str(signal.get("display_title") or signal.get("title") or "")
             identity=str(signal.get("normative_document_label") or signal.get("legal_identity") or "")
             context=str(signal.get("normative_context") or "")

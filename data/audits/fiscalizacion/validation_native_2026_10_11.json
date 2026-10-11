@@ -1,0 +1,396 @@
+{
+  "candidate_sha": "8798bfc5abe48c7485208ca7058c519d949acd18",
+  "stock_commit_sha": "9fe964cfd7733f9eac6a1717bf2a40a9b9a18f01",
+  "native_engine_sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
+  "baseline_sha": "cadb6c2",
+  "validated_at": "2026-10-11T07:39:26.902569+00:00",
+  "acceptance_complete": false,
+  "source_states": {
+    "superintendencia_fiscalizacion": "OPERATIVE_DEGRADED",
+    "suseso_fiscalizacion": "OPERATIVE_DEGRADED"
+  },
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q",
+    "passed": 305,
+    "skipped": 1,
+    "skip_reason": "OPENAI_API_KEY unavailable for unrelated beta integration test; not a source fetch success"
+  },
+  "node": {
+    "command": "node tests/web.test.cjs",
+    "passed": 42,
+    "failed": 0
+  },
+  "browser": {
+    "specific": {
+      "command": "npx playwright test tests/browser/fiscalization.spec.cjs --config work/fiscalizacion/playwright.config.cjs",
+      "passed": 4,
+      "failed": 0,
+      "screenshots": [
+        "data/audits/fiscalizacion/native-register-desktop.png",
+        "data/audits/fiscalizacion/native-register-mobile.png"
+      ]
+    },
+    "global_local": {
+      "baseline": {
+        "startTime": "2026-10-11T04:38:32.578Z",
+        "duration": 52835.717,
+        "expected": 32,
+        "skipped": 0,
+        "unexpected": 14,
+        "flaky": 0
+      },
+      "candidate": {
+        "startTime": "2026-10-11T07:13:44.713Z",
+        "duration": 53348.23,
+        "expected": 36,
+        "skipped": 0,
+        "unexpected": 14,
+        "flaky": 0
+      },
+      "inherited_failures": [
+        {
+          "project": "desktop",
+          "title": "Home V2 loads, filters persist and compact triage remains stable",
+          "file": "product.spec.cjs",
+          "line": 3
+        },
+        {
+          "project": "desktop",
+          "title": "operations dashboard loads without inventing measurements",
+          "file": "product.spec.cjs",
+          "line": 109
+        },
+        {
+          "project": "desktop",
+          "title": "Global read state is shared across Home and the research page",
+          "file": "product.spec.cjs",
+          "line": 187
+        },
+        {
+          "project": "desktop",
+          "title": "Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct",
+          "file": "product.spec.cjs",
+          "line": 312
+        },
+        {
+          "project": "desktop",
+          "title": "Pulso Isapre leads with executive table and statistics use the value ladder",
+          "file": "product.spec.cjs",
+          "line": 414
+        },
+        {
+          "project": "desktop",
+          "title": "priority statistical releases use compact tables and collapsed traceability",
+          "file": "product.spec.cjs",
+          "line": 523
+        },
+        {
+          "project": "desktop",
+          "title": "Normative V2.1 puts document, subject and action in each current headline",
+          "file": "product.spec.cjs",
+          "line": 572
+        },
+        {
+          "project": "mobile",
+          "title": "Home V2 loads, filters persist and compact triage remains stable",
+          "file": "product.spec.cjs",
+          "line": 3
+        },
+        {
+          "project": "mobile",
+          "title": "operations dashboard loads without inventing measurements",
+          "file": "product.spec.cjs",
+          "line": 109
+        },
+        {
+          "project": "mobile",
+          "title": "Global read state is shared across Home and the research page",
+          "file": "product.spec.cjs",
+          "line": 187
+        },
+        {
+          "project": "mobile",
+          "title": "Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct",
+          "file": "product.spec.cjs",
+          "line": 312
+        },
+        {
+          "project": "mobile",
+          "title": "Pulso Isapre leads with executive table and statistics use the value ladder",
+          "file": "product.spec.cjs",
+          "line": 414
+        },
+        {
+          "project": "mobile",
+          "title": "priority statistical releases use compact tables and collapsed traceability",
+          "file": "product.spec.cjs",
+          "line": 523
+        },
+        {
+          "project": "mobile",
+          "title": "Normative V2.1 puts document, subject and action in each current headline",
+          "file": "product.spec.cjs",
+          "line": 572
+        }
+      ],
+      "introduced_failures": []
+    },
+    "ci": {
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751325",
+      "sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
+      "tests": "PASS",
+      "browser_passed": 44,
+      "browser_failed": 6,
+      "failure_lines": [
+        414,
+        523,
+        572
+      ],
+      "projects": [
+        "desktop",
+        "mobile"
+      ],
+      "reviewer": "SKIPPED because browser gate failed",
+      "verdict": "FAIL; unchanged inherited statistical/normative contracts"
+    }
+  },
+  "coverage_reviewer": {
+    "historical_listing_inventory_differences": [],
+    "reviewer": "independent_read_only_official_html_reconciliation",
+    "verdict": "PASS",
+    "failures": [],
+    "counts": {
+      "30": {
+        "sis": 14,
+        "suseso": 20
+      },
+      "90": {
+        "sis": 32,
+        "suseso": 77
+      }
+    },
+    "sis_unique_listing_urls": 3344,
+    "professional_offices": 101,
+    "current_historical_stock": 17,
+    "exact_calendar_windows": {
+      "30": {
+        "sis": 14,
+        "suseso": 20
+      },
+      "90": {
+        "sis": 28,
+        "suseso": 74
+      }
+    },
+    "official_news_inventory": 187,
+    "news_primary_reviews_verified": 59,
+    "date_uncertain_reports": 10,
+    "coverage_complete": false,
+    "limits": [
+      "Bounded dated coverage; daily publication dates of ten reports remain unknown.",
+      "Primary legal readings are explicit editorial reviews with matching native PDF hashes; this script does not certify legal interpretation.",
+      "Global QA and existing product Reviewer remain independent release gates."
+    ]
+  },
+  "global_reviewer": {
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": false,
+      "ux": true
+    },
+    "inherited_findings": 8,
+    "introduced_findings": 0,
+    "verdict": "FAIL; baseline statistics",
+    "artifact": "data/audits/fiscalizacion/reviewer_global_native_2026_10_11.json"
+  },
+  "native_runtime": {
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+    "sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
+    "receipt_count": 204,
+    "http_statuses": {
+      "200": 202,
+      "404": 2
+    },
+    "tls_verified_receipts": 204,
+    "actual_collectors": true,
+    "actual_engine": true,
+    "engine_idempotent": true,
+    "writes_to_staging_or_main": false,
+    "independent_coverage_reviewer_github": "PASS",
+    "latest_gate_verification": {
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122064329",
+      "sha": "8798bfc5abe48c7485208ca7058c519d949acd18",
+      "result": "PASS; transport, real engine idempotence and independent coverage Reviewer including 59 primary-news hash checks"
+    },
+    "receipt_snapshot_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340"
+  },
+  "stock_replay_idempotence": {
+    "byte_identical": true,
+    "before": {
+      "data/history/superintendencia_signals.json": "60019a3cd07af3232aa21087f11e037c7e1fc5f57b1471b3034fcd2083b7e49b",
+      "data/state/pending_queue.json": "10f65b458e1a878b8a21770bff469d770ae673025912d6e3b534db3b2264458f",
+      "data/source_health.json": "6169f9a3556ac2b76bc603776eb51bd63b8a225b2bdf32761835ef34f464c492",
+      "web/data/radar_today.json": "0bbfd673d0f42d36b352198737ffe4590def1a1274990f3e12de244e69f6be39",
+      "web/data/source_health.json": "6169f9a3556ac2b76bc603776eb51bd63b8a225b2bdf32761835ef34f464c492"
+    },
+    "after": {
+      "data/history/superintendencia_signals.json": "60019a3cd07af3232aa21087f11e037c7e1fc5f57b1471b3034fcd2083b7e49b",
+      "data/state/pending_queue.json": "10f65b458e1a878b8a21770bff469d770ae673025912d6e3b534db3b2264458f",
+      "data/source_health.json": "6169f9a3556ac2b76bc603776eb51bd63b8a225b2bdf32761835ef34f464c492",
+      "web/data/radar_today.json": "0bbfd673d0f42d36b352198737ffe4590def1a1274990f3e12de244e69f6be39",
+      "web/data/source_health.json": "6169f9a3556ac2b76bc603776eb51bd63b8a225b2bdf32761835ef34f464c492"
+    },
+    "native_engine_idempotent": true,
+    "other_queue_records_preserved": true,
+    "full_cycle_roundtrip": {
+      "cycle": "native verified capture collector -> actual engine twice -> scoped stock reconciliation; repeat entire cycle",
+      "first_cycle_repairs_original_listing_observation": true,
+      "second_cycle_byte_identical": true,
+      "snapshots": [
+        {
+          "data/history/superintendencia_signals.json": "60019a3cd07af3232aa21087f11e037c7e1fc5f57b1471b3034fcd2083b7e49b",
+          "data/state/pending_queue.json": "321d7da1e2aca4d5b23755565c9d88013370e889e083c73725c61689f8eb442e"
+        },
+        {
+          "data/history/superintendencia_signals.json": "60019a3cd07af3232aa21087f11e037c7e1fc5f57b1471b3034fcd2083b7e49b",
+          "data/state/pending_queue.json": "321d7da1e2aca4d5b23755565c9d88013370e889e083c73725c61689f8eb442e"
+        }
+      ],
+      "processing_candidate_sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7"
+    }
+  },
+  "windows": {
+    "superintendencia_fiscalizacion": {
+      "30": {
+        "publication_dated": 13,
+        "emission_dated": 11,
+        "official_confirmed": 14,
+        "detected": 14,
+        "baseline_detected": 4,
+        "baseline_omitted": 10,
+        "omitted": 0,
+        "material": 14,
+        "published": 14,
+        "rejected": 0,
+        "deferred": 0
+      },
+      "90": {
+        "publication_dated": 31,
+        "emission_dated": 27,
+        "official_confirmed": 32,
+        "detected": 32,
+        "baseline_detected": 13,
+        "baseline_omitted": 19,
+        "omitted": 0,
+        "material": 32,
+        "published": 32,
+        "rejected": 0,
+        "deferred": 0
+      }
+    },
+    "suseso_fiscalizacion": {
+      "30": {
+        "publication_dated": 0,
+        "emission_dated": 20,
+        "official_confirmed": 20,
+        "detected": 20,
+        "baseline_detected": 0,
+        "baseline_omitted": 20,
+        "omitted": 0,
+        "material": 20,
+        "published": 20,
+        "rejected": 0,
+        "deferred": 0
+      },
+      "90": {
+        "publication_dated": 2,
+        "emission_dated": 75,
+        "official_confirmed": 77,
+        "detected": 77,
+        "baseline_detected": 0,
+        "baseline_omitted": 77,
+        "omitted": 0,
+        "material": 77,
+        "published": 77,
+        "rejected": 0,
+        "deferred": 0
+      }
+    }
+  },
+  "exact_calendar_windows": {
+    "superintendencia_fiscalizacion": {
+      "30": {
+        "official_confirmed": 14,
+        "detected": 14,
+        "omitted": 0,
+        "material": 14,
+        "published": 14,
+        "rejected": 0,
+        "deferred": 0,
+        "boundary_records_excluded": 0
+      },
+      "90": {
+        "official_confirmed": 28,
+        "detected": 28,
+        "omitted": 0,
+        "material": 28,
+        "published": 28,
+        "rejected": 0,
+        "deferred": 0,
+        "boundary_records_excluded": 4
+      }
+    },
+    "suseso_fiscalizacion": {
+      "30": {
+        "official_confirmed": 20,
+        "detected": 20,
+        "omitted": 0,
+        "material": 20,
+        "published": 20,
+        "rejected": 0,
+        "deferred": 0,
+        "boundary_records_excluded": 0
+      },
+      "90": {
+        "official_confirmed": 74,
+        "detected": 74,
+        "omitted": 0,
+        "material": 74,
+        "published": 74,
+        "rejected": 0,
+        "deferred": 0,
+        "boundary_records_excluded": 3
+      }
+    }
+  },
+  "window_semantics": {
+    "primary": "inclusive elapsed date age: 0..30 and 0..90; matches the existing application filter",
+    "30_start": "2026-09-11",
+    "90_start": "2026-07-13",
+    "exact_calendar_30_start": "2026-09-12",
+    "exact_calendar_90_start": "2026-07-14"
+  },
+  "current_historical_sanction_stock": {
+    "count": 17,
+    "published": 17,
+    "counted_as_recent_activity": false
+  },
+  "blocking_reasons": [
+    "Ten medical result reports have no verified daily publication or issuance date.",
+    "439 programme rows establish historical execution, never their daily publication date.",
+    "Historical unique URLs are not a full certification of distinct legal-act identities.",
+    "Global browser QA and global Reviewer remain blocked by the baseline.",
+    "PR #15 is isolated; integration to staging and post-merge core verification have not happened."
+  ],
+  "next_steps": [
+    "Find original daily publication/emission evidence for the ten medical reports; do not infer dates from execution periods or PDF uploads.",
+    "Resolve inherited global QA/statistics/Normative V2.1 gates with their owning workstreams.",
+    "Integrate PR #15 safely to staging only with required gates, then rerun core and reconcile 20/72 exact-window SUSESO oficios; keep Work 3 finding open until then."
+  ],
+  "durable_original_archive": {
+    "path": "data/audits/fiscalizacion/native_original_indexes_2026_10_11.zip",
+    "sha256": "69ed74351514f54dfc40e46a09260487a1ddbab8c575b08328fb9173b065ed80",
+    "body_count": 87
+  }
+}
