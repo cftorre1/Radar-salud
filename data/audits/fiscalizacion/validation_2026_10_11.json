@@ -1,0 +1,856 @@
+{
+  "candidate_sha": "3d6ed4229aedf7dc2365b26a0c889d35741e527b",
+  "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "validated_at": "2026-10-11T04:45:53.324678+00:00",
+  "acceptance_complete": false,
+  "blocking_reasons": [
+    "native_original_surface_http_403",
+    "existing_14_browser_failures",
+    "existing_8_statistics_reviewer_findings"
+  ],
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q",
+    "passed": 285,
+    "skipped": 1,
+    "skip_reason": "Beta-source integration requires OPENAI_API_KEY; no LIVE/AI validation claimed.",
+    "warnings": [
+      "Existing unregistered integration pytest marker."
+    ]
+  },
+  "node": {
+    "command": "npm test",
+    "passed": 1,
+    "failed": 0
+  },
+  "browser": {
+    "command": "npx playwright test --config work/fiscalizacion/playwright.config.cjs",
+    "environment": "Local http.server, system Chromium, desktop 1440x900 and mobile 390x844; official network access is not validated by browser QA.",
+    "baseline": {
+      "counts": {
+        "unexpected": 14,
+        "expected": 32
+      },
+      "tests": [
+        {
+          "title": "Home V2 loads, filters persist and compact triage remains stable",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(received).toBeGreaterThan(expected)\n\nExpected: > 6\nReceived:   5\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate"
+          ]
+        },
+        {
+          "title": "Inbox shows every unread signal, supports direct read and persists it",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "operations dashboard loads without inventing measurements",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  locator('#coverageSegments tr')\nExpected: 4\nReceived: 0\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for locator('#coverageSegments tr')\n    9 × locator resolved to 0 elements\n      - unexpected value \"0\"\n"
+          ]
+        },
+        {
+          "title": "Home V2 places unread Global and Insight in the brief, then retains subdued feed cards",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Expired weekly insight stays hidden while its original signal remains in history",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Feed-only share uses Web Share and clipboard fallback without analytics",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Global read state is shared across Home and the research page",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  locator('#globalInbox .inbox-row')\nExpected: 9\nReceived: 10\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for locator('#globalInbox .inbox-row')\n    9 × locator resolved to 10 elements\n      - unexpected value \"10\"\n"
+          ]
+        },
+        {
+          "title": "source suggestion is visible, concise and fail-closed without provider",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "source suggestion never falls back to URL serialization without JavaScript",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  locator('#globalMetrics')\nExpected: \"10 temas · no leídos 9\"\nReceived: \"10 temas · no leídos 10\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for locator('#globalMetrics')\n    9 × locator resolved to <p class=\"inbox-meta\" id=\"globalMetrics\">10 temas · no leídos 10</p>\n      - unexpected value \"10 temas · no leídos 10\"\n"
+          ]
+        },
+        {
+          "title": "Weekly email capture requires consent and stays closed without approved provider",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "analytics never sends without explicit privacy approval even if a key is present",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "authorized analytics fixture emits only anonymous event fields",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "persistent editorial contract is visible in feed and brief",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Pulso Isapre leads with executive table and statistics use the value ladder",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: Estadística Trimestral de Casos GES missing from snapshot\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        },
+        {
+          "title": "committee HOLD/REJECT and failed publication contracts do not render as individual feed cards",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "period is visible outside filters, persisted without duplicating metric copy, and resettable",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Home hero is compact, one-line and exposes subscription plus Global Intelligence",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "conversion surfaces lead with value and hide internal implementation status",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "sources are grouped by decision value and expose freshness layers",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "priority statistical releases use compact tables and collapsed traceability",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: Estadística Trimestral de Casos GES missing\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        },
+        {
+          "title": "Normative V2.1 puts document, subject and action in each current headline",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: 529\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        },
+        {
+          "title": "Home V2 loads, filters persist and compact triage remains stable",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(received).toBeGreaterThan(expected)\n\nExpected: > 6\nReceived:   5\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate"
+          ]
+        },
+        {
+          "title": "Inbox shows every unread signal, supports direct read and persists it",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "operations dashboard loads without inventing measurements",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  locator('#coverageSegments tr')\nExpected: 4\nReceived: 0\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for locator('#coverageSegments tr')\n    9 × locator resolved to 0 elements\n      - unexpected value \"0\"\n"
+          ]
+        },
+        {
+          "title": "Home V2 places unread Global and Insight in the brief, then retains subdued feed cards",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Expired weekly insight stays hidden while its original signal remains in history",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Feed-only share uses Web Share and clipboard fallback without analytics",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Global read state is shared across Home and the research page",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  locator('#globalInbox .inbox-row')\nExpected: 9\nReceived: 10\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for locator('#globalInbox .inbox-row')\n    9 × locator resolved to 10 elements\n      - unexpected value \"10\"\n"
+          ]
+        },
+        {
+          "title": "source suggestion is visible, concise and fail-closed without provider",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "source suggestion never falls back to URL serialization without JavaScript",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  locator('#globalMetrics')\nExpected: \"10 temas · no leídos 9\"\nReceived: \"10 temas · no leídos 10\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for locator('#globalMetrics')\n    9 × locator resolved to <p class=\"inbox-meta\" id=\"globalMetrics\">10 temas · no leídos 10</p>\n      - unexpected value \"10 temas · no leídos 10\"\n"
+          ]
+        },
+        {
+          "title": "Weekly email capture requires consent and stays closed without approved provider",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "analytics never sends without explicit privacy approval even if a key is present",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "authorized analytics fixture emits only anonymous event fields",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "persistent editorial contract is visible in feed and brief",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Pulso Isapre leads with executive table and statistics use the value ladder",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: Estadística Trimestral de Casos GES missing from snapshot\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        },
+        {
+          "title": "committee HOLD/REJECT and failed publication contracts do not render as individual feed cards",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "period is visible outside filters, persisted without duplicating metric copy, and resettable",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Home hero is compact, one-line and exposes subscription plus Global Intelligence",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "conversion surfaces lead with value and hide internal implementation status",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "sources are grouped by decision value and expose freshness layers",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "priority statistical releases use compact tables and collapsed traceability",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: Estadística Trimestral de Casos GES missing\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        },
+        {
+          "title": "Normative V2.1 puts document, subject and action in each current headline",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: 529\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "counts": {
+        "expected": 34,
+        "unexpected": 14
+      },
+      "tests": [
+        {
+          "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Home V2 loads, filters persist and compact triage remains stable",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(received).toBeGreaterThan(expected)\n\nExpected: > 6\nReceived:   5\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate"
+          ]
+        },
+        {
+          "title": "Inbox shows every unread signal, supports direct read and persists it",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "operations dashboard loads without inventing measurements",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  locator('#coverageSegments tr')\nExpected: 4\nReceived: 0\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for locator('#coverageSegments tr')\n    9 × locator resolved to 0 elements\n      - unexpected value \"0\"\n"
+          ]
+        },
+        {
+          "title": "Home V2 places unread Global and Insight in the brief, then retains subdued feed cards",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Expired weekly insight stays hidden while its original signal remains in history",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Feed-only share uses Web Share and clipboard fallback without analytics",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Global read state is shared across Home and the research page",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  locator('#globalInbox .inbox-row')\nExpected: 9\nReceived: 10\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for locator('#globalInbox .inbox-row')\n    9 × locator resolved to 10 elements\n      - unexpected value \"10\"\n"
+          ]
+        },
+        {
+          "title": "source suggestion is visible, concise and fail-closed without provider",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "source suggestion never falls back to URL serialization without JavaScript",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  locator('#globalMetrics')\nExpected: \"10 temas · no leídos 9\"\nReceived: \"10 temas · no leídos 10\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for locator('#globalMetrics')\n    9 × locator resolved to <p class=\"inbox-meta\" id=\"globalMetrics\">10 temas · no leídos 10</p>\n      - unexpected value \"10 temas · no leídos 10\"\n"
+          ]
+        },
+        {
+          "title": "Weekly email capture requires consent and stays closed without approved provider",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "analytics never sends without explicit privacy approval even if a key is present",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "authorized analytics fixture emits only anonymous event fields",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "persistent editorial contract is visible in feed and brief",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Pulso Isapre leads with executive table and statistics use the value ladder",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: Estadística Trimestral de Casos GES missing from snapshot\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        },
+        {
+          "title": "committee HOLD/REJECT and failed publication contracts do not render as individual feed cards",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "period is visible outside filters, persisted without duplicating metric copy, and resettable",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Home hero is compact, one-line and exposes subscription plus Global Intelligence",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "conversion surfaces lead with value and hide internal implementation status",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "sources are grouped by decision value and expose freshness layers",
+          "project": "desktop",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "priority statistical releases use compact tables and collapsed traceability",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: Estadística Trimestral de Casos GES missing\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        },
+        {
+          "title": "Normative V2.1 puts document, subject and action in each current headline",
+          "project": "desktop",
+          "status": "unexpected",
+          "errors": [
+            "Error: 529\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        },
+        {
+          "title": "Home V2 loads, filters persist and compact triage remains stable",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(received).toBeGreaterThan(expected)\n\nExpected: > 6\nReceived:   5\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate"
+          ]
+        },
+        {
+          "title": "Inbox shows every unread signal, supports direct read and persists it",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "operations dashboard loads without inventing measurements",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  locator('#coverageSegments tr')\nExpected: 4\nReceived: 0\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for locator('#coverageSegments tr')\n    9 × locator resolved to 0 elements\n      - unexpected value \"0\"\n"
+          ]
+        },
+        {
+          "title": "Home V2 places unread Global and Insight in the brief, then retains subdued feed cards",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Expired weekly insight stays hidden while its original signal remains in history",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Feed-only share uses Web Share and clipboard fallback without analytics",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Global read state is shared across Home and the research page",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  locator('#globalInbox .inbox-row')\nExpected: 9\nReceived: 10\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for locator('#globalInbox .inbox-row')\n    9 × locator resolved to 10 elements\n      - unexpected value \"10\"\n"
+          ]
+        },
+        {
+          "title": "source suggestion is visible, concise and fail-closed without provider",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "source suggestion never falls back to URL serialization without JavaScript",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  locator('#globalMetrics')\nExpected: \"10 temas · no leídos 9\"\nReceived: \"10 temas · no leídos 10\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for locator('#globalMetrics')\n    9 × locator resolved to <p class=\"inbox-meta\" id=\"globalMetrics\">10 temas · no leídos 10</p>\n      - unexpected value \"10 temas · no leídos 10\"\n"
+          ]
+        },
+        {
+          "title": "Weekly email capture requires consent and stays closed without approved provider",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "analytics never sends without explicit privacy approval even if a key is present",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "authorized analytics fixture emits only anonymous event fields",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "persistent editorial contract is visible in feed and brief",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Pulso Isapre leads with executive table and statistics use the value ladder",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: Estadística Trimestral de Casos GES missing from snapshot\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        },
+        {
+          "title": "committee HOLD/REJECT and failed publication contracts do not render as individual feed cards",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "period is visible outside filters, persisted without duplicating metric copy, and resettable",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "Home hero is compact, one-line and exposes subscription plus Global Intelligence",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "conversion surfaces lead with value and hide internal implementation status",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "sources are grouped by decision value and expose freshness layers",
+          "project": "mobile",
+          "status": "expected",
+          "errors": []
+        },
+        {
+          "title": "priority statistical releases use compact tables and collapsed traceability",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: Estadística Trimestral de Casos GES missing\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        },
+        {
+          "title": "Normative V2.1 puts document, subject and action in each current headline",
+          "project": "mobile",
+          "status": "unexpected",
+          "errors": [
+            "Error: 529\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+          ]
+        }
+      ]
+    },
+    "new_failures": [],
+    "note": "Existing product.spec.cjs unchanged. Baseline web assets exported from staging base; the two new fiscalization checks are candidate-only."
+  },
+  "reviewer": {
+    "candidate": {
+      "reviewer": "deterministic-reviewer",
+      "candidate_sha": "3d6ed4229aedf7dc2365b26a0c889d35741e527b",
+      "reviewed_at": "2026-10-11T04:43:03.280518+00:00",
+      "findings": [
+        {
+          "category": "statistics",
+          "code": "invalid_statistical_table",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Every visible statistical row must map to the declared columns",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "methodology_not_collapsed",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Technical traceability must be available in a collapsed layer",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "missing_incremental_value_gate",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Visible blocks need an explicit incremental value decision",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "generic_why_required",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Statistical cards must allow omission of generic impact copy",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "untraceable_statistical_evidence",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Data evidence must link to an official source",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "bulletin_coverage",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "June 2026 audit must include accreditation, mediation, complaints and RNPI",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "bulletin_missing_pdf",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "All four official June 2026 bulletin PDFs must be traceable",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "bulletin_stock_flow_confusion",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Stock, cumulative flow and monthly flow must be labelled separately",
+          "severity": "critical"
+        }
+      ],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": false,
+        "ux": true
+      },
+      "limitations": [
+        "Semantic/legal accuracy is not certified by deterministic checks.",
+        "Browser evidence is required separately for desktop/mobile.",
+        "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+      ]
+    },
+    "baseline": {
+      "reviewer": "deterministic-reviewer",
+      "candidate_sha": "cadb6c2",
+      "reviewed_at": "2026-10-11T04:43:03.268001+00:00",
+      "findings": [
+        {
+          "category": "statistics",
+          "code": "invalid_statistical_table",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Every visible statistical row must map to the declared columns",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "methodology_not_collapsed",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Technical traceability must be available in a collapsed layer",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "missing_incremental_value_gate",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Visible blocks need an explicit incremental value decision",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "generic_why_required",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Statistical cards must allow omission of generic impact copy",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "untraceable_statistical_evidence",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Data evidence must link to an official source",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "bulletin_coverage",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "June 2026 audit must include accreditation, mediation, complaints and RNPI",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "bulletin_missing_pdf",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "All four official June 2026 bulletin PDFs must be traceable",
+          "severity": "critical"
+        },
+        {
+          "category": "statistics",
+          "code": "bulletin_stock_flow_confusion",
+          "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+          "detail": "Stock, cumulative flow and monthly flow must be labelled separately",
+          "severity": "critical"
+        }
+      ],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": false,
+        "ux": true
+      },
+      "limitations": [
+        "Semantic/legal accuracy is not certified by deterministic checks.",
+        "Browser evidence is required separately for desktop/mobile.",
+        "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+      ]
+    },
+    "findings_identical_excluding_signal_index": true,
+    "note": "Read-only deterministic Reviewer in an independent process. Legal completeness still requires original-surface reconciliation."
+  },
+  "replay_idempotence": {
+    "byte_identical": true,
+    "before": {
+      "data/history/superintendencia_signals.json": "a224ebe345a46ebc7064a4e94111886e6bfa496cda0a7719ddec36dec8fcf452",
+      "data/state/pending_queue.json": "356f6e366bd447a83561fb5c46f7657ac7a0dca06c73435171f5bd611b456018",
+      "data/state/suseso_seen.json": "5990a0829438ffca133ea764d728bf0e4d34dc8a9ee639885e7f52d7f3e162bd",
+      "data/state/suseso_fiscalizacion_seen.json": "b1ee09775b4201cc4f02b95db65c1e4e1901d4f629d6c5c152d5c9106c6c64a2",
+      "data/source_health.json": "ffcd6125e7590759f2c1ea00f0b91abc0d08827c2f46567d381aecb67e0db266",
+      "web/data/radar_today.json": "581339350ec7c14658a1778ae0196efb2b93819cc10027cd1fde5364e9ba9073",
+      "web/data/source_health.json": "ffcd6125e7590759f2c1ea00f0b91abc0d08827c2f46567d381aecb67e0db266"
+    },
+    "after": {
+      "data/history/superintendencia_signals.json": "a224ebe345a46ebc7064a4e94111886e6bfa496cda0a7719ddec36dec8fcf452",
+      "data/state/pending_queue.json": "356f6e366bd447a83561fb5c46f7657ac7a0dca06c73435171f5bd611b456018",
+      "data/state/suseso_seen.json": "5990a0829438ffca133ea764d728bf0e4d34dc8a9ee639885e7f52d7f3e162bd",
+      "data/state/suseso_fiscalizacion_seen.json": "b1ee09775b4201cc4f02b95db65c1e4e1901d4f629d6c5c152d5c9106c6c64a2",
+      "data/source_health.json": "ffcd6125e7590759f2c1ea00f0b91abc0d08827c2f46567d381aecb67e0db266",
+      "web/data/radar_today.json": "581339350ec7c14658a1778ae0196efb2b93819cc10027cd1fde5364e9ba9073",
+      "web/data/source_health.json": "ffcd6125e7590759f2c1ea00f0b91abc0d08827c2f46567d381aecb67e0db266"
+    }
+  },
+  "scope_preservation": {
+    "independent_feed_rows_unchanged": 48,
+    "other_source_health_unchanged": true,
+    "all_native_poll_timestamps_unchanged": true
+  },
+  "original_surfaces": {
+    "method": "Official web-page reads and reconstructed structured observations, with cache crawl hints in original_web_receipts_2026_10_11.json.",
+    "native_live_validated": false,
+    "complete": false
+  },
+  "next_steps": [
+    "Allow official domains in the native execution environment, then capture raw HTML and run collectors on this branch without declaring discovery counts as coverage.",
+    "Extend dated reconciliation to dynamic/paginated rows and resolve the publication/emission contradiction for IP 7462 from an authoritative correction.",
+    "Resolve baseline browser and statistics Reviewer failures on their own scope, then run repository-wide QA and Reviewer on the final integration SHA.",
+    "Review remaining SUSESO circular/pronouncement normative value independently; taxonomy membership alone never proves a new enforcement finding."
+  ]
+}
