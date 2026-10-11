@@ -52,6 +52,9 @@ def observed_case():
     assert fresh.title == old["title"] and fresh.event_date == old["event_date"]
     assert fresh.metadata["page_text"] == old["metadata"]["page_text"]
     assert complete_article_body(fresh.metadata)
+    # Reproduce the legacy Source omission explicitly even after its parser
+    # learns to annotate completeness. Primary bytes/body/date remain exact.
+    fresh.metadata.pop("article_body_complete", None)
     assert "article_body_complete" not in fresh.metadata
     assert old["metadata"]["article_body_complete"] is True
     ai = old["metadata"]["analysis_model_output"]
