@@ -27,7 +27,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 80
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       RADAR_FAST_MODEL: gpt-5.6-luna
@@ -45,13 +45,6 @@ jobs:
           python-version: '3.11'
       - name: Install package
         run: pip install -e . pytest
-      - name: Independent Global metadata discovery (no paid AI or publication)
-        id: global_discovery
-        continue-on-error: true
-        timeout-minutes: 12
-        env:
-          OPENAI_API_KEY: ''
-        run: python scripts/discover_global_sources.py
       - name: Core deterministic tests before collection
         run: python -m pytest -q --ignore=tests/test_reviewer.py --ignore=tests/test_beta_source_runtime_fast.py
       - name: Preserve paid Terra analyses
@@ -84,6 +77,14 @@ jobs:
           echo "Beta source failures remain repair-required but do not suppress independent core collection." >> "$GITHUB_STEP_SUMMARY"
       - name: Snapshot reviewer after collection
         run: python -m pytest -q tests/test_reviewer.py
+      - name: Independent Global metadata discovery (no paid AI or publication)
+        id: global_discovery
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 35
+        env:
+          OPENAI_API_KEY: ''
+        run: python scripts/discover_global_sources.py
       - name: Preserve Global discovery health after independent core exports
         if: ${{ always() && steps.global_discovery.outcome == 'success' }}
         run: python scripts/discover_global_sources.py --mirror-health

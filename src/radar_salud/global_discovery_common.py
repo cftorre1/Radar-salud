@@ -95,12 +95,14 @@ class PublicRedirect(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         target = canonical_url(newurl, req.full_url)
         self.client.check_cooldown(target)
+        self.client.check_live_budget()
         is_robots = getattr(req, "_global_is_robots", False)
         if is_robots:
             if urlsplit(target).path != "/robots.txt":
                 raise ValueError("robots_redirect_to_content_denied")
         else:
             self.client.check_robots(target)
+        self.client.check_live_budget()
         chain = getattr(req, "_global_redirect_chain", [])
         chain.append({"from_url": req.full_url, "http_status": code, "location": target,
                       "tls_verified": True, "destination_robots_checked": not is_robots})
@@ -111,11 +113,14 @@ class PublicRedirect(HTTPRedirectHandler):
         return redirected
 
 class CaptureClient:
-    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None, resume: bool = False):
+    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None, resume: bool = False, live_budget_seconds: float = 1800.):
         self.directory, self.replay, self.delay = directory, replay, delay
         directory.mkdir(parents=True, exist_ok=True)
         self.records, self.robots, self.network_requests = {}, {}, 0
         self._live_lock = RLock()
+        if live_budget_seconds <= 0:
+            raise ValueError('live capture budget must be positive')
+        self.live_deadline = time.monotonic() + live_budget_seconds
         self.cooldown_file = cooldown_file
         self.cooldowns = json.loads(cooldown_file.read_text()) if cooldown_file and cooldown_file.exists() and not replay else {}
         self.resume = resume
@@ -148,8 +153,14 @@ class CaptureClient:
         # Replays reproduce historical bytes, including requests made by older collectors.
         with self._live_lock:
             url = canonical_url(url)
-            if url not in self.records: self.check_cooldown(url)
+            if url not in self.records:
+                self.check_cooldown(url)
+                self.check_live_budget()
             return self._fetch(url, robots=robots)
+
+    def check_live_budget(self):
+        if not self.replay and time.monotonic() >= self.live_deadline:
+            raise ValueError('capture_campaign_budget_exhausted_without_request')
 
     def check_cooldown(self, url):
         origin = urlunsplit((*urlsplit(url)[:2], "", "", ""))
@@ -189,6 +200,7 @@ class CaptureClient:
             if not robots:
                 self.check_robots(url)
             time.sleep(self.delay)
+            self.check_live_budget()
             self.network_requests += 1
             request = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/html,application/json,application/xml"})
             request._global_is_robots = robots

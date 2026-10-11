@@ -57,7 +57,8 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
     config = json.loads((root / "config/global_discovery.json").read_text())
     if config["default_window_days"] != 30 or config["maximum_editorial_topics"] != 10 or config["fill_quota"] or config["paid_ai_calls"] != 0 or config["reuters"]["enabled"]:
         raise ValueError("Global discovery/publication/license contract changed")
-    client = CaptureClient(captures, replay=replay, cooldown_file=root/"data/global_intelligence/http_cooldowns.json",resume=resume)
+    client = CaptureClient(captures, replay=replay, cooldown_file=root/"data/global_intelligence/http_cooldowns.json",resume=resume,
+                           live_budget_seconds=config['live_capture_budget_seconds'])
     prior_discovery_path = root / "data/global_intelligence/discovery.json"
     prior_items = json.loads(prior_discovery_path.read_text()).get("items",[]) if prior_discovery_path.exists() else []
     routes, language_items, failures = discover(config, client, as_of)

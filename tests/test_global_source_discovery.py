@@ -283,6 +283,51 @@ def test_expired_cooldown_allows_normal_access_without_rotating_identity(tmp_pat
     client.fetch('https://www.paho.org/en/news')
     assert client.network_requests==1
 
+def test_live_campaign_budget_preserves_evidence_and_denies_new_requests(tmp_path,monkeypatch):
+    clock=[100.]
+    monkeypatch.setattr('radar_salud.global_discovery_common.time.monotonic',lambda:clock[0])
+    client=CaptureClient(tmp_path/'captures',delay=0,live_budget_seconds=10)
+    allow_test_hosts(client);client.opener=RateOpener()
+    first='https://www.paho.org/en/news/first'
+    client.fetch(first)
+    clock[0]=110.
+    with pytest.raises(ValueError,match='budget_exhausted_without_request'):
+        client.fetch('https://www.paho.org/en/news/next')
+    assert client.network_requests==1 and client.opener.calls==[first]
+    assert client.fetch(first)[1]['requested_url']==first
+    request=Request(first);request._global_redirect_chain=[]
+    with pytest.raises(ValueError,match='budget_exhausted_without_request'):
+        PublicRedirect(client).redirect_request(request,None,302,'Found',{},'https://www.paho.org/en/news/redirect')
+    assert request._global_redirect_chain==[] and client.network_requests==1
+
+def test_live_budget_is_rechecked_after_pacing_before_network(tmp_path,monkeypatch):
+    clock=[100.]
+    monkeypatch.setattr('radar_salud.global_discovery_common.time.monotonic',lambda:clock[0])
+    monkeypatch.setattr('radar_salud.global_discovery_common.time.sleep',lambda _:clock.__setitem__(0,110.))
+    client=CaptureClient(tmp_path/'captures',live_budget_seconds=10)
+    allow_test_hosts(client);client.opener=RateOpener()
+    with pytest.raises(ValueError,match='budget_exhausted_without_request'):
+        client.fetch('https://www.paho.org/en/news/first')
+    assert client.network_requests==0 and not client.opener.calls
+
+def test_replay_never_expires_live_campaign_budget(tmp_path,monkeypatch):
+    clock=[100.]
+    monkeypatch.setattr('radar_salud.global_discovery_common.time.monotonic',lambda:clock[0])
+    client=CaptureClient(tmp_path/'output',replay=tmp_path/'input',live_budget_seconds=10)
+    clock[0]=200.
+    client.check_live_budget()
+    assert client.network_requests==0
+
+def test_redirect_rechecks_live_budget_after_destination_robots(tmp_path,monkeypatch):
+    clock=[100.]
+    monkeypatch.setattr('radar_salud.global_discovery_common.time.monotonic',lambda:clock[0])
+    client=CaptureClient(tmp_path/'captures',delay=0,live_budget_seconds=10)
+    monkeypatch.setattr(client,'check_robots',lambda _:clock.__setitem__(0,110.))
+    request=Request('https://www.paho.org/en/news');request._global_redirect_chain=[]
+    with pytest.raises(ValueError,match='budget_exhausted_without_request'):
+        PublicRedirect(client).redirect_request(request,None,302,'Found',{},'https://iris.paho.org/')
+    assert request._global_redirect_chain==[] and client.network_requests==0
+
 def test_replay_of_older_429_evidence_never_suppresses_captured_history_or_contacts_network(tmp_path):
     capture=tmp_path/'old';capture.mkdir()
     for url,status in [('https://www.who.int/news/first',429),('https://www.who.int/news/second',200)]:

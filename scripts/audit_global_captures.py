@@ -270,7 +270,7 @@ def audit(captures, inventory_path, output):
         except Exception as exc:
             errors.append({"code": "robots_evidence_invalid", "context": url, "error": str(exc)[:200]})
 
-    pages, index_rows, page_readers, page_rows, partition_results = [], {}, {}, {}, []
+    pages, index_rows, page_readers, page_rows, page_bound_checks, partition_results = [], {}, {}, {}, {}, []
     native_90 = {"who": set(), "paho": set()}
     for route_result in inventory["routes"]:
         route = route_result["route"]
@@ -287,10 +287,11 @@ def audit(captures, inventory_path, output):
                     query = parse_qsl(urlsplit(url).query, keep_blank_values=True)
                     bounds = {key: value for key, value in query if key in {"date[min]", "date[max]"}}
                     if bounds:
-                        check(len([key for key, _ in query if key in bounds]) == 2 and set(bounds) == {"date[min]", "date[max]"}, "date_query_unambiguous", url)
                         echoed = {node.get("name"): node.get("value") for node in reader.inputs if node.get("name") in bounds}
-                        check(echoed == bounds, "date_query_echo", url)
-                        check(all(row["published_at"] and bounds["date[min]"] <= row["published_at"] <= bounds["date[max]"] for row in rows), "native_dates_inside_query_bounds", url)
+                        page_bound_checks[url] = {
+                            "date_query_unambiguous": len([key for key, _ in query if key in bounds]) == 2 and set(bounds) == {"date[min]", "date[max]"},
+                            "date_query_echo": echoed == bounds,
+                            "native_dates_inside_query_bounds": all(row["published_at"] and bounds.get("date[min]", "") <= row["published_at"] <= bounds.get("date[max]", "") for row in rows)}
                 control = [{"url": row["url"], "published_at": row["published_at"]} for row in rows]
                 check(control == page.get("native_control"), "independent_native_control", url)
                 check(len(rows) == page["native_records"], "native_record_count", url)
@@ -303,7 +304,8 @@ def audit(captures, inventory_path, output):
                     if in_window(row["published_at"], as_of, 90):
                         native_90[route["source"]].add(row["url"])
                 pages.append({"source": route["source"], "section": route["section"], "url": url,
-                              "native_records": len(rows), "body_sha256": digest(bodies[url])})
+                              "native_records": len(rows), "body_sha256": digest(bodies[url]),
+                              "date_query_checks": page_bound_checks.get(url)})
             except Exception as exc:
                 errors.append({"code": "native_page_invalid", "context": page.get("url"), "error": str(exc)[:200]})
 
@@ -337,6 +339,10 @@ def audit(captures, inventory_path, output):
                     check(indices == list(range(len(indices))), "partition_contiguous_page_numbers", requested)
                     if part["archive_complete"]:
                         check(bool(ordered), "complete_partition_missing_pages", requested)
+                        for page_url in ordered:
+                            for code, valid in page_bound_checks.get(page_url, {}).items():
+                                check(valid, code, page_url)
+                            check(bool(page_bound_checks.get(page_url)), "complete_partition_missing_query_evidence", page_url)
                         terminal = ordered[-1]
                         if part["stop_reason"] == "date_partition_official_empty":
                             check(not page_rows[terminal] and bool(page_readers[terminal].empty_messages), "partition_native_empty_evidence", terminal)
