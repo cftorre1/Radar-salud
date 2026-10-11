@@ -471,3 +471,23 @@ def test_real_ist_details_recover_cms_months_without_promoting_conflict_or_missi
         assert item.metadata["publication_date"] == rows[item.url]["api_publication_evidence"]["date"]
         assert item.metadata["publication_evidence"]["url"] == item.url
     assert not result["coverage_complete"] and not result["ist_api"]["inclusive_90_day_bounds"]
+
+
+def test_current_run6_ist_api_closes_calendar_bounds_and_verifies_report_publication(tmp_path):
+    from radar_salud.occupational_capture import CaptureLoader
+    from radar_salud.occupational_recovery import inventory
+    base = Path(__file__).resolve().parents[1] / "data/audits/source_e_recovery/actions/38117675962/inventory"
+    loader = CaptureLoader(tmp_path, replay=base)
+    result = inventory(CuratedBetaSourceScout("ist"), loader, as_of=AS_OF)
+    assert result["ist_api"]["response_complete"] and result["ist_api"]["inclusive_90_day_bounds"]
+    assert len(result["ist_api"]["posts"]) == 21 and result["ist_api"]["pages"][0]["total"] == 21
+    assert result["metrics"]["90"]["dated_articles"] == 20 and len(result["raw_items"]) == 20
+    assert result["unknown_publication_dates"] == 1
+    pending = [row for row in result["rows"] if row["status"] == "pending"]
+    assert len(pending) == 1 and pending[0]["reason"] == "api_visible_publication_date_conflict"
+    report = next(row for row in result["rows"] if row["url"] == IST_REPORT)
+    assert report["publication_date"] == "2026-07-14" and report["data_period"] == "2025"
+    assert report["publication_evidence"]["date"] == report["api_publication_evidence"]["date"]
+    assert report["publication_evidence"]["url"] == IST_REPORT
+    assert loader.evidence(IST_REPORT)["tls_verified"]
+    assert not result["coverage_complete"]
