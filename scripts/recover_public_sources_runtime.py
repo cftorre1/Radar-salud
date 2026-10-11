@@ -99,9 +99,13 @@ def probe(slug, url, output, timeout=18, user_agent=None):
                        headers={k: v for k, v in response.headers.items() if k.lower() in {
                            "content-type", "server", "date", "location", "last-modified", "etag",
                            "content-length", "retry-after"}})
-            body = response.read(8 * 1024 * 1024 + 1)
-            if len(body) > 8 * 1024 * 1024:
-                raise ValueError("Capture exceeded 8 MiB")
+            # Published national CSVs can exceed the HTML/PDF probe ceiling.
+            # Keep the separate large-PDF native limit and bound dataset reads.
+            capture_limit = 32 if row['host'] == 'datos.gob.cl' and urlsplit(url).path.lower().endswith('.csv') else 8
+            row['capture_limit_mib'] = capture_limit
+            body = response.read(capture_limit * 1024 * 1024 + 1)
+            if len(body) > capture_limit * 1024 * 1024:
+                raise ValueError(f"Capture exceeded {capture_limit} MiB")
             digest = hashlib.sha256(body).hexdigest()
             suffix = ".pdf" if body.startswith(b"%PDF-") else ".html"
             path = output / "captures" / (digest + suffix)
@@ -156,11 +160,19 @@ def verify_dataset_body(body, url):
         except UnicodeDecodeError:
             text = body.decode('cp1252'); encoding = 'cp1252'
         dialect = csv.Sniffer().sniff(text[:8192], delimiters=',;\t|')
-        rows = list(csv.reader(io.StringIO(text), dialect))
-        if len(rows) < 2 or len(rows[0]) < 2 or any(len(row) != len(rows[0]) for row in rows[1:] if row):
+        reader = csv.reader(io.StringIO(text), dialect)
+        header = next(reader, [])
+        count = 0
+        for row in reader:
+            if not row:
+                continue
+            if len(row) != len(header):
+                raise ValueError('Official CSV has inconsistent columns')
+            count += 1
+        if count < 1 or len(header) < 2:
             raise ValueError('Official CSV is empty or has inconsistent columns')
-        return {'format': 'csv', 'encoding': encoding, 'columns': rows[0],
-                'data_rows': len(rows) - 1, 'scope': 'rectangular_dataset_only_no_indicator_computation'}
+        return {'format': 'csv', 'encoding': encoding, 'columns': header,
+                'data_rows': count, 'scope': 'rectangular_dataset_only_no_indicator_computation'}
     raise ValueError('Unsupported dataset structural replay format')
 
 
