@@ -1,0 +1,1262 @@
+{
+  "schema": "pulso_editorial_guard_independent_review_v1",
+  "reviewer": "publisher_surfaces independent of editorial guard owner external_control",
+  "reviewed_commit": "d53493cabe142802a8d331b4c1bb7d92b2609fd0",
+  "reviewed_code_sha256": {
+    "src/radar_salud/pulso_editorial_proof.py": "76a42cb197d21a2767d80d2199d30995308ab3f7ddd70acfabd06f2fd2b901c5",
+    "src/radar_salud/beta_sources.py": "4129e7831066746f283f6d93dbfdb8532be195eb770359cad893c7264e61bb44",
+    "src/radar_salud/llm_analysis.py": "6348774d31ae8efb4a713d6241e70bfa7121f4342c99adaa17be581180d798a2",
+    "src/radar_salud/pulso_source.py": "c9cf83e54ac0c4cff0808b7d90a5076e5c6ff35945696e4f52aaa873b31efc69",
+    "src/radar_salud/ai_budget.py": "73b0f0cb120935aa17812b6b3dff822953db7f62a59ee540a2ed405c51ac119d",
+    "src/radar_salud/telemetry.py": "bace66c06da2defc3c2eaf638d3aee56c5d9684af29a2e06a8221776c5e58f14",
+    "src/radar_salud/engine_cli.py": "98ee41e039662c600379fdb19bb6ed007d57aac2ef8de7f47cb478e9af5908ca",
+    "src/radar_salud/pending_queue.py": "31261ddd7fee64081377397010051e0913184b57256de438c856ed6f692f790a"
+  },
+  "status": "SCOPED_PASS",
+  "scope": "Pulso single-FAST full-body editorial-proof guard, primary queue URL/day/verification flags, future wording, scope and traceability; no runtime/global acceptance",
+  "gate_threshold": 72,
+  "evidence_maturity": "media_reported",
+  "publication_quota": false,
+  "paid_provider_calls": 0,
+  "network_calls": 0,
+  "product_files_mutated_by_review": 0,
+  "findings": [
+    {
+      "id": "PEG-01",
+      "finding": "A conditional suffix could launder claims that future care-network capacity was already achieved.",
+      "status": "resolved",
+      "repair_checkpoint": "32cffa1",
+      "final_cases": [
+        "future_field_laundering",
+        "announced_care_expansion_stays_prospective"
+      ]
+    },
+    {
+      "id": "PEG-02",
+      "finding": "Literal animal/plant-health quotes mislabeled human-specific could pass.",
+      "status": "resolved",
+      "repair_checkpoint": "32cffa1",
+      "final_cases": [
+        "animal_only_as_human",
+        "excluded_scope_non_human_health"
+      ]
+    },
+    {
+      "id": "PEG-03",
+      "finding": "Source says se proponen for Fonasa2027 funding; actual status wrongly allowed implemented-funding copy.",
+      "status": "resolved",
+      "repair_checkpoint": "87a9d8a",
+      "final_cases": [
+        "proposed_fonasa_budget_cannot_claim_available_funding",
+        "proposed_fonasa_funding_stays_prospective"
+      ]
+    },
+    {
+      "id": "PEG-04",
+      "finding": "Complete primary evidence could be reused for another queue URL or publication day.",
+      "status": "resolved",
+      "repair_checkpoint": "093fcb6",
+      "final_cases": [
+        "queue_primary_url_mismatch",
+        "queue_primary_day_mismatch"
+      ]
+    },
+    {
+      "id": "PEG-05",
+      "finding": "Explicitly false primary identity/date-verification flags still allowed one model call.",
+      "status": "resolved",
+      "repair_checkpoint": "2568778",
+      "final_cases": [
+        "primary_flag_primary_identity_verified_False",
+        "primary_flag_primary_identity_verified_None",
+        "primary_flag_primary_identity_verified_1",
+        "primary_flag_primary_identity_verified_true",
+        "primary_flag_primary_identity_verified_MISSING",
+        "primary_flag_publication_date_verified_False",
+        "primary_flag_publication_date_verified_None",
+        "primary_flag_publication_date_verified_1",
+        "primary_flag_publication_date_verified_true",
+        "primary_flag_publication_date_verified_MISSING"
+      ]
+    },
+    {
+      "id": "PEG-06",
+      "finding": "After verified same-item recovery, the prior false primary-binding marker could contradict successful publication and cause QA technical failure.",
+      "status": "resolved",
+      "repair_checkpoint": "2568778",
+      "final_cases": [
+        "same_item_current_primary_proof_replaces_stale_false_binding"
+      ]
+    }
+  ],
+  "all_findings_resolved": true,
+  "independent_check_count": 54,
+  "all_independent_checks_pass": true,
+  "contract_checks": {
+    "schema": "pulso_guard_contract_independent_v1",
+    "reviewed_code_sha256": {
+      "src/radar_salud/pulso_editorial_proof.py": "76a42cb197d21a2767d80d2199d30995308ab3f7ddd70acfabd06f2fd2b901c5",
+      "src/radar_salud/llm_analysis.py": "6348774d31ae8efb4a713d6241e70bfa7121f4342c99adaa17be581180d798a2",
+      "src/radar_salud/beta_sources.py": "4129e7831066746f283f6d93dbfdb8532be195eb770359cad893c7264e61bb44",
+      "src/radar_salud/pulso_source.py": "c9cf83e54ac0c4cff0808b7d90a5076e5c6ff35945696e4f52aaa873b31efc69",
+      "src/radar_salud/ai_budget.py": "73b0f0cb120935aa17812b6b3dff822953db7f62a59ee540a2ed405c51ac119d",
+      "src/radar_salud/telemetry.py": "bace66c06da2defc3c2eaf638d3aee56c5d9684af29a2e06a8221776c5e58f14",
+      "src/radar_salud/engine_cli.py": "98ee41e039662c600379fdb19bb6ed007d57aac2ef8de7f47cb478e9af5908ca",
+      "src/radar_salud/pending_queue.py": "31261ddd7fee64081377397010051e0913184b57256de438c856ed6f692f790a"
+    },
+    "head_commit": "d53493cabe142802a8d331b4c1bb7d92b2609fd0",
+    "reviewed_code_matches_head": {
+      "src/radar_salud/pulso_editorial_proof.py": true,
+      "src/radar_salud/llm_analysis.py": true,
+      "src/radar_salud/beta_sources.py": true,
+      "src/radar_salud/pulso_source.py": true,
+      "src/radar_salud/ai_budget.py": true,
+      "src/radar_salud/telemetry.py": true,
+      "src/radar_salud/engine_cli.py": true,
+      "src/radar_salud/pending_queue.py": true
+    },
+    "review_scope": "single_FAST_budget_provider/default5500/response_source_body_request_binding/media_reported_gate72_date_source; mocked provider only",
+    "source_original": {
+      "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "publication_date": "2026-10-10",
+      "raw_html_sha256": "e7d3de316f5d8afa1d4be08e75b639e64a6d43a293a2b18e5e4542400a02e4a3",
+      "full_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+    },
+    "checks": [
+      {
+        "name": "real_original_raw_and_full_body_hashes",
+        "passed": true,
+        "raw_html_sha256": "e7d3de316f5d8afa1d4be08e75b639e64a6d43a293a2b18e5e4542400a02e4a3",
+        "full_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "full_body_characters": 1608
+      },
+      {
+        "name": "source_replays_exact_original_date_and_full_body",
+        "passed": true,
+        "publication_date": "2026-10-10",
+        "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/"
+      },
+      {
+        "name": "literal_clinical_proof_ready_is_not_publication_approval",
+        "passed": true,
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      {
+        "name": "real_client_constructor_disables_provider_sdk_retries",
+        "passed": true,
+        "constructors": [
+          {
+            "max_retries": 0
+          }
+        ]
+      },
+      {
+        "name": "strict_call_is_single_fast_provider_and_single_budget_trace_result",
+        "passed": true,
+        "provider_calls": 1,
+        "budget_calls": [
+          "fast"
+        ],
+        "result_records": 1,
+        "trace_records": 1
+      },
+      {
+        "name": "strict_call_preserves_fast_model_configuration",
+        "passed": true,
+        "requested_model": "gpt-5.6-luna"
+      },
+      {
+        "name": "strict_provider_request_and_response_binding_are_exact",
+        "passed": true,
+        "response_id": "independent-contract-mocked-response",
+        "model": "independent-contract-mocked-fast",
+        "body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "request_sha256": "8d2727c29e35a33639cc85b3140b64fe26ed9ae2cb03a7863ca6afa18e52e6cb",
+        "raw_model_output_sha256": "9c83108fe555047ac6aa994ab68dfa4f490ad0828683f3142c8c916623b600e5"
+      },
+      {
+        "name": "strict_schema_requires_proof_without_modifying_shared_news_schema",
+        "passed": true,
+        "version": "pulso_editorial_proof_v3"
+      },
+      {
+        "name": "response_binding_rejects_missing_or_tampered_contract_fields",
+        "passed": true,
+        "cases": {
+          "schema_version": true,
+          "source_name": true,
+          "analysis_text_sha256": true,
+          "request_input_sha256": true,
+          "response_id": true,
+          "model": true,
+          "raw_model_output_sha256": true,
+          "missing_metadata": true
+        }
+      },
+      {
+        "name": "non_pulso_default_5500_schema_and_single_fast_call_unchanged",
+        "passed": true,
+        "content_characters": 5500
+      },
+      {
+        "name": "strict_excerpt_refused_before_client_budget_or_provider",
+        "passed": true,
+        "client_calls": 0,
+        "budget_calls": 0,
+        "error": "Pulso editorial proof requires complete primary input"
+      },
+      {
+        "name": "budget_denied_has_no_hidden_second_call",
+        "passed": true,
+        "provider_calls": 0,
+        "budget_calls": [
+          "fast"
+        ],
+        "result_records": 0,
+        "trace_records": 0
+      },
+      {
+        "name": "client_absent_has_no_hidden_second_call",
+        "passed": true,
+        "provider_calls": 0,
+        "budget_calls": [],
+        "result_records": 0,
+        "trace_records": 0
+      },
+      {
+        "name": "provider_failure_has_no_hidden_second_call",
+        "passed": true,
+        "provider_calls": 1,
+        "budget_calls": [
+          "fast"
+        ],
+        "result_records": 1,
+        "trace_records": 1
+      },
+      {
+        "name": "invalid_json_has_no_hidden_second_call",
+        "passed": true,
+        "provider_calls": 1,
+        "budget_calls": [
+          "fast"
+        ],
+        "result_records": 1,
+        "trace_records": 1
+      },
+      {
+        "name": "beta_exact72_accepts_once_with_original_date_press_maturity_complete_input",
+        "passed": true,
+        "output_publication_date": "2026-10-10",
+        "publication_date_source": "visible_article_byline",
+        "publication_timestamp": "2026-10-10T16:38:08.831Z",
+        "evidence_maturity": "media_reported",
+        "relevance": 72,
+        "threshold": 72,
+        "model_calls": 1
+      },
+      {
+        "name": "beta_retains_exact_response_source_body_request_binding_for_queue_serialization",
+        "passed": true,
+        "response_id": "independent-contract-mocked-response",
+        "source_name": "Pulso / La Tercera",
+        "body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "request_sha256": "a2e6ac416f391ef3afac1104c84642f11001445d2a0909306a0781b0b7e30351",
+        "raw_model_output_sha256": "9c83108fe555047ac6aa994ab68dfa4f490ad0828683f3142c8c916623b600e5",
+        "runtime_queue_persistence_observation": "engine_cli serializes asdict(processing_raw) before terminal acknowledgements and inside DeferredProcessing handler; static code inspection only"
+      },
+      {
+        "name": "beta_exact71_rejects_traceably_without_lowering_gate",
+        "passed": true,
+        "reason": "editorial_relevance_below_threshold",
+        "model_calls": 1,
+        "threshold": 72
+      },
+      {
+        "name": "beta_invalid_article_verified_cannot_call_model",
+        "passed": true,
+        "model_calls": 0,
+        "reason": "Pulso article verification failed",
+        "metadata_field": "article_verified",
+        "injected_value": false
+      },
+      {
+        "name": "beta_invalid_article_body_sha256_cannot_call_model",
+        "passed": true,
+        "model_calls": 0,
+        "reason": "Pulso article verification failed",
+        "metadata_field": "article_body_sha256",
+        "injected_value": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "name": "beta_invalid_publication_date_verified_cannot_call_model",
+        "passed": true,
+        "model_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "metadata_field": "publication_date_verified",
+        "injected_value": false
+      },
+      {
+        "name": "beta_invalid_primary_identity_verified_cannot_call_model",
+        "passed": true,
+        "model_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "metadata_field": "primary_identity_verified",
+        "injected_value": false
+      }
+    ],
+    "all_checks_pass": true,
+    "product_files_stable_during_run": true,
+    "beta_checks_executed": true,
+    "paid_provider_calls": 0,
+    "network_calls": 0,
+    "repository_mutations": 0,
+    "isolated_budget_import": false,
+    "limitations": [
+      "Provider Responses are explicitly mocked; no fresh actual runtime acceptance is asserted.",
+      "Quote grounding is provenance validation; independent semantics and publication review remain required.",
+      "RawItem URL/date tampering is separately owned and reviewed; this audit does not duplicate that repair.",
+      "This contract audit does not establish discovery recall or 30/90-day reconciliation."
+    ]
+  },
+  "semantic_status_scope_quote_checks": {
+    "schema": "pulso_guard_semantic_counterexample_recheck_v1",
+    "guard_version": "pulso_editorial_proof_v3",
+    "reviewed_code_sha256": {
+      "src/radar_salud/pulso_editorial_proof.py": "76a42cb197d21a2767d80d2199d30995308ab3f7ddd70acfabd06f2fd2b901c5",
+      "src/radar_salud/beta_sources.py": "4129e7831066746f283f6d93dbfdb8532be195eb770359cad893c7264e61bb44",
+      "src/radar_salud/llm_analysis.py": "6348774d31ae8efb4a713d6241e70bfa7121f4342c99adaa17be581180d798a2",
+      "src/radar_salud/pulso_source.py": "c9cf83e54ac0c4cff0808b7d90a5076e5c6ff35945696e4f52aaa873b31efc69"
+    },
+    "checks": [
+      {
+        "name": "future_field_laundering",
+        "passed": true,
+        "source_body_sha256": "d41b5474b0797552f3a1a086d558427da3e3b0cc6942d5b59e9fd442ddc4f2ad",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded",
+        "expected_decision": "deferred",
+        "expected_reason": null,
+        "prospective_evidence": null,
+        "url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+        "old_decision": "ready",
+        "old_reason": "pulso_editorial_grounded_assessment",
+        "assessment_sha256": "d547891509fcfc42bf227d7026b68b03c23540bd5141f67aab6946bf049d4719"
+      },
+      {
+        "name": "animal_only_as_human",
+        "passed": true,
+        "source_body_sha256": "c04c53da3f42d3622571f4ed40754744f34a8ba64ab175400e15dfffcffaa029",
+        "decision": "deferred",
+        "reason": "pulso_editorial_human_scope_conflicts_with_non_human_quote",
+        "expected_decision": "deferred",
+        "expected_reason": null,
+        "prospective_evidence": null,
+        "url": "https://www.latercera.com/pulso/noticia/china-joyvio-se-querella-contra-de-isidoro-quiroga-ahora-por-delitos-ambientales-defensa-acusa-nuevo-manotazo-de-ahogado/",
+        "old_decision": "ready",
+        "old_reason": "pulso_editorial_grounded_assessment",
+        "assessment_sha256": "71a2b8a5b59372c36b4114fa8e29b08aa740d3872f1ad723853f59ae3fb2496b"
+      },
+      {
+        "name": "proposed_fonasa_budget_cannot_claim_available_funding",
+        "passed": true,
+        "source_body_sha256": "744b61b329357f0d9a34ba8f72ff2e8495dea55c1d708f6d94b6a3b80edb0e6a",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_status_mismatch",
+        "expected_decision": "deferred",
+        "expected_reason": "pulso_editorial_future_status_mismatch",
+        "prospective_evidence": null,
+        "url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+        "old_decision": "ready",
+        "old_reason": "pulso_editorial_grounded_assessment",
+        "assessment_sha256": "20a5bfb81ae2fc938806e09df60c77059564ba58b2504421ac1ab33edcdf0090"
+      },
+      {
+        "name": "actual_clinical_capacity_increment",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment",
+        "expected_decision": "ready",
+        "expected_reason": null,
+        "prospective_evidence": false,
+        "assessment_sha256": "9756e3711676a70e9f368473f0754009dbcada0d0a72e8c2f3aac4e8be42c322"
+      },
+      {
+        "name": "announced_care_expansion_stays_prospective",
+        "passed": true,
+        "source_body_sha256": "d41b5474b0797552f3a1a086d558427da3e3b0cc6942d5b59e9fd442ddc4f2ad",
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment",
+        "expected_decision": "ready",
+        "expected_reason": null,
+        "prospective_evidence": true,
+        "assessment_sha256": "ee73c0caaa1eb97259e2db1524f88985b02c7ecff1227a64a2a66cc706849314"
+      },
+      {
+        "name": "proposed_fonasa_funding_stays_prospective",
+        "passed": true,
+        "source_body_sha256": "744b61b329357f0d9a34ba8f72ff2e8495dea55c1d708f6d94b6a3b80edb0e6a",
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment",
+        "expected_decision": "ready",
+        "expected_reason": null,
+        "prospective_evidence": true,
+        "assessment_sha256": "28db586e035f154211f905998863d51ead3d8d01f8a1711de08375d237873b9a"
+      },
+      {
+        "name": "novelty_repetition_or_context",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "rejected",
+        "reason": "pulso_editorial_repetition_or_context",
+        "expected_decision": "rejected",
+        "expected_reason": null,
+        "prospective_evidence": null,
+        "assessment_sha256": "7743564e96b31b71c003ef9bc3ab14a4cbe409576828e30b353b459d9a1d4cfe"
+      },
+      {
+        "name": "novelty_uncertain",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "deferred",
+        "reason": "pulso_editorial_incremental_value_uncertain",
+        "expected_decision": "deferred",
+        "expected_reason": null,
+        "prospective_evidence": null,
+        "assessment_sha256": "1032b2e025f9cbd33ad0f781cd443cb8cd63a35cc04216e345cb2f24ae9d203b"
+      },
+      {
+        "name": "historical_event_not_rejuvenated",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "rejected",
+        "reason": "pulso_editorial_repetition_or_context",
+        "expected_decision": "rejected",
+        "expected_reason": "pulso_editorial_repetition_or_context",
+        "prospective_evidence": null,
+        "assessment_sha256": "8be3e18aeb599ced271d42b466f95f63a578ade6b85b5d13abebf356fc45916e"
+      },
+      {
+        "name": "foreign_actor_quote",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "deferred",
+        "reason": "pulso_editorial_actor_not_grounded",
+        "expected_decision": "deferred",
+        "expected_reason": null,
+        "prospective_evidence": null,
+        "assessment_sha256": "53ee57c1862adf1fd791f630bd40c8e95b996e24c67f4b494a7f9d7538e67990"
+      },
+      {
+        "name": "foreign_action_quote",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "deferred",
+        "reason": "pulso_editorial_action_not_grounded",
+        "expected_decision": "deferred",
+        "expected_reason": null,
+        "prospective_evidence": null,
+        "assessment_sha256": "5771cada666acdab051044109236e1958694145950db2c3052bbaaad7313bc81"
+      },
+      {
+        "name": "foreign_consequence_quote",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "deferred",
+        "reason": "pulso_editorial_consequence_not_grounded",
+        "expected_decision": "deferred",
+        "expected_reason": null,
+        "prospective_evidence": null,
+        "assessment_sha256": "372247e3b770f0ed0eeae1b9d938a6762edfd7d8c327d90092b4ecae34a86ae5"
+      },
+      {
+        "name": "foreign_human_health_scope_quote",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_quote_not_in_input",
+        "expected_decision": "deferred",
+        "expected_reason": null,
+        "prospective_evidence": null,
+        "assessment_sha256": "71ec3b186155379b7051910b43a65218c302a568f26d965eb0eafdea4c6e44b8"
+      },
+      {
+        "name": "foreign_event_status_quote",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "deferred",
+        "reason": "pulso_editorial_status_or_novelty_not_grounded",
+        "expected_decision": "deferred",
+        "expected_reason": null,
+        "prospective_evidence": null,
+        "assessment_sha256": "52f5ece7a6c967e8674391af74a1d0008aa02584423fff55d5d6a16f4d0bc91f"
+      },
+      {
+        "name": "foreign_novelty_quote",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "deferred",
+        "reason": "pulso_editorial_status_or_novelty_not_grounded",
+        "expected_decision": "deferred",
+        "expected_reason": null,
+        "prospective_evidence": null,
+        "assessment_sha256": "55d216eb4ef1a60ab3edc59eedb29634d7279f3b08a1fb45d2eca3d02a45a884"
+      },
+      {
+        "name": "excluded_scope_non_human_health",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "rejected",
+        "reason": "pulso_editorial_non_human_health",
+        "expected_decision": "rejected",
+        "expected_reason": "pulso_editorial_non_human_health",
+        "prospective_evidence": null,
+        "assessment_sha256": "b6472fdecef51fb14f44e401e163af45b0cd47217de9e56e8df3b64eb1481454"
+      },
+      {
+        "name": "excluded_scope_incidental_health",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "rejected",
+        "reason": "pulso_editorial_incidental_health",
+        "expected_decision": "rejected",
+        "expected_reason": "pulso_editorial_incidental_health",
+        "prospective_evidence": null,
+        "assessment_sha256": "75f93acda080d92a7a32bd1b078cf8fea7ab57bed2d600369a203b9d6fafbbc2"
+      },
+      {
+        "name": "excluded_scope_marketing",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "rejected",
+        "reason": "pulso_editorial_marketing",
+        "expected_decision": "rejected",
+        "expected_reason": "pulso_editorial_marketing",
+        "prospective_evidence": null,
+        "assessment_sha256": "267e67ab54e98a129101e5abd572768f0b49b6b22c700a208c8b959f3728d8ee"
+      },
+      {
+        "name": "excluded_scope_opinion",
+        "passed": true,
+        "source_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "decision": "rejected",
+        "reason": "pulso_editorial_opinion",
+        "expected_decision": "rejected",
+        "expected_reason": "pulso_editorial_opinion",
+        "prospective_evidence": null,
+        "assessment_sha256": "b0b355803eb383c0797ff2f0f15db4116b47b5524b54fc52c72c919e0cef1bf5"
+      }
+    ],
+    "all_checks_pass": true,
+    "network_calls": 0,
+    "paid_provider_calls": 0,
+    "actual_publisher_metadata_mutations": 0,
+    "limitations": [
+      "Answers are explicit adversarial or witness-based mocked assessments against captured complete publisher body projections, not actual new provider responses.",
+      "Quote provenance is not independent entailment, novelty, or publication approval.",
+      "No discovery/runtime/feed acceptance is asserted."
+    ]
+  },
+  "primary_item_checks": {
+    "schema": "pulso_primary_binding_independent_v1",
+    "checks": [
+      {
+        "name": "primary_flag_primary_identity_verified_False",
+        "passed": true,
+        "flag": "primary_identity_verified",
+        "value": false,
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "primary_flag_primary_identity_verified_None",
+        "passed": true,
+        "flag": "primary_identity_verified",
+        "value": null,
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "primary_flag_primary_identity_verified_1",
+        "passed": true,
+        "flag": "primary_identity_verified",
+        "value": 1,
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "primary_flag_primary_identity_verified_true",
+        "passed": true,
+        "flag": "primary_identity_verified",
+        "value": "true",
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "primary_flag_primary_identity_verified_MISSING",
+        "passed": true,
+        "flag": "primary_identity_verified",
+        "value": "MISSING",
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "primary_flag_publication_date_verified_False",
+        "passed": true,
+        "flag": "publication_date_verified",
+        "value": false,
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "primary_flag_publication_date_verified_None",
+        "passed": true,
+        "flag": "publication_date_verified",
+        "value": null,
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "primary_flag_publication_date_verified_1",
+        "passed": true,
+        "flag": "publication_date_verified",
+        "value": 1,
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "primary_flag_publication_date_verified_true",
+        "passed": true,
+        "flag": "publication_date_verified",
+        "value": "true",
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "primary_flag_publication_date_verified_MISSING",
+        "passed": true,
+        "flag": "publication_date_verified",
+        "value": "MISSING",
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "queue_primary_url_mismatch",
+        "passed": true,
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_item_identity_or_date_mismatch",
+        "primary_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "queue_url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+        "primary_day": "2026-10-10",
+        "queue_day": "2026-10-10",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      },
+      {
+        "name": "queue_primary_day_mismatch",
+        "passed": true,
+        "model_calls": 0,
+        "http_calls": 0,
+        "reason": "pulso_primary_item_identity_or_date_mismatch",
+        "primary_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "queue_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "primary_day": "2026-10-10",
+        "queue_day": "2026-10-09",
+        "primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405"
+      }
+    ],
+    "all_checks_pass": true,
+    "paid_provider_calls": 0,
+    "actual_publisher_metadata_mutations": 0,
+    "network_calls": 0,
+    "product_files_mutated": 0,
+    "reviewed_beta_sha256": "4129e7831066746f283f6d93dbfdb8532be195eb770359cad893c7264e61bb44",
+    "limitations": [
+      "Queue metadata and identity changes are deliberate adversarial fixture mutations, not allegations about current publisher or runtime data.",
+      "No fresh runtime acceptance is asserted."
+    ]
+  },
+  "same_item_recovery_trace_check": {
+    "name": "same_item_current_primary_proof_replaces_stale_false_binding",
+    "passed": true,
+    "first_hold": "pulso_primary_verification_flags_missing_or_false",
+    "verified_proof_restored_from_original": {
+      "primary_identity_verified": true,
+      "publication_date_verified": true
+    },
+    "accepted_row": true,
+    "current_primary_item_binding": {
+      "verified": true,
+      "reason": "pulso_primary_item_identity_and_date_verified",
+      "raw_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "primary_canonical_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "raw_event_date": "2026-10-10",
+      "primary_publication_date": "2026-10-10",
+      "primary_verification_flags": {
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      "model_calls_permitted": true,
+      "other_editorial_and_budget_gates_still_apply": true,
+      "publication_approved": false
+    },
+    "prior_primary_item_binding_deferrals": [
+      {
+        "verified": false,
+        "reason": "pulso_primary_verification_flags_missing_or_false",
+        "raw_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "primary_canonical_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "raw_event_date": "2026-10-10",
+        "primary_publication_date": "2026-10-10",
+        "primary_verification_flags": {
+          "primary_identity_verified": true,
+          "publication_date_verified": false
+        },
+        "model_calls_permitted": false
+      }
+    ],
+    "current_assessment": {
+      "decision": "published",
+      "relevance_score": 72,
+      "threshold": 72,
+      "analysis_reason": "Traslado completo y cierre de semanas como nuevo balance del prestador."
+    },
+    "model_calls_after_restored_verified_proof": 1,
+    "evidence_maturity": "media_reported",
+    "publication_date": "2026-10-10",
+    "reviewed_beta_sha256": "4129e7831066746f283f6d93dbfdb8532be195eb770359cad893c7264e61bb44",
+    "paid_provider_calls": 0,
+    "network_calls": 0,
+    "note": "Synthetic same-item recovery witness against exact retained clinical original; not a current runtime allegation."
+  },
+  "primary_original_replay_scope": {
+    "schema": "pulso_guard_primary_projection_replay_scope_v1",
+    "rows": [
+      {
+        "index": 1,
+        "url": "https://www.latercera.com/pulso/noticia/la-bateria-de-proyectos-laborales-que-prepara-el-gobierno-para-combatir-la-crisis-de-empleo/",
+        "original_html_sha256": "d4af3dd89f53452fa8a08d509e9d101fb3925d22de6cbfcd7e2df59744c2bf0c",
+        "full_primary_body_sha256": "aa07cc10c1110957df93324cb7f05af7e7e7f649eb46d6495693afb60196fa45",
+        "publication_date": "2026-10-11",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 2,
+        "url": "https://www.latercera.com/politica/noticia/may-chomali-el-impensado-ascenso-de-la-discola-del-gabinete/",
+        "original_html_sha256": "383be19987b558aae742d0820890736d4ab6e52a2d6ef884c4a2ff32b56c3f0d",
+        "full_primary_body_sha256": "5158387dba2ffb8ebe3ab6bfbfaabf93272239dbd0bbd2f074e7d17267267890",
+        "publication_date": "2026-10-11",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 3,
+        "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+        "original_html_sha256": "2cb53f344d07638271631bbf2a72d1281cca96b50400563c5959335e6166ac6e",
+        "full_primary_body_sha256": "78269f9af000343aaffbeb13140eab15b341595286e10885c743dd158b2762ab",
+        "publication_date": "2026-10-10",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_runtime_real/2cb53f344d07638271631bbf2a72d1281cca96b50400563c5959335e6166ac6e.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 4,
+        "url": "https://www.latercera.com/politica/noticia/los-ministros-favorecidos-y-afectados-por-el-primer-apreton-de-cinturon-de-quiroz/",
+        "original_html_sha256": "3bed4c19f11e8293c84d4164fde119cfa70bac905b006acaf155b94fd107fefe",
+        "full_primary_body_sha256": "2fa146f7487e25d65bd74c64716b663fc7710792562d6aba1557723538f4bda3",
+        "publication_date": "2026-10-10",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 5,
+        "url": "https://www.latercera.com/paula/noticia/cierre-de-prodemu-las-mujeres-lo-van-a-extranar/",
+        "original_html_sha256": "e8c9fb39db69487251a041a046daedf52b7580bac55f4940d2613eb8a98e05bd",
+        "full_primary_body_sha256": "7d30b90fd493626478a17523399bb6628c93251443f295313cc3d09b6822e9ba",
+        "publication_date": "2026-10-10",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 6,
+        "url": "https://www.latercera.com/sustentabilidad/noticia/el-costo-de-no-anticiparse-a-los-riesgos-climaticos-en-el-sistema-de-salud/",
+        "original_html_sha256": "41add88cc3363d11e98a5faf1fbf11d5c0aa85edf8aed4084827d4a4dc540fb6",
+        "full_primary_body_sha256": "5509b69ac692cd9b248e6eabd94c48e0c0288533145cac690f7eff20a86d443f",
+        "publication_date": "2026-10-10",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_runtime_real/41add88cc3363d11e98a5faf1fbf11d5c0aa85edf8aed4084827d4a4dc540fb6.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 7,
+        "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "original_html_sha256": "e7d3de316f5d8afa1d4be08e75b639e64a6d43a293a2b18e5e4542400a02e4a3",
+        "full_primary_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "publication_date": "2026-10-10",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_runtime_real/e7d3de316f5d8afa1d4be08e75b639e64a6d43a293a2b18e5e4542400a02e4a3.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 8,
+        "url": "https://www.latercera.com/nacional/noticia/gobierno-decreta-zona-de-catastrofe-en-las-condes-tras-devastador-aluvion-que-arraso-con-personas-autos-y-casas/",
+        "original_html_sha256": "38687da2e2ded7d52de0fb790b3012fb971900bfd9d18e6f20a42645eed6ea35",
+        "full_primary_body_sha256": "044949b83ad9a97a8dbbefec3bbbbb860730cb11686d1bef32b438c1ff6fe629",
+        "publication_date": "2026-10-09",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_editorial_exception_real/video/38687da2e2ded7d52de0fb790b3012fb971900bfd9d18e6f20a42645eed6ea35.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 9,
+        "url": "https://www.latercera.com/videos/noticia/aluvion-en-las-condes-experto-apunta-a-actualizacion-de-planificacion-territorial-y-a-decreto-de-contraloria/",
+        "original_html_sha256": "567e2f19c068c2d2d521008ab8dd490700431120edda1431f8c310b23d410e32",
+        "full_primary_body_sha256": "f634bfdc7b7f319276434d3d9ec317ac6d7d1f14b248ae54bf8cc581b046906e",
+        "publication_date": "2026-10-09",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_editorial_exception_real/video/567e2f19c068c2d2d521008ab8dd490700431120edda1431f8c310b23d410e32.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 10,
+        "url": "https://www.latercera.com/horizontes/noticia/ministro-mas-en-chile-100-incorporar-a-las-personas-mayores-a-la-vida-economica-no-es-caridad/",
+        "original_html_sha256": "7b4acdd8963a14e62894a994f5dac57a10cd6eb1abf6de52a1ff6449cd2bdf3a",
+        "full_primary_body_sha256": "d54aac05f57af13da93298efc0dd89acc090b41df9acc37695f5ab45f27f9a84",
+        "publication_date": "2026-10-09",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 11,
+        "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+        "original_html_sha256": "24cfba5e77cc0c4e6587798bd064008170db416c48ab2be2cd6f331cf6c29ab7",
+        "full_primary_body_sha256": "545cb1a0653662a7c24b6b651a48229199252eeb540207464ec7e43864ec03a3",
+        "publication_date": "2026-10-09",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_runtime_real/24cfba5e77cc0c4e6587798bd064008170db416c48ab2be2cd6f331cf6c29ab7.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 12,
+        "url": "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+        "original_html_sha256": "385486ce387672279b3cd474550424ba1087f7e8b6a08a38abac01ed3c1fd5e9",
+        "full_primary_body_sha256": "0278d7e51a5ce95bb69aac55a729e75085acbfa0d4dfff228500d2f3be2fe16d",
+        "publication_date": "2026-10-08",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_runtime_real/385486ce387672279b3cd474550424ba1087f7e8b6a08a38abac01ed3c1fd5e9.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 13,
+        "url": "https://www.latercera.com/nacional/noticia/sigue-en-vivo-aluvion-las-condes-lluvias/",
+        "original_html_sha256": "eb3e89f779023a4f315574eb399229cdc5ecfa843afbf10a168103ae5e1a89bc",
+        "full_primary_body_sha256": "c2541fa444ddf526fa5c44a08eb187058b3974258fed8e4ea2972ab30fbfd155",
+        "publication_date": "2026-10-08",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_editorial_exception_real/video/eb3e89f779023a4f315574eb399229cdc5ecfa843afbf10a168103ae5e1a89bc.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 14,
+        "url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+        "original_html_sha256": "79a8252714e8d0bbdd393c83d5ca9839204cb70115efe82f045e211826e81269",
+        "full_primary_body_sha256": "d41b5474b0797552f3a1a086d558427da3e3b0cc6942d5b59e9fd442ddc4f2ad",
+        "publication_date": "2026-10-08",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_runtime_real/79a8252714e8d0bbdd393c83d5ca9839204cb70115efe82f045e211826e81269.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 15,
+        "url": "https://www.latercera.com/pulso/noticia/expertos-ven-factible-cumplimiento-de-meta-fiscal-este-ano-pero-califican-de-exigente-llegar-a-15-del-pib-a-2030/",
+        "original_html_sha256": "6717d44a4f057418f58a8f3a5f31b80c3e04e1dacbe2fba389821759655a5fb4",
+        "full_primary_body_sha256": "853d0b0c09b31bf13ea247d8610ad2c584b29748e7708f14f3df904774ad7274",
+        "publication_date": "2026-10-08",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 16,
+        "url": "https://www.latercera.com/nacional/noticia/lluvias-provocan-aluvion-en-las-condes-registros-captan-a-vehiculos-siendo-arrastrados-por-el-agua/",
+        "original_html_sha256": "1898eb7e2cd078da8036082b31ace69538567a8e988ca5db9ed35609abd2730a",
+        "full_primary_body_sha256": "0dcff64eb6e40187c6b56a5795e45e1ba28d47a71bb4f3fd7ff3deb6e59c1618",
+        "publication_date": "2026-10-08",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_editorial_exception_real/video/1898eb7e2cd078da8036082b31ace69538567a8e988ca5db9ed35609abd2730a.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 17,
+        "url": "https://www.latercera.com/nacional/noticia/gobierno-le-dice-adios-al-presupuesto-con-perspectiva-de-genero-establecido-por-boric/",
+        "original_html_sha256": "3533c8bb0740f54f953ecb85b101f2c41057428d1d6e6d9e4600ebcc6c7d7b8b",
+        "full_primary_body_sha256": "6ddf8c35ee6917ed4316a32e374b0b7597cbbb964cab58cc1a3f47e8495bc4af",
+        "publication_date": "2026-10-08",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 18,
+        "url": "https://www.latercera.com/servicios/noticia/declaran-alerta-roja-para-10-comunas-de-la-region-metropolitana-por-riesgo-de-aluviones-luego-de-emergencia-en-las-condes/",
+        "original_html_sha256": "7e7a81438b2f8a590f554b98f3eacb50680b5f5c4b459fa527addbea264e092b",
+        "full_primary_body_sha256": "c61ff054d0c528262be8a6d785cfdf7d444969611583156f309f814caf6f4177",
+        "publication_date": "2026-10-08",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 19,
+        "url": "https://www.latercera.com/nacional/noticia/la-zona-cero-del-aluvion-en-las-condes-que-inundo-clinicas-y-arrastro-autos/",
+        "original_html_sha256": "f0d7d5d74ba225a3c9b05b14af4b55ea748d7045a23b07820e2c5cba72982fe9",
+        "full_primary_body_sha256": "fdaeae8f838c0664aa9780281aa35917cd217ef7ccf3d78d9c7b937e4a55c2af",
+        "publication_date": "2026-10-08",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 20,
+        "url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+        "original_html_sha256": "1ec18445a04b084d7774b829b8873b4cf90209431f54e39a6160b6bd633de294",
+        "full_primary_body_sha256": "744b61b329357f0d9a34ba8f72ff2e8495dea55c1d708f6d94b6a3b80edb0e6a",
+        "publication_date": "2026-10-07",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_runtime_real/1ec18445a04b084d7774b829b8873b4cf90209431f54e39a6160b6bd633de294.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 21,
+        "url": "https://www.latercera.com/politica/noticia/rodrigo-mundaca-le-dijimos-al-ministro-que-si-rebajas-van-a-ser-de-esta-magnitud-vamos-a-dejar-de-trabajar-con-los-servicios-de-ministerios/",
+        "original_html_sha256": "970fa62c9c51cb901b463a293a038f4836009f534d664ef22b67f539a3e9414e",
+        "full_primary_body_sha256": "fbd7e9f568ccbb738757cb5a95ddb76336db05c4b9eb71e101144ecdf1a50e9b",
+        "publication_date": "2026-10-07",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 22,
+        "url": "https://www.latercera.com/politica/noticia/senador-castro-acusa-gran-retroceso-por-recortes-en-presupuesto-de-salud-y-advierte-que-pacientes-de-ley-ricarte-soto-no-tendran-la-misma-cobertura/",
+        "original_html_sha256": "e8e2557b440cab4279eb5e367b6d9bcb01c00081ae05b732ab80fb0f7bb118ed",
+        "full_primary_body_sha256": "3e86fa787b11e7bc64891fe8167be8e18c8875679e349dd834fba747776dade5",
+        "publication_date": "2026-10-07",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 23,
+        "url": "https://www.latercera.com/pulso/noticia/china-joyvio-se-querella-contra-de-isidoro-quiroga-ahora-por-delitos-ambientales-defensa-acusa-nuevo-manotazo-de-ahogado/",
+        "original_html_sha256": "65578dfea88595f242e45d2d779435e67a1a04ac6dd4b050ce1fba4e7dd55bd1",
+        "full_primary_body_sha256": "c04c53da3f42d3622571f4ed40754744f34a8ba64ab175400e15dfffcffaa029",
+        "publication_date": "2026-10-07",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 24,
+        "url": "https://www.latercera.com/tecnologia/noticia/chile-plan-nacional-digital-subtel-6g/",
+        "original_html_sha256": "7d28375c2b9b8d8bac1ac5b8ff3e66159a49446c675a644c8d19a611e7a2ea56",
+        "full_primary_body_sha256": "20c6a4854337505bf030435299190a4abd9f23d23c8e0105369e306bf5bc84ca",
+        "publication_date": "2026-10-07",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 25,
+        "url": "https://www.latercera.com/pulso/noticia/presupuesto-2027-minuta-politica-del-gobierno-reporta-alza-del-gasto-distinta-de-la-informada/",
+        "original_html_sha256": "6a169e1fb536ca2be8513bddb379ef8c3eba67da942d665c40dd216273add267",
+        "full_primary_body_sha256": "7a6ced79126104e96221c21f3231721940ad955889bbb9e102cc1ecc4be9440c",
+        "publication_date": "2026-10-06",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 26,
+        "url": "https://www.latercera.com/pulso/noticia/los-otros-detalles-de-la-minuta-que-el-gobierno-entrego-a-los-parlamentarios-del-oficialismo/",
+        "original_html_sha256": "c6f21fa1420002e2a7626c02cbd8bf7bb51a47b1fc4e3656dd12e06cda9ba52a",
+        "full_primary_body_sha256": "ea4b3d2202553200fda224fa40067b22e115f865fabf9e8714fe8907804197aa",
+        "publication_date": "2026-10-06",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_runtime_real/c6f21fa1420002e2a7626c02cbd8bf7bb51a47b1fc4e3656dd12e06cda9ba52a.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 27,
+        "url": "https://www.latercera.com/nacional/noticia/cambios-estructurales-no-maquillajes-gobierno-lanza-plan-para-agilizar-proceso-de-certificacion-de-discapacidad/",
+        "original_html_sha256": "e3aaa6bb7f9f816a75e8633b403a1eb78c1ba5ecc98e246ceac0950b502f8ea4",
+        "full_primary_body_sha256": "b0b4ae2dd7bfdfd441afd0fdadd3d244d95780b2568509ea18bb744ac1ec1970",
+        "publication_date": "2026-10-06",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 28,
+        "url": "https://www.latercera.com/politica/noticia/gobernador-de-valparaiso-revela-detalles-de-tensa-cita-con-quiroz-por-presupuesto-y-su-advertencia-al-titular-de-hacienda/",
+        "original_html_sha256": "affa84ab563ff47bb549a4af403241638c4c39be253f2088e8af8317069f5ba2",
+        "full_primary_body_sha256": "3921989d2699755d6fc5fdc25d663754ec6147e17b1eeeb28a11e5be0d9f9aad",
+        "publication_date": "2026-10-06",
+        "status": "verified_exact_original",
+        "fixture_path": "tests/fixtures/pulso_editorial_exception_real/video/affa84ab563ff47bb549a4af403241638c4c39be253f2088e8af8317069f5ba2.html.gz",
+        "original_sha_matches": true,
+        "body_sha_matches": true,
+        "publication_date_unchanged": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      {
+        "index": 29,
+        "url": "https://www.latercera.com/politica/noticia/senadores-de-oposicion-presentan-indicaciones-a-infraestructura-critica-y-marcan-diferencias-con-mociones-del-ejecutivo/",
+        "original_html_sha256": "230d53105eddb1abc4a70a3a3c611dcbb0e9c8036277b747dea2b0afe212852b",
+        "full_primary_body_sha256": "b4f20ad082f827f71404f4873a46f3e272881050b6887b2fe9fb74057792c820",
+        "publication_date": "2026-10-06",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 30,
+        "url": "https://www.latercera.com/nacional/noticia/el-guino-de-kast-a-dorothy-perez-presupuesto-de-contraloria-sube-un-59-y-aumentan-funcionarios/",
+        "original_html_sha256": "cade8b0ddbf5c7409a1c115db3473d3d1049c117d21449bf01d009ae411cc8bd",
+        "full_primary_body_sha256": "21d59ab6f3a81b04f8061575adf6c5678b266740c9c250abb87493f7bb7dfb27",
+        "publication_date": "2026-10-06",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 31,
+        "url": "https://www.latercera.com/pulso/noticia/presupuesto-2027-las-cuatro-prioridades-del-ejecutivo-y-los-21-programas-bajo-el-analisis-de-la-dipres/",
+        "original_html_sha256": "dcdf298a0ebf929748542ce6597d10de098200fb41913506810915f0c002c865",
+        "full_primary_body_sha256": "d72e24c5b4d4ece88b06b40acb6891fab75b798bec4bed92bd9f489a16ba4872",
+        "publication_date": "2026-10-06",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      },
+      {
+        "index": 32,
+        "url": "https://www.latercera.com/nacional/noticia/el-gobierno-de-los-retrocesos-oposicion-eleva-criticas-contra-kast-tras-recorte-de-86-a-programa-asociado-a-la-ley-cholito/",
+        "original_html_sha256": "47342b95f1862106ebd863e21dbc28f7a9f3558b95dbf3b9683b29fc057eba21",
+        "full_primary_body_sha256": "b777d717a16bf61f76d627c68abe5e96d953966da8f4de98c7835c493749790c",
+        "publication_date": "2026-10-06",
+        "status": "exact_recorded_original_not_retained_locally_for_independent_replay"
+      }
+    ],
+    "originals_independently_replayed": 13,
+    "exact_original_variants_not_retained_locally": 19,
+    "all_available_originals_pass": true,
+    "all_32_fullbody_projection_hashes_verified": true,
+    "source_sha256": "c9cf83e54ac0c4cff0808b7d90a5076e5c6ff35945696e4f52aaa873b31efc69",
+    "limitations": [
+      "The missing19 exact captured HTTP variants are not independently byte-replayed here. Complete primary-body projections are hash-verified, not represented as raw captures."
+    ]
+  },
+  "exact_adversarial_answer_witnesses": [
+    {
+      "id": "future_field_laundering",
+      "url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+      "source_body_sha256": "d41b5474b0797552f3a1a086d558427da3e3b0cc6942d5b59e9fd442ddc4f2ad",
+      "analysis": {
+        "relevance_score": 78,
+        "what_happened": "Según La Tercera, la red ya incorporó las 24 nuevas comunas y alcanzó 333 de las 345 previstas por ley. La ampliación podría llegar a otras comunas.",
+        "why_it_matters": "La expansión ya aumentó la capacidad de atención disponible en 24 comunas. El presupuesto permitiría ampliar apoyos domiciliarios.",
+        "reason": "Distingue el avance operacional de discapacidad y el anuncio prospectivo de cuidados.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "Una ampliación concreta de cuidados a personas con dependencia, todavía futura.",
+          "human_health_scope_quote": "modernizar la solicitud de la certificación de discapacidad y la nueva plataforma que permite al usuario hacer seguimiento del proceso",
+          "actor": "ministra Wulf",
+          "actor_quote": "En materia de cuidados domiciliarios, la ministra Wulf destacó por su parte que habrá un aumento de 2.624 millones de pesos, equivalente al 4,7%, para la Red Local de Apoyos y Cuidados.",
+          "action": "habrá un aumento de 2.624 millones de pesos",
+          "action_quote": "habrá un aumento de 2.624 millones de pesos, equivalente al 4,7%, para la Red Local de Apoyos y Cuidados.",
+          "consequence": "incorporar 24 nuevas comunas",
+          "consequence_quote": "Esto permitirá incorporar 24 nuevas comunas y llegar a 333 de las 345 que establece la ley.",
+          "event_status": "plan",
+          "event_status_quote": "habrá un aumento de 2.624 millones de pesos, equivalente al 4,7%, para la Red Local de Apoyos y Cuidados.",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "Cuantifica el aumento anunciado y la expansión territorial todavía pendiente.",
+          "novelty_quote": "Esto permitirá incorporar 24 nuevas comunas y llegar a 333 de las 345 que establece la ley.",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "La ampliación podría llegar a otras comunas.",
+              "source_quote": "habrá un aumento de 2.624 millones de pesos, equivalente al 4,7%, para la Red Local de Apoyos y Cuidados."
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "El presupuesto permitiría ampliar apoyos domiciliarios.",
+              "source_quote": "Esto permitirá incorporar 24 nuevas comunas y llegar a 333 de las 345 que establece la ley."
+            }
+          ]
+        }
+      },
+      "old_decision": "ready",
+      "old_reason": "pulso_editorial_grounded_assessment"
+    },
+    {
+      "id": "animal_only_as_human",
+      "url": "https://www.latercera.com/pulso/noticia/china-joyvio-se-querella-contra-de-isidoro-quiroga-ahora-por-delitos-ambientales-defensa-acusa-nuevo-manotazo-de-ahogado/",
+      "source_body_sha256": "c04c53da3f42d3622571f4ed40754744f34a8ba64ab175400e15dfffcffaa029",
+      "analysis": {
+        "relevance_score": 99,
+        "what_happened": "Según Pulso, Joyvio presentó una nueva querella contra Quiroga por delitos que afectarían la salud animal o vegetal de ecosistemas marinos.",
+        "why_it_matters": "La acción judicial sobre salmonicultura y sus recursos hidrobiológicos tiene consecuencias para esta controversia empresarial.",
+        "reason": "Adversarial scope misclassification with genuine literal quotes.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "Afirmación adversarial errónea de salud humana para un conflicto exclusivo de salmonicultura.",
+          "human_health_scope_quote": "La nueva acción penal, patrocinada por los abogados Jorge Bofill y César Ramos, apunta a los delitos de “propagación indebida de agentes susceptibles de poner en peligro la salud animal o vegetal, y de introducción de agentes contaminantes con daño a recursos hidrobiológicos”.",
+          "actor": "Joyvio",
+          "actor_quote": "Esta última hebra es la que Joyvio tomó para presentar una nueva querella contra Quiroga.",
+          "action": "presentar una nueva querella contra Quiroga",
+          "action_quote": "Esta última hebra es la que Joyvio tomó para presentar una nueva querella contra Quiroga.",
+          "consequence": "poner en peligro la salud animal o vegetal",
+          "consequence_quote": "La nueva acción penal, patrocinada por los abogados Jorge Bofill y César Ramos, apunta a los delitos de “propagación indebida de agentes susceptibles de poner en peligro la salud animal o vegetal, y de introducción de agentes contaminantes con daño a recursos hidrobiológicos”.",
+          "event_status": "actual",
+          "event_status_quote": "Esta última hebra es la que Joyvio tomó para presentar una nueva querella contra Quiroga.",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nueva acción judicial es un dato nuevo en la disputa de la salmonera.",
+          "novelty_quote": "La nueva acción penal, patrocinada por los abogados Jorge Bofill y César Ramos, apunta a los delitos de “propagación indebida de agentes susceptibles de poner en peligro la salud animal o vegetal, y de introducción de agentes contaminantes con daño a recursos hidrobiológicos”.",
+          "future_claims": []
+        }
+      },
+      "old_decision": "ready",
+      "old_reason": "pulso_editorial_grounded_assessment"
+    },
+    {
+      "id": "proposed_fonasa_budget_as_implemented",
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+      "source_body_sha256": "744b61b329357f0d9a34ba8f72ff2e8495dea55c1d708f6d94b6a3b80edb0e6a",
+      "analysis": {
+        "relevance_score": 80,
+        "what_happened": "Según La Tercera, el presupuesto de Fonasa para 2027 ya aumentó de $14.964 billones a $16.224, con el financiamiento implementado y disponible.",
+        "why_it_matters": "El incremento aprobado ya permite financiar prestaciones y ampliar la atención primaria de salud para los afiliados a Fonasa.",
+        "reason": "Adversarial unsupported actual classification of the real proposed budget.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La cita aborda el seguro público de salud y la atención primaria dentro del presupuesto propuesto.",
+          "human_health_scope_quote": "el seguro público de salud de Chile en el que están 17,3 millones de personas, fue de $14.964 billones y para 2027 se proponen $16.224, lo que implica un aumento nominal de 8,4% y de 5,2% real al proyectar una inflación de 3,1%. Dentro de Fonasa, la atención primaria pasa de $3.595.710 millones en 2026 a $3.960.097 millones en 2027, es decir, un 6,8% de aumento real.",
+          "actor": "Fonasa",
+          "actor_quote": "Fondo Nacional de Salud (Fonasa), el seguro público de salud de Chile",
+          "action": "para 2027 se proponen $16.224",
+          "action_quote": "el seguro público de salud de Chile en el que están 17,3 millones de personas, fue de $14.964 billones y para 2027 se proponen $16.224, lo que implica un aumento nominal de 8,4% y de 5,2% real al proyectar una inflación de 3,1%. Dentro de Fonasa, la atención primaria pasa de $3.595.710 millones en 2026 a $3.960.097 millones en 2027, es decir, un 6,8% de aumento real.",
+          "consequence": "lo que implica un aumento nominal de 8,4%",
+          "consequence_quote": "el seguro público de salud de Chile en el que están 17,3 millones de personas, fue de $14.964 billones y para 2027 se proponen $16.224, lo que implica un aumento nominal de 8,4% y de 5,2% real al proyectar una inflación de 3,1%. Dentro de Fonasa, la atención primaria pasa de $3.595.710 millones en 2026 a $3.960.097 millones en 2027, es decir, un 6,8% de aumento real.",
+          "event_status": "actual",
+          "event_status_quote": "el seguro público de salud de Chile en el que están 17,3 millones de personas, fue de $14.964 billones y para 2027 se proponen $16.224, lo que implica un aumento nominal de 8,4% y de 5,2% real al proyectar una inflación de 3,1%. Dentro de Fonasa, la atención primaria pasa de $3.595.710 millones en 2026 a $3.960.097 millones en 2027, es decir, un 6,8% de aumento real.",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "Reporta una comparación específica del presupuesto sanitario entre 2026 y el proyecto 2027.",
+          "novelty_quote": "el seguro público de salud de Chile en el que están 17,3 millones de personas, fue de $14.964 billones y para 2027 se proponen $16.224, lo que implica un aumento nominal de 8,4% y de 5,2% real al proyectar una inflación de 3,1%. Dentro de Fonasa, la atención primaria pasa de $3.595.710 millones en 2026 a $3.960.097 millones en 2027, es decir, un 6,8% de aumento real.",
+          "future_claims": []
+        }
+      },
+      "old_decision": "ready",
+      "old_reason": "pulso_editorial_grounded_assessment"
+    }
+  ],
+  "before_primary_flag_repair_failed_cases": [
+    {
+      "name": "beta_invalid_publication_date_verified_cannot_call_model",
+      "passed": false,
+      "model_calls": 1,
+      "reason": "curated beta source pending assessment",
+      "metadata_field": "publication_date_verified",
+      "injected_value": false
+    },
+    {
+      "name": "beta_invalid_primary_identity_verified_cannot_call_model",
+      "passed": false,
+      "model_calls": 1,
+      "reason": "curated beta source pending assessment",
+      "metadata_field": "primary_identity_verified",
+      "injected_value": false
+    }
+  ],
+  "before_same_item_recovery_trace": {
+    "first_hold": "pulso_primary_verification_flags_missing_or_false",
+    "verified_proof_restored_from_original": {
+      "primary_identity_verified": true,
+      "publication_date_verified": true
+    },
+    "accepted_row": true,
+    "current_primary_item_binding": {
+      "verified": false,
+      "reason": "pulso_primary_verification_flags_missing_or_false",
+      "raw_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "primary_canonical_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "raw_event_date": "2026-10-10",
+      "primary_publication_date": "2026-10-10",
+      "primary_verification_flags": {
+        "primary_identity_verified": true,
+        "publication_date_verified": false
+      },
+      "model_calls_permitted": false
+    },
+    "current_assessment": {
+      "decision": "published",
+      "relevance_score": 72,
+      "threshold": 72,
+      "analysis_reason": "Traslado completo y cierre de semanas como nuevo balance del prestador."
+    },
+    "model_calls_after_restored_verified_proof": 1,
+    "note": "Synthetic same-item recovery witness against exact retained clinical original; not a current runtime allegation."
+  },
+  "validation": {
+    "command": ".venv/bin/python -m pytest -q tests/test_pulso_editorial_proof.py tests/test_pulso_liveblog_temporal_input.py tests/test_pulso_health_anchor_compatibility.py",
+    "result": "64 PASS including final same-item recovery regression",
+    "model_and_budget_hooks": "Explicit mocks only; SDK request/response paths replayed without network or ledger writes"
+  },
+  "source_body_reference": "data/audits/pulso_first_real_all32_semantic_review_2026_10_11.json",
+  "limitations": [
+    "This is a scoped independent code/fixture review, not acceptance of discovery, processing, staging, history or feed.",
+    "Literal quote validation establishes provenance, not complete semantic entailment or independent publication approval; every actual new publication still needs semantic review.",
+    "Source publication date stays immutable; a current report of an old event requires explicit analysis of event period and new information. The guard cannot prove novelty by string matching.",
+    "All32 retained full-body projection hashes were checked. Only13 of their exact recorded HTTP variants are locally retained and independently re-parsed in this review;19 are not represented as independently byte-replayed.",
+    "Adversarial candidate/assessment changes exist only in mocked fixtures; no claim of present runtime contamination follows."
+  ]
+}
