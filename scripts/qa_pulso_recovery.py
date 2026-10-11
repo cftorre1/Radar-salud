@@ -24,6 +24,10 @@ ROOT = Path(__file__).resolve().parents[1]
 FROZEN_CONTROL_SHA256 = "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374"
 PROCESSING_COHORT_PATH = "data/audits/pulso_material_recovery_cohort_2026_10_11.json"
 PROCESSING_COHORT_SHA256 = "8ed358f0cd37ecc4b554ab96cd4366048b8e6180ad1c0ee0044fc5d5f6976514"
+EDITORIAL_REVIEW_PATH = "data/audits/pulso_first_paid_editorial_corrections_2026_10_11.json"
+EDITORIAL_REVIEW_SHA256 = "35e1d8a806f99881b56c5358d904880ca6bf2aa7ddd21e7bdada8a4b740a78d2"
+INDEPENDENT_EDITORIAL_PATH = "data/audits/pulso_first_real_all32_semantic_review_2026_10_11.json"
+INDEPENDENT_EDITORIAL_SHA256 = "a6ddc143c4cedb1bdc77bb1eb07ce80f25630a36bdde9ac68d49e2e2fe44d48f"
 WINDOWS = {"30": ("2026-09-11", "2026-10-10", 29), "90": ("2026-07-13", "2026-10-10", 79)}
 REQUIRED_FEEDS = {"section:" + name for name in (
     "pulso", "nacional", "politica", "tendencias", "que-pasa", "paula", "sustentabilidad",
@@ -39,6 +43,125 @@ SHA = re.compile(r"[0-9a-f]{64}")
 
 def digest(value):
     return hashlib.sha256(value).hexdigest()
+
+
+def object_digest(value):
+    return digest(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode())
+
+
+def verify_bound_editorial_review(queue, history, snapshot, root):
+    """Verify the exact independently reviewed ALL32 correction, not flags.
+
+    Original model outputs remain immutable in the pinned audit. A withdrawal
+    is allowed only when its complete effective history, queue assessment and
+    provenance match that audit; the reader never applies a correction.
+    """
+    source_queue = [item for item in queue.values() if item.get("source") == SOURCE]
+    claimed = [item for item in source_queue if item.get("raw", {}).get("metadata", {}).get("editorial_review")]
+    claimed_history = [item for item in history if normalized_url(item.get("source_url"))
+                       and item.get("editorial_review")]
+    if not claimed and not claimed_history:
+        return {}, []
+    findings, verified = [], {}
+    def fail(code, **evidence):
+        findings.append(dict(domain="processing", code=code, **evidence))
+    try:
+        raw = (root / EDITORIAL_REVIEW_PATH).read_bytes()
+        independent_raw = (root / INDEPENDENT_EDITORIAL_PATH).read_bytes()
+        if digest(raw) != EDITORIAL_REVIEW_SHA256 or digest(independent_raw) != INDEPENDENT_EDITORIAL_SHA256:
+            raise ValueError("independent_editorial_review_file_changed")
+        audit, independent = json.loads(raw), json.loads(independent_raw)
+        records = audit["records"]
+        originals = {(row["url"], row["publication_date"]): row for row in independent["all_signals"]}
+        if (len(records) != 32 or len(originals) != 32
+                or audit["independent_review"] != dict(path=INDEPENDENT_EDITORIAL_PATH, sha256=INDEPENDENT_EDITORIAL_SHA256)
+                or {(row["url"], row["publication_date"]) for row in records} != set(originals)):
+            raise ValueError("independent_editorial_review_incomplete")
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        fail("independent_editorial_review_unverified", error=str(error))
+        return {}, findings
+    keys = {(row["url"], row["publication_date"]) for row in records}
+    if (any((item["raw"].get("url"), item["raw"].get("event_date")) not in keys for item in claimed)
+            or any((item.get("source_url"), item.get("event_date")) not in keys for item in claimed_history)):
+        fail("unbound_editorial_review_record")
+    feed = snapshot.get("signals", [])
+    for record in records:
+        url, day = record["url"], record["publication_date"]
+        original, decision = record["original_signal"], record["decision"]
+        independent_record = originals[(url, day)]
+        matches = [item for item in source_queue if item.get("raw", {}).get("url") == url
+                   and item.get("raw", {}).get("event_date") == day]
+        signals = [item for item in history if item.get("source_url") == url and item.get("event_date") == day]
+        if len(matches) != 1 or len(signals) != 1:
+            fail("editorial_review_history_queue_identity_missing_or_ambiguous", url=url)
+            continue
+        item, signal = matches[0], signals[0]
+        metadata = item["raw"].get("metadata", {})
+        body = metadata.get("page_text")
+        approved_quotes = {quote["text"] for quote in independent_record["supporting_verbatim_quotes"]
+                           if quote.get("origin") == "original"}
+        if (record["independent_review_record_sha256"] != object_digest(independent_record)
+                or object_digest(original) != record["original_signal_sha256"]
+                or not isinstance(body, str) or digest(body.encode()) != record["original_body_sha256"]
+                or metadata.get("article_body_sha256") != record["original_body_sha256"]
+                or metadata.get("analysis_base_article_body_sha256") != record["original_body_sha256"]
+                or not set(record["evidence_quotes"]) <= approved_quotes
+                or any(" ".join(quote.split()) not in " ".join(body.split()) for quote in record["evidence_quotes"])
+                or original.get("evidence_maturity") != "media_reported"
+                or original.get("publication_date") != day or original.get("event_date") != day
+                or original.get("source_url") != url or type(original.get("editorial_relevance")) is not int
+                or original["editorial_relevance"] < 72
+                or metadata.get("canonical_url") != url or metadata.get("publication_date") != day
+                or any(metadata.get(key) is not True for key in
+                       ("article_verified", "article_body_complete", "primary_identity_verified", "publication_date_verified"))):
+            fail("editorial_review_original_output_body_or_date_unverified", url=url)
+        provenance = dict(schema_version="pulso_editorial_review_v1", review_id=audit["review_id"],
+            review_file=EDITORIAL_REVIEW_PATH, review_sha256=EDITORIAL_REVIEW_SHA256,
+            record_sha256=object_digest(record), original_signal_sha256=record["original_signal_sha256"],
+            original_body_sha256=record["original_body_sha256"], publication_date=day, decision=decision,
+            reason=record["reason"], evidence_quotes=record["evidence_quotes"], original_terminal_status="published",
+            original_model_assessment=record["original_model_assessment"],
+            original_model_what_happened=original["what_happened"], original_model_why_it_matters=original["why_it_matters"])
+        if record.get("duplicate_of"):
+            provenance["duplicate_of"] = record["duplicate_of"]
+        expected = dict(original, editorial_review=provenance,
+            editorial_decision=decision if decision in {"reject", "group"} else "accept",
+            editorial_review_reason=record["reason"], feed_visibility=decision not in {"reject", "group"})
+        assessment = record["original_model_assessment"]
+        original_assessment = dict(decision="published", relevance_score=original["editorial_relevance"],
+                                   threshold=72, analysis_reason=assessment.get("analysis_reason"))
+        if assessment != original_assessment or not assessment.get("analysis_reason"):
+            fail("editorial_review_original_paid_gate_unverified", url=url)
+        if decision == "correct":
+            expected.update(record["proposed"], event_status=record["event_status"],
+                            prospective_evidence=record["event_status"] in {"proposed", "planned"})
+            assessment = dict(decision="published", reason="independent_editorial_copy_corrected",
+                relevance_score=original["editorial_relevance"], threshold=72,
+                original_model_assessment=record["original_model_assessment"], review_sha256=EDITORIAL_REVIEW_SHA256)
+        elif decision in {"reject", "group"}:
+            assessment = dict(decision="rejected", reason="independent_editorial_review:" + record["reason"],
+                relevance_score=original["editorial_relevance"], threshold=72,
+                original_model_assessment=record["original_model_assessment"], review_sha256=EDITORIAL_REVIEW_SHA256)
+            if item.get("last_error") != assessment["reason"] or metadata.get("rejection_reason") != assessment["reason"]:
+                fail("editorial_review_rejection_reason_changed", url=url)
+        if (signal != expected or metadata.get("editorial_review") != provenance
+                or metadata.get("editorial_assessment") != assessment
+                or metadata.get("what_happened") != expected["what_happened"]
+                or metadata.get("why_it_matters") != expected["why_it_matters"]
+                or item.get("status") != ("rejected" if decision in {"reject", "group"} else "published")
+                or type(item.get("attempts")) is not int or item["attempts"] < 1):
+            fail("editorial_review_effective_state_or_provenance_changed", url=url)
+        present = [row for row in feed if row.get("source_url") == url and row.get("event_date") == day]
+        if decision in {"reject", "group"} and present:
+            fail("withdrawn_editorial_publication_still_in_serialized_feed", url=url)
+        if decision not in {"reject", "group"} and len(present) != 1:
+            fail("reviewed_retained_publication_missing_or_duplicated_in_serialized_feed", url=url)
+        if present and any(row.get(key) != expected.get(key) for row in present for key in
+                           ("what_happened", "why_it_matters", "publication_date", "editorial_relevance",
+                            "evidence_maturity", "editorial_review", "editorial_decision", "feed_visibility")):
+            fail("editorial_review_serialized_feed_changed", url=url)
+        verified[url] = provenance
+    return ({} if findings else verified), findings
 
 
 def explicit_media_attribution(value):
@@ -1058,12 +1181,21 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
         if item.get("source") == SOURCE:
             url = normalized_url(item.get("raw", {}).get("url"))
             current_queue.setdefault(url, []).append((fingerprint, item))
+    reviewed_outputs, review_findings = verify_bound_editorial_review(queue, history, snapshot, root)
+    findings.extend(review_findings)
+    if reviewed_outputs:
+        checks["bound_independent_editorial_corrections"] = dict(
+            review_sha256=EDITORIAL_REVIEW_SHA256, records=32,
+            withdrawn=sum(proof["decision"] in {"reject", "group"} for proof in reviewed_outputs.values()),
+            retained=sum(proof["decision"] not in {"reject", "group"} for proof in reviewed_outputs.values()))
     for baseline in report.get("baseline_queue", []):
         candidates = current_queue.get(baseline.get("url"), [])
         item = next((item for key, item in candidates if key == baseline.get("fingerprint")), None)
         if (not item or any(item.get(key) != baseline.get(key) for key in ("lane", "detected_at"))
                 or item.get("attempts", 0) < baseline.get("attempts", 0)
-                or baseline.get("status") in {"published", "rejected", "archived"} and item.get("status") != baseline["status"]):
+                or baseline.get("status") in {"published", "rejected", "archived"} and item.get("status") != baseline["status"]
+                and not (baseline["status"] == "published" and item.get("status") == "rejected"
+                         and reviewed_outputs.get(baseline.get("url"), {}).get("decision") in {"reject", "group"})):
             fail("discovery", "baseline_queue_identity_or_bookkeeping_changed", url=baseline.get("url"))
     historical_urls = {normalized_url(row.get("source_url")) for row in history}
     feed_urls = {normalized_url(row.get("source_url")) for row in snapshot.get("signals", [])}
@@ -1197,7 +1329,10 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                 if item.get("status") not in {"published", "rejected"}:
                     fail("processing", "recent_important_control_not_editorially_processed", url=url, reason=reason)
             if item.get("status") == "published":
-                if assessment.get("decision") != "published" or type(score) is not int or score < 72 or not assessment.get("analysis_reason"):
+                gate_analysis_reason = assessment.get("analysis_reason")
+                if url in reviewed_outputs:
+                    gate_analysis_reason = reviewed_outputs[url]["original_model_assessment"].get("analysis_reason")
+                if assessment.get("decision") != "published" or type(score) is not int or score < 72 or not gate_analysis_reason:
                     fail("processing", "published_without_unchanged_editorial_gate_trace", url=url)
                 published = historical.get(url, {})
                 text = " ".join(str(published.get(key) or "") for key in ("title", "what_happened", "why_it_matters"))
