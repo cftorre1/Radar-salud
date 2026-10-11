@@ -278,7 +278,8 @@ def main():
     matrix = []
     for url in dict.fromkeys([*titles, *report["originals"]]):
         normalized = article_url(url)
-        if url in DfHealthScout.PAGES or url == "https://www.df.cl/senal-df" or "tagport_" in normalized or url in {p['url'] for p in report['listing_pages']}: continue
+        if (url in DfHealthScout.PAGES or url == "https://www.df.cl/senal-df" or "tagport_" in normalized
+                or url.endswith(('/robots.txt','.xml')) or url in {p['url'] for p in report['listing_pages']}): continue
         entries = [{"fingerprint": key, "status": row["status"], "lane": row["lane"], "attempts": row["attempts"],
                     "reason": row.get("reason"), "event_date": row["raw"].get("event_date"), "detected_at": row["detected_at"],
                     "seen": key in seen, "assessment": row["raw"].get("metadata", {}).get("editorial_assessment"),
