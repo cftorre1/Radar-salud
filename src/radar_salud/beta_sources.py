@@ -306,7 +306,16 @@ def process_curated_beta_source(raw, cfg):
 
     if raw.source_slug == "pulso_latercera":
         from .pulso_source import (article_body_evidence, article_url, complete_article_body,
-                                   extract_article, verified_video_without_text)
+                                   extract_article, verified_publication_date_conflict,
+                                   verified_video_without_text)
+        if (verified_publication_date_conflict(raw.metadata)
+                and article_url(raw.url) == raw.metadata.get("canonical_url")
+                and raw.event_date is None):
+            # Preserve the conflicting primary timestamps and complete body;
+            # neither a retry nor editorial analysis can choose a true date.
+            raw.metadata["editorial_assessment"] = {
+                "decision": "pending", "reason": "publisher_conflicting_publication_dates"}
+            raise DeferredProcessing("publisher_conflicting_publication_dates")
         if (verified_video_without_text(raw.metadata)
                 and article_url(raw.url) == raw.metadata.get("canonical_url")
                 and raw.event_date == raw.metadata.get("publication_date") and raw.event_date):
