@@ -116,7 +116,7 @@ def reconcile(root, observations, apply=False):
                 ('superdesalud.gob.cl' if slug.startswith('superintendencia') else 'suseso.gob.cl') in row.get('source_url','')]
             docs=[row for row in observations['documents'] if row['source_slug']==slug]
             counts=queue.counts(slug)
-            source.update(status='warning',coverage_status='partial',coverage_reason='verified_visible_web_rows; native_http_blocked; site_wide_completeness_unverified',
+            source.update(status='warning',coverage_status='partial',coverage_complete=False,coverage_reason='verified_visible_web_rows; native_http_blocked; site_wide_completeness_unverified',
                 last_signal_at=max((row.get('event_date') or '' for row in stock),default='') or None,
                 published_total=len(stock),last_observed_event_at=max(row['event_date'] for row in docs),
                 last_observed_publication_at=max(row['metadata']['publication_date'] for row in docs),

@@ -40,7 +40,9 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         coverage = technical = None
     coverage_gap=error is None and discovered==0 and not last_signal
     status="error" if error else ("warning" if (coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
-    if fiscal and coverage != "listed_surface_parsed":
+    # Parsed tables prove an observation, not reconciled 30/90-day coverage.
+    # Keep the public health warning until independent reconciliation exists.
+    if fiscal:
         status = "error" if error else "warning"
     try:
         age=(datetime.now(timezone.utc).date()-date.fromisoformat(str(last_signal)[:10])).days
@@ -64,6 +66,7 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         src[slug].update(
             last_observed_event_at=last_observed, last_observed_publication_at=last_observed_publication,
             surfaces=surfaces or [], undated_observations=undated,
+            coverage_complete=False,
             archived=archived, rejection_reasons=rejection_reasons or {},
             published_total=len(published_history) if published_history is not None else None,
             coverage_reason="listed_documents_only; not site-wide reconciliation" if surface_success else "no_surface_receipt; discovery_count_is_not_coverage",

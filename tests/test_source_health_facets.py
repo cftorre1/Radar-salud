@@ -49,3 +49,13 @@ def test_fiscalization_undated_documents_cannot_be_real_absence(tmp_path):
         observed_rows=[{'event_date':None}],surfaces=[{'url':'compin','status':'parsed'}])
     row=json.loads((tmp_path/'data/source_health.json').read_text())['sources']['suseso_fiscalizacion']
     assert row['coverage_status']=='gap' and row['undated_observations']==1
+
+
+def test_parsed_dated_historical_tables_do_not_mark_fiscalization_operational(tmp_path):
+    record(tmp_path,'superintendencia_fiscalizacion',name='SIS',discovered=2696,new=0,published=0,
+        observed_rows=[{'event_date':'2024-12-31','metadata':{'publication_date':'2024-12-31'}}],
+        surfaces=[{'url':'reports','status':'parsed','documents':2696}],published_history=[])
+    row=json.loads((tmp_path/'data/source_health.json').read_text())['sources']['superintendencia_fiscalizacion']
+    assert row['technical_status']=='ok' and row['coverage_status']=='listed_surface_parsed'
+    assert row['status']=='warning' and row['coverage_complete'] is False
+    assert row['last_signal_at'] is None and row['last_observed_publication_at']=='2024-12-31'
