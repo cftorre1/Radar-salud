@@ -6,8 +6,10 @@ on:
       - '.github/run-pulso-targeted-primary-now'
       - '.github/workflows/pulso-targeted-primary.yml'
       - 'scripts/capture_pulso_targeted_primary.py'
+      - 'scripts/audit_pulso_primary_corpus.py'
 permissions:
   contents: write
+  actions: read
 concurrency:
   group: pulso-isolated-targeted-primary-capture
   cancel-in-progress: false
@@ -27,7 +29,17 @@ jobs:
         run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
       - run: pip install -e . pytest
       - name: Verify unconditional original retention and date diagnostics
-        run: python -m pytest -q tests/test_pulso_targeted_primary_capture.py
+        run: python -m pytest -q tests/test_pulso_targeted_primary_capture.py tests/test_pulso_primary_corpus_audit.py
+      - name: Read every original response from the genuine cold core artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pulso-real-core-*
+          merge-multiple: true
+          path: .scratch/pulso-prior-capture
+          github-token: ${{ github.token }}
+          run-id: 38115982275
+      - name: Audit complete retained original corpus and preserve all thin documents
+        run: python scripts/audit_pulso_primary_corpus.py --capture-artifact .scratch/pulso-prior-capture
       - name: Capture only the three diagnosed original details
         run: python scripts/capture_pulso_targeted_primary.py
       - name: Preserve targeted originals exclusively on isolated branch
@@ -38,6 +50,8 @@ jobs:
           git config user.email alicanto-salud-bot@users.noreply.github.com
           if test -f tests/fixtures/pulso_targeted_primary_real/manifest.json; then git add tests/fixtures/pulso_targeted_primary_real; fi
           if test -f data/audits/pulso_targeted_primary_date_audit_2026_10_11.json; then git add data/audits/pulso_targeted_primary_date_audit_2026_10_11.json; fi
+          if test -f data/audits/pulso_primary_corpus_2026_10_11.json; then git add data/audits/pulso_primary_corpus_2026_10_11.json; fi
+          if test -f tests/fixtures/pulso_thin_primary_real/manifest.json; then git add tests/fixtures/pulso_thin_primary_real; fi
           git diff --cached --quiet || git commit -m "audit(pulso): preserve targeted original dates and full bodies [skip ci]"
           git fetch origin codex/b-pulso-runtime-20261011
           git rebase origin/codex/b-pulso-runtime-20261011
@@ -50,4 +64,6 @@ jobs:
           path: |
             tests/fixtures/pulso_targeted_primary_real/
             data/audits/pulso_targeted_primary_date_audit_2026_10_11.json
+            data/audits/pulso_primary_corpus_2026_10_11.json
+            tests/fixtures/pulso_thin_primary_real/
           if-no-files-found: error
