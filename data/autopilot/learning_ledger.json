@@ -356,5 +356,28 @@
       "Require each lane to produce mutation, blocker, or explicit no-op evidence before next cycle."
     ],
     "status": "open"
+  },
+  {
+    "id": "pulso_core_promotion_unverified_2026_10_11",
+    "source": "Issue #5 / Work3 / Codex B",
+    "classification": "missed_agent_finding",
+    "recorded_at": "2026-10-11T04:42:58.167048+00:00",
+    "finding": "Config promotion tests did not demonstrate real core discovery or prevent beta health overwrite; arbitrary listing dates/body and title-based identities weakened traceability.",
+    "root_cause": "Registration and sampled beta discovery were treated as too much evidence; tests omitted publisher-bound dates, core publication/rejection/retry and beta/core writer interaction.",
+    "preventive_controls": [
+      "tests/test_pulso_source.py",
+      "tests/test_pulso_core_runtime.py",
+      "tests/test_beta_core_handoff.py",
+      "source_details for partial listing/detail failures",
+      "source-scoped isolated runtime",
+      "hold preservation and canonical URL queue identity"
+    ],
+    "status": "implemented_deterministic_controls_live_acceptance_blocked",
+    "evidence": [
+      "data/audits/pulso_reconciliation_2026_10_11.json",
+      "data/audits/pulso_core_blocked_2026_10_11.json",
+      "data/audits/pulso_qa_2026_10_11.json"
+    ],
+    "owner_minutes_saved": "not measured; no unsupported autonomy KPI claim"
   }
 ]
