@@ -6,8 +6,8 @@
     "queue_blob_sha": "1f2c408f62163fe9060bbdb2aa1e09a083d616d8",
     "queue_sha256": "08d0b5506d8ff5711ece644f0e2d57602ad77cd6125a4ced50652cd58ba7d174",
     "staging_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
-    "state_control_sha256": "65528faa0db5e880f1032a098f2c68298d57c295eeb4984348fd9ba6f17daf79",
-    "state_sha": "266e284475020f97b7d0429afa58ce798fa59feb"
+    "state_control_sha256": "51b67012f6e98356da91aa05df96fa4b033e6f83e9f34159ae6ffee8401a657f",
+    "state_sha": "c84df716b0115a8776115f57e269ab9ee7fc530e"
   },
   "canonical_pmo_updated": false,
   "corrected_material_event_count": 8,
@@ -44,23 +44,25 @@
     },
     "legacy_stage_a": {
       "metrics": {
-        "autonomous_pickups": 13,
-        "material_event_count": 12,
-        "max_material_gap_seconds": 8857.748083,
+        "autonomous_pickups": 0,
+        "material_event_count": 0,
+        "max_material_gap_seconds": 14400.0,
         "mode": "live",
         "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 45765.405767,
-        "window_started_at": "2026-10-11T14:12:31.637264Z"
+        "total_elapsed_seconds": 54444.813545,
+        "window_started_at": "2026-10-11T16:37:11.045042Z"
       },
-      "observed_until": "2026-10-11T18:12:31.637264Z",
+      "observed_until": "2026-10-11T20:37:11.045042Z",
       "reasons": [
         "owner_intervention_observation_not_verified",
+        "autonomous_pickup_not_observed",
         "durable_verified_mutation_not_observed",
         "real_failure_verified_repair_not_observed",
+        "automatic_independent_transition_not_observed",
         "material_progress_gap_exceeded_30m",
         "owner_prompt_source_not_connected"
       ],
@@ -73,17 +75,17 @@
     "useful_work_window": {
       "is_live_proof": false,
       "metrics": {
-        "autonomous_pickups": 13,
-        "material_event_count": 12,
-        "max_material_gap_seconds": 8857.748083,
+        "autonomous_pickups": 0,
+        "material_event_count": 0,
+        "max_material_gap_seconds": 14400.0,
         "mode": "live",
         "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 45765.405767,
-        "window_started_at": "2026-10-11T14:12:31.637264Z"
+        "total_elapsed_seconds": 54444.813545,
+        "window_started_at": "2026-10-11T16:37:11.045042Z"
       }
     }
   },
@@ -476,10 +478,10 @@
   "material_event_count": 82,
   "material_signature": "d1311a2491ccdef6d6120821a84d5464dd46f246545ef4360f8a540e912e0ad6",
   "observation": {
-    "path": "data/autopilot/evidence/observation-7717a16c23404af89579d67b6c42d7fa.json",
-    "sha256": "f21bb133c23d5bf12c70c43faca4ce71dc1c4150180389daca5cc2e5683400e7",
+    "path": "data/autopilot/evidence/observation-967a0dc3c9c64590abaaa0901fb28d2c.json",
+    "sha256": "d228bb8ce7c034d9ac5026f63692d96a91744b84ea870eefafaf2f7ab3051706",
     "staging_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
-    "state_sha": "266e284475020f97b7d0429afa58ce798fa59feb"
+    "state_sha": "c84df716b0115a8776115f57e269ab9ee7fc530e"
   },
   "owner_followup_count": null,
   "owner_followups": "UNKNOWN",
