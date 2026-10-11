@@ -112,6 +112,11 @@ verbos, negaciones y cifras del fragmento citado. Las citas son UN solo fragment
 CONTIGUO del contenido; nunca unas dos frases separadas, agregues conectores,
 comillas exteriores, puntos suspensivos o citas del título. event_status_quote
 requiere al menos 12 caracteres y novelty_quote/human_health_scope_quote al menos 20.
+No suprimas palabras intermedias, fechas, siglas entre paréntesis, comillas internas
+ni errores tipográficos del original en una cita. Si el contenido repite «de de»,
+la cita debe conservar esa repetición. Si dice «encabezó este viernes la firma»,
+no cites «encabezó la firma». Copia primero una cita contigua y extrae de ella el
+actor, la acción o la consecuencia exactos; no agregues un sujeto ausente.
 Ejemplo de copia, sólo si el contenido realmente dijera «El Hospital del Sur
 suspendió las consultas durante dos días.»: actor="Hospital del Sur",
 actor_quote="El Hospital del Sur suspendió las consultas durante dos días.",
@@ -129,6 +134,13 @@ y condición de propuesta. Un anuncio, proyecto, plan o notificación FNE no es
 aprobación, implementación, adquisición cerrada ni capacidad ya disponible.
 No rejuvenezcas hechos históricos con la fecha de publicación; una auditoría/fallo
 actual sí puede informar hechos de períodos antiguos, claramente separados.
+BACKFILL describe la vía de ingreso y no implica historical_context: un balance,
+fallo o cambio nuevo a la fecha de publicación puede ser actual con atribución a
+esa fecha. Reserva historical_context para antecedentes sin un cambio nuevo.
+La aprobación de un artículo o de una comisión no acredita la aprobación íntegra
+de una reforma. Distingue el precio base de un precio que incluye GES y no cambies
+porcentajes por puntos porcentuales. No iguales porcentajes de gastos o ingresos
+con márgenes distintos ni extiendes «hasta la fecha» a un período más corto.
 Usa las fechas de publicación original y revisión entregadas en Tipo de fuente.
 Si la publicación es anterior a la revisión (BACKFILL), fecha explícitamente los
 estados persistentes en AMBOS campos, what_happened y why_it_matters: «Según la
