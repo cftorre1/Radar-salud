@@ -228,3 +228,76 @@ def test_real_taxonomy_inventory_excludes_opinions_and_holds_commercial_pages_wi
     warm_candidates, _ = discover_public_feeds(loader, [], tmp_path/'cache.json',
                                                today=date(2026, 10, 11), feeds=[('tag', 'salud')])
     assert not opened and {raw.url for raw in warm_candidates} == {raw.url for raw in candidates}
+
+
+LISTING_CASES = [
+    next(row for row in VIDEO_OBJECTS if '/horizontes/' in row['url']),
+    next(row for row in VIDEO_OBJECTS if row['sha256'] == '6c310d175c41f476e2d54622122d63e370f5c916c4b8408587dccb2952082967'),
+    next(row for row in COMMERCIAL if '/publirreportajes/' in row['url']),
+    next(row for row in CONFLICTS if '/el-trabajo-tambien-' in row['url']),
+    next(row for row in OPINIONS if '/lo-dijimos/' in row['url']),
+]
+
+
+@pytest.mark.parametrize('row', LISTING_CASES, ids=lambda row: row['url'].split('/')[-2])
+def test_listing_only_candidates_keep_the_complete_original_trace_contract(row):
+    from radar_salud.pulso_source import discover_listing
+    audit, opened = [], []
+    def loader(url):
+        opened.append(url)
+        return original(row)
+    # This inventory is synthetic; every primary response is exact retained HTML.
+    candidates = discover_listing(f'<a href="{row["url"]}">Información general</a>',
+                                  'https://www.latercera.com/canal/pulso/', loader, audit, set())
+    assert opened == [row['url']] and len(audit) == 1
+    trace = audit[0]
+    assert trace['canonical_url'] == row['url']
+    assert trace['html_sha256'] == row['sha256'] and trace['captured_at']
+    assert trace['publication_date_source'] and trace['publication_evidence']
+    assert trace['visible_publication_date'] == row['visible_byline_day']
+    assert trace['primary_identity_verified'] is True
+    assert trace['article_body_characters'] == row['primary_body_chars']
+    assert trace['article_body_sha256'] == row['primary_body_sha256']
+    assert trace['cache_hit'] is False
+    assert trace['publisher_taxonomy']['canonical_url'] == row['url']
+    if row in CONFLICTS:
+        assert trace['publication_date'] is trace['publication_timestamp'] is None
+        assert trace['publication_date_verified'] is trace['article_verified'] is False
+        assert trace['publisher_exception_reason'] == 'publisher_conflicting_publication_dates'
+    else:
+        assert trace['publication_date'] == row['visible_byline_day']
+        assert trace['publication_date_verified'] is True
+        assert trace['publication_timestamp'] == row['publication_evidence'][0]['timestamp']
+    if row in OPINIONS:
+        assert candidates == [] and trace['status'] == 'excluded'
+        assert trace['reason'] == 'publisher_opinion_taxonomy'
+    else:
+        assert len(candidates) == 1
+        assert trace['publication_date_source'] == candidates[0].metadata['publication_date_source']
+        assert trace['html_sha256'] == candidates[0].metadata['html_sha256']
+
+
+def test_normal_discovery_hook_retains_complete_proof_for_an_article_found_only_in_fallback_listing(tmp_path):
+    from datetime import date
+    from radar_salud.pulso_source import LISTINGS, SITEMAP_INDEX, discover_pulso
+    row = LISTING_CASES[0]
+    def loader(url):
+        if url == SITEMAP_INDEX:
+            return '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" />'
+        if '/arc/outboundfeeds/' in url:
+            return '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" />'
+        if url in LISTINGS:
+            return f'<a href="{row["url"]}">Información general</a>' if url == LISTINGS[0] else ''
+        assert url == row['url']
+        return original(row)
+    audit = []
+    candidates = discover_pulso(loader, audit, cache_path=tmp_path/'cache.json', today=date(2026, 10, 11),
+                               include_public_feeds=False)
+    assert [raw.url for raw in candidates] == [row['url']]
+    trace = next(item for item in audit if item.get('url') == row['url'])
+    assert trace['status'] == 'discovered' and trace['listing'] == LISTINGS[0]
+    assert trace['html_sha256'] == row['sha256'] and trace['captured_at']
+    assert trace['publication_date_source'] == 'visible_article_byline'
+    assert trace['primary_identity_verified'] and trace['publication_date_verified']
+    assert trace['article_verified'] and trace['article_body_complete']
+    assert trace['publisher_content_classification'] == 'factual'
