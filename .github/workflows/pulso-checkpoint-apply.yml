@@ -1,0 +1,80 @@
+name: Pulso isolated validated checkpoint apply
+on:
+  push:
+    branches: [codex/b-pulso-runtime-20261011]
+    paths:
+      - '.github/run-pulso-checkpoint-apply-now'
+      - '.github/workflows/pulso-checkpoint-apply.yml'
+      - 'scripts/pulso_checkpoint_apply.py'
+permissions:
+  contents: write
+concurrency:
+  group: pulso-isolated-checkpoint-apply
+  cancel-in-progress: false
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/b-pulso-runtime-20261011
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Assert authorized branch and configure checkpoint committer
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+          git config user.name alicanto-salud-bot
+          git config user.email alicanto-salud-bot@users.noreply.github.com
+      - run: pip install -e . pytest
+      - name: Validate decoder, allowlist, hashes and real git-am replay
+        run: python -m pytest -q tests/test_pulso_checkpoint_apply.py
+      - name: Apply only the selected hash-bound repair commits
+        run: python scripts/pulso_checkpoint_apply.py --apply work/pulso-checkpoint-apply
+      - name: Validate all checkpoints before publishing
+        run: python -m pytest -q
+      - name: Verify runtime, configuration, queue and budget preservation
+        run: python scripts/pulso_checkpoint_apply.py --check-baseline .scratch/pulso-checkpoint-apply/protected-baseline.json
+      - name: Preserve checkpoint mapping and push only the isolated branch
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path('work/pulso-checkpoint-apply/result.json')
+          value=json.loads(path.read_text());value['tests']='FULL_PYTEST_PASS'
+          path.write_text(json.dumps(value,indent=2)+'\n')
+          PY
+          git add -- work/pulso-checkpoint-apply/result.json
+          git diff --cached --quiet || git commit -m "audit(pulso): preserve validated checkpoint application mapping [skip ci]"
+          git fetch origin codex/b-pulso-runtime-20261011
+          git rebase origin/codex/b-pulso-runtime-20261011
+          python scripts/pulso_checkpoint_apply.py --check-protected-ref origin/codex/b-pulso-runtime-20261011
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          path=Path('work/pulso-checkpoint-apply/result.json')
+          result=json.loads(path.read_text())
+          selected=json.loads(Path('work/pulso-checkpoint-apply/manifest.json').read_text())['selected_commit_shas']
+          revisions=subprocess.check_output(['git','rev-list','--reverse','origin/codex/b-pulso-runtime-20261011..HEAD'],text=True).splitlines()
+          if len(revisions)!=len(selected)+1:
+              raise SystemExit('Checkpoint mapping changed during rebase; inspect preserved artifact')
+          result['commit_map']=dict(zip(selected,revisions[:-1]))
+          result['head_after_rebase']=revisions[-2]
+          result['remote_runtime_base_at_publish']=subprocess.check_output(['git','rev-parse','origin/codex/b-pulso-runtime-20261011'],text=True).strip()
+          path.write_text(json.dumps(result,indent=2)+'\n')
+          PY
+          git add -- work/pulso-checkpoint-apply/result.json
+          git commit --amend --no-edit
+          git push origin HEAD:codex/b-pulso-runtime-20261011
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pulso-checkpoint-apply-${{ github.sha }}
+          retention-days: 90
+          path: |
+            work/pulso-checkpoint-apply/
+            .scratch/pulso-checkpoint-apply/
+          if-no-files-found: warn
