@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T14:30:08.169918+00:00",
+  "updated_at": "2026-10-11T14:34:56.693908+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -4799,7 +4799,7 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:30:08.169918+00:00",
+      "last_progress_at": "2026-10-11T14:34:56.693908+00:00",
       "current_subfront": "post_merge_PR23",
       "next_action": "Validar runtime de la integración actual y continuar los siguientes frentes seguros. Pulso requiere READY explícito.",
       "independent_review_cuts": [
@@ -5257,26 +5257,32 @@
           "integration": "merged_PR21",
           "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
           "qa": {
-            "run": 38145944249,
+            "run": 38146250319,
             "status": "PASS"
           },
           "reviewer": {
-            "run": 38145944249,
+            "run": 38146250319,
             "status": "PASS",
-            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+            "scope": "strict deterministic + desktop/mobile; original semantic review retained"
           },
           "runtime_post_merge": {
             "run": 38146249940,
-            "status": "IN_PROGRESS"
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/postmerge-isp_surveillance/summary.json"
           },
-          "final_state": "NOT_READY",
+          "final_state": "EXTERNAL_BLOCKER_PROVEN",
           "owner": "Pele + Public Data Worker",
-          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "next_action": "Conservar seguimiento y reparar únicamente los límites de cobertura documentados; no certificar totalidad del sitio.",
           "candidate_qa": {
             "focused": "129 PASS",
             "history_preserved": 891,
             "new_editorial_signals": 0
-          }
+          },
+          "limits": [
+            "Native official surveillance endpoints and aliases time out in both polls; coverage and activity remain unverified."
+          ]
         },
         "redsalud": {
           "source": "redsalud",
