@@ -826,3 +826,25 @@ def test_incidental_opinion_or_commercial_words_in_prose_never_supply_publisher_
     assert qa.original_taxonomy(article, BASE + "factual/")["classification"] == "factual"
     article["keywords"].append("Columna")
     assert qa.original_taxonomy(article, BASE + "factual/")["classification"] == "opinion"
+
+
+def test_full_http_capture_is_indexed_once_without_skipping_failed_or_duplicate_responses(evidence, monkeypatch):
+    """Real captures contain thousands of HTML requests alongside API pages."""
+    original = qa.api_page_key
+    calls = []
+    def counted(url):
+        calls.append(url)
+        return original(url)
+    records = list(evidence["captures"])
+    first = records[0]
+    records += [dict(first, status=503), dict(first)]
+    records += [dict(url=BASE + f"original-{i}/", status=200, sha256="b" * 64) for i in range(2000)]
+    monkeypatch.setattr(qa, "api_page_key", counted)
+    evidence["captures"] = records
+    assert qa.evaluate(**evidence)["discovery_qa"] == "PASS"
+    assert len(calls) == len(records)
+    key = original(first["url"])
+    assert len(qa.api_capture_index(records)[key]) == 3
+    # The failed response does not become proof when successful bytes vanish.
+    evidence["captures"] = [dict(row, status=503) if original(row["url"]) == key else row for row in records]
+    assert "public_api_http_chain_unproven" in codes(evidence)

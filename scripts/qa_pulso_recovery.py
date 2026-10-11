@@ -561,17 +561,29 @@ def factual_api_urls(entries):
     return urls
 
 
+def api_capture_index(records):
+    """Index a complete capture once; large real inventories are not samples."""
+    if isinstance(records, dict):
+        return records
+    index = {}
+    for record in records:
+        key = api_page_key(record.get("url", ""))
+        if key:
+            index.setdefault(key, []).append(record)
+    return index
+
+
 def verify_api_pages(pages, records, root, details=()):
     """HTTP hashes for the cursor chain; original JSON for first/boundary pages."""
     failures = []
+    indexed = api_capture_index(records)
     proof_offsets = {row.get("offset") for row in pages[:1] + pages[-3:]}
     for index, page in enumerate(pages):
         key = (page.get("feed"), page.get("offset"))
         if not SHA.fullmatch(str(page.get("json_sha256", ""))):
             failures.append(dict(code="public_api_page_hash_missing", offset=page.get("offset")))
             continue
-        candidates = [record for record in records if api_page_key(record.get("url", "")) == key
-                      and record.get("status") == 200
+        candidates = [record for record in indexed.get(key, []) if record.get("status") == 200
                       and page.get("json_sha256") in {record.get("sha256"), record.get("returned_text_utf8_sha256")}
                       and stamp(record.get("captured_at"))]
         if not candidates:
@@ -772,13 +784,14 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
         fail("discovery", "primary_required_public_feed_coverage_incomplete", missing=sorted(REQUIRED_FEEDS - declared))
     date_exception_count = 0
     feeds_without_content = []
+    indexed_captures = api_capture_index(captures)
     for name in REQUIRED_FEEDS:
         summary = summaries.get(name, {})
         ending = summary.get("termination")
         pages = [row for row in details if row.get("status") == "public_feed_page" and row.get("feed") == name]
         if not pages or pages[0].get("offset") != 0 or len(pages) != summary.get("pages_attempted"):
             fail("discovery", "complete_public_api_page_chain_missing", feed=name)
-        for problem in verify_api_pages(pages, captures, root, details):
+        for problem in verify_api_pages(pages, indexed_captures, root, details):
             fail("discovery", problem.pop("code"), feed=name, **problem)
         if not summary.get("coverage_complete") or summary.get("errors") != 0:
             fail("discovery", "feed_incomplete_or_errors", feed=name, summary=summary)
