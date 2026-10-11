@@ -1,0 +1,605 @@
+{
+  "schema": "clinic_connectivity_diagnostic_v1",
+  "prepared_at": "2026-10-11T08:24:33.149469+00:00",
+  "branch": "codex/e-salud-laboral-20261011",
+  "scope": "Nine previously identified clinical publishers and their official corporate identity hub",
+  "workflow": ".github/workflows/clinic-connectivity-diagnostic.yml",
+  "script": "scripts/clinic_connectivity_diagnostic.py",
+  "phases": [
+    {
+      "name": "representatives",
+      "publishers": [
+        {
+          "id": "portada",
+          "name": "Clínica Portada",
+          "home": "https://clinicaportada.cl/",
+          "news": "https://clinicaportada.cl/noticias/",
+          "hosts": [
+            "www.clinicaportada.cl",
+            "clinicaportada.cl"
+          ]
+        },
+        {
+          "id": "maitenes",
+          "name": "Clínica Maitenes",
+          "home": "https://clinicamaitenes.cl/",
+          "news": "https://clinicamaitenes.cl/noticias/",
+          "hosts": [
+            "www.clinicamaitenes.cl",
+            "clinicamaitenes.cl"
+          ]
+        },
+        {
+          "id": "puerto_montt",
+          "name": "Clínica Puerto Montt",
+          "home": "https://clinicapuertomontt.cl/",
+          "news": "https://clinicapuertomontt.cl/noticias/",
+          "hosts": [
+            "www.clinicapuertomontt.cl",
+            "clinicapuertomontt.cl"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "remaining_publishers_and_hub",
+      "publishers": [
+        {
+          "id": "atacama",
+          "name": "Clínica Atacama",
+          "home": "https://clinicaatacama.cl/",
+          "news": "https://clinicaatacama.cl/noticias/",
+          "hosts": [
+            "clinicaatacama.cl",
+            "www.clinicaatacama.cl"
+          ]
+        },
+        {
+          "id": "los_coihues",
+          "name": "Clínica Los Coihues",
+          "home": "https://clinicaloscoihues.cl/",
+          "news": "https://clinicaloscoihues.cl/noticias",
+          "hosts": [
+            "clinicaloscoihues.cl"
+          ]
+        },
+        {
+          "id": "lircay",
+          "name": "Clínica Lircay",
+          "home": "https://clinicalircay.cl/",
+          "news": "https://clinicalircay.cl/noticias/",
+          "hosts": [
+            "www.clinicalircay.cl",
+            "clinicalircay.cl"
+          ]
+        },
+        {
+          "id": "los_andes",
+          "name": "Clínica Los Andes",
+          "home": "https://www.clinicalosandes.cl/",
+          "news": "https://www.clinicalosandes.cl/noticias/",
+          "hosts": [
+            "clinicalosandes.cl",
+            "www.clinicalosandes.cl"
+          ]
+        },
+        {
+          "id": "del_sur",
+          "name": "Clínica Del Sur",
+          "home": "https://www.clinicasur.cl/",
+          "news": "https://www.clinicasur.cl/noticias/",
+          "hosts": [
+            "www.clinicasur.cl"
+          ]
+        },
+        {
+          "id": "curico",
+          "name": "Clínica Curicó",
+          "home": "https://clinica-curico.cl/",
+          "news": "https://clinica-curico.cl/noticias/",
+          "hosts": [
+            "www.clinica-curico.cl",
+            "clinica-curico.cl"
+          ]
+        },
+        {
+          "id": "clinical_network",
+          "name": "Clínicas Achs Salud",
+          "home": "https://www.clinicasachssalud.cl/",
+          "news": null
+        }
+      ]
+    }
+  ],
+  "transport": {
+    "normal_dns_only": true,
+    "dns_observation_timeout_seconds": 8,
+    "ip_selection": false,
+    "tls_verification_required": true,
+    "concurrency_maximum": 2,
+    "connect_timeout_seconds": 12,
+    "request_timeout_seconds": 35,
+    "user_agents": "identified, browser_comparison only for home",
+    "robots_required_before_newsroom": true,
+    "challenge_execution": false,
+    "public_get_only": true
+  },
+  "isolation": {
+    "ai_calls": 0,
+    "canonical_state_writes": false,
+    "snapshot_reconciliation": false,
+    "evidence_auto_commit": "data/audits/source_e_recovery/clinic_connectivity_actions/GITHUB_RUN_ID only",
+    "main_workflow_trigger_paths_disjoint": true
+  },
+  "baseline": {
+    "run13_probe_counts": {
+      "response_captured": 120,
+      "redirect_outside_official_allowlist": 1
+    },
+    "run14_probe_counts": {
+      "response_captured": 74,
+      "transport_error": 46,
+      "redirect_outside_official_allowlist": 1
+    },
+    "inventory_source_health_transport_errors": 18,
+    "probe_and_inventory_counts_have_different_denominators": true,
+    "same_url_home_comparisons": [
+      {
+        "publisher_id": "portada",
+        "url": "https://clinicaportada.cl/",
+        "user_agent": "identified",
+        "observations": [
+          {
+            "run_id": "38122111500",
+            "report": "data/audits/source_e_recovery/actions/38122111500/report.json",
+            "report_sha256": "0fd249269a7f42dc9a614448ec2d712479631176f50b937cbe55901fc898f1a1",
+            "captured_at": "2026-10-11T07:43:26.390418+00:00",
+            "http_status": 200,
+            "stop_reason": "response_captured",
+            "final_url": "https://clinicaportada.cl/",
+            "curl_exit": 0,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": true,
+              "certificate_verification_result": 0,
+              "verified": true
+            },
+            "waf": null,
+            "body_file": "b7321b8ab427c4c258d2-0.body",
+            "body_sha256": "b06390577c8c8aa8675be84b3db3f14afcdbdb3f3aa1707cfb321889887543ab"
+          },
+          {
+            "run_id": "38122998011",
+            "report": "data/audits/source_e_recovery/actions/38122998011/report.json",
+            "report_sha256": "463a3ce0d404ec9bfeb4aef6273d1b2032317d29fac3dfa1e24989aaed2ca836",
+            "captured_at": "2026-10-11T08:03:17.834438+00:00",
+            "http_status": 0,
+            "stop_reason": "transport_error",
+            "final_url": "https://clinicaportada.cl/",
+            "curl_exit": 28,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": false,
+              "certificate_verification_result": null,
+              "verified": false
+            },
+            "waf": null,
+            "body_file": "b7321b8ab427c4c258d2-0.body",
+            "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      {
+        "publisher_id": "maitenes",
+        "url": "https://clinicamaitenes.cl/",
+        "user_agent": "identified",
+        "observations": [
+          {
+            "run_id": "38122111500",
+            "report": "data/audits/source_e_recovery/actions/38122111500/report.json",
+            "report_sha256": "0fd249269a7f42dc9a614448ec2d712479631176f50b937cbe55901fc898f1a1",
+            "captured_at": "2026-10-11T07:43:33.858194+00:00",
+            "http_status": 200,
+            "stop_reason": "response_captured",
+            "final_url": "https://clinicamaitenes.cl/",
+            "curl_exit": 0,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": true,
+              "certificate_verification_result": 0,
+              "verified": true
+            },
+            "waf": null,
+            "body_file": "c095b7e685abe92a9dc5-0.body",
+            "body_sha256": "c8df5dbbd6fefdf5f787649ad45615748254dc18b917e8a4bfed07d1834916b3"
+          },
+          {
+            "run_id": "38122998011",
+            "report": "data/audits/source_e_recovery/actions/38122998011/report.json",
+            "report_sha256": "463a3ce0d404ec9bfeb4aef6273d1b2032317d29fac3dfa1e24989aaed2ca836",
+            "captured_at": "2026-10-11T08:03:56.862953+00:00",
+            "http_status": 0,
+            "stop_reason": "transport_error",
+            "final_url": "https://clinicamaitenes.cl/",
+            "curl_exit": 28,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": false,
+              "certificate_verification_result": null,
+              "verified": false
+            },
+            "waf": null,
+            "body_file": "c095b7e685abe92a9dc5-0.body",
+            "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      {
+        "publisher_id": "puerto_montt",
+        "url": "https://clinicapuertomontt.cl/",
+        "user_agent": "identified",
+        "observations": [
+          {
+            "run_id": "38122111500",
+            "report": "data/audits/source_e_recovery/actions/38122111500/report.json",
+            "report_sha256": "0fd249269a7f42dc9a614448ec2d712479631176f50b937cbe55901fc898f1a1",
+            "captured_at": "2026-10-11T07:43:44.169047+00:00",
+            "http_status": 200,
+            "stop_reason": "response_captured",
+            "final_url": "https://clinicapuertomontt.cl/",
+            "curl_exit": 0,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": true,
+              "certificate_verification_result": 0,
+              "verified": true
+            },
+            "waf": null,
+            "body_file": "552bd0ac22bcc34d5f53-0.body",
+            "body_sha256": "2aad465ef17079bb66ef3ed16fb7d7b0fd855fd551343fc3fb9d293c4bab7967"
+          },
+          {
+            "run_id": "38122998011",
+            "report": "data/audits/source_e_recovery/actions/38122998011/report.json",
+            "report_sha256": "463a3ce0d404ec9bfeb4aef6273d1b2032317d29fac3dfa1e24989aaed2ca836",
+            "captured_at": "2026-10-11T08:04:48.899477+00:00",
+            "http_status": 0,
+            "stop_reason": "transport_error",
+            "final_url": "https://clinicapuertomontt.cl/",
+            "curl_exit": 28,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": false,
+              "certificate_verification_result": null,
+              "verified": false
+            },
+            "waf": null,
+            "body_file": "552bd0ac22bcc34d5f53-0.body",
+            "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      {
+        "publisher_id": "atacama",
+        "url": "https://clinicaatacama.cl/",
+        "user_agent": "identified",
+        "observations": [
+          {
+            "run_id": "38122111500",
+            "report": "data/audits/source_e_recovery/actions/38122111500/report.json",
+            "report_sha256": "0fd249269a7f42dc9a614448ec2d712479631176f50b937cbe55901fc898f1a1",
+            "captured_at": "2026-10-11T07:42:25.071043+00:00",
+            "http_status": 200,
+            "stop_reason": "response_captured",
+            "final_url": "https://clinicaatacama.cl/",
+            "curl_exit": 0,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": true,
+              "certificate_verification_result": 0,
+              "verified": true
+            },
+            "waf": null,
+            "body_file": "b81bb8335a01194b6247-0.body",
+            "body_sha256": "2086b6a26ef1bd1cc835ece9a20c06477dd7a7db09ac25e9ce0ff8c8ac683b79"
+          },
+          {
+            "run_id": "38122998011",
+            "report": "data/audits/source_e_recovery/actions/38122998011/report.json",
+            "report_sha256": "463a3ce0d404ec9bfeb4aef6273d1b2032317d29fac3dfa1e24989aaed2ca836",
+            "captured_at": "2026-10-11T07:59:10.651703+00:00",
+            "http_status": 0,
+            "stop_reason": "transport_error",
+            "final_url": "https://clinicaatacama.cl/",
+            "curl_exit": 28,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": false,
+              "certificate_verification_result": null,
+              "verified": false
+            },
+            "waf": null,
+            "body_file": "b81bb8335a01194b6247-0.body",
+            "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      {
+        "publisher_id": "los_coihues",
+        "url": "https://clinicaloscoihues.cl/",
+        "user_agent": "identified",
+        "observations": [
+          {
+            "run_id": "38122111500",
+            "report": "data/audits/source_e_recovery/actions/38122111500/report.json",
+            "report_sha256": "0fd249269a7f42dc9a614448ec2d712479631176f50b937cbe55901fc898f1a1",
+            "captured_at": "2026-10-11T07:42:27.993998+00:00",
+            "http_status": 200,
+            "stop_reason": "response_captured",
+            "final_url": "https://clinicaloscoihues.cl/",
+            "curl_exit": 0,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": true,
+              "certificate_verification_result": 0,
+              "verified": true
+            },
+            "waf": null,
+            "body_file": "41a93e077a4ed61fbf08-0.body",
+            "body_sha256": "9ebd4a5bbd98c0bd3a16a468440b7750373c20a37c7a48e46e7eaf138d53ebd5"
+          },
+          {
+            "run_id": "38122998011",
+            "report": "data/audits/source_e_recovery/actions/38122998011/report.json",
+            "report_sha256": "463a3ce0d404ec9bfeb4aef6273d1b2032317d29fac3dfa1e24989aaed2ca836",
+            "captured_at": "2026-10-11T07:59:23.662566+00:00",
+            "http_status": 0,
+            "stop_reason": "transport_error",
+            "final_url": "https://clinicaloscoihues.cl/",
+            "curl_exit": 28,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": false,
+              "certificate_verification_result": null,
+              "verified": false
+            },
+            "waf": null,
+            "body_file": "41a93e077a4ed61fbf08-0.body",
+            "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      {
+        "publisher_id": "lircay",
+        "url": "https://clinicalircay.cl/",
+        "user_agent": "identified",
+        "observations": [
+          {
+            "run_id": "38122111500",
+            "report": "data/audits/source_e_recovery/actions/38122111500/report.json",
+            "report_sha256": "0fd249269a7f42dc9a614448ec2d712479631176f50b937cbe55901fc898f1a1",
+            "captured_at": "2026-10-11T07:43:36.707621+00:00",
+            "http_status": 200,
+            "stop_reason": "response_captured",
+            "final_url": "https://clinicalircay.cl/",
+            "curl_exit": 0,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": true,
+              "certificate_verification_result": 0,
+              "verified": true
+            },
+            "waf": null,
+            "body_file": "29c7582bef7cf82c60bb-0.body",
+            "body_sha256": "301ff33ea7c93b14077e1a257bd8516a841408773cd7581df578deede32677cc"
+          },
+          {
+            "run_id": "38122998011",
+            "report": "data/audits/source_e_recovery/actions/38122998011/report.json",
+            "report_sha256": "463a3ce0d404ec9bfeb4aef6273d1b2032317d29fac3dfa1e24989aaed2ca836",
+            "captured_at": "2026-10-11T08:04:09.871827+00:00",
+            "http_status": 0,
+            "stop_reason": "transport_error",
+            "final_url": "https://clinicalircay.cl/",
+            "curl_exit": 28,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": false,
+              "certificate_verification_result": null,
+              "verified": false
+            },
+            "waf": null,
+            "body_file": "29c7582bef7cf82c60bb-0.body",
+            "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      {
+        "publisher_id": "los_andes",
+        "url": "https://www.clinicalosandes.cl/",
+        "user_agent": "identified",
+        "observations": [
+          {
+            "run_id": "38122111500",
+            "report": "data/audits/source_e_recovery/actions/38122111500/report.json",
+            "report_sha256": "0fd249269a7f42dc9a614448ec2d712479631176f50b937cbe55901fc898f1a1",
+            "captured_at": "2026-10-11T07:43:39.243640+00:00",
+            "http_status": 200,
+            "stop_reason": "response_captured",
+            "final_url": "https://www.clinicalosandes.cl/",
+            "curl_exit": 0,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": true,
+              "certificate_verification_result": 0,
+              "verified": true
+            },
+            "waf": null,
+            "body_file": "80571e4b4055a1f88f13-0.body",
+            "body_sha256": "a168b301f433cc0689373c501eecca150f209114ff631d5b565ff73f59c021d9"
+          },
+          {
+            "run_id": "38122998011",
+            "report": "data/audits/source_e_recovery/actions/38122998011/report.json",
+            "report_sha256": "463a3ce0d404ec9bfeb4aef6273d1b2032317d29fac3dfa1e24989aaed2ca836",
+            "captured_at": "2026-10-11T08:04:22.881466+00:00",
+            "http_status": 0,
+            "stop_reason": "transport_error",
+            "final_url": "https://www.clinicalosandes.cl/",
+            "curl_exit": 28,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": false,
+              "certificate_verification_result": null,
+              "verified": false
+            },
+            "waf": null,
+            "body_file": "80571e4b4055a1f88f13-0.body",
+            "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      {
+        "publisher_id": "del_sur",
+        "url": "https://www.clinicasur.cl/",
+        "user_agent": "identified",
+        "observations": [
+          {
+            "run_id": "38122111500",
+            "report": "data/audits/source_e_recovery/actions/38122111500/report.json",
+            "report_sha256": "0fd249269a7f42dc9a614448ec2d712479631176f50b937cbe55901fc898f1a1",
+            "captured_at": "2026-10-11T07:42:45.046607+00:00",
+            "http_status": 200,
+            "stop_reason": "response_captured",
+            "final_url": "https://www.clinicasur.cl/",
+            "curl_exit": 0,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": true,
+              "certificate_verification_result": 0,
+              "verified": true
+            },
+            "waf": null,
+            "body_file": "b35f4eecf46ce3491e18-0.body",
+            "body_sha256": "3e28ec8b967044f021f63d27a3a9ed4a471bd7012f8aa1580ebd060fa6b43cbc"
+          },
+          {
+            "run_id": "38122998011",
+            "report": "data/audits/source_e_recovery/actions/38122998011/report.json",
+            "report_sha256": "463a3ce0d404ec9bfeb4aef6273d1b2032317d29fac3dfa1e24989aaed2ca836",
+            "captured_at": "2026-10-11T08:00:15.701469+00:00",
+            "http_status": 0,
+            "stop_reason": "transport_error",
+            "final_url": "https://www.clinicasur.cl/",
+            "curl_exit": 28,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": false,
+              "certificate_verification_result": null,
+              "verified": false
+            },
+            "waf": null,
+            "body_file": "b35f4eecf46ce3491e18-0.body",
+            "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      {
+        "publisher_id": "curico",
+        "url": "https://clinica-curico.cl/",
+        "user_agent": "identified",
+        "observations": [
+          {
+            "run_id": "38122111500",
+            "report": "data/audits/source_e_recovery/actions/38122111500/report.json",
+            "report_sha256": "0fd249269a7f42dc9a614448ec2d712479631176f50b937cbe55901fc898f1a1",
+            "captured_at": "2026-10-11T07:43:49.716861+00:00",
+            "http_status": 200,
+            "stop_reason": "response_captured",
+            "final_url": "https://clinica-curico.cl/",
+            "curl_exit": 0,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": true,
+              "certificate_verification_result": 0,
+              "verified": true
+            },
+            "waf": null,
+            "body_file": "c204042afb77af6ed0b3-0.body",
+            "body_sha256": "bbca778f6693a1be9f2e29c05e4c3cdad819fe42c230ee884c560d8c197e45b2"
+          },
+          {
+            "run_id": "38122998011",
+            "report": "data/audits/source_e_recovery/actions/38122998011/report.json",
+            "report_sha256": "463a3ce0d404ec9bfeb4aef6273d1b2032317d29fac3dfa1e24989aaed2ca836",
+            "captured_at": "2026-10-11T08:05:14.919250+00:00",
+            "http_status": 0,
+            "stop_reason": "transport_error",
+            "final_url": "https://clinica-curico.cl/",
+            "curl_exit": 28,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": false,
+              "certificate_verification_result": null,
+              "verified": false
+            },
+            "waf": null,
+            "body_file": "c204042afb77af6ed0b3-0.body",
+            "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      {
+        "publisher_id": "clinical_network",
+        "url": "https://www.clinicasachssalud.cl/",
+        "user_agent": "identified",
+        "observations": [
+          {
+            "run_id": "38122111500",
+            "report": "data/audits/source_e_recovery/actions/38122111500/report.json",
+            "report_sha256": "0fd249269a7f42dc9a614448ec2d712479631176f50b937cbe55901fc898f1a1",
+            "captured_at": "2026-10-11T07:40:17.900278+00:00",
+            "http_status": 200,
+            "stop_reason": "response_captured",
+            "final_url": "https://www.clinicasachssalud.cl/",
+            "curl_exit": 0,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": true,
+              "certificate_verification_result": 0,
+              "verified": true
+            },
+            "waf": null,
+            "body_file": "6429d8a14cd86b0ba2f9-0.body",
+            "body_sha256": "63766601d94e1b4cf403e47fe1a047162e884b0fce493ab4ebae198817fd2eec"
+          },
+          {
+            "run_id": "38122998011",
+            "report": "data/audits/source_e_recovery/actions/38122998011/report.json",
+            "report_sha256": "463a3ce0d404ec9bfeb4aef6273d1b2032317d29fac3dfa1e24989aaed2ca836",
+            "captured_at": "2026-10-11T07:56:01.440431+00:00",
+            "http_status": 0,
+            "stop_reason": "transport_error",
+            "final_url": "https://www.clinicasachssalud.cl/",
+            "curl_exit": 28,
+            "curl_error": null,
+            "tls": {
+              "origin_handshake_observed": false,
+              "certificate_verification_result": null,
+              "verified": false
+            },
+            "waf": null,
+            "body_file": "6429d8a14cd86b0ba2f9-0.body",
+            "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Run14 observed connection timeout before HTTP or TLS for these hosts, while Run13 captured their HTTP 200 responses. No origin outage or WAF conclusion follows from a connection timeout."
+  },
+  "validation": {
+    "command": "PYTHONPATH=src:. .venv/bin/python -m pytest -q tests/test_clinic_connectivity_diagnostic.py tests/test_occupational_access_probe.py",
+    "result": "14 passed"
+  },
+  "next_action": "Push isolated workflow, inspect real Actions result and preserve standard origin JSON/body records. A successful capture can be passed explicitly to CaptureLoader later without applying state in the diagnostic."
+}

@@ -1,0 +1,55 @@
+name: Clinical publisher connectivity diagnostic
+
+on:
+  push:
+    branches: [codex/e-salud-laboral-20261011]
+    paths:
+      - .github/workflows/clinic-connectivity-diagnostic.yml
+      - scripts/clinic_connectivity_diagnostic.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: alicanto-staging-writer
+  cancel-in-progress: false
+
+jobs:
+  clinics-only:
+    if: github.ref == 'refs/heads/codex/e-salud-laboral-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/e-salud-laboral-20261011
+          fetch-depth: 0
+      - name: Record actual candidate after waiting for the shared writer
+        run: printf 'CANDIDATE_SHA=%s\n' "$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install local package without configuring AI credentials
+        run: pip install -e .
+      - name: Diagnose only configured clinical publishers with normal TLS and DNS
+        run: python scripts/clinic_connectivity_diagnostic.py --output "data/audits/source_e_recovery/clinic_connectivity_actions/${GITHUB_RUN_ID}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: clinic-connectivity-${{ github.run_id }}
+          path: data/audits/source_e_recovery/clinic_connectivity_actions/${{ github.run_id }}/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Persist only diagnostic evidence on the isolated branch
+        if: always()
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/e-salud-laboral-20261011
+          git config user.name 'Alicanto source evidence'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "data/audits/source_e_recovery/clinic_connectivity_actions/${GITHUB_RUN_ID}"
+          if ! git diff --cached --quiet; then
+            git commit --only -m "audit(clinics): isolated connectivity checkpoint ${GITHUB_RUN_ID}" -- "data/audits/source_e_recovery/clinic_connectivity_actions/${GITHUB_RUN_ID}"
+            git pull --rebase origin codex/e-salud-laboral-20261011
+            git push origin HEAD:codex/e-salud-laboral-20261011
+          fi
