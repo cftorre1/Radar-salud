@@ -48,21 +48,27 @@ class _ContentScope(HTMLParser):
         self.stack, self.entries, self.articles, self.meta, self.headers, self.headings = [], [], [], [], [], []
         self.entry, self.article, self.header, self.heading = None, None, None, None
         self.body_seen = False
+        self.wordpress_single = False
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         classes = set(attrs.get("class", "").casefold().split())
-        ignored = any(frame["ignored"] for frame in self.stack) or tag in self.IGNORE or bool(classes & {"site-header", "site-footer", "sidebar", "widget-area", "elementor-location-header", "elementor-location-footer"})
+        ignored = any(frame["ignored"] for frame in self.stack) or tag in self.IGNORE or bool(classes & {"site-header", "site-footer", "sidebar", "widget-area", "elementor-location-header", "elementor-location-footer", "reply-button", "comments", "comment-form"})
         if tag == "body":
             self.body_seen = True
+            self.wordpress_single = "single-post" in classes
         if tag == "meta" and not ignored:
             key = (attrs.get("property") or attrs.get("name") or attrs.get("itemprop") or "").casefold()
             if key in {"article:published_time", "datepublished", "publishdate"} and (not self.body_seen or any(frame["tag"] == "head" for frame in self.stack)):
                 self.meta.append(self.get_starttag_text())
         depth = len(self.stack) + 1
         if not ignored:
-            if self.entry is None and "entry-content" in classes:
-                self.entry = {"depth": depth, "parts": [], "heading_index": len(self.headings)}
+            medicenter_post = ("post-content" in classes and self.wordpress_single and
+                               any(frame["tag"] == "li" and {"single", "post"} <= frame["classes"]
+                                   for frame in self.stack))
+            if self.entry is None and ("entry-content" in classes or medicenter_post):
+                self.entry = {"depth": depth, "parts": [], "heading_index": len(self.headings),
+                              "scope": "wordpress:medicenter_post-content" if medicenter_post else "wordpress:entry-content"}
                 self.entries.append(self.entry)
             if self.article is None and tag == "article":
                 self.article = {"depth": depth, "parts": []}
@@ -71,14 +77,14 @@ class _ContentScope(HTMLParser):
                 self.header = {"depth": depth, "parts": []}
                 self.headers.append(self.header)
             if tag == "h1":
-                self.heading = {"depth": depth, "parts": [], "entry_title": "entry-title" in classes,
+                self.heading = {"depth": depth, "parts": [], "entry_title": bool(classes & {"entry-title", "post-title"}),
                                 "in_entry": self.entry is not None, "in_article": self.article is not None}
                 self.headings.append(self.heading)
             for field in (self.entry, self.article, self.header):
                 if field is not None:
                     field["parts"].append(self.get_starttag_text())
         if tag not in self.VOID:
-            self.stack.append({"tag": tag, "ignored": ignored})
+            self.stack.append({"tag": tag, "ignored": ignored, "classes": classes})
 
     def handle_data(self, text):
         if any(frame["ignored"] for frame in self.stack):
@@ -110,7 +116,7 @@ class _ContentScope(HTMLParser):
             headings = self.headings[:self.entries[0]["heading_index"]][-1:]
         title = " ".join(" ".join(headings[0]["parts"]).split()) if headings else ""
         if self.entries:
-            body, scope = "".join(self.entries[0]["parts"]), "wordpress:entry-content"
+            body, scope = "".join(self.entries[0]["parts"]), self.entries[0]["scope"]
         elif self.articles:
             body, scope = "".join(self.articles[0]["parts"]), "html:article"
         else:
@@ -120,10 +126,15 @@ class _ContentScope(HTMLParser):
 
 class ClinicArticle(Article):
     """Shared date rules with clinic-specific body scope and verified tail titles."""
-    STOP = Article.STOP + ("lo mas visto", "photostream", "archivos", "noticias que te podrian interesar")
+    STOP = Article.STOP + ("lo mas visto", "photostream", "archivos", "noticias que te podrian interesar", "leave a reply")
 
     def __init__(self, url=None):
         super().__init__(url=url)
+        # The Drupal publisher places this native field in article.single-noticia
+        # before its H1. Reconstructing the scoped article activates the shared
+        # publication-container rule; sibling card dates never enter that scope.
+        if urlsplit(url or "").hostname == "clinicaloscoihues.cl":
+            self.PUBLICATION_CLASSES = Article.PUBLICATION_CLASSES | {"date-noticia"}
         self._captured_parts, self._clinic_parsed = [], False
         self.content_scope = "not_parsed"
 

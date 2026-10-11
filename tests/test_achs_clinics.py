@@ -1,6 +1,8 @@
 """Synthetic native clinical layouts; no current endpoint health is fabricated."""
 import json
+import hashlib
 from datetime import date
+from pathlib import Path
 from urllib.parse import urlencode
 
 import pytest
@@ -109,6 +111,66 @@ def test_missing_native_container_cannot_use_branding_h1_as_article():
                 f'<h1>Logotipo de la clínica</h1><p>{BODY}</p>')
     assert parser.result(today=AS_OF)[2] == ''
     assert parser.content_scope == 'missing_native_article_container'
+
+
+def test_observed_medicenter_post_content_requires_a_singular_post_scope():
+    inside = '<li class="single post"><div class="post-content"><h1 class="post-title">' + TITLE + '</h1><p>' + BODY + '</p></div></li>'
+    for singular in (True, False):
+        parser = ClinicArticle(url=CLINICS[0]['home'] + 'noticia/')
+        parser.feed('<head><meta property="article:published_time" content="2026-10-10"></head>'
+                    '<body class="' + ('single-post' if singular else 'page') + '"><h1 class="page-title">Banner de la clínica</h1>'
+                    + inside + '<aside>Inauguramos pabellones antiguos en 2025.</aside></body>')
+        title, published, body, _ = parser.result(today=AS_OF)
+        if singular:
+            assert title == TITLE and published == '2026-10-10' and body == BODY
+            assert parser.content_scope == 'wordpress:medicenter_post-content'
+        else:
+            assert body == '' and parser.content_scope == 'missing_native_article_container'
+
+
+@pytest.mark.parametrize('url,published', [
+    ('https://clinicamaitenes.cl/nueva-unidad-de-paciente-critico/', '2025-06-05'),
+    ('https://clinicalircay.cl/modulo-fonasa-talca-lircay/', '2023-12-13'),
+    ('https://www.clinicalosandes.cl/inauguramos-nuestro-nuevo-centro-medico/', '2022-12-21'),
+    ('https://clinica-curico.cl/nuevo-scanner-tac/', '2025-09-22'),
+    ('https://clinica-curico.cl/nuevo-resonador-magnetico-signa-creator/', '2025-09-22'),
+    ('https://clinicamaitenes.cl/mes-del-corazon-salud-cardiaca/', '2026-08-05'),
+    ('https://clinica-curico.cl/clinicas-achs-salud-primer-lugar-total-brands/', '2026-08-12'),
+    ('https://clinicaloscoihues.cl/clinicas-achs-salud-primer-lugar-total-brands', '2026-08-12'),
+])
+def test_current_origin_capture_native_clinic_layouts_preserve_publication_year(url, published):
+    base = Path(__file__).resolve().parents[1] / 'data/audits/source_e_recovery/actions/38117675962'
+    report = json.loads((base / 'report.json').read_text())
+    record = next(row for row in report['records'] if row['url'] == url)
+    hop = record['hops'][-1]
+    raw = (base / hop['body_file']).read_bytes()
+    assert record['http_status'] == 200 and hop['tls']['verified']
+    assert hashlib.sha256(raw).hexdigest() == hop['sha256']
+    parser = ClinicArticle(url=url)
+    parser.feed(raw.decode('utf-8', errors='replace'))
+    title, actual, body, evidence = parser.result(today=AS_OF)
+    assert actual == published and len(title) >= 18 and len(body) >= 160
+    assert parser.publication_evidence(today=AS_OF)['url'] == url
+    assert parser.publication_evidence(today=AS_OF)['date'] == published
+    assert 'Leave a reply' not in body
+    if 'clinicaloscoihues' in url:
+        assert evidence == 'publisher:publication_container'
+        assert parser.date_candidates == [{'kind': evidence, 'value': '12/08/2026'}]
+        assert parser.content_scope == 'html:article'
+        assert 'Mejor Ambiente Laboral' not in body
+    else:
+        assert evidence == 'article:published_time'
+        assert parser.content_scope == 'wordpress:medicenter_post-content'
+
+
+def test_drupal_native_date_class_is_restricted_to_the_observed_clinic_publisher():
+    for clinic in (CLINICS[0], CLINICS[2]):
+        parser = ClinicArticle(url=clinic['home'] + 'noticia/')
+        parser.feed('<article class="single-noticia"><span class="date-noticia">12/08/2026</span><h1>'
+                    + TITLE + '</h1><p>' + BODY + '</p></article>'
+                    '<article class="card-noticia"><span class="date-noticia">13/08/2026</span><h1>Otra noticia</h1></article>')
+        result = parser.result(today=AS_OF)
+        assert result[1] == ('2026-08-12' if clinic['id'] == 'los_coihues' else None)
 
 
 def test_observed_next_href_is_followed_and_a_page_budget_remains_partial():
