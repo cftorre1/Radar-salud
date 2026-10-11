@@ -124,6 +124,72 @@ class ObservationTests(unittest.TestCase):
         self.assertEqual(report["material_event_count"], 300)
         self.assertEqual(report["material_events_included"], observer.RECENT_EVENTS)
         self.assertEqual(report["material_signature"], observer.digest(observer.encode(initial["material_events"])))
+        self.assertEqual(report["raw_material_event_count"], 300)
+        self.assertEqual(report["effective_material_event_count"], 300)
+        self.assertEqual(report["corrected_material_event_count"], 0)
+
+    def test_retracted_duplicate_blocker_is_excluded_from_progress_with_raw_history_preserved(self):
+        queue = {"input_sha": "b" * 40, "tasks": []}
+        failure = {"run_id": "123", "conclusion": "failure",
+                   "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/123",
+                   "failure_signature": "fixture-identical-normative-gate"}
+        for run_id in ("123", "124"):
+            queue["tasks"].append({"id": "staging_qa_failed_run_" + run_id, "family": "staging_qa",
+                "status": "approved", "input_sha": "b" * 40, "input_fingerprint": "8" * 64,
+                "product_input_fingerprint": "9" * 64,
+                "failure": {**failure, "run_id": run_id,
+                            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/" + run_id}})
+        initial, lease = engine.claim({}, queue, "staging_qa", "123-1-staging_qa", BASE)
+        initial["acceptance"]["mode"] = "simulation"
+        report = {"task_id": lease["task_id"], "family": "staging_qa", "status": "BLOCKED",
+                  "changed_paths": [], "validated": False,
+                  "blockers": [{"fingerprint": "raw-first-failure-hash", "reason": "Normative gate: 11 >= 12 failed",
+                      "evidence": [{"kind": "executor_failure", "reason": "Normative gate: 11 >= 12 failed",
+                                    "captured_stdout_sha256": "a" * 64, "failure_hash": "a" * 64}]}]}
+        initial = engine.finish(initial, lease["task_id"], lease["token"], report, BASE + timedelta(minutes=1))
+        retained = initial["material_events"][0]
+        duplicate = deepcopy(retained)
+        duplicate.update(id="legacy-repeated-gate-event", task_id="staging_qa_failed_run_124",
+                         at=(BASE + timedelta(minutes=20)).isoformat())
+        duplicate["details"]["real_failure"] = queue["tasks"][1]["failure"]
+        duplicate["details"]["fingerprint"] = "raw-second-failure-hash"
+        for evidence in duplicate["details"]["evidence"]:
+            evidence.update(captured_stdout_sha256="c" * 64, failure_hash="c" * 64,
+                            run_id="124", input_sha="c" * 40)
+        initial["material_events"].append(duplicate)
+        initial["tasks"][duplicate["task_id"]].update(status="BLOCKED", lease=None,
+            material_progress_at=duplicate["at"], blocker=deepcopy(duplicate["details"]),
+            last_failure=queue["tasks"][1]["failure"])
+        corrected = engine.reconcile(initial, queue, BASE + timedelta(minutes=21))
+        self.assertEqual(len(corrected["material_events"]), 2)
+        self.assertEqual(len(engine.effective_material_events(corrected)), 1)
+        self.assertTrue(corrected["material_event_corrections"])
+        original = deepcopy(corrected)
+        result = build(corrected, at=BASE + timedelta(minutes=22))
+        observation = result.value
+        self.assertEqual(observation["material_event_count"], 1)
+        self.assertEqual(observation["effective_material_event_count"], 1)
+        self.assertEqual(observation["raw_material_event_count"], 2)
+        self.assertEqual(observation["corrected_material_event_count"], 1)
+        self.assertEqual(observation["last_material_progress_at"], retained["at"])
+        self.assertEqual(observation["raw_last_material_progress_at"], duplicate["at"])
+        retracted_task = next(row for row in observation["tasks"] if row["task_id"] == duplicate["task_id"])
+        self.assertIsNone(retracted_task["material_progress_at"])
+        self.assertEqual(retracted_task["raw_material_progress_at"], duplicate["at"])
+        self.assertEqual([event["id"] for event in observation["material_events"]], [retained["id"]])
+        self.assertEqual([event["id"] for event in observation["raw_material_events"]], [retained["id"], duplicate["id"]])
+        self.assertEqual(observation["material_event_corrections"], observer._safe(corrected["material_event_corrections"]))
+        self.assertFalse(observation["correction_is_material_progress"])
+        self.assertFalse(observation["observation_is_material_progress"])
+        self.assertEqual(observation["criteria"]["useful_work_window"]["metrics"]["material_event_count"], 1)
+        self.assertEqual(observation["criteria"]["durable_mutation"]["status"], "NOT_OBSERVED")
+        self.assertEqual(observation["criteria"]["failure_repaired"]["status"], "NOT_OBSERVED")
+        pmo = json.loads(result.writes[observer.PMO_EVIDENCE])
+        self.assertEqual(pmo["material_event_count"], 1)
+        self.assertEqual(pmo["raw_material_event_count"], 2)
+        self.assertEqual(pmo["corrected_material_event_count"], 1)
+        self.assertEqual(corrected, original)
+        self.assertNotIn(observer.STATE, result.writes)
 
     def test_missing_control_is_explicit_and_has_no_fabricated_content_hash(self):
         result = observer.build_mutation(Snapshot(commit="1" * 40, files={}), authority(),
@@ -134,7 +200,8 @@ class ObservationTests(unittest.TestCase):
         self.assertEqual(result.value["criteria"]["legacy_stage_a"]["status"], "NOT_PROVEN")
 
     def test_invalid_operation_or_state_shape_cannot_write_partial_projections(self):
-        for changes in ({"tasks": []}, {"material_events": {}}, {"lease_events": {}}, {"tasks": {MEDIA: []}}):
+        for changes in ({"tasks": []}, {"material_events": {}}, {"material_event_corrections": {}},
+                        {"lease_events": {}}, {"tasks": {MEDIA: []}}):
             initial = state(); initial.update(changes)
             with self.subTest(changes=changes), self.assertRaises(observer.ObservationError):
                 build(initial)

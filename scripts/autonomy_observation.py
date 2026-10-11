@@ -118,10 +118,33 @@ def _run_metadata(run):
     return result
 
 
-def _rows(state):
+def _last_material(events):
+    return max((event.get("at") for event in events if event.get("at")),
+               key=engine._time, default=None)
+
+
+def _material_summaries(events):
+    return [{"id": event.get("id") or digest(encode(event)), "at": event.get("at"), "kind": event.get("kind"),
+             "task_id": event.get("task_id"), "family": event.get("family"),
+             "candidate_commit": event.get("details", {}).get("candidate_commit"),
+             "failure_action": event.get("details", {}).get("failure_action"),
+             "independent": event.get("details", {}).get("independent")} for event in events[-RECENT_EVENTS:]]
+
+
+def _last_by_task(events):
+    result = {}
+    for event in events:
+        task_id, at = event.get("task_id"), event.get("at")
+        if task_id and at and (task_id not in result or engine._time(at) > engine._time(result[task_id])):
+            result[task_id] = at
+    return result
+
+
+def _rows(state, events, raw_events):
     if len(state.get("tasks", {})) > MAX_TASKS:
         raise ObservationError("State exceeds the bounded task projection")
     rows = []
+    effective_progress, raw_progress = _last_by_task(events), _last_by_task(raw_events)
     review_keys = ("candidate_commit", "candidate_branch", "status", "semantic_fingerprint", "evidence_path", "evidence_sha256", "superseded")
     for task_id, task in sorted(state.get("tasks", {}).items()):
         lease = task.get("lease") or {}
@@ -129,7 +152,9 @@ def _rows(state):
             "fence": task.get("fence"), "input_sha": task.get("input_sha"),
             "input_fingerprint": task.get("input_fingerprint"), "evidence_revision": task.get("evidence_revision"),
             "lease": {key: _safe(lease).get(key) for key in ("owner", "token_sha256", "fence", "claimed_at", "heartbeat_at", "expires_at", "recovery_deadline_at")},
-            "material_progress_at": task.get("material_progress_at"), "last_ready_at": task.get("last_ready_at"),
+            "material_progress_at": effective_progress.get(task_id),
+            "raw_material_progress_at": raw_progress.get(task_id),
+            "canonical_material_progress_at": task.get("material_progress_at"), "last_ready_at": task.get("last_ready_at"),
             "reason": task.get("reason"), "blocker_fingerprint": (task.get("blocker") or {}).get("fingerprint"),
             "blocker_evidence_count": len((task.get("blocker") or {}).get("evidence", [])),
             "recovery_reclaims": task.get("recovery_reclaims", 0), "recovery_episode": task.get("recovery_episode"),
@@ -180,17 +205,17 @@ def build_mutation(snapshot, authority, *, observed_at, operation_id, run):
     if (not isinstance(state.get("tasks", {}), dict)
             or any(not isinstance(task, dict) for task in state.get("tasks", {}).values())
             or not isinstance(state.get("material_events", []), list)
+            or not isinstance(state.get("material_event_corrections", []), list)
             or not isinstance(state.get("lease_events", []), list)):
         raise ObservationError("Canonical state collections have an unsupported schema")
-    rows = _rows(state)
-    events = state.get("material_events", [])
+    raw_events = state.get("material_events", [])
+    events = engine.effective_material_events(state)
+    rows = _rows(state, events, raw_events)
+    corrections = state.get("material_event_corrections", [])
     lease_events = state.get("lease_events", [])
     # Keep per-event signatures, not arbitrary command output or repeated logs.
-    material = [{"id": event.get("id") or digest(encode(event)), "at": event.get("at"), "kind": event.get("kind"),
-                 "task_id": event.get("task_id"), "family": event.get("family"),
-                 "candidate_commit": event.get("details", {}).get("candidate_commit"),
-                 "failure_action": event.get("details", {}).get("failure_action"),
-                 "independent": event.get("details", {}).get("independent")} for event in events[-RECENT_EVENTS:]]
+    material = _material_summaries(events)
+    raw_material = _material_summaries(raw_events)
     repaired_all = [event.get("id") or digest(encode(event)) for event in events if engine._repaired_failure_event(event)]
     repaired = repaired_all[-RECENT_EVENTS:]
     escalated = [row["task_id"] for row in rows if row["status"] == "BLOCKED" and row["failure_verified"] and row["blocker_fingerprint"] and row["blocker_evidence_count"]]
@@ -212,6 +237,17 @@ def build_mutation(snapshot, authority, *, observed_at, operation_id, run):
         "canonical_control_present": control_bytes is not None,
         "families": {family: [row["task_id"] for row in rows if row["family"] == family] for family in engine.FAMILIES},
         "material_events": material, "material_event_count": len(events),
+        "effective_material_event_count": len(events), "raw_material_event_count": len(raw_events),
+        "corrected_material_event_count": len(raw_events) - len(events),
+        "raw_material_events": raw_material, "raw_material_events_included": len(raw_material),
+        "raw_material_signature": digest(encode(raw_events)),
+        "last_material_progress_at": _last_material(events),
+        "raw_last_material_progress_at": _last_material(raw_events),
+        "material_event_corrections": _safe(corrections[-RECENT_EVENTS:]),
+        "material_event_correction_count": len(corrections),
+        "material_event_corrections_included": min(len(corrections), RECENT_EVENTS),
+        "material_event_correction_signature": digest(encode(corrections)),
+        "correction_is_material_progress": False,
         "material_events_included": len(material), "material_signature": digest(encode(events)), "pickup_count": len(pickups),
         "declared_autonomous_pickup_count": sum(event.get("autonomous") is True for event in pickups),
         "pickup_causality_verified": False, "stalls": [row["task_id"] for row in rows if row["status"] == "STALLED"],
@@ -246,6 +282,15 @@ def build_mutation(snapshot, authority, *, observed_at, operation_id, run):
     pmo = {"schema_version": 2, "kind": "autonomy_pmo_evidence", "observation": reference, "authority": pins,
         "criteria": observation["criteria"], "task_counts": {status: sum(row["status"] == status for row in rows) for status in sorted({str(row["status"]) for row in rows})},
         "material_event_count": len(events), "material_signature": observation["material_signature"],
+        "effective_material_event_count": len(events), "raw_material_event_count": len(raw_events),
+        "corrected_material_event_count": len(raw_events) - len(events),
+        "raw_material_signature": observation["raw_material_signature"],
+        "last_material_progress_at": observation["last_material_progress_at"],
+        "raw_last_material_progress_at": observation["raw_last_material_progress_at"],
+        "material_event_corrections": observation["material_event_corrections"],
+        "material_event_correction_count": len(corrections),
+        "material_event_correction_signature": observation["material_event_correction_signature"],
+        "correction_is_material_progress": False,
         "stalls": observation["stalls"], "owner_followup_count": None, "owner_followups": "UNKNOWN",
         "canonical_pmo_updated": False, "legacy_stage_a_status": "NOT_PROVEN"}
     ledger = _ledger(snapshot.read_json(LEDGER, []), authority["learning_ledger"], rows, reference)
