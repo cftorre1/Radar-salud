@@ -84218,24 +84218,59 @@
       "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
       "source_name": "RedSalud",
       "source_type": "corporate",
-      "event_date": "2026-08-27",
+      "event_date": "2026-09-04",
       "raw_text": "",
       "metadata": {
         "discovered_from": "https://www.redsalud.cl/noticias",
         "listing_date": "2026-08-27",
-        "publication_date_source": "verified_article_header",
+        "publication_date_source": "canonical_article_publication",
         "recovery_audit": "data/audits/providers_2026_10_11/redsalud.json",
-        "source_quality_gate": "passed"
+        "source_quality_gate": "passed",
+        "listing_date_before_canonical_verification": "2026-08-27",
+        "canonical_source_url": "https://www.redsalud.cl/observatorio/noticias/nueva-unidad-de-trasplante-de-medula-osea-alta-complejidad-y-nueva-vida",
+        "publication_date_resolution": "canonical_identity_jsonld_and_visible_header_agree",
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T06:17:31.689143+00:00",
+          "relevance_score": 84,
+          "minimum_relevance": 78,
+          "editorial_reason": "Es un cambio de capacidad asistencial relevante, con una capacidad anual declarada y cobertura para ambos tipos de aseguramiento. Sin embargo, el comunicado no informa inversión, número de pacientes efectivamente atendidos, convenios de financiamiento ni resultados clínicos; por eso no alcanza el nivel de un cambio estructural nacional comprobado.",
+          "what_characters": 404,
+          "why_characters": 512,
+          "gate_failures": [],
+          "outcome": "passed",
+          "publication_date": "2026-09-04",
+          "publication_date_source": "canonical_article_publication"
+        },
+        "what_happened": "RedSalud inauguró en el Instituto del Cáncer de Clínica RedSalud Vitacura una unidad de trasplante de progenitores hematopoyéticos, disponible para pacientes Fonasa e Isapre. La unidad tiene 1.233 m², seis habitaciones de ambiente protegido, integración con la UPC y una capacidad declarada de 40 a 50 trasplantes anuales. También quedó preparada para incorporar terapias celulares como CAR-T desde 2028.",
+        "why_it_matters": "La apertura agrega capacidad privada para procedimientos de alta complejidad en hemato-oncología y puede ampliar las alternativas de atención para pacientes del sistema público y privado. Afecta a Fonasa, Isapres, prestadores de alta complejidad y centros que realizan trasplantes, porque introduce nueva oferta en un ámbito que RedSalud describe como deficitario a nivel nacional. Merece atención ahora por la entrada de capacidad especializada y la eventual expansión futura hacia terapias celulares avanzadas.",
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Prestadores",
+          "Isapres"
+        ],
+        "watch_tags": [
+          "redsalud",
+          "mercado"
+        ],
+        "scores": {
+          "economic": 84,
+          "regulatory": 30,
+          "scope": 84,
+          "novelty": 84,
+          "actionability": 65
+        }
       }
     },
     "source": "redsalud",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "published",
     "detected_at": "2026-09-24T17:51:49.535310+00:00",
-    "attempts": 6,
-    "reason": "budget_or_analysis_deferred",
-    "updated_at": "2026-10-11T05:58:00.734686+00:00",
-    "retry_at": "2026-10-12T05:58:00.734701+00:00",
+    "attempts": 7,
+    "reason": null,
+    "updated_at": "2026-10-11T06:17:31.742471+00:00",
+    "retry_at": null,
     "audit_prior_state": {
       "status": "retry",
       "reason": "budget_or_analysis_deferred"
@@ -84364,21 +84399,45 @@
       "url": "https://www.redsalud.cl/noticias/fibrilacion-auricular-varipulse-pro",
       "source_name": "RedSalud",
       "source_type": "corporate",
-      "event_date": "2026-08-28",
+      "event_date": "2026-09-04",
       "raw_text": "",
       "metadata": {
         "discovered_from": "https://www.redsalud.cl/noticias",
-        "listing_date": "2026-08-28"
+        "listing_date": "2026-08-28",
+        "publication_date_source": "canonical_article_publication",
+        "recovery_audit": "data/audits/providers_2026_10_11/redsalud.json",
+        "source_quality_gate": "passed",
+        "listing_date_before_canonical_verification": "2026-08-28",
+        "canonical_source_url": "https://www.redsalud.cl/observatorio/noticias/clinica-redsalud-santiago-realiza-las-primeras-cirugias-de-arritmia-con-campo",
+        "publication_date_resolution": "canonical_identity_jsonld_and_visible_header_agree",
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T06:17:43.365337+00:00",
+          "relevance_score": 76,
+          "minimum_relevance": 78,
+          "editorial_reason": "Merece seguimiento como señal de adopción tecnológica y competencia en cardiología de alta complejidad por parte de un actor relevante. Sin embargo, el alcance actual es acotado a dos procedimientos y la información proviene exclusivamente de un comunicado corporativo, con afirmaciones promocionales sobre seguridad, recuperación y acceso que no están corroboradas en el material entregado.",
+          "what_characters": 422,
+          "why_characters": 507,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-04",
+          "publication_date_source": "canonical_article_publication"
+        }
       }
     },
     "source": "redsalud",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "rejected",
     "detected_at": "2026-09-24T17:51:49.535310+00:00",
-    "attempts": 4,
-    "reason": "budget_or_analysis_deferred",
-    "updated_at": "2026-09-30T19:09:40.560953+00:00",
-    "retry_at": "2026-10-01T11:09:40.560966+00:00"
+    "attempts": 5,
+    "reason": "relevance_below_source_gate",
+    "updated_at": "2026-10-11T06:17:43.365433+00:00",
+    "retry_at": null,
+    "audit_prior_state": {
+      "status": "retry",
+      "reason": "budget_or_analysis_deferred"
+    }
   },
   "aff8cbc9da4892e16f88305265930c8c7d738d4f8b5160b4e92910eab424bbe9": {
     "raw": {
@@ -94624,6 +94683,282 @@
     "attempts": 1,
     "reason": "relevance_below_source_gate",
     "updated_at": "2026-10-11T05:57:48.811766+00:00",
+    "retry_at": null
+  },
+  "82641e89cc8479329589d8feab44efafffbc5584a4205366afb620de922ccb38": {
+    "raw": {
+      "source_slug": "red_davila",
+      "title": "Operativo Médico en Valparaíso",
+      "url": "https://www.davila.cl/novedades/operativo-medico-en-valparaiso",
+      "source_name": "Red Dávila",
+      "source_type": "corporate",
+      "event_date": "2026-09-30",
+      "raw_text": "",
+      "metadata": {
+        "discovered_from": "https://www.davila.cl/novedades",
+        "publication_date_source": "verified_article_header",
+        "recovery_audit": "data/audits/providers_2026_10_11/red_davila.json",
+        "source_quality_gate": "passed",
+        "market_role": "provider",
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T06:17:07.118228+00:00",
+          "relevance_score": 62,
+          "minimum_relevance": 75,
+          "editorial_reason": "Contexto útil sobre colaboración público-privada y movilización de especialistas, pero de alcance local y principalmente institucional; no evidencia un cambio material para el sector salud.",
+          "what_characters": 482,
+          "why_characters": 318,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-30",
+          "publication_date_source": "verified_article_header"
+        }
+      }
+    },
+    "source": "red_davila",
+    "lane": "BACKFILL",
+    "status": "rejected",
+    "detected_at": "2026-10-11T06:16:57.263775+00:00",
+    "attempts": 1,
+    "reason": "relevance_below_source_gate",
+    "updated_at": "2026-10-11T06:17:07.118381+00:00",
+    "retry_at": null
+  },
+  "a69805b0a648e162d0f05ca0eb4799f4a0146d16808583aa774102ccaae65bd7": {
+    "raw": {
+      "source_slug": "red_davila",
+      "title": "Resonancia cardíaca en Clínica Dávila Vespucio",
+      "url": "https://www.davila.cl/novedades/resonancia-cardiaca-en-clinica-davila-vespucio",
+      "source_name": "Red Dávila",
+      "source_type": "corporate",
+      "event_date": "2026-09-08",
+      "raw_text": "",
+      "metadata": {
+        "discovered_from": "https://www.davila.cl/novedades",
+        "publication_date_source": "verified_article_header",
+        "recovery_audit": "data/audits/providers_2026_10_11/red_davila.json",
+        "source_quality_gate": "passed",
+        "market_role": "provider",
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T06:17:15.511242+00:00",
+          "relevance_score": 70,
+          "minimum_relevance": 75,
+          "editorial_reason": "La incorporación de equipamiento avanzado sí constituye un desarrollo de capacidad e inversión dentro de la red, pero la publicación es principalmente informativa y no entrega antecedentes suficientes para calificarla como un cambio competitivo o sectorial de mayor escala.",
+          "what_characters": 207,
+          "why_characters": 377,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-08",
+          "publication_date_source": "verified_article_header"
+        }
+      }
+    },
+    "source": "red_davila",
+    "lane": "BACKFILL",
+    "status": "rejected",
+    "detected_at": "2026-10-11T06:16:57.263775+00:00",
+    "attempts": 1,
+    "reason": "relevance_below_source_gate",
+    "updated_at": "2026-10-11T06:17:15.511388+00:00",
+    "retry_at": null
+  },
+  "ff4dfd34fc1b4ad84f4147bed4396c794aa219e04ab8024314ffe1c2aa1a64f2": {
+    "raw": {
+      "source_slug": "red_davila",
+      "title": "Clínica Dávila Recoleta incorpora nuevo servicio de Fototerapia Dermatológica",
+      "url": "https://www.davila.cl/novedades/clinica-davila-recoleta-incorpora-nuevo-servicio-de-fototerapia-dermatologica",
+      "source_name": "Red Dávila",
+      "source_type": "corporate",
+      "event_date": "2026-09-02",
+      "raw_text": "",
+      "metadata": {
+        "discovered_from": "https://www.davila.cl/novedades",
+        "publication_date_source": "verified_article_header",
+        "recovery_audit": "data/audits/providers_2026_10_11/red_davila.json",
+        "source_quality_gate": "passed",
+        "market_role": "provider",
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T06:17:22.196953+00:00",
+          "relevance_score": 60,
+          "minimum_relevance": 75,
+          "editorial_reason": "Es una incorporación puntual de prestación en un establecimiento específico, sin evidencia de un cambio material para el sector salud, de impacto nacional o de una estrategia competitiva de mayor escala.",
+          "what_characters": 213,
+          "why_characters": 302,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-02",
+          "publication_date_source": "verified_article_header"
+        }
+      }
+    },
+    "source": "red_davila",
+    "lane": "BACKFILL",
+    "status": "rejected",
+    "detected_at": "2026-10-11T06:16:57.263775+00:00",
+    "attempts": 1,
+    "reason": "relevance_below_source_gate",
+    "updated_at": "2026-10-11T06:17:22.197054+00:00",
+    "retry_at": null
+  },
+  "38756c9794bcb9ff96bc5842ec5167e3c26340be6a8117bfff51910cce8ccb49": {
+    "raw": {
+      "source_slug": "redsalud",
+      "title": "Conoce el nuevo Servicio de Urgencia Clínica RedSalud Elqui: Alta complejidad en un solo lugar",
+      "url": "https://www.redsalud.cl/noticias/nuevo-servicio-de-urgencia-elqui",
+      "source_name": "RedSalud",
+      "source_type": "corporate",
+      "event_date": "2026-08-17",
+      "raw_text": "",
+      "metadata": {
+        "discovered_from": "https://www.redsalud.cl/noticias",
+        "publication_date_source": "verified_article_header",
+        "recovery_audit": "data/audits/providers_2026_10_11/redsalud.json",
+        "source_quality_gate": "passed",
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T06:17:56.623454+00:00",
+          "relevance_score": 72,
+          "minimum_relevance": 78,
+          "editorial_reason": "Merece seguimiento como inversión de capacidad asistencial con impacto regional, pero su alcance es principalmente local y el comunicado no entrega montos de inversión, volúmenes de atención, resultados operativos ni evidencia independiente sobre la reducción efectiva de derivaciones o tiempos de espera. Por eso corresponde a un contexto estratégico secundario, no a un cambio sectorial nacional.",
+          "what_characters": 402,
+          "why_characters": 406,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-08-17",
+          "publication_date_source": "verified_article_header"
+        }
+      }
+    },
+    "source": "redsalud",
+    "lane": "BACKFILL",
+    "status": "rejected",
+    "detected_at": "2026-10-11T06:16:57.263775+00:00",
+    "attempts": 1,
+    "reason": "relevance_below_source_gate",
+    "updated_at": "2026-10-11T06:17:56.623552+00:00",
+    "retry_at": null
+  },
+  "d6c8431c5d9a4a062c43134aef58de9e9be9a158a4f621384d3f5fe8d27c7dbc": {
+    "raw": {
+      "source_slug": "redsalud",
+      "title": "El exitoso primer implante valvular aórtico transcatéter (TAVI) en Clínica RedSalud Mayor Temuco",
+      "url": "https://www.redsalud.cl/noticias/el-exitoso-primer-tavi-en-temuco",
+      "source_name": "RedSalud",
+      "source_type": "corporate",
+      "event_date": "2026-09-04",
+      "raw_text": "",
+      "metadata": {
+        "discovered_from": "https://www.redsalud.cl/noticias",
+        "publication_date_source": "verified_article_header",
+        "recovery_audit": "data/audits/providers_2026_10_11/redsalud.json",
+        "source_quality_gate": "passed",
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T06:18:08.932940+00:00",
+          "relevance_score": 72,
+          "minimum_relevance": 78,
+          "editorial_reason": "Es una expansión concreta de capacidad clínica especializada en una región, pero corresponde al primer procedimiento de un prestador específico y no entrega evidencia de escala, resultados clínicos ni cambios en acceso a nivel nacional. Por eso merece seguimiento como señal secundaria de descentralización de la cardiología intervencional, no como un cambio sectorial mayor.",
+          "what_characters": 402,
+          "why_characters": 421,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-04",
+          "publication_date_source": "verified_article_header"
+        }
+      }
+    },
+    "source": "redsalud",
+    "lane": "BACKFILL",
+    "status": "rejected",
+    "detected_at": "2026-10-11T06:16:57.263775+00:00",
+    "attempts": 1,
+    "reason": "relevance_below_source_gate",
+    "updated_at": "2026-10-11T06:18:08.933030+00:00",
+    "retry_at": null
+  },
+  "b738fbc7ef637368bf8fff56e90ea0ddb64afa3db84f2f8918c859713f6f55ef": {
+    "raw": {
+      "source_slug": "redsalud",
+      "title": "Cirugía Robótica MARS en Chile: Precisión y Seguridad en Procedimientos Bariátricos y Digestivos",
+      "url": "https://www.redsalud.cl/noticias/cirugia-robotica-mars-en-chile",
+      "source_name": "RedSalud",
+      "source_type": "corporate",
+      "event_date": "2026-09-04",
+      "raw_text": "",
+      "metadata": {
+        "discovered_from": "https://www.redsalud.cl/noticias",
+        "publication_date_source": "verified_article_header",
+        "recovery_audit": "data/audits/providers_2026_10_11/redsalud.json",
+        "source_quality_gate": "passed",
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T06:18:18.889290+00:00",
+          "relevance_score": 72,
+          "minimum_relevance": 78,
+          "editorial_reason": "Es un avance de capacidad tecnológica y acceso dentro de un prestador relevante, pero su impacto sectorial todavía es acotado y no se informa una expansión ya materializada más allá de la manga gástrica en una clínica. Además, los beneficios clínicos y económicos se presentan en tono corporativo, sin datos comparativos ni resultados verificables; por eso corresponde a un contexto relevante, pero secundario, y no a un cambio sectorial mayor.",
+          "what_characters": 431,
+          "why_characters": 447,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-04",
+          "publication_date_source": "verified_article_header"
+        }
+      }
+    },
+    "source": "redsalud",
+    "lane": "BACKFILL",
+    "status": "rejected",
+    "detected_at": "2026-10-11T06:16:57.263775+00:00",
+    "attempts": 1,
+    "reason": "relevance_below_source_gate",
+    "updated_at": "2026-10-11T06:18:18.889385+00:00",
+    "retry_at": null
+  },
+  "6216dc278f0300bec815c82d01502ecbbf50604259d7883d14940cce34e37ca1": {
+    "raw": {
+      "source_slug": "redsalud",
+      "title": "RedSalud y Facultad de Medicina de la Universidad de Chile firman convenio docente-asistencial",
+      "url": "https://www.redsalud.cl/noticias/redsalud-y-facultadla-universidad-de-chile",
+      "source_name": "RedSalud",
+      "source_type": "corporate",
+      "event_date": "2026-07-23",
+      "raw_text": "",
+      "metadata": {
+        "discovered_from": "https://www.redsalud.cl/noticias",
+        "publication_date_source": "verified_article_header",
+        "recovery_audit": "data/audits/providers_2026_10_11/redsalud.json",
+        "source_quality_gate": "passed",
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T06:18:28.912516+00:00",
+          "relevance_score": 70,
+          "minimum_relevance": 78,
+          "editorial_reason": "Es un cambio relevante para la estrategia de capacidad médica de RedSalud y para la formación de especialistas, pero su alcance sectorial inmediato es acotado: se trata de un convenio institucional con número de plazas, financiamiento y efectos sobre la oferta nacional aún no especificados.",
+          "what_characters": 416,
+          "why_characters": 385,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-07-23",
+          "publication_date_source": "verified_article_header"
+        }
+      }
+    },
+    "source": "redsalud",
+    "lane": "BACKFILL",
+    "status": "rejected",
+    "detected_at": "2026-10-11T06:16:57.263775+00:00",
+    "attempts": 1,
+    "reason": "relevance_below_source_gate",
+    "updated_at": "2026-10-11T06:18:28.912616+00:00",
     "retry_at": null
   }
 }
