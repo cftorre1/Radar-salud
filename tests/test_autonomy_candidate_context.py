@@ -95,6 +95,43 @@ class OverlayQueueTests(unittest.TestCase):
         self.assertEqual(context["baseline_input_fingerprint"], self.fingerprint)
         self.assertEqual(context["current_input_fingerprint"], "e" * 64)
 
+    def test_executor_only_fingerprint_change_preserves_product_candidate_continuation(self):
+        details = self.state["material_events"][0]["details"]
+        details.update(input_fingerprint="1" * 64, product_input_fingerprint=self.fingerprint,
+                       executor_fingerprint="2" * 64)
+        self.queue["tasks"][0].update(input_fingerprint="3" * 64,
+                                      product_input_fingerprint=self.fingerprint,
+                                      executor_fingerprint="4" * 64)
+        task = self.task()
+        context = task["candidate_context"]
+        self.assertEqual(task["input_sha"], self.candidate_sha)
+        self.assertEqual(context["baseline_input_fingerprint"], self.fingerprint)
+        self.assertEqual(context["current_input_fingerprint"], self.fingerprint)
+        self.assertFalse(context["base_changed"])
+        self.assertFalse(context["rebase_required"])
+        self.assertFalse(context["integrated_into_staging"])
+        self.assertEqual(task["blocked_by"], ["preserve-existing-external-blocker"])
+        self.assertFalse(self.queue["policy"]["production_promotion"])
+
+    def test_legacy_fingerprint_fallback_keeps_conservative_equal_and_changed_guards(self):
+        self.assertNotIn("product_input_fingerprint", self.state["material_events"][0]["details"])
+        self.assertNotIn("product_input_fingerprint", self.queue["tasks"][0])
+        for mode in ("legacy_both", "legacy_event_new_task", "new_event_legacy_task"):
+            for current, changed in ((self.fingerprint, False), ("e" * 64, True)):
+                with self.subTest(mode=mode, current=current):
+                    queue, state = deepcopy(self.queue), deepcopy(self.state)
+                    task, details = queue["tasks"][0], state["material_events"][0]["details"]
+                    task["input_fingerprint"] = current
+                    if mode == "legacy_event_new_task":
+                        task.update(input_fingerprint="3" * 64, product_input_fingerprint=current)
+                    elif mode == "new_event_legacy_task":
+                        details.update(input_fingerprint="1" * 64, product_input_fingerprint=self.fingerprint)
+                    context = self.task(queue=queue, state=state)["candidate_context"]
+                    self.assertEqual(context["baseline_input_fingerprint"], self.fingerprint)
+                    self.assertEqual(context["current_input_fingerprint"], current)
+                    self.assertEqual(context["rebase_required"], changed)
+                    self.assertFalse(context["integrated_into_staging"])
+
     def test_trusted_exact_integration_uses_current_staging_and_keeps_candidate_evidence(self):
         self.queue["input_sha"] = "d" * 40
         self.queue["tasks"][0].update(input_sha="d" * 40, input_fingerprint="e" * 64)
@@ -346,6 +383,54 @@ class PrepareWorkspaceTests(unittest.TestCase):
         self.assertEqual(self.git("-C", str(self.workspace), "branch", "--show-current"), "staging")
         self.assertEqual((self.workspace / "source.py").read_text(), "repair = False\n")
         self.assertEqual(self.refs(), before_refs)
+
+    def test_actual_product_delta_requires_rebase_without_checking_out_or_promoting_candidate(self):
+        self.git("-C", str(self.seed), "checkout", "--quiet", "staging")
+        (self.seed / "source.py").write_text("repair = 'independent staging product change'\n")
+        self.git("-C", str(self.seed), "commit", "--quiet", "-am", "independent scoped product delta")
+        staging_sha = self.git("-C", str(self.seed), "rev-parse", "HEAD")
+        self.git("-C", str(self.seed), "push", "--quiet", "origin", "staging")
+        current_product = hashlib.sha256((self.seed / "source.py").read_bytes()).hexdigest()
+        queue = {"input_sha": staging_sha, "policy": {"production_promotion": False}, "tasks": [{
+            "id": MEDIA, "status": "approved", "input_sha": staging_sha,
+            "input_fingerprint": "5" * 64, "product_input_fingerprint": current_product,
+            "executor_fingerprint": "6" * 64,
+        }]}
+        state = {"tasks": {MEDIA: {"id": MEDIA, "family": "media", "status": "BLOCKED",
+                    "candidate_review": {"candidate_commit": self.candidate_sha, "status": "PASS",
+                                         "candidate_branch": self.branch, "candidate_scope": "isolated"}}},
+            "material_events": [{"kind": "mutation", "task_id": MEDIA, "details": {
+                "candidate_commit": self.candidate_sha, "candidate_branch": self.branch,
+                "candidate_scope": "isolated", "parent_input_sha": self.parent_sha,
+                "input_fingerprint": "1" * 64, "product_input_fingerprint": self.fingerprint,
+                "executor_fingerprint": "2" * 64, "changed_paths": ["source.py"],
+            }}]}
+        for mode in ("new_both", "legacy_event_new_task", "new_event_legacy_task"):
+            with self.subTest(mode=mode):
+                current_queue, current_state = deepcopy(queue), deepcopy(state)
+                if mode == "legacy_event_new_task":
+                    details = current_state["material_events"][0]["details"]
+                    details.pop("product_input_fingerprint")
+                    details["input_fingerprint"] = self.fingerprint
+                elif mode == "new_event_legacy_task":
+                    current_queue["tasks"][0].pop("product_input_fingerprint")
+                    current_queue["tasks"][0]["input_fingerprint"] = current_product
+                overlaid = overlay_queue(current_queue, current_state)
+                task = overlaid["tasks"][0]
+                self.assertEqual(task["input_sha"], self.candidate_sha)
+                self.assertTrue(task["candidate_context"]["base_changed"])
+                self.assertTrue(task["candidate_context"]["rebase_required"])
+                self.assertEqual(task["candidate_context"]["baseline_input_fingerprint"], self.fingerprint)
+                self.assertEqual(task["candidate_context"]["current_input_fingerprint"], current_product)
+                before_head, before_refs = self.head(), self.refs()
+                result = prepare_workspace(self.workspace, task)
+                self.assertFalse(result["prepared"])
+                self.assertEqual(result["blocker"]["kind"], "candidate_rebase_required")
+                self.assertEqual(self.head(), before_head)
+                self.assertEqual(self.git("-C", str(self.workspace), "branch", "--show-current"), "staging")
+                self.assertEqual(self.refs(), before_refs)
+                self.assertEqual(self.refs()[self.branch], self.candidate_sha)
+                self.assertFalse(overlaid["policy"]["production_promotion"])
 
     def test_integrated_exact_ancestor_keeps_current_staging_without_checkout_or_remote_write(self):
         # Represent an independently authorized integration in a private Git

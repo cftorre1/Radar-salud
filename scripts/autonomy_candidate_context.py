@@ -97,8 +97,11 @@ def overlay_queue(queue, state, *, integrated_candidate_commits=()):
         task.pop("candidate_context", None)
         declared = previous.get("queue_evidence_revision", task.get("evidence_revision")) if previous.get("commit") == commit else task.get("evidence_revision")
         latest_staging = result.get("input_sha", task.get("input_sha"))
-        baseline = details.get("input_fingerprint")
-        current = task.get("input_fingerprint")
+        # Executor updates can permit another repair attempt without changing
+        # the candidate's product base. Canonical legacy mutations recorded the
+        # product identity in input_fingerprint; newer records keep it separate.
+        baseline = details.get("product_input_fingerprint") or details.get("input_fingerprint")
+        current = task.get("product_input_fingerprint") or task.get("input_fingerprint")
         parent = details.get("parent_input_sha")
         base_changed = bool(parent and latest_staging and parent != latest_staging)
         integrated = (commit in integrated_commits and isinstance(latest_staging, str)
