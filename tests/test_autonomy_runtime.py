@@ -246,7 +246,8 @@ Path(a.report).write_text(json.dumps(report))
             report = self.invoke("plan")
         state = self.state()
         self.assertEqual(state["acceptance"]["mode"], "live")
-        self.assertEqual(datetime.fromisoformat(state["acceptance"]["started_at"]), hosted_at)
+        self.assertEqual(datetime.fromisoformat(state["acceptance"]["controller_started_at"]), hosted_at)
+        self.assertNotIn("started_at", state["acceptance"])
         self.assertEqual(state["acceptance"]["owner_prompts"], [])
         self.assertEqual(state["acceptance"]["owner_restarts"], [])
         self.assertEqual(report["acceptance"]["metrics"]["material_event_count"], 0)
@@ -257,6 +258,107 @@ Path(a.report).write_text(json.dumps(report))
         self.environment["GITHUB_ACTIONS"] = "false"
         self.invoke("plan")
         self.assertEqual(self.state()["acceptance"], state["acceptance"])
+
+    def test_live_window_starts_in_first_durable_claim_and_later_claims_preserve_history(self):
+        self.environment["GITHUB_ACTIONS"] = "true"
+        self.install_runner("blocker")
+        first_claim = datetime.now(timezone.utc) - timedelta(minutes=5)
+        controller_start = first_claim - timedelta(hours=2)
+        with patch.object(runtime, "now", return_value=controller_start.isoformat()):
+            self.invoke("plan")
+        self.assertNotIn("started_at", self.state()["acceptance"])
+        with patch.object(runtime, "now", return_value=(first_claim - timedelta(minutes=1)).isoformat()):
+            before_pickup = self.invoke("plan")
+        self.assertEqual(before_pickup["acceptance"]["metrics"]["observed_seconds"], 0)
+        self.assertNotIn("started_at", self.state()["acceptance"])
+
+        store = runtime.GitStateStore(repository=self.workspace, initial_backoff=0)
+        owner_history = {"owner_prompts": ["recorded owner followup"], "owner_restarts": ["recorded restart"],
+                         "owner_observation": {"verified": False, "reason": "coverage not proven"}}
+        def preserve_history(snapshot):
+            state = snapshot.read_json(runtime.STATE)
+            state["acceptance"].update(owner_history)
+            return runtime.Mutation(runtime.state_write(state))
+        store.transact(preserve_history)
+        original_transact = store.transact
+        pickups = []
+        def inspect_durable_claim(mutator, *, message):
+            result = original_transact(mutator, message=message)
+            if message.startswith("autonomy: atomically lease"):
+                pickups.append(self.state())
+            return result
+        with patch.object(runtime, "now", return_value=first_claim.isoformat()), \
+             patch.object(runtime, "store_for", return_value=store), \
+             patch.object(store, "transact", side_effect=inspect_durable_claim):
+            first_report = self.invoke("execute", "media")
+        self.assertEqual(pickups[0]["tasks"][MEDIA]["status"], "RUNNING")
+        self.assertEqual(datetime.fromisoformat(pickups[0]["acceptance"]["started_at"]), first_claim)
+        self.assertEqual(datetime.fromisoformat(pickups[0]["acceptance"]["controller_started_at"]), controller_start)
+        self.assertEqual(pickups[0]["acceptance"]["first_pickup_task_id"], MEDIA)
+        self.assertEqual(pickups[0]["acceptance"]["first_pickup_fence"], pickups[0]["tasks"][MEDIA]["lease"]["fence"])
+        for key, value in owner_history.items():
+            self.assertEqual(pickups[0]["acceptance"][key], value)
+        self.assertIn("owner_intervention_observation_not_verified", first_report["acceptance"]["reasons"])
+        self.assertIn("owner_restart_or_followup_in_window", first_report["acceptance"]["reasons"])
+        fixed_window = self.state()["acceptance"]
+        with patch.object(runtime, "now", return_value=(first_claim + timedelta(minutes=1)).isoformat()):
+            second_report = self.invoke("execute", "public_data")
+            self.invoke("plan")
+        self.assertEqual(self.state()["acceptance"], fixed_window)
+        self.assertEqual(second_report["acceptance"]["metrics"]["observed_seconds"], 60)
+        self.assertEqual(second_report["acceptance"]["status"], "NOT_PROVEN")
+
+    def test_legacy_live_clock_migrates_first_real_pickup_and_never_reanchors(self):
+        observed_at = datetime.now(timezone.utc)
+        activated_at = observed_at - timedelta(minutes=20)
+        simulated_at = activated_at - timedelta(hours=2)
+        first_claim = activated_at + timedelta(minutes=1)
+        store = runtime.GitStateStore(repository=self.workspace, initial_backoff=0)
+        queue = runtime.queue_for(self.workspace)
+        def seed_legacy_live(snapshot):
+            state, old_lease = runtime.engine.claim({}, queue, "media", "fixture-worker", simulated_at)
+            state = runtime.engine.finish(state, MEDIA, old_lease["token"], {
+                "task_id": MEDIA, "family": "media", "status": "BLOCKED", "changed_paths": [],
+                "validated": False, "blockers": [{"fingerprint": "old-fixture", "reason": "fixture",
+                    "evidence": [{"fixture": True}]}]}, simulated_at + timedelta(seconds=1))
+            # A genuine relevant revision opens the task for the hosted-era claim.
+            live_queue = json.loads(json.dumps(queue))
+            live_queue["tasks"][0]["evidence_revision"] = "actual-hosted-executor-revision"
+            state, _ = runtime.engine.claim(state, live_queue, "media", "123-1-media", first_claim)
+            state["acceptance"] = {"mode": "live", "started_at": activated_at.isoformat(),
+                                   "owner_prompts": ["retained"], "owner_restarts": [],
+                                   "owner_observation": {"verified": False, "reason": "retained proof"}}
+            return runtime.Mutation(runtime.state_write(state))
+        store.transact(seed_legacy_live)
+        with patch.object(runtime, "now", return_value=observed_at.isoformat()):
+            self.invoke("plan")
+        acceptance = self.state()["acceptance"]
+        self.assertEqual(datetime.fromisoformat(acceptance["started_at"]), first_claim)
+        self.assertEqual(datetime.fromisoformat(acceptance["controller_started_at"]), activated_at)
+        self.assertEqual(acceptance["owner_prompts"], ["retained"])
+        self.assertEqual(acceptance["owner_observation"], {"verified": False, "reason": "retained proof"})
+        self.assertEqual(len([event for event in self.state()["lease_events"] if event["kind"] == "pickup"]), 2)
+        with patch.object(runtime, "now", return_value=(observed_at + timedelta(minutes=1)).isoformat()):
+            self.invoke("plan")
+        self.assertEqual(self.state()["acceptance"], acceptance)
+
+    def test_legacy_live_clock_can_recover_claim_from_durable_task_lease(self):
+        observed_at = datetime.now(timezone.utc)
+        activated_at = observed_at - timedelta(minutes=5)
+        first_claim = activated_at + timedelta(minutes=1)
+        store = runtime.GitStateStore(repository=self.workspace, initial_backoff=0)
+        queue = runtime.queue_for(self.workspace)
+        def seed_lease(snapshot):
+            state, _ = runtime.engine.claim({}, queue, "media", "123-1-media", first_claim)
+            state["lease_events"] = []
+            state["acceptance"] = {"mode": "live", "started_at": activated_at.isoformat(),
+                                   "owner_prompts": [], "owner_restarts": []}
+            return runtime.Mutation(runtime.state_write(state))
+        store.transact(seed_lease)
+        with patch.object(runtime, "now", return_value=observed_at.isoformat()):
+            self.invoke("plan")
+        self.assertEqual(datetime.fromisoformat(self.state()["acceptance"]["started_at"]), first_claim)
+        self.assertEqual(self.state()["acceptance"]["window_started_by"], "first_durable_pickup")
 
     def test_trusted_runtime_uses_exact_candidate_ancestry_for_current_staging_continuation(self):
         baseline_queue = runtime.queue_for(self.workspace)

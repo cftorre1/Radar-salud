@@ -131,7 +131,55 @@ def store_for(args):
     return GitStateStore(repository=args.infrastructure)
 
 
-def initial_state(snapshot):
+def anchor_acceptance_window(state, at):
+    """Fix the live clock once, using a claim in the durable control authority.
+
+    Controller startup is retained separately. Without a real hosted-era claim
+    there is no started_at, so the engine observes zero elapsed acceptance time.
+    A legacy live state is migrated from its pickup ledger or active task lease;
+    history from before the live handoff cannot start the new window.
+    """
+    acceptance = state["acceptance"]
+    if acceptance.get("mode") != "live":
+        return state
+    acceptance.setdefault("controller_started_at", acceptance.get("started_at", at))
+    if acceptance.get("window_started_by") == "first_durable_pickup":
+        return state
+    floor = engine._time(acceptance["controller_started_at"])
+    ceiling = engine._time(at)
+    pickups = []
+    def record(task_id, family, owner, fence, claimed_at):
+        task = state.get("tasks", {}).get(task_id, {})
+        if (not owner or str(owner).lower().startswith(("owner", "toba", "manual"))
+                or not isinstance(fence, int) or isinstance(fence, bool) or fence < 1
+                or family not in engine.FAMILIES or task.get("family") != family
+                or task.get("attempts", 0) < 1 or task.get("fence", 0) < fence):
+            return
+        try:
+            claimed = engine._time(claimed_at)
+        except (TypeError, ValueError, OverflowError):
+            return
+        if floor <= claimed <= ceiling:
+            pickups.append((claimed, task_id, fence))
+    for event in state.get("lease_events", []):
+        if event.get("kind") == "pickup" and event.get("autonomous") is True:
+            record(event.get("task_id"), event.get("family"), event.get("owner"),
+                   event.get("fence"), event.get("at"))
+    for task in state.get("tasks", {}).values():
+        lease = task.get("lease") or {}
+        if re.fullmatch(r"[a-fA-F0-9]{64}", str(lease.get("token", ""))):
+            record(task["id"], task.get("family"), lease.get("owner"),
+                   lease.get("fence"), lease.get("claimed_at"))
+    if pickups:
+        first, task_id, fence = min(pickups)
+        acceptance.update(started_at=engine._iso(first), window_started_by="first_durable_pickup",
+                          first_pickup_task_id=task_id, first_pickup_fence=fence)
+    else:
+        acceptance.pop("started_at", None)
+    return state
+
+
+def initial_state(snapshot, at=None):
     """Start live acceptance only from this repository's hosted Actions run.
 
     Local initialization is a simulation. A later hosted activation starts a
@@ -140,16 +188,20 @@ def initial_state(snapshot):
     authority locally never downgrades or restarts that window.
     """
     state = snapshot.read_json(STATE, {})
+    at = at or now()
     hosted = (os.getenv("GITHUB_ACTIONS") == "true"
               and os.getenv("GITHUB_REPOSITORY") == "cftorre1/Radar-salud"
               and os.getenv("GITHUB_RUN_ID", "").isdigit()
               and os.getenv("GITHUB_RUN_ATTEMPT", "").isdigit())
     acceptance = state.get("acceptance")
     if acceptance and acceptance.get("mode") == "live":
-        return state
+        return anchor_acceptance_window(state, at)
     if not acceptance or (hosted and acceptance.get("mode") == "simulation"):
-        state["acceptance"] = {"mode": "live" if hosted else "simulation", "started_at": now(),
+        state["acceptance"] = {"mode": "live" if hosted else "simulation", "controller_started_at": at,
                                "owner_restarts": [], "owner_prompts": []}
+        if hosted:
+            return anchor_acceptance_window(state, at)
+        state["acceptance"]["started_at"] = at
     return state
 
 
@@ -193,7 +245,7 @@ def plan(args):
     at = now()
     operation = uuid.uuid4().hex
     def reduce(snapshot):
-        previous = initial_state(snapshot)
+        previous = initial_state(snapshot, at)
         effective_queue = overlay_queue(queue, previous,
             integrated_candidate_commits=integrated_candidates(workspace, queue, previous))
         state, selected = engine.plan(previous, effective_queue, at)
@@ -287,14 +339,16 @@ def execute(args):
     store = store_for(args)
     owner = os.environ.get("GITHUB_RUN_ID", "local") + "-" + os.environ.get("GITHUB_RUN_ATTEMPT", "1") + "-" + args.family
     run_url = "https://github.com/" + os.environ.get("GITHUB_REPOSITORY", "cftorre1/Radar-salud") + "/actions/runs/" + os.environ.get("GITHUB_RUN_ID", "local")
+    at = now()
     operation = uuid.uuid4().hex
     def acquire(snapshot):
-        previous = initial_state(snapshot)
+        previous = initial_state(snapshot, at)
         effective_queue = overlay_queue(queue, previous,
             integrated_candidate_commits=integrated_candidates(workspace, queue, previous))
-        state, lease = engine.claim(previous, effective_queue, args.family, owner, now())
+        state, lease = engine.claim(previous, effective_queue, args.family, owner, at)
+        anchor_acceptance_window(state, at)
         if lease:
-            writes = state_write(state, {"operation_id": operation, "kind": "pickup", "lease": lease, "at": now()})
+            writes = state_write(state, {"operation_id": operation, "kind": "pickup", "lease": lease, "at": at})
             lease = {**lease, "_queue_task": next(t for t in effective_queue["tasks"] if t["id"] == lease["task_id"])}
             return Mutation(writes, {"lease": lease})
         family_tasks = [{"task_id": task["id"], "status": task["status"],
@@ -311,7 +365,7 @@ def execute(args):
         report = {"family": args.family, "status": "NO_EXECUTABLE_TASK", "reason": reason,
                   "family_tasks": family_tasks, "observed_state_commit": snapshot.commit,
                   "input_sha": queue["input_sha"], "run_id": owner, "run_url": run_url,
-                  "generated_at": now(), "changed_paths": [], "material_progress": False}
+                  "generated_at": at, "changed_paths": [], "material_progress": False}
         evidence = {"operation_id": operation, "kind": "worker_observation", "report": report}
         return Mutation(state_write(state, evidence), {"lease": None, "report": report})
     result = store.transact(acquire, message="autonomy: atomically lease " + args.family)
