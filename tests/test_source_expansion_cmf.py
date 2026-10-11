@@ -61,3 +61,16 @@ def test_materiality_never_publishes_parent_fact_to_insurer():
     assert classify_primary('Otros')['disposition']=='deferred'
     url,body=essential_query('94139000','ILC',date(2026,7,14),date(2026,10,11))
     assert 'pestania=25' in url and 'aa=2026' in body
+
+
+def test_review_cannot_reuse_changed_document_or_cross_issuer():
+    from radar_salud.cmf_sources import apply_verified_primary
+    review=json.loads((ROOT/'config/cmf_verified_events_2026_10_11.json').read_text())['records'][0]
+    doc={key:review[key] for key in ['official_document_number','issuer_entity_id','published_at']}
+    doc['primary_sha256']='0'*64
+    assert not apply_verified_primary(doc,review) and 'verified_event' not in doc
+    doc['primary_sha256']=review['primary_sha256'];doc['issuer_entity_id']='cl:rut:94139000-5'
+    with pytest.raises(ValueError,match='identity'):apply_verified_primary(doc,review)
+    doc['issuer_entity_id']=review['issuer_entity_id']
+    assert apply_verified_primary(doc,review) and doc['disposition']=='deferred'
+    assert doc['verified_event']['amount']['value']==80119759016

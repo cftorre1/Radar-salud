@@ -101,8 +101,8 @@ def classify_primary(text):
     value=fold(text)
     material=[label for label,pattern in [
         ('capital',r'aumento de capital|colocacion de acciones|suscripcion de acciones'),
-        ('debt',r'emision de bonos|credito|refinanciamiento|incumplimiento|covenant'),
-        ('ownership',r'adquisicion|enajenacion|toma de control|oferta publica|fusion'),
+        ('debt',r'emisi.n.{0,40}bonos|colocaci.n.{0,40}bonos|credito|refinanciamiento|incumplimiento|covenant'),
+        ('ownership',r'adquisicion|enajenacion|toma de control|oferta publica|fusion|compraventa|oferta no vinculante|operaci.n con parte relacionada'),
         ('capacity',r'cierre de clinica|apertura de clinica|inversion hospitalaria')]
         if re.search(pattern,value)]
     if material: return {'material':True,'disposition':'deferred','themes':material,
@@ -142,3 +142,29 @@ def financial_results(html, *, actor, source_url, sha256, reporting_period):
                     source_url=source_url, source_sha256=sha256,
                     comparability='Same reporting entity, interval, perimeter and accounting basis only'))
     return result
+
+
+def parse_shareholders(html, *, source_url, sha256):
+    rows=read(html).rows;period=None;owners=[]
+    for row in rows:
+        if row and row[0].startswith('Período:'):
+            match=re.search(r'(\d{2})\s*/\s*(20\d{2})',row[0]);period=f'{match[2]}-{match[1]}' if match else None
+        if len(row)==4 and re.fullmatch(r'\d+[,.]\d+%',row[-1]):
+            owners.append({'name':row[0],'ownership_pct':float(row[-1][:-1].replace(',','.')),
+                           'reported_period':period,'source_url':source_url,'source_sha256':sha256})
+    return owners
+
+
+def apply_verified_primary(doc, review):
+    """A review only applies to its exact public document, issuer, date and content."""
+    if not review or doc.get('primary_sha256')!=review['primary_sha256']:
+        return False
+    if doc['official_document_number']!=review['official_document_number'] or doc['issuer_entity_id']!=review['issuer_entity_id']:
+        raise ValueError('Reviewed primary issuer/document identity mismatch')
+    if doc['published_at']!=review['published_at']:
+        raise ValueError('Reviewed primary and current index communication dates disagree')
+    doc['verified_event']={k:v for k,v in review.items() if k not in ['source_url','primary_sha256','published_at']}
+    doc['event_date']=review['event_date'];doc['effective_date']=review.get('effective_date')
+    doc['disposition']=review['publication_disposition'];doc['reason']=review['publication_reason']
+    doc.setdefault('materiality',{})['material']=not review.get('supporting_update',False)
+    return True
