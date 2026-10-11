@@ -87644,7 +87644,36 @@
         "threshold": 72,
         "analysis_reason": "La nota combina una brecha financiera sectorial cuantificada, resultados de listas de espera y GES, y definiciones presupuestarias de Redes Asistenciales con impacto potencial en prestadores públicos, Fonasa, Atención Primaria y proveedores privados. Ingresa por BACKFILL: los estados reportados corresponden a lo observado o anunciado al 19-09-2026 y no se presentan como vigentes al 11-10-2026."
       },
-      "ingestion_mode": "BACKFILL"
+      "ingestion_mode": "BACKFILL",
+      "editorial_review": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso_actual_final12_assigned7_published_review_2026_10_11",
+        "review_file": "data/audits/pulso_actual_final12_assigned7_editorial_corrections_2026_10_11.json",
+        "review_sha256": "1a08eeb947162a921756546f82a704db18371c066a2065b31042222ac69a544c",
+        "record_sha256": "69db31d2f67cf64174123414aaf2787ba7ec25ef6234af10bd02a608f19a8d34",
+        "original_signal_sha256": "c292649c4b0faf1e5f9469ae3cbbf9d0a398f65e315b938de9d9ef06714f3f1b",
+        "original_body_sha256": "4af8fea9489b451652e9469649bc3d3871f9241dc5cb86bb80f15ad33321d936",
+        "publication_date": "2026-09-19",
+        "decision": "accept",
+        "reason": "La respuesta pagada de 908 se reutilizó íntegra en el core de 66, sin FAST nuevo para este artículo. La copia atribuye a la entrevista del 19 de septiembre la brecha de $2,5 billones, los ajustes de 2,5% en Redes y 0,5% en APS, y 97% de cumplimiento de 2.433.000 garantías GES. Distingue las disminuciones interanuales de 10% y 6,73% del aumento trimestral de 259 a 277 días; omite el 2,83% ambiguo del original sin reinterpretarlo. La derivación oncológica a privados se reporta como observada, mientras que convergencia fiscal a cuatro años, extensión privada y mayor per cápita son intenciones condicionadas. No afirma recursos aprobados ni estado vigente al 11 de octubre.",
+        "evidence_quotes": [
+          "Siempre tenemos una diferencia entre el presupuesto y el gasto; hoy alcanzó a $ 2,5 billones.",
+          "En el segundo trimestre la red asistencial alcanzó un 97% de cumplimiento de las 2.433.000 garantías GES",
+          "Hoy día se está haciendo eso en el sistema público, pero aquellos pacientes que tienen riesgo de retraso se están derivando al sistema privado a través de Fonasa."
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 86,
+          "threshold": 72,
+          "analysis_reason": "La nota combina una brecha financiera sectorial cuantificada, resultados de listas de espera y GES, y definiciones presupuestarias de Redes Asistenciales con impacto potencial en prestadores públicos, Fonasa, Atención Primaria y proveedores privados. Ingresa por BACKFILL: los estados reportados corresponden a lo observado o anunciado al 19-09-2026 y no se presentan como vigentes al 11-10-2026."
+        },
+        "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 19-09-2026, el subsecretario de Redes Asistenciales reportó que la brecha entre el presupuesto y el gasto del sector alcanzaba $2,5 billones y que se aplicó un ajuste de 2,5% al presupuesto inicial de Redes y de 0,5% a Atención Primaria de Salud. Para el segundo trimestre, la red asistencial habría alcanzado 97% de cumplimiento de 2.433.000 garantías GES, mientras que la mediana de espera disminuyó 10% en consultas de especialidad y 6,73% en cirugías respecto del mismo período de 2025. Como medidas futuras, planteó converger presupuesto y gasto en un plazo de cuatro años, recurrir al sector privado si la red pública no logra resolver la demanda y negociar un aumento del per cápita de Atención Primaria.",
+        "original_model_why_it_matters": "Al 19-09-2026, según la nota, el Minsal buscaba comprometer una trayectoria de convergencia financiera para evitar deuda de arrastre en las redes asistenciales y priorizar recursos para Atención Primaria mediante un mayor per cápita. En paralelo, la gestión de listas de espera ya había derivado al sector privado a pacientes oncológicos con riesgo de retraso a través de Fonasa, mientras que la eventual ampliación de esa complementariedad quedaba planteada como una medida futura, no como capacidad ya implementada."
+      },
+      "editorial_decision": "accept",
+      "editorial_review_reason": "La respuesta pagada de 908 se reutilizó íntegra en el core de 66, sin FAST nuevo para este artículo. La copia atribuye a la entrevista del 19 de septiembre la brecha de $2,5 billones, los ajustes de 2,5% en Redes y 0,5% en APS, y 97% de cumplimiento de 2.433.000 garantías GES. Distingue las disminuciones interanuales de 10% y 6,73% del aumento trimestral de 259 a 277 días; omite el 2,83% ambiguo del original sin reinterpretarlo. La derivación oncológica a privados se reporta como observada, mientras que convergencia fiscal a cuatro años, extensión privada y mayor per cápita son intenciones condicionadas. No afirma recursos aprobados ni estado vigente al 11 de octubre.",
+      "feed_visibility": true
     },
     {
       "title": "Pese a recorte presupuestario impulsado por Hacienda, Chomali reconoce que el Minsal necesitará $3,2 billones adicionales",
@@ -87654,7 +87683,7 @@
       "category": "Regulación & Legal",
       "subcategory": "General",
       "system_domain": "HEALTH",
-      "what_happened": "Según la nota del 9 de septiembre de 2026, el Ministerio de Salud presentó ante la Tercera Subcomisión Mixta de Presupuestos la ejecución y proyección de su gasto. La nota reportó que el presupuesto inicial de 2026, de $ 17.251.055.000.000, quedó en $ 16.776.055.000.000 tras una reducción de $ 431.000.000.000, mientras que el gasto planificado para 2026 fue proyectado en $ 20.012.359.000.000, incluidos recursos adicionales como el Plan Oncológico. Frente a esa base recortada, la nota reportó que Salud necesitaría unos $3,2 billones adicionales para alcanzar ese nivel de gasto. Al 9 de septiembre de 2026, según la nota, Chomali informó que seguían conversaciones con Hacienda para obtener una inyección de recursos antes del cierre del año; la propuesta de Ley de Presupuesto 2027 estaba en trámite y no constituía un presupuesto aprobado. Las cifras publicadas presentan inconsistencias de formato y magnitud —incluido el monto de arrastres de compromisos de 2025— que se conservan como fueron reportadas, sin realizar una suma o corrección propia.",
+      "what_happened": "Según La Tercera, en su nota del 9 de septiembre de 2026, el Ministerio de Salud presentó ante la Tercera Subcomisión Mixta de Presupuestos la ejecución y proyección de su gasto. La nota reportó que el presupuesto inicial de 2026, de $ 17.251.055.000.000, quedó en $ 16.776.055.000.000 tras una reducción de $ 431.000.000.000, mientras que el gasto planificado para 2026 fue proyectado en $ 20.012.359.000.000, incluidos recursos adicionales como el Plan Oncológico. Frente a esa base recortada, la nota reportó que Salud necesitaría unos $3,2 billones adicionales para alcanzar ese nivel de gasto. Al 9 de septiembre de 2026, según la nota, Chomali informó que seguían conversaciones con Hacienda para obtener una inyección de recursos antes del cierre del año; la propuesta de Ley de Presupuesto 2027 estaba en trámite y no constituía un presupuesto aprobado. Las cifras publicadas presentan inconsistencias de formato y magnitud —incluido el monto de arrastres de compromisos de 2025— que se conservan como fueron reportadas, sin realizar una suma o corrección propia.",
       "event_date": "2026-09-09",
       "detected_at": "2026-10-11T06:23:48.863044+00:00",
       "primary_source_url": null,
@@ -87673,7 +87702,7 @@
       "geography": [],
       "key_facts": [],
       "key_numbers": [],
-      "why_it_matters": "Según la nota del 9 de septiembre de 2026, el Minsal enfrentaba una brecha de financiamiento entre el presupuesto 2026 recortado y un gasto planificado de $ 20.012.359.000.000; la cifra de $3,2 billones fue reportada como adicional frente a la base cercana a $16,7 billones, no como un presupuesto 2027 aprobado. Para el Minsal, Hacienda y Dipres, el punto de atención era cómo financiar esa diferencia y los compromisos sanitarios informados, entre ellos el Plan Oncológico. Al 9 de septiembre de 2026, Chomali había señalado que se negociaban recursos para llegar a fin de año sin inconvenientes, pero la nota no acreditaba que esa inyección ya hubiera sido aprobada o transferida.",
+      "why_it_matters": "Según La Tercera, en su nota del 9 de septiembre de 2026, el Minsal enfrentaba una brecha de financiamiento entre el presupuesto 2026 recortado y un gasto planificado de $ 20.012.359.000.000; la cifra de $3,2 billones fue reportada como adicional frente a la base cercana a $16,7 billones, no como un presupuesto 2027 aprobado. Para el Minsal, Hacienda y Dipres, el punto de atención era cómo financiar esa diferencia y los compromisos sanitarios informados, entre ellos el Plan Oncológico. Al 9 de septiembre de 2026, Chomali había señalado que se negociaban recursos para llegar a fin de año sin inconvenientes, pero la nota no acreditaba que esa inyección ya hubiera sido aprobada o transferida.",
       "who_cares": [],
       "possible_implications": [],
       "watch_tags": [
@@ -87728,17 +87757,48 @@
         "threshold": 72,
         "analysis_reason": "La nota reporta una señal material de financiamiento sanitario en Chile: una brecha cuantificada entre el presupuesto 2026 recortado y el gasto planificado del Minsal, junto con negociaciones de recursos adicionales y una propuesta de Presupuesto 2027 aún en trámite. Es una señal de financiamiento y capacidad sectorial, no evidencia de que se hayan cerrado pabellones ni de que exista un presupuesto 2027 aprobado."
       },
-      "ingestion_mode": "BACKFILL"
+      "ingestion_mode": "BACKFILL",
+      "editorial_review": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso_current12_deficit_actual_paid_publication_2026_10_11",
+        "review_file": "data/audits/pulso_current12_deficit_paid_editorial_correction_2026_10_11.json",
+        "review_sha256": "6c7dcaffe808063c6ea6430cfe0dbaa2d039d694518ea510030df4aae87ff70b",
+        "record_sha256": "a2ccf63012a5a7d5742a29ccf49eb7eac3c0176d4e7cd966c40c4fd362b5b023",
+        "original_signal_sha256": "29d3c5cb3f11a4cfbd9cc9265712bd3eda9d4a66d6a2e7e2ba5854b625852b86",
+        "original_body_sha256": "beac60d96524a37fb805e27c0d2f68e5405bbbc747980b7da2f46d166ef12509",
+        "publication_date": "2026-09-09",
+        "decision": "correct",
+        "reason": "La copia mantiene brecha/gasto planificado2026, negociación futura de recursos y propuesta2027sin aprobación; conserva la inconsistencia numérica como atribuida y no prueba cierre de pabellones. Sin embargo «Según la nota» no identifica el medio en WHAT/WHY. Añadir sólo «La Tercera» al inicio de ambos campos para presentar la señal como información de prensa. No modificar cifras, períodos, score88, cuerpo, modelo ni estado, y mantener prospective_evidence=True.",
+        "evidence_quotes": [
+          "con lo que el gasto planificado para 2026 lo proyectó en $ 20.012.359.000.000.",
+          "Salud necesitaría unos $3,2 billones adicionales para alcanzar ese nivel de gasto.",
+          "para este año aún se espera una inyección de recursos",
+          "La recta final para cerrar la propuesta de ley de Presupuesto 2027"
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 88,
+          "threshold": 72,
+          "analysis_reason": "La nota reporta una señal material de financiamiento sanitario en Chile: una brecha cuantificada entre el presupuesto 2026 recortado y el gasto planificado del Minsal, junto con negociaciones de recursos adicionales y una propuesta de Presupuesto 2027 aún en trámite. Es una señal de financiamiento y capacidad sectorial, no evidencia de que se hayan cerrado pabellones ni de que exista un presupuesto 2027 aprobado."
+        },
+        "original_model_what_happened": "Según la nota del 9 de septiembre de 2026, el Ministerio de Salud presentó ante la Tercera Subcomisión Mixta de Presupuestos la ejecución y proyección de su gasto. La nota reportó que el presupuesto inicial de 2026, de $ 17.251.055.000.000, quedó en $ 16.776.055.000.000 tras una reducción de $ 431.000.000.000, mientras que el gasto planificado para 2026 fue proyectado en $ 20.012.359.000.000, incluidos recursos adicionales como el Plan Oncológico. Frente a esa base recortada, la nota reportó que Salud necesitaría unos $3,2 billones adicionales para alcanzar ese nivel de gasto. Al 9 de septiembre de 2026, según la nota, Chomali informó que seguían conversaciones con Hacienda para obtener una inyección de recursos antes del cierre del año; la propuesta de Ley de Presupuesto 2027 estaba en trámite y no constituía un presupuesto aprobado. Las cifras publicadas presentan inconsistencias de formato y magnitud —incluido el monto de arrastres de compromisos de 2025— que se conservan como fueron reportadas, sin realizar una suma o corrección propia.",
+        "original_model_why_it_matters": "Según la nota del 9 de septiembre de 2026, el Minsal enfrentaba una brecha de financiamiento entre el presupuesto 2026 recortado y un gasto planificado de $ 20.012.359.000.000; la cifra de $3,2 billones fue reportada como adicional frente a la base cercana a $16,7 billones, no como un presupuesto 2027 aprobado. Para el Minsal, Hacienda y Dipres, el punto de atención era cómo financiar esa diferencia y los compromisos sanitarios informados, entre ellos el Plan Oncológico. Al 9 de septiembre de 2026, Chomali había señalado que se negociaban recursos para llegar a fin de año sin inconvenientes, pero la nota no acreditaba que esa inyección ya hubiera sido aprobada o transferida."
+      },
+      "editorial_decision": "accept",
+      "editorial_review_reason": "La copia mantiene brecha/gasto planificado2026, negociación futura de recursos y propuesta2027sin aprobación; conserva la inconsistencia numérica como atribuida y no prueba cierre de pabellones. Sin embargo «Según la nota» no identifica el medio en WHAT/WHY. Añadir sólo «La Tercera» al inicio de ambos campos para presentar la señal como información de prensa. No modificar cifras, períodos, score88, cuerpo, modelo ni estado, y mantener prospective_evidence=True.",
+      "feed_visibility": true,
+      "event_status": "planned"
     },
     {
       "title": "Minsal presenta programa de detección precoz de cáncer en salud primaria para las 28 comunas con APS Universal",
       "source_name": "Pulso / La Tercera",
       "source_type": "press_high_trust",
       "source_url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
-      "category": "Mercado",
+      "category": "Prestadores",
       "subcategory": "General",
       "system_domain": "HEALTH",
-      "what_happened": "Como BACKFILL, según la nota de Pulso/La Tercera del 25 de agosto de 2026, la ministra de Salud, May Chomali, dio inicio en el Cesfam José Symon Ojeda de Conchalí a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS). La nota reportó que se destinaron cerca de 600 millones de pesos a los servicios de salud. También informó que durante el segundo semestre de 2026 la estrategia se implementaría en las 28 comunas del país que forman parte del programa de Universalización de la APS, y que para 2027 se esperaba incorporar 80 municipios más; esos anuncios no acreditan implementación efectiva ni cobertura nacional a la fecha de revisión.",
+      "what_happened": "Según Pulso / La Tercera, en la nota del 25 de agosto de 2026, la ministra de Salud, May Chomali, dio inicio en el Cesfam José Symon Ojeda de Conchalí a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS). La nota reportó que se destinaron cerca de 600 millones de pesos a los servicios de salud. También informó que durante el segundo semestre de 2026 la estrategia se implementaría en las 28 comunas del país que forman parte del programa de Universalización de la APS, y que para 2027 se esperaba incorporar 80 municipios más; esos anuncios no acreditan implementación efectiva ni cobertura nacional a la fecha de revisión.",
       "event_date": "2026-08-25",
       "detected_at": "2026-10-11T06:23:48.863044+00:00",
       "primary_source_url": null,
@@ -87757,7 +87817,7 @@
       "geography": [],
       "key_facts": [],
       "key_numbers": [],
-      "why_it_matters": "Como BACKFILL, según la nota del 25 de agosto de 2026, el Minsal anunció una estrategia de pesquisa de cáncer gástrico y colorrectal en APS, con test dirigidos a personas con determinados rangos etarios y síntomas, y con derivación de resultados positivos para confirmación diagnóstica y activación de GES cuando correspondiera. La medida podía reducir el uso inespecífico de colonoscopías y proyectaba disminuir tiempos de espera hospitalarios; la extensión a 28 comunas y a 80 municipios adicionales seguía siendo, según la nota, una implementación anunciada o esperada, no un resultado verificado al 11 de octubre de 2026.",
+      "why_it_matters": "Según la nota de Pulso / La Tercera del 25 de agosto de 2026, el Minsal anunció una estrategia de pesquisa de cáncer gástrico y colorrectal en APS, con test dirigidos a personas con determinados rangos etarios y síntomas, y con derivación de resultados positivos para confirmación diagnóstica y activación de GES cuando correspondiera. La medida podía reducir el uso inespecífico de colonoscopías y proyectaba disminuir tiempos de espera hospitalarios; la extensión a 28 comunas y a 80 municipios adicionales seguía siendo, según la nota, una implementación anunciada o esperada, no un resultado verificado al 11 de octubre de 2026.",
       "who_cares": [],
       "possible_implications": [],
       "watch_tags": [
@@ -87812,7 +87872,37 @@
         "threshold": 72,
         "analysis_reason": "Merece radar por combinar una intervención concreta de salud poblacional y diagnóstico precoz de cáncer en APS con una asignación reportada de cerca de 600 millones de pesos y un plan de expansión territorial. Ingresa como BACKFILL: la nota acredita el inicio anunciado y los compromisos descritos al 25 de agosto de 2026, pero no permite confirmar su ejecución o vigencia al 11 de octubre."
       },
-      "ingestion_mode": "BACKFILL"
+      "ingestion_mode": "BACKFILL",
+      "editorial_review": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso_actual_final12_assigned7_published_review_2026_10_11",
+        "review_file": "data/audits/pulso_actual_final12_assigned7_editorial_corrections_2026_10_11.json",
+        "review_sha256": "1a08eeb947162a921756546f82a704db18371c066a2065b31042222ac69a544c",
+        "record_sha256": "8d5490fda48fd9535fe1e5c7b865ba5e079481e1af718e364ae6f6da8ac8c0f5",
+        "original_signal_sha256": "2069f3b0e1f5431317c241819267fba2100efeb6df53f064b2607601bda92ad4",
+        "original_body_sha256": "5b4257997dd4ba1264324b70ee8e699f76ac249b0f0feb94411e317f078f3742",
+        "publication_date": "2026-08-25",
+        "decision": "correct",
+        "reason": "La nueva respuesta conserva el lanzamiento en el Cesfam de Conchalí, cerca de $600 millones destinados, implementación anunciada para 28 comunas durante el segundo semestre y 80 municipios adicionales para 2027. No declara cobertura universal instalada ni ejecución vigente al 11 de octubre. WHAT empieza con Como BACKFILL y no cumple la atribución de prensa requerida, aunque sí menciona la nota; se propone un prefijo explícito de Pulso / La Tercera y retirar BACKFILL de la copia al usuario, manteniendo todos los hechos. El programa clínico de APS corresponde a Prestadores, no a Mercado. La condición GES de WHY permanece aplicable cuando corresponda, sin afirmar que todos los positivos SAT requieren derivación secundaria.",
+        "evidence_quotes": [
+          "Desde el Cesfam José Symon Ojeda de Conchalí, la ministra de Salud, May Chomali, dio inicio a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS)",
+          "durante el segundo semestre de este año la estrategia se implementará en las 28 comunas",
+          "Para esto, se indicó, se destinaron cerca de 600 millones de pesos a los servicios de salud. Y para el 2027 se espera incorporar 80 municipios más"
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 92,
+          "threshold": 72,
+          "analysis_reason": "Merece radar por combinar una intervención concreta de salud poblacional y diagnóstico precoz de cáncer en APS con una asignación reportada de cerca de 600 millones de pesos y un plan de expansión territorial. Ingresa como BACKFILL: la nota acredita el inicio anunciado y los compromisos descritos al 25 de agosto de 2026, pero no permite confirmar su ejecución o vigencia al 11 de octubre."
+        },
+        "original_model_what_happened": "Como BACKFILL, según la nota de Pulso/La Tercera del 25 de agosto de 2026, la ministra de Salud, May Chomali, dio inicio en el Cesfam José Symon Ojeda de Conchalí a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS). La nota reportó que se destinaron cerca de 600 millones de pesos a los servicios de salud. También informó que durante el segundo semestre de 2026 la estrategia se implementaría en las 28 comunas del país que forman parte del programa de Universalización de la APS, y que para 2027 se esperaba incorporar 80 municipios más; esos anuncios no acreditan implementación efectiva ni cobertura nacional a la fecha de revisión.",
+        "original_model_why_it_matters": "Como BACKFILL, según la nota del 25 de agosto de 2026, el Minsal anunció una estrategia de pesquisa de cáncer gástrico y colorrectal en APS, con test dirigidos a personas con determinados rangos etarios y síntomas, y con derivación de resultados positivos para confirmación diagnóstica y activación de GES cuando correspondiera. La medida podía reducir el uso inespecífico de colonoscopías y proyectaba disminuir tiempos de espera hospitalarios; la extensión a 28 comunas y a 80 municipios adicionales seguía siendo, según la nota, una implementación anunciada o esperada, no un resultado verificado al 11 de octubre de 2026."
+      },
+      "editorial_decision": "accept",
+      "editorial_review_reason": "La nueva respuesta conserva el lanzamiento en el Cesfam de Conchalí, cerca de $600 millones destinados, implementación anunciada para 28 comunas durante el segundo semestre y 80 municipios adicionales para 2027. No declara cobertura universal instalada ni ejecución vigente al 11 de octubre. WHAT empieza con Como BACKFILL y no cumple la atribución de prensa requerida, aunque sí menciona la nota; se propone un prefijo explícito de Pulso / La Tercera y retirar BACKFILL de la copia al usuario, manteniendo todos los hechos. El programa clínico de APS corresponde a Prestadores, no a Mercado. La condición GES de WHY permanece aplicable cuando corresponda, sin afirmar que todos los positivos SAT requieren derivación secundaria.",
+      "feed_visibility": true,
+      "event_status": "planned"
     },
     {
       "title": "Kast en firma de convenio para agilizar listas de espera: “En algún momento no se utilizaron bien los recursos”",
@@ -87844,7 +87934,7 @@
       "geography": [],
       "key_facts": [],
       "key_numbers": [],
-      "why_it_matters": "Al 14 de agosto de 2026, según la nota de Pulso/La Tercera, el convenio vinculaba a Fonasa, el Ministerio de Salud y Caja Los Andes para derivar inicialmente consultas de especialidad No GES de afiliados Fonasa de los grupos B, C y D a prestadores en convenio, con copago cero para los casos incluidos. Si se ejecutaba desde el 1 de septiembre, podía aportar capacidad adicional para consultas, exámenes y medicamentos, órtesis o lentes, pero no para procedimientos ni intervenciones quirúrgicas en esa primera etapa. Para la red pública, la autoridad planteó que el plan liberaría espacio; para los pacientes, el beneficio anunciado dependía de la implementación y de la disponibilidad de prestadores. La nota también atribuyó a Chomali la expectativa de mantener el programa en el tiempo y extenderlo a todas las regiones, pero esas eran condiciones anunciadas, no una vigencia operativa verificada hoy. El antecedente publicado el 23 de septiembre reportó nuevamente el convenio y señaló que el modelo podría incorporar cirugías y otras prestaciones posteriormente; por ello, no se cuenta dos veces la misma firma ni se retroproyecta esa descripción posterior sobre el artículo del 14 de agosto.",
+      "why_it_matters": "Al 14 de agosto de 2026, según la nota de Pulso/La Tercera, el convenio vinculaba a Fonasa, el Ministerio de Salud y Caja Los Andes para derivar inicialmente consultas de especialidad No GES de afiliados Fonasa de los grupos B, C y D a prestadores en convenio, con copago cero para los casos incluidos. Si se ejecutaba desde el 1 de septiembre, podía aportar capacidad adicional para consultas, exámenes y medicamentos, órtesis o lentes, pero no para procedimientos ni intervenciones quirúrgicas en esa primera etapa. Para la red pública, la autoridad planteó que el plan liberaría espacio; para los pacientes, el beneficio anunciado dependía de la implementación y de la disponibilidad de prestadores. La nota también atribuyó a Chomali la expectativa de mantener el programa en el tiempo y extenderlo a todas las regiones, pero esas eran condiciones anunciadas, no una vigencia operativa verificada hoy. El antecedente publicado el 23 de septiembre reportó un convenio del Plan Enlace con las cajas 18 de Septiembre, La Araucana y Los Héroes, distinto de la alianza con Caja Los Andes descrita el 14 de agosto. Su referencia a una posible incorporación posterior de cirugías y otras prestaciones no se retroproyecta sobre la etapa inicial del convenio con Los Andes, que excluía procedimientos e intervenciones quirúrgicas.",
       "who_cares": [],
       "possible_implications": [],
       "watch_tags": [
@@ -87901,14 +87991,45 @@
         "threshold": 72,
         "analysis_reason": "Señal relevante de capacidad, cobertura y financiamiento sanitario: combina un convenio público-privado concreto con una primera fase cuantificada, copago cero y asignación de recursos para resolver consultas No GES. El valor incremental frente al antecedente del 23 de septiembre está en el detalle inicial de 50 mil casos, 150 mil prestaciones estimadas, financiamiento de $3.900 millones y exclusión expresa de procedimientos e intervenciones quirúrgicas; no en la existencia general del Plan Enlace."
       },
-      "ingestion_mode": "BACKFILL"
+      "ingestion_mode": "BACKFILL",
+      "editorial_review": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso_actual_final12_assigned7_published_review_2026_10_11",
+        "review_file": "data/audits/pulso_actual_final12_assigned7_editorial_corrections_2026_10_11.json",
+        "review_sha256": "1a08eeb947162a921756546f82a704db18371c066a2065b31042222ac69a544c",
+        "record_sha256": "9581f5166dfad6ac4fd2f8612988fa0740b0ba1b25ae23da2015c56d6ce3847b",
+        "original_signal_sha256": "8e71d4f712891b58c94fc19bdf8a2459e1030aa1bb264fddd28a7ec27f30938a",
+        "original_body_sha256": "6c61fb4a54bd3a08384a3675c8fbe2cff609c3b81cdb6be43a84a953a18c78ff",
+        "publication_date": "2026-08-14",
+        "decision": "correct",
+        "reason": "WHAT conserva la firma del 14 de agosto con Caja Los Andes, la futura fase del 1 de septiembre, 50 mil casos, 30 mil pacientes, 150 mil prestaciones estimadas, $3.900 millones de valor total y $1.500 millones de financiamiento de Fonasa. No concilia esas unidades ni afirma desembolso. La etapa inicial excluye procedimientos y cirugías. WHY confunde el antecedente del 23 de septiembre como la misma firma o repetición del mismo convenio, pero ese original enumera las cajas 18 de Septiembre, La Araucana y Los Héroes: es otra alianza dentro del Plan Enlace. Se corrige sólo esa cláusula final, conservando las cautelas de implementación, WHAT y puntaje 88. No se agrupan contratos distintos ni se presenta el plan general como nueva capacidad instalada.",
+        "evidence_quotes": [
+          "la firma de un convenio público-privado entre el Ministerio de Salud, Fonasa y Caja Los Andes",
+          "excluyendo procedimientos e intervenciones quirúrgicas",
+          "En esta etapa inicial de dos meses se estima que se realizarán aproximadamente 150 mil prestaciones, las que tendrán un valor de $3.900 millones.",
+          "Fonasa financiará $1.500 millones"
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 88,
+          "threshold": 72,
+          "analysis_reason": "Señal relevante de capacidad, cobertura y financiamiento sanitario: combina un convenio público-privado concreto con una primera fase cuantificada, copago cero y asignación de recursos para resolver consultas No GES. El valor incremental frente al antecedente del 23 de septiembre está en el detalle inicial de 50 mil casos, 150 mil prestaciones estimadas, financiamiento de $3.900 millones y exclusión expresa de procedimientos e intervenciones quirúrgicas; no en la existencia general del Plan Enlace."
+        },
+        "original_model_what_happened": "Según reportó Pulso/La Tercera el 14 de agosto de 2026, el Presidente José Antonio Kast encabezó la firma de un convenio público-privado entre el Ministerio de Salud, Fonasa y Caja Los Andes, en el marco del Plan Enlace. La nota indicó que, a partir del 1 de septiembre, una primera fase permitiría que 50 mil casos en espera por consultas de nueva especialidad No GES accedieran a prestadores en convenio, con foco inicial en otorrinolaringología, obstetricia, oftalmología y traumatología. El paquete comprometido por Caja Los Andes incluía consultas, exámenes y entrega de medicamentos, órtesis y lentes cuando correspondiera, excluyendo procedimientos e intervenciones quirúrgicas. Para esa etapa inicial de dos meses se estimaban aproximadamente 150 mil prestaciones por $3.900 millones, de los cuales Fonasa financiaría $1.500 millones y el resto sería asumido por la caja. La ministra May Chomali también señaló que alrededor de 30 mil pacientes se verían beneficiados; la nota presenta ambas cifras sin conciliarlas ni derivar un saldo entre ellas. La firma del convenio fue un hecho reportado; el acceso desde septiembre, las prestaciones estimadas y la continuidad esperada del programa eran compromisos o proyecciones, no implementación verificada a la fecha de revisión del 11 de octubre de 2026.",
+        "original_model_why_it_matters": "Al 14 de agosto de 2026, según la nota de Pulso/La Tercera, el convenio vinculaba a Fonasa, el Ministerio de Salud y Caja Los Andes para derivar inicialmente consultas de especialidad No GES de afiliados Fonasa de los grupos B, C y D a prestadores en convenio, con copago cero para los casos incluidos. Si se ejecutaba desde el 1 de septiembre, podía aportar capacidad adicional para consultas, exámenes y medicamentos, órtesis o lentes, pero no para procedimientos ni intervenciones quirúrgicas en esa primera etapa. Para la red pública, la autoridad planteó que el plan liberaría espacio; para los pacientes, el beneficio anunciado dependía de la implementación y de la disponibilidad de prestadores. La nota también atribuyó a Chomali la expectativa de mantener el programa en el tiempo y extenderlo a todas las regiones, pero esas eran condiciones anunciadas, no una vigencia operativa verificada hoy. El antecedente publicado el 23 de septiembre reportó nuevamente el convenio y señaló que el modelo podría incorporar cirugías y otras prestaciones posteriormente; por ello, no se cuenta dos veces la misma firma ni se retroproyecta esa descripción posterior sobre el artículo del 14 de agosto."
+      },
+      "editorial_decision": "accept",
+      "editorial_review_reason": "WHAT conserva la firma del 14 de agosto con Caja Los Andes, la futura fase del 1 de septiembre, 50 mil casos, 30 mil pacientes, 150 mil prestaciones estimadas, $3.900 millones de valor total y $1.500 millones de financiamiento de Fonasa. No concilia esas unidades ni afirma desembolso. La etapa inicial excluye procedimientos y cirugías. WHY confunde el antecedente del 23 de septiembre como la misma firma o repetición del mismo convenio, pero ese original enumera las cajas 18 de Septiembre, La Araucana y Los Héroes: es otra alianza dentro del Plan Enlace. Se corrige sólo esa cláusula final, conservando las cautelas de implementación, WHAT y puntaje 88. No se agrupan contratos distintos ni se presenta el plan general como nueva capacidad instalada.",
+      "feed_visibility": true,
+      "event_status": "planned"
     },
     {
       "title": "Colmed se suma a las críticas contra proyecto “Escucha su corazón” y defiende que exista un consentimiento informado libre de coerción",
       "source_name": "Pulso / La Tercera",
       "source_type": "press_high_trust",
       "source_url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
-      "category": "Prestadores",
+      "category": "Regulación & Legal",
       "subcategory": "General",
       "system_domain": "HEALTH",
       "what_happened": "Según Pulso / La Tercera, Según la nota del 2026-07-15, el proyecto de ley denominado “Escucha su corazón” propone que los médicos ofrezcan escuchar la actividad cardíaca fetal antes de la interrupción del embarazo por las tres causales y plantea condicionar la realización del procedimiento a la aceptación de esa instancia. Al 2026-07-15, la iniciativa contaba con respaldo de parlamentarios del Partido Republicano y de Renovación Nacional, mientras era cuestionada por el Colegio Médico y otros sectores; la nota no reporta aprobación ni implementación.",
@@ -87984,7 +88105,37 @@
         "threshold": 72,
         "analysis_reason": "Es una señal legislativa relevante para la regulación clínica y los derechos de las pacientes, pero corresponde a una propuesta no aprobada ni implementada al momento de la publicación. Su impacto potencial justifica seguimiento, sin presentarla como un cambio vigente."
       },
-      "ingestion_mode": "BACKFILL"
+      "ingestion_mode": "BACKFILL",
+      "editorial_review": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso_actual_final12_assigned7_published_review_2026_10_11",
+        "review_file": "data/audits/pulso_actual_final12_assigned7_editorial_corrections_2026_10_11.json",
+        "review_sha256": "1a08eeb947162a921756546f82a704db18371c066a2065b31042222ac69a544c",
+        "record_sha256": "4d650e514244b922102ba32e17ba13deded0cb79188c89edc211c810325bf615",
+        "original_signal_sha256": "066176e8cd88a42735f9032369d6521223f8f1836204e5cdabb51d2e3eac011e",
+        "original_body_sha256": "498322790b34aff91b51dd1768968c41a53ac050657007091f75181bdbb30356",
+        "publication_date": "2026-07-15",
+        "decision": "correct",
+        "reason": "La respuesta pagada de 908 se revalidó íntegra sin una nueva FAST. WHAT y WHY distinguen la propuesta existente del pronunciamiento crítico del Colmed del 15 de julio; no afirman una ley aprobada ni una condición clínica actualmente implementada. El consentimiento autónomo y libre de coerción se atribuye al gremio. Se propone sólo cambiar Prestadores por Regulación & Legal, porque el hecho seguido es un proyecto de regla legal de consentimiento, no una nueva prestación ejecutada. Se mantienen prospectividad verdadera, puntaje 84, copias y modelo original, sin presentar el proyecto conocido desde el 7 de julio como una nueva presentación del día 15.",
+        "evidence_quotes": [
+          "el proyecto de ley denominado “Escucha su corazón”",
+          "condicionando la realización del procedimiento a la aceptación de esa instancia",
+          "El proyecto, que cuenta con el respaldo de parlamentarios de la bancada del Partido Republicano y de Renovación Nacional, ha sido rechazado desde distintos sectores tanto del oficialismo como de la oposición."
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 84,
+          "threshold": 72,
+          "analysis_reason": "Es una señal legislativa relevante para la regulación clínica y los derechos de las pacientes, pero corresponde a una propuesta no aprobada ni implementada al momento de la publicación. Su impacto potencial justifica seguimiento, sin presentarla como un cambio vigente."
+        },
+        "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 2026-07-15, el proyecto de ley denominado “Escucha su corazón” propone que los médicos ofrezcan escuchar la actividad cardíaca fetal antes de la interrupción del embarazo por las tres causales y plantea condicionar la realización del procedimiento a la aceptación de esa instancia. Al 2026-07-15, la iniciativa contaba con respaldo de parlamentarios del Partido Republicano y de Renovación Nacional, mientras era cuestionada por el Colegio Médico y otros sectores; la nota no reporta aprobación ni implementación.",
+        "original_model_why_it_matters": "Según la nota del 2026-07-15, si la propuesta avanzara, médicos y pacientes enfrentarían una regla legal que vincularía la realización del procedimiento a la aceptación de una instancia específica, con impacto en el consentimiento informado y la atención clínica de mujeres que recurren a la interrupción del embarazo por tres causales. El Colmed sostiene, a esa fecha, que el consentimiento debe ser individualizado, libre de coerción y centrado en la autonomía de la persona."
+      },
+      "editorial_decision": "accept",
+      "editorial_review_reason": "La respuesta pagada de 908 se revalidó íntegra sin una nueva FAST. WHAT y WHY distinguen la propuesta existente del pronunciamiento crítico del Colmed del 15 de julio; no afirman una ley aprobada ni una condición clínica actualmente implementada. El consentimiento autónomo y libre de coerción se atribuye al gremio. Se propone sólo cambiar Prestadores por Regulación & Legal, porque el hecho seguido es un proyecto de regla legal de consentimiento, no una nueva prestación ejecutada. Se mantienen prospectividad verdadera, puntaje 84, copias y modelo original, sin presentar el proyecto conocido desde el 7 de julio como una nueva presentación del día 15.",
+      "feed_visibility": true,
+      "event_status": "planned"
     }
   ]
 }
