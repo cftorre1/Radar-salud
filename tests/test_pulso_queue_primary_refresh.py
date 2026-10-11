@@ -121,3 +121,32 @@ def test_legacy_verified_cache_flags_require_bound_original_hash_and_coherent_da
         refreshed = _verified_detail(entry, loader, corrupted)
         assert not refreshed['cache_hit'] and calls[-1] == row['url']
     assert len(calls) == 5
+
+
+@pytest.mark.parametrize('old_hold', ['publisher_conflicting_publication_dates', 'publisher_video_text_unavailable',
+                                    'publisher_sponsored_content_review_required', 'publisher_opinion_taxonomy',
+                                    'possible_duplicate_requires_incremental_review'])
+def test_verified_factual_rediscovery_resolves_only_obsolete_publisher_holds(tmp_path, old_hold):
+    row = next(row for row in MANIFEST['requests'] if '/horizontes/noticia/' in row['url'])
+    fresh = fresh_original(row)
+    assert fresh.metadata['publisher_taxonomy']['classification'] == 'factual'
+    stale = copy.deepcopy(fresh)
+    stale.metadata.update(editorial_hold=old_hold, article_verified=False,
+                          publisher_exception_reason=old_hold,
+                          event_equivalence_review={'decision': 'pending', 'reason': 'separate_event_review'})
+    queue = PendingQueue(tmp_path/'queue.json')
+    queue.discover('pulso_latercera', [stale], now=NOW)
+    key = fingerprint(stale)
+    queue.start(key)
+    queue.finish(key, 'retry', 'prior_hold', now=NOW)
+    before = copy.deepcopy(queue.items[key])
+    queue.discover('pulso_latercera', [fresh], now=NOW)
+    current = queue.items[key]
+    assert {k:v for k,v in current.items() if k != 'raw'} == {k:v for k,v in before.items() if k != 'raw'}
+    metadata = current['raw']['metadata']
+    assert metadata['event_equivalence_review'] == stale.metadata['event_equivalence_review']
+    assert 'publisher_exception_reason' not in metadata
+    assert metadata.get('editorial_hold') == (old_hold if old_hold.startswith('possible_duplicate') else None)
+    snapshot = copy.deepcopy(current)
+    queue.discover('pulso_latercera', [fresh], now=NOW)
+    assert queue.items[key] == snapshot
