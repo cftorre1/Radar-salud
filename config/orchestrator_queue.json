@@ -4440,19 +4440,21 @@
       "depends_on": [],
       "approved_at": "2026-10-11T12:52:18.984015+00:00",
       "started_at": "2026-10-11T12:52:18.984015+00:00",
-      "last_progress_at": "2026-10-11T13:06:52.267397+00:00",
-      "current_subfront": "full_candidate_build_and_browser",
+      "last_progress_at": "2026-10-11T13:18:43.383122+00:00",
+      "current_subfront": "exact_head_ci_and_handoff",
       "branch": "codex/staging-qa-gates-20261011",
       "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
-      "next_action": "Run exact canonical QA build (epidemiology/global/product), full browser desktop/mobile and CI PR; preserve unrelated generated outputs outside commits.",
+      "next_action": "Await CI for final regression commit, then persist exact run/artifact/SHA and hand off complete PR17 to Integration Commander.",
       "evidence": [
         "data/audits/staging_qa_gates_2026_10_11.json"
       ],
       "human_decision_required": false,
       "completed": [
         "Normative rolling-window gate fixed with primary date evidence;267PythonPASS/1explicitSKIP;2browser normativePASS",
-        "Eight actual statistical findings resolved by primary-PDF evidence/durable export input;270PythonPASS/1SKIP;36focusedPASS;Reviewer0findings;48other feed records preserved"
-      ]
+        "Eight actual statistical findings resolved by primary-PDF evidence/durable export input;270PythonPASS/1SKIP;36focusedPASS;Reviewer0findings;48other feed records preserved",
+        "Canonical local48browser/270Python/41Node/Reviewer0findings PASS; initial CI tests-staging-reviewerPASS; final historical regression preserved"
+      ],
+      "pr": "https://github.com/cftorre1/Radar-salud/pull/17"
     }
   ],
   "execution_policy": {

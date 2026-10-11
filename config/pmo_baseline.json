@@ -2259,6 +2259,19 @@
         9
       ],
       "next_check": "Re-audit only after repairs are integrated into staging and run through real source/queue/history/feed plus QA and Reviewer."
+    },
+    {
+      "id": "staging_qa_gatekeeper_2026_10_11",
+      "status": "LOCAL_AND_INITIAL_CI_PASS_FINAL_REGRESSION_PENDING",
+      "at": "2026-10-11T13:14:40.424737+00:00",
+      "pr": 17,
+      "branch": "codex/staging-qa-gates-20261011",
+      "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+      "normative": "Obsolete fixed live count; all reviewed identities retained, eligible ones checked, no lowered minimum",
+      "statistics": "Eight real export/presentation findings fixed with4verifiedprimaryPDFs, Reviewer unchanged",
+      "evidence": "data/audits/staging_qa_gates_2026_10_11.json",
+      "initial_ci": "https://github.com/cftorre1/Radar-salud/actions/runs/38141940100",
+      "next_action": "Complete final historical-clock browser regression and exact-head CI; integration by Commander only."
     }
   ],
   "approved_infrastructure_changes": [

@@ -410,5 +410,28 @@
     "source_closed": false,
     "four_hour_acceptance": "NOT_PROVEN",
     "metadata_counts_as_material_progress": false
+  },
+  {
+    "id": "staging_qa_obsolete_inventory_and_ephemeral_analysis_2026_10_11",
+    "at": "2026-10-11T13:14:40.423159+00:00",
+    "scope": "Independent Staging QA Gatekeeper; no source collector changes",
+    "trigger": "User had to separate inherited QA/Reviewer failures blocking multiple unrelated source PRs.",
+    "why_missed": "Snapshot tests treated12reviewed normative acts and3July statistical releases as a permanent live inventory; exports consumed an analysis file generated only in CI and not retained in clean checkouts. Source-specific tests could pass while global gates stalled; new normative rows could mask the wrong count.",
+    "specific_fix": "Verify every eligible reviewed identity and preserve expired history, test90/91boundaries, version four-primary-PDF bulletin analysis, fail on malformed/identity-changing patches, build only eligible release inputs and keep a historical-clock browser fixture.",
+    "preventive_controls": [
+      "deterministic_test",
+      "browser_qa_assertion",
+      "data_validation_rule"
+    ],
+    "evidence": [
+      "tests/test_web_snapshot.py",
+      "tests/test_statistics_reviewer.py",
+      "tests/browser/statistical-contract.spec.cjs",
+      "config/statistical_analysis_verified_v1.json",
+      "data/audits/staging_qa_gates_2026_10_11.json",
+      "https://github.com/cftorre1/Radar-salud/actions/runs/38141940100"
+    ],
+    "status": "implemented_initial_ci_pass_final_regression_verification_in_progress",
+    "owner_time_saved": "Independent source PRs no longer need owner intervention to diagnose stale fixed-volume gates; no editorial quota or Reviewer weakening."
   }
 ]

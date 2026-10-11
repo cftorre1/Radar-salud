@@ -2,7 +2,7 @@
   "at": "2026-10-11T12:52:18.984015+00:00",
   "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
   "branch": "codex/staging-qa-gates-20261011",
-  "status": "IN_PROGRESS",
+  "status": "LOCAL_PASS_FINAL_CI_PENDING",
   "preview": {
     "run_id": 38128983053,
     "job_id": 114439217514,
@@ -91,8 +91,8 @@
     }
   ],
   "missing_analysis_file": "data/statistical_analysis_overrides_v1.json is not versioned/present on staging; investigation of CI export overwrite follows",
-  "next_action": "Run exact canonical QA build (epidemiology/global/product), full browser desktop/mobile and CI PR; preserve unrelated generated outputs outside commits.",
-  "last_progress_at": "2026-10-11T13:06:52.267397+00:00",
+  "next_action": "Await CI for final regression commit, then persist exact run/artifact/SHA and hand off complete PR17 to Integration Commander.",
+  "last_progress_at": "2026-10-11T13:18:43.383122+00:00",
   "statistics_resolution": [
     {
       "code": "invalid_statistical_table",
@@ -193,5 +193,78 @@
     "feed_other_rows_preserved": 48,
     "source_history_queue_health_unchanged": true,
     "browser_before_canonical_build": "38PASS/8FAIL unrelated Global/product prerequisite outputs; rebuilding exact QA pipeline, not accepting this as PASS"
+  },
+  "pr": 17,
+  "final_local_checks": {
+    "at": "2026-10-11T13:18:43.383122+00:00",
+    "python": {
+      "passed": 270,
+      "failed": 0,
+      "skipped": 1,
+      "skip_reason": "Beta live test requires OPENAI_API_KEY, unavailable; no source LIVE claim"
+    },
+    "node": {
+      "passed": 41,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0,
+      "projects": [
+        "desktop",
+        "mobile"
+      ],
+      "chromium": "154.0.8037.57",
+      "canonical_build": true,
+      "raw_report_sha256": "be20f38b57a2f8fbf972df72977fde9efdb135e477a263d727b0caccb4bf1b85",
+      "historical_fixture_preserves_future_render_coverage": true
+    },
+    "reviewer": {
+      "reviewer": "deterministic-reviewer",
+      "candidate_sha": "94d8a7e",
+      "reviewed_at": "2026-10-11T13:14:41.606327+00:00",
+      "findings": [],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": true,
+        "ux": true
+      },
+      "limitations": [
+        "Semantic/legal accuracy is not certified by deterministic checks.",
+        "Browser evidence is required separately for desktop/mobile.",
+        "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+      ]
+    },
+    "strict_review_scripts_changed": false,
+    "paid_ai_calls": 0
+  },
+  "initial_ci": {
+    "run_id": 38141940100,
+    "head_sha": "94d8a7e6e8bb400da461a604ed835daf1bf9918e",
+    "merge_sha": "c97aecaaa88585351048acecb2d4ed84d5edc705",
+    "tests": "PASS",
+    "staging": "PASS",
+    "reviewer": "PASS",
+    "browser_passed": 46,
+    "post_ci_change": "Two additional desktop/mobile executions of historical verified bulletin fixture; all48localPASS",
+    "staging_artifact": {
+      "id": 11702774296,
+      "digest": "sha256:38a2317892e19510aed318a240ff397ca9b9690823fd41898f9fdbc33769b983"
+    },
+    "reviewer_artifact": {
+      "id": 11702682961,
+      "digest": "sha256:620429cdcf5588694a7ae994ef47fe1f735155a7ffdeb8566fa9e74dff8e5aca"
+    }
+  },
+  "scope_preservation": {
+    "history_pending_seen_discovery_source_health": "Unchanged",
+    "committed_feed": "Only reviewed bulletin presentation changed;48other rows exact",
+    "canonical_build": "Existing epidemiology freshness rule can retire an expired pulse, Global/product outputs regenerated as required; these temporary outputs not committed",
+    "no_source_repairs_imported": true,
+    "issues_closed": false,
+    "merged_to_staging": false,
+    "main_production_written": false
   }
 }
