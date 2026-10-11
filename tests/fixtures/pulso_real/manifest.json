@@ -3,35 +3,91 @@
   "verdict": "SURFACE_PROBE_NOT_COVERAGE_ACCEPTANCE",
   "fixtures": [
     {
+      "path": "tests/fixtures/pulso_real/robots.txt.gz",
+      "url": "https://www.latercera.com/robots.txt",
+      "captured_at": "2026-10-11T05:24:22.902913+00:00",
+      "sha256": "2acc658a2e67032fafcc624ac9f2c377094efad0edbd2e2425410502ab2a2576",
+      "gzip_sha256": "e395cd8bf42569fc50d629ed0ca2c11cc8eb6a8d6fb3901c91d665ff8b4e129e",
+      "transformation": "gzip storage only; original response bytes unchanged"
+    },
+    {
+      "path": "tests/fixtures/pulso_real/sitemap_index.xml.gz",
+      "url": "https://www.latercera.com/arc/outboundfeeds/sitemap-index/?outputType=xml",
+      "captured_at": "2026-10-11T05:24:23.091050+00:00",
+      "sha256": "cbec16be0ae575d025fbe859ac864de0a0a7118f0cab06ef1905dc971b712c5b",
+      "gzip_sha256": "b0816e8ec67f7ac8b79e0422f6791266599499799f35e561da80488fe8e88201",
+      "transformation": "gzip storage only; original response bytes unchanged"
+    },
+    {
+      "path": "tests/fixtures/pulso_real/news_sitemap_index.xml.gz",
+      "url": "https://www.latercera.com/arc/outboundfeeds/news-sitemap-index/?outputType=xml",
+      "captured_at": "2026-10-11T05:24:24.003728+00:00",
+      "sha256": "e64b0e66472fef0d6099e4d356ccff4690f8ed36c0c6701b62ccf5a13d823c9f",
+      "gzip_sha256": "e4ebb8e6d9526f1e859193964750f6f1328f3b7d6be379b6cd3a25ba520c8f15",
+      "transformation": "gzip storage only; original response bytes unchanged"
+    },
+    {
+      "path": "tests/fixtures/pulso_real/sitemap_first_page.xml.gz",
+      "url": "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml",
+      "captured_at": "2026-10-11T05:24:24.119934+00:00",
+      "sha256": "15009ad855058c425c09abffe59b1cc752837a59896dcc27e8aa37072a5a30bd",
+      "gzip_sha256": "a1bcbf89c28ed5c419ca9017ac03e454a4265a7ebd1ee6daa5859922fdabd051",
+      "transformation": "gzip storage only; original response bytes unchanged"
+    },
+    {
+      "path": "tests/fixtures/pulso_real/sitemap_boundary_9900.xml.gz",
+      "url": "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml&from=9900",
+      "captured_at": "2026-10-11T05:24:24.246639+00:00",
+      "sha256": "31a2efc7c056c299486caaefb5cf9c9630c833da09ef1472f7acf5613ab7a841",
+      "gzip_sha256": "a9e6a3e3adbafcb8f7c5931860d452c0e6158f539c296ef2b15114a0a3db8b63",
+      "transformation": "gzip storage only; original response bytes unchanged"
+    },
+    {
       "path": "tests/fixtures/pulso_real/pulso_listing.html.gz",
       "url": "https://www.latercera.com/canal/pulso/",
-      "captured_at": "2026-10-11T05:21:35.967282+00:00",
-      "sha256": "84fd2425c77dab8320c9439d7161f8c59c8882f52927fe045303eecfd5096cc6",
-      "gzip_sha256": "e3114d1a0ceaace899f51f6586c3dc65532a752fde4d45e6b22e7fa313832c01",
+      "captured_at": "2026-10-11T05:24:24.343776+00:00",
+      "sha256": "b130ec8793b81684853e45cd065ba1020dbdc4405ebe47008fc243a739c7dec2",
+      "gzip_sha256": "8200c0e96685254eb5ef049dcd7d581e87eca969c4b906116043a2c6eded2403",
       "transformation": "gzip storage only; original response bytes unchanged"
     },
     {
       "path": "tests/fixtures/pulso_real/salud_listing.html.gz",
       "url": "https://www.latercera.com/etiqueta/salud/",
-      "captured_at": "2026-10-11T05:21:36.705511+00:00",
-      "sha256": "4b35bc3a1bcd4df5a2f44e3dcd8925052ced1ad095918452f835f4d1a38150aa",
-      "gzip_sha256": "e677f03d08c9fac011f4107584fabc8a194862d8a739f4691931b6734f166838",
+      "captured_at": "2026-10-11T05:24:24.795108+00:00",
+      "sha256": "455c8598882475323a8246eefcb3e8b2e088a2e0af6ac9ddb807bffa377d7863",
+      "gzip_sha256": "ae3134f84561ba10eb14dcd09b9b924c0436d9814c3d546a590f24ba0cb840a2",
+      "transformation": "gzip storage only; original response bytes unchanged"
+    },
+    {
+      "path": "tests/fixtures/pulso_real/rss.xml.gz",
+      "url": "https://www.latercera.com/arc/outboundfeeds/rss/?outputType=xml",
+      "captured_at": "2026-10-11T05:24:26.443657+00:00",
+      "sha256": "330b6ecd9dbb1868138b3baaec1752a1071a680372924834d219ba81d605c5ac",
+      "gzip_sha256": "c7de4888903906d96d0242dfe89ce94855dc03ae69aa65fb4d05723bcf93740d",
       "transformation": "gzip storage only; original response bytes unchanged"
     },
     {
       "path": "tests/fixtures/pulso_real/senior_housing.html.gz",
       "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
-      "captured_at": "2026-10-11T05:21:39.951001+00:00",
-      "sha256": "3f32a55aee1ba5b957707a22fdce6e98c0d37d3d5ce904d8b198edf4b240836c",
-      "gzip_sha256": "65dd5aeff07d8ae846041c03ef432a6a83cc7caca21e8ec0b89da4804eaddd5a",
+      "captured_at": "2026-10-11T05:24:26.766583+00:00",
+      "sha256": "0c8a2f6467310bc3f1e98e954f218e92d109585b2f2b60cd4afab0dac132fa34",
+      "gzip_sha256": "ef5faa918f67f3ac3376d86e6ef21a2e2f8f43b5314901cb8d6d0665d77ae3a8",
       "transformation": "gzip storage only; original response bytes unchanged"
     },
     {
       "path": "tests/fixtures/pulso_real/uc_christus.html.gz",
       "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
-      "captured_at": "2026-10-11T05:21:40.418904+00:00",
-      "sha256": "7d88f53d9fd8b50651fc11efabc5bb68bdd77969447bc6e829d378d87a73004c",
-      "gzip_sha256": "8e7a6343443cae368c2c48ad95b2d60c658c8613bd4d1798b1a0383879cf6288",
+      "captured_at": "2026-10-11T05:24:27.017225+00:00",
+      "sha256": "5f825daaddaee5c7f851c1dd55a45ebaac07d910d34fdbfad1ff5e8fc00881f6",
+      "gzip_sha256": "1c14dccd468fed1181a10c755b8c289a6080c26fd0051b9872cbfde9b7befbeb",
+      "transformation": "gzip storage only; original response bytes unchanged"
+    },
+    {
+      "path": "tests/fixtures/pulso_real/news_sitemap_first_page.xml.gz",
+      "url": "https://www.latercera.com/arc/outboundfeeds/news-sitemap/?outputType=xml",
+      "captured_at": "2026-10-11T05:24:28.212779+00:00",
+      "sha256": "0a5b53f42b5ac2d0e649267eee1a51314b76e297274c89f3b0c4b4799e069563",
+      "gzip_sha256": "ee2c42a115ed8483bdc68fe927423f54c4c149b0c5c0bca15be3cc39b296b54a",
       "transformation": "gzip storage only; original response bytes unchanged"
     }
   ]
