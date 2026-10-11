@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T14:50:30.355604+00:00",
+  "updated_at": "2026-10-11T15:07:30.832140+00:00",
   "scope": "staging_only",
   "prior_staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
   "rows": [
@@ -44,6 +44,41 @@
         "native_job_result": "PASS",
         "workflow_result": "IN_PROGRESS_OTHER_SOURCES",
         "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/receipt.json"
+      },
+      "latest_runtime_validation": {
+        "source": "diario_financiero",
+        "runtime_run": 38148412191,
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "workflow_result": "PASS",
+        "artifact_id": 11706100211,
+        "archive_sha256": "32c99aaae403a1ec8abcba20d5e12ffe7592f6db04565e5796b226c9274f56e1",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/diario_financiero/summary.json",
+        "two_fresh_actual_polls": true,
+        "idempotent_published_history_queue_identity": true,
+        "unrelated_stock_preserved": true,
+        "current_editorial_outcome": "not_evaluated",
+        "published_each": 0,
+        "new_each": 0,
+        "paid_calls": 0,
+        "discovered_each": [
+          41,
+          41
+        ],
+        "reviewer": "PASS, zero deterministic findings",
+        "qa": {
+          "run": 38149082710,
+          "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+          "python_passed": 1007,
+          "python_skipped": 1,
+          "node_passed": 42,
+          "browser_passed": 60,
+          "reviewer": "PASS"
+        },
+        "preview": {
+          "run": 38148412444,
+          "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+          "status": "PASS"
+        }
       }
     },
     {
@@ -83,6 +118,41 @@
         "native_job_result": "PASS",
         "workflow_result": "IN_PROGRESS_OTHER_SOURCES",
         "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/receipt.json"
+      },
+      "latest_runtime_validation": {
+        "source": "superintendencia_fiscalizacion",
+        "runtime_run": 38148412191,
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "workflow_result": "PASS",
+        "artifact_id": 11705483811,
+        "archive_sha256": "910ba78f9fba0e51ca767dbb07ae26ef9ba4c762315baeb75dc4cca8fc22d308",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/superintendencia_fiscalizacion/summary.json",
+        "two_fresh_actual_polls": true,
+        "idempotent_published_history_queue_identity": true,
+        "unrelated_stock_preserved": true,
+        "current_editorial_outcome": "no_new_publications_existing_history",
+        "published_each": 0,
+        "new_each": 0,
+        "paid_calls": 0,
+        "discovered_each": [
+          3343,
+          3343
+        ],
+        "reviewer": "PASS, zero deterministic findings",
+        "qa": {
+          "run": 38149082710,
+          "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+          "python_passed": 1007,
+          "python_skipped": 1,
+          "node_passed": 42,
+          "browser_passed": 60,
+          "reviewer": "PASS"
+        },
+        "preview": {
+          "run": 38148412444,
+          "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+          "status": "PASS"
+        }
       }
     },
     {
@@ -122,6 +192,41 @@
         "native_job_result": "PASS",
         "workflow_result": "IN_PROGRESS_OTHER_SOURCES",
         "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/receipt.json"
+      },
+      "latest_runtime_validation": {
+        "source": "suseso_fiscalizacion",
+        "runtime_run": 38148412191,
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "workflow_result": "PASS",
+        "artifact_id": 11705821157,
+        "archive_sha256": "918568d8b078b2003f5803a4ecfe5853508c4384720f386e3fa99b530650701c",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/suseso_fiscalizacion/summary.json",
+        "two_fresh_actual_polls": true,
+        "idempotent_published_history_queue_identity": true,
+        "unrelated_stock_preserved": true,
+        "current_editorial_outcome": "not_evaluated",
+        "published_each": 0,
+        "new_each": 0,
+        "paid_calls": 0,
+        "discovered_each": [
+          1273,
+          1273
+        ],
+        "reviewer": "PASS, zero deterministic findings",
+        "qa": {
+          "run": 38149082710,
+          "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+          "python_passed": 1007,
+          "python_skipped": 1,
+          "node_passed": 42,
+          "browser_passed": 60,
+          "reviewer": "PASS"
+        },
+        "preview": {
+          "run": 38148412444,
+          "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+          "status": "PASS"
+        }
       }
     },
     {
@@ -218,6 +323,46 @@
         "at": "2026-10-11T14:50:30.355604+00:00",
         "artifact_receipt": "data/audits/integration_20261011/postmerge-clinicas_achs_salud/independent-raw-artifact/independent-artifact-receipt.json",
         "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      },
+      "latest_runtime_validation": {
+        "source": "clinicas_achs_salud",
+        "runtime_run": 38148412191,
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "workflow_result": "PASS",
+        "artifact_id": 11705823117,
+        "archive_sha256": "c6c18582c049ecaf66a2715da3f88d773e37a835e225799d6ef3d25599320edd",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/clinicas_achs_salud/summary.json",
+        "two_fresh_actual_polls": true,
+        "idempotent_published_history_queue_identity": true,
+        "unrelated_stock_preserved": true,
+        "current_editorial_outcome": "not_evaluated",
+        "published_each": 0,
+        "new_each": 0,
+        "paid_calls": 0,
+        "discovered_each": [
+          13,
+          13
+        ],
+        "reviewer": "PASS, zero deterministic findings",
+        "qa": {
+          "run": 38149082710,
+          "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+          "python_passed": 1007,
+          "python_skipped": 1,
+          "node_passed": 42,
+          "browser_passed": 60,
+          "reviewer": "PASS"
+        },
+        "preview": {
+          "run": 38148412444,
+          "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+          "status": "PASS"
+        },
+        "clinical_crosslane_delta19_verified": true,
+        "clinical_publications": 0,
+        "unknown_date_conflicts": 25,
+        "held_pending_count": 1,
+        "boundary": "Partial publisher capture; 19 provider-lane queue additions present in baseline. Current native transport completes; publication/editorial conflicts and undated LaSerena qualification form remain held. No current source-wide443 blocker."
       }
     },
     {
@@ -357,6 +502,41 @@
         "at": "2026-10-11T14:50:30.355604+00:00",
         "artifact_receipt": "data/audits/integration_20261011/postmerge-deis/independent-raw-artifact/independent-artifact-receipt.json",
         "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      },
+      "latest_runtime_validation": {
+        "source": "deis",
+        "runtime_run": 38148412191,
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "workflow_result": "PASS",
+        "artifact_id": 11706085633,
+        "archive_sha256": "be74059fa26881dfce85ed647bea6c96ad9fcd49a1bba0128a08959bc234b26e",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/deis/summary.json",
+        "two_fresh_actual_polls": true,
+        "idempotent_published_history_queue_identity": true,
+        "unrelated_stock_preserved": true,
+        "current_editorial_outcome": "not_evaluated",
+        "published_each": 0,
+        "new_each": 0,
+        "paid_calls": 0,
+        "discovered_each": [
+          12,
+          12
+        ],
+        "reviewer": "PASS, zero deterministic findings",
+        "qa": {
+          "run": 38149082710,
+          "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+          "python_passed": 1007,
+          "python_skipped": 1,
+          "node_passed": 42,
+          "browser_passed": 60,
+          "reviewer": "PASS"
+        },
+        "preview": {
+          "run": 38148412444,
+          "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+          "status": "PASS"
+        }
       }
     },
     {
@@ -403,6 +583,41 @@
         "at": "2026-10-11T14:50:30.355604+00:00",
         "artifact_receipt": "data/audits/integration_20261011/postmerge-fonasa/independent-raw-artifact/independent-artifact-receipt.json",
         "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      },
+      "latest_runtime_validation": {
+        "source": "fonasa",
+        "runtime_run": 38148412191,
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "workflow_result": "PASS",
+        "artifact_id": 11706360175,
+        "archive_sha256": "6ca0de6b03c6bf7f2b768f1c8df9bd4bee0e20c640e70d8bfd80773816e12cc8",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa/summary.json",
+        "two_fresh_actual_polls": true,
+        "idempotent_published_history_queue_identity": true,
+        "unrelated_stock_preserved": true,
+        "current_editorial_outcome": "not_evaluated",
+        "published_each": 0,
+        "new_each": 0,
+        "paid_calls": 0,
+        "discovered_each": [
+          0,
+          0
+        ],
+        "reviewer": "PASS, zero deterministic findings",
+        "qa": {
+          "run": 38149082710,
+          "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+          "python_passed": 1007,
+          "python_skipped": 1,
+          "node_passed": 42,
+          "browser_passed": 60,
+          "reviewer": "PASS"
+        },
+        "preview": {
+          "run": 38148412444,
+          "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+          "status": "PASS"
+        }
       }
     },
     {
@@ -449,6 +664,41 @@
         "at": "2026-10-11T14:50:30.355604+00:00",
         "artifact_receipt": "data/audits/integration_20261011/postmerge-fonasa_datos_abiertos/independent-raw-artifact/independent-artifact-receipt.json",
         "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      },
+      "latest_runtime_validation": {
+        "source": "fonasa_datos_abiertos",
+        "runtime_run": 38148412191,
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "workflow_result": "PASS",
+        "artifact_id": 11706275303,
+        "archive_sha256": "b6d4348bee13492692a8e6f5e98d177e5bbd66bb5dc6ffd5fdaa8bf5c3f53fa2",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa_datos_abiertos/summary.json",
+        "two_fresh_actual_polls": true,
+        "idempotent_published_history_queue_identity": true,
+        "unrelated_stock_preserved": true,
+        "current_editorial_outcome": "not_evaluated",
+        "published_each": 0,
+        "new_each": 0,
+        "paid_calls": 0,
+        "discovered_each": [
+          0,
+          0
+        ],
+        "reviewer": "PASS, zero deterministic findings",
+        "qa": {
+          "run": 38149082710,
+          "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+          "python_passed": 1007,
+          "python_skipped": 1,
+          "node_passed": 42,
+          "browser_passed": 60,
+          "reviewer": "PASS"
+        },
+        "preview": {
+          "run": 38148412444,
+          "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+          "status": "PASS"
+        }
       }
     },
     {
@@ -495,6 +745,41 @@
         "at": "2026-10-11T14:50:30.355604+00:00",
         "artifact_receipt": "data/audits/integration_20261011/postmerge-isp_anamed/independent-raw-artifact/independent-artifact-receipt.json",
         "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      },
+      "latest_runtime_validation": {
+        "source": "isp_anamed",
+        "runtime_run": 38148412191,
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "workflow_result": "PASS",
+        "artifact_id": 11705479515,
+        "archive_sha256": "57486cc0cc974eec6808344cbb457ddd3ecfbe60a9120e1652235a7a2c530d5e",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_anamed/summary.json",
+        "two_fresh_actual_polls": true,
+        "idempotent_published_history_queue_identity": true,
+        "unrelated_stock_preserved": true,
+        "current_editorial_outcome": "not_evaluated",
+        "published_each": 0,
+        "new_each": 0,
+        "paid_calls": 0,
+        "discovered_each": [
+          0,
+          0
+        ],
+        "reviewer": "PASS, zero deterministic findings",
+        "qa": {
+          "run": 38149082710,
+          "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+          "python_passed": 1007,
+          "python_skipped": 1,
+          "node_passed": 42,
+          "browser_passed": 60,
+          "reviewer": "PASS"
+        },
+        "preview": {
+          "run": 38148412444,
+          "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+          "status": "PASS"
+        }
       }
     },
     {
@@ -540,6 +825,41 @@
         "at": "2026-10-11T14:50:30.355604+00:00",
         "artifact_receipt": "data/audits/integration_20261011/postmerge-isp_surveillance/independent-raw-artifact/independent-artifact-receipt.json",
         "scope": "Artifact digest, two actual fresh core receipts, unchanged published history, queue identity/dedupe, honest source health, retained original dates and scoped primary-source Reviewer."
+      },
+      "latest_runtime_validation": {
+        "source": "isp_surveillance",
+        "runtime_run": 38148412191,
+        "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "workflow_result": "PASS",
+        "artifact_id": 11706091870,
+        "archive_sha256": "3d6bca8e4427f41ba912691ea9e1ff587016f3bce8994eebef00739c37e2bccc",
+        "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_surveillance/summary.json",
+        "two_fresh_actual_polls": true,
+        "idempotent_published_history_queue_identity": true,
+        "unrelated_stock_preserved": true,
+        "current_editorial_outcome": "not_evaluated",
+        "published_each": 0,
+        "new_each": 0,
+        "paid_calls": 0,
+        "discovered_each": [
+          0,
+          0
+        ],
+        "reviewer": "PASS, zero deterministic findings",
+        "qa": {
+          "run": 38149082710,
+          "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+          "python_passed": 1007,
+          "python_skipped": 1,
+          "node_passed": 42,
+          "browser_passed": 60,
+          "reviewer": "PASS"
+        },
+        "preview": {
+          "run": 38148412444,
+          "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+          "status": "PASS"
+        }
       }
     },
     {
@@ -1034,7 +1354,13 @@
     "normative": "Original 12-act cohort remains frozen and checked; current 90-day eligibility uses the real publication cutoff; old act retained in history. No count threshold lowered.",
     "statistics": "Four-primary-PDF reviewed numerical analysis is present in clean-checkout export; original strict statistics validation restored. Normative contract also resolves source-specific legal identities. Eight findings resolved.",
     "superseded_interpretation": "Prior publication_inventory workaround superseded; not used for final acceptance",
-    "reviewer_sha256": "474acbcf90c395fc80b0db05d7c8062385939dd75364037e99e58cbeb494b5df"
+    "reviewer_sha256": "474acbcf90c395fc80b0db05d7c8062385939dd75364037e99e58cbeb494b5df",
+    "latest_native_revalidation": {
+      "status": "PASS",
+      "run": 38148412191,
+      "source_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+      "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/receipt.json"
+    }
   },
   "zero_orphan_p0": {
     "checked_at": "2026-10-11T14:41:20.711400+00:00",

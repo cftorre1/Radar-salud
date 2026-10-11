@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T14:50:30.355604+00:00",
+  "updated_at": "2026-10-11T15:07:30.832140+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -4405,7 +4405,7 @@
       "started_at": "2026-10-11",
       "last_progress_at": "2026-10-11T14:50:30.355604+00:00",
       "current_subfront": "publisher_date_and_archive_gaps_after_scoped_technical_validation",
-      "next_action": "Obtain primary publication evidence for unresolved clinical/IST dates and distinct Mutual archive continuations; preserve provider/insurance separation and terminal below75 decisions. Verify clinical19-record provider delta in PR22 native runtime.",
+      "next_action": "Resolve25 clinical publisher/editorial date conflicts, undated LaSerena qualification form, Mutual repeated archive pages and IST TPS date disagreement. Latest clinical delta19 runtime PASS with0publications/0IA; retain insurance/provider separation and all terminal editorial decisions.",
       "branch": "codex/e-salud-laboral-20261011",
       "pull_request": "https://github.com/cftorre1/Radar-salud/pull/12",
       "progress": "Scoped implementation and Reviewer validated; 5 reviewed branch-only BACKFILLs. Official ACHS Seguro, central ACHS Salud, Mutual and IST surfaces accessible; clinic subpublisher availability separately recorded. 110 verified official URLs (102 title/date groups); 107 queued, three nonmaterial blog rejections durable only in inventory. 90-day complete acceptance remains partial for three sources.",
@@ -5252,9 +5252,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:50:30.355604+00:00",
-      "current_subfront": "post_merge_all_mature_sources_reviewed",
-      "next_action": "Complete PR22 historical native revalidation and clinical delta19; keep Pulso NOT_READY until explicit READY and verified processing. Global recurring-source gap remains assigned to Work4.",
+      "last_progress_at": "2026-10-11T15:07:30.832140+00:00",
+      "current_subfront": "all_current_mature_source_fronts_integrated_and_runtime_validated",
+      "next_action": "Pulso#10 only after explicit READY_FOR_INTEGRATION and actual processing acceptance. Continue scoped publisher coverage/date gaps and Work4 recurring Global source expansion; no main/production promotion or autonomy4h closure.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -6165,7 +6165,12 @@
           "next_action": "DF integrado con runtime validado y limitaciones preservadas; PR10 continúa en su rama hasta READY_FOR_INTEGRATION."
         }
       },
-      "commander_matrix": "data/audits/integration_20261011/source-matrix.json"
+      "commander_matrix": "data/audits/integration_20261011/source-matrix.json",
+      "latest_native_revalidation": {
+        "status": "PASS",
+        "run": 38148412191,
+        "evidence": "data/audits/integration_20261011/postmerge-aa8bb305/receipt.json"
+      }
     },
     {
       "id": "beta_gate5_test_ops_golive_2026_10_11",

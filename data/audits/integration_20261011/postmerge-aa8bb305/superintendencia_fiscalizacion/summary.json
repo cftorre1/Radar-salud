@@ -1,0 +1,436 @@
+{
+  "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+  "targets": {
+    "sources": [
+      "superintendencia_fiscalizacion"
+    ],
+    "origin_prs": [
+      11,
+      15,
+      19,
+      22,
+      13,
+      12,
+      14,
+      23
+    ],
+    "purpose": "Actual two-poll revalidation of DF/SIS/SUSESO, public transports and clinical cross-lane stock on copied staging state; no publication. Provider runtime 38147271657 continues independently.",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_achs_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "mutual_seguridad": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "ist": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "fonasa": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "fonasa_datos_abiertos": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_anamed": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_surveillance": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:45:26.835993+00:00",
+      "finished_at": "2026-10-11T14:45:37.511254+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "superintendencia_fiscalizacion": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "superintendencia_fiscalizacion": {
+          "discovered": 3343,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:45:37.044370+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "25da39f5b231dfe87d9b327469835f8470d0a8167923b23756eb009c99c5e532",
+        "2b5e08bcefdf07115eb07291ca6af3bcf4ad9d7a8d37a14e91eeda0e6e9e1c77",
+        "307263945eca8a317730f8e0ccb0a230367c009bcd75445c1cb248ad0e1ddbb4",
+        "3a56b6d7b28aa5d0b5a4cfb44ef77645c33667ddef5baf58b10fd70d5a3d3544",
+        "4263d28443be306d5a4e8b9901cb2125f445270dda55b0e01842939b7bca1b03",
+        "4aab70e9e4f204c32ca6577976e471f50a7d6fb95fbd51b2b3de4028204402c1",
+        "651c4631aebbdbcb40c7030aacf2d96df22fdf78c63ecf44718444628f65b4c5",
+        "6ee0ce7f098672ae7e491658b9b7bb17633902082bd1d60bf60387dce77b6b8e",
+        "7671d522d503c4d817037bba81a3c108b7d8c506c07d0593e4a8f5416ecbe632",
+        "8129297b825b2839530ddbf18dd774df9a5a0a5f367400393b1a49c9e098c5d7",
+        "85db659b2323a94e956272b158208f0efd48e501b40c3861550b480a2e31e4df",
+        "8f913b7dfafd82196056ebfddea49770857f9b0d37da2c90c2cfd6fd4469b315",
+        "92708d40fbde27872ca96f368cd76284d3432cbceaa0669ebc6b8f521a389047",
+        "9673a90a34f11f8f1dd9c5bad13ce46e0176a6df2286de61d043b2c312e1f653",
+        "9eb4cca71d5c26b2b80333b8249e72130b04452b2deda32416dfa17b5fea38b0",
+        "c8f4a78348c9b77e31ae3cd0b28a6d40ce2c133079506771de9c02ac425e48d8",
+        "cc3527572ff98c0785d5844ae679acf5a73f1c5a5d69b57e189b1036fd5b58e1",
+        "cc79e576dd9a5fa6b4fd8df677356124999adf7112092e00046fe3a52f23eac5",
+        "e98abb5cc657561d7002e1aa0d298e3306ec7dc9683ed80388674b3dc8d4a354",
+        "f24ca8dc2a13bb2f8d1b4ea82d8a914ac55a7e8930e3ca9321d51356cedc011a"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 485,
+      "source_health": {
+        "superintendencia_fiscalizacion": {
+          "name": "Superintendencia de Salud",
+          "checked_at": "2026-10-11T14:45:37.054240+00:00",
+          "last_signal_at": "2026-09-28",
+          "discovered": 3343,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 1,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "listed_surface_parsed",
+          "content_freshness": "older",
+          "latest_original_at": "2026-09-28",
+          "editorial_outcome": "no_new_publications_existing_history",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "last_observed_event_at": "2026-09-28",
+          "last_observed_publication_at": "2026-09-28",
+          "surfaces": [
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/informes-de-fiscalizacion-5126/",
+              "status": "parsed",
+              "documents": 231
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-isapres-6248/",
+              "status": "parsed",
+              "documents": 616
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-prestadores-6249/",
+              "status": "parsed",
+              "documents": 1848
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/informes-de-fiscalizacion-3218/",
+              "status": "parsed",
+              "documents": 325
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-entidades-acreditadoras-7059/",
+              "status": "parsed",
+              "documents": 75
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-agentes-de-ventas-7441/",
+              "status": "parsed",
+              "documents": 470
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/sanciones-aplicadas-5113/",
+              "status": "parsed",
+              "documents": 2944
+            }
+          ],
+          "undated_observations": 0,
+          "coverage_complete": false,
+          "archived": 3143,
+          "rejection_reasons": {
+            "administrative_subrogation_not_enforcement": 1
+          },
+          "published_total": 200,
+          "final_state": "OPERATIVE_DEGRADED",
+          "pages_checked": 7,
+          "items_discovered": 3343,
+          "unique_items": 3343,
+          "surface_rows_discovered": 6509,
+          "items_recent": 32,
+          "items_material": 32,
+          "items_recent_enforcement": 32,
+          "parse_errors": 0,
+          "surface_errors": 0,
+          "windows": {
+            "30": {
+              "items_recent": 14,
+              "enforcement_recent": 14,
+              "official_news_recent": 0,
+              "related_normative_recent": 0,
+              "published": 14,
+              "rejected": 0,
+              "deferred": 0,
+              "items_material": 14,
+              "unaccounted": 0
+            },
+            "90": {
+              "items_recent": 32,
+              "enforcement_recent": 32,
+              "official_news_recent": 0,
+              "related_normative_recent": 0,
+              "published": 32,
+              "rejected": 0,
+              "deferred": 0,
+              "items_material": 32,
+              "unaccounted": 0
+            }
+          },
+          "coverage_reason": "listed_documents_only; not site-wide reconciliation",
+          "counter_semantics": {
+            "discovered": "documents in this discovery run, including historical",
+            "new": "queue additions this run",
+            "published": "processed to history this run; feed gate is separate",
+            "published_total": "persisted source history stock",
+            "pending": "current queue stock",
+            "rejected": "queue stock with evaluated rejection",
+            "archived": "queue stock beyond backfill horizon"
+          },
+          "zero_published_reason": "evaluated_rejections_or_existing_published_history"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:45:37.544972+00:00",
+      "finished_at": "2026-10-11T14:45:43.977970+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "superintendencia_fiscalizacion": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "superintendencia_fiscalizacion": {
+          "discovered": 3343,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:45:43.462789+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "25da39f5b231dfe87d9b327469835f8470d0a8167923b23756eb009c99c5e532",
+        "2b5e08bcefdf07115eb07291ca6af3bcf4ad9d7a8d37a14e91eeda0e6e9e1c77",
+        "307263945eca8a317730f8e0ccb0a230367c009bcd75445c1cb248ad0e1ddbb4",
+        "3a56b6d7b28aa5d0b5a4cfb44ef77645c33667ddef5baf58b10fd70d5a3d3544",
+        "4263d28443be306d5a4e8b9901cb2125f445270dda55b0e01842939b7bca1b03",
+        "4aab70e9e4f204c32ca6577976e471f50a7d6fb95fbd51b2b3de4028204402c1",
+        "651c4631aebbdbcb40c7030aacf2d96df22fdf78c63ecf44718444628f65b4c5",
+        "6ee0ce7f098672ae7e491658b9b7bb17633902082bd1d60bf60387dce77b6b8e",
+        "7671d522d503c4d817037bba81a3c108b7d8c506c07d0593e4a8f5416ecbe632",
+        "8129297b825b2839530ddbf18dd774df9a5a0a5f367400393b1a49c9e098c5d7",
+        "85db659b2323a94e956272b158208f0efd48e501b40c3861550b480a2e31e4df",
+        "8f913b7dfafd82196056ebfddea49770857f9b0d37da2c90c2cfd6fd4469b315",
+        "92708d40fbde27872ca96f368cd76284d3432cbceaa0669ebc6b8f521a389047",
+        "9673a90a34f11f8f1dd9c5bad13ce46e0176a6df2286de61d043b2c312e1f653",
+        "9eb4cca71d5c26b2b80333b8249e72130b04452b2deda32416dfa17b5fea38b0",
+        "c8f4a78348c9b77e31ae3cd0b28a6d40ce2c133079506771de9c02ac425e48d8",
+        "cc3527572ff98c0785d5844ae679acf5a73f1c5a5d69b57e189b1036fd5b58e1",
+        "cc79e576dd9a5fa6b4fd8df677356124999adf7112092e00046fe3a52f23eac5",
+        "e98abb5cc657561d7002e1aa0d298e3306ec7dc9683ed80388674b3dc8d4a354",
+        "f24ca8dc2a13bb2f8d1b4ea82d8a914ac55a7e8930e3ca9321d51356cedc011a"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 485,
+      "source_health": {
+        "superintendencia_fiscalizacion": {
+          "name": "Superintendencia de Salud",
+          "checked_at": "2026-10-11T14:45:43.472157+00:00",
+          "last_signal_at": "2026-09-28",
+          "discovered": 3343,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 1,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "listed_surface_parsed",
+          "content_freshness": "older",
+          "latest_original_at": "2026-09-28",
+          "editorial_outcome": "no_new_publications_existing_history",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "last_observed_event_at": "2026-09-28",
+          "last_observed_publication_at": "2026-09-28",
+          "surfaces": [
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/informes-de-fiscalizacion-5126/",
+              "status": "parsed",
+              "documents": 231
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-isapres-6248/",
+              "status": "parsed",
+              "documents": 616
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-prestadores-6249/",
+              "status": "parsed",
+              "documents": 1848
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/informes-de-fiscalizacion-3218/",
+              "status": "parsed",
+              "documents": 325
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-entidades-acreditadoras-7059/",
+              "status": "parsed",
+              "documents": 75
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-agentes-de-ventas-7441/",
+              "status": "parsed",
+              "documents": 470
+            },
+            {
+              "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/sanciones-aplicadas-5113/",
+              "status": "parsed",
+              "documents": 2944
+            }
+          ],
+          "undated_observations": 0,
+          "coverage_complete": false,
+          "archived": 3143,
+          "rejection_reasons": {
+            "administrative_subrogation_not_enforcement": 1
+          },
+          "published_total": 200,
+          "final_state": "OPERATIVE_DEGRADED",
+          "pages_checked": 7,
+          "items_discovered": 3343,
+          "unique_items": 3343,
+          "surface_rows_discovered": 6509,
+          "items_recent": 32,
+          "items_material": 32,
+          "items_recent_enforcement": 32,
+          "parse_errors": 0,
+          "surface_errors": 0,
+          "windows": {
+            "30": {
+              "items_recent": 14,
+              "enforcement_recent": 14,
+              "official_news_recent": 0,
+              "related_normative_recent": 0,
+              "published": 14,
+              "rejected": 0,
+              "deferred": 0,
+              "items_material": 14,
+              "unaccounted": 0
+            },
+            "90": {
+              "items_recent": 32,
+              "enforcement_recent": 32,
+              "official_news_recent": 0,
+              "related_normative_recent": 0,
+              "published": 32,
+              "rejected": 0,
+              "deferred": 0,
+              "items_material": 32,
+              "unaccounted": 0
+            }
+          },
+          "coverage_reason": "listed_documents_only; not site-wide reconciliation",
+          "counter_semantics": {
+            "discovered": "documents in this discovery run, including historical",
+            "new": "queue additions this run",
+            "published": "processed to history this run; feed gate is separate",
+            "published_total": "persisted source history stock",
+            "pending": "current queue stock",
+            "rejected": "queue stock with evaluated rejection",
+            "archived": "queue stock beyond backfill horizon"
+          },
+          "zero_published_reason": "evaluated_rejections_or_existing_published_history"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+    "reviewed_at": "2026-10-11T14:45:44.287803+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93
+}

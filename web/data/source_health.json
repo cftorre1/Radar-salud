@@ -59,7 +59,7 @@
     },
     "diario_financiero": {
       "name": "Diario Financiero",
-      "checked_at": "2026-10-11T13:18:27.077647+00:00",
+      "checked_at": "2026-10-11T14:47:06.601900+00:00",
       "last_signal_at": "2026-10-10",
       "discovered": 41,
       "new": 0,
@@ -72,9 +72,20 @@
       "status": "warning",
       "error": null,
       "technical_status": "partial",
-      "coverage_status": "date_or_detail_gap",
+      "coverage_status": "format_gap",
       "content_freshness": "recent",
-      "editorial_outcome": "no_new_signals",
+      "latest_original_at": "2026-10-10",
+      "editorial_outcome": "not_evaluated",
+      "evaluation_performed": false,
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "pending": "cumulative_queue",
+        "deferred": "cumulative_queue",
+        "rejected": "cumulative_queue"
+      },
       "dated": 41,
       "undated": 0,
       "detail_errors": 0,
@@ -91,37 +102,9 @@
       "deferred_multimedia": 19,
       "unverifiable_date_dispositions": 0,
       "last_published_event_at": "2026-10-10",
-      "counts_scope": {
-        "discovered": "this_run",
-        "new": "this_run",
-        "published": "this_run",
-        "pending": "cumulative_queue",
-        "deferred": "cumulative_queue",
-        "rejected": "cumulative_queue"
-      },
       "last_discovered_event_at": "2026-10-10",
-      "runtime_raw_editorial_outcome": "rejected",
-      "counts_semantics": {
-        "discovered": "current_poll",
-        "new": "current_poll",
-        "published": "current_poll",
-        "pending": "cumulative_queue",
-        "rejected": "cumulative_queue",
-        "deferred": "cumulative_queue",
-        "last_signal_at": "latest_accepted_history_publication"
-      },
-      "editorial_outcome_reconciliation_reason": "Both genuine post-merge polls have zero new, pending and published. Raw engine used cumulative rejected stock for editorial_outcome; current-poll outcome reconciled here. Producer fix follows with the next scoped health integration.",
-      "integration_status": "INTEGRATED_DEGRADED",
-      "integration_staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
-      "postmerge_runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38142527704",
       "coverage_complete": false,
-      "integration_state": "INTEGRATED_DEGRADED",
-      "integration_evidence": {
-        "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
-        "runtime_run": 38142527704,
-        "preview_run": 38142527882,
-        "artifact": "data/audits/integration_20261011/df-postmerge-916fe2d.json"
-      }
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/diario_financiero/summary.json"
     },
     "diario_oficial": {
       "name": "Diario Oficial",
@@ -143,8 +126,8 @@
       "editorial_outcome": "rejected"
     },
     "superintendencia_fiscalizacion": {
-      "name": "Superintendencia Fiscalizacion",
-      "checked_at": "2026-10-11T13:39:17.875662+00:00",
+      "name": "Superintendencia de Salud",
+      "checked_at": "2026-10-11T14:45:43.472157+00:00",
       "last_signal_at": "2026-09-28",
       "discovered": 3343,
       "new": 0,
@@ -159,7 +142,17 @@
       "technical_status": "ok",
       "coverage_status": "listed_surface_parsed",
       "content_freshness": "older",
+      "latest_original_at": "2026-09-28",
       "editorial_outcome": "no_new_publications_existing_history",
+      "evaluation_performed": false,
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
       "last_observed_event_at": "2026-09-28",
       "last_observed_publication_at": "2026-09-28",
       "surfaces": [
@@ -251,15 +244,7 @@
         "archived": "queue stock beyond backfill horizon"
       },
       "zero_published_reason": "evaluated_rejections_or_existing_published_history",
-      "integration_state": "INTEGRATED_DEGRADED",
-      "integration_evidence": {
-        "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
-        "runtime_run": 38143952220,
-        "preview_run": 38143952494,
-        "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
-      },
-      "runtime_raw_editorial_outcome": "rejected",
-      "editorial_outcome_reconciliation_reason": "Runtime 38143952220 has zero new/published, zero pending; cumulative rejected stock is not a current poll decision. Producer fix in PR19."
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/superintendencia_fiscalizacion/summary.json"
     },
     "superintendencia": {
       "name": "Superintendencia",
@@ -282,7 +267,7 @@
     },
     "fonasa": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-10-11T14:22:55.759207+00:00",
+      "checked_at": "2026-10-11T14:45:26.442065+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -297,7 +282,9 @@
       "technical_status": "error",
       "coverage_status": "unverified",
       "content_freshness": "unknown",
+      "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
+      "evaluation_performed": false,
       "processed_rejections": 0,
       "counts_scope": {
         "discovered": "this_run",
@@ -341,19 +328,13 @@
         "partial_failure": true,
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-10-11T14:22:55.759207+00:00",
+      "engine_checked_at": "2026-10-11T14:45:26.442065+00:00",
       "poll_mode": "daily_engine",
-      "integration_state": "EXTERNAL_BLOCKER_PROVEN",
-      "integration_evidence": {
-        "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
-        "runtime_run": 38146249940,
-        "preview_run": 38146250319,
-        "artifact": "data/audits/integration_20261011/postmerge-fonasa/summary.json"
-      }
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa/summary.json"
     },
     "isp_anamed": {
       "name": "Instituto de Salud Pública de Chile (ISP) / ANAMED",
-      "checked_at": "2026-10-11T14:27:55.048155+00:00",
+      "checked_at": "2026-10-11T14:50:26.450101+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -368,7 +349,9 @@
       "technical_status": "error",
       "coverage_status": "unverified",
       "content_freshness": "unknown",
+      "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
+      "evaluation_performed": false,
       "processed_rejections": 0,
       "counts_scope": {
         "discovered": "this_run",
@@ -427,19 +410,13 @@
         "partial_failure": true,
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-10-11T14:27:55.048155+00:00",
+      "engine_checked_at": "2026-10-11T14:50:26.450101+00:00",
       "poll_mode": "daily_engine",
-      "integration_state": "EXTERNAL_BLOCKER_PROVEN",
-      "integration_evidence": {
-        "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
-        "runtime_run": 38146249940,
-        "preview_run": 38146250319,
-        "artifact": "data/audits/integration_20261011/postmerge-isp_anamed/summary.json"
-      }
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_anamed/summary.json"
     },
     "deis": {
       "name": "Departamento de Estadísticas e Información de Salud",
-      "checked_at": "2026-10-11T14:23:16.486260+00:00",
+      "checked_at": "2026-10-11T14:45:37.858740+00:00",
       "last_signal_at": null,
       "discovered": 12,
       "new": 0,
@@ -449,12 +426,14 @@
       "pending": 0,
       "deferred": 0,
       "rejected": 0,
-      "status": "ok",
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "observed",
       "content_freshness": "unknown",
-      "editorial_outcome": "no_new_signals",
+      "latest_original_at": "2026-06-25",
+      "editorial_outcome": "not_evaluated",
+      "evaluation_performed": false,
       "processed_rejections": 0,
       "counts_scope": {
         "discovered": "this_run",
@@ -482,7 +461,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
-            "listing_sha256": "ffba395fcb4c33929c10a281c582063517db5755acdab66af508ddf4d110643e",
+            "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -492,7 +471,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
-            "listing_sha256": "ffba395fcb4c33929c10a281c582063517db5755acdab66af508ddf4d110643e",
+            "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -502,7 +481,7 @@
             "reason": "update_without_proven_material_change",
             "publication_date": null,
             "listing_notice": "Volumen 1 CIE-10 2016-cha ¡Actualizado 15/12/2017!",
-            "listing_sha256": "ffba395fcb4c33929c10a281c582063517db5755acdab66af508ddf4d110643e",
+            "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -512,7 +491,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Volumen 2 Manual de Instrucciones ¡Agregado el 07/08/2015!",
-            "listing_sha256": "ffba395fcb4c33929c10a281c582063517db5755acdab66af508ddf4d110643e",
+            "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -522,7 +501,7 @@
             "reason": "update_without_proven_material_change",
             "publication_date": null,
             "listing_notice": "Volumen 3 Índice Alfabético Nota: ¡Actualizado el 01/03/2018!",
-            "listing_sha256": "ffba395fcb4c33929c10a281c582063517db5755acdab66af508ddf4d110643e",
+            "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -532,7 +511,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Actualización Catalogo Diagnosticos.pdf ¡Agregado 26/03/2015!",
-            "listing_sha256": "ffba395fcb4c33929c10a281c582063517db5755acdab66af508ddf4d110643e",
+            "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -542,7 +521,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Decreto Norma Técnica sobre Uso de CIE 10",
-            "listing_sha256": "ffba395fcb4c33929c10a281c582063517db5755acdab66af508ddf4d110643e",
+            "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -552,7 +531,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Decreto 356 Complementa Decreto Uso de la CIE-10 ¡Agregado 15/12/2017!",
-            "listing_sha256": "ffba395fcb4c33929c10a281c582063517db5755acdab66af508ddf4d110643e",
+            "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -562,7 +541,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Resolución Nº 783: DEIS – Centro de referencia FIC",
-            "listing_sha256": "ffba395fcb4c33929c10a281c582063517db5755acdab66af508ddf4d110643e",
+            "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
             "listing_sha256_kind": "utf8_decoded_listing"
           }
         ],
@@ -637,16 +616,10 @@
         "latest_verified_publication_date": "2026-06-25",
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-10-11T14:23:16.486260+00:00",
+      "engine_checked_at": "2026-10-11T14:45:37.858740+00:00",
       "poll_mode": "daily_engine",
       "latest_verified_publication_at": "2026-06-25",
-      "integration_state": "INTEGRATED_DEGRADED",
-      "integration_evidence": {
-        "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
-        "runtime_run": 38146249940,
-        "preview_run": 38146250319,
-        "artifact": "data/audits/integration_20261011/postmerge-deis/summary.json"
-      }
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/deis/summary.json"
     },
     "redsalud": {
       "name": "RedSalud",
@@ -1025,7 +998,7 @@
     },
     "fonasa_datos_abiertos": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-10-11T14:22:56.361921+00:00",
+      "checked_at": "2026-10-11T14:45:30.511053+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -1040,7 +1013,9 @@
       "technical_status": "error",
       "coverage_status": "unverified",
       "content_freshness": "unknown",
+      "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
+      "evaluation_performed": false,
       "processed_rejections": 0,
       "counts_scope": {
         "discovered": "this_run",
@@ -1117,15 +1092,9 @@
         "partial_failure": true,
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-10-11T14:22:56.361921+00:00",
+      "engine_checked_at": "2026-10-11T14:45:30.511053+00:00",
       "poll_mode": "daily_engine",
-      "integration_state": "EXTERNAL_BLOCKER_PROVEN",
-      "integration_evidence": {
-        "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
-        "runtime_run": 38146249940,
-        "preview_run": 38146250319,
-        "artifact": "data/audits/integration_20261011/postmerge-fonasa_datos_abiertos/summary.json"
-      }
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa_datos_abiertos/summary.json"
     },
     "suseso_news": {
       "name": "Suseso News",
@@ -1147,8 +1116,8 @@
       "editorial_outcome": "published"
     },
     "suseso_fiscalizacion": {
-      "name": "Suseso Fiscalizacion",
-      "checked_at": "2026-10-11T13:39:17.928547+00:00",
+      "name": "Superintendencia de Seguridad Social (SUSESO)",
+      "checked_at": "2026-10-11T14:46:06.019586+00:00",
       "last_signal_at": "2026-10-02",
       "discovered": 1273,
       "new": 0,
@@ -1156,14 +1125,24 @@
       "live_pending": 0,
       "backfill_pending": 10,
       "pending": 10,
-      "deferred": 0,
+      "deferred": 10,
       "rejected": 110,
       "status": "warning",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "gap",
       "content_freshness": "older",
-      "editorial_outcome": "pending",
+      "latest_original_at": "2026-10-09",
+      "editorial_outcome": "not_evaluated",
+      "evaluation_performed": false,
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
       "last_observed_event_at": "2026-10-09",
       "last_observed_publication_at": "2026-10-09",
       "surfaces": [
@@ -1277,13 +1256,7 @@
         "archived": "queue stock beyond backfill horizon"
       },
       "zero_published_reason": "pending_or_deferred_candidates",
-      "integration_state": "INTEGRATED_DEGRADED",
-      "integration_evidence": {
-        "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
-        "runtime_run": 38143952220,
-        "preview_run": 38143952494,
-        "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
-      }
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/suseso_fiscalizacion/summary.json"
     },
     "prestadores_data": {
       "name": "Superintendencia de Salud · Intendencia de Prestadores",
@@ -1494,7 +1467,7 @@
     },
     "clinicas_achs_salud": {
       "name": "Achs Salud / Clínicas",
-      "checked_at": "2026-10-11T14:22:10.776895+00:00",
+      "checked_at": "2026-10-11T15:04:16.497535+00:00",
       "last_signal_at": null,
       "discovered": 13,
       "new": 0,
@@ -1502,14 +1475,16 @@
       "live_pending": 0,
       "backfill_pending": 1,
       "pending": 1,
-      "deferred": 0,
+      "deferred": 1,
       "rejected": 31,
       "status": "warning",
       "error": "SourceDiscoveryError",
       "technical_status": "partial",
       "coverage_status": "partial",
       "content_freshness": "unknown",
+      "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
+      "evaluation_performed": false,
       "processed_rejections": 0,
       "counts_scope": {
         "discovered": "this_run",
@@ -1672,39 +1647,6 @@
       ],
       "coverage_completeness": false,
       "recovery_outcome": "OPERATIVE_DEGRADED",
-      "post_runtime_stock_reconciliation": {
-        "later_integrated_queue_keys": [
-          "b12b68ee28d1a9ef227a524fae7934004a5d06099f2ae555858b22bbcf6a51d0",
-          "7b8ec578c059577c2ffae089a12bb24c5c74b1e4b2319d4546d2e24bd9d74c72",
-          "f5f05c30a123ed1160603567214ef5069f5474329b9cc91f2b6590f421fff50d",
-          "5c3b872d13223b8b316ff450b788f47a6870c37da3b74d11fda96a779fb6ff60",
-          "5c845776cb58624143ba09c356668915bcad5a70f5987f962cfd983fad78ee91",
-          "0235f96c5fd1173164dc3be50f50f128985be39b6cc1c5e0354d666ab3418637",
-          "a6a4fc208af6520b4a410a9e9c1d5d40a6249e9aa170cf934e62d4aeba7d0ca2",
-          "1c7569e05f9f879b80b41ba9bfa124527d767029380cab712505cc4df58f37b9",
-          "39d9221b043149664d068ed88d38d700ff0aef860a944f40f0bfbb9110284f44",
-          "a43f1b90e7ec9e67dbf4eac4a135109340546dc5bc416c6dfd3f779b627940c0",
-          "a686adf31ecf9a2802ab95d7590f4a342675bad31deb8a48a7898caa42ee32f6",
-          "9f67416388639a54a07f27ea711467872fd84199874135b3c853393a01556353",
-          "c59b0e36c08764e2f82ffee6c50395c669f4886f0b1de718e4b5c267f57923ee",
-          "3e0783ab375f8a989b71c4286d18cc7e0117918ffd5493955eb38f1f3bc0b86f",
-          "06b3878b7131443c84371dee46323baaf40d6b6afe5e9dffcca8d6045a800155",
-          "1199f12242d4712b2fa27cf408a3ce309d9c94c42e77df22ee7877d7dec69134",
-          "6ed9492efc780c62bc5b4e8c2469d6ff74b812af34fa9f7fa9ae41673966e937",
-          "ca44df99d0014704c51b2b36a2ed77f4022d201dd1bdbf1a69924ffff2bfe561",
-          "0a0dff76257cfeeef6c3f65f2ec97f1cfd344254574ea6453ff81607ba37b0bd"
-        ],
-        "origin_pr": 14,
-        "integration_pr": 23,
-        "runtime_does_not_certify_later_additions": true
-      },
-      "integration_state": "INTEGRATED_DEGRADED",
-      "integration_evidence": {
-        "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
-        "runtime_run": 38145632535,
-        "preview_run": 38145632732,
-        "artifact": "data/audits/integration_20261011/postmerge-clinicas_achs_salud/summary.json"
-      },
       "provider_audit": {
         "as_of": "2026-10-11",
         "path": "data/audits/providers_2026_10_11/clinicas_achs_salud.json",
@@ -1763,7 +1705,8 @@
         "relevant_90d_total": null,
         "publicable_confirmed": 0,
         "publicable_total": null
-      }
+      },
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/clinicas_achs_salud/summary.json"
     },
     "achs_seguro_laboral": {
       "name": "Achs Seguro Laboral",
@@ -2139,7 +2082,7 @@
     },
     "isp_surveillance": {
       "name": "Instituto de Salud Pública de Chile (ISP)",
-      "checked_at": "2026-10-11T14:32:51.906567+00:00",
+      "checked_at": "2026-10-11T14:55:34.964795+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -2154,7 +2097,9 @@
       "technical_status": "error",
       "coverage_status": "unverified",
       "content_freshness": "unknown",
+      "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
+      "evaluation_performed": false,
       "processed_rejections": 0,
       "counts_scope": {
         "discovered": "this_run",
@@ -2253,15 +2198,9 @@
         "partial_failure": true,
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-10-11T14:32:51.906567+00:00",
+      "engine_checked_at": "2026-10-11T14:55:34.964795+00:00",
       "poll_mode": "daily_engine",
-      "integration_state": "EXTERNAL_BLOCKER_PROVEN",
-      "integration_evidence": {
-        "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
-        "runtime_run": 38146249940,
-        "preview_run": 38146250319,
-        "artifact": "data/audits/integration_20261011/postmerge-isp_surveillance/summary.json"
-      }
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_surveillance/summary.json"
     },
     "clinicas_chile": {
       "name": "Clínicas de Chile A.G.",
@@ -2363,5 +2302,6 @@
   },
   "generated_at": "2026-10-11T14:40:23.112019+00:00",
   "occupational_sources_checked_at": "2026-10-11T08:09:52.626810+00:00",
-  "public_data_sources_checked_at": "2026-10-11T05:38:00.741627+00:00"
+  "public_data_sources_checked_at": "2026-10-11T05:38:00.741627+00:00",
+  "integration_revalidation_recorded_at": "2026-10-11T15:07:30.832140+00:00"
 }
