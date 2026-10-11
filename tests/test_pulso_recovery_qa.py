@@ -367,15 +367,44 @@ def test_navigation_dates_cannot_supply_the_primary_visible_calendar(context):
     assert parser.bylines == []
 
 
-def test_byline_cannot_mix_calendar_conventions_or_borrow_an_event_timestamp():
+def test_byline_cannot_mix_calendar_conventions_or_borrow_an_unrelated_calendar():
     parser = qa.PrimaryDates()
     # Each field individually could be mapped to Oct 1, but there is no single
     # convention under which both metadata values corroborate that day.
     parser.feed(primary_date_html(["2026-10-01T00:46:24Z", "2026-10-02T01:00:00Z"], "1 OCTUBRE 2026"))
     assert parser.days_for(BASE + "primary/") == set()
     parser = qa.PrimaryDates()
-    parser.feed(primary_date_html(["2026-10-01T00:46:24Z"], "1 OCTUBRE 2026", byline_timestamp="2026-10-01T02:00:00Z"))
+    parser.feed(primary_date_html(["2026-10-01T00:46:24Z"], "1 OCTUBRE 2026", byline_timestamp="2026-10-02T13:00:00Z"))
     assert parser.days_for(BASE + "primary/") == set()
+
+
+def test_same_primary_publication_day_does_not_invent_equality_of_distinct_publisher_instants():
+    root = Path(__file__).parents[1]
+    folder = root / "tests/fixtures/pulso_runtime_real"
+    manifest = json.loads((folder / "manifest.json").read_text())
+    record = next(value for value in manifest["requests"] if "minsal-conmemora-dia-nacional-del-donante" in value["url"])
+    compressed = (folder / record["gzip_file"]).read_bytes()
+    raw = gzip.decompress(compressed)
+    assert qa.digest(compressed) == record["gzip_sha256"]
+    assert qa.digest(raw) == record["sha256"]
+    parser = qa.PrimaryDates()
+    original = raw.decode(record.get("charset") or "utf-8")
+    parser.feed(original)
+    proof = parser.publication_evidence_for(record["url"])
+    assert proof["publication_date"] == "2026-09-26"
+    assert proof["publisher_date_convention"] == "calendar_agreement"
+    assert proof["primary_byline_instants_match_metadata"] is False
+    assert set(proof["primary_timestamps"]) == {"2026-09-26T17:16:04.571Z"}
+    assert {value["timestamp"] for value in proof["visible_bylines"]} == {"2026-09-26T17:20:09.19Z"}
+    assert parser.strict_original_projection(record["url"])["visible_publication_date"] == "2026-09-26"
+    capture = dict(record, gzip_file=str(Path("tests/fixtures/pulso_runtime_real") / record["gzip_file"]))
+    row = dict(url=record["url"], publication_date="2026-09-26", primary_detail_sha256=record["sha256"], original_http_captures=[capture])
+    assert qa.verify_primary_capture(row, root) is None
+    # A conflicting primary time cannot borrow the unchanged visible day.
+    tampered = qa.PrimaryDates()
+    tampered.feed(original.replace('2026-09-26T17:20:09.19Z', '2026-09-27T17:20:09.19Z'))
+    assert {value["timestamp"] for value in tampered.bylines} == {"2026-09-27T17:20:09.19Z"}
+    assert tampered.days_for(record["url"]) == set()
 
 
 def test_queue_and_original_byline_validate_the_same_real_calendar(evidence):

@@ -215,16 +215,19 @@ class PrimaryDates(HTMLParser):
             if None in visible or len(visible) != 1:
                 return dict(reason="ambiguous_or_invalid_primary_visible_byline")
             day = visible.pop()
-            # The captured primary <time datetime> must identify the same
-            # publication instant as URL-bound metadata, not a nearby event.
+            # Publisher originals can expose a byline datetime a few minutes
+            # after their datePublished while corroborating the same calendar
+            # day. Preserve the two instants; verification here establishes
+            # the publication day, never their equality or an invented time.
             instants = {stamp(value) for value in dates if stamp(value)}
-            if any(not stamp(value["timestamp"]) or stamp(value["timestamp"]) not in instants for value in self.bylines):
-                return dict(reason="primary_byline_timestamp_not_bound_to_metadata")
+            if any(not stamp(value["timestamp"]) for value in self.bylines):
+                return dict(reason="primary_byline_timestamp_invalid")
             convention = date_convention(dates + [value["timestamp"] for value in self.bylines], day)
             if not convention:
                 return dict(reason="visible_byline_not_consistent_with_one_timestamp_convention")
             return dict(publication_date=day, publisher_date_convention=convention,
-                        visible_bylines=self.bylines, primary_timestamps=dates)
+                        visible_bylines=self.bylines, primary_timestamps=dates,
+                        primary_byline_instants_match_metadata=all(stamp(value["timestamp"]) in instants for value in self.bylines))
         days = {publisher_day(value) for value in dates if publisher_day(value)}
         if len(days) == 1:
             return dict(publication_date=days.pop(), publisher_date_convention="america_santiago_metadata_only",
@@ -271,7 +274,6 @@ class PrimaryDates(HTMLParser):
         visible = {visible_byline_day(value["text"]) for value in self.bylines}
         if not self.bylines or None in visible or len(visible) != 1:
             raise ValueError("exception_original_visible_byline_missing_or_ambiguous")
-        instants = {stamp(value) for value in values if stamp(value)}
         if unresolved_date_conflict:
             # The four real originals expose a publisher byline datetime
             # different from their own metadata datePublished. Preserve that
@@ -280,8 +282,8 @@ class PrimaryDates(HTMLParser):
             if any(not stamp(value["timestamp"]) or date_convention(
                     [value["timestamp"]], visible_byline_day(value["text"])) is None for value in self.bylines):
                 raise ValueError("exception_conflict_primary_byline_datetime_invalid")
-        elif any(not stamp(value["timestamp"]) or stamp(value["timestamp"]) not in instants for value in self.bylines):
-            raise ValueError("exception_original_byline_instant_unbound")
+        elif not date_convention(values + [value["timestamp"] for value in self.bylines], next(iter(visible))):
+            raise ValueError("exception_original_primary_calendars_not_corroborated")
         title = article.get("headline") or " ".join(self.title_text)
         json_body = article.get("articleBody")
         body = " ".join(json_body.split()) if isinstance(json_body, str) and json_body.strip() else " ".join(self.primary_paragraphs)
