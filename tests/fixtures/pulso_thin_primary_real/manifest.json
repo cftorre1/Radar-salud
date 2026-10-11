@@ -2,30 +2,30 @@
   "schema_version": "1.0",
   "source": "pulso_latercera",
   "mode": "exact_offline_retention_of_all_cold_incomplete_detail_originals_no_inventory_injection",
-  "discovery_run_sha256": "c3e01d43cb2d48cabe733e3920bc9cbe20819472caa771c954683ba7016a98d3",
-  "discovery_at": "2026-10-11T11:07:51.687201+00:00",
+  "discovery_run_sha256": "837dce862e99fba5491804bf69026441412fccfa9495d0dcf9f1cb788b1494e1",
+  "discovery_at": "2026-10-11T13:02:10.059196+00:00",
   "observed_discovery_run_sha256s": [
     "660f979b34a7ba9025ee0ddfc7d41f5edf89bb145939fb290ae4c37d48b38131",
-    "c3e01d43cb2d48cabe733e3920bc9cbe20819472caa771c954683ba7016a98d3"
+    "837dce862e99fba5491804bf69026441412fccfa9495d0dcf9f1cb788b1494e1"
   ],
   "expected_unique_incomplete_urls": 30,
   "requests": [
     {
       "url": "https://www.latercera.com/branded/noticia/empresas-x-chile-el-movimiento-empresarial-que-busca-fomentar-el-empleo-juvenil-impulsando-practicas-tp/",
       "status": 200,
-      "captured_at": "2026-10-11T11:07:33.475461+00:00",
-      "sha256": "72fc28c440379065c28441a4a0504baa810c83bbef41d435da4cd5c8610e0377",
-      "gzip_sha256": "2e82525ea0821db46c2eb36b45c499b7c562d40e254b908e27ff4e99540b1042",
-      "bytes": 418163,
+      "captured_at": "2026-10-11T13:01:53.255157+00:00",
+      "sha256": "6f80192372945996717972287c6a385b50ed429d5b709ad2fd60474a016ce88d",
+      "gzip_sha256": "993619c68f081a51084ec2e1ef4687d01c02e191610c96a6c84236667dd08a2c",
+      "bytes": 410953,
       "charset": "utf-8",
-      "returned_text_utf8_sha256": "72fc28c440379065c28441a4a0504baa810c83bbef41d435da4cd5c8610e0377",
+      "returned_text_utf8_sha256": "6f80192372945996717972287c6a385b50ed429d5b709ad2fd60474a016ce88d",
       "content_type": "text/html; charset=utf-8",
       "primary_article_error": {
         "error_type": "ValueError",
         "reason": "incomplete_article_evidence"
       },
-      "original_capture_manifest_sha256": "37e23b1f3916e4617538e5a953ccaf06e39d943823a51b925859bf3182491b43",
-      "original_capture_gzip_file": "responses/72fc28c440379065c28441a4a0504baa810c83bbef41d435da4cd5c8610e0377.gz",
+      "original_capture_manifest_sha256": "6152f4b78bfd3dcf10590f413d2f1b2d4b16a01ed2fc254331c44c41ed30763f",
+      "original_capture_gzip_file": "responses/6f80192372945996717972287c6a385b50ed429d5b709ad2fd60474a016ce88d.gz",
       "original_bytes_verified": true,
       "response_kind": "html",
       "title": "“Empresas x Chile”, el movimiento empresarial que busca fomentar el empleo juvenil impulsando prácticas TP",
@@ -34,6 +34,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Branded",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 103,
+        "sha256": "9dc16987f2a9d88e07556f02a471173f27060d8a263b668f2f4a996321d600e8"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "11 OCTUBRE 2026",
@@ -64,8 +71,8 @@
       ],
       "current_parser": {
         "status": "error",
-        "error_type": "ValueError",
-        "reason": "incomplete_article_evidence"
+        "error_type": "TextUnavailableArticle",
+        "reason": "publisher_sponsored_text_unavailable"
       },
       "health_anchor_current_source": false,
       "health_anchor_broad_clinical_audit": false,
@@ -78,7 +85,7 @@
       "body_complete_as_original": false,
       "primary_document_diagnosis": "url_bound_primary_article_text_below_160",
       "original_article_path": true,
-      "gzip_file": "72fc28c440379065c28441a4a0504baa810c83bbef41d435da4cd5c8610e0377.html.gz",
+      "gzip_file": "6f80192372945996717972287c6a385b50ed429d5b709ad2fd60474a016ce88d.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
@@ -108,6 +115,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Finde",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 1736,
+        "sha256": "f79eae2f4cff74a8311bfdf4f89067b14a0c431904d6a30ca15e397825819270"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "10 OCTUBRE 2026",
@@ -255,6 +269,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Paula",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 884,
+        "sha256": "14d866d5000d84d522e7777e5fc69247868ea8a174ef7a91eb00afecbe9616b2"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "27 MAYO 2026",
@@ -384,6 +405,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Paula",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 1438,
+        "sha256": "fd0436d0e3f4071c7eb94d26d87c8ae4f5b1e14b8fcbaf9a29ff85b5258fc54e"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "12 AGOSTO 2026",
@@ -519,6 +547,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Paula",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 918,
+        "sha256": "0e9ee3679b285b7bb5dbcf4123b4b7b5150e2c4ec2193ad229c66fb6953b88d5"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "25 MARZO 2026",
@@ -648,6 +683,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Paula",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 840,
+        "sha256": "efc9395b2769ed52445a6967635b5bc043d25a2537be6d5f9187b56c27ca5f9d"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "11 MARZO 2026",
@@ -783,6 +825,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Paula",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 894,
+        "sha256": "c05f0dea071662d58b3b5a0a62bfd8a6678b9e78cd853b1b7dcc32e881570c05"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "29 JULIO 2026",
@@ -915,6 +964,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Paula",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 909,
+        "sha256": "2a220c9954f1cb6a8a1fb0908ab3a6511831d794d9a8a47c7f0ca21f879173da"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "15 JULIO 2026",
@@ -1044,6 +1100,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Paula",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 712,
+        "sha256": "feaee755c11dabf74d9349487c22475d693ebd9bf617da43829a5a0edb5eac42"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "22 JULIO 2026",
@@ -1173,6 +1236,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Paula",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 1166,
+        "sha256": "6a7dcbb8157b4edb2dfb465154c12ed864fe1cb6b36465db660ef16246ed3901"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "18 MARZO 2026",
@@ -1302,6 +1372,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Paula",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 9013,
+        "sha256": "624a72804ae2376449882c1f8a204d49a3052b1f06359da09f3dfea8976d6219"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "26 ABRIL 2026",
@@ -1437,6 +1514,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Política",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 3899,
+        "sha256": "f8ef0023fc7f9eeec85016baceebed05de81f2c5fcc42a1859893a7caa9970bf"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "2 MAYO 2026",
@@ -1566,6 +1650,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Pulso",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 6088,
+        "sha256": "b0777f1e1199bc51556f941500536b9fd26e393a9c74a508e60b3b7dbce86703"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "20 SEPTIEMBRE 2026",
@@ -1644,6 +1735,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Sustentabilidad",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 11032,
+        "sha256": "48d9b80231e305f6cdd294c1b5169374a82cf1f5f8480897888601e5f7abbdc4"
+      },
       "url_bound_video_objects": 0,
       "url_bound_video_evidence": [],
       "visible_byline_text": "8 SEPTIEMBRE 2026",
@@ -1726,6 +1824,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 146,
+        "sha256": "1adfdaf01dabe1aea545d7329d3507ab84f47f1431cc87be207d67117e2ddb5f"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -1817,6 +1922,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 150,
+        "sha256": "c9efd7737e91968ebe078822bec737458f0d50b2f3e22bc4395b71f98e43fde7"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -1908,6 +2020,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 151,
+        "sha256": "643129213d93dac0fe381eb778dec91ff0557fd02eef45241c5e9bb5810ae4ca"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2000,6 +2119,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 156,
+        "sha256": "35237a39c92533361cfb150615d1e7561a45a56a5037bb9e5767720637ca75e6"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2092,6 +2218,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 138,
+        "sha256": "ce5fc949e43b1b3ed8c5f8e8d3cbf38b599757b76e20282755d34f9641f8b0c5"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2183,6 +2316,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 141,
+        "sha256": "c99a884df58838baabbf5063a8cc6a8c4a44451042c301ff379b84d121b4efd7"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2274,6 +2414,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 148,
+        "sha256": "2021e24ae6a82172e1392361d2dca80482abe3d6e53e74da976d780c7beeb87a"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2367,6 +2514,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 159,
+        "sha256": "6d570cbd3f545bb6bf9330e4c1088564055e9f14125c3af6b4c56a896fc52dd9"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2460,6 +2614,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 136,
+        "sha256": "ae56c141ac755d3455b390e51bb5da7e1e6a15ac0d0282dca1a8180f9685d1a3"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2551,6 +2712,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 145,
+        "sha256": "18d97c9dbc8271f117da939ab2e89fde7e8b8955c8c59ed273f739f21f44869c"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2642,6 +2810,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 155,
+        "sha256": "75105aeff02888a1751154d3354c9c7485930a6a848230b05501add09069d443"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2734,6 +2909,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 159,
+        "sha256": "9ec6865d6857504ac9dd3da7669f1ff7274a9ebe31ced723605d6835e0e134e5"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2827,6 +3009,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 153,
+        "sha256": "0009709b0112dfb344e64c2e285d4e3695336f58e6d3def1cb4dd5d5d55a3f2b"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -2919,6 +3108,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 151,
+        "sha256": "7ae34cf40d9c54ae613601148a4c5a02cc4ff0f6054398a09294d8cce8f256cc"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -3011,6 +3207,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 140,
+        "sha256": "d58639e932e25d38cc102d4b88e31113812b27c2c65070b94a6cce01137c33ff"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
@@ -3102,6 +3305,13 @@
       "canonical_matches_requested": true,
       "url_bound_article_nodes": 1,
       "section": "Videos",
+      "url_bound_liveblog_nodes": 0,
+      "liveblog_document_projection": null,
+      "html_wrapper_observation": {
+        "scope": "body_container_text_including_nonprimary_controls_not_a_video_transcript",
+        "chars": 130,
+        "sha256": "e2dde5b82ef268a59d6d5d3160c030b932629e53e065df706045a5c71dc84c43"
+      },
       "url_bound_video_objects": 1,
       "url_bound_video_evidence": [
         {
