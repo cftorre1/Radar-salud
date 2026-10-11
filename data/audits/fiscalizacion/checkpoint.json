@@ -1,30 +1,34 @@
 {
-  "work": "Codex D SIS + SUSESO",
-  "base_sha": "cadb6c2",
+  "recorded_at": "2026-10-11T06:17:21.011800+00:00",
   "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
-  "as_of": "2026-10-11",
-  "evidence_method": "official pages read through web tool; direct Python HTTP denied by environment proxy (403)",
-  "parser_fixture_kind": "minimal reconstructed table rows from verified source columns; not raw fetched HTML",
-  "validated_hypotheses": [
-    "SIS publication and emission dates are separate; 7462 source lists 2025-09-23 publication but 2026-09-23 emission on both listing and detail",
-    "SIS entity column is authoritative when populated; empty provider column requires bounded summary extraction",
-    "SIS appeal 9774 reduces an earlier fine; the earlier act date 2025-07-22 must not become the current event date",
-    "SUSESO fiscalized-actor taxonomy contains related normative acts; it is not evidence of new enforcement",
-    "SUSESO 791293, 790778 and 790779 have dates 2026-09-29, 2026-09-23 and 2026-09-11 and belong to both Isapres and COMPIN; preserve both memberships on one URL",
-    "Related circulars/dictamen are rejected from fiscalization before AI expenditure with reason related_normative_not_enforcement; independent normative coverage is audited separately",
-    "Fiscalization identity must use source + canonical document URL, not mutable title; replay repairs existing archived dates and merges legacy title aliases while retaining original detection, attempts, raw and terminal decisions",
-    "SIS date contradictions must be held with source_date_conflict_requires_review; reductions/revocations must not be counted as fresh imposed sanctions",
-    "Provider pulse is a 30-day publication window: retain each act emission date and expose publication_date separately",
-    "SUSESO 791293 is a material cross-actor normative instruction, not enforcement; a source/date-specific editorial review routes it to suseso with full alphanumeric legal identity. Fiscal feed dedup preserves IF/IP and distinct document URLs."
-  ],
-  "source_urls": [
-    "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n-7462-emision-23-09-2026/",
-    "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n6836-emision-08-09-2026/",
-    "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n9774-emision-20-08-2026/",
-    "https://www.suseso.gob.cl/612/w3-article-791293.html",
-    "https://www.suseso.gob.cl/612/w3-article-790778.html",
-    "https://www.suseso.gob.cl/612/w3-article-790779.html"
-  ],
-  "acceptance": "in_progress; native live coverage not validated",
-  "next_step": "Apply scoped reconciliation against verified original rows, recover existing SIS history and publish reviewed SUSESO normativa 791293 as BACKFILL; regenerate feed and run full QA/Reviewer with original capture limitations"
+  "pr": 15,
+  "baseline_sha": "cadb6c2",
+  "latest_parser_sha": "3d2cf3255f81873b24dd193c019602429477d4da",
+  "native_http": "validated; local CONNECT403 bypassed through authorized read-only GitHub Actions",
+  "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38116583352",
+  "receipts": 192,
+  "official_recent_confirmed": {
+    "sis": {
+      "30": 14,
+      "90": 32
+    },
+    "suseso": {
+      "30": 20,
+      "90": 77,
+      "individual_offices_90": 75,
+      "enforcement_publications_90": 2
+    }
+  },
+  "date_uncertain_suseso_reports": 10,
+  "real_engine_replay": {
+    "idempotent": true,
+    "other_queue_records_preserved": true,
+    "github_run_pending": "https://github.com/cftorre1/Radar-salud/actions/runs/38117344816"
+  },
+  "coverage_complete": false,
+  "source_states": {
+    "sis": "OPERATIVE_DEGRADED",
+    "suseso": "OPERATIVE_DEGRADED"
+  },
+  "next_step": "Apply native replay to fiscalization stock; independently reconcile every recent record to history/feed; validate desktop/mobile and independent Reviewer. Unknown report publication dates and contradictory historical IP4640 listing remain explicit. Global baseline failures do not authorize release."
 }

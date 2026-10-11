@@ -47,7 +47,9 @@ def parse_actor_listing(html, actor, page):
                     'discovered_from': page, 'listing_urls': [page],
                     'fiscalized_actors': [actor], 'fiscalized_actor': actor,
                     'actor_evidence': 'related_actor_taxonomy', 'document_class': doc_kind,
-                    'publication_date': publication_date, 'event_date_basis': 'publication' if publication_date else None,
+                    'publication_date': None, 'emission_date': publication_date,
+                    'observed_listing_date': publication_date,
+                    'event_date_basis': 'emission' if publication_date else None,
                     'suggested_source': 'suseso' if doc_kind == 'related_normative' else None,
                 }))
     return list(items.values())
@@ -263,5 +265,6 @@ def process_reviewed_normative(raw, cfg):
         normative_document_label=review['legal_identity'], legal_identity=review['legal_identity'],
         normative_document_number=review['legal_identity'], normative_context=review['normative_context'],
         display_title=review['plain_language_title'], editorial_review=review['review_basis'],
-        publication_date=review['event_date'], source_documents=[{'url':raw.url,'label':'Ficha oficial SUSESO'}])
+        publication_date=None, emission_date=review['event_date'], event_date_basis='emission',
+        source_documents=[{'url':raw.url,'label':'Ficha oficial SUSESO'}])
     return row

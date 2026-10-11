@@ -1,36 +1,34 @@
 {
-  "issue_origin": 5,
-  "related_issue": 8,
-  "task_id": "source_repair_fiscalization_lane_2026_10_11",
-  "worker": "Codex D / Regulatory Worker",
+  "recorded_at": "2026-10-11T06:17:21.011800+00:00",
   "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
-  "pull_request": 15,
-  "pull_request_url": "https://github.com/cftorre1/Radar-salud/pull/15",
-  "code_and_stock_sha": "58d614d9e2c71b2811bda41a1f618309226d5811",
-  "staging_merge_sha": null,
-  "status": "blocked",
-  "acceptance_complete": false,
-  "recorded_at": "2026-10-11T04:53:10.090541+00:00",
-  "facts": {
-    "sis_corrected_existing_acts": 12,
-    "sis_date_conflict_held": 1,
-    "suseso_excluded_from_fiscalization": 15,
-    "suseso_material_instruction_published_as_normativa_backfill": 1,
-    "independent_feed_rows_preserved": 48,
-    "native_live_validated": false,
-    "exhaustive_site_wide_absence_certified": false
+  "pr": 15,
+  "baseline_sha": "cadb6c2",
+  "latest_parser_sha": "3d2cf3255f81873b24dd193c019602429477d4da",
+  "native_http": "validated; local CONNECT403 bypassed through authorized read-only GitHub Actions",
+  "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38116583352",
+  "receipts": 192,
+  "official_recent_confirmed": {
+    "sis": {
+      "30": 14,
+      "90": 32
+    },
+    "suseso": {
+      "30": 20,
+      "90": 77,
+      "individual_offices_90": 75,
+      "enforcement_publications_90": 2
+    }
   },
-  "evidence_files": [
-    "original_observations_2026_10_11.json",
-    "original_web_receipts_2026_10_11.json",
-    "reconciliation_2026_10_11.json",
-    "validation_2026_10_11.json"
-  ],
-  "blockers": [
-    "native_original_surface_http_403",
-    "existing_14_browser_failures",
-    "existing_8_statistics_reviewer_findings"
-  ],
-  "next_action": "Keep draft open. Run native original-surface reconciliation in an authorized environment with official-domain access; extend dynamic/paginated 30/90-day bounds. Resolve baseline browser/Reviewer failures and validate the integration SHA before safe staging merge. Then verify real post-merge runtime before declaring either source repaired.",
-  "scope_note": "This checkpoint does not close issues #5/#8 or certify other source lanes. No source is marked repaired from a draft PR or skipped integration test."
+  "date_uncertain_suseso_reports": 10,
+  "real_engine_replay": {
+    "idempotent": true,
+    "other_queue_records_preserved": true,
+    "github_run_pending": "https://github.com/cftorre1/Radar-salud/actions/runs/38117344816"
+  },
+  "coverage_complete": false,
+  "source_states": {
+    "sis": "OPERATIVE_DEGRADED",
+    "suseso": "OPERATIVE_DEGRADED"
+  },
+  "next_step": "Apply native replay to fiscalization stock; independently reconcile every recent record to history/feed; validate desktop/mobile and independent Reviewer. Unknown report publication dates and contradictory historical IP4640 listing remain explicit. Global baseline failures do not authorize release."
 }

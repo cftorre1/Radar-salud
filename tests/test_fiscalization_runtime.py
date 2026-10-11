@@ -85,3 +85,30 @@ def test_primary_agent_review_corrects_misassigned_actor_and_preserves_substitut
             assert row['event_type']=='SANCTION_SUBSTITUTION'
             assert row['sanction_amount'] is None and row['replaced_fine_amount']==5
             assert 'cancelación del registro' in row['what_happened']
+
+
+def test_register_feed_aggregates_without_losing_legal_ids_or_inventing_publication():
+    from datetime import date
+    spec=importlib.util.spec_from_file_location('register_export',Path('scripts/export_web_snapshot.py'))
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    rows=[process_professional_sanction(raw,{'base_confidence':100}) for raw in parse_enforcement_listing(professional_table(75),*ENFORCEMENT_PAGES[0])]
+    pulse,=module._enforcement_register_pulses(rows,date(2026,10,11))
+    assert pulse['counts']=={'30':75,'90':75}
+    assert len(pulse['source_alternatives'])==75
+    assert len({r['source_record_id'] for r in pulse['source_alternatives']})==75
+    assert pulse['publication_date'] is None and pulse['event_date_basis']=='emission'
+    assert all('2027-01-04' in r['material'] for r in pulse['source_alternatives'])
+
+
+def test_primary_proof_reopens_date_rejection_preserving_original_detection(tmp_path):
+    from radar_salud.models import RawItem
+    raw=RawItem('superintendencia_fiscalizacion','Acto','https://www.superdesalud.gob.cl/normativa/acto','SIS','official','2025-09-23',metadata={'event_date_basis':'publication'})
+    queue=PendingQueue(tmp_path/'queue.json');old=datetime(2026,9,25,tzinfo=timezone.utc)
+    queue.discover(raw.source_slug,[raw],now=old)
+    key=fingerprint(raw);queue.finish(key,'rejected','source_date_conflict_requires_review',now=old)
+    raw.event_date='2026-09-23';raw.metadata.update(event_date_basis='verified_primary_emission',publication_date=None,date_conflicts=[],primary_document_review={'decision':'publish_fiscalization'})
+    assert queue.discover(raw.source_slug,[raw],now=datetime(2026,10,11,tzinfo=timezone.utc))==0
+    item=queue.items[key]
+    assert item['status']=='pending' and item['lane']=='BACKFILL'
+    assert item['detected_at']==old.isoformat()
+    assert item['rediscovery_repairs'][0]['previous_reason']=='source_date_conflict_requires_review'

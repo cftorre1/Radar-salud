@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T04:09:16.638Z",
+  "updated_at": "2026-10-11T06:17:21.011800+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3252,7 +3252,7 @@
       "id": "source_repair_fiscalization_lane_2026_10_11",
       "status": "in_progress",
       "priority": "critical",
-      "owner": "Pele + Regulatory Worker",
+      "owner": "Codex D · Regulatory Source Recovery",
       "source": "Issue #5 autonomy split",
       "objective": "Repair Superintendencia Fiscalización and SUSESO Fiscalización freshness/publication semantics.",
       "depends_on": [],
@@ -3269,9 +3269,14 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11",
-      "current_subfront": "sis_suseso_fiscalization",
-      "next_action": "Reconcile 2026 fiscalization surfaces."
+      "last_progress_at": "2026-10-11T06:17:21.011800+00:00",
+      "current_subfront": "native_stock_reconciliation",
+      "next_action": "Apply native replay to fiscalization stock; independently reconcile every recent record to history/feed; validate desktop/mobile and independent Reviewer. Unknown report publication dates and contradictory historical IP4640 listing remain explicit. Global baseline failures do not authorize release.",
+      "progress": "Native official HTTPS validated, 192 receipts; actual engine local replay idempotent. Confirmed SIS 14/32 and SUSESO 20/77 in 30/90 days. Recovery and independent coverage review underway.",
+      "evidence": [
+        "data/audits/fiscalizacion/checkpoint.json",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38116583352"
+      ]
     },
     {
       "id": "source_repair_mutualities_lane_2026_10_11",

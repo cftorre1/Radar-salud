@@ -464,9 +464,56 @@ def _statistical_value_ladder(s):
 
     return r
 
+def _enforcement_register_pulses(signals, today=None):
+    """Keep legal records individually; aggregate only reviewed register families."""
+    today=today or date.today()
+    groups=defaultdict(list);other=[]
+    for signal in signals:
+        family=('suseso_emisores' if signal.get('source_record_id') and
+            signal.get('document_class')=='enforcement_sanction' else
+            'sis_agentes' if signal.get('scopes')==['Agentes de ventas'] else None)
+        emitted=_d(signal.get('emission_date'))
+        if family and emitted and 0 <= (today-emitted).days <=90:
+            groups[family].append(signal)
+        else:other.append(signal)
+    for family,items in groups.items():
+        items.sort(key=lambda s:(s['emission_date'],s.get('source_record_id') or s['source_url']),reverse=True)
+        recent30=sum((today-_d(s['emission_date'])).days<=30 for s in items)
+        latest=items[0]
+        alternatives=[]
+        for s in items:
+            amount=s.get('sanction_amount');unit=s.get('sanction_unit')
+            material=s.get('regulated_entity') or ''
+            if amount is not None and unit:material+=f' · {amount:g} {unit}'
+            material+=' · '+(s.get('validity_text') or s.get('what_happened') or '')
+            alternatives.append(dict(title=s['title'],url=s['source_url'],source_record_id=s.get('source_record_id'),
+                event_date=s['emission_date'],emission_date=s['emission_date'],publication_date=s.get('publication_date'),
+                event_date_basis='emission',material=material,ingestion_mode=s.get('ingestion_mode'),detected_at=s.get('detected_at')))
+        if family=='suseso_emisores':
+            title='SUSESO sanciona a emisores de licencias · registro de 90 días'
+            what=f'{recent30} oficios emitidos en 30 días y {len(items)} en 90 días, con multas y suspensión de emisión de licencias. Las fechas de suspensión se detallan por profesional.'
+            why='Prestadores, COMPIN e Isapres deben contrastar las licencias con las suspensiones del registro. Los sancionados son los profesionales emisores.'
+        else:
+            from collections import Counter
+            effects=Counter(s['event_type'] for s in items)
+            title='SIS sanciona a agentes de ventas · registro de 90 días'
+            what=f'{recent30} resoluciones emitidas en 30 días y {len(items)} en 90: {effects["REGISTRATION_CANCELLATION"]} cancelaciones directas, {effects["SANCTION_SUBSTITUTION"]} multas impagas sustituidas por cancelación, {effects["SANCTION"]} multas y {effects["SANCTION_WARNING"]} censuras.'
+            why='Las Isapres deben revisar habilitación, consentimiento y veracidad de la venta. La cancelación del registro impide actuar como agente; no equivale a una absolución.'
+        pulse=dict(latest,title=title,what_happened=what,why_it_matters=why,card_what=what,card_why=why,
+            event_type='SANCTION_REGISTER',source_record_id=family+':rolling90',regulated_entity=None,
+            event_date=latest['emission_date'],emission_date=latest['emission_date'],publication_date=None,
+            event_date_basis='emission',window_basis='emission_date',sanction_count=len(items),
+            counts={'30':recent30,'90':len(items)},source_alternatives=alternatives,source_documents=[],
+            sanction_amount=None,sanction_unit=None,key_points=[],related_reference_ids=[],
+            validity_text='Cada acto conserva su fecha de emisión y efecto. La fecha de publicación del registro no está acreditada; consulte la vigencia individual.',
+            ingestion_mode='BACKFILL',risk_notes=[],key_facts=[])
+        other.append(pulse)
+    return other
+
 def _sanction_pulses(signals, today=None):
     """Keep individual records in history, show one rolling pulse per sector."""
     today=today or date.today()
+    signals=_enforcement_register_pulses(signals,today)
     groups=defaultdict(list);other=[]
     for s in signals:
         scopes=s.get("scopes") or []
