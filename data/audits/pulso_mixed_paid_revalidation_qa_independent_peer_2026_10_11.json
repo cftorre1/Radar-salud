@@ -1,0 +1,94 @@
+{
+  "schema_version": "pulso_mixed_paid_revalidation_qa_independent_peer_v1",
+  "source_id": "pulso_latercera",
+  "reviewed_commit": "e93a2c2d9efb098c4285efc797091541c55f0630",
+  "committed_file_sha256": {
+    "scripts/qa_pulso_recovery.py": "17d1acdfb3a57e0aee116095ff3cf78a9597076f707996f36e74cfdcdda4c187",
+    "tests/test_pulso_paid_revalidation_qa.py": "ce11705008485677a223249793f3f9d2b8ba8e8160a70bee7b24240904f5b06c"
+  },
+  "status": "PASS_SCOPED_FIRST18_REUSE_6_REJECT_25_NEW_FAST_QA_REPAIR",
+  "runtime_acceptance": "NOT_ACCEPTED",
+  "scope": "Independent exact committed QA reader repair: current guard computation bound to execution fingerprint bytes, receipt/output/body/request provenance, and detection of surviving receipt/revision/new-attempt claims when admission is removed. No source edits, runtime writes, network, or AI.",
+  "fixed_findings": [
+    {
+      "id": "MUTABLE_REHASHED_CURRENT_GUARD_VERDICT",
+      "original_qa_commit": "a40ecafe19fe1bc5fe02c2e1592585a2f3e11ed6",
+      "problem": "An actual ready80 model could be recorded as rejected by rehashing its mutable validation and receipt. The current reader now replays exact execution-bound guard bytes against full original model/body and requires complete result equality.",
+      "independent_exact_attack_rejected": "paid_revalidation_recorded_verdict_not_actual_guard_result"
+    },
+    {
+      "id": "REMOVED_ADMISSION_HIDES_SURVIVING_REVALIDATION_CLAIMS",
+      "problem": "Receipt, archived admission revision, and new FAST attempt receipts are now each recognized as claims requiring full proof, even if the admission field is removed.",
+      "independent_exact_attack_rejected": "paid_revalidation_admission_or_unique_revision_changed"
+    }
+  ],
+  "validation": {
+    "current_peer_qa_tests": {
+      "command": "pytest -q tests/test_pulso_paid_revalidation_qa.py",
+      "passed": 44,
+      "seconds": 20.43
+    },
+    "prior_peer_qa_and_product_tests": {
+      "command": "pytest -q tests/test_pulso_paid_revalidation_qa.py tests/test_pulso_paid_guard_revalidation.py",
+      "passed": 75,
+      "seconds": 65.69
+    },
+    "parent_independent_regressions": {
+      "command": "pytest -q tests/test_pulso_paid_revalidation_qa.py -k 'forge or removing'",
+      "passed": 8,
+      "deselected": 36,
+      "seconds": 6.46
+    },
+    "current_guard_and_reader_hashes_match_committed_git_blobs": true,
+    "parent_new_fast_false_ready_regression": {
+      "command": "pytest -q tests/test_pulso_paid_revalidation_qa.py::test_new_fast_receipt_cannot_rehash_a_false_ready_result",
+      "passed": 1,
+      "seconds": 3.5
+    }
+  },
+  "independent_child_report_sha256": "1a99a0d9622978b14de6eb4b0025229a5e7f65db50cf869c7abcf35f31f6e67b",
+  "independent_child_report": {
+    "schema": "scoped_independent_mixed_receipt_repair_peer_v1",
+    "scope": "FIRST18reuse_6reject_25newFAST_receipt_claims_only",
+    "qa_sha256": "c951d303d2b54b81ee23c61cab7405eb0e0d4a8786b37d1461682471802d6e61",
+    "baseline_unit_receipt_bound": true,
+    "unit_no_ai_calls": true,
+    "synthetic_execution_envelope": true,
+    "attacks": {
+      "rehashed_false_rejection": {
+        "accepted": false,
+        "error": "paid_revalidation_recorded_verdict_not_actual_guard_result"
+      },
+      "removed_admission_surviving_receipt_and_revision": {
+        "accepted": false,
+        "error": "paid_revalidation_admission_or_unique_revision_changed"
+      }
+    },
+    "tests": {
+      "command": "pytest -q tests/test_pulso_paid_revalidation_qa.py tests/test_pulso_paid_guard_revalidation.py",
+      "passed": 75,
+      "seconds": 65.69
+    },
+    "runtime_acceptance": false,
+    "future_multi_attempt_historical_limit": "Known P2 outside first25; recorded separately; not reviewed as resolved.",
+    "final_reader_snapshot": {
+      "qa_sha256": "17d1acdfb3a57e0aee116095ff3cf78a9597076f707996f36e74cfdcdda4c187",
+      "additional_diff_review": "NEW_FAST_RECEIPTS surviving claim included; deferred-to-ready forged new receipt test added. No findings within FIRST25 scope.",
+      "tests": {
+        "command": "pytest -q tests/test_pulso_paid_revalidation_qa.py",
+        "passed": 44,
+        "seconds": 20.43
+      },
+      "commit_binding": "Pending author commit; parent must compare git blob SHA."
+    },
+    "peer_verdict": "PASS_SCOPED_IMPLEMENTATION_FIRST25_RECEIPT_FIX_NOT_RUNTIME_ACCEPTANCE"
+  },
+  "limits": [
+    "This is implementation QA, not evidence of completed current real processing, genuine new FAST outputs, final editorial semantics, staging or idempotence acceptance.",
+    "Continuation cases in unit tests use explicitly synthetic response identifiers and execution envelopes; actual first25 still require new real successful Response events and complete current requests.",
+    "P2 historical multi-attempt receipt consistency beyond latest remains explicitly scoped outside FIRST25; no multiple new attempts exist in the first planned execution. It is not represented as resolved."
+  ],
+  "actual_new_ai_requests": 0,
+  "runtime_state_writes": 0,
+  "source_product_edits": 0
+}
