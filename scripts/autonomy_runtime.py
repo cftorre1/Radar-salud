@@ -37,6 +37,7 @@ FAMILY_INPUTS = {
         "config/media_early_signal_gate.json", "config/taxonomy_v2.json",
     ],
 }
+EXECUTOR_INPUTS = ["scripts/autonomy_lane_runner.py", "scripts/autonomy_recovery.py"]
 
 
 class CandidateNeedsRevalidation(RuntimeError):
@@ -88,10 +89,14 @@ def scoped_fingerprint(workspace, commit, inputs, blob_cache=None):
     return hashlib.sha256(serialized.encode()).hexdigest()
 
 
-def queue_for(workspace, failure_path=None):
+def queue_for(workspace, failure_path=None, infrastructure=None):
     queue = json.loads((workspace / "config/orchestrator_queue.json").read_text())
     sha = command(["git", "rev-parse", "HEAD"], workspace).stdout.strip()
     queue["input_sha"] = sha
+    infrastructure = Path(infrastructure or workspace).resolve()
+    infrastructure_sha = command(["git", "rev-parse", "HEAD"], infrastructure).stdout.strip()
+    queue["infrastructure_sha"] = infrastructure_sha
+    executor_fingerprint = scoped_fingerprint(infrastructure, infrastructure_sha, EXECUTOR_INPUTS)
     for task in queue.get("tasks", []):
         task["input_sha"] = sha
     editorial = next((task for task in queue["tasks"] if task["id"] == "source_audit_issue5_iteration3_editorial_2026_10_09"
@@ -115,7 +120,15 @@ def queue_for(workspace, failure_path=None):
         family = engine._family(task)
         if family in FAMILY_INPUTS:
             inputs = FAMILY_INPUTS[family] + ["src/radar_salud/scouts.py", "src/radar_salud/models.py", "config/sources.json", "config/beta_source_configs.json"]
-            task["input_fingerprint"] = scoped_fingerprint(workspace, sha, inputs, blob_cache)
+            product_fingerprint = scoped_fingerprint(workspace, sha, inputs, blob_cache)
+            task["product_input_fingerprint"] = product_fingerprint
+            task["executor_fingerprint"] = executor_fingerprint
+            # Executor repairs change the retry input, while candidate ancestry
+            # compares the separate product identity. Unrelated main commits do
+            # not refresh budgets or manufacture progress.
+            task["input_fingerprint"] = hashlib.sha256(json.dumps({
+                "product": product_fingerprint, "executor": executor_fingerprint},
+                sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     return queue
 
 
@@ -241,7 +254,7 @@ def integrated_candidates(workspace, queue, state):
 
 def plan(args):
     workspace = Path(args.workspace).resolve()
-    queue = queue_for(workspace, args.failure_json)
+    queue = queue_for(workspace, args.failure_json, args.infrastructure)
     at = now()
     operation = uuid.uuid4().hex
     def reduce(snapshot):
@@ -335,7 +348,7 @@ def persist_candidate(workspace, family, owner, report):
 
 def execute(args):
     workspace = Path(args.workspace).resolve()
-    queue = queue_for(workspace, args.failure_json)
+    queue = queue_for(workspace, args.failure_json, args.infrastructure)
     store = store_for(args)
     owner = os.environ.get("GITHUB_RUN_ID", "local") + "-" + os.environ.get("GITHUB_RUN_ATTEMPT", "1") + "-" + args.family
     run_url = "https://github.com/" + os.environ.get("GITHUB_REPOSITORY", "cftorre1/Radar-salud") + "/actions/runs/" + os.environ.get("GITHUB_RUN_ID", "local")

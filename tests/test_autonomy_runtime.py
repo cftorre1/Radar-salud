@@ -374,7 +374,8 @@ Path(a.report).write_text(json.dumps(report))
             "material_events": [{"kind": "mutation", "task_id": MEDIA, "family": "media", "details": {
                 "candidate_commit": commit, "candidate_branch": candidate["candidate_branch"],
                 "candidate_scope": "isolated", "parent_input_sha": self.product_sha,
-                "input_fingerprint": baseline_fingerprint}}]}
+                "input_fingerprint": baseline_fingerprint,
+                "product_input_fingerprint": baseline_queue["tasks"][0]["product_input_fingerprint"]}}]}
 
         self.git("checkout", "--quiet", "--detach", self.product_sha, cwd=self.workspace)
         self.git("branch", "-f", "staging", self.product_sha, cwd=self.workspace)
@@ -525,6 +526,132 @@ Path(a.report).write_text(json.dumps(report))
                 current = runtime.scoped_fingerprint(self.workspace, head, [path])
                 self.assertNotEqual(current, previous)
                 previous = current
+        self.assertEqual(self.product_refs(), before_refs)
+
+    def infrastructure_fixture(self):
+        infrastructure = self.root / "infrastructure"
+        self.git("init", "--quiet", "-b", "main", str(infrastructure))
+        self.git("config", "user.name", "Infrastructure Test", cwd=infrastructure)
+        self.git("config", "user.email", "infrastructure@example.invalid", cwd=infrastructure)
+        fixtures = {"scripts/autonomy_lane_runner.py": "def run():\n    return 1\n",
+                    "scripts/autonomy_recovery.py": "def repair():\n    return 1\n",
+                    "scripts/autonomy_observation.py": "def observe():\n    return 1\n",
+                    "scripts/autonomy_hosted_canary.py": "def canary():\n    return 1\n",
+                    "docs/README.md": "Infrastructure fixture\n"}
+        for path, content in fixtures.items():
+            target = infrastructure / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(content)
+        self.git("add", "--", *fixtures, cwd=infrastructure)
+        self.git("commit", "--quiet", "-m", "fixture infrastructure", cwd=infrastructure)
+        return infrastructure
+
+    def test_executor_fingerprint_uses_committed_infrastructure_code_without_main_sha_churn(self):
+        infrastructure = self.infrastructure_fixture()
+        before_refs = self.product_refs()
+        failure_path = self.root / "failed-run.json"
+        failure_path.write_text(json.dumps({"run_id": 85, "conclusion": "failure",
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/85"}))
+        def observe():
+            queue = runtime.queue_for(self.workspace, failure_path, infrastructure)
+            return queue, {runtime.engine._family(task): task for task in queue["tasks"]}
+        original_queue, original = observe()
+        self.assertEqual(set(original), {"media", "public_data", "staging_qa"})
+
+        for path in ("docs/README.md", "scripts/autonomy_observation.py", "scripts/autonomy_hosted_canary.py"):
+            with self.subTest(unrelated_input=path):
+                (infrastructure / path).write_text("# unrelated committed observer, canary or documentation change\n")
+                self.git("add", "--", path, cwd=infrastructure)
+                self.git("commit", "--quiet", "-m", "unrelated infrastructure change", cwd=infrastructure)
+                current_queue, current = observe()
+                self.assertNotEqual(current_queue["infrastructure_sha"], original_queue["infrastructure_sha"])
+                self.assertEqual(current, original)
+
+        for path in runtime.EXECUTOR_INPUTS:
+            with self.subTest(executor_input=path):
+                (infrastructure / path).write_text("def repaired_executor():\n    return 2\n")
+                self.assertEqual(observe()[1], original, "Uncommitted infrastructure is never authority")
+                self.git("add", "--", path, cwd=infrastructure)
+                self.git("commit", "--quiet", "-m", "meaningful executor repair", cwd=infrastructure)
+                _, current = observe()
+                for family, task in current.items():
+                    self.assertEqual(task["input_sha"], original[family]["input_sha"])
+                    self.assertEqual(task["product_input_fingerprint"], original[family]["product_input_fingerprint"])
+                    self.assertNotEqual(task["executor_fingerprint"], original[family]["executor_fingerprint"])
+                    self.assertNotEqual(task["input_fingerprint"], original[family]["input_fingerprint"])
+                original = current
+        self.assertEqual(self.product_refs(), before_refs)
+
+    def test_committed_executor_repair_reopens_exhausted_failure_without_erasing_history(self):
+        infrastructure = self.infrastructure_fixture()
+        failure_path = self.root / "failed-run.json"
+        failure_path.write_text(json.dumps({"run_id": 85, "conclusion": "failure",
+            "failure_signature": "fixture-repeated-browser-gate-failure",
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/85"}))
+        at = datetime.now(timezone.utc)
+        store = runtime.GitStateStore(repository=self.workspace, initial_backoff=0)
+        for attempt in range(3):
+            queue = runtime.queue_for(self.workspace, failure_path, infrastructure)
+            qa = next(task for task in queue["tasks"] if task["family"] == "staging_qa")
+            qa["evidence_revision"] = "fixture-approved-repair-attempt-" + str(attempt)
+            def fail(snapshot):
+                state, lease = runtime.engine.claim(runtime.initial_state(snapshot), queue,
+                                                     "staging_qa", "fixture-worker", at)
+                self.assertIsNotNone(lease)
+                report = {"task_id": lease["task_id"], "family": "staging_qa", "status": "BLOCKED",
+                          "changed_paths": [], "validated": False,
+                          "blockers": [{"fingerprint": "unchanged-browser-failure", "reason": "fixture gate failure",
+                                        "evidence": [{"run_url": qa["failure"]["run_url"], "failure_signature": qa["failure"]["failure_signature"]}]}]}
+                state = runtime.engine.finish(state, lease["task_id"], lease["token"], report, at)
+                return runtime.Mutation(runtime.state_write(state))
+            store.transact(fail)
+        queue = runtime.queue_for(self.workspace, failure_path, infrastructure)
+        qa_id = "staging_qa_failed_run_85"
+        exhausted, selected = runtime.engine.plan(self.state(), queue, at)
+        self.assertNotIn("staging_qa", selected)
+        self.assertEqual(set(selected), {"media", "public_data"})
+        self.assertTrue(exhausted["tasks"][qa_id]["blocker"]["fingerprint"].startswith("failure_budget_exhausted:"))
+        old_history = exhausted["failure_history"]
+        self.assertEqual([row["attempts"] for row in old_history.values()], [3])
+        before_material = exhausted["material_events"]
+
+        (infrastructure / "scripts/autonomy_recovery.py").write_text("def repair():\n    return 'actual new fixture validation'\n")
+        self.git("add", "--", "scripts/autonomy_recovery.py", cwd=infrastructure)
+        self.git("commit", "--quiet", "-m", "repair executor validation", cwd=infrastructure)
+        repaired_queue = runtime.queue_for(self.workspace, failure_path, infrastructure)
+        reopened, selected = runtime.engine.plan(exhausted, repaired_queue, at)
+        self.assertIn("staging_qa", selected)
+        self.assertEqual(reopened["tasks"][qa_id]["status"], "READY")
+        self.assertEqual(reopened["failure_history"], old_history)
+        self.assertEqual(reopened["material_events"], before_material)
+        self.assertEqual(reopened["tasks"][qa_id]["input_sha"], exhausted["tasks"][qa_id]["input_sha"])
+        self.assertEqual(reopened["tasks"][qa_id]["product_input_fingerprint"], exhausted["tasks"][qa_id]["product_input_fingerprint"])
+        self.assertNotEqual(reopened["tasks"][qa_id]["input_fingerprint"], exhausted["tasks"][qa_id]["input_fingerprint"])
+
+    def test_cli_controller_automatically_reopens_worker_blocker_after_infrastructure_repair(self):
+        infrastructure = self.infrastructure_fixture()
+        self.git("remote", "add", "origin", self.remote.as_uri(), cwd=infrastructure)
+        self.install_runner("blocker")
+        before_refs = self.product_refs()
+        self.invoke("execute", "media", infrastructure=infrastructure)
+        blocked = self.state()
+        self.assertEqual(blocked["tasks"][MEDIA]["status"], "BLOCKED")
+        unchanged = self.invoke("plan", infrastructure=infrastructure)
+        self.assertEqual(unchanged["matrix"]["include"], [{"family": "public_data", "task_id": PUBLIC}])
+        recovery = infrastructure / "scripts/autonomy_recovery.py"
+        recovery.write_text("def repair():\n    return 'corrected fixture executor'\n")
+        uncommitted = self.invoke("plan", infrastructure=infrastructure)
+        self.assertEqual(uncommitted["matrix"], unchanged["matrix"])
+        self.git("add", "--", "scripts/autonomy_recovery.py", cwd=infrastructure)
+        self.git("commit", "--quiet", "-m", "correct executor repair", cwd=infrastructure)
+        next_plan = self.invoke("plan", infrastructure=infrastructure)
+        self.assertEqual({entry["family"] for entry in next_plan["matrix"]["include"]}, {"media", "public_data"})
+        resumed = self.state()
+        self.assertEqual(resumed["tasks"][MEDIA]["status"], "READY")
+        self.assertEqual(resumed["tasks"][MEDIA]["input_sha"], blocked["tasks"][MEDIA]["input_sha"])
+        self.assertEqual(resumed["tasks"][MEDIA]["product_input_fingerprint"], blocked["tasks"][MEDIA]["product_input_fingerprint"])
+        self.assertNotEqual(resumed["tasks"][MEDIA]["executor_fingerprint"], blocked["tasks"][MEDIA]["executor_fingerprint"])
+        self.assertEqual(resumed["material_events"], blocked["material_events"])
         self.assertEqual(self.product_refs(), before_refs)
 
     def test_cli_claim_mutation_finish_keeps_product_refs_and_records_durable_candidate(self):
