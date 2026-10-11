@@ -106,6 +106,17 @@ def test_actual_sar_projection_cannot_be_replaced_by_already_realized_capacity()
     assert validate_pulso_editorial_proof(ai, row["full_primary_body"])["reason"] == "pulso_editorial_future_copy_not_grounded"
 
 
+def test_real_sar_opening_and_estimated_capacity_remain_a_valid_mixed_account():
+    row = ROWS[9]
+    assert "inauguraron el primer Centro de Salud de Alta Resolutividad (SAR)" in row["full_primary_body"]
+    assert "se estima que tendrá una capacidad para realizar 65 mil atenciones al año" in row["full_primary_body"]
+    before = deepcopy(row["analysis"])
+    result = validate_pulso_editorial_proof(row["analysis"], row["full_primary_body"])
+    assert result["decision"] == "ready"
+    assert result["prospective_evidence"] is True and result["publication_approved"] is False
+    assert row["analysis"] == before
+
+
 def test_actual_model_numeric_finding_remains_explicitly_unapproved_by_technical_ready():
     row = ROWS[5]
     assert "equivalente al 2,83%" in row["analysis"]["what_happened"]

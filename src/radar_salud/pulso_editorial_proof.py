@@ -59,7 +59,8 @@ ACHIEVED_COPY = re.compile(r"\b(?:ya (?:se )?(?:(?:ha[n]?|había[n]?) )?(?:alcan
                            r"se ejecut[oó]|termin[oó])\b", re.I)
 CLINICAL_COMPLETED_COPY = re.compile(
     r"\b(?:el hospital(?: modular)?|el recinto|la cl[ií]nica)\b[^.;!?]{0,80}\b"
-    r"(?:(?:ya )?(?:est[aá]|se encuentra) (?:instalad[oa]|operativ[oa])|"
+    r"(?:(?:ya )?(?:fue|ha sido) inaugurad[oa]|"
+    r"(?:ya )?(?:est[aá]|se encuentra) (?:instalad[oa]|operativ[oa])|"
     r"(?:ya )?(?:dispone de|tiene|cuenta con) capacidad (?:cl[ií]nica )?(?:disponible|instalada)|"
     r"ya funciona y atiende pacientes)\b|"
     r"\bla capacidad (?:cl[ií]nica |asistencial )?fue agregada\b", re.I)

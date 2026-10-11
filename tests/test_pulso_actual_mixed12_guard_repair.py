@@ -10,6 +10,7 @@ import pytest
 from radar_salud.pulso_editorial_proof import (
     human_health_scope_anchor,
     unqualified_achieved_copy,
+    unsupported_clinical_completion,
     validate_pulso_editorial_proof,
 )
 from radar_salud.pulso_editorial_review import canonical_sha
@@ -116,3 +117,43 @@ def test_explicit_veterinary_context_cannot_turn_patient_contacts_into_independe
 def test_explicit_independent_human_procedure_can_coexist_with_a_veterinary_reference():
     quote = "medicina veterinaria; antes de la interrupción del embarazo por las tres causales"
     assert human_health_scope_anchor(quote, allow_patient_contact=False)
+
+
+@pytest.mark.parametrize("denial", [
+    "la nota no acredita capacidad nacional ya instalada",
+    "no como capacidad ya implementada",
+])
+@pytest.mark.parametrize("completed", [
+    "El hospital ya fue inaugurado.",
+    "El hospital ha sido inaugurado.",
+    "El recinto ya fue inaugurado.",
+    "La clínica ha sido inaugurada.",
+])
+def test_local_capacity_denial_does_not_excuse_a_separate_unsupported_inauguration(denial, completed):
+    # Only the entire WHY and its exact whole-field claim are mutated. All real
+    # primary input, clinical quotes, score and response provenance stay intact.
+    row = next(row for row in ROWS if row["publication_date"] == "2026-09-19")
+    model = deepcopy(row["ai"])
+    value = "Al 19 de septiembre de 2026, la capacidad podría ampliarse; " + denial + ". " + completed
+    model["why_it_matters"] = value
+    claim = next(claim for claim in model["pulso_editorial_proof"]["future_claims"]
+                 if claim["summary_field"] == "why_it_matters")
+    claim["summary_quote"] = value
+    result = validate_pulso_editorial_proof(model, request(row))
+    assert result["decision"] == "deferred"
+    assert result["reason"] == "pulso_editorial_future_copy_not_grounded"
+    assert result["publication_approved"] is False
+
+
+@pytest.mark.parametrize("statement", [
+    "El hospital ya fue inaugurado",
+    "El hospital ha sido inaugurado",
+    "El recinto fue inaugurado",
+    "La clínica ha sido inaugurada",
+])
+def test_completed_inauguration_requires_positive_same_input_evidence(statement):
+    # Explicitly synthetic boundary assertions, not a publisher capture. The
+    # captured SAR inauguration/mixed projection remains exercised separately.
+    assert not unsupported_clinical_completion(statement, statement + ". Su ampliación podría continuar.")
+    assert unsupported_clinical_completion(statement, "No " + statement.lower() + ". Su ampliación podría continuar.")
+    assert unsupported_clinical_completion(statement, "Se planifica la apertura; podría iniciarse en 2027.")
