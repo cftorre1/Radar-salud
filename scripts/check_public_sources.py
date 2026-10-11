@@ -52,12 +52,17 @@ def check(root: Path, *, record_health=False, factories=SCOUTS):
                 document_checks.append({"url":item.url,"status":"blocked",**failure_details(exc)})
         diagnostics["document_checks"]=document_checks
         verified=diagnostics.get("verified_publications",0)>0
+        readable_documents=sum(row["status"]=="captured" for row in document_checks)
+        validated=error is None and not diagnostics.get("partial_failure") and verified
+        degraded=error is None and verified and bool(diagnostics.get("partial_failure")) and readable_documents>0
         diagnostics["evidence_status"]="capture_pending" if error or diagnostics.get("partial_failure") else "captured" if verified else "publication_unverified"
         result["sources"][scout.SOURCE_SLUG]={
             "checked_at":datetime.now(timezone.utc).isoformat(),
             "technical_status":"error" if error else "degraded" if diagnostics.get("partial_failure") else "ok",
             "discovery_verified":error is None and verified,
-            "operational":error is None and not diagnostics.get("partial_failure") and verified,
+            "operational":validated,
+            "operative_degraded":degraded,
+            "runtime_outcome":"OPERATIVE_VALIDATED" if validated else "OPERATIVE_DEGRADED" if degraded else "not_validated_by_this_runtime",
             "discovered":len(items),"error":error,"error_details":details,"diagnostics":diagnostics,
             "items":[asdict(item) for item in items]}
         if record_health:
@@ -67,6 +72,7 @@ def check(root: Path, *, record_health=False, factories=SCOUTS):
                 live_pending=old.get("live_pending"),backfill_pending=old.get("backfill_pending"),
                 error_details=details,diagnostics=diagnostics)
     result["operational_sources"]=sum(row["operational"] for row in result["sources"].values())
+    result["operative_degraded_sources"]=sum(row["operative_degraded"] for row in result["sources"].values())
     return result
 
 

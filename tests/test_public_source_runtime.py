@@ -60,3 +60,24 @@ def test_listing_success_with_failed_pdf_cannot_be_operational(tmp_path,monkeypa
     assert row["technical_status"]=="degraded"
     assert row["diagnostics"]["evidence_status"]=="capture_pending"
     assert row["diagnostics"]["document_checks"][0]["status"]=="blocked"
+    assert not row["operative_degraded"]
+
+
+def test_degraded_operation_requires_an_actual_readable_primary_document(tmp_path,monkeypatch):
+    class Listed:
+        SOURCE_SLUG="deis";SOURCE_NAME="DEIS"
+        diagnostics={}
+        def discover(self):
+            listing="https://deis.minsal.cl/centrofic/";kind="official_document_listing:published"
+            return [RawItem("deis", "Orientaciones de codificación", "https://repositoriodeis.minsal.cl/"+name+".pdf",
+                "DEIS", "official",event_date="2026-06-25",metadata={"discovered_from":listing,
+                "publication_date_source":kind,"publication_date_evidence":{"kind":kind,
+                "value":"Publicado 25/06/2026","date":"2026-06-25","url":listing}})
+                for name in ['readable','oversized']]
+    def capture(url,*args,**kwargs):
+        if 'oversized' in url: raise ValueError('Public-source capture exceeds the byte limit')
+        return 'Official guidance with verified readable content. '*20
+    monkeypatch.setattr(monitor,"extract_public_source_pdf",capture)
+    row=monitor.check(tmp_path,factories=[Listed])["sources"]["deis"]
+    assert row["runtime_outcome"]=="OPERATIVE_DEGRADED"
+    assert row["operative_degraded"] and not row["operational"]
