@@ -279,7 +279,8 @@ def test_runtime_fingerprint_covers_new_implementation_and_policy_without_marker
     for path in ("src/radar_salud/beta_sources.py", "src/radar_salud/llm_analysis.py", "src/radar_salud/pending_queue.py",
                  "src/radar_salud/queue_selection.py", "src/radar_salud/pulso_incremental_review.py",
                  "src/radar_salud/pulso_editorial_review.py", "src/radar_salud/ai_budget.py",
-                 "config/media_early_signal_gate.json", ".github/workflows/daily-radar.yml",
+                 "config/media_early_signal_gate.json", "config/pulso_editorial_repair_admission_2026_10_11.json",
+                 ".github/workflows/daily-radar.yml",
                  "scripts/qa_pulso_recovery.py"):
         assert path in result["files"]
     assert result["sha256"] == audit.digest(result["files"])
@@ -406,3 +407,21 @@ def test_incremental_addendum_file_bytes_must_remain_pinned(tmp_path):
     (tmp_path / audit.INCREMENTAL_ADDENDUM).write_bytes((ROOT / audit.INCREMENTAL_ADDENDUM).read_bytes() + b"\n")
     with pytest.raises(ValueError, match="incremental_review_addendum_file_changed"):
         audit.incremental_proof_files(tmp_path, addendum_reference_queue())
+
+
+def test_one_byte_change_to_code_repair_admission_pins_changes_runtime_fingerprint(tmp_path):
+    original = audit.runtime_fingerprint(ROOT)
+    # Replay the fingerprint's real implementation/policy files in an isolated
+    # directory. Marker/data paths are not copied or changed by this test.
+    for reference in original["files"]:
+        target = tmp_path / reference
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / reference).read_bytes())
+    assert audit.runtime_fingerprint(tmp_path) == original
+    pins = tmp_path / "config/pulso_editorial_repair_admission_2026_10_11.json"
+    pins.write_bytes(pins.read_bytes() + b"\n")
+    changed = audit.runtime_fingerprint(tmp_path)
+    assert changed["sha256"] != original["sha256"]
+    assert {reference for reference in changed["files"]
+            if changed["files"][reference] != original["files"][reference]} == {
+                "config/pulso_editorial_repair_admission_2026_10_11.json"}
