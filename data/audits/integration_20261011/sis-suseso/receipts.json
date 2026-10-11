@@ -1,0 +1,142 @@
+[
+  {
+    "issue": [
+      5,
+      8
+    ],
+    "task": "source_repair_fiscalization_lane_2026_10_11",
+    "pr": 15,
+    "integration_pr": 18,
+    "source": "superintendencia_fiscalizacion",
+    "integrated_commit": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+    "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+    "status": "INTEGRATED_DEGRADED",
+    "qa": "https://github.com/cftorre1/Radar-salud/actions/runs/38143763798",
+    "preview": "https://github.com/cftorre1/Radar-salud/actions/runs/38143952494",
+    "reviewer": {
+      "runtime": {
+        "reviewer": "deterministic-reviewer",
+        "candidate_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "reviewed_at": "2026-10-11T13:39:18.720261+00:00",
+        "findings": [],
+        "checks": {
+          "data": true,
+          "editorial": true,
+          "statistics": true,
+          "ux": true
+        },
+        "limitations": [
+          "Semantic/legal accuracy is not certified by deterministic checks.",
+          "Browser evidence is required separately for desktop/mobile.",
+          "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+        ]
+      },
+      "bounded_native": "data/audits/fiscalizacion/coverage_reviewer_native_2026_10_11.json"
+    },
+    "runtime": {
+      "run_id": 38143952220,
+      "artifact_id": 11703837683,
+      "sha256": "41952fdd8f6a1456d830c8465fbf9d85305b23e60afd82cd0f62a90cc6ca0586",
+      "polls": 2,
+      "discovery": [
+        {
+          "discovered": 3343,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T13:38:47.288295+00:00"
+        },
+        {
+          "discovered": 3343,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T13:39:13.180788+00:00"
+        }
+      ],
+      "idempotent": true,
+      "unrelated_stock_preserved": true
+    },
+    "editorial_outcome": "no_new_publications_existing_history",
+    "raw_runtime_editorial_outcome": "rejected",
+    "poll_outcome_producer_fix": "54491a9 candidate awaiting staging combined QA",
+    "exact_calendar_window_material": {
+      "30": 14,
+      "90": 28
+    },
+    "window_evidence": "native reviewed original dated surfaces; runtime inclusive window counts separately preserved",
+    "coverage_complete": false,
+    "next_action": "Keep source degraded; resolve undated reports / remaining legal-act identity limits without date fabrication",
+    "production_changes": false
+  },
+  {
+    "issue": [
+      5,
+      8
+    ],
+    "task": "source_repair_fiscalization_lane_2026_10_11",
+    "pr": 15,
+    "integration_pr": 18,
+    "source": "suseso_fiscalizacion",
+    "integrated_commit": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+    "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+    "status": "INTEGRATED_DEGRADED",
+    "qa": "https://github.com/cftorre1/Radar-salud/actions/runs/38143763798",
+    "preview": "https://github.com/cftorre1/Radar-salud/actions/runs/38143952494",
+    "reviewer": {
+      "runtime": {
+        "reviewer": "deterministic-reviewer",
+        "candidate_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "reviewed_at": "2026-10-11T13:39:18.720261+00:00",
+        "findings": [],
+        "checks": {
+          "data": true,
+          "editorial": true,
+          "statistics": true,
+          "ux": true
+        },
+        "limitations": [
+          "Semantic/legal accuracy is not certified by deterministic checks.",
+          "Browser evidence is required separately for desktop/mobile.",
+          "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+        ]
+      },
+      "bounded_native": "data/audits/fiscalizacion/coverage_reviewer_native_2026_10_11.json"
+    },
+    "runtime": {
+      "run_id": 38143952220,
+      "artifact_id": 11703837683,
+      "sha256": "41952fdd8f6a1456d830c8465fbf9d85305b23e60afd82cd0f62a90cc6ca0586",
+      "polls": 2,
+      "discovery": [
+        {
+          "discovered": 1273,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T13:38:47.288308+00:00"
+        },
+        {
+          "discovered": 1273,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T13:39:13.180801+00:00"
+        }
+      ],
+      "idempotent": true,
+      "unrelated_stock_preserved": true
+    },
+    "editorial_outcome": "pending_10_undated_medical_reports_no_new_publication",
+    "raw_runtime_editorial_outcome": "pending",
+    "poll_outcome_producer_fix": "54491a9 candidate awaiting staging combined QA",
+    "exact_calendar_window_material": {
+      "30": 20,
+      "90": 74
+    },
+    "window_evidence": "native reviewed original dated surfaces; runtime inclusive window counts separately preserved",
+    "coverage_complete": false,
+    "next_action": "Keep source degraded; resolve undated reports / remaining legal-act identity limits without date fabrication",
+    "production_changes": false
+  }
+]

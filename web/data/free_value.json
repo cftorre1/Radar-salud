@@ -1,42 +1,29 @@
 {
-  "generated_at": "2026-10-11T05:13:00.857858+00:00",
-  "status": "available",
+  "generated_at": "2026-10-11T04:08:32.700810+00:00",
+  "status": "partial",
   "global_teaser": {
-    "theme_id": "global-ai-coding-payer-cost-2026",
-    "title": "La IA clínica también puede inflar gasto al convertir más hallazgos en diagnósticos cobrables",
-    "excerpt": "Blue Cross Blue Shield estimó cerca de US$1.000 millones en gasto adicional asociado a mayor codificación de condiciones secundarias y complejidad, vinculada al uso de herramientas de IA como ambient scribes y análisis de registros.",
-    "what_changed": "Blue Cross Blue Shield estimó cerca de US$1.000 millones en gasto adicional asociado a mayor codificación de condiciones secundarias y complejidad, vinculada al uso de herramientas de IA como ambient scribes y análisis de registros.",
-    "why_it_matters": "La IA no sólo promete eficiencia: también puede cambiar documentación, codificación, riesgo y facturación, redistribuyendo valor entre prestadores y pagadores.",
-    "what_to_watch": "Sirve para incorporar impacto en codificación y gasto a la evaluación económica de IA clínica.",
-    "chile_hypothesis": "Hipótesis para Chile: observar si herramientas de documentación clínica cambian codificación, frecuencia de diagnósticos, cuentas médicas, auditoría y controversias de cobertura.",
+    "theme_id": "global-workforce-pressure-2026",
+    "title": "La brecha de personal sanitario se vuelve estructural",
+    "excerpt": "La OMS proyecta un déficit mundial de 11,1 millones de trabajadores de salud a 2030.",
+    "what_changed": "La OMS proyecta un déficit mundial de 11,1 millones de trabajadores de salud a 2030.",
+    "why_it_matters": "La presión combina envejecimiento de la población y de la fuerza laboral. Para prestadores y aseguradores, el riesgo no es solo contratar más: también afecta capacidad, continuidad, productividad clínica y dependencia de profesionales formados en otros países.",
+    "what_to_watch": "Sirve para priorizar indicadores de capacidad, rotación y jubilación sin convertir una proyección global en diagnóstico local.",
+    "chile_hypothesis": "Hipótesis para Chile: vigilar vacantes críticas, tiempos de espera, rotación, costos laborales y cambios en reconocimiento de títulos. La evidencia global no demuestra que Chile ya siga la misma trayectoria.",
     "chile_hypothesis_status": "not_established",
-    "source_count": 1,
+    "source_count": 2,
     "publishers": [
-      "Reuters"
+      "Reuters",
+      "WHO"
     ],
-    "source_label": "Reuters",
-    "published_at": "2026-09-24",
-    "premium_href": "global.html#theme-global-ai-coding-payer-cost-2026",
+    "source_label": "Reuters · WHO",
+    "published_at": "2026-09-18",
+    "premium_href": "global.html#theme-global-workforce-pressure-2026",
     "evidence_status": "verified_sources",
-    "teaser_score": {
-      "score": 97.25,
-      "eligible": true,
-      "freshness_gate_days": null,
-      "source_age_days": 17,
-      "latest_source_date": "2026-09-24",
-      "dimensions": {
-        "commercial_hook": 99.0,
-        "strategic_relevance": 98.0,
-        "decision_usefulness": 99.0,
-        "conversation_potential": 99.0,
-        "evidence_strength": 70.0
-      }
-    },
     "model_trace": {
       "mode": "deterministic_existing_evidence",
       "api_call": false,
       "model": null,
-      "output_id": "global-ai-coding-payer-cost-2026"
+      "output_id": "global-workforce-pressure-2026"
     }
   },
   "weekly_insight": {
@@ -115,25 +102,16 @@
   },
   "selection_policy": {
     "window_weeks": 6,
-    "recent_history_count": 1,
-    "current_week_locked": false,
-    "selection_method": "strategic_relevance_first_then_commercial_hook_v3",
-    "strategic_dimensions": [
-      "financial_impact",
-      "operational_impact",
-      "regulatory_or_competitive_shift",
-      "affected_scope",
-      "urgency_time_horizon",
-      "actionability",
-      "evidence_strength",
-      "novelty_non_repetition"
-    ],
+    "recent_history_count": 0,
+    "current_week_locked": true,
     "penalizes": [
-      "repetition_in_novelty_dimension"
+      "archetype",
+      "scope",
+      "source"
     ],
-    "fallback": "hide_without_reproducible_evidence_tied_insight",
-    "weekly_insight_status": "published_editorial_reviewed",
-    "minimum_insight_evidence": "two independent sources, or one high-quality source with reproducible deep analysis and explicit decision use",
+    "fallback": "hide_without_curated_evidence_tied_insight",
+    "weekly_insight_status": "published_deep_intelligence",
+    "minimum_insight_evidence": "two_verified_signals_or_one_verified_signal_plus_one_verified_indicator",
     "no_forced_frequency": true,
     "top3": [
       {
@@ -206,11 +184,13 @@
       }
     ],
     "deep_intelligence": {
-      "mode": "editorial_reviewed"
+      "mode": "senior_editorial_work_session",
+      "api_call": false,
+      "model": null,
+      "note": "Sesión Work2, evidencia Work3 contrastada directamente; no ejecución TERRA ni segundo revisor del contenido final."
     },
     "freshness_gate": {
       "eligible": true,
-      "reason": "fresh",
       "as_of": "2026-10-11",
       "timezone": "America/Santiago",
       "window_days": 7,

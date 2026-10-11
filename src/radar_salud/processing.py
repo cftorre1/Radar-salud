@@ -6,7 +6,6 @@ class DeferredProcessing(Exception):
         super().__init__(message)
         self.reason = reason
 
-
 class RejectedProcessing(Exception):
     """An evaluated candidate has a durable, document-specific rejection reason."""
     pass

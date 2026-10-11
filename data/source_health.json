@@ -74,7 +74,7 @@
       "technical_status": "partial",
       "coverage_status": "date_or_detail_gap",
       "content_freshness": "recent",
-      "editorial_outcome": "rejected",
+      "editorial_outcome": "no_new_signals",
       "dated": 41,
       "undated": 0,
       "detail_errors": 0,
@@ -100,6 +100,21 @@
         "rejected": "cumulative_queue"
       },
       "last_discovered_event_at": "2026-10-10",
+      "runtime_raw_editorial_outcome": "rejected",
+      "counts_semantics": {
+        "discovered": "current_poll",
+        "new": "current_poll",
+        "published": "current_poll",
+        "pending": "cumulative_queue",
+        "rejected": "cumulative_queue",
+        "deferred": "cumulative_queue",
+        "last_signal_at": "latest_accepted_history_publication"
+      },
+      "editorial_outcome_reconciliation_reason": "Both genuine post-merge polls have zero new, pending and published. Raw engine used cumulative rejected stock for editorial_outcome; current-poll outcome reconciled here. Producer fix follows with the next scoped health integration.",
+      "integration_status": "INTEGRATED_DEGRADED",
+      "integration_staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "postmerge_runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38142527704",
+      "coverage_complete": false,
       "integration_state": "INTEGRATED_DEGRADED",
       "integration_evidence": {
         "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
@@ -144,7 +159,7 @@
       "technical_status": "ok",
       "coverage_status": "listed_surface_parsed",
       "content_freshness": "older",
-      "editorial_outcome": "rejected",
+      "editorial_outcome": "no_new_publications_existing_history",
       "last_observed_event_at": "2026-09-28",
       "last_observed_publication_at": "2026-09-28",
       "surfaces": [
@@ -242,7 +257,9 @@
         "runtime_run": 38143952220,
         "preview_run": 38143952494,
         "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
-      }
+      },
+      "runtime_raw_editorial_outcome": "rejected",
+      "editorial_outcome_reconciliation_reason": "Runtime 38143952220 has zero new/published, zero pending; cumulative rejected stock is not a current poll decision. Producer fix in PR19."
     },
     "superintendencia": {
       "name": "Superintendencia",

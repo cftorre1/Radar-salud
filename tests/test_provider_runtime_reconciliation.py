@@ -53,11 +53,14 @@ def test_provider_sources_enter_daily_durable_queue_without_ai(tmp_path, monkeyp
     assert all(health[slug]['evaluation_performed'] is False and health[slug]['editorial_outcome']=='not_evaluated'
                and health[slug]['deferred']==1 for slug in expected)
     before=json.loads(queue.path.read_text())
+    prior_discovery=json.loads((tmp_path/'data/state/discovery_run.json').read_text())['sources']
     monkeypatch.setattr(sys,'argv',['engine_cli','--source','red_davila','--discovery-only'])
     monkeypatch.setattr(engine_cli,'has_capacity',lambda kind: __import__('pytest').fail('Discovery-only must not check or consume AI'))
     engine_cli.main()
     assert json.loads(queue.path.read_text())==before
-    assert set(json.loads((tmp_path/'data/state/discovery_run.json').read_text())['sources'])=={'red_davila'}
+    discovery=json.loads((tmp_path/'data/state/discovery_run.json').read_text())
+    assert discovery['run_scope']==['red_davila']
+    assert all(discovery['sources'][k]==v for k,v in prior_discovery.items() if k!='red_davila')
 
 
 def test_discovery_only_health_does_not_claim_editorial_assessment(tmp_path):

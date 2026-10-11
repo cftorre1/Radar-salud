@@ -60,3 +60,29 @@ def test_structurally_valid_model_output_remains_a_draft(monkeypatch):
     assert result['weekly_insight'] is None
     assert result['draft_weekly_insight']
     assert reviewed_weekly(result,date(2026,10,11)) is None
+
+
+def test_generation_attempt_never_changes_reviewed_publication_provenance():
+    from radar_salud.weekly_freshness import reconcile_weekly_publication
+    reviewed=approved()
+    for status in ('editorial_review_required','generation_error','no_candidate'):
+        attempt={'status':status,'top3':[{'url':'https://different.example/new'}],
+                 'model':{'response_id':'new-model-response'},'evidence_package':{'candidate_url':'https://different.example/new'}}
+        output=reconcile_weekly_publication(attempt,reviewed,date(2026,10,11))
+        assert output['weekly_insight']==reviewed['weekly_insight']
+        assert output['top3']==reviewed['top3'] and output['audit']==reviewed['audit']
+        assert output['source_head']==reviewed['source_head']
+        assert output['model']==reviewed['weekly_insight']['model_trace']
+        assert output['generation_attempt']==attempt and 'evidence_package' not in output
+        output['generation_attempt']['top3'].clear()
+        assert attempt['top3']  # no mutation of the candidate evidence
+
+
+def test_stale_reviewed_publication_hides_ranking_and_model_with_new_draft():
+    from radar_salud.weekly_freshness import reconcile_weekly_publication
+    attempt={'status':'editorial_review_required','top3':[{'url':'https://new.example'}],
+             'draft_weekly_insight':{'source_url':'https://new.example'},'model':{'response_id':'new'}}
+    output=reconcile_weekly_publication(attempt,approved(),date(2026,10,14))
+    assert output['status']=='hidden_fail_closed' and output['weekly_insight'] is None
+    assert output['top3']==[] and output['model'] is None
+    assert output['audit']['verdict']=='HOLD' and output['generation_attempt']==attempt

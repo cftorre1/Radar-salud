@@ -1,0 +1,35 @@
+{
+  "origin_pr": 15,
+  "head": "e654dd623001ddf6de54da5e31d84a795e78e997",
+  "base_staging": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+  "effective_review": {
+    "files": 54,
+    "queue_changes": {
+      "superintendencia_fiscalizacion": 5679,
+      "suseso_fiscalizacion": 1311,
+      "suseso_reviewed_normative_route": 1
+    },
+    "df_queue_unchanged": true,
+    "orchestrator_tasks_preserved": 84,
+    "history_entries": 886,
+    "feed_entries": 82
+  },
+  "conflict_decisions": [
+    "Three-way JSON merge retains current staging PMO/autonomy tasks and source-specific changes.",
+    "History/queue identity includes legal record ID for shared SUSESO register URL.",
+    "--source and --only-source aliases share scoped discovery, processing and horizon.",
+    "Reviewed normative route remains explicit; no unrelated backlog processing.",
+    "Deep-copy input retains DF document reassessment and fiscalization rejection provenance.",
+    "DF current-poll outcome no longer uses cumulative rejected stock.",
+    "Current browser population retains original >=12 threshold and latest historical release eligibility."
+  ],
+  "qa": {
+    "python_pass": 349,
+    "python_skip": 1,
+    "node_pass": 42,
+    "reviewer": "work/d-candidate-reviewer.json",
+    "hosted": "PENDING"
+  },
+  "source_dispositions": "PENDING_POST_MERGE_RUNTIME",
+  "production_changes": false
+}
