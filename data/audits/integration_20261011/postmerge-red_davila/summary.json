@@ -1,0 +1,304 @@
+{
+  "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+  "targets": {
+    "sources": [
+      "red_davila"
+    ],
+    "origin_prs": [
+      14
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:33:29.352581+00:00",
+      "finished_at": "2026-10-11T14:33:46.906482+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "red_davila": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "red_davila": {
+          "discovered": 11,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:33:46.421873+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 0,
+      "source_health": {
+        "red_davila": {
+          "name": "Red Dávila",
+          "checked_at": "2026-10-11T14:33:46.426651+00:00",
+          "last_signal_at": null,
+          "discovered": 11,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 12,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "observed",
+          "content_freshness": "unknown",
+          "latest_original_at": "2026-10-05",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/red_davila.json",
+            "blockers": [
+              "191historical original URLs remain403 in currentHTTP/Chrome; public original reader verifies each dated before2026-06-30."
+            ],
+            "latest_verified_original_at": "2026-10-05",
+            "coverage_complete": true,
+            "outcome": "OPERATIVE_DEGRADED",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T05:03:43.051938+00:00",
+            "evaluated": 1,
+            "published": 0,
+            "outcome": "rejected",
+            "last_signal_at": null,
+            "scope": "two repaired original URLs; preceding assessment preserved in history"
+          },
+          "provider_coverage": {
+            "outcome": "OPERATIVE_DEGRADED",
+            "coverage_complete": true,
+            "coverage_reason": "All640sitemapURLs reconciled:639datednews and1navigation;13verified90/3verified30,6materialcandidates all specifically rejected.411datesHTTP+37ordinaryChrome+191isolatedoriginalreaderheaders. All191reader originals are before90cutoff(latestJun29); cached freshness recorded separately from current191HTTP/Chrome403, so access remains degraded.",
+            "archive_depth": {
+              "sitemap_news_urls_visited": 640,
+              "dated_originals": 639,
+              "ordinary_browser_targets": 228,
+              "browser_recovered_dates": 37,
+              "public_reader_originals": 191,
+              "current_denied_originals": 191
+            },
+            "owner": "Publisher Red Dávila / Source Engineering",
+            "next_action": "Maintain13-piece90day reconciliation and below75 decisions. Publisher/SourceEngineering repair191current archive403 routes; all are verified historical beforeJun30 via cached original headers, so they are not current90-day omissions. Recheck changed/new original metadata through normal gates.",
+            "pages_checked": 879,
+            "latest_original_publication": "2026-10-05",
+            "discovered": 640,
+            "unique": 639,
+            "recent_30d": 3,
+            "recent_90d": 13,
+            "publication_date_unknown": 0,
+            "material_30d": 1,
+            "material_90d": 6,
+            "material_date_unknown": 0,
+            "material": 6,
+            "material_unknown": 0,
+            "published": 0,
+            "rejected": 6,
+            "deferred": 0,
+            "detected_material": 6,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 228,
+            "inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": 1,
+            "relevant_90d_total": 6,
+            "publicable_confirmed": 0,
+            "publicable_total": 0
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:33:46.946575+00:00",
+      "finished_at": "2026-10-11T14:34:02.878869+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "red_davila": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "red_davila": {
+          "discovered": 11,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:34:02.379995+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 0,
+      "source_health": {
+        "red_davila": {
+          "name": "Red Dávila",
+          "checked_at": "2026-10-11T14:34:02.384970+00:00",
+          "last_signal_at": null,
+          "discovered": 11,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 12,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "observed",
+          "content_freshness": "unknown",
+          "latest_original_at": "2026-10-05",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/red_davila.json",
+            "blockers": [
+              "191historical original URLs remain403 in currentHTTP/Chrome; public original reader verifies each dated before2026-06-30."
+            ],
+            "latest_verified_original_at": "2026-10-05",
+            "coverage_complete": true,
+            "outcome": "OPERATIVE_DEGRADED",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T05:03:43.051938+00:00",
+            "evaluated": 1,
+            "published": 0,
+            "outcome": "rejected",
+            "last_signal_at": null,
+            "scope": "two repaired original URLs; preceding assessment preserved in history"
+          },
+          "provider_coverage": {
+            "outcome": "OPERATIVE_DEGRADED",
+            "coverage_complete": true,
+            "coverage_reason": "All640sitemapURLs reconciled:639datednews and1navigation;13verified90/3verified30,6materialcandidates all specifically rejected.411datesHTTP+37ordinaryChrome+191isolatedoriginalreaderheaders. All191reader originals are before90cutoff(latestJun29); cached freshness recorded separately from current191HTTP/Chrome403, so access remains degraded.",
+            "archive_depth": {
+              "sitemap_news_urls_visited": 640,
+              "dated_originals": 639,
+              "ordinary_browser_targets": 228,
+              "browser_recovered_dates": 37,
+              "public_reader_originals": 191,
+              "current_denied_originals": 191
+            },
+            "owner": "Publisher Red Dávila / Source Engineering",
+            "next_action": "Maintain13-piece90day reconciliation and below75 decisions. Publisher/SourceEngineering repair191current archive403 routes; all are verified historical beforeJun30 via cached original headers, so they are not current90-day omissions. Recheck changed/new original metadata through normal gates.",
+            "pages_checked": 879,
+            "latest_original_publication": "2026-10-05",
+            "discovered": 640,
+            "unique": 639,
+            "recent_30d": 3,
+            "recent_90d": 13,
+            "publication_date_unknown": 0,
+            "material_30d": 1,
+            "material_90d": 6,
+            "material_date_unknown": 0,
+            "material": 6,
+            "material_unknown": 0,
+            "published": 0,
+            "rejected": 6,
+            "deferred": 0,
+            "detected_material": 6,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 228,
+            "inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": 1,
+            "relevant_90d_total": 6,
+            "publicable_confirmed": 0,
+            "publicable_total": 0
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+    "reviewed_at": "2026-10-11T14:34:03.246374+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93,
+  "idempotence_scope": "published queue keys, queue identities and history; non-editorial queue transitions reconciled separately",
+  "reviewed_queue_changes": [],
+  "runtime_run": 38147271657,
+  "preview_run": 38147510597,
+  "artifact_id": 11705418137,
+  "artifact_sha256": "81e0c1459b0ca7d5b47fa9e6bb71db160f8bee63c7f11ca959444399c973a51c",
+  "artifact_retention": "Original full archive retained by GitHub Actions; immutable summary, poll logs, capture manifest and original source-lane evidence preserved in git",
+  "imported_at": "2026-10-11T14:40:23.112019+00:00",
+  "import_scope": "source health/discovery/watermark receipts only; accepted queue/history unchanged"
+}

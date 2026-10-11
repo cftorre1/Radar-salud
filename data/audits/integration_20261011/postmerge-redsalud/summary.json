@@ -1,0 +1,310 @@
+{
+  "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+  "targets": {
+    "sources": [
+      "redsalud"
+    ],
+    "origin_prs": [
+      14
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:33:30.353453+00:00",
+      "finished_at": "2026-10-11T14:33:47.903001+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "redsalud": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "redsalud": {
+          "discovered": 45,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:33:47.426432+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "b8c86555901f6f1da45b2f36d63ce5b13b53d72b1f7cf096ac258085557fe70a",
+        "decf12cac54c8934b979229db11cfc158f4349c43c4db10e052a96d13c01f7dc"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 2,
+      "source_health": {
+        "redsalud": {
+          "name": "RedSalud",
+          "checked_at": "2026-10-11T14:33:47.431482+00:00",
+          "last_signal_at": "2026-09-21",
+          "discovered": 45,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 28,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "unverified",
+          "content_freshness": "older",
+          "latest_original_at": "2026-10-07",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/redsalud.json",
+            "blockers": [
+              "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately."
+            ],
+            "latest_verified_original_at": "2026-10-07",
+            "coverage_complete": false,
+            "outcome": "OPERATIVE_DEGRADED",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T04:49:06.489309+00:00",
+            "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+            "attempted": 1,
+            "published": 0,
+            "rejected": 0,
+            "retry": 1,
+            "outcome": "pending",
+            "full_90_inventory": false,
+            "promotion": "none"
+          },
+          "provider_coverage": {
+            "outcome": "OPERATIVE_DEGRADED",
+            "coverage_complete": false,
+            "coverage_reason": "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately.",
+            "archive_depth": {
+              "newsroom_pages": 9,
+              "alternate_observatorio": true,
+              "sitemap_checked": true
+            },
+            "owner": "Publisher RedSalud / Source Engineering",
+            "next_action": "Require accessible original publication/content for two denied sitemap articles; retain canonical+dedicated-header+ownJSONLD fail-closed date resolution. TMO84 is recovered; unavailable historical model diagnostics remain explicit, not reconstructed.",
+            "pages_checked": 116,
+            "latest_original_publication": "2026-10-07",
+            "discovered": 94,
+            "unique": 93,
+            "recent_30d": 8,
+            "recent_90d": 30,
+            "publication_date_unknown": 2,
+            "material_30d": 2,
+            "material_90d": 9,
+            "material_date_unknown": 0,
+            "material": 9,
+            "material_unknown": 2,
+            "published": 2,
+            "rejected": 7,
+            "deferred": 0,
+            "detected_material": 9,
+            "omitted_material": 0,
+            "parse_errors": 1,
+            "access_errors": 7,
+            "inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": null,
+            "relevant_90d_total": null,
+            "publicable_confirmed": 2,
+            "publicable_total": null
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:33:47.942302+00:00",
+      "finished_at": "2026-10-11T14:33:50.233350+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "redsalud": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "redsalud": {
+          "discovered": 45,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:33:49.736060+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "b8c86555901f6f1da45b2f36d63ce5b13b53d72b1f7cf096ac258085557fe70a",
+        "decf12cac54c8934b979229db11cfc158f4349c43c4db10e052a96d13c01f7dc"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 2,
+      "source_health": {
+        "redsalud": {
+          "name": "RedSalud",
+          "checked_at": "2026-10-11T14:33:49.742734+00:00",
+          "last_signal_at": "2026-09-21",
+          "discovered": 45,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 28,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "unverified",
+          "content_freshness": "older",
+          "latest_original_at": "2026-10-07",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/redsalud.json",
+            "blockers": [
+              "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately."
+            ],
+            "latest_verified_original_at": "2026-10-07",
+            "coverage_complete": false,
+            "outcome": "OPERATIVE_DEGRADED",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T04:49:06.489309+00:00",
+            "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+            "attempted": 1,
+            "published": 0,
+            "rejected": 0,
+            "retry": 1,
+            "outcome": "pending",
+            "full_90_inventory": false,
+            "promotion": "none"
+          },
+          "provider_coverage": {
+            "outcome": "OPERATIVE_DEGRADED",
+            "coverage_complete": false,
+            "coverage_reason": "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately.",
+            "archive_depth": {
+              "newsroom_pages": 9,
+              "alternate_observatorio": true,
+              "sitemap_checked": true
+            },
+            "owner": "Publisher RedSalud / Source Engineering",
+            "next_action": "Require accessible original publication/content for two denied sitemap articles; retain canonical+dedicated-header+ownJSONLD fail-closed date resolution. TMO84 is recovered; unavailable historical model diagnostics remain explicit, not reconstructed.",
+            "pages_checked": 116,
+            "latest_original_publication": "2026-10-07",
+            "discovered": 94,
+            "unique": 93,
+            "recent_30d": 8,
+            "recent_90d": 30,
+            "publication_date_unknown": 2,
+            "material_30d": 2,
+            "material_90d": 9,
+            "material_date_unknown": 0,
+            "material": 9,
+            "material_unknown": 2,
+            "published": 2,
+            "rejected": 7,
+            "deferred": 0,
+            "detected_material": 9,
+            "omitted_material": 0,
+            "parse_errors": 1,
+            "access_errors": 7,
+            "inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": null,
+            "relevant_90d_total": null,
+            "publicable_confirmed": 2,
+            "publicable_total": null
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+    "reviewed_at": "2026-10-11T14:33:50.593379+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93,
+  "idempotence_scope": "published queue keys, queue identities and history; non-editorial queue transitions reconciled separately",
+  "reviewed_queue_changes": [],
+  "runtime_run": 38147271657,
+  "preview_run": 38147510597,
+  "artifact_id": 11704529405,
+  "artifact_sha256": "f0930e3f5d3698e7805fa897ef7dc2d527a65d85db0b4ec6796f43812f8630aa",
+  "artifact_retention": "Original full archive retained by GitHub Actions; immutable summary, poll logs, capture manifest and original source-lane evidence preserved in git",
+  "imported_at": "2026-10-11T14:40:23.112019+00:00",
+  "import_scope": "source health/discovery/watermark receipts only; accepted queue/history unchanged"
+}

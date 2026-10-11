@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T14:34:56.693908+00:00",
+  "updated_at": "2026-10-11T14:45:50.467689+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3144,7 +3144,7 @@
     },
     {
       "id": "source_audit_issue5_iteration2_balance_2026_10_09",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Pele + Source Intelligence + Editorial Committee",
       "source": "Dirección / GitHub issue #5",
@@ -3164,7 +3164,7 @@
         "QA editorial de diversidad y materialidad"
       ],
       "approved_at": "2026-10-10",
-      "next_action": "Runtime post-merge en curso; revisión por subfuente y conciliación del stock antes de cambiar outcome.",
+      "next_action": "Follow source-specific matrix limits and next_action in data/pmo/integration_release_2026_10_11.json; do not repeat accepted analysis or close external coverage as healthy.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3227,11 +3227,21 @@
           ]
         }
       ],
-      "last_progress_at": "2026-10-11T14:28:47.562636+00:00",
+      "last_progress_at": "2026-10-11T14:41:20.711400+00:00",
       "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
       "integration_pr": 23,
       "runtime_run": 38147271657,
-      "integration_outcome": "NOT_READY"
+      "integration_outcome": "NOT_READY",
+      "integration_outcomes": {
+        "redsalud": "INTEGRATED_DEGRADED",
+        "bupa_chile": "EXTERNAL_BLOCKER_PROVEN",
+        "indisa": "EXTERNAL_BLOCKER_PROVEN",
+        "red_davila": "INTEGRATED_DEGRADED",
+        "andes_salud": "INTEGRATED_VALIDATED",
+        "clinicas_chile": "INTEGRATED_DEGRADED",
+        "pfizer_chile": "INTEGRATED_DEGRADED"
+      },
+      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers."
     },
     {
       "id": "source_audit_issue5_iteration3_editorial_2026_10_09",
@@ -3527,9 +3537,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11",
+      "last_progress_at": "2026-10-11T14:41:20.711400+00:00",
       "current_subfront": "validate_df_and_pulso_runtime",
-      "next_action": "DF integrado con runtime validado y limitaciones preservadas; PR10 continúa en su rama hasta READY_FOR_INTEGRATION.",
+      "next_action": "Preserve DF validated integration; keep Pulso PR10 separate until explicit READY_FOR_INTEGRATION with genuine runtime, semantic review and final QA.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3681,20 +3691,10 @@
         }
       ],
       "integration_outcomes": {
-        "diario_financiero": {
-          "state": "INTEGRATED_DEGRADED",
-          "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
-          "runtime_run": 38142527704,
-          "preview_run": 38142527882,
-          "deferred_multimedia": 19,
-          "coverage_complete": false
-        },
-        "pulso_latercera": {
-          "state": "NOT_READY",
-          "pr": 10,
-          "next_action": "Terminar procesamiento real, QA dirigido, Reviewer y handoff READY_FOR_INTEGRATION."
-        }
-      }
+        "diario_financiero": "INTEGRATED_DEGRADED",
+        "pulso_latercera": "NOT_READY"
+      },
+      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers."
     },
     {
       "id": "source_repair_public_data_lane_2026_10_11",
@@ -3717,9 +3717,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:13:46.692772+00:00",
+      "last_progress_at": "2026-10-11T14:41:20.711400+00:00",
       "current_subfront": "branch_runtime_outcomes_proven_pending_postmerge_staging_gate",
-      "next_action": "Runtime post-merge en curso; revisión por subfuente y conciliación del stock antes de cambiar outcome.",
+      "next_action": "Follow source-specific matrix limits and next_action in data/pmo/integration_release_2026_10_11.json; do not repeat accepted analysis or close external coverage as healthy.",
       "blocked_by": [],
       "progress": "Recuperación efectiva en la rama: DEIS OPERATIVE_DEGRADED con 12 documentos fechados, 10 PDF legibles, 5 catálogos/572 recursos y 5 datasets oficiales nacionales; cuatro EXTERNAL_BLOCKER_PROVEN desde Codex + GitHub, con alternativas oficiales. 137 tests dirigidos; 389 PASS/1 fallo heredado/1 SKIP; Node41; browser 32/14 igual baseline; Reviewer sin nuevos hallazgos. Sin merge/deploy ni publicaciones nuevas. Final runtime 38117670184 at 55e31b1 confirms all five native scouts and XLSX/CSV samples: 14,641 sheet rows, 5,782 establishments, 168,474 hospital-indicator rows, with no editorial date fabricated.",
       "evidence": [
@@ -3764,7 +3764,15 @@
       "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
       "integration_pr": 21,
       "runtime_run": 38146249940,
-      "integration_outcome": "NOT_READY"
+      "integration_outcome": "NOT_READY",
+      "integration_outcomes": {
+        "deis": "INTEGRATED_DEGRADED",
+        "fonasa": "EXTERNAL_BLOCKER_PROVEN",
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_anamed": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_surveillance": "EXTERNAL_BLOCKER_PROVEN"
+      },
+      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers."
     },
     {
       "id": "source_repair_fiscalization_lane_2026_10_11",
@@ -3787,9 +3795,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T13:41:48.647967+00:00",
+      "last_progress_at": "2026-10-11T14:41:20.711400+00:00",
       "current_subfront": "bounded_coverage_validated_global_gates_and_dates_pending",
-      "next_action": "Integrate strict baseline PR17 and current-poll health/weekly provenance PR19 with combined QA. Continue source PR12/13/14 in staging; preserve undated reports and legal coverage gaps. Pulso only READY.",
+      "next_action": "Follow source-specific matrix limits and next_action in data/pmo/integration_release_2026_10_11.json; do not repeat accepted analysis or close external coverage as healthy.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -4020,11 +4028,16 @@
       "integration_outcome": "INTEGRATED_DEGRADED",
       "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
       "qa_run": 38143952494,
-      "runtime_run": 38143952220
+      "runtime_run": 38143952220,
+      "integration_outcomes": {
+        "superintendencia_fiscalizacion": "INTEGRATED_DEGRADED",
+        "suseso_fiscalizacion": "INTEGRATED_DEGRADED"
+      },
+      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers."
     },
     {
       "id": "source_repair_mutualities_lane_2026_10_11",
-      "status": "blocked",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Pele + Occupational Health Worker",
       "source": "Issue #5 autonomy split",
@@ -4043,9 +4056,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:05:53.481344+00:00",
+      "last_progress_at": "2026-10-11T14:41:20.711400+00:00",
       "current_subfront": "publisher_date_and_archive_gaps_after_scoped_technical_validation",
-      "next_action": "Runtime post-merge en curso; revisión por subfuente y conciliación del stock antes de cambiar outcome.",
+      "next_action": "Follow source-specific matrix limits and next_action in data/pmo/integration_release_2026_10_11.json; do not repeat accepted analysis or close external coverage as healthy.",
       "branch": "codex/e-salud-laboral-20261011",
       "pull_request": "https://github.com/cftorre1/Radar-salud/pull/12",
       "progress": "Scoped implementation and Reviewer validated; 5 reviewed branch-only BACKFILLs. Official ACHS Seguro, central ACHS Salud, Mutual and IST surfaces accessible; clinic subpublisher availability separately recorded. 110 verified official URLs (102 title/date groups); 107 queued, three nonmaterial blog rejections durable only in inventory. 90-day complete acceptance remains partial for three sources.",
@@ -4128,7 +4141,14 @@
       "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
       "integration_pr": 20,
       "runtime_run": 38145632535,
-      "integration_outcome": "NOT_READY"
+      "integration_outcome": "NOT_READY",
+      "integration_outcomes": {
+        "achs_seguro_laboral": "INTEGRATED_VALIDATED",
+        "clinicas_achs_salud": "INTEGRATED_DEGRADED",
+        "mutual_seguridad": "INTEGRATED_DEGRADED",
+        "ist": "INTEGRATED_DEGRADED"
+      },
+      "integration_acceptance": "Mature components integrated and runtime-reviewed; follow-up limited to listed coverage gaps/blockers."
     },
     {
       "id": "w4_isapres_2026_10_11",
@@ -4799,9 +4819,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:34:56.693908+00:00",
+      "last_progress_at": "2026-10-11T14:45:50.467689+00:00",
       "current_subfront": "post_merge_PR23",
-      "next_action": "Validar runtime de la integración actual y continuar los siguientes frentes seguros. Pulso requiere READY explícito.",
+      "next_action": "Finish native postmerge38148412191 and preview; reconcile receipts. PulsoPR10 remainsNOT_READY until explicitREADY plus runtime/semantic/QA gates. Continue only documented residual source repairs.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -4911,6 +4931,106 @@
         }
       },
       "integrated_source_rows": {
+        "diario_financiero": {
+          "source": "diario_financiero",
+          "issues": [
+            5,
+            6
+          ],
+          "task_id": "source_repair_media_lane_2026_10_11",
+          "pr": 11,
+          "branch": "codex/df-end-to-end-20261011",
+          "candidate_sha": "50cef26c4d829f18b3619d41710fffdf50534e91",
+          "integration": "merged_PR11",
+          "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+          "qa": {
+            "run": 38142527882,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38142527882,
+            "status": "PASS",
+            "scope": "deterministic + desktop/mobile; original semantic scope retained"
+          },
+          "runtime_post_merge": {
+            "run": 38142527704,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/df-postmerge-916fe2d.json"
+          },
+          "final_state": "INTEGRATED_DEGRADED",
+          "owner": "Pele + Media Source Worker",
+          "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito.",
+          "limits": [
+            "partial 30/90 inventory",
+            "19 multimedia deferred"
+          ]
+        },
+        "superintendencia_fiscalizacion": {
+          "source": "superintendencia_fiscalizacion",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_fiscalization_lane_2026_10_11",
+          "pr": 15,
+          "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
+          "candidate_sha": "e654dd623001ddf6de54da5e31d84a795e78e997",
+          "integration": "merged_PR18",
+          "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+          "qa": {
+            "run": 38143952494,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38143952494,
+            "status": "PASS",
+            "scope": "deterministic + desktop/mobile; original semantic scope retained"
+          },
+          "runtime_post_merge": {
+            "run": 38143952220,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+          },
+          "final_state": "INTEGRATED_DEGRADED",
+          "owner": "Codex D · Regulatory Source Recovery",
+          "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito."
+        },
+        "suseso_fiscalizacion": {
+          "source": "suseso_fiscalizacion",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_fiscalization_lane_2026_10_11",
+          "pr": 15,
+          "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
+          "candidate_sha": "e654dd623001ddf6de54da5e31d84a795e78e997",
+          "integration": "merged_PR18",
+          "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+          "qa": {
+            "run": 38143952494,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38143952494,
+            "status": "PASS",
+            "scope": "deterministic + desktop/mobile; original semantic scope retained"
+          },
+          "runtime_post_merge": {
+            "run": 38143952220,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+          },
+          "final_state": "INTEGRATED_DEGRADED",
+          "owner": "Codex D · Regulatory Source Recovery",
+          "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito."
+        },
         "achs_seguro_laboral": {
           "source": "achs_seguro_laboral",
           "issues": [
@@ -5297,27 +5417,36 @@
           "integration": "merged_PR23",
           "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
           "qa": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS"
           },
           "reviewer": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS",
-            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+            "scope": "strict deterministic + desktop/mobile; original semantic review retained"
           },
           "runtime_post_merge": {
             "run": 38147271657,
-            "status": "IN_PROGRESS"
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "idempotence_scope": "published queue keys, queue identities and history",
+            "reviewed_queue_transitions": 0,
+            "artifact": "data/audits/integration_20261011/postmerge-redsalud/summary.json"
           },
-          "final_state": "NOT_READY",
+          "final_state": "INTEGRATED_DEGRADED",
           "owner": "Pele + Source Intelligence + Editorial Committee",
-          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "next_action": "Require accessible original publication/content for two denied sitemap articles; retain canonical+dedicated-header+ownJSONLD fail-closed date resolution. TMO84 is recovered; unavailable historical model diagnostics remain explicit, not reconstructed.",
           "candidate_qa": {
             "prior_history_rows": 891,
             "new_verified_signals": 6,
             "quarantined_false_pdf_dates": 2,
             "focused": "31 PASS"
-          }
+          },
+          "limits": [
+            "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately.",
+            "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
+          ]
         },
         "bupa_chile": {
           "source": "bupa_chile",
@@ -5332,27 +5461,36 @@
           "integration": "merged_PR23",
           "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
           "qa": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS"
           },
           "reviewer": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS",
-            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+            "scope": "strict deterministic + desktop/mobile; original semantic review retained"
           },
           "runtime_post_merge": {
             "run": 38147271657,
-            "status": "IN_PROGRESS"
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "idempotence_scope": "published queue keys, queue identities and history",
+            "reviewed_queue_transitions": 10,
+            "artifact": "data/audits/integration_20261011/postmerge-bupa_chile/summary.json"
           },
-          "final_state": "NOT_READY",
+          "final_state": "EXTERNAL_BLOCKER_PROVEN",
           "owner": "Pele + Source Intelligence + Editorial Committee",
-          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "next_action": "Require an article-level published date from the original for undated roots, particularly Conecta; recheck official newsroom/sitemap/feed/CMS after publisher supplies release evidence. Investment already covered by DF; BancoEstado renewal needs no paid retry.",
           "candidate_qa": {
             "prior_history_rows": 891,
             "new_verified_signals": 6,
             "quarantined_false_pdf_dates": 2,
             "focused": "31 PASS"
-          }
+          },
+          "limits": [
+            "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held.",
+            "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
+          ]
         },
         "indisa": {
           "source": "indisa",
@@ -5367,27 +5505,36 @@
           "integration": "merged_PR23",
           "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
           "qa": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS"
           },
           "reviewer": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS",
-            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+            "scope": "strict deterministic + desktop/mobile; original semantic review retained"
           },
           "runtime_post_merge": {
             "run": 38147271657,
-            "status": "IN_PROGRESS"
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "idempotence_scope": "published queue keys, queue identities and history",
+            "reviewed_queue_transitions": 2,
+            "artifact": "data/audits/integration_20261011/postmerge-indisa/summary.json"
           },
-          "final_state": "NOT_READY",
+          "final_state": "EXTERNAL_BLOCKER_PROVEN",
           "owner": "Pele + Source Intelligence + Editorial Committee",
-          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "next_action": "Restore original public newsroom/details from maintenance, then reconcile full90 archive and review the pending90 source gate before evaluating Esencial/FundaElbo. Cached dates alone cannot clear the gate.",
           "candidate_qa": {
             "prior_history_rows": 891,
             "new_verified_signals": 6,
             "quarantined_false_pdf_dates": 2,
             "focused": "31 PASS"
-          }
+          },
+          "limits": [
+            "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof.",
+            "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
+          ]
         },
         "red_davila": {
           "source": "red_davila",
@@ -5402,27 +5549,36 @@
           "integration": "merged_PR23",
           "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
           "qa": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS"
           },
           "reviewer": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS",
-            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+            "scope": "strict deterministic + desktop/mobile; original semantic review retained"
           },
           "runtime_post_merge": {
             "run": 38147271657,
-            "status": "IN_PROGRESS"
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "idempotence_scope": "published queue keys, queue identities and history",
+            "reviewed_queue_transitions": 0,
+            "artifact": "data/audits/integration_20261011/postmerge-red_davila/summary.json"
           },
-          "final_state": "NOT_READY",
+          "final_state": "INTEGRATED_DEGRADED",
           "owner": "Pele + Source Intelligence + Editorial Committee",
-          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "next_action": "Maintain13-piece90day reconciliation and below75 decisions. Publisher/SourceEngineering repair191current archive403 routes; all are verified historical beforeJun30 via cached original headers, so they are not current90-day omissions. Recheck changed/new original metadata through normal gates.",
           "candidate_qa": {
             "prior_history_rows": 891,
             "new_verified_signals": 6,
             "quarantined_false_pdf_dates": 2,
             "focused": "31 PASS"
-          }
+          },
+          "limits": [
+            "All640sitemapURLs reconciled:639datednews and1navigation;13verified90/3verified30,6materialcandidates all specifically rejected.411datesHTTP+37ordinaryChrome+191isolatedoriginalreaderheaders. All191reader originals are before90cutoff(latestJun29); cached freshness recorded separately from current191HTTP/Chrome403, so access remains degraded.",
+            "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
+          ]
         },
         "andes_salud": {
           "source": "andes_salud",
@@ -5437,27 +5593,36 @@
           "integration": "merged_PR23",
           "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
           "qa": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS"
           },
           "reviewer": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS",
-            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+            "scope": "strict deterministic + desktop/mobile; original semantic review retained"
           },
           "runtime_post_merge": {
             "run": 38147271657,
-            "status": "IN_PROGRESS"
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "idempotence_scope": "published queue keys, queue identities and history",
+            "reviewed_queue_transitions": 10,
+            "artifact": "data/audits/integration_20261011/postmerge-andes_salud/summary.json"
           },
-          "final_state": "NOT_READY",
+          "final_state": "INTEGRATED_VALIDATED",
           "owner": "Pele + Source Intelligence + Editorial Committee",
-          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "next_action": "Maintain verified CMS/header discovery and reviewed stock. Shared gates resolved; 3 reviewed outputs are integrated and genuine two-poll runtime passed within the official archive scope.",
           "candidate_qa": {
             "prior_history_rows": 891,
             "new_verified_signals": 6,
             "quarantined_false_pdf_dates": 2,
             "focused": "31 PASS"
-          }
+          },
+          "limits": [
+            "All26 published original CMS posts in90days (11in30) reconciled:4material candidates,3published,Frutillar70<75,20education and2reviewed campaigns;24news enter daily discovery.",
+            "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
+          ]
         },
         "clinicas_chile": {
           "source": "clinicas_chile",
@@ -5472,27 +5637,36 @@
           "integration": "merged_PR23",
           "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
           "qa": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS"
           },
           "reviewer": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS",
-            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+            "scope": "strict deterministic + desktop/mobile; original semantic review retained"
           },
           "runtime_post_merge": {
             "run": 38147271657,
-            "status": "IN_PROGRESS"
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "idempotence_scope": "published queue keys, queue identities and history",
+            "reviewed_queue_transitions": 10,
+            "artifact": "data/audits/integration_20261011/postmerge-clinicas_chile/summary.json"
           },
-          "final_state": "NOT_READY",
+          "final_state": "INTEGRATED_DEGRADED",
           "owner": "Pele + Source Intelligence + Editorial Committee",
-          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "next_action": "Supply dated editorial release/version evidence for33PDFs and one library item, distinct from RSS entry date, reporting year, upload path and sitemaplastmod; all four requested channels remain audited.",
           "candidate_qa": {
             "prior_history_rows": 891,
             "new_verified_signals": 6,
             "quarantined_false_pdf_dates": 2,
             "focused": "31 PASS"
-          }
+          },
+          "limits": [
+            "Noticias boundary verified; four requested channels and129library sitemap entries investigated,33documents.3recent news reconciled (CENS70published; opinion/meetingexcluded). Library RSS newest entryMar16before90daywindow, but it does not date each PDF/version; document-release chronology remains unverified.",
+            "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
+          ]
         },
         "pfizer_chile": {
           "source": "pfizer_chile",
@@ -5507,27 +5681,55 @@
           "integration": "merged_PR23",
           "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
           "qa": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS"
           },
           "reviewer": {
-            "run": 38146579368,
+            "run": 38147510597,
             "status": "PASS",
-            "scope": "strict deterministic and browser desktop/mobile; original semantic review retained"
+            "scope": "strict deterministic + desktop/mobile; original semantic review retained"
           },
           "runtime_post_merge": {
             "run": 38147271657,
-            "status": "IN_PROGRESS"
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "idempotence_scope": "published queue keys, queue identities and history",
+            "reviewed_queue_transitions": 0,
+            "artifact": "data/audits/integration_20261011/postmerge-pfizer_chile/summary.json"
           },
-          "final_state": "NOT_READY",
+          "final_state": "INTEGRATED_DEGRADED",
           "owner": "Pele + Source Intelligence + Editorial Committee",
-          "next_action": "Revisar dos polls reales post-merge y emitir estado por fuente; merge no equivale a validación.",
+          "next_action": "Repair healthtech/covax misroutes and publish current article-level chronology or an official current Chile newsroom/feed. Latest verified2023-01-22; zero verified2026 originals is not a zero-activity claim.",
           "candidate_qa": {
             "prior_history_rows": 891,
             "new_verified_signals": 6,
             "quarantined_false_pdf_dates": 2,
             "focused": "31 PASS"
-          }
+          },
+          "limits": [
+            "All17observed original news URLs inspected with componentH1/body; historical publication headers recovered, broken healthtech/covax links identified. No verified2026news; undated/misrouted/legacy originals and stale newsroom prevent exact recent total.0verified is not proof of zero activity.",
+            "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
+          ]
+        },
+        "pulso_latercera": {
+          "source": "pulso_latercera",
+          "issues": [
+            5,
+            6
+          ],
+          "task_id": "source_repair_media_lane_2026_10_11",
+          "pr": 10,
+          "branch": "codex/b-pulso-runtime-20261011",
+          "candidate_sha": "90e99ad30e6eeaf470480e7847a7a814334a2b7b",
+          "integration": "pending",
+          "staging_sha": null,
+          "qa": "NOT_RUN_POST_INTEGRATION",
+          "reviewer": "NOT_RUN_POST_INTEGRATION",
+          "runtime_post_merge": null,
+          "final_state": "NOT_READY",
+          "owner": "Pele + Media Source Worker",
+          "next_action": "DF integrado con runtime validado y limitaciones preservadas; PR10 continúa en su rama hasta READY_FOR_INTEGRATION."
         }
       }
     },
