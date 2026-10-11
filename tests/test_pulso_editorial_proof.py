@@ -181,6 +181,42 @@ def test_literal_animal_plant_quote_cannot_substantiate_a_mislabeled_human_healt
     assert validate_pulso_editorial_proof(ai, body)["reason"] == "pulso_editorial_non_human_health"
 
 
+def test_real_proposed_2027_fonasa_budget_cannot_be_mislabeled_as_implemented_funding():
+    body = ROWS[19]["original_full_primary_body"]
+    assert hashlib.sha256(body.encode()).hexdigest() == "744b61b329357f0d9a34ba8f72ff2e8495dea55c1d708f6d94b6a3b80edb0e6a"
+    quote = (
+        "el seguro público de salud de Chile en el que están 17,3 millones de personas, fue "
+        "de $14.964 billones y para 2027 se proponen $16.224, lo que implica un aumento nominal "
+        "de 8,4% y de 5,2% real al proyectar una inflación de 3,1%. Dentro de Fonasa, la "
+        "atención primaria pasa de $3.595.710 millones en 2026 a $3.960.097 millones en 2027, "
+        "es decir, un 6,8% de aumento real.")
+    assert quote in body
+    ai = dict(relevance_score=80,
+              what_happened="Según La Tercera, el presupuesto de Fonasa para 2027 ya aumentó de $14.964 billones a $16.224, con el financiamiento implementado y disponible.",
+              why_it_matters="El incremento aprobado ya permite financiar prestaciones y ampliar la atención primaria de salud para los afiliados a Fonasa.",
+              reason="Comparación específica del presupuesto sanitario propuesto, sin aprobación acreditada.")
+    ai["pulso_editorial_proof"] = dict(
+        scope_decision="human_health_specific", scope_reason="La fuente cuantifica financiamiento de Fonasa y atención primaria propuesto para 2027.",
+        human_health_scope_quote=quote, actor="Fonasa",
+        actor_quote="Fondo Nacional de Salud (Fonasa), el seguro público de salud de Chile",
+        action="para 2027 se proponen $16.224", action_quote=quote,
+        consequence="lo que implica un aumento nominal de 8,4%", consequence_quote=quote,
+        event_status="actual", event_status_quote=quote,
+        novelty_decision="new_material_information", novelty_reason="La comparación reportada preserva cifras y distingue proyecto de ejecución.",
+        novelty_quote=quote, future_claims=[])
+    verdict = validate_pulso_editorial_proof(ai, body)
+    assert verdict["decision"] == "deferred"
+    assert verdict["reason"] == "pulso_editorial_future_status_mismatch"
+    ai["what_happened"] = "Según La Tercera, para Fonasa se proponen $16.224 billones en 2027 frente a $14.964 billones en 2026; la propuesta incluye atención primaria."
+    ai["why_it_matters"] = "El proyecto podría aumentar en 6,8% real los recursos de atención primaria; la comparación presupuestaria no acredita aprobación ni financiamiento disponible."
+    ai["pulso_editorial_proof"].update(event_status="proposal", future_claims=[
+        dict(summary_field=field, summary_quote=ai[field], source_quote=quote)
+        for field in ("what_happened", "why_it_matters")])
+    verdict = validate_pulso_editorial_proof(ai, body)
+    assert verdict["decision"] == "ready" and verdict["prospective_evidence"] is True
+    assert verdict["publication_approved"] is False
+
+
 @pytest.mark.parametrize("novelty,decision", [("repetition_or_context", "rejected"), ("uncertain", "deferred")])
 def test_context_repetition_or_uncertain_increment_never_becomes_approved(novelty, decision):
     body, ai = clinical_assessment(); ai["pulso_editorial_proof"]["novelty_decision"] = novelty

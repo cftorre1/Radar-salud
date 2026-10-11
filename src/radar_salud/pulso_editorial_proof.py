@@ -11,12 +11,12 @@ import json
 import re
 import unicodedata
 
-VERSION = "pulso_editorial_proof_v2"
+VERSION = "pulso_editorial_proof_v3"
 SCOPES = ("human_health_specific", "incidental_health", "non_human_health", "marketing", "opinion")
 STATUSES = ("actual", "proposal", "plan", "mixed_actual_and_future", "historical_context")
 NOVELTY = ("new_material_information", "repetition_or_context", "uncertain")
 FUTURE_SOURCE = re.compile(r"\b(?:habr[aá]|permitir[aá]n?|ser[aá]n?|podr[ií]an?|previst[oa]s?|"
-                           r"se prev[eé]|incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?)\b", re.I)
+                           r"se prev[eé]|se propone(?:n)?|incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?)\b", re.I)
 FUTURE_COPY = re.compile(r"\b(?:propuest[oa]s?|propon\w*|proyecto|plan(?:ea|eado)?|prev[eé]|"
                          r"previst[oa]s?|proyect\w*|habr[aá]|permitir[aáí]\w*|"
                          r"podr[ií]\w*|puede\w*|ser[aá]n?|futur[oa]s?|de aprobarse|"
