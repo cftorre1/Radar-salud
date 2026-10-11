@@ -186,8 +186,13 @@ def exceptional_categories(row, window):
     """Observed taxonomy and parser evidence select retention, never adoption."""
     observed_day = row.get("visible_byline_day") or row.get("current_parser", {}).get("metadata", {}).get("publication_date")
     if (not window or not observed_day or not window["start"] <= observed_day <= window["end"]
-            or not row.get("canonical_matches_requested") or row.get("url_bound_article_nodes") != 1):
+            or not row.get("canonical_matches_requested")):
         return []
+    video_category = ["url_bound_primary_video_object"] if row.get("url_bound_video_objects", 0) else []
+    # Standalone VideoObject documents are still primary video evidence. They
+    # cannot supply an Article body or authorize a factual date exception.
+    if row.get("url_bound_article_nodes") != 1:
+        return video_category
     categories = []
     native_days, chile_days = [], []
     for evidence in row.get("publication_evidence", []):
@@ -216,9 +221,7 @@ def exceptional_categories(row, window):
         categories.append("explicit_opinion_or_column_keyword_under_article_path")
     if str(row.get("section", "")).strip().casefold() in {"branded", "publirreportajes"}:
         categories.append("explicit_commercial_publisher_section")
-    if row.get("url_bound_video_objects", 0):
-        categories.append("url_bound_primary_video_object")
-    return categories
+    return categories + video_category
 
 
 def retain_editorial_exceptions(originals, output, window, discovery_hash, discovered_at):

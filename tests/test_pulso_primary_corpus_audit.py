@@ -200,3 +200,24 @@ def test_editorial_and_all_bound_video_originals_are_retained_exactly_without_ad
             assert row["visible_byline_day"] == "2026-10-09"
             assert row["publication_evidence"][0]["timestamp"] == "2026-09-01T12:00:00Z"
             assert row["current_parser"]["reason"] == "conflicting_publication_dates"
+
+
+def test_standalone_bound_video_is_retained_without_fabricating_an_article(tmp_path):
+    base, captures, manifest, _ = artifact(tmp_path, [])
+    url = "https://www.latercera.com/videos/noticia/unit-standalone-video/"
+    video = {"@type": "VideoObject", "url": url, "name": "Conversación sobre hospitales",
+             "uploadDate": "2026-10-09T12:00:00Z", "embedUrl": "https://www.youtube.com/embed/unit"}
+    payload = (f'<html><link rel="canonical" href="{url}"><script type="application/ld+json">{json.dumps(video)}</script>'
+               '<article><time class="byline-date">9 Octubre 2026</time></article></html>').encode()
+    record = captured_record(captures, url, payload)
+    manifest.write_text(json.dumps({"source": "pulso_latercera", "mode": "actual_core_http_observation_no_inventory_injection",
+                                   "requests": [record]}))
+    output = tmp_path / "editorial"
+    report = corpus.audit(base, tmp_path / "report.json", tmp_path / "thin", exception_output=output)
+    row, = report["editorial_and_video_exception_originals"]["requests"]
+    assert row["retention_categories"] == ["url_bound_primary_video_object"]
+    assert row["url_bound_article_nodes"] == 0 and row["url_bound_video_objects"] == 1
+    assert row["full_primary_body"] == "" and not row["body_complete_as_original"]
+    assert row["current_parser"]["status"] == "error"
+    assert gzip.decompress((output / row["gzip_file"]).read_bytes()) == payload
+    assert row["visible_byline_day"] == "2026-10-09"
