@@ -30,3 +30,29 @@ def test_clinicas_news_binds_listing_stamp_without_borrowing_body_dates(monkeypa
     with pytest.raises(DeferredProcessing,match="without verified date"):
         process_clinicas_chile(pdf,{})
     assert pdf.event_date is None
+
+
+def test_clinicas_undated_card_cannot_inherit_previous_stamp():
+    scout=ClinicasChileScout()
+    html='''<div>6:42 pm el 2 de Octubre del 2026</div>
+      <h2><a href="/jornada-salud-digital/">Clínicas de Chile y CENS revisan nuevo marco digital</a></h2>
+      <h2><a href="/otra-noticia-sin-fecha/">Otra noticia de Clínicas de Chile sin sello de publicación</a></h2>'''
+    rows=scout.discover_from_html(html,"Noticias",scout.PAGES[0][1])
+    assert rows[0].event_date=="2026-10-02"
+    assert rows[1].event_date is None
+
+
+def test_clinicas_partial_library_failure_preserves_news_and_exact_error(monkeypatch):
+    scout=ClinicasChileScout()
+    def fetch(url):
+        if url==scout.PAGES[0][1]:
+            return '<div>6:42 pm el 2 de Octubre del 2026</div><h2><a href="/jornada-salud-digital/">Clínicas de Chile y CENS revisan nuevo marco digital</a></h2>'
+        if url.endswith('/jornada-salud-digital/'):return '<h1>Clínicas de Chile y CENS</h1>'
+        raise OSError('blocked')
+    monkeypatch.setattr('radar_salud.source_scouts.fetch_html',fetch)
+    rows=scout.discover()
+    assert len(rows)==1 and rows[0].event_date=='2026-10-02'
+    assert len(scout.discovery_errors)==10
+    assert any('Memorias:' in error and 'OSError' in error for error in scout.discovery_errors)
+    scout.discover()
+    assert len(scout.discovery_errors)==10

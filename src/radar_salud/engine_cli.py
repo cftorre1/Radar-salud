@@ -77,13 +77,15 @@ def main():
     for name,_,discover,_ in specs:
         try:
             items=discover()
+            partial_errors=getattr(getattr(discover,"__self__",None),"discovery_errors",[])
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
             seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw))}
             checked_at=datetime.now(timezone.utc).isoformat()
             added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name))
-            watermarks[name]=checked_at
-            atomic_json(watermark_path,watermarks)
-            discoveries[name]=(len(items),added,None)
+            if not partial_errors:
+                watermarks[name]=checked_at
+                atomic_json(watermark_path,watermarks)
+            discoveries[name]=(len(items),added,"partial_discovery: "+"; ".join(partial_errors) if partial_errors else None)
         except Exception as exc:
             discoveries[name]=(0,0,type(exc).__name__)
     atomic_json(root/"data/state/discovery_run.json",{

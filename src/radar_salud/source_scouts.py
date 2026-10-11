@@ -338,7 +338,7 @@ class ClinicasChileScout:
         return out
     def discover(self):
         from .public_source_pipeline import _Meta, _date
-        out=[];seen=set()
+        out=[];seen=set();self.discovery_errors=[]
         for channel,page in self.PAGES:
             # The library lists 3/3/4 pages. Scan each channel from page 1;
             # library order is not a verified chronology.
@@ -346,40 +346,55 @@ class ClinicasChileScout:
             pages=[page]+[f"{page}page/{n}/?mostrar=6" for n in range(2,count+1)]
             candidates=[]
             for listing in pages:
-                candidates.extend(self.discover_from_html(fetch_html(listing),channel,listing))
+                try:candidates.extend(self.discover_from_html(fetch_html(listing),channel,listing))
+                except Exception as exc:self.discovery_errors.append(f"{channel}: {listing}: {type(exc).__name__}")
             for raw in candidates:
                 if raw.url in seen:continue
                 seen.add(raw.url)
                 if channel=="Noticias":
                     # A detail fetch failure remains retryable, never a date
                     # borrowed from navigation, legal citations or PDF body text.
-                    detail=fetch_html(raw.url)
+                    try:detail=fetch_html(raw.url)
+                    except Exception as exc:
+                        self.discovery_errors.append(f"{channel}: {raw.url}: {type(exc).__name__}")
+                        out.append(raw);continue
                     meta=_Meta();meta.feed(detail)
                     stamp=_PublishedMeta();stamp.feed(detail)
                     # _Meta includes several historical date names; only the
                     # explicit article property can replace the listing stamp.
                     verified=_date(stamp.published)
-                    if verified:
+                    if verified and raw.event_date and verified != raw.event_date:
+                        self.discovery_errors.append(f"{channel}: {raw.url}: publication_date_mismatch")
+                        raw.event_date=None;raw.metadata["publication_date_source"]="conflicting_stamps"
+                    elif verified:
                         raw.event_date=verified;raw.metadata["publication_date_source"]="article:published_time"
                     raw.metadata["page_text"]=" ".join(meta.text)[:18000]
                     raw.raw_text=raw.metadata["page_text"][:1800]
                 out.append(raw)
-        if not out:raise RuntimeError("Clínicas de Chile hubs unavailable or empty")
+        if not out:raise RuntimeError("Clínicas de Chile hubs unavailable or empty: "+"; ".join(self.discovery_errors))
         return out[:100]
 
 
 class _ClinicasLinks(_A):
     """Associate the site's publication stamp with the following news headline."""
-    def __init__(self):super().__init__();self.dates={};self._stamp=None
+    def __init__(self):super().__init__();self.dates={};self._stamp=None;self._heading=False
+    def handle_starttag(self,tag,attrs):
+        lower=tag.lower()
+        if lower in ("article","nav","footer"):self._stamp=None
+        if lower in ("h2","h3"):self._heading=True
+        super().handle_starttag(tag,attrs)
     def handle_data(self,data):
         from .public_source_pipeline import _date
-        if re.search(r"\bel\s+\d{1,2}\s+de\s+\w+\s+del\s+20\d{2}",data,re.I):
+        if re.fullmatch(r"\s*\d{1,2}:\d{2}\s*[ap]m\s+el\s+\d{1,2}\s+de\s+\w+\s+del\s+20\d{2}\s*",data,re.I):
             self._stamp=_date(data)
         super().handle_data(data)
     def handle_endtag(self,tag):
         href=self._href
         super().handle_endtag(tag)
-        if tag.lower()=="a" and href and self._stamp:self.dates[href]=self._stamp
+        if tag.lower()=="a" and href and self._heading and self._stamp:
+            self.dates[href]=self._stamp;self._stamp=None
+        if tag.lower() in ("h2","h3","article"):
+            self._stamp=None;self._heading=False
 
 
 class CorporateNewsroomScout:
@@ -418,6 +433,7 @@ class CorporateNewsroomScout:
         if not out:raise RuntimeError(f"{self.SOURCE_NAME} newsroom structure unrecognized")
         return out[:100]
     def discover(self):
+        self.discovery_errors=[]
         items=self.discover_from_html(fetch_html(self.PAGE))
         if self.SOURCE_SLUG=="redsalud":
             # First-page-only polling hides capacity/convenio articles in the
@@ -425,7 +441,10 @@ class CorporateNewsroomScout:
             seen={item.url for item in items}
             for number in range(1,5):
                 page=f"{self.PAGE}?page={number}"
-                for item in self.discover_from_html(fetch_html(page)):
+                try:page_items=self.discover_from_html(fetch_html(page))
+                except Exception as exc:
+                    self.discovery_errors.append(f"{page}: {type(exc).__name__}");continue
+                for item in page_items:
                     if item.url not in seen:
                         seen.add(item.url);item.metadata["discovered_from"]=page;items.append(item)
         if self.SOURCE_SLUG=="indisa":

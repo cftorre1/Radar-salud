@@ -35,6 +35,10 @@ def test_indisa_visible_header_stamp_excludes_dates_from_article_and_footer():
     undated.feed('<h1>Convenio sin fecha</h1><p>Objetivo para 31/12/2027.</p>')
     undated.finish()
     assert undated.event_date() is None
+    unrelated = _IndisaArticle()
+    unrelated.feed('<nav><p>Evento seminario: 15/09/2026</p></nav><h1>Convenio sin sello</h1>')
+    unrelated.finish()
+    assert unrelated.event_date() is None
 
 
 def test_redsalud_discovers_beyond_first_page_without_duplicate_pinned_card(monkeypatch):

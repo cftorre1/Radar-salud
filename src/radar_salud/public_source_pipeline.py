@@ -591,12 +591,13 @@ class _IndisaArticle(HTMLParser):
         if lower=="meta":
             key=(attrs.get("property") or attrs.get("name") or "").casefold()
             value=attrs.get("content") or ""
-            if key in ("article:published_time","datepublished","date") and value and not self.published:
+            if key in ("article:published_time","datepublished") and value and not self.published:
                 self.published=value
         elif lower=="h1" and not self.title:
             # INDISA exposes a compact publication stamp immediately before H1.
             # Never take dates from medical/event text, related cards or the footer.
-            self._header_date=_date(" ".join(self._before_title)[-180:])
+            stamp=re.search(r"Novedades INDISA\s*•\s*(\d{1,2}/\d{1,2}/20\d{2})\s*•\s*\d+\s*min", " ".join(self._before_title)[-180:], re.I)
+            self._header_date=_date(stamp.group(1)) if stamp else None
             self._capture="title";self._parts=[]
         elif lower in ("p","li"):
             self._capture="body";self._parts=[]
@@ -609,7 +610,7 @@ class _IndisaArticle(HTMLParser):
             self.title=" ".join(" ".join(self._parts).split());self._capture=None
         elif self._capture=="body" and lower in ("p","li"):
             value=" ".join(" ".join(self._parts).split())
-            if value:self.body.append(value)
+            if value and self.title:self.body.append(value)
             self._capture=None
     def finish(self):
         self.title=" ".join(self.title.split());self.body=" ".join(self.body)

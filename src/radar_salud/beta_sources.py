@@ -253,6 +253,8 @@ def process_curated_beta_source(raw, cfg):
     from .public_source_pipeline import enrich, _scopes
 
     raw = enrich(raw)
+    if raw.metadata.get("fetch_error"):
+        raise DeferredProcessing(f"Provider detail unavailable: {raw.url}: {raw.metadata['fetch_error']}")
     body = raw.metadata.get("page_text") or raw.raw_text or ""
     role = raw.metadata.get("market_role") or "provider"
     if not raw.event_date or len(body) < 160 or not _material(role, raw.title, body):
