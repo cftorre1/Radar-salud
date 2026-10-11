@@ -1,0 +1,305 @@
+{
+  "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+  "targets": {
+    "sources": [
+      "indisa"
+    ],
+    "origin_prs": [
+      14
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:33:31.769878+00:00",
+      "finished_at": "2026-10-11T14:33:36.651649+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "indisa": "EXTERNAL_BLOCKER_OBSERVED"
+      },
+      "discovery": {
+        "indisa": {
+          "discovered": 0,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "HTTPError",
+          "checked_at": "2026-10-11T14:33:32.486302+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 0,
+      "source_health": {
+        "indisa": {
+          "name": "Clínica INDISA",
+          "checked_at": "2026-10-11T14:33:36.167798+00:00",
+          "last_signal_at": null,
+          "discovered": 0,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 2,
+          "pending": 2,
+          "deferred": 2,
+          "rejected": 0,
+          "status": "error",
+          "error": "HTTPError",
+          "technical_status": "error",
+          "coverage_status": "unverified",
+          "content_freshness": "unknown",
+          "latest_original_at": "2026-09-11",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/indisa.json",
+            "blockers": [
+              "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof."
+            ],
+            "latest_verified_original_at": "2026-09-11",
+            "coverage_complete": false,
+            "outcome": "EXTERNAL_BLOCKER_PROVEN",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T04:49:06.489309+00:00",
+            "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+            "attempted": 1,
+            "published": 0,
+            "rejected": 0,
+            "retry": 1,
+            "outcome": "pending",
+            "full_90_inventory": false,
+            "promotion": "none"
+          },
+          "provider_coverage": {
+            "outcome": "EXTERNAL_BLOCKER_PROVEN",
+            "coverage_complete": false,
+            "coverage_reason": "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof.",
+            "archive_depth": {
+              "official_routes_attempted": 25,
+              "ordinary_browser_targets": 2
+            },
+            "owner": "Publisher INDISA / Source Engineering",
+            "next_action": "Restore original public newsroom/details from maintenance, then reconcile full90 archive and review the pending90 source gate before evaluating Esencial/FundaElbo. Cached dates alone cannot clear the gate.",
+            "pages_checked": 20,
+            "latest_original_publication": "2026-09-11",
+            "discovered": 3,
+            "unique": 3,
+            "recent_30d": 1,
+            "recent_90d": 1,
+            "publication_date_unknown": 1,
+            "material_30d": 1,
+            "material_90d": 1,
+            "material_date_unknown": 1,
+            "material": 2,
+            "material_unknown": 0,
+            "published": 0,
+            "rejected": 0,
+            "deferred": 2,
+            "detected_material": 2,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 19,
+            "inventory": "data/audits/provider_inventory_2026_10_11/indisa.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": null,
+            "relevant_90d_total": null,
+            "publicable_confirmed": 0,
+            "publicable_total": null
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:33:36.684860+00:00",
+      "finished_at": "2026-10-11T14:33:37.636893+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "indisa": "EXTERNAL_BLOCKER_OBSERVED"
+      },
+      "discovery": {
+        "indisa": {
+          "discovered": 0,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "HTTPError",
+          "checked_at": "2026-10-11T14:33:37.078059+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 0,
+      "source_health": {
+        "indisa": {
+          "name": "Clínica INDISA",
+          "checked_at": "2026-10-11T14:33:37.137973+00:00",
+          "last_signal_at": null,
+          "discovered": 0,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 2,
+          "pending": 2,
+          "deferred": 2,
+          "rejected": 0,
+          "status": "error",
+          "error": "HTTPError",
+          "technical_status": "error",
+          "coverage_status": "unverified",
+          "content_freshness": "unknown",
+          "latest_original_at": "2026-09-11",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/indisa.json",
+            "blockers": [
+              "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof."
+            ],
+            "latest_verified_original_at": "2026-09-11",
+            "coverage_complete": false,
+            "outcome": "EXTERNAL_BLOCKER_PROVEN",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T04:49:06.489309+00:00",
+            "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+            "attempted": 1,
+            "published": 0,
+            "rejected": 0,
+            "retry": 1,
+            "outcome": "pending",
+            "full_90_inventory": false,
+            "promotion": "none"
+          },
+          "provider_coverage": {
+            "outcome": "EXTERNAL_BLOCKER_PROVEN",
+            "coverage_complete": false,
+            "coverage_reason": "Original listing/details/archives/feed/CMS/search deny access; ordinary native Chrome returns the same PÁGINA EN MANTENCIÓN DOM. Source gate pending_90_day_audit retained; cached Esencial context is not current inventory proof.",
+            "archive_depth": {
+              "official_routes_attempted": 25,
+              "ordinary_browser_targets": 2
+            },
+            "owner": "Publisher INDISA / Source Engineering",
+            "next_action": "Restore original public newsroom/details from maintenance, then reconcile full90 archive and review the pending90 source gate before evaluating Esencial/FundaElbo. Cached dates alone cannot clear the gate.",
+            "pages_checked": 20,
+            "latest_original_publication": "2026-09-11",
+            "discovered": 3,
+            "unique": 3,
+            "recent_30d": 1,
+            "recent_90d": 1,
+            "publication_date_unknown": 1,
+            "material_30d": 1,
+            "material_90d": 1,
+            "material_date_unknown": 1,
+            "material": 2,
+            "material_unknown": 0,
+            "published": 0,
+            "rejected": 0,
+            "deferred": 2,
+            "detected_material": 2,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 19,
+            "inventory": "data/audits/provider_inventory_2026_10_11/indisa.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": null,
+            "relevant_90d_total": null,
+            "publicable_confirmed": 0,
+            "publicable_total": null
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+    "reviewed_at": "2026-10-11T14:33:37.913847+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93,
+  "idempotence_scope": "published queue keys, queue identities and history; non-editorial queue transitions reconciled separately",
+  "reviewed_queue_changes": [
+    "7d441f50ec7e88f725f7bb7501c0c9949c49fbf7206dc2dfbd16a7ba6ee8f8bd",
+    "06bc70bf71af17a1b9b4600f99e5951afccab71ce43f2dc9a17c9b4e014e8220"
+  ],
+  "runtime_run": 38147271657,
+  "preview_run": 38147510597,
+  "artifact_id": 11704474575,
+  "artifact_sha256": "4e4f78999b2c4943fd4c3b7d2ace198af29077ec2e2da58bf97491cd9599c723",
+  "artifact_retention": "Original full archive retained by GitHub Actions; immutable summary, poll logs, capture manifest and original source-lane evidence preserved in git",
+  "imported_at": "2026-10-11T14:40:23.112019+00:00",
+  "import_scope": "source health/discovery/watermark receipts only; accepted queue/history unchanged"
+}

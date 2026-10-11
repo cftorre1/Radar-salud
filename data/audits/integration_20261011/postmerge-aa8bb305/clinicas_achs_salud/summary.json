@@ -1,0 +1,638 @@
+{
+  "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+  "targets": {
+    "sources": [
+      "clinicas_achs_salud"
+    ],
+    "origin_prs": [
+      11,
+      15,
+      19,
+      22,
+      13,
+      12,
+      14,
+      23
+    ],
+    "purpose": "Actual two-poll revalidation of DF/SIS/SUSESO, public transports and clinical cross-lane stock on copied staging state; no publication. Provider runtime 38147271657 continues independently.",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_achs_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "mutual_seguridad": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "ist": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "fonasa": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "fonasa_datos_abiertos": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_anamed": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_surveillance": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:45:21.672312+00:00",
+      "finished_at": "2026-10-11T14:54:40.861813+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "clinicas_achs_salud": "EXECUTED_WITH_PARTIAL_CAPTURE"
+      },
+      "discovery": {
+        "clinicas_achs_salud": {
+          "discovered": 13,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "SourceDiscoveryError",
+          "checked_at": "2026-10-11T14:54:38.865923+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 0,
+      "source_health": {
+        "clinicas_achs_salud": {
+          "name": "Achs Salud / Clínicas",
+          "checked_at": "2026-10-11T14:54:40.377086+00:00",
+          "last_signal_at": null,
+          "discovered": 13,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 1,
+          "pending": 1,
+          "deferred": 1,
+          "rejected": 31,
+          "status": "warning",
+          "error": "SourceDiscoveryError",
+          "technical_status": "partial",
+          "coverage_status": "partial",
+          "content_freshness": "unknown",
+          "latest_original_at": null,
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_detail": {
+            "code": "inventory_capture_incomplete",
+            "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad",
+            "message": "inventory_capture_incomplete: https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad"
+          },
+          "coverage_window": {
+            "convention": "rolling_elapsed_days_inclusive",
+            "end": "2026-10-11",
+            "start_30": "2026-09-11",
+            "start_90": "2026-07-13"
+          },
+          "pages_checked": 170,
+          "recent_items": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 13,
+              "expected_role": 3,
+              "candidates": 0,
+              "rejected": 3,
+              "excluded_role": 10,
+              "pending": 0,
+              "unknown_date_items": 25,
+              "complete": false,
+              "content_kinds": {
+                "news": 6,
+                "prevention": 5,
+                "study": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 39,
+              "expected_role": 16,
+              "candidates": 2,
+              "rejected": 14,
+              "excluded_role": 23,
+              "pending": 0,
+              "unknown_date_items": 25,
+              "complete": false,
+              "content_kinds": {
+                "news": 19,
+                "prevention": 8,
+                "study": 12
+              }
+            }
+          },
+          "unique_items": 16,
+          "material_items": 2,
+          "technical_failures": [
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/ansiedad-paso-a-paso-de-la-comprension-a-la-regulacion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/construye-tu-bienestar-paso-a-paso-con-habitos-saludables"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/cuándo-debes-consultar-a-un-psicólogo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/estrés-postraumático-y-crecimiento"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/cuando-el-dolor-habla-sin-palabras-la-depresion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/tienes-dolor-de-hombro-conoce-las-causas-y-tratamiento-de-las-lesiones-del-manguito-rotador"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/crisis-de-panico-como-regularlas"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/el-compromiso-de-la-achs-y-su-servicio-de-traumatologia-con-la-poblacion-chilena"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-esperar-de-la-primera-sesion-con-tu-psicologo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/para-que-buscar-ayuda-psicologica"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/estoy-triste-o-deprimido"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/como-alguien-como-yo-puede-deprimirse"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/conoce-nuestro-servicio-de-terapia-fisica"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/enfrenta-con-mas-herramientas-el-fin-de-ano"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/ser-mujer-8m-y-salud-mental"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-la-psicoterapia-breve-y-focalizada"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/aplicacion-terapeutica-de-frio-y-calor"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-una-crisis-de-panico"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/mindfulness-como-mantenernos-en-el-presente"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/mis-hijos-vuelven-a-clases-como-enfrento-el-estres-escolar-de-marzo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/como-manejar-el-estres-en-período-de-examenes"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/el-corazon-del-servicio-de-salud-mental-la-cooperacion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-la-ansiedad"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
+            }
+          ],
+          "coverage_completeness": false,
+          "recovery_outcome": "OPERATIVE_DEGRADED",
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/clinicas_achs_salud.json",
+            "blockers": [
+              "Shared parent archive160URLs/25recent90 checked; only subsidiary SAFED participation, related to existingBupa publication, is relevant. Mutuality excluded from this entity. Official subsidiary ownsite/CMS/feed checked (no90dayposts); LaSerena prequalification form has no dated release and is held without a new entity."
+            ],
+            "latest_verified_original_at": "2026-10-05",
+            "coverage_complete": false,
+            "outcome": "OPERATIVE_DEGRADED",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T04:49:06.489309+00:00",
+            "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+            "attempted": 1,
+            "published": 0,
+            "rejected": 1,
+            "retry": 0,
+            "outcome": "rejected",
+            "full_90_inventory": false,
+            "promotion": "none"
+          },
+          "provider_coverage": {
+            "outcome": "OPERATIVE_DEGRADED",
+            "coverage_complete": false,
+            "coverage_reason": "Shared parent archive160URLs/25recent90 checked; only subsidiary SAFED participation, related to existingBupa publication, is relevant. Mutuality excluded from this entity. Official subsidiary ownsite/CMS/feed checked (no90dayposts); LaSerena prequalification form has no dated release and is held without a new entity.",
+            "archive_depth": {
+              "parent_archive_urls": 160,
+              "own_site_alternatives": 8,
+              "own_cms_posts_90": 0
+            },
+            "owner": "Publisher Clínicas Achs Salud / Source Engineering",
+            "next_action": "Require a dated official LaSerena MasterPlan announcement with award/capacity/investment evidence; keep form held and one visible entity. Continue central archive exact-subsidiary filter; own CMS currently has no90-dayposts.",
+            "pages_checked": 177,
+            "latest_original_publication": "2026-10-05",
+            "discovered": 161,
+            "unique": 161,
+            "recent_30d": 10,
+            "recent_90d": 25,
+            "publication_date_unknown": 1,
+            "material_30d": 0,
+            "material_90d": 1,
+            "material_date_unknown": 1,
+            "material": 2,
+            "material_unknown": 0,
+            "published": 0,
+            "rejected": 1,
+            "deferred": 1,
+            "detected_material": 2,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 8,
+            "inventory": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": null,
+            "relevant_90d_total": null,
+            "publicable_confirmed": 0,
+            "publicable_total": null
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:54:40.902342+00:00",
+      "finished_at": "2026-10-11T15:04:17.018035+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "clinicas_achs_salud": "EXECUTED_WITH_PARTIAL_CAPTURE"
+      },
+      "discovery": {
+        "clinicas_achs_salud": {
+          "discovered": 13,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "SourceDiscoveryError",
+          "checked_at": "2026-10-11T15:04:16.491556+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 0,
+      "source_health": {
+        "clinicas_achs_salud": {
+          "name": "Achs Salud / Clínicas",
+          "checked_at": "2026-10-11T15:04:16.497535+00:00",
+          "last_signal_at": null,
+          "discovered": 13,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 1,
+          "pending": 1,
+          "deferred": 1,
+          "rejected": 31,
+          "status": "warning",
+          "error": "SourceDiscoveryError",
+          "technical_status": "partial",
+          "coverage_status": "partial",
+          "content_freshness": "unknown",
+          "latest_original_at": null,
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_detail": {
+            "code": "inventory_capture_incomplete",
+            "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad",
+            "message": "inventory_capture_incomplete: https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad"
+          },
+          "coverage_window": {
+            "convention": "rolling_elapsed_days_inclusive",
+            "end": "2026-10-11",
+            "start_30": "2026-09-11",
+            "start_90": "2026-07-13"
+          },
+          "pages_checked": 170,
+          "recent_items": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 13,
+              "expected_role": 3,
+              "candidates": 0,
+              "rejected": 3,
+              "excluded_role": 10,
+              "pending": 0,
+              "unknown_date_items": 25,
+              "complete": false,
+              "content_kinds": {
+                "news": 6,
+                "prevention": 5,
+                "study": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 39,
+              "expected_role": 16,
+              "candidates": 2,
+              "rejected": 14,
+              "excluded_role": 23,
+              "pending": 0,
+              "unknown_date_items": 25,
+              "complete": false,
+              "content_kinds": {
+                "news": 19,
+                "prevention": 8,
+                "study": 12
+              }
+            }
+          },
+          "unique_items": 16,
+          "material_items": 2,
+          "technical_failures": [
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/ansiedad-paso-a-paso-de-la-comprension-a-la-regulacion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/construye-tu-bienestar-paso-a-paso-con-habitos-saludables"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/cuándo-debes-consultar-a-un-psicólogo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/estrés-postraumático-y-crecimiento"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/cuando-el-dolor-habla-sin-palabras-la-depresion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/tienes-dolor-de-hombro-conoce-las-causas-y-tratamiento-de-las-lesiones-del-manguito-rotador"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/crisis-de-panico-como-regularlas"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/el-compromiso-de-la-achs-y-su-servicio-de-traumatologia-con-la-poblacion-chilena"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-esperar-de-la-primera-sesion-con-tu-psicologo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/para-que-buscar-ayuda-psicologica"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/estoy-triste-o-deprimido"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/como-alguien-como-yo-puede-deprimirse"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/conoce-nuestro-servicio-de-terapia-fisica"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/enfrenta-con-mas-herramientas-el-fin-de-ano"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/ser-mujer-8m-y-salud-mental"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-la-psicoterapia-breve-y-focalizada"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/aplicacion-terapeutica-de-frio-y-calor"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-una-crisis-de-panico"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/mindfulness-como-mantenernos-en-el-presente"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/mis-hijos-vuelven-a-clases-como-enfrento-el-estres-escolar-de-marzo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/como-manejar-el-estres-en-período-de-examenes"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/el-corazon-del-servicio-de-salud-mental-la-cooperacion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-la-ansiedad"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
+            }
+          ],
+          "coverage_completeness": false,
+          "recovery_outcome": "OPERATIVE_DEGRADED",
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/clinicas_achs_salud.json",
+            "blockers": [
+              "Shared parent archive160URLs/25recent90 checked; only subsidiary SAFED participation, related to existingBupa publication, is relevant. Mutuality excluded from this entity. Official subsidiary ownsite/CMS/feed checked (no90dayposts); LaSerena prequalification form has no dated release and is held without a new entity."
+            ],
+            "latest_verified_original_at": "2026-10-05",
+            "coverage_complete": false,
+            "outcome": "OPERATIVE_DEGRADED",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T04:49:06.489309+00:00",
+            "sha": "2b002e9268d35d33a6b6eea7e90a341d0fbc357e",
+            "attempted": 1,
+            "published": 0,
+            "rejected": 1,
+            "retry": 0,
+            "outcome": "rejected",
+            "full_90_inventory": false,
+            "promotion": "none"
+          },
+          "provider_coverage": {
+            "outcome": "OPERATIVE_DEGRADED",
+            "coverage_complete": false,
+            "coverage_reason": "Shared parent archive160URLs/25recent90 checked; only subsidiary SAFED participation, related to existingBupa publication, is relevant. Mutuality excluded from this entity. Official subsidiary ownsite/CMS/feed checked (no90dayposts); LaSerena prequalification form has no dated release and is held without a new entity.",
+            "archive_depth": {
+              "parent_archive_urls": 160,
+              "own_site_alternatives": 8,
+              "own_cms_posts_90": 0
+            },
+            "owner": "Publisher Clínicas Achs Salud / Source Engineering",
+            "next_action": "Require a dated official LaSerena MasterPlan announcement with award/capacity/investment evidence; keep form held and one visible entity. Continue central archive exact-subsidiary filter; own CMS currently has no90-dayposts.",
+            "pages_checked": 177,
+            "latest_original_publication": "2026-10-05",
+            "discovered": 161,
+            "unique": 161,
+            "recent_30d": 10,
+            "recent_90d": 25,
+            "publication_date_unknown": 1,
+            "material_30d": 0,
+            "material_90d": 1,
+            "material_date_unknown": 1,
+            "material": 2,
+            "material_unknown": 0,
+            "published": 0,
+            "rejected": 1,
+            "deferred": 1,
+            "detected_material": 2,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 8,
+            "inventory": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": null,
+            "relevant_90d_total": null,
+            "publicable_confirmed": 0,
+            "publicable_total": null
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+    "reviewed_at": "2026-10-11T15:04:17.388699+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93
+}

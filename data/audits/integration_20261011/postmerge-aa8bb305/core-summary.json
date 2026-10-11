@@ -1,0 +1,628 @@
+{
+  "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+  "targets": {
+    "sources": [
+      "suseso_fiscalizacion"
+    ],
+    "origin_prs": [
+      11,
+      15,
+      19,
+      22,
+      13,
+      12,
+      14,
+      23
+    ],
+    "purpose": "Actual two-poll revalidation of DF/SIS/SUSESO, public transports and clinical cross-lane stock on copied staging state; no publication. Provider runtime 38147271657 continues independently.",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_achs_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "mutual_seguridad": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "ist": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "fonasa": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "fonasa_datos_abiertos": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_anamed": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_surveillance": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:45:21.245402+00:00",
+      "finished_at": "2026-10-11T14:45:44.744965+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "suseso_fiscalizacion": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "suseso_fiscalizacion": {
+          "discovered": 1273,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:45:36.735237+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "00856a84daaf3307faf989b49b171ed945fb5870d8538676118606313ada9798",
+        "016320620c8e03cb24bb6370b1851c33519a065677f238887071b6da61f2b6b8",
+        "0794eee9108518d336d5143da1d9bd94b570b59b275ce367a55767c6cd3806a6",
+        "0bf6a0983ad1e475fe79781a891ed93a0fb8c05b8a2666c5ea17b4b350d02cb8",
+        "0cc2db37168aa43df86310425dd9f89c83a8f56bd9f7b19de789908f885f39be",
+        "0cc3e800218d4534bfdd855084f0346e91438ac5c71e788d7918637017780901",
+        "1125e2237e8cc2ade78f32746e7b1b2a7a346a3af5d0b7c3c07eddbcf5f85add",
+        "1452a4cf8e827d081a633b1ae24a74d02d2d8fbc3e02699833a215dd13414419",
+        "183eb2b42b1863d9168f3b92e877555dd46b98e437474bba1403b7e03ff77ef9",
+        "1cdcfb7eb827818d6f7db6f3ca006619c5eaee4aa06d118f4f0241430480eda2",
+        "2457774364c33f07b703be488686a7d117e912b6af09160cfbdb562ace5ee839",
+        "2e11b46de31fe77f5b5ecb080c9ce37cac53c2db4c9b5b630fc245f6c935278d",
+        "32739ad04450b79abf5c8e6d776553628f150840e4d2d75bb1a8fc4934a1dbc6",
+        "336f38eefdb6ce40392b76da3aaa62d17c2d233cac05b8528c3bcd51f318b185",
+        "35932eae8c7db12207d7172b2b4b3f5a1b9672d2991ab0b15bd0fdf49a8ef178",
+        "3ea0f9801b61fe92df5420022bfc112a365450b07647b6be6b439c1445e727d5",
+        "3fb29bde1c5c71bfe82ff95513ab885c902451b678f9610a9036b13ffebb31ab",
+        "40cfac8932438937c7dc99007398c80d814e4097d5597389760d50a8d3661d17",
+        "4276d7e565a2266b4ba2d360e2399bf21ddc148cc4ce63e7473e01643d483c78",
+        "43e0d01fdd474f78e10cd30a2153feb2d6681c55a983165f83a8af42000b3144",
+        "44f2e74f7d6f944a774b6829efc66ea44023ea1a0766afa948b8c0e3a9167cc3",
+        "4b45fbd7f2d68d99aee64ae5e2f24dc70d3d669e641fb93230d1bcb557b22fa8",
+        "50f8b8c9d0e8f1e9e28f7cbf5be183cc8ccd4328dbaa8f3380e59eb402855468",
+        "53d731879a7d4c47a685750d09ba3ea96c7b1bf738fb89d80ce22c5850dd4db5",
+        "5d1b3b14a3be03a906acc8e41b430e1d968c6cca3b9333af1e8b4c5afa622b02",
+        "5d36018d44466b2f02ebc4d8a113c34f9c509cbde2aa7305649c23addf484bda",
+        "5ffe6519b1f05ed2b0f7412e31470ddec2d7c1d19e99ebd149f2d3b022705a51",
+        "6051229f9248240a17497718c4510fe226efbe318960a57206cfc1cbd9014e4d",
+        "63cd230e3ef5f999b9bc263300619888b4e0e0f485fb038a6d9f682c6f61f856",
+        "648f0b9cec7e3f618bd65b59c532c1e1881cc4f9e7be1e65949ef0cdd589f209",
+        "6fa4b7b0b0eb64b203bba73415583c978be8f08049d05f77f354c8a81d6cd34f",
+        "701b24b81fd9ba7273c14b125ecf0524d76fa5448bea7485653a07db0fccc4fb",
+        "743a54e0f1efcf323931df8562a5dc66e66ce22f0e56a5ecc89bac4cf820a6f2",
+        "74455c1fe83122919bd172a7d18a5ba0761fba823ab1c9956a68cd28d40cac0d",
+        "75972d3d921c7c4e6b40b32cdce73158672ccf8c48f48574e4875093ded3f032",
+        "77455fc0e64c0de05e042314ab474e9e25b4cd18730874e7dc2e74f08ae86c10",
+        "77d4b8bc65719ad223c34fb9a95dcbb3154fe015bb19770f60dfffe6d5772798",
+        "7b3325e88eaf13fa7521dbaeaf9da300ca38202fc8cfdb68c1afb42f3906fb1e",
+        "85d80552691c02383bd758f8384b4eb3777b31c6c743b79a05fa854bdeed2966",
+        "85dfeb591b72a27379aca12477c449b70c056b5f498790e0774fe8bc7117d7c4",
+        "866399d6892d457f11fc26c886842e002bcaf54d367d91c25e183544e5e67cf9",
+        "86b4b8a16cc630af193da111daa21cd26be0456ea7764595425d5218aff4c3ae",
+        "894237bcd8d586b5c44106d7a089945f578a0da58c2db51faa32b9e8aecd3c67",
+        "8a8d33627f850eafd847a66256e095654aff4898a7587578e05c70c7ad470296",
+        "91d7f24ba9768776b30545635d1cba67696d561f889647ac8b380b3a78c7b004",
+        "942f97712fe6b79de9112654262bb55cafc1f38b81877d0becf379bc1079511b",
+        "955d0afeae3716a42aeff6444ba4002d10f128e9315c317f1808e0c624238a25",
+        "99497519eca2acb6ae479da49a6fad4a913f26abf43d20e0311c5d3a8b3061fa",
+        "9ad52d6b67294e4fd6cd9685ae27707ac4a5bf673a0a3200ee3c463770e594ba",
+        "9b7c52f440b01e523d5af3d45cdc718435dcc70f31b69e46b650e1346a5d05f3",
+        "9c8c8d250f23048b753f87db424a75e34efc3abe11b814f319b45e2c93c36c3f",
+        "a135eadd37b908e4ad1fab3cd2d7bdad834ad62f72b78f9b932a7f83d2cd3074",
+        "a2455a5c8fd2b6cdd53b3771170e2f1571dd4b4ea72791f141fa614711210594",
+        "a8277296b2131f739b313b7c444404e6a7aefc3681a4ce83c29137c7f0653eea",
+        "a88803104697f50095baac4487c01de61b256aadc64427208b8cd1ef4b0808a7",
+        "a8d5c24a4616e694107d1e53dc3e4b6a72314882cc1607aa52703367441ce1eb",
+        "a9784ad08a0d337ab41b3eeea43e67250bddd49a597315a67bd5242433a06e60",
+        "b7a9c6c7a6250a072ce4c7733036871bd622d232389bd45d9fe438bac872fc8f",
+        "b89e41aabf8f850569f3cd4395f9326286f315f85b8d97e2933d742a5b4595b1",
+        "ba8a5145dde1f2f442897aee2ae4c0bc16461f9875a331e19376dad6a7c191de",
+        "ba9fd28e9821a134e86ab2c63cb1b73bc7dc5ab7e2de6d766286a50a4c456301",
+        "bb78965fab164d38a050fc85323ab1f132bb5ad47610fe99a2f9467bc2aa3797",
+        "beaa9f631e921b52095a2e20cae8e196e758c08b167170f45305939e6b32c4f0",
+        "c10d021c4dbf86a6a6f6974471a77059610628069decd203d8d911ad777421e8",
+        "c44e78c4bc44681487e4c605e2afad3bbdb24d95142065d2c87723e71d62a6ba",
+        "c457f0c9c6da641b0d08c96ed623255276b62fe035a780efddf3df049f6ebb77",
+        "c4eea922f18756d89112c099cf038d1e8c869af7c2c6dddba1df71f5cafb05b2",
+        "c819f21b592bb9abb514e3e9f11848f4fbd7b4277029cb010775a9da1de05001",
+        "caea31ace82ad3fb6662b02963f71e087e17c47ebdddcd1d879a072a9b960be5",
+        "d075662fe663fcda669ff3a2dedfff77fa82bd491923106ce54ce139e4be01ea",
+        "d21ab5ee954ee76a2ca2c552cc48de2a84838eb17c27fac75dbf6505469bd1a9",
+        "d3e82167843445d5ae4d6958b6e23c8bf167a74ce4ef40df5e530d519a6d762c",
+        "d40ab350258a5c003045aff0ac6828dad7bcfafa56ae5cbde30d0ba263cdf5a5",
+        "d4af95f5d04654149d49d24bbfd1d152b5856450a38a9e8d0c1cdd37d799bd4b",
+        "d5d9756fd3bf6eab28275d37a7f4ccf084cdca96febfdf183925414da9926af8",
+        "d8ec51316d50f35a44d79b55f1380c3771b92957548cf60da0626cbc0b0ca67d",
+        "d9ade8426ddd67dd644dc2dcc840cc82ef9fe241206897e293bc4e177ead5f25",
+        "dac1b8aa84b10ad502a40c0c663345bbe6a4a15c21bf722c14ed9507e06bc79c",
+        "dcb649fa2a5b6e7efb99c17248bbb172416a081969182f3784179ad3d75cf5d5",
+        "dd5afe9c01a9ffc30d0712226eb87491f48b88372c57331e1ceb7662fd6b09cf",
+        "de04cd5bef40436b583d1cac515a5085d733f01c9a08a9ac82c6dff04e46b046",
+        "e68b24cf08e12f77a351ab6a19807314caccc3bdd1997b698144c67194f94b6d",
+        "e6e38bb07b4a94ac3005a5ccab7d680289946a5b97a8d85e6811f7a6945adc4d",
+        "e7767a0e7e2a59bcf16f89786dfc1ffc90fbf05f3aef8f393b2416e28924c871",
+        "ea9b7e21324cb1a8afb431e0fd71b3216c752900d45839c91f90a43a62089d9b",
+        "eacc604cc02d8911d975fff923b32ad4dae938de59f9fb5161a69c7349ee74f5",
+        "f04f19173829f5eec9bdc389468ff1818036f55bd3196d0df7459cd38cacdbf1",
+        "f3bf53309ca99d56079036ef9f99c099c92e6d7dd45c0a5821d10f6c8bdeafbb",
+        "f662ed6230989eca2a3a73524def3f09f12ef47681c83eab475644af866f7f1c",
+        "f6773abab664900296dae01ae8130ccde8134db99a2ab36a320fb6321ae38cb0",
+        "f86e5453cb77b5f69b227c582d10bfd3b0be932c5ff78e6eacd68fc50ccf11b6",
+        "fa0aae3b3e9f20fa7e4740f477f2fcb64dabdc5ac87ffa4343a383aa58139539",
+        "faf5a322d3431fabd1dadbe055f8f9b5070c32df02ee0aca0331a0dcc9d1f380",
+        "faf6d3aa3f6dbf72ae25c54533030154f2d200358c9aca46979eb4346348a87d"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 112,
+      "source_health": {
+        "suseso_fiscalizacion": {
+          "name": "Superintendencia de Seguridad Social (SUSESO)",
+          "checked_at": "2026-10-11T14:45:44.226333+00:00",
+          "last_signal_at": "2026-10-02",
+          "discovered": 1273,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 10,
+          "pending": 10,
+          "deferred": 10,
+          "rejected": 110,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "gap",
+          "content_freshness": "older",
+          "latest_original_at": "2026-10-09",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "last_observed_event_at": "2026-10-09",
+          "last_observed_publication_at": "2026-10-09",
+          "surfaces": [
+            {
+              "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html",
+              "status": "parsed",
+              "documents": 359,
+              "undated": 0
+            },
+            {
+              "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30982.html",
+              "status": "parsed",
+              "documents": 407,
+              "undated": 0
+            },
+            {
+              "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+              "status": "parsed",
+              "documents": 101,
+              "undated": 0,
+              "surface_kind": "professionals"
+            },
+            {
+              "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-806511.html",
+              "status": "parsed",
+              "documents": 109,
+              "undated": 0,
+              "surface_kind": "entities"
+            },
+            {
+              "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-559471.html",
+              "status": "parsed",
+              "documents": 157,
+              "undated": 157,
+              "surface_kind": "reports"
+            },
+            {
+              "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-715128.html",
+              "status": "parsed",
+              "documents": 282,
+              "undated": 282,
+              "surface_kind": "reports"
+            },
+            {
+              "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-814414.html",
+              "status": "parsed",
+              "documents": 10,
+              "undated": 10,
+              "surface_kind": "medical_reports"
+            },
+            {
+              "url": "https://www.suseso.gob.cl/605/w3-propertyname-536.html",
+              "status": "parsed",
+              "documents": 187,
+              "surface_kind": "official_news"
+            }
+          ],
+          "undated_observations": 449,
+          "coverage_complete": false,
+          "archived": 1061,
+          "rejection_reasons": {
+            "related_normative_not_enforcement": 53,
+            "Beneficio, convenio o información de seguridad social; el detalle no acredita sanción ni resultado fiscalizador nuevo.": 19,
+            "Actividad institucional, coordinación o capacitación; no documenta resultado fiscalizador nuevo.": 18,
+            "Estadística, estudio o evolución de licencias/seguro laboral; no aporta un acto de fiscalización individual nuevo.": 7,
+            "Normativa, guía o consulta pública; no identifica una fiscalización concluida ni sanción nueva.": 13
+          },
+          "published_total": 94,
+          "final_state": "OPERATIVE_DEGRADED",
+          "pages_checked": 8,
+          "items_discovered": 1273,
+          "unique_items": 1273,
+          "surface_rows_discovered": 1612,
+          "items_recent": 149,
+          "items_material": 77,
+          "items_recent_enforcement": 77,
+          "parse_errors": 0,
+          "surface_errors": 0,
+          "windows": {
+            "30": {
+              "items_recent": 42,
+              "enforcement_recent": 20,
+              "official_news_recent": 18,
+              "related_normative_recent": 4,
+              "published": 20,
+              "rejected": 22,
+              "deferred": 0,
+              "items_material": 20,
+              "unaccounted": 0
+            },
+            "90": {
+              "items_recent": 149,
+              "enforcement_recent": 77,
+              "official_news_recent": 59,
+              "related_normative_recent": 15,
+              "published": 77,
+              "rejected": 72,
+              "deferred": 0,
+              "items_material": 77,
+              "unaccounted": 0
+            }
+          },
+          "coverage_reason": "listed_documents_only; not site-wide reconciliation",
+          "counter_semantics": {
+            "discovered": "documents in this discovery run, including historical",
+            "new": "queue additions this run",
+            "published": "processed to history this run; feed gate is separate",
+            "published_total": "persisted source history stock",
+            "pending": "current queue stock",
+            "rejected": "queue stock with evaluated rejection",
+            "archived": "queue stock beyond backfill horizon"
+          },
+          "zero_published_reason": "pending_or_deferred_candidates"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:45:44.785904+00:00",
+      "finished_at": "2026-10-11T14:46:06.550989+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "suseso_fiscalizacion": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "suseso_fiscalizacion": {
+          "discovered": 1273,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:45:58.492567+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "00856a84daaf3307faf989b49b171ed945fb5870d8538676118606313ada9798",
+        "016320620c8e03cb24bb6370b1851c33519a065677f238887071b6da61f2b6b8",
+        "0794eee9108518d336d5143da1d9bd94b570b59b275ce367a55767c6cd3806a6",
+        "0bf6a0983ad1e475fe79781a891ed93a0fb8c05b8a2666c5ea17b4b350d02cb8",
+        "0cc2db37168aa43df86310425dd9f89c83a8f56bd9f7b19de789908f885f39be",
+        "0cc3e800218d4534bfdd855084f0346e91438ac5c71e788d7918637017780901",
+        "1125e2237e8cc2ade78f32746e7b1b2a7a346a3af5d0b7c3c07eddbcf5f85add",
+        "1452a4cf8e827d081a633b1ae24a74d02d2d8fbc3e02699833a215dd13414419",
+        "183eb2b42b1863d9168f3b92e877555dd46b98e437474bba1403b7e03ff77ef9",
+        "1cdcfb7eb827818d6f7db6f3ca006619c5eaee4aa06d118f4f0241430480eda2",
+        "2457774364c33f07b703be488686a7d117e912b6af09160cfbdb562ace5ee839",
+        "2e11b46de31fe77f5b5ecb080c9ce37cac53c2db4c9b5b630fc245f6c935278d",
+        "32739ad04450b79abf5c8e6d776553628f150840e4d2d75bb1a8fc4934a1dbc6",
+        "336f38eefdb6ce40392b76da3aaa62d17c2d233cac05b8528c3bcd51f318b185",
+        "35932eae8c7db12207d7172b2b4b3f5a1b9672d2991ab0b15bd0fdf49a8ef178",
+        "3ea0f9801b61fe92df5420022bfc112a365450b07647b6be6b439c1445e727d5",
+        "3fb29bde1c5c71bfe82ff95513ab885c902451b678f9610a9036b13ffebb31ab",
+        "40cfac8932438937c7dc99007398c80d814e4097d5597389760d50a8d3661d17",
+        "4276d7e565a2266b4ba2d360e2399bf21ddc148cc4ce63e7473e01643d483c78",
+        "43e0d01fdd474f78e10cd30a2153feb2d6681c55a983165f83a8af42000b3144",
+        "44f2e74f7d6f944a774b6829efc66ea44023ea1a0766afa948b8c0e3a9167cc3",
+        "4b45fbd7f2d68d99aee64ae5e2f24dc70d3d669e641fb93230d1bcb557b22fa8",
+        "50f8b8c9d0e8f1e9e28f7cbf5be183cc8ccd4328dbaa8f3380e59eb402855468",
+        "53d731879a7d4c47a685750d09ba3ea96c7b1bf738fb89d80ce22c5850dd4db5",
+        "5d1b3b14a3be03a906acc8e41b430e1d968c6cca3b9333af1e8b4c5afa622b02",
+        "5d36018d44466b2f02ebc4d8a113c34f9c509cbde2aa7305649c23addf484bda",
+        "5ffe6519b1f05ed2b0f7412e31470ddec2d7c1d19e99ebd149f2d3b022705a51",
+        "6051229f9248240a17497718c4510fe226efbe318960a57206cfc1cbd9014e4d",
+        "63cd230e3ef5f999b9bc263300619888b4e0e0f485fb038a6d9f682c6f61f856",
+        "648f0b9cec7e3f618bd65b59c532c1e1881cc4f9e7be1e65949ef0cdd589f209",
+        "6fa4b7b0b0eb64b203bba73415583c978be8f08049d05f77f354c8a81d6cd34f",
+        "701b24b81fd9ba7273c14b125ecf0524d76fa5448bea7485653a07db0fccc4fb",
+        "743a54e0f1efcf323931df8562a5dc66e66ce22f0e56a5ecc89bac4cf820a6f2",
+        "74455c1fe83122919bd172a7d18a5ba0761fba823ab1c9956a68cd28d40cac0d",
+        "75972d3d921c7c4e6b40b32cdce73158672ccf8c48f48574e4875093ded3f032",
+        "77455fc0e64c0de05e042314ab474e9e25b4cd18730874e7dc2e74f08ae86c10",
+        "77d4b8bc65719ad223c34fb9a95dcbb3154fe015bb19770f60dfffe6d5772798",
+        "7b3325e88eaf13fa7521dbaeaf9da300ca38202fc8cfdb68c1afb42f3906fb1e",
+        "85d80552691c02383bd758f8384b4eb3777b31c6c743b79a05fa854bdeed2966",
+        "85dfeb591b72a27379aca12477c449b70c056b5f498790e0774fe8bc7117d7c4",
+        "866399d6892d457f11fc26c886842e002bcaf54d367d91c25e183544e5e67cf9",
+        "86b4b8a16cc630af193da111daa21cd26be0456ea7764595425d5218aff4c3ae",
+        "894237bcd8d586b5c44106d7a089945f578a0da58c2db51faa32b9e8aecd3c67",
+        "8a8d33627f850eafd847a66256e095654aff4898a7587578e05c70c7ad470296",
+        "91d7f24ba9768776b30545635d1cba67696d561f889647ac8b380b3a78c7b004",
+        "942f97712fe6b79de9112654262bb55cafc1f38b81877d0becf379bc1079511b",
+        "955d0afeae3716a42aeff6444ba4002d10f128e9315c317f1808e0c624238a25",
+        "99497519eca2acb6ae479da49a6fad4a913f26abf43d20e0311c5d3a8b3061fa",
+        "9ad52d6b67294e4fd6cd9685ae27707ac4a5bf673a0a3200ee3c463770e594ba",
+        "9b7c52f440b01e523d5af3d45cdc718435dcc70f31b69e46b650e1346a5d05f3",
+        "9c8c8d250f23048b753f87db424a75e34efc3abe11b814f319b45e2c93c36c3f",
+        "a135eadd37b908e4ad1fab3cd2d7bdad834ad62f72b78f9b932a7f83d2cd3074",
+        "a2455a5c8fd2b6cdd53b3771170e2f1571dd4b4ea72791f141fa614711210594",
+        "a8277296b2131f739b313b7c444404e6a7aefc3681a4ce83c29137c7f0653eea",
+        "a88803104697f50095baac4487c01de61b256aadc64427208b8cd1ef4b0808a7",
+        "a8d5c24a4616e694107d1e53dc3e4b6a72314882cc1607aa52703367441ce1eb",
+        "a9784ad08a0d337ab41b3eeea43e67250bddd49a597315a67bd5242433a06e60",
+        "b7a9c6c7a6250a072ce4c7733036871bd622d232389bd45d9fe438bac872fc8f",
+        "b89e41aabf8f850569f3cd4395f9326286f315f85b8d97e2933d742a5b4595b1",
+        "ba8a5145dde1f2f442897aee2ae4c0bc16461f9875a331e19376dad6a7c191de",
+        "ba9fd28e9821a134e86ab2c63cb1b73bc7dc5ab7e2de6d766286a50a4c456301",
+        "bb78965fab164d38a050fc85323ab1f132bb5ad47610fe99a2f9467bc2aa3797",
+        "beaa9f631e921b52095a2e20cae8e196e758c08b167170f45305939e6b32c4f0",
+        "c10d021c4dbf86a6a6f6974471a77059610628069decd203d8d911ad777421e8",
+        "c44e78c4bc44681487e4c605e2afad3bbdb24d95142065d2c87723e71d62a6ba",
+        "c457f0c9c6da641b0d08c96ed623255276b62fe035a780efddf3df049f6ebb77",
+        "c4eea922f18756d89112c099cf038d1e8c869af7c2c6dddba1df71f5cafb05b2",
+        "c819f21b592bb9abb514e3e9f11848f4fbd7b4277029cb010775a9da1de05001",
+        "caea31ace82ad3fb6662b02963f71e087e17c47ebdddcd1d879a072a9b960be5",
+        "d075662fe663fcda669ff3a2dedfff77fa82bd491923106ce54ce139e4be01ea",
+        "d21ab5ee954ee76a2ca2c552cc48de2a84838eb17c27fac75dbf6505469bd1a9",
+        "d3e82167843445d5ae4d6958b6e23c8bf167a74ce4ef40df5e530d519a6d762c",
+        "d40ab350258a5c003045aff0ac6828dad7bcfafa56ae5cbde30d0ba263cdf5a5",
+        "d4af95f5d04654149d49d24bbfd1d152b5856450a38a9e8d0c1cdd37d799bd4b",
+        "d5d9756fd3bf6eab28275d37a7f4ccf084cdca96febfdf183925414da9926af8",
+        "d8ec51316d50f35a44d79b55f1380c3771b92957548cf60da0626cbc0b0ca67d",
+        "d9ade8426ddd67dd644dc2dcc840cc82ef9fe241206897e293bc4e177ead5f25",
+        "dac1b8aa84b10ad502a40c0c663345bbe6a4a15c21bf722c14ed9507e06bc79c",
+        "dcb649fa2a5b6e7efb99c17248bbb172416a081969182f3784179ad3d75cf5d5",
+        "dd5afe9c01a9ffc30d0712226eb87491f48b88372c57331e1ceb7662fd6b09cf",
+        "de04cd5bef40436b583d1cac515a5085d733f01c9a08a9ac82c6dff04e46b046",
+        "e68b24cf08e12f77a351ab6a19807314caccc3bdd1997b698144c67194f94b6d",
+        "e6e38bb07b4a94ac3005a5ccab7d680289946a5b97a8d85e6811f7a6945adc4d",
+        "e7767a0e7e2a59bcf16f89786dfc1ffc90fbf05f3aef8f393b2416e28924c871",
+        "ea9b7e21324cb1a8afb431e0fd71b3216c752900d45839c91f90a43a62089d9b",
+        "eacc604cc02d8911d975fff923b32ad4dae938de59f9fb5161a69c7349ee74f5",
+        "f04f19173829f5eec9bdc389468ff1818036f55bd3196d0df7459cd38cacdbf1",
+        "f3bf53309ca99d56079036ef9f99c099c92e6d7dd45c0a5821d10f6c8bdeafbb",
+        "f662ed6230989eca2a3a73524def3f09f12ef47681c83eab475644af866f7f1c",
+        "f6773abab664900296dae01ae8130ccde8134db99a2ab36a320fb6321ae38cb0",
+        "f86e5453cb77b5f69b227c582d10bfd3b0be932c5ff78e6eacd68fc50ccf11b6",
+        "fa0aae3b3e9f20fa7e4740f477f2fcb64dabdc5ac87ffa4343a383aa58139539",
+        "faf5a322d3431fabd1dadbe055f8f9b5070c32df02ee0aca0331a0dcc9d1f380",
+        "faf6d3aa3f6dbf72ae25c54533030154f2d200358c9aca46979eb4346348a87d"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 112,
+      "source_health": {
+        "suseso_fiscalizacion": {
+          "name": "Superintendencia de Seguridad Social (SUSESO)",
+          "checked_at": "2026-10-11T14:46:06.019586+00:00",
+          "last_signal_at": "2026-10-02",
+          "discovered": 1273,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 10,
+          "pending": 10,
+          "deferred": 10,
+          "rejected": 110,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "gap",
+          "content_freshness": "older",
+          "latest_original_at": "2026-10-09",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "last_observed_event_at": "2026-10-09",
+          "last_observed_publication_at": "2026-10-09",
+          "surfaces": [
+            {
+              "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html",
+              "status": "parsed",
+              "documents": 359,
+              "undated": 0
+            },
+            {
+              "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30982.html",
+              "status": "parsed",
+              "documents": 407,
+              "undated": 0
+            },
+            {
+              "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+              "status": "parsed",
+              "documents": 101,
+              "undated": 0,
+              "surface_kind": "professionals"
+            },
+            {
+              "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-806511.html",
+              "status": "parsed",
+              "documents": 109,
+              "undated": 0,
+              "surface_kind": "entities"
+            },
+            {
+              "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-559471.html",
+              "status": "parsed",
+              "documents": 157,
+              "undated": 157,
+              "surface_kind": "reports"
+            },
+            {
+              "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-715128.html",
+              "status": "parsed",
+              "documents": 282,
+              "undated": 282,
+              "surface_kind": "reports"
+            },
+            {
+              "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-814414.html",
+              "status": "parsed",
+              "documents": 10,
+              "undated": 10,
+              "surface_kind": "medical_reports"
+            },
+            {
+              "url": "https://www.suseso.gob.cl/605/w3-propertyname-536.html",
+              "status": "parsed",
+              "documents": 187,
+              "surface_kind": "official_news"
+            }
+          ],
+          "undated_observations": 449,
+          "coverage_complete": false,
+          "archived": 1061,
+          "rejection_reasons": {
+            "related_normative_not_enforcement": 53,
+            "Beneficio, convenio o información de seguridad social; el detalle no acredita sanción ni resultado fiscalizador nuevo.": 19,
+            "Actividad institucional, coordinación o capacitación; no documenta resultado fiscalizador nuevo.": 18,
+            "Estadística, estudio o evolución de licencias/seguro laboral; no aporta un acto de fiscalización individual nuevo.": 7,
+            "Normativa, guía o consulta pública; no identifica una fiscalización concluida ni sanción nueva.": 13
+          },
+          "published_total": 94,
+          "final_state": "OPERATIVE_DEGRADED",
+          "pages_checked": 8,
+          "items_discovered": 1273,
+          "unique_items": 1273,
+          "surface_rows_discovered": 1612,
+          "items_recent": 149,
+          "items_material": 77,
+          "items_recent_enforcement": 77,
+          "parse_errors": 0,
+          "surface_errors": 0,
+          "windows": {
+            "30": {
+              "items_recent": 42,
+              "enforcement_recent": 20,
+              "official_news_recent": 18,
+              "related_normative_recent": 4,
+              "published": 20,
+              "rejected": 22,
+              "deferred": 0,
+              "items_material": 20,
+              "unaccounted": 0
+            },
+            "90": {
+              "items_recent": 149,
+              "enforcement_recent": 77,
+              "official_news_recent": 59,
+              "related_normative_recent": 15,
+              "published": 77,
+              "rejected": 72,
+              "deferred": 0,
+              "items_material": 77,
+              "unaccounted": 0
+            }
+          },
+          "coverage_reason": "listed_documents_only; not site-wide reconciliation",
+          "counter_semantics": {
+            "discovered": "documents in this discovery run, including historical",
+            "new": "queue additions this run",
+            "published": "processed to history this run; feed gate is separate",
+            "published_total": "persisted source history stock",
+            "pending": "current queue stock",
+            "rejected": "queue stock with evaluated rejection",
+            "archived": "queue stock beyond backfill horizon"
+          },
+          "zero_published_reason": "pending_or_deferred_candidates"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+    "reviewed_at": "2026-10-11T14:46:06.919224+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93
+}

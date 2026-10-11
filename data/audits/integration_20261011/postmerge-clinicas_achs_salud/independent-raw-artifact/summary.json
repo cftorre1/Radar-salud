@@ -1,0 +1,466 @@
+{
+  "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+  "targets": {
+    "sources": [
+      "clinicas_achs_salud"
+    ],
+    "origin_prs": [
+      12
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "clinicas_achs_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "mutual_seguridad": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "ist": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:03:55.825729+00:00",
+      "finished_at": "2026-10-11T14:13:03.878210+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "clinicas_achs_salud": "EXECUTED_WITH_PARTIAL_CAPTURE"
+      },
+      "discovery": {
+        "clinicas_achs_salud": {
+          "discovered": 13,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "SourceDiscoveryError",
+          "checked_at": "2026-10-11T14:13:03.378739+00:00"
+        }
+      },
+      "queue_identity_sha256": "01e693576a57c9d5ea5e5b193217491cda98b4bffccc1c772a735cea61de9514",
+      "published_queue_keys": [],
+      "history_sha256": "ea2a57b1b0b2707c8f8551be4cf591ed83b620f0862ac131dbb3f6d95a755284",
+      "history_count": 891,
+      "history_selected_unique": 0,
+      "source_health": {
+        "clinicas_achs_salud": {
+          "name": "Clinicas Achs Salud",
+          "checked_at": "2026-10-11T14:13:03.383884+00:00",
+          "last_signal_at": null,
+          "discovered": 13,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 13,
+          "status": "warning",
+          "error": "SourceDiscoveryError",
+          "technical_status": "partial",
+          "coverage_status": "partial",
+          "content_freshness": "unknown",
+          "editorial_outcome": "not_evaluated",
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_detail": {
+            "code": "inventory_capture_incomplete",
+            "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad",
+            "message": "inventory_capture_incomplete: https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad"
+          },
+          "coverage_window": {
+            "convention": "rolling_elapsed_days_inclusive",
+            "end": "2026-10-11",
+            "start_30": "2026-09-11",
+            "start_90": "2026-07-13"
+          },
+          "pages_checked": 170,
+          "recent_items": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 13,
+              "expected_role": 3,
+              "candidates": 0,
+              "rejected": 3,
+              "excluded_role": 10,
+              "pending": 0,
+              "unknown_date_items": 25,
+              "complete": false,
+              "content_kinds": {
+                "news": 6,
+                "prevention": 5,
+                "study": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 39,
+              "expected_role": 16,
+              "candidates": 2,
+              "rejected": 14,
+              "excluded_role": 23,
+              "pending": 0,
+              "unknown_date_items": 25,
+              "complete": false,
+              "content_kinds": {
+                "news": 19,
+                "prevention": 8,
+                "study": 12
+              }
+            }
+          },
+          "unique_items": 16,
+          "material_items": 2,
+          "technical_failures": [
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/ansiedad-paso-a-paso-de-la-comprension-a-la-regulacion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/construye-tu-bienestar-paso-a-paso-con-habitos-saludables"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/cuándo-debes-consultar-a-un-psicólogo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/estrés-postraumático-y-crecimiento"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/cuando-el-dolor-habla-sin-palabras-la-depresion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/tienes-dolor-de-hombro-conoce-las-causas-y-tratamiento-de-las-lesiones-del-manguito-rotador"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/crisis-de-panico-como-regularlas"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/el-compromiso-de-la-achs-y-su-servicio-de-traumatologia-con-la-poblacion-chilena"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-esperar-de-la-primera-sesion-con-tu-psicologo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/para-que-buscar-ayuda-psicologica"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/estoy-triste-o-deprimido"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/como-alguien-como-yo-puede-deprimirse"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/conoce-nuestro-servicio-de-terapia-fisica"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/enfrenta-con-mas-herramientas-el-fin-de-ano"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/ser-mujer-8m-y-salud-mental"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-la-psicoterapia-breve-y-focalizada"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/aplicacion-terapeutica-de-frio-y-calor"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-una-crisis-de-panico"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/mindfulness-como-mantenernos-en-el-presente"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/mis-hijos-vuelven-a-clases-como-enfrento-el-estres-escolar-de-marzo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/como-manejar-el-estres-en-período-de-examenes"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/el-corazon-del-servicio-de-salud-mental-la-cooperacion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-la-ansiedad"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
+            }
+          ],
+          "coverage_completeness": false,
+          "recovery_outcome": "OPERATIVE_DEGRADED"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:13:03.921073+00:00",
+      "finished_at": "2026-10-11T14:22:11.255107+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "clinicas_achs_salud": "EXECUTED_WITH_PARTIAL_CAPTURE"
+      },
+      "discovery": {
+        "clinicas_achs_salud": {
+          "discovered": 13,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "SourceDiscoveryError",
+          "checked_at": "2026-10-11T14:22:10.771848+00:00"
+        }
+      },
+      "queue_identity_sha256": "01e693576a57c9d5ea5e5b193217491cda98b4bffccc1c772a735cea61de9514",
+      "published_queue_keys": [],
+      "history_sha256": "ea2a57b1b0b2707c8f8551be4cf591ed83b620f0862ac131dbb3f6d95a755284",
+      "history_count": 891,
+      "history_selected_unique": 0,
+      "source_health": {
+        "clinicas_achs_salud": {
+          "name": "Clinicas Achs Salud",
+          "checked_at": "2026-10-11T14:22:10.776895+00:00",
+          "last_signal_at": null,
+          "discovered": 13,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 13,
+          "status": "warning",
+          "error": "SourceDiscoveryError",
+          "technical_status": "partial",
+          "coverage_status": "partial",
+          "content_freshness": "unknown",
+          "editorial_outcome": "not_evaluated",
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_detail": {
+            "code": "inventory_capture_incomplete",
+            "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad",
+            "message": "inventory_capture_incomplete: https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad"
+          },
+          "coverage_window": {
+            "convention": "rolling_elapsed_days_inclusive",
+            "end": "2026-10-11",
+            "start_30": "2026-09-11",
+            "start_90": "2026-07-13"
+          },
+          "pages_checked": 170,
+          "recent_items": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 13,
+              "expected_role": 3,
+              "candidates": 0,
+              "rejected": 3,
+              "excluded_role": 10,
+              "pending": 0,
+              "unknown_date_items": 25,
+              "complete": false,
+              "content_kinds": {
+                "news": 6,
+                "prevention": 5,
+                "study": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 39,
+              "expected_role": 16,
+              "candidates": 2,
+              "rejected": 14,
+              "excluded_role": 23,
+              "pending": 0,
+              "unknown_date_items": 25,
+              "complete": false,
+              "content_kinds": {
+                "news": 19,
+                "prevention": 8,
+                "study": 12
+              }
+            }
+          },
+          "unique_items": 16,
+          "material_items": 2,
+          "technical_failures": [
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/ansiedad-paso-a-paso-de-la-comprension-a-la-regulacion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/construye-tu-bienestar-paso-a-paso-con-habitos-saludables"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/cuándo-debes-consultar-a-un-psicólogo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/estrés-postraumático-y-crecimiento"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/cuando-el-dolor-habla-sin-palabras-la-depresion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/tienes-dolor-de-hombro-conoce-las-causas-y-tratamiento-de-las-lesiones-del-manguito-rotador"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/crisis-de-panico-como-regularlas"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/el-compromiso-de-la-achs-y-su-servicio-de-traumatologia-con-la-poblacion-chilena"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-esperar-de-la-primera-sesion-con-tu-psicologo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/para-que-buscar-ayuda-psicologica"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/estoy-triste-o-deprimido"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/como-alguien-como-yo-puede-deprimirse"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/conoce-nuestro-servicio-de-terapia-fisica"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/enfrenta-con-mas-herramientas-el-fin-de-ano"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/ser-mujer-8m-y-salud-mental"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-la-psicoterapia-breve-y-focalizada"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/aplicacion-terapeutica-de-frio-y-calor"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-una-crisis-de-panico"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/mindfulness-como-mantenernos-en-el-presente"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/mis-hijos-vuelven-a-clases-como-enfrento-el-estres-escolar-de-marzo"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/como-manejar-el-estres-en-período-de-examenes"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/el-corazon-del-servicio-de-salud-mental-la-cooperacion"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-la-ansiedad"
+            },
+            {
+              "code": "publication_editorial_date_conflict",
+              "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
+            }
+          ],
+          "coverage_completeness": false,
+          "recovery_outcome": "OPERATIVE_DEGRADED"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+    "reviewed_at": "2026-10-11T14:22:11.625243+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 87
+}
