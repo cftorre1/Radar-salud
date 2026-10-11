@@ -507,6 +507,25 @@ test('conversion surfaces lead with value and hide internal implementation statu
  await expect(page.locator('#newsletterDialog')).not.toContainText('proveedor');
 });
 
+test('Global metadata health stays separate from Chile LIVE coverage',async({page})=>{
+ const health=await(await page.request.get('/data/source_health.json')).json();
+ const product=await(await page.request.get('/data/product.json')).json();
+ for(const key of ['global_who','global_paho','global_reuters']){
+  const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');
+  expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);
+  expect(product.sources[key]).toEqual(row);
+ }
+ expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});
+ expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');
+ await page.goto('/');
+ const expected=Object.values(health.sources).filter(s=>s.discovery_scope!=='global_intelligence'&&(s.technical_status==='ok'||(!s.technical_status&&['ok','warning'].includes(s.status)))).length;
+ const coverage=await page.evaluate(data=>coverageText(data),health);
+ expect(coverage).toContain(`${expected} fuentes activas`);
+ await page.locator('#sourcesOpen').click();
+ const group=page.locator('.source-group').filter({has:page.getByRole('heading',{name:'Global Intelligence',exact:true})});
+ await expect(group).toContainText('WHO');await expect(group).toContainText('PAHO');await expect(group).toContainText('Reuters');
+});
+
 test('sources are grouped by decision value and expose freshness layers',async({page})=>{
  await page.goto('/');
  await page.locator('#sourcesOpen').click();

@@ -6,7 +6,7 @@ import csv
 import hashlib
 import json
 import os
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -20,13 +20,22 @@ def write(root, relative, payload):
 def health_counts(items, as_of):
     return {str(days): sum(row.get("detail_verified", False) and in_window(row["published_at"], as_of, days) for row in items) for days in (30,90)}
 
-def cadence_is_valid(ledger, source, checked, run_id, complete, cadence_seconds, replay=False):
-    if replay or not complete or not checked:
+def new_identity_count(items, prior_items, source):
+    previous={alias for old in prior_items if old["source"]==source for alias in old.get("source_aliases",[old["url"]])}
+    return sum(not set(item["source_aliases"]) & previous for item in items)
+
+def window_boundary_verified(route, as_of, days):
+    dates=[row["index_published_at"] for row in route["items"]]
+    return bool(dates and all(dates) and dates==sorted(dates,reverse=True)
+                and min(dates)<(as_of-timedelta(days=days-1)).isoformat())
+
+def cadence_is_valid(ledger, source, checked, run_id, complete, cadence_seconds, replay=False, contract_id=None):
+    if replay or not complete or not checked or not contract_id:
         return False
     for row in ledger["runs"]:
         previous = row.get("sources", {}).get(source, {})
         prior = previous.get("checked_at")
-        if row["run_id"] != run_id and previous.get("coverage_completeness") == "complete" and prior:
+        if row["run_id"] != run_id and previous.get("coverage_completeness") == "complete" and previous.get("coverage_contract_id") == contract_id and prior:
             if (datetime.fromisoformat(checked)-datetime.fromisoformat(prior)).total_seconds() >= cadence_seconds:
                 return True
     return False
@@ -44,6 +53,8 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
     if config["default_window_days"] != 30 or config["maximum_editorial_topics"] != 10 or config["fill_quota"] or config["paid_ai_calls"] != 0 or config["reuters"]["enabled"]:
         raise ValueError("Global discovery/publication/license contract changed")
     client = CaptureClient(captures, replay=replay)
+    prior_discovery_path = root / "data/global_intelligence/discovery.json"
+    prior_items = json.loads(prior_discovery_path.read_text()).get("items",[]) if prior_discovery_path.exists() else []
     routes, language_items, failures = discover(config, client, as_of)
     items=deduplicate_translations(language_items)
     generated = datetime.now(timezone.utc).isoformat()
@@ -52,6 +63,7 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
     prior_path = root / "data/global_intelligence/ledger.json"
     ledger = json.loads(prior_path.read_text()) if prior_path.exists() else {"runs": []}
     for source in ("who", "paho"):
+        contract_id=hashlib.sha256(json.dumps({"qualification_version":2,"inventory_days":90,"routes":[route for route in config["routes"] if route["source"]==source]},sort_keys=True).encode()).hexdigest()
         source_items = [item for item in items if item["source"] == source]
         source_routes = [route for route in routes if route["route"]["source"] == source]
         technical = [f for f in failures if f["route"]["source"] == source] + [{"url": item["url"], "error": item["technical_error"]} for item in language_items if item["source"] == source and item.get("technical_error")]
@@ -62,34 +74,44 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
         counts = health_counts(source_items, as_of)
         indexed_counts = {str(days): sum(in_window(row["index_published_at"], as_of, days) for row in source_items) for days in (30,90)}
         material = [item for item in source_items if item["classification"]["materiality"] == "candidate" and item["detail_verified"] and item["published_at"]]
-        control_urls={row["url"] for route in source_routes for page in route["pages"] for row in page.get("native_control",[]) if in_window(row["published_at"],as_of,90)}
         detected_urls={alias for item in source_items for alias in item["source_aliases"]}
-        recall={"basis":"independent_native_index_control_on_declared_surfaces", "inventory_90_url_count":len(control_urls), "detected":len(control_urls & detected_urls),"omitted_urls":sorted(control_urls-detected_urls),"recall":len(control_urls&detected_urls)/len(control_urls) if control_urls else None,"whole_source_archive_claim":False}
-        if control_urls-detected_urls:complete=False
-        cadence_validated = cadence_is_valid(ledger,source,checked,run_id,complete,config["cadence_seconds"],replay)
+        recalls={}
+        windows={}
+        for days in (30,90):
+            control_urls={row["url"] for route in source_routes for page in route["pages"] for row in page.get("native_control",[]) if in_window(row["published_at"],as_of,days)}
+            recalls[str(days)]={"basis":"independent_native_index_control_on_declared_surfaces", "inventory_url_count":len(control_urls), "detected":len(control_urls & detected_urls),"omitted_urls":sorted(control_urls-detected_urls),"recall":len(control_urls&detected_urls)/len(control_urls) if control_urls else None,"whole_source_archive_claim":False}
+            expected=len([route for route in config["routes"] if route["source"]==source])
+            windows[str(days)]="complete_on_declared_surfaces" if len(source_routes)==expected and not technical and not pending_dates and all(window_boundary_verified(route,as_of,days) for route in source_routes) and not control_urls-detected_urls else "incomplete_lower_bound"
+            if control_urls-detected_urls:complete=False
+        cadence_validated = cadence_is_valid(ledger,source,checked,run_id,complete,config["cadence_seconds"],replay,contract_id)
         source_health[source] = {
             "name": source.upper(), "checked_at": checked, "status": "ok" if complete and cadence_validated else "warning" if source_routes else "error",
             "technical_status": "error" if technical else "ok", "coverage_status": "complete" if complete else "incomplete",
             "outcome": "READY_FOR_INTEGRATION" if complete else "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
-            "operation_mode": "isolated_qualification", "recurrent_operation_proven": cadence_validated,
+            "operation_mode": "isolated_qualification", "discovery_scope": "global_intelligence", "recurrent_operation_proven": cadence_validated,
             "cadence_seconds": config["cadence_seconds"], "cadence_validation_pending": not cadence_validated,
+            "coverage_contract_id":contract_id,
+            "next_cadence_validation_not_before": (datetime.fromisoformat(checked)+timedelta(seconds=config["cadence_seconds"])).isoformat() if checked and not cadence_validated else None,
             "coverage_completeness": "complete" if complete else "incomplete", "coverage_window_days": 90,
-            "coverage_from": (as_of - __import__('datetime').timedelta(days=89)).isoformat(), "coverage_to": as_of.isoformat(),
+            "coverage_from": (as_of - timedelta(days=89)).isoformat(), "coverage_to": as_of.isoformat(),
             "pages_checked": sum(len(route["pages"]) for route in source_routes), "recent_items": counts["30"],
-            "discovery_recall_90":recall,"unique_language_urls_90":len([row for row in language_items if row["source"]==source and in_window(row["published_at"],as_of,90)]),
+            "discovery_recall_30":recalls["30"],"discovery_recall_90":recalls["90"],
+            "window_completeness":windows,"unique_language_urls_90":len([row for row in language_items if row["source"]==source and in_window(row["published_at"],as_of,90)]),
             "unique_items": counts["90"], "counts": counts, "indexed_counts": indexed_counts,
             "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
             "material_items": len(material), "published": 0,
             "rejected": sum(item["status"] == "rejected" for item in source_items),
             "deferred": sum(item["status"] == "pending" for item in source_items), "pending_date_items": len(pending_dates),
-            "technical_failures": technical, "discovered": len(source_items), "new": len(source_items),
+            "technical_failures": technical, "discovered": len(source_items),
+            "new": new_identity_count(source_items,prior_items,source),
+            "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
             "parser_routes": [r["route"]["section"] for r in source_routes],
             "boundary_evidence": [{"section": r["route"]["section"], "stop": r["stop_reason"], "pages": len(r["pages"])} for r in source_routes],
             "evidence_ref": str(evidence / "inventory.json"), "source_quality_disposition": "pass_data" if complete else "hold_external",
             "publication_activation": False, "content_freshness": "recent" if counts["30"] else "no_verified_recent_items",
             "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"}
     reuters_refs = {s["url"]: s for t in json.loads((root / "data/global/themes.json").read_text())["themes"] for s in t["sources"] if s["publisher"] == "Reuters"}
-    source_health["reuters"] = {"name": "Reuters", "checked_at": None, "status": "error", "technical_status": "not_polled_license_hold", "coverage_status": "not_permitted",
+    source_health["reuters"] = {"name": "Reuters", "discovery_scope": "global_intelligence", "checked_at": None, "status": "error", "technical_status": "not_polled_license_hold", "coverage_status": "not_permitted",
         "outcome": config["reuters"]["outcome"], "operation_mode": "manual_curated_only", "recurrent_operation_proven": False,
         "coverage_completeness": "unmeasured_without_permitted_route", "coverage_window_days": 90,
         "counts": {"30": None, "90": None}, "recent_items": None, "unique_items": None, "material_items": None,

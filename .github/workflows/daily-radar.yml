@@ -48,6 +48,7 @@ jobs:
       - name: Independent Global metadata discovery (no paid AI or publication)
         id: global_discovery
         continue-on-error: true
+        timeout-minutes: 6
         env:
           OPENAI_API_KEY: ''
         run: python scripts/discover_global_sources.py

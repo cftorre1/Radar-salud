@@ -27,6 +27,24 @@ jobs:
         run: python scripts/discover_global_sources.py
       - name: Replay captured bytes without touching live or curated state
         run: python scripts/replay_global_sources.py
+      - name: Reviewer independent raw capture audit (no network)
+        run: |
+          python scripts/audit_global_captures.py --captures work/global-runtime-captures --inventory data/global_intelligence/discovery.json --output work/independent_capture_audit.json
+          python -c 'import json,pathlib; p=json.loads(pathlib.Path("work/independent_capture_audit.json").read_text()); d=pathlib.Path("data/audits/global_source_recovery_2026_10_11/runs")/p["run_id"]/"independent_capture_audit.json"; d.write_text(json.dumps(p,ensure_ascii=False,indent=2)+"\n")'
+      - name: Full deterministic Python QA with inherited baseline separated
+        run: |
+          python -m pytest -q --ignore=tests/test_beta_source_runtime_fast.py --junitxml=work/global-python-qa.xml || code=$?
+          python scripts/check_global_qa_baseline.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Node and Global desktop/mobile QA without deployment
+        run: |
+          npm ci
+          npm test
+          npx playwright install --with-deps chromium
+          npx playwright test --grep 'Global|global|sources are grouped'
       - name: Persist metadata inventory and health to the isolated branch
         if: always()
         run: |
@@ -43,3 +61,7 @@ jobs:
             work/global-runtime-captures/
             data/audits/global_source_recovery_2026_10_11/runs/
             data/global_intelligence/
+            work/global-python-qa.xml
+            work/independent_capture_audit.json
+            artifacts/
+            test-results/

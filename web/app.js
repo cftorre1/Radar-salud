@@ -2,7 +2,7 @@
 function stored(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 function saveLocal(key,value){try{localStorage.setItem(key,value)}catch{}}
 function coverageText(d){
- const sources=Object.values(d.sources||{}),live=d.coverage_live;
+ const sources=Object.values(d.sources||{}).filter(s=>s.discovery_scope!=='global_intelligence'),live=d.coverage_live;
  const fmt=n=>new Intl.NumberFormat('es-CL').format(n);
  return d.queue_status==='measured'&&d.queue&&live
   ?`Cobertura global auditada: ${fmt(sources.filter(s=>s.technical_status==='ok'||(!s.technical_status&&['ok','warning'].includes(s.status))).length)} fuentes activas · ${fmt(live.detected)} señales detectadas · ${fmt(live.evaluated)} evaluadas · ${fmt(live.selected)} seleccionadas (LIVE, portada actual).${d.discovery?.failed_sources?` Medición parcial: ${fmt(d.discovery.failed_sources)} fuentes con error.`:''}`
@@ -169,7 +169,7 @@ Promise.all([
  const canonicalSource=name=>{const n=String(name||'').toLowerCase();if(n.includes('superintendencia'))return'Superintendencia de Salud';if(n==='minsal'||n.includes('ministerio'))return'Ministerio de Salud';if(n.includes('suseso'))return'SUSESO';return name};
  const selectedDate=x=>{const target=canonicalSource(x.name);return signals.filter(s=>canonicalSource(s.source_name)===target).map(s=>s.event_date).filter(Boolean).sort().at(-1)||null};
  const groupFor=name=>{const n=String(name||'').toLowerCase();if(/superintendencia|minsal|ministerio|suseso|diario oficial|fonasa|isp|anamed|deis|estadísticas e información/.test(n))return['Organismos públicos y reguladores',0];if(/bupa|redsalud|pfizer|clínica|clinica|prestador/.test(n))return['Prestadores e industria de salud',1];if(/diario financiero|reuters|noticia|medio/.test(n))return['Noticias y mercado',2];return['Otras fuentes relevantes',3]};
- const rows=Object.values(d.sources||{}).filter(x=>x&&x.name).map(x=>({...x,last_selected_at:selectedDate(x),group:groupFor(x.name)})).sort((a,b)=>a.group[1]-b.group[1]||String(b.last_selected_at||b.last_signal_at||b.checked_at||'').localeCompare(String(a.last_selected_at||a.last_signal_at||a.checked_at||''))||String(a.name).localeCompare(String(b.name),'es'));
+ const rows=Object.values(d.sources||{}).filter(x=>x&&x.name).map(x=>({...x,last_selected_at:selectedDate(x),group:x.discovery_scope==='global_intelligence'?['Global Intelligence',3]:groupFor(x.name)})).sort((a,b)=>a.group[1]-b.group[1]||String(b.last_selected_at||b.last_signal_at||b.checked_at||'').localeCompare(String(a.last_selected_at||a.last_signal_at||a.checked_at||''))||String(a.name).localeCompare(String(b.name),'es'));
  let expanded=false;
  const sourceRow=x=>`<div class="source-row"><strong>${esc(x.name)}</strong><div class="source-meta"><span><b>Última consulta</b> · ${x.checked_at?fmtDate(x.checked_at):'sin dato'}</span><span><b>Última señal detectada</b> · ${x.last_signal_at?fmtDate(x.last_signal_at):'sin señal reciente'}</span><span><b>Última seleccionada</b> · ${x.last_selected_at?fmtDate(x.last_selected_at):'aún no visible'}</span></div></div>`;
  const render=()=>{

@@ -12,7 +12,7 @@ from radar_salud.global_source_discovery import classify, collect_route, detail_
 from radar_salud.global_discovery_common import PublicRedirect
 from radar_salud.global_native_control import native_control
 from radar_salud.global_source_discovery import deduplicate_translations
-from scripts.discover_global_sources import cadence_is_valid, health_counts
+from scripts.discover_global_sources import cadence_is_valid, health_counts, new_identity_count, window_boundary_verified
 from urllib.request import Request
 
 AS_OF = date(2026,10,11)
@@ -50,7 +50,7 @@ def test_conflicting_api_publication_fields_are_pending():
 
 def test_actual_who_detail_corroborates_official_index_date():
     url='https://www.who.int/news/item/09-10-2026-who-urges-shift-from-institutional-to-community-based-mental-health-care'
-    metadata=detail_metadata((PROBES/'38141711504/who_detail.body').read_text(),AS_OF,url)
+    metadata=detail_metadata((PROBES/'38141711504/who_detail.metadata.html').read_text(),AS_OF,url)
     assert metadata['publication_dates']==['2026-10-09']
     assert metadata['canonical_url']==url
 
@@ -181,13 +181,14 @@ def test_health_counts_verified_details_separately_from_indexed_dates():
     assert health_counts([item],AS_OF)=={'30':0,'90':0}
 
 def test_cadence_requires_distinct_successful_live_runs_at_the_configured_interval():
-    ledger={'runs':[{'run_id':'prior','sources':{'who':{'coverage_completeness':'complete','checked_at':'2026-10-10T13:00:00+00:00'}}}]}
+    ledger={'runs':[{'run_id':'prior','sources':{'who':{'coverage_completeness':'complete','coverage_contract_id':'contract-A','checked_at':'2026-10-10T13:00:00+00:00'}}}]}
     args=(ledger,'who','2026-10-11T13:00:00+00:00','current')
-    assert cadence_is_valid(*args,True,86400)
-    assert not cadence_is_valid(*args,False,86400)
-    assert not cadence_is_valid(*args,True,86400,replay=True)
-    assert not cadence_is_valid(ledger,'who','2026-10-11T13:00:00+00:00','prior',True,86400)
-    assert not cadence_is_valid(ledger,'who','2026-10-11T12:59:59+00:00','current',True,86400)
+    assert cadence_is_valid(*args,True,86400,contract_id='contract-A')
+    assert not cadence_is_valid(*args,False,86400,contract_id='contract-A')
+    assert not cadence_is_valid(*args,True,86400,replay=True,contract_id='contract-A')
+    assert not cadence_is_valid(*args,True,86400,contract_id='contract-B')
+    assert not cadence_is_valid(ledger,'who','2026-10-11T13:00:00+00:00','prior',True,86400,contract_id='contract-A')
+    assert not cadence_is_valid(ledger,'who','2026-10-11T12:59:59+00:00','current',True,86400,contract_id='contract-A')
 
 def test_independent_native_control_measures_real_official_cards_and_detects_omissions(monkeypatch):
     raw=(PROBES/'38141320771/paho_reports.body').read_bytes()
@@ -217,3 +218,16 @@ def test_only_reciprocal_publisher_language_aliases_merge_and_keep_chile_scope()
     assert deduplicate_translations([first,second])[0]['published_at'] is None
     second['detail_evidence']['metadata']['alternate_language_urls']=[]
     assert len(deduplicate_translations([first,second]))==2
+
+def test_new_counts_compare_prior_identity_and_do_not_reannounce_translations():
+    old=[{'source':'paho','url':'en','source_aliases':['en']}]
+    items=[{'source_aliases':['en','es']},{'source_aliases':['another']}]
+    assert new_identity_count(items,old,'paho')==1
+    assert new_identity_count(items,[],'paho')==2
+
+def test_observed_older_date_requires_ordered_boundary_for_window_coverage():
+    route={'items':[{'index_published_at':'2026-09-09'},{'index_published_at':'2026-09-01'}]}
+    assert window_boundary_verified(route,AS_OF,30)
+    assert not window_boundary_verified(route,AS_OF,90)
+    route['items'].reverse()
+    assert not window_boundary_verified(route,AS_OF,30)
