@@ -265,7 +265,7 @@ def targeted_command(root: Path, failure_log: str) -> list[str]:
     if re.search(r"playwright|product\.spec|toHaveValue|toBeVisible|toHaveCount", failure_log, re.I):
         if not (root / "package.json").is_file():
             raise RecoveryError("Browser failure has no available npm validation contract")
-        return ["npm", "test"]
+        return ["npm", "run", "test:browser"]
     return [sys.executable, "-m", "pytest", "-q"]
 
 

@@ -3,6 +3,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -163,6 +164,21 @@ class RecoveryTests(unittest.TestCase):
     def test_target_command_cannot_execute_log_supplied_options(self):
         command = recovery.targeted_command(self.root, self.log + "\n--override-ini=addopts=--ignore=tests")
         self.assertEqual(command, self.command)
+
+    @unittest.skipUnless(shutil.which("npm"), "Real npm reproduction requires npm")
+    def test_browser_failure_runs_actual_browser_script_when_unit_npm_is_green(self):
+        (self.root / "package.json").write_text(json.dumps({"scripts": {
+            "test": "node -e \"process.exit(0)\"", "test:browser": "node browser-check.cjs"}}))
+        (self.root / "browser-check.cjs").write_text(
+            "process.stderr.write('Error: expect(locator).toBeVisible failed\\n1 failed\\n'); process.exitCode = 1;\n")
+        unit = recovery.run_command(["npm", "test"], self.root)
+        self.assertEqual(unit["returncode"], 0, unit)
+        command = recovery.targeted_command(self.root, "Playwright tests/browser/product.spec.cjs:10 › navigation failed")
+        self.assertEqual(command, ["npm", "run", "test:browser"])
+        reproduced = recovery.run_command(command, self.root)
+        self.assertNotEqual(reproduced["returncode"], 0, reproduced)
+        self.assertIn("toBeVisible failed", reproduced["output"])
+        self.assertIn("1 failed", reproduced["output"])
 
     def test_stale_apply_detected_without_overwriting_concurrent_work(self):
         prepared = recovery.validate_plan(self.root, self.plan())
