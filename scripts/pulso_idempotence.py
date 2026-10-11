@@ -141,8 +141,9 @@ def core_checkout_files(root, code_ref, paths):
 def compact(value):
     """Hash large primary text while retaining its length, never dropping proof."""
     if isinstance(value, dict):
-        return {key: ({"utf8_sha256": digest(item.encode()), "characters": len(item)}
-                      if key in {"page_text", "raw_text"} and isinstance(item, str) else compact(item))
+        return {key: (({"value_type": "str", "utf8_sha256": digest(item.encode()), "characters": len(item)}
+                       if isinstance(item, str) else {"value_type": type(item).__name__, "value": compact(item)})
+                      if key in {"page_text", "raw_text"} else compact(item))
                 for key, item in value.items() if key not in {"last_checked_at", "cache_hit"}}
     if isinstance(value, list):
         return [compact(item) for item in value]
