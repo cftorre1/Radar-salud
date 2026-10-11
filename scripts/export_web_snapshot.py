@@ -526,11 +526,12 @@ def _sanction_pulses(signals, today=None):
         publication = _d(s.get("publication_date") or s.get("event_date"))
         age=(today-publication).days if publication else 999
         if s.get("event_type")=="SANCTION" and sector:
-            if 0<=age<=30:groups[sector].append(s)
+            if 0<=age<=30:groups[(sector,30)].append(s)
+            elif 30<age<=90:groups[(sector,90)].append(s)
             # Individual and older resolutions stay in durable history.
             continue
         other.append(s)
-    for sector,items in groups.items():
+    for (sector,window),items in groups.items():
         items.sort(key=lambda x:_d(x.get("event_date")) or date.min,reverse=True)
         live=[s for s in items if s.get("ingestion_mode")=="LIVE"]
         latest=live[0] if live else items[0]
@@ -555,11 +556,12 @@ def _sanction_pulses(signals, today=None):
         if isinstance(amount,(int,float)) and not isinstance(amount,bool) and amount>=0 and unit:brief_parts.append(f"{amount:g} {unit}")
         if brief_topic:brief_parts.append(brief_topic)
         brief_material=" · ".join(x for x in brief_parts if x)
-        pulse=dict(latest,title=f"Pulso de sanciones a {sector} · últimos 30 días",
-            what_happened=f"{len(items)} {'resolución sancionadora publicada' if len(items)==1 else 'resoluciones sancionadoras publicadas'} en los últimos 30 días. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico."+(f" Entre ellas: {lead}." if lead else ""),
+        period='últimos 30 días' if window==30 else 'días 31 a 90'
+        pulse=dict(latest,title=f"Pulso de sanciones a {sector} · {period}",
+            what_happened=f"{len(items)} {'resolución sancionadora publicada' if len(items)==1 else 'resoluciones sancionadoras publicadas'} en {period}. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico."+(f" Entre ellas: {lead}." if lead else ""),
             why_it_matters="Permite observar focos recientes de fiscalización y revisar cada resolución en su fuente original.",
             source_alternatives=resolutions,
-            card_what=f"{len(items)} sanciones a {sector} en 30 días."+(f" Entre ellas: {brief_material}." if brief_material else ""),
+            card_what=f"{len(items)} sanciones a {sector} · {period}."+(f" Entre ellas: {brief_material}." if brief_material else ""),
             event_date=max((s.get("publication_date") or s.get("event_date") or "" for s in items)),
             publication_date=max((s.get("publication_date") or s.get("event_date") or "" for s in items)),
             event_date_basis="publication", emission_date=None,

@@ -114,6 +114,10 @@ def probe(output, as_of):
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-715128.html'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-814414.html'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-715129.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/601/rss3-channel.rss'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/sitemap.xml'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/612/w3-article-717507.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/612/w3-article-583273.html'),
     ]]
     seeds = list({seed['url']: seed for seed in reversed(seeds)}.values())[::-1]
     enforcement = {url:(name,kind) for name,url,kind in ENFORCEMENT_PAGES}

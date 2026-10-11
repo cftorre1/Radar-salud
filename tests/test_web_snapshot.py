@@ -90,8 +90,10 @@ def test_sanctions_become_two_rolling_pulses_without_losing_individual_sources()
     rows.append(dict(rows[0],title="Resolución backfill",source_url="https://x/backfill",event_date="2026-09-21",ingestion_mode="BACKFILL"))
     rows.append(dict(rows[0],title="Resolución antigua",source_url="https://x/old",event_date="2026-08-01"))
     pulses=m._sanction_pulses(rows,date(2026,9,23))
-    assert sorted(x["sanction_count"] for x in pulses if x.get("sanction_count"))==[2,3]
-    assert not [x for x in pulses if x["source_url"]=="https://x/old"]
+    assert sorted(x["sanction_count"] for x in pulses if 'últimos 30 días' in x['title'])==[2,3]
+    older,=[x for x in pulses if 'días 31 a 90' in x['title']]
+    assert older['sanction_count']==1
+    assert older['source_alternatives'][0]['url']=='https://x/old'
     assert {x["source_url"] for x in pulses if x.get("sanction_count")} <= {r["source_url"] for r in rows}
     assert all(len(x["source_alternatives"])==x["sanction_count"] for x in pulses if x.get("sanction_count"))
     assert all(x["ingestion_mode"]=="LIVE" for x in pulses if x.get("sanction_count"))

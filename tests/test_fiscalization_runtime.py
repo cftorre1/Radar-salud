@@ -112,3 +112,10 @@ def test_primary_proof_reopens_date_rejection_preserving_original_detection(tmp_
     assert item['status']=='pending' and item['lane']=='BACKFILL'
     assert item['detected_at']==old.isoformat()
     assert item['rediscovery_repairs'][0]['previous_reason']=='source_date_conflict_requires_review'
+
+
+def test_history_canonical_url_alias_is_one_act_but_offices_remain_distinct():
+    a={'signal_types':['Fiscalización'],'source_url':'https://www.superdesalud.gob.cl/normativa/acto/','title':'Acto antiguo'}
+    b={**a,'source_url':'https://www.superdesalud.gob.cl/normativa/acto','title':'Acto corregido'}
+    assert len(merge_history([a],[b]))==1
+    assert len(merge_history([{**a,'source_record_id':'Oficio 1'}],[{**b,'source_record_id':'Oficio 2'}]))==2

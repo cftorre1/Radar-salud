@@ -2,6 +2,7 @@ from __future__ import annotations
 import re
 from urllib.parse import urljoin, urlsplit, urlunsplit
 from datetime import date
+from dataclasses import asdict
 from .models import RawItem
 from .scouts import fetch_html
 from .regulatory import _TableParser, _date
@@ -148,7 +149,8 @@ class SuperintendenciaFiscalizacionScout:
         import json
         from .paths import project_root
         reviews_path=project_root()/'config/fiscalization_editorial_reviews.json'
-        primary_reviews=json.loads(reviews_path.read_text()).get('primary_document_reviews',{}) if reviews_path.exists() else {}
+        all_reviews=json.loads(reviews_path.read_text()) if reviews_path.exists() else {}
+        primary_reviews=all_reviews.get('primary_document_reviews',{})
         out = {}
         self.surface_results = []
         for page_name, page_url, scope, kind in PAGES:
@@ -171,6 +173,15 @@ class SuperintendenciaFiscalizacionScout:
                 self.surface_results.append({"url": page_url, "status": "error", "error": type(exc).__name__})
         if not out:
             raise RuntimeError("No SIS fiscalization surface parsed successfully")
+        for review in all_reviews.get('historical_identity_reviews',{}).values():
+            urls=review['urls']
+            if (review.get('decision')=='one_verified_primary_act_two_listing_aliases'
+                and all(url in out for url in urls)
+                and all(review['primary_document_url'] in {a['url'] for a in out[url].metadata.get('attachments',[])} for url in urls)):
+                primary=out[urls[0]]
+                primary.metadata.update(primary_identity_review=review,
+                    primary_alias_observations=[asdict(out[url]) for url in urls[1:]])
+                for url in urls[1:]:del out[url]
         return sorted(out.values(), key=lambda raw: raw.event_date or "", reverse=True)
 
 def reviewed_primary_act(raw, primary_reviews=None):
