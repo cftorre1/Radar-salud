@@ -13,6 +13,7 @@ import importlib.util
 import json
 from pathlib import Path
 import subprocess
+from copy import deepcopy
 from radar_salud.history import load_history,save_history,_key
 from radar_salud.models import RawItem
 from radar_salud.pending_queue import atomic_json,fingerprint
@@ -71,7 +72,7 @@ def reconcile(runtime,root=Path('.'),apply=False):
             elif key in history_ids:
                 old=history_ids[key]
                 if recent(raw,90):
-                    row=process_fiscalizacion(RawItem(**raw),cfg[raw['source_slug']])
+                    row=process_fiscalizacion(RawItem(**deepcopy(raw)),cfg[raw['source_slug']])
                     from radar_salud.editorial_gate import publication_ready
                     assert publication_ready(row)[0],raw['url']
                     row['source_url']=old['source_url']
@@ -112,7 +113,7 @@ def reconcile(runtime,root=Path('.'),apply=False):
         if match:
             if match['status']!='rejected':match.setdefault('stock_reconciliation',[]).append(dict(at=manifest['completed_at'],previous_status=match['status'],previous_reason=match.get('reason'),reason='related_normative_not_enforcement'))
             match.update(status='rejected',reason='related_normative_not_enforcement',retry_at=None)
-            match['raw']['metadata'].update(document_class='related_normative',publication_date=None,emission_date=raw.get('event_date'),event_date_basis='emission')
+            match['raw']['metadata'].update(document_class='related_normative',publication_date=None,emission_date=match['raw'].get('event_date'),event_date_basis='emission')
     # Administrative subrogation is not an enforcement report.
     administrative=[]
     for item in queue.values():

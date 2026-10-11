@@ -30,6 +30,8 @@ jobs:
         run: python scripts/probe_fiscalization_runtime.py --as-of 2026-10-11
       - name: Real collectors and engine, isolated state, idempotent native replay
         run: python scripts/replay_fiscalization_runtime.py --captures artifacts/fiscalization-runtime --output artifacts/fiscalization-runtime/isolated-replay
+      - name: Independent original HTML coverage Reviewer
+        run: python scripts/review_fiscalization_coverage.py --runtime artifacts/fiscalization-runtime --output artifacts/fiscalization-runtime/coverage-review.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
