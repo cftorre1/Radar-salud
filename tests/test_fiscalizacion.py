@@ -100,7 +100,7 @@ def test_suseso_partial_surface_keeps_other_actor_and_exposes_failure(monkeypatc
     scout = SusesoFiscalizacionScout()
     raw, = scout.discover()
     assert raw.metadata['fiscalized_actors'] == ['COMPIN']
-    assert [row['status'] for row in scout.surface_results] == ['error', 'parsed', 'error', 'error', 'error']
+    assert [row['status'] for row in scout.surface_results] == ['error', 'parsed', 'error', 'error', 'error', 'error', 'error']
 
 
 def test_suseso_retains_undated_documents_and_does_not_limit_recent_coverage(monkeypatch):

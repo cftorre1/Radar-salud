@@ -16,6 +16,8 @@ ENFORCEMENT_PAGES = [
     ('Sanciones a emisores de licencias médicas', 'https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html', 'professionals'),
     ('Sanciones a entidades', 'https://www.suseso.gob.cl/609/w3-propertyvalue-806511.html', 'entities'),
     ('Informes Seguridad y Salud en el Trabajo', 'https://www.suseso.gob.cl/609/w3-propertyvalue-559471.html', 'reports'),
+    ('Fichas Beneficios Sociales', 'https://www.suseso.gob.cl/609/w3-propertyvalue-715128.html', 'reports'),
+    ('Informes de fiscalización de licencias médicas', 'https://www.suseso.gob.cl/609/w3-propertyvalue-814414.html', 'medical_reports'),
 ]
 
 
@@ -95,7 +97,7 @@ def parse_enforcement_listing(html, name, page, kind):
                     notification_date=_valid_date(cells[1]),publication_date=None,emission_date=None,
                     modification_date=_valid_date(cells[10]),event_date_basis='notification',
                     validity_text=cells[6],listing_url=page,listing_name=name,attachments=attachments)))
-        elif kind == 'reports':
+        elif kind in ('reports', 'medical_reports'):
             if len(cells) < 5 or not re.search(r'20\d{2}', cells[0]):
                 continue
             detail = next((urljoin(page, href) for href, _ in row[1].get('links', []) if 'w3-article-' in href), None)
@@ -103,7 +105,7 @@ def parse_enforcement_listing(html, name, page, kind):
                 continue
             out.append(RawItem('suseso_fiscalizacion',cells[1],canonical_url(detail),
                 'Superintendencia de Seguridad Social (SUSESO)','official',None,cells[2],
-                dict(document_class='historical_enforcement_report',execution_period=cells[3],
+                dict(document_class='enforcement_report_candidate' if kind=='medical_reports' else 'historical_enforcement_report',execution_period=cells[3],
                     legal_identity=cells[0],publication_date=None,emission_date=None,event_date_basis=None,
                     listing_url=page,listing_name=name,
                     attachments=[{'url':urljoin(page,href),'label':label} for href,label in row[4].get('links',[]) if '.pdf' in href])))

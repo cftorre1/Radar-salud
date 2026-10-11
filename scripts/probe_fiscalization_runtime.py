@@ -148,6 +148,23 @@ def probe(output, as_of):
         for k in ('publication_date','emission_date'))}
     targets={raw['url'] for raw in recent.values()}
     targets.update(attachment['url'] for raw in recent.values() for attachment in raw['metadata'].get('attachments',[]))
+    for raw in inventory:
+        if raw['metadata'].get('document_class') == 'enforcement_report_candidate':
+            targets.add(raw['url'])
+            targets.update(a['url'] for a in raw['metadata'].get('attachments', []))
+    # The complete official yearly news archive covers the 90-day boundary. Read
+    # every recent detail, including items ultimately rejected from enforcement.
+    news_seed = next(seed for seed in seeds if seed['url']=='https://www.suseso.gob.cl/605/w3-propertyname-536.html')
+    news_receipt = next(r for r in receipts if r['url']==news_seed['url'])
+    news_rows = []
+    if news_receipt['transport_ok']:
+        news_html = Path(news_receipt['body_file']).read_text(errors='replace')
+        for day, href, title in re.findall(r'iso8601-(\d{8})T[^"\']*["\'][^>]*>[\s\S]*?<h3[^>]*>[\s\S]*?<a[^>]*href=["\']([^"\']+)["\'][^>]*>([\s\S]*?)</a>', news_html):
+            published = f'{day[:4]}-{day[4:6]}-{day[6:]}'
+            row = dict(url=urljoin(news_seed['url'],href),title=' '.join(re.sub('<[^>]*>',' ',title).split()),publication_date=published)
+            news_rows.append(row)
+            if within(published,as_of,90):targets.add(row['url'])
+    atomic_json(output/'official_news_inventory.json',news_rows)
     # Inspect detail and primary documents for every recent candidate, including held dates.
     with ThreadPoolExecutor(max_workers=3) as pool:
         for receipt,_ in pool.map(lambda url: fetch(url,captures),sorted(targets)):
