@@ -36,6 +36,7 @@ jobs:
         run: |
           pip install -e . pytest
           python scripts/inspect_global_empty_pages.py
+          python scripts/diagnose_paho_native_end.py --captures work/global-runtime-captures --inventory data/global_intelligence/discovery.json --auditor scripts/audit_global_captures.py --output data/audits/global_source_recovery_2026_10_11/runs/38153425336/paho_independent_end_diagnostic.json
           python scripts/requalify_global_coverage.py
           python scripts/discover_global_sources.py --project-inventory-csv
           python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py tests/test_global_capture_audit.py tests/test_global_metadata_projection.py tests/test_global_coverage_projection.py --junitxml=work/global-directed-qa.xml

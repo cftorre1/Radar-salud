@@ -684,3 +684,10 @@ def test_clamped_empty_end_rejects_changed_structure_query_text_cards_and_contro
 def test_clamped_empty_initial_page_cannot_invent_previous_terminal_proof():
     result=collect_route(FakeClient([news_view(numbered_pager(1))]),terminal_date_route(),AS_OF,10)
     assert not result['archive_complete']
+
+
+def test_listing_article_wrapper_does_not_invent_an_article_inside_empty_news_view():
+    wrapper=lambda h:'<article class="node node--type-page">'+h+'</article>'
+    client=FakeClient([wrapper(news_view(date_card(0)+numbered_pager(0))),wrapper(news_view(date_card(1)+numbered_pager(1))),wrapper(news_view(numbered_pager(1)))])
+    result=collect_route(client,terminal_date_route(),AS_OF,10)
+    assert result['archive_complete'] and result['stop_reason']=='date_partition_native_empty_after_clamped_numbered_end'

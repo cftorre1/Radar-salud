@@ -169,12 +169,12 @@ def verified_news_view(document, route, bounds, *, empty, allow_pager=False):
         if len(navs)!=1:return False
         headers=list(navs[0].nodes('h2'))
         if len(headers)!=1 or not headers[0].closed or headers[0].parent is not navs[0] or headers[0].attrs.get('id')!='pagination-heading' or headers[0].text()!=('Paginación' if '/es/' in route['url'] else 'Pagination'):return False
-        if any(n.tag in {'time','article'} or n.tag=='meta' and (n.attrs.get('property') or n.attrs.get('name') or '').lower() in {'article:published_time','datepublished','citation_publication_date','dc.date.issued'} for n in document.nodes()):return False
+        if any(n.tag=='time' or n.tag=='meta' and (n.attrs.get('property') or n.attrs.get('name') or '').lower() in {'article:published_time','datepublished','citation_publication_date','dc.date.issued'} for n in document.nodes()):return False
         excluded={id(form),id(navs[0])}
         def outside(node):
             if id(node) in excluded:return ''
             return ' '.join(outside(c) if hasattr(c,'tag') else c for c in node.children)
-        if outside(view).strip():return False
+        if outside(view).strip() or any(n.tag=='article' for n in view.nodes()):return False
         inside={id(n) for n in navs[0].nodes()}|{id(navs[0])}
         if any(id(n) not in inside for n in document.nodes() if any(c in {'pager','pager-nav','pagination'} or c.startswith(('pager__','js-pager__')) for c in n.attrs.get('class','').split())):return False
         if any(id(a) not in inside for a in document.nodes('a') if {'next','last','prev','previous','first'}&set(a.attrs.get('rel','').split())):return False
