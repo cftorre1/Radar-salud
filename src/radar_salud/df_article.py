@@ -5,6 +5,7 @@ are not publication dates. The date is expressed in the publisher's Chile zone.
 """
 import json
 import re
+from html import unescape
 from datetime import datetime
 from html.parser import HTMLParser
 from urllib.parse import urlsplit, urljoin
@@ -188,7 +189,7 @@ def parse_df_article(html, url):
         "raw_text": description or body[:1800],
         "metadata": {
             "page_text": body,
-            "article_title": node.get("headline") or p.meta.get("og:title") or "",
+            "article_title": unescape(node.get("headline") or p.meta.get("og:title") or ""),
             "article_section": node.get("articleSection") or p.meta.get("article:section") or "",
             "publisher_canonical_url": urljoin(url,p.canonical) if p.canonical else None,
             "publisher_jsonld_identity": _node_identity(node),

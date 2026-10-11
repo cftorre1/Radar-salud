@@ -11,6 +11,12 @@ from radar_salud.pending_queue import PendingQueue, fingerprint
 URL = "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos"
 
 
+def test_publisher_jsonld_headline_decodes_html_entities_without_changing_its_words():
+    html='<script type="application/ld+json">{"@type":"NewsArticle","url":"'+URL+'","headline":"Rotter &#38; Krauss: &#34;negocios en salud&#34;","datePublished":"2026-10-10T13:22:00-03:00"}</script>'
+    parsed=parse_df_article(html,URL)
+    assert parsed['metadata']['article_title']=='Rotter & Krauss: "negocios en salud"'
+
+
 def test_multimedia_disposition_does_not_retry_or_mark_seen_and_resumes_verified_text(tmp_path):
     from radar_salud.df_resolution import defer_format
     from dataclasses import asdict
