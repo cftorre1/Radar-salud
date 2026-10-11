@@ -76,6 +76,28 @@ def test_statistics_reviewer_accepts_semantically_labeled_release_tables():
     assert review_statistics(releases()) == []
 
 
+def test_document_inventory_is_reviewed_as_inventory_without_inventing_statistics():
+    from scripts.export_web_snapshot import _statistical_value_ladder
+    row=_statistical_value_ladder({"source_name":"Superintendencia de Salud","signal_types":["Datos"],
+        "title":"Boletín Estadístico Informativo IP – Junio 2026","source_url":URLS["bulletin"],
+        "source_documents":[{"url":url} for url in FILES]})
+    assert review_statistics([row])==[]
+    assert row["card_why"]=="" and row["card_why_optional"] is True
+    assert row["statistical_methodology"]["analysis_status"]=="not_performed"
+    row["source_documents"]=row["source_documents"][:-1]
+    assert "bulletin_missing_pdf" in {f["code"] for f in review_statistics([row])}
+
+
+def test_inventory_label_cannot_bypass_statistical_evidence_checks():
+    row=releases()[3]
+    row["statistical_value_level"]="publication_inventory"
+    codes={f["code"] for f in review_statistics([row])}
+    assert {"inventory_claims_analysis","untraceable_statistical_inventory","inventory_analysis_status","bulletin_missing_pdf"}<=codes
+    row["statistical_value_level"]="deep_analysis"
+    row.pop("summary_table")
+    assert "invalid_statistical_table" in {f["code"] for f in review_statistics([row])}
+
+
 def test_statistics_reviewer_fails_closed_on_outlier_and_unitless_prestaciones():
     signals = releases()
     signals[1]["summary_table"]["rows"].append({"cells": ["Prestaciones", "Desconocido", "monto", 4_526_117_479_378,

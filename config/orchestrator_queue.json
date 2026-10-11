@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T10:02:43.358668-03:00",
+  "updated_at": "2026-10-11T13:41:48.647967+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3513,7 +3513,7 @@
       "started_at": "2026-10-11",
       "last_progress_at": "2026-10-11",
       "current_subfront": "validate_df_and_pulso_runtime",
-      "next_action": "Exercise repairs in Daily Radar and verify output.",
+      "next_action": "DF integrado con runtime validado y limitaciones preservadas; PR10 continúa en su rama hasta READY_FOR_INTEGRATION.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3533,6 +3533,63 @@
         "supplement_finding_ids": [
           "work3_df_real_html_date_null"
         ]
+      },
+      "df_execution": {
+        "status": "READY_FOR_INTEGRATION",
+        "owner": "Codex A",
+        "branch": "codex/df-end-to-end-20261011",
+        "base_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+        "started_at": "2026-10-11T04:18:12.641064+00:00",
+        "last_progress_at": "2026-10-11T07:11:23.063060+00:00",
+        "current_subfront": "df_integration_package_complete",
+        "completed": [
+          "Textual Daily runtime PASS, LIVE82/82/86 retained and CESFAM72 BACKFILL recovered",
+          "58 focused tests PASS; no new failures versus staging",
+          "Original21 plus5accepted rows audited against primary original bodies/dates/headlines",
+          "40 former retries:18irrelevant,3duplicates,19explicit format deferrals; zero generic retries",
+          "13unknown dates:4recovered,9nonnews exclusions; independent12controls and publisher surfaces checked",
+          "Diff contains only DF rows/shared minimal plumbing; source health counts honest; durable integration handoff",
+          "Current staging c481984 merged into own branch without rewrite; concurrency evidence preserved,58DF+14governance PASS; GitHub mergeable."
+        ],
+        "failing": [],
+        "next_action": "Integration Commander review current staging diff, merge PR11 to staging only, run global QA/Reviewer/browser and fresh Daily runtime after merge; verify LIVE/new eligible publication, counts/format deferrals/idempotence before issue5/6 closure.",
+        "runtime_restored": "38111768459",
+        "runtime_artifact": "data/audits/df_reconciliation_2026_10_11.json",
+        "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38119095016",
+        "runtime_counts": {
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "rejected": 176,
+          "published": 26
+        },
+        "blocked_by": [],
+        "human_decision_required": false,
+        "pr": "https://github.com/cftorre1/Radar-salud/pull/11",
+        "evidence": [
+          "data/audits/df_reconciliation_2026_10_11.json",
+          "data/audits/df_qa_checkpoint_2026_10_11.json",
+          "data/audits/df_remaining_formats_2026_10_11.json",
+          "docs/DF_RUNTIME_HANDOFF_2026_10_11.md",
+          "data/audits/df_integration_readiness_2026_10_11.json",
+          "data/audits/df_publications_review_2026_10_11.json",
+          "data/audits/df_retry_resolution_2026_10_11.json",
+          "data/audits/df_undated_resolution_2026_10_11.json",
+          "data/audits/df_independent_controls_2026_10_11.json"
+        ],
+        "ready_for_integration": true,
+        "inherited_candidate_blockers": [
+          "Normative stock11>=12",
+          "Reviewer8 SIS critical findings, identical on staging"
+        ],
+        "remaining_capability": {
+          "status": "Nonblocking declared connector capability; no invented text or automatic repeated processing",
+          "audio_video_without_official_transcript": 18,
+          "primary_image_articles_requiring_verified_ocr": 1,
+          "instruction": "Resume only with attributable primary text and verified date, or reassess scope with new publisher evidence; preserve before snapshots and unchanged72gate"
+        },
+        "runtime_post_merge_required": true,
+        "integration_base_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+        "staging_reconciliation_merge_sha": "99b65b392cb12e144ca93c545bfd9fe328f59cb2"
       },
       "independent_review_cuts": [
         {
@@ -3556,7 +3613,22 @@
             9
           ]
         }
-      ]
+      ],
+      "integration_outcomes": {
+        "diario_financiero": {
+          "state": "INTEGRATED_DEGRADED",
+          "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+          "runtime_run": 38142527704,
+          "preview_run": 38142527882,
+          "deferred_multimedia": 19,
+          "coverage_complete": false
+        },
+        "pulso_latercera": {
+          "state": "NOT_READY",
+          "pr": 10,
+          "next_action": "Terminar procesamiento real, QA dirigido, Reviewer y handoff READY_FOR_INTEGRATION."
+        }
+      }
     },
     {
       "id": "source_repair_public_data_lane_2026_10_11",
@@ -3587,9 +3659,9 @@
       "id": "source_repair_fiscalization_lane_2026_10_11",
       "status": "in_progress",
       "priority": "critical",
-      "owner": "Pele + Regulatory Worker",
+      "owner": "Codex D · Regulatory Source Recovery",
       "source": "Issue #5 autonomy split",
-      "objective": "Repair Superintendencia Fiscalización and SUSESO Fiscalización freshness/publication semantics.",
+      "objective": "Demonstrate original-source SIS/SUSESO fiscalization coverage and recover historical stock without fictitious recency.",
       "depends_on": [],
       "instructions": [
         "Reconcile discovered inventory with 2026 dated material.",
@@ -3604,9 +3676,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11",
-      "current_subfront": "sis_suseso_fiscalization",
-      "next_action": "Integrar y ejecutar en staging el registro SUSESO /609/799701; reconciliar 20 oficios en 30 fechas y 72 en 90 fechas por número de oficio, con fecha de oficio y outcome específico/agrupado. Ver último independent_review_cuts.",
+      "last_progress_at": "2026-10-11T13:41:48.647967+00:00",
+      "current_subfront": "bounded_coverage_validated_global_gates_and_dates_pending",
+      "next_action": "Mantener abiertos los informes sin fecha y completitud jurídica del stock; 20/72 oficios SUSESO exactos están reconciliados en staging. No certificar totalidad del sitio.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -3626,7 +3698,76 @@
             8
           ]
         }
-      ]
+      ],
+      "progress": "Native official access and actual engine 2x replay validated. Exact 30/90-date windows: SIS 14/28; SUSESO 20/74 (72 offices + 2 result publications in 90). Existing inclusive application filter: SIS 14/32, SUSESO 20/77; seven July13 boundary records are explicit. All dated material records persisted, 17 older active suspensions recovered as separate BACKFILL context. 305 Python PASS/1 SKIP, 42 Node PASS, scoped browser4 PASS, independent coverage Reviewer PASS; global QA/Reviewer still baseline-blocked.",
+      "evidence": [
+        "data/audits/fiscalizacion/checkpoint.json",
+        "data/audits/fiscalizacion/validation_native_2026_10_11.json",
+        "data/audits/fiscalizacion/native_reconciliation_2026_10_11.json",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+        "https://github.com/cftorre1/Radar-salud/pull/15",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38122064329"
+      ],
+      "source_states": {
+        "sis": "OPERATIVE_DEGRADED",
+        "suseso": "OPERATIVE_DEGRADED"
+      },
+      "coverage_complete": false,
+      "exact_calendar_windows": {
+        "superintendencia_fiscalizacion": {
+          "30": {
+            "official_confirmed": 14,
+            "detected": 14,
+            "omitted": 0,
+            "material": 14,
+            "published": 14,
+            "rejected": 0,
+            "deferred": 0,
+            "boundary_records_excluded": 0
+          },
+          "90": {
+            "official_confirmed": 28,
+            "detected": 28,
+            "omitted": 0,
+            "material": 28,
+            "published": 28,
+            "rejected": 0,
+            "deferred": 0,
+            "boundary_records_excluded": 4
+          }
+        },
+        "suseso_fiscalizacion": {
+          "30": {
+            "official_confirmed": 20,
+            "detected": 20,
+            "omitted": 0,
+            "material": 20,
+            "published": 20,
+            "rejected": 0,
+            "deferred": 0,
+            "boundary_records_excluded": 0
+          },
+          "90": {
+            "official_confirmed": 74,
+            "detected": 74,
+            "omitted": 0,
+            "material": 74,
+            "published": 74,
+            "rejected": 0,
+            "deferred": 0,
+            "boundary_records_excluded": 3
+          }
+        }
+      },
+      "historical_active_stock": {
+        "suseso": 17,
+        "published_backfill": 17,
+        "counted_as_recent": false
+      },
+      "integration_outcome": "INTEGRATED_DEGRADED",
+      "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+      "qa_run": 38143952494,
+      "runtime_run": 38143952220
     },
     {
       "id": "source_repair_mutualities_lane_2026_10_11",
@@ -4301,7 +4442,7 @@
       "id": "source_recovery_reconciliation_gate_2026_10_11",
       "status": "in_progress",
       "priority": "critical",
-      "owner": "Paolo + Pato + Reviewer",
+      "owner": "Integration Director + Pato + Reviewer",
       "source": "Dirección",
       "objective": "Conciliar todo hallazgo, issue, PR Codex, tarea Work y evidencia de fuente para que ningún compromiso quede olvidado ni se cierre sin llegar efectivamente a staging validado.",
       "depends_on": [],
@@ -4324,9 +4465,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T04:45:00Z",
-      "current_subfront": "reconcile_work_findings_and_codex_prs",
-      "next_action": "Conciliar PRs #10-#13 con issues #5-#9 y queue; no cerrar ninguna fuente hasta merge + QA + runtime.",
+      "last_progress_at": "2026-10-11T13:41:48.647967+00:00",
+      "current_subfront": "salud_laboral_candidate",
+      "next_action": "Integrar Salud Laboral #12 tras QA/Reviewer; luego públicas #13 y prestadores #14. Pulso #10 sólo READY.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -4362,7 +4503,8 @@
             7
           ]
         }
-      ]
+      ],
+      "integration_matrix": "data/pmo/integration_release_2026_10_11.json"
     },
     {
       "id": "beta_gate5_test_ops_golive_2026_10_11",
