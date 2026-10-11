@@ -77,10 +77,14 @@ def test_checkpoint_accepts_workflow_relative_output_and_only_isolated_branch(tm
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv('GITHUB_REF','refs/heads/codex/e-salud-laboral-20261011')
     calls=[]
-    monkeypatch.setattr('scripts.occupational_inventory.subprocess.run',lambda args,**kwargs:calls.append(args))
+    monkeypatch.setattr('scripts.occupational_inventory.subprocess.check_output',lambda *a,**k:'candidate')
+    from types import SimpleNamespace
+    def run(args,**kwargs):
+        calls.append(args);return SimpleNamespace(returncode=0)
+    monkeypatch.setattr('scripts.occupational_inventory.subprocess.run',run)
     commit_source_checkpoint(tmp_path,Path('data/audits/source_e_recovery/actions/123/inventory'),'ist')
     assert calls[0]==['git','add','--','data/audits/source_e_recovery/actions/123/inventory']
-    assert calls[-1][-1]=='HEAD:codex/e-salud-laboral-20261011'
+    assert calls[-2][-1]=='HEAD:codex/e-salud-laboral-20261011'
 
 
 def test_same_assessment_failure_limit_survives_separate_source_checkpoints(tmp_path,monkeypatch):

@@ -22,3 +22,7 @@ def test_header_blocks_preserve_proxy_and_origin_separately():
     assert len(headers) == 2
     assert headers[1]["location"] == "https://ist.cl/noticias/"
     assert "set-cookie" not in headers[1]
+
+
+def test_private_portal_routes_never_enter_the_public_probe():
+    assert not official_url("https://www.mutual.cl/portal/privado/empresas/sucursalvirtual/")

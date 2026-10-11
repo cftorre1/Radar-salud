@@ -68,7 +68,8 @@ TARGETS = [
 def official_url(url):
     parsed = urlsplit(url)
     return (parsed.scheme == "https" and parsed.hostname in OFFICIAL_HOSTS
-            and parsed.port in (None, 443) and not parsed.username and not parsed.password)
+            and parsed.port in (None, 443) and not parsed.username and not parsed.password
+            and not parsed.path.lower().startswith("/portal/privado/"))
 
 
 def safe_headers(raw):

@@ -200,11 +200,14 @@ def commit_source_checkpoint(root, output, slug):
              "data/history/superintendencia_signals.json", "data/source_health.json",
              "web/data/source_health.json", "data/ai_usage", "data/telemetry"]
     existing = [p for p in paths if (root / p).exists()]
+    candidate = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
     for args in (["git", "add", "--", *existing],
                  ["git", "commit", "-m", f"audit({slug}): inventory and reconciliation checkpoint {os.getenv('GITHUB_RUN_ID')}"],
                  ["git", "pull", "--rebase", "origin", "codex/e-salud-laboral-20261011"],
                  ["git", "push", "origin", "HEAD:codex/e-salud-laboral-20261011"]):
         subprocess.run(args, cwd=root, check=True)
+    if subprocess.run(["git", "diff", "--quiet", candidate, "HEAD", "--", "src", "scripts", "config", ".github/workflows"], cwd=root).returncode:
+        raise RuntimeError("candidate_code_changed_after_source_checkpoint; completed source is durable, resume on the new isolated candidate")
 
 
 def main():
