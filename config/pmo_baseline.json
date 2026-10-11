@@ -1178,6 +1178,35 @@
       "result": "MERGED_RUNTIME_PENDING",
       "matrix": "data/pmo/integration_release_2026_10_11.json",
       "scope": "staging only; no source closure or autonomy acceptance inferred"
+    },
+    "work4_p0_implementation_2026_10_11": {
+      "kind": "native_source_qualification",
+      "status": "OPERATIVE_DEGRADED",
+      "sha": "a1a3a9caf8815d24f696376e242ffb478d9d6ce6",
+      "integration_base_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "date": "2026-10-11",
+      "paths": [
+        "docs/SOURCE_EXPANSION_IMPLEMENTATION_2026_10_11.md",
+        "data/audits/source_expansion_runtime_review_2026_10_11.json",
+        "data/audits/w4_isapres_2026_10_11.json",
+        "data/audits/w4_cmf_2026_10_11.json",
+        "data/audits/w4_dipres_2026_10_11.json"
+      ],
+      "url": "https://github.com/cftorre1/Radar-salud/pull/16",
+      "runtime_runs": [
+        38144418936,
+        38145221551
+      ],
+      "checks": [
+        "Native public adapters PASS",
+        "Idempotent stock replay PASS",
+        "Independent original-page Reviewer PASS",
+        "Global tests/desktop/mobile/Reviewer PASS on c450dc0; final staging-sync SHA awaits its checks"
+      ],
+      "result": "real_initial_inventory_qualified_recurring_activation_pending",
+      "scope": "Three executable P0 data packages and retained editorial candidates; no full ecosystem coverage, recurrence, activation, deploy or release claim",
+      "validated_requirements": [],
+      "validated_blocks": []
     }
   },
   "blocks": [
@@ -2195,6 +2224,13 @@
       "evidence": [
         "public_sources_c_2026_10_11",
         "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Work4 P0 implementados: inventarios Isapres/CMF/DIPRES y runtime nativo calificados. Tres OPERATIVE_DEGRADED por brechas específicas/cadencia; sin activación ni aumento de readiness global.",
+      "evidence": [
+        "work4_p0_implementation_2026_10_11"
       ]
     }
   ],
