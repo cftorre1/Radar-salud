@@ -483,9 +483,56 @@ def test_warm_public_feed_trace_retains_real_primary_publisher_change_token(tmp_
 
 
 RUNTIME_REAL = Path(__file__).parent / 'fixtures/pulso_runtime_real'
-RUNTIME_MANIFEST = json.loads((RUNTIME_REAL / 'manifest.json').read_text())
-MIDNIGHT_ORIGINALS = [entry for entry in RUNTIME_MANIFEST['fixtures']
-                      if entry.get('reason') == 'conflicting_publication_dates']
+# Pin known regressions to their immutable originals. Future runtime capture
+# manifests can reclassify them as successful without deleting this coverage.
+MIDNIGHT_ORIGINALS = [{'url': 'https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/',
+  'sha256': 'e322d80bbd4ba2876923944f298f6ac249f995b6e9da2f177372289acc2b66f3',
+  'expected_publication_date': '2026-09-04',
+  'path': 'e322d80bbd4ba2876923944f298f6ac249f995b6e9da2f177372289acc2b66f3.html.gz'},
+ {'url': 'https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/',
+  'sha256': '8e5e353d8694aa8a8170b595b426a0c9ee9a345bc16c8f88087bb030644eddec',
+  'expected_publication_date': '2026-08-11',
+  'path': '8e5e353d8694aa8a8170b595b426a0c9ee9a345bc16c8f88087bb030644eddec.html.gz'},
+ {'url': 'https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/',
+  'sha256': '73fbc8f33b16ddbcb722b325243f68f1f8bdc535124c049ae3dc2e0aa2e27172',
+  'expected_publication_date': '2026-09-01',
+  'path': '73fbc8f33b16ddbcb722b325243f68f1f8bdc535124c049ae3dc2e0aa2e27172.html.gz'},
+ {'url': 'https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/',
+  'sha256': '30a3338f8e2e9a149a3c5c60aa488d6a3133729316b600e7f88a76bab9e47a24',
+  'expected_publication_date': '2026-10-01',
+  'path': '30a3338f8e2e9a149a3c5c60aa488d6a3133729316b600e7f88a76bab9e47a24.html.gz'},
+ {'url': 'https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/',
+  'sha256': '4721567cd9702ac79249356f271da2eb5bd1054486e9c044fa69f1ef9c654e06',
+  'expected_publication_date': '2026-09-04',
+  'path': '4721567cd9702ac79249356f271da2eb5bd1054486e9c044fa69f1ef9c654e06.html.gz'},
+ {'url': 'https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/',
+  'sha256': '79558fcb7fe30603a1ad4f5e3474e574406679b8fb805b5f123afccf721d6754',
+  'expected_publication_date': '2026-07-31',
+  'path': '79558fcb7fe30603a1ad4f5e3474e574406679b8fb805b5f123afccf721d6754.html.gz'},
+ {'url': 'https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/',
+  'sha256': 'a78d7fa00eda277fad0cae0483d0fc381cdd6ed2de62b9a97ebf516f8900227a',
+  'expected_publication_date': '2026-08-05',
+  'path': 'a78d7fa00eda277fad0cae0483d0fc381cdd6ed2de62b9a97ebf516f8900227a.html.gz'},
+ {'url': 'https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/',
+  'sha256': 'a6d21de71ddd00c9345a5f462fa118f091d5a70f6ff540c4de32cadf1bf78cc7',
+  'expected_publication_date': '2026-07-23',
+  'path': 'a6d21de71ddd00c9345a5f462fa118f091d5a70f6ff540c4de32cadf1bf78cc7.html.gz'},
+ {'url': 'https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/',
+  'sha256': 'e8753a163ed3f864807106a03925da5a8d5aab553c13420c97b9c98f8ea98e6c',
+  'expected_publication_date': '2026-08-20',
+  'path': 'e8753a163ed3f864807106a03925da5a8d5aab553c13420c97b9c98f8ea98e6c.html.gz'},
+ {'url': 'https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/',
+  'sha256': 'cbe1194267c167fc16c898efdb26ff19986745ba23a289f0804099d62fcd54cf',
+  'expected_publication_date': '2026-07-14',
+  'path': 'cbe1194267c167fc16c898efdb26ff19986745ba23a289f0804099d62fcd54cf.html.gz'},
+ {'url': 'https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/',
+  'sha256': '8646b65f02a786cd7e3d434dce555f7ab10638e24db7f27fe234e8167ef2bc34',
+  'expected_publication_date': '2026-10-01',
+  'path': '8646b65f02a786cd7e3d434dce555f7ab10638e24db7f27fe234e8167ef2bc34.html.gz'},
+ {'url': 'https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/',
+  'sha256': '0f7a1ed2fc769daf4ff3af88e40d4f9ea90013dea9fe01e2633792c6b17ebeae',
+  'expected_publication_date': '2026-10-09',
+  'path': '0f7a1ed2fc769daf4ff3af88e40d4f9ea90013dea9fe01e2633792c6b17ebeae.html.gz'}]
 
 
 @pytest.mark.parametrize('entry', MIDNIGHT_ORIGINALS, ids=lambda entry: entry['url'].split('/')[-2])
