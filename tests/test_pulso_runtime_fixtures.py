@@ -158,7 +158,39 @@ def test_same_url_older_original_cannot_satisfy_changed_current_metadata_primary
     row, = result["current_metadata_hold_originals"]
     assert row["fixture_status"] == "missing_current_metadata_hold_original"
     assert result["current_metadata_hold_original_status"] == "CURRENT_METADATA_HOLD_ORIGINAL_RETENTION_PARTIAL"
-    assert not any(entry["url"] == observed[0]["url"] for entry in result["requests"])
+    assert row["expected_current_primary_sha256s"] == ["0" * 64]
+    assert row["capture_attempts"] == []
+    # The same URL can also be a frozen control whose older original remains
+    # valid evidence. It cannot satisfy the current metadata trace's new hash.
+    assert not any(entry["url"] == observed[0]["url"] and "0" * 64 in {
+        entry.get("sha256"), entry.get("returned_text_utf8_sha256")} for entry in result["requests"])
+
+
+def test_prior_warm_artifact_restores_every_exact_cached_metadata_original_without_recapture(tmp_path):
+    source, control, discovery, observed = real_metadata_observations(tmp_path)
+    live = tmp_path / "current_capture" / "manifest.json"
+    live.parent.mkdir()
+    live.write_text(json.dumps({"source": "pulso_latercera", "requests": []}))
+    output = tmp_path / "fixtures"
+    missing = retain.retain(control, live, output, discovery_path=discovery, original_fixture_manifests=[])
+    assert missing["current_metadata_hold_original_status"] == "CURRENT_METADATA_HOLD_ORIGINAL_RETENTION_PARTIAL"
+    assert all(row["fixture_status"] == "missing_current_metadata_hold_original"
+               for row in missing["current_metadata_hold_originals"])
+    # This folder is an original-byte artifact, not a restored runtime/cache.
+    recovered = retain.retain(control, live, output, artifact_dir=source.parent,
+                             discovery_path=discovery, original_fixture_manifests=[])
+    assert recovered["current_metadata_hold_original_status"] == "ALL_CURRENT_METADATA_HOLD_ORIGINALS_RETAINED_NOT_EDITORIAL_ACCEPTANCE"
+    assert len(recovered["current_metadata_hold_originals"]) == len(observed)
+    manifest_sha = retain.sha256(source.read_bytes())
+    for row in recovered["current_metadata_hold_originals"]:
+        original = next(record for record in observed if record["url"] == row["url"])
+        assert row["sha256"] == original["sha256"]
+        assert row["captured_at"] == original["captured_at"]
+        request = next(record for record in recovered["requests"]
+                       if record["url"] == row["url"] and record["sha256"] == row["sha256"])
+        assert request["original_capture_manifest_sha256"] == original.get(
+            "original_capture_manifest_sha256", manifest_sha)
+        assert (output / row["path"]).read_bytes() == (source.parent / original["gzip_file"]).read_bytes()
 
 
 def test_original_date_conflict_is_explicit_not_fixture_acceptance(tmp_path):
