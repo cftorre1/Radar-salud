@@ -356,7 +356,7 @@ def _material(role, title, body):
 
 
 def process_curated_beta_source(raw, cfg):
-    from .llm_analysis import analyze_news
+    from .llm_analysis import analyze_news, news_analysis_input
     from .pipeline import build_signal
     from .processing import DeferredProcessing
     from .public_source_pipeline import enrich, _scopes
@@ -365,7 +365,8 @@ def process_curated_beta_source(raw, cfg):
         from .pulso_source import (ConflictingPublicationArticle, ExcludedArticle,
                                    SponsoredArticle, TextUnavailableArticle,
                                    article_body_evidence, article_url, complete_article_body,
-                                   extract_article, publisher_taxonomy_requires_revalidation,
+                                   extract_article, liveblog_analysis_text, liveblog_requires_revalidation,
+                                   publisher_taxonomy_requires_revalidation, verified_liveblog_temporal_evidence,
                                    verified_publication_date_conflict, verified_sponsored_content,
                                    verified_video_without_text)
 
@@ -395,6 +396,7 @@ def process_curated_beta_source(raw, cfg):
         legacy_video = (urlparse(raw.url).path.startswith("/videos/")
                         and raw.metadata.get("video_identity_verified") is not True)
         if (sponsor_flag or opinion_flag or legacy_video or publisher_taxonomy_requires_revalidation(raw.metadata)
+                or liveblog_requires_revalidation(raw.metadata)
                 or not (raw.metadata.get("article_verified") and complete_article_body(raw.metadata) and raw.event_date)):
             try:
                 from datetime import datetime, timezone
@@ -406,11 +408,15 @@ def process_curated_beta_source(raw, cfg):
                         # A fresh primary classification replaces old publisher
                         # exceptions, while reviewed duplicate holds remain.
                         publisher_reasons = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
-                                             "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy"}
+                                             "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy",
+                                             "publisher_liveblog_entry_dates_unverified"}
                         for key in ("publisher_exception_reason", "source_content_unavailable_reason",
                                     "publisher_exclusion_reason", "editorial_hold"):
                             if key not in evidence and raw.metadata.get(key) in publisher_reasons:
                                 raw.metadata.pop(key)
+                    if raw.metadata.get("publisher_document_type") == "liveblog" and evidence.get("publisher_document_type") != "liveblog":
+                        for key in ("publisher_document_type", "liveblog_temporal_evidence", "liveblog_temporal_evidence_verified"):
+                            raw.metadata.pop(key, None)
                     raw.metadata.update(evidence, **article_body_evidence(body), market_role="media",
                                         source_quality_gate=quality,
                                         html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
@@ -444,6 +450,9 @@ def process_curated_beta_source(raw, cfg):
                 raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "article_verification_failed", "error_type": type(exc).__name__}
                 raise DeferredProcessing("Pulso article verification failed") from exc
         raw.metadata["article_body_complete"] = True
+        if raw.metadata.get("publisher_document_type") == "liveblog" and not verified_liveblog_temporal_evidence(raw.metadata):
+            raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "publisher_liveblog_entry_dates_unverified"}
+            raise DeferredProcessing("publisher_liveblog_entry_dates_unverified")
         from .pulso_incremental_review import apply_incremental_review
         apply_incremental_review(raw)
     else:
@@ -479,9 +488,22 @@ def process_curated_beta_source(raw, cfg):
     if raw.source_slug == "pulso_latercera":
         # Keep the source's complete primary text through the model boundary;
         # strategic facts can occur after the general news excerpt limit.
-        raw.metadata.update(analysis_input_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
-                            analysis_input_characters=len(body), analysis_input_complete=True)
-        ai = analyze_news(title=raw.title, text=body, source_name=raw.source_name, kind=kind, full_text=True)
+        text = body
+        input_format = "full_primary_article_body"
+        if raw.metadata.get("publisher_document_type") == "liveblog":
+            text = liveblog_analysis_text(raw.metadata)
+            input_format = "full_primary_body_with_verified_liveblog_entry_timeline_v1"
+            kind += ". Cobertura en vivo: usa las fechas verificadas de cada entrada, separadas de la fecha del documento; conserva condiciones y no sumes balances repetidos."
+        request_input = news_analysis_input(title=raw.title, text=text, source_name=raw.source_name, full_text=True)
+        raw.metadata.update(analysis_base_article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                            analysis_base_article_body_characters=len(body), analysis_input_format=input_format,
+                            analysis_input_body_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest(),
+                            analysis_input_characters=len(text), analysis_input_complete=True,
+                            analysis_request_input_sha256=hashlib.sha256(request_input.encode("utf-8")).hexdigest(),
+                            analysis_request_input_characters=len(request_input))
+        if raw.metadata.get("publisher_document_type") == "liveblog":
+            raw.metadata["analysis_liveblog_entries_sha256"] = raw.metadata["liveblog_temporal_evidence"]["entries_sha256"]
+        ai = analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind, full_text=True)
     else:
         ai = analyze_news(title=raw.title, text=body[:10000], source_name=raw.source_name, kind=kind)
     if not ai:

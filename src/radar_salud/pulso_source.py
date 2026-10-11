@@ -214,6 +214,253 @@ _SPANISH_MONTHS = {name: index for index, name in enumerate(
     ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"), 1)}
 
 
+class _LiveblogEntries(HTMLParser):
+    """Bind displayed entry dates, headings and primary text to one fragment."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack, self.entries, self.duplicates = [], {}, set()
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag in _Article.VOID:
+            return
+        parent = self.stack[-1] if self.stack else {}
+        entry = parent.get("entry")
+        if "liveblog-entry" in attrs.get("class", "").split():
+            fragment = attrs.get("id", "")
+            if fragment in self.entries:
+                self.duplicates.add(fragment)
+            entry = self.entries.setdefault(fragment, dict(times=[], headline=[], paragraphs=[]))
+        frame = dict(tag=tag, entry=entry,
+                     blocked=parent.get("blocked", False) or tag in ("script", "style", "noscript"),
+                     heading=parent.get("heading", False) or tag in ("h1", "h2"),
+                     time=parent.get("time"), paragraph=parent.get("paragraph"))
+        if entry is not None and tag == "time" and "liveblog-entry__date" in attrs.get("class", "").split():
+            frame["time"] = dict(timestamp=attrs.get("datetime"), visible=[])
+            entry["times"].append(frame["time"])
+        if entry is not None and tag == "p" and "article-body__paragraph" in attrs.get("class", "").split():
+            frame["paragraph"] = []
+            entry["paragraphs"].append(frame["paragraph"])
+        self.stack.append(frame)
+
+    def handle_startendtag(self, tag, attrs):
+        self.handle_starttag(tag, attrs)
+        if tag not in _Article.VOID:
+            self.handle_endtag(tag)
+
+    def handle_endtag(self, tag):
+        for index in range(len(self.stack) - 1, -1, -1):
+            if self.stack[index]["tag"] == tag:
+                del self.stack[index:]
+                break
+
+    def handle_data(self, data):
+        if not self.stack or self.stack[-1]["blocked"]:
+            return
+        frame = self.stack[-1]
+        if frame["entry"] is None:
+            return
+        if frame["heading"]:
+            frame["entry"]["headline"].append(data)
+        if frame["time"] is not None:
+            frame["time"]["visible"].append(data)
+        if frame["paragraph"] is not None:
+            frame["paragraph"].append(data)
+
+
+def _liveblog_visible_day(text, timestamp):
+    match = re.fullmatch(r"(\d{1,2})\s+(" + "|".join(_SPANISH_MONTHS)
+                         + r")(?:\s+(\d{4})(?:\s+a las\s+(\d{1,2}):(\d{2}))?)?", text.lower())
+    day = _publisher_day(timestamp)
+    if not match or not day or (int(match[1]), _SPANISH_MONTHS[match[2]]) != (
+            date.fromisoformat(day).day, date.fromisoformat(day).month):
+        raise ValueError("liveblog_visible_entry_day_mismatch")
+    local = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).astimezone(ZoneInfo("America/Santiago"))
+    if ((match[3] and int(match[3]) != local.year)
+            or (match[4] and (int(match[4]), int(match[5])) != (local.hour, local.minute))):
+        raise ValueError("liveblog_visible_entry_time_mismatch")
+    return day
+
+
+def _liveblog_temporal_evidence(node, html, expected, metadata, body, parser=None):
+    """Entry timestamps supplement, and never replace, the document's date.
+
+    Preserve raw JSON articleBody bytes for each hash, even trailing spaces.
+    Entries may precede initial document publication or repeat another entry;
+    neither condition is evidence of a publisher publication-date conflict.
+    """
+    if parser is None:
+        parser = _LiveblogEntries()
+        parser.feed(html)
+    proof = dict(source="url_bound_json_ld_and_liveblog_entry_html", canonical_url=expected,
+                 original_html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
+                 base_article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                 document_publication_timestamp=node.get("datePublished"),
+                 document_modified_timestamp=node.get("dateModified"),
+                 document_publication_date=metadata.get("publication_date"),
+                 publisher_entry_timezone="America/Santiago", entries=[], errors=[])
+    updates = node.get("liveBlogUpdate")
+    if not isinstance(updates, list) or not updates:
+        proof["errors"].append("missing_liveblog_updates")
+        updates = []
+    proof["entry_count"] = len(updates)
+    known_document_timestamps = {row.get("timestamp") for row in metadata.get("publication_evidence", [])}
+    if node.get("datePublished") not in known_document_timestamps:
+        proof["errors"].append("liveblog_document_publication_timestamp_uncorroborated")
+    modified = node.get("dateModified")
+    if modified is not None:
+        try:
+            stamp = datetime.fromisoformat(modified.replace("Z", "+00:00"))
+            if stamp.tzinfo is None or stamp > datetime.now(ZoneInfo("UTC")):
+                raise ValueError("invalid_or_future_liveblog_document_modified_timestamp")
+        except (ValueError, TypeError, AttributeError):
+            proof["errors"].append("invalid_or_future_liveblog_document_modified_timestamp")
+    seen = set()
+    for index, entry in enumerate(updates):
+        try:
+            if not isinstance(entry, dict) or entry.get("@type") != "BlogPosting":
+                raise ValueError("invalid_liveblog_entry_type")
+            url = entry.get("url")
+            parsed = urlparse(url or "")
+            fragment = parsed.fragment
+            if (article_url(url) != expected or not fragment.startswith("lbp-")
+                    or entry.get("mainEntityOfPage") != expected or fragment in seen
+                    or fragment in parser.duplicates):
+                raise ValueError("liveblog_entry_identity_mismatch")
+            seen.add(fragment)
+            displayed = parser.entries.get(fragment, {})
+            times = displayed.get("times", [])
+            timestamp = entry.get("datePublished")
+            if (len(times) != 1 or times[0]["timestamp"] != timestamp
+                    or not isinstance(timestamp, str) or len(timestamp) <= 10 or not publication_day(timestamp)):
+                raise ValueError("liveblog_entry_timestamp_uncorroborated")
+            stamp = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+            if stamp.tzinfo is None or stamp > datetime.now(ZoneInfo("UTC")):
+                raise ValueError("invalid_or_future_liveblog_entry_timestamp")
+            visible = " ".join(" ".join(times[0]["visible"]).split())
+            publisher_day = _liveblog_visible_day(visible, timestamp)
+            headline, entry_body = entry.get("headline"), entry.get("articleBody")
+            if not isinstance(headline, str) or not isinstance(entry_body, str):
+                raise ValueError("invalid_liveblog_entry_primary_text")
+            if " ".join(headline.split()) != " ".join(" ".join(displayed.get("headline", [])).split()):
+                raise ValueError("liveblog_entry_headline_mismatch")
+            html_body = " ".join("".join(paragraph) for paragraph in displayed.get("paragraphs", []))
+            normalized_body = " ".join(entry_body.split())
+            normalized_html_body = " ".join(html_body.split())
+            body_corroboration = "primary_entry_paragraphs"
+            if not normalized_html_body and normalized_body == " ".join(headline.split()):
+                # Publisher embed-only updates repeat the bound heading in
+                # articleBody without an accompanying prose paragraph.
+                normalized_html_body = " ".join(headline.split())
+                body_corroboration = "bound_heading_without_primary_paragraphs"
+            if normalized_body != normalized_html_body:
+                raise ValueError("liveblog_entry_body_mismatch")
+            proof["entries"].append(dict(index=index, id=entry.get("@id"), url=url,
+                timestamp=timestamp, html_datetime=times[0]["timestamp"],
+                timestamp_calendar_day=publication_day(timestamp), publisher_day=publisher_day,
+                visible_entry_day_month=visible, headline=headline, body=entry_body,
+                body_characters=len(entry_body), body_sha256=hashlib.sha256(entry_body.encode("utf-8")).hexdigest(),
+                html_body_corroboration=body_corroboration,
+                html_primary_text_sha256=hashlib.sha256(normalized_html_body.encode("utf-8")).hexdigest()))
+        except (ValueError, TypeError) as exc:
+            proof["errors"].append(dict(index=index, reason=str(exc)))
+    if seen != set(parser.entries):
+        proof["errors"].append("liveblog_json_html_entry_set_mismatch")
+    proof["entries_sha256"] = hashlib.sha256(json.dumps(proof["entries"], ensure_ascii=False,
+                                            sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+    proof["verified"] = not proof["errors"] and len(proof["entries"]) == proof["entry_count"] > 0
+    return proof
+
+
+def verified_liveblog_temporal_evidence(metadata):
+    proof = metadata.get("liveblog_temporal_evidence", {})
+    if not (metadata.get("publisher_document_type") == "liveblog"
+            and metadata.get("primary_identity_verified") is True
+            and metadata.get("publication_date_verified") is True
+            and metadata.get("article_verified") is True
+            and metadata.get("liveblog_temporal_evidence_verified") is True
+            and complete_article_body(metadata) and isinstance(proof, dict)
+            and proof.get("verified") is True and proof.get("errors") == []
+            and proof.get("canonical_url") == metadata.get("canonical_url")
+            and proof.get("original_html_sha256") == metadata.get("html_sha256")
+            and re.fullmatch(r"[0-9a-f]{64}", str(metadata.get("html_sha256", "")))
+            and proof.get("base_article_body_sha256") == metadata.get("article_body_sha256")
+            and proof.get("document_publication_date") == metadata.get("publication_date")
+            and proof.get("document_publication_timestamp") == metadata.get("publication_timestamp")
+            and isinstance(metadata.get("publication_evidence"), list)
+            and proof.get("document_publication_timestamp") in {
+                row.get("timestamp") for row in metadata.get("publication_evidence", []) if isinstance(row, dict)}
+            and proof.get("source") == "url_bound_json_ld_and_liveblog_entry_html"
+            and proof.get("publisher_entry_timezone") == "America/Santiago"):
+        return False
+    entries = proof.get("entries")
+    if not isinstance(entries, list) or not entries or len(entries) != proof.get("entry_count"):
+        return False
+    digest = hashlib.sha256(json.dumps(entries, ensure_ascii=False, sort_keys=True,
+                                      separators=(",", ":")).encode("utf-8")).hexdigest()
+    if digest != proof.get("entries_sha256"):
+        return False
+    try:
+        modified = proof.get("document_modified_timestamp")
+        if modified is not None:
+            stamp = datetime.fromisoformat(modified.replace("Z", "+00:00"))
+            if stamp.tzinfo is None or stamp > datetime.now(ZoneInfo("UTC")):
+                return False
+        urls = set()
+        for index, entry in enumerate(entries):
+            url, timestamp, text = entry["url"], entry["timestamp"], entry["body"]
+            if (entry.get("index") != index or url in urls or not urlparse(url).fragment.startswith("lbp-")
+                    or article_url(url) != metadata["canonical_url"]
+                    or entry["html_datetime"] != timestamp
+                    or entry["timestamp_calendar_day"] != publication_day(timestamp)
+                    or entry["publisher_day"] != _liveblog_visible_day(entry["visible_entry_day_month"], timestamp)
+                    or entry["body_characters"] != len(text)
+                    or entry["body_sha256"] != hashlib.sha256(text.encode("utf-8")).hexdigest()
+                    or entry.get("html_body_corroboration") not in {
+                        "primary_entry_paragraphs", "bound_heading_without_primary_paragraphs"}
+                    or entry.get("html_primary_text_sha256") != hashlib.sha256(
+                        " ".join(text.split()).encode("utf-8")).hexdigest()
+                    or (entry["html_body_corroboration"] == "bound_heading_without_primary_paragraphs"
+                        and " ".join(text.split()) != " ".join(entry["headline"].split()))):
+                return False
+            stamp = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+            if stamp.tzinfo is None or stamp > datetime.now(ZoneInfo("UTC")):
+                return False
+            urls.add(url)
+    except (KeyError, ValueError, TypeError, AttributeError):
+        return False
+    return True
+
+
+def liveblog_requires_revalidation(metadata):
+    if metadata.get("publisher_document_type") == "liveblog":
+        return not verified_liveblog_temporal_evidence(metadata)
+    if metadata.get("publisher_document_type") in {"article", "video"}:
+        return False
+    # Earlier HTML-body caches omitted the publisher format. Revalidate these
+    # once from primary structure, irrespective of title/path vocabulary.
+    # Fresh ordinary HTML articles save an explicit article classification.
+    return metadata.get("body_source") == "article_html"
+
+
+def liveblog_analysis_text(metadata):
+    if not verified_liveblog_temporal_evidence(metadata):
+        raise ValueError("publisher_liveblog_entry_dates_unverified")
+    proof = metadata["liveblog_temporal_evidence"]
+    parts = ["CUERPO PRIMARIO COMPLETO (sin modificaciones):", metadata["page_text"],
+             "CRONOLOGÍA PRIMARIA VERIFICADA DE LA COBERTURA EN VIVO:",
+             f"Publicación del documento: {proof['document_publication_timestamp']} (día {proof['document_publication_date']}).",
+             f"Última modificación del documento: {proof.get('document_modified_timestamp')}.",
+             "La fecha del documento NO reemplaza la fecha de cada entrada. Usa el día visible corroborado en America/Santiago; "
+             "distingue fecha del reporte y fechas/condiciones de acciones anunciadas en su texto. No sumes balances repetidos ni conviertas preparación en ejecución."]
+    for entry in proof["entries"]:
+        parts.extend([f"ENTRADA {entry['index']} | {entry['url']}",
+                      f"Timestamp original: {entry['timestamp']} | fecha visible: {entry['publisher_day']} "
+                      f"({entry['visible_entry_day_month']}, America/Santiago) | día calendario del timestamp: {entry['timestamp_calendar_day']}",
+                      f"Titular: {entry['headline']}", f"Texto primario íntegro de la entrada: {entry['body']}"])
+    return "\n".join(parts)
+
+
 def _visible_byline_day(parts):
     text = " ".join(parts).lower()
     match = re.search(r"\b(\d{1,2})\s+(?:de\s+)?(" + "|".join(_SPANISH_MONTHS) + r")\s+(?:de\s+)?(\d{4})\b", text)
@@ -483,21 +730,23 @@ def extract_article(html, expected_url):
     identity = parser.canonical or parser.metas.get("og:url")
     if not identity or article_url(identity, expected) != expected:
         raise ValueError("article_identity_mismatch")
-    articles, videos = [], []
+    articles, videos, liveblogs = [], [], []
     for script in parser.scripts:
         try:
             nodes = _nodes(json.loads(script))
             for node in nodes:
                 types = node.get("@type", [])
                 types = [types] if isinstance(types, str) else types
-                if not any(t in ("NewsArticle", "Article", "ReportageNewsArticle", "VideoObject") for t in types):
+                if not any(t in ("NewsArticle", "Article", "ReportageNewsArticle", "VideoObject", "LiveBlogPosting") for t in types):
                     continue
                 link = node.get("url") or node.get("mainEntityOfPage") or node.get("@id")
                 if isinstance(link, dict):
                     link = link.get("@id")
                 if not link or article_url(link, expected) != expected:
                     continue
-                if "VideoObject" in types:
+                if "LiveBlogPosting" in types:
+                    liveblogs.append(node)
+                elif "VideoObject" in types:
                     videos.append(node)
                 else:
                     articles.append(node)
@@ -505,6 +754,8 @@ def extract_article(html, expected_url):
             continue
     if len(articles) > 1:
         raise ValueError("ambiguous_article_metadata")
+    if len(liveblogs) > 1:
+        raise ValueError("ambiguous_liveblog_metadata")
     node = articles[0] if articles else {}
     evidence = [("json_ld_datePublished", node.get("datePublished")),
                 ("article_published_time", parser.metas.get("article:published_time"))]
@@ -565,6 +816,24 @@ def extract_article(html, expected_url):
                             publisher_date_convention=convention, publication_evidence=dated_evidence,
                             canonical_url=expected, primary_identity_verified=True,
                             publication_date_verified=not conflicting, article_verified=not conflicting)
+    if liveblogs:
+        timeline = _liveblog_temporal_evidence(liveblogs[0], html, expected, metadata, body)
+        metadata.update(publisher_document_type="liveblog", liveblog_temporal_evidence=timeline,
+                        liveblog_temporal_evidence_verified=timeline["verified"],
+                        html_sha256=timeline["original_html_sha256"])
+    elif body_source == "article_html":
+        displayed_entries = _LiveblogEntries()
+        displayed_entries.feed(html)
+        if displayed_entries.entries:
+            # A structured timeline whose JSON identity/date proof vanished
+            # remains a liveblog with unverified entry dates, not an ordinary
+            # article eligible to reuse the document date for every event.
+            timeline = _liveblog_temporal_evidence({}, html, expected, metadata, body, displayed_entries)
+            metadata.update(publisher_document_type="liveblog", liveblog_temporal_evidence=timeline,
+                            liveblog_temporal_evidence_verified=False,
+                            html_sha256=timeline["original_html_sha256"])
+        else:
+            metadata["publisher_document_type"] = "article"
     if len(articles) == 1:
         taxonomy = _primary_taxonomy(section, metadata["keywords"], expected, node.get("@type"))
         metadata.update(publisher_taxonomy=taxonomy, publisher_content_classification=taxonomy["classification"])
@@ -618,7 +887,8 @@ def _primary_trace(metadata):
             "publication_evidence", "source_content_unavailable_reason", "publisher_exception_reason",
             "publisher_exclusion_reason", "publisher_taxonomy", "publisher_content_classification",
             "possible_publication_days", "video_evidence", "html_sha256", "captured_at",
-            "article_body_characters", "article_body_sha256", "source_quality_gate")
+            "article_body_characters", "article_body_sha256", "source_quality_gate",
+            "liveblog_temporal_evidence", "liveblog_temporal_evidence_verified")
     trace = {key: metadata.get(key) for key in keys}
     trace.update(topics=metadata.get("topics", []),
                  primary_identity_verified=metadata.get("primary_identity_verified", False),
@@ -850,6 +1120,7 @@ def _verified_detail(entry, loader, cached, audit=None):
             and re.fullmatch(r"[0-9a-f]{64}", str(cached.get("metadata", {}).get("html_sha256", "")))
             and _cached_capture_dates_valid(cached.get("metadata", {}))
             and not publisher_taxonomy_requires_revalidation(cached.get("metadata", {}))
+            and not liveblog_requires_revalidation(cached.get("metadata", {}))
             and (cached.get("metadata", {}).get("article_verified")
                  or verified_video_without_text(cached.get("metadata", {}))
                  or verified_publication_date_conflict(cached.get("metadata", {})))
