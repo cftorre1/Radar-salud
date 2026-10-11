@@ -40,6 +40,12 @@ def recovery_command(marker: dict, root: Path) -> list[str]:
         if phase != "process" or selection is None:
             raise ValueError("Idempotence replay requires a selected processing marker")
         audit_path(baseline, root, "Idempotence baseline")
+    capture_mode = marker.get("baseline_capture_mode")
+    if capture_mode is not None:
+        if capture_mode != "revalidated_paid_lineage":
+            raise ValueError("Unsupported baseline capture mode")
+        if phase != "process" or selection is None or baseline is not None:
+            raise ValueError("Paid-lineage capture requires selected processing before its replay")
     return command
 
 
@@ -60,7 +66,8 @@ def idempotence_command(marker: dict, root: Path, stage: str) -> list[str]:
             return helper + ["compare", "--baseline", relative, "--output", PROOF]
         return []  # Never replace the paid baseline with its zero-call replay.
     if stage == "after_qa":
-        return helper + ["capture", "--baseline", audit_path(BASELINE, root, "Baseline output", exists=False)]
+        capture = "capture-revalidated" if marker.get("baseline_capture_mode") == "revalidated_paid_lineage" else "capture"
+        return helper + [capture, "--baseline", audit_path(BASELINE, root, "Baseline output", exists=False)]
     return []
 
 

@@ -123,3 +123,36 @@ def test_capture_output_cannot_escape_through_symlink(tmp_path):
     (tmp_path / module.BASELINE).symlink_to(tmp_path / "outside.json")
     with pytest.raises(ValueError):
         idempotence_command(value, tmp_path, "after_qa")
+
+
+def test_paid_lineage_capture_is_explicit_and_runs_only_after_successful_qa(tmp_path):
+    value = marker(tmp_path)
+    value["baseline_capture_mode"] = "revalidated_paid_lineage"
+    assert idempotence_command(value, tmp_path, "preflight") == []
+    assert idempotence_command(value, tmp_path, "after_core") == []
+    assert idempotence_command(value, tmp_path, "after_qa") == [
+        "python", "scripts/pulso_idempotence.py", "capture-revalidated", "--baseline", module.BASELINE]
+    ordinary = {key: item for key, item in value.items() if key != "baseline_capture_mode"}
+    assert recovery_command(value, tmp_path) == recovery_command(ordinary, tmp_path)
+
+
+@pytest.mark.parametrize("mode", ["capture", "allow-zero", "", [], True])
+def test_unknown_paid_lineage_capture_modes_stop_before_runtime(tmp_path, mode):
+    value = marker(tmp_path)
+    value["baseline_capture_mode"] = mode
+    with pytest.raises(ValueError, match="Unsupported baseline capture mode"):
+        idempotence_command(value, tmp_path, "after_qa")
+
+
+@pytest.mark.parametrize("phase", ["discovery_only", "report_only", "process"])
+def test_paid_lineage_capture_requires_selected_processing(tmp_path, phase):
+    with pytest.raises(ValueError):
+        recovery_command({"phase": phase, "baseline_capture_mode": "revalidated_paid_lineage"}, tmp_path)
+
+
+def test_paid_lineage_capture_cannot_replace_replay_baseline(tmp_path):
+    value = marker(tmp_path)
+    (tmp_path / module.BASELINE).write_text("{}")
+    value.update(baseline_capture_mode="revalidated_paid_lineage", idempotence_baseline=module.BASELINE)
+    with pytest.raises(ValueError, match="before its replay"):
+        idempotence_command(value, tmp_path, "after_qa")
