@@ -427,6 +427,204 @@ def test_api_originals_and_source_traces_can_be_read_from_artifact_without_state
     assert not (tmp_path / "fixtures/discovery_run.json").exists()
 
 
+def paid_original_unit_capture(tmp_path):
+    """Exercise paid retention over genuine HTML, never a new discovery seed."""
+    source, control, record, compressed = original_capture(tmp_path)
+    text = gzip.decompress(compressed).decode()
+    title, body, primary = extract_article(text, record["url"])
+    record.update(requested_at="2026-10-11T04:59:59Z", final_url=record["url"],
+                  content_type="text/html; charset=utf-8", returned_text_utf8_sha256=retain.sha256(text.encode()))
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": [record]}))
+    metadata = dict(primary, page_text=body, html_sha256=record["returned_text_utf8_sha256"],
+                    article_body_sha256=retain.sha256(body.encode()), article_body_complete=True,
+                    article_body_characters=len(body), source_quality_gate="passed")
+    queue = tmp_path / "current_queue.json"
+    queue.write_text(json.dumps({"unit-paid-row": {"source": "pulso_latercera", "status": "retry",
+        "raw": {"source_slug": "pulso_latercera", "url": record["url"], "title": title,
+                "event_date": primary["publication_date"], "metadata": metadata}}}))
+    pins = tmp_path / "retention-pins.json"
+    pins.write_text(json.dumps({"schema": "pulso_v5_paid_missing_original_retention_pins_v1",
+        "source": "pulso_latercera", "paid_producer": "unit-test-not-paid-producer",
+        "required_original_count": 1,
+        "original_capture": {"source_manifest_sha256": retain.sha256(source.read_bytes())},
+        "articles": [{"url": record["url"], "producer_queue_key": "unit-paid-row",
+            "publication_date": primary["publication_date"], "primary_body_sha256": retain.sha256(body.encode()),
+            "primary_body_characters": len(body), "current_primary_html_sha256": record["returned_text_utf8_sha256"],
+            "original_http": record}]}))
+    return source, control, pins, queue, record, compressed
+
+
+def test_exact_paid_original_from_nested_artifact_keeps_full_primary_and_provenance_without_state_restore(tmp_path):
+    source, control, pins, queue, record, compressed = paid_original_unit_capture(tmp_path)
+    artifact_capture = tmp_path / "artifact/first-warm/data/audits/pulso_runtime_capture"
+    artifact_capture.mkdir(parents=True)
+    (artifact_capture / "manifest.json").write_bytes(source.read_bytes())
+    (artifact_capture / record["gzip_file"]).write_bytes(compressed)
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": []}))
+    frozen_control = json.loads(control.read_bytes())
+    frozen_control["articles"][0]["url"] = "https://www.latercera.com/nacional/noticia/unrelated-control/"
+    control.write_text(json.dumps(frozen_control))
+    state = artifact_capture.parents[1] / "pending_queue.json"
+    state.write_text('{"sentinel":"do not restore"}')
+    original_queue = queue.read_bytes()
+    output = tmp_path / "fixtures"
+    result = retain.retain(control, source, output, artifact_dir=tmp_path / "artifact",
+                           original_fixture_manifests=[], paid_original_pins_path=pins, current_queue_path=queue)
+    proof = result["paid_input_original_retention"]
+    assert result["status"] == "ORIGINAL_FIXTURES_PARTIAL"
+    assert result["fixtures"][0]["fixture_status"] == "missing_original_capture"
+    assert proof["status"] == "ALL_EXACT_PAID_INPUT_ORIGINALS_RETAINED_NOT_EDITORIAL_ACCEPTANCE"
+    witness, = proof["rows"]
+    assert witness["fixture_status"] == "verified_exact_paid_input_original"
+    assert witness["editorial_acceptance"] is False
+    assert witness["current_queue_primary_bound"] is True
+    assert witness["primary_witness"]["primary_body_sha256"] == json.loads(pins.read_bytes())["articles"][0]["primary_body_sha256"]
+    assert witness["primary_witness"]["complete_paid_primary_body_matches"] is True
+    assert witness["primary_witness"]["publication_date_source"] == "visible_article_byline"
+    assert witness["primary_witness"]["visible_publication_date"] == "2026-10-10"
+    assert witness["captured_at"] == record["captured_at"]
+    assert (output / witness["path"]).read_bytes() == compressed
+    request, = [row for row in result["requests"] if row["sha256"] == record["sha256"]]
+    assert request["original_gzip_file"] == record["gzip_file"]
+    assert request["original_capture_manifest_sha256"] == retain.sha256((artifact_capture / "manifest.json").read_bytes())
+    assert queue.read_bytes() == original_queue and state.read_text() == '{"sentinel":"do not restore"}'
+    assert not (output / "pending_queue.json").exists()
+    # Subsequent warm retention can use the preserved original without downloading again.
+    warm = retain.retain(control, source, output, original_fixture_manifests=[],
+                         paid_original_pins_path=pins, current_queue_path=queue)
+    assert warm["paid_input_original_retention"]["status"] == proof["status"]
+    assert warm["paid_input_original_retention"]["rows"][0]["captured_at"] == record["captured_at"]
+
+
+@pytest.mark.parametrize("mutation,reason", [
+    ("html", "current_paid_primary_html_sha256_mismatch"),
+    ("body", "current_paid_primary_body_mismatch"),
+    ("day", "current_paid_primary_date_mismatch"),
+    ("identity", "current_paid_primary_identity_mismatch"),
+    ("incomplete", "current_paid_primary_evidence_not_verified"),
+])
+def test_changed_current_producer_primary_cannot_gain_paid_original_witness(tmp_path, mutation, reason):
+    source, control, pins, queue, _, _ = paid_original_unit_capture(tmp_path)
+    current = json.loads(queue.read_bytes())
+    raw = current["unit-paid-row"]["raw"]
+    if mutation == "html":
+        raw["metadata"]["html_sha256"] = "0" * 64
+    elif mutation == "body":
+        raw["metadata"]["page_text"] += " changed current primary"
+        raw["metadata"]["article_body_sha256"] = retain.sha256(raw["metadata"]["page_text"].encode())
+    elif mutation == "day":
+        raw["event_date"] = raw["metadata"]["publication_date"] = "2026-10-09"
+    elif mutation == "identity":
+        raw["url"] = "https://www.latercera.com/nacional/noticia/other/"
+    else:
+        raw["metadata"]["article_body_complete"] = False
+    queue.write_text(json.dumps(current))
+    result = retain.retain(control, source, tmp_path / "fixtures", original_fixture_manifests=[],
+                           paid_original_pins_path=pins, current_queue_path=queue)
+    proof = result["paid_input_original_retention"]
+    assert proof["status"] == "PAID_INPUT_ORIGINAL_RETENTION_PARTIAL"
+    assert proof["verified_original_count"] == 0
+    assert proof["rows"][0]["reason"] == reason
+    assert not any(row.get("paid_input_original_witness") for row in result["requests"])
+
+
+@pytest.mark.parametrize("mutation,reason", [
+    ("gzip", "gzip_sha256_mismatch"),
+    ("raw", "original_sha256_mismatch"),
+    ("utf8", "returned_text_sha256_mismatch"),
+    ("path", "unsafe_capture_path"),
+    ("provenance", "paid_original_capture_manifest_sha256_mismatch"),
+    ("missing_file", "No such file or directory"),
+])
+def test_invalid_paid_original_hash_path_or_provenance_remains_explicit_partial(tmp_path, mutation, reason):
+    source, control, pins, queue, record, compressed = paid_original_unit_capture(tmp_path)
+    if mutation == "gzip":
+        (source.parent / record["gzip_file"]).write_bytes(compressed + b"tampered")
+    elif mutation == "missing_file":
+        (source.parent / record["gzip_file"]).unlink()
+    elif mutation == "path":
+        record.update(original_gzip_file=record["gzip_file"], gzip_file="../outside.gz")
+    elif mutation == "provenance":
+        record["original_capture_manifest_sha256"] = "0" * 64
+    else:
+        key = "sha256" if mutation == "raw" else "returned_text_utf8_sha256"
+        record[key] = "0" * 64
+        value = json.loads(pins.read_bytes())
+        value["articles"][0]["original_http"][key] = "0" * 64
+        pins.write_text(json.dumps(value))
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": [record]}))
+    # Unit contract tracks this unit manifest; exact byte hashes still reject tampering.
+    value = json.loads(pins.read_bytes())
+    value["original_capture"]["source_manifest_sha256"] = retain.sha256(source.read_bytes())
+    pins.write_text(json.dumps(value))
+    result = retain.retain(control, source, tmp_path / "fixtures", original_fixture_manifests=[],
+                           paid_original_pins_path=pins, current_queue_path=queue)
+    proof = result["paid_input_original_retention"]
+    assert proof["status"] == "PAID_INPUT_ORIGINAL_RETENTION_PARTIAL"
+    assert proof["verified_original_count"] == 0
+    assert reason in proof["rows"][0]["reason"]
+    assert not any(row.get("paid_input_original_witness") for row in result["requests"])
+
+
+def test_missing_paid_original_record_is_per_url_partial_not_success_from_other_controls(tmp_path):
+    source, control, pins, queue, _, _ = paid_original_unit_capture(tmp_path)
+    source.write_text(json.dumps({"source": "pulso_latercera", "requests": []}))
+    result = retain.retain(control, source, tmp_path / "fixtures", original_fixture_manifests=[],
+                           paid_original_pins_path=pins, current_queue_path=queue)
+    proof = result["paid_input_original_retention"]
+    assert proof["status"] == "PAID_INPUT_ORIGINAL_RETENTION_PARTIAL"
+    assert proof["rows"][0]["reason"] == "no_observed_original_http_record"
+    assert proof["rows"][0]["capture_attempts"] == []
+
+
+@pytest.mark.parametrize("conflict,reason", [
+    ("day", "paid_original_primary_byline_date_mismatch"),
+    ("body", "paid_original_parsed_body_mismatch"),
+])
+def test_paid_primary_replay_independently_rejects_wrong_queue_and_pin_agreement(tmp_path, conflict, reason):
+    source, control, pins, queue, _, _ = paid_original_unit_capture(tmp_path)
+    current, contract = json.loads(queue.read_bytes()), json.loads(pins.read_bytes())
+    raw, pin = current["unit-paid-row"]["raw"], contract["articles"][0]
+    if conflict == "day":
+        pin["publication_date"] = raw["event_date"] = raw["metadata"]["publication_date"] = "2026-10-09"
+    else:
+        raw["metadata"]["page_text"] += " text absent from the genuine primary"
+        pin["primary_body_sha256"] = raw["metadata"]["article_body_sha256"] = retain.sha256(raw["metadata"]["page_text"].encode())
+        pin["primary_body_characters"] = raw["metadata"]["article_body_characters"] = len(raw["metadata"]["page_text"])
+    queue.write_text(json.dumps(current))
+    pins.write_text(json.dumps(contract))
+    result = retain.retain(control, source, tmp_path / "fixtures", original_fixture_manifests=[],
+                           paid_original_pins_path=pins, current_queue_path=queue)
+    proof = result["paid_input_original_retention"]
+    assert proof["status"] == "PAID_INPUT_ORIGINAL_RETENTION_PARTIAL"
+    assert proof["rows"][0]["current_queue_primary_bound"] is True
+    assert proof["rows"][0]["reason"] == reason
+    assert not any(row.get("paid_input_original_witness") for row in result["requests"])
+
+
+def test_durable_nine_paid_originals_replay_only_when_all_genuine_bytes_are_retained():
+    pins = json.loads((ROOT / "data/audits/pulso_v5_paid_missing_originals_2026_10_11.json").read_bytes())
+    assert pins["required_original_count"] == len(pins["articles"]) == 9
+    folder = ROOT / "tests/fixtures/pulso_runtime_real"
+    manifest = json.loads((folder / "manifest.json").read_bytes())
+    requests = {(row.get("url"), row.get("returned_text_utf8_sha256")): row for row in manifest["requests"]}
+    present = [pin for pin in pins["articles"] if (pin["url"], pin["current_primary_html_sha256"]) in requests]
+    if len(present) != 9:
+        pytest.skip(f"Exact historical originals retained {len(present)}/9; this is not an acceptance PASS")
+    for pin in pins["articles"]:
+        row = requests[(pin["url"], pin["current_primary_html_sha256"])]
+        compressed, text = retain.verify_original(folder, row)
+        assert retain.sha256(compressed) == pin["original_http"]["gzip_sha256"]
+        assert row["captured_at"] == pin["original_http"]["captured_at"]
+        assert row["original_capture_manifest_sha256"] == pins["original_capture"]["source_manifest_sha256"]
+        _, body, primary = extract_article(text, pin["url"])
+        assert retain.sha256(body.encode()) == pin["primary_body_sha256"]
+        assert len(body) == pin["primary_body_characters"]
+        assert primary["publication_date"] == primary["visible_publication_date"] == pin["publication_date"]
+        assert primary["publication_date_source"] == "visible_article_byline"
+        assert primary["primary_identity_verified"] is primary["publication_date_verified"] is True
+
+
 def test_durable_runtime_originals_replay_when_the_permitted_capture_is_available():
     path = ROOT / "tests/fixtures/pulso_runtime_real/manifest.json"
     if not path.exists():

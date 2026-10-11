@@ -219,8 +219,155 @@ def preserve_api_proof(sources, evidence, output, requests):
             "raw_payload_retention": "Exact observed first and last three API responses per feed; interior pages retain observed HTTP metadata only."}
 
 
+def preserve_paid_originals(sources, pins_path, queue_path, output, requests):
+    """Retain bounded paid input originals, without reopening or restoring rows.
+
+    The fixed producer pins select retention only. Current queue primary text,
+    exact original HTTP provenance and parser replay must all agree before an
+    original can become a witness. A newer same-URL response is insufficient.
+    """
+    if pins_path is None:
+        return {"status": "PAID_ORIGINAL_RETENTION_NOT_REQUESTED", "rows": []}
+    pin_bytes = pins_path.read_bytes()
+    pins = json.loads(pin_bytes)
+    articles = pins.get("articles", [])
+    urls = [row.get("url") for row in articles]
+    if (pins.get("schema") != "pulso_v5_paid_missing_original_retention_pins_v1"
+            or pins.get("source") != SOURCE or not articles
+            or pins.get("required_original_count") != len(articles)
+            or len(set(urls)) != len(urls)
+            or any(normalized_url(url) != url for url in urls)):
+        raise ValueError("invalid_paid_original_retention_pins")
+    expected_manifest = pins["original_capture"]["source_manifest_sha256"]
+    try:
+        queue_bytes = queue_path.read_bytes()
+        queue = json.loads(queue_bytes)
+        if not isinstance(queue, dict):
+            raise ValueError("invalid_current_queue")
+        queue_error = None
+    except Exception as error:
+        queue_bytes, queue = b"", {}
+        queue_error = {"reason": "current_queue_unavailable", "error_type": type(error).__name__}
+    candidates = {}
+    for base, manifest_hash, records in sources:
+        for record in records:
+            if record.get("url") in urls:
+                candidates.setdefault(record["url"], []).append((base, manifest_hash, record))
+    rows = []
+    for pin in articles:
+        result = {"url": pin["url"], "producer_queue_key": pin["producer_queue_key"],
+                  "expected_primary_html_sha256": pin["current_primary_html_sha256"],
+                  "expected_primary_body_sha256": pin["primary_body_sha256"],
+                  "expected_publication_date": pin["publication_date"],
+                  "fixture_status": "missing_paid_input_original", "editorial_acceptance": False,
+                  "capture_attempts": []}
+        try:
+            if queue_error:
+                raise ValueError(queue_error["reason"])
+            entry = queue.get(pin["producer_queue_key"], {})
+            raw = entry.get("raw", {})
+            metadata = raw.get("metadata", {})
+            body = metadata.get("page_text")
+            if entry.get("source") != SOURCE or raw.get("source_slug") != SOURCE or raw.get("url") != pin["url"]:
+                raise ValueError("current_paid_primary_identity_mismatch")
+            if metadata.get("html_sha256") != pin["current_primary_html_sha256"]:
+                raise ValueError("current_paid_primary_html_sha256_mismatch")
+            if (not isinstance(body, str) or sha256(body.encode()) != pin["primary_body_sha256"]
+                    or len(body) != pin["primary_body_characters"]
+                    or metadata.get("article_body_sha256") != pin["primary_body_sha256"]
+                    or metadata.get("article_body_characters") != pin["primary_body_characters"]):
+                raise ValueError("current_paid_primary_body_mismatch")
+            if (raw.get("event_date") != pin["publication_date"]
+                    or metadata.get("publication_date") != pin["publication_date"]):
+                raise ValueError("current_paid_primary_date_mismatch")
+            if (metadata.get("source_quality_gate") != "passed"
+                    or any(metadata.get(flag) is not True for flag in (
+                        "article_body_complete", "primary_identity_verified", "publication_date_verified", "article_verified"))):
+                raise ValueError("current_paid_primary_evidence_not_verified")
+            result["current_queue_primary_bound"] = True
+            expected = pin["original_http"]
+            entries = sorted(candidates.get(pin["url"], []),
+                             key=lambda row: row[2].get("captured_at") or "", reverse=True)
+            if not entries:
+                result["reason"] = "no_observed_original_http_record"
+            for base, manifest_hash, record in entries:
+                attempt = {"sha256": record.get("sha256"), "captured_at": record.get("captured_at")}
+                try:
+                    original_manifest = record.get("original_capture_manifest_sha256", manifest_hash)
+                    if original_manifest != expected_manifest:
+                        raise ValueError("paid_original_capture_manifest_sha256_mismatch")
+                    for key in ("url", "requested_at", "captured_at", "status", "final_url", "content_type",
+                                "charset", "bytes", "sha256", "returned_text_utf8_sha256", "gzip_sha256"):
+                        if record.get(key) != expected.get(key):
+                            raise ValueError("paid_original_http_record_mismatch:" + key)
+                    if expected.get("status") != 200:
+                        raise ValueError("paid_original_not_http_200")
+                    original_path = record.get("original_gzip_file", record.get("gzip_file"))
+                    if original_path != expected.get("gzip_file"):
+                        raise ValueError("paid_original_gzip_path_mismatch")
+                    compressed, text = verify_original(base, record)
+                    if sha256(text.encode()) != pin["current_primary_html_sha256"]:
+                        raise ValueError("paid_original_utf8_primary_sha256_mismatch")
+                    title, parsed_body, primary = extract_article(text, pin["url"])
+                    if (parsed_body != body or sha256(parsed_body.encode()) != pin["primary_body_sha256"]
+                            or len(parsed_body) != pin["primary_body_characters"]):
+                        raise ValueError("paid_original_parsed_body_mismatch")
+                    if (primary.get("canonical_url") != pin["url"]
+                            or any(primary.get(flag) is not True for flag in (
+                                "primary_identity_verified", "publication_date_verified", "article_verified"))):
+                        raise ValueError("paid_original_parsed_identity_or_date_unverified")
+                    if (primary.get("publication_date") != pin["publication_date"]
+                            or primary.get("visible_publication_date") != pin["publication_date"]
+                            or primary.get("publication_date_source") != "visible_article_byline"):
+                        raise ValueError("paid_original_primary_byline_date_mismatch")
+                    relative = expected["sha256"] + ".html.gz"
+                    destination = output / relative
+                    if destination.exists() and sha256(destination.read_bytes()) != expected["gzip_sha256"]:
+                        raise ValueError("existing_fixture_gzip_sha256_mismatch")
+                    destination.write_bytes(compressed)
+                    witness = {key: primary.get(key) for key in (
+                        "canonical_url", "primary_identity_verified", "publication_date_verified", "article_verified",
+                        "publication_date", "visible_publication_date", "publication_date_source",
+                        "publication_timestamp", "publication_evidence", "publisher_date_convention", "section", "body_source")}
+                    witness.update(primary_body_sha256=sha256(parsed_body.encode()),
+                                   primary_body_characters=len(parsed_body), complete_paid_primary_body_matches=True)
+                    retained = dict(record, gzip_file=relative, original_gzip_file=expected["gzip_file"],
+                                    original_capture_manifest_sha256=expected_manifest,
+                                    capture_provenance="preserved_original_http_response",
+                                    paid_input_original_witness=dict(witness, paid_producer=pins["paid_producer"],
+                                        producer_queue_key=pin["producer_queue_key"], retention_pins_sha256=sha256(pin_bytes)))
+                    requests[(pin["url"], record["sha256"])] = retained
+                    result.update(fixture_status="verified_exact_paid_input_original", original_bytes_verified=True,
+                                  path=relative, sha256=record["sha256"], gzip_sha256=record["gzip_sha256"],
+                                  returned_text_utf8_sha256=record["returned_text_utf8_sha256"],
+                                  captured_at=record["captured_at"], requested_at=record["requested_at"],
+                                  original_gzip_file=expected["gzip_file"],
+                                  original_capture_manifest_sha256=expected_manifest, title=title,
+                                  primary_witness=witness)
+                    result.pop("reason", None)
+                    result["capture_attempts"].append(dict(attempt, status="verified_exact_original"))
+                    break
+                except Exception as error:
+                    result["capture_attempts"].append(dict(attempt, status="original_verification_error",
+                                                          error_type=type(error).__name__, reason=str(error)))
+                    result["reason"] = str(error)
+        except Exception as error:
+            result.update(fixture_status="paid_input_primary_binding_error", error_type=type(error).__name__, reason=str(error))
+        rows.append(result)
+    complete = all(row["fixture_status"] == "verified_exact_paid_input_original" for row in rows)
+    return {"status": "ALL_EXACT_PAID_INPUT_ORIGINALS_RETAINED_NOT_EDITORIAL_ACCEPTANCE" if complete else "PAID_INPUT_ORIGINAL_RETENTION_PARTIAL",
+            "retention_pins_sha256": sha256(pin_bytes), "paid_producer": pins["paid_producer"],
+            "producer_references": pins.get("producer_references", {}), "original_capture": pins["original_capture"],
+            "artifact_zip_digest_verified_by_this_retainer": False,
+            "current_queue_sha256": sha256(queue_bytes) if queue_bytes else None,
+            "required_original_count": len(articles), "verified_original_count": sum(
+                row["fixture_status"] == "verified_exact_paid_input_original" for row in rows),
+            "counts": dict(Counter(row["fixture_status"] for row in rows)), "rows": rows,
+            "acceptance_note": "Exact historical HTTP 200 bytes and current full-primary/date replay only; no refetch, state restoration or editorial acceptance."}
+
+
 def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=10, discovery_path=None,
-           original_fixture_manifests=None):
+           original_fixture_manifests=None, paid_original_pins_path=None, current_queue_path=None):
     control_bytes = control_path.read_bytes()
     control = json.loads(control_bytes)
     window = control["window_90"]
@@ -380,12 +527,14 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
 
     metadata_rows = preserve_current(metadata_targets, metadata_candidates, "metadata_hold")
     current_control_rows = preserve_current(control_targets, candidates, "control_primary")
+    paid_originals = preserve_paid_originals(sources, paid_original_pins_path, current_queue_path, output, requests)
+    paid_urls = {row["url"] for row in paid_originals["rows"]}
     # Preserve already retained observed variants by URL+SHA. Rebuilding the
     # manifest must not orphan the original a warm cache still references when
     # a later targeted observation supplies different publisher bytes.
     for record in previous.get("requests", []):
         key = (normalized_url(record.get("url")), record.get("sha256"))
-        if key[0] in set(controls) | set(metadata_targets) and record.get("gzip_file") and key not in requests:
+        if key[0] in set(controls) | set(metadata_targets) | paid_urls and record.get("gzip_file") and key not in requests:
             preserve((output, sha256(previous_path.read_bytes()), record))
     api_proof = preserve_api_proof(sources, evidence, output, requests)
     counts = dict(Counter(row["fixture_status"] for row in rows))
@@ -407,6 +556,7 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
                     row["fixture_status"] == "hash_verified_current_control_primary_original" and not row["source_sha_missing_or_ambiguous"]
                     for row in current_control_rows) else ("CURRENT_CONTROL_PRIMARY_ORIGINAL_RETENTION_PARTIAL" if current_control_rows else "NO_CURRENT_CONTROL_PRIMARY_TRACES"),
                 "public_api_proof": api_proof,
+                "paid_input_original_retention": paid_originals,
                 "requests": list(requests.values()), "unique_original_payloads": len({row["sha256"] for row in requests.values() if row.get("gzip_file")}),
                 "acceptance_note": "These fixtures prove captured bytes and parser replay; they do not establish discovery recall or editorial acceptance."}
     temporary = previous_path.with_suffix(".json.tmp")
@@ -421,10 +571,14 @@ def main():
     parser.add_argument("--capture-manifest", type=Path, default=ROOT / "data/audits/pulso_runtime_capture/manifest.json")
     parser.add_argument("--capture-artifact", type=Path)
     parser.add_argument("--discovery", type=Path, default=ROOT / "data/state/discovery_run.json")
+    parser.add_argument("--paid-original-pins", type=Path, default=ROOT / "data/audits/pulso_v5_paid_missing_originals_2026_10_11.json")
+    parser.add_argument("--current-queue", type=Path, default=ROOT / "data/state/pending_queue.json")
     parser.add_argument("--output", type=Path, default=ROOT / "tests/fixtures/pulso_runtime_real")
     args = parser.parse_args()
-    manifest = retain(args.control, args.capture_manifest, args.output, args.capture_artifact, discovery_path=args.discovery)
-    print(json.dumps({key: manifest[key] for key in ("status", "expected_controls", "counts", "unique_original_payloads")}))
+    manifest = retain(args.control, args.capture_manifest, args.output, args.capture_artifact, discovery_path=args.discovery,
+                      paid_original_pins_path=args.paid_original_pins, current_queue_path=args.current_queue)
+    print(json.dumps(dict({key: manifest[key] for key in ("status", "expected_controls", "counts", "unique_original_payloads")},
+                          paid_input_original_retention=manifest["paid_input_original_retention"]["status"])))
 
 
 if __name__ == "__main__":
