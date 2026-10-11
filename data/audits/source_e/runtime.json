@@ -1,0 +1,156 @@
+{
+  "candidate_sha": "f050ce6c96d2ebb1c6606aaafbcbbba4e41275c5",
+  "checked_at": "2026-10-11T01:32:58.329579-03:00",
+  "sources": {
+    "achs_seguro_laboral": {
+      "listing": "https://www.achs.cl/centro-de-noticias",
+      "reconciliation_evidence": "data/audits/source_e/achs_seguro_laboral.json",
+      "evidence_sha256": "bd59535ec8696aee3802a654113cbc77cb085bbe8ac04c4c9c61378686df30cd",
+      "samples": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+          "publication_date": "2026-09-24",
+          "date_evidence": "visible date directly after article H1; listing agrees",
+          "within_30_days": true,
+          "within_90_days": true,
+          "decision": "candidate_pending_editorial_analysis",
+          "reason": "new treatment and reintegration guidance; not a wellbeing campaign",
+          "published": false
+        },
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+          "publication_date": "2026-09-15",
+          "date_evidence": "visible date directly after article H1; listing agrees",
+          "data_period": "2026-01/2026-06",
+          "within_30_days": true,
+          "within_90_days": true,
+          "decision": "candidate_pending_editorial_analysis",
+          "reason": "501 accidents vs 366 in first half of 2025; publication date distinct from data period",
+          "published": false
+        }
+      ],
+      "inventory_complete": false,
+      "technical_status": "error",
+      "error": {
+        "type": "SourceDiscoveryError",
+        "code": "executor_proxy_denied",
+        "url": "https://www.achs.cl/centro-de-noticias",
+        "message": "executor_proxy_denied: https://www.achs.cl/centro-de-noticias (URLError)"
+      },
+      "decisions": []
+    },
+    "clinicas_achs_salud": {
+      "listing": "https://www.achs.cl/centro-de-noticias",
+      "reconciliation_evidence": "data/audits/source_e/clinicas_achs_salud.json",
+      "evidence_sha256": "413eca0a7afd6ac04cd666ba3a5532ac73762f87818c1e2146de4e096b66616b",
+      "samples": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+          "publication_date": "2026-08-28",
+          "date_evidence": "visible date immediately after H1; newsroom listing agrees",
+          "within_30_days": false,
+          "within_90_days": true,
+          "decision": "candidate_pending_editorial_analysis",
+          "reason": "Clinica Atacama participates in SAFED/Fonasa ambulatory care for FIBE-qualified disaster victims. Over 4200 slots are the combined private-provider effort, not Clinica Atacama capacity.",
+          "published": false
+        },
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+          "publication_date": "2026-08-19",
+          "date_evidence": "visible date after H1; listing agrees",
+          "within_30_days": false,
+          "within_90_days": true,
+          "decision": "rejected_for_clinic_lane",
+          "reason": "Operational center changes in Linares, San Javier and La Florida; clinic reference is only out-of-hours routing. This is not a clinic capacity change.",
+          "published": false
+        },
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2025/achs-y-su-filial-clinicas-achs-salud-se-suman-a-la-modalidad-de-cobertura-complementaria-de-fonasa",
+          "publication_date": null,
+          "date_evidence": "historical 2025 route; exact original date not reconciled in this audit",
+          "within_30_days": false,
+          "within_90_days": false,
+          "decision": "excluded_from_recent_sample",
+          "reason": "Historical MCC incorporation must not inherit dates from current related stories.",
+          "published": false
+        }
+      ],
+      "inventory_complete": false,
+      "technical_status": "error",
+      "error": {
+        "type": "SourceDiscoveryError",
+        "code": "executor_proxy_denied",
+        "url": "https://www.achs.cl/centro-de-noticias",
+        "message": "executor_proxy_denied: https://www.achs.cl/centro-de-noticias (URLError)"
+      },
+      "decisions": []
+    },
+    "ist": {
+      "listing": "https://ist.cl/noticias/",
+      "reconciliation_evidence": "data/audits/source_e/ist.json",
+      "evidence_sha256": "4bd0de67b8f57e27fc40d082e93c89316a14f980c30f327f78fe981e2c870072",
+      "samples": [
+        {
+          "url": "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/",
+          "publication_date": "2026-10-07",
+          "date_evidence": "WordPress byline Oct 7, 2026 and visible 07/10/2026 agree",
+          "within_30_days": true,
+          "within_90_days": true,
+          "decision": "rejected",
+          "reason": "Educational wellbeing event without a material coverage, capacity or operational change",
+          "published": false
+        },
+        {
+          "url": "https://ist.cl/feria-de-bienestar-2026-promoviendo-el-cuidado-de-la-vida-junto-a-puerto-ventanas/",
+          "publication_date": "2026-09-17",
+          "date_evidence": "WordPress byline Sep 17, 2026 and visible 17/09/2026 agree",
+          "within_30_days": true,
+          "within_90_days": true,
+          "decision": "rejected",
+          "reason": "Wellbeing fair with active breaks, counselling and contests; no material change",
+          "published": false
+        },
+        {
+          "url": "https://ist.cl/damos-la-bienvenida-a-mk-recursos-humanos/",
+          "publication_date": "2026-07-29",
+          "date_evidence": "WordPress byline Jul 29, 2026 and visible 29/07/2026 agree",
+          "within_30_days": false,
+          "within_90_days": true,
+          "decision": "candidate_pending_editorial_analysis",
+          "reason": "New adherent brings over 700 workers into coverage; quantified coverage change",
+          "published": false
+        }
+      ],
+      "inventory_complete": false,
+      "technical_status": "error",
+      "error": {
+        "type": "SourceDiscoveryError",
+        "code": "executor_proxy_denied",
+        "url": "https://ist.cl/noticias/",
+        "message": "executor_proxy_denied: https://ist.cl/noticias/ (URLError)"
+      },
+      "decisions": []
+    },
+    "mutual_seguridad": {
+      "listing": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "reconciliation_evidence": "data/audits/source_e/mutual_seguridad.json",
+      "evidence_sha256": "b0f5bdae5cb93e2d77ef9c2a7bf41db359cba6c17ceefec99d6f0e7eeb63440d",
+      "samples": [],
+      "inventory_complete": false,
+      "technical_status": "error",
+      "error": {
+        "type": "SourceDiscoveryError",
+        "code": "executor_proxy_denied",
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+        "message": "executor_proxy_denied: https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/ (URLError)"
+      },
+      "decisions": []
+    }
+  },
+  "published": 0,
+  "analysis_api_calls": 0,
+  "window_start": {
+    "30": "2026-09-11",
+    "90": "2026-07-13"
+  }
+}
