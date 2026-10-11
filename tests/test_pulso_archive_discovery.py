@@ -63,7 +63,7 @@ def test_archive_reads_every_detail_and_health_in_body_with_generic_title(tmp_pa
     assert len([url for url in calls if '/noticia/' in url]) == 100
     assert [item.url for item in items] == ['https://www.latercera.com/nacional/noticia/gobierno-99/']
     summary = next(entry for entry in audit if entry['status'] == 'archive_coverage')
-    assert summary['coverage_complete'] and summary['complete_90_days'] == {'start': '2026-07-13', 'end': '2026-10-10'}
+    assert not summary['coverage_complete'] and summary['complete_90_days'] == {'start': '2026-07-13', 'end': '2026-10-10'}
     assert summary['complete_30_days'] == {'start': '2026-09-11', 'end': '2026-10-10'}
     assert len([entry for entry in audit if entry['status'] == 'excluded']) == 99
     assert all(entry.get('publication_date_source') for entry in audit if entry['status'] in ('discovered', 'excluded'))
@@ -202,3 +202,81 @@ def test_visible_byline_conflicting_with_bound_publication_evidence_rejected():
     html = html_article(url, timestamp='2026-10-10T14:30:00Z', byline='<time class="article-body__byline__date">9 OCTUBRE 2026</time>')
     with pytest.raises(ValueError, match='conflicting_publication_dates'):
         extract_article(html, url)
+
+
+def rss_page(url, *, health=True, short=False, title='Gobierno anuncia un nuevo plan para las regiones'):
+    body = ('Hospitales y clínicas tendrán nuevos recursos para financiamiento y atención de listas de espera. ' if health else
+            'El nuevo plan incluye contratos de transporte, ajustes al calendario de trenes y permisos para obras en carreteras nacionales. ') * (1 if short else 3)
+    if short:
+        body = 'Resumen breve'
+    return '<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><item>' + (
+        f'<link>{url}</link><title>{title}</title><pubDate>Fri, 09 Oct 2026 15:00:00 GMT</pubDate>'
+        f'<content:encoded><![CDATA[<p>{body}</p>]]></content:encoded></item></channel></rss>')
+
+
+def test_real_rss_has_full_primary_story_bodies_not_search_snippets():
+    from radar_salud.pulso_source import parse_fulltext_rss
+    items = parse_fulltext_rss(gzip.decompress((REAL / 'rss.xml.gz').read_bytes()).decode())
+    assert len(items) == 80  # 100 RSS entries minus opinion/unsupported routes
+    assert sum(item['fulltext_complete'] for item in items.values()) == 76
+    assert any(not item['fulltext_complete'] for item in items.values())  # videos must fall back to detail
+    assert max(len(item['body']) for item in items.values()) > 10_000
+    assert all(item['rss_inventory_day'] for item in items.values())
+
+
+@pytest.mark.parametrize('health,short,opens_detail', [(True, False, True), (False, False, False), (False, True, True)])
+def test_rss_body_prescreen_never_uses_title_alone_or_truncated_body(tmp_path, health, short, opens_detail):
+    calls = []
+    url = 'https://www.latercera.com/nacional/noticia/gobierno-0/'
+    def loader(value):
+        calls.append(value)
+        if value == SITEMAP_INDEX:
+            return xml_index()
+        if value == SITEMAP_PAGE:
+            return xml_page(0, count=1)
+        if '/arc/outboundfeeds/rss/' in value:
+            return rss_page(url, health=health, short=short)
+        if '/arc/outboundfeeds/' in value:
+            return f'<urlset xmlns="{NS}" />'
+        return html_article(value, health=True)
+    audit = []
+    items, _, summary = discover_archive(loader, audit, tmp_path / 'cache.json', today=TODAY)
+    assert (url in calls) == opens_detail
+    assert bool(items) == opens_detail
+    if not opens_detail:
+        trace = next(e for e in audit if e.get('url') == url and e['status'] == 'excluded')
+        assert trace['reason'] == 'fulltext_rss_no_health_anchor'
+        assert trace['publication_date'] is None and trace['publication_date_source'] == 'not_detail_verified'
+        assert len(trace['rss_fulltext_sha256']) == 64
+        assert summary['rss_fulltext_exclusions'] == 1
+
+
+def test_rss_missing_primary_url_falls_back_to_original_detail(tmp_path):
+    calls = []
+    def loader(value):
+        calls.append(value)
+        if value == SITEMAP_INDEX:
+            return xml_index()
+        if value == SITEMAP_PAGE:
+            return xml_page(0, count=1)
+        if '/arc/outboundfeeds/rss/' in value:
+            return rss_page('https://www.latercera.com/nacional/noticia/another-story/', health=False)
+        if '/arc/outboundfeeds/' in value:
+            return f'<urlset xmlns="{NS}" />'
+        return html_article(value)
+    items, _, _ = discover_archive(loader, [], tmp_path / 'cache.json', today=TODAY)
+    assert len(items) == 1 and items[0].url in calls
+
+
+def test_valid_empty_page_before_required_window_is_a_cap_not_success(tmp_path):
+    def loader(value):
+        if value == SITEMAP_INDEX:
+            return xml_index()
+        if value == SITEMAP_PAGE:
+            return xml_page(0, count=1)
+        if '/arc/outboundfeeds/' in value:
+            return f'<urlset xmlns="{NS}" />'
+        return html_article(value, day='2026-08-12')
+    _, _, summary = discover_archive(loader, [], tmp_path / 'cache.json', today=TODAY)
+    assert not summary['coverage_complete']
+    assert summary['termination'] == 'archive_exhausted_before_required_window'

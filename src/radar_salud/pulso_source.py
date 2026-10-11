@@ -11,6 +11,7 @@ import re
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
+from email.utils import parsedate_to_datetime
 from html.parser import HTMLParser
 from urllib.parse import parse_qs, urljoin, urlparse
 from zoneinfo import ZoneInfo
@@ -341,6 +342,64 @@ def health_topics(text):
     return [topic for topic, pattern in patterns.items() if re.search(pattern, text or "", re.I)] or ["health_general"]
 
 
+class _FeedText(HTMLParser):
+    """Full story RSS markup, with scripts removed but no topic/title gate."""
+    def __init__(self):
+        super().__init__()
+        self.parts, self.blocked = [], 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in ("script", "style", "noscript"):
+            self.blocked += 1
+
+    def handle_endtag(self, tag):
+        if tag in ("script", "style", "noscript"):
+            self.blocked = max(0, self.blocked - 1)
+
+    def handle_data(self, text):
+        if not self.blocked:
+            self.parts.append(text)
+
+
+def _feed_text(value):
+    parser = _FeedText()
+    parser.feed(value or "")
+    return " ".join(" ".join(parser.parts).split())
+
+
+def parse_fulltext_rss(xml):
+    """Official URL-bound story bodies are usable for recall-safe prescreening.
+
+    pubDate is only inventory evidence. Any health candidate's final calendar
+    date, title and body still come from its original URL-bound article detail.
+    """
+    root = ET.fromstring(xml)
+    if root.tag != "rss" or root.find("channel") is None:
+        raise ValueError("unexpected_rss_document")
+    out = {}
+    for node in root.findall("channel/item"):
+        url = article_url(node.findtext("link", ""))
+        if not url:
+            continue
+        body = _feed_text(node.findtext("{http://purl.org/rss/1.0/modules/content/}encoded", ""))
+        description = _feed_text(node.findtext("description", ""))
+        title = _feed_text(node.findtext("title", ""))
+        categories = [item.text or "" for item in node.findall("category")]
+        timestamp = node.findtext("pubDate", "")
+        try:
+            stamp = parsedate_to_datetime(timestamp)
+            provisional_day = stamp.astimezone(ZoneInfo("America/Santiago")).date().isoformat() if stamp.tzinfo else None
+        except (ValueError, TypeError):
+            provisional_day = None
+        combined = title + " " + body + " " + description + " " + " ".join(categories)
+        out[url] = dict(url=url, title=title, body=body, description=description, categories=categories,
+                        rss_publication_timestamp=timestamp, rss_inventory_day=provisional_day,
+                        fulltext_complete=len(body) >= 160 and len(title) >= 18,
+                        rss_fulltext_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                        relevant=health_anchor(combined))
+    return out
+
+
 def _load_cache(path):
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -380,7 +439,7 @@ def _verified_detail(entry, loader, cached):
 
 
 def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
-                     max_pages=250, boundary_pages=3):
+                     max_pages=250, boundary_pages=3, use_rss=True):
     """Traverse the official archive and verify every factual article in detail.
 
     The advertised index currently exposes only 10,000 stories. Its own offset
@@ -393,6 +452,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
     cache = _load_cache(cache_path)
     articles = cache["articles"]
     visited, out, primary = set(), [], {}
+    rss_exclusions, rss_inventory_days, verified_days = 0, [], []
     errors, pages, excluded, attempted_pages, consecutive_page_errors = 0, [], 0, 0, 0
     terminal, boundary, termination = False, False, "unproven"
     advertised = []
@@ -417,7 +477,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
     worker_count = max(1, min(int(workers), 4))
 
     def consume_page(url):
-        nonlocal errors, excluded, older_pages, terminal, boundary, termination, attempted_pages, consecutive_page_errors
+        nonlocal errors, excluded, older_pages, terminal, boundary, termination, attempted_pages, consecutive_page_errors, rss_exclusions
         attempted_pages += 1
         try:
             xml = detail_loader(url)
@@ -449,6 +509,16 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
         if not entries:
             terminal, termination = True, "empty_official_archive_page"
             return
+        rss_items = {}
+        rss_url = url.replace("/sitemap/", "/rss/")
+        if use_rss:
+            try:
+                rss_items = parse_fulltext_rss(detail_loader(rss_url))
+            except Exception as exc:
+                # This optimisation is optional. Missing/invalid RSS causes
+                # direct detail verification for every primary archive URL.
+                audit.append(dict(listing=rss_url, status="surface_error", reason=str(exc),
+                                  error_type=type(exc).__name__, fallback="direct_article_detail"))
         candidates = []
         for entry in entries:
             canonical = article_url(entry["url"])
@@ -461,6 +531,26 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
                 continue
             visited.add(canonical)
             primary[canonical] = entry
+            feed_item = rss_items.get(canonical)
+            if feed_item:
+                entry.update({key: feed_item[key] for key in ("rss_publication_timestamp", "rss_inventory_day", "rss_fulltext_sha256")})
+                if feed_item["rss_inventory_day"]:
+                    rss_inventory_days.append(feed_item["rss_inventory_day"])
+            if feed_item and feed_item["fulltext_complete"] and not feed_item["relevant"]:
+                rss_exclusions += 1
+                # Deliberately no final publication_date: no health topic was
+                # found anywhere in the original full story, and the detail
+                # has not been opened. Inventory dates cannot masquerade as
+                # verified bylines in the reconciled health article ledger.
+                audit.append(dict(url=canonical, listing=url, status="excluded", reason="fulltext_rss_no_health_anchor",
+                                  title=feed_item["title"], section=canonical.split('/')[3], topics=[],
+                                  publication_date=None, publication_date_source="not_detail_verified",
+                                  rss_publication_timestamp=feed_item["rss_publication_timestamp"],
+                                  rss_inventory_day=feed_item["rss_inventory_day"],
+                                  rss_fulltext_sha256=feed_item["rss_fulltext_sha256"],
+                                  publisher_lastmod=entry.get("lastmod", ""), article_verified=False,
+                                  captured_at=datetime.now(ZoneInfo("UTC")).isoformat(), rss_url=rss_url))
+                continue
             candidates.append(entry)
         dates = []
         with ThreadPoolExecutor(max_workers=worker_count) as pool:
@@ -476,6 +566,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
             metadata = result["metadata"]
             day = date.fromisoformat(metadata["publication_date"])
             dates.append(day)
+            verified_days.append(day)
             status = "discovered" if result["relevant"] and cutoff <= day <= today else "excluded"
             reason = None if status == "discovered" else "no_health_anchor" if not result["relevant"] else "outside_90_day_window"
             trace = dict(url=result["url"], listing=url, status=status, reason=reason,
@@ -518,15 +609,22 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
     if not terminal and not boundary:
         termination = "explicit_page_limit"
     covered_advertised = len(pages) >= len(page_urls)
-    complete = bool(contiguous and covered_advertised and (terminal or boundary) and not errors)
+    reached_verified_90_boundary = bool(verified_days and min(verified_days) < cutoff - timedelta(days=2))
+    complete = bool(contiguous and covered_advertised and (terminal or boundary) and not errors
+                    and reached_verified_90_boundary)
+    if terminal and termination == "empty_official_archive_page" and not reached_verified_90_boundary:
+        termination = "archive_exhausted_before_required_window"
     summary = dict(status="archive_coverage", mechanism="official_sitemap_offsets_detail_verification",
                    coverage_complete=complete, advertised_pages=len(page_urls), pages_read=len(pages), pages_attempted=attempted_pages,
                    primary_urls=len(primary), excluded_paths=excluded, errors=errors,
                    cache_path=str(cache_path), cache_entries=len(articles), workers=worker_count,
-                   max_pages=max_pages, termination=termination,
+                   max_pages=max_pages, termination=termination, rss_fulltext_exclusions=rss_exclusions,
+                   rss_inventory_day_min=min(rss_inventory_days) if rss_inventory_days else None,
+                   rss_inventory_day_max=max(rss_inventory_days) if rss_inventory_days else None,
                    complete_30_days=dict(start=(today - timedelta(days=30)).isoformat(), end=(today - timedelta(days=1)).isoformat()),
                    complete_90_days=dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()),
-                   current_day_slice=today.isoformat(), boundary_is_observed_not_global_completeness_proof=True)
+                   current_day_slice=today.isoformat(), verified_publication_day_min=min(verified_days).isoformat() if verified_days else None,
+                   boundary_is_observed_not_global_completeness_proof=True)
     audit.append(summary)
     if not complete:
         audit.append(dict(listing=SITEMAP_INDEX, status="listing_error", reason="archive_coverage_incomplete", termination=termination))
