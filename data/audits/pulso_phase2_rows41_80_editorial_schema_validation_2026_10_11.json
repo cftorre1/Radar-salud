@@ -1,0 +1,91 @@
+{
+  "schema_version": "pulso_phase2_rows41_80_editorial_schema_replay_v1",
+  "source_id": "pulso_latercera",
+  "generated_at": "2026-10-11T18:13:46.836038+00:00",
+  "actual_producer_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+  "reader": {
+    "path": "data/audits/pulso_phase2_rows41_80_independent_semantic_review_2026_10_11.json",
+    "sha256": "983fc66cd156c23b23f4b2689beff6754442a57b29ca7277727caef747594e26",
+    "prior_reader_sha256": "dfcabc6e7d1d62b14fce151b15fe2bb528f7a52147d824350531b4eb342ec5d9",
+    "schema_completion_explicit": true,
+    "semantic_decisions_changed": false
+  },
+  "application_template": {
+    "path": "data/audits/pulso_phase2_rows41_80_editorial_corrections_2026_10_11.json",
+    "sha256": "47c7d0594365cb8f62b84a876a32f0f83a00b7c76cad211db979d48509e2d26a"
+  },
+  "verdict": "PASS_SCOPED_ALL7_SCHEMA_REGISTRY_AND_IN_MEMORY_APPLICATION",
+  "validation": {
+    "exact4producerinputs": true,
+    "fullbody_signal_output_bindings_all7": true,
+    "separate_reader_binding": true,
+    "full_state_original_inputs_not_mutated": true,
+    "in_memory_application": {
+      "review_id": "pulso-phase2-rows41-80-independent-actual981-2026-10-11",
+      "review_sha256": "47c7d0594365cb8f62b84a876a32f0f83a00b7c76cad211db979d48509e2d26a",
+      "reviewed_count": 7,
+      "applied_count": 7,
+      "unchanged_on_replay": 0,
+      "decisions": {
+        "accept": 5,
+        "reject": 0,
+        "group": 0,
+        "correct": 2
+      },
+      "ai_calls": 0,
+      "primary_evidence_mutations": 0,
+      "queue_attempt_resets": 0
+    },
+    "idempotent_in_memory_reapplication": {
+      "review_id": "pulso-phase2-rows41-80-independent-actual981-2026-10-11",
+      "review_sha256": "47c7d0594365cb8f62b84a876a32f0f83a00b7c76cad211db979d48509e2d26a",
+      "reviewed_count": 7,
+      "applied_count": 0,
+      "unchanged_on_replay": 7,
+      "decisions": {
+        "accept": 5,
+        "reject": 0,
+        "group": 0,
+        "correct": 2
+      },
+      "ai_calls": 0,
+      "primary_evidence_mutations": 0,
+      "queue_attempt_resets": 0
+    },
+    "actual_registry_used_in_temporary_root": true,
+    "registry_registration_only_temporary": true,
+    "independent_QA_fullcontext_verified": 12,
+    "independent_QA_fullcontext_failures": [],
+    "independent_QA_exact_seven_verified": 7,
+    "independent_QA_exact_seven_failures": [],
+    "numeric_and_category_effective_history_queue_feed_explicitly_equal": true,
+    "all7_original_bodies_modeloutputs_scores_dates_status_attempts_unchanged": true
+  },
+  "reviewed_record_sha256_by_index": {
+    "42": "e33b6520c4891df4d4330b75d268c363f0732001e1d0b8a9598592992bc72888",
+    "45": "7a3178b652a080be02eb69ea7a50a054a404fd2d160d81a161bfdd4853105024",
+    "51": "5b6db131cc0d8eb69ffdf76d3e9dbeadd1da9150c0cde41e2facc2783434ddbb",
+    "52": "69f6dc76c1bf42aabf2d902e88d24423075178dfea5819d7e86418bb117817ca",
+    "55": "43b26c506aa9175be816aeeb1b43dae4bd616be2e0ff2b186720abacba4a7dae",
+    "63": "139c50028980c1a1cf38f384aa558d93b3a043c9cd0e8e8850e7bd0ae6202d88",
+    "75": "db2739ba94b9f9a62cb235f6898cce26409d396ffca337fa6c9e87d6318bb2b6"
+  },
+  "actual_state_writes": 0,
+  "AI_calls": 0,
+  "final_acceptance_claimed": false,
+  "limits": [
+    "Application and feed updates in this test are in memory only; no actual product correction has been applied by this reviewer.",
+    "The two original published findings remain pending real application and confirmation.",
+    "Temporary registry adds only the reviewed template; real registry is unchanged.",
+    "No source/QA logic was modified or replaced by this replay."
+  ],
+  "minimum_tests": {
+    "paths": [
+      "tests/test_pulso_additional_editorial_review_qa.py",
+      "tests/test_pulso_editorial_review.py"
+    ],
+    "passed": 95,
+    "failed": 0,
+    "seconds": 88.47
+  }
+}
