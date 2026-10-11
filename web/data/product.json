@@ -101,16 +101,16 @@
     },
     "achs_seguro_laboral": {
       "name": "Achs Seguro Laboral",
-      "checked_at": "2026-10-11T06:46:30.619331+00:00",
-      "last_signal_at": "2026-09-17",
+      "checked_at": "2026-10-11T07:05:40.693094+00:00",
+      "last_signal_at": "2026-09-24",
       "discovered": 23,
       "new": 0,
-      "published": 2,
+      "published": 3,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
-      "rejected": 21,
+      "rejected": 20,
       "status": "ok",
       "error": null,
       "technical_status": "ok",
@@ -136,7 +136,12 @@
           "excluded_role": 0,
           "pending": 0,
           "unknown_date_items": 0,
-          "complete": true
+          "complete": true,
+          "content_kinds": {
+            "news": 4,
+            "prevention": 4,
+            "study": 2
+          }
         },
         "90": {
           "start": "2026-07-13",
@@ -148,7 +153,12 @@
           "excluded_role": 2,
           "pending": 0,
           "unknown_date_items": 0,
-          "complete": true
+          "complete": true,
+          "content_kinds": {
+            "news": 14,
+            "prevention": 8,
+            "study": 3
+          }
         }
       },
       "unique_items": 23,
@@ -156,22 +166,28 @@
       "technical_failures": [],
       "coverage_completeness": true,
       "capture_environment": "github_actions",
-      "capture_run_id": "38119024441",
+      "capture_run_id": "38120060930",
       "count_basis": "unique source items in rolling 90 days; published includes previously reconciled items",
       "latest_detected_at": "2026-10-05",
       "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00",
-      "latest_capture_at": "2026-10-11T06:46:30.619331+00:00"
+      "latest_capture_at": "2026-10-11T07:05:40.693094+00:00",
+      "accepted_history": 3,
+      "feed_reconciliation": {
+        "published": 3,
+        "deferred": {},
+        "unrelated_signals_preserved": 50
+      }
     },
     "clinicas_achs_salud": {
       "name": "Achs Salud / Clínicas",
-      "checked_at": "2026-10-11T06:48:40.627834+00:00",
-      "last_signal_at": "2026-09-17",
+      "checked_at": "2026-10-11T07:07:53.290829+00:00",
+      "last_signal_at": null,
       "discovered": 13,
-      "new": 11,
-      "published": 2,
+      "new": 0,
+      "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
-      "pending": 27,
+      "pending": 25,
       "deferred": 0,
       "rejected": 16,
       "status": "warning",
@@ -275,41 +291,12 @@
         {
           "code": "publication_editorial_date_conflict",
           "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
-        },
-        {
-          "code": "clinic_detail_extraction_failed",
-          "url": "https://clinicaatacama.cl/telemedicina/",
-          "phase": "clinic_detail_extraction",
-          "type": "ValueError",
-          "detail": "Clinic detail extraction unverified: article:published_time; scope=missing_native_article_container"
-        },
-        {
-          "code": "clinic_pagination_gap_or_cycle",
-          "url": "https://clinicaloscoihues.cl/noticias?page=1"
-        },
-        {
-          "code": "clinic_detail_extraction_failed",
-          "url": "https://www.clinicasur.cl/nuevo-mamografo/",
-          "phase": "clinic_detail_extraction",
-          "type": "ValueError",
-          "detail": "Clinic detail extraction unverified: article:published_time; scope=wordpress:medicenter_post-content"
-        },
-        {
-          "code": "clinic_listing_detail_date_conflict",
-          "url": "https://www.clinicasur.cl/nuevo-mamografo/",
-          "listing_evidence": {
-            "kind": "rss:item.pubDate",
-            "url": "https://www.clinicasur.cl/feed/",
-            "document_url": "https://www.clinicasur.cl/nuevo-mamografo/",
-            "value": "Thu, 25 May 2023 15:35:54 +0000",
-            "date": "2023-05-25"
-          }
         }
       ],
       "technical_status": "partial",
       "coverage_status": "partial",
       "content_freshness": "unknown",
-      "editorial_outcome": "published",
+      "editorial_outcome": "rejected",
       "recovery_outcome": "OPERATIVE_DEGRADED",
       "coverage_window": {
         "convention": "rolling_elapsed_days_inclusive",
@@ -328,8 +315,13 @@
           "rejected": 3,
           "excluded_role": 10,
           "pending": 0,
-          "unknown_date_items": 27,
-          "complete": false
+          "unknown_date_items": 25,
+          "complete": false,
+          "content_kinds": {
+            "news": 6,
+            "prevention": 5,
+            "study": 2
+          }
         },
         "90": {
           "start": "2026-07-13",
@@ -340,8 +332,13 @@
           "rejected": 14,
           "excluded_role": 23,
           "pending": 0,
-          "unknown_date_items": 27,
-          "complete": false
+          "unknown_date_items": 25,
+          "complete": false,
+          "content_kinds": {
+            "news": 19,
+            "prevention": 8,
+            "study": 12
+          }
         }
       },
       "unique_items": 16,
@@ -446,51 +443,28 @@
         {
           "code": "publication_editorial_date_conflict",
           "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
-        },
-        {
-          "code": "clinic_detail_extraction_failed",
-          "url": "https://clinicaatacama.cl/telemedicina/",
-          "phase": "clinic_detail_extraction",
-          "type": "ValueError",
-          "detail": "Clinic detail extraction unverified: article:published_time; scope=missing_native_article_container"
-        },
-        {
-          "code": "clinic_pagination_gap_or_cycle",
-          "url": "https://clinicaloscoihues.cl/noticias?page=1"
-        },
-        {
-          "code": "clinic_detail_extraction_failed",
-          "url": "https://www.clinicasur.cl/nuevo-mamografo/",
-          "phase": "clinic_detail_extraction",
-          "type": "ValueError",
-          "detail": "Clinic detail extraction unverified: article:published_time; scope=wordpress:medicenter_post-content"
-        },
-        {
-          "code": "clinic_listing_detail_date_conflict",
-          "url": "https://www.clinicasur.cl/nuevo-mamografo/",
-          "listing_evidence": {
-            "kind": "rss:item.pubDate",
-            "url": "https://www.clinicasur.cl/feed/",
-            "document_url": "https://www.clinicasur.cl/nuevo-mamografo/",
-            "value": "Thu, 25 May 2023 15:35:54 +0000",
-            "date": "2023-05-25"
-          }
         }
       ],
       "coverage_completeness": false,
       "capture_environment": "github_actions",
-      "capture_run_id": "38119024441",
+      "capture_run_id": "38120060930",
       "count_basis": "unique source items in rolling 90 days; published includes previously reconciled items",
       "latest_detected_at": "2026-10-01",
       "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00",
-      "latest_capture_at": "2026-10-11T06:48:40.627834+00:00"
+      "latest_capture_at": "2026-10-11T07:07:53.290829+00:00",
+      "accepted_history": 0,
+      "feed_reconciliation": {
+        "published": 0,
+        "deferred": {},
+        "unrelated_signals_preserved": 53
+      }
     },
     "ist": {
       "name": "Instituto de Seguridad del Trabajo (IST)",
-      "checked_at": "2026-10-11T06:45:08.676202+00:00",
+      "checked_at": "2026-10-11T07:04:07.918745+00:00",
       "last_signal_at": null,
       "discovered": 20,
-      "new": 19,
+      "new": 0,
       "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
@@ -535,23 +509,32 @@
           "excluded_role": 0,
           "pending": 0,
           "unknown_date_items": 1,
-          "complete": false
+          "complete": false,
+          "content_kinds": {
+            "news": 4,
+            "prevention": 2
+          }
         },
         "90": {
           "start": "2026-07-13",
           "end": "2026-10-11",
           "dated_articles": 20,
           "expected_role": 20,
-          "candidates": 0,
-          "rejected": 20,
+          "candidates": 1,
+          "rejected": 19,
           "excluded_role": 0,
           "pending": 0,
           "unknown_date_items": 1,
-          "complete": false
+          "complete": false,
+          "content_kinds": {
+            "news": 11,
+            "prevention": 8,
+            "study": 1
+          }
         }
       },
       "unique_items": 20,
-      "material_items": 0,
+      "material_items": 1,
       "technical_failures": [
         {
           "code": "api_visible_publication_date_conflict",
@@ -568,15 +551,21 @@
       ],
       "coverage_completeness": false,
       "capture_environment": "github_actions",
-      "capture_run_id": "38119024441",
+      "capture_run_id": "38120060930",
       "count_basis": "unique source items in rolling 90 days; published includes previously reconciled items",
       "latest_detected_at": "2026-10-07",
       "oldest_capture_at": "2026-10-11T05:57:37.036246+00:00",
-      "latest_capture_at": "2026-10-11T06:45:08.676202+00:00"
+      "latest_capture_at": "2026-10-11T07:04:07.918745+00:00",
+      "accepted_history": 0,
+      "feed_reconciliation": {
+        "published": 0,
+        "deferred": {},
+        "unrelated_signals_preserved": 53
+      }
     },
     "mutual_seguridad": {
       "name": "Mutual de Seguridad CChC",
-      "checked_at": "2026-10-11T06:50:44.247862+00:00",
+      "checked_at": "2026-10-11T07:10:53.959318+00:00",
       "last_signal_at": "2026-08-27",
       "discovered": 51,
       "new": 0,
@@ -589,85 +578,85 @@
       "status": "warning",
       "error": [
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GH=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GH=/",
           "branch": "component-2",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GL=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GL=/",
           "branch": "component-3",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GP=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GP=/",
           "branch": "component-4",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GDB=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GDB=/",
           "branch": "component-5",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GNB=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GNB=/",
           "branch": "component-9",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GBC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GBC=/",
           "branch": "component-10",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GFC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GFC=/",
           "branch": "component-11",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GJC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GJC=/",
           "branch": "component-12",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GNC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GNC=/",
           "branch": "component-14",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GBD=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GBD=/",
           "branch": "component-15",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GFD=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GFD=/",
           "branch": "component-16",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GJD=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GJD=/",
           "branch": "component-18",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GND=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GND=/",
           "branch": "component-19",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GFE=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GFE=/",
           "branch": "component-21",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
@@ -695,7 +684,12 @@
           "pending": 0,
           "excluded_role": 0,
           "unknown_date_items": 0,
-          "complete": false
+          "complete": false,
+          "content_kinds": {
+            "prevention": 22,
+            "news": 10,
+            "study": 1
+          }
         },
         "90": {
           "start": "2026-07-13",
@@ -707,92 +701,98 @@
           "pending": 0,
           "excluded_role": 0,
           "unknown_date_items": 0,
-          "complete": false
+          "complete": false,
+          "content_kinds": {
+            "prevention": 36,
+            "news": 12,
+            "study": 1,
+            "commercial": 2
+          }
         }
       },
       "unique_items": 51,
       "material_items": 2,
       "technical_failures": [
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GH=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GH=/",
           "branch": "component-2",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GL=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GL=/",
           "branch": "component-3",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GP=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GP=/",
           "branch": "component-4",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GDB=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GDB=/",
           "branch": "component-5",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GNB=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GNB=/",
           "branch": "component-9",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GBC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GBC=/",
           "branch": "component-10",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GFC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GFC=/",
           "branch": "component-11",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GJC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GJC=/",
           "branch": "component-12",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GNC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GNC=/",
           "branch": "component-14",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GBD=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GBD=/",
           "branch": "component-15",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GFD=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GFD=/",
           "branch": "component-16",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GJD=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GJD=/",
           "branch": "component-18",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GND=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GND=/",
           "branch": "component-19",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
         },
         {
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKUhvSZA=GFE=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKwRLc8g=GFE=/",
           "branch": "component-21",
           "reason": "repeated_pagination_page",
           "code": "repeated_pagination_page"
@@ -800,11 +800,17 @@
       ],
       "coverage_completeness": false,
       "capture_environment": "github_actions",
-      "capture_run_id": "38119024441",
+      "capture_run_id": "38120060930",
       "count_basis": "unique source items in rolling 90 days; published includes previously reconciled items",
       "latest_detected_at": "2026-10-09",
       "oldest_capture_at": "2026-10-11T06:17:53.338527+00:00",
-      "latest_capture_at": "2026-10-11T06:50:44.247862+00:00"
+      "latest_capture_at": "2026-10-11T07:10:53.959318+00:00",
+      "accepted_history": 1,
+      "feed_reconciliation": {
+        "published": 1,
+        "deferred": {},
+        "unrelated_signals_preserved": 52
+      }
     }
   },
   "iterations": [],
@@ -1782,5 +1788,5 @@
     ],
     "next_action": "PMO baseline y panel: validar panel y estados contra el baseline en staging"
   },
-  "occupational_sources_checked_at": "2026-10-11T06:50:59.292258+00:00"
+  "occupational_sources_checked_at": "2026-10-11T07:10:59.717265+00:00"
 }
