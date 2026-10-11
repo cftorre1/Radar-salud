@@ -514,7 +514,7 @@
     },
     "fonasa_datos_abiertos": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-10-11T04:35:24.062882+00:00",
+      "checked_at": "2026-10-11T05:46:02.408506+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -536,31 +536,29 @@
             "type": "FonasaDiscoveryError"
           }
         ],
-        "failure_signature": "FonasaDiscoveryError > URLError:<urlopen error Tunnel connection failed: 403 Forbidden>; URLError:<urlopen error Tunnel connection failed: 403 Forbidden>; URLError:<urlopen error Tunnel connection failed: 403 Forbidden>; URLError:<urlopen error Tunnel connection failed: 403 Forbidden>",
+        "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
         "endpoint_failures": [
           {
             "url": "https://datosabiertos.fonasa.cl/noticias/",
-            "type": "URLError",
-            "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
           },
           {
             "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
-            "type": "URLError",
-            "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
           },
           {
             "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
-            "type": "URLError",
-            "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
           },
           {
             "url": "https://datosabiertos.fonasa.cl/analysis/",
-            "type": "URLError",
-            "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
           }
-        ],
-        "transport_stage": "proxy_connect_rejected",
-        "origin_tls_observed": false
+        ]
       },
       "discovery_diagnostics": {
         "surfaces": [
@@ -568,33 +566,33 @@
             "stage": "listing",
             "url": "https://datosabiertos.fonasa.cl/noticias/",
             "channel": "Noticias",
-            "exception": "URLError",
-            "message": "<urlopen error Tunnel connection failed: 403 Forbidden>",
-            "http_status": null
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
           },
           {
             "stage": "listing",
             "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
             "channel": "Biblioteca / Cuenta Pública",
-            "exception": "URLError",
-            "message": "<urlopen error Tunnel connection failed: 403 Forbidden>",
-            "http_status": null
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
           },
           {
             "stage": "listing",
             "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
             "channel": "Boletines estadísticos",
-            "exception": "URLError",
-            "message": "<urlopen error Tunnel connection failed: 403 Forbidden>",
-            "http_status": null
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
           },
           {
             "stage": "listing",
             "url": "https://datosabiertos.fonasa.cl/analysis/",
             "channel": "Análisis",
-            "exception": "URLError",
-            "message": "<urlopen error Tunnel connection failed: 403 Forbidden>",
-            "http_status": null
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
           }
         ],
         "partial_failure": true,
@@ -603,7 +601,15 @@
         "evidence_status": "capture_pending"
       },
       "engine_checked_at": "2026-10-11T04:31:45.196893+00:00",
-      "poll_mode": "discovery_and_document_verification_only"
+      "poll_mode": "discovery_and_document_verification_only",
+      "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "runtime_environment": "github_actions",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115490854",
+      "runtime_commit": "52acee50dceff03dc3c26a66ec44588ccc84ac79",
+      "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/fonasa_datos_abiertos-checkpoint.json",
+      "blocking_component": "Frontal público HTTP AWS ALB (Server awselb/2.0), tras TLS verificado, responde403 sin challenge WAF identificado. La regla causante y su dueño interno no son observables.",
+      "minimum_human_step": "Administrador web FONASA: habilitar acceso HTTPS autorizado desde GitHub al hub datosabiertos.fonasa.cl y documentos fonasaweb.fonasa.cl, o proporcionar export oficial actual con fecha editorial/publicación y enlaces de recurso verificables; confirmar rutas vigentes de Noticias, Biblioteca/Cuenta Pública, Boletines y Análisis. El catálogo nacional disponible es histórico.",
+      "coverage_complete": false
     },
     "suseso_news": {
       "name": "Suseso News",

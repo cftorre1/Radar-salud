@@ -1,0 +1,726 @@
+{
+  "source": "fonasa_datos_abiertos",
+  "outcome": "EXTERNAL_BLOCKER_PROVEN",
+  "captured_at": "2026-10-11T05:40:33.757459+00:00",
+  "official_endpoint": "https://datosabiertos.fonasa.cl/",
+  "official_identity_evidence": {
+    "url": "https://datosabiertos.fonasa.cl/",
+    "kind": "official FONASA subdomain plus contemporary references and official publisher registry",
+    "live_listing_body_verified": false,
+    "note": "La identidad oficial y superficie se contrastaron por navegación; el cuerpo vivo no es verificable bajo el fallo de acceso. No se afirma funcionamiento de una ruta histórica."
+  },
+  "codex": {
+    "evidence": "codex-current-transport.json",
+    "probes": [
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:13.028185+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/noticias/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:13.029551+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:13.030831+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:13.032247+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/analysis/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:18.040772+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/wp-json/wp/v2/posts?per_page=5",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:18.044296+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://www.fonasa.cl/sites/fonasa/datos-abiertos",
+        "host": "www.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:18.047019+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/feed/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:23.054282+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://www.datosabiertos.fonasa.cl/",
+        "host": "www.datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:23.055846+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://fonasaweb.fonasa.cl/Trans_Docs/2022/04/Otros/Cuenta%20Publica/2020.pdf",
+        "host": "fonasaweb.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:23.057816+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://fonasaweb.fonasa.cl/Trans_Docs/2025/03/NCENTRAL/NC_17_032025.pdf",
+        "host": "fonasaweb.fonasa.cl",
+        "captured_at": "2026-10-11T05:56:23.059135+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datos.gob.cl/organization/fondo_nacional_de_salud",
+        "host": "datos.gob.cl",
+        "captured_at": "2026-10-11T05:56:23.060744+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datos.gob.cl/organization/fondo_nacional_de_salud?page=2",
+        "host": "datos.gob.cl",
+        "captured_at": "2026-10-11T05:56:23.062376+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datos.gob.cl/dataset/2095",
+        "host": "datos.gob.cl",
+        "captured_at": "2026-10-11T05:56:28.080582+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datos.gob.cl/api/3/action/package_search?q=fonasa",
+        "host": "datos.gob.cl",
+        "captured_at": "2026-10-11T05:56:28.080701+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "proxy_connect",
+        "error_type": "URLError",
+        "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+      }
+    ],
+    "stage": "proxy_connect",
+    "origin_tls_observed": false
+  },
+  "github_actions": {
+    "run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115282340",
+    "commit": "dbdea875dff9177ccaa9ba4efa8cf41b81ef9ba3",
+    "proxy_configured": false,
+    "probes": [
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.009859+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "100.62.159.84",
+            "34.229.2.249"
+          ]
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "final_url": "https://datosabiertos.fonasa.cl/",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:38:21 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/noticias/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.150239+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "100.62.159.84",
+            "34.229.2.249"
+          ]
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "final_url": "https://datosabiertos.fonasa.cl/noticias/",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:38:21 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.157800+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "100.62.159.84",
+            "34.229.2.249"
+          ]
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "final_url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:38:21 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.241594+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "100.62.159.84",
+            "34.229.2.249"
+          ]
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "final_url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:38:21 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/analysis/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.297686+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "100.62.159.84",
+            "34.229.2.249"
+          ]
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "final_url": "https://datosabiertos.fonasa.cl/analysis/",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:38:21 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/wp-json/wp/v2/posts?per_page=5",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.299578+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "100.62.159.84",
+            "34.229.2.249"
+          ]
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "final_url": "https://datosabiertos.fonasa.cl/wp-json/wp/v2/posts?per_page=5",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:38:21 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://www.fonasa.cl/sites/fonasa/datos-abiertos",
+        "host": "www.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.301504+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "100.63.150.33",
+            "44.219.111.58"
+          ]
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "final_url": "https://www.fonasa.cl/sites/fonasa/datos-abiertos",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:38:21 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/feed/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.346878+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "100.62.159.84",
+            "34.229.2.249"
+          ]
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "final_url": "https://datosabiertos.fonasa.cl/feed/",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:38:21 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://www.datosabiertos.fonasa.cl/",
+        "host": "www.datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.347248+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": null,
+        "origin_tls_observed": false,
+        "dns": {
+          "error": "[Errno -2] Name or service not known"
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "outcome": "dns",
+        "error_type": "URLError",
+        "error": "<urlopen error [Errno -2] Name or service not known>"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://fonasaweb.fonasa.cl/Trans_Docs/2022/04/Otros/Cuenta%20Publica/2020.pdf",
+        "host": "fonasaweb.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.369504+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "166.117.237.103",
+            "166.117.45.213"
+          ]
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "final_url": "https://fonasaweb.fonasa.cl/Trans_Docs/2022/04/Otros/Cuenta%20Publica/2020.pdf",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:38:21 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      },
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://fonasaweb.fonasa.cl/Trans_Docs/2025/03/NCENTRAL/NC_17_032025.pdf",
+        "host": "fonasaweb.fonasa.cl",
+        "captured_at": "2026-10-11T05:38:21.475198+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "166.117.237.103",
+            "166.117.45.213"
+          ]
+        },
+        "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+        "final_url": "https://fonasaweb.fonasa.cl/Trans_Docs/2025/03/NCENTRAL/NC_17_032025.pdf",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:38:21 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      }
+    ],
+    "tls_diagnostics": [
+      {
+        "host": "datosabiertos.fonasa.cl",
+        "tcp": "connected",
+        "tls": "verified",
+        "captured_at": "2026-10-11T05:40:11.993492+00:00",
+        "tls_version": "TLSv1.3"
+      },
+      {
+        "host": "fonasa.cl",
+        "tcp": "connected",
+        "tls": "verified",
+        "captured_at": "2026-10-11T05:40:11.994134+00:00",
+        "tls_version": "TLSv1.3"
+      },
+      {
+        "host": "fonasa.gob.cl",
+        "tcp": "not_attempted",
+        "tls": "not_attempted",
+        "captured_at": "2026-10-11T05:40:11.994508+00:00",
+        "error_type": "gaierror",
+        "error": "[Errno -5] No address associated with hostname",
+        "failed_stage": "tcp"
+      },
+      {
+        "host": "fonasaweb.fonasa.cl",
+        "tcp": "connected",
+        "tls": "verified",
+        "captured_at": "2026-10-11T05:40:11.994895+00:00",
+        "tls_version": "TLSv1.3"
+      },
+      {
+        "host": "nuevo.fonasa.gob.cl",
+        "tcp": "connected",
+        "tls": "verified",
+        "captured_at": "2026-10-11T05:40:12.042580+00:00",
+        "tls_version": "TLSv1.3"
+      },
+      {
+        "host": "www.datosabiertos.fonasa.cl",
+        "tcp": "not_attempted",
+        "tls": "not_attempted",
+        "captured_at": "2026-10-11T05:40:12.153987+00:00",
+        "error_type": "gaierror",
+        "error": "[Errno -2] Name or service not known",
+        "failed_stage": "tcp"
+      },
+      {
+        "host": "www.fonasa.cl",
+        "tcp": "connected",
+        "tls": "verified",
+        "captured_at": "2026-10-11T05:40:12.162105+00:00",
+        "tls_version": "TLSv1.3"
+      },
+      {
+        "host": "www.fonasa.gob.cl",
+        "tcp": "connected",
+        "tls": "verified",
+        "captured_at": "2026-10-11T05:40:12.319980+00:00",
+        "tls_version": "TLSv1.3"
+      }
+    ],
+    "browser_user_agent_retries": [
+      {
+        "source": "fonasa_datos_abiertos",
+        "url": "https://datosabiertos.fonasa.cl/",
+        "host": "datosabiertos.fonasa.cl",
+        "captured_at": "2026-10-11T05:39:53.832112+00:00",
+        "method": "GET",
+        "redirects": [],
+        "http_status": 403,
+        "origin_tls_observed": true,
+        "dns": {
+          "addresses": [
+            "100.62.159.84",
+            "34.229.2.249"
+          ]
+        },
+        "user_agent": "Mozilla/5.0",
+        "final_url": "https://datosabiertos.fonasa.cl/",
+        "headers": {
+          "Server": "awselb/2.0",
+          "Date": "Sun, 11 Oct 2026 05:39:54 GMT",
+          "Content-Type": "text/html",
+          "Content-Length": "118"
+        },
+        "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+        "bytes": 118,
+        "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+        "waf_challenge": false,
+        "outcome": "http"
+      }
+    ]
+  },
+  "blocking_component": "Frontal público HTTP AWS ALB (Server awselb/2.0), tras TLS verificado, responde403 sin challenge WAF identificado. La regla causante y su dueño interno no son observables.",
+  "responsible_owner": "FONASA web/infraestructura",
+  "minimum_human_step": "Administrador web FONASA: habilitar acceso HTTPS autorizado desde GitHub al hub datosabiertos.fonasa.cl y documentos fonasaweb.fonasa.cl, o proporcionar export oficial actual con fecha editorial/publicación y enlaces de recurso verificables; confirmar rutas vigentes de Noticias, Biblioteca/Cuenta Pública, Boletines y Análisis. El catálogo nacional disponible es histórico.",
+  "alternatives_evaluated": [
+    "https://datosabiertos.fonasa.cl/",
+    "https://datosabiertos.fonasa.cl/noticias/",
+    "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+    "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+    "https://datosabiertos.fonasa.cl/analysis/",
+    "https://datosabiertos.fonasa.cl/wp-json/wp/v2/posts?per_page=5",
+    "https://www.fonasa.cl/sites/fonasa/datos-abiertos",
+    "https://datosabiertos.fonasa.cl/feed/",
+    "https://www.datosabiertos.fonasa.cl/",
+    "https://fonasaweb.fonasa.cl/Trans_Docs/2022/04/Otros/Cuenta%20Publica/2020.pdf",
+    "https://fonasaweb.fonasa.cl/Trans_Docs/2025/03/NCENTRAL/NC_17_032025.pdf",
+    "https://datos.gob.cl/organization/fondo_nacional_de_salud",
+    "https://datos.gob.cl/organization/fondo_nacional_de_salud?page=2",
+    "https://datos.gob.cl/dataset/2095",
+    "https://datos.gob.cl/api/3/action/package_search?q=fonasa",
+    "https://datos.gob.cl/api/3/action/package_search?q=fonasa&rows=100"
+  ],
+  "inventory_30_90": {
+    "status": "unverifiable_due_to_primary_access_blocker",
+    "counts_30": null,
+    "counts_90": null,
+    "zero_is_not_asserted": true,
+    "candidate_observations": []
+  },
+  "alicanto": {
+    "detected": 0,
+    "pending": 0,
+    "rejected": 0,
+    "published": 0,
+    "omissions": "Cantidad total desconocida; candidatos indexados quedan trazados sin inventar publicación ni cola.",
+    "baseline_evidence": "stock-baseline.json",
+    "alternative_catalog_detected": 14,
+    "alternative_records_feed_eligible": 0,
+    "alternative_records_rejected_from_feed_reason": "historical_catalog_metadata_not_recent_material_publication"
+  },
+  "repair": "Newsroom y cuatro hubs conservan scouts separados. Catálogo nacional completo y PDF oficiales de GRD evaluados; registros históricos y referencias sin fecha no se publican como novedad.",
+  "next_action": "Administrador web FONASA: habilitar acceso HTTPS autorizado desde GitHub al hub datosabiertos.fonasa.cl y documentos fonasaweb.fonasa.cl, o proporcionar export oficial actual con fecha editorial/publicación y enlaces de recurso verificables; confirmar rutas vigentes de Noticias, Biblioteca/Cuenta Pública, Boletines y Análisis. El catálogo nacional disponible es histórico.",
+  "alternative_evidence": [
+    "fonasa-national-catalog.json",
+    "fonasa-financing-alternatives.json"
+  ]
+}
