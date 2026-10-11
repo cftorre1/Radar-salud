@@ -1,0 +1,87 @@
+{
+  "reviewer": "independent_adversarial_subagent",
+  "verdict": "EXPECTATIONS_ONLY_NOT_PASS",
+  "control_path": "/workspace/work/pulso-external-control.json",
+  "control_size": 200,
+  "complete_windows": {
+    "30": {
+      "start": "2026-09-11",
+      "end": "2026-10-10",
+      "primary_control_expected": 29
+    },
+    "90": {
+      "start": "2026-07-13",
+      "end": "2026-10-10",
+      "primary_control_expected": 79
+    }
+  },
+  "current_day_slice": "2026-10-11; excluded from completed-window denominators",
+  "mandatory_omission_regression_controls": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+      "title": "Kast anuncia uso de inteligencia artificial en Salud para priorizar atención de pacientes de mayor gravedad",
+      "publication_date": "2026-10-01",
+      "recall_cohort": "reported_sector"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "title": "“Todas somos vulnerables”: Minsal refuerza el llamado a la detección precoz del cáncer de mama para un tratamiento oportuno",
+      "publication_date": "2026-10-05",
+      "recall_cohort": "reported_sector"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+      "title": "Médicos sin vínculo con Hospital de Talagante emitieron 1.045 recetas por fentanilo y otros fármacos controlados",
+      "publication_date": "2026-10-08",
+      "recall_cohort": "reported_sector"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/uc-christus-san-carlos-de-apoquindo-suspende-atencion-de-urgencia-y-consultas-medicas-tras-verse-afectada-por-aluvion/",
+      "title": "UC Christus San Carlos de Apoquindo suspende atención de urgencia y consultas médicas tras verse afectada por aluvión",
+      "publication_date": "2026-10-08",
+      "recall_cohort": "reported_sector"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/salud-garantiza-seguridad-de-agua-potable-en-la-rm-y-anuncia-vacunacion-contra-la-hepatitis-y-tetanos-en-las-condes/",
+      "title": "Salud garantiza seguridad de agua potable en la RM y anuncia vacunación contra la hepatitis y tétanos en Las Condes",
+      "publication_date": "2026-10-09",
+      "recall_cohort": "public_health_network"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "title": "Clínica UC Christus de San Carlos de Apoquindo termina traslado de pacientes ante suspensión de operaciones por aluvión",
+      "publication_date": "2026-10-10",
+      "recall_cohort": "reported_sector"
+    }
+  ],
+  "runtime_requirements": [
+    "core_source_present=true; runtime=daily_core; selected_sources includes only pulso_latercera in isolated capture",
+    "execution.engine_called/completed=true; discovery_run_at>=current execution start",
+    "current core source_details discovered records establish numerator, not baseline queue/history/manual control injection",
+    "runtime_coverage includes all required frontend section/tag traversals and each complete boundary; complementary capped sitemap does not masquerade as90",
+    "Original article metadata/canonical/byline/body binds publication date; positive discovered rows article_verified=true with primary detail hash and captured_at",
+    "Primary control recall target >=95% for30/90 with every miss explained; all known omission-regression controls above discovered or genuine detail failure documented",
+    "Date conflicts reported, resolved before coverage acceptance; pubDate/first_publish_date/lastmod remain inventory corroboration only",
+    "Source queue canonical URL uniqueness; rehydration preserves detected_at/lane/attempt count/retry status and terminal identities",
+    "Discovery-only run has editorial gate unknown and exact explicit_discovery_only outcomes; cannot establish end-to-end acceptance",
+    "Real processing run retains exact gate threshold72 and score/analysis_reason/publication_ready reason; no numeric/quality threshold reduction",
+    "Recent material signals have attributable media_reported history and actual curator feed presence; no publication quota",
+    "Every rejected/deferred/pending row has observed exact reason; no generic all-purpose pending explanation or invented gate decision",
+    "Incremental review resolves known budget/membership holds; preserve event versus publication chronology (senior housing FNEAug5 vs reportOct10)",
+    "Recent history/feed exclusions require precise curator reason or unresolved flag; published queue without history is consistency failure",
+    "Captured raw original HTML/JSON/XML bytes retained for positives/control/errors with matching SHA and gzip metadata; cached positives may use prior durable capture provenance",
+    "Other source queue records unchanged",
+    "Final SHA tests and Reviewer distinguish source-code QA from genuine source/editorial runtime acceptance"
+  ],
+  "code_review_checkpoint": {
+    "20d394c": "public ANS data envelope matches recorded frontend payload; direct/list schemas fail closed",
+    "b261818": "pending reasons derive from observed attempt deltas and read-only model capacity; no gate pass inferred"
+  },
+  "remaining_review_questions": [
+    "all required feeds reach true90-day boundary without page cap/timeouts",
+    "external control omitted URL reasons correspond original details",
+    "Publisher byline drift corrected rather than hidden",
+    "recent material publisher reports processed through real LLM without mocks",
+    "final QA and source semantics on final SHA"
+  ]
+}
