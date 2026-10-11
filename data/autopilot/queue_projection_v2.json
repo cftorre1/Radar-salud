@@ -6,13 +6,13 @@
     "queue_blob_sha": "839728922ad473867429ff96f3ff2ebbdf001b4b",
     "queue_sha256": "d6d1338359a937d45015cfa88a7f1da88cd262f311bfcf37391f400348ee088f",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_control_sha256": "eebc4e606fec659c9e93c97353a63c1420c6ee662d6a2472fa4b3ecd94333a6a",
-    "state_sha": "c58db62d76b5793e8e07280c030d3a25f139d6df"
+    "state_control_sha256": "f706915c6d94be097efd1b1abbe21319102f073f39e795aa49f1a6e4e583436a",
+    "state_sha": "057f29979d0dd5ec0690de315349754f5b2eb5c2"
   },
   "canonical_queue_updated": false,
   "derived_runtime_tasks": [
     {
-      "attempts": 3,
+      "attempts": 4,
       "blocker_evidence_count": 1,
       "blocker_fingerprint": "bf7c16dcf9fbbb751840c43b368c1af73694cc230014e680157aba2988b69aae",
       "candidate_review": {
@@ -30,7 +30,7 @@
       "failure_signature": null,
       "failure_verified": false,
       "family": "editorial",
-      "fence": 8,
+      "fence": 9,
       "input_fingerprint": "29f1fa2d39f3f121abe5d8af7645c88dfadde3b584dfdf1ac703ad31ea55aa06",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_ready_at": "2026-10-11T07:04:08.198661Z",
@@ -47,8 +47,8 @@
       "raw_material_progress_at": "2026-10-11T05:49:10.476041Z",
       "reason": "no_material_progress_30m",
       "recovery_episode": "497f84b95210cad1fc3b8025fc4af58cbf98f5c9216f203dda5164f67a943b8c",
-      "recovery_reclaims": 1,
-      "status": "STALLED",
+      "recovery_reclaims": 2,
+      "status": "BLOCKED",
       "task_id": "editorial_repair_lane_2026_10_11"
     },
     {
@@ -92,7 +92,7 @@
       "task_id": "staging_qa_failed_run_38113830124"
     },
     {
-      "attempts": 2,
+      "attempts": 3,
       "blocker_evidence_count": 5,
       "blocker_fingerprint": "8537acd6dda5f3043034a5aac971fd4794e0e0e0b8b8f68b997553ac17d32ede",
       "candidate_review": {
@@ -110,34 +110,34 @@
       "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
       "failure_verified": true,
       "family": "staging_qa",
-      "fence": 5,
+      "fence": 6,
       "input_fingerprint": "b4bf579f780e291cef38328053a2795414830b7441956b8d66ac98ef7bc734db",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_ready_at": "2026-10-11T07:04:08.198661Z",
       "lease": {
-        "claimed_at": null,
-        "expires_at": null,
-        "fence": null,
-        "heartbeat_at": null,
-        "owner": null,
-        "recovery_deadline_at": null,
-        "token_sha256": null
+        "claimed_at": "2026-10-11T07:05:00.589490Z",
+        "expires_at": "2026-10-11T07:15:00.589490Z",
+        "fence": 6,
+        "heartbeat_at": "2026-10-11T07:05:00.589490Z",
+        "owner": "38120110728-1-staging_qa",
+        "recovery_deadline_at": "2026-10-11T07:15:00.589490Z",
+        "token_sha256": "0d980c6b4c40ee2e602586ce94953080614a06bddae2997b6fb4c5189d040358"
       },
       "material_progress_at": "2026-10-11T06:27:55.036024Z",
       "raw_material_progress_at": "2026-10-11T06:27:55.036024Z",
       "reason": "no_material_progress_30m",
       "recovery_episode": "6bf8b7ef653aff856c6c1cfa525622b32aa6061219b666b4905b65fc97cee361",
-      "recovery_reclaims": 0,
-      "status": "STALLED",
+      "recovery_reclaims": 1,
+      "status": "RUNNING",
       "task_id": "staging_qa_failed_run_38116961282"
     }
   ],
   "kind": "queue_runtime_projection",
   "observation": {
-    "path": "data/autopilot/evidence/observation-c624562a3e3e4c21b31e5b23018f259c.json",
-    "sha256": "aa20ba5d09ac9ece778c105434bfa4cef404db023c6e965abc8736b8de38aafe",
+    "path": "data/autopilot/evidence/observation-92b5ffa89a894b30ac65d98f018a2fea.json",
+    "sha256": "5fbd3671119c109ec87cd390dc52d7351322f945de30545e94db15c279f6de5e",
     "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_sha": "c58db62d76b5793e8e07280c030d3a25f139d6df"
+    "state_sha": "057f29979d0dd5ec0690de315349754f5b2eb5c2"
   },
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
@@ -1419,9 +1419,9 @@
       "owner": "Pele + Media Source Worker",
       "queue_status": "in_progress",
       "runtime": {
-        "attempts": 3,
+        "attempts": 4,
         "blocker_evidence_count": 4,
-        "blocker_fingerprint": "139762a29e92c14aa48ea33bdf7e806ef0796c465cb586e5c878fe7c78e59e86",
+        "blocker_fingerprint": "1b25c133efaaf486138744e45870663d02158a3ba6bd806c37a8bd59d9c47d67",
         "candidate_review": {
           "candidate_branch": null,
           "candidate_commit": null,
@@ -1437,7 +1437,7 @@
         "failure_signature": null,
         "failure_verified": false,
         "family": "media",
-        "fence": 8,
+        "fence": 9,
         "input_fingerprint": "7354e00ca263da10d601f510f52b0b047e8bd3d6e7fccbd1a6f169dd7226bc4a",
         "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
         "last_ready_at": "2026-10-11T07:04:08.198661Z",
@@ -1454,8 +1454,8 @@
         "raw_material_progress_at": "2026-10-11T06:27:57.119852Z",
         "reason": "no_material_progress_30m",
         "recovery_episode": "0017e57e0e30827958cdff70f89549369ea7e33493e5f480813e56caff4414c9",
-        "recovery_reclaims": 0,
-        "status": "STALLED",
+        "recovery_reclaims": 1,
+        "status": "BLOCKED",
         "task_id": "source_repair_media_lane_2026_10_11"
       },
       "task_id": "source_repair_media_lane_2026_10_11"
@@ -1467,7 +1467,7 @@
       "owner": "Pele + Public Data Worker",
       "queue_status": "in_progress",
       "runtime": {
-        "attempts": 3,
+        "attempts": 4,
         "blocker_evidence_count": 16,
         "blocker_fingerprint": "f31d7c8628bd916aefcb7e32483b052bc54bd3fe66affdcbee7421b52ef036c7",
         "candidate_review": {
@@ -1485,25 +1485,25 @@
         "failure_signature": "17745ae2b3a25337b03f94a2a71b1337eeda0719b240300a9c77ce419ff5f40f",
         "failure_verified": true,
         "family": "public_data",
-        "fence": 8,
+        "fence": 9,
         "input_fingerprint": "48c9b85a02fe3e3a5bf54fb2a121a2b98f24a8b3e4335bf1551a4358cf04decd",
         "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
         "last_ready_at": "2026-10-11T07:04:08.198661Z",
         "lease": {
-          "claimed_at": null,
-          "expires_at": null,
-          "fence": null,
-          "heartbeat_at": null,
-          "owner": null,
-          "recovery_deadline_at": null,
-          "token_sha256": null
+          "claimed_at": "2026-10-11T07:04:59.263384Z",
+          "expires_at": "2026-10-11T07:14:59.263384Z",
+          "fence": 9,
+          "heartbeat_at": "2026-10-11T07:04:59.263384Z",
+          "owner": "38120110728-1-public_data",
+          "recovery_deadline_at": "2026-10-11T07:14:59.263384Z",
+          "token_sha256": "238bdeba4d777cf11afc2700ee0efeda660a7bc76d29b2e05965224fdc7a3474"
         },
         "material_progress_at": "2026-10-11T06:26:34.167333Z",
         "raw_material_progress_at": "2026-10-11T06:29:06.639025Z",
         "reason": "no_material_progress_30m",
         "recovery_episode": "3a4ef577818f50ca8e8e5c7260aee57d3d7ba53ec13e378a991fc8f242d474fb",
-        "recovery_reclaims": 0,
-        "status": "STALLED",
+        "recovery_reclaims": 1,
+        "status": "RUNNING",
         "task_id": "source_repair_public_data_lane_2026_10_11"
       },
       "task_id": "source_repair_public_data_lane_2026_10_11"
@@ -1515,9 +1515,9 @@
       "owner": "Pele + Regulatory Worker",
       "queue_status": "in_progress",
       "runtime": {
-        "attempts": 3,
+        "attempts": 4,
         "blocker_evidence_count": 4,
-        "blocker_fingerprint": "b0766ac50c0e2f422659889d1da4ba67b470924dbb7a5bd864f6cd6fd1bf5e17",
+        "blocker_fingerprint": "73b2e6a31c9f0bd3a35ba8d77ca9bf969671d3f1d9ccfb5d75c83fa940c1ddb5",
         "candidate_review": {
           "candidate_branch": null,
           "candidate_commit": null,
@@ -1528,12 +1528,12 @@
           "superseded": null
         },
         "candidate_reviews": {},
-        "canonical_material_progress_at": "2026-10-11T06:26:31.126468Z",
+        "canonical_material_progress_at": "2026-10-11T07:04:51.811962Z",
         "evidence_revision": "2c92af3b8a8b8319366d819aa4f039a6c8016ccdf6e7ef4d2139a03dc289e8ae",
         "failure_signature": "63bd80fe6868312bdb1eab311620090fb6334bb22f65a03cda132a932b4e4563",
         "failure_verified": false,
         "family": "fiscalization",
-        "fence": 8,
+        "fence": 9,
         "input_fingerprint": "d19a7836f9014b21c5256f4844a82116e02c63e25eee7a8cb4a2f16a0444005b",
         "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
         "last_ready_at": "2026-10-11T07:04:08.198661Z",
@@ -1546,12 +1546,12 @@
           "recovery_deadline_at": null,
           "token_sha256": null
         },
-        "material_progress_at": "2026-10-11T06:26:31.126468Z",
-        "raw_material_progress_at": "2026-10-11T06:27:27.933100Z",
+        "material_progress_at": "2026-10-11T07:04:51.811962Z",
+        "raw_material_progress_at": "2026-10-11T07:04:51.811962Z",
         "reason": "no_material_progress_30m",
-        "recovery_episode": "92c75a257f55b79369a5f6c9a3d66c1f68f1469becfa2f879014e33f3413460e",
+        "recovery_episode": "62c4fcb1d589045b89d9344288f50765127eeb54d3eae138064e9af04259c01e",
         "recovery_reclaims": 0,
-        "status": "STALLED",
+        "status": "BLOCKED",
         "task_id": "source_repair_fiscalization_lane_2026_10_11"
       },
       "task_id": "source_repair_fiscalization_lane_2026_10_11"
@@ -1563,7 +1563,7 @@
       "owner": "Pele + Occupational Health Worker",
       "queue_status": "in_progress",
       "runtime": {
-        "attempts": 3,
+        "attempts": 4,
         "blocker_evidence_count": 10,
         "blocker_fingerprint": "c9f403304c18cd3f027043db67f2d1783a4b3cde2b27f592bf044c55993e4f4c",
         "candidate_review": {
@@ -1581,25 +1581,25 @@
         "failure_signature": "72996ac38587716785fbb2512ec610775123f89cd0f6d40aea1f479e890d0a5f",
         "failure_verified": true,
         "family": "mutualities",
-        "fence": 8,
+        "fence": 9,
         "input_fingerprint": "3485de6466047fbec14ad8df47b472e3199abfe724a48727ddddfc728cab15eb",
         "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
         "last_ready_at": "2026-10-11T07:04:08.198661Z",
         "lease": {
-          "claimed_at": null,
-          "expires_at": null,
-          "fence": null,
-          "heartbeat_at": null,
-          "owner": null,
-          "recovery_deadline_at": null,
-          "token_sha256": null
+          "claimed_at": "2026-10-11T07:04:56.960108Z",
+          "expires_at": "2026-10-11T07:14:56.960108Z",
+          "fence": 9,
+          "heartbeat_at": "2026-10-11T07:04:56.960108Z",
+          "owner": "38120110728-1-mutualities",
+          "recovery_deadline_at": "2026-10-11T07:14:56.960108Z",
+          "token_sha256": "193d138a07d6a5790d831b601b090ae8df3a1edea517053eb8ad8b3d4cb3425a"
         },
         "material_progress_at": "2026-10-11T05:50:36.986244Z",
         "raw_material_progress_at": "2026-10-11T06:27:48.472273Z",
         "reason": "no_material_progress_30m",
         "recovery_episode": "99495489654606fbc8c19c3a3eb94f649720bddbcd40f83d20b46a56b9baea90",
-        "recovery_reclaims": 0,
-        "status": "STALLED",
+        "recovery_reclaims": 1,
+        "status": "RUNNING",
         "task_id": "source_repair_mutualities_lane_2026_10_11"
       },
       "task_id": "source_repair_mutualities_lane_2026_10_11"
