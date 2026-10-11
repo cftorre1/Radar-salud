@@ -34,6 +34,7 @@ CHANNELS = {
     ],
 }
 UAS = ["RadarSaludBot/0.1 (+public-source-monitor)",
+       "RadarSaludBot/0.3 (+public-source-monitor)",
        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36"]
 
 
