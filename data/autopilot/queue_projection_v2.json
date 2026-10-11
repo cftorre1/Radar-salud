@@ -6,8 +6,8 @@
     "queue_blob_sha": "1f2c408f62163fe9060bbdb2aa1e09a083d616d8",
     "queue_sha256": "08d0b5506d8ff5711ece644f0e2d57602ad77cd6125a4ced50652cd58ba7d174",
     "staging_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
-    "state_control_sha256": "adf0559213aa41b44c0c2cb210113aae29f06a2814f23122628f17031c655142",
-    "state_sha": "5cede1db0741cc68a9ff4d1dc113ce39a5ea69ec"
+    "state_control_sha256": "ce3aeb7c7a29e05ece02918e5e9c31ab200140f9860e008b0be5b98d67d9a373",
+    "state_sha": "2a5135b6892d789710ea6d8e5cc1c0bfd69b1f72"
   },
   "canonical_queue_updated": false,
   "derived_runtime_tasks": [
@@ -254,10 +254,10 @@
   ],
   "kind": "queue_runtime_projection",
   "observation": {
-    "path": "data/autopilot/evidence/observation-de20757358f741bb972330738221fbec.json",
-    "sha256": "6c7498726ae562ee166f0a1c5114b51aa1e3d0a7bfcd254dc9e22bb865d6b232",
+    "path": "data/autopilot/evidence/observation-dc6a821e68f44498a7c31ef0acfc061a.json",
+    "sha256": "77697ff36c098f4f19598285eb14aed55b723ad1fafc162fca3dc5983de91580",
     "staging_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
-    "state_sha": "5cede1db0741cc68a9ff4d1dc113ce39a5ea69ec"
+    "state_sha": "2a5135b6892d789710ea6d8e5cc1c0bfd69b1f72"
   },
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
@@ -1683,7 +1683,7 @@
       "owner": "Pele + Occupational Health Worker",
       "queue_status": "in_progress",
       "runtime": {
-        "attempts": 5,
+        "attempts": 6,
         "blocker_evidence_count": 10,
         "blocker_fingerprint": "6c11f6974cd4912ae9e3f59d1a9576236bbc8d7e71e6660877fb385cebd7330d",
         "candidate_review": {
@@ -1701,25 +1701,25 @@
         "failure_signature": "2e1711ae92e4fa6ad4208c85a0931a781a450d387b26709550de273b401d909a",
         "failure_verified": true,
         "family": "mutualities",
-        "fence": 13,
+        "fence": 14,
         "input_fingerprint": "f43e9ca087fa0107f9c6e882ad625863fbf5c53d3f161d1ddde6e7d9aecf598e",
-        "input_sha": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "input_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
         "last_ready_at": "2026-10-11T15:07:18.917675Z",
         "lease": {
-          "claimed_at": null,
-          "expires_at": null,
-          "fence": null,
-          "heartbeat_at": null,
-          "owner": null,
-          "recovery_deadline_at": null,
-          "token_sha256": null
+          "claimed_at": "2026-10-11T15:20:40.898753Z",
+          "expires_at": "2026-10-11T15:30:40.898753Z",
+          "fence": 14,
+          "heartbeat_at": "2026-10-11T15:23:58.924021Z",
+          "owner": "38150765510-1-mutualities",
+          "recovery_deadline_at": "2026-10-11T15:30:40.898753Z",
+          "token_sha256": "2cd1c13926f268670a9a84b4254b2d1cebefa219f700be8df8a9a05e0df1f8c6"
         },
         "material_progress_at": "2026-10-11T07:06:00.551910Z",
         "raw_material_progress_at": "2026-10-11T07:06:00.551910Z",
         "reason": "no_material_progress_30m",
         "recovery_episode": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
-        "recovery_reclaims": 1,
-        "status": "STALLED",
+        "recovery_reclaims": 2,
+        "status": "RUNNING",
         "task_id": "source_repair_mutualities_lane_2026_10_11"
       },
       "task_id": "source_repair_mutualities_lane_2026_10_11"
