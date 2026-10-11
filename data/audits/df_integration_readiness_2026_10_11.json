@@ -1,8 +1,8 @@
 {
-  "at": "2026-10-11T06:58:24.316894+00:00",
+  "at": "2026-10-11T07:11:23.063060+00:00",
   "verdict": "READY_FOR_INTEGRATION",
   "implementation_sha": "f3ad5f08a23360ab2df131d0ce80d55b5e9bf2f6",
-  "base_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+  "base_sha": "c4819844e413d31ede792521a2c137392c4ae104",
   "integration": {
     "pr": 11,
     "base": "staging",
@@ -10,7 +10,35 @@
     "method": "Merge the complete PR at its final head after Integration Commander checks current staging compatibility. No cherry-pick of isolated code or data commits: queue/history/withdrawals/seen/fixtures/evidence form one verified package.",
     "history_rewritten": false,
     "merged": false,
-    "post_merge_runtime_required": true
+    "post_merge_runtime_required": true,
+    "staging_reconciliation": {
+      "at": "2026-10-11T07:11:23.063060+00:00",
+      "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "merge_commit": "99b65b392cb12e144ca93c545bfd9fe328f59cb2",
+      "method": "Non-destructive merge of current staging into isolated DF branch; only queue and ledger textual conflicts, resolved by semantic three-way merge.",
+      "focused_df_tests": 58,
+      "governance_tests": 14,
+      "broad_python": {
+        "passed": 304,
+        "failed": 1,
+        "skipped": 1,
+        "failure": "Inherited normative stock11>=12"
+      },
+      "node_tests_passed": 1,
+      "reviewer_findings": 8,
+      "reviewer_signatures_equal_staging": true,
+      "baseline_inputs_unchanged_from_fe3a4f7": [
+        "src",
+        "tests",
+        "web",
+        ".github"
+      ],
+      "preservation": "All staging tasks/properties/learning entries and3new evidence files preserved; nonDF queue/history/health/feed equal current staging.",
+      "github_mergeable": true,
+      "diff_check": "PASS",
+      "fresh_runtime_after_staging_merge_into_branch": false,
+      "runtime_after_merge_to_staging_required": true
+    }
   },
   "df_checks": {
     "focused_tests": {
@@ -123,13 +151,14 @@
       "passed": 264,
       "failed": 2,
       "skipped": 1,
-      "df_failure_repaired": "test_df_scout_binds_detail_date_before_queue_classification"
+      "df_failure_repaired": "test_df_scout_binds_detail_date_before_queue_classification",
+      "base_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2"
     },
     "node": "PASS1",
     "reviewer": {
       "reviewer": "deterministic-reviewer",
-      "candidate_sha": "f3ad5f0",
-      "reviewed_at": "2026-10-11T06:56:32.660444+00:00",
+      "candidate_sha": "99b65b392cb12e144ca93c545bfd9fe328f59cb2",
+      "reviewed_at": "2026-10-11T07:10:26.417687+00:00",
       "findings": [
         {
           "category": "statistics",
@@ -248,5 +277,6 @@
   },
   "runtime_provenance_note": "New runtime receipt is this artifact/run logs. The reconciliation retains earlier inventory capture timestamps and does not renew them during matrix-only review. Later changes only scope reviewed dispositions, compact evidence, preserve offline proof and expose derived health facets; validated locally with58tests.",
   "next_action": "Integration Commander review current staging diff, merge PR11 to staging only, run global QA/Reviewer/browser and fresh Daily runtime after merge; verify LIVE/new eligible publication, counts/format deferrals/idempotence before issue5/6 closure.",
-  "verification_test_sha": "a3cb75c36c943aa1538f9f20e0be68b2fa97d479"
+  "verification_test_sha": "a3cb75c36c943aa1538f9f20e0be68b2fa97d479",
+  "original_review_base_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2"
 }

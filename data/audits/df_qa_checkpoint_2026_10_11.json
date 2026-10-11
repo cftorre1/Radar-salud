@@ -151,5 +151,33 @@
     "real_runtime": 38119095016,
     "post_merge_runtime_required": true,
     "global_candidate_pass": false
+  },
+  "current_staging_reconciliation": {
+    "at": "2026-10-11T07:11:23.063060+00:00",
+    "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+    "merge_commit": "99b65b392cb12e144ca93c545bfd9fe328f59cb2",
+    "method": "Non-destructive merge of current staging into isolated DF branch; only queue and ledger textual conflicts, resolved by semantic three-way merge.",
+    "focused_df_tests": 58,
+    "governance_tests": 14,
+    "broad_python": {
+      "passed": 304,
+      "failed": 1,
+      "skipped": 1,
+      "failure": "Inherited normative stock11>=12"
+    },
+    "node_tests_passed": 1,
+    "reviewer_findings": 8,
+    "reviewer_signatures_equal_staging": true,
+    "baseline_inputs_unchanged_from_fe3a4f7": [
+      "src",
+      "tests",
+      "web",
+      ".github"
+    ],
+    "preservation": "All staging tasks/properties/learning entries and3new evidence files preserved; nonDF queue/history/health/feed equal current staging.",
+    "github_mergeable": true,
+    "diff_check": "PASS",
+    "fresh_runtime_after_staging_merge_into_branch": false,
+    "runtime_after_merge_to_staging_required": true
   }
 }

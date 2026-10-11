@@ -1,13 +1,14 @@
 # DF · READY_FOR_INTEGRATION · PR #11
 
-**Verdict: READY_FOR_INTEGRATION.** Frente DF técnicamente integrable; no equivale a DONE, candidate global PASS o runtime post-merge. Issues #5/#6 abiertas. No se hizo merge ni se escribió staging/main/producción.
+**Verdict: READY_FOR_INTEGRATION.** Frente DF técnicamente integrable; no equivale a DONE, candidate global PASS o runtime post-merge. Issues #5/#6 abiertas. No se hizo merge a staging ni se escribió staging/main/producción.
 
 ## Paquete exacto
 
 - Rama: `codex/df-end-to-end-20261011`; [PR #11](https://github.com/cftorre1/Radar-salud/pull/11), base `staging`.
-- Base revisada: `fe3a4f779f43edfdea8edc9df2f2641dd96056c2`.
+- Base actual revisada e incorporada: `c4819844e413d31ede792521a2c137392c4ae104`. Merge a la rama DF: `99b65b392cb12e144ca93c545bfd9fe328f59cb2`.
 - Implementación y estados completos: `f3ad5f08a23360ab2df131d0ce80d55b5e9bf2f6`; regresión final/normalización de fixtures en `a3cb75c`, más los commits de handoff con documentación/queue/PMO/evidencia.
-- **Integrar el PR completo hasta su HEAD final**, incluida la implementación anterior y el handoff. No seleccionar cherry-picks aislados: código, fixtures, rehidratación, decisiones retiradas, dedupe, history/seen/cola y evidencia deben permanecer coherentes. El rango es `fe3a4f779f43edfdea8edc9df2f2641dd96056c2..HEAD` de esta rama. Si staging avanzó, Commander debe contrastar sus nuevos estados y resolver conflictos sin reemplazar registros ajenos a DF.
+- **Integrar el PR completo hasta su HEAD final**, incluida la implementación anterior, la reconciliación de staging y el handoff. No seleccionar cherry-picks aislados: código, fixtures, rehidratación, decisiones retiradas, dedupe, history/seen/cola y evidencia deben permanecer coherentes. El rango es `c4819844e413d31ede792521a2c137392c4ae104..HEAD` de esta rama. Si staging vuelve a avanzar, Commander debe contrastar sus nuevos estados y resolver conflictos sin reemplazar registros ajenos a DF.
+- Los seis commits concurrentes de staging se incorporaron sin reescribir historia. Los dos conflictos textuales de queue/learning ledger se resolvieron por merge semántico: tareas/propiedades de staging y todas sus entradas/evidencias conservadas exactas, más la extensión DF. GitHub confirmó el PR mergeable; 58 tests DF y 14 de gobernanza/orquestación PASS después del merge. Esta reconciliación no equivale a un runtime nuevo.
 - Historia no reescrita. Pruebas de diff: registros no DF de queue/history/health/feed idénticos a staging; sólo plumbing compartido necesario para `--source`, motivos de defer y publicación durable.
 - Se redujeron más de 31 mil líneas de template en fixtures, preservando exactamente cuerpo/fechas/cards y hashes de los originales. Matrices referencian una única copia de evidencia por URL. `work/` no se versiona. Estados voluminosos conservan los snapshots requeridos para explicar/retirar decisiones contaminadas; no son snapshots accidentales de otras fuentes.
 
@@ -54,7 +55,7 @@ Los 19 diferidos son **18 audio/video sin transcripción oficial verificable en 
 - [x] Blockers heredados separados: normativa `11 >= 12` y 8 hallazgos SIS.
 - [ ] Runtime **posterior al merge** y candidate global QA/Reviewer/browser todavía requeridos.
 
-Suite ampliada: 304 PASS, 1 FAIL heredado, 1 skipped; live beta excluida por red local. Staging:264 PASS,2 FAIL,1 skipped, incluido el defecto de fecha DF ya reparado. Node PASS. Reviewer determinístico data/editorial/UX PASS; sus ocho hallazgos estadísticos son idénticos a staging. No se certifica revisión semántica independiente ni browser local: Chromium ausente, cero ejecuciones de producto. Esos límites no se presentan como regresiones DF.
+Suite ampliada repetida después de incorporar staging actual: 304 PASS, 1 FAIL heredado, 1 skipped; live beta excluida por red local. Baseline staging `fe3a4f7`:264 PASS,2 FAIL,1 skipped, incluido el defecto de fecha DF ya reparado; los seis commits nuevos no cambiaron src/tests/web/.github. Node PASS. Reviewer determinístico repetido: data/editorial/UX PASS; sus ocho hallazgos estadísticos son idénticos a staging. No se certifica revisión semántica independiente ni browser local: Chromium ausente, cero ejecuciones de producto. Esos límites no se presentan como regresiones DF.
 
 ## Siguiente acción exacta del Integration Commander
 
