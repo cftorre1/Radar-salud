@@ -3716,5 +3716,30 @@
     "root_cause": "Shared slug across source lanes, concurrent state commits, asynchronous product-data loading.",
     "source": "Integration Director",
     "specific_fix": "One canonical ACHS occupational registration; reject duplicate slugs; preserve terminal receipt objects and alternate review evidence; reconcile independent usage deltas; await source list render before expansion."
+  },
+  {
+    "blocker_fingerprint": "a7e47a7dfb7ef3a86033f5ed30acf38f414f69c3e891b719ebc0b0f74d031c6f",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-da5f1abf6d934267a57069c7b0dea55a.json",
+        "sha256": "7ca45d5c103746ef55ae14609737be10a15e42391dbbf87bcec911463a0926ec",
+        "staging_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c",
+        "state_sha": "ca66dfba91da7848c9e3ed8a714865260df40f56"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_repair_public_data_lane_2026_10_11",
+    "id": "autonomy_observed_cece680b52066f1172710ea960dc8bb6c52628aded5dc1a6106514522fd24de6",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_repair_public_data_lane_2026_10_11"
   }
 ]
