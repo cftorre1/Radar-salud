@@ -82,7 +82,9 @@ def main():
         samples={"df_san_carlos_real":"aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
                  "df_catastrofe_real":"kast-decreta-estado-de-catastrofe-tras-aluvion-en-las-condes-que-deja-al",
                  "df_ricarte_real":"recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
-                 "df_biometria_real":"super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"}
+                 "df_biometria_real":"super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+                 "df_health_listing_real":"/empresas/dfsalud",
+                 "df_health_tag_real":"/tagport_161_1.html"}
         fixture_manifest={}
         for name,suffix in samples.items():
             for url,html in cache.items():
@@ -137,6 +139,18 @@ def main():
         ordered = [sample["url"] for sample in samples] + list(titles)
         # Follow observable archive pagination links. Never invent article URLs.
         pages = [*DfHealthScout.PAGES, "https://www.df.cl/senal-df"]
+        # Additional health tags must be observed on an original page, not
+        # guessed URLs. These surfaces may expose archive navigation absent
+        # from the current health landing page.
+        from urllib.parse import urljoin, urlsplit, urldefrag
+        for parent,html in list(cache.items()):
+            if not isinstance(html,str):continue
+            links=_A();links.feed(html)
+            for href,label in links.links:
+                url=urldefrag(urljoin(parent,href))[0]
+                path=urlsplit(url).path
+                if urlsplit(url).netloc in ('df.cl','www.df.cl') and ('/tags/' in path or '/tag/' in path) and re.fullmatch(r'\s*(salud|isapres?|fonasa|clínicas?|clinicas?|df salud)\s*',label,re.I):
+                    if url not in pages:pages.append(url)
         visited = set()
         while pages and len(visited) < args.max_pages and time.monotonic() < deadline:
             page = pages.pop(0)
@@ -148,17 +162,20 @@ def main():
                 from urllib.parse import urljoin, urlsplit
                 page_articles = []
                 for href, title in parser.links:
-                    url = urljoin(page, href)
+                    url = urldefrag(urljoin(page, href))[0]
                     parsed = urlsplit(url)
                     if parsed.netloc not in ("df.cl", "www.df.cl"): continue
-                    if re.search(r"tagport_161_\d+\.html$", parsed.path):
+                    if re.search(r"tagport_(161|121)_\d+\.html$", parsed.path):
                         if url not in visited: pages.append(url)
                         continue
                     if len(title) < 18 or parsed.path.count("/") < 3: continue
                     if any(x in parsed.path for x in ("/tag/", "/autor/", "/tax/", "/suscripcion", "/login")): continue
                     if "/salud/" in parsed.path or public_source_pipeline._health_relevance(title, ""):
                         titles.setdefault(url, title); ordered.append(url); page_articles.append(url)
-                report["listing_pages"].append({"url": page, "fetch": "ok", "health_candidate_urls": list(dict.fromkeys(page_articles))})
+                controls=[m[0][:700] for m in re.finditer(r'<(?:button|a|div)\b[^>]*(?:pagin|cargar|load.more|ver.mas)[^>]*>',html,re.I)]
+                scripts=re.findall(r'<script\b[^>]*src=["\']([^"\']+)',html,re.I)
+                report["listing_pages"].append({"url": page, "fetch": "ok", "health_candidate_urls": list(dict.fromkeys(page_articles)),
+                    "observed_archive_controls":controls[:12],"observed_script_urls":[urljoin(page,s) for s in scripts if 'df.cl' in urljoin(page,s)]})
             except Exception as exc:
                 report["listing_pages"].append({"url": page, "fetch": "error", "error_type": type(exc).__name__})
         by_url = {article_url(raw.url): raw for raw in raw_items}

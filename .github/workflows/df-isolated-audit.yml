@@ -41,7 +41,7 @@ jobs:
       - name: DF regressions
         run: python -m pytest -q tests/test_df_recovery.py tests/test_press_pipeline.py tests/test_autopilot.py tests/test_live_evidence_replay.py tests/test_source_health_facets.py tests/test_state_persistence.py
       - name: Reconcile live originals and actual Daily DF processing
-        run: timeout --signal=TERM 18m python scripts/reconcile_df.py --live --reuse-originals --capture-fixtures --capture-only --minutes 12 --process-limit 30
+        run: timeout --signal=TERM 18m python scripts/reconcile_df.py --live --reuse-originals --capture-fixtures --repair-contaminated-bodies --minutes 12 --process-limit 30
       - name: Rebuild candidate feed offline
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline
       - name: Preserve isolated checkpoint and issue evidence
