@@ -7,8 +7,10 @@ from radar_salud.global_discovery_common import CaptureClient, Document
 
 client = CaptureClient(Path('work/global-diagnostic-captures'))
 rows = []
-targets = ['https://www.paho.org/sitemap.xml?page=1', 'https://www.paho.org/sitemap.xml?page=8',
-           'https://www.paho.org/sitemap.xml?page=9']
+targets = ['https://www.paho.org/en/news?date%5Bmin%5D=2026-07-14&date%5Bmax%5D=2026-09-11',
+           'https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-14&date%5Bmax%5D=2026-09-11',
+           'https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-12&date%5Bmax%5D=2026-09-18',
+           'https://iris.paho.org/']
 for url in targets:
     try:
         raw, capture = client.fetch(url)
@@ -33,6 +35,8 @@ for url in targets:
             'pager': [{'text': n.text(), 'attrs': n.attrs} for n in doc.nodes('a')
                       if 'page=' in n.attrs.get('href', '')],
             'filters': [n.attrs for n in doc.nodes('select')],
+            'form_fields': [n.attrs for n in doc.nodes('input') if n.attrs.get('name','').startswith('date')],
+            'official_repository_api_links': [n.attrs for n in doc.nodes() if n.tag in ('link','script','a') and any(x in str(n.attrs).lower() for x in ('/server/api','/rest','iris.paho'))],
             'chile_option': [n.attrs for n in doc.nodes('option') if n.text() == 'Chile'],
             'sitemap_locations': locations if not news_locations else [],
             'sitemap_total_urls': len(locations), 'sitemap_news_urls': len(news_locations),
