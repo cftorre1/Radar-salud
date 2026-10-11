@@ -192,6 +192,10 @@ class CaptureObserver:
         self.manifest["updated_at"] = datetime.now(timezone.utc).isoformat()
         atomic_json(self.output / "manifest.json", self.manifest)
         self.last_flush = time.monotonic()
+        print(json.dumps(dict(event="original_capture_checkpoint",
+            at=self.manifest["updated_at"], observed_http_responses=len(self.manifest["requests"]),
+            original_responses_retained=sum(bool(row.get("gzip_file")) for row in self.manifest["requests"]),
+            http_statuses=dict(Counter(str(row.get("status")) for row in self.manifest["requests"])))), flush=True)
 
     def flush(self):
         with self.lock:
