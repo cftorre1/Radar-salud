@@ -235,11 +235,33 @@ def exceptional_categories(row, window):
     return categories + video_category
 
 
-def retain_editorial_exceptions(originals, output, window, discovery_hash, discovered_at):
+def retain_editorial_exceptions(originals, output, window, discovery_hash, discovered_at, observed_traces=()):
     output.mkdir(parents=True, exist_ok=True)
     retained = []
+    conflict_observations = {}
+    for trace in observed_traces:
+        if (trace.get("publisher_exception_reason") != "publisher_conflicting_publication_dates"
+                and trace.get("reason") != "publisher_conflicting_publication_dates"):
+            continue
+        url = normalized_url(trace.get("url"))
+        if url is not None:
+            observation = {key: trace.get(key) for key in ("status", "reason", "publisher_exception_reason",
+                "possible_publication_days", "publication_date", "publication_date_verified", "visible_publication_date",
+                "publication_evidence", "html_sha256", "captured_at", "cache_hit", "publisher_lastmod")}
+            conflict_observations.setdefault(url, []).append(observation)
     for url, candidates in sorted(originals.items()):
-        eligible = [(row, compressed, body, exceptional_categories(row, window)) for row, compressed, body in candidates]
+        eligible = []
+        for row, compressed, body in candidates:
+            categories = exceptional_categories(row, window)
+            if url in conflict_observations:
+                # Retain explicitly observed old date conflicts as exclusion
+                # evidence too. Raw identity/date disagreement still has to
+                # verify; a source trace alone cannot fabricate an original.
+                outside_categories = exceptional_categories(row, {"start": "0001-01-01", "end": "9999-12-31"})
+                if ("observed_primary_publication_date_conflict" in outside_categories
+                        and "observed_primary_publication_date_conflict" not in categories):
+                    categories = ["observed_primary_publication_date_conflict"] + categories
+            eligible.append((row, compressed, body, categories))
         eligible = [item for item in eligible if item[3]]
         if not eligible:
             continue
@@ -250,15 +272,26 @@ def retain_editorial_exceptions(originals, output, window, discovery_hash, disco
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(compressed)
         retained.append(dict(row, gzip_file=str(relative), full_primary_body=body, retention_categories=categories,
+                             observed_current_discovery_date_conflict=conflict_observations.get(url, []),
+                             original_visible_byline_outside_complete_90_window=bool(window and row.get("visible_byline_day") and
+                                 not window["start"] <= row["visible_byline_day"] <= window["end"]),
                              capture_provenance="preserved_original_cold_core_editorial_or_video_exception",
                              fixture_status="hash_verified_original_retained_without_date_or_editorial_adoption"))
+    retained_conflicts = {row["url"] for row in retained if "observed_primary_publication_date_conflict" in row["retention_categories"]}
+    targets = [{"url": url, "source_observations": observations,
+                "fixture_status": "hash_verified_original_conflict_retained" if url in retained_conflicts else "missing_hash_verified_original_conflict"}
+               for url, observations in sorted(conflict_observations.items())]
+    missing_conflicts = [target["url"] for target in targets if target["fixture_status"] != "hash_verified_original_conflict_retained"]
     result = {"schema_version": "1.0", "source": SOURCE,
               "mode": "offline_original_editorial_and_video_exception_retention_no_inventory_injection",
               "window_90": window, "discovery_at": discovered_at, "discovery_run_sha256": discovery_hash,
               "requests": retained, "unique_urls": len(retained),
+              "observed_current_discovery_date_conflict_targets": targets,
+              "missing_observed_current_discovery_date_conflict_originals": missing_conflicts,
               "category_counts": dict(Counter(category for row in retained for category in row["retention_categories"])),
-              "status": "OBSERVED_EXCEPTION_ORIGINALS_RETAINED_NOT_SOURCE_ACCEPTANCE" if retained else "EXCEPTION_ORIGINALS_NOT_AVAILABLE",
-              "selection_policy": "Hash-verified URL-bound originals in the observed visible-byline calendar window: ALL primary publisher date conflicts regardless of topic, EXACT Opinión/Opinion/Columna keywords, EXACT Branded/Publirreportajes sections, and ALL URL-bound VideoObject primary documents. Dates remain observations; neither article paths nor retention grant editorial acceptance."}
+              "status": "OBSERVED_EXCEPTION_ORIGINAL_RETENTION_PARTIAL" if missing_conflicts else (
+                  "OBSERVED_EXCEPTION_ORIGINALS_RETAINED_NOT_SOURCE_ACCEPTANCE" if retained else "EXCEPTION_ORIGINALS_NOT_AVAILABLE"),
+              "selection_policy": "Hash-verified URL-bound originals in the observed visible-byline calendar window: ALL primary publisher date conflicts regardless of topic, EXACT Opinión/Opinion/Columna keywords, EXACT Branded/Publirreportajes sections, and ALL URL-bound VideoObject primary documents. Also retain ALL date-conflict URLs explicitly observed in the current source traces, including old excluded documents, only after original identity/date disagreement verifies. Dates remain observations; neither article paths nor retention grant editorial acceptance."}
     (output / "manifest.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     return result
 
@@ -340,7 +373,8 @@ def audit(artifact, output, thin_output, discovery=None, capture_manifest=None, 
                      "status": "ALL_COLD_THIN_ORIGINALS_RETAINED_NOT_SOURCE_ACCEPTANCE" if thin_urls and all(
                          row.get("original_bytes_verified") for row in thin_rows) else "THIN_ORIGINAL_RETENTION_PARTIAL"}
     (thin_output / "manifest.json").write_text(json.dumps(thin_manifest, ensure_ascii=False, indent=2) + "\n")
-    exception_manifest = retain_editorial_exceptions(originals, exception_output, window, discovery_hash, discovered_at) if exception_output is not None else None
+    exception_manifest = retain_editorial_exceptions(originals, exception_output, window, discovery_hash, discovered_at,
+        snapshot.get("source_details", {}).get(SOURCE, [])) if exception_output is not None else None
     report = {"schema_version": "1.0", "source": SOURCE,
               "mode": "complete_offline_audit_of_retained_original_response_corpus_without_analysis_or_inventory_injection",
               "generated_at": datetime.now(timezone.utc).isoformat(), "network_requests": 0, "ai_calls": 0,
