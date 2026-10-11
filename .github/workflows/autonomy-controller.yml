@@ -5,107 +5,86 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/autonomy-controller.yml'
+      - '.github/workflows/repair-lanes.yml'
+      - 'scripts/autonomy_*.py'
   workflow_run:
-    workflows:
-      - 'Daily Radar pilot'
-      - 'Alicanto staging preview'
+    workflows: ['Daily Radar pilot', 'Alicanto staging preview', 'Alicanto repair lane']
     types: [completed]
   schedule:
-    - cron: '5 * * * *'
+    - cron: '*/10 * * * *'
 permissions:
   contents: write
   actions: write
-concurrency:
-  group: alicanto-autonomy-controller
-  cancel-in-progress: false
 jobs:
   control:
+    concurrency:
+      group: alicanto-autonomy-controller-plan
+      cancel-in-progress: false
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 8
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      has_work: ${{ steps.plan.outputs.has_work }}
+      review_matrix: ${{ steps.plan.outputs.review_matrix }}
+      has_reviews: ${{ steps.plan.outputs.has_reviews }}
+      failure_run_id: ${{ steps.failure.outputs.run_id }}
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
+          path: infrastructure
+      - uses: actions/checkout@v4
+        with:
           ref: staging
+          path: candidate
           fetch-depth: 0
-      - name: Evaluate executable backlog and runtime freshness
-        id: decide
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Find latest demonstrated staging gate
+        id: failure
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          python infrastructure/scripts/autonomy_failure_input.py --repository "$GITHUB_REPOSITORY" --report artifacts/failure.json
           python - <<'PY'
           import json, os
-          from datetime import datetime, timezone
           from pathlib import Path
-
-          queue=json.loads(Path('config/orchestrator_queue.json').read_text(encoding='utf-8'))
-          tasks=queue.get('tasks') or []
-          status={t.get('id'):t.get('status') for t in tasks}
-          active=[]
-          for t in tasks:
-              if t.get('status') not in {'approved','in_progress'} or t.get('blocked_by'):
-                  continue
-              if all(status.get(d) in {'validated','completed','cancelled'} for d in (t.get('depends_on') or [])):
-                  active.append(t.get('id'))
-
-          discovery=Path('data/state/discovery_run.json')
-          age_hours=9999.0
-          last_runtime=None
-          if discovery.exists():
-              try:
-                  payload=json.loads(discovery.read_text(encoding='utf-8'))
-                  last_runtime=payload.get('at')
-                  if last_runtime:
-                      at=datetime.fromisoformat(last_runtime.replace('Z','+00:00'))
-                      age_hours=max(0.0,(datetime.now(timezone.utc)-at).total_seconds()/3600)
-              except Exception:
-                  pass
-
-          dispatch=bool(active and age_hours>26)
-          issue5_active=any(str(task_id).startswith('source_audit_issue5_') for task_id in active)
-          decision={
-              'generated_at':datetime.now(timezone.utc).isoformat(),
-              'executable_tasks':active,
-              'last_runtime_at':last_runtime,
-              'runtime_age_hours':round(age_hours,2),
-              'dispatch_daily_radar':dispatch,
-              'dispatch_source_audit_executor':issue5_active,
-              'reason':'issue5_backlog_active' if issue5_active else ('runtime_stale_with_executable_backlog' if dispatch else 'heartbeat_only')
-          }
-          Path('artifacts').mkdir(exist_ok=True)
-          Path('artifacts/autonomy_controller.json').write_text(json.dumps(decision,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
-              out.write(f"dispatch={'true' if dispatch else 'false'}\n")
-              out.write(f"dispatch_source_audit={'true' if issue5_active else 'false'}\n")
-          print(json.dumps(decision,ensure_ascii=False))
+          failure = json.loads(Path('artifacts/failure.json').read_text())
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('run_id=' + str(failure.get('run_id', 0)) + '\n')
           PY
-      - name: Persist controller heartbeat
-        run: |
-          git config user.name alicanto-autonomy-controller
-          git config user.email alicanto-autonomy-controller@users.noreply.github.com
-          git fetch origin autopilot-state
-          git worktree add /tmp/autonomy-state origin/autopilot-state
-          mkdir -p /tmp/autonomy-state/data/autopilot
-          cp artifacts/autonomy_controller.json /tmp/autonomy-state/data/autopilot/controller_heartbeat_latest.json
-          git -C /tmp/autonomy-state add data/autopilot/controller_heartbeat_latest.json
-          git -C /tmp/autonomy-state diff --cached --quiet || git -C /tmp/autonomy-state commit -m "chore: autonomy controller heartbeat"
-          git -C /tmp/autonomy-state push origin HEAD:autopilot-state
-      - name: Dispatch Daily Radar through authorized GitHub API
-        if: steps.decide.outputs.dispatch == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          active=$(gh run list --workflow daily-radar.yml --limit 20 --json status --jq '[.[] | select(.status == "queued" or .status == "in_progress")] | length')
-          if [ "$active" -eq 0 ]; then
-            gh workflow run daily-radar.yml --ref main
-          else
-            echo "Daily Radar already active; no duplicate dispatch."
-          fi
-      - name: Dispatch Source Audit Executor
-        if: steps.decide.outputs.dispatch_source_audit == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          active=$(gh run list --workflow source-audit-executor.yml --limit 20 --json status --jq '[.[] | select(.status == "queued" or .status == "in_progress")] | length')
-          if [ "$active" -eq 0 ]; then
-            gh workflow run source-audit-executor.yml --ref main
-          else
-            echo "Source Audit Executor already active; no duplicate dispatch."
-          fi
+      - name: Reconcile leases, material stalls and independent families
+        id: plan
+        run: python infrastructure/scripts/autonomy_runtime.py plan --infrastructure infrastructure --workspace candidate --failure-json artifacts/failure.json --report artifacts/controller.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autonomy-controller-${{ github.run_id }}
+          path: artifacts
+  repair:
+    needs: control
+    if: needs.control.outputs.has_work == 'true'
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.control.outputs.matrix) }}
+    uses: ./.github/workflows/repair-lanes.yml
+    with:
+      family: ${{ matrix.family }}
+      failure_run_id: ${{ needs.control.outputs.failure_run_id }}
+    secrets: inherit
+  candidate_review:
+    needs: control
+    if: needs.control.outputs.has_reviews == 'true'
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.control.outputs.review_matrix) }}
+    uses: ./.github/workflows/candidate-review.yml
+    with:
+      family: ${{ matrix.family }}
+      task_id: ${{ matrix.task_id }}
+      candidate_commit: ${{ matrix.candidate_commit }}
+      candidate_branch: ${{ matrix.candidate_branch }}
+    secrets: inherit

@@ -289,3 +289,21 @@ four actual hours remain unproven.
 Next hypothesis: automatic GitHub pickup and real repair evidence can be
 observed after infrastructure publication while a trusted prompt-event observer
 provides the independent continuity proof required for Stage A.
+
+## 15. Main autonomy workflow activation
+
+Decision: only the planning job is serialized. Six family workers and independent
+candidate review jobs use separate concurrency groups, with fail-fast disabled.
+Main push, ten-minute schedule and completion/explicit wakeups use the committed
+runtime. Audit and recovery wrappers dispatch work rather than writing mutable
+audit timestamps. Controller and worker share the exact failure input contract.
+Completion wakes the controller immediately; no whole-run concurrency gate
+serializes independent repairs. Production deployment remains manual and untouched.
+
+Directed validation: actionlint 1.7.7 passed all five changed/new workflows and
+git diff --check passed. These are syntax/static integration checks. Hosted
+dispatch, secrets/platform access and actual four-hour continuity remain unproven
+until the infrastructure payload is published and observed.
+
+Next hypothesis: an authorized fast-forward main infrastructure push starts
+parallel hosted pickup and evidence transactions without deploying product bytes.

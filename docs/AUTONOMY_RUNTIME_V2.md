@@ -10,6 +10,8 @@ audits were read on staging at `cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb`.
 Those files remain the approval input; they were not copied wholesale into main.
 Runtime task status is a durable overlay in `autopilot-state`, not an invented
 update to the owner-approved product queue.
+The queue was reconciled again at `24d4c1a8d6a70d73324207b33985378aeff36142`,
+including the new requirement for verified source runtime after a staging merge.
 
 ```mermaid
 flowchart TD
@@ -97,6 +99,12 @@ full-gate logs and no new failure fingerprints. This does not grant closure or
 integration. A separate job reviews the exact recorded candidate. Its technical
 PASS still cannot replace source 30/90-day reconciliation, publication/rejection
 trace, editorial review or the parent's explicit acceptance requirements.
+Source closure requires an incorporated staging SHA and hashed actual runtime
+after integration, covering every source with publication, rejection or genuine
+absence. A source fix on an isolated branch earns candidate mutation credit;
+it cannot earn source implementation or Stage A source-repair credit. A later
+authorized merge is recognized by actual Git ancestry and resumes on current
+staging without promoting any ref from this runtime.
 
 The existing `ai_builder_enabled=false` and no-new-paid-calls policy is respected.
 Hosted workers do not enable model repair. Optional future model calls fail
@@ -115,13 +123,19 @@ partial staging candidate retaining the failed gate cannot claim that failure
 repaired. Source recovery must bind the repaired slug to executed directed and
 LIVE PASS evidence. Ending with real blockers while independent lanes continue
 is a valid operational outcome; it remains `NOT_PROVEN` for Stage A.
+Zero owner intervention also requires a verified observation covering the entire
+window, with immutable hashed evidence for both Actions and owner prompt events.
+Empty arrays alone are not proof. GitHub Actions cannot observe Work/chat prompts;
+no such event source is connected in this implementation. Until a trusted event
+observer supplies that complete coverage, the evaluator keeps Stage A unproven
+while repair lanes remain executable. It never invents a zero-prompt attestation.
 Owner involvement targets 30–60 minutes/week: count each manual status/restart
 prompt, retain its incident, and automate the missing pickup or recovery path.
 
 ## Current evidence and exact continuation
 
 Use `docs/AUTONOMY_CHECKPOINTS.md` and the committed evidence report for directed
-test results. The real staging normative test still fails `11 >= 12`; its
+test results. The normative test was rerun at `24d4c1a…` and fails `11 >= 12`; its
 contract remains intact. The managed cloud allows package/Git hosts but not the
 source destinations, so local DF/Pulso HTTP 403 is a platform-network blocker,
 not proof of a defect at the publisher or proof of hosted Actions source access.
