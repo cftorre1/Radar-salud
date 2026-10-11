@@ -49,6 +49,9 @@ def test_provider_sources_enter_daily_durable_queue_without_ai(tmp_path, monkeyp
     engine_cli.main()
     assert all(r["status"] == "retry" and r["deferred_detail"] == "Provider original blocked: HTTP 403"
                for r in PendingQueue(queue.path).items.values())
+    health=json.loads((tmp_path/'data/source_health.json').read_text())['sources']
+    assert all(health[slug]['evaluation_performed'] is False and health[slug]['editorial_outcome']=='not_evaluated'
+               and health[slug]['deferred']==1 for slug in expected)
     before=json.loads(queue.path.read_text())
     monkeypatch.setattr(sys,'argv',['engine_cli','--source','red_davila','--discovery-only'])
     monkeypatch.setattr(engine_cli,'has_capacity',lambda kind: __import__('pytest').fail('Discovery-only must not check or consume AI'))

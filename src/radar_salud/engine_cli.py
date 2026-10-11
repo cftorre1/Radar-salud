@@ -106,16 +106,18 @@ def main():
     produced={name:[] for name in processors}
     queue.enforce_backfill_horizon(sources=set(processors))
     ready=[] if args.discovery_only else [(key,item) for key,item in queue.ready() if item['source'] in processors]
-    attempted={name:0 for name in processors}
+    evaluated={name:0 for name in processors}
     for index,(key,item) in enumerate(ready):
         if args.limit and index>=args.limit:break
         if not has_capacity("fast") and not has_capacity("deep"):break
         queue.start(key)
         raw=RawItem(**item['raw'])
-        attempted[item['source']]+=1
+        prior_assessment=raw.metadata.get('editorial_assessment')
         try:
             cfg,processor=processors[item["source"]]
             row=processor(raw,cfg)
+            if row or (raw.metadata.get('editorial_assessment') and raw.metadata['editorial_assessment']!=prior_assessment):
+                evaluated[item['source']]+=1
             from dataclasses import asdict
             item["raw"]=asdict(raw)
             if row:
@@ -146,7 +148,8 @@ def main():
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
             rejected=counts["rejected"],rows=produced[name],error=error,
             live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"],latest_original_at=original_dates.get(name),
-            evaluation_performed=attempted[name]>0)
+            evaluation_performed=evaluated[name]>0,
+            deferred=sum(item['source']==name and item['status']=='retry' for item in queue.items.values()))
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()
