@@ -356,5 +356,27 @@
       "Require each lane to produce mutation, blocker, or explicit no-op evidence before next cycle."
     ],
     "status": "open"
+  },
+  {
+    "id": "autonomy_structured_output_truncation_2026_10_11",
+    "at": "2026-10-11T06:01:59.671306+00:00",
+    "class": "autonomy_recovery_evidence_transport",
+    "finding": "First hosted SUSESO diagnostic produced 55,588 bytes; recovery truncated to 24,000 before parsing and falsely reported missing structured evidence.",
+    "root_cause": "Source JSON parsed from display tail rather than complete captured stdout.",
+    "specific_fix": "Parse structured source evidence before truncation; retain bounded display log and full stdout byte count/SHA256. Commit 1d28d63, deployed main dd2d206.",
+    "preventive_controls": [
+      "structured_payload_before_display_tail",
+      "bounded_logs_with_full_capture_hash",
+      "directed_oversized_payload_regression",
+      "relevant_executor_fingerprint_for_bounded_retry"
+    ],
+    "status": "infrastructure_repair_verified_hosted_source_acceptance_open",
+    "evidence": [
+      "data/pmo/autonomy_acceptance_2026_10_11.json",
+      "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398"
+    ],
+    "same_captured_stdout_sha256": "17511ebd09faf49db9ae7ef295c73173d0cbacf4a2372423c3ae2327ca63e18e",
+    "source_closed": false,
+    "four_hour_acceptance": "NOT_PROVEN"
   }
 ]
