@@ -1,6 +1,8 @@
 """Adversarial runner contracts: no fake LIVE, acceptance or material progress."""
 import importlib.util
 from copy import deepcopy
+from contextlib import redirect_stdout
+import io
 import json
 from pathlib import Path
 import subprocess
@@ -9,6 +11,7 @@ import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
+from urllib.error import HTTPError
 
 SPEC = importlib.util.spec_from_file_location("autonomy_lane_runner", Path(__file__).resolve().parents[1] / "scripts/autonomy_lane_runner.py")
 runner = importlib.util.module_from_spec(SPEC)
@@ -256,6 +259,162 @@ class RunnerTests(unittest.TestCase):
         self.assertNotEqual(browser_gates[0]["failure_hash"], browser_gates[1]["failure_hash"])
         self.assertNotEqual(browser_gates[0]["log_sha256"], browser_gates[1]["log_sha256"])
         self.assertTrue(all(gate["browser_proof"]["cases"] for gate in browser_gates))
+
+    def source_row(self, slug="diario_financiero"):
+        return {"slug": slug, "technical_status": "error", "error": "RuntimeError: bounded_probe_budget: 24 requests per source",
+            "discovered": 0, "dated": 0, "inventory_hash": "same-inventory", "samples": [], "publication_verified": False,
+            "requests": [{"url": "https://source.test/listing", "status": "PASS", "response_sha256": "a" * 64, "response_bytes": 100},
+                {"url": "https://source.test/omitted", "status": "UNVERIFIED", "error": "bounded_probe_budget: 24 requests per source"}]}
+
+    def test_source_problem_identity_preserves_facts_without_capture_churn(self):
+        first = self.source_row()
+        first["observed_at"] = "2026-10-11T05:00:00Z"
+        first["samples"] = [{"source_url": "https://source.test/item", "title": "Actual signal", "event_date": "2026-10-10", "content_hash": "actual-content"}]
+        second = deepcopy(first)
+        second["observed_at"] = "2026-10-11T06:00:00Z"
+        second["requests"][0].update(response_sha256="b" * 64, response_bytes=200)
+        second["requests"].reverse()
+        self.assertEqual(runner.source_problem_hash(first), runner.source_problem_hash(second))
+        for field in ("url", "error", "status", "inventory_hash", "dated", "title", "event_date", "content_hash"):
+            changed = deepcopy(second)
+            if field in {"url", "error", "status"}:
+                changed["requests"][0][field] = "distinct actual evidence"
+            elif field in {"title", "event_date", "content_hash"}:
+                changed["samples"][0][field] = "distinct actual evidence"
+            else:
+                changed[field] = "distinct actual evidence"
+            with self.subTest(field=field):
+                self.assertNotEqual(runner.source_problem_hash(first), runner.source_problem_hash(changed))
+        for opaque in ({"response_sha256": "a" * 64}, {"requests": first["requests"]}, {**first, "slug": "unknown"}):
+            changed = deepcopy(opaque)
+            if "requests" in changed:
+                changed["requests"][0]["response_sha256"] = "b" * 64
+            else:
+                changed["response_sha256"] = "b" * 64
+            with self.subTest(opaque=opaque):
+                self.assertNotEqual(runner.source_problem_hash(opaque), runner.source_problem_hash(changed))
+        captured_first = {"returncode": 1, "source_evidence": first, "output": "AUTONOMY_SOURCE_JSON=" + json.dumps(first)}
+        captured_second = {"returncode": 1, "source_evidence": second, "output": "AUTONOMY_SOURCE_JSON=" + json.dumps(second)}
+        self.assertEqual(runner.problem_hash(captured_first), runner.problem_hash(captured_second))
+        actual_first = {"evidence": [first], "real_failure": {"source_slug": first["slug"], "source_url": "https://source.test/item", "observed_at": "old",
+            "trace_path": "/run/1/log", "trace_sha256": "a" * 64, "failure_signature": "a" * 64}}
+        actual_second = {"evidence": [second], "real_failure": {**actual_first["real_failure"], "observed_at": "new", "trace_path": "/run/2/log",
+            "trace_sha256": "b" * 64, "failure_signature": "b" * 64}}
+        self.assertEqual(runner.problem_hash(actual_first), runner.problem_hash(actual_second))
+        self.assertNotEqual(runner.problem_hash(actual_first["real_failure"]), runner.problem_hash(actual_second["real_failure"]))
+        unrelated_first, unrelated_second = deepcopy(actual_first), deepcopy(actual_second)
+        unrelated_first["real_failure"]["source_slug"] = "unknown"
+        unrelated_second["real_failure"]["source_slug"] = "unknown"
+        self.assertNotEqual(runner.problem_hash(unrelated_first), runner.problem_hash(unrelated_second))
+        duplicated = deepcopy(second)
+        duplicated["requests"].append(deepcopy(duplicated["requests"][0]))
+        self.assertNotEqual(runner.source_problem_hash(first), runner.source_problem_hash(duplicated))
+
+    def test_budget_only_scope_is_incomplete_not_external_failure_even_without_exception(self):
+        for error in (None, "RuntimeError: bounded_probe_budget: 24 requests per source"):
+            row = self.source_row()
+            row["error"] = error
+            result = runner.classify_source_probe(row)
+            self.assertEqual(result["technical_status"], "incomplete")
+            self.assertEqual(result["failure_origin"], "instrumentation_limit")
+            self.assertFalse(result["probe_complete"])
+            self.assertEqual(result["error"], error)
+            self.assertEqual(result["probe_budget"]["max_requests"], 24)
+        for actual in ("HTTPError: HTTP Error 403: Forbidden", "UnicodeEncodeError: ascii URL encoding failed"):
+            row = self.source_row()
+            row["technical_status"] = "incomplete"
+            row["requests"].append({"url": "https://source.test/real-failure", "status": "FAIL", "error": actual})
+            result = runner.classify_source_probe(row)
+            self.assertEqual(result["technical_status"], "error")
+            self.assertFalse(result["probe_complete"])
+        row = self.source_row()
+        row["error"] = "ValueError: independent parser schema error"
+        self.assertEqual(runner.classify_source_probe(row)["technical_status"], "error")
+
+    def test_source_component_covered_probe_hash_is_redundant_but_other_opaque_gate_remains(self):
+        row = self.source_row()
+        component = {"kind": "technical", "reason": "Scoped source failed", "source_urls": ["https://source.test/listing"],
+            "evidence": [{"command": ["python", "runner.py", "--diagnose-source", row["slug"]], "returncode": 1, "failure_hash": "a" * 64}, row,
+                {"automated_recovery": {"status": "BLOCKED", "blocker": "Cannot repair source"}}]}
+        changed = deepcopy(component)
+        changed["evidence"][0]["failure_hash"] = "b" * 64
+        self.assertEqual(runner.problem_hash(component), runner.problem_hash(changed))
+        opaque = {"kind": "technical", "reason": "Opaque independent failure", "evidence": [{"command": ["npm", "test"], "returncode": 1, "failure_hash": "unique"}]}
+        report = {"blockers": [component, opaque], "evidence": component["evidence"] + opaque["evidence"]}
+        same = {"blockers": [changed, opaque], "evidence": changed["evidence"] + opaque["evidence"]}
+        self.assertEqual(runner.problem_hash(report), runner.problem_hash(same))
+        distinct = deepcopy(same)
+        distinct["blockers"][1]["evidence"][0]["failure_hash"] = "different unique failure"
+        distinct["evidence"] = distinct["blockers"][0]["evidence"] + distinct["blockers"][1]["evidence"]
+        self.assertNotEqual(runner.problem_hash(report), runner.problem_hash(distinct))
+
+    def test_actual_source_worker_enforces_cap_and_records_incomplete_scope(self):
+        for mixed in (False, True):
+            scouts = SimpleNamespace()
+            def fetch(url, *args, **kwargs):
+                if mixed and url.endswith("/1"):
+                    raise HTTPError(url, 403, "Forbidden", None, None)
+                return "<html>controlled source response</html>"
+            original = Mock(side_effect=fetch)
+            scouts.fetch_html = original
+            class ControlledScout:
+                def discover(self):
+                    rows = []
+                    for index in range(30):
+                        url = "https://source.test/item/" + str(index)
+                        try:
+                            scouts.fetch_html(url)
+                        except (RuntimeError, HTTPError):
+                            continue
+                        rows.append(SimpleNamespace(url=url, title="Controlled scoped item", event_date="2026-10-10", raw_text="body"))
+                    return rows
+            names = ("DfHealthScout", "FonasaNewsScout", "FonasaDataHubScout", "IspAnamedAlertScout", "IspSurveillanceScout", "DeisResourceScout", "SusesoFiscalizacionScout")
+            source_scouts = SimpleNamespace(**{name: ControlledScout for name in names})
+            package = SimpleNamespace(source_scouts=source_scouts, scouts=scouts, beta_sources=SimpleNamespace(),
+                beta_sources_fast=SimpleNamespace(FastCuratedBetaSourceScout=lambda slug: ControlledScout()),
+                superintendencia_fiscalizacion=SimpleNamespace(SuperintendenciaFiscalizacionScout=ControlledScout))
+            output = io.StringIO()
+            with patch.dict(sys.modules, {"radar_salud": package}), redirect_stdout(output):
+                code = runner.source_worker("diario_financiero")
+            row = json.loads(output.getvalue().partition("=")[2])
+            with self.subTest(mixed=mixed):
+                self.assertEqual(code, 1)
+                self.assertEqual(original.call_count, 24)
+                self.assertEqual(row["technical_status"], "error" if mixed else "incomplete")
+                self.assertEqual(row["dated"], 23 if mixed else 24)
+                self.assertEqual(row["probe_budget"], {"max_requests": 24, "executed_requests": 24, "unexecuted_requests": 6})
+                self.assertEqual(sum(request["status"] == "FAIL" for request in row["requests"]), int(mixed))
+                if mixed:
+                    self.assertIn("HTTP Error 403", row["requests"][1]["error"])
+
+    def test_runner_budget_scope_never_creates_verified_source_failure_or_recovery_credit(self):
+        for mixed in (False, True):
+            self.install_gate("media")
+            base = self.fake_commands()
+            def commands(command, workspace, timeout=180, **kwargs):
+                result = base(command, workspace, timeout, **kwargs)
+                if "--diagnose-source" in command:
+                    row = self.source_row(command[-1])
+                    if mixed:
+                        row["requests"].append({"url": "https://source.test/real-failure", "status": "FAIL", "error": "HTTPError: HTTP Error 403: Forbidden"})
+                    result.update(returncode=1, stdout="AUTONOMY_SOURCE_JSON=" + json.dumps(row))
+                return result
+            recover = Mock(return_value={"status": "BLOCKED", "validated": False, "blocker": "External HTTP 403"})
+            with patch.object(runner, "tracked_hashes", return_value={"src/product.py": "same"}), \
+                patch.object(runner, "recovery_module", return_value=SimpleNamespace(recover=recover)):
+                report = runner.execute_lane("media", self.root, self.task, self.report, command_runner=commands)
+            self.assertEqual(report["status"], "BLOCKED")
+            self.assertFalse(report["validated"])
+            self.assertFalse(report["live_validated"])
+            if mixed:
+                self.assertTrue(report["real_failure"]["verified"])
+                self.assertEqual(report["real_failure"]["source_url"], "https://source.test/real-failure")
+                self.assertEqual(recover.call_count, 2)
+            else:
+                self.assertFalse(report.get("real_failure", {}).get("verified", False))
+                self.assertEqual(recover.call_count, 0)
+                self.assertTrue(all(row["technical_status"] == "incomplete" for row in report["source_results"]))
+                self.assertTrue(any(b["kind"] == "instrumentation" and "INCOMPLETE" in b["reason"] for b in report["blockers"]))
 
     def test_actual_git_clock_only_json_edit_is_not_a_publishable_mutation(self):
         payload = {"generated_at": "2026-10-11T04:00:00Z", "signals": [{"title": "Unchanged material signal", "event_date": "2026-10-10"}]}

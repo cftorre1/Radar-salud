@@ -51,6 +51,34 @@ SOURCE_ACCEPTANCE = {
     "source_health", "qa_pass", "independent_review_pass", "runtime_after_merge_pass",
 }
 EDITORIAL_ACCEPTANCE = {"freshness", "top3_audited", "editorial_business_review_pass", "qa_pass", "independent_review_pass"}
+MAX_SOURCE_REQUESTS = 24
+
+
+def structured_source_problem(value):
+    """Request capture hashes are redundant only alongside scoped source facts."""
+    return (isinstance(value, dict) and value.get("slug") in {slug for slugs in FAMILIES.values() for slug in slugs}
+        and isinstance(value.get("requests"), list) and "technical_status" in value
+        and "discovered" in value and "dated" in value
+        and ("inventory_hash" in value or isinstance(value.get("samples"), list))
+        and all(isinstance(request, dict) and request.get("url") and request.get("status") for request in value["requests"]))
+
+
+def classify_source_probe(row):
+    """Our HTTP cap limits evidence; it cannot establish a publisher failure."""
+    result = dict(row)
+    requests = row.get("requests") or []
+    omitted = [request for request in requests if request.get("status") == "UNVERIFIED"
+        and str(request.get("error", "")).startswith("bounded_probe_budget:")]
+    actual_failures = [request for request in requests if request.get("status") == "FAIL"]
+    if omitted:
+        result.update(probe_complete=False, probe_budget={"max_requests": MAX_SOURCE_REQUESTS,
+            "executed_requests": len(requests) - len(omitted), "unexecuted_requests": len(omitted)})
+        parser_error = bool(row.get("error") and "bounded_probe_budget:" not in str(row["error"]))
+        if not actual_failures and not parser_error:
+            result.update(technical_status="incomplete", failure_origin="instrumentation_limit")
+        else:
+            result.update(technical_status="error", failure_origin="source_or_product_fetch")
+    return result
 
 
 def digest(value):
@@ -92,6 +120,16 @@ def problem_semantic(value, *, task=None, input_sha=None):
     clocks = VOLATILE_KEYS - {"response_sha256", "response_bytes"}
     captures = {"captured_stdout_sha256", "captured_stdout_bytes", "source_evidence_sha256", "failure_sha256", "failure_hash", "fingerprint"}
 
+    def source_facts(item):
+        if structured_source_problem(item):
+            return {item["slug"]}
+        if isinstance(item, dict):
+            return set().union(*(source_facts(child) for child in item.values()))
+        if isinstance(item, list):
+            return set().union(*(source_facts(child) for child in item))
+        return set()
+    known_source = source_facts(value)
+
     def meaningful(item):
         if isinstance(item, list):
             return any(meaningful(child) for child in item)
@@ -110,12 +148,33 @@ def problem_semantic(value, *, task=None, input_sha=None):
             return True
         return any(meaningful(child) for child in item.values())
 
-    def visit(item, path=()):
+    def visit(item, path=(), source_scope=False, covered_slugs=()):
         if isinstance(item, dict):
+            source_row = structured_source_problem(item)
+            source_scope = source_scope or source_row
+            if item.get("kind") and item.get("reason") and isinstance(item.get("evidence"), list):
+                covered_slugs = {row["slug"] for row in item["evidence"] if structured_source_problem(row)}
+            command = item.get("command")
+            covered_probe = False
+            if isinstance(command, list) and "--diagnose-source" in command:
+                index = command.index("--diagnose-source") + 1
+                covered_probe = index < len(command) and command[index] in covered_slugs
+            aggregate = item.get("blockers")
+            duplicate_evidence = False
+            if isinstance(aggregate, list) and isinstance(item.get("evidence"), list):
+                flattened = [row for child in aggregate if isinstance(child, dict) for row in child.get("evidence", [])]
+                duplicate_evidence = (sorted(json.dumps(row, sort_keys=True) for row in flattened)
+                    == sorted(json.dumps(row, sort_keys=True) for row in item["evidence"]))
             actual = meaningful(item)
             result = {}
             for key, child in sorted(item.items()):
-                if key in clocks or (key == "startTime" and path[-2:] == ("browser_proof", "stats")) or (key in captures and actual) or (key == "fingerprint" and item.get("reason") and "evidence" in item):
+                if (key in clocks or (key == "startTime" and path[-2:] == ("browser_proof", "stats"))
+                    or (key == "observed_at" and (source_row or path[-1:] == ("real_failure",)))
+                    or (key in {"trace_path", "trace_sha256", "failure_signature"} and item.get("source_slug") in known_source and path[-1:] == ("real_failure",))
+                    or (key in {"response_sha256", "response_bytes"} and source_scope and path[-1:] == ("requests",))
+                    or (key == "output" and structured_source_problem(item.get("source_evidence")))
+                    or (key == "evidence" and duplicate_evidence)
+                    or (key in captures and (actual or covered_probe)) or (key == "fingerprint" and item.get("reason") and "evidence" in item)):
                     continue
                 if key == "reason" and isinstance(item.get("blockers"), list):
                     child = "; ".join(sorted({row.get("reason", "") for row in item["blockers"] if isinstance(row, dict)}))
@@ -138,13 +197,13 @@ def problem_semantic(value, *, task=None, input_sha=None):
                             argument = "--junitxml=<artifact>"
                         command.append(argument)
                     child = command
-                normalized = visit(child, path + (key,))
-                if key in {"blockers", "evidence"} and isinstance(normalized, list):
+                normalized = visit(child, path + (key,), source_scope, covered_slugs)
+                if (key in {"blockers", "evidence", "source_urls"} or (key == "requests" and source_row)) and isinstance(normalized, list):
                     normalized = sorted(normalized, key=lambda row: json.dumps(row, sort_keys=True))
                 result[key] = normalized
             return result
         if isinstance(item, list):
-            return [visit(child, path) for child in item]
+            return [visit(child, path, source_scope, covered_slugs) for child in item]
         if isinstance(item, str) and path and path[-1] in {"output", "stdout", "stderr"}:
             # Content and assertions retain dates/durations; test log timing moves.
             return re.sub(r"\bin \d+(?:\.\d+)?s\b", "in <duration>", item)
@@ -157,6 +216,10 @@ def problem_semantic(value, *, task=None, input_sha=None):
 def problem_hash(value, *, task=None, input_sha=None):
     return digest(json.dumps(problem_semantic(value, task=task, input_sha=input_sha), sort_keys=True,
         ensure_ascii=False, separators=(",", ":")))
+
+
+def source_problem_hash(row):
+    return problem_hash(row)
 
 
 def browser_failure_cases(browser):
@@ -345,8 +408,8 @@ def source_worker(slug):
     def fetch(url, *args, **kwargs):
         entry = {"url": str(url)}
         requests.append(entry)
-        if len(requests) > 24:
-            entry.update(status="UNVERIFIED", error="bounded_probe_budget: 24 requests per source")
+        if len(requests) > MAX_SOURCE_REQUESTS:
+            entry.update(status="UNVERIFIED", error=f"bounded_probe_budget: {MAX_SOURCE_REQUESTS} requests per source")
             raise RuntimeError(entry["error"])
         try:
             response = original(url, *args, **kwargs)
@@ -372,8 +435,9 @@ def source_worker(slug):
               "newest_event_date": max((row["event_date"] for row in rows if row["event_date"]), default=None),
               "samples": rows[:12], "inventory_hash": semantic_hash(rows), "requests": requests,
               "publication_verified": False, "scope": "discovery_only"}
+    result = classify_source_probe(result)
     print("AUTONOMY_SOURCE_JSON=" + json.dumps(result, ensure_ascii=False))
-    return 1 if error or failures else 0
+    return 1 if result["technical_status"] != "ok" else 0
 
 
 def source_urls(workspace, task, family):
@@ -603,6 +667,7 @@ def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeo
             row = read_json_string(lines[-1]) if lines else None
             if not row:
                 row = {"slug": slug, "technical_status": "error", "error": "No completed scoped discovery evidence", "requests": [], "publication_verified": False}
+            row = classify_source_probe(row)
             urls = [entry["url"] for entry in row.get("requests", [])] or source_urls(workspace, task, family)
             evidence["source_urls"] = urls
             return row, evidence
@@ -613,13 +678,12 @@ def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeo
             report["evidence"].append(evidence)
             if row["technical_status"] != "ok" or not row.get("dated"):
                 recovery = None
-                if row["technical_status"] != "ok":
+                if row["technical_status"] not in {"ok", "incomplete"}:
                     failed_urls = [entry["url"] for entry in row.get("requests", []) if entry.get("status") == "FAIL"]
                     source_url = (failed_urls or evidence["source_urls"] or [None])[0]
                     report["real_failure"] = {"kind": "source_runtime", "source_url": source_url,
                                               "source_slug": row["slug"],
-                                              "failure_signature": semantic_hash({"slug": row["slug"], "error": row.get("error"),
-                                                                                   "requests": [x for x in row.get("requests", []) if x.get("status") != "PASS"]}),
+                                              "failure_signature": source_problem_hash(row),
                                               "trace_path": evidence["log_path"], "trace_sha256": evidence["log_sha256"],
                                               "observed_at": datetime.now(timezone.utc).isoformat(), "verified": bool(source_url and (row.get("error") or failed_urls))}
                     module = recovery_module()
@@ -643,8 +707,12 @@ def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeo
                             preserve_partial_proof(report, recovery, logs, "source-recovery-" + row["slug"])
                             continue
                     report["failure_action"] = "blocked"
-                reason = "Scoped live discovery failed: " + row["slug"] if row["technical_status"] != "ok" else "No dated discovery proves current coverage: " + row["slug"]
-                report["blockers"].append(blocker(reason, [evidence, row, {"automated_recovery": recovery or {"attempted": False, "reason": "No test failure or source recovery module installed"}}], urls=evidence["source_urls"]))
+                incomplete = row["technical_status"] == "incomplete"
+                reason = ("Scoped coverage INCOMPLETE: internal request budget reached: " + row["slug"] if incomplete else
+                    "Scoped live discovery failed: " + row["slug"] if row["technical_status"] != "ok" else "No dated discovery proves current coverage: " + row["slug"])
+                skipped = "Instrumentation limit is not a demonstrated source failure" if incomplete else "No test failure or source recovery module installed"
+                report["blockers"].append(blocker(reason, [evidence, row, {"automated_recovery": recovery or {"attempted": False, "reason": skipped}}],
+                    kind="instrumentation" if incomplete else "technical", urls=evidence["source_urls"]))
 
     if family == "editorial" and report["gates"] and all(gate["status"] == "PASS" for gate in report["gates"]):
         try:
