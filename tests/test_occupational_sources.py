@@ -151,3 +151,34 @@ def test_old_ist_article_keeps_historical_date_and_does_not_enter_recent_discove
     assert scout.discover_from_html(listing, lambda url: detail("Una noticia histórica del IST", "02/11/2016")) == []
     assert scout.decisions[0]["event_date"] == "2016-11-02"
     assert scout.decisions[0]["reason"] == "outside_90_day_horizon"
+
+
+def test_mutual_waf_challenge_is_exact_external_blocker_not_selector_failure():
+    scout = CuratedBetaSourceScout("mutual_seguridad")
+    with pytest.raises(SourceDiscoveryError) as exc:
+        scout.discover_from_html('<iframe src="/_Incapsula_Resource?incident_id=example"></iframe>')
+    assert exc.value.code == "external_waf_challenge"
+    assert exc.value.url == scout.cfg["page"]
+
+
+def test_proxy_denial_records_executor_blocker_not_origin_http_status(monkeypatch):
+    from urllib.error import URLError
+    def denied(url):
+        raise URLError("Tunnel connection failed: 403 Forbidden")
+    monkeypatch.setattr("radar_salud.beta_sources.fetch_html", denied)
+    with pytest.raises(SourceDiscoveryError) as exc:
+        CuratedBetaSourceScout("mutual_seguridad").discover()
+    assert exc.value.code == "executor_proxy_denied"
+
+
+def test_blocked_mutual_does_not_prevent_independent_source_discovery():
+    results = {}
+    for slug in ("mutual_seguridad", "achs_seguro_laboral"):
+        scout = CuratedBetaSourceScout(slug)
+        try:
+            html = '<iframe src="/_Incapsula_Resource"></iframe>' if slug == "mutual_seguridad" else f'<a href="{ACHS}guia">Ver detalle</a>'
+            results[slug] = scout.discover_from_html(html, lambda url: detail("Nueva guía de tratamiento en salud mental laboral"))
+        except SourceDiscoveryError as exc:
+            results[slug] = exc.code
+    assert results["mutual_seguridad"] == "external_waf_challenge"
+    assert len(results["achs_seguro_laboral"]) == 1

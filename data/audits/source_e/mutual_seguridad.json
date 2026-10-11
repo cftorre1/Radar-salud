@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-10-11",
+  "listing": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+  "origin_blocker": {"code": "external_waf_challenge", "provider": "Incapsula", "evidence": "Connected web returned an iframe whose target is /_Incapsula_Resource. Root and newsroom both exposed the challenge instead of content.", "external": true},
+  "executor_blocker": {"code": "executor_proxy_denied", "evidence": "URLError: Tunnel connection failed: 403 Forbidden", "external_to_repository": true},
+  "cause": "An access challenge was interpreted as an empty listing and collapsed into RuntimeError. Actual newsroom URL, selectors and dated detail structure cannot be certified from a WAF response.",
+  "repair": "Recognize Incapsula explicitly before parsing. Retain exact blocker code and original URL. Preserve known listing and detail route until real origin HTML is available; no speculative replacement URL.",
+  "windows": {"as_of_chile": "2026-10-11", "30_day_start": "2026-09-11", "90_day_start": "2026-07-13", "inventory_complete": false},
+  "samples": [],
+  "recent_reconciliation": "blocked: no original dated content accessible through available paths",
+  "published": 0,
+  "handoff": "Source owner must provide an approved accessible newsroom/feed or resolve the Incapsula restriction for the collector. Configure executor access to mutual.cl separately. Then verify canonical links, scope article content and walk 90-day inventory; do not mark operational before live replay. Other sources continue independently."
+}

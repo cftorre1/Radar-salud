@@ -108,7 +108,8 @@ class CuratedBetaSourceScout:
         self.slug = slug
         self.cfg = self.SOURCES[slug]
 
-    def discover_from_html(self, html, detail_loader=fetch_html):
+    def discover_from_html(self, html, detail_loader=None):
+        detail_loader = detail_loader or fetch_html
         from .occupational_sources import SOURCES, discover_items
         if self.slug in SOURCES:
             return discover_items(self, html, detail_loader)
@@ -165,6 +166,9 @@ class CuratedBetaSourceScout:
         return out[:30]
 
     def discover(self):
+        from .occupational_sources import SOURCES, fetch_listing
+        if self.slug in SOURCES:
+            return self.discover_from_html(fetch_listing(self, fetch_html))
         return self.discover_from_html(fetch_html(self.cfg["page"]))
 
 

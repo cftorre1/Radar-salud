@@ -14,13 +14,28 @@ from zoneinfo import ZoneInfo
 from .models import RawItem
 from .public_source_pipeline import _date
 
-SOURCES = {"clinicas_achs_salud", "achs_seguro_laboral", "ist"}
+SOURCES = {"clinicas_achs_salud", "achs_seguro_laboral", "ist", "mutual_seguridad"}
 
 
 class SourceDiscoveryError(RuntimeError):
     def __init__(self, code, url, detail=""):
         self.code, self.url, self.detail = code, url, detail
         super().__init__(f"{code}: {url}" + (f" ({detail})" if detail else ""))
+
+
+def assert_not_challenge(html, url):
+    if re.search(r"_Incapsula_Resource|Request unsuccessful.*Incapsula|Incapsula incident ID", html, re.I | re.S):
+        raise SourceDiscoveryError("external_waf_challenge", url, "Incapsula response; not newsroom content")
+
+
+def fetch_listing(scout, loader):
+    try:
+        html = loader(scout.cfg["page"])
+    except Exception as exc:
+        code = "executor_proxy_denied" if "Tunnel connection failed: 403" in str(exc) else "listing_fetch_failed"
+        raise SourceDiscoveryError(code, scout.cfg["page"], type(exc).__name__) from exc
+    assert_not_challenge(html, scout.cfg["page"])
+    return html
 
 
 def chile_today():
@@ -146,7 +161,8 @@ def materiality(role, title, body):
     if re.search(r"feria de bienestar|testimonio|historia de superacion|campana|semana de la|"
                  r"reconoc|premio|conmemor|seminario|congreso|webinar|caminata|pausas activas", headline):
         return False, "campaign_event_testimonial_or_recognition"
-    if re.search(r"\b(?:inaugur|ampli|apertur|traslad|inversion|adqui|habilit|nuevo centro|nueva clinica)", text):
+    if re.search(r"\b(?:inaugur\w*|ampli\w*|apertura|se traslada|traslado temporal|adquier\w*|adquisicion|"
+                 r"habilit\w*|nuevo centro|nueva clinica)\b|inversion de.{0,30}\d", text):
         return True, "capacity_or_investment_change"
     if re.search(r"(?:activa|incorpora|se suman|se suma).{0,180}(?:fonasa|safed|mcc)|"
                  r"(?:fonasa|safed|mcc).{0,180}(?:activa|incorpora|prestaciones|atencion)", text):
@@ -167,6 +183,7 @@ def discover_items(scout, html, detail_loader):
     from .beta_sources import _Links
     from urllib.parse import urljoin, urlparse, urlunparse
 
+    assert_not_challenge(html, scout.cfg["page"])
     class NewsHeadings(_Links):
         """IST news links occur in article headings, not the main navigation."""
         def __init__(self):
@@ -207,8 +224,12 @@ def discover_items(scout, html, detail_loader):
             break
         attempted += 1
         try:
+            detail = detail_loader(url)
+            assert_not_challenge(detail, url)
             article = Article()
-            article.feed(detail_loader(url))
+            article.feed(detail)
+        except SourceDiscoveryError:
+            raise
         except Exception as exc:
             raise SourceDiscoveryError("detail_fetch_failed", url, type(exc).__name__) from exc
         title, published, body, evidence = article.result()
@@ -220,7 +241,7 @@ def discover_items(scout, html, detail_loader):
         if (chile_today() - date.fromisoformat(published)).days > 90:
             decision.update(status="rejected", reason="outside_90_day_horizon")
             continue
-        role = market_role(title, body) if scout.slug != "ist" else "mutuality"
+        role = market_role(title, body) if scout.slug in ("clinicas_achs_salud", "achs_seguro_laboral") else "mutuality"
         expected = scout.cfg["role"]
         if role != expected:
             decision.update(status="rejected", reason="different_market_role", actual_role=role)
