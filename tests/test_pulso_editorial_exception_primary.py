@@ -34,6 +34,25 @@ def original(row):
     return payload.decode(row['charset'])
 
 
+def commercial_health_urls():
+    """A commercial taxonomy alone does not make a primary article about health."""
+    from scripts.audit_pulso_primary_corpus import primary_projection
+    from radar_salud.pulso_source import health_anchor
+    relevant = set()
+    for row in COMMERCIAL:
+        projection = primary_projection(original(row), row['url'])
+        assert projection['canonical_matches_requested']
+        assert projection['primary_body_sha256'] == row['primary_body_sha256']
+        combined = (projection['title'] + ' ' + projection['full_primary_body']
+                    + ' ' + str(projection['keywords']))
+        if health_anchor(combined):
+            relevant.add(row['url'])
+    # The four independently reviewed cold health witnesses cannot disappear
+    # when unrelated commercial originals, such as Ballerinas, are retained.
+    assert cold_urls('explicit_commercial_publisher_section').issubset(relevant)
+    return relevant
+
+
 def test_all_cold_original_witnesses_remain_in_the_expanding_retained_inventory():
     assert_cold_witnesses(MANIFEST['requests'])
     assert len(COLD_RECORDS) == 58
@@ -214,12 +233,17 @@ def test_real_taxonomy_inventory_excludes_opinions_and_holds_commercial_pages_wi
         opened.append(url)
         return original(by_url[url])
     audit = []
+    health_commercial = commercial_health_urls()
+    expected = {row['url'] for row in COMMERCIAL
+                if row['url'] in health_commercial or row in CONFLICTS}
     candidates, coverage = discover_public_feeds(loader, audit, tmp_path/'cache.json',
                                                 today=date(2026, 10, 11), feeds=[('tag', 'salud')])
     assert len(opened) == len(set(opened)) == len(by_url)
-    assert len(candidates) == coverage['new_inventory_urls'] == 4 and coverage['new_health_urls'] == 0
-    assert coverage['metadata_only_sponsored_candidates'] == 3
-    assert coverage['metadata_only_date_conflict_candidates'] == 1
+    assert {raw.url for raw in candidates} == expected
+    assert len(candidates) == coverage['new_inventory_urls'] == len(expected) and coverage['new_health_urls'] == 0
+    assert coverage['metadata_only_sponsored_candidates'] == sum(
+        row['url'] in expected and row not in CONFLICTS for row in COMMERCIAL)
+    assert coverage['metadata_only_date_conflict_candidates'] == sum(row in CONFLICTS for row in COMMERCIAL)
     assert coverage['coverage_complete'] and not coverage['publication_date_coverage_complete']
     assert not any(row['status'] in ('detail_error', 'listing_error') for row in audit)
     traces = {row['url']: row for row in audit if row.get('url') in by_url}
@@ -230,7 +254,10 @@ def test_real_taxonomy_inventory_excludes_opinions_and_holds_commercial_pages_wi
         assert trace['html_sha256'] == row['sha256'] and trace['publication_date'] == row['visible_byline_day']
     for row in COMMERCIAL:
         trace = traces[row['url']]
-        assert trace['status'] == 'discovered_metadata_only'
+        if row['url'] in expected:
+            assert trace['status'] == 'discovered_metadata_only'
+        else:
+            assert trace['status'] == 'excluded' and trace['reason'] == 'no_health_anchor'
         assert trace['publisher_content_classification'] == 'sponsored'
         assert trace['publisher_taxonomy']['canonical_url'] == row['url']
         assert trace['html_sha256'] == row['sha256']
@@ -281,6 +308,10 @@ def test_listing_only_candidates_keep_the_complete_original_trace_contract(row):
     if row in OPINIONS:
         assert candidates == [] and trace['status'] == 'excluded'
         assert trace['reason'] == 'publisher_opinion_taxonomy'
+    elif row in COMMERCIAL and row['url'] not in commercial_health_urls() and row not in CONFLICTS:
+        assert candidates == [] and trace['status'] == 'excluded'
+        assert trace['reason'] == 'no_health_anchor'
+        assert trace['publisher_content_classification'] == 'sponsored'
     else:
         assert len(candidates) == 1
         assert trace['publication_date_source'] == candidates[0].metadata['publication_date_source']
