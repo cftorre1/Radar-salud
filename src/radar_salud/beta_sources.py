@@ -66,6 +66,7 @@ class CuratedBetaSourceScout:
             "hosts": ("www.achs.cl", "achs.cl"),
             "path": r"/centro-de-noticias/noticia/20\d{2}/[^/]+/?",
             "role": "provider_achs",
+            "provider_identity_url": "https://www.achssalud.cl/areasdeatencion/clinicas",
         },
         "achs_seguro_laboral": {
             "name": "Achs Seguro Laboral",

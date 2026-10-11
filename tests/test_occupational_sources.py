@@ -79,6 +79,29 @@ def test_provider_absence_in_listing_is_valid_zero_not_runtime_error():
     assert scout.decisions[0]["reason"] == "different_market_role"
 
 
+def test_center_changes_and_incidental_clinic_routing_are_not_clinic_news():
+    from radar_salud.occupational_sources import market_role
+    assert market_role("Master Plan Achs Salud: modernizamos centros y ampliamos servicios",
+                       "Nuevo Centro San Javier. Fuera de horario acudir a Clínica Lircay Achs Salud.") == "provider_achs_centers"
+
+
+def test_clinic_story_after_five_mutual_stories_remains_discoverable(monkeypatch):
+    from radar_salud.beta_sources_fast import FastCuratedBetaSourceScout
+    listing = "".join(f'<a href="{ACHS}guia-{n}">Ver detalle</a>' for n in range(5))
+    listing += f'<a href="{ACHS}safed">Ver detalle</a>'
+    def load(url):
+        if url.endswith("centro-de-noticias"):
+            return listing
+        if url.endswith("safed"):
+            return detail("Clínicas Achs Salud activa atención SAFED", "28/08/2026",
+                          "Clínicas Achs Salud activa SAFED de Fonasa en Clínica Atacama. " * 4)
+        return detail("Nueva guía de tratamiento en salud mental laboral")
+    # Pass the loader explicitly because the base discover_from_html default is bound.
+    monkeypatch.setattr("radar_salud.beta_sources.fetch_html", load)
+    monkeypatch.setattr(CuratedBetaSourceScout, "discover", lambda self: self.discover_from_html(load(self.cfg["page"]), load))
+    assert len(FastCuratedBetaSourceScout("clinicas_achs_salud").discover()) == 1
+
+
 @pytest.mark.parametrize("title", [
     "Campaña por salud mental laboral", "Testimonio de rehabilitación",
     "Feria de bienestar con adherentes", "Semana de la seguridad con prevención",
