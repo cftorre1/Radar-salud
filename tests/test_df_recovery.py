@@ -416,3 +416,32 @@ def test_single_clock_or_incident_time_never_becomes_df_publication_date():
     assert parse_df_article('<article><time datetime="2026-10-08">Fecha del incidente</time></article>', URL)['event_date'] is None
     assert parse_df_article('<header><time datetime="2026-10-11">Reloj</time></header>', URL)['event_date'] is None
     assert parse_df_article('<time itemprop="datePublished" datetime="2026-10-10">Publicado</time>', URL)['event_date'] == '2026-10-10'
+
+
+def test_retained_withdrawn_history_does_not_acknowledge_reassessment_as_published(tmp_path):
+    from radar_salud.df_recovery import repair_contaminated_evidence, published_history_urls, resume_withdrawn_reassessments
+    queue = PendingQueue(tmp_path / 'q.json')
+    raw = _raw(dated=True);raw.metadata['article_content_source'] = 'visible_article'
+    queue.discover('diario_financiero', [raw], now=CAPTURE)
+    key = fingerprint(raw);queue.finish(key, 'published', now=CAPTURE)
+    history = [{'source_url': URL, 'title': 'Clínica San Carlos'}]
+    corrected = _raw(dated=True);corrected.metadata['article_content_source'] = 'df_primary_body'
+    repair_contaminated_evidence(queue, [corrected], history, NOW)
+    queue.discover('diario_financiero', [corrected], now=NOW, published_urls=published_history_urls(history))
+    assert queue.items[key]['status'] == 'pending'
+    # Exact recovery of the acknowledgement seen in runtime38113493822.
+    queue.items[key].update(status='superseded', reason='already_published_in_history')
+    assert resume_withdrawn_reassessments(queue, history, NOW) == [key]
+    assert queue.items[key]['status'] == 'pending'
+    assert resume_withdrawn_reassessments(queue, history, NOW) == []
+    assert published_history_urls([{'source_url': URL, 'editorial_decision': 'accept'}]) == [URL]
+
+
+def test_verified_body_repair_unblocks_retry_without_changing_publication_day(tmp_path):
+    queue = PendingQueue(tmp_path / 'q.json')
+    raw = _raw(dated=True);raw.metadata['page_text'] = 'Short body'
+    queue.discover('diario_financiero', [raw], now=CAPTURE)
+    key = fingerprint(raw);queue.start(key);queue.finish(key, 'retry', 'df_insufficient_article_evidence', now=CAPTURE)
+    queue.discover('diario_financiero', [_raw(dated=True)], now=NOW)
+    assert queue.items[key]['status'] == 'pending'
+    assert queue.items[key]['retry_at'] is None

@@ -5,6 +5,29 @@ from dataclasses import asdict
 from .df_article import article_url
 
 
+def published_history_urls(history):
+    """A retained but withdrawn capture is evidence, not a published verdict."""
+    return [row['source_url'] for row in history if row.get('source_url') and not (
+        row.get('df_body_reaudit_observations') and row.get('editorial_decision')=='reject')]
+
+
+def resume_withdrawn_reassessments(queue, history, now):
+    """Recover exact old acknowledgements that mistakenly treated withdrawn history as published."""
+    withdrawn={article_url(row['source_url']) for row in history if row.get('df_body_reaudit_status')=='pending'
+               and row.get('df_body_reaudit_reason')=='df_primary_body_reassessment_required'}
+    changed=[]
+    for key,item in queue.items.items():
+        if (item.get('source')=='diario_financiero' and item['status']=='superseded'
+                and item.get('reason')=='already_published_in_history'
+                and item['raw'].get('metadata',{}).get('df_body_reaudit_version')==1
+                and article_url(item['raw']['url']) in withdrawn):
+            _remember(item,now,'withdrawn_history_is_not_published')
+            item.update(status='pending',reason='df_primary_body_reassessment_required',retry_at=None,updated_at=now.isoformat())
+            changed.append(key)
+    if changed:queue.save()
+    return changed
+
+
 def _remember(item, now, action):
     observation = {k: deepcopy(v) for k, v in item.items() if k != "recovery_observations"}
     item.setdefault("recovery_observations", []).append({"at": now.isoformat(), "action": action, "before": observation})
@@ -51,7 +74,9 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
         enriched["metadata"].pop("fetch_error", None)
         capture_repaired=(item["status"]=="retry" and item.get("reason") in
                           ("df_detail_fetch_failed","df_missing_publication_date","df_publication_date_conflict","df_insufficient_article_evidence")
-                          and original.get("event_date")!=raw.event_date)
+                          and (original.get("event_date")!=raw.event_date
+                               or original.get('metadata',{}).get('fetch_error')
+                               or len(original.get('metadata',{}).get('page_text',''))<160))
         new_status = "pending" if legacy_reject or capture_repaired else item["status"]
         reason = None if legacy_reject or capture_repaired else item.get("reason")
         if beyond_backfill_horizon(raw, now):

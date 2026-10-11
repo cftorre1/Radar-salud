@@ -19,6 +19,7 @@ from zoneinfo import ZoneInfo
 
 from radar_salud import engine_cli, source_scouts, public_source_pipeline
 from radar_salud.df_article import parse_df_article, article_url
+from radar_salud.df_recovery import published_history_urls, resume_withdrawn_reassessments
 from radar_salud.history import load_history, save_history
 from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue, atomic_json
@@ -200,13 +201,14 @@ def main():
             raw.metadata.update(original_sha256=original.get("sha256"),original_captured_at=original.get("captured_at"))
         if args.repair_contaminated_bodies:
             from radar_salud.df_recovery import repair_contaminated_evidence
+            report["withdrawn_reassessment_recovery"]=resume_withdrawn_reassessments(queue,history,now)
             report["body_reaudit"]=repair_contaminated_evidence(queue,raw_items,history,now)
             save_history(root/"data/history/superintendencia_signals.json",history)
             atomic_json(out,report)
         watermarks = json.loads((root / "data/state/discovery_watermarks.json").read_text())
         if raw_items:
             queue.discover("diario_financiero", raw_items, now=now, last_discovered_at=watermarks.get("diario_financiero"),
-                           published_urls=[row["source_url"] for row in history if row.get("source_url")])
+                           published_urls=published_history_urls(history))
         # Actual core engine, including real AI client and existing budget guardrails.
         # Missing credentials produce retry, never a mocked or skipped live PASS.
         argv = sys.argv

@@ -8,6 +8,7 @@ from .sources import load_sources,source_index
 from .superintendencia_pipeline import process_superintendencia_detail
 from .distribution import UserPlan,choose_distribution
 from .history import load_history,merge_history,save_history
+from .df_recovery import published_history_urls
 from .regulatory import SuperintendenciaNormativaScout
 from .regulatory_pipeline import process_superintendencia_normativa
 from .source_scouts import SusesoNormativeScout,SusesoNewsScout,SusesoFiscalizacionScout,DfHealthScout,FonasaDataHubScout,FonasaNewsScout,IspSurveillanceScout,IspAnamedAlertScout,ClinicasChileScout,CorporateNewsroomScout,DeisResourceScout
@@ -84,7 +85,7 @@ def main():
             seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw))}
             checked_at=datetime.now(timezone.utc).isoformat()
             added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name),
-                                 published_urls=[row["source_url"] for row in history if row.get("source_url")])
+                                 published_urls=published_history_urls(history))
             watermarks[name]=checked_at
             atomic_json(watermark_path,watermarks)
             discoveries[name]=(len(items),added,None)
@@ -143,7 +144,7 @@ def main():
         counts=queue.counts(name)
         df_evidence=({**discovery_evidence.get(name,{}),
             "last_published_event_at":max([row.get("event_date") for row in history
-                if row.get("source_name")=="Diario Financiero" and row.get("event_date")],default=None)}
+                if row.get("source_name")=="Diario Financiero" and row.get("event_date") and row.get("editorial_decision")!="reject"],default=None)}
             if name=="diario_financiero" else None)
         health_record(root,name,name="Diario Financiero" if name=="diario_financiero" else name.replace("_"," ").title(),discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
