@@ -1,0 +1,753 @@
+{
+  "schema_version": 1,
+  "source": "mutual_seguridad",
+  "audit_date_chile": "2026-10-11",
+  "checked_at_utc": "2026-10-11T05:28:09.909Z",
+  "branch": "codex/e-salud-laboral-20261011",
+  "pr": 12,
+  "scope": "Read-only discovery and endpoint probes; no application, source_health or queue changes; no WAF challenge solving, no proxy/TLS bypass, no form submission.",
+  "decision": "PENDING_CROSS_ENVIRONMENT_VALIDATION",
+  "limitations": {
+    "codex_runtime": "Runner transport result to be recorded separately; environment restriction alone cannot establish EXTERNAL_BLOCKER for the source.",
+    "webtool": "Search text and web opens can be cached/indexed. Crawl labels are retained and none are represented as origin wire capture. 'Not accessible via this tool' does not prove endpoint absence.",
+    "dates": "No current publication date certified from Mutual original document/news bytes in this subtask. Edition periods, report coverage, WCM pagination, financial approval dates, crawled time and business event dates are not substituted for publication.",
+    "rss_api": "No declared public RSS/API verified. /feed/ is an explicitly unverified conventional candidate. IBM WCM connect is rendered content/attachment route, not a public API contract.",
+    "memoria_2025": "No verified exact 2025 annual report URL discovered; search lack of result does not prove absence."
+  },
+  "actions_recommendation": "GET prioritized exact official URLs on isolated GitHub Actions runner using TLS verification and ordinary bot/browser User-Agents. Respect robots restrictions. Persist status, redirects, final URL, content type, content SHA256 and WAF markers; require real HTML/article date or valid PDF bytes. Compare with Codex environment before any source-level blocker conclusion.",
+  "routes": [
+    {
+      "url": "https://www.mutual.cl/",
+      "category": "primary_portal",
+      "attribution": "Current canonical Mutual institutional host; linked by official ww2.mutual.cl portal.",
+      "web": [
+        {
+          "operation": "open",
+          "reference": "turn668265view0",
+          "crawl_label": "today",
+          "content_type": "text/html",
+          "result": "one iframe; institutional content unavailable through this extraction",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "priority": 1
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "category": "primary_newsroom",
+      "attribution": "Existing configured source and indexed current IBM portal news route.",
+      "web": [
+        {
+          "operation": "open",
+          "reference": "turn173198view0",
+          "crawl_label": "today",
+          "content_type": "text/html",
+          "result": "one iframe; no listing/article/date body",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "priority": 1
+    },
+    {
+      "url": "https://www.mutual.cl/robots.txt",
+      "category": "robots_policy",
+      "attribution": "Standard policy endpoint at exact institutional host; candidate, policy contents not yet known.",
+      "web": [
+        {
+          "operation": "open",
+          "reference": "turn668265view1",
+          "result": "not accessible via this tool",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "priority": 1
+    },
+    {
+      "url": "https://www.mutual.cl/sitemap.xml",
+      "category": "sitemap_candidate",
+      "attribution": "Standard discovery endpoint at exact institutional host; candidate, sitemap not verified.",
+      "web": [
+        {
+          "operation": "open",
+          "reference": "turn173198view3",
+          "crawl_label": "last month",
+          "content_type": "text/html",
+          "result": "one iframe, not XML sitemap",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "priority": 1
+    },
+    {
+      "url": "https://www.mutual.cl/feed/",
+      "category": "feed_candidate",
+      "attribution": "Standard RSS candidate at exact institutional host; no rel=alternate or official feed declaration captured.",
+      "web": [
+        {
+          "operation": "open",
+          "reference": "turn173198view4",
+          "result": "not accessible via this tool",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "priority": 2
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/67eeddbd-d49c-4e55-bbf5-23b32e08c240/memoria-mutual-2024.pdf?MOD=AJPERES",
+      "category": "annual_report_pdf",
+      "attribution": "Search indexes this exact institutional WCM attachment as Memoria Integrada Mutual de Seguridad 2024.",
+      "web": [
+        {
+          "operation": "search",
+          "reference": "turn654998search0",
+          "published_label": "1.3 years ago",
+          "result": "indexed report text; includes financial statements approved 27 February 2025",
+          "fresh_origin_response_proven": false
+        },
+        {
+          "operation": "open",
+          "reference": "turn173198view1",
+          "crawl_label": "2 days ago",
+          "content_type": "text/html",
+          "result": "one iframe; actual PDF bytes not captured",
+          "fresh_origin_response_proven": false
+        },
+        {
+          "operation": "search",
+          "reference": "turn792720search0",
+          "published_label": "1.3 years ago",
+          "result": "Indexed section8.15 states publication in May2025; no exact day. This remains search/index evidence, not original PDF capture.",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "2024 is reporting coverage. Indexed section8.15 explicitly names publication May2025 but no day, which cannot certify YYYY-MM-DD. 27February2025 financial approval is a separate event.",
+      "priority": 1
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/f8d55034-e8db-44c2-a5cc-f46874de4189/memoria-mutual-2023.pdf?MOD=AJPERES",
+      "category": "annual_report_pdf",
+      "attribution": "Exact official WCM attachment indexed as Memoria Integrada 2023.",
+      "web": [
+        {
+          "operation": "search",
+          "reference": "turn654998search1",
+          "published_label": "2.1 years ago",
+          "result": "indexed report text",
+          "fresh_origin_response_proven": false
+        },
+        {
+          "operation": "open",
+          "reference": "turn519418view0",
+          "crawl_label": "5 days ago",
+          "content_type": "text/html",
+          "result": "one iframe; actual PDF bytes not captured",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "2023 is report coverage, not day of publication.",
+      "priority": 2
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/25690125-4ebe-4af7-aa06-3123a6bbb225/informativo-juridico-agosto-2024.pdf?CACHEID=ROOTWORKSPACE-25690125-4ebe-4af7-aa06-3123a6bbb225-p6r12TV&CONVERT_TO=url&MOD=AJPERES",
+      "category": "legal_bulletin_pdf",
+      "attribution": "Exact official WCM legal bulletin attachment present in search index.",
+      "web": [
+        {
+          "operation": "search",
+          "reference": "turn668265search28",
+          "published_label": "2.1 years ago",
+          "result": "indexed PDF text",
+          "fresh_origin_response_proven": false
+        },
+        {
+          "operation": "open",
+          "reference": "turn519418view1",
+          "crawl_label": "last week",
+          "content_type": "text/html",
+          "result": "one iframe; actual PDF bytes not captured",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "Edition month and cited law dates are not certified bulletin publication dates.",
+      "priority": 2
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/ccb10149-a893-4770-ab9b-fcb4db5a2689/preguntas-frecuentes-ds44-v1.pdf?CVID=plO5eJk&MOD=AJPERES",
+      "category": "prevention_guidance_pdf",
+      "attribution": "Exact institutional WCM PDF indexed with Mutual identity and DS44 guidance.",
+      "web": [
+        {
+          "operation": "search",
+          "reference": "turn581668search9",
+          "published_label": "1.7 years ago",
+          "result": "indexed PDF guidance",
+          "fresh_origin_response_proven": false
+        },
+        {
+          "operation": "open",
+          "reference": "turn372493view1",
+          "crawl_label": "yesterday",
+          "content_type": "text/html",
+          "result": "one iframe; actual PDF bytes not captured",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "DS44 reference, filename and search relative age do not establish publication day.",
+      "priority": 2
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/7159845f-d4b9-4570-9538-88350dee6314/informativo-02-23-circular-3705-modifica-proceso-inv-acc-graves-y-acrm.pdf?CACHEID=ROOTWORKSPACE-7159845f-d4b9-4570-9538-88350dee6314-oEE6uKd&CONVERT_TO=url&MOD=AJPERES",
+      "category": "official_communication_pdf",
+      "attribution": "Exact institutional WCM attachment indexed as Gerencia de Prevención de Riesgos communication about Circular3705.",
+      "web": [
+        {
+          "operation": "search",
+          "reference": "turn581668search6",
+          "published_label": "3.1 years ago",
+          "result": "indexed communication, archival",
+          "fresh_origin_response_proven": false
+        },
+        {
+          "operation": "open",
+          "reference": "turn372493view2",
+          "crawl_label": "last week",
+          "content_type": "text/html",
+          "result": "one iframe; actual PDF bytes not captured",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "Circular date and period in filename are not certified communication publication day.",
+      "priority": 2
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/Carga%20Cron%20Noticias/Noticias/noticias-contenido-cron/cchc-y-mutual-de-seguridad-renuevan-compromiso-con-la-seguridad-y-salud-laboral-para-2025-2026?WCM_PI=1&WCM_Page.e88ea003-7166-4115-b764-08f0dfcbdf99=60",
+      "category": "wcm_rendered_news_alternative",
+      "attribution": "Exact public WCM news-content route discovered in institutional domain search index; not an API or RSS feed.",
+      "web": [
+        {
+          "operation": "search",
+          "reference": "turn250870search0",
+          "crawl_label": "9 months ago",
+          "result": "indexed article",
+          "fresh_origin_response_proven": false
+        },
+        {
+          "operation": "open",
+          "reference": "turn881592view1",
+          "crawl_label": "7 months ago",
+          "content_type": "text/html",
+          "result": "article title/body and other-news pagination rendered; no publication date extracted; possible cached text",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "2025–2026 describes the work plan's coverage, not article publication. WCM_Page is pagination, not date.",
+      "priority": 1
+    },
+    {
+      "url": "https://ww2.mutual.cl/",
+      "category": "official_legacy_subdomain",
+      "attribution": "Mutual-identifying institutional portal on exact mutual.cl subdomain; links www.mutual.cl enterprise/worker surfaces.",
+      "web": [
+        {
+          "operation": "open",
+          "reference": "turn173198view2",
+          "crawl_label": "today",
+          "content_type": "text/html",
+          "result": "legacy menu content and explicit error in news widget",
+          "excerpt": "Error: noticias home is currently unavailable.",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "Page crawl time does not certify current releases; widget error prevents newsroom fallback claim.",
+      "priority": 1
+    },
+    {
+      "url": "https://ww2.mutual.cl/memorias.aspx",
+      "category": "legacy_annual_report_listing",
+      "attribution": "Exact href obtained by clicking Memorias y Reportes de Sustentabilidad in official ww2 portal.",
+      "web": [
+        {
+          "operation": "click",
+          "reference": "turn881592view2",
+          "crawl_label": "today",
+          "content_type": "text/html",
+          "reported_final_url": "https://ww2.mutual.cl/",
+          "result": "webtool reports redirect to legacy home; archive listing not observed; HTTP redirect status/chain unavailable",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "priority": 1
+    },
+    {
+      "url": "https://ww2.mutual.cl/EstadosFinancieros.aspx",
+      "category": "legacy_financial_listing",
+      "attribution": "Exact Información Financiera link in official ww2 portal.",
+      "web": [
+        {
+          "operation": "click",
+          "reference": "turn881592view3",
+          "crawl_label": "yesterday",
+          "content_type": "text/html",
+          "result": "financial listing shown, entries cover 2014–2015 only; no current dated release verified",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "Statement reporting periods in titles do not establish date of publication.",
+      "priority": 1
+    },
+    {
+      "url": "https://www.mutual.cl/prevencion_riesgos/BoletinaccidenteconResultadodeMuerte.aspx",
+      "category": "fatal_accident_bulletin_listing",
+      "attribution": "Exact Boletín Accidentes Fatales link in official ww2 portal.",
+      "web": [
+        {
+          "operation": "click",
+          "reference": "turn881592view4",
+          "crawl_label": "today",
+          "content_type": "text/html",
+          "result": "one iframe; bulletin listing unavailable via extraction",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "priority": 1
+    },
+    {
+      "url": "https://ww2.mutual.cl/form_mut/form_mutual_newslewtter.html",
+      "category": "legacy_newsletter_subscription",
+      "attribution": "Exact Suscripciones link in official ww2 portal; read-only GET, no form submitted.",
+      "web": [
+        {
+          "operation": "click",
+          "reference": "turn881592view5",
+          "tool_reported_http_status": 404,
+          "result": "Not Found",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "Subscription endpoint would not establish feed or publication inventory.",
+      "priority": 3
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/proceso.php",
+      "category": "official_public_payment_process_notice",
+      "attribution": "Exact mutual.cl subdomain with Mutual-identifying public notice and links to institutional host.",
+      "web": [
+        {
+          "operation": "search",
+          "reference": "turn581668search2",
+          "crawl_label": "today",
+          "result": "indexed 2026 process FAQ",
+          "fresh_origin_response_proven": false
+        },
+        {
+          "operation": "open",
+          "reference": "turn372493view0",
+          "crawl_label": "last month",
+          "content_type": "text/html",
+          "result": "public FAQ and attached form links shown; may be cached; no forms submitted or personal data requested",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "April2021–March2026 is refund coverage; 1 June2026 consultation opening and 10 July2026 payment are event dates, not certified publication date.",
+      "priority": 1
+    },
+    {
+      "url": "https://medicoscontralores.mutual.cl/",
+      "category": "official_authenticated_patient_service",
+      "attribution": "Mutual-identifying exact subdomain discovered by institutional domain search.",
+      "web": [
+        {
+          "operation": "open",
+          "reference": "turn881592view0",
+          "crawl_label": "2 days ago",
+          "content_type": "text/html",
+          "result": "patient RUT/key authentication form; no public newsroom or data documents",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "decision": "Excluded as public-data fallback; no authentication attempted.",
+      "priority": 3
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_ADHERENTES.pdf",
+      "category": "official_public_blank_form_pdf",
+      "attribution": "Exact PDF attachment link from the Mutual-identifying public process FAQ on proceso-devolucion-masiva.mutual.cl. No forms submitted.",
+      "web": [
+        {
+          "operation": "click",
+          "reference": "turn792720view0",
+          "crawl_label": "8 months ago",
+          "content_type": "application/pdf",
+          "pages": 3,
+          "result": "employer blank repayment request form rendered; may be cached and no publication date.",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "Empty Fecha fields and requested coverage periods are form fields, not publication date.",
+      "decision": "Useful transport/PDF-content contrast for official subdomain only; not a dated intelligence release.",
+      "priority": 1
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_Trabajadores.pdf",
+      "category": "official_public_blank_form_pdf",
+      "attribution": "Exact PDF attachment link from the Mutual-identifying public process FAQ on proceso-devolucion-masiva.mutual.cl. No forms submitted.",
+      "web": [
+        {
+          "operation": "click",
+          "reference": "turn792720view1",
+          "crawl_label": "8 months ago",
+          "content_type": "application/pdf",
+          "pages": 3,
+          "result": "independent worker blank repayment request form rendered; may be cached and no publication date.",
+          "fresh_origin_response_proven": false
+        }
+      ],
+      "date_semantics": "Empty Fecha fields and requested coverage periods are form fields, not publication date.",
+      "decision": "Useful transport/PDF-content contrast for official subdomain only; not a dated intelligence release.",
+      "priority": 1
+    }
+  ],
+  "executor_probes": [
+    {
+      "url": "https://www.mutual.cl/",
+      "checked_at_utc": "2026-10-11T05:28:33.402202+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/",
+      "checked_at_utc": "2026-10-11T05:28:33.417518+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "checked_at_utc": "2026-10-11T05:28:33.427704+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "checked_at_utc": "2026-10-11T05:28:33.437956+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/robots.txt",
+      "checked_at_utc": "2026-10-11T05:28:33.448092+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/robots.txt",
+      "checked_at_utc": "2026-10-11T05:28:33.457957+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/sitemap.xml",
+      "checked_at_utc": "2026-10-11T05:28:33.468065+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/sitemap.xml",
+      "checked_at_utc": "2026-10-11T05:28:33.477725+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/67eeddbd-d49c-4e55-bbf5-23b32e08c240/memoria-mutual-2024.pdf?MOD=AJPERES",
+      "checked_at_utc": "2026-10-11T05:28:33.487631+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/67eeddbd-d49c-4e55-bbf5-23b32e08c240/memoria-mutual-2024.pdf?MOD=AJPERES",
+      "checked_at_utc": "2026-10-11T05:28:33.502206+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/Carga%20Cron%20Noticias/Noticias/noticias-contenido-cron/cchc-y-mutual-de-seguridad-renuevan-compromiso-con-la-seguridad-y-salud-laboral-para-2025-2026?WCM_PI=1&WCM_Page.e88ea003-7166-4115-b764-08f0dfcbdf99=60",
+      "checked_at_utc": "2026-10-11T05:28:33.513850+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/Carga%20Cron%20Noticias/Noticias/noticias-contenido-cron/cchc-y-mutual-de-seguridad-renuevan-compromiso-con-la-seguridad-y-salud-laboral-para-2025-2026?WCM_PI=1&WCM_Page.e88ea003-7166-4115-b764-08f0dfcbdf99=60",
+      "checked_at_utc": "2026-10-11T05:28:33.523957+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://ww2.mutual.cl/",
+      "checked_at_utc": "2026-10-11T05:28:33.533178+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://ww2.mutual.cl/",
+      "checked_at_utc": "2026-10-11T05:28:33.542868+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://ww2.mutual.cl/memorias.aspx",
+      "checked_at_utc": "2026-10-11T05:28:33.552729+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://ww2.mutual.cl/memorias.aspx",
+      "checked_at_utc": "2026-10-11T05:28:33.562135+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://ww2.mutual.cl/EstadosFinancieros.aspx",
+      "checked_at_utc": "2026-10-11T05:28:33.571858+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://ww2.mutual.cl/EstadosFinancieros.aspx",
+      "checked_at_utc": "2026-10-11T05:28:33.581267+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/prevencion_riesgos/BoletinaccidenteconResultadodeMuerte.aspx",
+      "checked_at_utc": "2026-10-11T05:28:33.590960+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/prevencion_riesgos/BoletinaccidenteconResultadodeMuerte.aspx",
+      "checked_at_utc": "2026-10-11T05:28:33.600779+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/proceso.php",
+      "checked_at_utc": "2026-10-11T05:28:33.610468+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/proceso.php",
+      "checked_at_utc": "2026-10-11T05:28:33.620257+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/feed/",
+      "checked_at_utc": "2026-10-11T05:28:33.630310+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.mutual.cl/feed/",
+      "checked_at_utc": "2026-10-11T05:28:33.640297+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "http://www.mutual.cl/",
+      "checked_at_utc": "2026-10-11T05:28:33.661069+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "status": 403,
+      "headers": {
+        "content-length": "16",
+        "content-type": "text/plain",
+        "date": "Sun, 11 Oct 2026 05:28:33 GMT",
+        "server": "envoy",
+        "connection": "close"
+      },
+      "response_body": "Domain forbidden"
+    },
+    {
+      "url": "http://www.mutual.cl/",
+      "checked_at_utc": "2026-10-11T05:28:33.671001+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "status": 403,
+      "headers": {
+        "content-length": "16",
+        "content-type": "text/plain",
+        "date": "Sun, 11 Oct 2026 05:28:33 GMT",
+        "server": "envoy",
+        "connection": "close"
+      },
+      "response_body": "Domain forbidden"
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_ADHERENTES.pdf",
+      "checked_at_utc": "2026-10-11T05:29:17.484970+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_ADHERENTES.pdf",
+      "checked_at_utc": "2026-10-11T05:29:17.498988+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_Trabajadores.pdf",
+      "checked_at_utc": "2026-10-11T05:29:17.509257+00:00",
+      "method": "GET",
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_Trabajadores.pdf",
+      "checked_at_utc": "2026-10-11T05:29:17.519054+00:00",
+      "method": "GET",
+      "user_agent": "Mozilla/5.0",
+      "tls_verification": "ssl.create_default_context; enabled",
+      "proxy_configuration": "environment unchanged; no bypass",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    }
+  ],
+  "recommended_action_urls": [
+    "https://www.mutual.cl/",
+    "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+    "https://www.mutual.cl/robots.txt",
+    "https://www.mutual.cl/sitemap.xml",
+    "https://www.mutual.cl/portal/wcm/connect/67eeddbd-d49c-4e55-bbf5-23b32e08c240/memoria-mutual-2024.pdf?MOD=AJPERES",
+    "https://www.mutual.cl/portal/wcm/connect/Carga%20Cron%20Noticias/Noticias/noticias-contenido-cron/cchc-y-mutual-de-seguridad-renuevan-compromiso-con-la-seguridad-y-salud-laboral-para-2025-2026?WCM_PI=1&WCM_Page.e88ea003-7166-4115-b764-08f0dfcbdf99=60",
+    "https://ww2.mutual.cl/",
+    "https://ww2.mutual.cl/memorias.aspx",
+    "https://ww2.mutual.cl/EstadosFinancieros.aspx",
+    "https://www.mutual.cl/prevencion_riesgos/BoletinaccidenteconResultadodeMuerte.aspx",
+    "https://proceso-devolucion-masiva.mutual.cl/proceso.php",
+    "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_ADHERENTES.pdf",
+    "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_Trabajadores.pdf"
+  ],
+  "executor_summary": {
+    "attempts": 30,
+    "environment": "Codex managed executor",
+    "origin_tls_verified": false,
+    "origin_response_verified": false,
+    "result": "All HTTPS requests fail at proxy CONNECT 403; HTTP response is envoy 403 Domain forbidden. This demonstrates environment policy only, not source unavailability.",
+    "source_blocker_decision": "PENDING_GITHUB_ACTIONS_CONTRAST"
+  }
+}
