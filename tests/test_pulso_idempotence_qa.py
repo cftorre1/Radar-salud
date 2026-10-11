@@ -49,7 +49,8 @@ def replay(tmp_path):
     fingerprint = helper.runtime_fingerprint(ROOT)
     cohort_raw = (ROOT / qa.PROCESSING_COHORT_PATH).read_bytes()
     cohort = json.loads(cohort_raw)
-    paths = set(fingerprint["files"]) | {qa.PROCESSING_COHORT_PATH, qa.INCREMENTAL_REVIEW_PATH}
+    paths = set(fingerprint["files"]) | {qa.PROCESSING_COHORT_PATH, qa.INCREMENTAL_REVIEW_PATH,
+                                       qa.INCREMENTAL_ADDENDUM_PATH}
     paths.update(cohort["inputs"][key]["path"] for key in
                  ("frozen_control", "independent_primary_review", "expanded_negative_review"))
     for relative in paths:
@@ -72,6 +73,13 @@ def replay(tmp_path):
         key = original["queue_fingerprint"]
         item = deepcopy(current[key])
         item.update(status="rejected", attempts=1)
+        if "chomali-destaca-alza-de-47" in original["url"]:
+            from radar_salud.models import RawItem
+            from radar_salud.pulso_incremental_review import apply_incremental_review
+            candidate = RawItem(**deepcopy(item["raw"]))
+            candidate.metadata["article_body_complete"] = True
+            assert apply_incremental_review(candidate)
+            item["raw"] = deepcopy(candidate.__dict__)
         item["raw"]["metadata"].pop("editorial_review", None)
         item["raw"]["metadata"]["editorial_assessment"] = dict(decision="rejected", reason="synthetic_unit_rejection")
         context["queue"][key] = item
@@ -85,6 +93,8 @@ def replay(tmp_path):
         for key in ("frozen_control", "independent_primary_review", "expanded_negative_review")}
     if any(item["raw"]["metadata"].get("incremental_review") for item in context["queue"].values()):
         context["referenced_proof_files"][qa.INCREMENTAL_REVIEW_PATH] = qa.INCREMENTAL_REVIEW_SHA256
+    if any(item["raw"]["metadata"].get("incremental_review_addendum") for item in context["queue"].values()):
+        context["referenced_proof_files"][qa.INCREMENTAL_ADDENDUM_PATH] = qa.INCREMENTAL_ADDENDUM_SHA256
     write_context(tmp_path, context)
     baseline = helper.capture_baseline(context, now=NOW.replace(minute=2))
     after = unit.unit_second_core(context)
@@ -135,12 +145,13 @@ def test_unverified_duplicate_hold_map_cannot_grant_replay_acceptance(replay):
     assert failures[0]["reason"] == "reviewed_duplicate_hold_requires_independent_target_validation"
 
 
-def test_incremental_review_original_file_is_immutable_in_replay(replay):
-    path = replay["root"] / qa.INCREMENTAL_REVIEW_PATH
+@pytest.mark.parametrize("relative", [qa.INCREMENTAL_REVIEW_PATH, qa.INCREMENTAL_ADDENDUM_PATH])
+def test_incremental_review_original_file_is_immutable_in_replay(replay, relative):
+    path = replay["root"] / relative
     path.write_bytes(path.read_bytes() + b" ")
     checked, failures = qa.verify_genuine_idempotence(**replay)
     assert checked == {}
-    assert failures[0]["reason"] == "replay_incremental_review_reference_unverified"
+    assert failures[0]["reason"] == "incremental_addendum_immutable_review_changed"
 
 
 @pytest.mark.parametrize("attack", ["missing_baseline", "payload", "failed_paid_qa", "wrong_paid_cohort",

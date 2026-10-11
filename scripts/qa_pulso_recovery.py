@@ -30,6 +30,8 @@ INDEPENDENT_EDITORIAL_PATH = "data/audits/pulso_first_real_all32_semantic_review
 INDEPENDENT_EDITORIAL_SHA256 = "a6ddc143c4cedb1bdc77bb1eb07ce80f25630a36bdde9ac68d49e2e2fe44d48f"
 INCREMENTAL_REVIEW_PATH = "data/audits/pulso_incremental_review_2026_10_11.json"
 INCREMENTAL_REVIEW_SHA256 = "e5cee8d34839a905e391e85d6187db8bcdae09c0dde7f688cc71a9f04f093ddd"
+INCREMENTAL_ADDENDUM_PATH = "data/audits/pulso_oct5_incremental_addendum_2026_10_11.json"
+INCREMENTAL_ADDENDUM_SHA256 = "589ba50032521924803ef8ce94f40e3854930edcadddf7fc1223d9df81714160"
 WINDOWS = {"30": ("2026-09-11", "2026-10-10", 29), "90": ("2026-07-13", "2026-10-10", 79)}
 REQUIRED_FEEDS = {"section:" + name for name in (
     "pulso", "nacional", "politica", "tendencias", "que-pasa", "paula", "sustentabilidad",
@@ -49,6 +51,60 @@ def digest(value):
 
 def object_digest(value):
     return digest(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode())
+
+
+def verify_incremental_addendum_reference(raw, root):
+    """An analysis release keeps both immutable reviews and its exact original.
+
+    This reads the applied provenance after processing, so a terminal editorial
+    decision is allowed here. It never authorizes admission or exempts a pending
+    important control from a decision.
+    """
+    metadata = raw.get("metadata", {})
+    applied = metadata.get("incremental_review_addendum")
+    if applied is None:
+        return None
+    for relative, sha in ((INCREMENTAL_REVIEW_PATH, INCREMENTAL_REVIEW_SHA256),
+                          (INCREMENTAL_ADDENDUM_PATH, INCREMENTAL_ADDENDUM_SHA256)):
+        if digest(local_capture_path(root, relative).read_bytes()) != sha:
+            raise ValueError("incremental_addendum_immutable_review_changed")
+    document = json.loads(local_capture_path(root, INCREMENTAL_ADDENDUM_PATH).read_bytes())
+    article = document["article"]
+    prior = metadata.get("incremental_review") or {}
+    body = metadata.get("page_text")
+    expected = dict(review_ref=INCREMENTAL_ADDENDUM_PATH, review_sha256=INCREMENTAL_ADDENDUM_SHA256,
+        schema_version=document["schema_version"], review_id=document["review_id"], review_date=document["review_date"],
+        decision=document["decision"], reason=document["reason"], previous_hold=document["prior_review"]["reason"],
+        prior_review_ref=INCREMENTAL_REVIEW_PATH, prior_review_sha256=INCREMENTAL_REVIEW_SHA256,
+        publication_approved=False, verified_publication_date=article["publication_date"],
+        verified_html_sha256=article["html_sha256"], verified_body_sha256=article["body_sha256"],
+        verified_captured_at=metadata.get("captured_at"))
+    if (not isinstance(applied, dict) or applied != expected
+            or document["decision"] != "release_hold_for_editorial_analysis"
+            or document["editorial_policy"]["publication_approved"] is not False
+            or document["editorial_policy"]["media_materiality_threshold"] != 72
+            or document["editorial_policy"]["threshold_changed"] is not False
+            or raw.get("url") != article["source_url"] or raw.get("event_date") != article["publication_date"]
+            or metadata.get("canonical_url") != article["source_url"]
+            or metadata.get("publication_date") != article["publication_date"]
+            or metadata.get("publication_timestamp") != article["publication_timestamp"]
+            or any(metadata.get(field) is not True for field in
+                   ("article_verified", "primary_identity_verified", "publication_date_verified", "article_body_complete"))
+            or metadata.get("html_sha256") != article["html_sha256"]
+            or not isinstance(body, str) or len(body) != article["body_characters"]
+            or digest(body.encode()) != article["body_sha256"]
+            or metadata.get("article_body_sha256") != article["body_sha256"]
+            or not stamp(metadata.get("captured_at"))
+            or prior.get("review_ref") != INCREMENTAL_REVIEW_PATH or prior.get("review_sha256") != INCREMENTAL_REVIEW_SHA256
+            or prior.get("decision") != "keep_hold" or prior.get("reason") != document["prior_review"]["reason"]
+            or prior.get("publication_approved") is not False
+            or prior.get("verified_publication_date") != article["publication_date"]
+            or prior.get("verified_body_sha256") != article["body_sha256"]
+            or prior.get("verified_html_sha256") != article["html_sha256"]
+            or not all(quote in body for quote in document["new_incremental_observations"])):
+        raise ValueError("incremental_addendum_applied_original_or_provenance_mismatch")
+    return dict(review_ref=INCREMENTAL_ADDENDUM_PATH, review_sha256=INCREMENTAL_ADDENDUM_SHA256,
+                analysis_release_only=True, publication_approved=False)
 
 
 def verify_bound_editorial_review(queue, history, snapshot, root):
@@ -1205,6 +1261,8 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
         reviews.extend(item.get("raw", {}).get("metadata", {}).get("editorial_review", {}) for item in queue.values())
         references.update(row["review_file"] for row in reviews if isinstance(row, dict) and isinstance(row.get("review_file"), str))
         for item in queue.values():
+            if item.get("source") == SOURCE and verify_incremental_addendum_reference(item.get("raw", {}), root):
+                references.add(INCREMENTAL_ADDENDUM_PATH)
             review = item.get("raw", {}).get("metadata", {}).get("incremental_review")
             if item.get("source") != SOURCE or not isinstance(review, dict):
                 continue
@@ -1544,6 +1602,12 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
             if len(current_queue.get(url, [])) != 1:
                 continue
             item = current_queue[url][0][1]
+            try:
+                addendum = verify_incremental_addendum_reference(item.get("raw", {}), root)
+                if addendum:
+                    checks.setdefault("immutable_incremental_analysis_releases", {})[url] = addendum
+            except (OSError, ValueError, KeyError, TypeError) as error:
+                fail("processing", "incremental_addendum_original_or_provenance_unverified", url=url, error=str(error))
             assessment = item.get("raw", {}).get("metadata", {}).get("editorial_assessment") or {}
             score = assessment.get("relevance_score")
             if url in selected_urls:
