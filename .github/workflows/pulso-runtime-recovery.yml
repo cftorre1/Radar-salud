@@ -8,6 +8,7 @@ on:
       - 'scripts/audit_pulso_runtime.py'
 permissions:
   contents: write
+  actions: read
 concurrency:
   group: pulso-isolated-real-core
   cancel-in-progress: false
@@ -35,7 +36,31 @@ jobs:
         run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
       - run: pip install -e . pytest
       - name: Directed source, primary evidence and core checks
-        run: python -m pytest -q tests/test_pulso_source.py tests/test_pulso_archive_discovery.py tests/test_pulso_real_fixtures.py tests/test_pulso_core_runtime.py tests/test_beta_core_handoff.py tests/test_pulso_runtime_audit.py
+        run: python -m pytest -q tests/test_pulso_source.py tests/test_pulso_archive_discovery.py tests/test_pulso_real_fixtures.py tests/test_pulso_core_runtime.py tests/test_beta_core_handoff.py tests/test_pulso_runtime_audit.py tests/test_pulso_runtime_fixtures.py
+      - name: Read optional prior original capture run
+        id: prior_capture
+        run: |
+          python - <<'PY'
+          import json, os
+          value=json.load(open('.github/run-pulso-runtime-now')).get('prior_capture_run_id', '')
+          if value and (not str(value).isdigit() or int(value)<=0):
+              raise SystemExit('Invalid prior capture run ID')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('run_id='+str(value)+'\n')
+          PY
+      - name: Download prior original responses without restoring runtime state
+        if: steps.prior_capture.outputs.run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pulso-real-core-*
+          merge-multiple: true
+          path: .scratch/pulso-prior-capture
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.prior_capture.outputs.run_id }}
+      - name: Preserve original control fixtures before a cache-only core execution
+        run: python scripts/retain_pulso_runtime_fixtures.py --capture-artifact .scratch/pulso-prior-capture
+      - name: Replay preserved original fixtures
+        run: python -m pytest -q tests/test_pulso_runtime_fixtures.py
       - name: Execute source-scoped core with original HTTP observation
         run: |
           python - <<'PY'
@@ -48,6 +73,11 @@ jobs:
           if phase=='report_only': command.append('--report-only')
           raise SystemExit(subprocess.call(command))
           PY
+      - name: Preserve new original responses and reconcile their durable provenance
+        if: always()
+        run: |
+          python scripts/retain_pulso_runtime_fixtures.py --capture-artifact .scratch/pulso-prior-capture
+          python scripts/audit_pulso_runtime.py --report-only
       - name: Export processed history to actual offline candidate feed and reconcile it
         run: |
           python - <<'PY'
@@ -68,6 +98,7 @@ jobs:
           if test -f data/audits/pulso_runtime_capture/manifest.json; then git add data/audits/pulso_runtime_capture/manifest.json; fi
           if test -f web/data/radar_today.json; then git add web/data/radar_today.json; fi
           if test -f web/data/source_health.json; then git add web/data/source_health.json; fi
+          if test -f tests/fixtures/pulso_runtime_real/manifest.json; then git add tests/fixtures/pulso_runtime_real; fi
           git diff --cached --quiet || git commit -m "audit(pulso): preserve real core inventory and exact outcomes [skip ci]"
           git fetch origin codex/b-pulso-runtime-20261011
           git rebase origin/codex/b-pulso-runtime-20261011
@@ -86,4 +117,5 @@ jobs:
             data/history/superintendencia_signals.json
             web/data/radar_today.json
             web/data/source_health.json
+            tests/fixtures/pulso_runtime_real/
           if-no-files-found: error

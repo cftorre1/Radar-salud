@@ -117,6 +117,21 @@ def test_discovery_exclusion_and_date_conflict_remain_explicit():
     assert report["windows"]["30"]["date_conflicts"] == [BASE + "conflict/"]
 
 
+def test_reused_primary_detail_keeps_original_capture_time_and_hash_without_fresh_html_claim():
+    cached = trace("reused", cache_hit=True, captured_at="2026-10-11T05:00:00Z",
+                   html_sha256="a" * 64, publisher_lastmod="2026-10-10T18:00:00Z")
+    captures = {"requests": [{"url": cached["url"], "status": 200, "sha256": "a" * 64,
+                "captured_at": cached["captured_at"], "gzip_file": "tests/fixtures/pulso_runtime_real/a.html.gz",
+                "capture_provenance": "preserved_original_http_response"}]}
+    report = audit.join_report(discovery([cached]), {}, [], [], control([original("reused")]), captures=captures)
+    row = report["matrix"][0]
+    assert row["publication_date_evidence"] == "reused_verified_primary_byline_unchanged_publisher_lastmod"
+    assert row["primary_detail_captured_at"] == cached["captured_at"]
+    assert row["primary_detail_sha256"] == cached["html_sha256"]
+    assert row["publisher_lastmod"] == cached["publisher_lastmod"]
+    assert row["original_http_captures"][0]["capture_provenance"] == "preserved_original_http_response"
+
+
 def test_control_normalization_keeps_opinion_without_foreign_host_acceptance():
     assert audit.normalized_url("https://latercera.com/opinion/noticia/test?x=1#top") == "https://www.latercera.com/opinion/noticia/test/"
     assert audit.normalized_url("https://www.latercera.com.evil.test/pulso/noticia/test/") is None
@@ -133,6 +148,17 @@ def test_interrupted_execution_cannot_reuse_previous_discovery_recall():
     assert old["source_details"][SOURCE][0]["url"] == BASE + "prior/"
     filtered, current = audit.current_execution_discovery(old, "2026-10-11T09:00:00+00:00")
     assert current and filtered is old
+
+
+def test_fixture_only_report_rejoin_cannot_erase_interrupted_core_guard():
+    old = discovery([trace("prior")])
+    prior = {"last_core_execution": {"engine_called": True, "engine_completed": False,
+              "started_at": "2026-10-11T11:00:00Z", "error_type": "KeyboardInterrupt"}}
+    filtered, current = audit.report_only_discovery(old, prior)
+    assert current is False
+    report = audit.join_report(filtered, {}, [], [], control([original("prior")]))
+    assert report["windows"]["30"]["recall"] == 0
+    assert report["audit_discovery_error"] == "discovery_not_persisted_by_current_execution"
 
 
 def test_legacy_unverified_processor_retains_original_and_restores_both_bindings(tmp_path):

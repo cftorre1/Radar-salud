@@ -249,7 +249,8 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         if url:
             captures_by_url.setdefault(url, []).append({key: response.get(key) for key in (
                 "url", "status", "captured_at", "sha256", "returned_text_utf8_sha256", "gzip_file",
-                "retention_reason", "error_type", "error", "primary_article", "primary_article_error") if response.get(key) is not None})
+                "retention_reason", "error_type", "error", "primary_article", "primary_article_error",
+                "capture_provenance", "original_capture_manifest_sha256") if response.get(key) is not None})
     coverage = [row for row in details if row.get("status") in {
         "archive_coverage", "coverage_summary", "public_feed_coverage", "runtime_coverage"}]
     primary_coverage = next((row for row in reversed(coverage) if row.get("status") == "runtime_coverage"), None)
@@ -312,8 +313,12 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         historical_day = (historical or {}).get("publication_date") or (historical or {}).get("event_date")
         matrix.append({"url": url, "title": title,
             "publication_date": runtime_day or original.get("publication_date") or historical_day,
-            "publication_date_evidence": "current_verified_detail" if runtime_day else original.get("verification_method") or (
+            "publication_date_evidence": ("reused_verified_primary_byline_unchanged_publisher_lastmod" if verified.get("cache_hit") else "current_verified_detail") if runtime_day else original.get("verification_method") or (
                 "recorded_history_date_requires_current_original_verification" if historical_day else "unverified"),
+            "primary_detail_captured_at": verified.get("captured_at"),
+            "primary_detail_cache_hit": verified.get("cache_hit", False),
+            "primary_detail_sha256": verified.get("content_sha256") or verified.get("html_sha256"),
+            "publisher_lastmod": verified.get("publisher_lastmod"),
             "publication_timestamp": verified.get("publication_timestamp"),
             "publication_date_source": verified.get("publication_date_source"),
             "section": verified.get("section") or original.get("section") or urlsplit(url).path.split("/")[1],
@@ -416,6 +421,14 @@ def current_execution_discovery(discovery, started_at):
     stale["processing_deferrals"] = {key: row for key, row in discovery.get("processing_deferrals", {}).items() if key != SOURCE}
     stale["audit_discovery_error"] = "discovery_not_persisted_by_current_execution"
     return stale, False
+
+
+def report_only_discovery(discovery, prior_report):
+    """A fixture-only rejoin preserves an interrupted core's stale-run guard."""
+    execution = prior_report.get("last_core_execution") or prior_report.get("execution") or {}
+    if execution.get("engine_called") and execution.get("started_at"):
+        return current_execution_discovery(discovery, execution["started_at"])
+    return discovery, None
 
 
 def annotate_pending(report, execution):
@@ -521,6 +534,8 @@ def main():
     discovery_current = None
     if not args.report_only:
         discovery, discovery_current = current_execution_discovery(discovery, execution["started_at"])
+    else:
+        discovery, discovery_current = report_only_discovery(discovery, prior)
     after = read_json(queue_path, {})
     if not args.report_only:
         execution["processing_attempts_increased"] = sum(max(0, item.get("attempts", 0) - before.get(key, {}).get("attempts", 0))
@@ -532,7 +547,17 @@ def main():
     history_path = root / "data/history/superintendencia_signals.json"
     feed, feed_evidence = snapshot_feed(read_json(snapshot_path, {}), history_path.stat().st_mtime if history_path.exists() else None)
     captures = read_json(capture_path / "manifest.json", {})
-    report = join_report(discovery, after, history, feed, control, baseline=baseline, captures=captures)
+    preserved_path = root / "tests/fixtures/pulso_runtime_real/manifest.json"
+    preserved = read_json(preserved_path, {})
+    # Retained raw responses survive warm-cache runs, while the live observer
+    # remains scoped to the current HTTP execution. Never call them fresh polls.
+    preserved_requests = []
+    for record in preserved.get("requests", []):
+        retained = dict(record)
+        retained["gzip_file"] = str(Path("tests/fixtures/pulso_runtime_real") / record["gzip_file"])
+        preserved_requests.append(retained)
+    joined_captures = dict(captures, requests=captures.get("requests", []) + preserved_requests)
+    report = join_report(discovery, after, history, feed, control, baseline=baseline, captures=joined_captures)
     candidate_urls = {url for row in candidate if (url := normalized_url(row.get("source_url")))}
     for row in report["matrix"]:
         row["in_memory_curate_eligible"] = row["url"] in candidate_urls
@@ -549,6 +574,8 @@ def main():
                   external_control_path=str(control_path.relative_to(root)),
                   external_control_sha256=hashlib.sha256(control_path.read_bytes()).hexdigest(),
                   capture_manifest=str(capture_path / "manifest.json"),
+                  preserved_original_fixture_manifest=str(preserved_path) if preserved_path.exists() else None,
+                  preserved_original_fixture_status=preserved.get("status"),
                   unrelated_queue_unchanged=unrelated_before == digest_json({key: row for key, row in after.items() if row.get("source") != SOURCE}),
                   feed_method="actual serialized web/data/radar_today.json; full-history curate(resolve_external=False) eligibility recorded separately; no injected rows",
                   feed_evidence={**feed_evidence, "path": str(snapshot_path),
