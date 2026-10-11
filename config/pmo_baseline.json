@@ -1623,6 +1623,132 @@
       "severity": "warning",
       "description": "La tarjeta oficial Pfizer Chile «Empresas healthtech…» (08/06/2023) enlaza al artículo de depresión. El pipeline detecta headline mismatch, deja retry/BACKFILL y publica 0 señales.",
       "source": "https://www.pfizer.cl/news; piloto controlado 2026-09-24; staging 6eabf235ca9ddaff9841ee3aa0f554243e7d84d5"
+    },
+    {
+      "id": "work3_df_existing_queue_not_rehydrated",
+      "severity": "critical",
+      "priority": "P0",
+      "description": "DF discovery repair leaves existing undated queue entries unchanged — PendingQueue.discover skips an existing fingerprint before refreshing raw date/evidence/lane; repaired discovery alone cannot recover the same queued item.",
+      "source": "data/audits/work3_adversarial_2026_10_11.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "closure_criteria": [
+        "Recover affected existing candidates without rewriting original capture evidence; preserve audit trail and prevent duplicates.",
+        "Show date provenance, actual processing outcome and history/feed presence or specific justified rejection for this URL.",
+        "Demonstrate new and already-queued items; recompute lane using trustworthy original timing, not by forcing everything LIVE."
+      ],
+      "task_ids": [
+        "source_repair_media_lane_2026_10_11",
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ]
+    },
+    {
+      "id": "work3_live_validation_skipped_success",
+      "severity": "critical",
+      "priority": "P0",
+      "description": "Audit executor reports live success although the only live test was skipped — test_beta_source_runtime_fast.py skips when OPENAI_API_KEY is unavailable; executor records successful step exit as LIVE_OUTCOME success.",
+      "source": "data/audits/work3_adversarial_2026_10_11.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "closure_criteria": [
+        "Skipped/not-run must remain explicit and must not refresh a live-validation success timestamp.",
+        "Prove actual source fetch execution and newer per-source artifacts; no credential disclosure or unnecessary AI dependency for read-only discovery."
+      ],
+      "task_ids": [
+        "source_audit_issue5_iteration4_autonomy_2026_10_09",
+        "autonomy_architecture_redesign_2026_10_07"
+      ]
+    },
+    {
+      "id": "work3_recovery_corrupt_patch_loop",
+      "severity": "critical",
+      "priority": "P0",
+      "description": "Two consecutive recovery attempts fail applying generated patches — git apply --check rejects malformed patch at lines 9 and 10; validation and successful repair commit are skipped.",
+      "source": "data/audits/work3_adversarial_2026_10_11.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "closure_criteria": [
+        "Bound retries by failure signature; validate patch format before applying.",
+        "Produce a useful reviewed staging change or exact blocker and continue an independent task; demonstrate transition without owner restart."
+      ],
+      "task_ids": [
+        "source_audit_issue5_iteration4_autonomy_2026_10_09",
+        "autonomy_architecture_redesign_2026_10_07"
+      ]
+    },
+    {
+      "id": "work3_beta_discovery_is_not_publication",
+      "severity": "critical",
+      "priority": "P0",
+      "description": "Beta fast validation supplies no end-to-end publication evidence — beta_source_engine_fast.main only discovers and always records new=0,published=0,rows=[],pending=0,rejected=0. It never evaluates these items for publication and can label them ok.",
+      "source": "data/audits/work3_adversarial_2026_10_11.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "closure_criteria": [
+        "Separate discovery-only status from evaluated publication outcomes.",
+        "Provide URL-level discovery, pending/seen/rejection, dates and history/feed reconciliation or exact blockage."
+      ],
+      "task_ids": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ]
+    },
+    {
+      "id": "work3_latest_qa_snapshot_gate",
+      "severity": "critical",
+      "priority": "P0",
+      "description": "Latest staging QA blocks preview and reviewer — Snapshot normative test expects at least 12 visible normative rows; actual current snapshot has 11. This is an assertion failure, not by itself evidence that a required article was omitted.",
+      "source": "data/audits/work3_adversarial_2026_10_11.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "closure_criteria": [
+        "Explain the 11-vs-12 change against editorial decisions and fixed contract fixtures.",
+        "Restore meaningful QA; do not insert content or weaken assertion only to turn the workflow green."
+      ],
+      "task_ids": [
+        "source_audit_issue5_iteration4_autonomy_2026_10_09",
+        "autonomy_architecture_redesign_2026_10_07"
+      ]
+    },
+    {
+      "id": "work3_bupa_factual_tense_mismatch",
+      "severity": "warning",
+      "priority": "P1",
+      "description": "Published Bupa summary treats completed opening/acquisition as future — History and feed use future tense for La Dehesa opening and Huinganal purchase while publisher body describes operating since previous month and a recent acquisition.",
+      "source": "data/audits/work3_adversarial_2026_10_11.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "closure_criteria": [
+        "Committee reconciles lifecycle of each project against original and preserves source/date; independent reviewer checks resulting history/feed."
+      ],
+      "task_ids": [
+        "source_audit_issue5_iteration3_editorial_2026_10_09"
+      ]
+    },
+    {
+      "id": "work3_pulso_nacional_scope_gap",
+      "severity": "warning",
+      "priority": "P1",
+      "description": "Pulso/La Tercera connector excludes Nacional articles by construction — CuratedBetaSourceScout restricts listing to canal/pulso and path to /pulso/noticia/; two verified Nacional stories cannot be captured by this source path.",
+      "source": "data/audits/work3_adversarial_2026_10_11.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "closure_criteria": [
+        "Document promised scope vs actual sections; add approved capture route or explicit coverage exclusion.",
+        "Reconcile these URLs with existing cross-source events and publish only incremental value."
+      ],
+      "task_ids": [
+        "source_repair_media_lane_2026_10_11",
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ]
+    },
+    {
+      "id": "work3_pmo_readiness_stale",
+      "severity": "critical",
+      "priority": "P0",
+      "description": "PMO ready label lacks current independent release qualification — PMO closed_beta.status remains ready and updated_at 2026-09-29 despite latest QA failure and open source/editorial gates in issue #5.",
+      "source": "data/audits/work3_adversarial_2026_10_11.json",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "closure_criteria": [
+        "Retain historical validation provenance, but make current blocked/unvalidated assessment visible and bind to reviewed SHA.",
+        "Do not reuse historical ready label as evidence of present editorial readiness."
+      ],
+      "task_ids": [
+        "source_audit_issue5_master_2026_10_09"
+      ]
     }
   ],
   "approved_addenda": [
@@ -1853,6 +1979,15 @@
       "status": "HTTPS operativo; canonical preparado, publicación retenida",
       "description": "Pages Enforce HTTPS activo; apex y www redirigen por HTTP a https://alicantosalud.cl/ sin loop observado. Canonical en main 083d2f761e829de49ddd5ef9bc41bbeb494aaad4 sin release. El empaquetado actual ./web incluiría además web/data/radar_today.json y web/data/source_health.json distintos de production-stable, fuera de la excepción de dominio. Reviewer independiente aprobó diff, no release.",
       "next_check": "Preparar publicación aislada del canonical sin datos ajenos; ejecutar QA desktop/mobile del sitio público, comprobar canonical/OG y Reviewer antes de validar dominio."
+    },
+    {
+      "id": "work3_adversarial_2026_10_11",
+      "status": "Current staging not validated; independent review rejects readiness",
+      "description": "Historical closed_beta ready is retained as prior evidence, not current approval. Work3 confirms queue recovery gap, skipped live validation, recovery patch failures and current QA failure.",
+      "reviewed_at": "2026-10-11T04:00:00Z",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "artifact": "data/audits/work3_adversarial_2026_10_11.json",
+      "next_check": "Reconcile current candidate after real collector run and cause-specific closure; keep production untouched."
     }
   ],
   "approved_infrastructure_changes": [
@@ -2870,7 +3005,7 @@
       ]
     }
   ],
-  "updated_at": "2026-09-29",
+  "updated_at": "2026-10-11T04:00:00Z",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
@@ -2889,6 +3024,13 @@
     "remaining_human_gates": [
       "Aprobación explícita de Dirección antes de promover staging a main/producción",
       "Distribuir la URL solo a participantes invitados; no usar el preview para contenido sensible mientras no haya autenticación"
-    ]
+    ],
+    "independent_review": {
+      "status": "not_validated_current_candidate",
+      "reviewed_at": "2026-10-11T04:00:00Z",
+      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "artifact": "data/audits/work3_adversarial_2026_10_11.json",
+      "reason": "Historical readiness does not close current QA/source/editorial failures."
+    }
   }
 }

@@ -1,0 +1,1846 @@
+{
+  "schema_version": 1,
+  "reviewer": "Work 3 independent adversarial",
+  "cut_id": "work3_2026_10_11T0400Z",
+  "recorded_at": "2026-10-11T04:00:00Z",
+  "branch": "staging",
+  "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+  "verdict": "REJECT_CURRENT_COVERAGE_AND_READINESS_CLAIMS",
+  "previous_cut": {
+    "requested_file": "data/audits/work3_adversarial_2026_10_11.json",
+    "found_at_start": false,
+    "github_read_result": 404,
+    "later_work3_audits_found": [],
+    "conversation_baseline_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+    "comparison": "Same SHA as prior conversation; no new repair commits. This is first durable Work3 cut found, not a quantified comparison with a missing artifact."
+  },
+  "scope": {
+    "product_mutations": false,
+    "source_state_mutations": false,
+    "main_or_production_mutations": false,
+    "workflow_dispatches": 0,
+    "external_reconciliation_exhaustive": false,
+    "no_search_results_interpreted_as_absence": false,
+    "repairs_revalidated_as_operational": [],
+    "next_cycle": "Recheck staging HEAD and actual collector outputs; re-audit changed candidates. Monitoring window is not concluded in this cut."
+  },
+  "input_hashes_sha256": {
+    "config/orchestrator_queue.json": "c4e4e64fc9c36d459381043f56e10d0aceeae5589302d401464c529522aea0cc",
+    "config/pmo_baseline.json": "9d9b5a8016fffd2582ed0fb2cdb751482efa86b999ed464438fed586f935aeb7",
+    "config/sources.json": "3414ca7f9650be66bacb97ad90b1f17d24001321e0481f6c47f8372a0e6294b4",
+    "config/beta_source_configs.json": "fa4f84bff1fdeb5c6549bcb9eafc43879d1effcb6cad45ec3030a3bb3f0a9d1f",
+    "data/source_health.json": "eb7a18536cf7d374fea0ea0c637f0db1c1d63b6591a9181ae81e21180459480e",
+    "data/state/beta_source_validation.json": "6794ec0bcb1b28356c8f02253358fcdea23041a8c8e95bc4eac4ab299416512b",
+    "data/state/discovery_run.json": "b79bdbbb5210dbd31600a6fe298f92d70f2bc27efa76827a96a2c42b5157d2b4",
+    "data/state/pending_queue.json": "803ce81e9e4a339783d94ecc7a13140f1b6c5ccc2f657611410e13f565e9ca2d",
+    "data/history/superintendencia_signals.json": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+    "web/data/radar_today.json": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+    "data/weekly_insight/latest.json": "7864cd923b075fe62246fc2913ac36f38f58f0b8005479b65bd78e33b730750d",
+    "data/audits/source_autonomy_audit_latest.json": "892409226584763757c5b54c528fc0225b2a9d8bc6b44ac1ed1557bbe4233c2e",
+    "data/autopilot/queue_heartbeat_latest.json": "676b0b7637327fd1923b210cc354ca1b12efd3d7d0795b8b3b84b7b51293f146",
+    "data/autopilot/learning_ledger.json": "71895dc22a30aab65e5cf63c2ecdd4bbde66d7981f8df995d4ed59763996b724",
+    "data/editorial_audit_90d_2026_09_26.json": "4af8e4e9168adf1e0fed978f0b43cd96e806685c9a9036fb94a0ad7b7052a824"
+  },
+  "input_timestamps": {
+    "health": "2026-10-10T22:25:43.933396+00:00",
+    "beta": "2026-10-10T22:24:57.476946+00:00",
+    "discovery": "2026-10-10T22:23:57.654378+00:00"
+  },
+  "findings": [
+    {
+      "id": "work3_df_existing_queue_not_rehydrated",
+      "priority": "P0",
+      "severity": "critical",
+      "status": "open",
+      "title": "DF discovery repair leaves existing undated queue entries unchanged",
+      "cause": "PendingQueue.discover skips an existing fingerprint before refreshing raw date/evidence/lane; repaired discovery alone cannot recover the same queued item.",
+      "evidence": {
+        "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+        "publisher_publication_date": "2026-10-10",
+        "publisher_local_time": "13:22",
+        "incident_date": "2026-10-08",
+        "replay": {
+          "key": "e4c639df46d35cbdccae32c3169949d3984d9b2895396e154c58492e2c9570b0",
+          "same_fingerprint": true,
+          "corrected_candidate_lane": "LIVE",
+          "added": 0,
+          "stored_date": null,
+          "stored_lane": "BACKFILL",
+          "stored_status": "pending",
+          "test_scope": "isolated duplicate rediscovery, not real collector execution"
+        },
+        "persisted_queue": {
+          "status": "pending",
+          "lane": "BACKFILL",
+          "event_date": null,
+          "attempts": 0,
+          "detected_at": "2026-10-10T22:23:12.862520+00:00"
+        },
+        "history_matches": 0,
+        "feed_matches": 0
+      },
+      "closure_criteria": [
+        "Recover affected existing candidates without rewriting original capture evidence; preserve audit trail and prevent duplicates.",
+        "Show date provenance, actual processing outcome and history/feed presence or specific justified rejection for this URL.",
+        "Demonstrate new and already-queued items; recompute lane using trustworthy original timing, not by forcing everything LIVE."
+      ],
+      "existing_task_ids": [
+        "source_repair_media_lane_2026_10_11",
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ],
+      "novelty": "newly_verified_detail",
+      "observed_sha": "9826b3b727cd7d9f504148072385d4cd37405895"
+    },
+    {
+      "id": "work3_live_validation_skipped_success",
+      "priority": "P0",
+      "severity": "critical",
+      "status": "open",
+      "title": "Audit executor reports live success although the only live test was skipped",
+      "cause": "test_beta_source_runtime_fast.py skips when OPENAI_API_KEY is unavailable; executor records successful step exit as LIVE_OUTCOME success.",
+      "evidence": {
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106753769",
+        "job_id": 114373798207,
+        "observed_result": "1 skipped, 1 warning in 0.04s",
+        "reported": "LIVE_OUTCOME: success",
+        "source_health_generated_at": "2026-10-10T22:25:43.933396+00:00",
+        "note": "Workflow definition originates from main, but logs explicitly checkout staging; inspected read-only as staging execution evidence."
+      },
+      "closure_criteria": [
+        "Skipped/not-run must remain explicit and must not refresh a live-validation success timestamp.",
+        "Prove actual source fetch execution and newer per-source artifacts; no credential disclosure or unnecessary AI dependency for read-only discovery."
+      ],
+      "existing_task_ids": [
+        "source_audit_issue5_iteration4_autonomy_2026_10_09",
+        "autonomy_architecture_redesign_2026_10_07"
+      ],
+      "novelty": "newly_verified_detail",
+      "observed_sha": "9826b3b727cd7d9f504148072385d4cd37405895"
+    },
+    {
+      "id": "work3_recovery_corrupt_patch_loop",
+      "priority": "P0",
+      "severity": "critical",
+      "status": "open",
+      "title": "Two consecutive recovery attempts fail applying generated patches",
+      "cause": "git apply --check rejects malformed patch at lines 9 and 10; validation and successful repair commit are skipped.",
+      "evidence": {
+        "run_urls": [
+          "https://github.com/cftorre1/Radar-salud/actions/runs/38106710193",
+          "https://github.com/cftorre1/Radar-salud/actions/runs/38106744511"
+        ],
+        "errors": [
+          "corrupt patch at artifacts/recovery/repair.patch:9",
+          "corrupt patch at artifacts/recovery/repair.patch:10"
+        ],
+        "latest_staging_sha": "9826b3b727cd7d9f504148072385d4cd37405895"
+      },
+      "closure_criteria": [
+        "Bound retries by failure signature; validate patch format before applying.",
+        "Produce a useful reviewed staging change or exact blocker and continue an independent task; demonstrate transition without owner restart."
+      ],
+      "existing_task_ids": [
+        "source_audit_issue5_iteration4_autonomy_2026_10_09",
+        "autonomy_architecture_redesign_2026_10_07"
+      ],
+      "novelty": "newly_verified_detail",
+      "observed_sha": "9826b3b727cd7d9f504148072385d4cd37405895"
+    },
+    {
+      "id": "work3_beta_discovery_is_not_publication",
+      "priority": "P0",
+      "severity": "critical",
+      "status": "open",
+      "title": "Beta fast validation supplies no end-to-end publication evidence",
+      "cause": "beta_source_engine_fast.main only discovers and always records new=0,published=0,rows=[],pending=0,rejected=0. It never evaluates these items for publication and can label them ok.",
+      "evidence": {
+        "paths": [
+          "src/radar_salud/beta_source_engine_fast.py",
+          "src/radar_salud/source_health.py"
+        ],
+        "affected_examples": [
+          "red_davila",
+          "andes_salud",
+          "prestadores_data",
+          "ist"
+        ],
+        "pulso_caveat": "Pulso is now implemented in core but has no post-repair discovery artifact; do not infer new integration failure from old health."
+      },
+      "closure_criteria": [
+        "Separate discovery-only status from evaluated publication outcomes.",
+        "Provide URL-level discovery, pending/seen/rejection, dates and history/feed reconciliation or exact blockage."
+      ],
+      "existing_task_ids": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "novelty": "previous_commentary_confirmed_with_code",
+      "observed_sha": "9826b3b727cd7d9f504148072385d4cd37405895"
+    },
+    {
+      "id": "work3_latest_qa_snapshot_gate",
+      "priority": "P0",
+      "severity": "critical",
+      "status": "open",
+      "title": "Latest staging QA blocks preview and reviewer",
+      "cause": "Snapshot normative test expects at least 12 visible normative rows; actual current snapshot has 11. This is an assertion failure, not by itself evidence that a required article was omitted.",
+      "evidence": {
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106682155",
+        "run_number": 745,
+        "test": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+        "result": "1 failed, 260 passed, 1 skipped",
+        "skipped_jobs": [
+          "qa / staging",
+          "qa / reviewer",
+          "preview",
+          "rollback"
+        ]
+      },
+      "closure_criteria": [
+        "Explain the 11-vs-12 change against editorial decisions and fixed contract fixtures.",
+        "Restore meaningful QA; do not insert content or weaken assertion only to turn the workflow green."
+      ],
+      "existing_task_ids": [
+        "source_audit_issue5_iteration4_autonomy_2026_10_09",
+        "autonomy_architecture_redesign_2026_10_07"
+      ],
+      "novelty": "previous_commentary_failure_precised",
+      "observed_sha": "9826b3b727cd7d9f504148072385d4cd37405895"
+    },
+    {
+      "id": "work3_bupa_factual_tense_mismatch",
+      "priority": "P1",
+      "severity": "warning",
+      "status": "open",
+      "title": "Published Bupa summary treats completed opening/acquisition as future",
+      "cause": "History and feed use future tense for La Dehesa opening and Huinganal purchase while publisher body describes operating since previous month and a recent acquisition.",
+      "evidence": {
+        "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+        "publication_date": "2026-09-21",
+        "history_matches": 1,
+        "feed_matches": 1,
+        "what_is_verified": "US$15 million amount and three-project scope agree. Opening/acquisition lifecycle does not. Mindplace remains a future expansion.",
+        "queue_conflict": "A separately fingerprinted listing instance is rejected processor_rejected; this is not proof the story is absent."
+      },
+      "closure_criteria": [
+        "Committee reconciles lifecycle of each project against original and preserves source/date; independent reviewer checks resulting history/feed."
+      ],
+      "existing_task_ids": [
+        "source_audit_issue5_iteration3_editorial_2026_10_09"
+      ],
+      "novelty": "newly_verified_detail",
+      "observed_sha": "9826b3b727cd7d9f504148072385d4cd37405895"
+    },
+    {
+      "id": "work3_pulso_nacional_scope_gap",
+      "priority": "P1",
+      "severity": "warning",
+      "status": "open",
+      "title": "Pulso/La Tercera connector excludes Nacional articles by construction",
+      "cause": "CuratedBetaSourceScout restricts listing to canal/pulso and path to /pulso/noticia/; two verified Nacional stories cannot be captured by this source path.",
+      "evidence": {
+        "urls": [
+          "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+          "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/"
+        ],
+        "publication_dates": [
+          "2026-10-10",
+          "2026-10-05"
+        ],
+        "nacional_url_matches_in_queue_history_feed": 0,
+        "budget_overlap": "4.7% headline is already in MINSAL history/feed dated 2026-10-01; do not count the entire event as missing or duplicate-publish. Incremental interpretation requires editorial review."
+      },
+      "closure_criteria": [
+        "Document promised scope vs actual sections; add approved capture route or explicit coverage exclusion.",
+        "Reconcile these URLs with existing cross-source events and publish only incremental value."
+      ],
+      "existing_task_ids": [
+        "source_repair_media_lane_2026_10_11",
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ],
+      "novelty": "newly_verified_detail",
+      "observed_sha": "9826b3b727cd7d9f504148072385d4cd37405895"
+    },
+    {
+      "id": "work3_pmo_readiness_stale",
+      "priority": "P0",
+      "severity": "critical",
+      "status": "open",
+      "title": "PMO ready label lacks current independent release qualification",
+      "cause": "PMO closed_beta.status remains ready and updated_at 2026-09-29 despite latest QA failure and open source/editorial gates in issue #5.",
+      "evidence": {
+        "pmo_updated_at": "2026-09-29",
+        "historical_closed_beta_status": "ready",
+        "source_audit_verdict": "FAIL_AUTONOMY_AND_SOURCE_RUNTIME"
+      },
+      "closure_criteria": [
+        "Retain historical validation provenance, but make current blocked/unvalidated assessment visible and bind to reviewed SHA.",
+        "Do not reuse historical ready label as evidence of present editorial readiness."
+      ],
+      "existing_task_ids": [
+        "source_audit_issue5_master_2026_10_09"
+      ],
+      "novelty": "newly_verified_detail",
+      "observed_sha": "9826b3b727cd7d9f504148072385d4cd37405895"
+    }
+  ],
+  "known_open_findings": [
+    {
+      "id": "weekly_stale",
+      "status": "open",
+      "event_date": "2026-09-14",
+      "age_days_at_cut": 27,
+      "artifact_status": "pass",
+      "reason": "No post-repair weekly generation; 30-day/all period can still admit old special through specialInPeriod; default 14-day filtering is not a standalone weekly freshness gate. No browser deployment claim made.",
+      "task": "source_audit_issue5_iteration3_editorial_2026_10_09"
+    },
+    {
+      "id": "balance",
+      "status": "open",
+      "reason": "24 of 28 dated last-30-day feed rows belong to SIS/MINSAL/SUSESO. Counts do not impose publication quotas."
+    },
+    {
+      "id": "other_critical_connectors",
+      "status": "open",
+      "reason": "FONASA, ISP, INDISA, ACHS, Mutual errors remain in unchanged health; no new repair to revalidate. No genuine-absence conclusion."
+    }
+  ],
+  "source_matrix": [
+    {
+      "source_slug": "superintendencia_normativa",
+      "reported_health": {
+        "name": "Superintendencia Normativa",
+        "checked_at": "2026-10-10T22:24:44.392712+00:00",
+        "last_signal_at": "2026-10-09",
+        "discovered": 4289,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "recent",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": {
+        "discovered": 4289,
+        "new": 0,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "published": 23,
+        "archived": 1
+      },
+      "queue_reason_counts": {
+        "None": 23,
+        "outside_90_day_backfill": 1
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "minsal",
+      "reported_health": {
+        "name": "Minsal",
+        "checked_at": "2026-10-10T22:24:44.395941+00:00",
+        "last_signal_at": "2026-10-07",
+        "discovered": 53,
+        "new": 4,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 4,
+        "pending": 4,
+        "deferred": 0,
+        "rejected": 14,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "recent",
+        "editorial_outcome": "pending"
+      },
+      "discovery_run": {
+        "discovered": 53,
+        "new": 4,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "rejected": 14,
+        "published": 8,
+        "pending": 4
+      },
+      "queue_reason_counts": {
+        "processor_rejected": 14,
+        "None": 12
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "suseso",
+      "reported_health": {
+        "name": "Suseso",
+        "checked_at": "2026-10-10T22:24:44.405914+00:00",
+        "last_signal_at": "2026-10-02",
+        "discovered": 7608,
+        "new": 2,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 4,
+        "pending": 4,
+        "deferred": 0,
+        "rejected": 1,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "older",
+        "editorial_outcome": "pending"
+      },
+      "discovery_run": {
+        "discovered": 7608,
+        "new": 2,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "rejected": 1,
+        "published": 8,
+        "pending": 4
+      },
+      "queue_reason_counts": {
+        "processor_rejected": 1,
+        "None": 12
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "diario_financiero",
+      "reported_health": {
+        "name": "Diario Financiero",
+        "checked_at": "2026-10-10T22:24:44.408712+00:00",
+        "last_signal_at": "2026-09-22",
+        "discovered": 73,
+        "new": 14,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 44,
+        "pending": 44,
+        "deferred": 0,
+        "rejected": 170,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "older",
+        "editorial_outcome": "pending"
+      },
+      "discovery_run": {
+        "discovered": 73,
+        "new": 14,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "rejected": 170,
+        "pending": 44
+      },
+      "queue_reason_counts": {
+        "processor_rejected": 170,
+        "None": 44
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "sampled_not_exhaustive",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "diario_oficial",
+      "reported_health": {
+        "name": "Diario Oficial",
+        "checked_at": "2026-10-10T22:24:44.409615+00:00",
+        "last_signal_at": "2026-10-07",
+        "discovered": 2,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 3,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "recent",
+        "editorial_outcome": "rejected"
+      },
+      "discovery_run": {
+        "discovered": 2,
+        "new": 0,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "published": 3,
+        "rejected": 3
+      },
+      "queue_reason_counts": {
+        "None": 3,
+        "processor_rejected": 3
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "superintendencia_fiscalizacion",
+      "reported_health": {
+        "name": "Superintendencia Fiscalizacion",
+        "checked_at": "2026-10-10T22:24:44.395005+00:00",
+        "last_signal_at": "2025-10-24",
+        "discovered": 2696,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "older",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": {
+        "discovered": 2696,
+        "new": 0,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "archived": 2516
+      },
+      "queue_reason_counts": {
+        "outside_90_day_backfill": 2516
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "superintendencia",
+      "reported_health": {
+        "name": "Superintendencia",
+        "checked_at": "2026-10-10T22:24:44.391652+00:00",
+        "last_signal_at": "2026-10-02",
+        "discovered": 740,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "older",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": {
+        "discovered": 740,
+        "new": 0,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "published": 1
+      },
+      "queue_reason_counts": {
+        "None": 1
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "fonasa",
+      "reported_health": {
+        "name": "Fonasa",
+        "checked_at": "2026-10-10T22:24:44.396877+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "HTTPError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "discovery_run": {
+        "discovered": 0,
+        "new": 0,
+        "technical_status": "error",
+        "error_type": "HTTPError"
+      },
+      "beta_validation": null,
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "blocked_technical_evidence",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "isp_anamed",
+      "reported_health": {
+        "name": "Isp Anamed",
+        "checked_at": "2026-10-10T22:24:44.398698+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "URLError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "discovery_run": {
+        "discovered": 0,
+        "new": 0,
+        "technical_status": "error",
+        "error_type": "URLError"
+      },
+      "beta_validation": null,
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "blocked_technical_evidence",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "deis",
+      "reported_health": {
+        "name": "Deis",
+        "checked_at": "2026-10-10T22:24:44.401410+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "warning",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "gap",
+        "content_freshness": "unknown",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": {
+        "discovered": 0,
+        "new": 0,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "redsalud",
+      "reported_health": {
+        "name": "Redsalud",
+        "checked_at": "2026-10-10T22:24:44.402308+00:00",
+        "last_signal_at": "2026-09-21",
+        "discovered": 10,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 2,
+        "pending": 2,
+        "deferred": 0,
+        "rejected": 12,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "older",
+        "editorial_outcome": "pending"
+      },
+      "discovery_run": {
+        "discovered": 10,
+        "new": 0,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "retry": 2,
+        "published": 1,
+        "rejected": 12
+      },
+      "queue_reason_counts": {
+        "budget_or_analysis_deferred": 2,
+        "None": 1,
+        "processor_rejected": 12
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "bupa_chile",
+      "reported_health": {
+        "name": "Bupa Chile",
+        "checked_at": "2026-10-10T22:24:44.403208+00:00",
+        "last_signal_at": "2026-08-13",
+        "discovered": 15,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 2,
+        "pending": 2,
+        "deferred": 0,
+        "rejected": 12,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "older",
+        "editorial_outcome": "pending"
+      },
+      "discovery_run": {
+        "discovered": 15,
+        "new": 0,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "rejected": 12,
+        "retry": 2,
+        "published": 1
+      },
+      "queue_reason_counts": {
+        "processor_rejected": 12,
+        "budget_or_analysis_deferred": 2,
+        "None": 1
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "pfizer_chile",
+      "reported_health": {
+        "name": "Pfizer Chile",
+        "checked_at": "2026-10-10T22:24:44.400503+00:00",
+        "last_signal_at": null,
+        "discovered": 3,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "unknown",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": {
+        "discovered": 3,
+        "new": 0,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "archived": 3
+      },
+      "queue_reason_counts": {
+        "outside_90_day_backfill": 3
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "indisa",
+      "reported_health": {
+        "name": "Indisa",
+        "checked_at": "2026-10-10T22:24:44.404131+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "HTTPError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "discovery_run": {
+        "discovered": 0,
+        "new": 0,
+        "technical_status": "error",
+        "error_type": "HTTPError"
+      },
+      "beta_validation": null,
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "blocked_technical_evidence",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "fonasa_datos_abiertos",
+      "reported_health": {
+        "name": "Fonasa Datos Abiertos",
+        "checked_at": "2026-10-10T22:24:44.397778+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "HTTPError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "discovery_run": {
+        "discovered": 0,
+        "new": 0,
+        "technical_status": "error",
+        "error_type": "HTTPError"
+      },
+      "beta_validation": null,
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "blocked_technical_evidence",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "suseso_news",
+      "reported_health": {
+        "name": "Suseso News",
+        "checked_at": "2026-10-10T22:24:44.406814+00:00",
+        "last_signal_at": "2026-10-09",
+        "discovered": 6,
+        "new": 1,
+        "published": 1,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 2,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "recent",
+        "editorial_outcome": "published"
+      },
+      "discovery_run": {
+        "discovered": 6,
+        "new": 1,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "rejected": 2,
+        "published": 9,
+        "archived": 2
+      },
+      "queue_reason_counts": {
+        "processor_rejected": 2,
+        "None": 9,
+        "outside_90_day_backfill": 2
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "sampled_not_exhaustive",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "suseso_fiscalizacion",
+      "reported_health": {
+        "name": "Suseso Fiscalizacion",
+        "checked_at": "2026-10-10T22:24:44.407735+00:00",
+        "last_signal_at": null,
+        "discovered": 38,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "unknown",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": {
+        "discovered": 38,
+        "new": 0,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "archived": 38
+      },
+      "queue_reason_counts": {
+        "outside_90_day_backfill": 38
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "prestadores_data",
+      "reported_health": {
+        "name": "Superintendencia de Salud · Intendencia de Prestadores",
+        "checked_at": "2026-10-10T22:24:58.258379+00:00",
+        "last_signal_at": null,
+        "discovered": 8,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "unknown",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": null,
+      "beta_validation": {
+        "discovered": 8,
+        "published": 0,
+        "technical_status": "ok",
+        "error": null,
+        "newest_event_date": null
+      },
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "red_davila",
+      "reported_health": {
+        "name": "Red Dávila",
+        "checked_at": "2026-10-10T22:25:07.025584+00:00",
+        "last_signal_at": null,
+        "discovered": 5,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "unknown",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": null,
+      "beta_validation": {
+        "discovered": 5,
+        "published": 0,
+        "technical_status": "ok",
+        "error": null,
+        "newest_event_date": "2026-10-05"
+      },
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "andes_salud",
+      "reported_health": {
+        "name": "Andes Salud",
+        "checked_at": "2026-10-10T22:25:14.907821+00:00",
+        "last_signal_at": null,
+        "discovered": 5,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "unknown",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": null,
+      "beta_validation": {
+        "discovered": 5,
+        "published": 0,
+        "technical_status": "ok",
+        "error": null,
+        "newest_event_date": "2026-10-05"
+      },
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "clinicas_achs_salud",
+      "reported_health": {
+        "name": "Clínicas Achs Salud",
+        "checked_at": "2026-10-10T22:25:19.266882+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "RuntimeError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "discovery_run": null,
+      "beta_validation": {
+        "discovered": 0,
+        "published": 0,
+        "technical_status": "error",
+        "error": "RuntimeError",
+        "newest_event_date": null
+      },
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "blocked_technical_evidence",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "achs_seguro_laboral",
+      "reported_health": {
+        "name": "Achs Seguro Laboral",
+        "checked_at": "2026-10-10T22:25:23.401038+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "RuntimeError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "discovery_run": null,
+      "beta_validation": {
+        "discovered": 0,
+        "published": 0,
+        "technical_status": "error",
+        "error": "RuntimeError",
+        "newest_event_date": null
+      },
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "blocked_technical_evidence",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "mutual_seguridad",
+      "reported_health": {
+        "name": "Mutual de Seguridad CChC",
+        "checked_at": "2026-10-10T22:25:23.787318+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "RuntimeError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "discovery_run": null,
+      "beta_validation": {
+        "discovered": 0,
+        "published": 0,
+        "technical_status": "error",
+        "error": "RuntimeError",
+        "newest_event_date": null
+      },
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "blocked_technical_evidence",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "ist",
+      "reported_health": {
+        "name": "Instituto de Seguridad del Trabajo (IST)",
+        "checked_at": "2026-10-10T22:25:41.265782+00:00",
+        "last_signal_at": null,
+        "discovered": 3,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "unknown",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": null,
+      "beta_validation": {
+        "discovered": 3,
+        "published": 0,
+        "technical_status": "ok",
+        "error": null,
+        "newest_event_date": "2016-11-02"
+      },
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "pulso_latercera",
+      "reported_health": {
+        "name": "Pulso / La Tercera",
+        "checked_at": "2026-10-10T22:25:43.933385+00:00",
+        "last_signal_at": null,
+        "discovered": 5,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "unknown",
+        "editorial_outcome": "no_new_signals"
+      },
+      "discovery_run": null,
+      "beta_validation": {
+        "discovered": 5,
+        "published": 0,
+        "technical_status": "ok",
+        "error": null,
+        "newest_event_date": "2026-10-10"
+      },
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "sampled_not_exhaustive",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "isp_surveillance",
+      "reported_health": {
+        "name": "Isp Surveillance",
+        "checked_at": "2026-10-10T22:24:44.399595+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "URLError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "discovery_run": {
+        "discovered": 0,
+        "new": 0,
+        "technical_status": "error",
+        "error_type": "URLError"
+      },
+      "beta_validation": null,
+      "queue_status_counts": {},
+      "queue_reason_counts": {},
+      "decision": "blocked_technical_evidence",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    },
+    {
+      "source_slug": "clinicas_chile",
+      "reported_health": {
+        "name": "Clinicas Chile",
+        "checked_at": "2026-10-10T22:24:44.405016+00:00",
+        "last_signal_at": "2018-02-01",
+        "discovered": 29,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 19,
+        "pending": 19,
+        "deferred": 0,
+        "rejected": 5,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "older",
+        "editorial_outcome": "pending"
+      },
+      "discovery_run": {
+        "discovered": 29,
+        "new": 0,
+        "technical_status": "ok",
+        "error_type": null
+      },
+      "beta_validation": null,
+      "queue_status_counts": {
+        "retry": 19,
+        "rejected": 5,
+        "archived": 3,
+        "published": 2
+      },
+      "queue_reason_counts": {
+        "budget_or_analysis_deferred": 19,
+        "processor_rejected": 5,
+        "outside_90_day_backfill": 3,
+        "None": 2
+      },
+      "decision": "degraded_coverage_unvalidated",
+      "external_30_90_reconciliation": "not_revalidated_no_new_source_repair",
+      "effective_coverage_approved": false,
+      "owner_required": false,
+      "next_repair": "Use existing issue #5 lane; reconcile per-URL originals, dates and lifecycle before any operational claim."
+    }
+  ],
+  "distribution": {
+    "history": {
+      "30": {
+        "date_from_inclusive": "2026-09-11",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 73,
+        "by_source": {
+          "Superintendencia de Salud": 27,
+          "Ministerio de Salud": 17,
+          "Diario Oficial": 12,
+          "Diario Financiero": 4,
+          "RedSalud": 1,
+          "Superintendencia de Seguridad Social (SUSESO)": 12
+        },
+        "ingestion_mode": {
+          "unspecified": 27,
+          "BACKFILL": 26,
+          "LIVE": 20
+        }
+      },
+      "90": {
+        "date_from_inclusive": "2026-07-13",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 184,
+        "by_source": {
+          "Superintendencia de Salud": 52,
+          "Ministerio de Salud": 20,
+          "Diario Oficial": 80,
+          "Diario Financiero": 14,
+          "Bupa Chile": 1,
+          "RedSalud": 1,
+          "Superintendencia de Seguridad Social (SUSESO)": 16
+        },
+        "ingestion_mode": {
+          "unspecified": 131,
+          "BACKFILL": 33,
+          "LIVE": 20
+        }
+      }
+    },
+    "feed": {
+      "30": {
+        "date_from_inclusive": "2026-09-11",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 28,
+        "by_source": {
+          "Superintendencia de Seguridad Social (SUSESO)": 9,
+          "Ministerio de Salud": 11,
+          "Superintendencia de Salud": 4,
+          "Diario Financiero": 3,
+          "RedSalud": 1
+        },
+        "ingestion_mode": {
+          "LIVE": 4,
+          "BACKFILL": 17,
+          "unspecified": 7
+        }
+      },
+      "90": {
+        "date_from_inclusive": "2026-07-13",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 49,
+        "by_source": {
+          "Superintendencia de Seguridad Social (SUSESO)": 9,
+          "Ministerio de Salud": 11,
+          "Superintendencia de Salud": 14,
+          "Diario Financiero": 13,
+          "RedSalud": 1,
+          "Bupa Chile": 1
+        },
+        "ingestion_mode": {
+          "LIVE": 4,
+          "BACKFILL": 19,
+          "unspecified": 26
+        }
+      }
+    },
+    "counts_note": "Counts use event_date, not crawl date; history is not equivalent to public feed. Health published is last-run; queue states are cumulative. Discovered values cannot be divided by last-run published to infer coverage."
+  },
+  "external_samples": [
+    {
+      "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+      "publication_date": "2026-10-10",
+      "materiality": "High: provider capacity and care continuity",
+      "reconciliation": "pending undated BACKFILL; zero attempts; absent from history/feed"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+      "publication_date": "2026-09-21",
+      "reconciliation": "Present history and feed; amount consistent; lifecycle wording wrong. Not a missing-story claim."
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "publication_date": "2026-10-10",
+      "reconciliation": "Nacional path excluded; absent queue/history/feed; same event as DF pending item."
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+      "publication_date": "2026-10-05",
+      "reconciliation": "URL absent; underlying budget announcement present via MINSAL, needs incremental-value review."
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+      "publication_date": "2026-10-10",
+      "materiality": "Candidate for long-term care market/competition analysis",
+      "reconciliation": "Absent queue/history/feed. Public Pulso listing has article; fast validator only checks five links. Exact historical discovery unknown; do not claim a proven parser miss in a collector that has not run after repair."
+    },
+    {
+      "url": "https://www.suseso.gob.cl/605/w3-article-791308.html",
+      "publication_date": "2026-10-02",
+      "reconciliation": "Title and figures supported by original. Health-sector-specific relevance is committee judgment; generic employer applicability alone does not establish strategic health materiality."
+    }
+  ],
+  "actions": {
+    "staging_runs": [
+      {
+        "id": 38106682155,
+        "name": "Alicanto staging preview",
+        "number": 745,
+        "conclusion": "failure",
+        "head_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+        "created_at": "2026-10-11T02:54:51Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106682155"
+      },
+      {
+        "id": 38106679634,
+        "name": "Alicanto staging preview",
+        "number": 744,
+        "conclusion": "failure",
+        "head_sha": "4c56d058ebc97f7a60de17c7800dc85fb4c0dbfc",
+        "created_at": "2026-10-11T02:54:48Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106679634"
+      },
+      {
+        "id": 38106467969,
+        "name": "Alicanto staging preview",
+        "number": 743,
+        "conclusion": "failure",
+        "head_sha": "4f2b0845f5d6f74274aa6031533d992c7a04378a",
+        "created_at": "2026-10-11T02:50:49Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106467969"
+      },
+      {
+        "id": 38106320840,
+        "name": "Alicanto staging preview",
+        "number": 742,
+        "conclusion": "failure",
+        "head_sha": "9960f8bfdea6b4fb6802c143a534657518ffdbb8",
+        "created_at": "2026-10-11T02:48:08Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106320840"
+      },
+      {
+        "id": 38106303003,
+        "name": "Alicanto staging preview",
+        "number": 741,
+        "conclusion": "failure",
+        "head_sha": "4fa7ddb50e03e749b68d85bf98b1fe9b8c15542f",
+        "created_at": "2026-10-11T02:47:48Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106303003"
+      },
+      {
+        "id": 38106301021,
+        "name": "Alicanto staging preview",
+        "number": 740,
+        "conclusion": "cancelled",
+        "head_sha": "65a73083b631065070427f69046d025490c3d65c",
+        "created_at": "2026-10-11T02:47:46Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106301021"
+      },
+      {
+        "id": 38106297540,
+        "name": "Alicanto staging preview",
+        "number": 739,
+        "conclusion": "cancelled",
+        "head_sha": "eeef3f58000702eda0ac4dc324452053df779d13",
+        "created_at": "2026-10-11T02:47:42Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106297540"
+      },
+      {
+        "id": 38106259781,
+        "name": "Alicanto staging preview",
+        "number": 738,
+        "conclusion": "failure",
+        "head_sha": "f8007b7234ad384b7cd9a1a58c72601d132fa551",
+        "created_at": "2026-10-11T02:47:01Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106259781"
+      },
+      {
+        "id": 38106258181,
+        "name": "Alicanto staging preview",
+        "number": 737,
+        "conclusion": "cancelled",
+        "head_sha": "770ae5f964cf9ef4684393a0f32e57d4e95d91f6",
+        "created_at": "2026-10-11T02:46:59Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106258181"
+      },
+      {
+        "id": 38106255986,
+        "name": "Alicanto staging preview",
+        "number": 736,
+        "conclusion": "failure",
+        "head_sha": "7bc86b15644957069d7cbcba678221c1c6297450",
+        "created_at": "2026-10-11T02:46:56Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106255986"
+      },
+      {
+        "id": 38091385604,
+        "name": "Alicanto staging preview",
+        "number": 735,
+        "conclusion": "failure",
+        "head_sha": "58c5ef3359647d7b84c2ee7d99b1b2391e3f1198",
+        "created_at": "2026-10-10T22:25:47Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38091385604"
+      },
+      {
+        "id": 38046958140,
+        "name": "Alicanto staging preview",
+        "number": 734,
+        "conclusion": "success",
+        "head_sha": "fcc3abf3406913281de98fc2165f9598e942d98a",
+        "created_at": "2026-10-10T11:01:47Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38046958140"
+      }
+    ],
+    "autonomy_runs": [
+      {
+        "id": 38106753769,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:56:10Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106753769"
+      },
+      {
+        "id": 38106744511,
+        "name": "Alicanto autonomous recovery",
+        "conclusion": "failure",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:56:00Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106744511"
+      },
+      {
+        "id": 38106719410,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:55:32Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106719410"
+      },
+      {
+        "id": 38106710193,
+        "name": "Alicanto autonomous recovery",
+        "conclusion": "failure",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:55:22Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106710193"
+      },
+      {
+        "id": 38106505241,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:51:30Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106505241"
+      },
+      {
+        "id": 38106494768,
+        "name": "Alicanto autonomous recovery",
+        "conclusion": "failure",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:51:19Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106494768"
+      },
+      {
+        "id": 38106385282,
+        "name": "Alicanto source audit executor",
+        "conclusion": "failure",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:49:22Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106385282"
+      },
+      {
+        "id": 38106377455,
+        "name": "Alicanto autonomous recovery",
+        "conclusion": "failure",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:49:13Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106377455"
+      },
+      {
+        "id": 38106354511,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:48:46Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106354511"
+      },
+      {
+        "id": 38106345385,
+        "name": "Alicanto autonomous recovery",
+        "conclusion": "failure",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:48:36Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106345385"
+      },
+      {
+        "id": 38106322320,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:48:10Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106322320"
+      },
+      {
+        "id": 38106318457,
+        "name": "Alicanto autonomous recovery",
+        "conclusion": "failure",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:48:05Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106318457"
+      },
+      {
+        "id": 38106305144,
+        "name": "Alicanto autonomous recovery",
+        "conclusion": "skipped",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:47:51Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106305144"
+      },
+      {
+        "id": 38106303285,
+        "name": "Alicanto autonomous recovery",
+        "conclusion": "cancelled",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:47:48Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106303285"
+      },
+      {
+        "id": 38106295283,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:47:40Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106295283"
+      },
+      {
+        "id": 38106286610,
+        "name": "Alicanto autonomous recovery",
+        "conclusion": "failure",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:47:30Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106286610"
+      },
+      {
+        "id": 38106270557,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:47:13Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106270557"
+      },
+      {
+        "id": 38106262028,
+        "name": "Alicanto autonomous recovery",
+        "conclusion": "skipped",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T02:47:03Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38106262028"
+      },
+      {
+        "id": 38102313083,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-11T01:34:55Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38102313083"
+      },
+      {
+        "id": 38095824769,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-10T23:40:12Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38095824769"
+      },
+      {
+        "id": 38090716292,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-10T22:15:10Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38090716292"
+      },
+      {
+        "id": 38090713796,
+        "name": "Daily Radar pilot",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-10T22:15:08Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38090713796"
+      },
+      {
+        "id": 38082695080,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-10T20:10:25Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38082695080"
+      },
+      {
+        "id": 38074960040,
+        "name": "Alicanto source audit executor",
+        "conclusion": "success",
+        "workflow_branch": "main",
+        "created_at": "2026-10-10T18:14:12Z",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38074960040"
+      }
+    ],
+    "log_evidence": [
+      {
+        "job_id": 114373686764,
+        "run_id": 38106682155,
+        "lines": [
+          "2026-10-11T02:55:55.4562200Z E       AssertionError: assert 11 >= 12",
+          "2026-10-11T02:55:55.4575916Z FAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review - AssertionError: assert 11 >= 12",
+          "2026-10-11T02:55:55.4579755Z 1 failed, 260 passed, 1 skipped, 1 warning in 9.37s"
+        ]
+      },
+      {
+        "job_id": 114373798207,
+        "run_id": 38106753769,
+        "lines": [
+          "2026-10-11T02:56:15.1724941Z   ref: staging",
+          "2026-10-11T02:56:28.5477223Z 1 skipped, 1 warning in 0.04s",
+          "2026-10-11T02:56:28.6353570Z   LIVE_OUTCOME: success"
+        ]
+      },
+      {
+        "job_id": 114373769222,
+        "run_id": 38106744511,
+        "lines": [
+          "2026-10-11T02:56:04.5388924Z   ref: staging",
+          "2026-10-11T02:56:25.9141799Z error: corrupt patch at artifacts/recovery/repair.patch:10",
+          "2026-10-11T02:56:25.9153475Z ##[error]Process completed with exit code 128."
+        ]
+      },
+      {
+        "job_id": 114373668218,
+        "run_id": 38106710193,
+        "lines": [
+          "2026-10-11T02:55:26.3079189Z   ref: staging",
+          "2026-10-11T02:55:42.5482041Z error: corrupt patch at artifacts/recovery/repair.patch:9",
+          "2026-10-11T02:55:42.5494751Z ##[error]Process completed with exit code 128."
+        ]
+      }
+    ]
+  },
+  "autonomy": {
+    "staging_heartbeat": {
+      "recorded_at": "2026-10-07T07:34:00-03:00",
+      "task_id": "autonomy_architecture_redesign_2026_10_07",
+      "status": "in_progress",
+      "pickup_commit": "9ce5ee965bd4c4845157951c11a5b42305332b92",
+      "current_subfront": "source_health_truthfulness_repair"
+    },
+    "assessment": "No post-repair collector evidence. Repeated audit successes and failed patches do not show closure or task transition. Bare date-only lane progress is insufficient for 30-minute staleness measurement.",
+    "human_blocker": false
+  },
+  "limitations": [
+    "No exhaustive crawl of 27 sources across 90 days; all remain unvalidated for effective coverage.",
+    "No deployed-page browser QA or inferred preview success.",
+    "Exact DF rediscovery is an isolated queue replay using verified publisher date, not a real collector run.",
+    "No execution or mutation of deployment workflows; audit commit must carry skip-ci marker."
+  ]
+}
