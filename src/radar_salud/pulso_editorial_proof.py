@@ -82,6 +82,10 @@ HISTORICAL_FUTURE_COPY = re.compile(
     r"anunci[oó] extender hasta el \d{1,2} de "
     r"(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)|"
     r"condiciones anunciadas en esa fecha|"
+    r"el alcalde estim[oó] cerrar el a[nñ]o|"
+    r"no acredita que la alerta ni sus efectos siguieran vigentes al "
+    r"\d{1,2} de (?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|"
+    r"septiembre|octubre|noviembre|diciembre) de \d{4}|"
     r"recomendaciones de revisi[oó]n focalizada\b[^.;!?]{0,160}\b"
     r"sin acreditar su implementaci[oó]n|"
     r"coordinaciones\b[^.;!?]{0,160}\bpara instalar|"
@@ -134,10 +138,16 @@ PATIENT_CONTACT_SCOPE = re.compile(
 NAMED_CLINICAL_PROVIDER_SCOPE = re.compile(
     r"\bcomplejidad de sus prestaciones\b[^.;!?]{0,120}\b"
     r"incorporaci[oó]n del Sanatorio Alem[aá]n\b(?!\s+veterinari\w*)", re.I)
+# The final genuine model quotes the publisher's clinical description using
+# the common disease name, not its longer hantavirus spelling. A bare animal
+# reservoir reference remains insufficient, as does a veterinary assertion.
+HANTA_SYMPTOM_SCOPE = re.compile(
+    r"\bel hanta suele comenzar con s[ií]ntomas parecidos a un estado gripal\b", re.I)
 
 
 def human_health_scope_anchor(quote, *, allow_patient_contact=True,
-                              allow_named_clinical_provider=True):
+                              allow_named_clinical_provider=True,
+                              allow_hanta_symptoms=True):
     from .pulso_source import health_anchor
     # Discovery admits housing to open the primary detail; an editorial quote
     # must establish care/clinical relevance beyond the property-sector label.
@@ -146,6 +156,7 @@ def human_health_scope_anchor(quote, *, allow_patient_contact=True,
     return (health_anchor(clinical_quote) or bool(HUMAN_CLINICAL_SCOPE.search(quote))
             or bool(HUMAN_CLINICAL_BATCH_TWO.search(quote))
             or (allow_named_clinical_provider and bool(NAMED_CLINICAL_PROVIDER_SCOPE.search(quote)))
+            or (allow_hanta_symptoms and bool(HANTA_SYMPTOM_SCOPE.search(quote)))
             or (allow_patient_contact and bool(PATIENT_CONTACT_SCOPE.search(quote))))
 
 PROOF_SCHEMA = {
@@ -295,7 +306,7 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
     if (NON_HUMAN_HEALTH.search(scope_quote)
             and not human_health_scope_anchor(
                 NON_HUMAN_HEALTH.sub("", scope_quote), allow_patient_contact=False,
-                allow_named_clinical_provider=False)):
+                allow_named_clinical_provider=False, allow_hanta_symptoms=False)):
         return verdict("deferred", "pulso_editorial_human_scope_conflicts_with_non_human_quote")
     if not human_health_scope_anchor(scope_quote):
         return verdict("deferred", "pulso_editorial_scope_not_grounded")

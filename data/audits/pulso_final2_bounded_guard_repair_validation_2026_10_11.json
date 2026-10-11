@@ -1,0 +1,54 @@
+{
+  "schema_version": "pulso_final2_bounded_guard_repair_v1",
+  "producer_commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+  "producer_core_run": 38177423421,
+  "producer_core_checkout": "c2db17141fd55cbacbcda5b53805341aa4dfa86f",
+  "producer_runtime_fingerprint_sha256": "c960999eea01aed6e578d0ca1354cb5f45b8720ae8832993d609d0db540b0406",
+  "previous_guard_sha256": "e524dec57d62daa9559ba21e792422d350635b7a65f0eb78a277e36b800c231e",
+  "current_guard_sha256": "cfdfc0914a1e6d145d932ffe29063eae3be0cf72a977a522dd7e454772cb241b",
+  "fixture_sha256": "b57c36b685996cfb10c9964c70c3d17786597e0a4f7530bc90c3f47efd2f41f8",
+  "models": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "date": "2026-10-05",
+      "body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+      "response_id": "resp_06ee18158a24b956006acc05c1f19c87d09f13899818b114c3",
+      "score": 80,
+      "original_status": "retry",
+      "original_validation_reason": "pulso_editorial_future_copy_not_grounded",
+      "new_validation": "ready",
+      "paid_model_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "date": "2026-07-29",
+      "body_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+      "response_id": "resp_002f5b0446570472006acc05e1534887d0987e282ef36da3b9",
+      "score": 78,
+      "original_status": "retry",
+      "original_validation_reason": "pulso_editorial_scope_not_grounded",
+      "new_validation": "ready",
+      "paid_model_unchanged": true
+    }
+  ],
+  "repairs": [
+    "Recognize the exact clinical description of hanta symptoms, while disabling that alias in the veterinary-conflict verifier. Bare hanta/reservoir/symptom phrases remain insufficient.",
+    "Recognize a municipal year-end estimate only with explicit observation date; no achieved capacity or realized estimate is inferred.",
+    "Recognize the explicitly dated denial of current alert validity; no claim of current enforceability is inferred."
+  ],
+  "gate": 72,
+  "schema_version_unchanged": "pulso_editorial_proof_v5",
+  "budget_and_publication_threshold_changes": 0,
+  "paid_model_json_changes": 0,
+  "primary_body_or_date_changes": 0,
+  "source_state_writes": 0,
+  "AI_calls": 0,
+  "quote_validation_is_semantic_approval": false,
+  "publication_approved": false,
+  "validation": {
+    "passed": 134,
+    "duration_seconds": 7.25,
+    "includes_actual_paid2_and_adversarial_future_capacity_veterinary_gate71": true
+  },
+  "next": "Dual independent semantic proof and narrowly admitted actual model reuse through real core required; current2 remain retry until genuine revalidation."
+}
