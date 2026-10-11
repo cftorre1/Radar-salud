@@ -51,6 +51,9 @@ jobs:
           npm ci
           npm test | tee work/global-node-qa.log
           npx playwright install --with-deps chromium
+          mkdir -p work/baseline-browser
+          git archive 4ff51cf | tar -x -C work/baseline-browser
+          (cd work/baseline-browser && ../../node_modules/.bin/playwright test --grep 'Global|global|sources are grouped') || baseline_browser_code=$?
           npx playwright test --grep 'Global|global|sources are grouped'
           python scripts/check_global_browser_qa.py
       - name: Checkpoint QA on the isolated branch only
@@ -72,3 +75,4 @@ jobs:
             work/independent_capture_audit.json
             artifacts/
             test-results/
+            work/baseline-browser/artifacts/browser.json

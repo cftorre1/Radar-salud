@@ -22,6 +22,9 @@ result={'result':'PASS','qa_run_id':os.environ['GITHUB_RUN_ID'],'tested_commit':
         'directed_python_passed':len(directed),'node_passed':int(passed[1]),'node_failed':0,
         'browser_passed':stats['expected'],'browser_failed':stats['unexpected'],'projects':sorted(projects),
         'scope':'Global views, source groups and Global metadata exclusion from Chile LIVE coverage'}
+baseline=json.loads((root/'work/baseline-browser/artifacts/browser.json').read_text())
+result['baseline_browser']={'sha':'4ff51cf','stats':baseline['stats'],
+    'note':'Existing tests assumed the Home teaser was inside the ten all-period themes; fixture selection corrected without changing curated data or Global UI behavior.'}
 path=root/'data/audits/global_source_recovery_2026_10_11/runs/38145510005/browser_qa.json'
 path.write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result))

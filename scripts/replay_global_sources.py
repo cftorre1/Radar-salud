@@ -14,6 +14,8 @@ protected = [live_path, root/'data/global_intelligence/source_health.json',
              root/'data/global_intelligence/editorial_candidates.json', root/'data/global_intelligence/ledger.json',
              root/'data/source_health.json',root/'web/data/source_health.json',root/'web/data/product.json',
              root/'data/global/themes.json',root/'web/data/global_themes.json']
+cooldown=root/'data/global_intelligence/http_cooldowns.json'
+if cooldown.exists(): protected.append(cooldown)
 digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 before = {str(p.relative_to(root)):digest(p) for p in protected}
 with tempfile.TemporaryDirectory(prefix='global-replay-',dir=root/'work') as temporary:
