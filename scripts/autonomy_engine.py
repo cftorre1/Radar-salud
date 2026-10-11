@@ -12,6 +12,7 @@ from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
+from pathlib import PurePosixPath
 import re
 
 
@@ -64,8 +65,10 @@ def _iso(value):
 
 
 def _hash(value):
+    # Escaped surrogates are representable JSON but invalid UTF-8 text. Keep
+    # their identity distinct without changing any valid UTF-8 input hash.
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
-                                     ensure_ascii=False).encode()).hexdigest()
+                                     ensure_ascii=False).encode("utf-8", errors="backslashreplace")).hexdigest()
 
 
 def _semantic(value):
@@ -622,6 +625,107 @@ def _proof_time(value):
         return None
 
 
+def _qa_action_path(value, *, repair=False):
+    """Recognize bounded executor paths without performing filesystem I/O."""
+    if not isinstance(value, str) or not value or "\\" in value or "\x00" in value:
+        return False
+    try:
+        value.encode("utf-8")
+    except UnicodeError:
+        return False
+    if not repair:
+        return _qa_artifact_path(value) is not None
+    parts = value.split("/")
+    if any(part in {"", ".", ".."} or part.startswith(".") for part in parts):
+        return False
+    path = PurePosixPath(value)
+    if path.is_absolute():
+        return False
+    # Structural parity with autonomy_recovery.safe_path/validate_plan. Actual
+    # existence, observed failure scope, blob hashes, syntax and all gates are
+    # still checked by the executor; recognizing an action never proves PASS.
+    if (value not in {"app.js", "index.html"} and parts[0] not in {"src", "scripts", "web"}
+            or value in {"web/app.js", "web/index.html", "scripts/review_candidate.py",
+                         "scripts/smoke_release.py", "scripts/package_pages.py", "scripts/bootstrap_autopilot.py"}
+            or path.suffix not in {".py", ".js", ".cjs", ".html", ".css", ".json"}):
+        return False
+    sensitive = r"auth|privacy|pricing|secret|credential|password|token"
+    protected = sensitive + r"|budget|reviewer|validation|gate|autonomy|autopilot"
+    return not (any(re.search(sensitive, part, re.I) for part in parts[1:])
+                or re.search(protected, path.name, re.I)
+                or parts[0] == "src" and (len(parts) < 3 or parts[1] != "radar_salud")
+                or parts[0] == "web" and any(re.search(protected, part, re.I) for part in parts[1:]))
+
+
+def _qa_artifact_path(value):
+    """Canonicalize relative artifact aliases without workspace authority."""
+    if not isinstance(value, str) or not value or value.startswith("/") or "\\" in value or "\x00" in value:
+        return None
+    try:
+        value.encode("utf-8")
+    except UnicodeError:
+        return None
+    parts = []
+    for part in value.split("/"):
+        if not part:
+            return None
+        if part == ".":
+            continue
+        if part == "..":
+            if not parts:
+                return None
+            parts.pop()
+        else:
+            parts.append(part)
+    return "/".join(parts) or None
+
+
+def _qa_declared_actions(task):
+    """Project only action schemas actually consumed by the QA executor.
+
+    Malformed descriptors/clock-only metadata cannot reset a retry budget or
+    turn an unchanged run alias into useful progress. Inline patches retain
+    exact old/new assertion values; artifact descriptor extras are not consumed
+    by verify_acceptance and therefore cannot create a new action episode.
+    """
+    declared = task.get("declared_repair_inputs")
+    if not isinstance(declared, dict):
+        return {}
+    actions = {}
+    artifact = declared.get("acceptance_artifact")
+    if (isinstance(artifact, dict) and _qa_action_path(artifact.get("path"))
+            and isinstance(artifact.get("sha256"), str)
+            and re.fullmatch(r"[0-9a-f]{64}", artifact["sha256"])):
+        actions["acceptance_artifact"] = {"path": _qa_artifact_path(artifact["path"]), "sha256": artifact["sha256"]}
+    patch = declared.get("repair_patch")
+    if (not isinstance(patch, dict) or set(patch) != {"schema_version", "replacements"}
+            or type(patch["schema_version"]) is not int or patch["schema_version"] != 1
+            or not isinstance(patch["replacements"], list) or not 1 <= len(patch["replacements"]) <= 3):
+        return actions
+    seen, replacement_bytes = set(), 0
+    try:
+        if len(json.dumps(patch, ensure_ascii=False).encode("utf-8")) > 65_536:
+            return actions
+        for row in patch["replacements"]:
+            if (not isinstance(row, dict) or set(row) != {"path", "sha256", "old", "new"}
+                    or not all(isinstance(item, str) for item in row.values())
+                    or not _qa_action_path(row["path"], repair=True) or row["path"] in seen
+                    or not re.fullmatch(r"[0-9a-f]{64}", row["sha256"])
+                    or not row["old"] or row["old"] == row["new"] or "\x00" in row["old"] + row["new"]):
+                return actions
+            seen.add(row["path"])
+            replacement_bytes += len(row["old"].encode("utf-8")) + len(row["new"].encode("utf-8"))
+            if replacement_bytes > 24_576:
+                return actions
+    except (UnicodeError, ValueError, TypeError):
+        return actions
+    # All paths are unique and the executor validates every row before any
+    # write. Reordering the same independent replacements is not new work.
+    actions["repair_patch"] = {"schema_version": 1,
+                               "replacements": sorted(deepcopy(patch["replacements"]), key=lambda row: row["path"])}
+    return actions
+
+
 def _qa_episode_identity(task):
     """A GitHub run is an observation of work, not a new repair task."""
     failure = task.get("failure") or task.get("last_failure") or {}
@@ -630,11 +734,17 @@ def _qa_episode_identity(task):
             or task.get("id", task.get("task_id")) != "staging_qa_failed_run_" + str(failure["run_id"])
             or not task.get("input_fingerprint")):
         return None
+    declared = task.get("declared_repair_inputs", {})
+    if not isinstance(declared, dict):
+        return None
+    work = {key: deepcopy(value) for key, value in declared.items()
+            if key not in {"repair_patch", "acceptance_artifact"}}
+    work.update(_qa_declared_actions(task))
     return {"family": "staging_qa", "failure_signature": failure["failure_signature"],
             "input_fingerprint": task["input_fingerprint"],
             "product_input_fingerprint": task.get("product_input_fingerprint"),
             "executor_fingerprint": task.get("executor_fingerprint"),
-            "declared_repair_inputs": deepcopy(task.get("declared_repair_inputs", {}))}
+            "declared_repair_inputs": work}
 
 
 def _failure_history_key(task, failure_signature):
@@ -643,47 +753,90 @@ def _failure_history_key(task, failure_signature):
     # hypothesis. Empty legacy QA scope and every source-family key stay exact;
     # introducing descriptors must not reopen unchanged source audit budgets.
     if task.get("family") == "staging_qa":
-        declared = task.get("declared_repair_inputs") or {}
-        action = {key: declared[key] for key in ("repair_patch", "acceptance_artifact")
-                  if declared.get(key)}
+        action = _qa_declared_actions(task)
         if action:
             identity.append(action)
     return _hash(identity)
+
+
+def _qa_completed_attempts(state, now):
+    """Yield usable frozen attempt authority; malformed legacy proof is skipped."""
+    for key, history in state.get("failure_history", {}).items():
+        if not isinstance(history, dict) or type(history.get("attempts")) is not int or history["attempts"] <= 0:
+            continue
+        task_ids = history.get("task_ids")
+        if not isinstance(task_ids, list):
+            continue
+        contexts = history.get("attempt_contexts")
+        if contexts is not None:
+            if not isinstance(contexts, list):
+                continue
+            for context in contexts:
+                completed_at = _proof_time(context.get("completed_at")) if isinstance(context, dict) else None
+                task_id = context.get("task_id", "") if isinstance(context, dict) else ""
+                identity = context.get("identity") if isinstance(context, dict) else None
+                if (completed_at and completed_at < _time(now) and isinstance(task_id, str)
+                        and re.fullmatch(r"staging_qa_failed_run_[0-9]+", task_id)
+                        and task_id in task_ids and isinstance(identity, dict)
+                        and identity.get("failure_signature") == history.get("failure_signature")
+                        and identity.get("input_fingerprint") == history.get("input_fingerprint")):
+                    yield key, identity, completed_at
+            continue
+        # Legacy authority needs the original terminal state/time binding.
+        completed_at = _proof_time(history.get("last_attempt_at"))
+        if not completed_at or completed_at >= _time(now):
+            continue
+        for task_id in task_ids:
+            if not isinstance(task_id, str) or not re.fullmatch(r"staging_qa_failed_run_[0-9]+", task_id):
+                continue
+            previous = state.get("tasks", {}).get(task_id, {})
+            identity = _qa_episode_identity(previous)
+            if (previous.get("status") == "BLOCKED" and previous.get("state_changed_at") == history.get("last_attempt_at")
+                    and identity and identity.get("failure_signature") == history.get("failure_signature")
+                    and identity.get("input_fingerprint") == history.get("input_fingerprint")):
+                yield key, identity, completed_at
+
+
+def _resolved_failure_history_key(task, failure_signature, state, now):
+    key = _failure_history_key(task, failure_signature)
+    identity = _qa_episode_identity(task)
+    if not identity or state.get("failure_history", {}).get(key, {}).get("attempts", 0):
+        return key
+    # Removing/corrupting a previously supplied action is not a new repair
+    # hypothesis. Reuse the latest proven same-scope bucket if the ordinary
+    # subset/empty-action bucket has never been attempted. Sources unchanged.
+    scope = {name: value for name, value in identity.items() if name != "declared_repair_inputs"}
+    current_actions = _qa_declared_actions(task)
+    prior = [(completed_at, old_key) for old_key, frame, completed_at in _qa_completed_attempts(state, now)
+             if {name: value for name, value in frame.items() if name != "declared_repair_inputs"} == scope
+             and (actions := _qa_declared_actions({"declared_repair_inputs": frame.get("declared_repair_inputs")}))
+             and all(actions.get(name) == value for name, value in current_actions.items())]
+    return max(prior)[1] if prior else key
 
 
 def _qa_alias_retry(task, state, now):
     identity = _qa_episode_identity(task)
     if not identity:
         return False
-    key = _failure_history_key(task, identity["failure_signature"])
-    history = state.get("failure_history", {}).get(key, {})
-    if (type(history.get("attempts")) is not int or history["attempts"] <= 0
-            or history.get("failure_signature") != identity["failure_signature"]
-            or history.get("input_fingerprint") != identity["input_fingerprint"]):
-        return False
-    contexts = history.get("attempt_contexts")
-    if contexts is not None:
-        if not isinstance(contexts, list):
-            return False
-        for context in contexts:
-            completed_at = _proof_time(context.get("completed_at")) if isinstance(context, dict) else None
-            task_id = context.get("task_id", "") if isinstance(context, dict) else ""
-            if (completed_at and isinstance(task_id, str)
-                    and re.fullmatch(r"staging_qa_failed_run_[0-9]+", task_id)
-                    and task_id in history.get("task_ids", [])
-                    and context.get("identity") == identity and completed_at < _time(now)):
-                return True
-        return False
-    # Pre-context history is usable only while the original BLOCKED task is
-    # still bound to its completed attempt. Input changes make it READY and
-    # change this clock; future attempts freeze identity directly above.
-    for task_id in history.get("task_ids", []):
-        previous = state.get("tasks", {}).get(task_id, {})
-        completed_at = _proof_time(history.get("last_attempt_at"))
-        if (completed_at and previous.get("status") == "BLOCKED" and _qa_episode_identity(previous) == identity
-                and previous.get("state_changed_at") == history.get("last_attempt_at")
-                and completed_at < _time(now)):
+    key = _resolved_failure_history_key(task, identity["failure_signature"], state, now)
+    for old_key, frame, _ in _qa_completed_attempts(state, now):
+        if old_key != key:
+            continue
+        if frame == identity:
             return True
+        # Only missing actions are redundant. The retained action values and
+        # all independent declared instructions/assertions stay exact.
+        current_actions = _qa_declared_actions(task)
+        previous_actions = _qa_declared_actions({"declared_repair_inputs": frame.get("declared_repair_inputs")})
+        if all(previous_actions.get(name) == value for name, value in current_actions.items()):
+            previous = deepcopy(frame)
+            declared = previous.get("declared_repair_inputs")
+            if isinstance(declared, dict):
+                previous["declared_repair_inputs"] = {name: value for name, value in declared.items()
+                                                     if name not in {"repair_patch", "acceptance_artifact"}}
+                previous["declared_repair_inputs"].update(current_actions)
+                if previous == identity:
+                    return True
     return False
 
 
@@ -699,6 +852,14 @@ def _valid_alias_transition_binding(event, terminal, binding):
     prior, destination, proof = (binding.get(key) for key in ("prior", "destination", "proof"))
     if not all(isinstance(value, dict) for value in (prior, destination, proof)):
         return False
+    # Historical retirement needs an explicit frozen proof. Do not reinterpret
+    # a malformed/unknown historical action as absent executable work.
+    for value in (prior, destination):
+        declared = value.get("declared_repair_inputs", {})
+        if (not isinstance(declared, dict)
+                or any(key in declared and key not in _qa_declared_actions(value)
+                       for key in ("repair_patch", "acceptance_artifact"))):
+            return False
     identities = [_qa_episode_identity(value) for value in (prior, destination)]
     details = event.get("details", {})
     if (binding.get("schema_version") != 1 or binding.get("verified") is not True
@@ -1198,7 +1359,7 @@ def plan(state, queue, now):
         known_failure = task.get("failure") or task.get("last_failure") or {}
         failure_signature = known_failure.get("failure_signature")
         if failure_signature:
-            key = _failure_history_key(task, failure_signature)
+            key = _resolved_failure_history_key(task, failure_signature, result, now)
             history = result["failure_history"].get(key, {})
             if history.get("attempts", 0) >= MAX_IDENTICAL_AUDITS:
                 _block(result, task, {"fingerprint": "failure_budget_exhausted:" + key,
@@ -1459,7 +1620,7 @@ def finish(state, task_id, token, report, now):
         task["last_failure"] = deepcopy(real_failure)
         if real_failure.get("kind") == "source_runtime":
             task["last_failure_evidence"] = deepcopy(report.get("evidence") or report.get("blockers"))
-        key = _failure_history_key(task, real_failure["failure_signature"])
+        key = _resolved_failure_history_key(task, real_failure["failure_signature"], result, now)
         history = result.setdefault("failure_history", {}).setdefault(key, {
             "failure_signature": real_failure["failure_signature"],
             "input_fingerprint": task["input_fingerprint"], "attempts": 0,

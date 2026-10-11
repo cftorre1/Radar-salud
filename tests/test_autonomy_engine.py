@@ -2011,6 +2011,11 @@ class AcceptanceTests(unittest.TestCase):
 
 
 class LogicalQaAliasTransitionTests(unittest.TestCase):
+    @staticmethod
+    def executable_patch():
+        return {"schema_version": 1, "replacements": [{"path": "src/radar_salud/source_scouts.py",
+                 "sha256": "e" * 64, "old": "old_parser()", "new": "fixed_parser()"}]}
+
     def setup_episode(self, **declared_work):
         mutual = next(t for t, f in SOURCE_TASKS.items() if f == "mutualities")
         qa = {"id": "staging_qa_failed_run_123", "family": "staging_qa", "status": "approved",
@@ -2045,7 +2050,7 @@ class LogicalQaAliasTransitionTests(unittest.TestCase):
         changes = [{"input_fingerprint": "4" * 64}, {"product_input_fingerprint": "4" * 64},
                    {"executor_fingerprint": "4" * 64},
                    {"failure": {**failure("456"), "failure_signature": "8" * 64}},
-                   {"repair_patch": {"path": "new-plan.json", "sha256": "4" * 64}},
+                   {"repair_patch": self.executable_patch()},
                    {"acceptance_artifact": {"path": "acceptance.json", "sha256": "4" * 64}}]
         for change in changes:
             with self.subTest(change=change):
@@ -2208,7 +2213,7 @@ class LogicalQaAliasTransitionTests(unittest.TestCase):
                 before, q, alias = self.setup_episode()
                 prior_key = engine._hash(["9" * 64, "1" * 64])
                 before["failure_history"][prior_key]["attempts"] = 3
-                alias[key] = {"path": "new-approved-input.json", "sha256": "e" * 64}
+                alias[key] = self.executable_patch() if key == "repair_patch" else {"path": "new-approved-input.json", "sha256": "e" * 64}
                 state, lease = claim(before, q, "staging_qa", "new-approved-work", BASE + timedelta(seconds=4))
                 self.assertIsNotNone(lease)
                 self.assertEqual(state["failure_history"][prior_key]["attempts"], 3)
@@ -2242,6 +2247,175 @@ class LogicalQaAliasTransitionTests(unittest.TestCase):
                 state, lease = claim(before, q, "staging_qa", "qa-new", BASE + timedelta(seconds=4))
                 self.assertIsNotNone(lease)
                 self.assertEqual(len(state["material_events"]), len(before["material_events"]) + 1)
+
+    def test_invalid_or_metadata_only_actions_do_not_mint_transition_or_reset_exhausted_budget(self):
+        bad_patch = self.executable_patch()
+        bad_patch["replacements"][0]["new"] = bad_patch["replacements"][0]["old"]
+        bad_path = self.executable_patch()
+        bad_path["replacements"][0]["path"] = "../src/radar_salud/source_scouts.py"
+        forbidden = self.executable_patch()
+        forbidden["replacements"][0]["path"] = "scripts/autonomy_engine.py"
+        oversized = self.executable_patch()
+        oversized["replacements"][0]["new"] = "x" * 24577
+        multibyte = self.executable_patch()
+        multibyte["replacements"][0]["new"] = "é" * 12289
+        duplicate = self.executable_patch()
+        duplicate["replacements"] *= 2
+        extra_row = self.executable_patch()
+        extra_row["replacements"][0]["unexecuted_nonce"] = "new clock"
+        bad_hash = self.executable_patch()
+        bad_hash["replacements"][0]["sha256"] = "not-a-hash"
+        invalid = [
+            ("repair_patch", "not an executable plan"), ("repair_patch", {"generated_at": "new clock"}),
+            ("repair_patch", {"path": "unexecuted-plan.json", "sha256": "e" * 64}),
+            ("repair_patch", {"schema_version": True, "replacements": self.executable_patch()["replacements"]}),
+            ("repair_patch", {"schema_version": 1, "replacements": []}),
+            ("repair_patch", bad_patch), ("repair_patch", bad_path), ("repair_patch", forbidden), ("repair_patch", oversized),
+            ("repair_patch", multibyte), ("repair_patch", duplicate), ("repair_patch", extra_row), ("repair_patch", bad_hash),
+            ("repair_patch", {**self.executable_patch(), "generated_at": "extra unsupported field"}),
+            ("repair_patch", {"schema_version": 1, "replacements": self.executable_patch()["replacements"] * 4}),
+            ("acceptance_artifact", {"observed_at": "new clock"}),
+            ("acceptance_artifact", {"path": "proof.json", "sha256": "not-a-hash"}),
+            ("acceptance_artifact", {"path": "../proof.json", "sha256": "e" * 64}),
+        ]
+        for case, (key, value) in enumerate(invalid):
+            for attempts in (1, 3):
+                with self.subTest(declaration=key, case=case, attempts=attempts):
+                    before, q, alias = self.setup_episode()
+                    history_key = engine._hash(["9" * 64, "1" * 64])
+                    before["failure_history"][history_key]["attempts"] = attempts
+                    alias[key] = value
+                    state, lease = claim(before, q, "staging_qa", "same-work", BASE + timedelta(seconds=4))
+                    self.assertEqual(len(state["failure_history"]), 1)
+                    self.assertEqual(state["failure_history"][history_key]["attempts"], attempts)
+                    self.assertEqual([e for e in state["material_events"] if e["kind"] == "transition"],
+                                     [e for e in before["material_events"] if e["kind"] == "transition"])
+                    if attempts == 1:
+                        self.assertIsNotNone(lease)
+                        self.assertEqual(state["pending_transitions"], before["pending_transitions"])
+                    else:
+                        self.assertIsNone(lease)
+
+    def test_acceptance_reference_clock_metadata_cannot_create_another_action_episode(self):
+        artifact = {"path": "acceptance.json", "sha256": "e" * 64, "observed_at": "old clock"}
+        before, q, alias = self.setup_episode(acceptance_artifact=artifact)
+        alias["acceptance_artifact"]["observed_at"] = "new clock"
+        alias["acceptance_artifact"]["unexecuted_nonce"] = "new metadata"
+        state, lease = claim(before, q, "staging_qa", "same-reference", BASE + timedelta(seconds=4))
+        self.assertIsNotNone(lease)
+        self.assertEqual(state["material_events"], before["material_events"])
+        self.assertEqual(state["pending_transitions"], before["pending_transitions"])
+
+    def test_valid_action_assertions_and_artifact_reference_values_are_exact(self):
+        patch = self.executable_patch()
+        patch["replacements"][0].update(old="assert observed_at == '2026-10-10'", new="assert observed_at == '2026-10-11'")
+        for key, first, second in [
+            ("repair_patch", patch, {**deepcopy(patch), "replacements": [{**patch["replacements"][0], "new": "assert observed_at == '2026-10-12'"}]}),
+            ("acceptance_artifact", {"path": "proof.json", "sha256": "e" * 64}, {"path": "proof.json", "sha256": "f" * 64}),
+            ("acceptance_artifact", {"path": "proof.json", "sha256": "e" * 64}, {"path": "new-proof.json", "sha256": "e" * 64}),
+        ]:
+            with self.subTest(action=key, changed=second):
+                before, q, alias = self.setup_episode(**{key: first})
+                previous_key = next(iter(before["failure_history"]))
+                before["failure_history"][previous_key]["attempts"] = 3
+                alias[key] = second
+                state, lease = claim(before, q, "staging_qa", "new-action", BASE + timedelta(seconds=4))
+                self.assertIsNotNone(lease)
+                self.assertEqual(state["failure_history"][previous_key]["attempts"], 3)
+                self.assertEqual(state["material_events"][-1]["kind"], "transition")
+
+    def test_escaped_non_utf8_json_declarations_do_not_crash_or_create_work(self):
+        patch = self.executable_patch()
+        patch["replacements"][0]["new"] = "bad" + chr(0xd800)
+        for key, value in [("repair_patch", patch),
+                           ("acceptance_artifact", {"path": "bad" + chr(0xd800) + ".json", "sha256": "e" * 64})]:
+            for attempts in (1, 3):
+                with self.subTest(declaration=key, attempts=attempts):
+                    before, q, alias = self.setup_episode()
+                    previous_key = next(iter(before["failure_history"]))
+                    before["failure_history"][previous_key]["attempts"] = attempts
+                    # Such values can arrive from a JSON document as escapes.
+                    alias[key] = json.loads(json.dumps(value))
+                    state, lease = claim(before, q, "staging_qa", "invalid-utf8", BASE + timedelta(seconds=4))
+                    self.assertEqual(bool(lease), attempts < 3)
+                    self.assertEqual(state["failure_history"], before["failure_history"])
+                    self.assertEqual([event for event in state["material_events"] if event["kind"] == "transition"],
+                                     [event for event in before["material_events"] if event["kind"] == "transition"])
+
+    def test_reordering_identical_unique_patch_rows_cannot_reset_the_action_budget(self):
+        patch = self.executable_patch()
+        patch["replacements"].append({**patch["replacements"][0], "path": "src/radar_salud/beta_sources_fast.py"})
+        for attempts in (1, 3):
+            with self.subTest(attempts=attempts):
+                before, q, alias = self.setup_episode(repair_patch=patch)
+                previous_key = next(iter(before["failure_history"]))
+                before["failure_history"][previous_key]["attempts"] = attempts
+                alias["repair_patch"]["replacements"].reverse()
+                state, lease = claim(before, q, "staging_qa", "same-patch", BASE + timedelta(seconds=4))
+                self.assertEqual(bool(lease), attempts < 3)
+                self.assertEqual(state["failure_history"], before["failure_history"])
+                self.assertEqual([event for event in state["material_events"] if event["kind"] == "transition"],
+                                 [event for event in before["material_events"] if event["kind"] == "transition"])
+
+    def test_removed_or_malformed_action_reuses_the_proven_existing_episode(self):
+        both = {"repair_patch": self.executable_patch(),
+                "acceptance_artifact": {"path": "proof.json", "sha256": "e" * 64}}
+        for key, original in [("repair_patch", {"repair_patch": self.executable_patch()}),
+                              ("acceptance_artifact", {"acceptance_artifact": both["acceptance_artifact"]}),
+                              ("repair_patch", both), ("acceptance_artifact", both)]:
+            for replacement in (None, "not an executable action", {"generated_at": "new metadata"}):
+                for attempts in (1, 3):
+                    with self.subTest(action=key, replacement=replacement, attempts=attempts):
+                        before, q, alias = self.setup_episode(**deepcopy(original))
+                        prior_key = next(iter(before["failure_history"]))
+                        before["failure_history"][prior_key]["attempts"] = attempts
+                        if replacement is None:
+                            alias.pop(key)
+                        else:
+                            alias[key] = replacement
+                        # Authority comes from the frozen attempt even if the
+                        # former task's mutable inputs subsequently move.
+                        before["tasks"]["staging_qa_failed_run_123"].update(input_fingerprint="f" * 64, status="CLOSED")
+                        state, lease = claim(before, q, "staging_qa", "same-work", BASE + timedelta(seconds=4))
+                        self.assertEqual(bool(lease), attempts < 3)
+                        self.assertEqual(state["failure_history"], before["failure_history"])
+                        self.assertEqual([event for event in state["material_events"] if event["kind"] == "transition"],
+                                         [event for event in before["material_events"] if event["kind"] == "transition"])
+                        if lease:
+                            state = finish(state, lease["task_id"], lease["token"], blocked(), BASE + timedelta(seconds=5))
+                            self.assertEqual(len(state["failure_history"]), 1)
+                            self.assertEqual(state["failure_history"][prior_key]["attempts"], attempts + 1)
+
+    def test_removed_action_preserves_new_declared_assertion_work_without_a_new_budget(self):
+        for attempts in (1, 3):
+            with self.subTest(attempts=attempts):
+                before, q, alias = self.setup_episode(repair_patch=self.executable_patch(),
+                    acceptance_artifact={"path": "proof.json", "sha256": "e" * 64},
+                    instructions={"assertions": {"duration_seconds": 5, "observed_at": "2026-10-10"}})
+                prior_key = next(iter(before["failure_history"]))
+                before["failure_history"][prior_key]["attempts"] = attempts
+                alias.pop("repair_patch")
+                alias["instructions"]["assertions"]["observed_at"] = "2026-10-11"
+                state, lease = claim(before, q, "staging_qa", "new-assertion", BASE + timedelta(seconds=4))
+                self.assertEqual(bool(lease), attempts < 3)
+                self.assertEqual(state["failure_history"], before["failure_history"])
+                transitions = [event for event in state["material_events"] if event["kind"] == "transition"]
+                previous = [event for event in before["material_events"] if event["kind"] == "transition"]
+                self.assertEqual(len(transitions) - len(previous), int(attempts < 3))
+
+    def test_relative_aliases_of_the_same_acceptance_reference_keep_the_same_budget(self):
+        for path in ("./proof.json", "artifacts/../proof.json"):
+            for attempts in (1, 3):
+                with self.subTest(path=path, attempts=attempts):
+                    before, q, alias = self.setup_episode(acceptance_artifact={"path": "proof.json", "sha256": "e" * 64})
+                    prior_key = next(iter(before["failure_history"]))
+                    before["failure_history"][prior_key]["attempts"] = attempts
+                    alias["acceptance_artifact"]["path"] = path
+                    state, lease = claim(before, q, "staging_qa", "same-reference", BASE + timedelta(seconds=4))
+                    self.assertEqual(bool(lease), attempts < 3)
+                    self.assertEqual(state["failure_history"], before["failure_history"])
+                    self.assertEqual([event for event in state["material_events"] if event["kind"] == "transition"],
+                                     [event for event in before["material_events"] if event["kind"] == "transition"])
 
     def test_retired_terminal_never_authorizes_alias_transition_retirement(self):
         _, state, q, event, binding, _ = self.historical_alias()
