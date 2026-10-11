@@ -1,6 +1,6 @@
 const {test,expect}=require('@playwright/test');
 const names=['RedSalud','Bupa Chile','Clínica INDISA','Red Dávila','Andes Salud','Clínicas de Chile A.G.','Pfizer Chile','Clínicas Achs Salud'];
-const recovered=['/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000',
+const recovered=['/nueva-unidad-trasplante-medula-osea','/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000',
  '/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/',
  '/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/',
  '/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/',
