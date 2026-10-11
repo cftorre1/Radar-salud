@@ -101,7 +101,7 @@ def test_listing_reads_all_category_components_and_native_full_dates():
     assert parsed["branches"]["component-1"]["next_url"] == urljoin(PAGE, "p0/OBSERVED=GH=/")
 
 
-def test_native_ibm_next_link_uses_exact_alternate_base_bound_by_public_script():
+def test_experimental_ibm_fallback_keeps_observed_field_without_claiming_browser_contract():
     base = PAGE + "!ut/p/z1/OBSERVED_STATE/"
     html = theme_base(base) + listing(branch(0, card("one"), "p0/OBSERVED=GH=/"))
     parsed = parse_listing(html, as_of=TODAY)
@@ -109,7 +109,8 @@ def test_native_ibm_next_link_uses_exact_alternate_base_bound_by_public_script()
     assert parsed["pagination_base_url"] == base
     assert parsed["pagination_base_evidence"] == {
         "url": PAGE, "field": 'link[rel="alternate"]#H_OBSERVED', "value": base,
-        "contract": "wpModules.theme.WindowUtils.baseURL.resolve(element.href)"}
+        "observed_script": "wpModules.theme.WindowUtils.baseURL.resolve(element.href)",
+        "purpose": "experimental_archive_fallback", "browser_anchor_rewrite_verified": False}
 
 
 def test_each_server_page_resolves_next_against_its_new_observed_theme_state():
@@ -291,6 +292,34 @@ def test_repeated_paging_fails_coverage_without_infinite_requests():
     assert not report["coverage_complete"] and len(report["raw_items"]) == 1
     assert any(error["reason"] == "repeated_pagination_page" for error in report["errors"])
     assert calls.count(next_url) == 1
+
+
+def test_repeated_experimental_theme_response_preserves_valid_editorial_rejection_and_gap():
+    base = PAGE + "!ut/p/z1/OBSERVED_STATE/"
+    next_url = base + "p0/OBSERVED=GH=/"
+    title = "Mutual impulsa jornada de autocuidado"
+    body = "Los trabajadores participaron en una jornada de sensibilización y compartieron consejos de autocuidado. " * 3
+    page = theme_base(base) + listing(branch(2, card("one", title=title), "p0/OBSERVED=GH=/"))
+    source, calls = scout({PAGE: page, next_url: page, detail_url("one"): native_detail(title=title, body=body)})
+    report = source.discover_inventory()
+    assert report["rows"][0]["date_verified"] and report["rows"][0]["status"] == "rejected"
+    assert report["metrics"]["90"]["candidates"] == 0 and not report["metrics"]["90"]["complete"]
+    assert report["technical_status"] == "partial" and not report["coverage_complete"]
+    assert report["errors"][0]["reason"] == "repeated_pagination_page"
+    assert "http_status" not in report["errors"][0] and calls.count(next_url) == 1
+    assert report["pages"][1]["pagination_base_evidence"]["purpose"] == "experimental_archive_fallback"
+
+
+def test_browser_probe_never_persists_cookies_or_allows_private_or_unofficial_navigation():
+    from scripts.mutual_public_paging_probe import public_url, safe_response_headers
+    assert public_url(PAGE)
+    assert public_url(PAGE + "p0/OBSERVED=/")
+    for url in ("http://www.mutual.cl/", "https://www.mutual.cl:444/", "https://user:pass@www.mutual.cl/",
+                "https://www.mutual.cl/portal/privado/", "https://www.mutual.cl/portal/%2570rivado/login/",
+                "https://example.test/", "https://www.mutual.cl.evil.test/"):
+        assert not public_url(url)
+    assert safe_response_headers({"Content-Type": "text/html", "Set-Cookie": "private", "Authorization": "secret"}) == {
+        "content-type": "text/html"}
 
 
 def test_failed_category_keeps_other_categories_and_exact_transport_attribution():

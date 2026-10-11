@@ -155,9 +155,11 @@ def same_article_url(requested, final):
 
 
 def _pagination_base(tree, html, page_url):
-    # The public IBM theme explicitly resolves relative p0 navigation against
-    # this alternate link. Ordinary urljoin(requested_url, href) treats p0 as
-    # content path-info and returns an empty Noticias layout (fresh Run3).
+    # This publisher field supplies an experimental archive fallback only.
+    # Run6 wp_theme_utils proves baseURL.resolve initializes a Promise; it does
+    # not rewrite ordinary anchors or change document.baseURI. Run4's old-token
+    # fallback repeated the initial cards. Every continuation must prove actual
+    # progress; an observed field alone is not a verified browser contract.
     pattern = (r"var\s+element\s*=\s*document\.getElementById\(\s*['\"]([^'\"]+)['\"]\s*\)\s*;"
                r"\s*if\s*\(element\)\s*\{\s*wpModules\.theme\.WindowUtils\.baseURL\.resolve\(element\.href\)")
     ids = list(dict.fromkeys(re.findall(pattern, html)))
@@ -174,7 +176,8 @@ def _pagination_base(tree, html, page_url):
         raise SourceDiscoveryError("pagination_base_outside_official_scope", base)
     return base, {"url": page_url, "field": f'link[rel="alternate"]#{ids[0]}',
                   "value": fields[0].attrs["href"],
-                  "contract": "wpModules.theme.WindowUtils.baseURL.resolve(element.href)"}
+                  "observed_script": "wpModules.theme.WindowUtils.baseURL.resolve(element.href)",
+                  "purpose": "experimental_archive_fallback", "browser_anchor_rewrite_verified": False}
 
 
 def parse_listing(html, page_url=PAGE, *, as_of=None):

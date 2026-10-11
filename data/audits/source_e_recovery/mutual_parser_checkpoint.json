@@ -3,7 +3,7 @@
   "checkpoint": "native_query_cards_parser_and_inventory",
   "as_of_chile": "2026-10-11",
   "source_availability": "VERIFIED_FROM_GITHUB_ACTIONS",
-  "coverage_90_days": "PENDING_LIVE_CATEGORY_PAGINATION_AND_DETAIL_RECONCILIATION",
+  "coverage_90_days": "INCOMPLETE_ARCHIVE_CONTINUATION_NOT_VERIFIED",
   "live_evidence": {
     "run_id": "38114830625",
     "captured_at": "2026-10-11T05:28:49.477795+00:00",
@@ -71,9 +71,9 @@
   },
   "regression_tests": {
     "command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py",
-    "result": "66 passed; capture-loader origin HTTP diagnostics retain actual numeric status and never label proxy denial as an origin response",
+    "result": "68 passed; native evidence, repeated experimental paging cannot prove complete zero, and browser probe scoped URL/header guards verified.",
     "shared_command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py tests/test_occupational_sources.py tests/test_occupational_integrity.py",
-    "shared_result": "114 passed, 3 shared-test failures from concurrent materiality and runtime adapter changes; root and common-module owner notified"
+    "shared_result": "Earlier 114 passed, 3 concurrent shared failures were notified; this checkpoint reruns own68, shared integration belongs to root."
   },
   "follow_up_checkpoint": {
     "coverage_checks": [
@@ -84,12 +84,12 @@
       "All diagnostics distinguish proxy denial from real origin HTTP status"
     ],
     "paging_resolution_routes": "data/audits/source_e_recovery/mutual_paging_routes.json",
-    "known_live_validation_pending": "Native detail verified in Run3. Actual theme-base continuation still requires fresh public capture and complete category traversal."
+    "known_live_validation_pending": "Run4 replay verifies all51 initial in-horizon details; zero under prior gate requires materiality review. Fourteen uncaptured fresh theme continuations remain; frozen theme probe repeats initial category cards."
   },
   "next_actions": [
-    "Validate alternate theme-base server paging from fresh parent Run4 captures",
-    "Use native scoped parser and same-article redirect guard in next full Actions inventory",
-    "Independent root reviewer checks evidence and honest source_health"
+    "Common module owner reviews actual dated tender/new-adherent false negatives with saved cleaned bodies and origin artifacts.",
+    "Parent Actions observes actual client page2 and native nextPage anchor behavior with script; no fabricated paging routes.",
+    "Independent root QA validates date/capture/coverage and honest source_health."
   ],
   "live_detail_validation": {
     "run_id": "38115788047",
@@ -126,12 +126,25 @@
       "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
       "field": "link[rel=\"alternate\"]#YaHLaEuLiYE",
       "value": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/",
-      "contract": "wpModules.theme.WindowUtils.baseURL.resolve(element.href)"
+      "observed_script": "wpModules.theme.WindowUtils.baseURL.resolve(element.href)",
+      "purpose": "experimental_archive_fallback",
+      "browser_anchor_rewrite_verified": false
     },
     "observed_next_component_2_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKQCPjPdRw=GH=/",
-    "method": "Only resolve relative observed nextPage href against the observed alternate href explicitly bound by public WindowUtils.baseURL script; no numeric route generation",
+    "method": "Observed alternate field retained only as experimental archive fallback; each response must prove category progress before any horizon completeness. Stable+p0 has no cards; old theme+p0 repeats initial25 branches.",
     "opaque_state": "MK token changes between captured listings; every continuation must use the current captured anchor, not a frozen token",
-    "live_status": "Full category continuation/cutoff verification pending parent Run4/Run5; no coverage claim from parser tests alone"
+    "live_status": "FALLBACK_EXPERIMENTAL_EVALUATED_NOT_BROWSER_CONTRACT; Run6 public JS proves Promise initialization, not href resolution."
   },
-  "public_theme_contract_script": "data/audits/source_e_recovery/mutual_paging_routes.json: public_theme_contract_script_routes contains exact publisher script.src with wp_theme_utils; prepared for conditional live contract inspection, no request made by agent"
+  "public_theme_contract_script": "data/audits/source_e_recovery/mutual_paging_routes.json: public_theme_contract_script_routes contains exact publisher script.src with wp_theme_utils; prepared for conditional live contract inspection, no request made by agent",
+  "actual_run4_replay": "data/audits/source_e_recovery/mutual_run4_replay.json",
+  "browser_probe": {
+    "script": "scripts/mutual_public_paging_probe.py",
+    "workflow_dependencies": [
+      "pip install playwright",
+      "python -m playwright install --with-deps chromium"
+    ],
+    "command": "python scripts/mutual_public_paging_probe.py --output OUTPUT/mutual-browser --as-of 2026-10-11",
+    "purpose": "Anonymous official robots-allowed public GET navigation; before executing document checks challenge; blocks third-party/private requests and non-GET/HEAD; stores no cookie or request headers; labels rendered DOM separately from publisher response bytes.",
+    "run_status": "PENDING_PARENT_ACTIONS"
+  }
 }
