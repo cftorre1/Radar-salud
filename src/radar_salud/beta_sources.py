@@ -307,10 +307,13 @@ def _material(role, title, body):
         quantified_health_power_impact = ("electrodependientes" in text and bool(re.search(
             r"\bcentros de salud\b[^!?]{0,120}\bafectados\b[^!?]{0,60}\b\d+", text)) and bool(re.search(
             r"cortes? de (?:suministro(?: el[eé]ctrico)?|electricidad)|sin suministro el[eé]ctrico", text)))
+        modular_care_deployment = ("hospital modular" in text and bool(re.search(
+            r"\btraslad[oa]|\bimplementaci[oó]n\b", text)) and bool(re.search(r"reforzar|apoyar", text))
+            and "atención de salud" in text)
         return (care_obligation or ges_coverage or care_legislation
                 or proposed_clinical_condition or provider_flood_response
                 or authorized_care_registry or clinical_service_suspension
-                or quantified_health_power_impact)
+                or quantified_health_power_impact or modular_care_deployment)
     return False
 
 
