@@ -50,16 +50,17 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
     rank = {"published": 0, "processing": 1, "pending": 2, "retry": 3, "rejected": 4, "archived": 5, "superseded": 6}
     matches.sort(key=lambda pair: (rank.get(pair[1]["status"], 7), pair[1]["detected_at"]))
     primary_key, item = matches[0]
-    verified = (raw.event_date and raw.metadata.get("publication_date_source")
+    dated = (raw.event_date and raw.metadata.get("publication_date_source")
                 and (not raw.metadata.get("publication_date_conflict") or raw.metadata.get("publication_date_conflict_resolution"))
-                and not raw.metadata.get("fetch_error") and len(raw.metadata.get("page_text", "")) >= 160)
+                and not raw.metadata.get("fetch_error"))
+    verified=dated and len(raw.metadata.get('page_text',''))>=160
     legacy_reject = (item["status"] == "rejected" and item.get("reason") == "processor_rejected"
                      and not item["raw"].get("event_date"))
     active = item["status"] in ("pending", "retry", "processing")
     if published and item["status"] not in ("published", "superseded"):
         _remember(item, now, "already_published_in_history")
         item.update(status="superseded", reason="already_published_in_history", updated_at=now.isoformat(), retry_at=None)
-    elif verified and (active or legacy_reject):
+    elif (dated and active) or (verified and legacy_reject):
         # Legacy rows did not retain their discovery watermark. Use the original
         # detection day conservatively, never today's watermark to rewrite history.
         basis = item.get("classification_watermark")
@@ -72,7 +73,7 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
         enriched["title"] = original["title"]
         enriched["metadata"] = {**original.get("metadata", {}), **enriched["metadata"]}
         enriched["metadata"].pop("fetch_error", None)
-        capture_repaired=(item["status"]=="retry" and item.get("reason") in
+        capture_repaired=(verified and item["status"]=="retry" and item.get("reason") in
                           ("df_detail_fetch_failed","df_missing_publication_date","df_publication_date_conflict","df_insufficient_article_evidence")
                           and (original.get("event_date")!=raw.event_date
                                or original.get('metadata',{}).get('fetch_error')

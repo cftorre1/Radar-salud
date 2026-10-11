@@ -7,7 +7,7 @@ import json
 import re
 from datetime import datetime
 from html.parser import HTMLParser
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urljoin
 from zoneinfo import ZoneInfo
 from pathlib import Path
 
@@ -41,10 +41,15 @@ class _Article(HTMLParser):
         self.header = []
         self.visible = []
         self.publication_label = []
+        self.primary_found = False
+        self.images = []
+        self.media = []
 
     def handle_starttag(self, tag, attrs):
         tag = tag.lower()
         attrs = dict(attrs)
+        if tag=='img' and attrs.get('src') and any(e[1] for e in self.stack):self.images.append(attrs['src'])
+        if tag=='iframe' and attrs.get('src') and any(e[4] for e in self.stack):self.media.append(attrs['src'])
         if tag == "meta":
             key = (attrs.get("name") or attrs.get("property") or "").lower()
             self.meta.setdefault(key, attrs.get("content") or "")
@@ -56,6 +61,7 @@ class _Article(HTMLParser):
         if tag not in ("meta", "link", "br", "img", "input", "hr", "source", "wbr"):
             classes = attrs.get("class", "") + " " + attrs.get("id", "")
             primary = bool(re.search(r"\b(cuerpo|article-body|story-body|news-body)\b", classes, re.I))
+            self.primary_found |= primary
             excluded = bool(re.search(r"\b(card|related|recommendations|newsletter|te-puede-interesar)\b", classes, re.I))
             publication_header=tag=='header' and bool(re.search(r'\benc-main\b',classes))
             publication_label=bool(re.search(r'\bauthor__date\b',classes))
@@ -154,7 +160,7 @@ def parse_df_article(html, url):
     chosen = valid[0] if valid and not conflict else None
     resolution=None
     identity_verified=any(article_url(str(_node_identity(node) or ''))==article_url(url) for node in selected)
-    if conflict and p.publication_label and p.primary and identity_verified:
+    if conflict and p.publication_label and (p.primary_found or p.media) and identity_verified:
         chosen=next((c for c in valid if c['source']=='visible:published_label'),None)
         if chosen:
             resolution={'rule':'primary_header_explicit_publication_label','selected_visible_day':chosen['day'],
@@ -180,13 +186,15 @@ def parse_df_article(html, url):
             "page_text": body,
             "article_title": node.get("headline") or p.meta.get("og:title") or "",
             "article_section": node.get("articleSection") or p.meta.get("article:section") or "",
+            "primary_image_urls":[urljoin(url,src) for src in p.images],
+            "primary_media_urls":[urljoin(url,src) for src in p.media],
             "publication_date_source": chosen["source"] if chosen else None,
             "publication_timestamp": chosen["value"] if chosen and chosen["source"] != "visible:published_label" else None,
             "publication_label": chosen["value"] if chosen and chosen["source"] == "visible:published_label" else None,
             "publication_date_candidates": candidates,
             "publication_date_conflict": conflict,
             "publication_date_conflict_resolution": resolution,
-            "article_content_source": "jsonld:articleBody" if node.get("articleBody") else "df_primary_body" if p.primary else "semantic_article" if p.article else "missing_primary_article",
+            "article_content_source": "jsonld:articleBody" if node.get("articleBody") else "df_primary_body" if p.primary else "semantic_article" if p.article else "df_primary_images" if p.images else "df_embedded_media_without_transcript" if p.media else "missing_primary_article",
             "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
         },
     }

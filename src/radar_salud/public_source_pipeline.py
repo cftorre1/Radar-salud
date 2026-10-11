@@ -236,7 +236,9 @@ def process_df(raw,cfg):
     if not raw.event_date:
         raise DeferredProcessing("DF has no verifiable publication date",reason="df_missing_publication_date")
     if len(body)<160:
-        raise DeferredProcessing("DF has insufficient readable evidence",reason="df_insufficient_article_evidence")
+        reason=('df_image_only_requires_ocr' if raw.metadata.get('primary_image_urls') else
+                'df_media_transcript_unavailable' if raw.metadata.get('primary_media_urls') else 'df_insufficient_article_evidence')
+        raise DeferredProcessing("DF has insufficient readable primary evidence",reason=reason)
     ai=analyze_news(title=raw.metadata.get("article_title") or raw.title,text=body,source_name=raw.source_name,
                     kind="prensa económica; exigir cambio material explícito de un actor, financiamiento, regulación o capacidad del sector salud. Macro/política genérica sin consecuencia sanitaria concreta no es señal elegible. Resumir sólo este artículo, atribuir a Diario Financiero, no convertir reporte en confirmación oficial")
     if not ai:raise DeferredProcessing("DF pendiente de evaluación IA",reason="df_analysis_deferred")

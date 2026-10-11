@@ -484,3 +484,32 @@ def test_numeric_media_score_does_not_override_explicit_nonmaterial_assessment(m
     assert raw.metadata['rejection_reason'] == 'media_assessment_no_material_event'
     assert raw.metadata['editorial_assessment']['score'] == 72
     assert assessment_exclusion({'reason': 'Material a escala regional; no alcanza impacto nacional.'}) is None
+
+
+def test_exact_remaining_original_formats_do_not_substitute_related_text():
+    from pathlib import Path
+    fixtures = Path(__file__).parent / 'fixtures'
+    manifest = json.loads((fixtures / 'df_original_manifest.json').read_text())
+    graphic = parse_df_article((fixtures / 'df_senal_presupuesto_real.html').read_text(), manifest['df_senal_presupuesto_real']['url'])
+    assert graphic['metadata']['page_text'] == ''
+    assert graphic['metadata']['article_content_source'] == 'df_primary_images'
+    assert len(graphic['metadata']['primary_image_urls']) == 5
+    assert graphic['event_date'] == '2026-10-09'
+    video = parse_df_article((fixtures / 'df_health_video_real.html').read_text(), manifest['df_health_video_real']['url'])
+    assert video['metadata']['page_text'] == ''
+    assert video['metadata']['article_content_source'] == 'df_embedded_media_without_transcript'
+    assert video['metadata']['primary_media_urls'] == ['https://mdstrm.com/embed/6a904fa97897765c7c70f94e']
+    assert video['event_date'] == '2026-09-01'
+    assert video['metadata']['publication_date_conflict']
+
+
+def test_verified_publication_date_rehydrates_technical_row_without_claiming_body_ready(tmp_path):
+    queue = PendingQueue(tmp_path / 'q.json');raw = _raw()
+    queue.discover('diario_financiero', [raw], now=CAPTURE, last_discovered_at='2026-10-09T22:00:00Z')
+    key = fingerprint(raw);queue.start(key);queue.finish(key, 'retry', 'df_publication_date_conflict', now=CAPTURE)
+    repaired = _raw(dated=True);repaired.metadata['page_text'] = ''
+    repaired.metadata['primary_media_urls'] = ['https://mdstrm.com/embed/example']
+    queue.discover('diario_financiero', [repaired], now=NOW)
+    assert queue.items[key]['raw']['event_date'] == '2026-10-10'
+    assert queue.items[key]['lane'] == 'LIVE'
+    assert queue.items[key]['status'] == 'retry'
