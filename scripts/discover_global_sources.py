@@ -25,6 +25,11 @@ def new_identity_count(items, prior_items, source):
     return sum(not set(item["source_aliases"]) & previous for item in items)
 
 def window_boundary_verified(route, as_of, days):
+    if route.get("date_partitions"):
+        slices=sorted(route["date_partitions"],key=lambda s:s["from"])
+        return bool(route["archive_complete"] and not route.get("unvisited_partitions") and all(s["archive_complete"] for s in slices)
+            and slices[0]["from"]<=(as_of-timedelta(days=days-1)).isoformat() and slices[-1]["to"]>=as_of.isoformat()
+            and all(date.fromisoformat(a["to"])+timedelta(days=1)==date.fromisoformat(b["from"]) for a,b in zip(slices,slices[1:])))
     dates=[row["index_published_at"] for row in route["items"]]
     return bool(dates and all(dates) and dates==sorted(dates,reverse=True)
                 and min(dates)<(as_of-timedelta(days=days-1)).isoformat())
@@ -35,7 +40,7 @@ def cadence_is_valid(ledger, source, checked, run_id, complete, cadence_seconds,
     for row in ledger["runs"]:
         previous = row.get("sources", {}).get(source, {})
         prior = previous.get("checked_at")
-        if row["run_id"] != run_id and previous.get("coverage_completeness") == "complete" and previous.get("coverage_contract_id") == contract_id and prior:
+        if row["run_id"] != run_id and row.get("mode")=="live_discovery" and row.get("capture_reuse",{}).get("reused_url_count")==0 and previous.get("coverage_completeness") == "complete" and previous.get("coverage_contract_id") == contract_id and prior:
             if (datetime.fromisoformat(checked)-datetime.fromisoformat(prior)).total_seconds() >= cadence_seconds:
                 return True
     return False
@@ -48,11 +53,11 @@ def mirror_health(root, source_health):
         for source, row in source_health.items(): health["sources"]["global_"+source]=row
         write(root,path,health)
 
-def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | None = None):
+def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | None = None, resume: bool = False):
     config = json.loads((root / "config/global_discovery.json").read_text())
     if config["default_window_days"] != 30 or config["maximum_editorial_topics"] != 10 or config["fill_quota"] or config["paid_ai_calls"] != 0 or config["reuters"]["enabled"]:
         raise ValueError("Global discovery/publication/license contract changed")
-    client = CaptureClient(captures, replay=replay, cooldown_file=root/"data/global_intelligence/http_cooldowns.json")
+    client = CaptureClient(captures, replay=replay, cooldown_file=root/"data/global_intelligence/http_cooldowns.json",resume=resume)
     prior_discovery_path = root / "data/global_intelligence/discovery.json"
     prior_items = json.loads(prior_discovery_path.read_text()).get("items",[]) if prior_discovery_path.exists() else []
     routes, language_items, failures = discover(config, client, as_of)
@@ -83,7 +88,7 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
             expected=len([route for route in config["routes"] if route["source"]==source])
             windows[str(days)]="complete_on_declared_surfaces" if len(source_routes)==expected and not technical and not pending_dates and all(window_boundary_verified(route,as_of,days) for route in source_routes) and not control_urls-detected_urls else "incomplete_lower_bound"
             if control_urls-detected_urls:complete=False
-        cadence_validated = cadence_is_valid(ledger,source,checked,run_id,complete,config["cadence_seconds"],replay,contract_id)
+        cadence_validated = cadence_is_valid(ledger,source,checked,run_id,complete,config["cadence_seconds"],replay or resume,contract_id)
         source_health[source] = {
             "name": source.upper(), "checked_at": checked, "status": "ok" if complete and cadence_validated else "warning" if source_routes else "error",
             "technical_status": "error" if technical else "ok", "coverage_status": "complete" if complete else "incomplete",
@@ -132,7 +137,8 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
                        "chile_transfer": "hypothesis_only", "independence_groups": ["WHO_UN_SYSTEM"], "requires": ["verified_business_consequence", "independent_corroboration", "rights_review", "editorial_approval"]})
         if len(topics) >= config["maximum_editorial_topics"]: break
     payload = {"schema_version": 1, "as_of": as_of.isoformat(), "generated_at": generated, "run_id": run_id,
-               "mode": "projection_replay" if replay else "live_discovery", "network_requests": client.network_requests,
+               "mode": "projection_replay" if replay else "live_resume" if resume else "live_discovery", "network_requests": client.network_requests,
+               "capture_reuse": {"reused_url_count":len(client.reused_urls),"maximum_campaign_capture_age_hours":1,"does_not_prove_cadence":True},
                "paid_ai_calls": 0, "source_health": source_health, "items": items, "routes": routes, "technical_failures": failures,
                "publication_count": 0, "content_use": "metadata_and_link_only", "default_window_days": 30,
                "maximum_editorial_topics": 10, "editorial_topics": topics, "cadence_is_not_proven_by_back_to_back_runs": True}
@@ -150,7 +156,7 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
         projection[url] = {"capture":record,"metadata":detail["metadata"] if detail else None}
     write(root, evidence / "capture_manifest.json", projection)
     if not replay:
-        ledger["runs"] = [entry for entry in ledger["runs"] if entry["run_id"] != run_id] + [{"run_id":run_id,"generated_at":generated,"as_of":as_of.isoformat(),"sources":source_health,"evidence_ref":str(evidence / "inventory.json")}]
+        ledger["runs"] = [entry for entry in ledger["runs"] if entry["run_id"] != run_id] + [{"run_id":run_id,"mode":payload["mode"],"capture_reuse":payload["capture_reuse"],"generated_at":generated,"as_of":as_of.isoformat(),"sources":source_health,"evidence_ref":str(evidence / "inventory.json")}]
         write(root,"data/global_intelligence/ledger.json",ledger)
         # Preserve every unowned source entry; this is discovery health, not Chile publication.
         mirror_health(root,source_health)
@@ -158,8 +164,8 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
     return payload
 
 if __name__ == "__main__":
-    parser=argparse.ArgumentParser();parser.add_argument("--root",type=Path,default=Path(__file__).resolve().parents[1]);parser.add_argument("--captures",type=Path,default=Path("work/global-runtime-captures"));parser.add_argument("--replay",type=Path);parser.add_argument("--mirror-health",action="store_true");parser.add_argument("--as-of",type=date.fromisoformat,default=datetime.now(ZoneInfo("America/Santiago")).date());parser.add_argument("--run-id",default=os.environ.get("GITHUB_RUN_ID") or datetime.now(timezone.utc).strftime("local-%Y%m%dT%H%M%SZ"));args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument("--root",type=Path,default=Path(__file__).resolve().parents[1]);parser.add_argument("--captures",type=Path,default=Path("work/global-runtime-captures"));parser.add_argument("--replay",type=Path);parser.add_argument("--resume-captures",action="store_true");parser.add_argument("--mirror-health",action="store_true");parser.add_argument("--as-of",type=date.fromisoformat,default=datetime.now(ZoneInfo("America/Santiago")).date());parser.add_argument("--run-id",default=os.environ.get("GITHUB_RUN_ID") or datetime.now(timezone.utc).strftime("local-%Y%m%dT%H%M%SZ"));args=parser.parse_args()
     if args.mirror_health:
         mirror_health(args.root,json.loads((args.root/"data/global_intelligence/source_health.json").read_text())["sources"])
     else:
-        run(args.root,args.captures,args.as_of,args.run_id,args.replay)
+        run(args.root,args.captures,args.as_of,args.run_id,args.replay,args.resume_captures)

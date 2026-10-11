@@ -137,6 +137,8 @@ def detail_metadata(html, as_of, url):
             "document_links": sorted(set(docs))}
 
 def collect_route(client, route, as_of, max_pages):
+    if route.get("date_slice_days"):
+        return collect_date_slices(client,route,as_of,max_pages)
     rows, pages, seen = [], [], set()
     cutoff = (as_of - timedelta(days=89)).isoformat()
     complete, stop = False, "page_limit"
@@ -173,10 +175,27 @@ def collect_route(client, route, as_of, max_pages):
         pages.append({"url": page_url, "capture": capture, "native_records": len(control), "native_control":control,"items": found})
         if {x["url"] for x in control} != {x["url"] for x in found}:
             rows.extend(found); stop="independent_native_control_mismatch"; break
+        if route.get("date_partition"):
+            document=Document(raw.decode(errors="replace")).root
+            bounds=route["date_partition"]
+            echoed={n.attrs.get("name"):n.attrs.get("value") for n in document.nodes("input") if n.attrs.get("name") in {"date[min]","date[max]"}}
+            if echoed != {"date[min]":bounds["query_from"],"date[max]":bounds["query_to"]} or any(not row["index_published_at"] or not bounds["query_from"]<=row["index_published_at"]<=bounds["query_to"] for row in found):
+                rows.extend(found);stop="page_parse_failure: date_filter_not_corroborated";break
+            last_links=[a.attrs["href"] for a in document.nodes("a") if "last" in a.attrs.get("rel","").split()]
+            last_pages=[int(dict(parse_qsl(urlsplit(value).query)).get("page",0)) for value in last_links]
+            if last_pages and max(last_pages)>=8:
+                rows.extend(found);stop="date_partition_saturated_native_cap";break
+            if not found:
+                complete=any(n.has_class("view-empty") and n.text() for n in document.nodes())
+                stop="date_partition_official_empty" if complete else "date_partition_empty_unverified";break
         if not found:
             complete, stop = page > 0, "empty_native_page" if page > 0 else "empty_initial_page_unverified"; break
         if ids in seen:
-            stop = "repeated_pagination_page"; break
+            if route.get("date_partition"):
+                rows.extend(found)
+                complete,stop=True,"date_partition_native_archive_exhausted_after_public_end_probe"
+            else: stop = "repeated_pagination_page"
+            break
         seen.add(ids); rows.extend(found)
         dates = [item["index_published_at"] for item in found if item["index_published_at"]]
         if len(dates) == len(found) and dates == sorted(dates, reverse=True) and min(dates) < cutoff:
@@ -197,6 +216,44 @@ def collect_route(client, route, as_of, max_pages):
             url = next_url
     return {"route": route, "pages": pages, "items": rows, "archive_complete": complete,
             "stop_reason": stop, "date_pending": sum(not x["index_published_at"] for x in rows)}
+
+def collect_date_slices(client,route,as_of,max_pages):
+    """Use the publisher's exposed date form; never derive a publication from the query."""
+    raw,landing=client.fetch(route["url"])
+    document=Document(raw.decode(errors="replace")).root
+    forms=[f for f in document.nodes("form") if f.attrs.get("method","").lower()=="get" and {"date[min]","date[max]"}<={n.attrs.get("name") for n in f.nodes("input")}]
+    if len(forms)!=1 or canonical_url(forms[0].attrs.get("action",""),route["url"]).split('?')[0]!=route["url"].split('?')[0]:
+        raise ValueError("official_date_filter_form_missing_or_changed")
+    start=as_of-timedelta(days=89);queue=[]
+    while start<=as_of:
+        end=min(as_of,start+timedelta(days=route["date_slice_days"]-1));queue.append((start,end));start=end+timedelta(days=1)
+    slices=[];pages=[];rows={};failures=[]
+    while queue and len(pages)<max_pages:
+        start,end=queue.pop(0)
+        # One-day overlap handles the publisher's midnight/date-max convention.
+        query_from=(start-timedelta(days=1)).isoformat();query_to=(end+timedelta(days=1)).isoformat()
+        parts=urlsplit(route["url"]);query=parse_qsl(parts.query)
+        url=urlunsplit((*parts[:3],urlencode(query+[("date[min]",query_from),("date[max]",query_to)]),""))
+        child={k:v for k,v in route.items() if k!="date_slice_days"}
+        child.update(url=url,date_partition={"from":start.isoformat(),"to":end.isoformat(),"query_from":query_from,"query_to":query_to})
+        result=collect_route(client,child,as_of,max_pages-len(pages));pages.extend(result["pages"])
+        for row in result["items"]:
+            if row["url"] not in rows: rows[row["url"]]=dict(row,index_evidence=list(row["index_evidence"]),raw_publication_dates=list(row["raw_publication_dates"]))
+            else:
+                previous=rows[row["url"]];previous["index_evidence"].extend(row["index_evidence"])
+                previous["raw_publication_dates"]=sorted(set(previous["raw_publication_dates"]+row["raw_publication_dates"]))
+                if previous["index_published_at"]!=row["index_published_at"]:
+                    previous.update(index_published_at=None,publication_date_error="conflicting_official_listing_dates")
+        if result["stop_reason"].startswith(("page_fetch_failure","page_parse_failure","independent_native_control_mismatch")):
+            failures.append({"url":url,"error":result["stop_reason"]})
+        if result["stop_reason"]=="date_partition_saturated_native_cap" and start<end:
+            midpoint=start+(end-start)//2;queue[:0]=[(start,midpoint),(midpoint+timedelta(days=1),end)];continue
+        slices.append({**child["date_partition"],"url":url,"archive_complete":result["archive_complete"],"stop_reason":result["stop_reason"],"pages":len(result["pages"])})
+    complete=not queue and bool(slices) and all(s["archive_complete"] for s in slices)
+    return {"route":route,"pages":pages,"items":list(rows.values()),"archive_complete":complete,
+        "stop_reason":"verified_date_partition_coverage" if complete else "date_partition_coverage_incomplete",
+        "date_pending":sum(not x["index_published_at"] for x in rows.values()),"date_partitions":slices,
+        "date_filter_form_evidence":landing,"unvisited_partitions":len(queue),"partition_technical_failures":failures}
 
 def verify_item(client, row, as_of):
     item = dict(row); item["published_at"] = row["index_published_at"]
@@ -244,6 +301,7 @@ def discover(config, client, as_of):
         try:
             result = collect_route(client, route, as_of, config["max_pages_per_route"])
             routes.append(result)
+            failures.extend({"route":route,**failure} for failure in result.get("partition_technical_failures",[]))
             if result["stop_reason"].startswith(("page_fetch_failure", "page_parse_failure", "independent_native_control_mismatch")):
                 failures.append({"route": route, "error": result["stop_reason"]})
             for row in result["items"]:

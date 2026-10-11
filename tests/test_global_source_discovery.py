@@ -181,7 +181,7 @@ def test_health_counts_verified_details_separately_from_indexed_dates():
     assert health_counts([item],AS_OF)=={'30':0,'90':0}
 
 def test_cadence_requires_distinct_successful_live_runs_at_the_configured_interval():
-    ledger={'runs':[{'run_id':'prior','sources':{'who':{'coverage_completeness':'complete','coverage_contract_id':'contract-A','checked_at':'2026-10-10T13:00:00+00:00'}}}]}
+    ledger={'runs':[{'run_id':'prior','mode':'live_discovery','capture_reuse':{'reused_url_count':0},'sources':{'who':{'coverage_completeness':'complete','coverage_contract_id':'contract-A','checked_at':'2026-10-10T13:00:00+00:00'}}}]}
     args=(ledger,'who','2026-10-11T13:00:00+00:00','current')
     assert cadence_is_valid(*args,True,86400,contract_id='contract-A')
     assert not cadence_is_valid(*args,False,86400,contract_id='contract-A')
@@ -293,3 +293,106 @@ def test_replay_of_older_429_evidence_never_suppresses_captured_history_or_conta
     with pytest.raises(ValueError,match='http_429'): replay.fetch('https://www.who.int/news/first')
     assert replay.fetch('https://www.who.int/news/second')[1]['http_status']==200
     assert replay.network_requests==0 and not replay.cooldowns
+
+
+class DateArchiveClient:
+    def __init__(self,ignore=False,saturated=False,empty=False): self.calls=[];self.ignore=ignore;self.saturated=saturated;self.empty=empty
+    def fetch(self,url):
+        from urllib.parse import urlsplit,parse_qsl
+        from datetime import timedelta
+        self.calls.append(url);query=dict(parse_qsl(urlsplit(url).query))
+        start=query.get('date[min]','');end=query.get('date[max]','')
+        form=f'<form method="get" action="/en/news"><input name="date[min]" value="{start}"><input name="date[max]" value="{end}"></form>'
+        if not start: html=form
+        elif self.empty: html=form+'<div class="view-empty">No news found.</div>'
+        else:
+            day=(date.fromisoformat(start)+timedelta(days=1)).isoformat()
+            card=CARD.replace('2026-10-09',day).replace('9-10-2026-test',day+'-test')
+            html=(form if not self.ignore else '')+card
+            if self.saturated and (date.fromisoformat(end)-date.fromisoformat(start)).days>5:
+                html+='<a rel="last" href="?page=8">Last</a>'
+        raw=html.encode();return raw,{'http_status':200,'tls_verified':True,'fetched_at':'2026-10-11T14:18:00Z','body_sha256':hashlib.sha256(raw).hexdigest()}
+
+def test_official_date_slices_cover_all_90_days_using_card_dates_not_query_dates():
+    route=dict(ROUTE,date_slice_days=7)
+    result=collect_route(DateArchiveClient(),route,AS_OF,100)
+    assert result['archive_complete'] and result['stop_reason']=='verified_date_partition_coverage'
+    assert result['date_partitions'][0]['from']=='2026-07-14'
+    assert result['date_partitions'][-1]['to']=='2026-10-11'
+    assert all(p['native_control'] for p in result['pages'])
+    assert window_boundary_verified(result,AS_OF,30) and window_boundary_verified(result,AS_OF,90)
+    result['date_partitions'].pop(3)
+    assert not window_boundary_verified(result,AS_OF,90)
+
+def test_date_filter_echo_is_required_and_never_substitutes_for_publication():
+    result=collect_route(DateArchiveClient(ignore=True),dict(ROUTE,date_slice_days=7),AS_OF,100)
+    assert not result['archive_complete']
+    assert all(s['stop_reason'].startswith('page_parse_failure') for s in result['date_partitions'])
+
+def test_native_archive_cap_triggers_bounded_date_subdivision_instead_of_claiming_complete():
+    result=collect_route(DateArchiveClient(saturated=True),dict(ROUTE,date_slice_days=7),AS_OF,100)
+    assert result['archive_complete'] and len(result['date_partitions'])>13
+    assert all(s['stop_reason'] in {'date_partition_native_archive_exhausted_after_public_end_probe','verified_older_boundary'} for s in result['date_partitions'])
+    limited=collect_route(DateArchiveClient(saturated=True),dict(ROUTE,date_slice_days=7),AS_OF,2)
+    assert not limited['archive_complete'] and limited['unvisited_partitions']>0
+
+def test_official_empty_date_partitions_are_explicit_evidence_not_missing_html():
+    result=collect_route(DateArchiveClient(empty=True),dict(ROUTE,date_slice_days=7),AS_OF,100)
+    assert result['archive_complete'] and not result['items']
+    assert all(s['stop_reason']=='date_partition_official_empty' for s in result['date_partitions'])
+
+def test_date_query_cannot_operate_if_official_filter_form_disappears():
+    with pytest.raises(ValueError,match='form_missing'):
+        collect_route(FakeClient([CARD]),dict(ROUTE,date_slice_days=7),AS_OF,100)
+
+def test_resume_campaign_reuses_verified_bytes_without_fresh_requests_and_rejects_stale_capture(tmp_path):
+    first=CaptureClient(tmp_path,delay=0);allow_test_hosts(first);first.opener=RateOpener()
+    url='https://www.paho.org/en/news';first.fetch(url)
+    second=CaptureClient(tmp_path,delay=0,resume=True);allow_test_hosts(second);second.opener=RateOpener()
+    assert second.fetch(url)[0]==b'<h1>PAHO</h1>' and second.network_requests==0
+    assert second.reused_urls=={url}
+    path=next(tmp_path.glob('*.json'));record=json.loads(path.read_text());record['fetched_at']='2020-01-01T00:00:00+00:00';path.write_text(json.dumps(record))
+    with pytest.raises(ValueError,match='one-hour bound'): CaptureClient(tmp_path,resume=True)
+
+
+@pytest.mark.parametrize('conflict',[False,True])
+def test_overlapping_slices_preserve_each_receipt_and_close_on_conflicting_publication(conflict):
+    from urllib.parse import parse_qsl,urlsplit
+    class Overlap(DateArchiveClient):
+        def fetch(self,url):
+            raw,capture=super().fetch(url);query=dict(parse_qsl(urlsplit(url).query))
+            start=query.get('date[min]')
+            if start in {'2026-07-13','2026-07-20'}:
+                day='2026-07-19' if conflict and start=='2026-07-13' else '2026-07-20'
+                html=raw.decode();html=__import__('re').sub(r'datetime="[^"]+"',f'datetime="{day}T12:00:00Z"',html)
+                html=__import__('re').sub(r'/en/news/[^" ]+', '/en/news/shared',html)
+                raw=html.encode();capture['body_sha256']=hashlib.sha256(raw).hexdigest()
+            return raw,capture
+    result=collect_route(Overlap(),dict(ROUTE,date_slice_days=7),AS_OF,100)
+    row=next(r for r in result['items'] if r['url'].endswith('/shared'))
+    assert len(row['index_evidence'])>=4
+    assert row['index_published_at']==(None if conflict else '2026-07-20')
+    if conflict:
+        assert row['publication_date_error']=='conflicting_official_listing_dates' and result['date_pending']==1
+        observed=[r['index_published_at'] for page in result['pages'] for r in page['items'] if r['url'].endswith('/shared')]
+        assert '2026-07-19' in observed and '2026-07-20' in observed and None not in observed
+
+def test_cadence_prior_resume_or_legacy_unknown_provenance_never_proves_recurrence():
+    row={'run_id':'prior','mode':'live_resume','capture_reuse':{'reused_url_count':5},'sources':{'who':{'coverage_completeness':'complete','coverage_contract_id':'A','checked_at':'2026-10-10T13:00:00+00:00'}}}
+    args=({'runs':[row]},'who','2026-10-11T13:00:00+00:00','next',True,86400)
+    assert not cadence_is_valid(*args,contract_id='A')
+    row.pop('mode');row.pop('capture_reuse');assert not cadence_is_valid(*args,contract_id='A')
+    row.update(mode='live_discovery',capture_reuse={'reused_url_count':0});assert cadence_is_valid(*args,contract_id='A')
+
+def test_resume_rechecks_age_when_receipt_is_used_and_never_recaptures_stale_bytes(tmp_path,monkeypatch):
+    from datetime import datetime,timedelta,timezone
+    first=CaptureClient(tmp_path,delay=0);allow_test_hosts(first);first.opener=RateOpener()
+    url='https://www.paho.org/en/news';first.fetch(url)
+    second=CaptureClient(tmp_path,delay=0,resume=True);allow_test_hosts(second);second.opener=RateOpener()
+    stamp=datetime.fromisoformat(first.records[url]['fetched_at'])
+    class Later(datetime):
+        @classmethod
+        def now(cls,tz=None): return stamp+timedelta(hours=2)
+    monkeypatch.setattr('radar_salud.global_discovery_common.datetime',Later)
+    with pytest.raises(ValueError,match='one-hour bound'): second.fetch(url)
+    assert second.network_requests==0 and not second.opener.calls

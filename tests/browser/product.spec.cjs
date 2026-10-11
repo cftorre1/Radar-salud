@@ -195,6 +195,7 @@ test('Global read state is shared across Home and the research page',async({page
  // Filter its publisher explicitly to test persisted read state independently of rank.
  const teaser=globalData.themes.find(t=>t.id===teaserId);
  const publisher=teaser.sources.map(s=>s.publisher).sort((a,b)=>globalData.themes.filter(t=>t.sources.some(s=>s.publisher===a)).length-globalData.themes.filter(t=>t.sources.some(s=>s.publisher===b)).length)[0];
+ await page.locator('#globalFilters summary').click();
  await page.locator('#globalPublisher').selectOption(publisher);
  const publisherCount=globalData.themes.filter(t=>t.sources.some(s=>s.publisher===publisher)).length;
  expect(publisherCount).toBeLessThanOrEqual(10);
@@ -336,9 +337,8 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  const opened=page.locator('.theme').filter({has:page.locator('details[open]')});
  await expect(opened).toContainText('Qué mirar en Chile');
  await expect(opened).toContainText('Lectura estratégica');
- await expect(opened).toContainText('Resumen ejecutivo');
- await expect(opened).toContainText('Hallazgos clave');
- await expect(opened).toContainText('Metodología y alcance');
+ await expect(opened).toContainText('Qué encontró:');
+ await expect(opened).toContainText('Fuentes del tema');
  await expect(opened).toContainText('Hipótesis Chile');
  await expect(opened).toContainText('señales locales compatibles verificadas: 0');
  await expect(opened.getByRole('button',{name:'Volver a Ponte al día ↑'})).toBeVisible();

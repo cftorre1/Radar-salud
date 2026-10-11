@@ -72,12 +72,18 @@ class NativeHTML(HTMLParser):
         self.stack = []
         self.cards, self.h1, self.meta_dates, self.visible_dates = [], [], [], []
         self.canonical, self.alternates, self.documents = [], [], []
+        self.forms, self.inputs, self.links, self.empty_messages = [], [], [], []
         self.feed(raw.decode("utf-8", errors="replace"))
         self.close()
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         classes = set(attrs.get("class", "").split())
+        if tag == "input":
+            self.inputs.append(attrs)
+            for frame in self.stack:
+                if frame["tag"] == "form":
+                    frame["inputs"].append(attrs)
         if tag == "meta":
             name = (attrs.get("property") or attrs.get("name") or "").casefold()
             if name in {"article:published_time", "datepublished", "citation_publication_date", "dc.date.issued"}:
@@ -89,6 +95,7 @@ class NativeHTML(HTMLParser):
             if "alternate" in rel and attrs.get("hreflang") and attrs.get("href"):
                 self.alternates.append(attrs["href"])
         if tag == "a" and attrs.get("href"):
+            self.links.append(attrs)
             href = attrs["href"]
             if "language-link" in classes and attrs.get("hreflang"):
                 self.alternates.append(href)
@@ -99,7 +106,7 @@ class NativeHTML(HTMLParser):
                 frame["times"].append(attrs.get("datetime", ""))
         if tag not in VOID:
             self.stack.append({"tag": tag, "attrs": attrs, "classes": classes,
-                               "text": [], "links": [], "times": []})
+                               "text": [], "links": [], "times": [], "inputs": []})
 
     def handle_startendtag(self, tag, attrs):
         self.handle_starttag(tag, attrs)
@@ -108,7 +115,7 @@ class NativeHTML(HTMLParser):
 
     def handle_data(self, text):
         for frame in self.stack:
-            if frame["tag"] in {"a", "h1"} or frame["classes"] & {"date", "field--name-created", "views-field-title"}:
+            if frame["tag"] in {"a", "h1"} or frame["classes"] & {"date", "field--name-created", "views-field-title", "view-empty"}:
                 frame["text"].append(text)
 
     def handle_endtag(self, tag):
@@ -118,6 +125,10 @@ class NativeHTML(HTMLParser):
         while len(self.stack) > position:
             frame = self.stack.pop()
             text = " ".join(" ".join(frame["text"]).split())
+            if frame["tag"] == "form":
+                self.forms.append({"attrs": frame["attrs"], "inputs": frame["inputs"]})
+            if "view-empty" in frame["classes"] and text:
+                self.empty_messages.append(text)
             if frame["tag"] == "a":
                 for parent in self.stack:
                     parent["links"].append((frame["attrs"].get("href", ""), text))
@@ -259,7 +270,7 @@ def audit(captures, inventory_path, output):
         except Exception as exc:
             errors.append({"code": "robots_evidence_invalid", "context": url, "error": str(exc)[:200]})
 
-    pages, index_rows = [], {}
+    pages, index_rows, page_readers, page_rows, partition_results = [], {}, {}, {}, []
     native_90 = {"who": set(), "paho": set()}
     for route_result in inventory["routes"]:
         route = route_result["route"]
@@ -270,6 +281,16 @@ def audit(captures, inventory_path, output):
                 check(page["capture"] == record, "page_capture_metadata", url)
                 check(record["http_status"] == 200, "claimed_index_http", url)
                 rows = independent_index(bodies[url], route, url, as_of)
+                page_rows[url] = rows
+                if route["format"] == "paho_html":
+                    reader = page_readers.setdefault(url, NativeHTML(bodies[url]))
+                    query = parse_qsl(urlsplit(url).query, keep_blank_values=True)
+                    bounds = {key: value for key, value in query if key in {"date[min]", "date[max]"}}
+                    if bounds:
+                        check(len([key for key, _ in query if key in bounds]) == 2 and set(bounds) == {"date[min]", "date[max]"}, "date_query_unambiguous", url)
+                        echoed = {node.get("name"): node.get("value") for node in reader.inputs if node.get("name") in bounds}
+                        check(echoed == bounds, "date_query_echo", url)
+                        check(all(row["published_at"] and bounds["date[min]"] <= row["published_at"] <= bounds["date[max]"] for row in rows), "native_dates_inside_query_bounds", url)
                 control = [{"url": row["url"], "published_at": row["published_at"]} for row in rows]
                 check(control == page.get("native_control"), "independent_native_control", url)
                 check(len(rows) == page["native_records"], "native_record_count", url)
@@ -285,6 +306,57 @@ def audit(captures, inventory_path, output):
                               "native_records": len(rows), "body_sha256": digest(bodies[url])})
             except Exception as exc:
                 errors.append({"code": "native_page_invalid", "context": page.get("url"), "error": str(exc)[:200]})
+
+        if route_result.get("date_partitions"):
+            try:
+                form_capture = route_result["date_filter_form_evidence"]
+                landing = official_url(route["url"])
+                check(form_capture == records[landing], "date_form_capture_binding", landing)
+                forms = NativeHTML(bodies[landing]).forms
+                forms = [form for form in forms if form["attrs"].get("method", "").casefold() == "get"
+                         and {"date[min]", "date[max]"} <= {node.get("name") for node in form["inputs"]}]
+                check(len(forms) == 1 and official_url(forms[0]["attrs"].get("action", ""), landing).split("?")[0] == landing.split("?")[0], "official_date_form_identity", landing)
+                slices = sorted(route_result["date_partitions"], key=lambda part: part["from"])
+                contiguous = (date.fromisoformat(slices[0]["from"]) == as_of - timedelta(days=89)
+                              and date.fromisoformat(slices[-1]["to"]) == as_of
+                              and all(date.fromisoformat(a["to"]) + timedelta(days=1) == date.fromisoformat(b["from"]) for a, b in zip(slices, slices[1:])))
+                if route_result["archive_complete"]:
+                    check(contiguous and route_result.get("unvisited_partitions") == 0 and all(part["archive_complete"] for part in slices), "partition_full_window_claim", landing)
+                for part in slices:
+                    requested = official_url(part["url"])
+                    expected = {"date[min]": part["query_from"], "date[max]": part["query_to"]}
+                    span = (date.fromisoformat(part["to"]) - date.fromisoformat(part["from"])).days + 1
+                    check(0 < span <= route["date_slice_days"], "partition_slice_span_contract", requested)
+                    check(date.fromisoformat(part["query_from"]) == date.fromisoformat(part["from"]) - timedelta(days=1)
+                          and date.fromisoformat(part["query_to"]) == date.fromisoformat(part["to"]) + timedelta(days=1), "declared_one_day_query_overlap", requested)
+                    matching = [official_url(page["url"]) for page in route_result["pages"]
+                                if {k: v for k, v in parse_qsl(urlsplit(page["url"]).query) if k in expected} == expected]
+                    check(len(matching) == part["pages"] and requested in matching, "partition_page_receipts", requested)
+                    ordered = sorted(matching, key=lambda url: int(dict(parse_qsl(urlsplit(url).query)).get("page", 0)))
+                    indices = [int(dict(parse_qsl(urlsplit(url).query)).get("page", 0)) for url in ordered]
+                    check(indices == list(range(len(indices))), "partition_contiguous_page_numbers", requested)
+                    if part["archive_complete"]:
+                        check(bool(ordered), "complete_partition_missing_pages", requested)
+                        terminal = ordered[-1]
+                        if part["stop_reason"] == "date_partition_official_empty":
+                            check(not page_rows[terminal] and bool(page_readers[terminal].empty_messages), "partition_native_empty_evidence", terminal)
+                        elif part["stop_reason"] == "date_partition_native_archive_exhausted_after_public_end_probe":
+                            previous = ordered[:-1]
+                            check(bool(page_rows[terminal]) and any(page_rows[old] == page_rows[terminal] for old in previous), "partition_terminal_repeat_dates_and_urls", terminal)
+                        elif part["stop_reason"] == "verified_older_boundary":
+                            dates = [row["published_at"] for page_url in ordered for row in page_rows[page_url]]
+                            check(bool(dates) and all(dates) and dates == sorted(dates, reverse=True)
+                                  and min(dates) < (as_of - timedelta(days=89)).isoformat(), "partition_verified_older_calendar_boundary", terminal)
+                        else:
+                            check(False, "unrecognized_partition_completion_contract", terminal)
+                        for page_url in ordered:
+                            last = [anchor["href"] for anchor in page_readers[page_url].links if "last" in anchor.get("rel", "").split()]
+                            check(all(int(dict(parse_qsl(urlsplit(href).query)).get("page", 0)) < 8 for href in last), "complete_partition_native_cap_reached", page_url)
+                    partition_results.append({"source": route["source"], "section": route["section"], "from": part["from"], "to": part["to"],
+                                              "query_from": part["query_from"], "query_to": part["query_to"], "pages": len(matching),
+                                              "archive_complete": part["archive_complete"], "stop_reason": part["stop_reason"]})
+            except Exception as exc:
+                errors.append({"code": "partition_evidence_invalid", "context": route["url"], "error": str(exc)[:200]})
 
     detail_results, readers = [], {}
     detected = {"who": set(), "paho": set()}
@@ -307,6 +379,9 @@ def audit(captures, inventory_path, output):
                     dates.append(index_rows[(listing, url)]["published_at"])
                 expected = dates[0] if dates and None not in dates and len(set(dates)) == 1 else None
                 check(member["index_published_at"] == expected, "item_native_publication_date", url)
+                all_observed = [row["published_at"] for (_, native_url), row in index_rows.items() if native_url == url]
+                all_day = all_observed[0] if all_observed and None not in all_observed and len(set(all_observed)) == 1 else None
+                check(member["index_published_at"] == all_day, "all_observed_index_dates_fail_closed", url)
                 detail = member.get("detail_evidence")
                 if member.get("detail_verified"):
                     check(bool(detail), "verified_detail_missing", url)
@@ -399,7 +474,7 @@ def audit(captures, inventory_path, output):
               "captured_http_statuses": dict(Counter(str(entry["http_status"]) for entry in matrix)),
               "native_pages": len(pages), "verified_language_detail_checks": len(detail_results),
               "deduplicated_items": len(inventory["items"]), "editorial_topics": len(topics),
-              "source_summary": health_summary, "records": matrix, "pages": pages, "details": detail_results,
+              "source_summary": health_summary, "records": matrix, "pages": pages, "details": detail_results, "date_partitions": partition_results,
               "network_requests": 0, "paid_ai_calls": 0, "canonical_state_writes": 0,
               "inputs_unchanged": after == input_hashes, "input_file_count": len(input_hashes),
               "TLS_scope": "Recorded verified-TLS evidence and redirect binding; no retransmission or independent new certificate handshake.",

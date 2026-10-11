@@ -111,13 +111,27 @@ class PublicRedirect(HTTPRedirectHandler):
         return redirected
 
 class CaptureClient:
-    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None):
+    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None, resume: bool = False):
         self.directory, self.replay, self.delay = directory, replay, delay
         directory.mkdir(parents=True, exist_ok=True)
         self.records, self.robots, self.network_requests = {}, {}, 0
         self._live_lock = RLock()
         self.cooldown_file = cooldown_file
         self.cooldowns = json.loads(cooldown_file.read_text()) if cooldown_file and cooldown_file.exists() and not replay else {}
+        self.resume = resume
+        self.reused_urls = set()
+        if resume and not replay:
+            for path in directory.glob('*.json'):
+                record=json.loads(path.read_text());url=canonical_url(record['requested_url'])
+                key=hashlib.sha256(url.encode()).hexdigest()[:24]
+                if path.name!=key+'.json' or record['body_file']!=key+'.body': raise ValueError('resume capture filename mismatch')
+                raw=(directory/record['body_file']).read_bytes()
+                age=datetime.now(timezone.utc)-datetime.fromisoformat(record['fetched_at'])
+                if age<timedelta(0) or age>timedelta(hours=1): raise ValueError('resume campaign capture outside one-hour bound')
+                if record['tls_verified'] is not True or record['user_agent']!=USER_AGENT or hashlib.sha256(raw).hexdigest()!=record['body_sha256'] or len(raw)!=record['body_bytes']:
+                    raise ValueError('resume capture integrity mismatch')
+                canonical_url(record['final_url'])
+                self.records[url]=record
         self.opener = build_opener(PublicRedirect(self), HTTPSHandler(context=ssl.create_default_context()))
     def check_robots(self, url):
         origin = urlunsplit((*urlsplit(url)[:2], "", "", ""))
@@ -147,6 +161,15 @@ class CaptureClient:
         url = canonical_url(url)
         if url in self.records:
             record = self.records[url]
+            if self.resume and not robots:
+                age=datetime.now(timezone.utc)-datetime.fromisoformat(record['fetched_at'])
+                raw=(self.directory/record['body_file']).read_bytes()
+                if age<timedelta(0) or age>timedelta(hours=1): raise ValueError('resume campaign capture outside one-hour bound')
+                if hashlib.sha256(raw).hexdigest()!=record['body_sha256'] or len(raw)!=record['body_bytes']:
+                    raise ValueError('resume capture integrity mismatch')
+                for target in [url]+[hop['location'] for hop in record.get('redirect_chain',[])]+[record['final_url']]:
+                    self.check_robots(canonical_url(target))
+                self.reused_urls.add(url)
             if record["http_status"] != 200:
                 raise ValueError("http_" + str(record["http_status"]))
             return (self.directory / record["body_file"]).read_bytes(), record
