@@ -14,7 +14,7 @@ from radar_salud import engine_cli, llm_analysis, paths
 from radar_salud.beta_sources import CuratedBetaSourceScout, media_gate_accepts
 from radar_salud.history import load_history
 from radar_salud.models import RawItem
-from radar_salud.pending_queue import PendingQueue
+from radar_salud.pending_queue import PendingQueue, fingerprint
 
 ROOT = Path(__file__).resolve().parents[1]
 BODY = "La clínica suspendió operaciones y trasladó sus pacientes a otros establecimientos de su red asistencial. El cierre temporal reduce capacidad y obliga a redistribuir consultas, procedimientos y prestaciones para asegurar continuidad."
@@ -120,3 +120,33 @@ def test_generic_finance_excluded_and_strategic_health_prefilter_kept():
                   "Presupuesto de salud y listas de espera",
                   "Clínica anuncia adquisición de control"):
         assert media_gate_accepts(title)
+
+
+def test_pulso_rediscovery_rehydrates_same_url_without_resetting_capture_attempts_or_lane(tmp_path):
+    now = datetime.now(timezone.utc)
+    url = "https://www.latercera.com/pulso/noticia/clinica-cierre/"
+    old = RawItem("pulso_latercera", "Clínica anuncia cierre temporal", url, "Pulso / La Tercera", "press_high_trust",
+                  metadata={"capture_method": "verified_original_byline_inventory"})
+    queue = PendingQueue(tmp_path / "queue.json")
+    queue.discover("pulso_latercera", [old], now=now)
+    key = fingerprint(old)
+    queue.start(key)
+    queue.finish(key, "retry", "article_verification_failed", now=now)
+    before = dict(queue.items[key])
+    verified = RawItem("pulso_latercera", "Clínica suspende operaciones y traslada pacientes", url + "?outputType=base-amp-type",
+                       "Pulso / La Tercera", "press_high_trust", now.date().isoformat(), BODY,
+                       {"article_verified": True, "page_text": BODY, "market_role": "media", "source_quality_gate": "passed"})
+    assert queue.discover("pulso_latercera", [verified], now=now, last_discovered_at=now.isoformat()) == 0
+    item = queue.items[key]
+    assert len(queue.items) == 1
+    assert item["raw"]["event_date"] == verified.event_date
+    for field in ("detected_at", "attempts", "lane", "status", "retry_at"):
+        assert item[field] == before[field]
+    assert item["lane"] == "BACKFILL"  # Rediscovery is not a new LIVE event.
+    assert len(item["raw"]["metadata"]["evidence_revisions"]) == 1
+    queue.discover("pulso_latercera", [verified], now=now)
+    assert len(queue.items[key]["raw"]["metadata"]["evidence_revisions"]) == 1
+    queue.finish(key, "rejected", "editorial_relevance_below_threshold", now=now)
+    terminal = json.loads(json.dumps(queue.items[key]))
+    queue.discover("pulso_latercera", [verified], now=now)
+    assert queue.items[key] == terminal  # No automatic reopening of editorial decisions.

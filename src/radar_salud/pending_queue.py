@@ -56,8 +56,34 @@ class PendingQueue:
     def discover(self, source, items, seen=(), now=None, last_discovered_at=None):
         now = now or now_utc()
         added = 0
+        # Pulso article titles can change between listing, byline and metadata.
+        # A single canonical news URL must retain its original durable identity.
+        pulso_urls = {}
+        if source == "pulso_latercera":
+            from .pulso_source import article_url
+            pulso_urls = {article_url(item["raw"]["url"]): key for key,item in self.items.items()
+                          if item["source"] == source and article_url(item["raw"]["url"])}
         for raw in items:
             key = fingerprint(raw)
+            if source == "pulso_latercera":
+                url = article_url(raw.url)
+                previous = self.items.get(pulso_urls.get(url)) if url else None
+                if previous is not None:
+                    if previous["status"] in ("pending", "retry", "processing") and raw.metadata.get("article_verified"):
+                        old = previous["raw"]
+                        old_meta = old.get("metadata", {})
+                        changed = (not old_meta.get("article_verified") or old.get("event_date") != raw.event_date
+                                   or old.get("title") != raw.title or old_meta.get("page_text") != raw.metadata.get("page_text"))
+                        if changed:
+                            revisions = old_meta.get("evidence_revisions", []) + [dict(
+                                at=now.isoformat(), previous_publication_date=old.get("event_date"),
+                                verified_publication_date=raw.event_date, previous_title=old.get("title"),
+                                verified_title=raw.title, previous_capture_method=old_meta.get("capture_method"),
+                                reason="verified_article_rediscovery", lane_preserved=previous["lane"])]
+                            previous["raw"] = asdict(raw)
+                            previous["raw"]["metadata"]["evidence_revisions"] = revisions
+                            previous["raw"]["metadata"]["queue_identity_fingerprint"] = pulso_urls[url]
+                    continue
             if key in self.items or key in seen:
                 continue
             item_lane = lane(raw, now, last_discovered_at)
@@ -66,6 +92,8 @@ class PendingQueue:
                 status="archived" if archived else "pending", detected_at=now.isoformat(),
                 attempts=0, reason="outside_90_day_backfill" if archived else None)
             added += 1
+            if source == "pulso_latercera" and url:
+                pulso_urls[url] = key
         self.save()
         return added
 
