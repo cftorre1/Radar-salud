@@ -974,10 +974,10 @@
     },
     "ist": {
       "name": "Instituto de Seguridad del Trabajo (IST)",
-      "checked_at": "2026-10-11T06:45:08.676202+00:00",
+      "checked_at": "2026-10-11T07:04:07.918745+00:00",
       "last_signal_at": null,
       "discovered": 20,
-      "new": 19,
+      "new": 0,
       "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
@@ -1022,23 +1022,32 @@
           "excluded_role": 0,
           "pending": 0,
           "unknown_date_items": 1,
-          "complete": false
+          "complete": false,
+          "content_kinds": {
+            "news": 4,
+            "prevention": 2
+          }
         },
         "90": {
           "start": "2026-07-13",
           "end": "2026-10-11",
           "dated_articles": 20,
           "expected_role": 20,
-          "candidates": 0,
-          "rejected": 20,
+          "candidates": 1,
+          "rejected": 19,
           "excluded_role": 0,
           "pending": 0,
           "unknown_date_items": 1,
-          "complete": false
+          "complete": false,
+          "content_kinds": {
+            "news": 11,
+            "prevention": 8,
+            "study": 1
+          }
         }
       },
       "unique_items": 20,
-      "material_items": 0,
+      "material_items": 1,
       "technical_failures": [
         {
           "code": "api_visible_publication_date_conflict",
@@ -1055,11 +1064,17 @@
       ],
       "coverage_completeness": false,
       "capture_environment": "github_actions",
-      "capture_run_id": "38119024441",
+      "capture_run_id": "38120060930",
       "count_basis": "unique source items in rolling 90 days; published includes previously reconciled items",
       "latest_detected_at": "2026-10-07",
       "oldest_capture_at": "2026-10-11T05:57:37.036246+00:00",
-      "latest_capture_at": "2026-10-11T06:45:08.676202+00:00"
+      "latest_capture_at": "2026-10-11T07:04:07.918745+00:00",
+      "accepted_history": 0,
+      "feed_reconciliation": {
+        "published": 0,
+        "deferred": {},
+        "unrelated_signals_preserved": 53
+      }
     },
     "pulso_latercera": {
       "name": "Pulso / La Tercera",
@@ -1120,5 +1135,5 @@
     }
   },
   "generated_at": "2026-10-10T22:25:43.933396+00:00",
-  "occupational_sources_checked_at": "2026-10-11T07:10:14.564531+00:00"
+  "occupational_sources_checked_at": "2026-10-11T07:10:29.580216+00:00"
 }
