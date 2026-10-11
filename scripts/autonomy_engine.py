@@ -116,7 +116,7 @@ def _failure_proof(value):
             and str(value["run_id"]) == value["run_url"].rstrip("/").split("/")[-1])
 
 
-def _staging_problem(value, failure):
+def _staging_problem(value, failure, path=()):
     """Material identity, separate from retained transport/validation evidence.
 
     A fresh raw log digest is not evidence of a new problem when the report
@@ -131,8 +131,10 @@ def _staging_problem(value, failure):
         for key, item in value.items():
             if key in {"timestamp", "at", "updated_at", "recorded_at", "reviewed_at", "supplement_recorded_at",
                        "generated_at", "observed_at", "checked_at", "started_at", "finished_at", "heartbeat_at",
-                       "last_heartbeat_at", "duration", "duration_seconds", "elapsed_seconds", "startTime",
+                       "last_heartbeat_at", "duration", "duration_seconds", "elapsed_seconds",
                        "log_path", "log_sha256", "trace_path", "trace_sha256", "operation_id", "response_bytes"}:
+                continue
+            if key == "startTime" and path[-2:] == ("browser_proof", "stats"):
                 continue
             if (key == "fingerprint" and "reason" in value and "evidence" in value) or (structured and key in {
                     "captured_stdout_sha256", "captured_stdout_bytes", "failure_sha256", "failure_hash"}):
@@ -150,11 +152,11 @@ def _staging_problem(value, failure):
                 # Test duration is an observation. Assertion values and actual
                 # publication/effective dates in strings remain exact evidence.
                 item = re.sub(r"\bin \d+(?:\.\d+)?s\b", "in <duration>", item)
-            result[key] = _staging_problem(item, failure)
+            result[key] = _staging_problem(item, failure, path + (key,))
         return result
     if isinstance(value, list):
-        return [_staging_problem(item, failure) for item in value]
-    if isinstance(value, str) and value.startswith("--junitxml="):
+        return [_staging_problem(item, failure, path) for item in value]
+    if isinstance(value, str) and path[-1:] == ("command",) and value.startswith("--junitxml="):
         return "--junitxml=<artifact>"
     return value
 

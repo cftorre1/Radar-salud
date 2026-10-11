@@ -108,7 +108,8 @@ def qa_observation(run_id, sha, *, product="same-product", variant="1"):
         ("browser rejected", [{"command": ["npm", "run", "test:browser"], "returncode": 1,
             "status": "FAIL", "failure_hash": variant * 64,
             "browser_proof": {"projects": ["desktop", "mobile"],
-                "stats": {"expected": 32, "unexpected": 14, "duration": int(variant) * 100}}}]),
+                "stats": {"expected": 32, "unexpected": 14, "duration": int(variant) * 100,
+                          "startTime": "2026-10-10T00:0" + variant + ":00Z"}}}]),
     ]
     report = {"status": "BLOCKED", "blockers": [{"kind": "technical", "reason": reason,
                 "fingerprint": engine._hash([reason, sha, run_id, variant]), "evidence": items}
@@ -163,6 +164,7 @@ class AutonomyEngineTests(unittest.TestCase):
             lambda q, r: q["tasks"][0].update(product_input_fingerprint="changed-product"),
             lambda q, r: r["blockers"][3]["evidence"][0]["browser_proof"].update(cases=[{"test": "new assertion", "error": "wrong text"}]),
             lambda q, r: q["tasks"][0]["failure"].update(failure_signature="new-contract-failure"),
+            lambda q, r: r["blockers"][0]["evidence"][1]["context"][0].update(startTime="2026-10-11T00:00:00Z"),
         )
         for change in changes:
             with self.subTest(change=change):
