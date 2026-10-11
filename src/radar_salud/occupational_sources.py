@@ -276,27 +276,64 @@ def market_role(title, body):
 def materiality(role, title, body):
     """Reason codes are retained in raw metadata and the reconciliation ledger."""
     text, headline = fold(f"{title} {body}"), fold(title)
+    # Numeric punctuation is not a sentence boundary: "32.522" and "36,9%"
+    # must stay attached to the measurement they quantify.
+    clauses = re.split(r"(?<!\d)\.|\.(?!\d)|[!?;\n]|\b(?:pero|sin embargo)\b", text)
+    affirmative = []
+    for clause in clauses:
+        negation_scope = re.sub(r"\bsin\s+(?:costo|copago|cargo)(?:s)?\b", " ", clause)
+        if not re.search(r"\b(?:no|nunca|tampoco|sin)\b", negation_scope):
+            affirmative.append(clause)
+    new_labor_report = bool(any(re.search(r"(?:publico|publica|presento|presenta).{0,50}(?:informe|estudio)", c)
+                                  for c in affirmative)
+                            and re.search(r"(?:acoso laboral|violencia en el trabajo|salud mental laboral)", text))
+    new_adherent = any(re.search(r"(?:nuevo adherente|se incorpora|se adhiere|se adhieren|"
+                                r"forma parte de las entidades empleadoras adheridas)", c) for c in affirmative)
     # Check affirmative clauses before the headline noise gate. A campaign can
     # accompany a real opening or a new operational protocol.
-    for clause in re.split(r"[.!?;\n]|\b(?:pero|sin embargo)\b", text):
-        # Negation can cover coordinated verbs: "no inaugura ni amplía".
-        negation_scope = re.sub(r"\bsin\s+(?:costo|copago|cargo)(?:s)?\b", " ", clause)
-        if re.search(r"\b(?:no|nunca|tampoco|sin)\b", negation_scope):
-            continue
+    for clause in affirmative:
         capacity = r"(?:centro\w*|clinica\w*|pabellon\w*|boxes|box|camas?|salas?|unidades?|infraestructura|equipamiento|servicios?|prestaciones?)"
-        change = r"(?:inaugur\w*|ampli\w*|apertura|se traslada|traslado temporal|adquier\w*|adquisicion|habilit\w*|moderniz\w*)"
+        change = (r"(?:inaugur\w*|ampli\w*|apertura|se traslada|traslado temporal|adquier\w*|adquisicion|"
+                  r"habilit\w*|moderniz\w*|renovad\w*|remodelad\w*|reabr\w*|reabiert\w*|"
+                  r"(?:vuelve|volvio) a abrir)")
         if (re.search(rf"\b{change}\b.{{0,100}}\b{capacity}\b|\b{capacity}\b.{{0,100}}\b{change}\b", clause)
                 or re.search(r"\b(?:nuevo centro|nueva clinica)\b|\binversion de.{0,30}\d", clause)):
             return True, "capacity_or_investment_change"
+        if (re.search(r"\blicitacion publica\b", clause)
+                and re.search(r"(?:adquisicion|ejecucion|construccion).{0,100}(?:obras civiles|modular)", clause)
+                and re.search(r"(?:centro de atencion|clinica|hospital|capacidad).{0,250}\d[\d.,]*\s*m(?:²|2)", text)):
+            # A published procurement call is a capacity signal. It does not
+            # establish an award, a completed building or an unconditional
+            # opening; preserve those qualifications in the article body.
+            return True, "capacity_procurement_call"
         if re.search(r"(?:activ\w*|incorpor\w*|se suman|se suma).{0,180}(?:fonasa|safed|mcc)|"
                      r"(?:fonasa|safed|mcc).{0,180}(?:activ\w*|incorpor\w*|prestaciones|atencion)", clause):
             return True, "public_private_coverage_change"
         if role == "mutuality":
             if re.search(r"(?:nuevo adherente|incorpor\w*|se adhiere|se adhieren|adhiere).{0,160}\d[\d.,]*.{0,35}trabajador", clause):
                 return True, "quantified_coverage_change"
+            if (new_adherent and re.search(r"(?:pasa a asesorar|protege|cubre).{0,80}"
+                    r"(?:\d+|uno|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\s+de\s+(?:las?\s+)?"
+                    r"(?:\d+|uno|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\s+empresas", clause)):
+                return True, "quantified_coverage_change"
             if re.search(r"(?:accident|siniestr|enfermedad).{0,220}(?:aument|disminu|alza|baja|reduccion).{0,100}\d|"
                          r"(?:aument|disminu|alza|baja|reduccion).{0,100}\d.{0,140}(?:accident|siniestr)", clause):
                 return True, "quantified_occupational_data"
+            if (re.search(r"(?:atenciones.{0,80}salud mental|salud mental.{0,80}atenciones)", clause)
+                    and re.search(r"(?:triplic\w*|duplic\w*|aument\w*|disminu\w*).{0,100}\d", clause)):
+                return True, "quantified_occupational_data"
+            if (new_labor_report and re.search(r"(?:recibio|registro|registraron).{0,35}\d[\d.,]*\s+"
+                    r"(?:requerimientos|atenciones|casos)", clause)):
+                return True, "quantified_occupational_data"
+            if (re.search(r"(?:automatiz\w*|inscripcion automatica)", clause)
+                    and re.search(r"(?:inscripcion|inscribir)", text)
+                    and re.search(r"(?:cursos|capacitaciones).{0,30}e-learning|e-learning.{0,30}(?:cursos|capacitaciones)", text)
+                    and re.search(r"sin (?:la )?necesidad de esperar (?:el plazo de )?\d+ horas", text)):
+                return True, "quantified_operational_process_change"
+            if (re.search(r"se elaboro.{0,30}guia tecnica", clause)
+                    and re.search(r"kit de herramientas.{0,160}instituciones publicas.{0,70}implementacion", clause)
+                    and re.search(r"salud mental|violencia laboral", clause)):
+                return True, "new_operational_tool_or_protocol"
             if (re.search(r"(?:nueva guia|nuevo protocolo|nueva plataforma|nuevo modulo|estrena modulo|"
                           r"implement\w*.{0,50}(?:guia|protocolo|plataforma|modulo)|"
                           r"(?:guia|protocolo|plataforma|modulo).{0,50}(?:publicad|publica|implement))", clause)

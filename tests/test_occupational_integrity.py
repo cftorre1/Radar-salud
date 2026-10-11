@@ -332,3 +332,72 @@ def test_explicit_as_of_horizon_is_independent_of_machine_clock():
     assert discover_items(source, listing, lambda url: article_html(published="2026-07-12"), as_of=TODAY) == []
     assert source.decisions[0]["reason"] == "outside_90_day_horizon"
 
+
+def live_material_fixture(fragment, *, mutual=False):
+    """Return an article whose full scoped body agrees with the live bytes."""
+    import hashlib
+    import json
+    root = Path(__file__).resolve().parents[1]
+    if mutual:
+        audit = json.loads((root / "data/audits/source_e_recovery/mutual_run4_replay.json").read_text())
+        raws = audit["inventory"]["raw_items"]
+    else:
+        audit = json.loads((root / "data/audits/source_e_recovery/actions/38116209530/inventory/inventory.json").read_text())
+        raws = audit["sources"]["achs_seguro_laboral"]["raw_items"]
+    raw = next(raw for raw in raws if fragment in raw["url"])
+    evidence = audit["evidence"][raw["url"]] if mutual else raw["metadata"]["capture_evidence"]
+    content = (root / evidence["artifact"]).read_bytes()
+    assert hashlib.sha256(content).hexdigest() == evidence["sha256"]
+    if mutual:
+        from radar_salud.mutual_sources import parse_detail
+        current = parse_detail(content.decode("utf-8"), raw["url"], as_of=TODAY)
+        title, body = current["title"], current["body"]
+    else:
+        title, _, body, _ = parse(content.decode("utf-8"), raw["url"]).result(today=TODAY)
+    assert title == raw["title"] and body == raw["metadata"]["page_text"]
+    return raw
+
+
+@pytest.mark.parametrize("fragment,expected", [
+    ("a-dos-anos-de-la-ley-karin", "quantified_occupational_data"),
+    ("innovar-para-llegar-a-tiempo", "quantified_occupational_data"),
+    ("renovado-centro-de-entrenamiento", "capacity_or_investment_change"),
+    ("achs-pone-a-disposicion-guia", "new_operational_tool_or_protocol"),
+    ("conoce-las-actualizaciones", "quantified_operational_process_change"),
+])
+def test_real_published_business_changes_are_not_lost_before_editorial_review(fragment, expected):
+    raw = live_material_fixture(fragment)
+    assert materiality("mutuality", raw["title"], raw["metadata"]["page_text"]) == (True, expected)
+
+
+@pytest.mark.parametrize("fragment,expected", [
+    ("licitacion-publica-convenio-marco", "capacity_procurement_call"),
+    ("gran-americas-se-incorpora", "quantified_coverage_change"),
+])
+def test_real_mutual_procurement_and_quantified_network_adherence_are_candidates(fragment, expected):
+    raw = live_material_fixture(fragment, mutual=True)
+    assert materiality("mutuality", raw["title"], raw["metadata"]["page_text"]) == (True, expected)
+    if expected == "capacity_procurement_call":
+        assert "carácter facultativo" in raw["metadata"]["page_text"]
+        assert "eventual adjudicación" in raw["metadata"]["page_text"]
+
+
+def test_real_available_reporting_tool_and_generic_grc_manual_remain_rejected():
+    for fragment, mutual in (("descubre-el-modulo-de-reporteria", False), ("manual-grc", True)):
+        raw = live_material_fixture(fragment, mutual=mutual)
+        assert materiality("mutuality", raw["title"], raw["metadata"]["page_text"]) == (
+            False, "no_verifiable_material_change")
+
+
+@pytest.mark.parametrize("title,body", [
+    ("Centro de entrenamiento", "No reabre el centro ni remodela su infraestructura."),
+    ("Licitación pública", "La convocatoria es para adquirir material de oficina y mobiliario."),
+    ("Nueva adhesión", "Una empresa se incorpora a la mutualidad sin informar escala o trabajadores."),
+    ("Cobertura de transporte", "La mutualidad asesora a ocho de las nueve empresas desde hace años."),
+    ("Informe de salud mental laboral", "No se publicó un informe. Se recibieron 32.522 requerimientos."),
+    ("Consejos de inscripción", "Inscribir cursos e-learning en simples pasos ayuda al usuario."),
+    ("Guía de buen trato", "Una guía recomienda respeto y autocuidado en las instituciones."),
+])
+def test_generic_negated_or_unquantified_updates_stay_closed(title, body):
+    assert not materiality("mutuality", title, body)[0]
+
