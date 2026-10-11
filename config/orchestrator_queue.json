@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T09:36:35.151546+00:00",
+  "updated_at": "2026-10-11T10:02:43.358668-03:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3654,7 +3654,7 @@
     },
     {
       "id": "w4_isapres_2026_10_11",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "high",
       "expansion_priority": "P0",
       "owner": "Data Intelligence + Market Intelligence",
@@ -3686,13 +3686,14 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Extraer registro oficial de Isapres y fijar códigos 63,67,76,78,80,81,94,99,107,108, tipo abierta/cerrada, alias, grupo y vigencia.",
+      "next_action": "Reconcile demonstrable group/control and networks; validate separated cadence before promotion",
       "evidence": [
-        "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "data/audits/w4_isapres_2026_10_11.json",
+        "data/audits/source_expansion/native_initial.zip"
       ],
       "external_blockers": [],
-      "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+      "progress": "Native official inventory: 10 entities, 8 months, 320 comparable observations; canonical resolution integrated into build_signal",
+      "implementation_status": "OPERATIVE_DEGRADED"
     },
     {
       "id": "w4_cmf_2026_10_11",
