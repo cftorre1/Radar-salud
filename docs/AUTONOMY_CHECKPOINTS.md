@@ -141,3 +141,20 @@ and validation subprocesses. They do not establish hosted pickup or Stage A.
 
 Next hypothesis: a shared staging-failure capture contract will keep controller
 and worker evidence revisions identical and avoid fencing a healthy repair.
+
+## 8. Shared demonstrated-failure input
+
+Decision: controller and worker use the same read-only GitHub failure capture.
+It validates the staging preview identity, ignores cancelled supersessions and
+normalizes failed test names before hashing. An identical run now has identical
+evidence revision in both executors; observation wrappers do not create retries.
+
+Directed validation: 9 failure-input tests passed. The independent reviewer also
+replayed a captured real failure log and confirmed that controller and worker
+inputs leave a running lease intact. Runtime integration currently has 13 tests
+passed, including real local Git pickup, durable mutation and next-family pickup.
+Those are local fixtures, not hosted Stage A evidence.
+
+Next hypothesis: pinned repair candidates that are later safely integrated into
+staging can continue into genuine post-merge runtime acceptance without a false
+closure on the isolated branch or loss of the durable candidate.
