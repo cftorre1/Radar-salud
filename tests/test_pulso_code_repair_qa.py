@@ -130,8 +130,22 @@ def test_new_paid_output_must_match_same_primary_and_current_guard_version(admit
     elif change == "foreign_request": model["_pulso_analysis_meta"]["request_input_sha256"] = "0" * 64
     elif change == "output_tamper": model["what_happened"] = "unobserved modified answer"
     elif change == "response_binding": validation["model_response"]["response_id"] = "foreign"
-    with pytest.raises(ValueError, match="new_genuine_v5_assessment_missing"):
+    expected = "new_genuine_v5_validation_deferred" if change == "deferred" else "new_genuine_v5_assessment_missing"
+    with pytest.raises(ValueError, match=expected):
         qa.verify_code_repair_reference(raw, root, successful_response_ids={new_id}, require_new_assessment=True)
+
+
+def test_bound_deferred_answer_stays_a_blocker_and_does_not_mask_missing_paid_id(admitted):
+    queue, root = admitted
+    raw = deepcopy(next(iter(queue.items.values()))["raw"])
+    new_id = unit_new_v5_transport(raw)
+    raw["metadata"]["pulso_editorial_proof_validation"]["decision"] = "deferred"
+    original = deepcopy(raw)
+    with pytest.raises(ValueError, match="new_genuine_v5_validation_deferred"):
+        qa.verify_code_repair_reference(raw, root, successful_response_ids={new_id}, require_new_assessment=True)
+    with pytest.raises(ValueError, match="new_genuine_v5_assessment_missing_or_unbound"):
+        qa.verify_code_repair_reference(raw, root, successful_response_ids=set(), require_new_assessment=True)
+    assert raw == original
 
 
 def test_mutable_config_cannot_replace_fixed69_pin_set(admitted):

@@ -254,7 +254,6 @@ def verify_code_repair_reference(raw, root, *, successful_response_ids=None, req
                 or not isinstance(model.get("model"), str) or not model["model"].strip()
                 or not SHA.fullmatch(str(model.get("raw_model_output_sha256", "")))
                 or validation.get("version") != CODE_REPAIR_VERSION
-                or validation.get("decision") not in {"ready", "rejected"}
                 or validation.get("model_response") != model
                 or validation.get("model_output_sha256") != object_digest(current)
                 or validation.get("analysis_text_sha256") != pin["article_body_sha256"]
@@ -268,6 +267,13 @@ def verify_code_repair_reference(raw, root, *, successful_response_ids=None, req
                 or binding.get("raw_event_date") != pin["publication_date"]
                 or binding.get("primary_publication_date") != pin["publication_date"]):
             raise ValueError("code_repair_new_genuine_v5_assessment_missing_or_unbound")
+        # A paid answer can be fully bound yet remain editorially deferred.
+        # Keep that blocker explicit without misreporting its retained response
+        # as missing. Primary/request/telemetry failures always take precedence.
+        if validation.get("decision") == "deferred":
+            raise ValueError("code_repair_new_genuine_v5_validation_deferred")
+        if validation.get("decision") not in {"ready", "rejected"}:
+            raise ValueError("code_repair_new_genuine_v5_validation_invalid")
     return dict(pins_ref=CODE_REPAIR_PINS_PATH, pins_sha256=CODE_REPAIR_PINS_SHA256,
                 admission_id=admission_id, previous_response_id=previous_id,
                 current_response_id=current_id, analysis_release_only=True, publication_approved=False)
