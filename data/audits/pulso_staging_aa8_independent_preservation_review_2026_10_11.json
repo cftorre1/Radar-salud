@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "reviewer": "historical_discovery_independent_of_merge_script",
+  "captured_at": "2026-10-11T14:59:21.468791+00:00",
+  "mode": "read_only_no_network_no_ai_no_shared_edits",
+  "own_parent_sha": "daf35bc1e72298a538aec391baf3e6eb3976798f",
+  "staging_parent_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+  "base_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
+  "head_at_review_end": "9570b0acb31f9d362a6e75f30be369820a231acf",
+  "source_parent_proof_sha256": "3cb215c35715b3cb6af667ca3bee2c4b75662e508f403382aaa6d4543ecb9326",
+  "verdict": "PASS_SCOPED_PRESERVATION_WITH_INHERITED_TELEMETRY_GAPS",
+  "findings": [],
+  "inherited_warnings": [
+    {
+      "code": "inherited_monthly_counter_central_telemetry_gap",
+      "tier": "fast",
+      "combined_gap": 34,
+      "base_gap": 14,
+      "new_staging_counter_increment": 20,
+      "new_staging_central_events": 0,
+      "staging_provider_receipt_path": "data/audits/integration_20261011/provider-usage-reconciliation.json",
+      "receipt": {
+        "base": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 31,
+            "successful": 31,
+            "failed": 0
+          }
+        },
+        "integrated": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 188,
+            "successful": 188,
+            "failed": 0
+          }
+        },
+        "providers": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 51,
+            "successful": 51,
+            "failed": 0
+          }
+        },
+        "combined": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 208,
+            "successful": 208,
+            "failed": 0
+          }
+        }
+      },
+      "interpretation": "Preserve conservative actual counters and every available event. Missing central response records remain inherited/unknown; no fabricated response IDs, timestamps or full global accounting PASS."
+    }
+  ],
+  "checks": {
+    "queue": {
+      "non_pulso_exact_staging": 5293,
+      "pulso_exact_own": 1747,
+      "total": 7040,
+      "non_pulso_semantic_sha256": "bea005d750a4987583474e0c336441475bf2ea9b41e2dde9bf31bd2e6bf2ef68",
+      "pulso_semantic_sha256": "b1feb9dbe3ca5bccd5b63a586f6eee9a008b3532c4cdd11d92538204545fec23"
+    },
+    "history": {
+      "non_pulso_exact_staging": 897,
+      "pulso_exact_own": 32,
+      "total": 929,
+      "own_history_is_not_new_publication": true,
+      "own_row_editorial_flags_preserved": true
+    },
+    "source_health": {
+      "last_actual_pulso_observation_preserved": true,
+      "checked_at": "2026-10-11T13:14:04.388798+00:00",
+      "technical_status": "error",
+      "error": "partial_discovery",
+      "fresh_check_claimed": false
+    },
+    "polls": {
+      "current_raw_poll_exact_own": true,
+      "two_original_parent_polls_retained": true,
+      "combined_poll_not_fabricated": true,
+      "next_actual_runtime_required": true
+    },
+    "governance": {
+      "non_pulso_exact_staging": 85,
+      "own_pulso_checkpoint_exact": true,
+      "protected_work2_work3_work4_master_autonomy_sha256": {
+        "autonomy_continuity_hardening_v1_1_2026_09_29": "0bd4e2071f0115cc346fb4530e6b94a75e781775ec820c8c74eff6a601edf0ae",
+        "independent_auditor_and_autonomy_controller_2026_10_07": "5f5e1f45bdde139824a8cad85ac9cbc1823266071da7bbd7e382c4fa162d927b",
+        "autonomy_architecture_redesign_2026_10_07": "7cd6c2939b5a5c1f5c8613dc10244a72327b2c4f963bd8615a592c41502380d1",
+        "source_audit_issue5_master_2026_10_09": "26600073877c66f16e3c7031552c490b82901f57c5cb7db5c0da97c1c78563c3",
+        "source_audit_issue5_iteration3_editorial_2026_10_09": "05dbc5aff5a5594b3b16fcd024a4b01a2d4842ceba5cd817d33768216050a640",
+        "source_audit_issue5_iteration4_autonomy_2026_10_09": "14a7c23a9109a107eccf1844e62a35bc42d08504cdff6947101998ec2cf33e1c",
+        "source_audit_issue5_iteration5_expansion_2026_10_09": "9dfb79556df0cc593d8354f96d67c57e171884c71e1db0bd9e3a4738ebabf590",
+        "w4_isapres_2026_10_11": "22d7369610534144c270ac13a600305d9c86c02dfbf23ce467e5a61509fc30db",
+        "w4_cmf_2026_10_11": "379b170715fe27a392fea31c588ab193c8f912ff3bf57a7c1313179d17f92839",
+        "w4_dipres_2026_10_11": "3a75cae3a7a4c1b0711520c889431baee23db34f8a19edcda18ad5461457d250",
+        "w4_fne_2026_10_11": "d2a562a29a5da5cc0e2f27a8e4808b530574b862f592d07e69695d1e37c34a2e",
+        "w4_cenabast_2026_10_11": "ac447119b99fc097ee5db993686237e220a122c6d51ea2803008e3a448c07d9e",
+        "w4_procurement_2026_10_11": "b829d875892bd330eebce8ff1abcc8cf8a04534d3e102b494a547b93b04c33b3",
+        "w4_who_2026_10_11": "26405bde6112e2e85ca449728647984d7f42b5572a5e6781ec47afcbf1203709",
+        "w4_reuters_2026_10_11": "0a8297678bcb201b7e408be72e5438f2aa007147d81bbc27264604e2dafe95b1",
+        "w4_paho_2026_10_11": "04101e8174690812259229af9f3854133b77ae7cbbc092250f634159d9e16124",
+        "w4_legal_2026_10_11": "004c93674629d18835b0a5478573a5ee46da660d9b6a4c8dcfbcd67d5aca6d2d",
+        "w4_providers_2026_10_11": "b45467b0141b0506ff6010f9b71d3c8f85c61802faea493e1d28fe2c28aefa03",
+        "w4_provider_data_2026_10_11": "39c04837cc3570f583aaaea9015920047f8ffbb6b9dc23f2241340bffcfb5454",
+        "w4_socioeconomic_2026_10_11": "9cd0bc87b25c18315c9cde5a98d0fdff97e2b6bcaf13fc9aedb418c2008803ae",
+        "w4_occupational_2026_10_11": "b3e087e7ef4b76bcee90df96c341ab41cd11978bdc19b43ecd47fe7b0da69701",
+        "w4_innovation_2026_10_11": "70bba6c4be3fa7f4afe859801b86518f8a2fc1a7e490918105d2cf55e4084907",
+        "source_recovery_reconciliation_gate_2026_10_11": "b7508345c75ca30de5cfd6cbf1bb9aa0286bb20aee82b876876c0337b456ad3f"
+      },
+      "all_non_pulso_semantic_sha256": "b688af188abc6fac2318f0920f6671b9d0bf37c2a2f7096ec14276d120d5761e"
+    },
+    "pmo": {
+      "all_latest_staging_fields_preserved": true,
+      "staging_observations": 8,
+      "own_additions": [
+        "pulso_exhaustive_recovery_2026_10_11"
+      ]
+    },
+    "learning": {
+      "exact_staging_prefix": 31,
+      "own_additions": 2,
+      "total": 33
+    },
+    "monthly_usage": {
+      "base": {
+        "deep": {
+          "attempted": 14,
+          "successful": 14,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 188,
+          "successful": 188,
+          "failed": 0
+        }
+      },
+      "own": {
+        "deep": {
+          "attempted": 14,
+          "successful": 14,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 308,
+          "successful": 308,
+          "failed": 0
+        }
+      },
+      "staging": {
+        "deep": {
+          "attempted": 14,
+          "successful": 14,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 208,
+          "successful": 208,
+          "failed": 0
+        }
+      },
+      "merged": {
+        "deep": {
+          "attempted": 14,
+          "successful": 14,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 328,
+          "successful": 328,
+          "failed": 0
+        }
+      },
+      "formula": "base + (own-base) + (staging-base)",
+      "merge_ai_calls": 0,
+      "full_global_response_audit_pass_claimed": false
+    },
+    "telemetry": {
+      "staging_events": 238,
+      "own_events": 358,
+      "actual_unique_union": 358,
+      "duplicate_response_ids": 0,
+      "all_original_event_fields_preserved": true,
+      "invented_events": 0,
+      "own_new_events_vs_base": 120,
+      "staging_new_events_vs_base": 0,
+      "october_attempt_events": {
+        "deep": 14,
+        "fast": 294
+      },
+      "ledger_minus_central_telemetry": {
+        "fast": 34,
+        "deep": 0
+      }
+    }
+  },
+  "checked_file_sha256": {
+    "data/state/pending_queue.json": {
+      "current_sha256": "a336f5b618a646a721c9f1fb2272b760d80a0ba0292a893ad99a66b740cb45f2",
+      "own_sha256": "f84e64504dfdb3503ab36a07ad66865c3db40aea4dcebce8a8ad6bf71793841b",
+      "staging_sha256": "dc118be93656d217425a04676f2e4adb0e85a578ea3062dda412ab3d9bae2c37",
+      "base_sha256": "743541e725510a3412077ba49c46cbe6e9c97e9ba4e7591348e17ec35c66d889"
+    },
+    "data/history/superintendencia_signals.json": {
+      "current_sha256": "09ac913275c7966b06aea485c1f49afa9187e9b0e5b97246a31aaed972e9d977",
+      "own_sha256": "898034b698193ffbd470152459e660c9120c64df7c733c2f4a3c27f26d8b154d",
+      "staging_sha256": "1ac04a6809963bca457d97df73aab24598eab3ecaaf02fbf0d3f91703e082039",
+      "base_sha256": "0f92732922e48f78dadbd4f5b56f1bb80e16a441fa103488537de234ae9ceb3e"
+    },
+    "data/source_health.json": {
+      "current_sha256": "b1d28530e1f9e4bf51506acac964662f97b71d9768831350c861a83150816b75",
+      "own_sha256": "5ba2c3001dd351f0fbfab4cc38ced4c8910ca9f85a76ba9af560ba9d4e59cec2",
+      "staging_sha256": "d2de76011f0add2e502a516d8564cc82abaa7738c7053c19fa952690daefdc1b",
+      "base_sha256": "407433a01b173f8cbd262b8a456cfc056120e809c71af51c690eea21ef24059c"
+    },
+    "data/state/discovery_watermarks.json": {
+      "current_sha256": "16ae2f3dacadece8f8c5d3ea360a562f8ef24357116e5b4f96bed70684132369",
+      "own_sha256": "f16a0f4ca8e221d9c8577eb5186b5ddc8f8baa618ea3ca0f43f96ddbe5e635cb",
+      "staging_sha256": "3363eb0e30f8bae5ea5a6c67d8f988ee35651c1f50b77805ae32ef1db029efa6",
+      "base_sha256": "e53341f525e72e8bc707cac58046e468336fbf641e64cb99e5f4fb31213e0753"
+    },
+    "config/orchestrator_queue.json": {
+      "current_sha256": "4ab95b100c3b96f09117bf7a9950aee020f9126818e56bd3752b5bc89c363234",
+      "own_sha256": "65a6b5060fbd7d9fba46348dce05fba86810dd64d53300b1b00bb002bfccfd28",
+      "staging_sha256": "12210f760aa37bedd6f4b7b9aec3bfe784a23e9a7579f7176714372255c0ae0c",
+      "base_sha256": "e51964a3aa0a07b9e55e8b59d21c2b8d28862b546236461a5c2e33425348400f"
+    },
+    "config/pmo_baseline.json": {
+      "current_sha256": "19ed8c6badb44ed290faf6f40a3a723b5eb2ddf2fa02e73714540640694593c9",
+      "own_sha256": "739a5f22a98dfe588f1c70e4f3f628b9e53bb8d1d4a099b5c99386e96d495f6b",
+      "staging_sha256": "f213d091688932fdb8a7f937348696cccba944a154242e8ee04a7a721d7b718f",
+      "base_sha256": "b6057bb1ea9e06cff234bd019c7a56f7d97d40bcef42767315f6ff92592a875e"
+    },
+    "data/autopilot/learning_ledger.json": {
+      "current_sha256": "dd4a4bf6b697fdc9b2f3428b2f17a6145fa8a547129a5889281f2091636238a4",
+      "own_sha256": "96944539b36f6b55b479c7bdd69311a12f5df3e471d598fd36c6cbe0318b96b5",
+      "staging_sha256": "76795c63dbfe1aa57737888c3202df42543fda490fb9145ba36a76b9ecd10bd1",
+      "base_sha256": "e3e80cc18d4c691ff75884bbbfcb2808133c336f98c351f00ab28d0b079ed0b5"
+    },
+    "data/ai_usage/2026-10.json": {
+      "current_sha256": "e7aa45be406384693edceb434150b37cc977daf330839050132a484431bad202",
+      "own_sha256": "cbd5127a3514d9259d9f4df6a9777d720375b36db154b606e4ce4122463925e1",
+      "staging_sha256": "825bea907d929cb7c22127c9e73f948b4537274d9c4b3b9a4a20dad03325f09f",
+      "base_sha256": "b09904ad3665d230cdd2271ac70d952745cb5a0d3c972d3ea0d769c4b7359858"
+    }
+  },
+  "limits": [
+    "Read-only current candidate data/governance preservation, not runtime/editorial/staging acceptance.",
+    "No source-health freshness fabricated; next real core run remains required.",
+    "Offline feed export is separately owned/validated by root and does not refresh source-health.",
+    "Monthly counter reconciliation is preserved; incomplete central telemetry prevents full global accounting certification."
+  ],
+  "checkpoint_parent_sha": "9570b0acb31f9d362a6e75f30be369820a231acf",
+  "checked_data_hashes_unchanged_at_checkpoint": true,
+  "post_merge_minimal_validation": {
+    "preservation_replay": "PASS: independent assertions against daf35bc/f883/aa8 parents and actual merged files",
+    "tests": "9 passed in 0.08s",
+    "test_command": "/workspace/work/venv/bin/python -m pytest tests/test_pmo_readiness.py tests/test_orchestrator_liveness.py -q -p no:cacheprovider",
+    "scope": "preservation and readiness contracts only; no runtime, full budget, semantic or final staging acceptance"
+  }
+}
