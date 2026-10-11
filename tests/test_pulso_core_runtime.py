@@ -49,6 +49,7 @@ def test_core_pulso_publication_rejection_pending_and_feed_trace(tmp_path, monke
                         {"page_text": "La inversión y el capital bancario financian proyectos inmobiliarios. " * 4,
                          "article_body_sha256": hashlib.sha256(("La inversión y el capital bancario financian proyectos inmobiliarios. " * 4).encode()).hexdigest(),
                          "article_verified": True, "market_role": "media", "source_quality_gate": "passed"})
+    unrelated.metadata.update(canonical_url=unrelated.url, publication_date=day)
     class Pulso:
         def __init__(self, slug):
             assert slug == "pulso_latercera"
@@ -146,6 +147,7 @@ def test_core_pulso_without_proof_or_request_binding_remains_pending(monkeypatch
                   datetime.now(timezone.utc).date().isoformat(), BODY,
                   {"article_verified": True, "page_text": BODY, **BODY_PROOF,
                    "market_role": "media", "source_quality_gate": "passed"})
+    raw.metadata.update(canonical_url=raw.url, publication_date=raw.event_date)
     def analysis(**request):
         result = valid_assessment({
             "relevance_score": 80,
@@ -242,6 +244,7 @@ def test_known_possible_duplicate_waits_for_incremental_review_without_consuming
                   datetime.now(timezone.utc).date().isoformat(), BODY,
                   {"article_verified": True, "page_text": BODY, **BODY_PROOF, "market_role": "media",
                    "editorial_hold": "possible_duplicate_requires_incremental_review"})
+    raw.metadata.update(canonical_url=raw.url, publication_date=raw.event_date)
     def unexpected(**kwargs):
         raise AssertionError("Held duplicates must not consume analysis budget")
     monkeypatch.setattr(llm_analysis, "analyze_news", unexpected)

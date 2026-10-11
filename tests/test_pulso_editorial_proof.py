@@ -223,6 +223,26 @@ def test_pipeline_cross_article_response_cannot_bypass_body_request_binding(monk
         beta_sources.process_curated_beta_source(raw, {})
 
 
+@pytest.mark.parametrize("mismatch", ["url", "event_date"])
+def test_real_primary_metadata_cannot_be_reused_for_another_queue_url_or_day(monkeypatch, mismatch):
+    raw = original_clinical_raw()
+    original_url, original_day = raw.url, raw.event_date
+    if mismatch == "url":
+        raw.url = ROWS[13]["url"]
+    else:
+        raw.event_date = "2026-10-09"
+    monkeypatch.setattr(llm_analysis, "analyze_news", lambda **request: pytest.fail("Mismatched primary identity cannot spend an AI call"))
+    monkeypatch.setattr(beta_sources, "fetch_html", lambda url: pytest.fail("Do not silently rewrite the queued identity"))
+    with pytest.raises(DeferredProcessing, match="pulso_primary_item_identity_or_date_mismatch"):
+        beta_sources.process_curated_beta_source(raw, {})
+    evidence = raw.metadata["primary_item_binding"]
+    assert evidence["primary_canonical_url"] == original_url
+    assert evidence["primary_publication_date"] == original_day
+    assert evidence["model_calls_permitted"] is False
+    assert raw.metadata["editorial_assessment"]["decision"] == "pending"
+    assert "analysis_model_output" not in raw.metadata
+
+
 @pytest.mark.parametrize("strict", [False, True])
 def test_llm_adds_only_opt_in_schema_to_the_same_single_fast_call(monkeypatch, strict):
     body, ai = clinical_assessment(); calls = []; budget = []; results = []; traces = []

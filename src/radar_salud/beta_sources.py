@@ -456,6 +456,22 @@ def process_curated_beta_source(raw, cfg):
         if raw.metadata.get("publisher_document_type") == "liveblog" and not verified_liveblog_temporal_evidence(raw.metadata):
             raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "publisher_liveblog_entry_dates_unverified"}
             raise DeferredProcessing("publisher_liveblog_entry_dates_unverified")
+        # Complete publisher evidence must belong to this queue item. Binding
+        # the model request to a body does not bind the eventual signal URL/day.
+        # Never repair either identity silently from another item's metadata.
+        if (article_url(raw.url) != raw.metadata.get("canonical_url")
+                or raw.event_date != raw.metadata.get("publication_date")):
+            reason = "pulso_primary_item_identity_or_date_mismatch"
+            raw.metadata["primary_item_binding"] = {
+                "verified": False, "reason": reason, "raw_url": raw.url,
+                "normalized_raw_url": article_url(raw.url),
+                "primary_canonical_url": raw.metadata.get("canonical_url"),
+                "raw_event_date": raw.event_date,
+                "primary_publication_date": raw.metadata.get("publication_date"),
+                "model_calls_permitted": False,
+            }
+            raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": reason}
+            raise DeferredProcessing(reason)
         from .pulso_incremental_review import apply_incremental_review
         apply_incremental_review(raw)
     else:
