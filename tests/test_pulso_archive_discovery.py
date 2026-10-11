@@ -540,3 +540,88 @@ def test_cached_date_needs_primary_corroboration_and_keeps_original_capture_iden
     refreshed = _verified_detail(entry, loader, wrong)
     assert len(calls) == 2 and not refreshed['cache_hit']
     assert refreshed['metadata']['publication_date'] == '2026-10-09'
+
+
+def test_transient_nacional_first_page_recovers_without_false_partial_coverage(tmp_path, monkeypatch):
+    from urllib.error import HTTPError
+    from urllib.parse import parse_qs, urlparse
+    from radar_salud import pulso_source
+    monkeypatch.setattr(pulso_source, 'sleep', lambda _: None)
+    offsets = []
+    def loader(url):
+        if '/canal/' in url:
+            return 'Fusion.deployment="1284";'
+        if '/pf/api/' in url:
+            offset = json.loads(parse_qs(urlparse(url).query)['query'][0])['feedOffset']
+            offsets.append(offset)
+            if len(offsets) == 1:
+                raise HTTPError(url, 503, 'Service Unavailable', {}, None)
+            return ans_feed(offset, day='2026-10-09' if offset == 0 else '2026-07-01')
+        number = int(url.rstrip('/').rsplit('-', 1)[1])
+        return html_article(url, day='2026-10-09' if number < 24 else '2026-07-01')
+    audit = []
+    items, summary = pulso_source.discover_public_feeds(
+        loader, audit, tmp_path/'cache.json', today=TODAY, feeds=[('section', 'nacional')])
+    assert offsets == [0, 0, 24, 48, 72]
+    assert len(items) == 24 and summary['coverage_complete']
+    assert not any(row['status'] == 'listing_error' for row in audit)
+    retry = next(row for row in audit if row['status'] == 'request_retry')
+    assert retry['http_status'] == 503 and retry['recovered'] and retry['succeeded_on_attempt'] == 2
+    assert retry['feed'] == 'section:nacional'
+
+
+def test_exhausted_public_transport_retry_is_finite_and_retains_coverage_failure(tmp_path, monkeypatch):
+    from urllib.error import HTTPError
+    from radar_salud import pulso_source
+    monkeypatch.setattr(pulso_source, 'sleep', lambda _: None)
+    calls = []
+    def loader(url):
+        if '/canal/' in url:
+            return ''
+        calls.append(url)
+        raise HTTPError(url, 504, 'Gateway Timeout', {}, None)
+    audit = []
+    _, summary = pulso_source.discover_public_feeds(
+        loader, audit, tmp_path/'cache.json', today=TODAY, feeds=[('section', 'nacional')])
+    assert len(calls) == 3 and len(set(calls)) == 1
+    assert not summary['coverage_complete']
+    assert next(row for row in audit if row['status'] == 'public_feed_coverage')['errors'] == 1
+    retries = [row for row in audit if row['status'] == 'request_retry']
+    assert [row['attempt'] for row in retries] == [1, 2, 3]
+    assert not any(row['recovered'] for row in retries) and not retries[-1]['will_retry']
+
+
+def test_transient_detail_tls_recovers_original_evidence_not_a_cached_error(monkeypatch):
+    from urllib.error import URLError
+    from radar_salud import pulso_source
+    monkeypatch.setattr(pulso_source, 'sleep', lambda _: None)
+    url = 'https://www.latercera.com/nacional/noticia/hospital-anuncio/'
+    entry = dict(url=url, listing='official-public-feed', lastmod='publisher-token')
+    calls = []
+    def loader(value):
+        calls.append(value)
+        if len(calls) < 3:
+            raise URLError('TLSV1_ALERT_INTERNAL_ERROR')
+        return html_article(value)
+    audit = []
+    result = pulso_source._verified_detail(entry, loader, None, audit)
+    assert calls == [url] * 3 and result['metadata']['article_verified']
+    assert result['metadata']['html_sha256']
+    assert all(row['recovered'] and row['succeeded_on_attempt'] == 3 for row in audit)
+    assert len(audit) == 2
+
+
+def test_permanent_http_or_parser_errors_are_not_retried(monkeypatch):
+    from urllib.error import HTTPError
+    from radar_salud import pulso_source
+    monkeypatch.setattr(pulso_source, 'sleep', lambda _: None)
+    url = 'https://www.latercera.com/nacional/noticia/hospital-anuncio/'
+    calls = []
+    def loader(value):
+        calls.append(value)
+        raise HTTPError(value, 404, 'Not Found', {}, None)
+    audit = []
+    result = pulso_source._verified_detail(dict(url=url, listing='public'), loader, None, audit)
+    assert len(calls) == 1 and result['status'] == 'detail_error' and audit == []
+    result = pulso_source._verified_detail(dict(url=url, listing='public'), lambda _: '<html></html>', None, audit)
+    assert result['reason'] == 'article_identity_mismatch' and audit == []

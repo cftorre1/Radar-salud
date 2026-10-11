@@ -13,6 +13,8 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from email.utils import parsedate_to_datetime
 from html.parser import HTMLParser
+from time import sleep
+from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qs, urlencode, urljoin, urlparse
 from zoneinfo import ZoneInfo
 
@@ -30,6 +32,36 @@ LISTINGS = (
     "https://www.latercera.com/etiqueta/clinicas/",
     "https://www.latercera.com/etiqueta/salud/",
 )
+
+
+_RETRY_HTTP_CODES = {408, 429, 500, 502, 503, 504}
+
+
+def _request_with_retries(loader, url, audit=None, *, scope="article_detail", feed=None):
+    """Retry only temporary transport failures on the identical public URL."""
+    events = []
+    for attempt in range(1, 4):
+        try:
+            payload = loader(url)
+        except Exception as exc:
+            transient = (exc.code in _RETRY_HTTP_CODES if isinstance(exc, HTTPError) else
+                         isinstance(exc, (URLError, TimeoutError, ConnectionError)))
+            if not transient:
+                raise
+            event = dict(url=url, status="request_retry", scope=scope, feed=feed,
+                         attempt=attempt, max_attempts=3, will_retry=attempt < 3,
+                         recovered=False, reason=str(exc), error_type=type(exc).__name__,
+                         http_status=exc.code if isinstance(exc, HTTPError) else None)
+            events.append(event)
+            if audit is not None:
+                audit.append(event)
+            if attempt == 3:
+                raise
+            sleep(attempt)  # bounded one/two-second backoff, preserving URL/query
+        else:
+            for event in events:
+                event.update(recovered=True, succeeded_on_attempt=attempt)
+            return payload
 
 
 def article_url(value, base=LISTINGS[0]):
@@ -319,7 +351,7 @@ def discover_listing(html, base, detail_loader, audit, visited):
             continue
         visited.add(url)
         try:
-            html = detail_loader(url)
+            html = _request_with_retries(detail_loader, url, audit)
             title, body, metadata = extract_article(html, url)
             if not health_anchor(title + " " + body):
                 audit.append(dict(url=url, listing=base, status="excluded", reason="no_health_anchor",
@@ -470,7 +502,7 @@ def _load_cache(path):
     return dict(version=_CACHE_VERSION, source="pulso_latercera", articles={})
 
 
-def _verified_detail(entry, loader, cached):
+def _verified_detail(entry, loader, cached, audit=None):
     """Only successful URL-bound article evidence is eligible for reuse."""
     url = entry["url"]
     now = datetime.now(ZoneInfo("UTC")).isoformat()
@@ -497,7 +529,7 @@ def _verified_detail(entry, loader, cached):
                                                 publication_evidence=dated_evidence), cache_hit=True)
             return result
     try:
-        html = loader(url)
+        html = _request_with_retries(loader, url, audit)
         title, body, metadata = extract_article(html, url)
         digest = hashlib.sha256(html.encode("utf-8")).hexdigest()
         combined = title + " " + body + " " + str(metadata.get("keywords", ""))
@@ -540,7 +572,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
     terminal, boundary, termination = False, False, "unproven"
     advertised = []
     try:
-        kind, advertised = parse_sitemap(detail_loader(SITEMAP_INDEX))
+        kind, advertised = parse_sitemap(_request_with_retries(detail_loader, SITEMAP_INDEX, audit, scope="archive_index"))
         if kind != "index":
             raise ValueError("sitemap_index_not_index")
     except Exception as exc:
@@ -563,7 +595,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
         nonlocal errors, excluded, older_pages, terminal, boundary, termination, attempted_pages, consecutive_page_errors, rss_exclusions
         attempted_pages += 1
         try:
-            xml = detail_loader(url)
+            xml = _request_with_retries(detail_loader, url, audit, scope="archive_page")
             kind, entries = parse_sitemap(xml)
             if kind != "urls":
                 raise ValueError("archive_page_not_urlset")
@@ -596,7 +628,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
         rss_url = url.replace("/sitemap/", "/rss/")
         if use_rss:
             try:
-                rss_items = parse_fulltext_rss(detail_loader(rss_url))
+                rss_items = parse_fulltext_rss(_request_with_retries(detail_loader, rss_url, audit, scope="rss"))
             except Exception as exc:
                 # This optimisation is optional. Missing/invalid RSS causes
                 # direct detail verification for every primary archive URL.
@@ -625,7 +657,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
             candidates.append(entry)
         dates = []
         with ThreadPoolExecutor(max_workers=worker_count) as pool:
-            results = list(pool.map(lambda entry: _verified_detail(entry, detail_loader, articles.get(entry["url"])), candidates))
+            results = list(pool.map(lambda entry: _verified_detail(entry, detail_loader, articles.get(entry["url"]), audit), candidates))
         page_errors = False
         for entry, result in zip(candidates, results):
             if result.get("status") == "detail_error":
@@ -766,7 +798,7 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
     worker_count = max(1, min(int(workers), 4))
     deployment = None
     try:
-        page_html = loader(LISTINGS[0])
+        page_html = _request_with_retries(loader, LISTINGS[0], audit, scope="publisher_listing")
         match = re.search(r'Fusion\.deployment="([a-zA-Z0-9_-]+)"', page_html)
         deployment = match[1] if match else None
     except Exception as exc:
@@ -781,7 +813,7 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
             url = _public_feed_url(kind, name, offset, deployment)
             page_count += 1
             try:
-                payload = loader(url)
+                payload = _request_with_retries(loader, url, audit, scope="public_feed", feed=kind + ":" + name)
                 entries, total, next_cursor = parse_public_feed(payload)
             except Exception as exc:
                 errors += 1
@@ -828,7 +860,7 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                     continue
                 candidates.append(entry)
             with ThreadPoolExecutor(max_workers=worker_count) as pool:
-                verified = list(pool.map(lambda entry: _verified_detail(entry, loader, articles.get(entry["url"])), candidates))
+                verified = list(pool.map(lambda entry: _verified_detail(entry, loader, articles.get(entry["url"]), audit), candidates))
             page_results.extend(zip(candidates, verified))
             detail_dates = []
             page_errors = 0
@@ -955,7 +987,7 @@ def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=Non
     if include_listings:
         for listing in LISTINGS:
             try:
-                html = detail_loader(listing)
+                html = _request_with_retries(detail_loader, listing, audit, scope="publisher_listing")
             except Exception as exc:
                 audit.append(dict(listing=listing, status="surface_error", reason=str(exc), error_type=type(exc).__name__))
                 continue
