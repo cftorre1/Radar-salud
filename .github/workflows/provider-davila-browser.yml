@@ -1,0 +1,37 @@
+name: Provider Davila ordinary browser archive
+on:
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'scripts/provider_davila_browser*'
+      - '.github/workflows/provider-davila-browser.yml'
+permissions:
+  contents: read
+jobs:
+  browser-archive:
+    if: startsWith(github.head_ref, 'codex/f-prestadores-gremio-') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - run: npm ci
+      - name: Navigate all HTTP-denied official sitemap originals
+        if: hashFiles('data/audits/provider_davila_browser_receipt_2026_10_11.json') == ''
+        run: node scripts/provider_davila_browser_inventory.cjs
+      - name: Verify original chronology from real browser DOMs
+        if: hashFiles('data/audits/provider_davila_browser_receipt_2026_10_11.json') == ''
+        run: python scripts/provider_davila_browser_finalize.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: provider-davila-browser-${{ github.event.pull_request.head.sha }}
+          path: |
+            data/audits/provider_davila_browser_checkpoint_2026_10_11.json
+            work/provider_davila_browser
+          retention-days: 30
