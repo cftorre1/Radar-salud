@@ -150,14 +150,16 @@ def test_legacy_verified_cache_flags_require_bound_original_hash_and_coherent_da
 @pytest.mark.parametrize('old_hold', ['publisher_conflicting_publication_dates', 'publisher_video_text_unavailable',
                                     'publisher_sponsored_content_review_required', 'publisher_opinion_taxonomy',
                                     'possible_duplicate_requires_incremental_review'])
-def test_verified_factual_rediscovery_resolves_only_obsolete_publisher_holds(tmp_path, old_hold):
+@pytest.mark.parametrize('already_refreshed', [False, True])
+def test_verified_factual_rediscovery_resolves_only_obsolete_publisher_holds(tmp_path, old_hold, already_refreshed):
     row = next(row for row in MANIFEST['requests'] if '/horizontes/noticia/' in row['url'])
     fresh = fresh_original(row)
     assert fresh.metadata['publisher_taxonomy']['classification'] == 'factual'
     stale = copy.deepcopy(fresh)
-    stale.metadata.update(editorial_hold=old_hold, article_verified=False,
-                          publisher_exception_reason=old_hold,
+    stale.metadata.update(editorial_hold=old_hold,
                           event_equivalence_review={'decision': 'pending', 'reason': 'separate_event_review'})
+    if not already_refreshed:
+        stale.metadata.update(article_verified=False, publisher_exception_reason=old_hold)
     queue = PendingQueue(tmp_path/'queue.json')
     queue.discover('pulso_latercera', [stale], now=NOW)
     key = fingerprint(stale)
