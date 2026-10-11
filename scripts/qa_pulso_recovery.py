@@ -258,7 +258,7 @@ class PrimaryDates(HTMLParser):
                 result.append(node)
         return result
 
-    def strict_original_projection(self, url):
+    def strict_original_projection(self, url, *, unresolved_date_conflict=False):
         """Expose publisher facts even when no publication day can be adopted."""
         articles = self.bound_nodes(url, "NewsArticle")
         if self.canonical != url or len(articles) != 1:
@@ -271,7 +271,15 @@ class PrimaryDates(HTMLParser):
         if not self.bylines or None in visible or len(visible) != 1:
             raise ValueError("exception_original_visible_byline_missing_or_ambiguous")
         instants = {stamp(value) for value in values if stamp(value)}
-        if any(not stamp(value["timestamp"]) or stamp(value["timestamp"]) not in instants for value in self.bylines):
+        if unresolved_date_conflict:
+            # The four real originals expose a publisher byline datetime
+            # different from their own metadata datePublished. Preserve that
+            # contradiction; require the primary time's own displayed day to
+            # corroborate its datetime, never a navigation/event timestamp.
+            if any(not stamp(value["timestamp"]) or date_convention(
+                    [value["timestamp"]], visible_byline_day(value["text"])) is None for value in self.bylines):
+                raise ValueError("exception_conflict_primary_byline_datetime_invalid")
+        elif any(not stamp(value["timestamp"]) or stamp(value["timestamp"]) not in instants for value in self.bylines):
             raise ValueError("exception_original_byline_instant_unbound")
         title = article.get("headline") or " ".join(self.title_text)
         json_body = article.get("articleBody")
@@ -292,6 +300,37 @@ def local_capture_path(root, relative):
     if not target.is_relative_to(root.resolve()):
         raise ValueError("unsafe_capture_path")
     return target
+
+
+def retained_exception_provenance_matches(record, root):
+    """Accept named retained manifests only after matching their actual record."""
+    provenance = record.get("capture_provenance")
+    if provenance == "preserved_original_http_response":
+        return SHA.fullmatch(str(record.get("original_capture_manifest_sha256", ""))) is not None
+    modes = {
+        "preserved_original_cold_core_editorial_or_video_exception": (
+            "pulso_editorial_exception_real", "offline_original_editorial_and_video_exception_retention_no_inventory_injection"),
+        "preserved_original_cold_core_incomplete_detail": (
+            "pulso_thin_primary_real", "exact_offline_retention_of_all_cold_incomplete_detail_originals_no_inventory_injection"),
+    }
+    if provenance not in modes or not SHA.fullmatch(str(record.get("original_capture_manifest_sha256", ""))):
+        return False
+    directory, mode = modes[provenance]
+    folder = root / "tests/fixtures" / directory
+    try:
+        manifest = json.loads((folder / "manifest.json").read_text())
+        target = local_capture_path(Path(record.get("_capture_root") or root), record.get("gzip_file"))
+        if manifest.get("source") != SOURCE or manifest.get("mode") != mode:
+            return False
+        for original in manifest.get("requests", []):
+            if (original.get("original_bytes_verified") is True and original.get("capture_provenance") == provenance
+                    and local_capture_path(folder, original.get("gzip_file")) == target
+                    and all(original.get(key) == record.get(key) for key in (
+                        "url", "status", "sha256", "gzip_sha256", "captured_at", "original_capture_manifest_sha256"))):
+                return True
+    except (OSError, ValueError, TypeError, KeyError):
+        pass
+    return False
 
 
 def verify_primary_capture(row, root, date_evidence=None):
@@ -367,13 +406,11 @@ def verify_publisher_exception(row, metadata, traces, root):
             text = raw.decode(record.get("charset") or "utf-8", errors="replace")
             if digest(raw) != record.get("sha256") or digest(text.encode()) != expected:
                 raise ValueError("exception_original_html_hash_mismatch")
-            if row.get("primary_detail_cache_hit") and (
-                    record.get("capture_provenance") != "preserved_original_http_response"
-                    or not SHA.fullmatch(str(record.get("original_capture_manifest_sha256", "")))):
+            if row.get("primary_detail_cache_hit") and not retained_exception_provenance_matches(record, root):
                 raise ValueError("exception_cached_original_provenance_missing")
             parser = PrimaryDates()
             parser.feed(text)
-            projection = parser.strict_original_projection(url)
+            projection = parser.strict_original_projection(url, unresolved_date_conflict=reason == DATE_HOLD)
             body, visible = projection["body"], projection["visible_publication_date"]
             values = projection["primary_timestamps"]
             queued_values = [entry.get("timestamp") for entry in metadata.get("publication_evidence", []) if isinstance(entry, dict)]
@@ -422,6 +459,7 @@ def verify_publisher_exception(row, metadata, traces, root):
                         publication_date_verified=publication_verified, article_content_verified=content_verified,
                         publication_date=visible if publication_verified else None,
                         visible_publication_date=visible, original_primary_timestamps=values,
+                        original_primary_bylines=parser.bylines,
                         publisher_date_convention=convention, body_characters=len(body)), None
         except (OSError, ValueError, TypeError, KeyError, AttributeError, UnicodeError, EOFError) as error:
             errors.append(type(error).__name__ + ":" + str(error))
@@ -645,8 +683,21 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
     controls = {normalized_url(row.get("url")): row for row in control.get("articles", [])}
     rows = {row.get("url"): row for row in report.get("matrix", [])}
     details = discovery.get("source_details", {}).get(SOURCE, [])
-    actual = {normalized_url(row.get("url")) for row in details if row.get("status") == "discovered"}
-    metadata_only = {normalized_url(row.get("url")) for row in details if row.get("status") == "discovered_metadata_only"}
+    text_candidates = {normalized_url(row.get("url")) for row in details if row.get("status") == "discovered"}
+    metadata_candidates = {normalized_url(row.get("url")) for row in details if row.get("status") == "discovered_metadata_only"}
+    source_result = discovery.get("sources", {}).get(SOURCE)
+    source_error = (source_result or {}).get("error_type")
+    returned_to_core = source_result is not None and source_error in (None, "partial_discovery")
+    actual = text_candidates if returned_to_core else set()
+    metadata_only = metadata_candidates if returned_to_core else set()
+    checks["core_inventory_registration"] = dict(returned_to_core=returned_to_core,
+        text_candidate_trace_urls=len(text_candidates), metadata_candidate_trace_urls=len(metadata_candidates),
+        source_discovered=(source_result or {}).get("discovered"), source_error_type=source_error)
+    if source_error or not returned_to_core or report.get("source_inventory_returned_to_core") is False:
+        fail("discovery", "core_source_error_or_inventory_not_registered", source_error_type=source_error)
+    if returned_to_core and ((source_result or {}).get("discovered") != len(actual | metadata_only)
+                            or type((source_result or {}).get("discovered")) is not int):
+        fail("discovery", "source_returned_inventory_count_not_supported_by_traces")
     if None in actual | metadata_only or actual & metadata_only:
         fail("discovery", "core_inventory_identity_or_text_metadata_partition_invalid")
     enumerated = actual | metadata_only

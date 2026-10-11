@@ -86,7 +86,8 @@ def evidence(tmp_path):
     env = "env:\n  RADAR_FAST_PER_RUN: 120\n  RADAR_DEEP_PER_RUN: 15\n  RADAR_FAST_PER_MONTH: 1500\n  RADAR_DEEP_PER_MONTH: 180\n"
     for name in ("daily-radar.yml", "pulso-runtime-recovery.yml"):
         (workflow / name).write_text(env)
-    return dict(report=report, control=control, root=tmp_path, discovery={"source_details": {qa.SOURCE: details}},
+    return dict(report=report, control=control, root=tmp_path,
+                discovery={"source_details": {qa.SOURCE: details}, "sources": {qa.SOURCE: dict(discovered=79, error_type=None)}},
                 queue=queue, history=[], snapshot={"signals": []}, telemetry=[], captures=captures,
                 control_sha=qa.FROZEN_CONTROL_SHA256)
 
@@ -494,6 +495,7 @@ def append_publisher_exception(data, kind):
     url = "https://www.latercera.com/" + ("videos" if video else "paula") + "/noticia/verified-exception/"
     day, timestamp = ("2026-10-07", "2026-10-07T17:55:00Z") if video else (None, "2026-08-06T15:00:00Z")
     visible, byline = ("2026-10-07", "7 OCTUBRE 2026") if video else ("2026-07-30", "30 JULIO 2026")
+    byline_timestamp = timestamp if video else "2026-07-30T15:00:00Z"
     reason = qa.VIDEO_HOLD if video else qa.DATE_HOLD
     body = "" if video else ("El trabajo puede afectar la salud y la atención sanitaria. " * 5).strip()
     article = {"@type": "NewsArticle", "url": url, "datePublished": timestamp,
@@ -505,7 +507,7 @@ def append_publisher_exception(data, kind):
                       "embedUrl": video_evidence["embed_url"], "uploadDate": timestamp})
     raw = (f'<link rel="canonical" href="{url}"><meta property="article:published_time" content="{timestamp}">' +
            '<script type="application/ld+json">' + json.dumps(nodes) + '</script><h1>' + article["headline"] + '</h1>' +
-           f'<time class="article-body__byline__date" datetime="{timestamp}">{byline}</time>' +
+           f'<time class="article-body__byline__date" datetime="{byline_timestamp}">{byline}</time>' +
            ('<div class="article-body__raw-html"><iframe src="' + video_evidence["embed_url"] + '"></iframe></div>' if video else '')).encode()
     sha = qa.digest(raw)
     relative = f"tests/fixtures/pulso_runtime_real/{sha}.html.gz"
@@ -541,6 +543,7 @@ def append_publisher_exception(data, kind):
     data["queue"]["exception"] = dict(source=qa.SOURCE, status="pending", attempts=0, lane="BACKFILL",
                                       raw=dict(url=url, event_date=day, metadata=metadata))
     data["discovery"]["source_details"][qa.SOURCE].append(trace)
+    data["discovery"]["sources"][qa.SOURCE]["discovered"] = 80
     data["report"]["primary_coverage"].update(article_content_coverage_complete=False,
         publication_date_coverage_complete=video, publisher_exceptions=0 if video else 1, enumerated_with_editorial_exceptions=not video)
     data["report"]["coverage"][0].update(article_content_coverage_complete=False,
@@ -581,7 +584,7 @@ def test_conflict_exception_cannot_hide_missing_originals_or_invent_a_convenient
     elif tamper == "adopted_timestamp":
         metadata["publication_timestamp"] = "2026-07-30T15:00:00Z"
     elif tamper == "borrowed_timestamp":
-        metadata["publication_evidence"].append(dict(timestamp="2026-07-30T15:00:00Z"))
+        metadata["publication_evidence"].append(dict(timestamp="2026-07-30T11:00:00Z"))
     else:
         metadata["article_body_sha256"] = "b" * 64
     assert "publisher_exception_original_not_verified" in codes(evidence)
@@ -647,3 +650,127 @@ def test_verified_metadata_video_date_can_corroborate_temporal_boundary(evidence
     detail.update(publication_date_verified=True, article_body_complete=False,
                   publisher_document_type="video", source_content_unavailable_reason=qa.VIDEO_HOLD)
     assert qa.evaluate(**evidence)["discovery_qa"] == "PASS"
+
+
+def original_exception_evidence(record, root):
+    """Source emits a candidate; the independent reader checks the raw bytes."""
+    from radar_salud.pulso_source import ConflictingPublicationArticle, TextUnavailableArticle, extract_article
+    folder = root / "tests/fixtures/pulso_editorial_exception_real"
+    compressed = (folder / record["gzip_file"]).read_bytes()
+    raw = gzip.decompress(compressed)
+    assert qa.digest(compressed) == record["gzip_sha256"]
+    assert qa.digest(raw) == record["sha256"]
+    text = raw.decode(record.get("charset") or "utf-8")
+    try:
+        extract_article(text, record["url"])
+    except (ConflictingPublicationArticle, TextUnavailableArticle) as exception:
+        metadata, body = dict(exception.metadata), exception.body
+        reason = qa.DATE_HOLD if isinstance(exception, ConflictingPublicationArticle) else qa.VIDEO_HOLD
+    else:
+        raise AssertionError("Expected a genuine retained publisher exception")
+    sha = qa.digest(text.encode())
+    metadata.update(page_text=body, article_body_characters=len(body), article_body_sha256=qa.digest(body.encode()),
+                    html_sha256=sha, source_quality_gate="deferred_publication_date" if reason == qa.DATE_HOLD else "deferred_video_text")
+    capture = dict(record, gzip_file=str(Path("tests/fixtures/pulso_editorial_exception_real") / record["gzip_file"]))
+    row = dict(url=record["url"], publication_date=metadata["publication_date"],
+               publication_date_verified=metadata["publication_date_verified"], primary_detail_sha256=sha,
+               original_http_captures=[capture])
+    trace = dict(metadata, status="discovered_metadata_only", url=record["url"], reason=reason)
+    return row, metadata, trace
+
+
+@pytest.mark.parametrize("slug", ["desocupacion-llega-a-95-", "el-trabajo-tambien-puede-enfermar-", "asi-son-los-infartos-", "atencion-medica-domiciliaria-"])
+def test_all_four_original_publisher_conflicts_preserve_distinct_primary_byline_and_metadata_instants(slug):
+    root = Path(__file__).parents[1]
+    manifest = json.loads((root / "tests/fixtures/pulso_editorial_exception_real/manifest.json").read_text())
+    record = next(row for row in manifest["requests"] if slug in row["url"])
+    row, metadata, trace = original_exception_evidence(record, root)
+    proof, error = qa.verify_publisher_exception(row, metadata, [trace], root)
+    assert error is None
+    assert proof["publication_date"] is None
+    assert proof["publication_date_verified"] is False
+    assert proof["article_content_verified"] is True
+    assert proof["publisher_date_convention"] is None
+    assert all(value["timestamp"] not in proof["original_primary_timestamps"] for value in proof["original_primary_bylines"])
+    assert metadata["publication_timestamp"] is None
+    row["primary_detail_cache_hit"] = True
+    assert qa.verify_publisher_exception(row, metadata, [trace], root)[1] is None
+    row["original_http_captures"][0]["original_capture_manifest_sha256"] = "b" * 64
+    assert qa.verify_publisher_exception(row, metadata, [trace], root)[1]
+    row["original_http_captures"][0]["original_capture_manifest_sha256"] = record["original_capture_manifest_sha256"]
+    # The date can only remain unresolved. Both plausible calendars survive.
+    metadata["publication_date"] = proof["visible_publication_date"]
+    assert qa.verify_publisher_exception(row, metadata, [trace], root)[1]
+
+
+def test_all_twenty_retained_primary_videos_without_text_require_independent_original_proof():
+    from radar_salud.pulso_source import TextUnavailableArticle, extract_article
+    root = Path(__file__).parents[1]
+    folder = root / "tests/fixtures/pulso_editorial_exception_real"
+    manifest = json.loads((folder / "manifest.json").read_text())
+    checked = []
+    for record in manifest["requests"]:
+        if "/videos/noticia/" not in record["url"]:
+            continue
+        raw = gzip.decompress((folder / record["gzip_file"]).read_bytes())
+        try:
+            extract_article(raw.decode(record.get("charset") or "utf-8"), record["url"])
+        except TextUnavailableArticle:
+            row, metadata, trace = original_exception_evidence(record, root)
+            proof, error = qa.verify_publisher_exception(row, metadata, [trace], root)
+            assert error is None, (record["url"], error)
+            assert proof["publication_date_verified"] is True
+            assert proof["article_content_verified"] is False
+            assert proof["body_characters"] < 160
+            checked.append(proof)
+    assert len(checked) == 20
+    alzheimer = next(row for row in checked if "descubren-doble-avance" in row["url"])
+    assert alzheimer["body_characters"] == 84
+
+
+def test_conflicting_byline_exception_cannot_borrow_a_navigation_or_invalid_time(evidence):
+    row, metadata, trace = append_publisher_exception(evidence, "date_conflict")
+    record = row["original_http_captures"][0]
+    path = evidence["root"] / record["gzip_file"]
+    raw = gzip.decompress(path.read_bytes()).decode()
+    raw = raw.replace('<time class="article-body__byline__date"', '<nav><time class="article-body__byline__date"').replace('</time>', '</time></nav>')
+    raw = raw.encode()
+    compressed = gzip.compress(raw, mtime=0)
+    path.write_bytes(compressed)
+    sha = qa.digest(raw)
+    record.update(sha256=sha, returned_text_utf8_sha256=sha, gzip_sha256=qa.digest(compressed))
+    row["primary_detail_sha256"] = metadata["html_sha256"] = trace["html_sha256"] = sha
+    assert "publisher_exception_original_not_verified" in codes(evidence)
+
+
+def test_engine_completion_cannot_credit_source_traces_when_source_raised_before_registration(evidence):
+    evidence["discovery"]["sources"][qa.SOURCE].update(discovered=0, error_type="TypeError")
+    evidence["report"]["source_inventory_returned_to_core"] = False
+    result = qa.evaluate(**evidence)
+    assert result["discovery_qa"] == "FAIL"
+    assert result["checks"]["window_90"]["detected"] == 0
+    assert result["checks"]["core_inventory_registration"]["text_candidate_trace_urls"] == 79
+    assert result["checks"]["core_inventory_registration"]["returned_to_core"] is False
+    assert "core_source_error_or_inventory_not_registered" in {row["code"] for row in result["findings"]}
+
+
+def test_partial_source_returns_actual_candidates_but_still_fails_acceptance(evidence):
+    evidence["discovery"]["sources"][qa.SOURCE]["error_type"] = "partial_discovery"
+    result = qa.evaluate(**evidence)
+    assert result["checks"]["window_90"]["detected"] == 79
+    assert result["discovery_qa"] == "FAIL"
+    assert result["acceptance"] == "NOT_ACCEPTED"
+
+
+def test_source_return_count_cannot_be_replaced_by_positive_candidate_trace_count(evidence):
+    evidence["discovery"]["sources"][qa.SOURCE]["discovered"] = 1
+    assert "source_returned_inventory_count_not_supported_by_traces" in codes(evidence)
+
+
+def test_named_retention_provenance_cannot_be_invented_without_bound_real_manifest(evidence):
+    row, metadata, trace = append_publisher_exception(evidence, "video")
+    row["primary_detail_cache_hit"] = True
+    record = row["original_http_captures"][0]
+    record.update(capture_provenance="preserved_original_cold_core_editorial_or_video_exception",
+                  original_capture_manifest_sha256="a" * 64)
+    assert qa.verify_publisher_exception(row, metadata, [trace], evidence["root"])[1]
