@@ -118,6 +118,34 @@ def _reviewed_pulso_admission(raw, previous):
         return None
     return candidate, evidence, bool(old.get("editorial_hold"))
 
+
+def _same_pulso_model_request(previous_raw, fresh):
+    """Retain past processing evidence only for its unchanged primary request."""
+    old = previous_raw.get("metadata", {})
+    model = old.get("analysis_model_output")
+    binding = model.get("_pulso_analysis_meta") if isinstance(model, dict) else None
+    if (not isinstance(binding, dict) or not binding.get("response_id")
+            or old.get("analysis_input_complete") is not True
+            or old.get("article_body_complete") is not True
+            or previous_raw.get("url") != fresh.url
+            or previous_raw.get("title") != fresh.title
+            or previous_raw.get("source_name") != fresh.source_name
+            or previous_raw.get("event_date") != fresh.event_date
+            or old.get("html_sha256") != fresh.metadata.get("html_sha256")
+            or old.get("article_body_sha256") != fresh.metadata.get("article_body_sha256")
+            or old.get("page_text") != fresh.metadata.get("page_text")):
+        return False
+    from .llm_analysis import news_analysis_input
+    from .pulso_source import liveblog_analysis_text
+    text = (liveblog_analysis_text(fresh.metadata)
+            if fresh.metadata.get("publisher_document_type") == "liveblog" else fresh.metadata["page_text"])
+    request = news_analysis_input(title=fresh.title, text=text, source_name=fresh.source_name, full_text=True)
+    return (hashlib.sha256(text.encode()).hexdigest() == old.get("analysis_input_body_sha256")
+            == binding.get("analysis_text_sha256")
+            and hashlib.sha256(request.encode()).hexdigest() == old.get("analysis_request_input_sha256")
+            == binding.get("request_input_sha256")
+            and binding.get("source_name") == fresh.source_name)
+
 class PendingQueue:
     def __init__(self, path):
         self.path = Path(path)
@@ -169,6 +197,7 @@ class PendingQueue:
                                         and metadata.get("publication_date_verified") is True
                                         and raw.event_date == metadata.get("publication_date")
                                         and complete_article_body(metadata)
+                                        and metadata.get("article_body_complete") is not False
                                         and (metadata.get("publisher_document_type") != "liveblog"
                                              or verified_liveblog_temporal_evidence(metadata)))
                     if previous["status"] in ("pending", "retry", "processing") and (factual_verified or publisher_exception):
@@ -181,6 +210,14 @@ class PendingQueue:
                             # discarding an already terminal editorial decision.
                             continue
                         body_completeness_derived = "article_body_complete" not in metadata
+                        if factual_verified and body_completeness_derived and old_meta.get("article_body_complete") is True:
+                            # The processor annotates completeness after analysis;
+                            # normal Source discovery retains the full body/hash.
+                            # Its omitted annotation is not a changed primary and
+                            # must not erase a retained genuine model response.
+                            raw = deepcopy(raw)
+                            metadata = raw.metadata
+                            metadata["article_body_complete"] = complete_article_body(metadata)
                         reviewed_release = _reviewed_pulso_admission(raw, previous) if factual_verified else None
                         admission = reviewed_release if reviewed_release and reviewed_release[2] else None
                         if reviewed_release is not None:
@@ -207,6 +244,7 @@ class PendingQueue:
                                    or admission is not None
                                    or any(old_meta.get(field) != metadata.get(field) for field in proof_fields))
                         if changed:
+                            same_processing_input = factual_verified and _same_pulso_model_request(old, raw)
                             revisions = old_meta.get("evidence_revisions", []) + [dict(
                                 at=now.isoformat(), previous_publication_date=old.get("event_date"),
                                 verified_publication_date=raw.event_date, previous_title=old.get("title"),
@@ -217,7 +255,22 @@ class PendingQueue:
                                 previous_publisher_exception_reason=old_meta.get("publisher_exception_reason"),
                                 verified_publisher_exception_reason=metadata.get("publisher_exception_reason"),
                                 lane_preserved=previous["lane"])]
+                            if old_meta.get("analysis_model_output") or old_meta.get("pulso_editorial_proof_validation"):
+                                # Preserve the complete old input, response and
+                                # decision before replacing changed evidence.
+                                # Revision chains stay separate to avoid copying
+                                # the same historical chain into itself.
+                                revisions[-1]["previous_processing_raw"] = dict(
+                                    deepcopy(old), metadata={field:deepcopy(value) for field,value in old_meta.items()
+                                                             if field != "evidence_revisions"})
                             previous["raw"] = asdict(raw)
+                            if same_processing_input:
+                                for field,value in old_meta.items():
+                                    if field.startswith("analysis_") or field in (
+                                            "pulso_editorial_proof_validation", "primary_item_binding",
+                                            "editorial_assessment", "prospective_evidence"):
+                                        previous["raw"]["metadata"][field] = deepcopy(value)
+                                revisions[-1]["retained_processing_input_unchanged"] = True
                             if admission is not None:
                                 revisions[-1].update(
                                     incremental_review_addendum=deepcopy(admission_evidence),
