@@ -116,6 +116,171 @@ def _failure_proof(value):
             and str(value["run_id"]) == value["run_url"].rstrip("/").split("/")[-1])
 
 
+def _staging_problem(value, failure):
+    """Material identity, separate from retained transport/validation evidence.
+
+    A fresh raw log digest is not evidence of a new problem when the report
+    already contains its structured verdict or actual output. Browser aggregate
+    proof alone cannot prove a *new* assertion; detailed cases, when supplied,
+    remain part of this identity. Artifact/content hashes remain unchanged.
+    """
+    if isinstance(value, dict):
+        structured = any(key in value for key in (
+            "output", "stdout", "pytest", "browser_proof", "reviewer_proof", "evidence"))
+        result = {}
+        for key, item in value.items():
+            if (key == "fingerprint" and "reason" in value and "evidence" in value) or (structured and key in {
+                    "captured_stdout_sha256", "captured_stdout_bytes", "failure_sha256", "failure_hash"}):
+                continue
+            if key == "task_id" and str(item) == "staging_qa_failed_run_" + str(failure["run_id"]):
+                item = "<staging-failure-task>"
+            elif key in {"candidate_sha", "head_sha"} and item == failure.get("head_sha"):
+                item = "<bound-staging-product>"
+            elif key == "command" and isinstance(item, list):
+                item = list(item)
+                for index in range(1, len(item)):
+                    if item[index - 1] == "--sha" and item[index] == failure.get("head_sha"):
+                        item[index] = "<bound-staging-product>"
+            result[key] = _staging_problem(item, failure)
+        return _semantic(result)
+    if isinstance(value, list):
+        return [_staging_problem(item, failure) for item in value]
+    return _semantic(value)
+
+
+def _staging_blocker_identity(blocker, product_fingerprint, failure):
+    if (not _failure_proof(failure) or failure.get("kind") == "source_runtime"
+            or not failure.get("failure_signature") or not product_fingerprint
+            or not isinstance(blocker.get("evidence"), list) or not blocker["evidence"]):
+        return None
+    components = blocker.get("blockers") or [blocker]
+    problems = []
+    for component in components:
+        problem = {key: component[key] for key in ("kind", "reason", "source_urls", "human_required")
+                   if key in component}
+        problem["evidence"] = sorted({_hash(_staging_problem(evidence, failure))
+                                      for evidence in component["evidence"]})
+        problems.append(problem)
+    return {"failure_signature": failure["failure_signature"],
+            "product_input_fingerprint": product_fingerprint,
+            "problems": sorted({_hash(problem) for problem in problems})}
+
+
+def _staging_event_binding(event, state):
+    if event.get("kind") != "blocker" or event.get("family") != "staging_qa":
+        return None
+    details = event.get("details", {})
+    failure = details.get("real_failure")
+    task = state.get("tasks", {}).get(event.get("task_id"), {})
+    product = details.get("product_input_fingerprint")
+    if not product:
+        # Legacy events have no frozen product binding. Infer it only from the
+        # still-bound original failed run; a changed failure cannot rewrite it.
+        current_failure = task.get("failure") or task.get("last_failure") or {}
+        if (not isinstance(failure, dict)
+                or task.get("status") != "BLOCKED"
+                or _hash(task.get("blocker")) != _hash(details)
+                or any(current_failure.get(key) != failure.get(key)
+                       for key in ("run_id", "head_sha", "failure_signature"))):
+            return None
+        product = task.get("product_input_fingerprint")
+    return {"task_id": event["task_id"], "product_input_fingerprint": product,
+            "failure": deepcopy(failure)}
+
+
+def effective_material_events(state):
+    """Return original events excluding only verifiable append-only corrections."""
+    events = state.get("material_events", [])
+    by_id = {event.get("id"): (index, event) for index, event in enumerate(events)}
+    removed = set()
+    for correction in state.get("material_event_corrections", []):
+        if not isinstance(correction, dict) or correction.get("kind") != "duplicate_staging_blocker":
+            continue
+        invalid = by_id.get(correction.get("event_id"))
+        retained = by_id.get(correction.get("retained_event_id"))
+        if (not invalid or not retained or invalid[0] <= retained[0]
+                or _hash(invalid[1]) != correction.get("event_sha256")
+                or _hash(retained[1]) != correction.get("retained_event_sha256")):
+            continue
+        bindings = correction.get("bindings", [])
+        if (not isinstance(bindings, list) or len(bindings) != 2
+                or any(not isinstance(binding, dict) for binding in bindings)):
+            continue
+        identities = []
+        for event, binding in zip((retained[1], invalid[1]), bindings):
+            if (event.get("family") != "staging_qa" or event.get("kind") != "blocker"
+                    or binding.get("task_id") != event.get("task_id")
+                    or binding.get("failure") != event.get("details", {}).get("real_failure")
+                    or (event.get("details", {}).get("product_input_fingerprint")
+                        and event["details"]["product_input_fingerprint"] != binding.get("product_input_fingerprint"))):
+                break
+            identities.append(_staging_blocker_identity(event["details"],
+                              binding.get("product_input_fingerprint"), binding.get("failure")))
+        if (len(bindings) == len(identities) == 2 and identities[0]
+                and identities[0] == identities[1]
+                and _hash(identities[0]) == correction.get("canonical_signature")
+                and identities[0]["product_input_fingerprint"] == correction.get("product_input_fingerprint")
+                and identities[0]["failure_signature"] == correction.get("failure_signature")):
+            removed.add(invalid[1]["id"])
+    return [event for event in events if event.get("id") not in removed]
+
+
+def _correct_duplicate_staging_blockers(state, now):
+    """Migrate proven historical transport duplicates without minting progress."""
+    corrections = state.setdefault("material_event_corrections", [])
+    already_corrected = {event.get("id") for event in state.get("material_events", [])} - {
+        event.get("id") for event in effective_material_events(state)}
+    seen = {}
+    for event in state.get("material_events", []):
+        if not event.get("id") or event["id"] in already_corrected:
+            continue
+        binding = _staging_event_binding(event, state)
+        if not binding:
+            continue
+        identity = _staging_blocker_identity(event["details"], binding["product_input_fingerprint"], binding["failure"])
+        if not identity:
+            continue
+        signature = _hash(identity)
+        if signature not in seen:
+            seen[signature] = (event, binding)
+            continue
+        retained, retained_binding = seen[signature]
+        correction = {"kind": "duplicate_staging_blocker", "event_id": event["id"],
+            "retained_event_id": retained["id"], "at": _iso(now),
+            "event_sha256": _hash(event), "retained_event_sha256": _hash(retained),
+            "canonical_signature": signature, "failure_signature": identity["failure_signature"],
+            "product_input_fingerprint": identity["product_input_fingerprint"],
+            "bindings": [deepcopy(retained_binding), deepcopy(binding)],
+            "reason": "Same demonstrated failure, product and evidenced problem; transport aliases do not earn new progress."}
+        correction["id"] = _hash({key: correction[key] for key in ("kind", "event_id", "retained_event_id", "canonical_signature")})
+        if not any(item.get("id") == correction["id"] for item in corrections):
+            corrections.append(correction)
+    effective = effective_material_events(state)
+    invalid_ids = {event.get("id") for event in state.get("material_events", [])} - {event.get("id") for event in effective}
+    state["pending_transitions"] = [item for item in state.get("pending_transitions", [])
+                                    if item.get("event_id") not in invalid_ids]
+    for task in state.get("tasks", {}).values():
+        invalid_times = {event["at"] for event in state.get("material_events", [])
+                         if event["id"] in invalid_ids and event["task_id"] == task["id"]}
+        if (task.get("recovery_episode") not in invalid_ids
+                and task.get("material_progress_at") not in invalid_times
+                and task.get("material_watch_started_at") not in invalid_times):
+            continue
+        valid = [event for event in effective if event["task_id"] == task["id"]]
+        latest = max(valid, key=lambda item: _time(item["at"])) if valid else None
+        if latest:
+            task["material_progress_at"] = latest["at"]
+            task["material_watch_started_at"] = latest["at"]
+            task["recovery_episode"] = latest["id"]
+        else:
+            task.pop("material_progress_at", None)
+            pickups = [event["at"] for event in state.get("lease_events", [])
+                       if event.get("task_id") == task["id"] and event.get("kind") == "pickup"]
+            baseline = min(pickups, key=_time) if pickups else task["created_at"]
+            task["material_watch_started_at"] = baseline
+            task["recovery_episode"] = _hash([task["id"], baseline, task.get("input_fingerprint")])
+
+
 def _family(task):
     if task["id"] in SOURCE_TASKS:
         return SOURCE_TASKS[task["id"]]
@@ -196,6 +361,20 @@ def _block(state, task, blocker, now, *, terminal=False):
     global_signature = _hash([actual_failure, blocker["fingerprint"]]) if actual_failure else signature
     global_seen = state.setdefault("global_blocker_signatures", [])
     new = signature not in task.setdefault("blocker_signatures", []) and global_signature not in global_seen
+    if task.get("family") == "staging_qa":
+        identity = _staging_blocker_identity(blocker, task.get("product_input_fingerprint"), blocker.get("real_failure"))
+        if identity:
+            # Legacy opaque signatures can also hide a genuinely new product
+            # or assertion. The canonical historical comparison owns credit.
+            new = True
+            for event in effective_material_events(state):
+                binding = _staging_event_binding(event, state)
+                if binding and identity == _staging_blocker_identity(event["details"],
+                        binding["product_input_fingerprint"], binding["failure"]):
+                    new = False
+                    break
+            blocker = {**blocker, "product_input_fingerprint": task["product_input_fingerprint"],
+                       "canonical_material_signature": _hash(identity)}
     task["status"] = "BLOCKED"
     task["lease"] = None
     task["blocker"] = deepcopy(blocker)
@@ -226,6 +405,7 @@ def reconcile(state, queue, now):
     result.setdefault("lease_events", [])
     result.setdefault("pending_transitions", [])
     result.setdefault("failure_history", {})
+    _correct_duplicate_staging_blockers(result, now)
     result.setdefault("acceptance", {"mode": "live", "started_at": _iso(now),
                                       "owner_restarts": [], "owner_prompts": []})
     tasks = queue.get("tasks", []) if isinstance(queue, dict) else queue
@@ -806,7 +986,7 @@ def evaluate_acceptance(state, now, *, wall_now=None):
         reasons.append("owner_intervention_observation_not_verified")
     if acceptance.get("owner_restarts") or acceptance.get("owner_prompts"):
         reasons.append("owner_restart_or_followup_in_window")
-    events = [e for e in state.get("material_events", []) if start <= _time(e["at"]) <= end]
+    events = [e for e in effective_material_events(state) if start <= _time(e["at"]) <= end]
     pickups = [e for e in state.get("lease_events", []) if e["kind"] == "pickup"
                and e.get("autonomous") and start <= _time(e["at"]) <= end]
     if not pickups:

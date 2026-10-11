@@ -6,8 +6,9 @@ import unittest
 
 from scripts.autonomy_engine import (
     EDITORIAL_TASK, EDITORIAL_REPAIR_TASK, SOURCE_TASKS, LeaseError, ReportError, claim,
-    candidate_validated, evaluate_acceptance, finish, heartbeat, plan, reconcile,
+    candidate_validated, effective_material_events, evaluate_acceptance, finish, heartbeat, plan, reconcile,
 )
+from scripts import autonomy_engine as engine
 
 
 BASE = datetime(2026, 10, 10, tzinfo=timezone.utc)
@@ -84,7 +85,156 @@ def partial():
             "baseline_gate": baseline, "candidate_gate": candidate})
 
 
+def qa_observation(run_id, sha, *, product="same-product", variant="1"):
+    """Compact reproduction of the hosted four-component transport-only loop."""
+    tid = "staging_qa_failed_run_" + run_id
+    proof = {**failure(run_id), "head_sha": sha, "failure_signature": "same-normative-contract"}
+    q = {"input_sha": sha, "tasks": [{"id": tid, "status": "approved", "family": "staging_qa",
+        "failure": proof, "input_fingerprint": product + ":same-executor", "product_input_fingerprint": product}]}
+    raw = {"command": ["python", "-m", "pytest"], "returncode": 1,
+           "output": "FAILED tests/test_web_snapshot.py::normative - assert 11 >= 12\n1 failed in " + variant + "s\n",
+           "captured_stdout_sha256": variant * 64, "captured_stdout_bytes": 200 + int(variant)}
+    evidence = [
+        ("targeted gate failed", [{"name": "targeted", "status": "FAIL", "returncode": 1,
+            "pytest": {"cases": [{"name": "normative", "status": "FAIL", "reason": "assert 11 >= 12"}]},
+            "failure_hash": variant * 64},
+            {"status": "BLOCKED", "failure_sha256": variant * 64, "evidence": [raw],
+             "context": [{"path": "web/data/radar_today.json", "sha256": "f" * 64}]}]),
+        ("acceptance missing", [{"family": "staging_qa", "task_id": tid, "diagnostics_are_acceptance": False}]),
+        ("reviewer rejected", [{"command": ["python", "review_candidate.py", "--sha", sha],
+            "returncode": 1, "status": "FAIL", "failure_hash": variant * 64,
+            "reviewer_proof": {"candidate_sha": sha, "checks": {"statistics": False},
+                "findings": [{"code": "missing_pdf", "path": "https://source.example/bulletin", "detail": "Four PDFs required"}]}}]),
+        ("browser rejected", [{"command": ["npm", "run", "test:browser"], "returncode": 1,
+            "status": "FAIL", "failure_hash": variant * 64,
+            "browser_proof": {"projects": ["desktop", "mobile"],
+                "stats": {"expected": 32, "unexpected": 14, "duration": int(variant) * 100}}}]),
+    ]
+    report = {"status": "BLOCKED", "blockers": [{"kind": "technical", "reason": reason,
+                "fingerprint": engine._hash([reason, sha, run_id, variant]), "evidence": items}
+                for reason, items in evidence]}
+    return q, report
+
+
+def legacy_qa_duplicate_state():
+    """Simulate persisted pre-fix events, without invoking the fixed credit path."""
+    state = {"tasks": {}, "material_events": [], "lease_events": [], "pending_transitions": [],
+             "acceptance": {"mode": "simulation", "started_at": BASE.isoformat()}}
+    for index, (run_id, sha) in enumerate((("123", SHA), ("124", "b" * 40))):
+        q, report = qa_observation(run_id, sha, variant=str(index + 1))
+        current = reconcile({}, q, BASE + timedelta(minutes=index))
+        tid = q["tasks"][0]["id"]
+        task = current["tasks"][tid]
+        details = {"fingerprint": engine._hash([x["fingerprint"] for x in report["blockers"]]),
+            "reason": "; ".join(x["reason"] for x in report["blockers"]),
+            "blockers": report["blockers"], "evidence": [y for x in report["blockers"] for y in x["evidence"]],
+            "real_failure": deepcopy(task["failure"]), "failure_action": "blocked"}
+        at = (BASE + timedelta(minutes=index)).isoformat().replace("+00:00", "Z")
+        event = {"id": "legacy-" + run_id, "kind": "blocker", "family": "staging_qa", "task_id": tid,
+                 "at": at, "details": details}
+        task.update(status="BLOCKED", blocker=deepcopy(details), material_progress_at=at,
+                    material_watch_started_at=at, recovery_episode=event["id"])
+        state["tasks"][tid] = task
+        state["material_events"].append(event)
+        state["lease_events"].append({"task_id": tid, "kind": "pickup", "autonomous": True, "at": at})
+        state["pending_transitions"].append({"task_id": tid, "family": "staging_qa", "event_id": event["id"], "at": at})
+    return state
+
+
 class AutonomyEngineTests(unittest.TestCase):
+    def test_hosted_run_task_sha_and_raw_log_churn_cannot_credit_same_problem(self):
+        q, report = qa_observation("123", SHA)
+        state, lease = claim({}, q, "staging_qa", "worker", BASE)
+        state = finish(state, lease["task_id"], lease["token"], report, BASE)
+        old = deepcopy(state["material_events"][0])
+        q, report = qa_observation("124", "b" * 40, variant="2")
+        state, lease = claim(state, q, "staging_qa", "worker", BASE + timedelta(minutes=1))
+        state = finish(state, lease["task_id"], lease["token"], report, BASE + timedelta(minutes=1))
+        self.assertEqual([event for event in state["material_events"] if event["kind"] == "blocker"], [old])
+        self.assertEqual(old["details"]["product_input_fingerprint"], "same-product")
+        self.assertEqual(state["tasks"][lease["task_id"]]["status"], "BLOCKED")
+        self.assertEqual(sum(x["attempts"] for x in state["failure_history"].values()), 2)
+
+    def test_new_assertion_url_product_content_and_detailed_browser_failures_are_material(self):
+        changes = (
+            lambda q, r: r["blockers"][0]["evidence"][0]["pytest"]["cases"][0].update(reason="assert 10 >= 12"),
+            lambda q, r: r["blockers"][2]["evidence"][0]["reviewer_proof"]["findings"][0].update(path="https://source.example/other"),
+            lambda q, r: r["blockers"][0]["evidence"][1]["context"][0].update(sha256="e" * 64),
+            lambda q, r: q["tasks"][0].update(product_input_fingerprint="changed-product"),
+            lambda q, r: r["blockers"][3]["evidence"][0]["browser_proof"].update(cases=[{"test": "new assertion", "error": "wrong text"}]),
+        )
+        for change in changes:
+            with self.subTest(change=change):
+                q, report = qa_observation("123", SHA)
+                state, lease = claim({}, q, "staging_qa", "worker", BASE)
+                state = finish(state, lease["task_id"], lease["token"], report, BASE)
+                q, report = qa_observation("124", "b" * 40, variant="2")
+                change(q, report)
+                state, lease = claim(state, q, "staging_qa", "worker", BASE + timedelta(minutes=1))
+                state = finish(state, lease["task_id"], lease["token"], report, BASE + timedelta(minutes=1))
+                self.assertEqual(sum(event["kind"] == "blocker" for event in state["material_events"]), 2)
+
+    def test_legacy_transport_duplicate_correction_preserves_raw_and_repairs_watch_and_transition(self):
+        state = legacy_qa_duplicate_state()
+        original = deepcopy(state)
+        at = BASE + timedelta(minutes=2)
+        corrected = reconcile(state, {"tasks": []}, at)
+        self.assertEqual(state, original)
+        self.assertEqual(corrected["material_events"], original["material_events"])
+        self.assertEqual([x["id"] for x in effective_material_events(corrected)], ["legacy-123"])
+        self.assertEqual(len(corrected["material_event_corrections"]), 1)
+        self.assertEqual(corrected["material_event_corrections"][0]["event_id"], "legacy-124")
+        self.assertEqual([x["event_id"] for x in corrected["pending_transitions"]], ["legacy-123"])
+        task = corrected["tasks"]["staging_qa_failed_run_124"]
+        self.assertNotIn("material_progress_at", task)
+        self.assertEqual(task["material_watch_started_at"], original["lease_events"][1]["at"])
+        self.assertEqual(reconcile(corrected, {"tasks": []}, at + timedelta(minutes=1)), corrected)
+        result = evaluate_acceptance(corrected, at, wall_now=at)
+        self.assertEqual(result["metrics"]["material_event_count"], 1)
+
+    def test_legacy_correction_requires_exact_terminal_binding_and_meaningful_equal_evidence(self):
+        for mutate in (
+                lambda state: state["tasks"]["staging_qa_failed_run_124"].update(product_input_fingerprint="different"),
+                lambda state: state["tasks"]["staging_qa_failed_run_124"].update(status="READY"),
+                lambda state: state["tasks"]["staging_qa_failed_run_124"]["failure"].update(head_sha="c" * 40)):
+            state = legacy_qa_duplicate_state()
+            mutate(state)
+            corrected = reconcile(state, {"tasks": []}, BASE + timedelta(minutes=2))
+            self.assertEqual(len(effective_material_events(corrected)), 2)
+            self.assertEqual(corrected["material_event_corrections"], [])
+
+    def test_frozen_correction_survives_task_movement_but_tampered_raw_event_does_not(self):
+        state = reconcile(legacy_qa_duplicate_state(), {"tasks": []}, BASE + timedelta(minutes=2))
+        state["tasks"]["staging_qa_failed_run_123"].update(product_input_fingerprint="future-product", failure=None)
+        self.assertEqual(len(effective_material_events(state)), 1)
+        state["material_events"][1]["details"]["blockers"][0]["evidence"][0]["pytest"]["cases"][0]["reason"] = "new assertion"
+        self.assertEqual(len(effective_material_events(state)), 2)
+
+    def test_historical_correction_preserves_real_transition_and_its_material_baseline(self):
+        state = legacy_qa_duplicate_state()
+        tid = "staging_qa_failed_run_124"
+        at = (BASE + timedelta(seconds=30)).isoformat().replace("+00:00", "Z")
+        transition = {"id": "real-transition", "kind": "transition", "family": "staging_qa",
+            "task_id": tid, "at": at, "details": {"independent": True, "from_task_id": PUBLIC}}
+        state["material_events"].insert(1, transition)
+        corrected = reconcile(state, {"tasks": []}, BASE + timedelta(minutes=2))
+        self.assertEqual([event["id"] for event in effective_material_events(corrected)], ["legacy-123", "real-transition"])
+        self.assertEqual(corrected["tasks"][tid]["material_progress_at"], at)
+        self.assertEqual(corrected["tasks"][tid]["material_watch_started_at"], at)
+        self.assertEqual(corrected["tasks"][tid]["recovery_episode"], "real-transition")
+
+    def test_invalid_correction_cannot_remove_material_evidence(self):
+        valid = reconcile(legacy_qa_duplicate_state(), {"tasks": []}, BASE + timedelta(minutes=2))
+        for mutation in (
+                {"bindings": "invalid"}, {"bindings": [None, None]}, {"bindings": []},
+                {"event_sha256": "wrong"}, {"retained_event_sha256": "wrong"},
+                {"canonical_signature": "wrong"}, {"product_input_fingerprint": "wrong"},
+                {"retained_event_id": "legacy-124"}, {"kind": "unverified_external_assertion"}):
+            with self.subTest(mutation=mutation):
+                state = deepcopy(valid)
+                state["material_event_corrections"][0].update(mutation)
+                self.assertEqual(len(effective_material_events(state)), 2)
+
     def test_reducers_do_not_mutate_inputs(self):
         q = queue()
         original = deepcopy(q)
