@@ -126,7 +126,7 @@ def test_redsalud_canonical_header_resolves_old_teaser_without_using_update(monk
     title='Nueva unidad clínica de alta complejidad'
     raw=RawItem('redsalud',title,'https://www.redsalud.cl/noticias/old-teaser','RedSalud','corporate','2026-08-27',metadata={'listing_date':'2026-08-27'})
     canonical='https://www.redsalud.cl/observatorio/noticias/nueva-unidad'
-    html=f'<link rel="canonical" href="{canonical}"><script type="application/ld+json">'+__import__('json').dumps({'@type':'NewsArticle','url':canonical,'headline':title,'datePublished':'2026-09-04','dateModified':'2026-10-07'})+f'</script><span>4 Sep 2026</span><h1>{title}</h1><p>'+('Nueva capacidad de atención documentada. '*40)+'</p>'
+    html=f'<link rel="canonical" href="{canonical}"><script type="application/ld+json">'+__import__('json').dumps({'@type':'NewsArticle','url':canonical,'headline':title,'datePublished':'2026-09-04','dateModified':'2026-10-07'})+f'</script><span class="coh-inline-element coh-ce-9ca7c0c5">4 Sep 2026</span><span>Comparte</span><h1>{title}</h1><p>'+('Nueva capacidad de atención documentada. '*40)+'</p>'
     monkeypatch.setattr(pipeline,'fetch_html',lambda _:html)
     monkeypatch.setattr(pipeline,'analyze_news',lambda **kw:{'relevance_score':86,'reason':'Nueva capacidad hospitalaria documentada.',
         'what_happened':'El prestador abrió una nueva unidad hospitalaria de alta complejidad con capacidad adicional.',
@@ -139,4 +139,26 @@ def test_redsalud_canonical_header_resolves_old_teaser_without_using_update(monk
     import pytest
     from radar_salud.processing import DeferredProcessing
     with pytest.raises(DeferredProcessing,match='dates disagree'):pipeline.process_corporate_news(raw,cfg)
+
+
+def test_davila_official_chain_preserves_threshold_and_rejects_unverified_support(monkeypatch):
+    from radar_salud import beta_sources,llm_analysis
+    title='Programa Enlace: treinta cirugías ejecutadas'
+    support_title='Programa Enlace: compromiso de quinientos pacientes'
+    url='https://www.davila.cl/novedades/operativo'
+    support_url='https://www.davila.cl/novedades/firma'
+    evidence={'url':support_url,'title':support_title,'publication_date':'2026-08-20','relationship':'programme_announcement_before_execution'}
+    raw=RawItem('red_davila',title,url,'Red Dávila','corporate','2026-08-24',metadata={'market_role':'provider','source_quality_gate':'passed','publication_date_source':'verified_article_header','supporting_official_sources':[evidence]})
+    def fetch(target):
+        primary=target==url
+        return f'<span>Novedades {"24" if primary else "20"}/08/2026</span><h1>{title if primary else support_title}</h1><p>'+('Programa Enlace: se ejecutaron treinta cirugías con cinco pabellones. '*4 if primary else 'El Programa Enlace compromete quinientos pacientes en diez jornadas y diez meses. '*4)+'</p>'
+    monkeypatch.setattr(beta_sources,'fetch_html',fetch)
+    inputs=[]
+    monkeypatch.setattr(llm_analysis,'analyze_news',lambda **kw:inputs.append(kw['text']) or {'relevance_score':74,'reason':'Convenio cuantificado, impacto acotado territorialmente.', 'what_happened':'El prestador ejecutó treinta cirugías bajo un convenio de diez meses con la red pública.', 'why_it_matters':'Aporta capacidad privada para resolver espera odontológica en un hospital de referencia.'})
+    assert beta_sources.process_curated_beta_source(raw,{}) is None
+    assert 'quinientos' in inputs[0] and 'treinta' in inputs[0]
+    assert raw.metadata['editorial_assessment']['minimum_relevance']==75
+    evidence['publication_date']='2026-08-21'
+    with pytest.raises(DeferredProcessing,match='publication/programme mismatch'):beta_sources.process_curated_beta_source(raw,{})
+    assert len(inputs)==1
 

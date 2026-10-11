@@ -40,6 +40,26 @@ def test_provider_title_correction_does_not_duplicate_same_original_url(tmp_path
     assert len(queue.items)==1
 
 
+def test_reviewed_false_negative_reopens_once_without_resetting_identity(tmp_path):
+    from radar_salud.models import RawItem
+    now=datetime(2026,10,11,tzinfo=timezone.utc)
+    queue=PendingQueue(tmp_path/'queue.json')
+    url='https://www.davila.cl/novedades/operativo-medico-sotero'
+    raw=RawItem('red_davila','Programa Enlace: primer operativo',url,'Red Dávila','corporate','2026-08-24',metadata={'recovery_audit':'audit.json','source_quality_gate':'passed'})
+    queue.discover('red_davila',[raw],now=now);key=next(iter(queue.items));queue.finish(key,'rejected','processor_rejected',now=now)
+    evidence={'title':raw.title,'url':url,'publication_date':raw.event_date,'date_evidence':'verified_article_header','recover':True,
+        'review_false_negative':True,'review_revision':'official_chain_v1',
+        'supporting_official_sources':[{'url':'https://www.davila.cl/novedades/firma','publication_date':'2026-08-20'}]}
+    audit={'slug':'red_davila','as_of':'2026-10-11','audit_path':'audit.json','surfaces':[{'url':'https://www.davila.cl/novedades'}],'original_items':[evidence]}
+    cfg={'name':'Red Dávila','source_type':'corporate'}
+    assert len(module.admit(queue,audit,cfg,now))==1
+    assert next(iter(queue.items))==key and queue.items[key]['status']=='pending'
+    assert queue.items[key]['review_history'][0]['prior_status']=='rejected'
+    queue.finish(key,'rejected','relevance_below_source_gate',now=now)
+    assert module.admit(queue,audit,cfg,now)==[]
+    assert queue.items[key]['status']=='rejected' and len(queue.items[key]['review_history'])==1
+
+
 def test_bounded_repair_evaluates_only_selected_deferred_url_and_keeps_other_assessment(tmp_path, monkeypatch):
     import json
     from radar_salud.models import RawItem

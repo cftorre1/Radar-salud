@@ -583,21 +583,31 @@ class _RedSaludArticle(HTMLParser):
     def __init__(self,url=None):
         super().__init__();self.url=url;self.title="";self.published="";self.body="";self._script=False;self._json=[];self._after_h1=False;self._field=None;self._parts=[]
         self.schemas=[];self._before=[];self.header_date=None;self.canonical_url=None;self.canonical_schema_match=False
+        self._date_span=False;self._date_parts=[];self._visible_date_stamps=[]
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs);lower=tag.lower()
         if lower=='link' and attrs.get('rel')=='canonical':self.canonical_url=attrs.get('href')
+        if not self._after_h1 and lower=='span' and 'coh-ce-9ca7c0c5' in (attrs.get('class') or '').split():
+            # Observatorio's dedicated publication span precedes its share label.
+            # A navigation/event date elsewhere cannot stand in for this field.
+            self._date_span=True;self._date_parts=[]
         if lower=="script" and attrs.get("type")=="application/ld+json":self._script=True;self._json=[]
         elif lower=="h1":
             self._field="h1";self._parts=[]
             stamp=re.search(r'(\d{1,2}\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]+\s+20\d{2})\s*$', ' '.join(self._before)[-120:])
-            self.header_date=_date(stamp.group(1)) if stamp else None
+            dates={x for x in self._visible_date_stamps if x}
+            self.header_date=next(iter(dates)) if len(dates)==1 else _date(stamp.group(1)) if stamp and not dates else None
         elif self._after_h1 and lower in ("h2","p"):self._field="body";self._parts=[]
     def handle_data(self,data):
         if self._script:self._json.append(data)
+        if self._date_span:self._date_parts.append(data)
         if self._field:self._parts.append(data)
         if not self._script and not self._after_h1 and self._field!='h1':self._before.append(' '.join(data.split()))
     def handle_endtag(self,tag):
         lower=tag.lower()
+        if lower=='span' and self._date_span:
+            self._visible_date_stamps.append(_date(' '.join(self._date_parts)))
+            self._date_span=False
         if lower=="script" and self._script:
             self._consume_json("".join(self._json));self._script=False
         elif lower=="h1" and self._field=="h1":
