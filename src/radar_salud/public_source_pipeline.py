@@ -425,9 +425,9 @@ def process_clinicas_chile(raw,cfg):
     if not ai:raise DeferredProcessing("Clínicas de Chile pending assessment")
     score=int(ai.get("relevance_score",0))
     threshold=70 if channel=="Noticias" else 75
-    if score<threshold:return None
     what=(ai.get("what_happened") or "").strip();why=(ai.get("why_it_matters") or "").strip()
-    if len(what)<45 or len(why)<35:return None
+    from .provider_assessment import assessed
+    if not assessed(raw,ai,threshold):return None
     signal_type="Noticias" if channel=="Noticias" else "Datos"
     raw.metadata.update({
       "what_happened":what,"why_it_matters":why,
@@ -437,6 +437,7 @@ def process_clinicas_chile(raw,cfg):
     })
     row=build_signal(raw,cfg).to_dict()
     row["signal_types"]=[signal_type];row["scopes"]=["Prestadores"];row["source_channel"]=channel;row["editorial_relevance"]=score
+    row['editorial_assessment']=raw.metadata['editorial_assessment']
     return row
 
 def process_corporate_news(raw,cfg):
@@ -523,7 +524,8 @@ def process_corporate_news(raw,cfg):
     if not ai:raise DeferredProcessing("Corporate announcement pending assessment")
     score=int(ai.get("relevance_score",0))
     what=(ai.get("what_happened") or "").strip();why=(ai.get("why_it_matters") or "").strip()
-    if score<78 or len(what)<45 or len(why)<35:return None
+    from .provider_assessment import assessed
+    if not assessed(raw,ai,78):return None
     # Diagnostic lab tests are a clinical service, not a pharmaceutical company.
     scope_text=re.sub(r"ex[aá]menes? de laboratorio", "exámenes diagnósticos", f"{raw.title} {what}", flags=re.I)
     scopes=(["Prestadores"]+(["Isapres"] if re.search(r"\bisapre(?:s)?\b",scope_text,re.I) else [])
@@ -537,6 +539,7 @@ def process_corporate_news(raw,cfg):
         "scores":{"economic":score,"regulatory":30,"scope":score,"novelty":score,"actionability":65}})
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Noticias"],scopes=scopes,editorial_relevance=score)
+    row['editorial_assessment']=raw.metadata['editorial_assessment']
     if raw.url.rstrip('/').endswith('/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas'):
         row.update(source_title_full=raw.title,
                    title="Fonasa activa SAFED para atención gratuita en clínicas privadas tras temporal",

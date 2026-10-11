@@ -49,6 +49,12 @@ def test_provider_sources_enter_daily_durable_queue_without_ai(tmp_path, monkeyp
     engine_cli.main()
     assert all(r["status"] == "retry" and r["deferred_detail"] == "Provider original blocked: HTTP 403"
                for r in PendingQueue(queue.path).items.values())
+    before=json.loads(queue.path.read_text())
+    monkeypatch.setattr(sys,'argv',['engine_cli','--source','red_davila','--discovery-only'])
+    monkeypatch.setattr(engine_cli,'has_capacity',lambda kind: __import__('pytest').fail('Discovery-only must not check or consume AI'))
+    engine_cli.main()
+    assert json.loads(queue.path.read_text())==before
+    assert set(json.loads((tmp_path/'data/state/discovery_run.json').read_text())['sources'])=={'red_davila'}
 
 
 def test_discovery_only_health_does_not_claim_editorial_assessment(tmp_path):
@@ -78,3 +84,26 @@ def test_provider_stale_original_survives_successful_technical_poll(tmp_path):
     row=json.loads((tmp_path/'data/source_health.json').read_text())['sources']['pfizer_chile']
     assert row['technical_status']=='ok' and row['status']=='warning'
     assert row['content_freshness']=='stale_external_surface' and row['coverage_status']=='gap'
+
+
+def test_rejection_preserves_editorial_reason_and_original_gate():
+    from radar_salud.provider_assessment import assessed, rejection_reason
+    raw=RawItem('red_davila','Convenio público privado','https://www.davila.cl/novedades/enlace','Red Dávila','corporate','2026-08-24')
+    ai={'relevance_score':74,'reason':'Ejecución local sin compromiso incremental cuantificado.',
+        'what_happened':'Se ejecutó un operativo odontológico de treinta cirugías con cinco pabellones.',
+        'why_it_matters':'Reduce la espera de pacientes del hospital mediante una colaboración documentada.'}
+    assert not assessed(raw,ai,75)
+    assert rejection_reason(raw)=='relevance_below_source_gate'
+    assert raw.metadata['editorial_assessment']['minimum_relevance']==75
+    assert raw.metadata['editorial_assessment']['editorial_reason']==ai['reason']
+
+
+def test_scoped_horizon_preserves_other_front(tmp_path):
+    queue=PendingQueue(tmp_path/'queue.json')
+    for source in ('red_davila','minsal'):
+        raw=RawItem(source,'Article','https://example.org/'+source,source,'corporate')
+        queue.discover(source,[raw])
+        next(v for v in queue.items.values() if v['source']==source)['raw']['event_date']='2023-01-01'
+    queue.enforce_backfill_horizon(sources={'red_davila'})
+    assert next(v for v in queue.items.values() if v['source']=='minsal')['status']=='pending'
+    assert next(v for v in queue.items.values() if v['source']=='red_davila')['status']=='archived'

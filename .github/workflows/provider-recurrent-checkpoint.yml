@@ -1,0 +1,35 @@
+name: Provider recurrent isolated runtime
+on:
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'scripts/provider_recurrent_checkpoint.py'
+      - '.github/workflows/provider-recurrent-checkpoint.yml'
+permissions:
+  contents: read
+concurrency:
+  group: provider-recurrent-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  recurrent:
+    if: startsWith(github.head_ref, 'codex/f-prestadores-gremio-') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - run: python -m pytest -q tests/test_provider_runtime_reconciliation.py
+      - name: Execute twice with real originals and persistent queue
+        run: timeout --signal=TERM 15m python scripts/provider_recurrent_checkpoint.py
+      - name: Preserve recurrent evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: provider-recurrent-${{ github.event.pull_request.head.sha }}
+          path: data/audits/provider_recurrent_checkpoint_2026_10_11.json
+          retention-days: 30

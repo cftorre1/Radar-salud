@@ -26,6 +26,8 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
     ap.add_argument("--reset-state",action="store_true")
+    ap.add_argument('--source',action='append',help='Restrict discovery and processing to this registered runtime slug; repeatable')
+    ap.add_argument('--discovery-only',action='store_true',help='Persist real discovery without attempting editorial assessment')
     args=ap.parse_args()
     if args.reset_state:
         ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
@@ -38,7 +40,6 @@ def main():
         raise ValueError("Invalid discovery watermarks; refusing to classify LIVE")
     history_path=root/"data/history/superintendencia_signals.json"
     history=load_history(history_path)
-    seed_from_history(root)
     def stats(raw,cfg):
         signal=process_superintendencia_detail(raw,fetch_html(raw.url),cfg)
         row=signal.to_dict()
@@ -71,6 +72,11 @@ def main():
     # and publication path as the core. Discovery-only validation is not ingestion.
     specs.extend((slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
                  for slug in ("red_davila","andes_salud","clinicas_achs_salud") if slug in cfgs)
+    if args.source:
+        unknown=set(args.source)-{name for name,_,_,_ in specs}
+        if unknown:ap.error('Unknown runtime sources: '+', '.join(sorted(unknown)))
+        specs=[spec for spec in specs if spec[0] in args.source]
+    if any(name=='superintendencia_normativa' for name,_,_,_ in specs):seed_from_history(root)
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
     discoveries={}
     original_dates={}
@@ -98,14 +104,17 @@ def main():
         "failed_sources":sum(error is not None for _,_,error in discoveries.values()),
     })
     produced={name:[] for name in processors}
-    queue.enforce_backfill_horizon()
-    for index,(key,item) in enumerate(queue.ready()):
+    queue.enforce_backfill_horizon(sources=set(processors))
+    ready=[] if args.discovery_only else [(key,item) for key,item in queue.ready() if item['source'] in processors]
+    attempted={name:0 for name in processors}
+    for index,(key,item) in enumerate(ready):
         if args.limit and index>=args.limit:break
         if not has_capacity("fast") and not has_capacity("deep"):break
         queue.start(key)
+        raw=RawItem(**item['raw'])
+        attempted[item['source']]+=1
         try:
             cfg,processor=processors[item["source"]]
-            raw=RawItem(**item["raw"])
             row=processor(raw,cfg)
             from dataclasses import asdict
             item["raw"]=asdict(raw)
@@ -114,7 +123,8 @@ def main():
                 # Save output before terminal queue acknowledgement (crash safe replay).
                 history=merge_history(history,[row]);save_history(history_path,history)
                 produced[item["source"]].append(row)
-            queue.finish(key,"published" if row else "rejected",None if row else "processor_rejected")
+            from .provider_assessment import rejection_reason
+            queue.finish(key,"published" if row else "rejected",None if row else rejection_reason(raw) if item['source'] in ('redsalud','bupa_chile','indisa','red_davila','andes_salud','clinicas_chile','pfizer_chile','clinicas_achs_salud') else 'processor_rejected')
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except OutsideBackfillHorizon as exc:
             item["raw"]["event_date"]=str(exc)
@@ -124,6 +134,10 @@ def main():
             queue.finish(key,"retry","budget_or_analysis_deferred")
         except Exception as exc:
             queue.finish(key,"retry",type(exc).__name__)
+        finally:
+            from dataclasses import asdict
+            item['raw']=asdict(raw)
+            queue.save()
     for name,(discovered,new,error) in discoveries.items():
         counts=queue.counts(name)
         source_cfg=processors[name][0]
@@ -131,7 +145,8 @@ def main():
         health_record(root,name,name=label,discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
             rejected=counts["rejected"],rows=produced[name],error=error,
-            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"],latest_original_at=original_dates.get(name))
+            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"],latest_original_at=original_dates.get(name),
+            evaluation_performed=attempted[name]>0)
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()

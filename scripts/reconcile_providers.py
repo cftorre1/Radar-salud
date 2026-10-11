@@ -136,17 +136,24 @@ def run(root, slug=None, apply=False, live=False, limit=12, urls=None):
                     attempted+=1;queue.start(key);raw=RawItem(**item['raw'])
                     try:
                         row=processor(raw,cfgs[name])
+                        from dataclasses import asdict
+                        item['raw']=asdict(raw)
                         if row:
                             row.update(detected_at=item['detected_at'],ingestion_mode='BACKFILL')
                             history=merge_history(history,[row]);save_history(history_path,history)
-                        queue.finish(key,'published' if row else 'rejected',None if row else 'processor_rejected')
-                        live_results.append({'source':name,'url':raw.url,'outcome':'published' if row else 'rejected','signal':row})
+                        from radar_salud.provider_assessment import rejection_reason
+                        queue.finish(key,'published' if row else 'rejected',None if row else rejection_reason(raw))
+                        live_results.append({'source':name,'url':raw.url,'outcome':'published' if row else 'rejected','signal':row,
+                                             'editorial_assessment':raw.metadata.get('editorial_assessment')})
                     except OutsideBackfillHorizon as exc:
                         item['raw']['event_date']=str(exc);queue.finish(key,'archived','outside_90_day_backfill')
                         live_results.append({'source':name,'url':raw.url,'outcome':'archived','blocker':'outside_90_day_backfill'})
                     except Exception as exc:
                         item['deferred_detail']=str(exc);queue.finish(key,'retry','budget_or_analysis_deferred' if isinstance(exc,DeferredProcessing) else type(exc).__name__)
                         live_results.append({'source':name,'url':raw.url,'outcome':'retry','blocker':str(exc)})
+                    finally:
+                        from dataclasses import asdict
+                        item['raw']=asdict(raw);queue.save()
             audit['reconciliation']=reconcile(audit,queue,history,visible)
             h=health['sources'].setdefault(name,{})
             counts=queue.counts(name)

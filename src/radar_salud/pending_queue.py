@@ -85,10 +85,11 @@ class PendingQueue:
         self.save()
         return added
 
-    def enforce_backfill_horizon(self, now=None):
+    def enforce_backfill_horizon(self, now=None, sources=None):
         now = now or now_utc()
         changed = 0
         for item in self.items.values():
+            if sources is not None and item['source'] not in sources:continue
             if item.get("lane") == "BACKFILL" and item.get("status") in ("pending", "retry", "processing"):
                 raw = item.get("raw", {})
                 try:

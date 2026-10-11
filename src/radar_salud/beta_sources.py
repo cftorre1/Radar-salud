@@ -331,7 +331,12 @@ def process_curated_beta_source(raw, cfg):
     if raw.metadata.get("fetch_error"):
         raise DeferredProcessing(f"Provider detail unavailable: {raw.url}: {raw.metadata['fetch_error']}")
     body = raw.metadata.get("page_text") or raw.raw_text or ""
+    from .provider_assessment import assessed, prefilter_rejected
     if not raw.event_date or len(body) < 160 or not _material(role, raw.title, body):
+        reason=('publication_date_missing' if not raw.event_date else 'insufficient_readable_body' if len(body)<160
+                else 'outside_registered_clinicas_achs_institution' if role=='provider_achs' and not re.search(r'cl[ií]nicas achs salud',f'{raw.title} {body}',re.I)
+                else 'no_material_change_under_provider_prefilter')
+        prefilter_rejected(raw,reason)
         return None
     kind = {
         "media": "prensa económica de alta confianza; señal temprana, atribuir y no convertir reporte de prensa en hecho oficial",
@@ -346,7 +351,7 @@ def process_curated_beta_source(raw, cfg):
     threshold = 72 if role == "media" else 75
     what = (ai.get("what_happened") or "").strip()
     why = (ai.get("why_it_matters") or "").strip()
-    if score < threshold or len(what) < 45 or len(why) < 35:
+    if not assessed(raw,ai,threshold):
         return None
     scopes = ["Salud laboral"] if role == "mutuality" else (["Isapres", "Prestadores"] if role == "media" else ["Prestadores"])
     scope_text=f"{raw.title} {body[:2500]}"
@@ -378,6 +383,7 @@ def process_curated_beta_source(raw, cfg):
     row["signal_types"] = ["Noticias"]
     row["scopes"] = scopes
     row["editorial_relevance"] = score
+    row['editorial_assessment']=raw.metadata['editorial_assessment']
     row["source_quality_gate"] = "passed"
     if role == "media":
         row["evidence_maturity"] = "media_reported"
