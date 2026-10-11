@@ -123,7 +123,10 @@ def parse_df_article(html, url):
     labelled = re.search(r"\bPublicad[oa]\s*(?::|el)\s*(.{1,100})", " ".join(p.visible), re.I)
     if labelled:
         from .public_source_pipeline import _date
-        visible_day = _date(labelled[1])
+        # Select the first date next to the label, not an ISO incident/modification
+        # date later in the paragraph (the generic _date prefers any ISO token).
+        token=re.search(r"20\d{2}-\d{2}-\d{2}|\d{1,2}[/-]\d{1,2}[/-]20\d{2}|\d{1,2}\s+de\s+\w+\s+de\s+20\d{2}",labelled[1],re.I)
+        visible_day = _date(token[0]) if token else None
         if visible_day and _day(visible_day):
             candidates.append({"source": "visible:published_label", "value": labelled[1], "day": visible_day})
     # A time element is only a fallback: many pages have clocks in their header.

@@ -46,6 +46,8 @@ def test_conflicting_dates_are_held_with_both_original_observations():
     visible = parse_df_article('<meta name="cXenseParse:recs:publishtime" content="2026-10-07T22:54:15Z"><p>Publicado: jueves 8 de octubre de 2026</p>', URL)
     assert visible["event_date"] is None
     assert visible["metadata"]["publication_date_conflict"]
+    unrelated_iso = parse_df_article('<meta name="cXenseParse:recs:publishtime" content="2026-10-08T12:00:00Z"><p>Publicado: jueves 8 de octubre de 2026. Incidente: 2026-10-07.</p>', URL)
+    assert unrelated_iso["event_date"] == "2026-10-08"
 
 
 def test_chile_day_not_utc_day_and_no_nav_or_incident_date_fallback():

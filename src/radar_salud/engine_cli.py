@@ -92,6 +92,7 @@ def main():
                 discovery_evidence[name]={"dated":sum(bool(raw.event_date) for raw in items),
                     "undated":sum(not raw.event_date for raw in items),
                     "detail_errors":sum(bool(raw.metadata.get("fetch_error")) for raw in items),
+                    "insufficient_evidence":sum(len(raw.metadata.get("page_text", ""))<160 for raw in items),
                     "newest_event_date":max([raw.event_date for raw in items if raw.event_date],default=None)}
         except Exception as exc:
             discoveries[name]=(0,0,type(exc).__name__)

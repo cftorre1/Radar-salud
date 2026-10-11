@@ -46,7 +46,8 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
                              "pending":"cumulative_queue","rejected":"cumulative_queue"}
         row["coverage_status"]="unverified" if error else "partial_inventory"
         # An all-undated inventory cannot be healthy merely because HTTP worked.
-        if not error and (discovery_evidence.get("undated",0) or discovery_evidence.get("detail_errors",0)):
+        if not error and (discovery_evidence.get("undated",0) or discovery_evidence.get("detail_errors",0)
+                          or discovery_evidence.get("insufficient_evidence",0)):
             row.update(status="warning",technical_status="partial",coverage_status="date_or_detail_gap")
         row["last_signal_at"]=discovery_evidence.get("last_published_event_at")
         row["last_discovered_event_at"]=discovery_evidence.get("newest_event_date")
