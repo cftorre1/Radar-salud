@@ -2874,5 +2874,55 @@
     "source_live_evidence": false,
     "specific_fix": "Canonicalize the evidenced QA problem within its failure signature and product scope, preserve assertion/content/date evidence, and append a hash-bound duplicate correction. Effective readers exclude only validated retractions; raw events remain intact.",
     "status": "infrastructure_metric_correction_verified_hosted_acceptance_open"
+  },
+  {
+    "blocker_fingerprint": "c77406e3f36d4e47ef4454f12033fa60efd8c84b410bed438cd98d08b412c361",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-22aee65f6d6e489aaa64577767128720.json",
+        "sha256": "d22928d5c34e9ded95e20305b672d9459f8ef88d5c2913de1982db39d6496e6c",
+        "staging_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+        "state_sha": "a703892e40e56741bdd9cafe1ec5e0d28ecf4f13"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_repair_public_data_lane_2026_10_11",
+    "id": "autonomy_observed_25194e98cba220e1a142810167839ebda4ca0424aa281645cb156f1814f8101d",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_repair_public_data_lane_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "6405665650a49a3e21510c0920470210a3fc79bdb3b1a51f83080112248229ed",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-22aee65f6d6e489aaa64577767128720.json",
+        "sha256": "d22928d5c34e9ded95e20305b672d9459f8ef88d5c2913de1982db39d6496e6c",
+        "staging_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+        "state_sha": "a703892e40e56741bdd9cafe1ec5e0d28ecf4f13"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: staging_qa_failed_run_38116961282",
+    "id": "autonomy_observed_42aeb5f1d3c74d03aa1a092fc3ec2c2e33895438135fbecae09f56765f7161bc",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "staging_qa_failed_run_38116961282"
   }
 ]

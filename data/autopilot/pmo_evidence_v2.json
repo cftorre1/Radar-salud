@@ -1,16 +1,16 @@
 {
   "authority": {
-    "infra_sha": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+    "infra_sha": "c4417f1959227444f2f841a0e0c534f25d245e99",
     "learning_ledger_blob_sha": "5219803bf7a4717e2652ced0b106782d2548abd2",
     "learning_ledger_sha256": "e3725e5e19927fd579752670c91e10011c7f74a7630b4add6e7b5cba8ab8f2c0",
-    "queue_blob_sha": "839728922ad473867429ff96f3ff2ebbdf001b4b",
-    "queue_sha256": "d6d1338359a937d45015cfa88a7f1da88cd262f311bfcf37391f400348ee088f",
-    "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_control_sha256": "0966d18016ce987dbaa5ed7bad6345e5795e89fb44140b0ee55267f4fe855a2c",
-    "state_sha": "66273dac58c53556cb778d612925920565c8c7fa"
+    "queue_blob_sha": "f2bd69412ca25547dea24155f1102f77f007ebe4",
+    "queue_sha256": "e2622ebfc15b7bb567c8e01b81cbba0271ace08db7cc6f31b4811f8dcea21827",
+    "staging_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+    "state_control_sha256": "02cfa7126efef85d22766aac69c42164c03d559bfba839237dabb07b6c5c2ba9",
+    "state_sha": "a703892e40e56741bdd9cafe1ec5e0d28ecf4f13"
   },
   "canonical_pmo_updated": false,
-  "corrected_material_event_count": 5,
+  "corrected_material_event_count": 7,
   "correction_is_material_progress": false,
   "criteria": {
     "autonomous_pickup": {
@@ -42,18 +42,18 @@
     "legacy_stage_a": {
       "metrics": {
         "autonomous_pickups": 25,
-        "material_event_count": 27,
+        "material_event_count": 25,
         "max_material_gap_seconds": 2216.775938,
         "mode": "live",
-        "observed_seconds": 5909.202891,
+        "observed_seconds": 7408.454723,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 5909.202891,
+        "total_elapsed_seconds": 7408.454723,
         "window_started_at": "2026-10-11T05:29:46.231497Z"
       },
-      "observed_until": "2026-10-11T07:08:15.434388Z",
+      "observed_until": "2026-10-11T07:33:14.686220Z",
       "reasons": [
         "four_real_wall_hours_not_observed",
         "owner_intervention_observation_not_verified",
@@ -72,25 +72,25 @@
       "is_live_proof": false,
       "metrics": {
         "autonomous_pickups": 25,
-        "material_event_count": 27,
+        "material_event_count": 25,
         "max_material_gap_seconds": 2216.775938,
         "mode": "live",
-        "observed_seconds": 5909.202891,
+        "observed_seconds": 7408.454723,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 5909.202891,
+        "total_elapsed_seconds": 7408.454723,
         "window_started_at": "2026-10-11T05:29:46.231497Z"
       }
     }
   },
-  "effective_material_event_count": 57,
+  "effective_material_event_count": 55,
   "kind": "autonomy_pmo_evidence",
-  "last_material_progress_at": "2026-10-11T07:07:29.743719Z",
+  "last_material_progress_at": "2026-10-11T07:06:00.551910Z",
   "legacy_stage_a_status": "NOT_PROVEN",
-  "material_event_correction_count": 5,
-  "material_event_correction_signature": "c823fe4130c2a5406d10413e2e9042dc7f21f5c65c5ebf2ccc5764fac12b103f",
+  "material_event_correction_count": 7,
+  "material_event_correction_signature": "d4f5bd561ec9b07d4613727815a4c7f46f3921f076e8040bd9ae45a4d2c6867f",
   "material_event_corrections": [
     {
       "at": "2026-10-11T06:25:47.641878Z",
@@ -328,15 +328,90 @@
       "retained_event_id": "925d0100631445e1a44175810614a5befcdf121779b029ae9f46c4fe4a455e0e",
       "retained_event_sha256": "8c39d5289f76091aad6036ea40de069298ca33dabc492ceb56dddf1b6b4ec1ae",
       "source_problem_signature": "1216e2ccbd7861a35ca0fe8790933f268db58d7d81a36424ff5564c29f48de60"
+    },
+    {
+      "at": "2026-10-11T07:32:52.798673Z",
+      "bindings": [
+        {
+          "failure": {
+            "conclusion": "failure",
+            "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+            "head_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+            "run_id": 38116961282,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282"
+          },
+          "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+          "task_id": "staging_qa_failed_run_38116961282"
+        },
+        {
+          "failure": {
+            "conclusion": "failure",
+            "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+            "head_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+            "run_id": 38116961282,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282"
+          },
+          "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+          "task_id": "staging_qa_failed_run_38116961282"
+        }
+      ],
+      "canonical_signature": "b1a473566353505ec588a6edf96f56aa755a3cf646014bc7669e0a0cbc149aea",
+      "event_id": "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+      "event_sha256": "dbdf8d1db46eb8398338c8eb1b930e84477c46e3d0a8aa35b0a48cb05bf7d78f",
+      "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+      "id": "18441d42bc757bdba3a55fdc00e96139471f5005715263cb644d4ab45fb18046",
+      "kind": "duplicate_staging_blocker",
+      "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+      "reason": "Same product and structured evidenced problem; capture aliases do not earn new progress.",
+      "retained_event_id": "6bf8b7ef653aff856c6c1cfa525622b32aa6061219b666b4905b65fc97cee361",
+      "retained_event_sha256": "c4cc241c5713e57723e95216f1bb4a20e647003609b14d3ff72ad6d5b44690e4"
+    },
+    {
+      "at": "2026-10-11T07:32:52.798673Z",
+      "bindings": [
+        {
+          "event_sha256": "8c39d5289f76091aad6036ea40de069298ca33dabc492ceb56dddf1b6b4ec1ae",
+          "family": "public_data",
+          "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "product_input_fingerprint": "c481d468ac55655c78163a58f9013d8492217b793899cbb9690a6b3ce399b09c",
+          "proof": {
+            "control_sha256": "3f887c0385731c4710d7e2cf2ec6ebf3af88878b7c81043ababf70d048ff3e11",
+            "state_commit": "56b3ea8c71e792462b0b9736c5c484a4f17c9d36",
+            "worker_result": {
+              "path": "data/autopilot/evidence/a83d0bd664264764891b5a667b0bdcd0.json",
+              "sha256": "21cb60d5b5de3163e7943efb9f98650c12354d78d8ae99877f874704155b37c2"
+            }
+          },
+          "schema_version": 1,
+          "task_id": "source_repair_public_data_lane_2026_10_11",
+          "verified": true
+        },
+        {
+          "family": "public_data",
+          "product_input_fingerprint": "c481d468ac55655c78163a58f9013d8492217b793899cbb9690a6b3ce399b09c",
+          "task_id": "source_repair_public_data_lane_2026_10_11"
+        }
+      ],
+      "bindings_sha256": "99c3e83d8181035bba2fd66b9d8707c5ba6d3ca06e1b4076b2afb141878a5d5b",
+      "canonical_signature": "4482d3bd09953e195581a0e16618ab70e9127a5a67541f79ff2e2d1f8bc0e023",
+      "event_id": "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b",
+      "event_sha256": "d90b012be53dff61f9c9e6adbe993201eee12e99ddfe3e7261b8063ac44551c6",
+      "id": "d9fb16d65a2410be91e7583cb34181bb901d4906977eddbc57b08444e337ed4b",
+      "kind": "duplicate_source_blocker",
+      "product_input_fingerprint": "c481d468ac55655c78163a58f9013d8492217b793899cbb9690a6b3ce399b09c",
+      "reason": "Same product and structured evidenced problem; capture aliases do not earn new progress.",
+      "retained_event_id": "925d0100631445e1a44175810614a5befcdf121779b029ae9f46c4fe4a455e0e",
+      "retained_event_sha256": "8c39d5289f76091aad6036ea40de069298ca33dabc492ceb56dddf1b6b4ec1ae",
+      "source_problem_signature": "1216e2ccbd7861a35ca0fe8790933f268db58d7d81a36424ff5564c29f48de60"
     }
   ],
-  "material_event_count": 57,
-  "material_signature": "b637605066b989549b134677749a86b5e62fda6b2e8aae4709976228122ec63a",
+  "material_event_count": 55,
+  "material_signature": "39347935351dbe516573817cd1dba0d64254daa930297e9a93826af5af021947",
   "observation": {
-    "path": "data/autopilot/evidence/observation-6c20b0af0e4d4108a74b0c85aa91d9af.json",
-    "sha256": "19370d59a879258367f544672eb3c44af79f0b984475cb4fadb403d10aadd1f3",
-    "staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-    "state_sha": "66273dac58c53556cb778d612925920565c8c7fa"
+    "path": "data/autopilot/evidence/observation-22aee65f6d6e489aaa64577767128720.json",
+    "sha256": "d22928d5c34e9ded95e20305b672d9459f8ef88d5c2913de1982db39d6496e6c",
+    "staging_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+    "state_sha": "a703892e40e56741bdd9cafe1ec5e0d28ecf4f13"
   },
   "owner_followup_count": null,
   "owner_followups": "UNKNOWN",
