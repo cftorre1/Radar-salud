@@ -23,7 +23,7 @@ REPAIRED_PROJECTIONS = ('proposed_clinical_condition_colmed', 'regional_health_p
                         'medical_insurance_coverage_inquiry', 'provider_judicial_financial_liability',
                         'blocked_essential_dialysis_access', 'reported_compulsory_respiratory_measure',
                         'damaged_hospital_emergency_funds', 'proposed_minors_mental_health_legislative_urgency',
-                        'reported_national_health_cost_access_measurement')
+                        'reported_national_health_cost_access_measurement', 'territorial_toxic_exposure_health_order')
 
 
 def original_raw(entry):
@@ -223,6 +223,16 @@ def test_original_national_cost_survey_preserves_age_scope_and_reported_access_b
     assert 'Caja Los Andes desarrolló Cincuentímeter' in entry['body']
 
 
+def test_original_toxic_exposure_order_is_local_public_health_protection_without_clinical_capacity_claim():
+    entry = next(row for row in PROJECTIONS if row['name'] == 'territorial_toxic_exposure_health_order')
+    assert entry['publication_date'] == '2026-08-05'
+    assert 'un análisis realizado por la Seremi de Salud' in entry['body']
+    assert 'la toxicidad del humo' in entry['body']
+    assert 'A todos los colegios de la comuna de Quilicura' in entry['body']
+    assert 'incluye tanto a establecimientos públicos como privados' in entry['body']
+    assert 'hospital' not in entry['body'].lower()
+
+
 @pytest.mark.parametrize(('title', 'body'), [
     ('Minsal informa sobre salud de personas mayores', 'Los ELEAM necesitan autorización sanitaria. Las familias visitan a sus parientes.'),
     ('Lista de residencias ELEAM', 'Un directorio comercial ofrece un listado de ELEAM con autorización sanitaria, disponible públicamente.'),
@@ -248,6 +258,8 @@ def test_original_national_cost_survey_preserves_age_scope_and_reported_access_b
     ('Gobierno atiende viviendas', 'La Ley N° 16.282 libera fondos de emergencia tras publicación en el Diario Oficial para reparar viviendas. Los hospitales siguen intactos.'),
     ('Ministra comenta salud mental', 'La ministra quiere conversar sobre salud mental de niños y propone colaborar en un futuro diálogo, sin avance parlamentario concreto.'),
     ('Vecinos comentan sus gastos', 'Una encuesta informal del barrio comenta gastos de salud y cuidados y una barrera de acceso es el costo, sin medición nacional representativa.'),
+    ('Comuna suspende clases', 'La suspensión de clases en todos los colegios de la comuna obedece a mantención de edificios. La Seremi de Salud difundió un recordatorio separado.'),
+    ('Escuela difunde estudio de humo', 'La Seremi de Salud estudia la toxicidad del humo en un colegio, sin ordenar suspensión de clases territorial.'),
 ])
 def test_narrow_registry_and_care_suspension_rules_do_not_admit_generic_directory_or_unadopted_ideas(title, body):
     assert not beta_sources._material('media', title, body)
