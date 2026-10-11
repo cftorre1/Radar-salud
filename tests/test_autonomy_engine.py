@@ -162,6 +162,7 @@ class AutonomyEngineTests(unittest.TestCase):
             lambda q, r: r["blockers"][0]["evidence"][1]["context"][0].update(sha256="e" * 64),
             lambda q, r: q["tasks"][0].update(product_input_fingerprint="changed-product"),
             lambda q, r: r["blockers"][3]["evidence"][0]["browser_proof"].update(cases=[{"test": "new assertion", "error": "wrong text"}]),
+            lambda q, r: q["tasks"][0]["failure"].update(failure_signature="new-contract-failure"),
         )
         for change in changes:
             with self.subTest(change=change):
@@ -173,6 +174,19 @@ class AutonomyEngineTests(unittest.TestCase):
                 state, lease = claim(state, q, "staging_qa", "worker", BASE + timedelta(minutes=1))
                 state = finish(state, lease["task_id"], lease["token"], report, BASE + timedelta(minutes=1))
                 self.assertEqual(sum(event["kind"] == "blocker" for event in state["material_events"]), 2)
+
+    def test_asserted_and_publication_iso_dates_remain_meaningful_blocker_evidence(self):
+        q, report = qa_observation("123", SHA)
+        case = report["blockers"][0]["evidence"][0]["pytest"]["cases"][0]
+        case.update(reason="assert actual == '2026-10-10T00:00:00Z'", publication_date="2026-10-10T00:00:00Z")
+        state, lease = claim({}, q, "staging_qa", "worker", BASE)
+        state = finish(state, lease["task_id"], lease["token"], report, BASE)
+        q, report = qa_observation("124", "b" * 40, variant="2")
+        report["blockers"][0]["evidence"][0]["pytest"]["cases"][0].update(
+            reason="assert actual == '2026-10-11T00:00:00Z'", publication_date="2026-10-11T00:00:00Z")
+        state, lease = claim(state, q, "staging_qa", "worker", BASE + timedelta(minutes=1))
+        state = finish(state, lease["task_id"], lease["token"], report, BASE + timedelta(minutes=1))
+        self.assertEqual(sum(event["kind"] == "blocker" for event in state["material_events"]), 2)
 
     def test_legacy_transport_duplicate_correction_preserves_raw_and_repairs_watch_and_transition(self):
         state = legacy_qa_duplicate_state()

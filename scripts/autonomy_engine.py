@@ -129,6 +129,11 @@ def _staging_problem(value, failure):
             "output", "stdout", "pytest", "browser_proof", "reviewer_proof", "evidence"))
         result = {}
         for key, item in value.items():
+            if key in {"timestamp", "at", "updated_at", "recorded_at", "reviewed_at", "supplement_recorded_at",
+                       "generated_at", "observed_at", "checked_at", "started_at", "finished_at", "heartbeat_at",
+                       "last_heartbeat_at", "duration", "duration_seconds", "elapsed_seconds", "startTime",
+                       "log_path", "log_sha256", "trace_path", "trace_sha256", "operation_id", "response_bytes"}:
+                continue
             if (key == "fingerprint" and "reason" in value and "evidence" in value) or (structured and key in {
                     "captured_stdout_sha256", "captured_stdout_bytes", "failure_sha256", "failure_hash"}):
                 continue
@@ -141,11 +146,17 @@ def _staging_problem(value, failure):
                 for index in range(1, len(item)):
                     if item[index - 1] == "--sha" and item[index] == failure.get("head_sha"):
                         item[index] = "<bound-staging-product>"
+            elif key in {"output", "stdout"} and isinstance(item, str):
+                # Test duration is an observation. Assertion values and actual
+                # publication/effective dates in strings remain exact evidence.
+                item = re.sub(r"\bin \d+(?:\.\d+)?s\b", "in <duration>", item)
             result[key] = _staging_problem(item, failure)
-        return _semantic(result)
+        return result
     if isinstance(value, list):
         return [_staging_problem(item, failure) for item in value]
-    return _semantic(value)
+    if isinstance(value, str) and value.startswith("--junitxml="):
+        return "--junitxml=<artifact>"
+    return value
 
 
 def _staging_blocker_identity(blocker, product_fingerprint, failure):
