@@ -58,7 +58,7 @@ No incluyas la propia norma como referencia a sí misma."""
         record_response("deep",model,None,False,type(e).__name__)
         record_result("deep",False);print(f"deep model error: {type(e).__name__}");return None
 
-def analyze_news(*,title,text,source_name,kind="sector"):
+def analyze_news(*,title,text,source_name,kind="sector",full_text=False):
     c=_client()
     if not c or not allow_call("fast"):return None
     model=os.getenv("RADAR_FAST_MODEL","gpt-5.6-luna")
@@ -71,7 +71,8 @@ Evalúa si merece un radar estratégico del sector salud. Tipo de fuente: {kind}
 Qué pasó: concreto y verificable. Por qué importa: actor afectado + efecto específico + por qué merece atención ahora.
 Evita frases genéricas reutilizables. No inventes implicancias."""
     try:
-        r=c.responses.create(model=model,instructions=instructions,input=f"Fuente: {source_name}\nTítulo: {title}\nContenido:\n{text[:5500]}",text={"format":{"type":"json_schema","name":"alicanto_news_v3","strict":True,"schema":NEWS_SCHEMA}})
+        content = text if full_text else text[:5500]
+        r=c.responses.create(model=model,instructions=instructions,input=f"Fuente: {source_name}\nTítulo: {title}\nContenido:\n{content}",text={"format":{"type":"json_schema","name":"alicanto_news_v3","strict":True,"schema":NEWS_SCHEMA}})
         parsed=_parse_json(r.output_text);record_response("fast",model,r,bool(parsed),None if parsed else "invalid_json");record_result("fast",bool(parsed));return parsed
     except Exception as e:
         record_response("fast",model,None,False,type(e).__name__)

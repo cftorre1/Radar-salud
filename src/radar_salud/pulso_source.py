@@ -54,6 +54,25 @@ def health_anchor(text):
         text or "", re.I))
 
 
+def article_body_evidence(body):
+    """Retain all primary text emitted by the verified article extractor."""
+    return dict(page_text=body, article_body_characters=len(body),
+                article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest())
+
+
+def complete_article_body(metadata):
+    """A saved excerpt cannot stand in for the original primary body.
+
+    Earlier caches retained only 18,000 characters while hashing the full
+    article. Missing or inconsistent proof requires fresh original extraction.
+    """
+    body, expected = metadata.get("page_text"), metadata.get("article_body_sha256")
+    return (isinstance(body, str) and len(body.strip()) >= 160
+            and isinstance(expected, str) and re.fullmatch(r"[0-9a-f]{64}", expected) is not None
+            and hashlib.sha256(body.encode("utf-8")).hexdigest() == expected
+            and metadata.get("article_body_characters", len(body)) == len(body))
+
+
 def publication_day(value):
     """Use the calendar date exposed by the publisher's timestamp.
 
@@ -272,13 +291,15 @@ def discover_listing(html, base, detail_loader, audit, visited):
             continue
         visited.add(url)
         try:
-            title, body, metadata = extract_article(detail_loader(url), url)
+            html = detail_loader(url)
+            title, body, metadata = extract_article(html, url)
             if not health_anchor(title + " " + body):
                 audit.append(dict(url=url, listing=base, status="excluded", reason="no_health_anchor",
                                   publication_date=metadata["publication_date"], section=metadata["section"]))
                 continue
-            metadata.update(discovered_from=base, page_text=body[:18000], market_role="media",
-                            source_quality_gate="passed", captured_at=datetime.now(ZoneInfo("UTC")).isoformat())
+            metadata.update(article_body_evidence(body), discovered_from=base, market_role="media",
+                            source_quality_gate="passed", captured_at=datetime.now(ZoneInfo("UTC")).isoformat(),
+                            html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest())
             out.append(RawItem("pulso_latercera", title, url, "Pulso / La Tercera", "press_high_trust",
                                event_date=metadata["publication_date"], raw_text=body[:1800], metadata=metadata))
             audit.append(dict(url=url, listing=base, status="discovered", section=metadata["section"],
@@ -428,7 +449,8 @@ def _verified_detail(entry, loader, cached):
     # lastmod is solely a change token: it never establishes publication date.
     if (cached and entry.get("lastmod") and cached.get("lastmod") == entry["lastmod"]
             and cached.get("metadata", {}).get("article_verified")
-            and cached.get("url") == url):
+            and cached.get("url") == url
+            and (not cached.get("relevant") or complete_article_body(cached.get("metadata", {})))):
         result = dict(cached)
         result["cache_hit"] = True
         return result
@@ -438,9 +460,9 @@ def _verified_detail(entry, loader, cached):
         digest = hashlib.sha256(html.encode("utf-8")).hexdigest()
         combined = title + " " + body + " " + str(metadata.get("keywords", ""))
         relevant = health_anchor(combined)
-        metadata.update(discovered_from=entry["listing"], page_text=body[:18000] if relevant else "",
+        metadata.update(article_body_evidence(body), discovered_from=entry["listing"], page_text=body if relevant else "",
                         market_role="media", source_quality_gate="passed", captured_at=now,
-                        html_sha256=digest, article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                        html_sha256=digest,
                         publisher_lastmod=entry.get("lastmod", ""),
                         topics=health_topics(combined) if relevant else [])
         return dict(url=url, title=title, body=body[:1800] if relevant else "", metadata=metadata,

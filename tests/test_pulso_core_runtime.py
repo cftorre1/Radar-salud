@@ -3,6 +3,7 @@
 This proves registration, queue outcomes and feed propagation, not live coverage.
 """
 import importlib.util
+import hashlib
 import json
 import sys
 from datetime import datetime, timedelta, timezone
@@ -18,6 +19,8 @@ from radar_salud.pending_queue import PendingQueue, fingerprint
 
 ROOT = Path(__file__).resolve().parents[1]
 BODY = "La clínica suspendió operaciones y trasladó sus pacientes a otros establecimientos de su red asistencial. El cierre temporal reduce capacidad y obliga a redistribuir consultas, procedimientos y prestaciones para asegurar continuidad."
+BODY_PROOF = {"article_body_sha256": hashlib.sha256(BODY.encode("utf-8")).hexdigest(),
+              "article_body_characters": len(BODY)}
 
 
 @pytest.mark.parametrize("partial", [False, True])
@@ -43,6 +46,7 @@ def test_core_pulso_publication_rejection_pending_and_feed_trace(tmp_path, monke
                         "https://www.latercera.com/pulso/noticia/banco-capital/", "Pulso / La Tercera", "press_high_trust",
                         day, "La inversión y el capital bancario financian proyectos inmobiliarios. " * 4,
                         {"page_text": "La inversión y el capital bancario financian proyectos inmobiliarios. " * 4,
+                         "article_body_sha256": hashlib.sha256(("La inversión y el capital bancario financian proyectos inmobiliarios. " * 4).encode()).hexdigest(),
                          "article_verified": True, "market_role": "media", "source_quality_gate": "passed"})
     class Pulso:
         def __init__(self, slug):
@@ -144,7 +148,7 @@ def test_real_core_discovery_only_does_not_consume_analysis_or_processing_attemp
     raw = RawItem("pulso_latercera", "Clínica cierra pabellones y traslada pacientes",
                   "https://www.latercera.com/pulso/noticia/clinica-cierra/", "Pulso / La Tercera", "press_high_trust",
                   datetime.now(timezone.utc).date().isoformat(), BODY,
-                  {"page_text": BODY, "article_verified": True, "market_role": "media"})
+                  {"page_text": BODY, **BODY_PROOF, "article_verified": True, "market_role": "media"})
     monkeypatch.setattr(CuratedBetaSourceScout, "discover", lambda self: [raw])
     monkeypatch.setattr(paths, "project_root", lambda: tmp_path)
     monkeypatch.setattr(engine_cli, "seed_from_history", lambda root: None)
@@ -172,7 +176,7 @@ def test_pulso_rediscovery_rehydrates_same_url_without_resetting_capture_attempt
     before = dict(queue.items[key])
     verified = RawItem("pulso_latercera", "Clínica suspende operaciones y traslada pacientes", url + "?outputType=base-amp-type",
                        "Pulso / La Tercera", "press_high_trust", now.date().isoformat(), BODY,
-                       {"article_verified": True, "page_text": BODY, "market_role": "media", "source_quality_gate": "passed"})
+                       {"article_verified": True, "page_text": BODY, **BODY_PROOF, "market_role": "media", "source_quality_gate": "passed"})
     assert queue.discover("pulso_latercera", [verified], now=now, last_discovered_at=now.isoformat()) == 0
     item = queue.items[key]
     assert len(queue.items) == 1
@@ -196,7 +200,7 @@ def test_known_possible_duplicate_waits_for_incremental_review_without_consuming
     raw = RawItem("pulso_latercera", "Presupuesto de salud para reducir listas de espera",
                   "https://www.latercera.com/nacional/noticia/presupuesto-salud/", "Pulso / La Tercera", "press_high_trust",
                   datetime.now(timezone.utc).date().isoformat(), BODY,
-                  {"article_verified": True, "page_text": BODY, "market_role": "media",
+                  {"article_verified": True, "page_text": BODY, **BODY_PROOF, "market_role": "media",
                    "editorial_hold": "possible_duplicate_requires_incremental_review"})
     def unexpected(**kwargs):
         raise AssertionError("Held duplicates must not consume analysis budget")
@@ -215,7 +219,7 @@ def test_fast_budget_stop_leaves_scoped_pulso_pending_without_attempt(tmp_path, 
                   'https://www.latercera.com/pulso/noticia/clinica-budget-stop/',
                   'Pulso / La Tercera', 'press_high_trust',
                   (datetime.now(timezone.utc)-timedelta(days=1)).date().isoformat(), BODY,
-                  {'page_text': BODY, 'article_verified': True, 'market_role': 'media'})
+                  {'page_text': BODY, **BODY_PROOF, 'article_verified': True, 'market_role': 'media'})
     monkeypatch.setattr(CuratedBetaSourceScout, 'discover', lambda self: [raw])
     monkeypatch.setattr(paths, 'project_root', lambda: tmp_path)
     monkeypatch.setattr(engine_cli, 'seed_from_history', lambda root: None)
@@ -244,7 +248,7 @@ def test_pulso_fast_stop_does_not_starve_other_tier_or_consume_processing_limit(
     pulso = RawItem('pulso_latercera', 'Clínica cierra pabellones y traslada pacientes',
                     'https://www.latercera.com/pulso/noticia/clinica-fast-unavailable/',
                     'Pulso / La Tercera', 'press_high_trust', day, BODY,
-                    {'page_text': BODY, 'article_verified': True, 'market_role': 'media'})
+                    {'page_text': BODY, **BODY_PROOF, 'article_verified': True, 'market_role': 'media'})
     other = RawItem('diario_oficial', 'Norma sanitaria que requiere análisis de documentos',
                     'https://www.diariooficial.interior.gob.cl/other-deep-document',
                     'Diario Oficial', 'official', day, BODY)

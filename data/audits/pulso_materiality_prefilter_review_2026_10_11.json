@@ -926,5 +926,17 @@
     "competition": 8,
     "waiting_lists": 1,
     "health_general": 2
+  },
+  "complete_input_repair": {
+    "behavior": "Verified Pulso primary bodies survive discovery, positive cache, prefilter and model request without excerpts. Missing or mismatched body hashes require original refetch; failed verification defers before editorial analysis. Other news callers retain5500-characterdefault.",
+    "durable_regressions": "tests/test_pulso_complete_body.py",
+    "real_primary_regression": "Captured seniorhousing12107-characterbody reaches actual Responses input unchanged in a fakeclient test; score71 still rejected against72.",
+    "synthetic_adversarial_regressions": "Health change after18000 retained through discovery/prefilter/model; missing/corrupt/cappedcache refetched; holds/bookkeeping preserved; fetchfailure never consumes analysis.",
+    "validation": {
+      "command": "PYTHONPATH=src pytest -q tests/test_pulso_complete_body.py tests/test_pulso_core_runtime.py tests/test_pulso_incremental_review.py tests/test_pulso_archive_discovery.py tests/test_pulso_source.py tests/test_pulso_real_fixtures.py tests/test_beta_source_package.py",
+      "passed": 123
+    },
+    "real_runtime_editorial_processing": "PENDING_FINAL_SHA_VALIDATION",
+    "threshold_changed": false
   }
 }

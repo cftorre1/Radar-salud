@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import re
 from datetime import date
 from html.parser import HTMLParser
@@ -279,23 +280,23 @@ def process_curated_beta_source(raw, cfg):
     from .public_source_pipeline import enrich, _scopes
 
     if raw.source_slug == "pulso_latercera":
-        if not (raw.metadata.get("article_verified") and raw.metadata.get("page_text") and raw.event_date):
-            from .pulso_source import extract_article
+        from .pulso_source import article_body_evidence, complete_article_body, extract_article
+        if not (raw.metadata.get("article_verified") and complete_article_body(raw.metadata) and raw.event_date):
             try:
-                import hashlib
                 from datetime import datetime, timezone
                 html = fetch_html(raw.url)
                 raw.title, body, evidence = extract_article(html, raw.url)
                 raw.event_date = evidence["publication_date"]
                 raw.raw_text = body[:1800]
-                raw.metadata.update(evidence, page_text=body[:18000], market_role="media",
+                raw.metadata.update(evidence, **article_body_evidence(body), market_role="media",
                                     source_quality_gate="passed",
                                     html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
-                                    article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
                                     captured_at=datetime.now(timezone.utc).isoformat())
             except Exception as exc:
+                raw.metadata["article_body_complete"] = False
                 raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "article_verification_failed", "error_type": type(exc).__name__}
                 raise DeferredProcessing("Pulso article verification failed") from exc
+        raw.metadata["article_body_complete"] = True
         from .pulso_incremental_review import apply_incremental_review
         apply_incremental_review(raw)
     else:
@@ -328,7 +329,14 @@ def process_curated_beta_source(raw, cfg):
                  + ". Evalúa si el artículo agrega un cambio material a ese antecedente; "
                    "la revisión sólo habilita análisis y no aprueba publicación. "
                    "Preserva período, métrica, condición de propuesta y atribución de prensa.")
-    ai = analyze_news(title=raw.title, text=body[:10000], source_name=raw.source_name, kind=kind)
+    if raw.source_slug == "pulso_latercera":
+        # Keep the source's complete primary text through the model boundary;
+        # strategic facts can occur after the general news excerpt limit.
+        raw.metadata.update(analysis_input_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                            analysis_input_characters=len(body), analysis_input_complete=True)
+        ai = analyze_news(title=raw.title, text=body, source_name=raw.source_name, kind=kind, full_text=True)
+    else:
+        ai = analyze_news(title=raw.title, text=body[:10000], source_name=raw.source_name, kind=kind)
     if not ai:
         raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "analysis_unavailable"}
         raise DeferredProcessing("curated beta source pending assessment")
