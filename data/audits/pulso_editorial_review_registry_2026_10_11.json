@@ -1,0 +1,19 @@
+{
+  "schema_version": "pulso_paid_editorial_review_registry_v1",
+  "source_id": "pulso_latercera",
+  "policy": "Only independent correction or withdrawal of already paid, published originals. Original producer history, queue, runtime and Response events must match immutable Git bytes. No publication approval or score change is granted by this registry.",
+  "reviews": [
+    {
+      "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
+      "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
+      "independent_review_file": "data/audits/pulso_focus_new5_semantic_review_2026_10_11.json",
+      "independent_review_sha256": "773fcc79b87e2a8bfc215f344a87145526f47e947e26a740c8505b7bc8188518"
+    },
+    {
+      "review_file": "data/audits/pulso_plan_enlace_temporal_correction_2026_10_11.json",
+      "review_sha256": "c9310df3284fdfffc90710a72645a9eb582db81be4f3f350b9bf099141d2c60f",
+      "independent_review_file": "data/audits/pulso_plan_enlace_temporal_addendum_2026_10_11.json",
+      "independent_review_sha256": "f65b95dbc9d768a97342f58accd5f0e1f3261d38a21d620640ddc51660209eb2"
+    }
+  ]
+}

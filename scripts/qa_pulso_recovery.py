@@ -12,6 +12,7 @@ import gzip
 import hashlib
 import json
 import re
+import subprocess
 import unicodedata
 from datetime import date, datetime, timedelta
 from html.parser import HTMLParser
@@ -35,6 +36,18 @@ INCREMENTAL_ADDENDUM_SHA256 = "589ba50032521924803ef8ce94f40e3854930edcadddf7fc1
 CODE_REPAIR_PINS_PATH = "config/pulso_editorial_repair_admission_2026_10_11.json"
 CODE_REPAIR_PINS_SHA256 = "7f915bf1f8b4ee14d6426a41541cf3b6c319ad2e2acd384b8cc9fefa53224731"
 CODE_REPAIR_VERSION = "pulso_editorial_proof_v5"
+FOLLOWUP_REVIEW_PINS = {
+    "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json": (
+        "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
+        "data/audits/pulso_focus_new5_semantic_review_2026_10_11.json",
+        "773fcc79b87e2a8bfc215f344a87145526f47e947e26a740c8505b7bc8188518"),
+    "data/audits/pulso_plan_enlace_temporal_correction_2026_10_11.json": (
+        "c9310df3284fdfffc90710a72645a9eb582db81be4f3f350b9bf099141d2c60f",
+        "data/audits/pulso_plan_enlace_temporal_addendum_2026_10_11.json",
+        "f65b95dbc9d768a97342f58accd5f0e1f3261d38a21d620640ddc51660209eb2"),
+}
+FOCUS_PRODUCER = "0713ca9a327b4c09932345aff1353c5d87662332"
+EDITORIAL_REGISTRY_PATH = "data/audits/pulso_editorial_review_registry_2026_10_11.json"
 WINDOWS = {"30": ("2026-09-11", "2026-10-10", 29), "90": ("2026-07-13", "2026-10-10", 79)}
 REQUIRED_FEEDS = {"section:" + name for name in (
     "pulso", "nacional", "politica", "tendencias", "que-pasa", "paula", "sustentabilidad",
@@ -260,6 +273,354 @@ def verify_code_repair_reference(raw, root, *, successful_response_ids=None, req
                 current_response_id=current_id, analysis_release_only=True, publication_approved=False)
 
 
+def archived_editorial_input(root, specification, required_path):
+    """Read immutable producer bytes, never the currently claimed queue flags."""
+    commit = specification.get("commit")
+    if (not isinstance(commit, str) or not re.fullmatch(r"[0-9a-f]{40}", commit)
+            or specification.get("path") != required_path
+            or not SHA.fullmatch(str(specification.get("file_sha256", "")))):
+        raise ValueError("editorial_producer_reference_invalid")
+    result = subprocess.run(["git", "show", commit + ":" + required_path], cwd=root,
+                            capture_output=True, check=False)
+    if result.returncode or digest(result.stdout) != specification["file_sha256"]:
+        raise ValueError("editorial_producer_original_bytes_unavailable_or_changed")
+    if required_path.endswith(".jsonl"):
+        return [json.loads(line) for line in result.stdout.splitlines() if line.strip()]
+    return json.loads(result.stdout)
+
+
+def verify_additional_editorial_reviews(queue, history, snapshot, root):
+    """Read separate full-body reviews of genuinely paid publications.
+
+    Future audits use the same v1 application format plus immutable producer
+    history, queue, runtime report and Response-event references in the separate
+    reader's inputs. They can correct or withdraw existing paid publications;
+    a retry, fabricated terminal flag or self-reported approval cannot qualify.
+    This reader does not import or invoke the correction application.
+    """
+    source_claims = [item for item in queue.values() if item.get("source") == SOURCE
+                     and item.get("raw", {}).get("metadata", {}).get("editorial_review")]
+    all_history_claims = [row for row in history if normalized_url(row.get("source_url")) and row.get("editorial_review")]
+    if (any(not isinstance(item["raw"]["metadata"]["editorial_review"], dict) for item in source_claims)
+            or any(not isinstance(row["editorial_review"], dict) for row in all_history_claims)):
+        return {}, [dict(domain="processing", code="additional_editorial_review_unverified",
+                         error="editorial_review_provenance_not_an_object")]
+    claimed = [item for item in source_claims if item["raw"]["metadata"]["editorial_review"].get("review_file") != EDITORIAL_REVIEW_PATH]
+    history_claims = [row for row in all_history_claims if row["editorial_review"].get("review_file") != EDITORIAL_REVIEW_PATH]
+    if not claimed and not history_claims:
+        return {}, []
+    cache, active, producers, required_records = {}, set(), {}, set()
+
+    def audit_path(value):
+        if (not isinstance(value, str) or not re.fullmatch(r"data/audits/pulso_[A-Za-z0-9_]+\.json", value)
+                or local_capture_path(root, value).resolve().parent != (root / "data/audits").resolve()):
+            raise ValueError("editorial_review_path_outside_authorized_audits")
+        return value
+
+    def load(proof):
+        path = audit_path(proof.get("review_file"))
+        raw = local_capture_path(root, path).read_bytes()
+        if digest(raw) != proof.get("review_sha256"):
+            raise ValueError("editorial_review_file_hash_changed")
+        audit = json.loads(raw)
+        reference = audit.get("independent_review") or {}
+        parent_path = audit_path(reference.get("path"))
+        parent_raw = local_capture_path(root, parent_path).read_bytes()
+        if parent_path == path or digest(parent_raw) != reference.get("sha256"):
+            raise ValueError("editorial_separate_reader_hash_changed")
+        pinned = FOLLOWUP_REVIEW_PINS.get(path)
+        if pinned and (digest(raw), parent_path, digest(parent_raw)) != pinned:
+            raise ValueError("editorial_known_followup_immutable_files_changed")
+        if not pinned:
+            registry = json.loads(local_capture_path(root, EDITORIAL_REGISTRY_PATH).read_bytes())
+            registrations = registry.get("reviews") or []
+            identities = [entry.get("review_file") for entry in registrations]
+            registered = [entry for entry in registrations if entry.get("review_file") == path]
+            if (registry.get("schema_version") != "pulso_paid_editorial_review_registry_v1"
+                    or registry.get("source_id") != SOURCE or len(set(identities)) != len(identities)
+                    or len(registered) != 1 or registered[0] != dict(review_file=path, review_sha256=digest(raw),
+                        independent_review_file=parent_path, independent_review_sha256=digest(parent_raw))):
+                raise ValueError("editorial_review_not_registered_as_independently_authorized")
+        parent = json.loads(parent_raw)
+        records, readers = audit.get("records") or [], parent.get("all_signals") or []
+        keys = [(r.get("url"), r.get("publication_date")) for r in records]
+        reader_keys = [(r.get("url"), r.get("publication_date")) for r in readers]
+        if (audit.get("schema_version") != "pulso_editorial_review_v1" or not audit.get("review_id")
+                or audit.get("source_id") != SOURCE or parent.get("source_id") != SOURCE
+                or not keys or len(set(keys)) != len(keys) or len(set(reader_keys)) != len(reader_keys)
+                or set(keys) != set(reader_keys)):
+            raise ValueError("editorial_separate_reader_complete_identity_mismatch")
+        required_records.update((path, key) for key in keys)
+        return path, digest(raw), audit, {key: row for key, row in zip(reader_keys, readers)}
+
+    def producer(parent_document, pinned):
+        inputs = parent_document.get("inputs") or {}
+        if pinned:
+            # The known new5 review predates the generic declaration contract.
+            # Its entire dual-reader files and producer commit are frozen above.
+            commit = FOCUS_PRODUCER
+        else:
+            if set(inputs) != {"history", "queue", "runtime_report", "telemetry"}:
+                raise ValueError("editorial_genuine_paid_producer_inputs_missing")
+            commits = {value.get("commit") for value in inputs.values() if isinstance(value, dict)}
+            if len(commits) != 1:
+                raise ValueError("editorial_producer_mixed_snapshots")
+            commit = next(iter(commits))
+        if commit not in producers:
+            required = {"history": "data/history/superintendencia_signals.json",
+                        "queue": "data/state/pending_queue.json",
+                        "runtime_report": "data/audits/pulso_runtime_2026_10_11.json",
+                        "telemetry": "data/ai_usage/responses.jsonl"}
+            specs = {}
+            for key, path in required.items():
+                if pinned:
+                    result = subprocess.run(["git", "show", str(commit) + ":" + path], cwd=root,
+                                            capture_output=True, check=False)
+                    if result.returncode:
+                        raise ValueError("editorial_known_producer_unavailable")
+                    specs[key] = dict(commit=commit, path=path, file_sha256=digest(result.stdout))
+                    if key in {"history", "queue"} and inputs.get(key) != specs[key]:
+                        raise ValueError("editorial_known_producer_reference_changed")
+                else:
+                    specs[key] = inputs[key]
+            producers[commit] = {key: archived_editorial_input(root, specs[key], path)
+                                 for key, path in required.items()}
+            producers[commit]["_references"] = specs
+            run = producers[commit]["runtime_report"].get("last_core_execution") or producers[commit]["runtime_report"].get("execution") or {}
+            first, last = stamp(run.get("started_at")), stamp(run.get("finished_at"))
+            events = [row for row in producers[commit]["telemetry"] if first and last and stamp(row.get("at"))
+                      and first <= stamp(row["at"]) <= last and row.get("kind") == "fast"]
+            before = run.get("budget_before", {}).get("run", {}).get("fast", {})
+            after = run.get("budget_after", {}).get("run", {}).get("fast", {})
+            delta = {key: after.get(key, -1) - before.get(key, 0) for key in ("attempted", "successful", "failed")}
+            if (not first or not last or last < first or delta["successful"] <= 0
+                    or delta != dict(attempted=len(events), successful=sum(row.get("success") is True for row in events),
+                                     failed=sum(row.get("success") is False for row in events))
+                    or len({row.get("response_id") for row in events if row.get("success") is True}) != delta["successful"]):
+                raise ValueError("editorial_original_paid_runtime_ledger_or_response_events_mismatch")
+        else:
+            # Validate each reader's declared hashes even when a commit is reused.
+            for key, specification in inputs.items():
+                if isinstance(specification, dict) and key in producers[commit]:
+                    if specification != producers[commit]["_references"][key]:
+                        raise ValueError("editorial_producer_reference_changed_within_review")
+        return producers[commit]
+
+    def derive(proof, key):
+        identity = (proof.get("review_file"), key)
+        if identity in active:
+            raise ValueError("editorial_review_predecessor_cycle")
+        if identity in cache:
+            result = cache[identity]
+            if result[1] != proof:
+                raise ValueError("editorial_review_provenance_changed")
+            return result
+        active.add(identity)
+        path, audit_sha, audit, readers = load(proof)
+        record = next((row for row in audit["records"] if (row["url"], row["publication_date"]) == key), None)
+        if record is None:
+            raise ValueError("editorial_review_record_not_bound")
+        reader = readers[key]
+        original, decision = record.get("original_signal") or {}, record.get("decision")
+        url, day = key
+        score = original.get("editorial_relevance")
+        body = reader.get("original_full_primary_body")
+        quotes = record.get("evidence_quotes")
+        allowed = {q["text"] for q in reader.get("supporting_verbatim_quotes", []) if q.get("origin") == "original"}
+        if (normalized_url(url) != url or original.get("source_url") != url
+                or original.get("event_date") != day or original.get("publication_date") != day
+                or original.get("evidence_maturity") != "media_reported" or type(score) is not int or score < 72
+                or record.get("original_signal_sha256") != object_digest(original)
+                or reader.get("original_signal_sha256") != object_digest(original)
+                or reader.get("original_full_signal") != original
+                or record.get("independent_review_record_sha256") != object_digest(reader)
+                or record.get("original_body_sha256") != reader.get("original_body_sha256")
+                or not isinstance(body, str) or digest(body.encode()) != record.get("original_body_sha256")
+                or reader.get("full_original_body_read") is not True or reader.get("full_signal_read") is not True
+                or reader.get("decision") != decision or reader.get("exact_reason") != record.get("reason")
+                or not isinstance(record.get("reason"), str) or not record["reason"].strip()
+                or decision not in {"accept", "reject", "group", "correct"}
+                or not isinstance(quotes, list) or not quotes or not set(quotes) <= allowed
+                or any(not isinstance(q, str) or len(" ".join(q.split())) < 20
+                       or " ".join(q.split()) not in " ".join(body.split()) for q in quotes)
+                or reader.get("original_published_what_happened") != original.get("what_happened")
+                or reader.get("original_published_why_it_matters") != original.get("why_it_matters")):
+            raise ValueError("editorial_independent_full_original_or_decision_changed")
+        assessment = record.get("original_model_assessment")
+        predecessor = record.get("previous_editorial_review")
+        if predecessor:
+            previous, previous_proof, paid, previous_assessment = derive(predecessor, key)
+            if (previous != original or predecessor != original.get("editorial_review")
+                    or previous_proof["decision"] != "accept" or previous.get("feed_visibility") is not True
+                    or decision != "correct" or record.get("event_status") != "historical"
+                    or set(record.get("proposed") or {}) != {"what_happened", "why_it_matters"}
+                    or record["proposed"]["what_happened"] != original.get("what_happened")
+                    or reader.get("previous_editorial_review") != predecessor or assessment != previous_assessment):
+                raise ValueError("editorial_followup_predecessor_not_exact_accepted_publication")
+            prior_model = paid["raw"]["metadata"]["analysis_model_output"]
+            if (reader.get("original_model_output_semantic_sha256") != object_digest(prior_model)
+                    or reader.get("original_model_response_binding") != prior_model.get("_pulso_analysis_meta")
+                    or reader.get("original_html_sha256") != paid["raw"]["metadata"].get("html_sha256")
+                    or body != paid["raw"]["metadata"].get("page_text")):
+                raise ValueError("editorial_followup_original_paid_model_or_primary_changed")
+        else:
+            parent_document = json.loads(local_capture_path(root, audit["independent_review"]["path"]).read_bytes())
+            archived = producer(parent_document, path in FOLLOWUP_REVIEW_PINS)
+            signals = [row for row in archived["history"]["signals"] if (row.get("source_url"), row.get("event_date")) == key]
+            items = [row for row in archived["queue"].values() if row.get("source") == SOURCE
+                     and (row.get("raw", {}).get("url"), row.get("raw", {}).get("event_date")) == key]
+            if len(signals) != 1 or len(items) != 1 or signals[0] != original:
+                raise ValueError("editorial_original_not_in_immutable_paid_history")
+            paid = items[0]
+            paid_metadata = paid["raw"].get("metadata", {})
+            model = paid_metadata.get("analysis_model_output") or {}
+            model_response = model.get("_pulso_analysis_meta") or {}
+            execution = archived["runtime_report"].get("last_core_execution") or archived["runtime_report"].get("execution") or {}
+            begin, end = stamp(execution.get("started_at")), stamp(execution.get("finished_at"))
+            events = [event for event in archived["telemetry"] if event.get("response_id") == model_response.get("response_id")
+                      and event.get("success") is True and event.get("kind") == "fast"
+                      and begin and end and stamp(event.get("at")) and begin <= stamp(event["at"]) <= end]
+            binding = reader.get("original_output_binding") or {}
+            request = "Fuente: Pulso / La Tercera\nTítulo: " + paid["raw"]["title"] + "\nContenido:\n" + body
+            if (paid.get("status") != "published" or type(paid.get("attempts")) is not int or paid["attempts"] < 1
+                    or paid["raw"].get("source_slug") != SOURCE or paid["raw"].get("source_type") != "press_high_trust"
+                    or paid_metadata.get("canonical_url") != url or paid_metadata.get("publication_date") != day
+                    or any(paid_metadata.get(field) is not True for field in (
+                        "article_verified", "article_body_complete", "primary_identity_verified", "publication_date_verified"))
+                    or assessment != paid_metadata.get("editorial_assessment")
+                    or assessment != dict(decision="published", relevance_score=score, threshold=72,
+                                          analysis_reason=assessment.get("analysis_reason"))
+                    or not assessment.get("analysis_reason") or paid_metadata.get("page_text") != body
+                    or paid_metadata.get("analysis_base_article_body_sha256") != record["original_body_sha256"]
+                    or binding.get("retained_model_output_semantic_sha256") != object_digest(model)
+                    or binding.get("model_response") != model_response or binding.get("signal_sha256") != object_digest(original)
+                    or model.get("relevance_score") != score or not isinstance(model_response.get("response_id"), str)
+                    or not model_response["response_id"].strip()
+                    or not SHA.fullmatch(str(model_response.get("raw_model_output_sha256", "")))
+                    or paid_metadata.get("html_sha256") != reader.get("original_html_sha256")
+                    or paid_metadata.get("analysis_input_format") != "full_primary_article_body"
+                    or paid_metadata.get("analysis_input_complete") is not True
+                    or model_response.get("analysis_text_sha256") != digest(body.encode())
+                    or model_response.get("request_input_sha256") != digest(request.encode())
+                    or execution.get("mode") != "real_core_processing" or execution.get("engine_completed") is not True
+                    or execution.get("engine_called") is not True or execution.get("ai_guardrails_modified") is not False
+                    or len(events) != 1):
+                raise ValueError("editorial_original_genuine_paid_response_or_gate_not_bound")
+        provenance = dict(schema_version="pulso_editorial_review_v1", review_id=audit["review_id"],
+            review_file=path, review_sha256=audit_sha, record_sha256=object_digest(record),
+            original_signal_sha256=record["original_signal_sha256"], original_body_sha256=record["original_body_sha256"],
+            publication_date=day, decision=decision, reason=record["reason"], evidence_quotes=quotes,
+            original_terminal_status="published", original_model_assessment=assessment,
+            original_model_what_happened=original["what_happened"], original_model_why_it_matters=original["why_it_matters"])
+        if predecessor:
+            provenance["previous_editorial_review"] = predecessor
+        if record.get("duplicate_of"):
+            provenance["duplicate_of"] = record["duplicate_of"]
+        effective = dict(original, editorial_review=provenance, editorial_decision=decision if decision in {"reject", "group"} else "accept",
+                         editorial_review_reason=record["reason"], feed_visibility=decision not in {"reject", "group"})
+        effective_assessment = assessment
+        if decision == "correct":
+            proposed = record.get("proposed") or {}
+            approved = dict(what_happened=reader.get("proposed_what_happened"), why_it_matters=reader.get("proposed_why_it_matters"))
+            if reader.get("proposed_category"):
+                approved["category"] = reader["proposed_category"]
+            if (proposed != approved or not set(proposed) <= {"what_happened", "why_it_matters", "category"}
+                    or proposed.get("category", "Prestadores") != "Prestadores"
+                    or record.get("event_status") != reader.get("event_status")
+                    or record.get("event_status") not in {"reported", "proposed", "planned", "historical"}
+                    or not explicit_media_attribution(proposed.get("what_happened"))):
+                raise ValueError("editorial_corrected_copy_not_independently_bound")
+            effective.update(proposed, event_status=record["event_status"], prospective_evidence=record["event_status"] in {"proposed", "planned"})
+            effective_assessment = dict(decision="published", reason="independent_editorial_copy_corrected", relevance_score=score,
+                threshold=72, original_model_assessment=assessment, review_sha256=audit_sha)
+        elif decision in {"reject", "group"}:
+            effective_assessment = dict(decision="rejected", reason="independent_editorial_review:" + record["reason"],
+                relevance_score=score, threshold=72, original_model_assessment=assessment, review_sha256=audit_sha)
+        if proof != provenance:
+            raise ValueError("editorial_review_provenance_changed")
+        if decision not in {"reject", "group"}:
+            from copy import deepcopy
+            from radar_salud.editorial_gate import publication_ready
+            if not publication_ready(deepcopy(effective))[0]:
+                raise ValueError("editorial_effective_copy_fails_existing_publication_gate")
+        result = effective, provenance, paid, effective_assessment
+        cache[identity] = result
+        active.remove(identity)
+        return result
+
+    verified, failures = {}, []
+    for claim in claimed + history_claims:
+        raw = claim.get("raw")
+        key = (raw.get("url"), raw.get("event_date")) if raw else (claim.get("source_url"), claim.get("event_date"))
+        proof = raw["metadata"]["editorial_review"] if raw else claim["editorial_review"]
+        try:
+            effective, provenance, paid, assessment = derive(proof, key)
+            matches = [row for row in queue.values() if row.get("source") == SOURCE
+                       and (row.get("raw", {}).get("url"), row.get("raw", {}).get("event_date")) == key]
+            signals = [row for row in history if (row.get("source_url"), row.get("event_date")) == key]
+            if len(matches) != 1 or len(signals) != 1:
+                raise ValueError("editorial_effective_identity_missing_or_ambiguous")
+            item, signal = matches[0], signals[0]
+            metadata, primary = item["raw"].get("metadata", {}), paid["raw"].get("metadata", {})
+            rejected = provenance["decision"] in {"reject", "group"}
+            if (signal != effective or metadata.get("editorial_review") != provenance
+                    or metadata.get("editorial_assessment") != assessment
+                    or item.get("status") != ("rejected" if rejected else "published")
+                    or any(item.get(field) != paid.get(field) for field in ("attempts", "lane", "detected_at"))
+                    or metadata.get("what_happened") != effective["what_happened"]
+                    or metadata.get("why_it_matters") != effective["why_it_matters"]
+                    or metadata.get("analysis_model_output") != primary.get("analysis_model_output")
+                    or metadata.get("page_text") != primary.get("page_text")
+                    or any(metadata.get(field) != primary.get(field) for field in (
+                        "canonical_url", "publication_date", "html_sha256", "article_body_sha256", "analysis_base_article_body_sha256"))
+                    or any(metadata.get(field) is not True for field in (
+                        "article_verified", "article_body_complete", "primary_identity_verified", "publication_date_verified"))
+                    or rejected and (metadata.get("rejection_reason") != assessment["reason"] or item.get("last_error") != assessment["reason"])):
+                raise ValueError("editorial_effective_state_model_primary_or_bookkeeping_changed")
+            present = [row for row in snapshot.get("signals", []) if (row.get("source_url"), row.get("event_date")) == key]
+            if rejected and present or not rejected and len(present) != 1:
+                raise ValueError("editorial_effective_serialized_feed_presence_changed")
+            if present and any(row.get(field) != effective.get(field) for row in present for field in (
+                    "what_happened", "why_it_matters", "event_date", "publication_date", "editorial_relevance",
+                    "evidence_maturity", "editorial_review", "editorial_decision", "feed_visibility", "event_status", "prospective_evidence")):
+                raise ValueError("editorial_effective_serialized_feed_copy_changed")
+            if provenance["decision"] == "group":
+                target = provenance.get("duplicate_of") or {}
+                target_key = (target.get("url"), target.get("event_date"))
+                survivors = [row for row in history if (row.get("source_url"), row.get("event_date")) == target_key]
+                survivor_items = [row for row in queue.values() if (row.get("raw", {}).get("url"), row.get("raw", {}).get("event_date")) == target_key]
+                feeds = [row for row in snapshot.get("signals", []) if (row.get("source_url"), row.get("event_date")) == target_key]
+                _, _, audit, readers = load(provenance)
+                reader = readers[key]
+                if (target_key == key or len(survivors) != 1 or len(survivor_items) != 1 or len(feeds) != 1
+                        or survivor_items[0].get("status") != "published" or survivors[0].get("feed_visibility") is False
+                        or survivors[0].get("editorial_decision") in {"reject", "group"}
+                        or type(survivors[0].get("editorial_relevance")) is not int or survivors[0]["editorial_relevance"] < 72
+                        or normalized_url(target_key[0]) and survivors[0].get("evidence_maturity") != "media_reported"
+                        or reader.get("duplicate_of") != target_key[0]
+                        or reader.get("duplicate_of_event_date") != target_key[1]
+                        or reader.get("duplicate_target_signal_sha256") != object_digest(survivors[0])
+                        or reader.get("duplicate_target_queue_sha256") != object_digest(survivor_items[0])
+                        or any(feeds[0].get(field) != survivors[0].get(field) for field in (
+                            "what_happened", "why_it_matters", "event_date", "publication_date", "editorial_relevance", "evidence_maturity"))):
+                    raise ValueError("editorial_group_target_not_actual_unique_published_survivor")
+                from copy import deepcopy
+                from radar_salud.editorial_gate import publication_ready
+                if not publication_ready(deepcopy(survivors[0]))[0]:
+                    raise ValueError("editorial_group_target_fails_existing_publication_gate")
+            verified[key[0]] = provenance
+        except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+            finding = dict(domain="processing", code="additional_editorial_review_unverified", url=key[0], error=str(error))
+            if finding not in failures:
+                failures.append(finding)
+        finally:
+            active.clear()
+    if required_records - set(cache):
+        failures.append(dict(domain="processing", code="additional_editorial_review_incomplete_current_records",
+                             omitted_records=sorted([list(key) for key in required_records - set(cache)])))
+    return ({} if failures else verified), failures
+
+
 def verify_bound_editorial_review(queue, history, snapshot, root):
     """Verify the exact independently reviewed ALL32 correction, not flags.
 
@@ -267,13 +628,14 @@ def verify_bound_editorial_review(queue, history, snapshot, root):
     is allowed only when its complete effective history, queue assessment and
     provenance match that audit; the reader never applies a correction.
     """
+    additional, additional_failures = verify_additional_editorial_reviews(queue, history, snapshot, root)
     source_queue = [item for item in queue.values() if item.get("source") == SOURCE]
     claimed = [item for item in source_queue if item.get("raw", {}).get("metadata", {}).get("editorial_review")]
     claimed_history = [item for item in history if normalized_url(item.get("source_url"))
                        and item.get("editorial_review")]
     if not claimed and not claimed_history:
-        return {}, []
-    findings, verified = [], {}
+        return additional, additional_failures
+    findings, verified = list(additional_failures), dict(additional)
     def fail(code, **evidence):
         findings.append(dict(domain="processing", code=code, **evidence))
     try:
@@ -292,8 +654,8 @@ def verify_bound_editorial_review(queue, history, snapshot, root):
         fail("independent_editorial_review_unverified", error=str(error))
         return {}, findings
     keys = {(row["url"], row["publication_date"]) for row in records}
-    if (any((item["raw"].get("url"), item["raw"].get("event_date")) not in keys for item in claimed)
-            or any((item.get("source_url"), item.get("event_date")) not in keys for item in claimed_history)):
+    if (any((item["raw"].get("url"), item["raw"].get("event_date")) not in keys and item["raw"].get("url") not in additional for item in claimed)
+            or any((item.get("source_url"), item.get("event_date")) not in keys and item.get("source_url") not in additional for item in claimed_history)):
         fail("unbound_editorial_review_record")
     feed = snapshot.get("signals", [])
     for record in records:
@@ -1407,6 +1769,15 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
         reviews = [row.get("editorial_review", {}) for row in history]
         reviews.extend(item.get("raw", {}).get("metadata", {}).get("editorial_review", {}) for item in queue.values())
         references.update(row["review_file"] for row in reviews if isinstance(row, dict) and isinstance(row.get("review_file"), str))
+        if local_capture_path(root, EDITORIAL_REGISTRY_PATH).exists():
+            references.add(EDITORIAL_REGISTRY_PATH)
+            registry = json.loads(local_capture_path(root, EDITORIAL_REGISTRY_PATH).read_bytes())
+            for entry in registry["reviews"]:
+                for path_key, sha_key in (("review_file", "review_sha256"),
+                                          ("independent_review_file", "independent_review_sha256")):
+                    require(digest(local_capture_path(root, entry[path_key]).read_bytes()) == entry[sha_key],
+                            "replay_registered_editorial_dual_reader_changed")
+                    references.add(entry[path_key])
         for item in queue.values():
             if item.get("source") == SOURCE and verify_incremental_addendum_reference(item.get("raw", {}), root):
                 references.add(INCREMENTAL_ADDENDUM_PATH)
@@ -1606,10 +1977,14 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
     reviewed_outputs, review_findings = verify_bound_editorial_review(queue, history, snapshot, root)
     findings.extend(review_findings)
     if reviewed_outputs:
+        legacy = [proof for proof in reviewed_outputs.values() if proof["review_file"] == EDITORIAL_REVIEW_PATH]
         checks["bound_independent_editorial_corrections"] = dict(
-            review_sha256=EDITORIAL_REVIEW_SHA256, records=32,
-            withdrawn=sum(proof["decision"] in {"reject", "group"} for proof in reviewed_outputs.values()),
-            retained=sum(proof["decision"] not in {"reject", "group"} for proof in reviewed_outputs.values()))
+            review_sha256=EDITORIAL_REVIEW_SHA256, records=len(legacy),
+            withdrawn=sum(proof["decision"] in {"reject", "group"} for proof in legacy),
+            retained=sum(proof["decision"] not in {"reject", "group"} for proof in legacy),
+            additional_records=len(reviewed_outputs) - len(legacy),
+            additional_review_files=sorted({proof["review_file"] for proof in reviewed_outputs.values()
+                                            if proof["review_file"] != EDITORIAL_REVIEW_PATH}))
     for baseline in report.get("baseline_queue", []):
         candidates = current_queue.get(baseline.get("url"), [])
         item = next((item for key, item in candidates if key == baseline.get("fingerprint")), None)
