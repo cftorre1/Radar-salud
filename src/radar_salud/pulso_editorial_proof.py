@@ -10,8 +10,11 @@ import hashlib
 import json
 import re
 import unicodedata
+from pathlib import Path
 
 VERSION = "pulso_editorial_proof_v5"
+REPAIR_ADMISSION_PIN_SHA256 = "7f915bf1f8b4ee14d6426a41541cf3b6c319ad2e2acd384b8cc9fefa53224731"
+REPAIR_COHORT_SHA256 = "8ed358f0cd37ecc4b554ab96cd4366048b8e6180ad1c0ee0044fc5d5f6976514"
 SCOPES = ("human_health_specific", "incidental_health", "non_human_health", "marketing", "opinion")
 STATUSES = ("actual", "proposal", "plan", "mixed_actual_and_future", "historical_context")
 NOVELTY = ("new_material_information", "repetition_or_context", "uncertain")
@@ -213,3 +216,95 @@ def model_binding_matches(analysis, *, source_name, input_text_sha256, request_i
                 and isinstance(meta.get("model"), str) and meta["model"].strip()
                 and isinstance(meta.get("raw_model_output_sha256"), str)
                 and re.fullmatch(r"[0-9a-f]{64}", meta["raw_model_output_sha256"]))
+
+
+def verified_code_repair_admission(fresh, previous_raw, previous_reason):
+    """Admit one new assessment for a pinned real v4 failure, never its reuse.
+
+    This pure verifier neither changes queue state nor overrides editorial or
+    budget gates. The caller must limit it to pending/retry and retain the prior
+    response, attempts and all primary evidence in its evidence revision.
+    """
+    from .pulso_source import complete_article_body
+    from .llm_analysis import news_analysis_input
+    if not isinstance(previous_raw, dict) or not isinstance(previous_reason, str):
+        return None
+    try:
+        path = Path(__file__).resolve().parents[2] / "config/pulso_editorial_repair_admission_2026_10_11.json"
+        captured = path.read_bytes()
+        if hashlib.sha256(captured).hexdigest() != REPAIR_ADMISSION_PIN_SHA256:
+            return None
+        manifest = json.loads(captured)
+        if (manifest.get("repair_version") != VERSION or manifest.get("cohort_sha256") != REPAIR_COHORT_SHA256
+                or manifest.get("producer_run_id") != 38149773071 or len(manifest.get("pins", [])) != 69):
+            return None
+        pin = next((p for p in manifest["pins"] if p["url"] == fresh.url), None)
+        if not pin or pin["previous_reason"] != previous_reason:
+            return None
+        new, old = fresh.metadata, previous_raw.get("metadata", {})
+        if (fresh.source_slug != "pulso_latercera" or previous_raw.get("source_slug") != "pulso_latercera"
+                or fresh.source_type != "press_high_trust" or previous_raw.get("source_type") != "press_high_trust"
+                or fresh.source_name != "Pulso / La Tercera" or previous_raw.get("source_name") != fresh.source_name
+                or fresh.title != pin["title"] or previous_raw.get("title") != pin["title"]
+                or previous_raw.get("url") != pin["url"]
+                or fresh.event_date != pin["publication_date"]
+                or previous_raw.get("event_date") != pin["publication_date"]):
+            return None
+        for metadata in (new, old):
+            if (not isinstance(metadata, dict) or not complete_article_body(metadata)
+                    or any(metadata.get(flag) is not True for flag in (
+                        "article_verified", "article_body_complete", "primary_identity_verified", "publication_date_verified"))
+                    or metadata.get("source_quality_gate") != "passed"
+                    or metadata.get("canonical_url") != pin["url"]
+                    or metadata.get("publication_date") != pin["publication_date"]
+                    or metadata.get("article_body_sha256") != pin["article_body_sha256"]
+                    or metadata.get("html_sha256") != pin["html_sha256"]
+                    or metadata.get("editorial_hold") or metadata.get("publisher_exception_reason")):
+                return None
+        if new["page_text"] != old["page_text"]:
+            return None
+        ai, validation = old.get("analysis_model_output"), old.get("pulso_editorial_proof_validation")
+        if not isinstance(ai, dict) or not isinstance(validation, dict):
+            return None
+        binding = old.get("primary_item_binding")
+        if (not isinstance(binding, dict) or binding.get("verified") is not True
+                or binding.get("raw_url") != pin["url"] or binding.get("primary_canonical_url") != pin["url"]
+                or binding.get("raw_event_date") != pin["publication_date"]
+                or binding.get("primary_publication_date") != pin["publication_date"]
+                or binding.get("primary_verification_flags") != {
+                    "primary_identity_verified": True, "publication_date_verified": True}):
+            return None
+        output_sha = hashlib.sha256(json.dumps(ai, ensure_ascii=False, sort_keys=True,
+                                               separators=(",", ":")).encode()).hexdigest()
+        request_sha = hashlib.sha256(news_analysis_input(title=fresh.title, text=new["page_text"],
+            source_name=fresh.source_name, full_text=True).encode()).hexdigest()
+        if (output_sha != pin["previous_model_output_sha256"]
+                or ai.get("_pulso_analysis_meta") != pin["model_response"]
+                or pin["model_response"].get("schema_version") != "pulso_editorial_proof_v4"
+                or pin["model_response"].get("analysis_text_sha256") != pin["article_body_sha256"]
+                or pin["model_response"].get("request_input_sha256") != request_sha
+                or validation.get("version") != "pulso_editorial_proof_v4"
+                or validation.get("decision") != "deferred" or validation.get("reason") != previous_reason
+                or validation.get("model_output_sha256") != output_sha
+                or validation.get("analysis_text_sha256") != pin["article_body_sha256"]
+                or validation.get("request_input_sha256") != request_sha
+                or validation.get("model_response") != pin["model_response"]
+                or old.get("analysis_input_complete") is not True
+                or old.get("analysis_input_format") != "full_primary_article_body"
+                or old.get("analysis_input_body_sha256") != pin["article_body_sha256"]
+                or old.get("analysis_request_input_sha256") != request_sha):
+            return None
+        previous_response_id = pin["model_response"]["response_id"]
+        admission_id = hashlib.sha256((VERSION + "\n" + REPAIR_ADMISSION_PIN_SHA256 + "\n"
+            + pin["url"] + "\n" + previous_reason + "\n" + previous_response_id).encode()).hexdigest()
+        return dict(repair_version=VERSION, admission_id=admission_id,
+                    pins_sha256=REPAIR_ADMISSION_PIN_SHA256, cohort_sha256=REPAIR_COHORT_SHA256,
+                    producer_run_id=38149773071, previous_response_id=previous_response_id,
+                    previous_model_output_sha256=output_sha, previous_reason=previous_reason,
+                    url=pin["url"], publication_date=pin["publication_date"],
+                    article_body_sha256=pin["article_body_sha256"], html_sha256=pin["html_sha256"],
+                    request_input_sha256=request_sha, new_assessment_required=True,
+                    old_response_reuse=False, publication_approved=False,
+                    other_editorial_and_budget_gates_still_apply=True)
+    except (AttributeError, KeyError, TypeError, ValueError, OSError):
+        return None
