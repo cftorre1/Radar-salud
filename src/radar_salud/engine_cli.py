@@ -109,10 +109,23 @@ def main():
     ready=((key,item) for key,item in queue.ready() if item["source"] in processors)
     if args.discovery_only:
         ready=iter(())
-    for index,(key,item) in enumerate(ready):
-        if args.limit and index>=args.limit:break
-        if not has_capacity("fast") and not has_capacity("deep"):break
+    processed_count=0
+    processing_deferrals={}
+    for key,item in ready:
+        if args.limit and processed_count>=args.limit:break
+        fast_available=has_capacity("fast")
+        if item["source"] == "pulso_latercera" and not fast_available:
+            # Pulso's editorial processor uses the fast tier. Do not turn an
+            # unspent budget stop into a processing attempt and two-hour retry.
+            processing_deferrals["pulso_latercera"]={
+                "reason":"fast_analysis_capacity_exhausted","required_tier":"fast",
+                "before_queue_start":True,
+            }
+            if set(processors)=={"pulso_latercera"}:break
+            continue
+        if not fast_available and not has_capacity("deep"):break
         queue.start(key)
+        processed_count+=1
         try:
             cfg,processor=processors[item["source"]]
             raw=RawItem(**item["raw"])
@@ -137,6 +150,9 @@ def main():
             if item["source"] == "pulso_latercera":
                 item["raw"] = asdict(raw)
             queue.finish(key,"retry",type(exc).__name__)
+    discovery_run=json.loads((root/"data/state/discovery_run.json").read_text())
+    discovery_run.update(processing_deferrals=processing_deferrals,processing_attempts=processed_count)
+    atomic_json(root/"data/state/discovery_run.json",discovery_run)
     for name,(discovered,new,error) in discoveries.items():
         counts=queue.counts(name)
         health_record(root,name,name=name.replace("_"," ").title(),discovered=discovered,new=new,

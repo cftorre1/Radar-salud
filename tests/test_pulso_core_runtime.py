@@ -204,3 +204,79 @@ def test_known_possible_duplicate_waits_for_incremental_review_without_consuming
     with pytest.raises(DeferredProcessing, match="incremental-value"):
         process_curated_beta_source(raw, {})
     assert raw.metadata["editorial_assessment"]["reason"] == "possible_duplicate_requires_incremental_review"
+
+
+@pytest.mark.parametrize('deep_available', [True, False])
+def test_fast_budget_stop_leaves_scoped_pulso_pending_without_attempt(tmp_path, monkeypatch, deep_available):
+    (tmp_path/'config').mkdir()
+    (tmp_path/'config/sources.json').write_bytes((ROOT/'config/sources.json').read_bytes())
+    state = tmp_path/'data/state'; state.mkdir(parents=True)
+    raw = RawItem('pulso_latercera', 'Clínica cierra pabellones y traslada pacientes',
+                  'https://www.latercera.com/pulso/noticia/clinica-budget-stop/',
+                  'Pulso / La Tercera', 'press_high_trust',
+                  (datetime.now(timezone.utc)-timedelta(days=1)).date().isoformat(), BODY,
+                  {'page_text': BODY, 'article_verified': True, 'market_role': 'media'})
+    monkeypatch.setattr(CuratedBetaSourceScout, 'discover', lambda self: [raw])
+    monkeypatch.setattr(paths, 'project_root', lambda: tmp_path)
+    monkeypatch.setattr(engine_cli, 'seed_from_history', lambda root: None)
+    monkeypatch.setattr(engine_cli, 'has_capacity', lambda kind: deep_available if kind=='deep' else False)
+    def unexpected(raw, cfg):
+        raise AssertionError('Capacity stop must happen before processor/analysis')
+    monkeypatch.setattr(engine_cli, 'process_curated_beta_source', unexpected)
+    monkeypatch.setattr(sys, 'argv', ['engine_cli', '--sources', 'pulso_latercera'])
+    engine_cli.main()
+    item = next(iter(PendingQueue(state/'pending_queue.json').items.values()))
+    assert item['status']=='pending' and item['attempts']==0
+    assert not item.get('retry_at') and item['reason'] is None
+    run = json.loads((state/'discovery_run.json').read_text())
+    assert run['processing_attempts']==0
+    assert run['processing_deferrals']['pulso_latercera'] == {
+        'reason': 'fast_analysis_capacity_exhausted', 'required_tier': 'fast', 'before_queue_start': True,
+    }
+
+
+@pytest.mark.parametrize('unscoped', [False, True])
+def test_pulso_fast_stop_does_not_starve_other_tier_or_consume_processing_limit(tmp_path, monkeypatch, unscoped):
+    (tmp_path/'config').mkdir()
+    (tmp_path/'config/sources.json').write_bytes((ROOT/'config/sources.json').read_bytes())
+    state = tmp_path/'data/state'; state.mkdir(parents=True)
+    day=(datetime.now(timezone.utc)-timedelta(days=1)).date().isoformat()
+    pulso = RawItem('pulso_latercera', 'Clínica cierra pabellones y traslada pacientes',
+                    'https://www.latercera.com/pulso/noticia/clinica-fast-unavailable/',
+                    'Pulso / La Tercera', 'press_high_trust', day, BODY,
+                    {'page_text': BODY, 'article_verified': True, 'market_role': 'media'})
+    other = RawItem('diario_oficial', 'Norma sanitaria que requiere análisis de documentos',
+                    'https://www.diariooficial.interior.gob.cl/other-deep-document',
+                    'Diario Oficial', 'official', day, BODY)
+    # Preserve real multi-source scheduling while isolating discovery/network.
+    for name in dir(engine_cli):
+        candidate = getattr(engine_cli, name)
+        if name.endswith('Scout') and isinstance(candidate, type) and hasattr(candidate, 'discover'):
+            monkeypatch.setattr(candidate, 'discover', lambda self,*args,**kwargs: [])
+    monkeypatch.setattr(CuratedBetaSourceScout, 'discover', lambda self: [pulso])
+    monkeypatch.setattr(engine_cli.DiarioOficialHealthScout, 'discover', lambda self,*args,**kwargs: [other])
+    monkeypatch.setattr(paths, 'project_root', lambda: tmp_path)
+    monkeypatch.setattr(engine_cli, 'seed_from_history', lambda root: None)
+    monkeypatch.setattr(engine_cli, 'has_capacity', lambda kind: kind=='deep')
+    calls=[]
+    def unexpected(raw,cfg):
+        raise AssertionError('Pulso must not spend an attempt on unavailable fast capacity')
+    def process_deep(raw,cfg):
+        assert engine_cli.has_capacity('deep')
+        calls.append(raw.source_slug)
+        raw.metadata['rejection_reason']='document_not_material_after_review'
+        return None
+    monkeypatch.setattr(engine_cli, 'process_curated_beta_source', unexpected)
+    monkeypatch.setattr(engine_cli, 'process_diario_oficial', process_deep)
+    argv=['engine_cli','--limit','1']
+    if not unscoped:
+        argv += ['--sources','pulso_latercera','diario_oficial']
+    monkeypatch.setattr(sys,'argv',argv)
+    engine_cli.main()
+    by_source={item['source']:item for item in PendingQueue(state/'pending_queue.json').items.values()}
+    assert by_source['pulso_latercera']['status']=='pending' and by_source['pulso_latercera']['attempts']==0
+    assert by_source['diario_oficial']['status']=='rejected' and by_source['diario_oficial']['attempts']==1
+    assert calls==['diario_oficial']
+    run=json.loads((state/'discovery_run.json').read_text())
+    assert run['processing_attempts']==1
+    assert run['processing_deferrals']['pulso_latercera']['reason']=='fast_analysis_capacity_exhausted'
