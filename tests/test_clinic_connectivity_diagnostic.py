@@ -123,3 +123,27 @@ def test_workflow_only_triggers_own_paths_and_commits_diagnostic_directory():
     assert "refs/heads/codex/e-salud-laboral-20261011" in workflow
     core = (root / ".github/workflows/occupational-source-recovery.yml").read_text()
     assert not trigger_paths(workflow) & trigger_paths(core)
+
+
+def test_real_failed_origin_records_keep_all_nine_newsrooms_closed(tmp_path, monkeypatch):
+    """A successful diagnostic job with TCP failures must not unlock inventory."""
+    from radar_salud import occupational_capture
+    from radar_salud.occupational_sources import SourceDiscoveryError
+    root = Path(__file__).resolve().parents[1]
+    origin = root / "data/audits/source_e_recovery/clinic_connectivity_actions/38124717508"
+    report = json.loads((origin / "report.json").read_text())
+    assert report["publishers_completed"] == 10
+    assert len(report["records"]) == 30
+    assert report["summary"]["successful_identified_newsrooms"] == 0
+    for record in report["records"]:
+        hop = record["hops"][-1]
+        assert record["http_status"] == 0 and hop["curl_exit"] == 28
+        assert not hop["tls"]["origin_handshake_observed"] and not hop["tls"]["verified"]
+        assert not record["waf"]
+        assert hashlib.sha256((origin / hop["body_file"]).read_bytes()).hexdigest() == hop["sha256"]
+    monkeypatch.setattr(occupational_capture, "capture", lambda *args, **kwargs: pytest.fail("unexpected new network request"))
+    loader = occupational_capture.CaptureLoader(tmp_path / "cache", probe=origin / "report.json")
+    for clinic in CLINICS:
+        with pytest.raises(SourceDiscoveryError) as failed:
+            loader(clinic["news"])
+        assert failed.value.code == "robots_policy_unavailable"

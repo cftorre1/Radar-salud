@@ -177,7 +177,7 @@
             "stop_reason": "transport_error",
             "final_url": "https://clinicaportada.cl/",
             "curl_exit": 28,
-            "curl_error": null,
+            "curl_error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12000 ms: Timeout was reached",
             "tls": {
               "origin_handshake_observed": false,
               "certificate_verification_result": null,
@@ -222,7 +222,7 @@
             "stop_reason": "transport_error",
             "final_url": "https://clinicamaitenes.cl/",
             "curl_exit": 28,
-            "curl_error": null,
+            "curl_error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12000 ms: Timeout was reached",
             "tls": {
               "origin_handshake_observed": false,
               "certificate_verification_result": null,
@@ -267,7 +267,7 @@
             "stop_reason": "transport_error",
             "final_url": "https://clinicapuertomontt.cl/",
             "curl_exit": 28,
-            "curl_error": null,
+            "curl_error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12001 ms: Timeout was reached",
             "tls": {
               "origin_handshake_observed": false,
               "certificate_verification_result": null,
@@ -312,7 +312,7 @@
             "stop_reason": "transport_error",
             "final_url": "https://clinicaatacama.cl/",
             "curl_exit": 28,
-            "curl_error": null,
+            "curl_error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12002 ms: Timeout was reached",
             "tls": {
               "origin_handshake_observed": false,
               "certificate_verification_result": null,
@@ -357,7 +357,7 @@
             "stop_reason": "transport_error",
             "final_url": "https://clinicaloscoihues.cl/",
             "curl_exit": 28,
-            "curl_error": null,
+            "curl_error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
             "tls": {
               "origin_handshake_observed": false,
               "certificate_verification_result": null,
@@ -402,7 +402,7 @@
             "stop_reason": "transport_error",
             "final_url": "https://clinicalircay.cl/",
             "curl_exit": 28,
-            "curl_error": null,
+            "curl_error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12001 ms: Timeout was reached",
             "tls": {
               "origin_handshake_observed": false,
               "certificate_verification_result": null,
@@ -447,7 +447,7 @@
             "stop_reason": "transport_error",
             "final_url": "https://www.clinicalosandes.cl/",
             "curl_exit": 28,
-            "curl_error": null,
+            "curl_error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12000 ms: Timeout was reached",
             "tls": {
               "origin_handshake_observed": false,
               "certificate_verification_result": null,
@@ -492,7 +492,7 @@
             "stop_reason": "transport_error",
             "final_url": "https://www.clinicasur.cl/",
             "curl_exit": 28,
-            "curl_error": null,
+            "curl_error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12000 ms: Timeout was reached",
             "tls": {
               "origin_handshake_observed": false,
               "certificate_verification_result": null,
@@ -537,7 +537,7 @@
             "stop_reason": "transport_error",
             "final_url": "https://clinica-curico.cl/",
             "curl_exit": 28,
-            "curl_error": null,
+            "curl_error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12001 ms: Timeout was reached",
             "tls": {
               "origin_handshake_observed": false,
               "certificate_verification_result": null,
@@ -582,7 +582,7 @@
             "stop_reason": "transport_error",
             "final_url": "https://www.clinicasachssalud.cl/",
             "curl_exit": 28,
-            "curl_error": null,
+            "curl_error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
             "tls": {
               "origin_handshake_observed": false,
               "certificate_verification_result": null,
@@ -599,7 +599,14 @@
   },
   "validation": {
     "command": "PYTHONPATH=src:. .venv/bin/python -m pytest -q tests/test_clinic_connectivity_diagnostic.py tests/test_occupational_access_probe.py",
-    "result": "14 passed"
+    "result": "15 passed (includes replay of real failed captures)"
   },
-  "next_action": "Push isolated workflow, inspect real Actions result and preserve standard origin JSON/body records. A successful capture can be passed explicitly to CaptureLoader later without applying state in the diagnostic."
+  "next_action": "Push isolated workflow, inspect real Actions result and preserve standard origin JSON/body records. A successful capture can be passed explicitly to CaptureLoader later without applying state in the diagnostic.",
+  "live_result": {
+    "run_id": 38124717508,
+    "workflow_conclusion": "success",
+    "source_recovered": false,
+    "diagnostic_result": "data/audits/source_e_recovery/clinic_connectivity_diagnostic_result.json",
+    "next_action": "Retain clinical source_health degraded and preserve the 11 historical clinic articles as historical captures. Reuse the isolated workflow for another normal verified connection check when connectivity changes; only after verified robots/listing access reconcile explicitly, without AI if input is unchanged."
+  }
 }
