@@ -161,6 +161,10 @@ def main():
     for name,(discovered,new,error) in discoveries.items():
         counts=queue.counts(name)
         df_evidence=({**discovery_evidence.get(name,{}),
+            "deferred_multimedia":sum(i.get('source')==name and i['status']=='deferred' and
+                i.get('df_resolution',{}).get('state')=='DEFERRED_MULTIMEDIA' for i in queue.items.values()),
+            "unverifiable_date_dispositions":sum(i.get('source')==name and i['status']=='deferred' and
+                i.get('df_resolution',{}).get('state')=='RESOLVED_NO_VERIFIABLE_DATE' for i in queue.items.values()),
             "last_published_event_at":max([row.get("event_date") for row in history
                 if row.get("source_name")=="Diario Financiero" and row.get("event_date") and row.get("editorial_decision")!="reject"],default=None)}
             if name=="diario_financiero" else None)
