@@ -5,6 +5,7 @@ exercise the independent reader without executing an engine or provider call.
 """
 from copy import deepcopy
 from datetime import datetime, timezone
+import gzip
 import importlib.util
 import json
 from pathlib import Path
@@ -21,6 +22,37 @@ qa = module("idempotence_independent_qa", ROOT / "scripts/qa_pulso_recovery.py")
 helper = module("idempotence_helper_for_unit_shapes", ROOT / "scripts/pulso_idempotence.py")
 unit = module("unit_idempotence_shapes", ROOT / "tests/test_pulso_idempotence.py")
 NOW = datetime(2026, 10, 11, 14, 5, tzinfo=timezone.utc)
+PRE_FOCUS_FIXTURE = ROOT / "tests/fixtures/pulso_idempotence_pre_focus_real.json.gz"
+PRE_FOCUS_GZIP_SHA256 = "55e47cabf0f7f40005f922b0a18912c0ad758e3df721f249a960825f4e756ef9"
+PRE_FOCUS_RAW_SHA256 = "39a53d61e02320779cb92f34c3c5bcad1c0c5a528a5a5219a29b2530b9237c2e"
+
+
+def immutable_pre_focus_queue(cohort):
+    """Real primary input stays fixed as live editorial outcomes evolve.
+
+    These 113 complete rows were copied from the committed checkout before
+    the genuine focused run. The statuses below are explicitly synthetic unit
+    outcomes; current deferred/published/rejected records remain untouched.
+    """
+    encoded = PRE_FOCUS_FIXTURE.read_bytes()
+    assert qa.digest(encoded) == PRE_FOCUS_GZIP_SHA256
+    raw = gzip.decompress(encoded)
+    assert qa.digest(raw) == PRE_FOCUS_RAW_SHA256
+    document = json.loads(raw)
+    assert document["original_commit"] == "81b844a654533891ad0923a40dfedfda03c17fa3"
+    assert document["cohort_sha256"] == qa.PROCESSING_COHORT_SHA256
+    queue = document["queue"]
+    assert document["count"] == len(queue) == 113
+    assert set(queue) == {row["queue_fingerprint"] for row in cohort["items"]}
+    for row in cohort["items"]:
+        item = queue[row["queue_fingerprint"]]
+        primary = item["raw"]
+        body = primary["metadata"]["page_text"]
+        assert primary["url"] == row["url"]
+        assert primary["event_date"] == row["publication_date"]
+        assert qa.digest(body.encode()) == row["body_sha256"]
+        assert len(body) == row["body_characters"]
+    return queue
 
 
 def write_context(root, context):
@@ -66,7 +98,7 @@ def replay(tmp_path):
                     selected_urls=cohort["urls"], ready_selected_urls=cohort["urls"])
     execution = context["report"]["last_core_execution"]
     execution.update(code_sha="a" * 40, runtime_fingerprint=deepcopy(context["runtime_fingerprint"]))
-    current = json.loads((ROOT / "data/state/pending_queue.json").read_bytes())
+    current = immutable_pre_focus_queue(cohort)
     context["queue"] = {}
     context["report"]["matrix"] = []
     for original in cohort["items"]:
@@ -105,6 +137,20 @@ def replay(tmp_path):
     assert proof["verdict"] == "PASS", proof["findings"]
     return dict(baseline=baseline, proof=proof, root=tmp_path, report=after["report"], discovery=after["discovery"],
         queue=after["queue"], history=[], snapshot=after["feed"], telemetry=after["events"])
+
+
+def test_synthetic_replay_does_not_read_live_editorial_queue(monkeypatch, tmp_path):
+    original_read = Path.read_bytes
+    live_queue = ROOT / "data/state/pending_queue.json"
+    def reject_live_queue_read(path):
+        if path == live_queue:
+            raise AssertionError("A new real model outcome cannot redefine this unit fixture")
+        return original_read(path)
+    monkeypatch.setattr(Path, "read_bytes", reject_live_queue_read)
+    evidence = replay.__wrapped__(tmp_path)
+    checked, failures = qa.verify_genuine_idempotence(**evidence)
+    assert failures == []
+    assert checked["selected_urls"] == 113
 
 
 def test_reader_recomputes_all113_queue_ledger_and_response_observations(replay):
