@@ -34,5 +34,34 @@
       "provenance": "data/audits/source_e_recovery/actions/38115788047/14ab5b96dc76929b4786-0.body",
       "conditional_next_action": "Inspect WindowUtils.baseURL.resolve only if observed theme-base nextPage does not yield category cards; no challenge scripts or cookie solving"
     }
-  ]
+  ],
+  "latest_validation": {
+    "actions_run": "38117675962",
+    "actual_replay": "data/audits/source_e_recovery/mutual_run6_replay.json",
+    "archive_continuation": "14 fresh category next URLs returned the same initial cards; coverage incomplete.",
+    "theme_module": "Public wp_theme_utils initializes a Promise; no anchor-rewrite contract. Themebase is an experimental fallback evaluated, not browser-proven paging.",
+    "browser_diagnostic": "scripts/mutual_public_paging_probe.py; parent Actions pending."
+  },
+  "public_search_contract": {
+    "publisher_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+    "artifact": "data/audits/source_e_recovery/actions/38117675962/14ab5b96dc76929b4786-0.body",
+    "sha256": "d31c0129f11b2e50faee60dfb14ac65bbc9ca8749c03e88c7c4ebd534ec8f2e1",
+    "field": "inline function search()/searchM()",
+    "literal": "var url = \"/portal/publico/empresa/search?\" + \"queryBusqueda=\" + encodeURIComponent(query); window.location.href = url;",
+    "method": "GET public navigation generated from searchInput/searchInputM user text. No form submission or credentials.",
+    "routes": [
+      {
+        "url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=Mutual",
+        "input": "Mutual",
+        "status": "observed_contract_generated_input_pending_origin_capture"
+      },
+      {
+        "url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=2026",
+        "input": "2026",
+        "status": "observed_contract_generated_input_pending_origin_capture"
+      }
+    ],
+    "coverage_claim": false,
+    "date_evidence": "Unknown until actual search response and article detail capture; search ranking/index period never supplies publication day."
+  }
 }

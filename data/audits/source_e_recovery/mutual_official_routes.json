@@ -6,13 +6,13 @@
   "branch": "codex/e-salud-laboral-20261011",
   "pr": 12,
   "scope": "Read-only discovery and endpoint probes; no application, source_health or queue changes; no WAF challenge solving, no proxy/TLS bypass, no form submission.",
-  "decision": "SOURCE_AVAILABLE_GITHUB_ACTIONS__FULL_INVENTORY_PENDING",
+  "decision": "SOURCE_AVAILABLE_WITH_VERIFIED_PUBLICATION_DATES__ARCHIVE_COVERAGE_PARTIAL",
   "limitations": {
     "codex_runtime": "Runner transport result to be recorded separately; environment restriction alone cannot establish EXTERNAL_BLOCKER for the source.",
     "webtool": "Search text and web opens can be cached/indexed. Crawl labels are retained and none are represented as origin wire capture. 'Not accessible via this tool' does not prove endpoint absence.",
-    "dates": "Fresh official native cards declare exact publication fields such as 9 oct. 2026, bound to their article query URLs; detail identity and 90-day branch traversal are being validated separately. Data/report periods and modification timestamps remain excluded.",
+    "dates": "51 initial in-horizon article details have exact publisher publication dates and verified identity/body;2 material candidates after common gate review.14 actual archive continuations repeat initial state, so90-day coverage remains incomplete. Data periods, signing/approval and modification dates stay excluded.",
     "rss_api": "Fresh /feed/ redirects to portal HTML, not RSS. Fresh sitemap is static official institutional route listing, not a dated article inventory. No declared public API verified.",
-    "memoria_2025": "No verified exact 2025 annual report URL discovered; search lack of result does not prove absence."
+    "memoria_2025": "Superseded by live official Memorias listing Run6: exact2025 attachment observed; PDF capture and explicit publication day pending. Prior search absence never proved publisher absence."
   },
   "actions_recommendation": "GET prioritized exact official URLs on isolated GitHub Actions runner using TLS verification and ordinary bot/browser User-Agents. Respect robots restrictions. Persist status, redirects, final URL, content type, content SHA256 and WAF markers; require real HTML/article date or valid PDF bytes. Compare with Codex environment before any source-level blocker conclusion.",
   "routes": [
@@ -1040,5 +1040,16 @@
     "large_pdf_limit": "Memoria2024 returns HTTP200 application/pdf content-length12636726;2023 content-length10382271. Both curls exit63 because collector maximum file size; not source failure; PDF bodies not captured.",
     "legacy_memorias": "ww2/memorias.aspx302 Location=http://ww2.mutual.cl/; secure collector rejects HTTPS-to-HTTP downgrade.",
     "legacy_wcm": "Rendered article and other-news HTML200 real; title period2025-2026 does not establish publication date; no semantic explicit publisher date located."
-  }
+  },
+  "latest_fallback_validation": {
+    "actions_run": "38117675962",
+    "details": "data/audits/source_e_recovery/mutual_pdf_fallbacks.json",
+    "new_2025_route": "https://www.mutual.cl/portal/wcm/connect/28973518-0f53-4887-94fb-4c163aa90de0/memoria-mutual-de-seguridad-2025.pdf?MOD=AJPERES",
+    "provenance": "Fresh official Memorias listing button onclick window.open literal, SHA cf058f3d3a5271ddb7a75f3fc8d67313db2f95ec1e824f11d37fd71aee97d7c6; annual coverage field2025 is not pubday.",
+    "prior_pdf_size_limit": "Superseded:2024/2023 complete verified TLS200 PDF bodies captured Run6,12.6/10.3MB; collector limit never source failure.",
+    "publication_date": "No full publication day verified for evaluated PDF alternatives;2024 PDF explicit publication monthMay2025 only, signing29May2025 not pubday.",
+    "new_search_contract": "data/audits/source_e_recovery/mutual_paging_routes.json: public_search_contract exact publisher inline GET navigation; generated inputs pending capture.",
+    "current_news_replay": "data/audits/source_e_recovery/mutual_run6_replay.json:2 material dated candidates,51 verified initial in-horizon details,14 repeated category pages, coverage false."
+  },
+  "latest_checked_at_utc": "2026-10-11T06:43:45.432581+00:00"
 }
