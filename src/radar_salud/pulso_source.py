@@ -785,6 +785,7 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                                   publication_date=metadata["publication_date"], publication_timestamp=metadata["publication_timestamp"],
                                   publication_date_source=metadata["publication_date_source"], html_sha256=metadata["html_sha256"],
                                   captured_at=metadata["captured_at"], cache_hit=result["cache_hit"],
+                                  publisher_lastmod=metadata.get("publisher_lastmod"),
                                   first_publish_date=entry.get("first_publish_date"), duplicate_inventory_url=was_seen,
                                   in_complete_30_days=today - timedelta(days=30) <= day < today,
                                   in_complete_90_days=cutoff <= day < today, current_day_slice=day == today))

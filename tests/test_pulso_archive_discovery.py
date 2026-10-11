@@ -457,3 +457,26 @@ def test_api_archive_overlap_returns_one_canonical_article_with_occurrence_diagn
                            inventory_health_occurrences=2, duplicate_inventory_occurrences=1)
     occurrences = [item for item in audit if item['status']=='discovered']
     assert [item['duplicate_inventory_url'] for item in occurrences] == [False, True]
+
+
+
+def test_warm_public_feed_trace_retains_real_primary_publisher_change_token(tmp_path):
+    from radar_salud.pulso_source import discover_public_feeds
+    loaded=[]
+    def loader(value):
+        if '/canal/' in value:
+            return ''
+        if '/pf/api/' in value:
+            return ans_feed(count=1,size=1)
+        loaded.append(value)
+        return html_article(value)
+    cache=tmp_path/'cache.json'
+    _, _ = discover_public_feeds(loader, [], cache, today=TODAY, feeds=[('section','nacional')])
+    cold_fetches=len(loaded)
+    audit=[]
+    discover_public_feeds(loader,audit,cache,today=TODAY,feeds=[('section','nacional')])
+    trace=next(item for item in audit if item['status']=='discovered')
+    stored=json.loads(cache.read_text())['articles'][trace['url']]['metadata']
+    assert len(loaded)==cold_fetches==1 and trace['cache_hit'] is True
+    assert trace['publisher_lastmod']==stored['publisher_lastmod']=='2026-10-09T15:00:00Z'
+    assert trace['captured_at']==stored['captured_at'] and trace['html_sha256']==stored['html_sha256']
