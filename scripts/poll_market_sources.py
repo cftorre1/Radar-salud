@@ -27,7 +27,8 @@ def main():
         return
     stamp=now.strftime('%Y%m%dT%H%M%SZ');run=a.output/stamp
     subprocess.run([sys.executable,'scripts/probe_source_expansion.py','--output',str(run/'capture')],check=True)
-    subprocess.run([sys.executable,'scripts/validate_market_source_runtime.py','--capture-dir',str(run/'capture'),'--output',str(run/'qualification')],check=True)
+    seed=Path(polls[-1]['output'])/'qualification/stock' if polls else Path('.')
+    subprocess.run([sys.executable,'scripts/validate_market_source_runtime.py','--capture-dir',str(run/'capture'),'--output',str(run/'qualification'),'--stock-seed',str(seed)],check=True)
     polls.append({'started_at':now.isoformat(),'completed_at':datetime.now(timezone.utc).isoformat(),
                   'github_run_id':os.environ.get('GITHUB_RUN_ID'),'output':str(run),'status':'qualified_snapshot'})
     state.update(schema_version=1,cadence_hours=cadence,next_poll_at=(now+timedelta(hours=cadence)).isoformat(),

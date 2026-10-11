@@ -12,13 +12,14 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument('--capture-dir',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--stock-seed',type=Path,default=Path('.'))
     args=p.parse_args()
     root=args.output/'stock'
     if root.resolve().is_relative_to(Path('data').resolve()):
         raise ValueError('Qualification output must be isolated from repository stock')
     if not root.exists():
         for directory in ('entities','market'):
-            shutil.copytree(Path('data')/directory,root/'data'/directory)
+            shutil.copytree(args.stock_seed/'data'/directory,root/'data'/directory)
     command=[sys.executable,'-m','radar_salud.market_sources','--capture-dir',str(args.capture_dir),'--output-root',str(root)]
     subprocess.run(command,check=True)
     initial=digest_market(root)
