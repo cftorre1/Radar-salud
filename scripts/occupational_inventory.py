@@ -235,7 +235,7 @@ def save_health(root, reports):
                    capture_environment="github_actions", capture_run_id=os.getenv("GITHUB_RUN_ID"),
                    oldest_capture_at=report.get("oldest_capture_at"), latest_capture_at=report.get("capture_checked_at"),
                    discovered=len(report.get("raw_items", [])), new=report.get("newly_discovered", 0),
-                   count_basis="unique source items in rolling 90 days; published includes previously reconciled items",
+                   count_basis="unique official item URLs in rolling 90 days; mirrored newsroom URLs remain inventory rows; published includes previously reconciled items",
                    error=report.get("errors") or None,
                    latest_detected_at=max((r.get("publication_date") or r.get("event_date") or "" for r in report["rows"] if r.get("status") != "excluded_role"), default=None),
                    last_signal_at=max((r.get("publication_date") or r.get("event_date") or "" for r in report["rows"] if r.get("alicanto_status") == "published"), default=None),

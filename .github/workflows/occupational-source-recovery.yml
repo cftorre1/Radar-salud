@@ -7,6 +7,8 @@ on:
       - .github/workflows/occupational-source-recovery.yml
       - scripts/occupational_access_probe.py
       - scripts/occupational_inventory.py
+      - scripts/mutual_public_paging_probe.py
+      - src/radar_salud/occupational_evidence.py
       - config/occupational_recovery_routes.json
   workflow_dispatch:
 

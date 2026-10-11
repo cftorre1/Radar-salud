@@ -35,7 +35,7 @@ test('occupational backfills retain their publisher and original publication yea
   await page.goto('/');
   const snapshot=await (await page.request.get('/data/radar_today.json')).json();
   const recovered=snapshot.signals.filter(s=>(s.watch_tags||[]).some(t=>lanes.includes(t)));
-  expect(recovered.length).toBeGreaterThanOrEqual(3);
+  expect(recovered.length).toBeGreaterThanOrEqual(4);
   await page.locator('#period').selectOption('90');
   for(const signal of recovered){
     expect(signal.ingestion_mode).toBe('BACKFILL');
@@ -48,6 +48,11 @@ test('occupational backfills retain their publisher and original publication yea
     await expect(card.locator('.card-meta')).not.toContainText('2025');
     if(signal.market_role==='mutuality')expect(signal.watch_tags).not.toContain('clinicas_achs_salud');
     await expect(card).not.toContainText('aún está abierta');
+    if(signal.source_slug==='mutual_seguridad'){
+      await card.scrollIntoViewIfNeeded();
+      fs.mkdirSync('artifacts',{recursive:true});
+      await page.screenshot({path:`artifacts/${test.info().project.name}-occupational-mutual-viewport.png`});
+    }
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
   fs.mkdirSync('artifacts',{recursive:true});
