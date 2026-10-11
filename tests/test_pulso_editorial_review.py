@@ -86,6 +86,32 @@ def test_second_application_is_identical_without_queue_or_paid_replay(inputs):
     assert replay["applied_count"] == 0 and replay["unchanged_on_replay"] == 5
 
 
+@pytest.mark.parametrize("category", ["Prestadores", "Regulación & Legal"])
+def test_bound_copy_correction_keeps_original_gate_and_can_correct_reviewed_taxonomy(inputs, category):
+    history, queue, audit = deepcopy(inputs)
+    record = next(record for record in audit["records"] if record["decision"] == "correct")
+    record["proposed"]["category"] = category
+    corrected, updated_queue, report = apply((history, queue, audit))
+    signal = next(signal for signal in corrected if signal["source_url"] == record["url"])
+    assert signal["category"] == category
+    assert signal["editorial_relevance"] == record["original_signal"]["editorial_relevance"] >= 72
+    assert signal["publication_date"] == record["publication_date"]
+    assert report["ai_calls"] == report["primary_evidence_mutations"] == 0
+    repeated, repeated_queue, replay = apply((corrected, updated_queue, audit))
+    assert (repeated, repeated_queue) == (corrected, updated_queue)
+    assert replay["applied_count"] == 0
+
+
+def test_copy_correction_cannot_introduce_an_unreviewed_taxonomy(inputs):
+    history, queue, audit = deepcopy(inputs)
+    record = next(record for record in audit["records"] if record["decision"] == "correct")
+    record["proposed"]["category"] = "Inventada"
+    before = deepcopy((history, queue, audit))
+    with pytest.raises(ValueError, match="invalid_reviewed_copy_correction"):
+        apply((history, queue, audit))
+    assert (history, queue, audit) == before
+
+
 def test_unrelated_native_offices_keep_distinct_records_and_exact_bytes(inputs):
     native = json.loads((ROOT / "tests/fixtures/pulso_native_offices_shared_listing.json").read_bytes())["signals"]
     history, queue, review = inputs

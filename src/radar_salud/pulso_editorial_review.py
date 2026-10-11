@@ -162,7 +162,7 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
         if decision == "correct":
             if (not {"what_happened", "why_it_matters"}.issubset(proposed)
                     or not set(proposed).issubset({"what_happened", "why_it_matters", "category"})
-                    or ("category" in proposed and proposed["category"] != "Prestadores")
+                    or ("category" in proposed and proposed["category"] not in {"Prestadores", "Regulación & Legal"})
                     or not all(isinstance(value, str) for value in proposed.values())
                     or len(proposed["what_happened"].strip()) < 45
                     or len(proposed["why_it_matters"].strip()) < 35
