@@ -91,3 +91,16 @@ def test_tls_probe_preserves_certificate_failure_after_tcp_connection(monkeypatc
     assert row['tls'] == 'not_attempted'
     assert row['failed_stage'] == 'tls'
     assert 'certificate expired' in row['error']
+
+
+def test_primary_deis_workbook_is_structurally_readable_without_fabricated_signal():
+    path = Path('data/audits/public_sources_c_20261011/recovery/runs/38116401423/captures/4c4578b81f87c4ea85086750815ea05903bd12b6fca1ec78529ce9f27ee9e06f.html')
+    result = runtime.verify_dataset_body(path.read_bytes(), 'https://repositoriodeis.minsal.cl/Hospitalarias.xlsx')
+    assert result['format'] == 'xlsx'
+    assert result['first_sheet_rows'] > 10
+    assert result['sheets']
+
+
+def test_non_rectangular_csv_cannot_be_a_validated_dataset():
+    with pytest.raises((ValueError, runtime.csv.Error)):
+        runtime.verify_dataset_body(b'one;two\n1;2\n3;4;5\n', 'https://datos.gob.cl/resource.csv')

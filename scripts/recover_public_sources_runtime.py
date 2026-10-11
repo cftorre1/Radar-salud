@@ -10,6 +10,7 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -17,6 +18,9 @@ import socket
 import ssl
 import subprocess
 import shutil
+import csv
+import zipfile
+import xml.etree.ElementTree as ET
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener, getproxies
@@ -129,6 +133,35 @@ def tls_diagnostic(host):
     return row
 
 
+def verify_dataset_body(body, url):
+    """Read captured dataset structure without computing or publishing signals."""
+    if urlsplit(url).path.lower().endswith('.xlsx'):
+        with zipfile.ZipFile(io.BytesIO(body)) as book:
+            if any(entry.file_size > 32 * 1024 * 1024 for entry in book.infolist()):
+                raise ValueError('XLSX component exceeded 32 MiB structural replay limit')
+            ns = {'m': 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
+            workbook = ET.fromstring(book.read('xl/workbook.xml'))
+            names = [sheet.attrib['name'] for sheet in workbook.findall('m:sheets/m:sheet', ns)]
+            sheet_path = next(name for name in book.namelist() if name.startswith('xl/worksheets/sheet') and name.endswith('.xml'))
+            rows = len(ET.fromstring(book.read(sheet_path)).findall('m:sheetData/m:row', ns))
+            if not names or rows < 2:
+                raise ValueError('Official workbook has no readable data rows')
+            return {'format': 'xlsx', 'sheets': names, 'first_sheet_rows': rows,
+                    'scope': 'workbook_structure_only_no_indicator_computation'}
+    if urlsplit(url).path.lower().endswith('.csv'):
+        try:
+            text = body.decode('utf-8-sig'); encoding = 'utf-8-sig'
+        except UnicodeDecodeError:
+            text = body.decode('cp1252'); encoding = 'cp1252'
+        dialect = csv.Sniffer().sniff(text[:8192], delimiters=',;\t|')
+        rows = list(csv.reader(io.StringIO(text), dialect))
+        if len(rows) < 2 or len(rows[0]) < 2 or any(len(row) != len(rows[0]) for row in rows[1:] if row):
+            raise ValueError('Official CSV is empty or has inconsistent columns')
+        return {'format': 'csv', 'encoding': encoding, 'columns': rows[0],
+                'data_rows': len(rows) - 1, 'scope': 'rectangular_dataset_only_no_indicator_computation'}
+    raise ValueError('Unsupported dataset structural replay format')
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=ROOT / "work/public-source-recovery")
@@ -151,6 +184,17 @@ def main():
               "proxy_configured": any(key != 'no' for key in getproxies()),
               "ai_calls": 0, "ingestion_state_mutated": False}
     (args.output / "transport.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
+    dataset_checks = []
+    for row in probes:
+        if row.get('body_path') and urlsplit(row['url']).path.lower().endswith(('.csv', '.xlsx')):
+            sample = {'url': row['url'], 'sha256': row['sha256'], 'body_path': row['body_path'],
+                      'publication_date': None, 'feed_eligible': False}
+            try:
+                sample.update(status='readable', **verify_dataset_body((args.output / row['body_path']).read_bytes(), row['url']))
+            except Exception as exc:
+                sample.update(status='structural_replay_failed', **failure_details(exc))
+            dataset_checks.append(sample)
+    (args.output / 'dataset_samples.json').write_text(json.dumps(dataset_checks, ensure_ascii=False, indent=2) + '\n')
     if not args.probe_only:
         from check_public_sources import check
         from radar_salud import public_source_transport
