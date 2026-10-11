@@ -307,3 +307,24 @@ until the infrastructure payload is published and observed.
 
 Next hypothesis: an authorized fast-forward main infrastructure push starts
 parallel hosted pickup and evidence transactions without deploying product bytes.
+
+## 16. Relevant retries and committed semantic inputs
+
+Decision: unrelated staging SHAs update observed authority without reopening
+scoped blocked or repeatable closed tasks. New acceptance artifacts, repair
+plans, declared executor/source inputs and approval authority remain meaningful
+even under a fixed evidence token. Legacy unscoped SHA changes remain relevant.
+The global three-attempt failure guard cannot be reset by a new run or clock.
+
+QA fingerprints cover committed snapshots, UI, validation build scripts and
+explicit product contracts. JSON uses content semantics, preserving actual
+publication dates while excluding observation churn. Working-tree bytes never
+replace committed authority. Source parser families retain independent scopes.
+
+Directed validation: engine and candidate context ran 93 tests PASS (66 + 27);
+runtime ran 17 PASS. Real Git regressions cover unchanged global heads, genuine
+scope changes, artifact/patch additions under a fixed token, snapshot/config/UI
+changes, ignored export clocks and unchanged independent parser fingerprints.
+
+Next hypothesis: the final hosted payload retries only on actual new repair or
+acceptance inputs, and continues other families when the same fault is blocked.

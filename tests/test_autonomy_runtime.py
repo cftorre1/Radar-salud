@@ -315,6 +315,116 @@ Path(a.report).write_text(json.dumps(report))
             "details": {"candidate_scope": "isolated", "candidate_commit": "f" * 40}})
         self.assertEqual(runtime.integrated_candidates(self.workspace, current_queue, state), set())
 
+    def test_scoped_qa_inputs_track_product_meaning_without_snapshot_or_queue_clock_churn(self):
+        source_families = set(runtime.engine.SOURCE_TASKS.values())
+        present = {task["id"] for task in self.queue["tasks"]}
+        for task_id, family in runtime.engine.SOURCE_TASKS.items():
+            if task_id not in present:
+                self.queue["tasks"].append({"id": task_id, "family": family, "status": "approved",
+                                           "objective": "Fixture independent source", "depends_on": []})
+        snapshot = {"generated_at": "old observation", "signals": [{"title": "Verified normative signal",
+            "event_date": "2026-10-10", "publication_date": "2026-10-10", "signal_types": ["Normativa"]}]}
+        fixtures = {
+            "config/orchestrator_queue.json": json.dumps(self.queue),
+            "config/sources.json": json.dumps([{"slug": "fixture", "listing_url": "https://fixture.invalid/old",
+                                                 "updated_at": "old source observation"}]),
+            "web/data/radar_today.json": json.dumps(snapshot),
+            "config/normative_editorial_v2.json": '{"minimum_visible_normative_signals": 12}',
+            "web/app.js": "const fixtureVersion = 1;\n",
+            "docs/README.md": "Unrelated fixture documentation\n",
+        }
+        for path, content in fixtures.items():
+            target = self.workspace / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(content)
+
+        def commit(paths, message):
+            self.git("add", "--", *paths, cwd=self.workspace)
+            self.git("commit", "--quiet", "-m", message, cwd=self.workspace)
+
+        commit(list(fixtures), "scoped product fingerprint fixtures")
+        failure_path = self.root / "fixture-failure.json"
+        failure_path.write_text(json.dumps({"run_id": "999", "conclusion": "failure", "head_branch": "staging",
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/999",
+            "failure_signature": hashlib.sha256(b"fixture normative gate failure").hexdigest()}))
+
+        def fingerprints():
+            queue = runtime.queue_for(self.workspace, str(failure_path))
+            return {runtime.engine._family(task): task["input_fingerprint"] for task in queue["tasks"]}
+
+        baseline = fingerprints()
+        before_remote_refs = self.product_refs()
+        snapshot["generated_at"] = "new observation"
+        (self.workspace / "web/data/radar_today.json").write_text(json.dumps(snapshot))
+        commit(["web/data/radar_today.json"], "observation clock only")
+        self.assertEqual(fingerprints(), baseline)
+
+        # Working bytes cannot substitute for the committed staging authority.
+        uncommitted = {**snapshot, "signals": []}
+        (self.workspace / "web/data/radar_today.json").write_text(json.dumps(uncommitted))
+        self.assertEqual(fingerprints(), baseline)
+        (self.workspace / "web/data/radar_today.json").write_text(json.dumps(snapshot))
+
+        previous = baseline
+        for field, value in (("event_date", "2026-10-11"), ("publication_date", "2026-10-11"),
+                             ("title", "Materially changed verified normative content")):
+            with self.subTest(material_field=field):
+                snapshot["signals"][0][field] = value
+                (self.workspace / "web/data/radar_today.json").write_text(json.dumps(snapshot))
+                commit(["web/data/radar_today.json"], "material product " + field)
+                current = fingerprints()
+                self.assertNotEqual(current["staging_qa"], previous["staging_qa"])
+                self.assertEqual({family: current[family] for family in source_families},
+                                 {family: baseline[family] for family in source_families})
+                previous = current
+
+        for path, content in (("config/normative_editorial_v2.json", '{"minimum_visible_normative_signals": 13}'),
+                              ("web/app.js", "const fixtureVersion = 2;\n")):
+            with self.subTest(product_input=path):
+                (self.workspace / path).write_text(content)
+                commit([path], "real product contract or UI change")
+                current = fingerprints()
+                self.assertNotEqual(current["staging_qa"], previous["staging_qa"])
+                self.assertEqual({family: current[family] for family in source_families},
+                                 {family: baseline[family] for family in source_families})
+                previous = current
+
+        self.queue["updated_at"] = "new queue observation"
+        (self.workspace / "config/orchestrator_queue.json").write_text(json.dumps(self.queue))
+        (self.workspace / "docs/README.md").write_text("Unrelated new documentation\n")
+        commit(["config/orchestrator_queue.json", "docs/README.md"], "unrelated queue and documentation clocks")
+        self.assertEqual(fingerprints(), previous)
+
+        catalog = json.loads((self.workspace / "config/sources.json").read_text())
+        catalog[0]["updated_at"] = "new source observation"
+        (self.workspace / "config/sources.json").write_text(json.dumps(catalog))
+        commit(["config/sources.json"], "source catalog observation clock only")
+        self.assertEqual(fingerprints(), previous)
+        catalog[0]["listing_url"] = "https://fixture.invalid/new"
+        (self.workspace / "config/sources.json").write_text(json.dumps(catalog))
+        commit(["config/sources.json"], "actual source catalog input change")
+        current = fingerprints()
+        for family in source_families:
+            self.assertNotEqual(current[family], previous[family])
+        self.assertNotEqual(current["staging_qa"], previous["staging_qa"])
+        self.assertEqual(self.product_refs(), before_remote_refs)
+
+    def test_unreadable_committed_json_retains_raw_identity_without_blocking_fingerprinting(self):
+        path = "web/data/free_value.json"
+        head = self.git("rev-parse", "HEAD", cwd=self.workspace)
+        previous = runtime.scoped_fingerprint(self.workspace, head, [path])
+        before_refs = self.product_refs()
+        for content in (b"{ invalid json", b"\xff", b"\xfe"):
+            with self.subTest(content=content):
+                (self.workspace / path).write_bytes(content)
+                self.git("add", "--", path, cwd=self.workspace)
+                self.git("commit", "--quiet", "-m", "unreadable JSON raw identity fixture", cwd=self.workspace)
+                head = self.git("rev-parse", "HEAD", cwd=self.workspace)
+                current = runtime.scoped_fingerprint(self.workspace, head, [path])
+                self.assertNotEqual(current, previous)
+                previous = current
+        self.assertEqual(self.product_refs(), before_refs)
+
     def test_cli_claim_mutation_finish_keeps_product_refs_and_records_durable_candidate(self):
         self.install_runner("mutation")
         before = self.product_refs()

@@ -16,6 +16,7 @@ from datetime import datetime, timezone
 from autonomy_state_store import GitStateStore, Mutation
 import autonomy_engine as engine
 from autonomy_candidate_context import CandidateContextError, overlay_queue, prepare_workspace
+from autonomy_lane_runner import product_semantic
 
 STATE = "data/autopilot/control_v2.json"
 FAMILY_INPUTS = {
@@ -24,7 +25,17 @@ FAMILY_INPUTS = {
     "fiscalization": ["src/radar_salud/source_scouts.py", "src/radar_salud/superintendencia_fiscalizacion.py"],
     "mutualities": ["src/radar_salud/beta_sources_fast.py", "src/radar_salud/beta_sources.py"],
     "editorial": ["src/radar_salud/weekly_freshness.py", "data/weekly_insight/editorial_approved.json", "config/editorial_copy_overrides_v1.json", "src/radar_salud/free_value.py"],
-    "staging_qa": ["src", "tests", "app.js", "index.html", "package.json", "package-lock.json", ".github/workflows/qa.yml"],
+    "staging_qa": [
+        "src", "tests", "web", "app.js", "index.html", "package.json", "package-lock.json",
+        "pyproject.toml", "playwright.config.cjs", ".github/workflows/qa.yml",
+        "scripts/export_web_snapshot.py", "scripts/build_statistics_deep_analysis.py",
+        "scripts/build_epidemiology_snapshot.py", "scripts/export_global_intelligence.py",
+        "scripts/product_report.py", "scripts/review_candidate.py",
+        "config/normative_editorial_v2.json", "config/editorial_rules_v2.json",
+        "config/editorial_copy_overrides_v1.json", "config/admin_scorecard_v1.json",
+        "config/editorial_intelligence_committee_v1.json", "config/source_quality_gate.json",
+        "config/media_early_signal_gate.json", "config/taxonomy_v2.json",
+    ],
 }
 
 
@@ -42,6 +53,39 @@ def encode(value):
 
 def command(args, cwd, check=True):
     return subprocess.run(args, cwd=cwd, text=True, capture_output=True, check=check)
+
+
+def scoped_fingerprint(workspace, commit, inputs, blob_cache=None):
+    """Fingerprint committed product meaning, excluding observation clocks.
+
+    JSON comes from the pinned Git blob, never an uncommitted working file.
+    Non-JSON and invalid JSON retain their exact Git blob identity; file modes
+    and paths remain part of the scope identity. Cache shared JSON objects only
+    for this queue observation, so families read the same authority efficiently.
+    """
+    cache = {} if blob_cache is None else blob_cache
+    tree = command(["git", "ls-tree", "-rz", "--full-tree", commit, "--", *inputs], workspace).stdout
+    records = []
+    for entry in tree.split("\0"):
+        if not entry:
+            continue
+        metadata, path = entry.split("\t", 1)
+        mode, kind, object_id = metadata.split(" ")
+        identity = "git:" + object_id
+        if kind == "blob" and mode in {"100644", "100755"} and Path(path).suffix.lower() == ".json":
+            if object_id not in cache:
+                try:
+                    committed = command(["git", "show", commit + ":" + path], workspace).stdout
+                    payload = json.loads(committed)
+                    semantic = json.dumps(product_semantic(payload), sort_keys=True, ensure_ascii=False,
+                                          separators=(",", ":"))
+                    cache[object_id] = "semantic:" + hashlib.sha256(semantic.encode()).hexdigest()
+                except (UnicodeError, ValueError):
+                    cache[object_id] = identity
+            identity = cache[object_id]
+        records.append((path, mode, kind, identity))
+    serialized = json.dumps(sorted(records), ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(serialized.encode()).hexdigest()
 
 
 def queue_for(workspace, failure_path=None):
@@ -66,12 +110,12 @@ def queue_for(workspace, failure_path=None):
                 "family": "staging_qa", "input_sha": sha, "failure": failure,
                 "objective": "Recover the demonstrated staging gate; preserve product contracts.",
             })
+    blob_cache = {}
     for task in queue["tasks"]:
         family = engine._family(task)
         if family in FAMILY_INPUTS:
             inputs = FAMILY_INPUTS[family] + ["src/radar_salud/scouts.py", "src/radar_salud/models.py", "config/sources.json", "config/beta_source_configs.json"]
-            tree = command(["git", "ls-tree", "-r", "HEAD", "--", *inputs], workspace).stdout
-            task["input_fingerprint"] = hashlib.sha256(tree.encode()).hexdigest()
+            task["input_fingerprint"] = scoped_fingerprint(workspace, sha, inputs, blob_cache)
     return queue
 
 

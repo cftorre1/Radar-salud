@@ -215,6 +215,7 @@ class AutonomyEngineTests(unittest.TestCase):
 
     def test_reclaims_preserve_absolute_material_watch_and_exhaust_without_blocking_other_family(self):
         q = queue("media", "public_data")
+        next(task for task in q["tasks"] if task["id"] == MEDIA)["input_fingerprint"] = "unchanged-media-scope"
         state, first = claim({}, q, "media", "worker-0", BASE)
         baseline = state["tasks"][MEDIA]["material_watch_started_at"]
         previous = first
@@ -473,6 +474,198 @@ class AutonomyEngineTests(unittest.TestCase):
                        BASE + timedelta(minutes=2))
         self.assertEqual(len(state["material_events"]), 2)
 
+    def test_scoped_blocked_task_ignores_repeated_global_heads_but_tracks_latest_observation(self):
+        q = queue("media")
+        q["tasks"][0]["input_fingerprint"] = "unchanged-media-inputs"
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], blocked(), BASE)
+        original = deepcopy(state)
+        for minute, revision in enumerate(("b" * 40, "c" * 40, "d" * 40), start=1):
+            q["input_sha"] = revision
+            state, denied = claim(state, q, "media", "unnecessary-audit-" + str(minute),
+                                  BASE + timedelta(minutes=minute))
+            self.assertIsNone(denied)
+            task = state["tasks"][MEDIA]
+            self.assertEqual(task["status"], "BLOCKED")
+            self.assertEqual(task["input_sha"], revision)
+            self.assertEqual(task["evidence_revision"], original["tasks"][MEDIA]["evidence_revision"])
+            self.assertEqual(task["audit_counts"], original["tasks"][MEDIA]["audit_counts"])
+            self.assertEqual(task.get("last_audit_fingerprint"),
+                             original["tasks"][MEDIA].get("last_audit_fingerprint"))
+            self.assertEqual(task["attempts"], 1)
+            self.assertEqual(state["material_events"], original["material_events"])
+            self.assertEqual(state["lease_events"], original["lease_events"])
+        q["tasks"][0]["input_fingerprint"] = "changed-media-inputs"
+        state, candidates = plan(state, q, BASE + timedelta(minutes=4))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertIn("media", candidates)
+        self.assertEqual(state["material_events"], original["material_events"])
+        state, resumed = claim(state, q, "media", "necessary-repair", BASE + timedelta(minutes=4))
+        self.assertIsNotNone(resumed)
+
+    def test_scoped_blocked_task_reopens_when_evidence_changes_without_input_change(self):
+        q = queue("media")
+        q["tasks"][0]["input_fingerprint"] = "unchanged-media-inputs"
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], blocked(), BASE)
+        original_events = deepcopy(state["material_events"])
+        q["tasks"][0]["evidence_revision"] = "new-source-evidence"
+        state, candidates = plan(state, q, BASE + timedelta(minutes=1))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertEqual(state["tasks"][MEDIA]["input_sha"], SHA)
+        self.assertIn("media", candidates)
+        self.assertEqual(state["material_events"], original_events)
+
+    def test_new_acceptance_artifact_reopens_scoped_blocker_but_identical_definition_does_not(self):
+        q = queue("media")
+        task = q["tasks"][0]
+        task["input_fingerprint"] = "unchanged-media-inputs"
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], blocked(
+            reason="Missing revision-bound source acceptance artifact", fingerprint="missing-acceptance",
+            evidence=[{"task_id": MEDIA, "acceptance_artifact": None}]), BASE)
+        initial_revision = state["tasks"][MEDIA]["evidence_revision"]
+        task["acceptance_artifact"] = {"path": "data/autopilot/source-acceptance.json", "sha256": "1" * 64}
+        state, candidates = plan(state, q, BASE + timedelta(minutes=1))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertNotEqual(state["tasks"][MEDIA]["evidence_revision"], initial_revision)
+        self.assertIn("media", candidates)
+        state, lease = claim(state, q, "media", "acceptance-reconciliation", BASE + timedelta(minutes=1))
+        self.assertIsNotNone(lease)
+        state = finish(state, MEDIA, lease["token"], blocked(
+            reason="Source runtime evidence is still incomplete", fingerprint="acceptance-runtime-incomplete",
+            evidence=[{"acceptance_artifact": deepcopy(task["acceptance_artifact"])}]),
+            BASE + timedelta(minutes=1))
+        original = deepcopy(state)
+        task["acceptance_artifact"] = deepcopy(task["acceptance_artifact"])
+        state, denied = claim(state, q, "media", "repeated-acceptance-audit", BASE + timedelta(minutes=2))
+        self.assertIsNone(denied)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "BLOCKED")
+        self.assertEqual(state["tasks"][MEDIA]["evidence_revision"], original["tasks"][MEDIA]["evidence_revision"])
+        self.assertEqual(state["tasks"][MEDIA]["audit_counts"], original["tasks"][MEDIA]["audit_counts"])
+        self.assertEqual(state["material_events"], original["material_events"])
+        self.assertEqual(state["lease_events"], original["lease_events"])
+        task["acceptance_artifact"]["sha256"] = "2" * 64
+        state, lease = claim(state, q, "media", "changed-acceptance-reconciliation", BASE + timedelta(minutes=3))
+        self.assertIsNotNone(lease)
+        self.assertNotEqual(state["tasks"][MEDIA]["evidence_revision"], original["tasks"][MEDIA]["evidence_revision"])
+        self.assertEqual(state["material_events"], original["material_events"])
+
+    def test_new_approved_repair_patch_reopens_scoped_blocker_but_identical_patch_does_not(self):
+        q = queue("media")
+        task = q["tasks"][0]
+        task.update(input_fingerprint="unchanged-media-inputs", approved_at=BASE.isoformat())
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], blocked(
+            reason="No approved repair plan is available", fingerprint="missing-repair-plan",
+            evidence=[{"task_id": MEDIA, "repair_patch": None}]), BASE)
+        initial_revision = state["tasks"][MEDIA]["evidence_revision"]
+        task["repair_patch"] = {"schema_version": 1, "replacements": [{
+            "path": "src/radar_salud/press_pipeline.py", "sha256": "3" * 64,
+            "old": "selector = 'legacy'", "new": "selector = 'modern'"}]}
+        state, candidates = plan(state, q, BASE + timedelta(minutes=1))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertNotEqual(state["tasks"][MEDIA]["evidence_revision"], initial_revision)
+        self.assertIn("media", candidates)
+        state, lease = claim(state, q, "media", "approved-repair", BASE + timedelta(minutes=1))
+        self.assertIsNotNone(lease)
+        state = finish(state, MEDIA, lease["token"], blocked(
+            reason="Directed repair still needs scoped runtime evidence", fingerprint="repair-runtime-incomplete",
+            evidence=[{"repair_patch": deepcopy(task["repair_patch"])}]), BASE + timedelta(minutes=1))
+        original = deepcopy(state)
+        task["repair_patch"] = deepcopy(task["repair_patch"])
+        state, denied = claim(state, q, "media", "identical-repair-replay", BASE + timedelta(minutes=2))
+        self.assertIsNone(denied)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "BLOCKED")
+        self.assertEqual(state["tasks"][MEDIA]["evidence_revision"], original["tasks"][MEDIA]["evidence_revision"])
+        self.assertEqual(state["tasks"][MEDIA]["audit_counts"], original["tasks"][MEDIA]["audit_counts"])
+        self.assertEqual(state["material_events"], original["material_events"])
+        self.assertEqual(state["lease_events"], original["lease_events"])
+
+    def test_meaningful_dispatch_fields_reopen_with_fixed_token_and_scope_but_identical_values_do_not(self):
+        variants = (
+            ("executor_family", "media", "public_data"),
+            ("sources", ["diario_financiero"], ["diario_financiero", "pulso_latercera"]),
+            ("source_urls", ["https://source.example/listing"], ["https://source.example/new-listing"]),
+            ("approved_at", BASE.isoformat(), (BASE + timedelta(minutes=1)).isoformat()),
+        )
+        for field, before, after in variants:
+            with self.subTest(field=field):
+                q = queue("media")
+                task = q["tasks"][0]
+                task.update(input_fingerprint="unchanged-media-inputs")
+                task[field] = deepcopy(before)
+                state, lease = claim({}, q, "media", "worker", BASE)
+                state = finish(state, MEDIA, lease["token"], blocked(), BASE)
+                original_revision = state["tasks"][MEDIA]["evidence_revision"]
+                task[field] = deepcopy(after)
+                state, candidates = plan(state, q, BASE + timedelta(minutes=1))
+                self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+                self.assertNotEqual(state["tasks"][MEDIA]["evidence_revision"], original_revision)
+                self.assertIn("media", candidates)
+                state, lease = claim(state, q, "media", "changed-definition", BASE + timedelta(minutes=1))
+                self.assertIsNotNone(lease)
+                state = finish(state, MEDIA, lease["token"], blocked(), BASE + timedelta(minutes=1))
+                original = deepcopy(state)
+                task[field] = deepcopy(after)
+                state, denied = claim(state, q, "media", "identical-definition", BASE + timedelta(minutes=2))
+                self.assertIsNone(denied)
+                self.assertEqual(state["tasks"][MEDIA]["status"], "BLOCKED")
+                self.assertEqual(state["tasks"][MEDIA]["evidence_revision"],
+                                 original["tasks"][MEDIA]["evidence_revision"])
+                self.assertEqual(state["material_events"], original["material_events"])
+                self.assertEqual(state["lease_events"], original["lease_events"])
+
+    def test_scoped_repeatable_closure_ignores_global_heads_and_reopens_only_on_scope_change(self):
+        q = queue("media")
+        q["tasks"][0].update(input_fingerprint="unchanged-media-inputs", reopen_on_input_change=True)
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], passed(), BASE)
+        original = deepcopy(state)
+        for minute, revision in enumerate(("b" * 40, "c" * 40, "d" * 40), start=1):
+            q["input_sha"] = revision
+            state, denied = claim(state, q, "media", "unnecessary-repeat-" + str(minute),
+                                  BASE + timedelta(minutes=minute))
+            self.assertIsNone(denied)
+            self.assertEqual(state["tasks"][MEDIA]["status"], "CLOSED")
+            self.assertEqual(state["tasks"][MEDIA]["input_sha"], revision)
+            self.assertEqual(state["tasks"][MEDIA]["audit_counts"], original["tasks"][MEDIA]["audit_counts"])
+            self.assertEqual(state["tasks"][MEDIA]["attempts"], 1)
+            self.assertEqual(state["material_events"], original["material_events"])
+            self.assertEqual(state["lease_events"], original["lease_events"])
+        q["tasks"][0]["input_fingerprint"] = "changed-media-inputs"
+        state, candidates = plan(state, q, BASE + timedelta(minutes=4))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertIn("media", candidates)
+        self.assertEqual(state["material_events"], original["material_events"])
+
+    def test_legacy_unscoped_blocker_treats_global_sha_change_as_relevant(self):
+        q = queue("media")
+        self.assertNotIn("input_fingerprint", q["tasks"][0])
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], blocked(), BASE)
+        original_events = deepcopy(state["material_events"])
+        q["input_sha"] = "b" * 40
+        state, resumed = claim(state, q, "media", "legacy-repair", BASE + timedelta(minutes=1))
+        self.assertIsNotNone(resumed)
+        self.assertEqual(state["tasks"][MEDIA]["input_sha"], "b" * 40)
+        self.assertEqual(state["material_events"], original_events)
+
+    def test_scoped_revoked_task_restores_approval_without_requiring_input_change(self):
+        q = queue("media")
+        q["tasks"][0]["input_fingerprint"] = "unchanged-media-inputs"
+        state, old = claim({}, q, "media", "worker", BASE)
+        q["tasks"][0]["status"] = "paused"
+        state = reconcile(state, q, BASE + timedelta(seconds=1))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "REVOKED")
+        q["tasks"][0]["status"] = "approved"
+        state, restored = claim(state, q, "media", "restored-worker", BASE + timedelta(seconds=2))
+        self.assertIsNotNone(restored)
+        self.assertNotEqual(restored["token"], old["token"])
+        self.assertGreater(restored["fence"], old["fence"])
+        self.assertEqual(state["tasks"][MEDIA]["input_sha"], SHA)
+        self.assertEqual(state["material_events"], [])
+
     def test_alias_and_reordering_identical_blockers_cannot_manufacture_progress(self):
         q = queue("media")
         one = blocked(fingerprint="one")["blockers"][0]
@@ -568,14 +761,28 @@ class AutonomyEngineTests(unittest.TestCase):
         state = {}
         for attempt in range(3):
             q["input_sha"] = str(attempt) * 40
+            q["tasks"][0]["evidence_revision"] = "new-directed-repair-evidence-" + str(attempt)
             at = BASE + timedelta(minutes=attempt)
             state, lease = claim(state, q, "media", "worker", at)
+            self.assertIsNotNone(lease)
             report = {**blocked(), "real_failure": real, "failure_action": "blocked"}
             state = finish(state, MEDIA, lease["token"], report, at)
+        original_events = deepcopy(state["material_events"])
+        original_blocker = deepcopy(state["tasks"][MEDIA]["blocker"])
+        original_history = deepcopy(state["failure_history"])
         q["input_sha"] = "9" * 40
         state, candidates = plan(state, q, BASE + timedelta(minutes=4))
         self.assertNotIn("media", candidates)
+        self.assertEqual(state["tasks"][MEDIA]["status"], "BLOCKED")
+        self.assertEqual(state["tasks"][MEDIA]["blocker"], original_blocker)
+        self.assertEqual(state["material_events"], original_events)
+        self.assertEqual(state["failure_history"], original_history)
+        q["tasks"][0]["evidence_revision"] = "genuinely-new-repair-evidence"
+        state, candidates = plan(state, q, BASE + timedelta(minutes=5))
+        self.assertNotIn("media", candidates)
         self.assertIn("failure_budget_exhausted", state["tasks"][MEDIA]["blocker"]["fingerprint"])
+        self.assertEqual(state["failure_history"], original_history)
+        self.assertTrue(all(history["attempts"] == 3 for history in state["failure_history"].values()))
 
     def test_same_candidate_or_unchanged_semantic_result_is_not_new_mutation(self):
         q = queue("media")

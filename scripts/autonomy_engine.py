@@ -133,10 +133,24 @@ def _family(task):
 
 def _revision(task, queue):
     input_sha = task.get("input_sha", queue.get("input_sha", queue.get("source_sha", "")))
-    evidence = task.get("evidence_revision") or _hash(_semantic({
+    inferred = _semantic({
         key: task.get(key) for key in ("objective", "instructions", "constraints",
                                      "evidence", "independent_review", "depends_on", "failure")
-    }))
+    })
+    declared = _semantic({key: task[key] for key in (
+        "acceptance_artifact", "repair_patch", "executor_family", "sources", "source_urls", "approved_at")
+        if key in task})
+    # Approval authority is a declared input, unlike an audit observation clock.
+    if "approved_at" in task:
+        declared["approved_at"] = task["approved_at"]
+    evidence = task.get("evidence_revision")
+    if evidence:
+        # An externally declared revision token must not hide a new approved
+        # patch or an acceptance artifact added after the task was blocked.
+        if declared:
+            evidence = _hash([evidence, declared])
+    else:
+        evidence = _hash({**inferred, **declared})
     if task.get("input_fingerprint"):
         evidence = _hash([evidence, task["input_fingerprint"]])
     return str(input_sha), str(evidence)
@@ -245,6 +259,13 @@ def reconcile(state, queue, now):
             input_sha = task["input_sha"]
         changed = (task.get("input_sha"), task.get("evidence_revision")) != (
             input_sha, evidence_revision)
+        # A scoped fingerprint identifies the files that can affect this task.
+        # Keep observing the latest branch SHA, but do not retry a terminal task
+        # when only a sibling lane changed that branch. Legacy unscoped tasks
+        # still use the repository SHA as their relevant input revision.
+        relevant_changed = (previous_evidence_revision != evidence_revision
+                            or (not source.get("input_fingerprint")
+                                and task.get("input_sha") != input_sha))
         task.update({"family": family, "input_sha": input_sha,
                      "evidence_revision": evidence_revision,
                      "queue_status": source["status"],
@@ -265,15 +286,14 @@ def reconcile(state, queue, now):
             _invalidate(task, "READY", now, "queue_policy_blocker_removed")
         if changed and task["status"] == "RUNNING":
             _invalidate(task, "READY", now, "input_changed_fenced_previous_worker")
-        elif changed and task["status"] in {"BLOCKED", "REVOKED"}:
+        elif relevant_changed and task["status"] == "BLOCKED":
             exhausted = task.get("blocker", {}).get("kind") == "stall_recovery_budget"
-            if not exhausted or previous_evidence_revision != evidence_revision:
-                _invalidate(task, "READY", now, "input_or_evidence_changed")
-                if exhausted:
-                    task["recovery_reclaims"] = 0
-                    task["material_watch_started_at"] = _iso(now)
-                    task["recovery_episode"] = _hash([task_id, evidence_revision, _iso(now)])
-        elif changed and task["status"] == "CLOSED" and source.get("reopen_on_input_change"):
+            _invalidate(task, "READY", now, "input_or_evidence_changed")
+            if exhausted:
+                task["recovery_reclaims"] = 0
+                task["material_watch_started_at"] = _iso(now)
+                task["recovery_episode"] = _hash([task_id, evidence_revision, _iso(now)])
+        elif relevant_changed and task["status"] == "CLOSED" and source.get("reopen_on_input_change"):
             _invalidate(task, "READY", now, "explicit_repeatable_task_input_changed")
         elif task["status"] == "REVOKED":
             _invalidate(task, "READY", now, "queue_approval_restored")

@@ -12,6 +12,9 @@ Runtime task status is a durable overlay in `autopilot-state`, not an invented
 update to the owner-approved product queue.
 The queue was reconciled again at `24d4c1a8d6a70d73324207b33985378aeff36142`,
 including the new requirement for verified source runtime after a staging merge.
+The latest queue observed before publication is `73aff5c9e97c7c0294ccaf10708f0e6732a90816`;
+its later additions are retained as approved backlog, without overriding this
+front's prohibition on production promotion.
 
 ```mermaid
 flowchart TD
@@ -91,6 +94,10 @@ Dispatch, pickup alone, heartbeat, timestamp changes and workflow SUCCESS do not
 earn material progress. Repeated audits and failure signatures are capped at
 three on unchanged relevant inputs. Blocker order, duplicate aliases, log paths
 and observation clocks cannot inflate the metric.
+Scoped blocked tasks ignore unrelated staging heads. New approved repair plans,
+acceptance references and actual source/QA inputs can reopen them even if a
+declared revision token stays fixed. Fingerprints read committed blobs and use
+JSON content semantics, so regenerated clocks do not license identical retries.
 
 A directed repair may remain durable on an isolated candidate when full QA still
 contains an unrelated baseline failure. Its proof must include executed directed
