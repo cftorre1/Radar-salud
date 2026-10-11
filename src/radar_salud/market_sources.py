@@ -16,7 +16,9 @@ from urllib.parse import parse_qs, urlsplit
 class Captures:
     def __init__(self, path):
         self.path = Path(path)
-        self.receipts = json.loads((self.path / 'receipts.json').read_text())['receipts']
+        payload=json.loads((self.path / 'receipts.json').read_text())
+        self.receipts = payload['receipts']
+        self.as_of=payload.get('as_of')
 
     def body(self, receipt):
         file = (self.path / receipt['body_file']).resolve()
@@ -57,12 +59,13 @@ def collect_isapres(captures, root):
     if portfolio['coverage'][-1]['period'] != meta['reporting_period']:
         raise ValueError('Official release month and workbook latest data disagree')
     atomic_json(root/'data/market/isapre_portfolio.json', {'schema_version': 1, **meta, **portfolio})
-    evidence = health(captures, 'isapres', discovered=10, unique=10, complete=False,
+    evidence = health(captures, 'isapres', discovered=10, unique=10, recent=None, complete=False,
         reason='10/10 official codes and January–August portfolio reconcile; group/control, legal form Isalud, networks and separate-cadence recurrence remain unverified',
         deferred=1)
     evidence.update(inventory_entities=10, open_entities=7, closed_entities=3,
                     observations=len(portfolio['observations']), validated_periods=len(portfolio['coverage']),
                     latest_reporting_period=meta['reporting_period'], latest_release_at=meta['published_at'],
+                    recency_reason='Registry validity is observed, not dated publication; release date and data month are separate',
                     inventory_coverage_complete=True, outcome='OPERATIVE_DEGRADED')
     record_data_adapter(root, 'sis_isapre_universe', evidence)
     return evidence
@@ -74,7 +77,10 @@ def collect_cmf(captures, root):
     actors=json.loads(actor_path.read_text()).get('actors',[]) if actor_path.exists() else []
     documents=[]; statements=[]; observations=[]; actor_coverage=[]
     receipts=[r for r in captures.receipts if r['package']=='cmf']
-    as_of=max(r['completed_at'][:10] for r in receipts); start=(date.fromisoformat(as_of)-timedelta(days=89)).isoformat()
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    as_of=captures.as_of or max(datetime.fromisoformat(r['completed_at']).astimezone(ZoneInfo('America/Santiago')).date().isoformat() for r in receipts)
+    start=(date.fromisoformat(as_of)-timedelta(days=89)).isoformat()
     for r in receipts:
         if r['kind']=='1' and r['transport_ok']:
             actors.append(parse_actor(captures.html(r),source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at']))
@@ -107,6 +113,7 @@ def collect_cmf(captures, root):
                         from .primary_documents import extract_primary_pdf
                         text,method=extract_primary_pdf(content)
                         doc.update(primary_sha256=primary['sha256'], primary_verified=True,
+                                   primary_fetched_this_poll=True,
                                    primary_excerpt=' '.join(text.split())[:1000], primary_extraction_method=method,
                                    primary_content_usable=len(text.strip())>=80, materiality=classify_primary(text))
                         doc['disposition']=doc['materiality']['disposition'];doc['reason']=doc['materiality']['reason']
@@ -120,6 +127,10 @@ def collect_cmf(captures, root):
     old={d['record_id']:d for d in json.loads(old_path.read_text()).get('documents',[])} if old_path.exists() else {}
     for doc in documents:
         prior=old.get(doc['record_id'],{})
+        if not doc.get('primary_sha256') and prior.get('primary_sha256'):
+            for key,value in prior.items():
+                if key.startswith('primary_') or key=='materiality':doc[key]=value
+            doc['primary_fetched_this_poll']=False
         doc['detected_at']=prior.get('detected_at',next(r['completed_at'] for r in receipts if r['kind']=='essential_90d' and 'rut='+doc['issuer_entity_id'].split(':')[-1].split('-')[0]+'&' in r['url']))
     from .paths import project_root
     review_path=project_root()/'config/cmf_verified_events_2026_10_11.json'
@@ -150,6 +161,7 @@ def collect_cmf(captures, root):
         reason='Official issuer queries and primary disclosures reconciled; reviewed BACKFILL events held for core/editorial activation; complete health-group reporting perimeter and separate-cadence recurrence remain pending')
     evidence.update(outcome='OPERATIVE_DEGRADED',reporting_actors=len(actors),active_issuers=sum(a['issuer_registration_status']=='Vigente' for a in actors),
                     financial_observations=len(observations),statement_documents=len(statements),primary_documents_verified=sum(d.get('primary_verified',False) for d in documents),
+                    primary_documents_reverified=sum(d.get('primary_fetched_this_poll',False) for d in documents),
                     actor_coverage=actor_coverage,material_events=len(events), transport_failures=[{'url':r['url'],'http':r['network']['http_code'],'reason':r['network'].get('errormsg')} for r in receipts if not r['transport_ok']])
     record_data_adapter(root,'cmf_health_ecosystem',evidence)
     return evidence
@@ -162,6 +174,8 @@ def fold_name(value):
 
 def collect_dipres(captures, root):
     from .dipres_sources import pdf_text, parse_project, parse_comparative, parse_execution, budget_key, material_variations, canonical_url
+    stock_path=root/'data/market/dipres_health_budget.json'
+    previous_stock=json.loads(stock_path.read_text()) if stock_path.exists() else {}
     rows=[]; ledger=[];seen=set()
     for receipt in captures.receipts:
         if receipt['package']!='dipres':continue
@@ -174,31 +188,36 @@ def collect_dipres(captures, root):
             text=pdf_text(captures.body(receipt))
             parser=parse_comparative if 'Comparativo' in receipt['kind'] else parse_execution if 'Ejecución' in receipt['kind'] else parse_project
             values=parser(text,source_url=receipt['url'],sha256=receipt['sha256'])
+            for value in values:value['detected_at']=receipt['completed_at']
             rows.extend(values);entry.update(disposition='data_snapshot',observations=len(values),reason='Official total and hierarchy validated; no per-row news')
         except ValueError as exc:
             entry.update(disposition='deferred',observations=0,reason=str(exc))
         ledger.append(entry)
     # Same metric/state/period can be corroborated by several documents. Keep all provenance.
     merged={}
-    for row in rows:
+    for row in previous_stock.get('records',[])+rows:
         key=budget_key(row)
         if key in merged:
             previous=merged[key]
             if previous['value']!=row['value']:
                 key+='|version:'+row['source_sha256']
             else:
-                previous.setdefault('additional_sources',[]).append({'url':row['source_url'],'sha256':row['source_sha256']});continue
+                source={'url':row['source_url'],'sha256':row['source_sha256']}
+                if source['url']!=previous['source_url'] and source not in previous.setdefault('additional_sources',[]):previous['additional_sources'].append(source)
+                continue
         merged[key]=row
-    candidates=material_variations(rows)
-    payload={'schema_version':1,'records':list(merged.values()),'document_ledger':ledger,'material_variations':candidates,
+    candidates=list({(c['source_url'],c['source_sha256']):c for c in previous_stock.get('material_variations',[])+material_variations(rows)}.values())
+    retained_ledger=list({(d['source_url'],d['source_sha256']):d for d in previous_stock.get('document_ledger',[])+ledger}.values())
+    payload={'schema_version':1,'records':list(merged.values()),'document_ledger':retained_ledger,'poll_document_ledger':ledger,'material_variations':candidates,
              'aggregation_rule':'Do not sum nested fiscal levels or transfer-financed programs. Execution is accumulated, not monthly flow.',
              'coverage_complete':False,'coverage_reason':'Declared Salud project/execution perimeter parsed; source publication dates, complete fiscal version stock and separated-cadence recurrence remain unverified'}
-    atomic_json(root/'data/market/dipres_health_budget.json',payload)
-    evidence=health(captures,'dipres',discovered=len(ledger),unique=len(seen),material=len(candidates),
+    atomic_json(stock_path,payload)
+    evidence=health(captures,'dipres',discovered=len(ledger),unique=len(seen),recent=None,material=len(material_variations(rows)),
         deferred=sum(d['disposition']=='deferred' for d in ledger)+len(candidates),
         reason=payload['coverage_reason'])
     evidence.update(outcome='OPERATIVE_DEGRADED',data_documents=sum(d['disposition']=='data_snapshot' for d in ledger),
-        observations=len(merged),programs=sorted({f"{r['partida']}.{r['chapter']}.{r['program']}" for r in rows if r['program']}),
+        observations=len(merged),recency_reason='Original PDF publication dates unknown; fiscal years and execution cutoffs do not prove recent publication',
+        programs=sorted({f"{r['partida']}.{r['chapter']}.{r['program']}" for r in merged.values() if r['program']}),
         fiscal_years=sorted({r['fiscal_year'] for r in rows}),publication_reason='Tables feed Trend/Benchmark; material changes without verified publication day stay deferred')
     record_data_adapter(root,'dipres_health_budget',evidence)
     return evidence

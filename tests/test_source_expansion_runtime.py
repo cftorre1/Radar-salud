@@ -5,6 +5,7 @@ from pathlib import Path
 from zipfile import ZipFile
 import pytest
 from radar_salud.market_sources import Captures, collect_cmf
+from radar_salud.market_sources import collect_dipres
 from radar_salud.market_intelligence import export_views
 from radar_salud.cmf_sources import parse_shareholders
 
@@ -48,6 +49,20 @@ def test_shareholder_control_keeps_original_reporting_period(captures):
     owners=parse_shareholders(captures.html(r),source_url=r['url'],sha256=r['sha256'])
     ilc=next(o for o in owners if 'CONSTRU' in o['name'])
     assert ilc['ownership_pct']==100 and ilc['reported_period']=='2025-12'
+
+
+def test_partial_budget_poll_retains_valid_stock_and_does_not_claim_absence(captures,tmp_path):
+    path=tmp_path/'data/market';path.mkdir(parents=True)
+    original=json.loads((ROOT/'data/market/dipres_health_budget.json').read_text())
+    (path/'dipres_health_budget.json').write_text(json.dumps(original))
+    partial=Captures(captures.path)
+    partial.receipts=[r for r in captures.receipts if r['package']=='dipres' and r['kind']=='budget_index']
+    health=collect_dipres(partial,tmp_path)
+    retained=json.loads((path/'dipres_health_budget.json').read_text())
+    assert retained['records']==original['records']
+    assert retained['material_variations']==original['material_variations']
+    assert retained['document_ledger']==original['document_ledger']
+    assert health['items_recent'] is None and not health['coverage_complete']
 
 
 def test_periodic_queries_cross_year_without_freezing_2026():
