@@ -61,6 +61,7 @@ def test_publisher_conflict_cannot_hide_missing_identity_body_or_byline():
         assert not result.get('deferred_reason')
     valid = _verified_detail(dict(url=URL, listing='public'), lambda _: article(), None)['metadata']
     for change in ({'publication_date_verified': True}, {'publication_date': '2026-07-30'},
+                   {'publication_timestamp': '2026-07-30T12:00:00Z'}, {'article_verified': True},
                    {'primary_identity_verified': False}, {'page_text': 'Missing original body'},
                    {'visible_publication_date': '2026-08-06'}):
         assert not verified_publication_date_conflict(dict(valid, **change))

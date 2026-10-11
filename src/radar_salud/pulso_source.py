@@ -307,6 +307,8 @@ def verified_publication_date_conflict(metadata):
             and metadata.get("primary_identity_verified") is True
             and metadata.get("publication_date_verified") is False
             and metadata.get("publication_date") is None
+            and metadata.get("publication_timestamp") is None
+            and metadata.get("article_verified") is False
             and metadata.get("publisher_exception_reason") == "publisher_conflicting_publication_dates"
             and complete_article_body(metadata) and metadata.get("visible_publication_date")):
         return False
