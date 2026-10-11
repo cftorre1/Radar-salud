@@ -184,6 +184,51 @@ def test_actual_four_alternative_listings_repeat_identical_article_ids_titles_an
     assert len(datasets) == 3 and datasets[0] == datasets[1] == datasets[2]
 
 
+def test_actual_run13_all_worker_archive_hrefs_have_guarded_raw_final_but_no_additional_articles():
+    import hashlib
+    import json
+    from pathlib import Path
+    from radar_salud.mutual_sources import _Tree
+    from scripts.mutual_public_paging_probe import _NewsIdentities, public_url
+    root = Path(__file__).resolve().parents[1] / "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker"
+    report = json.loads((root / "report.json").read_text())
+    for response in report["responses"]:
+        body = (root/response["body_file"]).read_bytes()
+        assert hashlib.sha256(body).hexdigest() == response["sha256"] and len(body) == response["bytes"]
+        assert response["tls_verified"] and response["waf"] is None and public_url(response["url"])
+        assert not {"set-cookie", "authorization", "cookie"} & response["headers"].keys()
+    initial = next(x for x in report["responses"] if x["url"] == report["entry_url"] and x["http_status"] == 200)
+    raw = (root/initial["body_file"]).read_bytes().decode("utf8", "replace")
+    assert len(_NewsIdentities(raw).identities) == 84
+    tree, known = _Tree(raw), []
+    for node in tree.root.walk():
+        if node.tag != "a" or not node.attrs.get("id", "").endswith("_nextPage"):
+            continue
+        parent = node.parent
+        while parent and not parent.attrs.get("id", "").startswith("component-"):
+            parent = parent.parent
+        if parent:
+            known.append({"href": node.attrs["href"], "absolute_href": urljoin(report["entry_url"], node.attrs["href"]),
+                          "branch": parent.attrs["id"]})
+    assert len(known) == 21
+    assert sorted(known, key=lambda x: x["absolute_href"]) == sorted(report["observed_worker_anchors"], key=lambda x: x["absolute_href"])
+    inventory = report["observed_worker_archive"]
+    assert inventory["inspected_urls"] == inventory["verified_final_responses"] == 21
+    assert inventory["all_observed_urls_attempted"] and inventory["new_wcm_ids"] == []
+    assert not inventory["coverage_complete"] and not report["coverage_complete"]
+    for record in inventory["records"]:
+        assert record["http_status"] == 200 and len(record["hops"]) == 2
+        assert "/conocenos/quienes-somos/" in record["final_url"]
+        assert record["native_category_components"] == 0 and record["publisher_ids"] == []
+        parsed = _NewsIdentities((root/record["body_file"]).read_bytes().decode("utf8", "replace"))
+        assert not parsed.components and not parsed.identities
+        assert record["publication_date_evidence"] is None
+    native = next(x for x in report["steps"] if x["step"] == "native_next_result")
+    assert native["capture"]["http_status"] == 200 and not native["capture"]["browser_rendered"]
+    assert "dom_artifact" not in native
+    assert [x["reason"] for x in report["errors"]] == ["browser_redirect_not_followed"]
+
+
 def test_worker_browser_diagnostic_accepts_only_two_observed_entry_urls_before_import_or_request(tmp_path):
     import asyncio
     from scripts.mutual_public_paging_probe import OBSERVED_ENTRY_URLS, PAGE as BROWSER_PAGE, WORKER_PAGE, observe

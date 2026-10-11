@@ -1,0 +1,588 @@
+{
+  "source_slug": "mutual_seguridad",
+  "as_of_chile": "2026-10-11",
+  "assessment": "OPERATIVE_DEGRADED",
+  "external_blocker": null,
+  "coverage_complete": false,
+  "actions_run": "38122111500",
+  "report_artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/report.json",
+  "report_sha256": "5a279c0877b65ca6d584d7a3564641e348e58f9578f42c1281e17740da6da3d4",
+  "started_at": "2026-10-11T07:45:10.156670+00:00",
+  "finished_at": "2026-10-11T07:45:18.555157+00:00",
+  "elapsed_seconds": 8.398487,
+  "budget_seconds": 120,
+  "mode": "Verified anonymous official GET; challenge inspection before executable response; browser redirects aborted, manual observed Location hops inspected as raw only.",
+  "raw_capture_validation": {
+    "publisher_response_files_verified": 48,
+    "preflight_body_files_verified": 2,
+    "hash_size_tls_public_scope_waf_and_header_checks": "Every recorded response SHA256 and length agrees with saved bytes; TLS validated by default Playwright/curl policies; all URLs public www.mutual.cl; no challenges; no Cookie/Authorization/Set-Cookie persisted."
+  },
+  "initial_listing": {
+    "url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias",
+    "captured_at": "2026-10-11T07:45:11.660701+00:00",
+    "http_status": 200,
+    "bytes": 421913,
+    "sha256": "aae2d2610442b234a2d2cfc5a5cc8e4c62410f7b942fc013f0f32f1c71443534",
+    "body_file": "c9f4fd849f5463821270.body",
+    "tls_verified": true,
+    "waf": null,
+    "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/c9f4fd849f5463821270.body",
+    "unique_wcm_ids": 84,
+    "native_category_components_in_raw": 25
+  },
+  "native_next_click": {
+    "observed_anchor": {
+      "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GH=/",
+      "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GH=/",
+      "onclick": null,
+      "step": "observed_native_next_anchor",
+      "visible": false
+    },
+    "raw_hops": [
+      {
+        "url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GH=/",
+        "response_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GH=/",
+        "captured_at": "2026-10-11T07:45:13.371498+00:00",
+        "http_status": 302,
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "body_file": "2c3f2cd662025122a8eb.body",
+        "tls_verified": true,
+        "waf": null,
+        "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/2c3f2cd662025122a8eb.body"
+      },
+      {
+        "url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FplfOljp00A6CUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5s-AVpxEMUnpdCToHvEh0JQFTgk5MLAADELOHDn9ou5DsAxi1_cC0QAZsS8O5a6ZqYvhyuK9tWHSl6IEVo_C-RskwBj4-YIGYQI5PqV3eDbBynXKOHgsKaSh09Gs6qWu4DObowbqPUDZgOdQJgTuHzqrmw-ibPi1ccgA3tG8D3pX8!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+        "response_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FplfOljp00A6CUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5s-AVpxEMUnpdCToHvEh0JQFTgk5MLAADELOHDn9ou5DsAxi1_cC0QAZsS8O5a6ZqYvhyuK9tWHSl6IEVo_C-RskwBj4-YIGYQI5PqV3eDbBynXKOHgsKaSh09Gs6qWu4DObowbqPUDZgOdQJgTuHzqrmw-ibPi1ccgA3tG8D3pX8!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+        "captured_at": "2026-10-11T07:45:13.637758+00:00",
+        "http_status": 200,
+        "bytes": 105685,
+        "sha256": "bf47cfd7c4f5d394ac9a962b084473a52cc3d926c812e49f90348cdd109a6b3a",
+        "body_file": "4e133aa0249dd9a772c6.body",
+        "tls_verified": true,
+        "waf": null,
+        "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/4e133aa0249dd9a772c6.body"
+      }
+    ],
+    "browser_rendered": false,
+    "result": "Raw302 -> raw200 institutional Quienes Somos; no article IDs or native news category components. Original browser302 aborted; finalHTML inspected only, not rendered."
+  },
+  "observed_archive_evaluation": {
+    "observed_links": 21,
+    "unique_observed_urls": 21,
+    "baseline_wcm_ids": 84,
+    "new_wcm_ids": [],
+    "coverage_complete": false,
+    "mode": "bounded_observed_raw_GET_without_rendering",
+    "inspected_urls": 21,
+    "all_observed_urls_attempted": true,
+    "verified_final_responses": 21
+  },
+  "archive_records": [
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GD=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GD=/",
+        "branch": "component-1"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GD=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GD=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi0y1rCx560JoIQpGQELEX0wvYRB4x6MGvF7zoxcreNjszuzNLNCmJbs3D1mawXWuuY3_S_Iw05hEGnpdBQYFvUhUHgCjBJ0cXAACInsOHH7WeyXcAtFt-71oQhGxKwLspqWqiezNcFratOlL2QMpI-x8iZbkEnhwwRcwhQSbkt-4K2TjOuEIPAwpLKlR8bzirarHbitGFdhulbsB0qBMA_xTer_oXVt8URflMQrCRfQF-HvXl/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi0y1rCx560JoIQpGQELEX0wvYRB4x6MGvF7zoxcreNjszuzNLNCmJbs3D1mawXWuuY3_S_Iw05hEGnpdBQYFvUhUHgCjBJ0cXAACInsOHH7WeyXcAtFt-71oQhGxKwLspqWqiezNcFratOlL2QMpI-x8iZbkEnhwwRcwhQSbkt-4K2TjOuEIPAwpLKlR8bzirarHbitGFdhulbsB0qBMA_xTer_oXVt8URflMQrCRfQF-HvXl/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "8c3cf1368eab97005329be2b05d800e4f0740b43af8cae2758293010dbd268c6",
+      "body_file": "c47a9366ddceb32e7a41.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/c47a9366ddceb32e7a41.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GH=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GH=/",
+        "branch": "component-2"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GH=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GH=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FplfOljp00A6CUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5s-AVpxEMUnpdCToHvEh0JQFTgk5MLAADELOHDn9ou5DsAxi1_cC0QAZsS8O5a6ZqYvhyuK9tWHSl6IEVo_C-RskwBj4-YIGYQI5PqV3eDbBynXKOHgsKaSh09Gs6qWu4DObowbqPUDZgOdQJgTuHzqrmw-ibPi1ccgA3tG8D3pX8!/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FplfOljp00A6CUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5s-AVpxEMUnpdCToHvEh0JQFTgk5MLAADELOHDn9ou5DsAxi1_cC0QAZsS8O5a6ZqYvhyuK9tWHSl6IEVo_C-RskwBj4-YIGYQI5PqV3eDbBynXKOHgsKaSh09Gs6qWu4DObowbqPUDZgOdQJgTuHzqrmw-ibPi1ccgA3tG8D3pX8!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "bf47cfd7c4f5d394ac9a962b084473a52cc3d926c812e49f90348cdd109a6b3a",
+      "body_file": "900789389fbcf7c43c48.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/900789389fbcf7c43c48.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GL=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GL=/",
+        "branch": "component-3"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GL=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GL=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLXVg0A6CUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5sxAVpJEKUjKWQUxC7REcSEBV45OQCAAAxS_jwp7YL-Q6AccsfXAtkwKcE2F0rXRPTl8N1ZduqI0UPpAiN9yVSnikQ8RETxAxi5L761d0gH8ep0MhQUlhTX0ePRvCq9vexP7owbqPUDZgOdQJgTuHzqrmw-ibPi1ccgA3tG5VSRb8!/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLXVg0A6CUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5sxAVpJEKUjKWQUxC7REcSEBV45OQCAAAxS_jwp7YL-Q6AccsfXAtkwKcE2F0rXRPTl8N1ZduqI0UPpAiN9yVSnikQ8RETxAxi5L761d0gH8ep0MhQUlhTX0ePRvCq9vexP7owbqPUDZgOdQJgTuHzqrmw-ibPi1ccgA3tG5VSRb8!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "897b9a16aeb2655076aa32d7b81bc36fe57a9e08fb369380e9385da53abf06c6",
+      "body_file": "5243458913bd02b44fbe.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/5243458913bd02b44fbe.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GP=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GP=/",
+        "branch": "component-4"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GP=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GP=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FplfOljp00A6CUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5s-AVpxEMUnpdCToHvEh0JQFTgk5MLAADELOHDn9ou5DsAxi1_cC0QAZsS8O5a6ZqYvhyuK9tWHSl6IEVo_C-RskwBj4-YIGYQI5PqV3eDbBynXKOHgsKaSh09Gs6qWu5TObowbqPUDZgOdQJgTuHzqrmw-ibPi1ccgA3tG_0idZA!/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FplfOljp00A6CUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5s-AVpxEMUnpdCToHvEh0JQFTgk5MLAADELOHDn9ou5DsAxi1_cC0QAZsS8O5a6ZqYvhyuK9tWHSl6IEVo_C-RskwBj4-YIGYQI5PqV3eDbBynXKOHgsKaSh09Gs6qWu5TObowbqPUDZgOdQJgTuHzqrmw-ibPi1ccgA3tG_0idZA!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "eeb75ed6b67d5e7b0e731bca8992570970103654e0206e141facadbb45b151df",
+      "body_file": "fcf6cd8285d71453b5f1.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/fcf6cd8285d71453b5f1.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GDB=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GDB=/",
+        "branch": "component-5"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GDB=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GDB=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XlnrgIJgIQpGQELEXwwVsIo8Y9ODXC170YmFvm52Z3ZklmhREt-XT1OVgura8jf1ZiwvSSIQoGUshpyC8REUSEH1wyMkGAACil_DhT20X8i0AbZc_2BbIgE8JsLvyVU10Xw7XlWmrjhQ9kCLUzpdIeeaDiI-YIGYQI3f9X90N8nGcCoUMJYU1dVX0aASvane_89zRhrY7pXbAdKkVAHMKn1_NpdU3eV684gBMaN6TEURq/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XlnrgIJgIQpGQELEXwwVsIo8Y9ODXC170YmFvm52Z3ZklmhREt-XT1OVgura8jf1ZiwvSSIQoGUshpyC8REUSEH1wyMkGAACil_DhT20X8i0AbZc_2BbIgE8JsLvyVU10Xw7XlWmrjhQ9kCLUzpdIeeaDiI-YIGYQI3f9X90N8nGcCoUMJYU1dVX0aASvane_89zRhrY7pXbAdKkVAHMKn1_NpdU3eV684gBMaN6TEURq/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "a2b8b23e2e6b703a8a23bfb448a06b811ea006fcc1a5d608521ae368a4ea169e",
+      "body_file": "3390663211e7a7c59032.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/3390663211e7a7c59032.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GGB=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GGB=/",
+        "branch": "component-6"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GGB=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GGB=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLXVgEAZAKBISInYxLGAT-YhBB3-94KKLhdsu9967e--IJiXRXfU0TTWavqtuU3_W4oI0FhFKxjIoKAgvVbEERB8ccrIBAIDoNXz4U_uVfAtA2-UPtgUy5HMC7K581RA9VON1Y7q6J-UApIy08yVSnvsgkiOmiDkkyF3_V3eHfBpnQiFDSWFLXRU_WsHrxg0Cz51saLtTagfMl1oBsKTw-dVSWkNbFOUrCcFE5g0rYeyM/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLXVgEAZAKBISInYxLGAT-YhBB3-94KKLhdsu9967e--IJiXRXfU0TTWavqtuU3_W4oI0FhFKxjIoKAgvVbEERB8ccrIBAIDoNXz4U_uVfAtA2-UPtgUy5HMC7K581RA9VON1Y7q6J-UApIy08yVSnvsgkiOmiDkkyF3_V3eHfBpnQiFDSWFLXRU_WsHrxg0Cz51saLtTagfMl1oBsKTw-dVSWkNbFOUrCcFE5g0rYeyM/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "21563bc9a0c5b491c46a68cf1a32516e1e10db878caa711f794db23d1bcdb4db",
+      "body_file": "fd739e85423cd25bfbb0.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/fd739e85423cd25bfbb0.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GIB=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GIB=/",
+        "branch": "component-7"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GIB=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GIB=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLTgwaAepUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5sxAVpJBT6jKWQUxC7REc-IErwyMkFAABilvDhT20X8h0A45Y_uBb4IZ8SYHctdU1MXw7XlW2rjhQ9kEIZ70ukPJMg4iMmiBnEyAP5q7tBPo5ToZGhT2FNAx09GsGrOtirXTDaMG6n1A2YLnUCYE7h86u5tPomz4tXHIJV9g2mDU-t/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLTgwaAepUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5sxAVpJBT6jKWQUxC7REc-IErwyMkFAABilvDhT20X8h0A45Y_uBb4IZ8SYHctdU1MXw7XlW2rjhQ9kEIZ70ukPJMg4iMmiBnEyAP5q7tBPo5ToZGhT2FNAx09GsGrOtirXTDaMG6n1A2YLnUCYE7h86u5tPomz4tXHIJV9g2mDU-t/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "632cc1b7e988376549cc96ec13f820ca4ce7194785ba9ab815ab49d6dd56d688",
+      "body_file": "a9d785e69d40607f30a5.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/a9d785e69d40607f30a5.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GKB=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GKB=/",
+        "branch": "component-8"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GKB=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GKB=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLTgwaAfBUiQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5sxAWpEhH6jKWQUxC7RCsfECV45OQCAAAxS_jwp7YL-Q6AccsfXAv8kE8JsLuWuiamL4fryrZVR4oeSBEZ70ukPJMg4iMmiBnEyAP5q7tBPo5ToZGhT2FNA60ejeBVHezVLhhtGLdT6gZMlzoBMKfw-dVcWn2T58UrDsFG9g1Jr6-g/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLTgwaAfBUiQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5sxAWpEhH6jKWQUxC7RCsfECV45OQCAAAxS_jwp7YL-Q6AccsfXAv8kE8JsLuWuiamL4fryrZVR4oeSBEZ70ukPJMg4iMmiBnEyAP5q7tBPo5ToZGhT2FNA60ejeBVHezVLhhtGLdT6gZMlzoBMKfw-dVcWn2T58UrDsFG9g1Jr6-g/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "2c5a0230e33f3437c283afabb5aca8c0f1a2746c5f3d151f8c9b84c48a3848eb",
+      "body_file": "7b8b69a5b2912e7fa5f4.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/7b8b69a5b2912e7fa5f4.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNB=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNB=/",
+        "branch": "component-9"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNB=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNB=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLTgwaAdBKBISInYxXcAm8hGDDv56wUUXC7dd7r13994RTUqiW_O0tRls15rb2J-1uCCNRYQ-YxkUFMQuVbEPiBI8cnIBAIDoJXz4U9uFfAdAu-UPrgV-yKcE2F1JVRPdm-G6sm3VkbIHUkba-xIpzyWI5IgpYg4J8kD-6m6Qj-NMKGToU1jTQMWPRvCqDvbpLhhtaLdT6gZMlzoBMKfw-dVcWn1TFOUrCcFG9g3AOCZQ/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLTgwaAdBKBISInYxXcAm8hGDDv56wUUXC7dd7r13994RTUqiW_O0tRls15rb2J-1uCCNRYQ-YxkUFMQuVbEPiBI8cnIBAIDoJXz4U9uFfAdAu-UPrgV-yKcE2F1JVRPdm-G6sm3VkbIHUkba-xIpzyWI5IgpYg4J8kD-6m6Qj-NMKGToU1jTQMWPRvCqDvbpLhhtaLdT6gZMlzoBMKfw-dVcWn1TFOUrCcFG9g3AOCZQ/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "601b1e9208be054554555c2003445a3f1a4a6d2447c174c8198c6f1917fc5676",
+      "body_file": "2b616ab2abb35ef976f1.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/2b616ab2abb35ef976f1.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBC=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBC=/",
+        "branch": "component-10"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBC=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBC=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLXVg0A6CUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5sxAVpJEKUjKWQUxC7REcSEBV45OQCAAAxS_jwp7YL-Q6AccsfXAtkwKcE2F0rXRPTl8N1ZduqI0UPpAiN9yVSnikQ8RETxAxi5L761d0gH8ep0MhQUlhTX0ePRvCq9vc75Y82jNspdQOmS50AmFP4_Gourb7J8-IVB2BD-wZnnoE6/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLXVg0A6CUCQkROxiWMAm8hGDDv56wUUXC7dd7r13994RQwpi2vJp63KwXVvexv5sxAVpJEKUjKWQUxC7REcSEBV45OQCAAAxS_jwp7YL-Q6AccsfXAtkwKcE2F0rXRPTl8N1ZduqI0UPpAiN9yVSnikQ8RETxAxi5L761d0gH8ep0MhQUlhTX0ePRvCq9vc75Y82jNspdQOmS50AmFP4_Gourb7J8-IVB2BD-wZnnoE6/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "eeaa24de8c4d1daafbd10bb6e52e16e742436ebaa6047e78b6ef4b00042bec21",
+      "body_file": "0d3d41778752408e8a09.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/0d3d41778752408e8a09.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFC=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFC=/",
+        "branch": "component-11"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFC=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFC=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XlnrgoE0UhCIhIWIvhgvYRB4x6MGvF7zoxcreNjszuzNLDCmIacuHrcvBdm15HfuTEWekkQhRMpZCTkFsEh1JQFTgkaMLAADEzOHDj1rP5DsAxi2_dy2QAZ8SYDetdE1MXw6XhW2rjhQ9kCI03odIeaZAxAdMEDOIkfvqW3eFfBynQiNDSWFJfR3dG8Gr2t9tlT_aMG6n1A2YLnUC4J_C-1f_0uqbPC-ecQA2tC-520Ah/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XlnrgoE0UhCIhIWIvhgvYRB4x6MGvF7zoxcreNjszuzNLDCmIacuHrcvBdm15HfuTEWekkQhRMpZCTkFsEh1JQFTgkaMLAADEzOHDj1rP5DsAxi2_dy2QAZ8SYDetdE1MXw6XhW2rjhQ9kCI03odIeaZAxAdMEDOIkfvqW3eFfBynQiNDSWFJfR3dG8Gr2t9tlT_aMG6n1A2YLnUC4J_C-1f_0uqbPC-ecQA2tC-520Ah/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "dbbd8d819ea04e6d8cc1e1eb854f8734417f4388ebcabbeffa4219ef13eaad80",
+      "body_file": "5252db7706fcd7ba8955.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/5252db7706fcd7ba8955.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJC=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJC=/",
+        "branch": "component-12"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJC=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJC=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVG7DsIwDPwiFKcmaRgyQAb6SqkqVZQsqEtLJPoQKgx8PS0LLKR4s3x39p2JISUxXfWwTTXavquuU38y_Iw05iEKz8ugoMB3qY4FICrwydEFAABi_uHDj9r-yXcAjFs-ci0QAZsT8G5a6YaYoRovK9vVPSkHIGVo_A-RslwBTw6YIuaQIJPqW3eDbBpnXKOHgsKaSh3fW87qRu4jJScbxu2UugHzpU4ALCm8f7WU1tAWRflMArChfQHbFQMN/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVG7DsIwDPwiFKcmaRgyQAb6SqkqVZQsqEtLJPoQKgx8PS0LLKR4s3x39p2JISUxXfWwTTXavquuU38y_Iw05iEKz8ugoMB3qY4FICrwydEFAABi_uHDj9r-yXcAjFs-ci0QAZsT8G5a6YaYoRovK9vVPSkHIGVo_A-RslwBTw6YIuaQIJPqW3eDbBpnXKOHgsKaSh3fW87qRu4jJScbxu2UugHzpU4ALCm8f7WU1tAWRflMArChfQHbFQMN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "9330a8510accb7aade9a9d2180f224e3e452c9d4c2c23f9cdcdb28be0c5b5ad3",
+      "body_file": "bf23747305aff7c6f7b4.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/bf23747305aff7c6f7b4.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNC=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNC=/",
+        "branch": "component-14"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNC=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNC=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLTgwaAdBKBISInYxXcAm8hGDDv56wUUXC7dd7r13994RTUqiW_O0tRls15rb2J-1uCCNRYQ-YxkUFMQuVbEPiBI8cnIBAIDoJXz4U9uFfAdAu-UPrgV-yKcE2F1JVRPdm-G6sm3VkbIHUkba-xIpzyWI5IgpYg4J8kD-6m6Qj-NMKGToU1jTQMWPRvCqDvapDEYb2u2UugHTpU4AzCl8fjWXVt8URflKQrCRfQMFUMIW/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVE9D4IwEP1FpteeLTgwaAdBKBISInYxXcAm8hGDDv56wUUXC7dd7r13994RTUqiW_O0tRls15rb2J-1uCCNRYQ-YxkUFMQuVbEPiBI8cnIBAIDoJXz4U9uFfAdAu-UPrgV-yKcE2F1JVRPdm-G6sm3VkbIHUkba-xIpzyWI5IgpYg4J8kD-6m6Qj-NMKGToU1jTQMWPRvCqDvapDEYb2u2UugHTpU4AzCl8fjWXVt8URflKQrCRfQMFUMIW/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "12f2ef415314d892cfbc0d649a2e982a3560a2abb30d4cd25fe6bf114fc74c09",
+      "body_file": "9964e7ab4fedb2641506.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/9964e7ab4fedb2641506.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBD=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBD=/",
+        "branch": "component-15"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBD=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBD=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XlnrgIJgIQpGQELEXwwVsIo8Y9ODXC170YmFvm52Z3ZklmhREt-XT1OVgura8jf1ZiwvSSIQoGUshpyC8REUSEH1wyMkGAACil_DhT20X8i0AbZc_2BbIgE8JsLvyVU10Xw7XlWmrjhQ9kCLUzpdIeeaDiI-YIGYQI3f9X90N8nGcCoUMJYU1dVX0aASvanfv7dzRhrY7pXbAdKkVAHMKn1_NpdU3eV684gBMaN59gk0x/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XlnrgIJgIQpGQELEXwwVsIo8Y9ODXC170YmFvm52Z3ZklmhREt-XT1OVgura8jf1ZiwvSSIQoGUshpyC8REUSEH1wyMkGAACil_DhT20X8i0AbZc_2BbIgE8JsLvyVU10Xw7XlWmrjhQ9kCLUzpdIeeaDiI-YIGYQI3f9X90N8nGcCoUMJYU1dVX0aASvanfv7dzRhrY7pXbAdKkVAHMKn1_NpdU3eV684gBMaN59gk0x/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "49b8ca0c086bed2c2b23872b1c5465d1f1fa72c6cca62b707c9bfa39b2b6e581",
+      "body_file": "e903050ee4a6d1909629.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/e903050ee4a6d1909629.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFD=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFD=/",
+        "branch": "component-16"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFD=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFD=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi0y1rSz30oBgFoUhIiNiL4QI2kUcMevDrBS96sbC3zc7M7swSTXKim-JpqqI3bVPchv6s-QVpyAMUjpNARoFvYhUKQPTAJScbAACInsOHP7WeybcAtF3-YFsgfDYm4NyVpyqiu6K_LkxTtiTvgOSBdr9EylIPeHTEGDGFCJn0fnVXyIZxwhU6KCgsqVTho-asrOR-t5WDDW13Su2A8VIrAKYUPr-aSqursyx_RT6YwLwBo8eMKg!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi0y1rSz30oBgFoUhIiNiL4QI2kUcMevDrBS96sbC3zc7M7swSTXKim-JpqqI3bVPchv6s-QVpyAMUjpNARoFvYhUKQPTAJScbAACInsOHP7WeybcAtF3-YFsgfDYm4NyVpyqiu6K_LkxTtiTvgOSBdr9EylIPeHTEGDGFCJn0fnVXyIZxwhU6KCgsqVTho-asrOR-t5WDDW13Su2A8VIrAKYUPr-aSqursyx_RT6YwLwBo8eMKg!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "f6706b091b46b394847a9b7875751f1d0f342db13bb6c032fba4fb6f4024ed91",
+      "body_file": "fb4225dd271a82c00fa1.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/fb4225dd271a82c00fa1.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJD=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJD=/",
+        "branch": "component-18"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJD=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJD=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi0y1rSz1wUEzkVSQkxNqL4QI2kUcMevDrBS96sbC3zc7M7swSTRTRbfk0dTmYri1vY3_W_II05iEKx8mgoMB3qYwFIPrgkpMNAABEL-HDn9ou5FsA2i4f2RaIgE0JOHfpy5rovhyuK9NWHVE9EBVq90ukLPeBJ0dMEXNIkHn-r-4G2TjOuEQHBYU19WT8aDirau8Q7b3RhrY7pXbAdKkVAHMKn1_NpdU3RaFeSQAmNG_BCc8G/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi0y1rSz1wUEzkVSQkxNqL4QI2kUcMevDrBS96sbC3zc7M7swSTRTRbfk0dTmYri1vY3_W_II05iEKx8mgoMB3qYwFIPrgkpMNAABEL-HDn9ou5FsA2i4f2RaIgE0JOHfpy5rovhyuK9NWHVE9EBVq90ukLPeBJ0dMEXNIkHn-r-4G2TjOuEQHBYU19WT8aDirau8Q7b3RhrY7pXbAdKkVAHMKn1_NpdU3RaFeSQAmNG_BCc8G/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "1f9a97077e106687fbf2b82a234547438ac5d6822f7390d388e01076bf76bded",
+      "body_file": "77b42aa66b021269bace.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/77b42aa66b021269bace.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GND=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GND=/",
+        "branch": "component-19"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GND=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GND=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XFjxw0JoIQpGQEGsvhgvYRB4x6MGvF7zoxcreNjszuzNLDNHEtOXD1uVgu7a8jv3JiDPSWEToM5ZBQUFsUhX7gCjBI0cXAACImcOHH7WeyXcAjFt-71rgh3xKgN2UVDUxfTlcFratOqJ7IDoy3odIeS5BJAdMEXNIkAfyW3eFfBxnQiFDn8KSBiq-N4JXdbBLt8Fow7idUjdgutQJgH8K71_9S6tvikI_kxBsZF8fTA4d/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XFjxw0JoIQpGQEGsvhgvYRB4x6MGvF7zoxcreNjszuzNLDNHEtOXD1uVgu7a8jv3JiDPSWEToM5ZBQUFsUhX7gCjBI0cXAACImcOHH7WeyXcAjFt-71rgh3xKgN2UVDUxfTlcFratOqJ7IDoy3odIeS5BJAdMEXNIkAfyW3eFfBxnQiFDn8KSBiq-N4JXdbBLt8Fow7idUjdgutQJgH8K71_9S6tvikI_kxBsZF8fTA4d/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "aed35ba262e1701cdf959b6d068adb3d8252a1fe23f16c61857c209c62a3dbae",
+      "body_file": "517c59e6ac2d4fcdd7b8.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/517c59e6ac2d4fcdd7b8.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBE=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBE=/",
+        "branch": "component-20"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBE=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GBE=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XlnrgIMQIQpGQELEXwwVsIo8Y9ODXC170YmFvm52Z3ZklmhREt-XT1OVgura8jf1ZiwvSSIQoGUshpyC8REUSEH1wyMkGAACil_DhT20X8i0AbZc_2BbIgE8JsLvyVU10Xw7XlWmrjhQ9kCLUzpdIeeaDiI-YIGYQI3f9X90N8nGcCoUMJYU1dVX0aASvanfv7dzRhrY7pXbAdKkVAHMKn1_NpdU3eV684gBMaN646ql3/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XlnrgIMQIQpGQELEXwwVsIo8Y9ODXC170YmFvm52Z3ZklmhREt-XT1OVgura8jf1ZiwvSSIQoGUshpyC8REUSEH1wyMkGAACil_DhT20X8i0AbZc_2BbIgE8JsLvyVU10Xw7XlWmrjhQ9kCLUzpdIeeaDiI-YIGYQI3f9X90N8nGcCoUMJYU1dVX0aASvanfv7dzRhrY7pXbAdKkVAHMKn1_NpdU3eV684gBMaN646ql3/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "8d155eaf46e3593e8a8d493ee62cd94df0e53cdcb057c50275c545907d680aa7",
+      "body_file": "1ee5b866345740ea802d.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/1ee5b866345740ea802d.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFE=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFE=/",
+        "branch": "component-21"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFE=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GFE=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi0y1rSz30oEQFoUhIiNiL4QI2kUcMevDrBS96sbC3zc7M7swSTXKim-JpqqI3bVPchv6s-QVpyAMUjpNARoFvYhUKQPTAJScbAACInsOHP7WeybcAtF3-YFsgfDYm4NyVpyqiu6K_LkxTtiTvgOSBdr9EylIPeHTEGDGFCJn0fnVXyIZxwhU6KCgsqVTho-asrOR-t5WDDW13Su2A8VIrAKYUPr-aSqursyx_RT6YwLwBZq9obA!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi0y1rSz30oEQFoUhIiNiL4QI2kUcMevDrBS96sbC3zc7M7swSTXKim-JpqqI3bVPchv6s-QVpyAMUjpNARoFvYhUKQPTAJScbAACInsOHP7WeybcAtF3-YFsgfDYm4NyVpyqiu6K_LkxTtiTvgOSBdr9EylIPeHTEGDGFCJn0fnVXyIZxwhU6KCgsqVTho-asrOR-t5WDDW13Su2A8VIrAKYUPr-aSqursyx_RT6YwLwBZq9obA!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "b679164bb6071999b0d9a62564fe0c49a9389dde8313fd38cb7c9ea4bfa436a3",
+      "body_file": "03df4d97408f4f0a7344.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/03df4d97408f4f0a7344.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJE=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJE=/",
+        "branch": "component-23"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJE=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GJE=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi0y1rSz1wUGLkVSQkxNqL4QI2kUcMevDrBS96sbC3zc7M7swSTRTRbfk0dTmYri1vY3_W_II05iEKx8mgoMB3qYwFIPrgkpMNAABEL-HDn9ou5FsA2i4f2RaIgE0JOHfpy5rovhyuK9NWHVE9EBVq90ukLPeBJ0dMEXNIkHn-r-4G2TjOuEQHBYU19WT8aDirau8Q7b3RhrY7pXbAdKkVAHMKn1_NpdU3RaFeSQAmNG8EYStA/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi0y1rSz1wUGLkVSQkxNqL4QI2kUcMevDrBS96sbC3zc7M7swSTRTRbfk0dTmYri1vY3_W_II05iEKx8mgoMB3qYwFIPrgkpMNAABEL-HDn9ou5FsA2i4f2RaIgE0JOHfpy5rovhyuK9NWHVE9EBVq90ukLPeBJ0dMEXNIkHn-r-4G2TjOuEQHBYU19WT8aDirau8Q7b3RhrY7pXbAdKkVAHMKn1_NpdU3RaFeSQAmNG8EYStA/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "8a3da062760a9ffc4cb8aeba5f34cfa0f1c210e87b2b8ad104d192533614b8a2",
+      "body_file": "e7c0a01205a1ad832f19.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/e7c0a01205a1ad832f19.body"
+    },
+    {
+      "anchor": {
+        "href": "p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNE=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNE=/",
+        "branch": "component-24"
+      },
+      "requested_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNE=/",
+      "hops": [
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/IZ7_31K6I382215RC06LO3N33R0L35=CZ6_31K6I3822935C06P6M32381041=MKum65fg=GNE=/",
+        "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XFjxw0MYIQpGQEGsvhgvYRB4x6MGvF7zoxcreNjszuzNLDNHEtOXD1uVgu7a8jv3JiDPSWEToM5ZBQUFsUhX7gCjBI0cXAACImcOHH7WeyXcAjFt-71rgh3xKgN2UVDUxfTlcFratOqJ7IDoy3odIeS5BJAdMEXNIkAfyW3eFfBxnQiFDn8KSBiq-N4JXdbBLt8Fow7idUjdgutQJgH8K71_9S6tvikI_kxBsZF_aJOpb/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      ],
+      "publisher_ids": [],
+      "publication_date_evidence": null,
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jVHLDoIwEPwi023XFjxw0MYIQpGQEGsvhgvYRB4x6MGvF7zoxcreNjszuzNLDNHEtOXD1uVgu7a8jv3JiDPSWEToM5ZBQUFsUhX7gCjBI0cXAACImcOHH7WeyXcAjFt-71rgh3xKgN2UVDUxfTlcFratOqJ7IDoy3odIeS5BJAdMEXNIkAfyW3eFfBxnQiFDn8KSBiq-N4JXdbBLt8Fow7idUjdgutQJgH8K71_9S6tvikI_kxBsZF_aJOpb/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "sha256": "b6fc16341697d1d951ab758ea00d34fe69db3d1c6e69c093adeb91fb916f333f",
+      "body_file": "34378c2bee761acfad40.body",
+      "tls_verified": true,
+      "waf": null,
+      "native_category_components": 0,
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/34378c2bee761acfad40.body"
+    }
+  ],
+  "limits_of_inference": [
+    "All21 literal current Worker anchors were attempted and their final raw200 bodies verified; this is a finite fallback evaluation, not proof the whole90-day publisher archive is complete.",
+    "No new WCM IDs, dated articles, or publication evidence were produced by these institutional-layout responses.",
+    "The employer listing still supplies51 verified in-horizon details/33within30days; native employer next is empty layout, and14experimental observed theme continuations repeat initial cards.",
+    "The three search alternative lists repeat exactly84ID/title/date records; fourth redirects to Search Center.",
+    "Memoria2025/HospitalAnuario2024 support source analysis but have no verified full publisher release day; annual data periods/signatures/cited research publication dates are excluded."
+  ],
+  "prior_fallback_evidence": [
+    "data/audits/source_e_recovery/mutual_run9_closure_evidence.json",
+    "data/audits/source_e_recovery/mutual_run10_alternative_listing_evidence.json",
+    "data/audits/source_e_recovery/mutual_pdf_fallbacks.json"
+  ],
+  "source_health_observed": {
+    "checked_at": "2026-10-11T07:46:09.936776+00:00",
+    "status": "warning",
+    "discovered": 51,
+    "published": 1,
+    "rejected": 50,
+    "pending": 0,
+    "diagnostic_count": 14,
+    "scope": "Read-only observation of root-owned health; sourcewarning maintained, no health writes by this agent."
+  },
+  "editorial_outcome": {
+    "deterministic_candidates_90_days": 2,
+    "historical_backfill_publications": 1,
+    "candidate_rejected_by_editorial_score": {
+      "item": "Gran Americas adherence8of9transportcompanies; no worker headcount",
+      "score": 64
+    },
+    "published_historical_item": "2026-08-27CAM construction procurement call, optional850m² referential Vallenar pilot,5-year framework; not awarded/opened/executed; deadline expired2026-09-03. Root-approved copy now states this historical limitation."
+  },
+  "regression_tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py",
+    "result": "85 passed; actualRun13 wire hashes, exact21raw-anchor membership, allfinal200 QuienesSomos/noIDs/noinferredpubday, no finalrender plus prior guard/deadline/URL tests."
+  },
+  "qa_reviewer": {
+    "reviewer": "independent /root/reviewer",
+    "pre_execution_3768b9e": "PASS;84Mutual tests independently passed, preventive302guard and scoped21GET/cap/deadline validated.",
+    "actual_run13": "Actual finalraw/hashes/21counts delivered for independent revalidation."
+  },
+  "resumable_next_action": "Source is operative with verified current capture and publication dates, degraded by reproducible publisher archive route behavior. Re-test when publisher exposes a working official dated archive; resume from this report and saved raw bytes. No speculative endpoints, WAF execution or publication-date inference.",
+  "canonical_queue_mutated": false,
+  "paid_api_called": false
+}
