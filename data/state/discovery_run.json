@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-11T06:52:23.720963+00:00",
+  "at": "2026-10-11T13:39:13.180801+00:00",
   "sources": {
     "superintendencia": {
       "discovered": 740,
@@ -14,10 +14,11 @@
       "error_type": null
     },
     "superintendencia_fiscalizacion": {
-      "discovered": 2696,
+      "discovered": 3343,
       "new": 0,
       "technical_status": "ok",
-      "error_type": null
+      "error_type": null,
+      "checked_at": "2026-10-11T13:39:13.180788+00:00"
     },
     "minsal": {
       "discovered": 53,
@@ -98,21 +99,30 @@
       "error_type": null
     },
     "suseso_fiscalizacion": {
-      "discovered": 38,
+      "discovered": 1273,
       "new": 0,
       "technical_status": "ok",
-      "error_type": null
+      "error_type": null,
+      "checked_at": "2026-10-11T13:39:13.180801+00:00"
     },
     "diario_financiero": {
       "discovered": 41,
       "new": 0,
       "technical_status": "ok",
       "error_type": null,
-      "checked_at": "2026-10-11T06:52:23.720946+00:00",
+      "checked_at": "2026-10-11T13:18:27.075056+00:00",
       "dated": 41,
       "undated": 0,
       "detail_errors": 0,
       "insufficient_evidence": 5,
+      "textual_candidates": 36,
+      "nontextual_candidates_known": 5,
+      "textual_capture_status": "verified",
+      "format_capability": {
+        "text": "runtime_verified",
+        "images": "requires_ocr",
+        "audio_video": "requires_official_text"
+      },
       "newest_event_date": "2026-10-10"
     },
     "diario_oficial": {
@@ -126,5 +136,9 @@
     "diario_financiero"
   ],
   "successful_sources": 14,
-  "failed_sources": 5
+  "failed_sources": 5,
+  "integration_receipts": [
+    38142527704,
+    38143952220
+  ]
 }

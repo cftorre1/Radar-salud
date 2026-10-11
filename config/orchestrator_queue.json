@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T13:34:28.611883+00:00",
+  "updated_at": "2026-10-11T13:41:48.647967+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3726,9 +3726,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T07:39:26.902569+00:00",
+      "last_progress_at": "2026-10-11T13:41:48.647967+00:00",
       "current_subfront": "bounded_coverage_validated_global_gates_and_dates_pending",
-      "next_action": "Preserve degraded source coverage after validated staging9920e3d runtime; integrate current-poll health fix. Ten undated reports and wider legal identity review remain open.",
+      "next_action": "Integrate strict baseline PR17 and current-poll health/weekly provenance PR19 with combined QA. Continue source PR12/13/14 in staging; preserve undated reports and legal coverage gaps. Pulso only READY.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -3955,7 +3955,11 @@
           "next_action": "Keep source degraded; resolve undated reports / remaining legal-act identity limits without date fabrication",
           "production_changes": false
         }
-      ]
+      ],
+      "integration_outcome": "INTEGRATED_DEGRADED",
+      "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+      "qa_run": 38143952494,
+      "runtime_run": 38143952220
     },
     {
       "id": "source_repair_mutualities_lane_2026_10_11",
@@ -4650,9 +4654,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T13:34:28.611883+00:00",
-      "current_subfront": "SIS_SUSESO_PR18_candidate_global_QA",
-      "next_action": "Verify SIS/SUSESO post-merge runtime on staging9920e3d; integrate PR17 strict primary-PDF baseline and poll health fix. Continue PR12/13/14 with parallel owner; PR10 only READY_FOR_INTEGRATION.",
+      "last_progress_at": "2026-10-11T13:41:48.647967+00:00",
+      "current_subfront": "salud_laboral_candidate",
+      "next_action": "Integrate strict baseline PR17 and current-poll health/weekly provenance PR19 with combined QA. Continue source PR12/13/14 in staging; preserve undated reports and legal coverage gaps. Pulso only READY.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
