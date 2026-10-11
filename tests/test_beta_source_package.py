@@ -74,3 +74,10 @@ def test_beta_source_surfaces_use_current_newsroom_routes():
     assert sources["clinicas_achs_salud"]["page"]=="https://www.achs.cl/centro-de-noticias"
     assert sources["achs_seguro_laboral"]["page"]=="https://www.achs.cl/centro-de-noticias"
     assert sources["pulso_latercera"]["page"]=="https://www.latercera.com/canal/pulso/"
+
+
+def test_pulso_is_promoted_to_core_daily_source_config():
+    core={x["slug"]:x for x in _json("config/sources.json")}
+    assert "pulso_latercera" in core
+    assert core["pulso_latercera"]["source_type"]=="press_high_trust"
+    assert core["pulso_latercera"]["cadence"]=="multiple_daily"
