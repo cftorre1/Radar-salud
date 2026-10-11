@@ -12,6 +12,9 @@ for url in (
     'https://www.paho.org/en/news?page=8',
     'https://www.paho.org/es/noticias',
     'https://www.paho.org/es/noticias?c%5B%5D=65',
+    'https://www.paho.org/en/news?page=9',
+    'https://www.paho.org/sitemap.xml',
+    'https://www.paho.org/en/rss.xml',
 ):
     try:
         raw, capture = client.fetch(url)
@@ -24,6 +27,9 @@ for url in (
                       if 'page=' in n.attrs.get('href', '')],
             'filters': [n.attrs for n in doc.nodes('select')],
             'chile_option': [n.attrs for n in doc.nodes('option') if n.text() == 'Chile'],
+            'sitemap_locations': [n.text() for n in doc.nodes('loc')],
+            'feed_count': sum(1 for _ in doc.nodes('item')),
+            'feed_publication_dates': [n.text() for n in doc.nodes('pubdate')],
             'card_count': sum(n.has_class('views-field-title') for n in doc.nodes())})
     except Exception as exc:
         rows.append({'url': url, 'error': str(exc)})
