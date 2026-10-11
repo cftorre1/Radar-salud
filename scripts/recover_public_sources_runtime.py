@@ -29,7 +29,9 @@ from radar_salud.public_source_evidence import HOSTS, failure_details
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OFFICIAL_HOSTS = set().union(*HOSTS.values()) | {"nuevo.fonasa.gob.cl", "fonasaweb.fonasa.cl", "datos.gob.cl"}
+OFFICIAL_HOSTS = set().union(*HOSTS.values()) | {
+    "nuevo.fonasa.gob.cl", "fonasaweb.fonasa.cl", "datos.gob.cl",
+    "www.dipres.gob.cl", "dipres.gob.cl", "www.minsal.cl"}
 HEADERS = {"User-Agent": "RadarSaludBot/0.3 (+public-source-monitor)",
            "Accept": "text/html,application/pdf,application/xml,application/json;q=0.9,*/*;q=0.5"}
 
@@ -166,10 +168,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=ROOT / "work/public-source-recovery")
     parser.add_argument("--probe-only", action="store_true")
+    parser.add_argument("--endpoints", type=Path, default=ROOT / "config/public_source_runtime_endpoints.json")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     (args.output / "captures").mkdir(exist_ok=True)
-    endpoints = json.loads((ROOT / "config/public_source_runtime_endpoints.json").read_text())
+    endpoints = json.loads(args.endpoints.read_text())
     tasks = [(slug, url) for slug, urls in endpoints.items() for url in urls]
     with ThreadPoolExecutor(max_workers=6) as executor:
         probes = list(executor.map(lambda pair: probe(*pair, args.output), tasks))
