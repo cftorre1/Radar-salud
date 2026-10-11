@@ -7,7 +7,7 @@ from urllib.parse import parse_qs, urlparse
 import pytest
 
 from radar_salud.pulso_source import (ConflictingPublicationArticle, _verified_detail,
-                                    discover_public_feeds, extract_article,
+                                    discover_public_feeds, discover_pulso, extract_article,
                                     verified_publication_date_conflict)
 
 URL = 'https://www.latercera.com/paula/noticia/corazon-atencion/'
@@ -97,3 +97,31 @@ def test_ambiguous_date_cannot_verify_old_boundary_and_requires_three_later_inde
     trace = next(row for row in audit if row.get('url') == unknown_url)
     assert trace['status'] == 'discovered_metadata_only'
     assert trace['publisher_exception_reason'] == 'publisher_conflicting_publication_dates'
+
+
+def test_normal_source_hook_preserves_unknown_date_and_separates_health_from_metadata_inventory(tmp_path):
+    from radar_salud.pulso_source import SITEMAP_INDEX
+    text_url = 'https://www.latercera.com/paula/noticia/hospital-confirmed/'
+    def loader(url):
+        if '/canal/' in url:
+            return ''
+        if '/pf/api/' in url:
+            nodes = [dict(_id=str(i), websites={'la-tercera': {'website_url': value}},
+                          first_publish_date='2026-08-06T21:20:49.55Z', last_updated_date='unchanged')
+                     for i, value in enumerate((URL, text_url))]
+            return json.dumps(dict(content_elements=nodes, count=2, next=None))
+        if url == SITEMAP_INDEX:
+            return '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" />'
+        if '/arc/outboundfeeds/' in url:
+            return '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" />'
+        return article(url) if url == URL else article(url, timestamp='2026-10-09T12:00:00Z', byline='9 OCTUBRE 2026')
+    audit = []
+    candidates = discover_pulso(loader, audit, cache_path=tmp_path/'cache.json',
+                               today=date(2026, 10, 11), feeds=[('section', 'paula')], include_listings=False)
+    assert [(raw.url, raw.event_date) for raw in candidates] == [(text_url, '2026-10-09'), (URL, None)]
+    assert candidates[-1].metadata['publication_date'] is None
+    inventory = next(row for row in audit if row['status'] == 'discovery_inventory')
+    assert inventory['unique_inventory_urls'] == 2
+    assert inventory['unique_health_urls'] == inventory['unique_metadata_only_urls'] == 1
+    runtime = next(row for row in audit if row['status'] == 'runtime_coverage')
+    assert runtime['new_inventory_urls'] == 2 and runtime['new_health_urls'] == 1

@@ -1157,7 +1157,9 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                    article_content_coverage_complete=complete and all(item["article_content_coverage_complete"] for item in summaries),
                    complete_30_days=dict(start=(today - timedelta(days=30)).isoformat(), end=(today - timedelta(days=1)).isoformat()),
                    complete_90_days=dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()),
-                   current_day_slice=today.isoformat(), new_health_urls=len(out),
+                   current_day_slice=today.isoformat(), new_inventory_urls=len(out),
+                   new_health_urls=sum(not item.metadata.get("publisher_exception_reason")
+                                       and not item.metadata.get("source_content_unavailable_reason") for item in out),
                    metadata_only_video_candidates=sum(item.metadata.get("publisher_document_type") == "video" and not item.metadata.get("article_body_complete", True) for item in out),
                    metadata_only_date_conflict_candidates=sum(bool(item.metadata.get("publisher_exception_reason")) for item in out),
                    publication_date_coverage_only_for_text_unavailable_candidates=True)
@@ -1213,13 +1215,25 @@ def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=Non
     for item in out:
         unique.setdefault(item.url, item)
     diagnosed, inventory_discoveries = set(), 0
+    metadata_diagnosed, metadata_occurrences = set(), 0
     for entry in audit:
+        if entry.get("status") == "discovered_metadata_only" and entry.get("url"):
+            metadata_occurrences += 1
+            entry["duplicate_inventory_url"] = entry["url"] in metadata_diagnosed
+            metadata_diagnosed.add(entry["url"])
         if entry.get("status") != "discovered" or not entry.get("url"):
             continue
         inventory_discoveries += 1
         entry["duplicate_inventory_url"] = entry["url"] in diagnosed
         diagnosed.add(entry["url"])
-    audit.append(dict(status="discovery_inventory", unique_health_urls=len(unique),
+    audit.append(dict(status="discovery_inventory", unique_inventory_urls=len(unique),
+                      unique_health_urls=sum(not item.metadata.get("publisher_exception_reason")
+                                             and not item.metadata.get("source_content_unavailable_reason")
+                                             for item in unique.values()),
+                      unique_metadata_only_urls=len(metadata_diagnosed),
+                      inventory_metadata_only_occurrences=metadata_occurrences,
                       inventory_health_occurrences=inventory_discoveries,
                       duplicate_inventory_occurrences=inventory_discoveries - len(diagnosed)))
-    return sorted(unique.values(), key=lambda item: item.event_date, reverse=True)
+    # Unknown publisher dates remain pending; they cannot be compared to ISO
+    # dates or acquire a synthetic ingestion/publication day during sorting.
+    return sorted(unique.values(), key=lambda item: item.event_date or "", reverse=True)

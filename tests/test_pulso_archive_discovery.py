@@ -453,7 +453,8 @@ def test_api_archive_overlap_returns_one_canonical_article_with_occurrence_diagn
                            include_listings=False, feeds=[('section','nacional')])
     assert [item.url for item in items] == [url]
     summary = next(item for item in audit if item['status']=='discovery_inventory')
-    assert summary == dict(status='discovery_inventory', unique_health_urls=1,
+    assert summary == dict(status='discovery_inventory', unique_inventory_urls=1, unique_health_urls=1,
+                           unique_metadata_only_urls=0, inventory_metadata_only_occurrences=0,
                            inventory_health_occurrences=2, duplicate_inventory_occurrences=1)
     occurrences = [item for item in audit if item['status']=='discovered']
     assert [item['duplicate_inventory_url'] for item in occurrences] == [False, True]
