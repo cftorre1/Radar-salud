@@ -38,7 +38,18 @@
       "date_evidence": "verified_article_header",
       "materiality": "candidate",
       "recover": true,
-      "evidence": "El detalle atribuye 30 cirugías efectivamente realizadas el 22 agosto, cinco pabellones y 18 voluntarios. Actualización del mismo Plan Enlace; no sumar las 50 planificadas a las 30 ejecutadas."
+      "evidence": "El detalle atribuye 30 cirugías efectivamente realizadas el 22 agosto, cinco pabellones y 18 voluntarios. Actualización del mismo Plan Enlace; no sumar las 50 planificadas a las 30 ejecutadas.",
+      "review_false_negative": true,
+      "review_revision": "enlace_official_chain_v1",
+      "event_date": "2026-08-22",
+      "supporting_official_sources": [
+        {
+          "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+          "title": "Red Dávila se suma al Plan Enlace para reducir listas de espera odontológicas",
+          "publication_date": "2026-08-20",
+          "relationship": "programme_announcement_before_execution"
+        }
+      ]
     }
   ],
   "notes": [
@@ -164,5 +175,19 @@
       "rejected": 0
     }
   },
-  "checkpoint_commit": "6e00e1e"
+  "checkpoint_commit": "6e00e1e",
+  "current_editorial_review": {
+    "reviewed_by": "independent Reviewer /root/reviewer",
+    "at": "2026-10-11",
+    "historical_processor_reason": "unknown; reason and score never persisted",
+    "announcement": "material programme commitment; relate to execution, no duplicate card",
+    "execution": "reassess once with verified official announcement and execution, gate75 unchanged",
+    "announced_target_patients": 500,
+    "announced_jornadas": 10,
+    "announced_months": 10,
+    "planned_first_surgeries": 50,
+    "executed_surgeries": 30,
+    "executed_on": "2026-08-22",
+    "rule": "Do not add planned50 and actual30; latest user continuation authorizes necessary false-negative review with new evidence."
+  }
 }

@@ -379,6 +379,31 @@ def process_curated_beta_source(raw, cfg):
                 else 'no_material_change_under_provider_prefilter')
         prefilter_rejected(raw,reason)
         return None
+    supporting=[]
+    for evidence in (raw.metadata.get('supporting_official_sources') or [])[:1]:
+        target=urlparse(evidence.get('url') or '')
+        source=CuratedBetaSourceScout.SOURCES.get(raw.source_slug,{})
+        if (target.scheme!='https' or target.netloc not in source.get('hosts',())
+                or not re.fullmatch(source.get('path',r'(?!)'),target.path)
+                or evidence.get('relationship')!='programme_announcement_before_execution'):
+            raise DeferredProcessing('Supporting provider evidence identity unverified')
+        try:
+            page=fetch_html(evidence['url']);stamp=_ProviderPublication();stamp.feed(page)
+            article=_VisibleArticle();article.feed(page)
+        except Exception as exc:raise DeferredProcessing('Supporting provider original unavailable') from exc
+        verified,_=stamp.publication()
+        if (verified!=evidence.get('publication_date') or not verified or verified>raw.event_date
+                or article.title!=evidence.get('title') or not re.search(r'\bEnlace\b',body)
+                or not re.search(r'\bEnlace\b',' '.join(article.text))):
+            raise DeferredProcessing('Supporting provider publication/programme mismatch')
+        from hashlib import sha256
+        supporting_text=' '.join(article.text)
+        supporting.append({**evidence,'body_sha256':sha256(supporting_text.encode()).hexdigest()})
+        # Same publication gate, richer original evidence: announced commitment
+        # and observed execution are explicitly attributed and never summed.
+        body=(f'Fuente principal; ejecución publicada {raw.event_date}:\n{body[:3200]}\n'
+              f'Fuente oficial relacionada; compromiso anunciado {verified}, {evidence["url"]}:\n{supporting_text[:1800]}')
+    if supporting:raw.metadata['supporting_evidence_capture']=supporting
     kind = {
         "media": "prensa económica de alta confianza; señal temprana, atribuir y no convertir reporte de prensa en hecho oficial",
         "mutuality": "publicación institucional de mutualidad; filtrar marketing y priorizar cambios operacionales o de salud laboral",
@@ -426,6 +451,7 @@ def process_curated_beta_source(raw, cfg):
     row["editorial_relevance"] = score
     row['editorial_assessment']=raw.metadata['editorial_assessment']
     row["source_quality_gate"] = "passed"
+    if supporting:row['supporting_sources']=supporting
     if role == "media":
         row["evidence_maturity"] = "media_reported"
         row["confirmation_policy"] = "upgrade_same_signal_when_company_or_official_source_confirms"

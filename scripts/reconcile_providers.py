@@ -42,6 +42,8 @@ def admit(queue, audit, cfg, now):
               'publication_date_source':evidence['date_evidence'],
               'recovery_audit':audit['audit_path'],
               'source_quality_gate':audit.get('source_quality_gate','passed')}
+        if evidence.get('review_revision'):meta['review_revision']=evidence['review_revision']
+        if evidence.get('supporting_official_sources'):meta['supporting_official_sources']=evidence['supporting_official_sources']
         if audit['slug']=='clinicas_chile':meta['clinicas_channel']=evidence.get('channel','Noticias')
         if audit.get('market_role'):meta['market_role']=audit['market_role']
         raw=RawItem(audit['slug'],evidence['title'],url,cfg['name'],cfg['source_type'],stamp,metadata=meta)
@@ -51,10 +53,17 @@ def admit(queue, audit, cfg, now):
         if matches:
             key,item=matches[0]
             if item['status'] in ('published','archived'):continue
+            reassess=(item['status']=='rejected' and evidence.get('review_false_negative') is True
+                      and evidence.get('review_revision') and evidence.get('supporting_official_sources')
+                      and item['raw'].get('metadata',{}).get('review_revision')!=evidence['review_revision'])
+            if item['status']=='rejected' and not reassess:continue
             if audit['slug']=='clinicas_chile':
                 item['raw']['metadata'].pop('page_text',None);item['raw']['raw_text']=''
-            if item['raw'].get('metadata',{}).get('recovery_audit')==audit['audit_path']:continue
+            if item['raw'].get('metadata',{}).get('recovery_audit')==audit['audit_path'] and not reassess:continue
             item['audit_prior_state']={'status':item['status'],'reason':item.get('reason')}
+            if reassess:item.setdefault('review_history',[]).append({'at':now.isoformat(),'prior_status':item['status'],
+                'historical_processor_reason':'unknown; original model reason/score not persisted',
+                'review_revision':evidence['review_revision'],'reason':'Reviewer confirmed material programme; reassess once with additional official announcement/execution evidence'})
             old_gate=item['raw'].get('metadata',{}).get('source_quality_gate')
             item['raw']['metadata'].update(meta)
             if old_gate and old_gate!='passed':item['raw']['metadata']['source_quality_gate']=old_gate
@@ -92,7 +101,7 @@ def reconcile(audit, queue, history, visible):
             'queue_counts':queue.counts(audit['slug']),'items':out}
 
 
-def run(root, slug=None, apply=False, live=False, limit=12, urls=None):
+def run(root, slug=None, apply=False, live=False, limit=12, urls=None, checkpoint_path=None):
     from radar_salud.history import load_history, merge_history, save_history
     from radar_salud.processing import DeferredProcessing, OutsideBackfillHorizon
     from radar_salud.public_source_pipeline import process_corporate_news, process_clinicas_chile
@@ -143,6 +152,8 @@ def run(root, slug=None, apply=False, live=False, limit=12, urls=None):
                             history=merge_history(history,[row]);save_history(history_path,history)
                         from radar_salud.provider_assessment import rejection_reason
                         queue.finish(key,'published' if row else 'rejected',None if row else rejection_reason(raw))
+                        from radar_salud.scouts import SeenStore
+                        SeenStore(root/'data/state'/f'{name}_seen.json').add_many([key])
                         live_results.append({'source':name,'url':raw.url,'outcome':'published' if row else 'rejected','signal':row,
                                              'editorial_assessment':raw.metadata.get('editorial_assessment')})
                     except OutsideBackfillHorizon as exc:
@@ -184,7 +195,7 @@ def run(root, slug=None, apply=False, live=False, limit=12, urls=None):
         print(name,json.dumps(audit['reconciliation']['queue_counts']),audit['reconciliation']['material_candidates_30_days'],audit['reconciliation']['material_candidates_90_days'])
     if apply:
         queue.save();save_history(history_path,history);atomic_json(root/'data/source_health.json',health)
-    if live:atomic_json(root/'data/audits/provider_live_checkpoint_2026_10_11.json',{'at':now.isoformat(),'attempted':attempted,'results':live_results,'promotion':'none; isolated candidate outputs only'})
+    if live:atomic_json(root/(checkpoint_path or 'data/audits/provider_live_checkpoint_2026_10_11.json'),{'at':now.isoformat(),'attempted':attempted,'results':live_results,'promotion':'none; isolated candidate outputs only'})
 
 
 if __name__=='__main__':
