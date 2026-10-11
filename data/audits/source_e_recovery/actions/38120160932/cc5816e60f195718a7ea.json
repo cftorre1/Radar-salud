@@ -1,0 +1,40 @@
+{
+  "url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=Mutual",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T07:16:32.096406+00:00",
+  "hops": [
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=Mutual",
+      "http_status": 200,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 200 ",
+          "date": "Sun, 11 Oct 2026 07:16:32 GMT",
+          "content-type": "text/html; charset=UTF-8",
+          "server": "nginx/1.29.8",
+          "cache-control": "no-cache, no-store, must-revalidate",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+          "x-cdn": "Imperva",
+          "x-iinfo": "15-29739132-29739134 NNNY CT(21 23 0) RT(1791702992319 16) q(0 1 1 -1) r(2 2) U24"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 107777,
+      "sha256": "44f6786c49a330de1db1f325691da8f3f26c5a7631061c5490d5e35e5f8656fd",
+      "waf": null,
+      "error": null,
+      "body_file": "cc5816e60f195718a7ea-0.body"
+    }
+  ],
+  "stop_reason": "response_captured",
+  "final_url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=Mutual",
+  "http_status": 200,
+  "waf": null
+}
