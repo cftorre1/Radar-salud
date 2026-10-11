@@ -294,6 +294,57 @@ class RecoveryTests(unittest.TestCase):
         self.assertIn("403", result["blocker"])
         self.assertEqual(len(result["evidence"]), 1)
 
+    def test_real_large_source_transport_preserves_json_and_failure_before_log_tail(self):
+        payload = {"slug": "suseso_fiscalizacion", "technical_status": "error", "error": "HTTPError: HTTP Error 403: Forbidden", "discovered": 0, "dated": 0,
+            "requests": [{"status": "FAIL", "error": "HTTP Error 403", "url": "https://source.test/" + str(index), "context": "x" * 200} for index in range(370)]}
+        record = json.dumps(payload)
+        captured = "AUTONOMY_SOURCE_JSON=" + record + "\n"
+        fixture = self.root / "source-output.json"
+        fixture.write_text(record)
+        command = [sys.executable, "-c", "import pathlib,sys; print('AUTONOMY_SOURCE_JSON=' + pathlib.Path(sys.argv[1]).read_text()); sys.exit(1)", str(fixture)]
+        result = recovery.run_command(command, self.root)
+        self.assertEqual(result["command"], command)
+        self.assertEqual(result["returncode"], 1)
+        self.assertEqual(len(result["output"]), 24_000)
+        self.assertNotIn("AUTONOMY_SOURCE_JSON=", result["output"])
+        self.assertEqual(result["captured_stdout_sha256"], recovery.digest(captured.encode()))
+        self.assertEqual(result["captured_stdout_bytes"], len(captured.encode()))
+        self.assertEqual(result["source_evidence_sha256"], recovery.digest(record.encode()))
+        restored = recovery.source_payload(result)
+        self.assertEqual(restored, payload)
+        self.assertFalse(recovery.source_passed(result, restored, payload["slug"]))
+        self.assertIn("403", recovery.external_source_blocker(restored))
+        with patch.object(recovery, "generate_plan", side_effect=AssertionError("external failure must not spend")):
+            report = recovery.recover(self.root, {}, "source failed", source_slug=payload["slug"], allow_model=True,
+                runner=lambda command, root: result)
+        self.assertEqual(report["status"], "BLOCKED")
+        self.assertIn("403", report["blocker"])
+        self.assertEqual(report["live_baseline"], payload)
+
+    def test_large_malformed_source_record_fails_closed_after_log_truncation(self):
+        command = [sys.executable, "-c", "print('AUTONOMY_SOURCE_JSON={' + 'x' * 30000)"]
+        result = recovery.run_command(command, self.root)
+        self.assertEqual(result["returncode"], 0)
+        self.assertNotIn("AUTONOMY_SOURCE_JSON=", result["output"])
+        with self.assertRaisesRegex(recovery.RecoveryError, "evidence is invalid"):
+            recovery.source_payload(result)
+
+    def test_source_record_selection_and_identity_fail_closed(self):
+        good = json.dumps({"slug": "diario_financiero", "technical_status": "ok"})
+        for bad in ('{"slug":"untrusted_source"}', '[]', '{invalid'):
+            with self.subTest(bad=bad):
+                result = {**recovery.structured_source_evidence("AUTONOMY_SOURCE_JSON=" + good + "\nAUTONOMY_SOURCE_JSON=" + bad), "output": ""}
+                with self.assertRaises(recovery.RecoveryError):
+                    recovery.source_payload(result)
+
+    def test_structured_source_redacts_strings_without_corrupting_json(self):
+        payload = {"slug": "diario_financiero", "error": "credential-sentinel-value", "requests": [{"error": "credential-sentinel-value"}]}
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "credential-sentinel-value"}):
+            fields = recovery.structured_source_evidence("AUTONOMY_SOURCE_JSON=" + json.dumps(payload))
+        restored = recovery.source_payload(fields)
+        self.assertEqual(restored["error"], "[REDACTED]")
+        self.assertEqual(restored["requests"][0]["error"], "[REDACTED]")
+
     def test_live_slug_cannot_supply_an_arbitrary_command(self):
         result = recovery.recover(self.root, {}, "source failed", source_slug="--evil-shell", runner=self.mocked_runner())
         self.assertEqual(result["status"], "BLOCKED")

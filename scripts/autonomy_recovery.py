@@ -284,6 +284,31 @@ def redact(text: str) -> str:
     return re.sub(r"(?i)((?:api[_-]?key|password|authorization|access[_-]?token)\s*[=:]\s*)([^\s,;\"']+)", r"\1[REDACTED]", text)
 
 
+def structured_source_evidence(output: str) -> dict:
+    """Read the complete command transport before truncating its display log."""
+    records = [line.partition("=")[2] for line in output.splitlines() if line.startswith("AUTONOMY_SOURCE_JSON=")]
+    if not records:
+        return {}
+    record = records[-1]
+    evidence = {"source_evidence_sha256": digest(record.encode("utf-8"))}
+    try:
+        payload = json.loads(record)
+    except (TypeError, ValueError):
+        evidence["source_evidence_error"] = "invalid JSON"
+        return evidence
+
+    def sanitized(value):
+        if isinstance(value, str):
+            return redact(value)
+        if isinstance(value, list):
+            return [sanitized(item) for item in value]
+        if isinstance(value, dict):
+            return {key: sanitized(item) for key, item in value.items()}
+        return value
+    evidence["source_evidence"] = sanitized(payload)
+    return evidence
+
+
 def run_command(command: list[str], root: Path, *, timeout: int = 300) -> dict:
     try:
         # Same-size replacements within one second can otherwise reuse stale
@@ -295,7 +320,10 @@ def run_command(command: list[str], root: Path, *, timeout: int = 300) -> dict:
             environment.update({"PYTHONPYCACHEPREFIX": cache, "PYTHONDONTWRITEBYTECODE": "1",
                 "PYTHONPATH": str(root / "src") + os.pathsep + str(root)})
             completed = subprocess.run(command, cwd=root, env=environment, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout, check=False)
-        return {"command": command, "returncode": completed.returncode, "output": redact(completed.stdout[-24_000:])}
+        captured = completed.stdout
+        return {"command": command, "returncode": completed.returncode, "output": redact(captured[-24_000:]),
+            "captured_stdout_sha256": digest(captured.encode("utf-8")), "captured_stdout_bytes": len(captured.encode("utf-8")),
+            **structured_source_evidence(captured)}
     except (OSError, subprocess.TimeoutExpired) as exc:
         return {"command": command, "returncode": 124, "output": f"Validation command unavailable or timed out: {type(exc).__name__}"}
 
@@ -317,13 +345,12 @@ def source_command(source_slug: str) -> list[str]:
 
 
 def source_payload(result: dict) -> dict:
-    rows = [line.split("AUTONOMY_SOURCE_JSON=", 1)[1] for line in result.get("output", "").splitlines() if line.startswith("AUTONOMY_SOURCE_JSON=")]
-    if not rows:
+    evidence = result if "source_evidence" in result or "source_evidence_error" in result else structured_source_evidence(result.get("output", ""))
+    if not evidence:
         raise RecoveryError("Live reproduction returned no structured source evidence")
-    try:
-        payload = json.loads(rows[-1])
-    except (TypeError, ValueError) as exc:
-        raise RecoveryError("Live reproduction source evidence is invalid") from exc
+    if "source_evidence_error" in evidence:
+        raise RecoveryError("Live reproduction source evidence is invalid")
+    payload = evidence.get("source_evidence")
     if not isinstance(payload, dict) or payload.get("slug") not in SOURCE_MODULES:
         raise RecoveryError("Live reproduction source identity is invalid")
     return payload
