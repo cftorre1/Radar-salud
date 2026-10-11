@@ -25,6 +25,8 @@ jobs:
           python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py
       - name: Inventory the official archives and verify publication details
         run: python scripts/discover_global_sources.py
+      - name: Replay captured bytes without touching live or curated state
+        run: python scripts/replay_global_sources.py
       - name: Persist metadata inventory and health to the isolated branch
         if: always()
         run: |
