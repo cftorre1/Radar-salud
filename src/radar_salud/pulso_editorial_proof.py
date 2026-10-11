@@ -68,8 +68,10 @@ HISTORICAL_FUTURE_COPY = re.compile(
     r"condicionad[oa]s?|se esperaba|pretend[ií]an?|intenci[oó]n anunciada|"
     r"posibilidad en evaluaci[oó]n|efecto esperado|capacidad estimada|"
     r"estimaci[oó]n reportada|actuaci[oó]n posterior|pr[oó]ximo juicio|"
-    r"objetivo era|buscaba[n]?|programad[oa]s?|"
-    r"no acredita|no demuestra|no permite (?:afirmar|verificar))\b", re.I)
+    r"objetivo era|buscaba[n]?|programad[oa]s?|riesgos? potenciales?|"
+    r"coordinaciones\b[^.;!?]{0,160}\bpara instalar|"
+    r"coordinaba\b[^.;!?]{0,160}\bcapacidad asistencial temporal\b"
+    r"[^.;!?]{0,80}\bpara absorber)\b", re.I)
 NEGATED_ACHIEVEMENT_PREFIX = re.compile(
     r"\bno\s*$|\bno como (?:resultados|acciones|medidas|logros)\s*$|"
     r"\bno (?:deben?|pueden?) (?:entenderse|considerarse|presentarse|tratarse) como\s*$",

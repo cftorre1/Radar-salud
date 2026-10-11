@@ -50,7 +50,7 @@ def test_every_actual_future_hold_replayed_without_changing_its_answer(index, ro
     "Las devoluciones deberían completarse hasta diciembre de 2037.",
     "La nota del 24 de agosto de 2026 advertía que las lluvias podían elevar la circulación.",
     "Al 19 de agosto de 2026, el efecto esperado era ampliar la resolutividad con capacidad estimada.",
-    "Al 18 de julio de 2026, el contenido no acredita que el hospital modular haya sido instalado.",
+    "Al 18 de julio de 2026, comenzaron coordinaciones con Defensa para instalar un hospital modular.",
 ])
 def test_demonstrated_conditional_and_dated_nonachievement_phrases(text):
     assert future_copy_qualified(text)
@@ -62,6 +62,10 @@ def test_demonstrated_conditional_and_dated_nonachievement_phrases(text):
     "El efecto esperado era ampliar la capacidad.",  # no observation-day context
     "La inversión hospitalaria prioritaria y necesaria tiene capacidad disponible.",
     "La atención secundaria unitaria ordinaria y comunitaria fue implementada.",
+    "Al 18 de julio de 2026, la nota no acredita otra medida. El hospital modular ya está instalado.",
+    "Al 18 de julio de 2026, la nota no acredita otra medida. El Minsal ya ha ejecutado la instalación.",
+    "Al 18 de julio de 2026, la nota no acredita otra medida. El hospital dispone de capacidad clínica disponible.",
+    "Al 18 de julio de 2026, la capacidad fue agregada y el hospital se encuentra operativo. La nota no demuestra vigencia.",
 ])
 def test_generic_nouns_or_unqualified_past_states_are_not_future_proof(text):
     assert not future_copy_qualified(text)
@@ -114,4 +118,34 @@ def test_dated_disclaimer_does_not_hide_separate_available_capacity_claim():
     for claim in ai["pulso_editorial_proof"]["future_claims"]:
         if claim["summary_field"] == "what_happened":
             claim["summary_quote"] = ai["what_happened"]
+    assert validate_pulso_editorial_proof(ai, row["full_primary_body"])["reason"] == "pulso_editorial_future_copy_not_grounded"
+
+
+@pytest.mark.parametrize("row", ROWS, ids=[r["url"].split("/")[-2] for r in ROWS])
+def test_generic_dated_denial_cannot_qualify_completed_future_acts_in_any_actual_answer(row):
+    ai = deepcopy(row["analysis"])
+    ai["what_happened"] = (
+        "Según La Tercera, al 2026-10-11 la red amplió la capacidad asistencial "
+        "e incorporó las prestaciones. La nota no acredita la vigencia al 2026-10-11.")
+    for claim in ai["pulso_editorial_proof"]["future_claims"]:
+        if claim["summary_field"] == "what_happened":
+            claim["summary_quote"] = ai["what_happened"]
+    verdict = validate_pulso_editorial_proof(ai, row["full_primary_body"])
+    assert verdict["decision"] != "ready"
+    assert verdict["publication_approved"] is False
+
+
+@pytest.mark.parametrize("claim", [
+    "El hospital modular ya está instalado.",
+    "El Minsal ya ha ejecutado la instalación.",
+    "El hospital dispone de capacidad clínica disponible.",
+    "La capacidad fue agregada y el hospital se encuentra operativo.",
+])
+def test_real_ovalle_future_proof_cannot_be_laundered_by_an_unrelated_dated_denial(claim):
+    row = ROWS[24]
+    ai = deepcopy(row["analysis"])
+    ai["what_happened"] = "Al 18 de julio de 2026, la nota no acredita otra medida. " + claim
+    for proof in ai["pulso_editorial_proof"]["future_claims"]:
+        if proof["summary_field"] == "what_happened":
+            proof["summary_quote"] = ai["what_happened"]
     assert validate_pulso_editorial_proof(ai, row["full_primary_body"])["reason"] == "pulso_editorial_future_copy_not_grounded"
