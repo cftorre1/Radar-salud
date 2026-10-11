@@ -46,6 +46,47 @@ def candidate(day="2026-10-07"):
         })
 
 
+def test_verified_review_enters_real_editorial_processor_with_comparison_and_unchanged_gate(monkeypatch):
+    from radar_salud import llm_analysis
+    from radar_salud.beta_sources import process_curated_beta_source
+    raw = candidate()
+    calls = []
+    def analysis(**kwargs):
+        calls.append(kwargs)
+        return {"relevance_score": 71, "what_happened": "", "why_it_matters": "",
+                "reason": "No supera el gate editorial vigente."}
+    monkeypatch.setattr(llm_analysis, "analyze_news", analysis)
+    assert process_curated_beta_source(raw, {}) is None
+    assert len(calls) == 1
+    assert "budget_proposal_not_enacted" in calls[0]["kind"]
+    assert "2026-10-01" in calls[0]["kind"]
+    assert "no aprueba publicación" in calls[0]["kind"]
+    assert raw.metadata["editorial_assessment"]["threshold"] == 72
+    assert raw.metadata["rejection_reason"] == "editorial_relevance_below_threshold"
+
+
+def test_legacy_detail_verification_records_provenance_before_review_and_analysis(monkeypatch):
+    from radar_salud import beta_sources, llm_analysis
+    raw = candidate()
+    body = raw.metadata["page_text"]
+    raw.metadata["article_verified"] = False
+    for field in ("page_text", "html_sha256", "article_body_sha256", "captured_at"):
+        del raw.metadata[field]
+    node = {"@type": "NewsArticle", "url": raw.url,
+            "headline": "Presupuesto de salud 2027: cambios en APS y Ley Ricarte Soto",
+            "datePublished": "2026-10-07T12:00:00-03:00", "articleBody": body}
+    html = (f'<link rel="canonical" href="{raw.url}">'
+            + '<script type="application/ld+json">' + json.dumps(node) + '</script>')
+    monkeypatch.setattr(beta_sources, "fetch_html", lambda url: html)
+    monkeypatch.setattr(llm_analysis, "analyze_news", lambda **kwargs: {
+        "relevance_score": 71, "what_happened": "", "why_it_matters": "", "reason": "reviewed"})
+    assert beta_sources.process_curated_beta_source(raw, {}) is None
+    assert raw.metadata["html_sha256"] == hashlib.sha256(html.encode()).hexdigest()
+    assert raw.metadata["article_body_sha256"] == hashlib.sha256(" ".join(body.split()).encode()).hexdigest()
+    assert raw.metadata["incremental_review"]["publication_approved"] is False
+    assert "editorial_hold" not in raw.metadata
+
+
 @pytest.mark.parametrize("day", ["2026-10-07", "2026-07-14"])
 def test_releases_only_duplicate_hold_with_context_for_unchanged_editorial_gate(day):
     raw = candidate(day)

@@ -282,13 +282,22 @@ def process_curated_beta_source(raw, cfg):
         if not (raw.metadata.get("article_verified") and raw.metadata.get("page_text") and raw.event_date):
             from .pulso_source import extract_article
             try:
-                raw.title, body, evidence = extract_article(fetch_html(raw.url), raw.url)
+                import hashlib
+                from datetime import datetime, timezone
+                html = fetch_html(raw.url)
+                raw.title, body, evidence = extract_article(html, raw.url)
                 raw.event_date = evidence["publication_date"]
                 raw.raw_text = body[:1800]
-                raw.metadata.update(evidence, page_text=body[:18000], market_role="media")
+                raw.metadata.update(evidence, page_text=body[:18000], market_role="media",
+                                    source_quality_gate="passed",
+                                    html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
+                                    article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                                    captured_at=datetime.now(timezone.utc).isoformat())
             except Exception as exc:
                 raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "article_verification_failed", "error_type": type(exc).__name__}
                 raise DeferredProcessing("Pulso article verification failed") from exc
+        from .pulso_incremental_review import apply_incremental_review
+        apply_incremental_review(raw)
     else:
         raw = enrich(raw)
     body = raw.metadata.get("page_text") or raw.raw_text or ""
@@ -312,6 +321,13 @@ def process_curated_beta_source(raw, cfg):
         "provider_achs": "publicación institucional de prestador; priorizar capacidad, convenios, expansión y relación público-privada",
         "provider": "publicación institucional de prestador; priorizar capacidad, convenios, expansión, inversión y M&A",
     }.get(role, "publicación sectorial")
+    if role == "media" and raw.metadata.get("editorial_review_context"):
+        import json
+        kind += (". Revisión previa de valor incremental: "
+                 + json.dumps(raw.metadata["editorial_review_context"], ensure_ascii=False)
+                 + ". Evalúa si el artículo agrega un cambio material a ese antecedente; "
+                   "la revisión sólo habilita análisis y no aprueba publicación. "
+                   "Preserva período, métrica, condición de propuesta y atribución de prensa.")
     ai = analyze_news(title=raw.title, text=body[:10000], source_name=raw.source_name, kind=kind)
     if not ai:
         raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "analysis_unavailable"}
