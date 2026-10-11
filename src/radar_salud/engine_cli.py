@@ -383,8 +383,9 @@ def main():
             deferred=sum(i.get('source')==name and i['status'] in ('retry','deferred') for i in queue.items.values()),
             rejected=counts["rejected"],rows=produced[name],error=error,
             live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"], discovery_evidence=df_evidence, observed_rows=observed.get(name),surfaces=surfaces.get(name),
-            published_history=fiscal_history if name in FISCALIZATION_SOURCES else None,
-            source_queue=source_items if name in FISCALIZATION_SOURCES else None,
+            published_history=(history if name == "pulso_latercera"
+                               else fiscal_history if name in FISCALIZATION_SOURCES else None),
+            source_queue=source_items if name in FISCALIZATION_SOURCES or name == "pulso_latercera" else None,
             archived=sum(item.get("status")=="archived" for item in source_items),
             rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")),
             **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}),
