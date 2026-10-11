@@ -186,6 +186,8 @@ def process_suseso_fiscalizacion(raw,cfg):
     if raw.metadata.get('document_class') == 'official_news':
         from .suseso_fiscalizacion import process_enforcement_news
         return process_enforcement_news(raw,cfg)
+    if raw.metadata.get('document_class')=='enforcement_report_candidate' and not raw.event_date:
+        raise DeferredProcessing('official_medical_report_missing_daily_publication_and_emission_date; execution_period_is_not_publication')
     raise DeferredProcessing("SUSESO enforcement candidate requires document/actor/materiality review")
 
 def _scopes(text):

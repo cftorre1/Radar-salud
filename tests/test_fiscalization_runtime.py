@@ -134,3 +134,13 @@ def test_unique_listing_image_alias_recovers_original_detection_without_merging_
     other=RawItem(**{**current.__dict__,'url':current.url+'-different'})
     q.discover(old.source_slug,[current,other],now=datetime(2026,10,11,tzinfo=timezone.utc))
     assert len(q.items)==3
+
+
+def test_medical_report_execution_month_never_becomes_daily_publication():
+    import pytest
+    from radar_salud.models import RawItem
+    from radar_salud.processing import DeferredProcessing
+    from radar_salud.public_source_pipeline import process_suseso_fiscalizacion
+    raw=RawItem('suseso_fiscalizacion','Informe 2026/IFIS10','https://www.suseso.gob.cl/609/w3-article-786875.html','SUSESO','official',None,metadata={'document_class':'enforcement_report_candidate','execution_period':'2026 / Junio','publication_date':None,'emission_date':None})
+    with pytest.raises(DeferredProcessing,match='execution_period_is_not_publication'):
+        process_suseso_fiscalizacion(raw,{'base_confidence':100})
