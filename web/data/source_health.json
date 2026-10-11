@@ -126,22 +126,159 @@
     },
     "superintendencia_fiscalizacion": {
       "name": "Superintendencia Fiscalizacion",
-      "checked_at": "2026-10-10T22:24:44.395005+00:00",
-      "last_signal_at": "2025-10-24",
-      "discovered": 2696,
+      "checked_at": "2026-10-11T07:33:49.042777+00:00",
+      "last_signal_at": "2026-09-28",
+      "discovered": 3343,
       "new": 0,
       "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
-      "rejected": 0,
-      "status": "ok",
+      "rejected": 1,
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "listed_surface_parsed",
       "content_freshness": "older",
-      "editorial_outcome": "no_new_signals"
+      "editorial_outcome": "rejected",
+      "last_observed_event_at": "2026-09-28",
+      "last_observed_publication_at": "2026-09-28",
+      "surfaces": [
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/informes-de-fiscalizacion-5126/",
+          "status": "parsed",
+          "documents": 231
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-isapres-6248/",
+          "status": "parsed",
+          "documents": 616
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-prestadores-6249/",
+          "status": "parsed",
+          "documents": 1848
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/informes-de-fiscalizacion-3218/",
+          "status": "parsed",
+          "documents": 325
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-entidades-acreditadoras-7059/",
+          "status": "parsed",
+          "documents": 75
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-agentes-de-ventas-7441/",
+          "status": "parsed",
+          "documents": 470
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/sanciones-aplicadas-5113/",
+          "status": "parsed",
+          "documents": 2944
+        }
+      ],
+      "undated_observations": 0,
+      "coverage_complete": false,
+      "archived": 3143,
+      "rejection_reasons": {
+        "administrative_subrogation_not_enforcement": 1
+      },
+      "published_total": 200,
+      "final_state": "OPERATIVE_DEGRADED",
+      "pages_checked": 49,
+      "items_discovered": 3343,
+      "unique_items": 3343,
+      "surface_rows_discovered": 6509,
+      "items_recent": 32,
+      "items_material": 32,
+      "items_recent_enforcement": 32,
+      "parse_errors": 0,
+      "surface_errors": 0,
+      "windows": {
+        "30": {
+          "publication_dated": 13,
+          "emission_dated": 11,
+          "official_confirmed": 14,
+          "detected": 14,
+          "baseline_detected": 4,
+          "baseline_omitted": 10,
+          "omitted": 0,
+          "material": 14,
+          "published": 14,
+          "rejected": 0,
+          "deferred": 0
+        },
+        "90": {
+          "publication_dated": 31,
+          "emission_dated": 27,
+          "official_confirmed": 32,
+          "detected": 32,
+          "baseline_detected": 13,
+          "baseline_omitted": 19,
+          "omitted": 0,
+          "material": 32,
+          "published": 32,
+          "rejected": 0,
+          "deferred": 0
+        }
+      },
+      "coverage_reason": "Seven official results indexes fully reconciled in 30/90-day dated windows; coverage outside these indexes and all historical legal-act identities not certified.",
+      "counter_semantics": {
+        "discovered": "documents in this discovery run, including historical",
+        "new": "queue additions this run",
+        "published": "processed to history this run; feed gate is separate",
+        "published_total": "persisted source history stock",
+        "pending": "current queue stock",
+        "rejected": "queue stock with evaluated rejection",
+        "archived": "queue stock beyond backfill horizon"
+      },
+      "zero_published_reason": "idempotent replay; all confirmed recent material acts already persisted",
+      "window_semantics": {
+        "primary": "inclusive elapsed date age: 0..30 and 0..90; matches the existing application filter",
+        "30_start": "2026-09-11",
+        "90_start": "2026-07-13",
+        "exact_calendar_30_start": "2026-09-12",
+        "exact_calendar_90_start": "2026-07-14"
+      },
+      "exact_calendar_windows": {
+        "30": {
+          "official_confirmed": 14,
+          "detected": 14,
+          "omitted": 0,
+          "material": 14,
+          "published": 14,
+          "rejected": 0,
+          "deferred": 0,
+          "boundary_records_excluded": 0
+        },
+        "90": {
+          "official_confirmed": 28,
+          "detected": 28,
+          "omitted": 0,
+          "material": 28,
+          "published": 28,
+          "rejected": 0,
+          "deferred": 0,
+          "boundary_records_excluded": 4
+        }
+      },
+      "documents_checked": 37,
+      "http_receipts_checked": 86,
+      "publication_date_uncertain_reports": 0,
+      "bounded_dated_coverage_complete": true,
+      "deferred_date_uncertain": 0,
+      "reconciliation": {
+        "at": "2026-10-11T07:34:17.473579+00:00",
+        "native_live_validated": true,
+        "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+        "runtime_sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
+        "stock_preserves_detected_at": true,
+        "backfill_only": true
+      }
     },
     "superintendencia": {
       "name": "Superintendencia",
@@ -335,22 +472,183 @@
     },
     "suseso_fiscalizacion": {
       "name": "Suseso Fiscalizacion",
-      "checked_at": "2026-10-10T22:24:44.407735+00:00",
-      "last_signal_at": null,
-      "discovered": 38,
+      "checked_at": "2026-10-11T07:34:17.256817+00:00",
+      "last_signal_at": "2026-10-02",
+      "discovered": 1273,
       "new": 0,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 0,
-      "pending": 0,
-      "deferred": 0,
-      "rejected": 0,
-      "status": "ok",
+      "backfill_pending": 10,
+      "pending": 10,
+      "deferred": 10,
+      "rejected": 110,
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
-      "content_freshness": "unknown",
-      "editorial_outcome": "no_new_signals"
+      "coverage_status": "gap",
+      "content_freshness": "older",
+      "editorial_outcome": "pending",
+      "last_observed_event_at": "2026-10-09",
+      "last_observed_publication_at": "2026-10-09",
+      "surfaces": [
+        {
+          "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html",
+          "status": "parsed",
+          "documents": 359,
+          "undated": 0
+        },
+        {
+          "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30982.html",
+          "status": "parsed",
+          "documents": 407,
+          "undated": 0
+        },
+        {
+          "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+          "status": "parsed",
+          "documents": 101,
+          "undated": 0,
+          "surface_kind": "professionals"
+        },
+        {
+          "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-806511.html",
+          "status": "parsed",
+          "documents": 109,
+          "undated": 0,
+          "surface_kind": "entities"
+        },
+        {
+          "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-559471.html",
+          "status": "parsed",
+          "documents": 157,
+          "undated": 157,
+          "surface_kind": "reports"
+        },
+        {
+          "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-715128.html",
+          "status": "parsed",
+          "documents": 282,
+          "undated": 282,
+          "surface_kind": "reports"
+        },
+        {
+          "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-814414.html",
+          "status": "parsed",
+          "documents": 10,
+          "undated": 10,
+          "surface_kind": "medical_reports"
+        },
+        {
+          "url": "https://www.suseso.gob.cl/605/w3-propertyname-536.html",
+          "status": "parsed",
+          "documents": 187,
+          "surface_kind": "official_news"
+        }
+      ],
+      "undated_observations": 449,
+      "coverage_complete": false,
+      "archived": 1061,
+      "rejection_reasons": {
+        "related_normative_not_enforcement": 53,
+        "Beneficio, convenio o información de seguridad social; el detalle no acredita sanción ni resultado fiscalizador nuevo.": 19,
+        "Actividad institucional, coordinación o capacitación; no documenta resultado fiscalizador nuevo.": 18,
+        "Estadística, estudio o evolución de licencias/seguro laboral; no aporta un acto de fiscalización individual nuevo.": 7,
+        "Normativa, guía o consulta pública; no identifica una fiscalización concluida ni sanción nueva.": 13
+      },
+      "published_total": 94,
+      "final_state": "OPERATIVE_DEGRADED",
+      "pages_checked": 108,
+      "items_discovered": 1273,
+      "unique_items": 1273,
+      "surface_rows_discovered": 1612,
+      "items_recent": 77,
+      "items_material": 77,
+      "items_recent_enforcement": 77,
+      "parse_errors": 0,
+      "surface_errors": 0,
+      "windows": {
+        "30": {
+          "publication_dated": 0,
+          "emission_dated": 20,
+          "official_confirmed": 20,
+          "detected": 20,
+          "baseline_detected": 0,
+          "baseline_omitted": 20,
+          "omitted": 0,
+          "material": 20,
+          "published": 20,
+          "rejected": 0,
+          "deferred": 0
+        },
+        "90": {
+          "publication_dated": 2,
+          "emission_dated": 75,
+          "official_confirmed": 77,
+          "detected": 77,
+          "baseline_detected": 0,
+          "baseline_omitted": 77,
+          "omitted": 0,
+          "material": 77,
+          "published": 77,
+          "rejected": 0,
+          "deferred": 0
+        }
+      },
+      "coverage_reason": "Dated sanctions and official news fully reconciled. Publication dates remain unknown for 439 historical-execution programme rows and ten medical result reports; no site-wide absence claim.",
+      "counter_semantics": {
+        "discovered": "documents in this discovery run, including historical",
+        "new": "queue additions this run",
+        "published": "processed to history this run; feed gate is separate",
+        "published_total": "persisted source history stock",
+        "pending": "current queue stock",
+        "rejected": "queue stock with evaluated rejection",
+        "archived": "queue stock beyond backfill horizon"
+      },
+      "zero_published_reason": "idempotent replay; all confirmed recent material acts already persisted",
+      "window_semantics": {
+        "primary": "inclusive elapsed date age: 0..30 and 0..90; matches the existing application filter",
+        "30_start": "2026-09-11",
+        "90_start": "2026-07-13",
+        "exact_calendar_30_start": "2026-09-12",
+        "exact_calendar_90_start": "2026-07-14"
+      },
+      "exact_calendar_windows": {
+        "30": {
+          "official_confirmed": 20,
+          "detected": 20,
+          "omitted": 0,
+          "material": 20,
+          "published": 20,
+          "rejected": 0,
+          "deferred": 0,
+          "boundary_records_excluded": 0
+        },
+        "90": {
+          "official_confirmed": 74,
+          "detected": 74,
+          "omitted": 0,
+          "material": 74,
+          "published": 74,
+          "rejected": 0,
+          "deferred": 0,
+          "boundary_records_excluded": 3
+        }
+      },
+      "documents_checked": 10,
+      "http_receipts_checked": 118,
+      "publication_date_uncertain_reports": 449,
+      "bounded_dated_coverage_complete": true,
+      "deferred_date_uncertain": 10,
+      "reconciliation": {
+        "at": "2026-10-11T07:34:17.473579+00:00",
+        "native_live_validated": true,
+        "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+        "runtime_sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
+        "stock_preserves_detected_at": true,
+        "backfill_only": true
+      },
+      "historical_sanctions_with_current_suspension": 17,
+      "historical_current_stock_published": 17
     },
     "prestadores_data": {
       "name": "Superintendencia de Salud · Intendencia de Prestadores",
@@ -543,5 +841,5 @@
       "editorial_outcome": "pending"
     }
   },
-  "generated_at": "2026-10-11T06:52:30.383799+00:00"
+  "generated_at": "2026-10-11T07:34:17.473579+00:00"
 }

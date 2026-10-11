@@ -49,8 +49,9 @@ def main():
         health=read(root/'data/source_health.json',{}).get('sources',{})
         assert all(health.get(k)==v for k,v in health_before.items() if k not in selected),'Unrelated source health changed'
         published={k:v for k,v in queue.items() if v.get('source') in selected and v.get('status')=='published'}
-        urls=[v.get('source_url') for v in history if v.get('source_name') in source_names]
-        assert len(urls)==len(set(urls)),'Duplicate selected-source history URLs'
+        from radar_salud.history import _key as history_identity
+        urls=[history_identity(v) for v in history if v.get('source_name') in source_names]
+        assert len(urls)==len(set(urls)),'Duplicate selected-source history identities (URL plus official record ID)'
         polls.append({'poll':number,'started_at':start,'finished_at':datetime.now(timezone.utc).isoformat(),
             'exit_code':result.returncode,'discovery':{k:v for k,v in discovery.get('sources',{}).items() if k in selected},
             'queue_identity_sha256':digest(sorted(queue)),'published_queue_keys':sorted(published),

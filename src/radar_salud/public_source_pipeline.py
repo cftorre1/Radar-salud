@@ -103,6 +103,9 @@ def _suseso_date(text):
 
 def process_suseso(raw,cfg):
     """Publish SUSESO normative acts with document-specific subject, affected actors and validity."""
+    if raw.metadata.get("reviewed_normative"):
+        from .suseso_fiscalizacion import process_reviewed_normative
+        return process_reviewed_normative(raw, cfg)
     raw=enrich(raw)
     text=raw.metadata.get("page_text") or raw.raw_text
     raw.event_date=_suseso_date(text) or raw.event_date
@@ -177,27 +180,19 @@ def process_suseso_news(raw,cfg):
 
 
 def process_suseso_fiscalizacion(raw,cfg):
-    """Official SUSESO fiscalization signal for Isapres or COMPIN."""
-    raw=enrich(raw)
-    if not raw.event_date:return None
-    body=raw.metadata.get("page_text") or raw.raw_text
-    actor=raw.metadata.get("fiscalized_actor") or "Sistema de salud"
-    ai=analyze_official_news(title=raw.title,text=body,source_name="Superintendencia de Seguridad Social (SUSESO)")
-    score=int(ai.get("relevance_score")) if ai else 72
-    if score<65:return None
-    scope="Isapres" if actor=="Isapres" else "Salud pública"
-    raw.metadata.update({
-      "what_happened":(ai.get("what_happened") if ai else raw.raw_text) or raw.title,
-      "why_it_matters":(ai.get("why_it_matters") if ai else
-        "La publicación permite monitorear criterios de fiscalización y cumplimiento aplicables al actor fiscalizado."),
-      "signal_types":["Fiscalización"],"scopes":[scope],
-      "watch_tags":["suseso","fiscalización",actor.lower()],
-      "event_type":"FISCALIZATION",
-      "scores":{"economic":50,"regulatory":88,"scope":score,"novelty":score,"actionability":80}
-    })
-    row=build_signal(raw,cfg).to_dict()
-    row["signal_types"]=["Fiscalización"];row["scopes"]=[scope];row["fiscalized_actor"]=actor;row["editorial_relevance"]=score
-    return row
+    """Publish only verified enforcement, never a related normative taxonomy row."""
+    from .processing import RejectedProcessing
+    if raw.metadata.get("document_class") == "related_normative" or re.match(r"(?:Circular|Dictamen)\b", raw.title, re.I):
+        raise RejectedProcessing("related_normative_not_enforcement")
+    if raw.metadata.get('document_class') == 'enforcement_sanction':
+        from .suseso_fiscalizacion import process_professional_sanction
+        return process_professional_sanction(raw, cfg)
+    if raw.metadata.get('document_class') == 'official_news':
+        from .suseso_fiscalizacion import process_enforcement_news
+        return process_enforcement_news(raw,cfg)
+    if raw.metadata.get('document_class')=='enforcement_report_candidate' and not raw.event_date:
+        raise DeferredProcessing('official_medical_report_missing_daily_publication_and_emission_date; execution_period_is_not_publication')
+    raise DeferredProcessing("SUSESO enforcement candidate requires document/actor/materiality review")
 
 def _scopes(text):
     t=text.lower();out=[]
