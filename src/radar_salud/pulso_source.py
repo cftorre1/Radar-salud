@@ -1015,8 +1015,25 @@ def extract_article(html, expected_url):
     return title, body, metadata
 
 
+def _project_missing_body_completeness(metadata):
+    """Recover absent legacy counters from the bound complete primary text.
+
+    The cached article's short display preview is never evidence. This projection
+    changes no capture, hash, publication date or explicit completeness verdict.
+    """
+    projected = dict(metadata)
+    if (metadata.get("source_quality_gate") == "passed"
+            and all(metadata.get(flag) is True for flag in (
+                "article_verified", "primary_identity_verified", "publication_date_verified"))
+            and complete_article_body(metadata)):
+        projected.setdefault("article_body_characters", len(metadata["page_text"]))
+        projected.setdefault("article_body_complete", True)
+    return projected
+
+
 def _primary_trace(metadata):
     """One primary-evidence contract for listings, archives and public feeds."""
+    metadata = _project_missing_body_completeness(metadata)
     keys = ("canonical_url", "section", "body_source", "publication_date", "publication_timestamp",
             "publication_date_source", "visible_publication_date", "publisher_date_convention",
             "publication_evidence", "source_content_unavailable_reason", "publisher_exception_reason",
@@ -1029,8 +1046,7 @@ def _primary_trace(metadata):
                  primary_identity_verified=metadata.get("primary_identity_verified", False),
                  publication_date_verified=metadata.get("publication_date_verified", False),
                  article_verified=metadata.get("article_verified", False),
-                 article_body_complete=metadata.get("article_body_complete",
-                                                    metadata.get("article_body_characters", 0) >= 160),
+                 article_body_complete=metadata.get("article_body_complete", False),
                  publisher_document_type=metadata.get("publisher_document_type", "article"),
                  publisher_lastmod=metadata.get("publisher_lastmod", ""))
     return trace
@@ -1293,6 +1309,7 @@ def _verified_detail(entry, loader, cached, audit=None):
                 # entire publication evidence were checked above. Capture time
                 # and original hash remain unchanged; this is not a fresh fetch.
                 result["metadata"].update(primary_identity_verified=True, publication_date_verified=True)
+                result["metadata"] = _project_missing_body_completeness(result["metadata"])
             return result
     try:
         html = _request_with_retries(loader, url, audit)
