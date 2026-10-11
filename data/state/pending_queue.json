@@ -125557,12 +125557,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "rejected",
+    "status": "superseded",
     "detected_at": "2026-10-11T05:09:10.713959+00:00",
     "attempts": 2,
-    "reason": "media_assessment_no_material_event",
+    "reason": "already_published_in_history",
     "classification_watermark": "2026-10-11T05:05:08.728740+00:00",
-    "updated_at": "2026-10-11T05:25:22.916697+00:00",
+    "updated_at": "2026-10-11T05:27:04.849485+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -125710,6 +125710,100 @@
           "reason": null,
           "classification_watermark": "2026-10-11T05:05:08.728740+00:00",
           "updated_at": "2026-10-11T05:20:26.965712+00:00",
+          "retry_at": null,
+          "classification_basis": "stored_watermark"
+        }
+      },
+      {
+        "at": "2026-10-11T05:27:04.849485+00:00",
+        "action": "already_published_in_history",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Pese a turnos extensos y trabajo en faenas aisladas, los mineros sacan mejor nota en salud mental que trabajadores de otros rubros",
+            "url": "https://www.df.cl/economia-y-politica/laboral-personas/pese-a-turnos-extensos-y-trabajo-en-faenas-aisladas-los-mineros-sacan",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-08-10",
+            "raw_text": "Pese a los resultados, el informe de Cochilco sugiere avanzar en la creación de un nuevo instrumento sectorial que evalúe los riesgos psicosociales y la salud mental. Ello, tomado en cuenta que es una actividad con características especiales.",
+            "metadata": {
+              "page_text": "Los turnos prolongados, el trabajo en altura o en profundidades, el aislamiento geográfico y la continuidad operacional hacen pensar que la minería podría ser uno de los sectores más expuestos a problemas de salud mental . Pero un estudio de la Comisión Chilena del Cobre (Cochilco) arrojó un resultado que sorprende: la industria presenta mejores indicadores de salud mental que el promedio de las actividades económicas del país. El informe, elaborado por los investigadores Francisco Donoso y Claudia Arancibia, sistematizó información sobre el tema y analizó estadísticas de enfermedades profesionales de la Superintendencia de Seguridad Social (Suseso), los resultados del Cuestionario de Evaluación del Ambiente Laboral -Salud Mental (CEAL-SM), la normativa nacional y las experiencias de países mineros como Australia y Canadá. El diagnóstico es que, pese a las exigencias propias de las labores del área, el rubro se ubica por debajo del promedio nacional en prácticamente todos los indicadores evaluados. Mientras la tasa de enfermedades profesionales registrada para el conjunto de las actividades fue de 0,16% en 2025, en minería llegó al 0,11% . En el caso de aquellas asociadas a salud mental, también hubo diferencias: 0,13% para el conjunto de las áreas medidas versus 0,03% en el ámbito minero . Incluso, la minería figura como la tercera rama productiva con menor tasa de enfermedades profesionales de salud mental del país. Una posible explicación a este escenario, Donoso la asocia a lo que llama “sólida cultura preventiva que caracteriza a la industria minera”, la que incluye sistemas de gestión de seguridad y salud ocupacional ampliamente desarrollados. Además, mencionó las “ condiciones laborales que, en muchos casos, favorecen la estabilidad y el acceso a programas de apoyo ”. Los resultados también mostraron un mejor desempeño en la medición de riesgos psicosociales. De acuerdo con el cuestionario CEAL-SM de la Suseso, solo el 8% de los centros de trabajo mineros está en una condición no óptima, muy por debajo del 20,9% observado a nivel nacional. Adicionalmente, apenas el 0,4% de las faenas evaluadas fue clasificada en riesgo alto. Otro dato que llama la atención es la distribución por género de los diagnósticos de salud mental. En 2025, los casos se repartieron en partes iguales entre hombres y mujeres, pese a que estas últimas representaron alrededor del 24% de la fuerza laboral de la gran minería. El informe planteó que ello supone una sobrerrepresentación femenina, aunque no profundizó en las causas detrás de esa diferencia. La tarea hacia adelante Pese a este desempeño , el informe advirtió que las cifras no significan que la minería esté libre de riesgos. De hecho, el reporte expuso que los diagnósticos de enfermedades profesionales asociadas a salud mental aumentaron desde cinco casos en 2019 a 24 en 2025. Para Donoso, la industria minera ha concentrado sus esfuerzos en la prevención de riesgos físicos y en el fortalecimiento de la seguridad operacional, ámbitos en los que se ha alcanzado progresos significativos. Sin embargo, dijo que actualmente “ existe un creciente consenso respecto de la necesidad de avanzar en mejorar la gestión, control y medición en materia de salud mental y de riesgos psicosociales, ya que constituyen factores fundamentales para la sostenibilidad, productividad y seguridad de la industria ”. En esa línea, el informe identificó los desafíos persistentes en dimensiones como carga de trabajo, conflicto de rol, vulnerabilidad y compañerismo, factores que adquieren especial relevancia en una industria marcada por jornadas excepcionales, sistemas de turno, trabajo en altura y faenas alejadas de los centros urbanos. A ello se suma que un 40,7% de los centros de trabajo evaluados obtuvo un resultado de riesgo no óptimo en la escala de salud mental GHQ-12 (del CEAL-SM), aunque nuevamente por debajo del promedio nacional (71,8%). Mirar las mejores prácticas A partir de la experiencia de Australia, Canadá y del Consejo Internacional de Minería y Metales (ICMM), el informe de Cochilco planteó que la industria debe evolucionar desde un enfoque centrado en reaccionar frente a las enfermedades hacia uno basado en la prevención de los riesgos psicosociales. Para ello, propuso integrar la salud mental dentro de los sistemas de gestión de seguridad, fortalecer la medición de estos riesgos y desarrollar herramientas específicas para la realidad de la minería chilena, en línea con las metas de la Política Nacional Minera 2050. “Se sugiere la creación de un nuevo instrumento sectorial específico para la industria minera que evalúe los riesgos psicosociales y la salud mental. Ello, tomando en cuenta que es una actividad que presenta características especiales como condiciones ambientales de trabajo extremas, aislamiento social, jornadas de trabajo por turnos y distanciamiento familiar; y que además se encuentra propiciando una mayor participación femenina en su fuerza laboral”, concluyó el documento.",
+              "article_title": "Pese a turnos extensos y trabajo en faenas aisladas, los mineros sacan mejor nota en salud mental que trabajadores de otros rubros",
+              "article_section": "Economía y Política",
+              "publication_date_source": "visible:published_label",
+              "publication_timestamp": null,
+              "publication_label": "Lunes 10 de agosto de 2026 a las 04:00 hrs.",
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-08-07T22:22:52Z",
+                  "day": "2026-08-07"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-08-07T22:22:52Z",
+                  "day": "2026-08-07"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Lunes 10 de agosto de 2026 a las 04:00 hrs.",
+                  "day": "2026-08-10"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": {
+                "rule": "primary_header_explicit_publication_label",
+                "selected_visible_day": "2026-08-10",
+                "basis": "DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary CUERPO verified. Metadata timestamps retained; discrepancy cause unknown."
+              },
+              "article_content_source": "df_primary_body",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "c836361c5f07b313c414ec6d4c8f28f685cebbf7d187552c6c8e5693fe7ad739",
+              "original_captured_at": "2026-10-11T05:10:42.026537+00:00",
+              "editorial_assessment": {
+                "score": 72,
+                "reason": "Es un hallazgo relevante sobre salud ocupacional y una propuesta de gestión para una industria importante, pero todavía corresponde a un informe y no a un cambio regulatorio, financiero o de capacidad sanitaria implementado. Por eso funciona como contexto estratégico secundario, no como una señal material de alcance nacional.",
+                "gate": "Media Early Signal Gate",
+                "gate_version": "1.0.0",
+                "threshold": 72
+              },
+              "what_happened": "Diario Financiero informó sobre un estudio de Cochilco que compara la salud mental minera con la de otros sectores. Según el reporte, en 2025 la minería registró una tasa de enfermedades profesionales de salud mental de 0,03%, frente a 0,13% para el conjunto de actividades medidas; sin embargo, los casos mineros aumentaron de 5 en 2019 a 24 en 2025. El documento propone integrar la salud mental a los sistemas de seguridad y crear un instrumento sectorial específico para evaluar riesgos psicosociales en faenas mineras.",
+              "why_it_matters": "Las empresas mineras y los responsables de seguridad y salud ocupacional enfrentan una presión creciente para medir y prevenir riesgos psicosociales asociados a turnos, aislamiento y jornadas excepcionales. La propuesta podría orientar futuras herramientas sectoriales y la implementación de la Política Nacional Minera 2050, aunque el artículo no informa una nueva regulación ni una decisión oficial adoptada.",
+              "signal_types": [
+                "Noticias"
+              ],
+              "scopes": [
+                "Sistema de salud"
+              ],
+              "watch_tags": [
+                "df",
+                "noticias",
+                "sistema de salud"
+              ],
+              "scores": {
+                "economic": 72,
+                "regulatory": 30,
+                "scope": 70,
+                "novelty": 72,
+                "actionability": 70
+              },
+              "publication_gate": {
+                "passed": true,
+                "reason": "ok",
+                "quality": 100
+              },
+              "rejection_reason": "media_assessment_no_material_event"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "rejected",
+          "detected_at": "2026-10-11T05:09:10.713959+00:00",
+          "attempts": 2,
+          "reason": "media_assessment_no_material_event",
+          "classification_watermark": "2026-10-11T05:05:08.728740+00:00",
+          "updated_at": "2026-10-11T05:25:22.916697+00:00",
           "retry_at": null,
           "classification_basis": "stored_watermark"
         }
