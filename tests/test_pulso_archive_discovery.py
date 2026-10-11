@@ -480,3 +480,63 @@ def test_warm_public_feed_trace_retains_real_primary_publisher_change_token(tmp_
     assert len(loaded)==cold_fetches==1 and trace['cache_hit'] is True
     assert trace['publisher_lastmod']==stored['publisher_lastmod']=='2026-10-09T15:00:00Z'
     assert trace['captured_at']==stored['captured_at'] and trace['html_sha256']==stored['html_sha256']
+
+
+RUNTIME_REAL = Path(__file__).parent / 'fixtures/pulso_runtime_real'
+RUNTIME_MANIFEST = json.loads((RUNTIME_REAL / 'manifest.json').read_text())
+MIDNIGHT_ORIGINALS = [entry for entry in RUNTIME_MANIFEST['fixtures']
+                      if entry.get('reason') == 'conflicting_publication_dates']
+
+
+@pytest.mark.parametrize('entry', MIDNIGHT_ORIGINALS, ids=lambda entry: entry['url'].split('/')[-2])
+def test_real_visible_editorial_byline_corroborates_native_timestamp_calendar(entry):
+    import hashlib
+    payload = gzip.decompress((RUNTIME_REAL / entry['path']).read_bytes())
+    assert hashlib.sha256(payload).hexdigest() == entry['sha256']
+    _, _, metadata = extract_article(payload.decode('utf-8'), entry['url'])
+    assert metadata['publication_date'] == entry['expected_publication_date']
+    assert metadata['visible_publication_date'] == entry['expected_publication_date']
+    assert metadata['publication_date_source'] == 'visible_article_byline'
+    assert metadata['publisher_date_convention'] == 'timestamp_calendar'
+    assert all(row['timestamp_calendar_day'] == metadata['publication_date']
+               and row['america_santiago_day'] != metadata['publication_date']
+               for row in metadata['publication_evidence'])
+
+
+def test_mixed_timestamp_conventions_cannot_mask_conflicting_primary_metadata():
+    url = 'https://www.latercera.com/nacional/noticia/hospital-anuncio/'
+    # Each timestamp individually can match Oct9 in a different convention.
+    # Together they corroborate neither one consistently.
+    html = html_article(url, timestamp='2026-10-09T00:30:00Z',
+                        byline='<time class="article-body__byline__date">9 OCTUBRE 2026</time>')
+    html += '<meta property="article:published_time" content="2026-10-10T00:30:00Z">'
+    with pytest.raises(ValueError, match='conflicting_publication_dates'):
+        extract_article(html, url)
+
+
+def test_unrelated_navigation_byline_does_not_override_primary_publication():
+    url = 'https://www.latercera.com/nacional/noticia/hospital-anuncio/'
+    html = '<nav><time class="article-body__byline__date">1 OCTUBRE 2026</time></nav>' + html_article(url)
+    assert extract_article(html, url)[2]['publication_date'] == '2026-10-09'
+
+
+def test_cached_date_needs_primary_corroboration_and_keeps_original_capture_identity():
+    from radar_salud.pulso_source import _verified_detail
+    url = 'https://www.latercera.com/nacional/noticia/hospital-anuncio/'
+    entry = dict(url=url, listing='official-public-feed', lastmod='unchanged-token')
+    calls = []
+    def loader(value):
+        calls.append(value)
+        return html_article(value, timestamp='2026-10-09T00:30:00Z',
+                            byline='<time class="article-body__byline__date">9 OCTUBRE 2026</time>')
+    original = _verified_detail(entry, loader, None)
+    original['metadata'].pop('publisher_date_convention')
+    warm = _verified_detail(entry, loader, original)
+    assert len(calls) == 1 and warm['cache_hit']
+    assert warm['metadata']['publisher_date_convention'] == 'timestamp_calendar'
+    assert warm['metadata']['html_sha256'] == original['metadata']['html_sha256']
+    assert warm['metadata']['captured_at'] == original['metadata']['captured_at']
+    wrong = dict(original, metadata=dict(original['metadata'], publication_date='2026-10-08'))
+    refreshed = _verified_detail(entry, loader, wrong)
+    assert len(calls) == 2 and not refreshed['cache_hit']
+    assert refreshed['metadata']['publication_date'] == '2026-10-09'

@@ -197,6 +197,36 @@ def _publisher_day(value):
     return stamp.astimezone(ZoneInfo("America/Santiago")).date().isoformat()
 
 
+def _reconcile_publication_dates(dates, visible_day):
+    """Require one consistent convention for all primary timestamps.
+
+    Real originals expose an editorial byline matching the UTC calendar at
+    00:xxZ; others match Santiago. A per-field choice could mask conflicting
+    metadata, so the complete evidence must corroborate the same convention.
+    """
+    native_days = {day for _, _, day in dates}
+    chile_days = {_publisher_day(value) for _, value, _ in dates}
+    native_match = len(native_days) == 1 and (not visible_day or visible_day in native_days)
+    chile_match = len(chile_days) == 1 and (not visible_day or visible_day in chile_days)
+    if visible_day:
+        if not (native_match or chile_match):
+            raise ValueError("conflicting_publication_dates")
+        published = visible_day
+        convention = ("calendar_agreement" if native_match and chile_match else
+                      "timestamp_calendar" if native_match else "america_santiago")
+    else:
+        # Without a displayed byline, preserve the publisher-local fallback;
+        # a timezone switch cannot resolve contradictory primary timestamps.
+        if not chile_match:
+            raise ValueError("conflicting_publication_dates")
+        published = next(iter(chile_days))
+        convention = "calendar_agreement" if native_match and native_days == chile_days else "america_santiago"
+    evidence = [dict(source=kind, timestamp=value, publisher_day=published,
+                     timestamp_calendar_day=day, america_santiago_day=_publisher_day(value))
+                for kind, value, day in dates]
+    return published, convention, evidence
+
+
 class ExcludedArticle(ValueError):
     """An explicit publisher section exclusion with verified primary identity/date."""
     def __init__(self, reason, title, body, metadata):
@@ -240,13 +270,10 @@ def extract_article(html, expected_url):
     if not dates or any(not day for _, _, day in dates):
         raise ValueError("missing_or_invalid_publication_date")
     visible_day = _visible_byline_day(parser.byline_dates)
-    publisher_dates = [(kind, value, _publisher_day(value)) for kind, value, _ in dates]
-    if len({day for _, _, day in publisher_dates}) != 1 or (
-            visible_day and visible_day != publisher_dates[0][2]):
-        raise ValueError("conflicting_publication_dates")
-    date_source, timestamp, published = publisher_dates[0]
+    published, convention, dated_evidence = _reconcile_publication_dates(dates, visible_day)
+    date_source, timestamp, _ = dates[0]
     if visible_day:
-        published, date_source = visible_day, "visible_article_byline"
+        date_source = "visible_article_byline"
     now = datetime.now(ZoneInfo("UTC"))
     for _, value, _ in dates:
         if len(value) == 10:
@@ -267,7 +294,8 @@ def extract_article(html, expected_url):
                             body_source="url_bound_json_ld_articleBody" if node.get("articleBody") else "article_html",
                             publication_date=published, publication_timestamp=timestamp,
                             publication_date_source=date_source, visible_publication_date=visible_day,
-                            publication_evidence=[dict(source=kind, timestamp=value, publisher_day=day) for kind, value, day in publisher_dates], canonical_url=expected,
+                            publisher_date_convention=convention, publication_evidence=dated_evidence,
+                            canonical_url=expected,
                             article_verified=True)
     if re.search(r"opini[oó]n|editorial|columna", str(section), re.I):
         raise ExcludedArticle("excluded_opinion_content", title, body, metadata)
@@ -451,9 +479,23 @@ def _verified_detail(entry, loader, cached):
             and cached.get("metadata", {}).get("article_verified")
             and cached.get("url") == url
             and (not cached.get("relevant") or complete_article_body(cached.get("metadata", {})))):
-        result = dict(cached)
-        result["cache_hit"] = True
-        return result
+        metadata = cached["metadata"]
+        evidence = metadata.get("publication_evidence", [])
+        dates = [(row.get("source"), row.get("timestamp"), publication_day(row.get("timestamp")))
+                 for row in evidence]
+        try:
+            if not dates or any(not day for _, _, day in dates):
+                raise ValueError("missing_or_invalid_publication_date")
+            published, convention, dated_evidence = _reconcile_publication_dates(
+                dates, metadata.get("visible_publication_date"))
+            if published != metadata.get("publication_date"):
+                raise ValueError("cached_publication_date_mismatch")
+        except (ValueError, TypeError):
+            pass  # A cache with uncorroborated dates requires original HTML.
+        else:
+            result = dict(cached, metadata=dict(metadata, publisher_date_convention=convention,
+                                                publication_evidence=dated_evidence), cache_hit=True)
+            return result
     try:
         html = loader(url)
         title, body, metadata = extract_article(html, url)
@@ -601,7 +643,10 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
             trace = dict(url=result["url"], listing=url, status=status, reason=reason,
                          title=result["title"], section=metadata["section"], topics=metadata.get("topics", []),
                          publication_date=metadata["publication_date"], publication_timestamp=metadata["publication_timestamp"],
-                         publication_date_source=metadata["publication_date_source"], html_sha256=metadata["html_sha256"],
+                         publication_date_source=metadata["publication_date_source"],
+                         visible_publication_date=metadata.get("visible_publication_date"),
+                         publisher_date_convention=metadata.get("publisher_date_convention"),
+                         publication_evidence=metadata.get("publication_evidence"), html_sha256=metadata["html_sha256"],
                          captured_at=metadata["captured_at"], publisher_lastmod=entry.get("lastmod", ""),
                          cache_hit=result["cache_hit"], in_complete_30_days=today - timedelta(days=30) <= day < today,
                          in_complete_90_days=cutoff <= day < today, current_day_slice=day == today)
@@ -805,7 +850,10 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                 audit.append(dict(url=result["url"], listing=url, feed=kind + ":" + name, status=status, reason=reason,
                                   title=result["title"], section=metadata["section"], topics=metadata.get("topics", []),
                                   publication_date=metadata["publication_date"], publication_timestamp=metadata["publication_timestamp"],
-                                  publication_date_source=metadata["publication_date_source"], html_sha256=metadata["html_sha256"],
+                                  publication_date_source=metadata["publication_date_source"],
+                         visible_publication_date=metadata.get("visible_publication_date"),
+                         publisher_date_convention=metadata.get("publisher_date_convention"),
+                         publication_evidence=metadata.get("publication_evidence"), html_sha256=metadata["html_sha256"],
                                   captured_at=metadata["captured_at"], cache_hit=result["cache_hit"],
                                   publisher_lastmod=metadata.get("publisher_lastmod"),
                                   first_publish_date=entry.get("first_publish_date"), duplicate_inventory_url=was_seen,
