@@ -274,6 +274,8 @@ def reconcile(state, queue, now):
                      "objective": source.get("objective", ""),
                      "failure": deepcopy(source.get("failure")),
                      "input_fingerprint": source.get("input_fingerprint", evidence_revision),
+                     "product_input_fingerprint": source.get("product_input_fingerprint", source.get("input_fingerprint", evidence_revision)),
+                     "executor_fingerprint": source.get("executor_fingerprint"),
                      "approved": True})
         policy_blockers = source.get("blocked_by")
         if policy_blockers:
@@ -676,6 +678,8 @@ def finish(state, task_id, token, report, now):
             "partial_candidate", "candidate_scope", "directed_gates", "non_regression", "live_gate",
             "validated", "targeted_validated", "live_validated", "live_scope")}
         details["input_fingerprint"] = task["input_fingerprint"]
+        details["product_input_fingerprint"] = task["product_input_fingerprint"]
+        details["executor_fingerprint"] = task.get("executor_fingerprint")
         details["parent_input_sha"] = task["input_sha"]
         if (task["family"] == "staging_qa" and _failure_proof(task.get("failure"))
                 and (task["failure"] or {}).get("kind") != "source_runtime" and report.get("validated") is True

@@ -701,6 +701,31 @@ class AutonomyEngineTests(unittest.TestCase):
         self.assertEqual(state["material_events"][0]["details"]["candidate_scope"], "isolated")
         self.assertNotIn("closure", [event["kind"] for event in state["material_events"]])
 
+    def test_candidate_base_keeps_product_identity_when_executor_scope_is_combined(self):
+        q = queue("media")
+        q["tasks"][0].update(input_fingerprint="product-and-executor-v1",
+            product_input_fingerprint="unchanged-product", executor_fingerprint="executor-v1")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], partial(), BASE)
+        details = state["material_events"][0]["details"]
+        self.assertEqual(details["product_input_fingerprint"], "unchanged-product")
+        self.assertEqual(details["executor_fingerprint"], "executor-v1")
+        self.assertEqual(details["input_fingerprint"], "product-and-executor-v1")
+        self.assertNotIn("closure", [event["kind"] for event in state["material_events"]])
+
+    def test_executor_change_reopens_blocker_and_preserves_product_scope(self):
+        q = queue("media")
+        q["tasks"][0].update(input_fingerprint="product-and-executor-v1",
+            product_input_fingerprint="unchanged-product", executor_fingerprint="executor-v1")
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], blocked(), BASE)
+        signatures = state["tasks"][MEDIA]["blocker_signatures"][:]
+        q["tasks"][0].update(input_fingerprint="product-and-executor-v2", executor_fingerprint="executor-v2")
+        state = reconcile(state, q, BASE + timedelta(seconds=1))
+        self.assertEqual(state["tasks"][MEDIA]["status"], "READY")
+        self.assertEqual(state["tasks"][MEDIA]["product_input_fingerprint"], "unchanged-product")
+        self.assertEqual(state["tasks"][MEDIA]["blocker_signatures"], signatures)
+
     def test_partial_candidate_requires_hashed_non_regression_and_live_directed_pass(self):
         report = partial()
         report["family"] = "media"
