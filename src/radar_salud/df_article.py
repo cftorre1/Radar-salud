@@ -109,6 +109,11 @@ def _news_nodes(value):
         yield from _news_nodes(value.get("@graph", []))
 
 
+def _node_identity(node):
+    identity=node.get('url') or node.get('mainEntityOfPage')
+    return identity.get('@id') if isinstance(identity,dict) else identity
+
+
 def parse_df_article(html, url):
     p = _Article()
     p.feed(html)
@@ -120,9 +125,7 @@ def parse_df_article(html, url):
             continue
     selected = []
     for node in nodes:
-        identity = node.get("url") or node.get("mainEntityOfPage")
-        if isinstance(identity, dict):
-            identity = identity.get("@id")
+        identity = _node_identity(node)
         if not identity or article_url(str(identity)) == article_url(url):
             selected.append(node)
     candidates = []
@@ -150,7 +153,7 @@ def parse_df_article(html, url):
     conflict = len({c["day"] for c in valid}) > 1
     chosen = valid[0] if valid and not conflict else None
     resolution=None
-    identity_verified=any(article_url(str(node.get('url') or ''))==article_url(url) for node in selected)
+    identity_verified=any(article_url(str(_node_identity(node) or ''))==article_url(url) for node in selected)
     if conflict and p.publication_label and p.primary and identity_verified:
         chosen=next((c for c in valid if c['source']=='visible:published_label'),None)
         if chosen:

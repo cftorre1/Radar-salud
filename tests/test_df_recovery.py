@@ -316,6 +316,7 @@ def test_captured_df_primary_bodies_exclude_real_recommendation_cards():
     ricarte = parse_df_article((fixtures / 'df_ricarte_real.html').read_text(), manifest['df_ricarte_real']['url'])
     assert ricarte['metadata']['publication_timestamp'] is None
     assert '04:00' in ricarte['metadata']['publication_label']
+    assert ricarte['metadata']['publication_date_conflict_resolution']['rule'] == 'primary_header_explicit_publication_label'
 
 
 def test_df_missing_primary_body_does_not_use_newsletter_or_description():
@@ -406,6 +407,7 @@ def test_conflict_resolves_only_explicit_primary_df_header_with_matching_identit
     assert parsed['event_date'] == '2026-07-23'
     assert parsed['metadata']['publication_date_conflict']
     assert parsed['metadata']['publication_date_conflict_resolution']['rule'] == 'primary_header_explicit_publication_label'
+    assert parse_df_article(meta + node.replace('\"url\"', '\"mainEntityOfPage\"') + label + body, URL)['event_date'] == '2026-07-23'
     assert len(parsed['metadata']['publication_date_candidates']) == 3
     assert parse_df_article(meta + node.replace(URL, 'https://www.df.cl/other/article') + label + body, URL)['event_date'] is None
     assert parse_df_article(meta + node + label.replace('enc-main', 'recommendations') + body, URL)['event_date'] is None
