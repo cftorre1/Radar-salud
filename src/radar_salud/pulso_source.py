@@ -611,6 +611,26 @@ def extract_article(html, expected_url):
     return title, body, metadata
 
 
+def _primary_trace(metadata):
+    """One primary-evidence contract for listings, archives and public feeds."""
+    keys = ("canonical_url", "section", "body_source", "publication_date", "publication_timestamp",
+            "publication_date_source", "visible_publication_date", "publisher_date_convention",
+            "publication_evidence", "source_content_unavailable_reason", "publisher_exception_reason",
+            "publisher_exclusion_reason", "publisher_taxonomy", "publisher_content_classification",
+            "possible_publication_days", "video_evidence", "html_sha256", "captured_at",
+            "article_body_characters", "article_body_sha256", "source_quality_gate")
+    trace = {key: metadata.get(key) for key in keys}
+    trace.update(topics=metadata.get("topics", []),
+                 primary_identity_verified=metadata.get("primary_identity_verified", False),
+                 publication_date_verified=metadata.get("publication_date_verified", False),
+                 article_verified=metadata.get("article_verified", False),
+                 article_body_complete=metadata.get("article_body_complete",
+                                                    metadata.get("article_body_characters", 0) >= 160),
+                 publisher_document_type=metadata.get("publisher_document_type", "article"),
+                 publisher_lastmod=metadata.get("publisher_lastmod", ""))
+    return trace
+
+
 def discover_listing(html, base, detail_loader, audit, visited):
     from .beta_sources import _Links
     parser = _Links()
@@ -628,47 +648,35 @@ def discover_listing(html, base, detail_loader, audit, visited):
         try:
             html = _request_with_retries(detail_loader, url, audit)
             title, body, metadata = extract_article(html, url)
-            if not health_anchor(title + " " + body):
-                audit.append(dict(url=url, listing=base, status="excluded", reason="no_health_anchor",
-                                  publication_date=metadata["publication_date"], section=metadata["section"]))
-                continue
             metadata.update(article_body_evidence(body), discovered_from=base, market_role="media",
-                            source_quality_gate="passed", captured_at=datetime.now(ZoneInfo("UTC")).isoformat(),
+                            captured_at=datetime.now(ZoneInfo("UTC")).isoformat(),
                             html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest())
+            if not health_anchor(title + " " + body):
+                audit.append(dict(_primary_trace(metadata), url=url, listing=base, title=title,
+                                  status="excluded", reason="no_health_anchor", cache_hit=False))
+                continue
+            metadata["source_quality_gate"] = "passed"
             out.append(RawItem("pulso_latercera", title, url, "Pulso / La Tercera", "press_high_trust",
                                event_date=metadata["publication_date"], raw_text=body[:1800], metadata=metadata))
-            audit.append(dict(url=url, listing=base, status="discovered", section=metadata["section"],
-                              publication_date=metadata["publication_date"]))
+            audit.append(dict(_primary_trace(metadata), url=url, listing=base, title=title,
+                              status="discovered", reason=None, cache_hit=False))
         except (TextUnavailableArticle, ConflictingPublicationArticle, SponsoredArticle) as exc:
             result = _verified_detail(dict(url=url, listing=base), lambda _: html, None, audit)
             metadata = result["metadata"]
             if not result["relevant"]:
-                audit.append(dict(url=url, listing=base, status="excluded", reason="no_health_anchor",
-                                  publication_date=metadata["publication_date"], section=metadata["section"],
-                                  publisher_taxonomy=metadata.get("publisher_taxonomy"),
-                                  publisher_content_classification=metadata.get("publisher_content_classification"),
-                                  html_sha256=metadata["html_sha256"]))
+                audit.append(dict(_primary_trace(metadata), url=url, listing=base, title=result["title"],
+                                  status="excluded", reason="no_health_anchor", cache_hit=False))
                 continue
             out.append(RawItem("pulso_latercera", result["title"], url, "Pulso / La Tercera", "press_high_trust",
                                event_date=metadata["publication_date"], raw_text=result["body"], metadata=metadata))
-            audit.append(dict(url=url, listing=base, status="discovered_metadata_only", reason=result["deferred_reason"],
-                              publication_date=metadata["publication_date"], section=metadata["section"],
-                              publication_date_verified=metadata.get("publication_date_verified"),
-                              article_body_complete=metadata["article_body_complete"],
-                              source_content_unavailable_reason=metadata.get("source_content_unavailable_reason"),
-                         publisher_exception_reason=metadata.get("publisher_exception_reason"),
-                         publisher_exclusion_reason=metadata.get("publisher_exclusion_reason"),
-                         possible_publication_days=metadata.get("possible_publication_days"),
-                         publisher_taxonomy=metadata.get("publisher_taxonomy"),
-                         publisher_content_classification=metadata.get("publisher_content_classification"),
-                              publication_evidence=metadata.get("publication_evidence"),
-                              video_evidence=metadata.get("video_evidence"), html_sha256=metadata["html_sha256"]))
+            audit.append(dict(_primary_trace(metadata), url=url, listing=base, title=result["title"],
+                              status="discovered_metadata_only", reason=result["deferred_reason"], cache_hit=False))
         except ExcludedArticle as exc:
-            audit.append(dict(url=url, listing=base, status="excluded", reason=str(exc),
-                              publication_date=exc.metadata["publication_date"], section=exc.metadata["section"],
-                              publisher_taxonomy=exc.metadata.get("publisher_taxonomy"),
-                              publication_evidence=exc.metadata.get("publication_evidence"),
-                              html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest()))
+            metadata = dict(exc.metadata)
+            metadata.update(article_body_evidence(exc.body), captured_at=datetime.now(ZoneInfo("UTC")).isoformat(),
+                            html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest())
+            audit.append(dict(_primary_trace(metadata), url=url, listing=base, title=exc.title,
+                              status="excluded", reason=str(exc), cache_hit=False))
         except Exception as exc:
             audit.append(dict(url=url, listing=base, status="detail_error", reason=str(exc), error_type=type(exc).__name__))
     return out
@@ -1018,26 +1026,8 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
             else:
                 page_errors = True  # an ambiguous date never corroborates an old page
                 publisher_exceptions += 1
-            trace = dict(url=result["url"], listing=url, status=status, reason=reason,
-                         title=result["title"], section=metadata["section"], topics=metadata.get("topics", []),
-                         publication_date=metadata["publication_date"], publication_timestamp=metadata["publication_timestamp"],
-                         publication_date_source=metadata["publication_date_source"],
-                         visible_publication_date=metadata.get("visible_publication_date"),
-                         publisher_date_convention=metadata.get("publisher_date_convention"),
-                         publication_evidence=metadata.get("publication_evidence"),
-                         primary_identity_verified=metadata.get("primary_identity_verified", True),
-                         publication_date_verified=metadata.get("publication_date_verified", True),
-                         article_verified=metadata.get("article_verified", True),
-                         article_body_complete=metadata.get("article_body_complete", True),
-                         source_content_unavailable_reason=metadata.get("source_content_unavailable_reason"),
-                         publisher_exception_reason=metadata.get("publisher_exception_reason"),
-                         publisher_exclusion_reason=metadata.get("publisher_exclusion_reason"),
-                         publisher_taxonomy=metadata.get("publisher_taxonomy"),
-                         publisher_content_classification=metadata.get("publisher_content_classification"),
-                         possible_publication_days=metadata.get("possible_publication_days"),
-                         publisher_document_type=metadata.get("publisher_document_type", "article"),
-                         video_evidence=metadata.get("video_evidence"), html_sha256=metadata["html_sha256"],
-                         captured_at=metadata["captured_at"], publisher_lastmod=entry.get("lastmod", ""),
+            trace = dict(_primary_trace(metadata), url=result["url"], listing=url, status=status, reason=reason,
+                         title=result["title"], publisher_lastmod=entry.get("lastmod", ""),
                          cache_hit=result["cache_hit"], in_complete_30_days=bool(day and today - timedelta(days=30) <= day < today),
                          in_complete_90_days=bool(day and cutoff <= day < today), current_day_slice=day == today)
             audit.append(trace)
@@ -1241,27 +1231,9 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                 articles[result["url"]] = {key: val for key, val in result.items() if key != "cache_hit"}
                 was_seen = result["url"] in visited
                 visited.add(result["url"])
-                audit.append(dict(url=result["url"], listing=url, feed=kind + ":" + name, status=status, reason=reason,
-                                  title=result["title"], section=metadata["section"], topics=metadata.get("topics", []),
-                                  publication_date=metadata["publication_date"], publication_timestamp=metadata["publication_timestamp"],
-                                  publication_date_source=metadata["publication_date_source"],
-                         visible_publication_date=metadata.get("visible_publication_date"),
-                         publisher_date_convention=metadata.get("publisher_date_convention"),
-                         publication_evidence=metadata.get("publication_evidence"),
-                         primary_identity_verified=metadata.get("primary_identity_verified", True),
-                         publication_date_verified=metadata.get("publication_date_verified", True),
-                         article_verified=metadata.get("article_verified", True),
-                         article_body_complete=metadata.get("article_body_complete", True),
-                         source_content_unavailable_reason=metadata.get("source_content_unavailable_reason"),
-                         publisher_exception_reason=metadata.get("publisher_exception_reason"),
-                         publisher_exclusion_reason=metadata.get("publisher_exclusion_reason"),
-                         publisher_taxonomy=metadata.get("publisher_taxonomy"),
-                         publisher_content_classification=metadata.get("publisher_content_classification"),
-                         possible_publication_days=metadata.get("possible_publication_days"),
-                         publisher_document_type=metadata.get("publisher_document_type", "article"),
-                         video_evidence=metadata.get("video_evidence"), html_sha256=metadata["html_sha256"],
-                                  captured_at=metadata["captured_at"], cache_hit=result["cache_hit"],
-                                  publisher_lastmod=metadata.get("publisher_lastmod"),
+                audit.append(dict(_primary_trace(metadata), url=result["url"], listing=url,
+                                  feed=kind + ":" + name, status=status, reason=reason,
+                                  title=result["title"], cache_hit=result["cache_hit"],
                                   first_publish_date=entry.get("first_publish_date"), duplicate_inventory_url=was_seen,
                                   in_complete_30_days=bool(day and today - timedelta(days=30) <= day < today),
                                   in_complete_90_days=bool(day and cutoff <= day < today), current_day_slice=day == today))
