@@ -189,5 +189,31 @@
     "executed_surgeries": 30,
     "executed_on": "2026-08-22",
     "rule": "Do not add planned50 and actual30; latest user continuation authorizes necessary false-negative review with new evidence."
+  },
+  "followup_assessment": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116467017",
+    "commit": "4848786d8801ea2c1005c31015ade16583198bdb",
+    "results": [
+      {
+        "source": "red_davila",
+        "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
+        "outcome": "rejected",
+        "signal": null,
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T05:57:59.863362+00:00",
+          "relevance_score": 74,
+          "minimum_relevance": 75,
+          "editorial_reason": "Es un convenio operativo con metas cuantificables, beneficiarios definidos y uso de capacidad instalada de un prestador privado para apoyar a la red pública. Su impacto es relevante para los actores involucrados, pero acotado territorialmente y a cirugía maxilofacial, por lo que corresponde a un contexto sectorial útil más que a un cambio nacional material.",
+          "what_characters": 577,
+          "why_characters": 481,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-08-24",
+          "publication_date_source": "verified_article_header"
+        }
+      }
+    ]
   }
 }

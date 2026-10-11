@@ -84232,10 +84232,10 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-09-24T17:51:49.535310+00:00",
-    "attempts": 5,
+    "attempts": 6,
     "reason": "budget_or_analysis_deferred",
-    "updated_at": "2026-10-11T04:49:06.195089+00:00",
-    "retry_at": "2026-10-12T04:49:06.195104+00:00",
+    "updated_at": "2026-10-11T05:58:00.734686+00:00",
+    "retry_at": "2026-10-12T05:58:00.734701+00:00",
     "audit_prior_state": {
       "status": "retry",
       "reason": "budget_or_analysis_deferred"
@@ -94357,19 +94357,64 @@
         "recovery_audit": "data/audits/providers_2026_10_11/red_davila.json",
         "source_quality_gate": "passed",
         "market_role": "provider",
-        "title_before_provider_audit_correction": "Operativo médico Sótero del Río"
+        "title_before_provider_audit_correction": "Operativo médico Sótero del Río",
+        "review_revision": "enlace_official_chain_v1",
+        "supporting_official_sources": [
+          {
+            "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+            "title": "Red Dávila se suma al Plan Enlace para reducir listas de espera odontológicas",
+            "publication_date": "2026-08-20",
+            "relationship": "programme_announcement_before_execution"
+          }
+        ],
+        "supporting_evidence_capture": [
+          {
+            "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+            "title": "Red Dávila se suma al Plan Enlace para reducir listas de espera odontológicas",
+            "publication_date": "2026-08-20",
+            "relationship": "programme_announcement_before_execution",
+            "body_sha256": "55a39578c9e7ebbf1bb704682517c4d6cb5b8a67d29f2a7970a49c866a2dfdf7"
+          }
+        ],
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T05:57:59.863362+00:00",
+          "relevance_score": 74,
+          "minimum_relevance": 75,
+          "editorial_reason": "Es un convenio operativo con metas cuantificables, beneficiarios definidos y uso de capacidad instalada de un prestador privado para apoyar a la red pública. Su impacto es relevante para los actores involucrados, pero acotado territorialmente y a cirugía maxilofacial, por lo que corresponde a un contexto sectorial útil más que a un cambio nacional material.",
+          "what_characters": 577,
+          "why_characters": 481,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-08-24",
+          "publication_date_source": "verified_article_header"
+        }
       }
     },
     "source": "red_davila",
     "lane": "BACKFILL",
     "status": "rejected",
     "detected_at": "2026-10-11T04:41:22.718201+00:00",
-    "attempts": 2,
-    "reason": "processor_rejected",
+    "attempts": 3,
+    "reason": "relevance_below_source_gate",
     "deferred_detail": "Provider listing/detail publication date mismatch: https://www.davila.cl/novedades/operativo-medico-sotero",
-    "updated_at": "2026-10-11T05:03:42.569630+00:00",
+    "updated_at": "2026-10-11T05:57:59.863482+00:00",
     "retry_at": null,
-    "repair_checkpoint": "corrected_original_headline_and_publication_header; reassess only this deferred URL"
+    "repair_checkpoint": "corrected_original_headline_and_publication_header; reassess only this deferred URL",
+    "audit_prior_state": {
+      "status": "rejected",
+      "reason": "processor_rejected"
+    },
+    "review_history": [
+      {
+        "at": "2026-10-11T05:57:39.599213+00:00",
+        "prior_status": "rejected",
+        "historical_processor_reason": "unknown; original model reason/score not persisted",
+        "review_revision": "enlace_official_chain_v1",
+        "reason": "Reviewer confirmed material programme; reassess once with additional official announcement/execution evidence"
+      }
+    ]
   },
   "59f04ea940925b9686889ee4a2451021859b2b0342c910c0c0842747bab9045f": {
     "raw": {
@@ -94539,6 +94584,46 @@
     "attempts": 1,
     "reason": "processor_rejected",
     "updated_at": "2026-10-11T04:48:45.089189+00:00",
+    "retry_at": null
+  },
+  "6528cd0cde6dafb54a2aaf2e117f36b98eaf99cd3b40e6c2c905ab586935c498": {
+    "raw": {
+      "source_slug": "andes_salud",
+      "title": "Andes Salud inaugura nuevo Centro Médico en Frutillar para acercar consultas médicas y exámenes a la comunidad",
+      "url": "https://www.andessalud.cl/novedades/andes-salud-inaugura-nuevo-centro-medico-en-frutillar-para-acercar-consultas-medicas-y-examenes-a-la-comunidad/",
+      "source_name": "Andes Salud",
+      "source_type": "corporate",
+      "event_date": "2026-07-23",
+      "raw_text": "",
+      "metadata": {
+        "discovered_from": "https://www.andessalud.cl/novedades/",
+        "publication_date_source": "verified_article_header",
+        "recovery_audit": "data/audits/providers_2026_10_11/andes_salud.json",
+        "source_quality_gate": "passed",
+        "market_role": "provider",
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T05:57:48.811644+00:00",
+          "relevance_score": 70,
+          "minimum_relevance": 75,
+          "editorial_reason": "Merece seguimiento como señal de expansión regional y fortalecimiento de la red ambulatoria de Andes Salud, pero su escala es local: la inversión y la capacidad anunciadas no configuran por sí solas un cambio material para el sector salud nacional.",
+          "what_characters": 358,
+          "why_characters": 352,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-07-23",
+          "publication_date_source": "verified_article_header"
+        }
+      }
+    },
+    "source": "andes_salud",
+    "lane": "BACKFILL",
+    "status": "rejected",
+    "detected_at": "2026-10-11T05:57:39.599213+00:00",
+    "attempts": 1,
+    "reason": "relevance_below_source_gate",
+    "updated_at": "2026-10-11T05:57:48.811766+00:00",
     "retry_at": null
   }
 }
