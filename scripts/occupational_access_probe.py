@@ -17,11 +17,13 @@ OFFICIAL_HOSTS = {
     "achs.cl", "www.achs.cl", "achssalud.cl", "www.achssalud.cl",
     "mutual.cl", "www.mutual.cl", "ww2.mutual.cl", "ist.cl", "www.ist.cl",
     "clinicasachssalud.cl", "www.clinicasachssalud.cl",
+    "proceso-devolucion-masiva.mutual.cl",
 }
 SAFE_HEADERS = {
     "content-type", "content-length", "date", "last-modified", "etag", "location",
     "server", "strict-transport-security", "retry-after", "x-robots-tag",
     "x-iinfo", "x-cdn", "cf-ray", "cf-mitigated", "cache-control",
+    "x-wp-total", "x-wp-totalpages", "link",
 }
 USER_AGENTS = {
     "identified": "AlicantoSaludSourceRecovery/1.0 (public-source audit; no challenge execution)",
@@ -86,7 +88,7 @@ def waf_kind(body):
         return "incapsula_challenge"
     if re.search(r"cf-chl-|Just a moment\.\.\.|cf-turnstile", text, re.I):
         return "cloudflare_challenge"
-    if re.search(r"verify you are human|captcha|access denied", text, re.I):
+    if len(body) < 15000 and re.search(r"verify you are human|access denied|request blocked", text, re.I):
         return "possible_access_challenge"
     return None
 
