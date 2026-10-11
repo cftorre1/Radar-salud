@@ -1,5 +1,7 @@
 name: Source expansion isolated native validation
 on:
+  pull_request:
+    branches: [staging]
   push:
     branches: [codex/w4-market-intelligence-expansion-20261011]
   workflow_dispatch:
@@ -7,12 +9,13 @@ permissions:
   contents: read
 jobs:
   native:
-    if: github.ref == 'refs/heads/codex/w4-market-intelligence-expansion-20261011'
+    if: github.head_ref == 'codex/w4-market-intelligence-expansion-20261011' || github.ref == 'refs/heads/codex/w4-market-intelligence-expansion-20261011'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
