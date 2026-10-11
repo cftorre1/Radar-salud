@@ -144,7 +144,17 @@ def main():
         metadata=parsed['metadata'] if parsed else raw.get('metadata',{})
         date=parsed['event_date'] if parsed else raw.get('event_date')
         reason=item.get('reason')
-        state='RESOLVED_PUBLISHED' if item['status']=='published' else 'RESOLVED_REJECTED' if item['status']=='rejected' else 'RESOLVED_DUPLICATE' if item['status']=='superseded' else None
+        review=controls.get('retry_reviews',{}).get(url)
+        if args.resolve and review and date and item['status'] in ('retry','deferred'):
+            counterpart=review.get('duplicate_of')
+            confirmed=not counterpart or any(r.get('source_url')==counterpart and r.get('editorial_decision')!='reject' for r in history)
+            if confirmed:
+                _remember(item,now,'individual_publisher_scope_or_event_duplicate_review')
+                item.update(status='superseded' if counterpart else 'rejected',retry_at=None,
+                    reason='duplicate_verified_df_event' if counterpart else 'df_unrelated_primary_multimedia_topic',
+                    updated_at=now.isoformat(),df_resolution=review)
+                if counterpart:item['duplicate_of']=counterpart
+        state=(item.get('df_resolution',{}).get('state') if item['status'] in ('rejected','superseded') else None) or ('RESOLVED_PUBLISHED' if item['status']=='published' else 'RESOLVED_REJECTED' if item['status']=='rejected' else 'RESOLVED_DUPLICATE' if item['status']=='superseded' else None)
         if state is None:
             state='RESOLVED_NO_VERIFIABLE_DATE' if not date else 'DEFERRED_MULTIMEDIA'
             reason='df_publication_date_conflict' if not date and metadata.get('publication_date_conflict') else 'df_missing_publication_date' if not date else 'df_image_only_requires_ocr' if metadata.get('primary_image_urls') else 'df_media_transcript_unavailable' if metadata.get('primary_media_urls') or '/podcast/' in url or '/videos/' in url else 'df_insufficient_article_evidence'
@@ -170,6 +180,7 @@ def main():
             description=parsed['raw_text'] if parsed else raw.get('raw_text'),
             media_markup=re.findall(r'.{0,300}<iframe\b[^>]*>.{0,300}',html or '',flags=re.I)[:6],
             equivalent_official_text=controls.get('equivalents',{}).get(url),
+            reviewed_basis=item.get('df_resolution',{}).get('basis'),
             next_action=item.get('df_resolution',{}).get('next_action')))
     queue.save()
     if args.resolve:
