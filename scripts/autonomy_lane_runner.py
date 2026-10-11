@@ -76,6 +76,106 @@ def semantic_hash(value):
     return digest(json.dumps(semantic(value), sort_keys=True, ensure_ascii=False, separators=(",", ":")))
 
 
+def problem_semantic(value, *, task=None, input_sha=None):
+    """Identify a demonstrated problem without changing its raw evidence.
+
+    Product and acceptance identities use their existing stricter contracts.
+    Only aliases explicitly bound to the failed QA episode lose run identity.
+    An opaque log hash alone still distinguishes an otherwise unknown failure.
+    """
+    task = task or {}
+    failure = task.get("failure") or {}
+    run_id = str(failure.get("run_id", ""))
+    bound = bool(run_id.isdigit() and task.get("id") == "staging_qa_failed_run_" + run_id
+        and failure.get("failure_signature") and task.get("product_input_fingerprint"))
+    aliases = {sha for sha in (input_sha, failure.get("head_sha")) if isinstance(sha, str) and re.fullmatch(r"[a-fA-F0-9]{40}", sha)} if bound else set()
+    clocks = VOLATILE_KEYS - {"response_sha256", "response_bytes"}
+    captures = {"captured_stdout_sha256", "captured_stdout_bytes", "source_evidence_sha256", "failure_sha256", "failure_hash", "fingerprint"}
+
+    def meaningful(item):
+        if isinstance(item, list):
+            return any(meaningful(child) for child in item)
+        if not isinstance(item, dict):
+            return False
+        if item.get("output") or item.get("error") or item.get("failure_details"):
+            return True
+        pytest = item.get("pytest") or {}
+        if isinstance(pytest, dict) and pytest.get("cases"):
+            return True
+        review = item.get("reviewer_proof") or {}
+        if isinstance(review, dict) and (review.get("checks") or review.get("findings")):
+            return True
+        browser = item.get("browser_proof") or {}
+        if isinstance(browser, dict) and (browser.get("cases") or (bound and browser.get("stats") and browser.get("projects"))):
+            return True
+        return any(meaningful(child) for child in item.values())
+
+    def visit(item, path=()):
+        if isinstance(item, dict):
+            actual = meaningful(item)
+            result = {}
+            for key, child in sorted(item.items()):
+                if key in clocks or (key == "startTime" and path[-2:] == ("browser_proof", "stats")) or (key in captures and actual) or (key == "fingerprint" and item.get("reason") and "evidence" in item):
+                    continue
+                if key == "reason" and isinstance(item.get("blockers"), list):
+                    child = "; ".join(sorted({row.get("reason", "") for row in item["blockers"] if isinstance(row, dict)}))
+                elif bound and key == "task_id" and child == task.get("id"):
+                    child = "staging_qa_failed_run_<episode>"
+                elif bound and key in {"candidate_sha", "head_sha"} and isinstance(child, str) and child in aliases:
+                    child = "<bound_candidate>"
+                elif bound and key in {"source_run_id", "run_url", "source_run_url"} and isinstance(child, (int, str)) and child in {failure.get("run_id"), str(failure.get("run_id")), failure.get("run_url")}:
+                    child = "<bound_run>"
+                elif key == "command" and isinstance(child, list):
+                    command = []
+                    reviewer = "scripts/review_candidate.py" in child
+                    for index, argument in enumerate(child):
+                        previous = child[index - 1] if index else None
+                        if bound and previous == "--sha" and argument in aliases:
+                            argument = "<bound_candidate>"
+                        elif reviewer and previous == "--output":
+                            argument = "<review_artifact>"
+                        elif isinstance(argument, str) and argument.startswith("--junitxml="):
+                            argument = "--junitxml=<artifact>"
+                        command.append(argument)
+                    child = command
+                normalized = visit(child, path + (key,))
+                if key in {"blockers", "evidence"} and isinstance(normalized, list):
+                    normalized = sorted(normalized, key=lambda row: json.dumps(row, sort_keys=True))
+                result[key] = normalized
+            return result
+        if isinstance(item, list):
+            return [visit(child, path) for child in item]
+        if isinstance(item, str) and path and path[-1] in {"output", "stdout", "stderr"}:
+            # Content and assertions retain dates/durations; test log timing moves.
+            return re.sub(r"\bin \d+(?:\.\d+)?s\b", "in <duration>", item)
+        return item
+    problem = visit(value)
+    return {"failure_signature": failure["failure_signature"], "product_input_fingerprint": task["product_input_fingerprint"],
+        "problem": problem} if bound else problem
+
+
+def problem_hash(value, *, task=None, input_sha=None):
+    return digest(json.dumps(problem_semantic(value, task=task, input_sha=input_sha), sort_keys=True,
+        ensure_ascii=False, separators=(",", ":")))
+
+
+def browser_failure_cases(browser):
+    """Retain executed Playwright failure identities, beyond aggregate counts."""
+    cases = []
+    def visit(suites):
+        for suite in suites or []:
+            for spec in suite.get("specs", []):
+                for test in spec.get("tests", []):
+                    failures = [result for result in test.get("results", []) if result.get("status") not in {"passed", "skipped"}]
+                    if failures:
+                        cases.append({"file": spec.get("file"), "title": spec.get("title"), "project": test.get("projectName"),
+                            "expected_status": test.get("expectedStatus"), "status": test.get("status"),
+                            "results": [{"status": result.get("status"), "errors": result.get("errors") or ([result["error"]] if result.get("error") else [])} for result in failures]})
+            visit(suite.get("suites", []))
+    visit(browser.get("suites", []))
+    return sorted(cases, key=lambda case: json.dumps(case, sort_keys=True))
+
+
 def atomic_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -599,7 +699,7 @@ def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeo
                 browser = read_json(workspace / "artifacts/browser.json", {})
                 stats = browser.get("stats", {})
                 projects = {item.get("name") for item in browser.get("config", {}).get("projects", [])}
-                gate["browser_proof"] = {"stats": stats, "projects": sorted(projects)}
+                gate["browser_proof"] = {"stats": stats, "projects": sorted(projects), "cases": browser_failure_cases(browser)}
                 if result["returncode"] == 0 and (not stats.get("expected") or stats.get("unexpected", 0) or
                         stats.get("skipped", 0) or not {"desktop", "mobile"} <= projects):
                     gate["status"] = "UNVERIFIED"
@@ -630,8 +730,11 @@ def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeo
         if changed and (report["validated"] or report.get("partial_candidate")):
             report["status"] = "REPAIRED"
     report["blocker"] = report["blockers"][0] if report["blockers"] else None
-    report["audit_fingerprint"] = semantic_hash({"blockers": report["blockers"], "source_results": report["source_results"],
-                                                  "gates": [{"name": gate["name"], "status": gate["status"], "pytest": gate.get("pytest")} for gate in report["gates"]]})
+    for item in report["blockers"]:
+        identity = {key: child for key, child in item.items() if key not in {"fingerprint", "human_required"}}
+        item["fingerprint"] = problem_hash(identity, task=task, input_sha=input_sha)
+    report["audit_fingerprint"] = problem_hash({"blockers": report["blockers"], "source_results": report["source_results"],
+        "gates": [{"name": gate["name"], "status": gate["status"], "pytest": gate.get("pytest")} for gate in report["gates"]]}, task=task, input_sha=input_sha)
     report["semantic_hash"] = semantic_hash({"status": report["status"], "audit_fingerprint": report["audit_fingerprint"],
                                               "changed_paths": changed, "after_hash": report["after_hash"], "acceptance_proof": report["acceptance_proof"]})
     definition_keys = ("id", "objective", "instructions", "constraints", "evidence_required", "approved_at", "sources", "source_urls",

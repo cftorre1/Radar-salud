@@ -1,5 +1,6 @@
 """Adversarial runner contracts: no fake LIVE, acceptance or material progress."""
 import importlib.util
+from copy import deepcopy
 import json
 from pathlib import Path
 import subprocess
@@ -140,6 +141,121 @@ class RunnerTests(unittest.TestCase):
                   "command": ["pytest", "--junitxml=/run/2/evidence.xml"]}
         self.assertEqual(runner.semantic_hash(first), runner.semantic_hash(second))
         self.assertNotEqual(runner.semantic_hash(first), runner.semantic_hash({**second, "event_date": "2026-10-09"}))
+
+    def episode(self, run_id=123, sha=None):
+        return {"id": "staging_qa_failed_run_" + str(run_id), "product_input_fingerprint": "same-product",
+            "failure": {"run_id": run_id, "head_sha": sha or self.sha, "failure_signature": "same-demonstrated-failure",
+                "run_url": "https://github.com/example/repo/actions/runs/" + str(run_id)}}
+
+    def test_problem_identity_ignores_only_bound_episode_and_capture_metadata(self):
+        first_task = self.episode()
+        second_task = self.episode(456, "b" * 40)
+        def evidence(task):
+            return {"kind": "technical", "reason": "Gate rejected candidate", "source_urls": ["https://source.test/item"], "fingerprint": str(task["failure"]["run_id"]),
+                "evidence": [{"command": [sys.executable, "scripts/review_candidate.py", "--sha", task["failure"]["head_sha"], "--output", "/artifact/" + str(task["failure"]["run_id"])],
+                    "returncode": 1, "status": "FAIL", "captured_stdout_sha256": str(task["failure"]["run_id"]), "captured_stdout_bytes": task["failure"]["run_id"],
+                    "failure_sha256": str(task["failure"]["run_id"]), "failure_hash": str(task["failure"]["run_id"]),
+                    "source_run_id": task["failure"]["run_id"], "source_run_url": task["failure"]["run_url"], "task_id": task["id"],
+                    "reviewer_proof": {"candidate_sha": task["failure"]["head_sha"], "checks": {"normative": False}, "findings": [{"reason": "assert 11 >= 12"}]}}]}
+        before, after = evidence(first_task), evidence(second_task)
+        original = deepcopy(before)
+        self.assertEqual(runner.problem_hash(before, task=first_task, input_sha=self.sha), runner.problem_hash(after, task=second_task, input_sha="b" * 40))
+        self.assertEqual(before, original)
+        self.assertNotEqual(runner.semantic_hash(before), runner.semantic_hash(after))
+
+    def test_problem_identity_preserves_actual_failure_content_and_unbound_aliases(self):
+        task = self.episode()
+        original = {"command": ["pytest", "--junitxml=/run/1/pytest.xml"], "returncode": 1, "status": "FAIL", "source_urls": ["https://source.test/item"],
+            "pytest": {"cases": [{"name": "test_normative", "status": "FAIL", "reason": "assert 11 >= 12"}]},
+            "content_hash": "a" * 64, "response_sha256": "a" * 64, "candidate_sha": "c" * 40,
+            "published_at": "2026-10-10T04:00:00Z", "source_content": "Fact published 2026-10-10T04:00:00Z"}
+        baseline = runner.problem_hash(original, task=task, input_sha=self.sha)
+        for key, changed in (("returncode", 124), ("status", "UNVERIFIED"), ("source_urls", ["https://source.test/other"]),
+            ("pytest", {"cases": [{"name": "test_other", "status": "FAIL", "reason": "assert 9 >= 12"}]}),
+            ("content_hash", "b" * 64), ("response_sha256", "b" * 64), ("candidate_sha", "d" * 40),
+            ("published_at", "2026-10-10T05:00:00Z"), ("source_content", "Fact published 2026-10-10T05:00:00Z")):
+            with self.subTest(key=key):
+                self.assertNotEqual(baseline, runner.problem_hash({**original, key: changed}, task=task, input_sha=self.sha))
+        unknown_task = {"id": task["id"], "failure": task["failure"]}
+        self.assertNotEqual(runner.problem_hash({"candidate_sha": self.sha}, task=unknown_task), runner.problem_hash({"candidate_sha": "b" * 40}, task=unknown_task))
+        for changed_task in ({**task, "id": "staging_qa_failed_run_999"}, {**task, "product_input_fingerprint": "different-product"},
+            {**task, "failure": {**task["failure"], "failure_signature": "different-failure"}}):
+            with self.subTest(task=changed_task):
+                self.assertNotEqual(baseline, runner.problem_hash(original, task=changed_task, input_sha=self.sha))
+
+    def test_opaque_hash_without_actual_failure_evidence_retains_identity(self):
+        first = {"returncode": 1, "status": "FAIL", "failure_hash": "a" * 64}
+        self.assertNotEqual(runner.problem_hash(first), runner.problem_hash({**first, "failure_hash": "b" * 64}))
+        browser = {**first, "browser_proof": {"stats": {"unexpected": 1}, "projects": ["desktop", "mobile"]}}
+        self.assertNotEqual(runner.problem_hash(browser), runner.problem_hash({**browser, "failure_hash": "b" * 64}))
+        # Same bound episode with only opaque log churn cannot prove new credit.
+        self.assertEqual(runner.problem_hash(browser, task=self.episode()), runner.problem_hash({**browser, "failure_hash": "b" * 64}, task=self.episode()))
+
+    def test_problem_identity_normalizes_only_log_timing_and_browser_observation_clock(self):
+        first = {"output": "1 failed in 0.10s", "browser_proof": {"stats": {"unexpected": 1, "startTime": "old"}},
+            "pytest": {"cases": [{"name": "test_timeout_contract", "status": "FAIL", "reason": "Expected result in 5s"}]},
+            "source_content": "Published fact in 5s", "source": {"startTime": "2026-10-10T04:00:00Z"}}
+        second = deepcopy(first)
+        second["output"] = "1 failed in 0.90s"
+        second["browser_proof"]["stats"]["startTime"] = "new"
+        self.assertEqual(runner.problem_hash(first), runner.problem_hash(second))
+        for field in ("assertion", "source_content", "startTime"):
+            changed = deepcopy(second)
+            if field == "assertion":
+                changed["pytest"]["cases"][0]["reason"] = "Expected result in 6s"
+            elif field == "source_content":
+                changed["source_content"] = "Published fact in 6s"
+            else:
+                changed["source"]["startTime"] = "2026-10-10T05:00:00Z"
+            with self.subTest(field=field):
+                self.assertNotEqual(runner.problem_hash(first), runner.problem_hash(changed))
+
+    def test_browser_failure_cases_preserve_executed_assertion_and_project(self):
+        browser = {"suites": [{"suites": [{"specs": [{"file": "tests/browser/product.spec.cjs", "title": "normative rows", "tests": [
+            {"projectName": "desktop", "expectedStatus": "passed", "status": "unexpected", "results": [{"status": "failed", "errors": [{"message": "Expected 12, received 11"}], "duration": 100}]},
+            {"projectName": "mobile", "expectedStatus": "passed", "status": "expected", "results": [{"status": "passed"}]}]}]}]}]}
+        cases = runner.browser_failure_cases(browser)
+        self.assertEqual(len(cases), 1)
+        self.assertEqual(cases[0]["project"], "desktop")
+        self.assertEqual(cases[0]["results"][0]["errors"][0]["message"], "Expected 12, received 11")
+        proof = {"status": "FAIL", "failure_hash": "opaque", "browser_proof": {"cases": cases}}
+        changed = deepcopy(proof)
+        changed["browser_proof"]["cases"][0]["results"][0]["errors"][0]["message"] = "Expected 12, received 10"
+        self.assertNotEqual(runner.problem_hash(proof), runner.problem_hash(changed))
+
+    def test_runner_repeated_qa_failure_retains_raw_logs_without_new_problem(self):
+        reports = []
+        for run_id, sha in ((123, "a" * 40), (456, "b" * 40)):
+            self.task, self.sha = self.episode(run_id, sha), sha
+            base = self.fake_commands(failure=True, branch="autonomy/staging_qa/test")
+            def commands(command, workspace, timeout=180, **kwargs):
+                result = base(command, workspace, timeout, **kwargs)
+                if "scripts/review_candidate.py" in command:
+                    proof = {"candidate_sha": sha, "checks": {"statistics": False}, "findings": [{"code": "missing_rows", "reason": "assert 11 >= 12"}]}
+                    Path(command[command.index("--output") + 1]).write_text(json.dumps(proof))
+                    result.update(returncode=1, stdout=json.dumps(proof))
+                elif command == ["npm", "run", "test:browser"]:
+                    browser = {"stats": {"expected": 32, "unexpected": 1, "skipped": 0, "startTime": str(run_id)},
+                        "config": {"projects": [{"name": "desktop"}, {"name": "mobile"}]},
+                        "suites": [{"specs": [{"file": "tests/browser/product.spec.cjs", "title": "normative", "tests": [
+                            {"projectName": "desktop", "expectedStatus": "passed", "status": "unexpected", "results": [{"status": "failed", "errors": [{"message": "Expected 12, received 11"}]}]}]}]}]}
+                    path = workspace / "artifacts/browser.json"
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(json.dumps(browser))
+                    result.update(returncode=1, stdout="Expected 12, received 11; captured run " + str(run_id))
+                return result
+            reproduction = {"status": "BLOCKED", "validated": False, "blocker": "bounded repair unavailable",
+                "failure_sha256": str(run_id), "evidence": [{"returncode": 1, "output": "FAILED tests/test_web_snapshot.py::test_normative - assert 11 >= 12",
+                    "captured_stdout_sha256": str(run_id)}]}
+            with patch.object(runner, "tracked_hashes", return_value={"src/product.py": "same"}), \
+                patch.object(runner, "recovery_module", return_value=SimpleNamespace(recover=Mock(return_value=reproduction))):
+                reports.append(runner.execute_lane("staging_qa", self.root, self.task, self.report, command_runner=commands))
+        self.assertEqual(reports[0]["audit_fingerprint"], reports[1]["audit_fingerprint"])
+        self.assertTrue(all(report["status"] == "BLOCKED" and not report["validated"] for report in reports))
+        browser_gates = [next(gate for gate in report["gates"] if gate["name"] == "browser_desktop_and_mobile") for report in reports]
+        self.assertNotEqual(browser_gates[0]["failure_hash"], browser_gates[1]["failure_hash"])
+        self.assertNotEqual(browser_gates[0]["log_sha256"], browser_gates[1]["log_sha256"])
+        self.assertTrue(all(gate["browser_proof"]["cases"] for gate in browser_gates))
 
     def test_actual_git_clock_only_json_edit_is_not_a_publishable_mutation(self):
         payload = {"generated_at": "2026-10-11T04:00:00Z", "signals": [{"title": "Unchanged material signal", "event_date": "2026-10-10"}]}
