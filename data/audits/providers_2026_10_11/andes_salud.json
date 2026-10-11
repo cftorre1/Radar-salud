@@ -1,0 +1,940 @@
+{
+  "version": 3,
+  "slug": "andes_salud",
+  "as_of": "2026-10-11",
+  "timezone": "America/Santiago",
+  "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
+  "audit_path": "data/audits/providers_2026_10_11/andes_salud.json",
+  "status": "OPERATIVE_VALIDATED",
+  "coverage": {
+    "outcome": "OPERATIVE_VALIDATED",
+    "coverage_complete": true,
+    "coverage_reason": "All26 published original CMS posts in90days (11in30) reconciled:4material candidates,3published,Frutillar70<75,20education and2reviewed campaigns;24news enter daily discovery.",
+    "archive_depth": {
+      "cms_pages": 1,
+      "cms_published_posts_90": 26,
+      "newsroom_articles_90": 24
+    },
+    "owner": "Integration Commander / publisher Andes Salud",
+    "next_action": "Maintain verified CMS+header discovery; three outputs are integrable only after shared beta gates are resolved.",
+    "pages_checked": 51,
+    "latest_original_publication": "2026-10-05",
+    "discovered": 30,
+    "unique": 30,
+    "recent_30d": 11,
+    "recent_90d": 26,
+    "publication_date_unknown": 0,
+    "material_30d": 1,
+    "material_90d": 4,
+    "material_date_unknown": 0,
+    "material": 4,
+    "material_unknown": 0,
+    "published": 3,
+    "rejected": 1,
+    "deferred": 0,
+    "detected_material": 4,
+    "omitted_material": 0,
+    "parse_errors": 0,
+    "access_errors": 9,
+    "inventory": "data/audits/provider_inventory_2026_10_11/andes_salud.json",
+    "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+    "relevant_30d_total": 1,
+    "relevant_90d_total": 4,
+    "publicable_confirmed": 3,
+    "publicable_total": 3
+  },
+  "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
+  "source_quality_gate": "passed",
+  "market_role": "provider",
+  "surfaces": [
+    {
+      "url": "https://www.andessalud.cl/novedades/",
+      "result": "Listing unavailable through web reader; homepage and original dated detail articles readable."
+    },
+    {
+      "url": "https://www.andessalud.cl/",
+      "result": "Homepage mixes education and institutional news; used to discover original article URLs, not infer dates."
+    }
+  ],
+  "blockers": [],
+  "original_items": [
+    {
+      "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+      "title": "Andes Salud y MetLife fortalecen su alianza para acercar protección financiera en salud a las regiones de Chile",
+      "publication_date": "2026-09-23",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "cf0ce7de00232f65af676f81e641a435151ae5f9560f5a12b73249b7fcf2204c",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 1,
+        "feed_count": 1,
+        "related_published_signals": [],
+        "alicanto_status": "published",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:41.147346+00:00",
+          "body_sha256": "2d18efbd7d7ca36f572780245799e39a67a056982cc3832ec7f83666003809ae",
+          "date_stamps": [
+            {
+              "kind": "cms_published_post_date",
+              "date": "2026-09-23",
+              "value": "2026-09-23"
+            },
+            {
+              "kind": "article:published_time",
+              "value": "2026-09-23T20:45:29+00:00",
+              "date": "2026-09-23"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-23T20:45:29+00:00",
+              "date": "2026-09-23"
+            },
+            {
+              "kind": "article:published_time",
+              "value": "2026-09-23",
+              "date": "2026-09-23"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/andes_salud.json"
+    },
+    {
+      "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+      "title": "Clínica Andes Salud Talca abre sus puertas y fortalece el acceso a salud de alta complejidad en el Maule",
+      "publication_date": "2026-09-08",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "59f04ea940925b9686889ee4a2451021859b2b0342c910c0c0842747bab9045f",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 1,
+        "feed_count": 1,
+        "related_published_signals": [],
+        "alicanto_status": "published",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:53.135323+00:00",
+          "body_sha256": "32c32bdd3602ce2a0dc3be06247558ef32aed94db87ee2f36da5a3bef31298d3",
+          "date_stamps": [
+            {
+              "kind": "cms_published_post_date",
+              "date": "2026-09-08",
+              "value": "2026-09-08"
+            },
+            {
+              "kind": "article:published_time",
+              "value": "2026-09-08T21:01:50+00:00",
+              "date": "2026-09-08"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-08T21:01:50+00:00",
+              "date": "2026-09-08"
+            },
+            {
+              "kind": "article:published_time",
+              "value": "2026-09-08",
+              "date": "2026-09-08"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/andes_salud.json"
+    },
+    {
+      "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+      "title": "Centro Médico Andes Salud Puerto Varas fortalecerá el acceso a salud en la Región de Los Lagos",
+      "publication_date": "2026-08-24",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "b3556fb8caf5acaa4ffde98d1466207d5a45a161bc306d7251efc69e1992c54f",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 1,
+        "feed_count": 1,
+        "related_published_signals": [],
+        "alicanto_status": "published",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:53.135358+00:00",
+          "body_sha256": "39d6855a81a622d96755ee79221c3258c182bcf6752c25378f72f7336e700641",
+          "date_stamps": [
+            {
+              "kind": "cms_published_post_date",
+              "date": "2026-08-24",
+              "value": "2026-08-24"
+            },
+            {
+              "kind": "article:published_time",
+              "value": "2026-08-24T19:34:27+00:00",
+              "date": "2026-08-24"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-08-24T19:34:27+00:00",
+              "date": "2026-08-24"
+            },
+            {
+              "kind": "article:published_time",
+              "value": "2026-08-24",
+              "date": "2026-08-24"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/andes_salud.json"
+    },
+    {
+      "url": "https://www.andessalud.cl/novedades/andes-salud-inaugura-nuevo-centro-medico-en-frutillar-para-acercar-consultas-medicas-y-examenes-a-la-comunidad/",
+      "title": "Andes Salud inaugura nuevo Centro Médico en Frutillar para acercar consultas médicas y exámenes a la comunidad",
+      "publication_date": "2026-07-23",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Merece seguimiento como señal de expansión regional y fortalecimiento de la red ambulatoria de Andes Salud, pero su escala es local: la inversión y la capacidad anunciadas no configuran por sí solas un cambio material para el sector salud nacional.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Merece seguimiento como señal de expansión regional y fortalecimiento de la red ambulatoria de Andes Salud, pero su escala es local: la inversión y la capacidad anunciadas no configuran por sí solas un cambio material para el sector salud nacional.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T05:57:48.811644+00:00",
+          "relevance_score": 70,
+          "minimum_relevance": 75,
+          "editorial_reason": "Merece seguimiento como señal de expansión regional y fortalecimiento de la red ambulatoria de Andes Salud, pero su escala es local: la inversión y la capacidad anunciadas no configuran por sí solas un cambio material para el sector salud nacional.",
+          "what_characters": 358,
+          "why_characters": 352,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-07-23",
+          "publication_date_source": "verified_article_header"
+        },
+        "detected": true,
+        "queue": [
+          {
+            "key": "6528cd0cde6dafb54a2aaf2e117f36b98eaf99cd3b40e6c2c905ab586935c498",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": {
+              "assessed_at": "2026-10-11T05:57:48.811644+00:00",
+              "relevance_score": 70,
+              "minimum_relevance": 75,
+              "editorial_reason": "Merece seguimiento como señal de expansión regional y fortalecimiento de la red ambulatoria de Andes Salud, pero su escala es local: la inversión y la capacidad anunciadas no configuran por sí solas un cambio material para el sector salud nacional.",
+              "what_characters": 358,
+              "why_characters": 352,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-07-23",
+              "publication_date_source": "verified_article_header"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:53:53.135462+00:00",
+          "body_sha256": "b37bbafea08e70a653b35f4638387250d3f90979be784b52026ad5eaca5d3aee",
+          "date_stamps": [
+            {
+              "kind": "cms_published_post_date",
+              "date": "2026-07-23",
+              "value": "2026-07-23"
+            },
+            {
+              "kind": "article:published_time",
+              "value": "2026-07-23T14:05:52+00:00",
+              "date": "2026-07-23"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-07-23T14:05:52+00:00",
+              "date": "2026-07-23"
+            },
+            {
+              "kind": "article:published_time",
+              "value": "2026-07-23",
+              "date": "2026-07-23"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/andes_salud.json"
+    }
+  ],
+  "notes": [
+    "Fechas invertidas de encabezado (septiembre 8, 2026) soportadas. Se excluyen fechas del cuerpo y tarjetas relacionadas.",
+    "Magallanes marzo/mayo y Calbuco junio están fuera de 90 días. No se reviven para compensar published=0.",
+    "Historical note before the completed exhaustive audit: official CMS archive exposes Frutillar, absent from nine-card landing; discovery now verifies every published CMS candidate against its own detail header. At that earlier checkpoint90-day coverage awaited inventory v2; final coverage_complete and totals above supersede this note."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:23.879240+00:00",
+    "changes": [
+      {
+        "key": "59f04ea940925b9686889ee4a2451021859b2b0342c910c0c0842747bab9045f",
+        "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+        "action": "admit_backfill"
+      },
+      {
+        "key": "cf0ce7de00232f65af676f81e641a435151ae5f9560f5a12b73249b7fcf2204c",
+        "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+        "action": "admit_backfill"
+      },
+      {
+        "key": "b3556fb8caf5acaa4ffde98d1466207d5a45a161bc306d7251efc69e1992c54f",
+        "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+        "action": "admit_backfill"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "full original inventory with unknown totals explicit",
+    "summary": {
+      "outcome": "OPERATIVE_VALIDATED",
+      "coverage_complete": true,
+      "coverage_reason": "All26 published original CMS posts in90days (11in30) reconciled:4material candidates,3published,Frutillar70<75,20education and2reviewed campaigns;24news enter daily discovery.",
+      "archive_depth": {
+        "cms_pages": 1,
+        "cms_published_posts_90": 26,
+        "newsroom_articles_90": 24
+      },
+      "owner": "Integration Commander / publisher Andes Salud",
+      "next_action": "Maintain verified CMS+header discovery; three outputs are integrable only after shared beta gates are resolved.",
+      "pages_checked": 51,
+      "latest_original_publication": "2026-10-05",
+      "discovered": 30,
+      "unique": 30,
+      "recent_30d": 11,
+      "recent_90d": 26,
+      "publication_date_unknown": 0,
+      "material_30d": 1,
+      "material_90d": 4,
+      "material_date_unknown": 0,
+      "material": 4,
+      "material_unknown": 0,
+      "published": 3,
+      "rejected": 1,
+      "deferred": 0,
+      "detected_material": 4,
+      "omitted_material": 0,
+      "parse_errors": 0,
+      "access_errors": 9,
+      "inventory": "data/audits/provider_inventory_2026_10_11/andes_salud.json",
+      "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+      "relevant_30d_total": 1,
+      "relevant_90d_total": 4,
+      "publicable_confirmed": 3,
+      "publicable_total": 3
+    },
+    "items": [
+      {
+        "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+        "title": "Andes Salud y MetLife fortalecen su alianza para acercar protección financiera en salud a las regiones de Chile",
+        "publication_date": "2026-09-23",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": true,
+          "queue": [
+            {
+              "key": "cf0ce7de00232f65af676f81e641a435151ae5f9560f5a12b73249b7fcf2204c",
+              "status": "published",
+              "reason": null,
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": false,
+          "history_count": 1,
+          "feed_count": 1,
+          "related_published_signals": [],
+          "alicanto_status": "published",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:41.147346+00:00",
+            "body_sha256": "2d18efbd7d7ca36f572780245799e39a67a056982cc3832ec7f83666003809ae",
+            "date_stamps": [
+              {
+                "kind": "cms_published_post_date",
+                "date": "2026-09-23",
+                "value": "2026-09-23"
+              },
+              {
+                "kind": "article:published_time",
+                "value": "2026-09-23T20:45:29+00:00",
+                "date": "2026-09-23"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-23T20:45:29+00:00",
+                "date": "2026-09-23"
+              },
+              {
+                "kind": "article:published_time",
+                "value": "2026-09-23",
+                "date": "2026-09-23"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/andes_salud.json"
+      },
+      {
+        "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+        "title": "Clínica Andes Salud Talca abre sus puertas y fortalece el acceso a salud de alta complejidad en el Maule",
+        "publication_date": "2026-09-08",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": true,
+          "queue": [
+            {
+              "key": "59f04ea940925b9686889ee4a2451021859b2b0342c910c0c0842747bab9045f",
+              "status": "published",
+              "reason": null,
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": false,
+          "history_count": 1,
+          "feed_count": 1,
+          "related_published_signals": [],
+          "alicanto_status": "published",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:53.135323+00:00",
+            "body_sha256": "32c32bdd3602ce2a0dc3be06247558ef32aed94db87ee2f36da5a3bef31298d3",
+            "date_stamps": [
+              {
+                "kind": "cms_published_post_date",
+                "date": "2026-09-08",
+                "value": "2026-09-08"
+              },
+              {
+                "kind": "article:published_time",
+                "value": "2026-09-08T21:01:50+00:00",
+                "date": "2026-09-08"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-08T21:01:50+00:00",
+                "date": "2026-09-08"
+              },
+              {
+                "kind": "article:published_time",
+                "value": "2026-09-08",
+                "date": "2026-09-08"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/andes_salud.json"
+      },
+      {
+        "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+        "title": "Centro Médico Andes Salud Puerto Varas fortalecerá el acceso a salud en la Región de Los Lagos",
+        "publication_date": "2026-08-24",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": true,
+          "queue": [
+            {
+              "key": "b3556fb8caf5acaa4ffde98d1466207d5a45a161bc306d7251efc69e1992c54f",
+              "status": "published",
+              "reason": null,
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": false,
+          "history_count": 1,
+          "feed_count": 1,
+          "related_published_signals": [],
+          "alicanto_status": "published",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:53.135358+00:00",
+            "body_sha256": "39d6855a81a622d96755ee79221c3258c182bcf6752c25378f72f7336e700641",
+            "date_stamps": [
+              {
+                "kind": "cms_published_post_date",
+                "date": "2026-08-24",
+                "value": "2026-08-24"
+              },
+              {
+                "kind": "article:published_time",
+                "value": "2026-08-24T19:34:27+00:00",
+                "date": "2026-08-24"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-08-24T19:34:27+00:00",
+                "date": "2026-08-24"
+              },
+              {
+                "kind": "article:published_time",
+                "value": "2026-08-24",
+                "date": "2026-08-24"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/andes_salud.json"
+      },
+      {
+        "url": "https://www.andessalud.cl/novedades/andes-salud-inaugura-nuevo-centro-medico-en-frutillar-para-acercar-consultas-medicas-y-examenes-a-la-comunidad/",
+        "title": "Andes Salud inaugura nuevo Centro Médico en Frutillar para acercar consultas médicas y exámenes a la comunidad",
+        "publication_date": "2026-07-23",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Merece seguimiento como señal de expansión regional y fortalecimiento de la red ambulatoria de Andes Salud, pero su escala es local: la inversión y la capacidad anunciadas no configuran por sí solas un cambio material para el sector salud nacional.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Merece seguimiento como señal de expansión regional y fortalecimiento de la red ambulatoria de Andes Salud, pero su escala es local: la inversión y la capacidad anunciadas no configuran por sí solas un cambio material para el sector salud nacional.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T05:57:48.811644+00:00",
+            "relevance_score": 70,
+            "minimum_relevance": 75,
+            "editorial_reason": "Merece seguimiento como señal de expansión regional y fortalecimiento de la red ambulatoria de Andes Salud, pero su escala es local: la inversión y la capacidad anunciadas no configuran por sí solas un cambio material para el sector salud nacional.",
+            "what_characters": 358,
+            "why_characters": 352,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-07-23",
+            "publication_date_source": "verified_article_header"
+          },
+          "detected": true,
+          "queue": [
+            {
+              "key": "6528cd0cde6dafb54a2aaf2e117f36b98eaf99cd3b40e6c2c905ab586935c498",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": {
+                "assessed_at": "2026-10-11T05:57:48.811644+00:00",
+                "relevance_score": 70,
+                "minimum_relevance": 75,
+                "editorial_reason": "Merece seguimiento como señal de expansión regional y fortalecimiento de la red ambulatoria de Andes Salud, pero su escala es local: la inversión y la capacidad anunciadas no configuran por sí solas un cambio material para el sector salud nacional.",
+                "what_characters": 358,
+                "why_characters": 352,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-07-23",
+                "publication_date_source": "verified_article_header"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:53:53.135462+00:00",
+            "body_sha256": "b37bbafea08e70a653b35f4638387250d3f90979be784b52026ad5eaca5d3aee",
+            "date_stamps": [
+              {
+                "kind": "cms_published_post_date",
+                "date": "2026-07-23",
+                "value": "2026-07-23"
+              },
+              {
+                "kind": "article:published_time",
+                "value": "2026-07-23T14:05:52+00:00",
+                "date": "2026-07-23"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-07-23T14:05:52+00:00",
+                "date": "2026-07-23"
+              },
+              {
+                "kind": "article:published_time",
+                "value": "2026-07-23",
+                "date": "2026-07-23"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/andes_salud.json"
+      }
+    ]
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 9,
+      "dated": 9,
+      "latest_original_at": "2026-10-05",
+      "technical_status": "ok",
+      "errors": [],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "andes_salud",
+        "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+        "outcome": "published"
+      },
+      {
+        "source": "andes_salud",
+        "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+        "outcome": "published"
+      },
+      {
+        "source": "andes_salud",
+        "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+        "outcome": "published"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "All26 published original CMS posts in90days (11in30) reconciled:4material candidates,3published,Frutillar70<75,20education and2reviewed campaigns;24news enter daily discovery.",
+  "baseline": {
+    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+    "queue_states": {},
+    "health": {
+      "technical_status": "ok",
+      "editorial_outcome": "no_new_signals",
+      "last_signal_at": null,
+      "published": 0,
+      "pending": 0,
+      "rejected": 0
+    }
+  },
+  "checkpoint_commit": "fe592be",
+  "post_checkpoint_editorial_review": [
+    {
+      "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+      "fields": [
+        "scopes",
+        "watch_tags"
+      ],
+      "before_scopes": [
+        "Prestadores",
+        "Farma / medicamentos"
+      ],
+      "after_scopes": [
+        "Prestadores"
+      ],
+      "reason": "On-site pharmacy and laboratory are hospital capacity; no pharmaceutical-industry transaction or actor in this announcement."
+    },
+    {
+      "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+      "fields": [
+        "why_it_matters"
+      ],
+      "before": "Afecta a los prestadores privados, pacientes Fonasa e Isapre y a la oferta ambulatoria de la Región de Los Lagos. La expansión aumenta la capacidad de atención de Andes Salud en Puerto Varas, incorpora prestaciones diagnósticas y especialidades, y busca reducir traslados hacia otros centros. Merece atención ahora porque forma parte de un plan regional de inversión que también incluye nuevos puntos ambulatorios y un futuro Centro de Radioterapia en Puerto Montt.",
+      "after": "El proyecto ampliaría la oferta ambulatoria y diagnóstica para pacientes Fonasa e Isapre de Puerto Varas si se concreta según lo anunciado. Forma parte de un plan regional que también contempla nuevos puntos ambulatorios y un futuro Centro de Radioterapia en Puerto Montt. Los $10.000 millones corresponden a la primera etapa del plan regional; la fuente no los atribuye exclusivamente a este centro.",
+      "reason": "Preserve announced/projected capacity and assign CLP10bn to regional plan, never to this center alone."
+    }
+  ],
+  "followup_assessment": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116467017",
+    "commit": "4848786d8801ea2c1005c31015ade16583198bdb",
+    "results": [
+      {
+        "source": "andes_salud",
+        "url": "https://www.andessalud.cl/novedades/andes-salud-inaugura-nuevo-centro-medico-en-frutillar-para-acercar-consultas-medicas-y-examenes-a-la-comunidad/",
+        "outcome": "rejected",
+        "signal": null,
+        "editorial_assessment": {
+          "assessed_at": "2026-10-11T05:57:48.811644+00:00",
+          "relevance_score": 70,
+          "minimum_relevance": 75,
+          "editorial_reason": "Merece seguimiento como señal de expansión regional y fortalecimiento de la red ambulatoria de Andes Salud, pero su escala es local: la inversión y la capacidad anunciadas no configuran por sí solas un cambio material para el sector salud nacional.",
+          "what_characters": 358,
+          "why_characters": 352,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-07-23",
+          "publication_date_source": "verified_article_header"
+        }
+      }
+    ]
+  },
+  "initial_checkpoint_status": "reconciled_with_exact_blockers",
+  "initial_original_items": [
+    {
+      "title": "Clínica Andes Salud Talca abre sus puertas y fortalece el acceso a salud de alta complejidad en el Maule",
+      "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+      "publication_date": "2026-09-08",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Detalle original: US$45 millones y 94 camas; apertura con UPC, urgencia 24/7 y pabellones. Capacidad e inversión material omitidas."
+    },
+    {
+      "title": "Andes Salud y MetLife fortalecen su alianza para acercar protección financiera en salud a las regiones de Chile",
+      "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+      "publication_date": "2026-09-23",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Renovación de alianza por cinco años; red regional y seguros. No confundir alianza renovada con adquisición de aseguradora."
+    },
+    {
+      "title": "Centro Médico Andes Salud Puerto Varas fortalecerá el acceso a salud en la Región de Los Lagos",
+      "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+      "publication_date": "2026-08-24",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Séptimo centro ambulatorio anunciado: más de 1.000 m², 17 boxes y cinco de toma de muestras. Inversión de $10.000 millones corresponde a primera etapa del plan regional, no sólo al centro. Apertura y volúmenes 2030 son proyectados."
+    },
+    {
+      "title": "Andes Salud inaugura nuevo Centro Médico en Frutillar para acercar consultas médicas y exámenes a la comunidad",
+      "url": "https://www.andessalud.cl/novedades/andes-salud-inaugura-nuevo-centro-medico-en-frutillar-para-acercar-consultas-medicas-y-examenes-a-la-comunidad/",
+      "publication_date": "2026-07-23",
+      "event_date": null,
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Apertura de sexto centro ambulatorio regional; inversión cercana a CLP160 millones, superficie superior a105m², tres box de consulta y tres de toma de muestras; metas8000 pacientes/30000exámenes anuales, proyecciones. Fuente original HTML+CMS, captura Actions38115651598."
+    }
+  ],
+  "blockers_before_exhaustive_audit": [
+    "first_listing_only_90_day_pagination_boundary_unverified"
+  ],
+  "initial_reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 1,
+    "material_candidates_90_days": 3,
+    "publication_date_unknown": 0,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 0,
+      "rejected": 0,
+      "published": 3
+    },
+    "items": [
+      {
+        "url": "https://www.andessalud.cl/novedades/clinica-andes-salud-talca-abre-sus-puertas-y-fortalece-el-acceso-a-salud-de-alta-complejidad-en-el-maule/",
+        "publication_date": "2026-09-08",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "59f04ea940925b9686889ee4a2451021859b2b0342c910c0c0842747bab9045f",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 1,
+        "visible_count": 1
+      },
+      {
+        "url": "https://www.andessalud.cl/novedades/andes-salud-y-metlife-fortalecen-su-alianza-para-acercar-proteccion-financiera-en-salud-a-las-regiones-de-chile/",
+        "publication_date": "2026-09-23",
+        "in_30_days": true,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "cf0ce7de00232f65af676f81e641a435151ae5f9560f5a12b73249b7fcf2204c",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 1,
+        "visible_count": 1
+      },
+      {
+        "url": "https://www.andessalud.cl/novedades/centro-medico-andes-salud-puerto-varas-fortalecera-el-acceso-a-salud-en-la-region-de-los-lagos/",
+        "publication_date": "2026-08-24",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "b3556fb8caf5acaa4ffde98d1466207d5a45a161bc306d7251efc69e1992c54f",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 1,
+        "visible_count": 1
+      }
+    ]
+  },
+  "outcome": "OPERATIVE_VALIDATED",
+  "original_items_role": "Current candidate reconciliation. Initial evidence is preserved separately; terminal results are not replayed.",
+  "latest_original_inventory": "data/audits/provider_inventory_2026_10_11/andes_salud.json",
+  "piece_decisions": "data/audits/provider_editorial_decisions_2026_10_11.json",
+  "last_runtime_evidence": "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
+  "next_action": "Maintain verified CMS+header discovery; three outputs are integrable only after shared beta gates are resolved.",
+  "blocker_owner": "Integration Commander / publisher Andes Salud",
+  "current_checkpoint_test": "74 passed, 1 skipped; provider/beta/publication/gremio/source-health focal suite on 2026-10-11",
+  "merged_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104"
+}

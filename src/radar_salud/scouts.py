@@ -7,7 +7,7 @@ from dataclasses import asdict
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Iterable, List, Optional
-from urllib.parse import urljoin
+from urllib.parse import quote, urljoin
 from urllib.request import Request, urlopen
 
 from .models import RawItem
@@ -38,7 +38,9 @@ class _AnchorParser(HTMLParser):
 
 
 def fetch_html(url: str, timeout: int = 20) -> str:
-    req = Request(url, headers={"User-Agent": "RadarSaludBot/0.1 (+public-source-monitor)"})
+    # Public ACHS links contain Unicode in their original slug. Encode the URI
+    # for HTTP transport without changing its identity or escaping existing %.
+    req = Request(quote(url,safe=':/?&=%+#;,@!$()*[]'), headers={"User-Agent": "RadarSaludBot/0.1 (+public-source-monitor)"})
     with urlopen(req, timeout=timeout) as resp:
         charset = resp.headers.get_content_charset() or "utf-8"
         return resp.read().decode(charset, errors="replace")

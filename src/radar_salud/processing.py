@@ -10,3 +10,6 @@ class DeferredProcessing(Exception):
 class RejectedProcessing(Exception):
     """An evaluated candidate has a durable, document-specific rejection reason."""
     pass
+
+class OutsideBackfillHorizon(Exception):
+    """A verified publication date is older than the supported 90-day intake."""

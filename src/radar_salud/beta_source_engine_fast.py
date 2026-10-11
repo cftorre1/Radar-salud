@@ -8,6 +8,7 @@ from .beta_sources_fast import FastCuratedBetaSourceScout
 from .history import load_history, save_history
 from .paths import project_root
 from .source_health import record as health_record
+from .pending_queue import PendingQueue
 
 
 def _cfgs(root):
@@ -36,6 +37,8 @@ def main():
     root=project_root();cfgs=_cfgs(root)
     history_path=root/"data/history/superintendencia_signals.json"
     history=load_history(history_path)
+    queue=PendingQueue(root/"data/state/pending_queue.json")
+    core={row["slug"] for row in json.loads((root/"config/sources.json").read_text(encoding="utf-8"))}
     audit={"generated_at":datetime.now(timezone.utc).isoformat(),"sources":{},"media_gate_df_rows":0}
     specs=[("prestadores_data",PrestadoresDataScout().discover)]
     specs += [(slug,FastCuratedBetaSourceScout(slug).discover) for slug in
@@ -48,8 +51,15 @@ def main():
         except Exception as exc:
             error=type(exc).__name__
             error_detail={"code":getattr(exc,"code",error),"url":getattr(exc,"url",None),"message":str(exc)}
-        health_record(root,slug,name=cfgs[slug]["name"],discovered=len(found),new=0,published=0,
-                      rows=[],pending=0,rejected=0,error=error,live_pending=0,backfill_pending=0,error_detail=error_detail)
+        # Do not overwrite the completed daily collection with a five-detail
+        # discovery sample. For beta-only channels make the lack of assessment explicit.
+        if slug not in core:
+            counts=queue.counts(slug)
+            health_record(root,slug,name=cfgs[slug]["name"],discovered=len(found),new=0,published=0,
+                          rows=[],pending=counts["live_pending"]+counts["backfill_pending"],
+                          rejected=counts["rejected"],error=error,
+                          live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"],
+                          evaluation_performed=False,error_detail=error_detail)
         audit["sources"][slug]={
             "discovered":len(found),"published":0,
             "technical_status":"error" if error else "ok","error":error,
@@ -57,6 +67,7 @@ def main():
             "decisions":getattr(owner,"decisions",[]),
             "validation_scope":"bounded_discovery_only_not_publication_or_90_day_inventory",
             "newest_event_date":max([x.event_date for x in found if x.event_date],default=None)
+            ,"collection_mode":"discovery_only","evaluation_performed":False
         }
     audit["media_gate_df_rows"]=_apply_media_gate(history)
     save_history(history_path,history)

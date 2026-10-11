@@ -1,0 +1,46 @@
+name: Provider verified completion checkpoint
+on:
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'scripts/provider_completion_checkpoint.py'
+      - '.github/workflows/provider-completion-checkpoint.yml'
+permissions:
+  contents: read
+concurrency:
+  group: provider-completion-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  completion:
+    if: startsWith(github.head_ref, 'codex/f-prestadores-gremio-') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      RADAR_FAST_MODEL: gpt-5.6-luna
+      RADAR_DEEP_MODEL: gpt-5.6-terra
+      RADAR_FAST_PER_RUN: 9
+      RADAR_DEEP_PER_RUN: 0
+      RADAR_FAST_PER_MONTH: 1500
+      RADAR_DEEP_PER_MONTH: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - run: python -m pytest -q tests/test_provider_newsroom_repairs.py tests/test_provider_audit_intake.py tests/test_provider_inventory.py tests/test_andes_archive.py
+      - name: Process only verified original completion cases
+        if: hashFiles('data/audits/provider_completion_receipt_2026_10_11.json') == ''
+        run: timeout --signal=TERM 10m python scripts/provider_completion_checkpoint.py
+      - name: Preserve unchanged terminals and new editorial outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: provider-completion-${{ github.event.pull_request.head.sha }}
+          path: |
+            data/audits/provider_completion_checkpoint_2026_10_11.json
+            data/ai_usage
+          retention-days: 30
