@@ -81,7 +81,9 @@ class NativeHTML(HTMLParser):
         attrs = dict(attrs)
         classes = set(attrs.get("class", "").split())
         if any(token in {"pager", "pagination"} or token.startswith(("pager__", "js-pager__", "pager-nav")) for token in classes):
-            self.pager_elements.append({"tag": tag, "attrs": attrs})
+            self.pager_elements.append({"tag": tag, "attrs": attrs,
+                                       "inside_news_view": any(frame.get("news_view") for frame in self.stack),
+                                       "inside_native_nav": tag == "nav" and "pager-nav" in classes or any(frame.get("pager_node") for frame in self.stack)})
         for frame in self.stack:
             if frame.get("news_view"):
                 frame["descendants"].append({"tag": tag, "attrs": attrs})
@@ -100,9 +102,9 @@ class NativeHTML(HTMLParser):
                 self.canonical.append(attrs["href"])
             if "alternate" in rel and attrs.get("hreflang") and attrs.get("href"):
                 self.alternates.append(attrs["href"])
-        if tag == "a" and attrs.get("href"):
+        if tag == "a":
             self.links.append(attrs)
-            href = attrs["href"]
+            href = attrs.get("href", "")
             if "language-link" in classes and attrs.get("hreflang"):
                 self.alternates.append(href)
             if ".pdf" in href.casefold() or "/bitstream/" in href or "/bitstreams/" in href:
@@ -418,6 +420,54 @@ def native_empty_end_checks(ordered, page_readers, page_rows, single_page=False,
     return checks
 
 
+def native_clamped_empty_end_checks(ordered, page_readers, page_rows):
+    """Positive terminal n followed by empty n+1 retaining the same native pager."""
+    checks = native_empty_end_checks(ordered, page_readers, page_rows, numbered_page=True)
+    checks.pop("terminal_only_filter_text")
+    checks.pop("terminal_no_content_or_pager")
+    terminal = ordered[-1]
+    prior_url = ordered[-2] if len(ordered) > 1 else None
+    current = page_readers[terminal]
+    previous = page_readers.get(prior_url)
+    current_nav = current.pager_navs[0] if len(current.pager_navs) == 1 else None
+    prior_nav = previous.pager_navs[0] if previous and len(previous.pager_navs) == 1 else None
+    view = current.news_views[0] if len(current.news_views) == 1 else None
+
+    def normalized_text(node):
+        return " ".join(" ".join(node["text"]).split())
+
+    def signature(node, base):
+        attrs = node["attrs"]
+        identity = dict(attrs)
+        if node["tag"] == "a":
+            identity["target_page"] = bound_pager_page(attrs.get("href", ""), base)
+        return {"tag": node["tag"], "attrs": identity, "text": normalized_text(node),
+                "children": [signature(child, base) for child in node["children"]]}
+
+    checks["clamped_terminal_pager_verified_against_positive_page"] = bool(prior_url) and all(
+        numbered_native_end_checks(current, prior_url).values())
+    try:
+        checks["clamped_pager_semantically_identical_to_positive_terminal"] = bool(current_nav and prior_nav) and signature(current_nav, prior_url) == signature(prior_nav, prior_url)
+    except (TypeError, ValueError):
+        checks["clamped_pager_semantically_identical_to_positive_terminal"] = False
+    checks["clamped_empty_only_form_and_native_pager_text"] = bool(view and current_nav) and view["outside_form_text"] == normalized_text(current_nav)
+    forbidden = {"view-content", "views-row", "views-field-title", "views-field-created", "field--name-created"}
+    checks["clamped_empty_no_content_or_publication_fields"] = (bool(view) and not current.meta_dates and not current.visible_dates
+        and not any(forbidden & set(node["attrs"].get("class", "").split()) or node["tag"] == "time" for node in view["descendants"]))
+    checks["clamped_global_pager_nodes_inside_unique_news_nav"] = bool(current_nav) and all(
+        node["inside_news_view"] and node["inside_native_nav"] for node in current.pager_elements)
+    pagination = {"first", "prev", "previous", "next", "last"}
+    global_rels = [anchor for anchor in current.links if set(anchor.get("rel", "").split()) & pagination]
+    native_rels = [node["attrs"] for node in pager_tree_nodes(current_nav) if node["tag"] == "a" and set(node["attrs"].get("rel", "").split()) & pagination] if current_nav else []
+    checks["clamped_global_pagination_links_only_same_native_nav"] = sorted(json.dumps(a, sort_keys=True) for a in global_rels) == sorted(json.dumps(a, sort_keys=True) for a in native_rels)
+    expected_heading = "Paginación" if urlsplit(terminal).path == "/es/noticias" else "Pagination"
+    for label, nav in (("terminal", current_nav), ("positive", prior_nav)):
+        children = nav["children"] if nav else []
+        checks["clamped_" + label + "_recognized_heading_and_list_only"] = (len(children) == 2 and [node["tag"] for node in children] == ["h2", "ul"]
+            and children[0]["attrs"].get("id") == "pagination-heading" and normalized_text(children[0]) == expected_heading)
+    return checks
+
+
 def title_key(value):
     return "".join(char for char in str(value).casefold() if char.isalnum() or char == "_")
 
@@ -590,10 +640,19 @@ def audit(captures, inventory_path, output):
                         terminal = ordered[-1]
                         if part["stop_reason"] == "date_partition_official_empty":
                             check(False, "unsupported_empty_message_completion_contract", terminal)
-                        elif part["stop_reason"] in {"date_partition_native_empty_after_advertised_end", "date_partition_single_page_native_end_probe", "date_partition_native_empty_after_numbered_end"}:
-                            proof = native_empty_end_checks(ordered, page_readers, page_rows,
-                                                           single_page=part["stop_reason"] == "date_partition_single_page_native_end_probe",
-                                                           numbered_page=part["stop_reason"] == "date_partition_native_empty_after_numbered_end")
+                        elif part["stop_reason"] in {"date_partition_native_empty_after_advertised_end", "date_partition_single_page_native_end_probe", "date_partition_native_empty_after_numbered_end", "date_partition_native_empty_after_clamped_numbered_end"}:
+                            proof = (native_clamped_empty_end_checks(ordered, page_readers, page_rows)
+                                     if part["stop_reason"] == "date_partition_native_empty_after_clamped_numbered_end"
+                                     else native_empty_end_checks(ordered, page_readers, page_rows,
+                                                                 single_page=part["stop_reason"] == "date_partition_single_page_native_end_probe",
+                                                                 numbered_page=part["stop_reason"] == "date_partition_native_empty_after_numbered_end"))
+                            if part["stop_reason"] == "date_partition_native_empty_after_clamped_numbered_end":
+                                requested = int(dict(parse_qsl(urlsplit(terminal).query)).get("page", 0))
+                                receipt = next(page for page in route_result["pages"] if official_url(page["url"]) == terminal).get("clamped_empty_native_pager")
+                                proof["clamped_requested_capture_final_identity"] = records[terminal]["final_url"] == terminal
+                                proof["clamped_native_receipt_matches_independent_request"] = receipt == {
+                                    "requested_page": requested, "clamped_current": requested - 1,
+                                    "maximum": requested - 1, "terminal": True, "previous_page_url": ordered[-2]}
                             for code, valid in proof.items():
                                 check(valid, code, terminal)
                         elif part["stop_reason"] == "date_partition_native_archive_exhausted_after_public_end_probe":

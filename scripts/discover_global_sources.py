@@ -21,7 +21,7 @@ def health_counts(items, as_of):
     return {str(days): sum(row.get("detail_verified", False) and in_window(row["published_at"], as_of, days) for row in items) for days in (30,90)}
 
 def project_inventory_csv(root, payload):
-    destination=root/(payload['metadata_projection']['inventory_csv_ref'] if payload.get('metadata_projection') else 'data/audits/global_source_recovery_2026_10_11/runs/'+payload['run_id']+'/inventory.csv')
+    destination=root/(payload['coverage_projection']['inventory_csv_ref'] if payload.get('coverage_projection') else payload['metadata_projection']['inventory_csv_ref'] if payload.get('metadata_projection') else 'data/audits/global_source_recovery_2026_10_11/runs/'+payload['run_id']+'/inventory.csv')
     destination.parent.mkdir(parents=True,exist_ok=True)
     fields=['source','section','url','title','index_published_at','published_at','status','reason','detail_verified',
             'materiality','discovery_priority','classification_reason','source_aliases','sections','entities','document_links','index_capture_sha256','detail_capture_sha256']
@@ -67,6 +67,9 @@ def mirror_health(root, source_health):
         for source, row in source_health.items(): health["sources"]["global_"+source]=row
         write(root,path,health)
 
+def coverage_contract_id(config,source):
+    return hashlib.sha256(json.dumps({"qualification_version":4 if source=="paho" else 2,"inventory_days":90,"routes":[route for route in config["routes"] if route["source"]==source]},sort_keys=True).encode()).hexdigest()
+
 def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | None = None, resume: bool = False):
     config = json.loads((root / "config/global_discovery.json").read_text())
     if config["default_window_days"] != 30 or config["maximum_editorial_topics"] != 10 or config["fill_quota"] or config["paid_ai_calls"] != 0 or config["reuters"]["enabled"]:
@@ -83,7 +86,7 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
     prior_path = root / "data/global_intelligence/ledger.json"
     ledger = json.loads(prior_path.read_text()) if prior_path.exists() else {"runs": []}
     for source in ("who", "paho"):
-        contract_id=hashlib.sha256(json.dumps({"qualification_version":3 if source=="paho" else 2,"inventory_days":90,"routes":[route for route in config["routes"] if route["source"]==source]},sort_keys=True).encode()).hexdigest()
+        contract_id=coverage_contract_id(config,source)
         source_items = [item for item in items if item["source"] == source]
         source_routes = [route for route in routes if route["route"]["source"] == source]
         technical = [f for f in failures if f["route"]["source"] == source] + [{"url": item["url"], "error": item["technical_error"]} for item in language_items if item["source"] == source and item.get("technical_error")]
@@ -127,7 +130,7 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
             "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
             "parser_routes": [r["route"]["section"] for r in source_routes],
             "boundary_evidence": [{"section": r["route"]["section"], "stop": r["stop_reason"], "pages": len(r["pages"])} for r in source_routes],
-            "evidence_ref": str(evidence / "inventory.json"), "source_quality_disposition": "pass_data" if complete else "hold_external",
+            "evidence_ref": str(evidence / "inventory.json"), "source_quality_disposition": "pass_data" if complete else "hold_technical" if technical else "hold_coverage",
             "publication_activation": False, "content_freshness": "recent" if counts["30"] else "no_verified_recent_items",
             "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"}
     reuters_refs = {s["url"]: s for t in json.loads((root / "data/global/themes.json").read_text())["themes"] for s in t["sources"] if s["publisher"] == "Reuters"}

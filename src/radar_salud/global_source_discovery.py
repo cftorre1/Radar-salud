@@ -164,14 +164,28 @@ def verified_news_view(document, route, bounds, *, empty, allow_pager=False):
         for cls in ('views-field-title','views-field-created'):
             inside={id(n) for n in view.nodes() if n.has_class(cls)}
             if not inside or inside!={id(n) for n in document.nodes() if n.has_class(cls)}:return False
-    return (not empty or view.text()==form.text()) and (allow_pager or not any(any(c in {'pager','pager-nav','pagination'} or c.startswith(('pager__','js-pager__')) for c in n.attrs.get('class','').split()) for n in document.nodes())) and (allow_pager or not any({'next','last','prev','previous','first'}&set(n.attrs.get('rel','').split()) for n in document.nodes('a')))
+    if empty and allow_pager:
+        navs=[n for n in view.nodes('nav') if n.has_class('pager-nav')]
+        if len(navs)!=1:return False
+        headers=list(navs[0].nodes('h2'))
+        if len(headers)!=1 or not headers[0].closed or headers[0].parent is not navs[0] or headers[0].attrs.get('id')!='pagination-heading' or headers[0].text()!=('Paginación' if '/es/' in route['url'] else 'Pagination'):return False
+        if any(n.tag in {'time','article'} or n.tag=='meta' and (n.attrs.get('property') or n.attrs.get('name') or '').lower() in {'article:published_time','datepublished','citation_publication_date','dc.date.issued'} for n in document.nodes()):return False
+        excluded={id(form),id(navs[0])}
+        def outside(node):
+            if id(node) in excluded:return ''
+            return ' '.join(outside(c) if hasattr(c,'tag') else c for c in node.children)
+        if outside(view).strip():return False
+        inside={id(n) for n in navs[0].nodes()}|{id(navs[0])}
+        if any(id(n) not in inside for n in document.nodes() if any(c in {'pager','pager-nav','pagination'} or c.startswith(('pager__','js-pager__')) for c in n.attrs.get('class','').split())):return False
+        if any(id(a) not in inside for a in document.nodes('a') if {'next','last','prev','previous','first'}&set(a.attrs.get('rel','').split())):return False
+    return (not empty or allow_pager or view.text()==form.text()) and (allow_pager or not any(any(c in {'pager','pager-nav','pagination'} or c.startswith(('pager__','js-pager__')) for c in n.attrs.get('class','').split()) for n in document.nodes())) and (allow_pager or not any({'next','last','prev','previous','first'}&set(n.attrs.get('rel','').split()) for n in document.nodes('a')))
 
 def verified_empty_news_view(document, route, bounds):
     return verified_news_view(document,route,bounds,empty=True)
 
-def native_numbered_pager(document, route, bounds, page_url):
+def native_numbered_pager(document, route, bounds, page_url, *, empty=False):
     """Verify the observed bilingual Drupal pager, never infer an end from no-next."""
-    if not verified_news_view(document,route,bounds,empty=False,allow_pager=True):return None
+    if not verified_news_view(document,route,bounds,empty=empty,allow_pager=True):return None
     identity=lambda u:(urlsplit(u)[:3],sorted((k,v) for k,v in parse_qsl(urlsplit(u).query,keep_blank_values=True) if k!='page'))
     values=[v for k,v in parse_qsl(urlsplit(page_url).query,keep_blank_values=True) if k=='page']
     if len(values)>1 or values and not re.fullmatch(r'0|[1-9][0-9]*',values[0]):return None
@@ -224,11 +238,28 @@ def native_numbered_pager(document, route, bounds, page_url):
     maximum=max(numbers+targets)
     return {'current':current,'maximum':maximum,'terminal':not forward and current==maximum and 0<current<8}
 
+def verified_clamped_empty_end(document, previous_document, route, bounds, page_url, previous_url):
+    """The observed empty overflow keeps the exact previous terminal pager."""
+    identity=lambda u:(urlsplit(u)[:3],sorted((k,v) for k,v in parse_qsl(urlsplit(u).query,keep_blank_values=True) if k!='page'))
+    def page(u):
+        values=[v for k,v in parse_qsl(urlsplit(u).query,keep_blank_values=True) if k=='page']
+        return int(values[0]) if len(values)==1 and re.fullmatch(r'0|[1-9][0-9]*',values[0]) else None
+    prior=page(previous_url);actual=page(page_url)
+    if prior is None or actual!=prior+1 or identity(page_url)!=identity(previous_url):return None
+    before=native_numbered_pager(previous_document,route,bounds,previous_url)
+    after=native_numbered_pager(document,route,bounds,previous_url,empty=True)
+    if not before or not before['terminal'] or after!=before:return None
+    def signature(doc):
+        nav=next(n for n in doc.nodes('nav') if n.has_class('pager-nav'))
+        return [(n.tag,sorted(n.attrs.items()),n.text()) for n in [nav,*nav.nodes()]]
+    if signature(document)!=signature(previous_document):return None
+    return {'requested_page':actual,'clamped_current':prior,'maximum':before['maximum'],'terminal':True,'previous_page_url':previous_url}
+
 def collect_route(client, route, as_of, max_pages):
     if route.get("date_slice_days"):
         return collect_date_slices(client,route,as_of,max_pages)
     rows, pages, seen = [], [], set()
-    advertised_last=None;previous_without_next=False;previous_single_page_verified=False;previous_structure_verified=False;previous_numbered_end=False
+    advertised_last=None;previous_without_next=False;previous_single_page_verified=False;previous_structure_verified=False;previous_numbered_end=False;previous_document=None
     cutoff = (as_of - timedelta(days=89)).isoformat()
     complete, stop = False, "page_limit"
     url = route["url"]
@@ -292,6 +323,10 @@ def collect_route(client, route, as_of, max_pages):
                 rows.extend(found);stop="date_partition_saturated_native_cap";break
             if last_pages:advertised_last=max(last_pages)
             if not found:
+                clamped=verified_clamped_empty_end(document,previous_document,route,bounds,page_url,pages[-2]['url']) if page>1 and previous_numbered_end and previous_without_next and previous_structure_verified and pages[-2]['items'] and capture.get('final_url')==page_url else None
+                if clamped:
+                    pages[-1]['clamped_empty_native_pager']=clamped
+                    complete=True;stop='date_partition_native_empty_after_clamped_numbered_end';break
                 # No official initial-empty message protocol was verified live.
                 # A generic view-empty can be an error or an unrelated search view.
                 if page>0 and advertised_last==page-1 and previous_without_next and previous_structure_verified and pages[-2]['items'] and verified_empty_news_view(document,route,bounds):
@@ -301,6 +336,7 @@ def collect_route(client, route, as_of, max_pages):
                 if page>1 and previous_numbered_end and previous_without_next and previous_structure_verified and pages[-2]['items'] and verified_empty_news_view(document,route,bounds):
                     complete=True;stop='date_partition_native_empty_after_numbered_end';break
                 stop='date_partition_empty_unverified';break
+            previous_document=document
             previous_numbered_end=bool(numbered and numbered['terminal'])
             previous_without_next=not next_url
             previous_structure_verified=bool(found) and verified_news_view(document,route,bounds,empty=False,allow_pager=True)

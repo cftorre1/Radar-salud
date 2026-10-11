@@ -28,7 +28,7 @@ jobs:
       - name: Restore only existing evidence bytes (no source requests)
         run: |
           cp -R work/qa-captured/work/global-runtime-captures work/global-runtime-captures
-          cmp data/global_intelligence/discovery.json work/qa-captured/data/global_intelligence/discovery.json
+          cmp data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json work/qa-captured/data/global_intelligence/discovery.json
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -36,9 +36,9 @@ jobs:
         run: |
           pip install -e . pytest
           python scripts/inspect_global_empty_pages.py
-          python scripts/requalify_global_metadata.py
+          python scripts/requalify_global_coverage.py
           python scripts/discover_global_sources.py --project-inventory-csv
-          python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py tests/test_global_capture_audit.py tests/test_global_metadata_projection.py --junitxml=work/global-directed-qa.xml
+          python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py tests/test_global_capture_audit.py tests/test_global_metadata_projection.py tests/test_global_coverage_projection.py --junitxml=work/global-directed-qa.xml
           python scripts/replay_global_sources.py
           python scripts/audit_global_captures.py --captures work/global-runtime-captures --inventory data/global_intelligence/discovery.json --output work/independent_capture_audit.json
           python -c 'import json,pathlib; p=json.loads(pathlib.Path("work/independent_capture_audit.json").read_text()); d=pathlib.Path("data/audits/global_source_recovery_2026_10_11/runs")/p["run_id"]/"independent_capture_audit.json"; d.write_text(json.dumps(p,ensure_ascii=False,indent=2)+"\n")'

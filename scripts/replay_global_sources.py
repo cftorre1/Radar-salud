@@ -36,7 +36,7 @@ after = {str(p.relative_to(root)):digest(p) for p in protected}
 if before != after: raise ValueError('replay modified canonical state')
 evidence=root/'data/audits/global_source_recovery_2026_10_11/runs'/live['run_id']/'replay.json'
 evidence.write_text(json.dumps({'result':'PASS','run_id':live['run_id'],
-    'live_inventory_sha256':digest(live_path),'inventory_mode':live['mode'],'canonical_inventory_sha256':digest(live_path),'metadata_projection_ref':(live.get('metadata_projection') or {}).get('inventory_ref'),'items':len(live['items']),
+    'live_inventory_sha256':digest(live_path),'inventory_mode':live['mode'],'canonical_inventory_sha256':digest(live_path),'metadata_projection_ref':(live.get('metadata_projection') or {}).get('inventory_ref'),'coverage_projection_ref':(live.get('coverage_projection') or {}).get('inventory_ref'),'items':len(live['items']),
     'network_requests':0,'paid_ai_calls':0,'publication_count':0,
     'protected_sha256':before,'canonical_state_unchanged':True,
     'metadata_and_native_control_identical':True},indent=2)+'\n')

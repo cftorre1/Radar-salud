@@ -91,7 +91,7 @@ class FakeClient:
     def fetch(self,url):
         self.calls.append(url);value=self.bodies.pop(0)
         if isinstance(value,Exception):raise value
-        raw=value.encode();return raw,{'http_status':200,'tls_verified':True,'fetched_at':'2026-10-11T13:00:00Z','body_sha256':hashlib.sha256(raw).hexdigest()}
+        raw=value.encode();return raw,{'final_url':url,'http_status':200,'tls_verified':True,'fetched_at':'2026-10-11T13:00:00Z','body_sha256':hashlib.sha256(raw).hexdigest()}
 
 CARD='<div class="col"><div class="views-field-created"><time datetime="2026-10-09T12:00:00Z">9 Oct 2026</time></div><div class="views-field-title"><a href="/en/news/9-10-2026-test">Material guidelines</a></div></div>'
 ROUTE={'format':'paho_html','section':'regional_news','source':'paho','url':'https://www.paho.org/en/news'}
@@ -358,7 +358,7 @@ class DateArchiveClient:
             if self.saturated and (date.fromisoformat(end)-date.fromisoformat(start)).days>5:
                 html+=f'<a rel="last" href="?date%5Bmin%5D={start}&amp;date%5Bmax%5D={end}&amp;page=8">Last</a>'
         html='<h1>News</h1><div class="news-grid view view-news view-id-news view-display-id-news_page">'+html+'</div>'
-        raw=html.encode();return raw,{'http_status':200,'tls_verified':True,'fetched_at':'2026-10-11T14:18:00Z','body_sha256':hashlib.sha256(raw).hexdigest()}
+        raw=html.encode();return raw,{'final_url':url,'http_status':200,'tls_verified':True,'fetched_at':'2026-10-11T14:18:00Z','body_sha256':hashlib.sha256(raw).hexdigest()}
 
 def test_official_date_slices_cover_all_90_days_using_card_dates_not_query_dates():
     route=dict(ROUTE,date_slice_days=7)
@@ -556,7 +556,7 @@ def numbered_pager(current,maximum=1):
         for modifier,number in [('first',0),('previous',current-1)]:
             li.insert(0 if modifier=='first' else 1,'<li class="pager__item pager__item--'+modifier+'">'+native_page_link(number,'prev')+'</li>')
     if current<maximum:li.append('<li class="pager__item pager__item--next">'+native_page_link(current+1,'next')+'</li>')
-    return '<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"><ul class="pagination js-pager__items">'+''.join(li)+'</ul></nav>'
+    return '<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"><h2 id="pagination-heading">Pagination</h2><ul class="pagination js-pager__items">'+''.join(li)+'</ul></nav>'
 
 def test_numbered_native_end_then_empty_completes_bounded_date_partition():
     result=collect_route(FakeClient([news_view(date_card(0)+numbered_pager(0)),news_view(date_card(1)+numbered_pager(1)),news_view('')]),terminal_date_route(),AS_OF,10)
@@ -651,4 +651,36 @@ def test_empty_native_pager_nav_inside_or_outside_view_cannot_close_archive(outs
 def test_initial_native_pager_nav_cannot_be_treated_as_single_page_without_a_pager():
     nav='<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"></nav>'
     result=collect_route(FakeClient([news_view(date_card(0)+nav),news_view('')]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete']
+
+
+def test_actual_clamped_empty_pager_proves_only_a_verified_previous_terminal():
+    html=news_view(numbered_pager(1))
+    result=collect_route(FakeClient([news_view(date_card(0)+numbered_pager(0)),news_view(date_card(1)+numbered_pager(1)),html]),terminal_date_route(),AS_OF,10)
+    assert result['archive_complete'] and result['stop_reason']=='date_partition_native_empty_after_clamped_numbered_end'
+    assert result['pages'][-1]['clamped_empty_native_pager']['requested_page']==2
+    assert result['pages'][-1]['clamped_empty_native_pager']['clamped_current']==1
+
+@pytest.mark.parametrize('change',[
+    lambda h:h.replace('</nav>',''),lambda h:h.replace('</ul>',''),
+    lambda h:h.replace('aria-current="page"',''),
+    lambda h:h.replace('date%5Bmin%5D=2026-09-14','date%5Bmin%5D=2026-08-14'),
+    lambda h:h.replace('value="2026-09-14"','value="2026-08-14"'),
+    lambda h:h.replace('</div>','<p>Internal server error</p></div>'),
+    lambda h:h.replace('</div>',date_card(9)+'</div>'),
+    lambda h:h.replace('</div>','<div class="views-field-title">Orphan article</div></div>'),
+    lambda h:h+'<nav class="pager-nav"></nav>',
+    lambda h:h+'<a rel="next" href="?page=9">Unrelated next</a>',
+    lambda h:h.replace('Go to page 1','Different pager'),
+    lambda h:h.replace('Current page 2','Current page 3'),
+    lambda h:h.replace('>Pagination<','>Error<'),
+    lambda h:h+'<meta property="article:published_time" content="2026-10-10">',
+    lambda h:h.replace('</div>','<time datetime="2026-10-10"></time></div>'),
+])
+def test_clamped_empty_end_rejects_changed_structure_query_text_cards_and_controls(change):
+    result=collect_route(FakeClient([news_view(date_card(0)+numbered_pager(0)),news_view(date_card(1)+numbered_pager(1)),change(news_view(numbered_pager(1)))]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete']
+
+def test_clamped_empty_initial_page_cannot_invent_previous_terminal_proof():
+    result=collect_route(FakeClient([news_view(numbered_pager(1))]),terminal_date_route(),AS_OF,10)
     assert not result['archive_complete']

@@ -153,4 +153,68 @@ class NumberedEndProof(unittest.TestCase):
   raw=numbered_setup();raw[url(0)]=html(CARD+numbered_pager(8).replace('title="Go to page 9"','title="Unrecognized page"'))
   self.assertFalse(all(checks(raw,numbered=True).values()))
 
+
+def clamped_setup(n=3):
+ raw=numbered_setup(n)
+ raw[url(n+1)]=html(numbered_pager(n))
+ return raw
+
+def clamped_checks(raw):
+ ordered=sorted(raw,key=lambda u:int(dict(audit.parse_qsl(audit.urlsplit(u).query)).get('page',0)))
+ readers={u:audit.NativeHTML(b) for u,b in raw.items()}
+ try:rows={u:audit.independent_index(b,{'format':'paho_html','section':'regional_news'},u,date(2026,10,11)) for u,b in raw.items()}
+ except ValueError:return {'native_index_invalid':False}
+ return audit.native_clamped_empty_end_checks(ordered,readers,rows)
+
+
+class ClampedNativeEndProof(unittest.TestCase):
+ def test_observed_en_and_es_clamped_positive(self):
+  for n in (1,3,7):
+   with self.subTest(language='en',last=n):
+    self.assertTrue(all(clamped_checks(clamped_setup(n)).values()))
+  raw=clamped_setup(4)
+  for n in (4,5):raw[url(n)]=html((CARD if n==4 else '')+numbered_pager(4,'es'))
+  raw={u.replace('/en/news','/es/noticias'):b.replace(b'/en/news',b'/es/noticias').replace(b'>News</h1>',b'>Noticias</h1>').replace(b'>Pagination</h2>','>Paginación</h2>'.encode()) for u,b in raw.items()}
+  self.assertTrue(all(clamped_checks(raw).values()))
+ def test_clamped_terminal_negations(self):
+  pager=numbered_pager(3)
+  cases={
+   'plain_empty_without_pager':html(),
+   'pager_advanced_to_requested':html(numbered_pager(4)),
+   'pager_lower_than_previous':html(numbered_pager(2)),
+   'pager_unclosed':html(pager.replace('</nav>','')),
+   'duplicate_same_native_nav':html(pager+pager),
+   'pager_outside_news_view':html(extra=pager),
+   'extra_outside_pager_node':html(pager,extra='<ul class="pagination"></ul>'),
+   'extra_inside_pager_node':html(pager+'<ul class="pagination"></ul>'),
+   'extra_outside_pagination_link':html(pager,extra='<a href="'+url(2)+'" rel="prev">Previous</a>'),
+   'extra_outside_rel_without_href':html(pager,extra='<a rel="next">Next</a>'),
+   'error_outside_nav':html(pager+'<div>Unable to load news</div>'),
+   'error_inside_nav':html(pager.replace('</nav>','<div>Unable to load news</div></nav>')),
+   'content_container_retained':html(pager+'<div class="view-content"></div>'),
+   'hidden_title_field':html(pager+'<div class="views-field-title"></div>'),
+   'hidden_created_field':html(pager+'<div class="views-field-created"></div>'),
+   'native_time_field':html(pager+'<time datetime="2026-07-24"></time>'),
+   'native_date_field':html(pager+'<div class="field--name-created">24 July 2026</div>'),
+   'article_publication_meta':html(pager,extra='<meta property="article:published_time" content="2026-07-24">'),
+   'news_card_retained':html(CARD+pager),
+   'changed_heading':html(pager.replace('>Pagination</h2>','>Search results</h2>')),
+   'changed_backward_text':html(pager.replace('>Previous page ‹<','>Other ‹<')),
+   'changed_backward_title':html(pager.replace('title="Go to previous page"','title="Other"')),
+   'unbound_query':html(pager.replace('2026-07-20','2026-07-19',1)),
+   'fragment':html(pager.replace('page=0"','page=0#extra"',1)),
+   'forward_control':html(pager.replace('</ul>','<li class="pager__item pager__item--next"><a rel="next" href="'+url(4)+'">Next</a></li></ul>')),
+   'wrong_form_echo':html(pager,form=FORM.replace('2026-07-20','2026-07-19')),
+  }
+  for name,body in cases.items():
+   with self.subTest(name=name):
+    raw=clamped_setup();raw[url(4)]=body;self.assertFalse(all(clamped_checks(raw).values()))
+ def test_clamped_positive_and_sequence_negations(self):
+  self.assertFalse(all(clamped_checks(clamped_setup(8)).values()))
+  raw=clamped_setup();raw[url(0)]=html(CARD+numbered_pager(8));self.assertFalse(all(clamped_checks(raw).values()))
+  raw=clamped_setup();raw[url(5)]=raw.pop(url(4));self.assertFalse(all(clamped_checks(raw).values()))
+  raw=clamped_setup();raw[url(3)]=html(numbered_pager(3));self.assertFalse(all(clamped_checks(raw).values()))
+  raw=clamped_setup();raw[url(3)]=html(CARD+numbered_pager(3).replace('page=0"','page=1"',1));self.assertFalse(all(clamped_checks(raw).values()))
+  raw=clamped_setup();raw[url(3)]=html(CARD,extra=numbered_pager(3));self.assertFalse(all(clamped_checks(raw).values()))
+
 if __name__=='__main__':unittest.main(verbosity=2)
