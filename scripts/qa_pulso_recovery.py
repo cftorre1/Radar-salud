@@ -12,6 +12,7 @@ import gzip
 import hashlib
 import json
 import re
+import unicodedata
 from datetime import date, datetime, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
@@ -20,6 +21,7 @@ from zoneinfo import ZoneInfo
 
 SOURCE = "pulso_latercera"
 ROOT = Path(__file__).resolve().parents[1]
+FROZEN_CONTROL_SHA256 = "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374"
 WINDOWS = {"30": ("2026-09-11", "2026-10-10", 29), "90": ("2026-07-13", "2026-10-10", 79)}
 REQUIRED_FEEDS = {"section:" + name for name in (
     "pulso", "nacional", "politica", "tendencias", "que-pasa", "paula", "sustentabilidad",
@@ -56,6 +58,14 @@ def publisher_day(value):
             stamp(value).astimezone(ZoneInfo("America/Santiago")).date().isoformat())
     except (ValueError, TypeError, AttributeError):
         return None
+
+
+def section_slug(value):
+    if not isinstance(value, str):
+        return None
+    text = "".join(character for character in unicodedata.normalize("NFKD", value.casefold())
+                   if not unicodedata.combining(character))
+    return re.sub(r"[^a-z0-9]+", "-", text).strip("-")
 
 
 class PrimaryDates(HTMLParser):
@@ -300,6 +310,30 @@ def capture_records(root, artifact=None):
     return records
 
 
+def count_exhaustion_proven(summary, pages):
+    """An exact, stable publisher total must bound a gap-free position traversal.
+
+    A small invented summary total cannot override the original API count.
+    Moving counts, gaps, overlaps or a capped total require another traversal;
+    reaching an offset greater than the summary is not proof of exhaustion.
+    Original first/last JSON counts are separately bound by verify_api_pages.
+    """
+    total = summary.get("publisher_count")
+    if type(total) is not int or not 0 <= total < 10000 or not pages:
+        return False
+    expected_offset = 0
+    for page in pages:
+        entries, offset, count = page.get("primary_entries"), page.get("offset"), page.get("count")
+        if (type(entries) is not int or not 0 <= entries <= 24
+                or type(offset) is not int or offset != expected_offset
+                or type(count) is not int or count != total):
+            return False
+        expected_offset += entries
+        if expected_offset > total:
+            return False
+    return expected_offset == total
+
+
 def evaluate(report, control, *, root, discovery, queue, history, snapshot, telemetry=(), control_sha=None, captures=(), phase="auto"):
     findings, checks = [], {}
     def fail(domain, code, **evidence):
@@ -339,7 +373,9 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
         fail("discovery", "ai_ledger_invalid", error=error)
     elif not actual_processing and any(value for tier in delta.values() for value in tier.values()):
         fail("discovery", "discovery_consumed_analysis_budget")
-    if control_sha and report.get("external_control_sha256") != control_sha:
+    if control_sha != FROZEN_CONTROL_SHA256:
+        fail("discovery", "independent_control_identity_not_frozen", expected_sha256=FROZEN_CONTROL_SHA256, observed_sha256=control_sha)
+    if report.get("external_control_sha256") != control_sha:
         fail("discovery", "frozen_control_hash_mismatch")
     controls = {normalized_url(row.get("url")): row for row in control.get("articles", [])}
     rows = {row.get("url"): row for row in report.get("matrix", [])}
@@ -389,10 +425,11 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                                        or row["inventory_day_max"] >= cutoff for row in boundary) or boundary[-1].get("boundary_pages", 0) < 3:
                 fail("discovery", "three_old_pages_boundary_unproven", feed=name)
         elif ending == "all_feed_count_delimited_articles":
-            last_page = pages[-1] if pages else {}
-            total = summary.get("publisher_count")
-            if type(total) is not int or not 0 <= total < 10000 or last_page.get("offset", -1) + last_page.get("primary_entries", 0) < total:
-                fail("discovery", "count_delimited_feed_exhaustion_unproven", feed=name)
+            if not count_exhaustion_proven(summary, pages):
+                fail("discovery", "count_delimited_feed_exhaustion_unproven", feed=name,
+                     summary_publisher_count=summary.get("publisher_count"),
+                     last_page_count=pages[-1].get("count") if pages else None,
+                     enumerated_entries=sum(row.get("primary_entries", 0) for row in pages if type(row.get("primary_entries")) is int))
         else:
             fail("discovery", "feed_cap_or_unknown_boundary", feed=name, termination=ending)
     current_queue = {}
@@ -415,6 +452,17 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
             fail("discovery", "primary_publication_evidence_missing", url=url)
         if url in controls and controls[url].get("publication_date") != row.get("publication_date"):
             fail("discovery", "original_control_date_disagrees", url=url)
+        if url in controls:
+            canonical_section = urlsplit(url).path.strip("/").split("/")[0]
+            control_section = section_slug(controls[url].get("section"))
+            if control_section != canonical_section:
+                fail("discovery", "external_control_section_not_bound_to_original_url", url=url)
+            if section_slug(row.get("section")) != canonical_section:
+                checks.setdefault("publisher_section_taxonomy_review", []).append(dict(
+                    url=url, canonical_section=canonical_section, reported_section=row.get("section")))
+            checks.setdefault("external_topic_comparison", []).append(dict(
+                url=url, independent_topic=controls[url].get("topic"), publisher_topics=row.get("topics", []),
+                policy="Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."))
         captured = stamp(row.get("primary_detail_captured_at"))
         if not captured or end and captured > end:
             fail("discovery", "primary_capture_timestamp_invalid", url=url)

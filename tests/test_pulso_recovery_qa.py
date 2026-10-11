@@ -33,14 +33,14 @@ def evidence(tmp_path):
         path.write_bytes(compressed)
         capture = dict(url=url, status=200, sha256=sha, returned_text_utf8_sha256=sha,
                        gzip_file=relative, gzip_sha256=qa.digest(compressed), captured_at="2026-10-11T10:30:00Z")
-        controls.append(dict(url=url, publication_date=day, recall_expected=True))
+        controls.append(dict(url=url, publication_date=day, recall_expected=True, section="nacional", topic="providers_capacity"))
         metadata = dict(article_verified=True, source_quality_gate="passed", canonical_url=url,
                         publication_date=day, page_text="El hospital amplía capacidad para reducir listas de espera. " * 5,
                         html_sha256=sha, publication_date_source="json_ld_datePublished", publication_timestamp=day + "T15:00:00Z")
         queue[str(i)] = dict(source=qa.SOURCE, status="pending", lane="BACKFILL", attempts=0,
                              detected_at="2026-10-11T10:30:00Z", raw=dict(url=url, event_date=day, metadata=metadata))
         details.append(dict(url=url, status="discovered", publication_date=day))
-        matrix.append(dict(url=url, publication_date=day, current_core_detected=True,
+        matrix.append(dict(url=url, publication_date=day, current_core_detected=True, section="Nacional", topics=["providers"],
                            publication_date_source="json_ld_datePublished", publication_date_evidence="current_verified_detail",
                            primary_detail_sha256=sha, primary_detail_captured_at="2026-10-11T10:30:00Z",
                            primary_detail_cache_hit=False, original_http_captures=[capture],
@@ -80,14 +80,15 @@ def evidence(tmp_path):
                   windows=windows, matrix=matrix, coverage=summaries,
                   primary_coverage=dict(status="runtime_coverage", coverage_complete=True, required_feeds=sorted(qa.REQUIRED_FEEDS)),
                   baseline_queue=[], source_attribution_findings=[], unresolved_recent_feed_exclusions=[],
-                  unresolved_pending_operational_reasons=[])
+                  unresolved_pending_operational_reasons=[], external_control_sha256=qa.FROZEN_CONTROL_SHA256)
     workflow = tmp_path / ".github/workflows"
     workflow.mkdir(parents=True)
     env = "env:\n  RADAR_FAST_PER_RUN: 120\n  RADAR_DEEP_PER_RUN: 15\n  RADAR_FAST_PER_MONTH: 1500\n  RADAR_DEEP_PER_MONTH: 180\n"
     for name in ("daily-radar.yml", "pulso-runtime-recovery.yml"):
         (workflow / name).write_text(env)
     return dict(report=report, control=control, root=tmp_path, discovery={"source_details": {qa.SOURCE: details}},
-                queue=queue, history=[], snapshot={"signals": []}, telemetry=[], captures=captures)
+                queue=queue, history=[], snapshot={"signals": []}, telemetry=[], captures=captures,
+                control_sha=qa.FROZEN_CONTROL_SHA256)
 
 
 def codes(data):
@@ -166,6 +167,23 @@ def test_changing_denominator_or_complete_window_cannot_make_small_sample_pass(e
     assert {"frozen_control_denominator_changed", "complete_calendar_window_changed"} <= codes(evidence)
 
 
+def test_denominator_preserving_control_replacement_cannot_repin_itself(evidence):
+    evidence["control"]["articles"][0]["title"] = "Una identidad reemplazada conserva29/79"
+    replacement_sha = qa.digest(json.dumps(evidence["control"]).encode())
+    evidence["control_sha"] = replacement_sha
+    evidence["report"]["external_control_sha256"] = replacement_sha
+    assert "independent_control_identity_not_frozen" in codes(evidence)
+
+
+def test_section_identity_uses_canonical_url_and_topic_aliases_do_not_false_fail(evidence):
+    result = qa.evaluate(**evidence)
+    assert result["discovery_qa"] == "PASS"
+    assert result["checks"]["external_topic_comparison"][0]["independent_topic"] == "providers_capacity"
+    assert result["checks"]["external_topic_comparison"][0]["publisher_topics"] == ["providers"]
+    evidence["control"]["articles"][0]["section"] = "Pulso"
+    assert "external_control_section_not_bound_to_original_url" in codes(evidence)
+
+
 def test_complementary_sitemap_cap_does_not_override_complete_primary_pagination(evidence):
     evidence["report"]["coverage"].append(dict(status="archive_coverage", coverage_complete=False, termination="explicit_page_limit"))
     assert qa.evaluate(**evidence)["discovery_qa"] == "PASS"
@@ -187,6 +205,46 @@ def test_internal_complete_summary_cannot_replace_original_api_boundary_json(evi
     evidence["captures"] = []
     assert "public_api_http_chain_unproven" in codes(evidence)
     assert qa.evaluate(**evidence)["discovery_qa"] == "FAIL"
+
+
+def test_small_summary_count_cannot_override_capped_original_json_count(evidence):
+    """Reproduce the reviewed false PASS while keeping all HTTP hashes valid."""
+    summary = evidence["report"]["coverage"][0]
+    page = next(row for row in evidence["discovery"]["source_details"][qa.SOURCE]
+                if row.get("status") == "public_feed_page" and row["feed"] == summary["feed"])
+    capture = next(row for row in evidence["captures"] if qa.api_page_key(row["url"]) == (summary["feed"], 0))
+    original = gzip.decompress((evidence["root"] / capture["gzip_file"]).read_bytes())
+    document = json.loads(original)
+    document["count"] = 10000
+    raw = json.dumps(document).encode()
+    compressed = gzip.compress(raw, mtime=0)
+    relative = f"tests/fixtures/pulso_runtime_real/{qa.digest(raw)}.api.json.gz"
+    (evidence["root"] / relative).write_bytes(compressed)
+    capture.update(gzip_file=relative, sha256=qa.digest(raw), returned_text_utf8_sha256=qa.digest(raw), gzip_sha256=qa.digest(compressed))
+    page.update(count=10000, json_sha256=qa.digest(raw))
+    # Publisher proof is intact. Only the summary lies about total exhaustion.
+    assert qa.verify_api_pages([page], evidence["captures"], evidence["root"]) == []
+    assert summary["publisher_count"] == 1
+    result = qa.evaluate(**evidence)
+    assert result["discovery_qa"] == "FAIL"
+    assert "count_delimited_feed_exhaustion_unproven" in {row["code"] for row in result["findings"]}
+
+
+@pytest.mark.parametrize("pages", [
+    [dict(offset=0, primary_entries=24, count=25), dict(offset=24, primary_entries=1, count=26)],
+    [dict(offset=0, primary_entries=24, count=25), dict(offset=23, primary_entries=1, count=25)],
+    [dict(offset=0, primary_entries=24, count=25), dict(offset=25, primary_entries=1, count=25)],
+    [dict(offset=0, primary_entries=24, count=25), dict(offset=24, primary_entries=2, count=25)],
+    [dict(offset=0, primary_entries=24, count=25)],
+])
+def test_terminal_count_requires_stable_total_and_complete_bounded_positions(pages):
+    assert not qa.count_exhaustion_proven(dict(publisher_count=25), pages)
+
+
+def test_count_terminal_accepts_complete_positions_and_genuine_empty_scope():
+    assert qa.count_exhaustion_proven(dict(publisher_count=25), [
+        dict(offset=0, primary_entries=24, count=25), dict(offset=24, primary_entries=1, count=25)])
+    assert qa.count_exhaustion_proven(dict(publisher_count=0), [dict(offset=0, primary_entries=0, count=0)])
 
 
 def test_prior_cache_requires_explicit_reuse_label_and_preserved_original_provenance(evidence):
