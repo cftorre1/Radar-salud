@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "recorded_at": "2026-10-11T06:22:42.737893+00:00",
+  "recorded_at": "2026-10-11T06:38:17.272986+00:00",
   "status": "IN_PROGRESS_NOT_ACCEPTED",
   "source": "pulso_latercera",
   "owner": "Codex B / Senior Source Recovery Engineer",
@@ -13,13 +13,7 @@
     5,
     6
   ],
-  "active_run": {
-    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38115982275",
-    "phase": "discovery_only",
-    "job_id": 114400848210,
-    "expected_branch_commit": "Inventory/cache/manifest/report committed by job. Fetch/rebase before editing state.",
-    "timeout_minutes": 75
-  },
+  "active_run": null,
   "evidence": [
     "data/audits/pulso_external_control_2026_10_11.json",
     "data/audits/pulso_browser_pagination/manifest.json",
@@ -28,7 +22,9 @@
     "data/audits/pulso_incremental_review_2026_10_11.json",
     "data/audits/pulso_candidate_qa_2026_10_11.json",
     "scripts/qa_pulso_recovery.py",
-    "tests/fixtures/pulso_runtime_real/manifest.json"
+    "tests/fixtures/pulso_runtime_real/manifest.json",
+    "data/audits/pulso_cold_recovery_checkpoint_2026_10_11.json",
+    "data/audits/pulso_cold_control_omissions_2026_10_11.json"
   ],
   "control": {
     "frozen_urls": 236,
@@ -43,7 +39,10 @@
       "2026-07-13",
       "2026-10-10"
     ],
-    "runtime_recall": "Not measured until actual core run completes; legacy11 is not discovery recall."
+    "runtime_recall": {
+      "30": "18/29 (62.1%), FAIL",
+      "90": "46/79 (58.2%), FAIL"
+    }
   },
   "validation": {
     "directed_tests": "Independent77PASS at bbcbe55; agent15PASS runtime export increment e49f662",
@@ -59,26 +58,78 @@
     "publisher_surfaces": "Full-corpus materiality review prepared, body/noise audit in progress"
   },
   "resume_order": [
-    "Check active run38115982275 and fetch/rebase isolated remote branch; do not start duplicate paid processing.",
-    "Inspect pulso_runtime audit and discovery_run. Measure current actual discovered recall29/79 and every omitted URL/date/section.",
-    "Resolve incomplete feeds/caps/errors and primary-byline conflicts; tests+small commit then rerun discovery-only only if needed.",
-    "Complete verified incremental review of three legacy holds. Oct7 budget and July14 enter unchanged gate only; Oct5 reviewed deferral persists.",
-    "Set .github/run-pulso-runtime-now phase=process with unique checkpoint. Commit+push triggers actual scoped core using existing120fast/15deep budgets. No injected inventory, fake AI, threshold reduction or terminal reopening.",
-    "Reconcile published/rejected/retry/pending exact reasons, primary dates, media_reported, history and actual exported feed; resolve unknown operational reasons.",
-    "Run full QA, independent Reviewer and exact candidate/staging gates. Update PR10/#5/queue evidence; leave#6open; do not touch main/production."
+    "Complete pending source repair checkpoints; never count current751/18/46as acceptance.",
+    "Fetch/rebase isolated remote targeted capture38118402792; preserve every small checkpoint and exact original hashes.",
+    "Download cold artifact in next isolated Actions execution; audit every retained HTML and retain all29 unique incomplete originals.",
+    "Run genuine warm discovery_only after date/transient/cursor repairs, then reconcile all29/79 controls and every feed.",
+    "Only after high explained coverage, execute source-scoped process using existing budgets; prioritise recent material outcomes without publishing quota.",
+    "Review all outcomes/history/actualfeed/fullprimaryinput; independentReviewer and exactfinalcandidateQA/staging required. Leaveissue6open/mainuntouched."
   ],
   "main_production": "Untouched; isolated branch only; no merge/deployment performed",
-  "queued_report_run": {
-    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38117836258",
-    "phase": "report_only",
-    "prior_capture_run_id": 38115982275,
-    "scope": "Retain exact original HTML and API boundary fixtures plus HTTP cursor-chain proof; latest reconciliation and independent directed QA. No AI or repeated cold crawl."
-  },
+  "queued_report_run": null,
   "staging_sync": {
     "mode": "preserve_checkpoint_ancestry_merge",
     "all_other_tasks_preserved": true,
     "pmo_observations_preserved": true,
     "learning_records_preserved": true,
     "reason": "Concurrentstaginggovernancechanged; preservedrunningbotancestor/checkpointSHAs and noforcepush."
+  },
+  "cold_capture_result": {
+    "at": "2026-10-11T06:38:17.272986+00:00",
+    "source": "pulso_latercera",
+    "branch": "codex/b-pulso-runtime-20261011",
+    "core_capture_run": 38115982275,
+    "reconciliation_run": 38117836258,
+    "capture_code_sha": "bbcbe55de8968dcf05bd7305084ad6e7d5d6bfd1",
+    "evidence_commit": "2760854",
+    "actual_core": "daily_core completed, source-scoped discovery_only",
+    "current_core_discovered_urls": 751,
+    "complete_calendar_windows": {
+      "30": {
+        "start": "2026-09-11",
+        "end": "2026-10-10",
+        "control_expected": 29,
+        "control_detected_by_current_core": 18,
+        "recall": 0.6206896551724138
+      },
+      "90": {
+        "start": "2026-07-13",
+        "end": "2026-10-10",
+        "control_expected": 79,
+        "control_detected_by_current_core": 46,
+        "recall": 0.5822784810126582
+      }
+    },
+    "acceptance": "FAIL_NOT_ACCEPTED_NO_MERGE",
+    "real_coverage_complete": false,
+    "complete_primary_feeds": 4,
+    "required_primary_feeds": 20,
+    "exact_control_omission_causes": {
+      "valid_original_rejected_by_forced_chile_date_conversion": 12,
+      "nacional_first_page_http503_aborted_without_retry": 21
+    },
+    "discovery_error_traces": {
+      "conflicting_publication_dates": 952,
+      "incomplete_article_evidence": 32,
+      "tls_transient": 4
+    },
+    "publication_outcomes": {
+      "published": 0,
+      "history": 0,
+      "feed": 0,
+      "queue_pending": 754,
+      "processing": "NOT_RUN"
+    },
+    "ai_calls_during_discovery": 0,
+    "necessary_repairs": [
+      "primary visible publication day corroborated against coherent publisher timestamp calendar",
+      "bounded retry of transient public HTTP errors",
+      "verify publisher cursor behavior using exact original API JSON",
+      "complete primary article input instead of 5500-character truncation",
+      "materiality prefilter false negatives, without altering score72",
+      "classify all thin/short-title originals from actual responses"
+    ],
+    "control_denominator": "Frozen b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374 unchanged29/79",
+    "independent_primary_review": "Raw HTML originals retained for12 failed controls; all21 absent originals rechecked independently with exact original byline and Nacional section; rechecks do not count as core discovery."
   }
 }

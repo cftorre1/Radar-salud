@@ -1,0 +1,58 @@
+{
+  "at": "2026-10-11T06:38:17.272986+00:00",
+  "source": "pulso_latercera",
+  "branch": "codex/b-pulso-runtime-20261011",
+  "core_capture_run": 38115982275,
+  "reconciliation_run": 38117836258,
+  "capture_code_sha": "bbcbe55de8968dcf05bd7305084ad6e7d5d6bfd1",
+  "evidence_commit": "2760854",
+  "actual_core": "daily_core completed, source-scoped discovery_only",
+  "current_core_discovered_urls": 751,
+  "complete_calendar_windows": {
+    "30": {
+      "start": "2026-09-11",
+      "end": "2026-10-10",
+      "control_expected": 29,
+      "control_detected_by_current_core": 18,
+      "recall": 0.6206896551724138
+    },
+    "90": {
+      "start": "2026-07-13",
+      "end": "2026-10-10",
+      "control_expected": 79,
+      "control_detected_by_current_core": 46,
+      "recall": 0.5822784810126582
+    }
+  },
+  "acceptance": "FAIL_NOT_ACCEPTED_NO_MERGE",
+  "real_coverage_complete": false,
+  "complete_primary_feeds": 4,
+  "required_primary_feeds": 20,
+  "exact_control_omission_causes": {
+    "valid_original_rejected_by_forced_chile_date_conversion": 12,
+    "nacional_first_page_http503_aborted_without_retry": 21
+  },
+  "discovery_error_traces": {
+    "conflicting_publication_dates": 952,
+    "incomplete_article_evidence": 32,
+    "tls_transient": 4
+  },
+  "publication_outcomes": {
+    "published": 0,
+    "history": 0,
+    "feed": 0,
+    "queue_pending": 754,
+    "processing": "NOT_RUN"
+  },
+  "ai_calls_during_discovery": 0,
+  "necessary_repairs": [
+    "primary visible publication day corroborated against coherent publisher timestamp calendar",
+    "bounded retry of transient public HTTP errors",
+    "verify publisher cursor behavior using exact original API JSON",
+    "complete primary article input instead of 5500-character truncation",
+    "materiality prefilter false negatives, without altering score72",
+    "classify all thin/short-title originals from actual responses"
+  ],
+  "control_denominator": "Frozen b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374 unchanged29/79",
+  "independent_primary_review": "Raw HTML originals retained for12 failed controls; all21 absent originals rechecked independently with exact original byline and Nacional section; rechecks do not count as core discovery."
+}
