@@ -270,7 +270,19 @@ def _material(role, title, body):
     terms = _MEDIA_TERMS if role == "media" else _MUTUAL_TERMS if role == "mutuality" else _PROVIDER_TERMS
     if role == "provider_achs" and "clínicas achs salud" not in text and "clinicas achs salud" not in text:
         return False
-    return any(x in text for x in terms)
+    if any(x in text for x in terms):
+        return True
+    if role == "media":
+        # Primary reports of care-network obligations and GES coverage changes
+        # must reach editorial analysis even without a finance/provider keyword.
+        # These matches only permit analysis; relevance/publication gates follow.
+        care_obligation = "uso obligatorio" in text and bool(re.search(
+            r"servicios? de urgencia|unidades? de di[aá]lisis|oncohematolog|"
+            r"red p[uú]blica(?: y privada)?|red privada", text))
+        ges_coverage = bool(re.search(r"\bges\b|garant[ií]as? expl[ií]citas? de salud", text)) and bool(
+            re.search(r"\bcobertura\b|incorpor", text))
+        return care_obligation or ges_coverage
+    return False
 
 
 def process_curated_beta_source(raw, cfg):
