@@ -1,0 +1,749 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-10-11",
+  "parent_task_id": "source_audit_issue5_iteration5_expansion_2026_10_09",
+  "scope": "staging_only",
+  "matrix_path": "data/audits/source_expansion_matrix_2026_10_11.json",
+  "status": "approved_backlog_not_implemented",
+  "priority_policy": "P0/P1 relativos a expansión, sin desplazar recuperación crítica de los 27. Varios actores comparten un adapter; filas no son conteo de conectores.",
+  "runtime_activation_gate": [
+    "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+    "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+    "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+    "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+    "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+    "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizizada."
+  ],
+  "tasks": [
+    {
+      "id": "w4_isapres_2026_10_11",
+      "priority": "P0",
+      "status": "approved",
+      "owner": "Data Intelligence + Market Intelligence",
+      "title": "Cohorte competitiva completa de las 10 Isapres",
+      "why": "Hoy los 27 conectores no equivalen a vigilancia competitiva de todas las Isapres; SIS permite cubrir el denominador sin diez feeds promocionales.",
+      "execution_mode": "implementation_after_gate",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Extraer registro oficial de Isapres y fijar códigos 63,67,76,78,80,81,94,99,107,108, tipo abierta/cerrada, alias, grupo y vigencia.",
+      "implementation_steps": [
+        "Extraer registro oficial de Isapres y fijar códigos 63,67,76,78,80,81,94,99,107,108, tipo abierta/cerrada, alias, grupo y vigencia.",
+        "Extender el scout SIS existente para detectar publicaciones/versiones de cartera, finanzas y redes; descargar archivo agregado autorizado y normalizar por código y período.",
+        "Construir snapshots de beneficiarios/participación/variación y mapa de redes sólo con denominadores comparables; dar cobertura individual a las 10 entidades.",
+        "Muestrear canales públicos de convenios/memorias de las 7 abiertas; admitir cambios contractuales o de red fechados y materiales. Revisar cerradas mensualmente, sin tratar ausencia como cero actividad."
+      ],
+      "acceptance_criteria": [
+        "Fixture publicación SIS 2026-10-02 con período agosto 2026: no usar agosto como fecha de noticia.",
+        "Las 10 entidades están presentes o tienen missing explícito; distinguir holding de Isapre y separar abiertas de cerradas en comparaciones.",
+        "Precios GES/base, redes y participación no se infieren de banners sin fecha ni de una noticia de Bupa sobre otro negocio.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "config/sources.json",
+        "src/radar_salud/engine_cli.py",
+        "config/beta_source_configs.json"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "sis_cohort",
+        "isapre_banmedica",
+        "isapre_colmena",
+        "isapre_consalud",
+        "isapre_cruzblanca",
+        "isapre_nuevamasvida",
+        "isapre_vidatres",
+        "isapre_esencial",
+        "isapre_isalud",
+        "isapre_fundacion",
+        "isapre_cruzdelnorte"
+      ],
+      "evidence_output": "data/audits/w4_isapres_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_isapres.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_isapres.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_cmf_2026_10_11",
+      "priority": "P0",
+      "status": "approved",
+      "owner": "Financial Intelligence + Source Engineering",
+      "title": "Financiamiento y hechos esenciales CMF",
+      "why": "CLC se declaró compensada por una CMF no conectada; la prensa no completa deuda, capital, propiedad y resultados.",
+      "execution_mode": "implementation_after_gate",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Crear inventario de emisores/grupos con RUT verificado (comenzar CLC 93930000, ILC, grupos de prestadores e Isapres); documentar filiales fuera del perímetro reportante.",
+      "implementation_steps": [
+        "Crear inventario de emisores/grupos con RUT verificado (comenzar CLC 93930000, ILC, grupos de prestadores e Isapres); documentar filiales fuera del perímetro reportante.",
+        "Resolver índice oficial de hechos esenciales y estados financieros hacia PDFs canónicos. Evaluar HTML/descarga permitida y conservar hash, emisor y fecha del documento.",
+        "Reproducir aumento de capital CLC de 2026-08-05 a partir del aviso del emisor publicado por Bolsa; resolver su original CMF antes de declarar capturado por CMF.",
+        "Conectar eventos a Discovery/Watch y series financieras a Benchmark; excluir plazos del calendario financiero como fecha de publicación."
+      ],
+      "acceptance_criteria": [
+        "Fecha de aviso, período contable y fecha de entrega se conservan por separado.",
+        "Una noticia sobre operación acordada, aprobada o cerrada no cambia de etapa por inferencia.",
+        "PDF de Bolsa es evidencia del emisor pero no demuestra parser CMF; validar listado y detalle canónicos en ejecución real.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "config/source_quality_reviews_beta_2026_10_01.json",
+        "src/radar_salud/engine_cli.py"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "cmf",
+        "clc"
+      ],
+      "evidence_output": "data/audits/w4_cmf_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_cmf.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_cmf.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_dipres_2026_10_11",
+      "priority": "P0",
+      "status": "approved",
+      "owner": "Public Finance + Data Intelligence",
+      "title": "Presupuesto y ejecución de salud DIPRES",
+      "why": "Un PDF fijo de DIPRES no es un canal de financiamiento recurrente ni reemplaza integralmente FONASA.",
+      "execution_mode": "implementation_after_gate",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Descubrir proyecto 2027 y series de ejecución por Partida/Capítulo/Programa de Salud y FONASA; extraer URL de cada archivo desde índice oficial.",
+      "implementation_steps": [
+        "Descubrir proyecto 2027 y series de ejecución por Partida/Capítulo/Programa de Salud y FONASA; extraer URL de cada archivo desde índice oficial.",
+        "Modelar proyecto, ley aprobada, modificaciones y ejecución como estados distintos; mantener moneda, año base, unidad y período.",
+        "Agregar difusión mensual normalizada y Watch de cambios materiales presupuestarios; enlazar anuncio MINSAL de 2026-10-05 al documento presupuestario sin duplicarlo."
+      ],
+      "acceptance_criteria": [
+        "Regresión: un proyecto 2027 no se rotula presupuesto aprobado ni gasto ejecutado.",
+        "El incremento agregado anunciado no se atribuye a un programa sin tabla verificable.",
+        "Detectar versión/hash del archivo y registrar cobertura de programas; no inferir publicación desde fecha de descarga.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "config/source_quality_reviews_beta_2026_10_01.json",
+        "src/radar_salud/engine_cli.py"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "dipres"
+      ],
+      "evidence_output": "data/audits/w4_dipres_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_dipres.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_dipres.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_fne_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Competition Intelligence + Source Engineering",
+      "title": "M&A sanitario desde FNE",
+      "why": "Cubre compras de clínicas, farmacias y redes con evidencia regulatoria que los newsrooms y CMF parcial no garantizan.",
+      "execution_mode": "implementation_after_gate",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Descubrir noticias/operaciones de concentración FNE con filtros de actores sanitarios y enlaces a resoluciones públicas.",
+      "implementation_steps": [
+        "Descubrir noticias/operaciones de concentración FNE con filtros de actores sanitarios y enlaces a resoluciones públicas.",
+        "Construir fixture adquisición Rotter & Krauss por Salcobrand, aprobación 2026-09-23; registrar partes, segmento, etapa y fecha.",
+        "Relacionar casos con CMF, Interclínica/CLC y prensa; versiones públicas pendientes conservan estado pendiente."
+      ],
+      "acceptance_criteria": [
+        "Aprobación FNE no implica cierre de transacción ni inversión desembolsada.",
+        "Conservar ID de operación/resolución cuando exista y descartar mercados no sanitarios.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "src/radar_salud/engine_cli.py",
+        "config/source_quality_gate.json"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "fne",
+        "interclinica"
+      ],
+      "evidence_output": "data/audits/w4_fne_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_fne.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_fne.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_cenabast_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Supply Chain Intelligence + Source Engineering",
+      "title": "Acceso a medicamentos, canales y adopción tecnológica CENABAST",
+      "why": "Una fuente primaria cubre brechas de farmacias, compras, laboratorios y healthtech con menos ruido que numerosos catálogos comerciales.",
+      "execution_mode": "implementation_after_gate",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Implementar listado/detalle de prensa CENABAST; conservar tablas y referencias de abastecimiento con extracción mínima.",
+      "implementation_steps": [
+        "Implementar listado/detalle de prensa CENABAST; conservar tablas y referencias de abastecimiento con extracción mínima.",
+        "Fixtures: adhesión Ahumada 2026-10-07 y piloto Barros Luco/Yapp 2026-09-24; unir evento con MINSAL y fuentes empresariales.",
+        "Separar lista de farmacias/productos, pilotos y contratos; vincular procurement cuando exista identificador oficial."
+      ],
+      "acceptance_criteria": [
+        "Piloto no se reporta como despliegue nacional ni resultado clínico probado.",
+        "La página Ahumada contiene 25/26 medicamentos en distintos pasajes: preservar discrepancia y tabla/alcance territorial, no consolidar un número sin justificación.",
+        "Precios/ahorros son declaración institucional con comparación y fecha; no asesoría terapéutica ni cesta comparable automática.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "src/radar_salud/engine_cli.py",
+        "config/source_quality_gate.json"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "cenabast"
+      ],
+      "evidence_output": "data/audits/w4_cenabast_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_cenabast.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_cenabast.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_procurement_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Procurement Intelligence + Source Engineering",
+      "title": "Licitaciones y adjudicaciones sanitarias trazables",
+      "why": "Existe cliente Mercado Público no enroutado al runtime; título/cierre no permiten inteligencia transaccional confiable.",
+      "execution_mode": "feasibility_then_implementation",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Revisar src/radar_salud/mercado_publico.py y documentación oficial ChileCompra; comprobar disponibilidad de ticket autorizado sin mostrar secretos. No usar ClaveÚnica ni ticket de terceros.",
+      "implementation_steps": [
+        "Revisar src/radar_salud/mercado_publico.py y documentación oficial ChileCompra; comprobar disponibilidad de ticket autorizado sin mostrar secretos. No usar ClaveÚnica ni ticket de terceros.",
+        "Si no hay ticket, evaluar descarga abierta documentada; si tampoco existe ruta suficiente, dejar hold_external con requerimiento exacto.",
+        "Conectar listado paginado por fecha y detalle con comprador, proveedor/RUT cuando público, categoría, ID, moneda, monto y etapa; diferenciar estimado/adjudicado.",
+        "Sustituir filtro genérico laboratorio por comprador sanitario + categoría/contexto. Fechas de publicación, cierre, adjudicación y consulta van separadas.",
+        "Validar una transacción sanitaria reciente en fuente oficial y negativos no sanitarios antes de enrutar Discovery/Watch."
+      ],
+      "acceptance_criteria": [
+        "No existe transacción reciente primaria validada por esta auditoría; no usar agregadores como prueba final.",
+        "Reintentos/límites/fechas/chunks no pierden cambios ni crean duplicados; ticket ausente muestra blocked, no healthy vacío.",
+        "Prueba diferencia licitación desierta/cancelada/adjudicada y órdenes de compra; no sumar montos incompatibles.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "src/radar_salud/mercado_publico.py",
+        "tests/test_mercado_publico.py",
+        "src/radar_salud/engine_cli.py"
+      ],
+      "external_blockers": [
+        "Ticket autorizado para API o ruta abierta equivalente por verificar."
+      ],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "procurement"
+      ],
+      "evidence_output": "data/audits/w4_procurement_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_procurement.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_procurement.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_who_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Global Intelligence + Source Engineering",
+      "title": "OMS recurrente con señales internacionales materiales",
+      "why": "WHO está en la colección curada pero carece de descubrimiento, polling y health propios.",
+      "execution_mode": "implementation_after_gate",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Implementar discovery desde WHO news-room y detalle; priorizar guías, emergencias, epidemiología y cambios de política.",
+      "implementation_steps": [
+        "Implementar discovery desde WHO news-room y detalle; priorizar guías, emergencias, epidemiología y cambios de política.",
+        "Fixture 2026-10-09 atención comunitaria de salud mental; negativos: nombramientos, ceremonia y opinión sin evidencia nueva.",
+        "Conectar ledger/health periódico y ruta a Global Intelligence; uso local requiere explicitar transferencia a Chile, no afirmar efecto local."
+      ],
+      "acceptance_criteria": [
+        "Preservar fecha de publicación y versión de guía/dataset; textos multilingües de una misma noticia se deduplican.",
+        "La exportación de themes.json no cuenta como recolección recurrente.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "src/radar_salud/global_intelligence.py",
+        "scripts/export_global_intelligence.py",
+        ".github/workflows/daily-radar.yml"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "who"
+      ],
+      "evidence_output": "data/audits/w4_who_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_who.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_who.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_reuters_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Global Intelligence + Source Engineering",
+      "title": "Reuters: ruta recurrente permitida o hold explícito",
+      "why": "Hay funciones de normalización y referencias recientes curadas, pero no conector periódico verificable.",
+      "execution_mode": "feasibility_then_implementation",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Auditar ruta pública/contratada permitida de Reuters; documentar condiciones de uso, estabilidad del índice y derechos de extracción/resumen antes de automatizar.",
+      "implementation_steps": [
+        "Auditar ruta pública/contratada permitida de Reuters; documentar condiciones de uso, estabilidad del índice y derechos de extracción/resumen antes de automatizar.",
+        "Reutilizar raw_reuters_item/process_reuters_item; demostrar listado y detalle con fecha y URL canónicas. No pasar resultados de buscador por feed capturado.",
+        "Fixture operación GE HealthCare/SOFIE 2026-10-05, contrastada con emisor; priorizar M&A, financiamiento, regulación y tecnología sanitaria.",
+        "Si no existe acceso adecuado, mantener curación secundaria claramente rotulada; no comprar ni sortear paywalls."
+      ],
+      "acceptance_criteria": [
+        "Modo operativo distingue curated/manual, scheduled_fetch y blocked; lo curado no satisface dos runs.",
+        "Falsos positivos litigation/sector genérico y duplicados del emisor quedan filtrados.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "src/radar_salud/press_pipeline.py",
+        "src/radar_salud/global_intelligence.py",
+        "tests/test_press_pipeline.py"
+      ],
+      "external_blockers": [
+        "Acceso y derechos para automatización no acreditados en repositorio."
+      ],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "reuters"
+      ],
+      "evidence_output": "data/audits/w4_reuters_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_reuters.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_reuters.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_paho_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Epidemiology Intelligence + Source Engineering",
+      "title": "OPS: resolver acceso público a vigilancia regional",
+      "why": "No hay referencias OPS en themes.json ni conector; sí material reciente indexado, con 403 al abrir en esta auditoría.",
+      "execution_mode": "bounded_feasibility",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Probar rutas oficiales públicas documentadas de informes técnicos/influenza y repositorio alternativo oficial; registrar HTTP, fecha y límites.",
+      "implementation_steps": [
+        "Probar rutas oficiales públicas documentadas de informes técnicos/influenza y repositorio alternativo oficial; registrar HTTP, fecha y límites.",
+        "Usar lista semana epidemiológica 37/2026 publicada 2026-09-25 como semilla y verificar PDF completo accesible antes de aceptar.",
+        "Mapear país, semana, denominador, revisión y publicación a Trend/Global Intelligence, con deduplicación ISP/DEIS.",
+        "Si persiste 403, cerrar prueba como hold_external con evidencia reproducible; no bypass de protección."
+      ],
+      "acceptance_criteria": [
+        "Indexación en buscador no se declara extracción ni parser saludable.",
+        "Reporte regional no se atribuye a Chile sin desglose y no se confunde fecha del fenómeno con publicación.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "src/radar_salud/global_intelligence.py",
+        "config/source_quality_gate.json"
+      ],
+      "external_blockers": [
+        "403 en listado y PDF desde entorno de consulta."
+      ],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "paho"
+      ],
+      "evidence_output": "data/audits/w4_paho_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_paho.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_paho.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_legal_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Legal Intelligence + Source Engineering",
+      "title": "BCN como resolver normativo y PJUD como factibilidad",
+      "why": "DO/SIS no completan texto consolidado y jurisprudencia; el acceso PJUD observado presenta CAPTCHA.",
+      "execution_mode": "feasibility_then_implementation",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "BCN: enlazar normas originadas en DO/SIS con idNorma, fecha original, vigencia, versión y cambios; no crear una noticia por regeneración de PDF.",
+      "implementation_steps": [
+        "BCN: enlazar normas originadas en DO/SIS con idNorma, fecha original, vigencia, versión y cambios; no crear una noticia por regeneración de PDF.",
+        "PJUD: localizar una superficie pública oficial permitida de sentencias/noticias de salud; registrar CAPTCHA y evaluar ruta alternativa documentada.",
+        "Extraer tribunal, rol, etapa, materia y efecto de resolución; omitir datos de pacientes o litigantes no necesarios.",
+        "Si no se obtiene fallo primario reciente trazable, mantener judicialización secundaria vía prensa y dejar backlog bloqueado documentado."
+      ],
+      "acceptance_criteria": [
+        "Regresión BCN: Decreto 67 original 2018 y PDF generado 2026 no es norma nueva.",
+        "No hay fallo primario reciente validado en esta auditoría: se exige fixture antes de activar.",
+        "Una sentencia individual no se transforma en regla general; indicar instancia y alcance.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "config/source_quality_gate.json",
+        "src/radar_salud/engine_cli.py"
+      ],
+      "external_blockers": [
+        "PJUD presenta verificación JavaScript/CAPTCHA; sin bypass."
+      ],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "pjud",
+        "bcn"
+      ],
+      "evidence_output": "data/audits/w4_legal_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_legal.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_legal.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_providers_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Provider Intelligence + Source Engineering",
+      "title": "Pilotos selectivos Alemana, UC CHRISTUS y FALP",
+      "why": "Hay superficies fechadas; las muestras comunitarias o exploratorias no bastan para aprobar materialidad estratégica.",
+      "execution_mode": "qualification_pilot",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Muestrear ventana completa 90 días por newsroom con paginación, fechas verificadas, motivos de rechazo y cobertura.",
+      "implementation_steps": [
+        "Muestrear ventana completa 90 días por newsroom con paginación, fechas verificadas, motivos de rechazo y cobertura.",
+        "Alemana: seguir redirección clinicaalemana.cl; UC CHRISTUS: blog/artículos; FALP: noticia. Extraer inversiones, capacidad, alianzas contractuales y tecnología desplegada.",
+        "Fixtures fechadas: Alemana 2026-09-25 y UC 2026-10-01 (operativos); FALP 2026-09-07 (exploración). Usarlas para probar parsing y no asumir admisión editorial.",
+        "Activar por fuente sólo si supera quality gate con al menos un evento material primario verificable; si no, conservar secundaria y justificar.",
+        "UC CHRISTUS: añadir /contingencias al Watch de capacidad, guardar hash/versiones y conciliar texto sobre hospitalizados con comunicado/prensa del 10/10; fecha editorial ausente no se reemplaza por fecha de captura."
+      ],
+      "acceptance_criteria": [
+        "Operativo puntual/visita exploratoria no se convierte en expansión permanente o inversión.",
+        "UC: consultas, cirugías, personas y prestaciones no se suman como pacientes; deduplicar facultad/clinica.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "config/beta_source_configs.json",
+        "docs/SOURCE_COVERAGE_BALANCE_REVIEW_2026_09_28.md",
+        "config/source_quality_reviews_beta_2026_10_01.json"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "alemana",
+        "uc_christus",
+        "falp"
+      ],
+      "evidence_output": "data/audits/w4_providers_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_providers.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_providers.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_provider_data_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Provider Intelligence + Data Intelligence",
+      "title": "Memorias Interclínica y subcanales regionales de redes existentes",
+      "why": "Interclínica posee memorias útiles; cobertura por holding no demuestra que cada sede regional se descubra.",
+      "execution_mode": "qualification_pilot",
+      "depends_on": [
+        "w4_fne_2026_10_11"
+      ],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Interclínica: extraer memorias 2025/2024/2023 por URL/hash, instalaciones, control y magnitudes comparables; guardar fecha de publicación desconocida cuando corresponda.",
+      "implementation_steps": [
+        "Interclínica: extraer memorias 2025/2024/2023 por URL/hash, instalaciones, control y magnitudes comparables; guardar fecha de publicación desconocida cuando corresponda.",
+        "Conectar novedades materiales de Interclínica por FNE/CMF/prensa; no forzar un newsroom de alta frecuencia.",
+        "Ampliar descubrimiento del conector Andes Salud a Puerto Montt y Talca, con seeds verificadas 2026-09-09 y 2026-09-08; mantener actor/grupo/sede y mismo evento.",
+        "Auditar subcanales equivalentes de RedSalud, Bupa/IntegraMédica, Dávila, INDISA y ACHS sin crear nuevos conectores por dominio."
+      ],
+      "acceptance_criteria": [
+        "Memoria de ejercicio 2025 no es noticia de hoy; cifras/capacidad incluyen año y perímetro.",
+        "Dos publicaciones de un mismo plan/red producen un evento y procedencia múltiple, no dos inversiones.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "config/beta_source_configs.json",
+        "config/source_quality_reviews_beta_2026_10_01.json"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "interclinica",
+        "andes_regional",
+        "existing_networks"
+      ],
+      "evidence_output": "data/audits/w4_provider_data_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_provider_data.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_provider_data.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_socioeconomic_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Data Intelligence",
+      "title": "INE y CASEN como base comparable de mercado",
+      "why": "Permiten interpretar gasto/demanda y segmentación con denominadores; no deben generar noticias diarias artificiales.",
+      "execution_mode": "data_adapter",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "INE: usar release calendar y archivo IPC para división Salud, además de población/proyecciones verificadas; conservar base, territorio y frecuencia.",
+      "implementation_steps": [
+        "INE: usar release calendar y archivo IPC para división Salud, además de población/proyecciones verificadas; conservar base, territorio y frecuencia.",
+        "CASEN: versionar salud/previsión de encuesta 2024, pesos, universo, errores muestrales y cambios metodológicos; comparar sólo series compatibles.",
+        "Publicar snapshots a Benchmark/Trend al cambiar versión; señal Discovery sólo ante cambio material nuevo con fecha comprobable."
+      ],
+      "acceptance_criteria": [
+        "IPC general septiembre divulgado 2026-10-08 no sustituye división Salud.",
+        "CASEN 2024 difundida en 2026 conserva período de encuesta y no se rejuvenece cada descarga.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "config/sources.json",
+        "config/source_quality_gate.json"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "ine",
+        "casen"
+      ],
+      "evidence_output": "data/audits/w4_socioeconomic_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_socioeconomic.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_socioeconomic.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_occupational_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Occupational Intelligence + Data Intelligence",
+      "title": "ISL agregado y COMPIN a través de canales oficiales existentes",
+      "why": "ISL falta en cobertura laboral y COMPIN no necesita acceso a expedientes personales para aportar cambios de sistema.",
+      "execution_mode": "data_adapter",
+      "depends_on": [],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "ISL: detectar infografías/estadísticas mensuales y memorias, normalizar trabajadores/empleadores/atenciones por período y definición.",
+      "implementation_steps": [
+        "ISL: detectar infografías/estadísticas mensuales y memorias, normalizar trabajadores/empleadores/atenciones por período y definición.",
+        "COMPIN: reforzar etiquetas y Watch del conector MINSAL/SUSESO con cambios institucionales y plataformas públicas; fixture anuncio 2026-10-06.",
+        "Prohibir ingreso a portales de licencias/discapacidad o extracción de datos personales; noticias operativas sin efecto sistémico quedan fuera."
+      ],
+      "acceptance_criteria": [
+        "ISL agosto 2026 es período, sin día de publicación verificado; no fabricar una fecha.",
+        "Una modernización anunciada no prueba reducción realizada de la lista de espera.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "config/sources.json",
+        "src/radar_salud/engine_cli.py"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "isl",
+        "compin"
+      ],
+      "evidence_output": "data/audits/w4_occupational_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_occupational.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_occupational.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    },
+    {
+      "id": "w4_innovation_2026_10_11",
+      "priority": "P1",
+      "status": "approved",
+      "owner": "Technology Intelligence + Source Engineering",
+      "title": "UDD/DHTAC y CENS: tecnología con evidencia de adopción",
+      "why": "Cubren tecnología clínica y evaluación; eventos/promoción requieren filtros más estrictos que el simple dominio de salud.",
+      "execution_mode": "qualification_pilot",
+      "depends_on": [
+        "w4_cenabast_2026_10_11"
+      ],
+      "activation_dependencies": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "first_action": "Calificar publicaciones DHTAC/UDD y bienes públicos/noticias CENS; fijar entidades y tipos: investigación, piloto, evaluación, despliegue, financiamiento.",
+      "implementation_steps": [
+        "Calificar publicaciones DHTAC/UDD y bienes públicos/noticias CENS; fijar entidades y tipos: investigación, piloto, evaluación, despliegue, financiamiento.",
+        "Fixture UDD/Alemana 2026-07-14 para soporte de decisiones; CENS 2026-09-10 sobre compras innovadoras es webinar y debe quedar secundario salvo documento técnico nuevo verificable.",
+        "Conectar adopción con actor/contrato/fuente primaria; cruzar CENABAST/Yapp sin duplicar. Expandir healthtech sólo tras evidencia de ronda o contrato."
+      ],
+      "acceptance_criteria": [
+        "IA/innovación no equivale a eficacia, autorización sanitaria o implantación comercial.",
+        "Eventos, premios, cursos y menciones a IA sin cambio material se rechazan; registrar muestra negativa real.",
+        "Aplicar config/source_quality_gate.json sin rebajar gates. Guardar URLs descubiertas, fecha y motivo de visto/aceptado/rechazado/pendiente; un feed vacío no prueba salud.",
+        "Separar published_at, event_date, effective_date, reporting_period y fetched_at. Fecha desconocida queda pendiente; no rejuvenecer archivos ni cerrar licitaciones como si fueran publicaciones.",
+        "Deduplicar URL canónica y evento entre fuente primaria, regulador, matriz/filial y prensa; no crear cards por cuota ni resumir documentos ajenos completos.",
+        "Aportar fixture positivo material y negativos específicos, listado de ventana de 90 días con paginación/corte explicados y cobertura por actor. Si no hay positivos recientes, documentar ausencia de evidencia y mantener hold/secondary.",
+        "Antes de declarar recurrente: dos ejecuciones reales separadas por la cadencia, con timestamp, workflow/run, parser route, ledger y source_health. El test unitario o una captura web no bastan.",
+        "Resolver recuperación/balance core y revisión editorial antes de promover a active. Mantener implementación y pruebas en staging; no producción, main, despliegue, secretos nuevos ni compra/licencia no autorizada."
+      ],
+      "starting_points": [
+        "config/source_quality_gate.json",
+        "src/radar_salud/engine_cli.py"
+      ],
+      "external_blockers": [],
+      "stop_rule": "Si falla acceso permitido, fecha o materialidad, producir evidencia y disposición hold_external/secondary; no fingir integración.",
+      "authorized_scope": "Usuario Work 4: auditoría y backlog ejecutable en staging. La prioridad no certifica fuente activa.",
+      "estimate": "1 ciclo acotado de evidencia/implementación por superficie; dividir si aparecen nuevos requisitos.",
+      "source_ids": [
+        "udd",
+        "cens"
+      ],
+      "evidence_output": "data/audits/w4_innovation_2026_10_11.json",
+      "planned_test_path": "tests/test_source_expansion_innovation.py",
+      "verification_command": "PYTHONPATH=src python -m pytest -q tests/test_source_expansion_innovation.py",
+      "verification_note": "Crear este test con fixtures/negativos descritos durante la implementación. Una prueba omitida no satisface aceptación; registrar runs de recolección separados antes de certificar."
+    }
+  ],
+  "next_unattended_task_id": "w4_isapres_2026_10_11",
+  "queue_note": "Guardar una cola no despierta un Work ni prueba ejecución; no se crea scheduler ni se despachan workflows."
+}
