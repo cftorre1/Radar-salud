@@ -1503,6 +1503,122 @@
     {
       "url": "https://clinica-curico.cl/blog/",
       "action": "Capture archive DOM and disclosed API/feed links; evaluate empty rendered state."
+    },
+    {
+      "url": "https://clinicaportada.cl/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicaportada.cl/noticias/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicaportada.cl/blog/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicaatacama.cl/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicaatacama.cl/noticias/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicaatacama.cl/blog/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicamaitenes.cl/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicamaitenes.cl/noticias/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicalircay.cl/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicalircay.cl/noticias/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/noticias/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://www.clinicasur.cl/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://www.clinicasur.cl/noticias/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://www.clinicasur.cl/blog-de-kinesiologia/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/noticias/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/blog/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinica-curico.cl/",
+      "action": "Capture exact observed official route, redirects/headers/TLS and disclosed publication/API/feed/pager fields."
+    },
+    {
+      "url": "https://clinicalircay.cl/2026/09/",
+      "action": "Capture exact observed archive/detail publication fields; dates and evidence fail closed."
+    },
+    {
+      "url": "https://clinicamaitenes.cl/nueva-unidad-de-paciente-critico/",
+      "action": "Capture exact observed archive/detail publication fields; dates and evidence fail closed."
+    },
+    {
+      "url": "https://clinicalircay.cl/modulo-fonasa-talca-lircay/",
+      "action": "Capture exact observed archive/detail publication fields; dates and evidence fail closed."
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/inauguramos-nuestro-nuevo-centro-medico/",
+      "action": "Capture exact observed archive/detail publication fields; dates and evidence fail closed."
+    },
+    {
+      "url": "https://clinica-curico.cl/nuevo-scanner-tac/",
+      "action": "Capture exact observed archive/detail publication fields; dates and evidence fail closed."
+    },
+    {
+      "url": "https://clinica-curico.cl/nuevo-resonador-magnetico-signa-creator/",
+      "action": "Capture exact observed archive/detail publication fields; dates and evidence fail closed."
+    },
+    {
+      "url": "https://clinicamaitenes.cl/mes-del-corazon-salud-cardiaca/",
+      "action": "Capture exact observed archive/detail publication fields; dates and evidence fail closed."
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/clinicas-achs-salud-primer-lugar-total-brands",
+      "action": "Capture exact observed archive/detail publication fields; dates and evidence fail closed."
+    },
+    {
+      "url": "https://clinica-curico.cl/clinicas-achs-salud-primer-lugar-total-brands/",
+      "action": "Capture exact observed archive/detail publication fields; dates and evidence fail closed."
     }
   ],
   "validation": {
@@ -1511,6 +1627,380 @@
     "raw_capture_regression": "43 native DOM records, SHA-256 verified, CMS date/modified distinction and conflicting editorial-date classification.",
     "canonical_state_mutated": false,
     "queue_mutated": false,
-    "reviewer_status": "pending parent independent review"
+    "reviewer_status": "Pending parent independent review and origin-capture clinic inventory integration.",
+    "clinic_manifest_check": "Nine unique official newsroom routes, approved host membership for every route, official identity chain for every clinic, all automatic publication capture flags false for browser-only observations.",
+    "clinic_checkpoint_tests": {
+      "command": "PYTHONPATH=src .venv/bin/python -m pytest -q tests/test_achs_blog_inventory.py",
+      "result": "26 passed in 0.14s",
+      "metadata_validation": "JSON9officialidentity/route/date/scope checks PASS"
+    }
+  },
+  "official_clinic_publishers": [
+    {
+      "name": "Clínica Portada",
+      "source_slug": "clinicas_achs_salud",
+      "market_role": "provider_achs",
+      "provider_subtype": "clinicas",
+      "official_identity": {
+        "linked_from": "https://www.clinicasachssalud.cl/",
+        "browser_reference": "turn568536view0",
+        "link_id": 49,
+        "linked_home_url": "https://www.clinicaportada.cl/"
+      },
+      "observed_home_url": "https://clinicaportada.cl/",
+      "observed_official_hosts": [
+        "www.clinicaportada.cl",
+        "clinicaportada.cl"
+      ],
+      "newsroom_url": "https://clinicaportada.cl/noticias/",
+      "observed_blog_urls": [
+        "https://clinicaportada.cl/blog/"
+      ],
+      "home_browser_reference": "turn581732view0",
+      "newsroom_browser_reference": "turn525270view0",
+      "browser_rendered_html_available": true,
+      "raw_http_headers_or_tls_observed": false,
+      "observed_archive_summary": "August 2026 (1), April 2025 (1), earlier historical months",
+      "api_urls_observed": [],
+      "feed_urls_observed": [],
+      "coverage_complete": false,
+      "next_action": "Origin raw capture, publication metadata/container verification, disclosed API/feed links and full 90-day archive census. No guessed API or pager URLs."
+    },
+    {
+      "name": "Clínica Atacama",
+      "source_slug": "clinicas_achs_salud",
+      "market_role": "provider_achs",
+      "provider_subtype": "clinicas",
+      "official_identity": {
+        "linked_from": "https://www.clinicasachssalud.cl/",
+        "browser_reference": "turn568536view0",
+        "link_id": 50,
+        "linked_home_url": "https://clinicaatacama.cl/"
+      },
+      "observed_home_url": "https://clinicaatacama.cl/",
+      "observed_official_hosts": [
+        "clinicaatacama.cl",
+        "www.clinicaatacama.cl"
+      ],
+      "newsroom_url": "https://clinicaatacama.cl/noticias/",
+      "observed_blog_urls": [
+        "https://clinicaatacama.cl/blog/"
+      ],
+      "home_browser_reference": "turn581732view1",
+      "newsroom_browser_reference": "turn525270view2",
+      "browser_rendered_html_available": true,
+      "raw_http_headers_or_tls_observed": false,
+      "observed_archive_summary": "August 2026 (1), March 2026 (1), earlier historical months",
+      "api_urls_observed": [],
+      "feed_urls_observed": [],
+      "coverage_complete": false,
+      "next_action": "Origin raw capture, publication metadata/container verification, disclosed API/feed links and full 90-day archive census. No guessed API or pager URLs."
+    },
+    {
+      "name": "Clínica Los Coihues",
+      "source_slug": "clinicas_achs_salud",
+      "market_role": "provider_achs",
+      "provider_subtype": "clinicas",
+      "official_identity": {
+        "linked_from": "https://www.clinicasachssalud.cl/",
+        "browser_reference": "turn568536view0",
+        "link_id": 51,
+        "linked_home_url": "https://clinicaloscoihues.cl/"
+      },
+      "observed_home_url": "https://clinicaloscoihues.cl/",
+      "observed_official_hosts": [
+        "clinicaloscoihues.cl"
+      ],
+      "newsroom_url": "https://clinicaloscoihues.cl/noticias",
+      "observed_blog_urls": [],
+      "home_browser_reference": "turn826092view2",
+      "newsroom_browser_reference": "turn229482view0",
+      "browser_rendered_html_available": true,
+      "raw_http_headers_or_tls_observed": false,
+      "observed_archive_summary": "Dated archive cards show August 2026 then March/February 2026. Date filters include older 2024/2025 months.",
+      "api_urls_observed": [],
+      "feed_urls_observed": [],
+      "coverage_complete": false,
+      "next_action": "Origin raw capture, publication metadata/container verification, disclosed API/feed links and full 90-day archive census. No guessed API or pager URLs."
+    },
+    {
+      "name": "Clínica Maitenes",
+      "source_slug": "clinicas_achs_salud",
+      "market_role": "provider_achs",
+      "provider_subtype": "clinicas",
+      "official_identity": {
+        "linked_from": "https://www.clinicasachssalud.cl/",
+        "browser_reference": "turn568536view0",
+        "link_id": 52,
+        "linked_home_url": "https://www.clinicamaitenes.cl/"
+      },
+      "observed_home_url": "https://clinicamaitenes.cl/",
+      "observed_official_hosts": [
+        "www.clinicamaitenes.cl",
+        "clinicamaitenes.cl"
+      ],
+      "newsroom_url": "https://clinicamaitenes.cl/noticias/",
+      "observed_blog_urls": [],
+      "home_browser_reference": "turn424293view0",
+      "newsroom_browser_reference": "turn424293view3",
+      "browser_rendered_html_available": true,
+      "raw_http_headers_or_tls_observed": false,
+      "observed_archive_summary": "August 2026 (2), June 2025 (1), earlier historical months",
+      "api_urls_observed": [],
+      "feed_urls_observed": [],
+      "coverage_complete": false,
+      "next_action": "Origin raw capture, publication metadata/container verification, disclosed API/feed links and full 90-day archive census. No guessed API or pager URLs."
+    },
+    {
+      "name": "Clínica Lircay",
+      "source_slug": "clinicas_achs_salud",
+      "market_role": "provider_achs",
+      "provider_subtype": "clinicas",
+      "official_identity": {
+        "linked_from": "https://www.clinicasachssalud.cl/",
+        "browser_reference": "turn568536view0",
+        "link_id": 53,
+        "linked_home_url": "https://www.clinicalircay.cl/"
+      },
+      "observed_home_url": "https://clinicalircay.cl/",
+      "observed_official_hosts": [
+        "www.clinicalircay.cl",
+        "clinicalircay.cl"
+      ],
+      "newsroom_url": "https://clinicalircay.cl/noticias/",
+      "observed_blog_urls": [],
+      "home_browser_reference": "turn424293view2",
+      "newsroom_browser_reference": "turn424293view5",
+      "browser_rendered_html_available": true,
+      "raw_http_headers_or_tls_observed": false,
+      "observed_archive_summary": "Fresh detail sidebar includes September 2026 (1) and August 2026 (1), while older cached newsroom starts August 2026; archive census remains incomplete.",
+      "api_urls_observed": [],
+      "feed_urls_observed": [],
+      "coverage_complete": false,
+      "next_action": "Origin raw capture, publication metadata/container verification, disclosed API/feed links and full 90-day archive census. No guessed API or pager URLs."
+    },
+    {
+      "name": "Clínica Los Andes",
+      "source_slug": "clinicas_achs_salud",
+      "market_role": "provider_achs",
+      "provider_subtype": "clinicas",
+      "official_identity": {
+        "linked_from": "https://www.clinicasachssalud.cl/",
+        "browser_reference": "turn568536view0",
+        "link_id": 54,
+        "linked_home_url": "https://clinicalosandes.cl/"
+      },
+      "observed_home_url": "https://www.clinicalosandes.cl/",
+      "observed_official_hosts": [
+        "clinicalosandes.cl",
+        "www.clinicalosandes.cl"
+      ],
+      "newsroom_url": "https://www.clinicalosandes.cl/noticias/",
+      "observed_blog_urls": [],
+      "home_browser_reference": "turn424293view1",
+      "newsroom_browser_reference": "turn424293view4",
+      "browser_rendered_html_available": true,
+      "raw_http_headers_or_tls_observed": false,
+      "observed_archive_summary": "August 2026 (1), January 2024 (1), December 2022 (1), earlier historical months",
+      "api_urls_observed": [],
+      "feed_urls_observed": [],
+      "coverage_complete": false,
+      "next_action": "Origin raw capture, publication metadata/container verification, disclosed API/feed links and full 90-day archive census. No guessed API or pager URLs."
+    },
+    {
+      "name": "Clínica Del Sur",
+      "source_slug": "clinicas_achs_salud",
+      "market_role": "provider_achs",
+      "provider_subtype": "clinicas",
+      "official_identity": {
+        "linked_from": "https://www.clinicasachssalud.cl/",
+        "browser_reference": "turn568536view0",
+        "link_id": 55,
+        "linked_home_url": "https://www.clinicasur.cl/"
+      },
+      "observed_home_url": "https://www.clinicasur.cl/",
+      "observed_official_hosts": [
+        "www.clinicasur.cl"
+      ],
+      "newsroom_url": "https://www.clinicasur.cl/noticias/",
+      "observed_blog_urls": [
+        "https://www.clinicasur.cl/blog-de-kinesiologia/"
+      ],
+      "home_browser_reference": "turn581732view3",
+      "newsroom_browser_reference": "turn525270view4",
+      "browser_rendered_html_available": true,
+      "raw_http_headers_or_tls_observed": false,
+      "observed_archive_summary": "August 2026 (1), then older historical months; equipment news exists but own publication must be checked.",
+      "api_urls_observed": [],
+      "feed_urls_observed": [],
+      "coverage_complete": false,
+      "next_action": "Origin raw capture, publication metadata/container verification, disclosed API/feed links and full 90-day archive census. No guessed API or pager URLs."
+    },
+    {
+      "name": "Clínica Puerto Montt",
+      "source_slug": "clinicas_achs_salud",
+      "market_role": "provider_achs",
+      "provider_subtype": "clinicas",
+      "official_identity": {
+        "linked_from": "https://www.clinicasachssalud.cl/",
+        "browser_reference": "turn568536view0",
+        "link_id": 56,
+        "linked_home_url": "https://www.clinicapuertomontt.cl/"
+      },
+      "observed_home_url": "https://clinicapuertomontt.cl/",
+      "observed_official_hosts": [
+        "www.clinicapuertomontt.cl",
+        "clinicapuertomontt.cl"
+      ],
+      "newsroom_url": "https://clinicapuertomontt.cl/noticias/",
+      "observed_blog_urls": [
+        "https://clinicapuertomontt.cl/blog/"
+      ],
+      "home_browser_reference": "turn581732view5",
+      "newsroom_browser_reference": "turn525270view6",
+      "browser_rendered_html_available": true,
+      "raw_http_headers_or_tls_observed": false,
+      "observed_archive_summary": "August 2026 (1), April 2026 (2), March 2026 (1), earlier historical months",
+      "api_urls_observed": [],
+      "feed_urls_observed": [],
+      "coverage_complete": false,
+      "next_action": "Origin raw capture, publication metadata/container verification, disclosed API/feed links and full 90-day archive census. No guessed API or pager URLs."
+    },
+    {
+      "name": "Clínica Curicó",
+      "source_slug": "clinicas_achs_salud",
+      "market_role": "provider_achs",
+      "provider_subtype": "clinicas",
+      "official_identity": {
+        "linked_from": "https://www.clinicasachssalud.cl/",
+        "browser_reference": "turn568536view0",
+        "link_id": 57,
+        "linked_home_url": "https://www.clinica-curico.cl/"
+      },
+      "observed_home_url": "https://clinica-curico.cl/",
+      "observed_official_hosts": [
+        "www.clinica-curico.cl",
+        "clinica-curico.cl"
+      ],
+      "newsroom_url": "https://clinica-curico.cl/noticias/",
+      "observed_blog_urls": [
+        "https://clinica-curico.cl/blog/"
+      ],
+      "home_browser_reference": "turn826092view3",
+      "newsroom_browser_reference": "turn229482view1",
+      "browser_rendered_html_available": true,
+      "raw_http_headers_or_tls_observed": false,
+      "observed_archive_summary": "August 2026 (1), September 2025 (2)",
+      "api_urls_observed": [],
+      "feed_urls_observed": [],
+      "coverage_complete": false,
+      "next_action": "Origin raw capture, publication metadata/container verification, disclosed API/feed links and full 90-day archive census. No guessed API or pager URLs."
+    }
+  ],
+  "clinic_manifest_observed_at": "2026-10-11T06:03:08.811953+00:00",
+  "clinic_manifest_limitations": [
+    "Nine official identities come from corporate-network links, not physician affiliation or third-party search alone.",
+    "All nine canonical homes/news archives returned rendered content through the browser tool; browser cache/crawl age is not evidence of current origin HTTP headers, TLS or publication dates.",
+    "Initial click errors for www Maitenes/Lircay and apex Los Andes were tool-access failures; official indexed canonical alternatives returned content. This is not an overall external source outage.",
+    "No clinic API/feed base URL was exposed by the rendered pages inspected. Origin HTML head and HTTP Link capture is the next step; do not synthesize WordPress API/feed URLs.",
+    "Native sidebar headings Lo más visto, Photostream, Archivos and Noticias que te podrían interesar must be excluded from article body, dates and materiality.",
+    "A current dated recognition is inventoried and rejected; a standing service or undated procurement invitation never becomes a new current signal."
+  ],
+  "observed_clinic_detail_checks": [
+    {
+      "url": "https://clinicamaitenes.cl/nueva-unidad-de-paciente-critico/",
+      "browser_reference": "turn427185view0",
+      "type": "capacity_change",
+      "observed_article_header_date": "2025-06-05",
+      "header_value": "5 JUNIO, 2025",
+      "within_90_days": false,
+      "safe_for_automatic_capture": false,
+      "reason": "Historical own article-header date; raw publication field still required for automated inventory."
+    },
+    {
+      "url": "https://clinicalircay.cl/modulo-fonasa-talca-lircay/",
+      "browser_reference": "turn598829view1",
+      "type": "coverage_change",
+      "observed_article_header_date": "2023-12-13",
+      "header_value": "13 DICIEMBRE, 2023",
+      "within_90_days": false,
+      "safe_for_automatic_capture": false,
+      "reason": "Historical publication; body refers to December 11/12 operation/inauguration and 2022 data, which are separate dates."
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/inauguramos-nuestro-nuevo-centro-medico/",
+      "browser_reference": "turn598829view2",
+      "type": "capacity_change",
+      "observed_article_header_date": "2022-12-21",
+      "header_value": "21 DICIEMBRE, 2022",
+      "within_90_days": false,
+      "safe_for_automatic_capture": false,
+      "reason": "Historical publication. Body event day October 13 does not imply a new 2026 opening."
+    },
+    {
+      "url": "https://clinica-curico.cl/nuevo-scanner-tac/",
+      "browser_reference": "turn400128view2",
+      "type": "equipment_capacity_change",
+      "observed_article_header_date": "2025-09-22",
+      "header_value": "22 SEPTIEMBRE, 2025",
+      "within_90_days": false,
+      "safe_for_automatic_capture": false,
+      "reason": "Historical equipment acquisition, outside current window."
+    },
+    {
+      "url": "https://clinica-curico.cl/nuevo-resonador-magnetico-signa-creator/",
+      "browser_reference": "turn113823view6",
+      "type": "equipment_capacity_change",
+      "observed_article_header_date": "2025-09-22",
+      "header_value": "22 SEPTIEMBRE, 2025",
+      "within_90_days": false,
+      "safe_for_automatic_capture": false,
+      "reason": "Historical equipment acquisition, outside current window."
+    },
+    {
+      "url": "https://clinicamaitenes.cl/mes-del-corazon-salud-cardiaca/",
+      "browser_reference": "turn295919view1",
+      "type": "health_advice_article",
+      "observed_article_header_date": "2026-08-05",
+      "header_value": "5 AGOSTO, 2026",
+      "within_90_days": true,
+      "safe_for_automatic_capture": false,
+      "status": "rejected_general_advice",
+      "reason": "General cardiac-health advice; no operational or capacity change. Raw date container not yet captured."
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/clinicas-achs-salud-primer-lugar-total-brands",
+      "browser_reference": "turn400128view0",
+      "type": "recognition_article",
+      "observed_article_header_date": "2026-08-12",
+      "header_value": "12/08/2026",
+      "within_90_days": true,
+      "safe_for_automatic_capture": false,
+      "status": "rejected_recognition",
+      "reason": "Brand recognition. Award event was July 31; header August 12 remains distinct from event date."
+    },
+    {
+      "url": "https://clinica-curico.cl/clinicas-achs-salud-primer-lugar-total-brands/",
+      "browser_reference": "turn400128view1",
+      "type": "recognition_article",
+      "observed_article_header_date": "2026-08-12",
+      "header_value": "12 AGOSTO, 2026",
+      "within_90_days": true,
+      "safe_for_automatic_capture": false,
+      "status": "rejected_recognition",
+      "reason": "Republished recognition across another official publisher; not a new clinical change."
+    }
+  ],
+  "observed_archive_gap": {
+    "url": "https://clinicalircay.cl/2026/09/",
+    "linked_from": "https://clinicalircay.cl/modulo-fonasa-talca-lircay/",
+    "source_browser_reference": "turn598829view1",
+    "source_link_id": 75,
+    "attempt_browser_reference": "turn295919view0",
+    "result": "TimeoutError",
+    "exact_tool_error": "Failed to fetch https://clinicalircay.cl/2026/09/: TimeoutError",
+    "publication_date": null,
+    "status": "pending_origin_capture",
+    "reason": "Fresh detail sidebar advertises a September 2026 archive absent from older cached newsroom rendering. Neither crawl time nor the month URL supplies individual publication evidence."
   }
 }
