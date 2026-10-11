@@ -23,6 +23,9 @@ def validate_discovery(targets, discovery, started_at):
         row=discovery.get('sources', {}).get(source)
         assert row and row.get('checked_at', '') >= started_at, f'{source}: missing fresh execution receipt'
         if row.get('error_type') or row.get('technical_status')=='error':
+            if expectations.get(source, {}).get('allow_partial_capture') and row.get('discovered',0) >= expectations[source].get('minimum_discovered',1):
+                results[source]='EXECUTED_WITH_PARTIAL_CAPTURE'
+                continue
             assert expectations.get(source, {}).get('allow_external_blocker'), f'{source}: unexpected runtime error {row}'
             results[source]='EXTERNAL_BLOCKER_OBSERVED'
         else:
@@ -35,6 +38,11 @@ def main():
     repo=Path(__file__).resolve().parents[1]
     targets=read(repo/'config/integration_runtime_targets.json')
     selected=set(targets['sources'])
+    requested=os.environ.get('INTEGRATION_SOURCE')
+    if requested:
+        assert requested in selected, 'Requested source is outside the authorized integration targets'
+        targets={**targets,'sources':[requested]}
+        selected={requested}
     root=repo/'work/integration-runtime'
     if root.exists():raise RuntimeError('Runtime output must start empty; do not overwrite an earlier checkpoint')
     root.mkdir(parents=True)

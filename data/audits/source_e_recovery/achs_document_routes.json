@@ -1,0 +1,173 @@
+{
+  "created_at": "2026-10-11T06:40:45.374437+00:00",
+  "scope": "Ancillary documents linked by three of the five evaluated ACHS occupational articles",
+  "observed_run_id": "38116209530",
+  "capture_targets": [
+    [
+      "achs",
+      "associated_article_pdf",
+      "https://www.achs.cl/docs/librariesprovider2/2026/achs-437334/guia-tratamiento-psicologico.pdf?sfvrsn=fbec0931_1"
+    ],
+    [
+      "achs",
+      "associated_article_pdf",
+      "https://www.achs.cl/docs/librariesprovider2/2026/achs-435774/achs-infografia-scooter.pdf?sfvrsn=fe766532_1"
+    ],
+    [
+      "achs",
+      "associated_article_pptx",
+      "https://www.achs.cl/docs/librariesprovider2/2026/achs-422711/ppt-lgf.pptx?sfvrsn=7908d12d_1"
+    ]
+  ],
+  "documents": [
+    {
+      "document_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-437334/guia-tratamiento-psicologico.pdf?sfvrsn=fbec0931_1",
+      "document_format": "pdf",
+      "link_label": "Descarga la Guía de Orientación para el Tratamiento Psicológico de Personas Trabajadoras con Patologías de Salud Mental Laboral.",
+      "source_slug": "achs_seguro_laboral",
+      "associated_article_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+      "associated_article_publication_date": "2026-09-24",
+      "associated_article_publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "value": "24/09/2026",
+        "date": "2026-09-24",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "link_observation_capture": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "captured_at": "2026-10-11T05:56:34.532949+00:00",
+        "sha256": "f96a9e2d6ec2b47ddae2e3fc97ca0b3392d938af0a0c598940658ce186772b39",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/2f8702b2b7fdab6e7e6c-0.body",
+        "environment": "github_actions"
+      },
+      "document_publication_date": null,
+      "publication_date_policy": "The dated article is the observed publication surface for the link. Its evidence does not establish an independent document publication date; PDF metadata, HTTP Last-Modified, sfvrsn/version and upload-directory dates must not become publication dates.",
+      "capture_state": "pending_verified_binary_capture",
+      "capture_max_bytes_proposed": 20000000,
+      "current_probe_max_bytes": 20000000,
+      "expected_media_type": "application/pdf",
+      "transport_requirements": [
+        "official HTTPS URL and every redirect host within existing allowlist",
+        "HTTP200 without WAF or authentication challenge",
+        "origin TLS certificate verified",
+        "complete saved bytes with SHA256 matching capture index",
+        "media signature and type compatible with PDF or OOXML presentation"
+      ],
+      "enrichment_policy": "Extract text only from validated captured bytes. Preserve article date evidence and bind added facts to this exact associated article and document capture. A duplicate infographic or restatement does not justify a fresh editorial assessment.",
+      "next_action": "Capture exact observed URL; inspect full text and identify genuinely additional facts before proposing page_text changes."
+    },
+    {
+      "document_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-435774/achs-infografia-scooter.pdf?sfvrsn=fe766532_1",
+      "document_format": "pdf",
+      "link_label": "Revisa esta infografía con los datos más relevantes.",
+      "source_slug": "achs_seguro_laboral",
+      "associated_article_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+      "associated_article_publication_date": "2026-09-15",
+      "associated_article_publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "value": "15/09/2026",
+        "date": "2026-09-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "link_observation_capture": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "captured_at": "2026-10-11T05:56:44.279728+00:00",
+        "sha256": "a6d86519d4949c1801e22bb7caa3d0c281c81519721471d94c9e58e06e13d66c",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/cf54b0043bc607ec3a8f-0.body",
+        "environment": "github_actions"
+      },
+      "document_publication_date": null,
+      "publication_date_policy": "The dated article is the observed publication surface for the link. Its evidence does not establish an independent document publication date; PDF metadata, HTTP Last-Modified, sfvrsn/version and upload-directory dates must not become publication dates.",
+      "capture_state": "pending_verified_binary_capture",
+      "capture_max_bytes_proposed": 20000000,
+      "current_probe_max_bytes": 20000000,
+      "expected_media_type": "application/pdf",
+      "transport_requirements": [
+        "official HTTPS URL and every redirect host within existing allowlist",
+        "HTTP200 without WAF or authentication challenge",
+        "origin TLS certificate verified",
+        "complete saved bytes with SHA256 matching capture index",
+        "media signature and type compatible with PDF or OOXML presentation"
+      ],
+      "enrichment_policy": "Extract text only from validated captured bytes. Preserve article date evidence and bind added facts to this exact associated article and document capture. A duplicate infographic or restatement does not justify a fresh editorial assessment.",
+      "next_action": "Capture exact observed URL; inspect full text and identify genuinely additional facts before proposing page_text changes."
+    },
+    {
+      "document_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-422711/ppt-lgf.pptx?sfvrsn=7908d12d_1",
+      "document_format": "pptx",
+      "link_label": "este documento",
+      "source_slug": "achs_seguro_laboral",
+      "associated_article_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+      "associated_article_publication_date": "2026-07-15",
+      "associated_article_publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+        "value": "15/07/2026",
+        "date": "2026-07-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "link_observation_capture": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+        "captured_at": "2026-10-11T05:57:03.190409+00:00",
+        "sha256": "12cfbb68cefe60f083c451db9bc2a8a7c6917c0b19afd7d8e55afba200eb20bd",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/873c1f1920ded4aca7bc-0.body",
+        "environment": "github_actions"
+      },
+      "document_publication_date": null,
+      "publication_date_policy": "The dated article is the observed publication surface for the link. Its evidence does not establish an independent document publication date; PDF metadata, HTTP Last-Modified, sfvrsn/version and upload-directory dates must not become publication dates.",
+      "capture_state": "pending_verified_binary_capture",
+      "capture_max_bytes_proposed": 20000000,
+      "current_probe_max_bytes": 6000000,
+      "expected_media_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "transport_requirements": [
+        "official HTTPS URL and every redirect host within existing allowlist",
+        "HTTP200 without WAF or authentication challenge",
+        "origin TLS certificate verified",
+        "complete saved bytes with SHA256 matching capture index",
+        "media signature and type compatible with PDF or OOXML presentation"
+      ],
+      "enrichment_policy": "Extract text only from validated captured bytes. Preserve article date evidence and bind added facts to this exact associated article and document capture. A duplicate infographic or restatement does not justify a fresh editorial assessment.",
+      "next_action": "Capture exact observed URL; inspect full text and identify genuinely additional facts before proposing page_text changes."
+    }
+  ],
+  "browser_attempt": {
+    "attempted": true,
+    "tool": "search_service_web_run",
+    "result": "tool cannot access each requested binary URL",
+    "refs": [
+      "turn836986view0",
+      "turn836986view1",
+      "turn836986view2"
+    ],
+    "origin_http_status_observed": null,
+    "origin_tls_observed": false,
+    "interpretation": "This tool-level retrieval failure does not prove an origin outage, WAF or HTTP error. Independent GitHub Actions public capture remains the next step."
+  },
+  "editorial_threshold": 75,
+  "paid_api_calls": 0,
+  "canonical_state_changed": false,
+  "no_automatic_reassessment_until": "Verified document facts materially change the previous editorial input; the captured binary alone, a new hash or document dates do not invalidate the prior below-threshold decision.",
+  "tests": {
+    "command": "PYTHONPATH=src .venv/bin/python -m pytest -q tests/test_achs_document_routes.py tests/test_occupational_integrity.py tests/test_occupational_inventory.py tests/test_occupational_sources.py",
+    "result": "167 passed"
+  },
+  "taxonomy_helper": {
+    "module": "radar_salud.occupational_sources",
+    "function": "classify_content_kind(materiality_reason, title=\"\", body=\"\")",
+    "labels": [
+      "news",
+      "study",
+      "prevention",
+      "commercial"
+    ],
+    "purpose": "Pure inventory classification; date, actor role, acceptance and editorial threshold are unchanged."
+  }
+}

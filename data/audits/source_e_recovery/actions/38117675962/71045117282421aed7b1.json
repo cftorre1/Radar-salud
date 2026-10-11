@@ -1,0 +1,68 @@
+{
+  "url": "https://clinicasachssalud.cl/",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T06:22:21.835512+00:00",
+  "hops": [
+    {
+      "url": "https://clinicasachssalud.cl/",
+      "http_status": 301,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 301 ",
+          "content-type": "text/html; charset=UTF-8",
+          "location": "https://www.clinicasachssalud.cl/",
+          "cache-control": "public, max-age=0",
+          "content-length": "0",
+          "date": "Sun, 11 Oct 2026 06:22:23 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "waf": null,
+      "error": null,
+      "body_file": "71045117282421aed7b1-0.body"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/",
+      "http_status": 200,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 200 ",
+          "last-modified": "Thu, 08 Oct 2026 19:01:00 GMT",
+          "content-type": "text/html; charset=UTF-8",
+          "cache-control": "public, max-age=0",
+          "date": "Sun, 11 Oct 2026 06:22:23 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 289607,
+      "sha256": "63766601d94e1b4cf403e47fe1a047162e884b0fce493ab4ebae198817fd2eec",
+      "waf": null,
+      "error": null,
+      "body_file": "71045117282421aed7b1-1.body"
+    }
+  ],
+  "stop_reason": "response_captured",
+  "final_url": "https://www.clinicasachssalud.cl/",
+  "http_status": 200,
+  "waf": null
+}

@@ -1,0 +1,29 @@
+{
+  "url": "https://www.clinicaportada.cl/",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T07:58:57.643464+00:00",
+  "hops": [
+    {
+      "url": "https://www.clinicaportada.cl/",
+      "http_status": 0,
+      "proxy_connect_status": 0,
+      "curl_exit": 28,
+      "headers": [],
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "content_type": null,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "waf": null,
+      "error": "curl: (28) Failed to connect to www.clinicaportada.cl port 443 after 12000 ms: Timeout was reached",
+      "body_file": "91614b886b0806eecee4-0.body"
+    }
+  ],
+  "stop_reason": "transport_error",
+  "final_url": "https://www.clinicaportada.cl/",
+  "http_status": 0,
+  "waf": null
+}

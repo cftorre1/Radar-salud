@@ -60,12 +60,19 @@ class CuratedBetaSourceScout:
             "role": "provider",
         },
         "clinicas_achs_salud": {
-            "name": "Clínicas Achs Salud",
+            "name": "Achs Salud / Clínicas",
             "type": "corporate",
             "page": "https://www.achs.cl/centro-de-noticias",
-            "hosts": ("www.achs.cl", "achs.cl"),
+            "hosts": ("www.achs.cl", "achs.cl", "www.achssalud.cl", "achssalud.cl",
+                      "clinicaportada.cl", "www.clinicaportada.cl", "clinicaatacama.cl", "www.clinicaatacama.cl",
+                      "clinicaloscoihues.cl", "clinicamaitenes.cl", "www.clinicamaitenes.cl",
+                      "clinicalircay.cl", "www.clinicalircay.cl", "clinicalosandes.cl", "www.clinicalosandes.cl",
+                      "www.clinicasur.cl", "clinicapuertomontt.cl", "www.clinicapuertomontt.cl",
+                      "clinica-curico.cl", "www.clinica-curico.cl"),
             "path": r"/centro-de-noticias/noticia/20\d{2}/[^/]+/?",
             "role": "provider_achs",
+            "accepted_roles": ("provider_achs", "provider_achs_centers"),
+            "provider_identity_url": "https://www.achssalud.cl/areasdeatencion/clinicas",
         },
         "achs_seguro_laboral": {
             "name": "Achs Seguro Laboral",
@@ -88,7 +95,7 @@ class CuratedBetaSourceScout:
             "type": "mutuality",
             "page": "https://ist.cl/noticias/",
             "hosts": ("www.ist.cl", "ist.cl"),
-            "path": r"/[^/]+/?",
+            "path": r"/[a-z0-9][a-z0-9-]*/?",
             "role": "mutuality",
         },
         "pulso_latercera": {
@@ -107,7 +114,11 @@ class CuratedBetaSourceScout:
         self.slug = slug
         self.cfg = self.SOURCES[slug]
 
-    def discover_from_html(self, html, detail_loader=fetch_html):
+    def discover_from_html(self, html, detail_loader=None):
+        detail_loader = detail_loader or fetch_html
+        from .occupational_sources import SOURCES, discover_items
+        if self.slug in SOURCES:
+            return discover_items(self, html, detail_loader)
         from .public_source_pipeline import _Meta, _date
 
         parser = _Links()
@@ -161,6 +172,30 @@ class CuratedBetaSourceScout:
         return out[:30]
 
     def discover(self):
+        from .occupational_sources import SOURCES, SourceDiscoveryError
+        if self.slug in SOURCES:
+            from .occupational_capture import CaptureLoader
+            from .paths import project_root
+            from datetime import datetime, timezone
+            loader = CaptureLoader(project_root() / "data/audits/source_e_recovery/runtime" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f"))
+            def attach(rows):
+                for raw in rows:
+                    raw.metadata["capture_evidence"] = loader.evidence(raw.url)
+                    raw.metadata["listing_capture_evidence"] = loader.evidence(raw.metadata["discovered_from"])
+                return rows
+        if self.slug in SOURCES:
+            from .occupational_recovery import inventory
+            self.inventory = inventory(self, loader)
+            rows = attach(self.inventory["raw_items"])
+            self.decisions = self.inventory["rows"]
+            if not self.inventory["coverage_complete"]:
+                errors = self.inventory["errors"]
+                code = errors[0].get("code", "inventory_capture_incomplete") if len(errors) == 1 and not rows else "inventory_capture_incomplete"
+                exc = SourceDiscoveryError(code, errors[0].get("url", self.cfg["page"]) if errors else self.cfg["page"])
+                exc.partial_items = rows
+                exc.diagnostics = errors
+                raise exc
+            return rows
         return self.discover_from_html(fetch_html(self.cfg["page"]))
 
 
@@ -252,25 +287,90 @@ def process_curated_beta_source(raw, cfg):
     from .processing import DeferredProcessing
     from .public_source_pipeline import enrich, _scopes
 
-    raw = enrich(raw)
-    body = raw.metadata.get("page_text") or raw.raw_text or ""
+    from .occupational_sources import SOURCES, materiality, valid_date, classify_content_kind, chile_today
+    scoped = raw.source_slug in SOURCES
+    if scoped and raw.metadata.get("article_extraction") != "occupational_v1":
+        raise DeferredProcessing("occupational detail requires verified article extraction")
+    if scoped and (raw.event_date != raw.metadata.get("publication_date") or
+                   not raw.metadata.get("date_evidence")):
+        raise DeferredProcessing("occupational publication date evidence mismatch")
+    if scoped:
+        parsed = urlparse(raw.url)
+        hosts = CuratedBetaSourceScout.SOURCES[raw.source_slug]["hosts"]
+        evidence = raw.metadata.get("publication_evidence") or raw.metadata.get("publication_date_evidence") or {}
+        kinds = {"article:published_time", "datePublished", "publishdate", "time.published@datetime",
+                 "publisher:achs_div_fecha", "publisher:publication_container", "publisher:mutual_div_fecha", "publisher:mutual_detail_fecha"}
+        if (parsed.scheme != "https" or parsed.hostname not in hosts or parsed.username or parsed.password
+                or parsed.port not in (None, 443)):
+            raise DeferredProcessing("occupational official article authority unverified")
+        bound = isinstance(evidence, dict) and evidence.get("kind") in kinds and evidence.get("url") == raw.url
+        if isinstance(evidence, dict) and evidence.get("kind") == "publisher:mutual_card_fecha":
+            listing = urlparse(evidence.get("url", ""))
+            bound = (raw.source_slug == "mutual_seguridad" and evidence.get("item_url") == raw.url
+                     and listing.scheme == "https" and listing.hostname in hosts
+                     and not listing.username and not listing.password and listing.port in (None, 443)
+                     and listing.path.startswith("/portal/publico/empresa/home/nuestra-mutual/noticias")
+                     and all(re.fullmatch(r"[0-9a-f]{64}", str(evidence.get(k, "")))
+                             for k in ("listing_sha256", "detail_sha256")))
+        if (not bound or evidence.get("date") != raw.event_date
+                or valid_date(evidence.get("value")) != raw.event_date or valid_date(raw.event_date) != raw.event_date):
+            raise DeferredProcessing("occupational explicit publication evidence unverified")
+        from .occupational_evidence import verify_capture
+        verify_capture(raw, hosts)
+    if not scoped:
+        raw = enrich(raw)
+    primary_body = raw.metadata.get("page_text") or raw.raw_text or ""
+    body, document_facts = primary_body, ""
+    if scoped:
+        from .occupational_documents import verified_document_text, additional_document_facts, documentary_materiality
+        verified_document = verified_document_text(raw, hosts)
+        document_facts = additional_document_facts(primary_body, verified_document)
+        if document_facts:
+            body += "\n" + document_facts
     role = raw.metadata.get("market_role") or "provider"
-    if not raw.event_date or len(body) < 160 or not _material(role, raw.title, body):
+    if scoped:
+        accepted, material_reason = documentary_materiality(raw, body, verified_document)
+        if (raw.metadata.get("supporting_documents_required") and not accepted
+                and any(document.get("truncated") for document in raw.metadata.get("supporting_documents", []))):
+            raise DeferredProcessing("required_document_materiality_unresolved_bounded_extraction")
+        raw.metadata.update(materiality_accepted=accepted, materiality_reason=material_reason,
+                            content_kind=classify_content_kind(material_reason, raw.title, primary_body))
+    else:
+        accepted = _material(role, raw.title, body)
+    if not raw.event_date or len(body) < 160 or not accepted:
+        if scoped:
+            raw.metadata["publication_rejection_reason"] = material_reason
         return None
     kind = {
         "media": "prensa económica de alta confianza; señal temprana, atribuir y no convertir reporte de prensa en hecho oficial",
         "mutuality": "publicación institucional de mutualidad; filtrar marketing y priorizar cambios operacionales o de salud laboral",
         "provider_achs": "publicación institucional de prestador; priorizar capacidad, convenios, expansión y relación público-privada",
+        "provider_achs_centers": "publicación de centros clínicos Achs Salud; no atribuir sus cambios a las clínicas ni al seguro laboral",
         "provider": "publicación institucional de prestador; priorizar capacidad, convenios, expansión, inversión y M&A",
     }.get(role, "publicación sectorial")
-    ai = analyze_news(title=raw.title, text=body[:10000], source_name=raw.source_name, kind=kind)
+    if scoped:
+        kind += (f". Tipo de contenido: {raw.metadata['content_kind']}. Publicación: {raw.event_date}; "
+                 f"fecha de revisión Chile: {chile_today().isoformat()}. Puede ingresar por BACKFILL. "
+                 "No afirmes que una convocatoria, inscripción o vigencia continúa abierta hoy a partir de una "
+                 "publicación histórica: exige fechas explícitas y diferencia publicación, período de datos y plazo operativo.")
+        if raw.url == "https://ist.cl/reporte-sostenibilidad-2025/" and document_facts:
+            kind += (" El informe corresponde al período 2025. Sus tablas comparan ingresos y egresos ordinarios 2025/2024; "
+                     "conserva los encabezados y la categoría ordinarios. No deduzcas déficit ni resultado neto "
+                     "mediante su resta. La afirmación sobre ausencia de excedentes debe atribuirse al informe.")
+    ai_text = (primary_body[:3500] + "\n\nHechos adicionales del documento oficial verificado:\n" + document_facts
+               if document_facts else body[:10000])
+    ai = analyze_news(title=raw.title, text=ai_text, source_name=raw.source_name, kind=kind)
     if not ai:
         raise DeferredProcessing("curated beta source pending assessment")
     score = int(ai.get("relevance_score", 0))
+    if scoped:
+        raw.metadata["editorial_assessment"] = {"score": score, "reason": ai.get("reason"), "threshold": 75}
     threshold = 72 if role == "media" else 75
     what = (ai.get("what_happened") or "").strip()
     why = (ai.get("why_it_matters") or "").strip()
     if score < threshold or len(what) < 45 or len(why) < 35:
+        if scoped:
+            raw.metadata["publication_rejection_reason"] = "editorial_score_or_summary_below_threshold"
         return None
     scopes = ["Salud laboral"] if role == "mutuality" else (["Isapres", "Prestadores"] if role == "media" else ["Prestadores"])
     inferred = _scopes(f"{raw.title} {body[:2500]}")
@@ -296,6 +396,17 @@ def process_curated_beta_source(raw, cfg):
     row["scopes"] = scopes
     row["editorial_relevance"] = score
     row["source_quality_gate"] = "passed"
+    if scoped:
+        row.update(source_slug=raw.source_slug, market_role=role,
+                   provider_subtype=raw.metadata.get("provider_subtype"),
+                   data_period=raw.metadata.get("data_period"), publication_date=raw.event_date,
+                   date_evidence=raw.metadata["date_evidence"],
+                   publication_evidence=raw.metadata.get("publication_evidence") or raw.metadata.get("publication_date_evidence"),
+                   capture_evidence=raw.metadata.get("capture_evidence"),
+                   materiality_reason=raw.metadata["materiality_reason"],
+                   content_kind=raw.metadata["content_kind"],
+                   supporting_documents=raw.metadata.get("supporting_documents", []),
+                   source_quality_gate=raw.metadata["source_quality_gate"])
     if role == "media":
         row["evidence_maturity"] = "media_reported"
         row["confirmation_policy"] = "upgrade_same_signal_when_company_or_official_source_confirms"

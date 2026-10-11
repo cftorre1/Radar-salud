@@ -1,0 +1,580 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_initial_read_only",
+  "checked_at": "2026-10-11T05:30:50.999599+00:00",
+  "branch": "codex/e-salud-laboral-20261011",
+  "pr": 12,
+  "baseline_sha": "ac70ed4a4554f3363448b06bb570923b6e291212",
+  "head_at_report_creation": "32a2e76cfa5030d1c3022bbd8bbda32893caf066",
+  "scope": [
+    "clinicas_achs_salud",
+    "achs_seguro_laboral",
+    "mutual_seguridad",
+    "ist"
+  ],
+  "verdict": "not_ready_for_publication_or_complete_inventory",
+  "verdict_scope": "Initial baseline review, not final QA of recovery changes underway. No source is certified operational by this report.",
+  "zero_publication_explanation": [
+    "All four sources have zero RawItems in durable pending queue and zero history signals, including official host matching. No scoped rejected or deferred items can currently be recovered from the durable queue.",
+    "The later read-only source_E runtime audit stopped at source listing access for all four sources. Its published=0 and analysis_api_calls=0 are fixed read-only audit values, not evidence of successful editorial evaluation.",
+    "Seven dated manual samples plus one undated historical MCC route reside only in audit files; four dated candidates remain editorially unevaluated. Sampling and blocked discovery cannot prove absence of recent material news.",
+    "Legacy beta validation/health precede the repaired extraction baseline and IST records historical 2016 navigation false positives."
+  ],
+  "durable_reconciliation": {
+    "queue_total": 2913,
+    "queue_status_totals": {
+      "published": 56,
+      "archived": 2563,
+      "rejected": 219,
+      "retry": 23,
+      "pending": 52
+    },
+    "queue_keys_by_source": {
+      "clinicas_achs_salud": [],
+      "achs_seguro_laboral": [],
+      "mutual_seguridad": [],
+      "ist": []
+    },
+    "history_total": 733,
+    "history_indexes_by_source": {
+      "clinicas_achs_salud": [],
+      "achs_seguro_laboral": [],
+      "mutual_seguridad": [],
+      "ist": []
+    },
+    "history_indexes_by_official_host": [],
+    "source_seen_files": {
+      "clinicas_achs_salud": false,
+      "achs_seguro_laboral": false,
+      "mutual_seguridad": false,
+      "ist": false
+    },
+    "discovery_watermarks": {
+      "clinicas_achs_salud": null,
+      "achs_seguro_laboral": null,
+      "mutual_seguridad": null,
+      "ist": null
+    },
+    "discovery_run_sources_present": {
+      "clinicas_achs_salud": false,
+      "achs_seguro_laboral": false,
+      "mutual_seguridad": false,
+      "ist": false
+    },
+    "occupational_source_discovery_file_exists": false,
+    "state_sha256": {
+      "data/state/pending_queue.json": "803ce81e9e4a339783d94ecc7a13140f1b6c5ccc2f657611410e13f565e9ca2d",
+      "data/history/superintendencia_signals.json": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+      "data/source_health.json": "eb7a18536cf7d374fea0ea0c637f0db1c1d63b6591a9181ae81e21180459480e",
+      "web/data/source_health.json": "653c3df4908751a8ac2b5c77a17c2d185f4024b2c9dc3744f0e33fe61b35c186",
+      "data/state/beta_source_validation.json": "6794ec0bcb1b28356c8f02253358fcdea23041a8c8e95bc4eac4ab299416512b",
+      "data/state/discovery_run.json": "b79bdbbb5210dbd31600a6fe298f92d70f2bc27efa76827a96a2c42b5157d2b4",
+      "data/state/discovery_watermarks.json": "90e9d529233a961924e94682a45827e7e52d4563b9a05dacb633aa4cc5f6cbaa",
+      "data/audits/source_e/clinicas_achs_salud.json": "413eca0a7afd6ac04cd666ba3a5532ac73762f87818c1e2146de4e096b66616b",
+      "data/audits/source_e/achs_seguro_laboral.json": "bd59535ec8696aee3802a654113cbc77cb085bbe8ac04c4c9c61378686df30cd",
+      "data/audits/source_e/mutual_seguridad.json": "b0f5bdae5cb93e2d77ef9c2a7bf41db359cba6c17ceefec99d6f0e7eeb63440d",
+      "data/audits/source_e/ist.json": "4bd0de67b8f57e27fc40d082e93c89316a14f980c30f327f78fe981e2c870072",
+      "data/audits/source_e/runtime.json": "c6471b6f1778a4054f363ccd372b83e3ca2e826b7c52821ee44e939af7fdafa4"
+    }
+  },
+  "legacy_health": {
+    "backend": {
+      "clinicas_achs_salud": {
+        "name": "Clínicas Achs Salud",
+        "checked_at": "2026-10-10T22:25:19.266882+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "RuntimeError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "achs_seguro_laboral": {
+        "name": "Achs Seguro Laboral",
+        "checked_at": "2026-10-10T22:25:23.401038+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "RuntimeError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "mutual_seguridad": {
+        "name": "Mutual de Seguridad CChC",
+        "checked_at": "2026-10-10T22:25:23.787318+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "RuntimeError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "ist": {
+        "name": "Instituto de Seguridad del Trabajo (IST)",
+        "checked_at": "2026-10-10T22:25:41.265782+00:00",
+        "last_signal_at": null,
+        "discovered": 3,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "unknown",
+        "editorial_outcome": "no_new_signals"
+      }
+    },
+    "web": {
+      "clinicas_achs_salud": {
+        "name": "Clínicas Achs Salud",
+        "checked_at": "2026-10-09T16:33:44.193625+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "RuntimeError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "achs_seguro_laboral": {
+        "name": "Achs Seguro Laboral",
+        "checked_at": "2026-10-09T16:33:47.436576+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "RuntimeError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "mutual_seguridad": {
+        "name": "Mutual de Seguridad CChC",
+        "checked_at": "2026-10-09T16:33:47.675654+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "RuntimeError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      },
+      "ist": {
+        "name": "Instituto de Seguridad del Trabajo (IST)",
+        "checked_at": "2026-10-09T16:33:58.439894+00:00",
+        "last_signal_at": null,
+        "discovered": 3,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 0,
+        "pending": 0,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "ok",
+        "error": null,
+        "technical_status": "ok",
+        "coverage_status": "observed",
+        "content_freshness": "unknown",
+        "editorial_outcome": "no_new_signals"
+      }
+    },
+    "beta_validation": {
+      "clinicas_achs_salud": {
+        "discovered": 0,
+        "published": 0,
+        "technical_status": "error",
+        "error": "RuntimeError",
+        "newest_event_date": null
+      },
+      "achs_seguro_laboral": {
+        "discovered": 0,
+        "published": 0,
+        "technical_status": "error",
+        "error": "RuntimeError",
+        "newest_event_date": null
+      },
+      "mutual_seguridad": {
+        "discovered": 0,
+        "published": 0,
+        "technical_status": "error",
+        "error": "RuntimeError",
+        "newest_event_date": null
+      },
+      "ist": {
+        "discovered": 3,
+        "published": 0,
+        "technical_status": "ok",
+        "error": null,
+        "newest_event_date": "2016-11-02"
+      }
+    }
+  },
+  "prior_manual_evidence": {
+    "windows": {
+      "as_of_chile": "2026-10-11",
+      "30_day_start": "2026-09-11",
+      "90_day_start": "2026-07-13"
+    },
+    "dated_samples": 7,
+    "undated_samples": 1,
+    "dated_within_30_days": 4,
+    "dated_within_90_days": 7,
+    "candidate_pending_editorial_analysis": 4,
+    "dated_rejections": 3,
+    "inventory_complete": false,
+    "original_raw_html_available": false,
+    "samples": [
+      {
+        "source": "clinicas_achs_salud",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "publication_date": "2026-08-28",
+        "date_evidence": "visible date immediately after H1; newsroom listing agrees",
+        "within_30_days": false,
+        "within_90_days": true,
+        "decision": "candidate_pending_editorial_analysis",
+        "reason": "Clinica Atacama participates in SAFED/Fonasa ambulatory care for FIBE-qualified disaster victims. Over 4200 slots are the combined private-provider effort, not Clinica Atacama capacity.",
+        "published": false
+      },
+      {
+        "source": "clinicas_achs_salud",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+        "publication_date": "2026-08-19",
+        "date_evidence": "visible date after H1; listing agrees",
+        "within_30_days": false,
+        "within_90_days": true,
+        "decision": "rejected_for_clinic_lane",
+        "reason": "Operational center changes in Linares, San Javier and La Florida; clinic reference is only out-of-hours routing. This is not a clinic capacity change.",
+        "published": false
+      },
+      {
+        "source": "clinicas_achs_salud",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2025/achs-y-su-filial-clinicas-achs-salud-se-suman-a-la-modalidad-de-cobertura-complementaria-de-fonasa",
+        "publication_date": null,
+        "date_evidence": "historical 2025 route; exact original date not reconciled in this audit",
+        "within_30_days": false,
+        "within_90_days": false,
+        "decision": "excluded_from_recent_sample",
+        "reason": "Historical MCC incorporation must not inherit dates from current related stories.",
+        "published": false
+      },
+      {
+        "source": "achs_seguro_laboral",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "publication_date": "2026-09-24",
+        "date_evidence": "visible date directly after article H1; listing agrees",
+        "within_30_days": true,
+        "within_90_days": true,
+        "decision": "candidate_pending_editorial_analysis",
+        "reason": "new treatment and reintegration guidance; not a wellbeing campaign",
+        "published": false
+      },
+      {
+        "source": "achs_seguro_laboral",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "publication_date": "2026-09-15",
+        "date_evidence": "visible date directly after article H1; listing agrees",
+        "data_period": "2026-01/2026-06",
+        "within_30_days": true,
+        "within_90_days": true,
+        "decision": "candidate_pending_editorial_analysis",
+        "reason": "501 accidents vs 366 in first half of 2025; publication date distinct from data period",
+        "published": false
+      },
+      {
+        "source": "ist",
+        "url": "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/",
+        "publication_date": "2026-10-07",
+        "date_evidence": "WordPress byline Oct 7, 2026 and visible 07/10/2026 agree",
+        "within_30_days": true,
+        "within_90_days": true,
+        "decision": "rejected",
+        "reason": "Educational wellbeing event without a material coverage, capacity or operational change",
+        "published": false
+      },
+      {
+        "source": "ist",
+        "url": "https://ist.cl/feria-de-bienestar-2026-promoviendo-el-cuidado-de-la-vida-junto-a-puerto-ventanas/",
+        "publication_date": "2026-09-17",
+        "date_evidence": "WordPress byline Sep 17, 2026 and visible 17/09/2026 agree",
+        "within_30_days": true,
+        "within_90_days": true,
+        "decision": "rejected",
+        "reason": "Wellbeing fair with active breaks, counselling and contests; no material change",
+        "published": false
+      },
+      {
+        "source": "ist",
+        "url": "https://ist.cl/damos-la-bienvenida-a-mk-recursos-humanos/",
+        "publication_date": "2026-07-29",
+        "date_evidence": "WordPress byline Jul 29, 2026 and visible 29/07/2026 agree",
+        "within_30_days": false,
+        "within_90_days": true,
+        "decision": "candidate_pending_editorial_analysis",
+        "reason": "New adherent brings over 700 workers into coverage; quantified coverage change",
+        "published": false
+      }
+    ],
+    "runtime_candidate_sha": "f050ce6c96d2ebb1c6606aaafbcbbba4e41275c5",
+    "runtime_checked_at": "2026-10-11T01:32:58.329579-03:00",
+    "runtime_status": {
+      "clinicas_achs_salud": {
+        "technical_status": "error",
+        "error": {
+          "type": "SourceDiscoveryError",
+          "code": "executor_proxy_denied",
+          "url": "https://www.achs.cl/centro-de-noticias",
+          "message": "executor_proxy_denied: https://www.achs.cl/centro-de-noticias (URLError)"
+        },
+        "decisions": [],
+        "inventory_complete": false
+      },
+      "achs_seguro_laboral": {
+        "technical_status": "error",
+        "error": {
+          "type": "SourceDiscoveryError",
+          "code": "executor_proxy_denied",
+          "url": "https://www.achs.cl/centro-de-noticias",
+          "message": "executor_proxy_denied: https://www.achs.cl/centro-de-noticias (URLError)"
+        },
+        "decisions": [],
+        "inventory_complete": false
+      },
+      "mutual_seguridad": {
+        "technical_status": "error",
+        "error": {
+          "type": "SourceDiscoveryError",
+          "code": "executor_proxy_denied",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+          "message": "executor_proxy_denied: https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/ (URLError)"
+        },
+        "decisions": [],
+        "inventory_complete": false
+      },
+      "ist": {
+        "technical_status": "error",
+        "error": {
+          "type": "SourceDiscoveryError",
+          "code": "executor_proxy_denied",
+          "url": "https://ist.cl/noticias/",
+          "message": "executor_proxy_denied: https://ist.cl/noticias/ (URLError)"
+        },
+        "decisions": [],
+        "inventory_complete": false
+      }
+    }
+  },
+  "current_network_observation": {
+    "runtime_ready": true,
+    "managed_policy_state": "unknown",
+    "observations_current": true,
+    "reviewer_live_probe_performed": false,
+    "historical_proxy_denied_evidence": "data/audits/source_e/runtime.json",
+    "note": "The prior runtime proxy403 and Mutual browser WAF are separate historical observations. They require current revalidation; this reviewer does not infer TLS failure or remote site unavailability from a CONNECT denial."
+  },
+  "findings": [
+    {
+      "id": "E-R01",
+      "severity": "high",
+      "area": "inventory/pagination",
+      "location": "src/radar_salud/beta_sources.py:168; src/radar_salud/occupational_sources.py:223",
+      "finding": "A single configured listing is fetched; no page/archive traversal exists, and details stop at 60 anchors. No 90-day end-of-window proof is recorded. Shared ACHS newsroom role filtering does not make the listing complete.",
+      "required": "Track official pages/cursors visited, window cutoff, deduplication and exact stop reason; inventory_complete false whenever access/date/page/cap gaps remain."
+    },
+    {
+      "id": "E-R02",
+      "severity": "high",
+      "area": "publication_date",
+      "location": "src/radar_salud/occupational_sources.py:50; :90; :127",
+      "finding": "Date parser accepts a date substring in period text, overwrites conflicting publication metas, and treats any early standalone numeric date after H1 as publication. time class matching accepts unpublished.",
+      "synthetic_repros": [
+        {
+          "input": "meta article:published_time content=Período 2026-09-24",
+          "actual": "publication_date=2026-09-24"
+        },
+        {
+          "input": "two article:published_time metas 2026-09-23 and 2026-09-24",
+          "actual": "publication_date=2026-09-24, no conflict"
+        },
+        {
+          "input": "H1 followed by Fecha del evento and 24/09/2026",
+          "actual": "publication_date=2026-09-24, visible_date_after_h1"
+        },
+        {
+          "input": "time class=unpublished datetime=2026-09-24 after H1",
+          "actual": "publication_date=2026-09-24"
+        }
+      ],
+      "required": "Use complete date fields, collect and reconcile all explicit publication assertions, exact class tokens, and distinguish event/data period from a demonstrated publication header."
+    },
+    {
+      "id": "E-R03",
+      "severity": "high",
+      "area": "provider_attribution",
+      "location": "src/radar_salud/occupational_sources.py:144",
+      "finding": "A clinic network mention anywhere in scoped body marks it as provider actor; the code does not enforce the actor claim made by its comment. This can place an insurance article in the clinic lane.",
+      "synthetic_repro": {
+        "title": "Nueva guía de tratamiento en salud mental laboral",
+        "body": "La autora pertenece a Clínicas Achs Salud. El seguro laboral presenta una nueva guía para reintegro.",
+        "actual": "provider_achs"
+      },
+      "required": "Attribute the changed service/capacity/coverage to the actual actor; staff affiliation, quotes, routing and counterparties alone cannot select provider_achs. Preserve Master Plan and combined-provider 4200-slot safeguards."
+    },
+    {
+      "id": "E-R04",
+      "severity": "high",
+      "area": "processing_guard",
+      "location": "src/radar_salud/beta_sources.py:263",
+      "finding": "Processing trusts occupational_v1, matching publication_date and any nonempty date_evidence. It validates neither official URL nor calendar/future date nor independent capture. This is unsafe for reintroduced legacy/manual queued items.",
+      "synthetic_repros": [
+        {
+          "input": "official source slug/name with https://unverified.example/claim, publication_date=2026-09-24, date_evidence=anything",
+          "actual": "signal produced with unverified source_url"
+        },
+        {
+          "input": "official ACHS URL, matching event_date/publication_date=2099-09-24, date_evidence=anything",
+          "actual": "signal produced with future date"
+        }
+      ],
+      "repro_isolation": "analyze_news replaced only in an isolated process by a deterministic score=90 response; zero API calls and zero queue/history writes",
+      "required": "Before analysis, validate current official detail authority, complete nonfuture date, coherent source role, and exact captured publication evidence. An arbitrary marker/string cannot authenticate the article."
+    },
+    {
+      "id": "E-R05",
+      "severity": "medium",
+      "area": "materiality",
+      "location": "src/radar_salud/occupational_sources.py:157",
+      "finding": "Lexical materiality gate produces false positives under negation and false negatives for concrete changes in campaign headlines or new-adherent wording.",
+      "synthetic_repros": [
+        {
+          "title": "Información sobre centro de atención",
+          "body": "No inaugura ni amplía ningún centro de atención.",
+          "actual": "accepted:capacity_or_investment_change"
+        },
+        {
+          "title": "Campaña SAFED incorpora capacidad clínica",
+          "body": "Clínicas Achs Salud activa SAFED con Fonasa y amplía las atenciones.",
+          "actual": "rejected:campaign_event_testimonial_or_recognition"
+        },
+        {
+          "title": "Damos la bienvenida a MK Recursos Humanos",
+          "body": "MK Recursos Humanos se adhiere al IST con más de 700 trabajadores y aumenta cobertura.",
+          "actual": "rejected:no_verifiable_material_change"
+        }
+      ],
+      "limitation": "MK body is a synthetic semantic example; prior audit contains no durable original HTML proving exact live wording.",
+      "required": "Demonstrate the concrete change and actor; ensure qualifying new coverage is considered while generic fairs/events remain rejected. Retain exact reason and evidence per decision."
+    },
+    {
+      "id": "E-R06",
+      "severity": "high",
+      "area": "partial_failure/traceability",
+      "location": "src/radar_salud/occupational_sources.py:235; :260",
+      "finding": "Invalid/undated details become ephemeral scout.decisions and are omitted from RawItems. When another valid row exists, discovery succeeds despite a pending undated detail. A detail fetch error aborts the full source before later articles.",
+      "synthetic_repro": "Two official detail links: one dated operational guide and one identical guide without publication date. discover_items returned one row and a pending decision, with no partial coverage failure.",
+      "required": "Persist every discovered URL and pending/rejected reason; continue independent details, report partial gaps in health, and prevent full operational/completeness claims."
+    },
+    {
+      "id": "E-R07",
+      "severity": "high",
+      "area": "runtime/durable_queue",
+      "location": "src/radar_salud/beta_source_engine.py:60; src/radar_salud/beta_source_engine_fast.py:51",
+      "finding": "Full beta runner considers found[:3] outside the durable queue; deferred samples are counted but not persisted. Fast runner considers bounded discovery only and writes zero published without evaluation. These are samples, not publication workflow or inventory.",
+      "required": "Use an explicit scoped durable recovery workflow with ledger and bounded resumable progress; do not repeatedly analyze first-three items or mistake bounded validation for a complete run. Protect unrelated media/history rows."
+    },
+    {
+      "id": "E-R08",
+      "severity": "high",
+      "area": "source_health",
+      "location": "data/source_health.json; web/data/source_health.json; data/state/beta_source_validation.json",
+      "finding": "Legacy IST health is technical ok/coverage observed with three 2016 items despite later source audit executor_proxy_denied. Backend and web checked_at differ by a day; latest source_E audit was intentionally read-only and did not reconcile health.",
+      "required": "Update only scoped health from current observed runtime, include checked_at/exact error and partial/completeness state, and mirror backend/web honestly. Zero publication cannot establish no new material content."
+    },
+    {
+      "id": "E-R09",
+      "severity": "medium",
+      "area": "transport/evidence",
+      "location": "src/radar_salud/beta_sources.py:168; src/radar_salud/scouts.py fetch_html",
+      "finding": "Initial detail URL whitelist is checked, but generic urlopen follows redirects without an occupational final-authority/content capture contract. Existing source_E semantic fixtures are explicitly reconstructed, not captured originals.",
+      "required": "Capture effective URL, redirect chain, headers/transport status and original bytes/hash where available; qualify render/indexed-text evidence accurately and never certify live parser replay from synthetic fixtures."
+    }
+  ],
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_occupational_sources.py tests/test_beta_source_package.py tests/test_live_evidence_replay.py",
+    "result": "37 passed in 0.19s",
+    "head_when_run": "6c5b9afb5b1f654f732374b12ec5eec552369e66",
+    "coverage_limit": "Existing regression suite passes but does not cover the adversarial cases recorded above. No paid analysis/network/publication workflow was executed by reviewer."
+  },
+  "final_qa_requirements": [
+    "Revalidate four official transport surfaces now; precise local/external blocker and alternatives if inaccessible.",
+    "Demonstrate complete dated publication evidence and role attribution before any analysis; tests for R02/R03/R04/R05.",
+    "Resume discovery from durable per-URL ledger, preserve rejects/pending, and report pagination/partial/transport gaps.",
+    "Reconcile only scoped state/history/health; no loss of unrelated rows, no repeated paid analysis, no fabricated timestamps or live parser certification.",
+    "Record source-scoped tests and checkpoints on existing branch/PR12; final reviewer will inspect changed code and durable outcomes separately."
+  ],
+  "reviewer_mutations": {
+    "code": false,
+    "queue": false,
+    "history": false,
+    "health": false,
+    "api_calls": 0,
+    "written_files": [
+      "data/audits/source_e_recovery/reviewer_initial.json"
+    ]
+  }
+}

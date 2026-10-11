@@ -1,0 +1,66 @@
+{
+  "reviewer": "independent /root/reviewer",
+  "reviewed_at": "2026-10-11T07:07:07.651153+00:00",
+  "candidate_sha": "4a77db864e4b8390a58ceadd9b0b50e3733efac6",
+  "scope": "Only three display_title approvals for existing reviewed occupational publications",
+  "verdict": "APPROVED_EXACT_DISPLAY_TITLES_WITH_NATIVE_TITLE_AND_DATE_PRESERVED",
+  "overall_final_gate": "pending_stable_live_reconciliation",
+  "evidence_artifact": "data/audits/source_e_recovery/reviewer_live_publications.json",
+  "evidence_artifact_sha256": "c56bc054d77d5a1bafc14edf4df6b023a2b71193876ef157ca51ff3aa6bfaebc",
+  "titles": [
+    {
+      "review_id": "karin",
+      "source_slug": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+      "source_native_title": "A dos años de la Ley Karin: avances, desafíos y aprendizajes para construir entornos laborales más seguros",
+      "publication_date": "2026-09-17",
+      "approved_display_title": "ACHS reporta 32.522 requerimientos de apoyo psicológico vinculados a Ley Karin · agosto 2024–junio 2026",
+      "proof_quotes": [
+        "Entre agosto de 2024 y junio de 2026, la Achs recibió 32.522 requerimientos",
+        "26.392 correspondieron a situaciones de acoso laboral (81%)",
+        "23.771 atenciones (73%) correspondieron a mujeres"
+      ],
+      "primary_sha256": "3e1ffa52dc65b8b3552ed53da4462cbae38a8379c95c088891292de1508d5327"
+    },
+    {
+      "review_id": "innovar",
+      "source_slug": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+      "source_native_title": "Innovar para llegar a tiempo",
+      "publication_date": "2026-08-25",
+      "approved_display_title": "ACHS reporta aumento de atenciones de salud mental: de 28 mil a más de 96 mil entre 2021 y 2025",
+      "proof_quotes": [
+        "Camila Zacharías, gerenta División Operaciones de Salud Achs",
+        "las atenciones asociadas a salud mental prácticamente se triplicaron entre 2021 y 2025, de 28 mil a más de 96 mil",
+        "desarrollamos un modelo especializado de salud mental que combina atención remota, equipos multidisciplinarios, seguimiento de tratamientos",
+        "BERTAchs analiza relatos clínicos y aporta información para determinar si un accidente tiene origen laboral, apoyando la decisión médica. Ya revisó más de 200 mil casos"
+      ],
+      "primary_sha256": "b3fd147fa5ff69a7f780c88d90fc079401429ffe9f16d0b0ea9eedabb2e14f93"
+    },
+    {
+      "review_id": "mutual_tender",
+      "source_slug": "mutual_seguridad",
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+      "source_native_title": "Licitación Pública Convenio Marco: Plan Nacional de Construcción Modular para Mutual de Seguridad C.Ch.C.",
+      "publication_date": "2026-08-27",
+      "approved_display_title": "Mutual convocó una licitación para un convenio de construcción modular de cinco años; piloto facultativo en Vallenar",
+      "proof_quotes": [
+        "Mutual de Seguridad C.CH.C. invita a Empresas del rubro de la Construcción a participar de su proceso de Licitación Pública",
+        "un período de 5 años",
+        "una superficie referencial aproximada de 850 m²",
+        "la ejecución de dicho proyecto tendrá carácter facultativo para Mutual",
+        "las inscripciones podrán realizarse hasta las 18:00 hrs del jueves 03 de septiembre del 2026"
+      ],
+      "primary_sha256": "9afeee854770e56970ad2260ce94c3471426c4931d1596ae9e965700edd582d7"
+    }
+  ],
+  "constraints": [
+    "Write display_title only; keep source-native title, source URL and publication_date unchanged.",
+    "Visible data periods are not publication dates.",
+    "Karin headline uses vinculados to avoid implying the law caused all requests.",
+    "Mutual headline explicitly says call for bids; it does not establish an award, signed agreement, construction start or open registration.",
+    "No AI call, quota use or publication-count claim is introduced by explanatory titles.",
+    "This approval does not upgrade whole-source coverage or close the final stable Actions QA gate."
+  ],
+  "reviewer_canonical_mutations": 0
+}

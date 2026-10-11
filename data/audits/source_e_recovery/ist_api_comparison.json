@@ -1,0 +1,1063 @@
+{
+  "checkpoint": "ist_native_api_html_feed_comparison",
+  "as_of": "2026-10-11",
+  "window": {
+    "convention": "rolling_elapsed_days_inclusive",
+    "start_90": "2026-07-13",
+    "start_30": "2026-09-11",
+    "end": "2026-10-11"
+  },
+  "provenance": {
+    "environment": "github_actions",
+    "run_id": "38115274609",
+    "candidate_sha": "168bc648ddf630d3975d38ba4eeb361de9d50c84",
+    "captured_at": "2026-10-11T05:38:30.830445+00:00",
+    "source_report": "data/audits/source_e_recovery/actions/38115274609/report.json",
+    "api_body": "data/audits/source_e_recovery/actions/38115274609/44f32f4cf767e3ab2022-0.body",
+    "api_sha256": "8d0abf995137f604321fa7955661d7592147e0f6524ac9f9ee62d2e545f2ccf7",
+    "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+    "final_url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+    "http_status": 200,
+    "tls": {
+      "origin_handshake_observed": true,
+      "certificate_verification_result": 0,
+      "verified": true
+    },
+    "user_agent": "identified",
+    "headers": {
+      "status_line": "HTTP/2 200 ",
+      "server": "nginx",
+      "date": "Sun, 11 Oct 2026 05:38:32 GMT",
+      "content-type": "application/json; charset=UTF-8",
+      "cache-control": "no-store, no-cache, must-revalidate",
+      "x-robots-tag": "noindex",
+      "link": "<https://ist.cl/wp-json/>; rel=\"https://api.w.org/\"",
+      "x-wp-total": "21",
+      "x-wp-totalpages": "1",
+      "strict-transport-security": "max-age=31536000"
+    }
+  },
+  "api_response": {
+    "returned_posts": 21,
+    "x_wp_total": 21,
+    "x_wp_totalpages": 1,
+    "page": 1,
+    "response_complete": true,
+    "native_date_field": "date (publisher local time)",
+    "ignored_publication_fields": [
+      "modified",
+      "modified_gmt",
+      "date_gmt",
+      "HTTP Last-Modified"
+    ],
+    "inclusive_calendar_boundary_limitation": "Captured after=2026-07-13T00:00:00 is exclusive in WordPress. It cannot rule out a publication exactly at midnight on the first included day.",
+    "next_action_for_inclusive_boundary": "Use verified route/parameters with after=2026-07-12T23:59:59 and before=2026-10-12T00:00:00; parse X-WP totals and page contract."
+  },
+  "comparison": {
+    "api_posts_90_day_query": 21,
+    "newsroom_posts_in_api": 20,
+    "institutional_posts_in_api": 1,
+    "api_only_vs_captured_html_archives": [
+      "https://ist.cl/reporte-sostenibilidad-2025/"
+    ],
+    "native_posts_within_30_elapsed_days_inclusive": 6,
+    "rss_items": 10,
+    "rss_urls_absent_from_api": [],
+    "rss_local_publication_day_conflicts": [],
+    "rss_utc_day_differs_from_local_day": [
+      "https://ist.cl/dimos-inicio-a-la-semana-de-la-seguridad-junto-a-ebco/"
+    ],
+    "visible_header_date_conflicts": [
+      {
+        "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+        "native_publication_date": "2026-08-12",
+        "visible_header_dates": [
+          {
+            "value": "10/08/2026",
+            "date": "2026-08-10",
+            "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+          }
+        ],
+        "resolution": "pending; no RawItem; do not label visible date an event date without evidence"
+      }
+    ],
+    "source_coverage_complete": false,
+    "coverage_reason": "Route comparison has a known date conflict, an exclusive lower-bound edge, and no captured linked details. A captured API response is not complete article/date verification."
+  },
+  "html_archives": [
+    {
+      "surface": "newsroom",
+      "url": "https://ist.cl/noticias/",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/31366e153e8724b3d604-0.body",
+      "sha256": "bdbe49bf6c30660e8c1d1aaef3db6c9a1031f49b66e402c071feb1f6587599e5",
+      "http_status": 200,
+      "tls_verified": true,
+      "candidate_count": 18,
+      "candidate_urls": [
+        "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/",
+        "https://ist.cl/dimos-inicio-a-la-semana-de-la-seguridad-junto-a-ebco/",
+        "https://ist.cl/potenciando-la-salud-ocupacional-e-higiene-industrial-junto-a-codelco-vp-y-newrest/",
+        "https://ist.cl/fortaleciendo-el-bienestar-junto-a-confusam-aconcagua/",
+        "https://ist.cl/feria-de-bienestar-2026-promoviendo-el-cuidado-de-la-vida-junto-a-puerto-ventanas/",
+        "https://ist.cl/con-gran-entusiasmo-participamos-en-el-4-seminario-magallanes-puerto-sostenible/",
+        "https://ist.cl/reconocimos-a-dyc-division-logistica-san-bernardo-por-cinco-anos-sin-accidentes/",
+        "https://ist.cl/avanzando-en-transformacion-digital-y-cuidado-de-la-vida-junto-a-la-municipalidad-de-puerto-montt/",
+        "https://ist.cl/reconocimos-a-h-constructora-por-cumplir-un-ano-sin-accidentes/",
+        "https://ist.cl/felicitamos-al-comite-paritario-de-transportes-cruz-del-sur-temuco-por-certificacion-sac/",
+        "https://ist.cl/reconocimos-a-fl-ingenieria-por-26-anos-de-trayectoria-y-compromiso/",
+        "https://ist.cl/poniendo-a-las-personas-en-el-centro-en-el-seminario-la-hospitalidad-que-viene-sociedad-5-0-humanizacion-y-cuidado-de-la-vida/",
+        "https://ist.cl/con-gran-orgullo-recibimos-nuevamente-el-premio-nacional-de-satisfaccion-de-clientes-en-el-sector-mutualidades/",
+        "https://ist.cl/realizamos-el-tercer-encuentro-de-comites-paritarios-2026-de-la-universidad-de-talca/",
+        "https://ist.cl/fuimos-parte-de-un-encuentro-significativo-junto-a-julio-olalla/",
+        "https://ist.cl/fortaleciendo-el-cuidado-de-la-vida-en-encuentro-de-comites-paritarios-de-universidad-de-valparaiso/",
+        "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+        "https://ist.cl/con-gran-exito-participamos-en-congreso-latinoamericano-de-coaching-icf-chile-2026/"
+      ],
+      "pagination_hrefs": [
+        "https://ist.cl/noticias/page/2/?et_blog"
+      ]
+    },
+    {
+      "surface": "page_2",
+      "url": "https://ist.cl/noticias/page/2/",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/ede006bb81b40ad69d9a-0.body",
+      "sha256": "01d8d5362296e86f7129349bbd3b4dc29d463f1996179c6c6607e96022f59f65",
+      "http_status": 200,
+      "tls_verified": true,
+      "candidate_count": 18,
+      "candidate_urls": [
+        "https://ist.cl/damos-la-bienvenida-a-mk-recursos-humanos/",
+        "https://ist.cl/firmamos-acuerdo-con-hospital-dr-eduardo-pereira-que-fortalece-gestion-preventiva/",
+        "https://ist.cl/lanzamos-campana-convivir-amablemente-junto-a-slep-costa-central/",
+        "https://ist.cl/damos-la-bienvenida-a-slep-costa-central/",
+        "https://ist.cl/firmamos-protocolo-de-colaboracion-con-rh-seguridad-que-fortalece-cultura-preventiva/",
+        "https://ist.cl/damos-la-bienvenida-a-abio-group-como-nuevo-adherente/",
+        "https://ist.cl/con-exito-realizamos-nuestra-junta-de-adherentes-correspondiente-a-la-gestion-2025/",
+        "https://ist.cl/suzuval-e-ist-chile-fortalecen-la-cultura-preventiva-con-acuerdo-de-colaboracion/",
+        "https://ist.cl/junto-a-ebco-impulsamos-programa-de-liderazgo-para-fortalecer-rol-estrategico-de-profesionales-de-prevencion/",
+        "https://ist.cl/participamos-de-exitosa-jornada-preventiva-junto-al-cphs-del-puerto-de-valparaiso/",
+        "https://ist.cl/cuidando-la-vida-junto-a-ebco-s-a-en-nuestro-plan-de-intervencion-colaborativa/",
+        "https://ist.cl/fortaleciendo-la-cultura-preventiva-y-el-bienestar-firmamos-acuerdo-con-alimentos-marinos-s-a/",
+        "https://ist.cl/iniciamos-con-exito-el-programa-liderando-equipos-cuidando-personas/",
+        "https://ist.cl/participamos-en-encuentro-que-fortalece-buenas-practicas-en-salud-mental/",
+        "https://ist.cl/gobierno-regional-de-valparaiso-culmina-acreditacion-sac-inicial-de-su-comite-paritario-junto-a-ist/",
+        "https://ist.cl/participamos-en-jornadas-de-seguridad-vial-de-voy-santiago-que-promueve-el-cuidado/",
+        "https://ist.cl/firmamos-convenio-de-salud-que-fortalece-bienestar-en-comunidades-de-valparaiso/",
+        "https://ist.cl/entregamos-importante-reconocimiento-a-ecr-group/"
+      ],
+      "pagination_hrefs": [
+        "https://ist.cl/noticias/page/3/?et_blog",
+        "https://ist.cl/noticias/?et_blog"
+      ]
+    },
+    {
+      "surface": "newsroom_page3",
+      "url": "https://ist.cl/noticias/page/3/?et_blog",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/cc6c6e7893050874eb3d-0.body",
+      "sha256": "62689a87377ebf6f6470b9d106fa2a64d81d1c4d4f75dbd2cb60eae9a9d22c60",
+      "http_status": 200,
+      "tls_verified": true,
+      "candidate_count": 18,
+      "candidate_urls": [
+        "https://ist.cl/ist-gana-premio-ces-uai/",
+        "https://ist.cl/premios-tucapel-2026-empresas-adherentes/",
+        "https://ist.cl/nos-sumamos-a-la-conmemoracion-dia-mundial-de-la-seguridad/",
+        "https://ist.cl/ist-y-ebco-firman-protocolo-para-obra/",
+        "https://ist.cl/red-pacto-global-fuimos-reconocidos-en-red-pacto-global-por-sostenibilidad-y-trayectoria/",
+        "https://ist.cl/nuevamente-construyendo-valor-compartido-desde-el-desarrollo-sostenible-en-cepal/",
+        "https://ist.cl/damos-la-bienvenida-a-intertek/",
+        "https://ist.cl/efe-ist-firman-convenio-que-fortalece-segurirad/",
+        "https://ist.cl/cotraporchi-realiza-seminario-que-fortalece-seguridad/",
+        "https://ist.cl/agrosuper-encuentro-nacional-cphs-vi-region/",
+        "https://ist.cl/ist-fortalece-el-liderazgo-colaborativo-en-comunidad-educativa-de-graneros/",
+        "https://ist.cl/encuentro-de-cphs-voy-santiago-juntos-fortaleciendo-espacios-laborales/",
+        "https://ist.cl/mes-de-la-mujer-mas-de-80-mujeres-participaron-de-encuentro-ist-en-concepcion/",
+        "https://ist.cl/convenio-ist-hospital-militar/",
+        "https://ist.cl/fortaleciendo-nuestra-alianza-con-la-municipalidad-de-quillota/",
+        "https://ist.cl/ist-primer-lugar-ranking-pxi-2026-mutualidades/",
+        "https://ist.cl/chile-da-un-paso-clave-en-salud-laboral-con-la-nch-3433/",
+        "https://ist.cl/participamos-del-seminario-slep-una-mirada-desde-el-municipalismo/"
+      ],
+      "pagination_hrefs": [
+        "https://ist.cl/noticias/page/4/?et_blog",
+        "https://ist.cl/noticias/page/2/?et_blog"
+      ]
+    },
+    {
+      "surface": "category_page_2",
+      "url": "https://ist.cl/category/noticias/page/2/",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/e85aa3b5703a2961d5f2-0.body",
+      "sha256": "0fa90d47e64b8395e13f1596beda1aadfad82688e90f97ed8b33c62f02c48ff5",
+      "http_status": 200,
+      "tls_verified": true,
+      "candidate_count": 6,
+      "candidate_urls": [
+        "https://ist.cl/reconocimos-a-dyc-division-logistica-san-bernardo-por-cinco-anos-sin-accidentes/",
+        "https://ist.cl/avanzando-en-transformacion-digital-y-cuidado-de-la-vida-junto-a-la-municipalidad-de-puerto-montt/",
+        "https://ist.cl/reconocimos-a-h-constructora-por-cumplir-un-ano-sin-accidentes/",
+        "https://ist.cl/felicitamos-al-comite-paritario-de-transportes-cruz-del-sur-temuco-por-certificacion-sac/",
+        "https://ist.cl/reconocimos-a-fl-ingenieria-por-26-anos-de-trayectoria-y-compromiso/",
+        "https://ist.cl/poniendo-a-las-personas-en-el-centro-en-el-seminario-la-hospitalidad-que-viene-sociedad-5-0-humanizacion-y-cuidado-de-la-vida/"
+      ],
+      "pagination_hrefs": [
+        "https://ist.cl/category/noticias/page/3/",
+        "https://ist.cl/category/noticias/"
+      ]
+    },
+    {
+      "surface": "category_page_3",
+      "url": "https://ist.cl/category/noticias/page/3/",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/07ede4c1758d221dc6bd-0.body",
+      "sha256": "e264709db35fbad8be140dadd98ce168c3bdc5b66d6ddda7d53034c296aa987b",
+      "http_status": 200,
+      "tls_verified": true,
+      "candidate_count": 6,
+      "candidate_urls": [
+        "https://ist.cl/con-gran-orgullo-recibimos-nuevamente-el-premio-nacional-de-satisfaccion-de-clientes-en-el-sector-mutualidades/",
+        "https://ist.cl/realizamos-el-tercer-encuentro-de-comites-paritarios-2026-de-la-universidad-de-talca/",
+        "https://ist.cl/fuimos-parte-de-un-encuentro-significativo-junto-a-julio-olalla/",
+        "https://ist.cl/fortaleciendo-el-cuidado-de-la-vida-en-encuentro-de-comites-paritarios-de-universidad-de-valparaiso/",
+        "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+        "https://ist.cl/con-gran-exito-participamos-en-congreso-latinoamericano-de-coaching-icf-chile-2026/"
+      ],
+      "pagination_hrefs": [
+        "https://ist.cl/category/noticias/page/4/",
+        "https://ist.cl/category/noticias/page/2/"
+      ]
+    }
+  ],
+  "landing_metadata_not_article_dates": [
+    {
+      "url": "https://ist.cl/noticias/",
+      "field": "article:published_time",
+      "value": "2016-08-25T10:22:31+00:00",
+      "applies_to": "Newsroom container only; not the linked articles"
+    },
+    {
+      "url": "https://ist.cl/noticias/",
+      "field": "article:modified_time",
+      "value": "2016-12-29T17:56:28+00:00",
+      "applies_to": "Newsroom container only; not the linked articles"
+    },
+    {
+      "url": "https://ist.cl/noticias/page/2/",
+      "field": "article:published_time",
+      "value": "2016-08-25T10:22:31+00:00",
+      "applies_to": "Newsroom container only; not the linked articles"
+    },
+    {
+      "url": "https://ist.cl/noticias/page/2/",
+      "field": "article:modified_time",
+      "value": "2016-12-29T17:56:28+00:00",
+      "applies_to": "Newsroom container only; not the linked articles"
+    },
+    {
+      "url": "https://ist.cl/noticias/page/3/?et_blog",
+      "field": "article:published_time",
+      "value": "2016-08-25T10:22:31+00:00",
+      "applies_to": "Newsroom container only; not the linked articles"
+    },
+    {
+      "url": "https://ist.cl/noticias/page/3/?et_blog",
+      "field": "article:modified_time",
+      "value": "2016-12-29T17:56:28+00:00",
+      "applies_to": "Newsroom container only; not the linked articles"
+    }
+  ],
+  "posts": [
+    {
+      "url": "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/",
+      "post_id": 108262,
+      "title": "Mes de la Salud Mental: junto a UAI realizamos significativo encuentro sobre su cuidado",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-10-07",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/",
+        "post_id": 108262,
+        "value": "2026-10-07T11:34:47",
+        "date": "2026-10-07"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-10-07T14:34:47",
+      "modified_observed_not_used_as_publication": "2026-10-07T11:34:51",
+      "visible_header_dates": [
+        {
+          "value": "07/10/2026",
+          "date": "2026-10-07",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": {
+        "value": "Wed, 07 Oct 2026 14:34:47 +0000",
+        "utc_day": "2026-10-07",
+        "publication_day_chile": "2026-10-07"
+      },
+      "within_30_elapsed_days_inclusive": true,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/dimos-inicio-a-la-semana-de-la-seguridad-junto-a-ebco/",
+      "post_id": 108218,
+      "title": "Dimos inicio a la Semana de la Seguridad junto a EBCO",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-10-05",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/dimos-inicio-a-la-semana-de-la-seguridad-junto-a-ebco/",
+        "post_id": 108218,
+        "value": "2026-10-05T21:22:30",
+        "date": "2026-10-05"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-10-06T00:22:30",
+      "modified_observed_not_used_as_publication": "2026-10-05T21:22:34",
+      "visible_header_dates": [
+        {
+          "value": "05/10/2026",
+          "date": "2026-10-05",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": {
+        "value": "Tue, 06 Oct 2026 00:22:30 +0000",
+        "utc_day": "2026-10-06",
+        "publication_day_chile": "2026-10-05"
+      },
+      "within_30_elapsed_days_inclusive": true,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/potenciando-la-salud-ocupacional-e-higiene-industrial-junto-a-codelco-vp-y-newrest/",
+      "post_id": 107783,
+      "title": "Potenciando la salud ocupacional e higiene industrial junto a Codelco VP y Newrest",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-09-28",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/potenciando-la-salud-ocupacional-e-higiene-industrial-junto-a-codelco-vp-y-newrest/",
+        "post_id": 107783,
+        "value": "2026-09-28T11:23:16",
+        "date": "2026-09-28"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-09-28T14:23:16",
+      "modified_observed_not_used_as_publication": "2026-09-28T11:23:20",
+      "visible_header_dates": [
+        {
+          "value": "28/09/2026",
+          "date": "2026-09-28",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": {
+        "value": "Mon, 28 Sep 2026 14:23:16 +0000",
+        "utc_day": "2026-09-28",
+        "publication_day_chile": "2026-09-28"
+      },
+      "within_30_elapsed_days_inclusive": true,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/fortaleciendo-el-bienestar-junto-a-confusam-aconcagua/",
+      "post_id": 107657,
+      "title": "Fortaleciendo el bienestar junto a CONFUSAM Aconcagua",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-09-22",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/fortaleciendo-el-bienestar-junto-a-confusam-aconcagua/",
+        "post_id": 107657,
+        "value": "2026-09-22T16:35:09",
+        "date": "2026-09-22"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-09-22T19:35:09",
+      "modified_observed_not_used_as_publication": "2026-09-22T16:45:34",
+      "visible_header_dates": [
+        {
+          "value": "22/09/2026",
+          "date": "2026-09-22",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": {
+        "value": "Tue, 22 Sep 2026 19:35:09 +0000",
+        "utc_day": "2026-09-22",
+        "publication_day_chile": "2026-09-22"
+      },
+      "within_30_elapsed_days_inclusive": true,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/feria-de-bienestar-2026-promoviendo-el-cuidado-de-la-vida-junto-a-puerto-ventanas/",
+      "post_id": 107560,
+      "title": "Feria de Bienestar 2026: promoviendo el cuidado de la vida junto a Puerto Ventanas",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-09-17",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/feria-de-bienestar-2026-promoviendo-el-cuidado-de-la-vida-junto-a-puerto-ventanas/",
+        "post_id": 107560,
+        "value": "2026-09-17T13:19:59",
+        "date": "2026-09-17"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-09-17T16:19:59",
+      "modified_observed_not_used_as_publication": "2026-09-17T13:20:03",
+      "visible_header_dates": [
+        {
+          "value": "17/09/2026",
+          "date": "2026-09-17",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": {
+        "value": "Thu, 17 Sep 2026 16:19:59 +0000",
+        "utc_day": "2026-09-17",
+        "publication_day_chile": "2026-09-17"
+      },
+      "within_30_elapsed_days_inclusive": true,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/con-gran-entusiasmo-participamos-en-el-4-seminario-magallanes-puerto-sostenible/",
+      "post_id": 107379,
+      "title": "Participamos en el 4° Seminario Magallanes Puerto Sostenible",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-09-11",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/con-gran-entusiasmo-participamos-en-el-4-seminario-magallanes-puerto-sostenible/",
+        "post_id": 107379,
+        "value": "2026-09-11T16:34:05",
+        "date": "2026-09-11"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-09-11T19:34:05",
+      "modified_observed_not_used_as_publication": "2026-09-11T16:40:04",
+      "visible_header_dates": [
+        {
+          "value": "11/09/2026",
+          "date": "2026-09-11",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": {
+        "value": "Fri, 11 Sep 2026 19:34:05 +0000",
+        "utc_day": "2026-09-11",
+        "publication_day_chile": "2026-09-11"
+      },
+      "within_30_elapsed_days_inclusive": true,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/reconocimos-a-dyc-division-logistica-san-bernardo-por-cinco-anos-sin-accidentes/",
+      "post_id": 107272,
+      "title": "Reconocimos a DyC División Logística San Bernardo por cinco años sin accidentes",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-09-10",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/reconocimos-a-dyc-division-logistica-san-bernardo-por-cinco-anos-sin-accidentes/",
+        "post_id": 107272,
+        "value": "2026-09-10T11:13:24",
+        "date": "2026-09-10"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-09-10T14:13:24",
+      "modified_observed_not_used_as_publication": "2026-09-10T11:13:29",
+      "visible_header_dates": [
+        {
+          "value": "10/09/2026",
+          "date": "2026-09-10",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": {
+        "value": "Thu, 10 Sep 2026 14:13:24 +0000",
+        "utc_day": "2026-09-10",
+        "publication_day_chile": "2026-09-10"
+      },
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/avanzando-en-transformacion-digital-y-cuidado-de-la-vida-junto-a-la-municipalidad-de-puerto-montt/",
+      "post_id": 107145,
+      "title": "Avanzando en transformación digital y cuidado de la vida junto a la Municipalidad de Puerto Montt",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-09-08",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/avanzando-en-transformacion-digital-y-cuidado-de-la-vida-junto-a-la-municipalidad-de-puerto-montt/",
+        "post_id": 107145,
+        "value": "2026-09-08T10:51:38",
+        "date": "2026-09-08"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-09-08T13:51:38",
+      "modified_observed_not_used_as_publication": "2026-09-08T10:55:39",
+      "visible_header_dates": [
+        {
+          "value": "08/09/2026",
+          "date": "2026-09-08",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": {
+        "value": "Tue, 08 Sep 2026 13:51:38 +0000",
+        "utc_day": "2026-09-08",
+        "publication_day_chile": "2026-09-08"
+      },
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/reconocimos-a-h-constructora-por-cumplir-un-ano-sin-accidentes/",
+      "post_id": 106983,
+      "title": "Reconocimos a h. Constructora por cumplir un año sin accidentes",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-09-03",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/reconocimos-a-h-constructora-por-cumplir-un-ano-sin-accidentes/",
+        "post_id": 106983,
+        "value": "2026-09-03T17:54:32",
+        "date": "2026-09-03"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-09-03T20:54:32",
+      "modified_observed_not_used_as_publication": "2026-09-03T17:54:36",
+      "visible_header_dates": [
+        {
+          "value": "03/09/2026",
+          "date": "2026-09-03",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": {
+        "value": "Thu, 03 Sep 2026 20:54:32 +0000",
+        "utc_day": "2026-09-03",
+        "publication_day_chile": "2026-09-03"
+      },
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/felicitamos-al-comite-paritario-de-transportes-cruz-del-sur-temuco-por-certificacion-sac/",
+      "post_id": 106744,
+      "title": "Felicitamos al Comité Paritario de Transportes Cruz del Sur Temuco por certificación SAC",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-08-31",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/felicitamos-al-comite-paritario-de-transportes-cruz-del-sur-temuco-por-certificacion-sac/",
+        "post_id": 106744,
+        "value": "2026-08-31T13:43:55",
+        "date": "2026-08-31"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-08-31T16:43:55",
+      "modified_observed_not_used_as_publication": "2026-08-31T13:43:59",
+      "visible_header_dates": [
+        {
+          "value": "31/08/2026",
+          "date": "2026-08-31",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": {
+        "value": "Mon, 31 Aug 2026 16:43:55 +0000",
+        "utc_day": "2026-08-31",
+        "publication_day_chile": "2026-08-31"
+      },
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/reconocimos-a-fl-ingenieria-por-26-anos-de-trayectoria-y-compromiso/",
+      "post_id": 106472,
+      "title": "Reconocimos a F&#038;L Ingeniería por 26 años de trayectoria y compromiso",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-08-25",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/reconocimos-a-fl-ingenieria-por-26-anos-de-trayectoria-y-compromiso/",
+        "post_id": 106472,
+        "value": "2026-08-25T15:29:50",
+        "date": "2026-08-25"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-08-25T18:29:50",
+      "modified_observed_not_used_as_publication": "2026-08-25T15:29:54",
+      "visible_header_dates": [
+        {
+          "value": "25/08/2026",
+          "date": "2026-08-25",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/poniendo-a-las-personas-en-el-centro-en-el-seminario-la-hospitalidad-que-viene-sociedad-5-0-humanizacion-y-cuidado-de-la-vida/",
+      "post_id": 106258,
+      "title": "Poniendo a las personas en el centro en seminario “La hospitalidad que viene: Sociedad 5.0, humanización y cuidado de la vida”",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-08-19",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/poniendo-a-las-personas-en-el-centro-en-el-seminario-la-hospitalidad-que-viene-sociedad-5-0-humanizacion-y-cuidado-de-la-vida/",
+        "post_id": 106258,
+        "value": "2026-08-19T19:20:08",
+        "date": "2026-08-19"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-08-19T22:20:08",
+      "modified_observed_not_used_as_publication": "2026-08-19T19:22:18",
+      "visible_header_dates": [
+        {
+          "value": "19/08/2026",
+          "date": "2026-08-19",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/con-gran-orgullo-recibimos-nuevamente-el-premio-nacional-de-satisfaccion-de-clientes-en-el-sector-mutualidades/",
+      "post_id": 105894,
+      "title": "Con gran orgullo recibimos nuevamente el Premio Nacional de Satisfacción de Clientes en el sector Mutualidades",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-08-14",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/con-gran-orgullo-recibimos-nuevamente-el-premio-nacional-de-satisfaccion-de-clientes-en-el-sector-mutualidades/",
+        "post_id": 105894,
+        "value": "2026-08-14T11:57:42",
+        "date": "2026-08-14"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-08-14T14:57:42",
+      "modified_observed_not_used_as_publication": "2026-08-14T12:00:14",
+      "visible_header_dates": [
+        {
+          "value": "14/08/2026",
+          "date": "2026-08-14",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/realizamos-el-tercer-encuentro-de-comites-paritarios-2026-de-la-universidad-de-talca/",
+      "post_id": 105882,
+      "title": "Realizamos el Tercer Encuentro de Comités Paritarios 2026 de la Universidad de Talca",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-08-14",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/realizamos-el-tercer-encuentro-de-comites-paritarios-2026-de-la-universidad-de-talca/",
+        "post_id": 105882,
+        "value": "2026-08-14T11:44:50",
+        "date": "2026-08-14"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-08-14T14:44:50",
+      "modified_observed_not_used_as_publication": "2026-08-14T11:44:55",
+      "visible_header_dates": [
+        {
+          "value": "14/08/2026",
+          "date": "2026-08-14",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/fuimos-parte-de-un-encuentro-significativo-junto-a-julio-olalla/",
+      "post_id": 105348,
+      "title": "Fuimos parte de un Encuentro Significativo junto a Julio Olalla",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-08-13",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/fuimos-parte-de-un-encuentro-significativo-junto-a-julio-olalla/",
+        "post_id": 105348,
+        "value": "2026-08-13T17:59:07",
+        "date": "2026-08-13"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-08-13T20:59:07",
+      "modified_observed_not_used_as_publication": "2026-08-13T17:59:12",
+      "visible_header_dates": [
+        {
+          "value": "13/08/2026",
+          "date": "2026-08-13",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/fortaleciendo-el-cuidado-de-la-vida-en-encuentro-de-comites-paritarios-de-universidad-de-valparaiso/",
+      "post_id": 105307,
+      "title": "Fortaleciendo el cuidado de la vida en Encuentro de Comités Paritarios de Universidad de Valparaíso",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-08-12",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/fortaleciendo-el-cuidado-de-la-vida-en-encuentro-de-comites-paritarios-de-universidad-de-valparaiso/",
+        "post_id": 105307,
+        "value": "2026-08-12T12:22:39",
+        "date": "2026-08-12"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-08-12T15:22:39",
+      "modified_observed_not_used_as_publication": "2026-08-12T12:22:45",
+      "visible_header_dates": [
+        {
+          "value": "12/08/2026",
+          "date": "2026-08-12",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+      "post_id": 105186,
+      "title": "¡Realizamos una exitosa jornada preventiva en TPS!",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-08-12",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+        "post_id": 105186,
+        "value": "2026-08-12T11:38:53",
+        "date": "2026-08-12"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-08-12T14:38:53",
+      "modified_observed_not_used_as_publication": "2026-08-12T11:38:58",
+      "visible_header_dates": [
+        {
+          "value": "10/08/2026",
+          "date": "2026-08-10",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": true,
+      "appears_in_html_archives": true,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/con-gran-exito-participamos-en-congreso-latinoamericano-de-coaching-icf-chile-2026/",
+      "post_id": 105042,
+      "title": "Con gran éxito participamos en Congreso Latinoamericano de Coaching ICF Chile 2026",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-08-03",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/con-gran-exito-participamos-en-congreso-latinoamericano-de-coaching-icf-chile-2026/",
+        "post_id": 105042,
+        "value": "2026-08-03T18:01:53",
+        "date": "2026-08-03"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-08-03T21:01:53",
+      "modified_observed_not_used_as_publication": "2026-08-03T18:10:46",
+      "visible_header_dates": [
+        {
+          "value": "03/08/2026",
+          "date": "2026-08-03",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/damos-la-bienvenida-a-mk-recursos-humanos/",
+      "post_id": 104880,
+      "title": "¡Damos la bienvenida a MK Recursos Humanos!",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-07-29",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/damos-la-bienvenida-a-mk-recursos-humanos/",
+        "post_id": 104880,
+        "value": "2026-07-29T18:31:38",
+        "date": "2026-07-29"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-07-29T21:31:38",
+      "modified_observed_not_used_as_publication": "2026-07-29T18:31:43",
+      "visible_header_dates": [
+        {
+          "value": "29/07/2026",
+          "date": "2026-07-29",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/firmamos-acuerdo-con-hospital-dr-eduardo-pereira-que-fortalece-gestion-preventiva/",
+      "post_id": 104193,
+      "title": "Firmamos acuerdo con Hospital Dr. Eduardo Pereira que fortalece gestión preventiva",
+      "categories": [
+        14,
+        12,
+        1
+      ],
+      "publication_date_from_api": "2026-07-22",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/firmamos-acuerdo-con-hospital-dr-eduardo-pereira-que-fortalece-gestion-preventiva/",
+        "post_id": 104193,
+        "value": "2026-07-22T18:39:30",
+        "date": "2026-07-22"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-07-22T21:39:30",
+      "modified_observed_not_used_as_publication": "2026-07-22T18:45:26",
+      "visible_header_dates": [
+        {
+          "value": "22/07/2026",
+          "date": "2026-07-22",
+          "kind": "rendered_content:date_before_h1; observation only, not a standalone publication authority"
+        }
+      ],
+      "date_conflict": false,
+      "appears_in_html_archives": true,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion"
+    },
+    {
+      "url": "https://ist.cl/reporte-sostenibilidad-2025/",
+      "post_id": 103841,
+      "title": "Reporte Sostenibilidad 2025",
+      "categories": [
+        1
+      ],
+      "publication_date_from_api": "2026-07-14",
+      "publication_evidence": {
+        "kind": "wordpress:post.date",
+        "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+        "document_url": "https://ist.cl/reporte-sostenibilidad-2025/",
+        "post_id": 103841,
+        "value": "2026-07-14T14:52:49",
+        "date": "2026-07-14"
+      },
+      "date_gmt_observed_for_timezone_audit_only": "2026-07-14T17:52:49",
+      "modified_observed_not_used_as_publication": "2026-07-14T14:52:53",
+      "visible_header_dates": [],
+      "date_conflict": false,
+      "appears_in_html_archives": false,
+      "rss": null,
+      "within_30_elapsed_days_inclusive": false,
+      "linked_detail_verification": "Not captured in this route-probe run; a matching official detail is required before RawItem promotion",
+      "data_period": "2025",
+      "data_period_source": "Document title, separate from publication date",
+      "section": "publicaciones_institucionales",
+      "linked_official_pdfs": [
+        {
+          "url": "https://ist.cl/wp-content/uploads/2026/07/Reporte-de-sostenibilidad-2025.pdf",
+          "publication_date": null,
+          "date_rule": "Do not inherit the listing-page publication date or infer from upload paths"
+        },
+        {
+          "url": "https://ist.cl/wp-content/uploads/2025/07/Reporte-de-sostenibilidad-2024.pdf",
+          "publication_date": null,
+          "date_rule": "Do not inherit the listing-page publication date or infer from upload paths"
+        },
+        {
+          "url": "https://ist.cl/wp-content/uploads/2021/12/Reporte-Sustentabilidad-IST-2020.pdf",
+          "publication_date": null,
+          "date_rule": "Do not inherit the listing-page publication date or infer from upload paths"
+        },
+        {
+          "url": "https://ist.cl/wp-content/uploads/2025/07/Reporte-de-sostenibilidad-2023.pdf",
+          "publication_date": null,
+          "date_rule": "Do not inherit the listing-page publication date or infer from upload paths"
+        },
+        {
+          "url": "https://ist.cl/wp-content/uploads/2020/10/Reporte-de-Sustentabilidad-2019-IST.pdf",
+          "publication_date": null,
+          "date_rule": "Do not inherit the listing-page publication date or infer from upload paths"
+        },
+        {
+          "url": "https://ist.cl/wp-content/uploads/2023/10/Reporte-Sostenibilidad-2022.pdf",
+          "publication_date": null,
+          "date_rule": "Do not inherit the listing-page publication date or infer from upload paths"
+        },
+        {
+          "url": "https://ist.cl/wp-content/uploads/2023/10/Reporte-de-sostenibilidad-2018.pdf",
+          "publication_date": null,
+          "date_rule": "Do not inherit the listing-page publication date or infer from upload paths"
+        },
+        {
+          "url": "https://ist.cl/wp-content/uploads/2023/01/Reporte-Sostenibilidad-IST-2021.pdf",
+          "publication_date": null,
+          "date_rule": "Do not inherit the listing-page publication date or infer from upload paths"
+        }
+      ]
+    }
+  ],
+  "regression_tests": "tests/test_occupational_inventory.py",
+  "next_action": "Use enrich_inventory_from_ist_api with captured response headers and shared-extractor detail verification. Keep TPS pending; recover institutional Reporte 2025 without changing its data period or inheriting publication dates onto older PDF links.",
+  "regression_validation": {
+    "captured_at_utc": "2026-10-11T05:55:43.286586+00:00",
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/test_occupational_inventory.py",
+      "tests/test_occupational_integrity.py",
+      "-q"
+    ],
+    "exit_code": 0,
+    "stdout": "........................................................................ [ 80%]\n..................                                                       [100%]\n90 passed in 0.31s\n",
+    "stderr": "",
+    "fixtures": "Synthetic date/pagination regressions and one hash/TLS-bound replay of the live captured IST REST API from Actions 38115274609. Missing linked details in that replay remain pending.",
+    "files_sha256": {
+      "src/radar_salud/occupational_inventory.py": "e4052b7c5b8e896b05b0aa17120306091562e9d5332bae19b7804adf3b557ceb",
+      "tests/test_occupational_inventory.py": "84d24d2b6138a4f803f91027b4f99d4f848f32db327f42d1620f9d72690b5c52"
+    },
+    "helper": "enrich_inventory_from_ist_api(report, scout, loader, api_url=None, api_headers=None, as_of=None, max_api_pages=20)",
+    "api_headers": "Mapping/list of final HTTP headers or callable(url) returning them. Missing headers still allow URL/detail discovery but never declare API capture complete.",
+    "default_url_builder": "ist_api_url(as_of): official route with captured per_page/after/before parameters and exclusive after one second before the first included calendar day."
+  }
+}

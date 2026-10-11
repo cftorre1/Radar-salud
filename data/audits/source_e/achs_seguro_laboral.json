@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-10-11",
+  "listing": "https://www.achs.cl/centro-de-noticias",
+  "evidence_method": "connected web reader against original; semantic test fixtures reconstructed, not raw HTML",
+  "cause": "The listing uses Ver detalle links; the collector ignored visible H1 titles and scanned the entire page for dates, including navigation and related news. Fast validation bounded anchors before source-role filtering.",
+  "runtime_blocker": "Executor HTTP proxy denies achs.cl: URLError, Tunnel connection failed: 403 Forbidden. No live Python replay is certified.",
+  "windows": {"as_of_chile": "2026-10-11", "30_day_start": "2026-09-11", "90_day_start": "2026-07-13", "inventory_complete": false},
+  "samples": [
+    {"url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral", "publication_date": "2026-09-24", "date_evidence": "visible date directly after article H1; listing agrees", "within_30_days": true, "within_90_days": true, "decision": "candidate_pending_editorial_analysis", "reason": "new treatment and reintegration guidance; not a wellbeing campaign", "published": false},
+    {"url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026", "publication_date": "2026-09-15", "date_evidence": "visible date directly after article H1; listing agrees", "data_period": "2026-01/2026-06", "within_30_days": true, "within_90_days": true, "decision": "candidate_pending_editorial_analysis", "reason": "501 accidents vs 366 in first half of 2025; publication date distinct from data period", "published": false}
+  ],
+  "handoff": "Replay this source through the configured collector after network access is restored. Run source-scoped extraction tests and full QA on the candidate SHA; candidate is not publication. Confirm detail metadata against actual HTML. Do not fabricate recent dates for numeric legacy routes."
+}

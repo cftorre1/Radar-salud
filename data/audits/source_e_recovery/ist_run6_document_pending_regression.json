@@ -1,0 +1,27 @@
+{
+  "checkpoint": "Run6 replay requires supporting report document before final materiality handling",
+  "source": "ist",
+  "run_id": "38117675962",
+  "as_of": "2026-10-11",
+  "regression": "test_current_run6_ist_api_closes_calendar_bounds_and_verifies_report_publication",
+  "date_evidence_unchanged": {
+    "api_total": 21,
+    "api_complete": true,
+    "inclusive_bounds_complete": true,
+    "publisher_dates_verified_90": 20,
+    "unknown_publication_dates": 1,
+    "report_publication_date": "2026-07-14",
+    "report_data_period": "2025"
+  },
+  "pending_reasons": [
+    "api_visible_publication_date_conflict",
+    "required_supporting_document_pending"
+  ],
+  "no_reclassification_of_publication_date_as_missing_document": true,
+  "validation": {
+    "command": ".venv/bin/python -m pytest -q tests/test_occupational_inventory.py",
+    "passed": 39,
+    "exit_code": 0
+  },
+  "next_action": "Compare current Run9 captured PDF evaluation independently; keep Run6 report pending because those historical captures do not contain the required supporting PDF."
+}

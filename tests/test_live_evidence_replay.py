@@ -42,7 +42,8 @@ def test_deterministic_live_replay_through_feed_and_coverage(tmp_path,monkeypatc
     monkeypatch.setattr(engine_cli,"load_sources",lambda path:[])
     monkeypatch.setattr(engine_cli,"source_index",lambda sources:{name:object() for name in (
         "superintendencia_salud","superintendencia_normativa","superintendencia_fiscalizacion",
-        "minsal","fonasa","fonasa_datos_abiertos","isp_anamed","isp_surveillance","pfizer_chile","deis","redsalud","bupa_chile","indisa","clinicas_chile","suseso","suseso_news","suseso_fiscalizacion","diario_financiero","pulso_latercera","diario_oficial")})
+        "minsal","fonasa","fonasa_datos_abiertos","isp_anamed","isp_surveillance","pfizer_chile","deis","redsalud","bupa_chile","indisa","clinicas_chile","suseso","suseso_news","suseso_fiscalizacion","diario_financiero","pulso_latercera","diario_oficial",
+        "clinicas_achs_salud","achs_seguro_laboral","mutual_seguridad","ist")})
     monkeypatch.setattr(paths,"project_root",lambda:tmp_path)
     monkeypatch.setattr(engine_cli,"seed_from_history",lambda root:None)
     monkeypatch.setattr(engine_cli,"has_capacity",lambda kind:True)
