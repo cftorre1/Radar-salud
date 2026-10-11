@@ -21,7 +21,7 @@ from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 
 def main():
     from .models import RawItem
-    from .pending_queue import PendingQueue, fingerprint, atomic_json
+    from .pending_queue import PendingQueue, fingerprint, legacy_fingerprint, FISCALIZATION_SOURCES, atomic_json
     from .paths import project_root
     ap=argparse.ArgumentParser()
     ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
@@ -69,18 +69,27 @@ def main():
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
     discoveries={}
+    observed={}
+    surfaces={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
         try:
             items=discover()
+            observed[name]=[dict(event_date=raw.event_date,metadata=raw.metadata) for raw in items]
+            surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
-            seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw))}
+            from .superintendencia_fiscalizacion import canonical_url
+            published_urls={canonical_url(row.get("source_url", "")) for row in history
+                if name in FISCALIZATION_SOURCES and "Fiscalización" in (row.get("signal_types") or [])}
+            seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw)) or
+                (name in FISCALIZATION_SOURCES and (store.is_seen(legacy_fingerprint(raw)) or canonical_url(raw.url) in published_urls))}
             checked_at=datetime.now(timezone.utc).isoformat()
             added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name))
             watermarks[name]=checked_at
             atomic_json(watermark_path,watermarks)
             discoveries[name]=(len(items),added,None)
         except Exception as exc:
+            surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
             discoveries[name]=(0,0,type(exc).__name__)
     atomic_json(root/"data/state/discovery_run.json",{
         "at":datetime.now(timezone.utc).isoformat(),
@@ -114,10 +123,18 @@ def main():
             queue.finish(key,"retry",type(exc).__name__)
     for name,(discovered,new,error) in discoveries.items():
         counts=queue.counts(name)
+        from collections import Counter
+        fiscal_history=[row for row in history if "Fiscalización" in (row.get("signal_types") or []) and
+            ((name=="superintendencia_fiscalizacion" and "superdesalud.gob.cl" in row.get("source_url", "")) or
+             (name=="suseso_fiscalizacion" and "suseso.gob.cl" in row.get("source_url", "")))]
+        source_items=[item for item in queue.items.values() if item.get("source")==name]
         health_record(root,name,name=name.replace("_"," ").title(),discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
             rejected=counts["rejected"],rows=produced[name],error=error,
-            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"])
+            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"], observed_rows=observed.get(name),surfaces=surfaces.get(name),
+            published_history=fiscal_history if name in FISCALIZATION_SOURCES else None,
+            archived=sum(item.get("status")=="archived" for item in source_items),
+            rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")))
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()
