@@ -310,10 +310,13 @@ def _material(role, title, body):
         modular_care_deployment = ("hospital modular" in text and bool(re.search(
             r"\btraslad[oa]|\bimplementaci[oó]n\b", text)) and bool(re.search(r"reforzar|apoyar", text))
             and "atención de salud" in text)
+        mapped_multi_provider_flood = (bool(re.search(r"cl[ií]nicas inundadas", text))
+            and "recintos asistenciales afectados" in text and "carabineros" in text
+            and bool(re.search(r"dron|monitoreo", text)))
         return (care_obligation or ges_coverage or care_legislation
                 or proposed_clinical_condition or provider_flood_response
                 or authorized_care_registry or clinical_service_suspension
-                or quantified_health_power_impact or modular_care_deployment)
+                or quantified_health_power_impact or modular_care_deployment or mapped_multi_provider_flood)
     return False
 
 
