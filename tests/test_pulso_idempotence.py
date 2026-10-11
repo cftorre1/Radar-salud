@@ -200,6 +200,30 @@ def test_current_paid_revalidation_authority_bound_before_any_new_admission():
         assert context["referenced_proof_files"][proof["path"]] == proof["sha256"]
 
 
+def test_followup_paid_authority_bound_before_any_new_admission():
+    from radar_salud.pulso_followup_paid_revalidation import MANIFEST_REF, MANIFEST_SHA256
+    context = audit.read_context(ROOT)
+    assert context["referenced_proof_files"][MANIFEST_REF] == MANIFEST_SHA256
+    manifest = json.loads((ROOT / MANIFEST_REF).read_bytes())
+    for proof in manifest["semantic_references"]:
+        assert context["referenced_proof_files"][proof["path"]] == proof["sha256"]
+
+
+@pytest.mark.parametrize("target", ["manifest", "first_reader", "second_reader"])
+def test_followup_paid_authority_change_fails_without_runtime_stamps(tmp_path, target):
+    from radar_salud.pulso_followup_paid_revalidation import MANIFEST_REF
+    manifest = json.loads((ROOT / MANIFEST_REF).read_bytes())
+    paths = [MANIFEST_REF] + [proof["path"] for proof in manifest["semantic_references"]]
+    for relative in paths:
+        destination = tmp_path / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes((ROOT / relative).read_bytes())
+    path = tmp_path / paths[["manifest", "first_reader", "second_reader"].index(target)]
+    path.write_bytes(path.read_bytes() + b"\n")
+    with pytest.raises(ValueError, match="paid_revalidation_.*changed"):
+        audit.paid_revalidation_proof_files(tmp_path)
+
+
 @pytest.mark.parametrize("target", ["manifest", "first_reader", "second_reader"])
 def test_current_paid_authority_change_fails_without_current_runtime_stamps(tmp_path, target):
     from radar_salud.pulso_current_paid_revalidation import MANIFEST_REF

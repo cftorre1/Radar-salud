@@ -336,9 +336,12 @@ def paid_revalidation_proof_files(root):
     from radar_salud.pulso_paid_revalidation import MANIFEST_REF, MANIFEST_SHA256
     from radar_salud.pulso_current_paid_revalidation import (
         MANIFEST_REF as CURRENT_REF, MANIFEST_SHA256 as CURRENT_SHA)
+    from radar_salud.pulso_followup_paid_revalidation import (
+        MANIFEST_REF as FOLLOWUP_REF, MANIFEST_SHA256 as FOLLOWUP_SHA)
     authorities = (
         (MANIFEST_REF, MANIFEST_SHA256, "pulso_v5_paid_guard_revalidation_manifest_v1"),
         (CURRENT_REF, CURRENT_SHA, "pulso_current_paid_guard_revalidation_manifest_v1"),
+        (FOLLOWUP_REF, FOLLOWUP_SHA, "pulso_followup_paid_guard_revalidation_manifest_v1"),
     )
     references = set()
     for manifest_ref, expected_sha, schema in authorities:
