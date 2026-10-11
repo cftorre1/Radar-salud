@@ -1,0 +1,28 @@
+name: Isolated Global source discovery
+on:
+  push:
+    branches: [codex/global-intelligence-recurrent-20261011]
+    paths: ['.github/run-global-discovery-now']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: global-source-discovery-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/codex/global-intelligence-recurrent-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Bounded official surface and licensing probes
+        run: python scripts/probe_global_sources.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: global-discovery-${{ github.run_id }}
+          path: work/global-surface-probes/
