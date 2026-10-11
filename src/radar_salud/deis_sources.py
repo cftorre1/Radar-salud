@@ -110,6 +110,8 @@ class DeisDocumentScout:
         self.fetcher = fetcher or _fetch_deis_html
         self.today = today
         self.diagnostics: dict = {}
+        self.catalog = None
+        self.catalog_scout = DeisCatalogScout() if fetcher is None else None
 
     def discover_from_html(self, html: str, page: str | None = None) -> list[RawItem]:
         page = page or self.PAGE
@@ -191,12 +193,32 @@ class DeisDocumentScout:
 
     def discover(self) -> list[RawItem]:
         self.diagnostics = {"listing_url": self.PAGE, "listing_recognized": False}
+        document_error = None
         try:
             html = self.fetcher(self.PAGE)
-            return self.discover_from_html(html)
+            items = self.discover_from_html(html)
         except Exception as exc:
             self.diagnostics.update(fetch_error=type(exc).__name__, fetch_error_detail=str(exc))
-            raise
+            document_error = exc
+        # The statistical catalog is independent of the dated document lane.
+        # Preserve either capture when the other surface fails.
+        if self.catalog_scout is not None:
+            try:
+                self.catalog = self.catalog_scout.discover()
+                self.diagnostics['catalog_summary'] = {
+                    'catalogs': len(self.catalog['catalogs']),
+                    'resources': sum(c['rows'] for c in self.catalog['catalogs']),
+                    'partial_failure': self.catalog['partial_failure'],
+                    'errors': self.catalog['errors'],
+                    'feed_eligible': False,
+                }
+                if self.catalog['partial_failure']:
+                    self.diagnostics['partial_failure'] = True
+            except Exception as exc:
+                self.diagnostics.update(partial_failure=True, catalog_error=str(exc))
+        if document_error is not None:
+            raise document_error
+        return items
 
 
 class DeisCatalogScout:
@@ -271,11 +293,17 @@ class DeisCatalogScout:
         from .public_source_transport import download_official
         surfaces = self.surfaces_from_html(_fetch_deis_html(self.PAGE))
         result = {"source": "deis", "homepage": self.PAGE, "catalogs": [],
+                  "errors": [], "partial_failure": False,
                   "release_inventory_30_90": "not_applicable_to_undated_catalog_resources"}
         for surface in surfaces:
-            capture = {}
-            body, _ = download_official(surface["url"], "deis", capture_metadata=capture)
-            resources = self.resources_from_json(json.loads(body), surface)
-            result["catalogs"].append({**surface, "capture": capture, "resources": resources,
-                                       "rows": len(resources)})
+            try:
+                capture = {}
+                body, _ = download_official(surface["url"], "deis", capture_metadata=capture)
+                resources = self.resources_from_json(json.loads(body), surface)
+                result["catalogs"].append({**surface, "capture": capture, "resources": resources,
+                                           "rows": len(resources)})
+            except Exception as exc:
+                from .public_source_evidence import failure_details
+                result['partial_failure'] = True
+                result['errors'].append({**surface, **failure_details(exc)})
         return result

@@ -154,7 +154,6 @@ def main():
     if not args.probe_only:
         from check_public_sources import check
         from radar_salud import public_source_transport
-        from radar_salud.deis_sources import DeisCatalogScout
         native_captures = []
         original_download = public_source_transport.download_official
         def capture_download(url, slug, **kwargs):
@@ -175,10 +174,9 @@ def main():
         runtime = check(isolated_root, record_health=True)
         (args.output / "native_discovery.json").write_text(json.dumps(runtime, ensure_ascii=False, indent=2) + "\n")
         result["native_operational_sources"] = runtime["operational_sources"]
-        try:
-            catalog = DeisCatalogScout().discover()
-        except Exception as exc:
-            catalog = {"source": "deis", "error": str(exc), "error_details": failure_details(exc)}
+        catalog = runtime['sources']['deis'].get('catalog', {
+            'source': 'deis', 'error': 'Native catalog capture unavailable',
+            'diagnostics': runtime['sources']['deis']['diagnostics']})
         (args.output / "deis_catalog.json").write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n")
         (args.output / "native_captures.json").write_text(json.dumps(native_captures, ensure_ascii=False, indent=2) + "\n")
         # Replay the real durable queue contract against a copy of the existing

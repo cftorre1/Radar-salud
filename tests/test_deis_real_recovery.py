@@ -71,3 +71,31 @@ def test_primary_ninja_response_unwraps_cells_without_inventing_release_dates():
     assert rows[0]['title'] == 'Indicadores Hospitalarios según Servicio de Salud 2024'
     assert rows[0]['period_fields']['filtro_2'] == '2024'
     assert all(r['publication_date'] is None and not r['feed_eligible'] for r in rows)
+
+
+def test_all_five_primary_catalogs_replay_with_undated_purpose_separation():
+    capture = Path('data/audits/public_sources_c_20261011/recovery/runs/38115490854')
+    catalog = json.loads((capture / 'deis_catalog.json').read_text())
+    counts = []
+    for table in catalog['catalogs']:
+        digest = table['capture']['sha256']
+        body = (capture / 'captures' / (digest + '.html')).read_bytes()
+        assert hashlib.sha256(body).hexdigest() == digest
+        rows = DeisCatalogScout.resources_from_json(json.loads(body), table)
+        counts.append(len(rows))
+        assert all(r['publication_date'] is None and not r['feed_eligible'] for r in rows)
+    assert counts == [330, 83, 54, 62, 43]
+
+
+def test_one_catalog_transport_failure_preserves_other_catalogs(monkeypatch):
+    from radar_salud import deis_sources, public_source_transport
+    monkeypatch.setattr(deis_sources, '_fetch_deis_html', lambda _: captured('https://deis.minsal.cl/'))
+    def download(url, slug, **kwargs):
+        if 'table_id=2889' in url:
+            raise TimeoutError('one catalog timed out')
+        return json.dumps([{'value': {'nombre': 'Statistical series', 'ver': 'https://deis.minsal.cl/data.xlsx'}}]).encode(), {}
+    monkeypatch.setattr(public_source_transport, 'download_official', download)
+    catalog = DeisCatalogScout().discover()
+    assert len(catalog['catalogs']) == 4
+    assert catalog['partial_failure'] is True
+    assert catalog['errors'][0]['title'] == 'Datos Abiertos'

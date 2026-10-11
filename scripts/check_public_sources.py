@@ -65,6 +65,10 @@ def check(root: Path, *, record_health=False, factories=SCOUTS):
             "runtime_outcome":"OPERATIVE_VALIDATED" if validated else "OPERATIVE_DEGRADED" if degraded else "not_validated_by_this_runtime",
             "discovered":len(items),"error":error,"error_details":details,"diagnostics":diagnostics,
             "items":[asdict(item) for item in items]}
+        if scout.SOURCE_SLUG == "deis" and getattr(scout, "catalog", None) is not None:
+            result["sources"]["deis"]["catalog"] = scout.catalog
+            if record_health:
+                atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
         if record_health:
             old=existing.get("sources",{}).get(scout.SOURCE_SLUG,{})
             record(root,scout.SOURCE_SLUG,name=scout.SOURCE_NAME,discovered=len(items),new=0,published=0,
