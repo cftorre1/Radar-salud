@@ -812,14 +812,43 @@ def _load_cache(path):
     return dict(version=_CACHE_VERSION, source="pulso_latercera", articles={})
 
 
+def _cached_capture_dates_valid(metadata, now=None):
+    """Reuse only an original aware capture with nonfuture primary timestamps."""
+    now = now or datetime.now(ZoneInfo("UTC"))
+    try:
+        captured = metadata.get("captured_at")
+        if not isinstance(captured, str):
+            return False
+        captured = datetime.fromisoformat(captured.replace("Z", "+00:00"))
+        if captured.tzinfo is None or captured.utcoffset() is None or captured > now:
+            return False
+        evidence = metadata.get("publication_evidence")
+        if not isinstance(evidence, list) or not evidence:
+            return False
+        for row in evidence:
+            value = row.get("timestamp")
+            if not publication_day(value):
+                return False
+            if len(value) == 10:
+                if date.fromisoformat(value) > now.astimezone(ZoneInfo("America/Santiago")).date():
+                    return False
+            elif datetime.fromisoformat(value.replace("Z", "+00:00")) > now:
+                return False
+        return True
+    except (AttributeError, ValueError, TypeError, OverflowError):
+        return False
+
+
 def _verified_detail(entry, loader, cached, audit=None):
     """Only successful URL-bound article evidence is eligible for reuse."""
     url = entry["url"]
     now = datetime.now(ZoneInfo("UTC")).isoformat()
     # lastmod is solely a change token: it never establishes publication date.
-    if (cached and entry.get("lastmod") and cached.get("lastmod") == entry["lastmod"]
+    if (cached and article_url(url) == url
+            and entry.get("lastmod") and cached.get("lastmod") == entry["lastmod"]
             and cached.get("metadata", {}).get("canonical_url") == url
             and re.fullmatch(r"[0-9a-f]{64}", str(cached.get("metadata", {}).get("html_sha256", "")))
+            and _cached_capture_dates_valid(cached.get("metadata", {}))
             and not publisher_taxonomy_requires_revalidation(cached.get("metadata", {}))
             and (cached.get("metadata", {}).get("article_verified")
                  or verified_video_without_text(cached.get("metadata", {}))
@@ -1231,11 +1260,12 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                 # are still required for old-page boundary corroboration.
                 is_boundary_page = bool(primary_dates and max(primary_dates) < cutoff - timedelta(days=2))
                 if canonical in visited and not is_boundary_page:
-                    if cached and (cached.get("metadata", {}).get("article_verified")
+                    if (cached and _cached_capture_dates_valid(cached.get("metadata", {}))
+                            and (cached.get("metadata", {}).get("article_verified")
                                    or verified_video_without_text(cached.get("metadata", {}))
-                                   or verified_publication_date_conflict(cached.get("metadata", {}))):
+                                   or verified_publication_date_conflict(cached.get("metadata", {})))):
                         page_results.append((entry, dict(cached, cache_hit=True)))
-                    continue
+                        continue
                 candidates.append(entry)
             with ThreadPoolExecutor(max_workers=worker_count) as pool:
                 verified = list(pool.map(lambda entry: _verified_detail(entry, loader, articles.get(entry["url"]), audit), candidates))
