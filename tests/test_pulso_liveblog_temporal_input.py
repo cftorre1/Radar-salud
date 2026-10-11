@@ -17,6 +17,8 @@ from radar_salud.pulso_source import (
     _verified_detail, article_body_evidence, complete_article_body, extract_article,
     liveblog_analysis_text, verified_liveblog_temporal_evidence,
 )
+from radar_salud.pulso_editorial_proof import PROOF_SCHEMA, validate_pulso_editorial_proof
+from pulso_editorial_test_support import valid_assessment
 
 
 REAL = Path(__file__).parent / 'fixtures/pulso_liveblog_temporal_real'
@@ -43,8 +45,41 @@ def model_requests(monkeypatch):
     requests = []
     def create(**kwargs):
         requests.append(kwargs)
-        return SimpleNamespace(output_text=json.dumps(dict(relevance_score=71, what_happened='',
-            why_it_matters='', reason='Sin suficiente materialidad incremental para publicación.')))
+        prefix, body = kwargs['input'].split('Contenido:\n', 1)
+        source, title = prefix.split('\nTítulo: ', 1)
+        request = dict(source_name=source.removeprefix('Fuente: '), title=title.rstrip('\n'), text=body)
+        assessment = dict(relevance_score=71, what_happened='', why_it_matters='',
+                          reason='Sin suficiente materialidad incremental para publicación.')
+        if 'hemos suspendido la atención del Servicio de Urgencias' in body:
+            start = body.index('La Red UC Christus emitió un comunicado')
+            end = body.index('viernes 9 de octubre', start) + len('viernes 9 de octubre')
+            quote = ' '.join(body[start:end].split())
+            assessment = valid_assessment(assessment, request, witness=dict(
+                actor='La Red UC Christus',
+                action='hemos suspendido la atención del Servicio de Urgencias',
+                consequence='consultas médicas, exámenes y procedimientos ambulatorios durante hoy jueves y mañana viernes 9 de octubre',
+                quote=quote, consequence_quote=quote, status='mixed_actual_and_future',
+                what='Según La Tercera, UC Christus informó la suspensión preventiva; el comunicado prevé mantenerla el viernes 9 de octubre.',
+                why='La medida podría limitar la atención ambulatoria durante el período anunciado; el comunicado no acredita evacuaciones.'))
+            # The API wrapper must produce the binding from this actual mock
+            # response, rather than receiving a prebound assessment shortcut.
+            assessment.pop('_pulso_analysis_meta')
+        else:
+            quote = ('criticó la reducción de recursos para municipios, educación y salud, '
+                     'especialmente en medio de las emergencias climáticas')
+            assert quote in ' '.join(body.split())
+            # The political speech names health among broad budget objections;
+            # it supplies no specific clinical obligation. The scope rejection
+            # is intentional, while all 110 original entry texts still reach
+            # the same full-input API boundary for this assessment.
+            proof = {field: '' for field in PROOF_SCHEMA['properties']}
+            proof.update(scope_decision='incidental_health', scope_reason='Mención de salud en una objeción política general sin obligación clínica específica.',
+                         human_health_scope_quote=quote, event_status='actual',
+                         novelty_decision='new_material_information', future_claims=[])
+            assessment['pulso_editorial_proof'] = proof
+            assert validate_pulso_editorial_proof(assessment, body)['reason'] == 'pulso_editorial_incidental_health'
+        return SimpleNamespace(output_text=json.dumps(assessment, ensure_ascii=False),
+                               id='unit-test-liveblog-response', model='unit-test-no-paid-call')
     monkeypatch.setattr(llm_analysis, '_client', lambda: SimpleNamespace(responses=SimpleNamespace(create=create)))
     monkeypatch.setattr(llm_analysis, 'allow_call', lambda _: True)
     monkeypatch.setattr(llm_analysis, 'record_response', lambda *a, **kw: None)
@@ -89,7 +124,7 @@ def test_all_165_real_entry_dates_and_exact_json_bodies_supplement_unchanged_pri
 
 
 @pytest.mark.parametrize('entry', FIXTURES, ids=lambda row: row['url'].split('/')[-2])
-def test_actual_responses_payload_contains_entire_body_and_every_dated_entry_but_gate_still_rejects71(entry, monkeypatch):
+def test_actual_responses_payload_contains_entire_body_and_every_dated_entry_with_strict_editorial_rejection(entry, monkeypatch):
     raw = raw_original(entry)
     before = deepcopy({key: raw.metadata[key] for key in ('page_text', 'article_body_sha256', 'html_sha256', 'captured_at')})
     monkeypatch.setattr(beta_sources, 'fetch_html', lambda _: pytest.fail('Valid complete timeline needs no refetch'))
@@ -112,7 +147,11 @@ def test_actual_responses_payload_contains_entire_body_and_every_dated_entry_but
     assert raw.metadata['analysis_request_input_characters'] == len(request)
     assert raw.metadata['analysis_input_complete'] is True
     assert raw.metadata['editorial_assessment']['threshold'] == 72
-    assert raw.metadata['rejection_reason'] == 'editorial_relevance_below_threshold'
+    expected = ('editorial_relevance_below_threshold' if '/nacional/' in raw.url
+                else 'pulso_editorial_incidental_health')
+    assert raw.metadata['rejection_reason'] == expected
+    assert raw.metadata['analysis_model_output']['relevance_score'] == 71
+    assert raw.metadata['pulso_editorial_proof_validation']['model_response']['response_id'] == 'unit-test-liveblog-response'
     assert 'no convertir reporte de prensa en hecho oficial' in requests[0]['instructions']
 
 
