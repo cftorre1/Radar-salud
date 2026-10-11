@@ -552,6 +552,15 @@ def annotate_pending(report, execution):
     report["unresolved_pending_operational_reasons"] = unresolved
 
 
+def execution_code_provenance(repository=REPOSITORY):
+    """Freeze implementation bytes at engine start, independently of data Git commits."""
+    spec = importlib.util.spec_from_file_location("pulso_runtime_idempotence", repository / "scripts/pulso_idempotence.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return {"code_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repository, text=True).strip(),
+            "runtime_fingerprint": module.runtime_fingerprint(repository)}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=REPOSITORY)
@@ -587,6 +596,9 @@ def main():
                  "ai_credentials_present": bool(os.environ.get("OPENAI_API_KEY")), "ai_guardrails_modified": False}
     if not args.report_only:
         from radar_salud import ai_budget, engine_cli
+        # Freeze the actual checkout before the engine. A later evidence-only
+        # rejoin may have a newer Git head and must preserve this provenance.
+        execution.update(execution_code_provenance())
         try:
             execution["budget_before"] = json.loads(json.dumps(ai_budget.status()))
         except Exception as error:

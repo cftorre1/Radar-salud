@@ -16,7 +16,8 @@ from radar_salud.pulso_source import (_verified_detail, TextUnavailableArticle, 
 
 ROOT = Path(__file__).parents[1]
 FOLDER = ROOT / 'tests/fixtures/pulso_targeted_primary_real'
-RECORD = next(row for row in json.loads((FOLDER/'manifest.json').read_text())['requests']
+ORIGINAL_MANIFEST = FOLDER/'manifest-1dfb146631d8341d1e9eaa21a1e8222b79bdc78dd04364058b7454c67d37da21.json'
+RECORD = next(row for row in json.loads(ORIGINAL_MANIFEST.read_text())['requests']
               if row['sha256'] == 'eec1ca11083227a69b3691afe92422d5d20332eae39afee234f43d027c63535d')
 REASON = 'publisher_sponsored_text_unavailable'
 spec = importlib.util.spec_from_file_location('independent_pulso_qa', ROOT/'scripts/qa_pulso_recovery.py')
