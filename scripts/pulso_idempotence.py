@@ -334,27 +334,36 @@ def incremental_proof_files(root, queue):
 def paid_revalidation_proof_files(root):
     """Bind the paid-reuse authority before any admission stamp exists."""
     from radar_salud.pulso_paid_revalidation import MANIFEST_REF, MANIFEST_SHA256
-    path = root / MANIFEST_REF
-    if not path.is_file():
-        return set()
-    payload = path.read_bytes()
-    require(digest(payload) == MANIFEST_SHA256, "paid_revalidation_manifest_changed")
-    manifest = json.loads(payload)
-    require(manifest.get("schema_version") == "pulso_v5_paid_guard_revalidation_manifest_v1"
-            and manifest.get("source_id") == SOURCE
-            and isinstance(manifest.get("semantic_references"), list)
-            and len(manifest["semantic_references"]) == 2,
-            "paid_revalidation_manifest_invalid")
-    references = {MANIFEST_REF}
-    for proof in manifest["semantic_references"]:
-        relative = proof.get("path") if isinstance(proof, dict) else None
-        require(isinstance(relative, str), "paid_revalidation_semantic_path_invalid")
-        source = (root / relative).resolve()
-        require(source.is_relative_to((root / "data/audits").resolve()) and source.is_file()
-                and digest(source.read_bytes()) == proof.get("sha256"),
-                "paid_revalidation_semantic_reference_changed")
-        references.add(relative)
-    require(len(references) == 3, "paid_revalidation_semantic_reference_repeated")
+    from radar_salud.pulso_current_paid_revalidation import (
+        MANIFEST_REF as CURRENT_REF, MANIFEST_SHA256 as CURRENT_SHA)
+    authorities = (
+        (MANIFEST_REF, MANIFEST_SHA256, "pulso_v5_paid_guard_revalidation_manifest_v1"),
+        (CURRENT_REF, CURRENT_SHA, "pulso_current_paid_guard_revalidation_manifest_v1"),
+    )
+    references = set()
+    for manifest_ref, expected_sha, schema in authorities:
+        path = root / manifest_ref
+        if not path.is_file():
+            continue
+        payload = path.read_bytes()
+        require(digest(payload) == expected_sha, "paid_revalidation_manifest_changed")
+        manifest = json.loads(payload)
+        require(manifest.get("schema_version") == schema
+                and manifest.get("source_id") == SOURCE
+                and isinstance(manifest.get("semantic_references"), list)
+                and len(manifest["semantic_references"]) == 2,
+                "paid_revalidation_manifest_invalid")
+        bound = {manifest_ref}
+        for proof in manifest["semantic_references"]:
+            relative = proof.get("path") if isinstance(proof, dict) else None
+            require(isinstance(relative, str), "paid_revalidation_semantic_path_invalid")
+            source = (root / relative).resolve()
+            require(source.is_relative_to((root / "data/audits").resolve()) and source.is_file()
+                    and digest(source.read_bytes()) == proof.get("sha256"),
+                    "paid_revalidation_semantic_reference_changed")
+            bound.add(relative)
+        require(len(bound) == 3, "paid_revalidation_semantic_reference_repeated")
+        references.update(bound)
     return references
 
 
