@@ -202,6 +202,51 @@ class RecoveryTests(unittest.TestCase):
         self.assertEqual(result["changed_paths"], [])
         self.assertEqual(result["evidence"][1]["command"], [sys.executable, "-m", "pytest", "-q"])
 
+    def test_supported_deterministic_plan_uses_all_existing_gates_without_model(self):
+        self.init_repo()
+        proposed = {"status": "PLANNED", "strategy": "fixture_known_failure",
+                    "plan": self.plan(), "diagnostic": {"kind": "known_failure"}}
+        with patch.object(recovery, "deterministic_plan", return_value=proposed) as planner, \
+                patch.object(recovery, "generate_plan", side_effect=AssertionError("paid repair must not run")):
+            report = recovery.recover(self.root, {}, self.log, runner=self.mocked_runner(1, 1, 0, 0, 0))
+        self.assertEqual(report["status"], "REPAIRED")
+        self.assertTrue(report["validated"])
+        self.assertEqual(report["repair_strategy"], "fixture_known_failure")
+        self.assertIn("src/radar_salud/calculation.py", planner.call_args.kwargs["allowed_paths"])
+        self.assertIn("return 2", self.source.read_text())
+        self.assertGreaterEqual(len(report["evidence"]), 5)
+
+    def test_supported_plan_cannot_bypass_stale_preimage_or_source_scope(self):
+        self.init_repo()
+        plan = self.plan()
+        plan["replacements"][0]["sha256"] = "0" * 64
+        with patch.object(recovery, "deterministic_plan", return_value={"status": "PLANNED", "plan": plan}):
+            report = recovery.recover(self.root, {}, self.log, runner=self.mocked_runner(1, 1))
+        self.assertEqual(report["status"], "BLOCKED")
+        self.assertIn("Stale file hash", report["blocker"])
+        self.assertEqual(report["changed_paths"], [])
+        self.assertIn("return 1", self.source.read_text())
+
+    def test_unsupported_strategy_is_internal_capability_blocker_without_paid_call(self):
+        self.init_repo()
+        with patch.object(recovery, "deterministic_plan", return_value={"status": "UNSUPPORTED", "plan": None}), \
+                patch.object(recovery, "generate_plan", side_effect=AssertionError("paid repair must not run")):
+            report = recovery.recover(self.root, {}, self.log, runner=self.mocked_runner(1, 1))
+        self.assertEqual(report["status"], "BLOCKED")
+        self.assertEqual(report["blocker_kind"], "executor_capability_missing")
+        self.assertFalse(report["material_progress"])
+        self.assertIn("return 1", self.source.read_text())
+
+    def test_rejected_strategy_cannot_fall_through_to_model(self):
+        self.init_repo()
+        rejected = {"status": "REJECTED", "plan": None,
+                    "diagnostic": {"reason": "Task has no applicable source approval"}}
+        with patch.object(recovery, "deterministic_plan", return_value=rejected), \
+                patch.object(recovery, "generate_plan", side_effect=AssertionError("rejected scope must not spend")):
+            report = recovery.recover(self.root, {}, self.log, allow_model=True, runner=self.mocked_runner(1, 1))
+        self.assertEqual(report["blocker_kind"], "deterministic_repair_rejected")
+        self.assertEqual(report["changed_paths"], [])
+
     def test_infrastructure_failure_never_calls_model(self):
         def unavailable(command, root):
             return {"command": command, "returncode": 1, "output": "No module named pytest"}

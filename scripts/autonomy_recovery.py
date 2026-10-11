@@ -476,6 +476,27 @@ def generate_plan(root: Path, context: list[dict], failure_log: str, task: dict)
         raise RecoveryError(f"Model repair failed: {type(exc).__name__}") from exc
 
 
+def deterministic_plan(root: Path, context: list[dict], failure_log: str, task: dict,
+                       *, source_slug: str | None, source_result: dict | None,
+                       allowed_paths: set[str]) -> dict:
+    """Ask the read-only known-failure planner before considering paid repair.
+
+    Its output still passes exact preimage, scope, isolated-branch and every
+    existing directed/LIVE/project gate. A plan is not mutation or repair proof.
+    """
+    planner_path = Path(__file__).with_name("autonomy_repair_planner.py")
+    if not planner_path.is_file() or planner_path.is_symlink():
+        return {"status": "UNSUPPORTED", "plan": None,
+                "diagnostic": {"kind": "executor_capability_missing",
+                               "reason": "Deterministic strategy module is unavailable"}}
+    spec = importlib.util.spec_from_file_location("autonomy_known_failure_planner", planner_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.plan_repair(root, task, failure_log, source_slug=source_slug,
+        source_result=source_result, allowed_paths=allowed_paths,
+        observed_hashes={item["path"]: item["sha256"] for item in context if item["editable"]})
+
+
 def failure_fingerprints(result: dict) -> list[str]:
     rows = re.findall(r"^FAILED (tests/\S+)(?:\s+-\s+([^\n]+))?", result.get("output", ""), re.M)
     return sorted({digest((node + "\n" + (reason or "")).encode("utf-8")) for node, reason in rows})
@@ -543,12 +564,24 @@ def recover(root: Path, task: dict, failure_log: str, *, patch: dict | None = No
         if not allowed:
             raise RecoveryError("No editable file implicated by demonstrated failure")
         if patch is None:
-            if not allow_model:
-                raise RecoveryError("Reproduced failure requires a bounded repair plan; model lane disabled")
-            # Guard before even debiting a budget or sending context externally.
+            # Guard before planning, debiting a budget or sending context externally.
             guard_staging(root, [{"path": name} for name in sorted(allowed)])
             relevant_failure = (live_result.get("output", "") + "\n" if live_failed else "") + reproduced.get("output", "")
-            patch = generate_plan(root, context, relevant_failure, task)
+            planned = deterministic_plan(root, context, relevant_failure, task,
+                source_slug=source_slug, source_result=live if live_failed else None,
+                allowed_paths=allowed)
+            report["deterministic_planning"] = planned
+            if planned.get("status") == "PLANNED" and isinstance(planned.get("plan"), dict):
+                patch = planned["plan"]
+                report["repair_strategy"] = planned.get("strategy")
+            elif planned.get("status") == "REJECTED":
+                report["blocker_kind"] = "deterministic_repair_rejected"
+                raise RecoveryError("Deterministic repair rejected: " + planned.get("diagnostic", {}).get("reason", "unverified scope"))
+            elif allow_model:
+                patch = generate_plan(root, context, relevant_failure, task)
+            else:
+                report["blocker_kind"] = "executor_capability_missing"
+                raise RecoveryError("No supported deterministic repair strategy for the reproduced failure; model lane disabled")
         changes = validate_plan(root, patch, allowed_paths=allowed)
         guard_staging(root, changes)
         apply_changes(root, changes)
