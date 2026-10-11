@@ -1,0 +1,407 @@
+{
+  "schema_version": "pulso_additional_live9_existing_candidate_recovery_cohort_v1",
+  "source": "pulso_latercera",
+  "source_id": "pulso_latercera",
+  "selection_id": "pulso_additional_live9_recovery_2026_10_11",
+  "generated_at": "2026-10-11T23:11:52.701292+00:00",
+  "producer_state_commit": "123bf2550536030a077c03ad4d56572df24ab418",
+  "purpose": "Process exactly nine already-discovered LIVE pending rows under ordinary Source/primary/media/editorial gates; one demonstrated fresh material vaccination response, other eight require traceable genuine preanalysis/analysis decisions.",
+  "urls": [
+    "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/",
+    "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+    "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+    "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
+    "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+    "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+    "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+    "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+    "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/"
+  ],
+  "items": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/",
+      "title": "Fallece Juan Pablo Cárdenas, Premio Nacional de Periodismo 2005",
+      "publication_date": "2026-10-11",
+      "section": "nacional",
+      "topics": [
+        "public_health"
+      ],
+      "queue_fingerprint": "76cdc28597009114d576b7e20314a93ed1390c31008b831ba7b2f47968ee40a7",
+      "lane": "LIVE",
+      "body_sha256": "ea77802bc5bad54fb476386dc3b9b4bfb4732494feecaa8e9cfa1fc54de46c72",
+      "html_sha256": "2b26c82563487d7d05a31e18d78c81fb637e14feaaa503cd79886fd6106122af",
+      "body_characters": 1553,
+      "baseline_status": "pending",
+      "baseline_attempts": 0,
+      "primary_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/76cdc28597009114d576b7e20314a93ed1390c31008b831ba7b2f47968ee40a7/raw/metadata/page_text"
+      },
+      "primary_verification_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "independent_fullbody_review": {
+        "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+        "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8",
+        "index": 1
+      },
+      "independent_triage_classification": "obituary_incidental_cancer_no_sector_action",
+      "independent_triage_reason": "Rechazo preliminar defendible: fallecimiento y trayectoria de periodista; cáncer es causa individual del deceso, sin acto de Minsal, prestador, asegurador, política sanitaria, inversión o nueva capacidad. El gate actual devuelveFalse; no Score/gate72 editorial evaluados.",
+      "observed_pure_preanalysis_gate": false,
+      "publication_approved": false,
+      "actual_AI_score": null,
+      "actual_editorial_result": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+      "title": "Amplían por 72 horas detención de chofer de bus que se desbarrancó en Valparaíso y dejó una persona fallecida",
+      "publication_date": "2026-10-11",
+      "section": "nacional",
+      "topics": [
+        "providers",
+        "competition"
+      ],
+      "queue_fingerprint": "bbc92593ad927019d68a04f3427e469aedea0e236c2532af9da9af0dfc38309b",
+      "lane": "LIVE",
+      "body_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+      "html_sha256": "9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049",
+      "body_characters": 2952,
+      "baseline_status": "pending",
+      "baseline_attempts": 0,
+      "primary_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/bbc92593ad927019d68a04f3427e469aedea0e236c2532af9da9af0dfc38309b/raw/metadata/page_text"
+      },
+      "primary_verification_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "independent_fullbody_review": {
+        "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+        "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8",
+        "index": 2
+      },
+      "independent_triage_classification": "judicial_bus_accident_with_repeated_case_management",
+      "independent_triage_reason": "El gate actual permite análisis porque el cuerpo detalla hospital/derivaciones, aunque el núcleo es ampliación de detención. El balance12recibidos/5altas/4mutual/3internados repiteLIVE3; no inversión, cambio de cobertura, interrupción de red ni presión general de capacidad demostrada. Si se procesa, explicar baja materialidad o eventual agrupación contra3 únicamente tras comparar resultados reales; no forzar score o status.",
+      "observed_pure_preanalysis_gate": true,
+      "publication_approved": false,
+      "actual_AI_score": null,
+      "actual_editorial_result": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+      "title": "Hospital Van Buren entrega nuevo balance tras accidente de bus de orquesta: tres pacientes permanecen internados",
+      "publication_date": "2026-10-11",
+      "section": "nacional",
+      "topics": [
+        "providers"
+      ],
+      "queue_fingerprint": "cab108224d311493028b294814e4e971ec29e91168face4427bc9ebf8b58f9e1",
+      "lane": "LIVE",
+      "body_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+      "html_sha256": "7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3",
+      "body_characters": 2787,
+      "baseline_status": "pending",
+      "baseline_attempts": 0,
+      "primary_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/cab108224d311493028b294814e4e971ec29e91168face4427bc9ebf8b58f9e1/raw/metadata/page_text"
+      },
+      "primary_verification_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "independent_fullbody_review": {
+        "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+        "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8",
+        "index": 3
+      },
+      "independent_triage_classification": "specific_human_case_management_low_demonstrated_sector_materiality",
+      "independent_triage_reason": "Atención humana real y balance de12pacientes, derivación a mutual y cirugía individual. El gate actual permite análisis; no se puede etiquetar como ausencia de salud. La fuente no acredita expansión de red, cierre o saturación, gasto material, nuevo contrato, cambio de aseguramiento o mandato sanitario. Valoración editorial ordinaria requerida, sin inferir rechazo numérico ni obligación de publicar.",
+      "observed_pure_preanalysis_gate": true,
+      "publication_approved": false,
+      "actual_AI_score": null,
+      "actual_editorial_result": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
+      "title": "Muere Juan Aliste Vega, exlautarista condenado por asesinato del cabo Luis Moyano",
+      "publication_date": "2026-10-11",
+      "section": "nacional",
+      "topics": [
+        "providers",
+        "regulation",
+        "public_health"
+      ],
+      "queue_fingerprint": "163e2e80aec2d66306c976c8de5b8aaf03eda3e0438ae9c8a6a67c6fe490396a",
+      "lane": "LIVE",
+      "body_sha256": "461828182f49ea460d59055783ff4d88c413c6720f55fcb25e35b3fc133546eb",
+      "html_sha256": "298e026ace0051f53e23f58b2904026a9a40293726660e0c1cc9a5ae9b8d9105",
+      "body_characters": 2666,
+      "baseline_status": "pending",
+      "baseline_attempts": 0,
+      "primary_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/163e2e80aec2d66306c976c8de5b8aaf03eda3e0438ae9c8a6a67c6fe490396a/raw/metadata/page_text"
+      },
+      "primary_verification_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "independent_fullbody_review": {
+        "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+        "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8",
+        "index": 4
+      },
+      "independent_triage_classification": "individual_prisoner_death_and_clemency_no_health_sector_change",
+      "independent_triage_reason": "Rechazo preliminar defendible: cáncer terminal/hospitalización y protocolo ante muerte individual; solicitud de indulto penal no resuelta, sin nuevo régimen de prestación, financiamiento o política clínica. No demuestra negligencia criminal ni cambio general de cobertura sanitaria.",
+      "observed_pure_preanalysis_gate": false,
+      "publication_approved": false,
+      "actual_AI_score": null,
+      "actual_editorial_result": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+      "title": "Universidad Católica lamenta muerte de Penélope Knuth tras accidente en Valparaíso",
+      "publication_date": "2026-10-11",
+      "section": "nacional",
+      "topics": [
+        "providers"
+      ],
+      "queue_fingerprint": "48c017ec9f9ca492c3f0ae7bebe9684c98225101a2e128aeee60d4895b7b0657",
+      "lane": "LIVE",
+      "body_sha256": "6ec4e6d5db14ab4c9f3f2f3e369bcebb67ae997977ad9a6a00b5e08ac76f5885",
+      "html_sha256": "5b772d61fa3df4799765d58d05a009075f591f5d8492bfc74ba3ea56af05716b",
+      "body_characters": 3189,
+      "baseline_status": "pending",
+      "baseline_attempts": 0,
+      "primary_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/48c017ec9f9ca492c3f0ae7bebe9684c98225101a2e128aeee60d4895b7b0657/raw/metadata/page_text"
+      },
+      "primary_verification_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "independent_fullbody_review": {
+        "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+        "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8",
+        "index": 5
+      },
+      "independent_triage_classification": "cultural_condolence_with_repeated_accident_case_balance",
+      "independent_triage_reason": "Rechazo preliminar defendible: condolencias/biografía de músico; balance clínico del mismo accidente repetido deLIVE3/2. La menciónUniversidadCatólica no es prestaciónUCCChristus ni nueva capacidad sanitaria; no resultado médico institucional adicional.",
+      "observed_pure_preanalysis_gate": false,
+      "publication_approved": false,
+      "actual_AI_score": null,
+      "actual_editorial_result": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+      "title": "Aluvión en Las Condes: municipio reporta 2.015 viviendas afectadas y 933 atenciones en vacunatorios",
+      "publication_date": "2026-10-11",
+      "section": "nacional",
+      "topics": [
+        "investment_ma",
+        "financing",
+        "public_health"
+      ],
+      "queue_fingerprint": "1f3c9b4fdad8a36de23c44b6e8ca57b9870177e1fb6dd52bb5cde1e095441392",
+      "lane": "LIVE",
+      "body_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+      "html_sha256": "1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25",
+      "body_characters": 4866,
+      "baseline_status": "pending",
+      "baseline_attempts": 0,
+      "primary_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/1f3c9b4fdad8a36de23c44b6e8ca57b9870177e1fb6dd52bb5cde1e095441392/raw/metadata/page_text"
+      },
+      "primary_verification_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "independent_fullbody_review": {
+        "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+        "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8",
+        "index": 6
+      },
+      "independent_triage_classification": "demonstrated_new_material_human_vaccination_response_requires_ordinary_FAST",
+      "independent_triage_reason": "Incremento sanitario operacional cuantificado, ya descubierto pero excluido de procesamiento113: campaña municipal conSSMetropolitanoOriente, móvil desplegado el sábado,883personas atendidas ese día,933atenciones acumuladas y aproximadamente1000dosis entregadas. Nuevo resultado frente a campaña inicialmente descritaOct9sin estas métricas; distintaacción del traslado/cierreUCCOct10. Requiere ordinaryFAST/gate72, no aprobación ni cuota. Mitigacióncivil es contexto: contrato5Oct776,7millones/90días no iniciado y500millonesadjudicación, sin infraestructura terminada.",
+      "observed_pure_preanalysis_gate": true,
+      "publication_approved": false,
+      "actual_AI_score": null,
+      "actual_editorial_result": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+      "title": "Abogado de Aliste Vega apunta a penal de Rancagua y evalúa acciones legales contra el Estado tras su muerte",
+      "publication_date": "2026-10-11",
+      "section": "nacional",
+      "topics": [
+        "providers",
+        "public_health"
+      ],
+      "queue_fingerprint": "d3f50bfb73fb868ff68b8a68d9997de170ce61234b1a344b782f7d1508fcc676",
+      "lane": "LIVE",
+      "body_sha256": "bc1b361e5a23f3225e35d27dd4e42d1488a8408deb93ebbbd6952657e009ee9b",
+      "html_sha256": "c80e39904f0edea2f0abbd94c81d5c979361d9c6aadc17d21c50bf336f098a95",
+      "body_characters": 2761,
+      "baseline_status": "pending",
+      "baseline_attempts": 0,
+      "primary_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/d3f50bfb73fb868ff68b8a68d9997de170ce61234b1a344b782f7d1508fcc676/raw/metadata/page_text"
+      },
+      "primary_verification_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "independent_fullbody_review": {
+        "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+        "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8",
+        "index": 7
+      },
+      "independent_triage_classification": "specific_alleged_individual_care_failure_without_filed_legal_or_systemic_action",
+      "independent_triage_reason": "Mención clínica específica, no ruido por título: abogado alega demoras/medicación/silla de ruedas y evalúa demanda contraEstado. Fuente no informa acciónjudicial presentada, hallazgojudicial, nueva regulación, contrato, capacidad o patrón cuantificado de falla. Gate actualFalse defendible por materialidad sectorial no demostrada; conservar atribución y carácter no probado, no declarar causalidad de muerte.",
+      "observed_pure_preanalysis_gate": false,
+      "publication_approved": false,
+      "actual_AI_score": null,
+      "actual_editorial_result": null
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+      "title": "Muerte de Aliste Vega reabre debate por indultos: de exigir “celeridad” en tramitación a advertir límites por lesa humanidad",
+      "publication_date": "2026-10-11",
+      "section": "politica",
+      "topics": [
+        "providers",
+        "public_health"
+      ],
+      "queue_fingerprint": "e7b3ca96c457220c2864feae3f174889348b408fd6496ffd51e24bd53e6132c6",
+      "lane": "LIVE",
+      "body_sha256": "46827634e3ce478bc5df6c182322871810c0a4c4e543f25ed859f67b995688b2",
+      "html_sha256": "9bd23f2f884108a559433654f0614fcce2af6a725dacf2693f2968c260772ce3",
+      "body_characters": 4824,
+      "baseline_status": "pending",
+      "baseline_attempts": 0,
+      "primary_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/e7b3ca96c457220c2864feae3f174889348b408fd6496ffd51e24bd53e6132c6/raw/metadata/page_text"
+      },
+      "primary_verification_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "independent_fullbody_review": {
+        "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+        "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8",
+        "index": 8
+      },
+      "independent_triage_classification": "penal_humanitarian_clemency_commentary_no_specific_health_policy_step",
+      "independent_triage_reason": "Reacciones políticas a indulto individual por enfermedad terminal; no proyecto clínico, regulación sanitaria, financiamiento, cobertura o cambio de red ejecutado/formalmente iniciado. Las opiniones sobre potestadpenal no equivalen a propuesta verificable de prestaciónpaliativa. Gate actualFalse defendible con razón específica.",
+      "observed_pure_preanalysis_gate": false,
+      "publication_approved": false,
+      "actual_AI_score": null,
+      "actual_editorial_result": null
+    },
+    {
+      "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+      "title": "Renocido actor Gabriel Prieto fallece a los 65 años",
+      "publication_date": "2026-10-11",
+      "section": "culto",
+      "topics": [
+        "providers",
+        "public_health"
+      ],
+      "queue_fingerprint": "a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280",
+      "lane": "LIVE",
+      "body_sha256": "94e66cb5eac914c75172013ca91b92d2c568cd2f1ebcffe0cda9e70e29e4dfc3",
+      "html_sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
+      "body_characters": 2645,
+      "baseline_status": "pending",
+      "baseline_attempts": 0,
+      "primary_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280/raw/metadata/page_text"
+      },
+      "primary_verification_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": null
+      },
+      "independent_fullbody_review": {
+        "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+        "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8",
+        "index": 9
+      },
+      "independent_triage_classification": "cultural_obituary_prior_2022_2023_clinical_history",
+      "independent_triage_reason": "Rechazo preliminar defendible: fallecimiento de actor, causaactual no especificada y antecedentesCOVID2022/hospitalización/alta2023/rehabilitación. No reporta nuevos resultados de tratamiento, capacidad delHospitalLuisTisné, enfermedadpoblacional, política o inversión2026. No rejuvenecer esos períodos como noticia clínica actual. Campoarticle_body_complete ausente; se conserva, no se inventaTrue.",
+      "observed_pure_preanalysis_gate": false,
+      "publication_approved": false,
+      "actual_AI_score": null,
+      "actual_editorial_result": null
+    }
+  ],
+  "counts": {
+    "selected_existing_urls": 9,
+    "live_pending_at_baseline": 9,
+    "pure_preanalysis_true_observed": 3,
+    "pure_preanalysis_false_observed": 6,
+    "demonstrated_material_ordinary_analysis_required": 1
+  },
+  "selection_filters_existing_queue_only": true,
+  "publication_approved": false,
+  "editorial_threshold": 72,
+  "baseline_queue_reference": {
+    "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+    "path": "data/state/pending_queue.json",
+    "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105"
+  },
+  "independent_primary_triage": {
+    "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+    "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8"
+  },
+  "constraints": [
+    "No discovery injection, no status/attempt/lane reset, no terminal reopen.",
+    "No quotas or numeric score assignment by the reader; ordinary realFAST determines eligible editorial outcomes.",
+    "Keep frozen113 cohort and control29/79/236/200 evidence byte identical.",
+    "Culto row9 missing article_body_complete flag is preserved, not invented; original body/hash/date/identity verified as recorded.",
+    "This nineURL selection is separate from historical113, not a replacement denominator."
+  ]
+}

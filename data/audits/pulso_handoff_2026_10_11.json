@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "recorded_at": "2026-10-11T23:00:37.581419+00:00",
+  "recorded_at": "2026-10-11T23:14:41.131050+00:00",
   "status": "IN_PROGRESS_NOT_ACCEPTED",
   "source": "pulso_latercera",
   "owner": "Codex B / Senior Source Recovery Engineer",
@@ -291,7 +291,7 @@
     },
     "next_run": "Same branch/PR; genuine full discovery plus113-existing-URL processing selection under unchanged budget; no extra discovery expansion. Then independent semantic review, real second-run idempotence and final-SHA QA/staging."
   },
-  "acceptance": "NOT_ACCEPTED_PENDING_CONSUMER_REPAIR_GENUINE_TERMINAL_REPLAY_FINAL_SHA_GATES",
+  "acceptance": "NOT_ACCEPTED_PENDING_LIVE9_ACTUAL_AND_GENUINE_REPLAY_AND_FINAL_SHA_GATES",
   "preserved_previous_operational_headers": [
     {
       "recorded_at": "2026-10-11T12:50:20.018214+00:00",
@@ -1154,5 +1154,22 @@
       6
     ],
     "main_production_modified": false
+  },
+  "latest_additional_live9_launch_checkpoint": {
+    "selection": "data/audits/pulso_additional_live9_recovery_cohort_2026_10_11.json",
+    "selection_sha256": "641eee7d713cd1c9fba2171d9e45dbaeab0688434ac371a87f56089b2f141373",
+    "independent_primary_review": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+    "known_true_material_unprocessed_url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+    "full_body_characters_read": 28243,
+    "pure_preanalysis_eligible": 3,
+    "pure_preanalysis_excluded": 6,
+    "existing_monthly_budget": {
+      "fast": 516,
+      "deep": 14
+    },
+    "budget_caps_modified": false,
+    "publication_approved": false,
+    "directed_local_validation": "147 PASS consumer/idempotence/command tests; strict9 existing queue identities and complete_article_body predicates PASS",
+    "acceptance": "NOT_ACCEPTED_PENDING_LIVE9_ACTUAL_AND_GENUINE_REPLAY_AND_FINAL_SHA_GATES"
   }
 }

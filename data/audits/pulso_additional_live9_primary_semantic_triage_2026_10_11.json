@@ -1,0 +1,828 @@
+{
+  "schema_version": "pulso_current_live9_independent_primary_triage_v1",
+  "generated_at": "2026-10-11T23:10:59.187866+00:00",
+  "source_id": "pulso_latercera",
+  "producer_commit": "123bf2550536030a077c03ad4d56572df24ab418",
+  "producer_code": "46a3683c6760f0e61031a7dc7d5961c105cacb36",
+  "producer_run_id": "38181190464",
+  "source": "Only already-discovered genuineLIVE pending outside frozen113; no newHTTP/research/discovery/model calls.",
+  "inputs": {
+    "queue": {
+      "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105"
+    },
+    "history": {
+      "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "1400cb4a7bfd9d50283bf7927515dffa328ec07cbb1a780148f9227f3db98b26"
+    },
+    "feed": {
+      "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+      "path": "web/data/radar_today.json",
+      "file_sha256": "6c7bd5a3b7dda1fbb6fe032d43c4927adc1393111716852835dfd495ce1e53dc"
+    },
+    "runtime_report": {
+      "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "6f0f26ac044cf50e2df2fc30be21e42b56276c6e77ca6678b6c8621b35a7d8d9"
+    },
+    "discovery": {
+      "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+      "path": "data/state/discovery_run.json",
+      "file_sha256": "301529a60f3209f6b1d5294d6bf1123f90e8c283974528602d461f1c09120f26"
+    },
+    "telemetry": {
+      "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "19bb3e6b2ae1e15c623a97eb08ae6b3f323b1c11cec6fa74aad359f3ca04cfad"
+    },
+    "source_health": {
+      "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+      "path": "data/source_health.json",
+      "file_sha256": "bd741145000720b5d3557bc8e06f7eef2aa8accb232b93fbabc577784e81f97f"
+    },
+    "budget": {
+      "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+      "path": "data/ai_usage/2026-10.json",
+      "file_sha256": "aec8ca63b045c2d44c28ebfddcfd4474651ae5bfc27efbc1247f4171a18e9ca9"
+    }
+  },
+  "rows": [
+    {
+      "index": 1,
+      "url": "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/",
+      "queue_fingerprint": "76cdc28597009114d576b7e20314a93ed1390c31008b831ba7b2f47968ee40a7",
+      "actual_queue_entry_sha256": "0adce2bbbd15676ad37087838345f7ce4877e7e8bf1c88bd347d6da06c594f57",
+      "publication_date": "2026-10-11",
+      "publication_timestamp": "2026-10-11T14:51:22.725Z",
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "calendar_agreement",
+      "original_publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T14:51:22.725Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T14:51:22.725Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        }
+      ],
+      "section": "nacional",
+      "source_topics": [
+        "public_health"
+      ],
+      "original_body_sha256": "ea77802bc5bad54fb476386dc3b9b4bfb4732494feecaa8e9cfa1fc54de46c72",
+      "original_html_sha256": "2b26c82563487d7d05a31e18d78c81fb637e14feaaa503cd79886fd6106122af",
+      "body_characters": 1553,
+      "full_body_read": true,
+      "original_primary_body_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/76cdc28597009114d576b7e20314a93ed1390c31008b831ba7b2f47968ee40a7/raw/metadata/page_text"
+      },
+      "actual_primary_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "captured_at": "2026-10-11T15:07:03.753633+00:00",
+      "current_actual_lane": "LIVE",
+      "current_actual_status": "pending",
+      "current_actual_attempts": 0,
+      "actualAI_score": null,
+      "actual_editorial_gate72_evaluated": false,
+      "pure_current_materiality_preanalysis_result": false,
+      "body_based_classification": "obituary_incidental_cancer_no_sector_action",
+      "independent_triage_reason": "Rechazo preliminar defendible: fallecimiento y trayectoria de periodista; cáncer es causa individual del deceso, sin acto de Minsal, prestador, asegurador, política sanitaria, inversión o nueva capacidad. El gate actual devuelveFalse; no Score/gate72 editorial evaluados.",
+      "supporting_verbatim_quotes": [
+        {
+          "text": "falleció la mañana de este domingo a los 76 años producto de un cáncer.",
+          "start": 106,
+          "end": 177,
+          "source": "full_retained_primary_article_body"
+        }
+      ],
+      "demonstrated_material_requiring_ordinary_FAST": false,
+      "fullbody_reader_AI_calls": 0,
+      "proposed_publication": false,
+      "state_mutations": 0,
+      "corroboration_verified": false,
+      "whole_article_duplicate_verified": false
+    },
+    {
+      "index": 2,
+      "url": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+      "queue_fingerprint": "bbc92593ad927019d68a04f3427e469aedea0e236c2532af9da9af0dfc38309b",
+      "actual_queue_entry_sha256": "774837ae3a8de76dd63bb7f64bdd49ea6f09fb17ede8d7fb0f26c9df3902b0ea",
+      "publication_date": "2026-10-11",
+      "publication_timestamp": "2026-10-11T14:47:52.443Z",
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "calendar_agreement",
+      "original_publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T14:47:52.443Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T14:47:52.443Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        }
+      ],
+      "section": "nacional",
+      "source_topics": [
+        "providers",
+        "competition"
+      ],
+      "original_body_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+      "original_html_sha256": "9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049",
+      "body_characters": 2952,
+      "full_body_read": true,
+      "original_primary_body_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/bbc92593ad927019d68a04f3427e469aedea0e236c2532af9da9af0dfc38309b/raw/metadata/page_text"
+      },
+      "actual_primary_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "captured_at": "2026-10-11T15:07:03.753913+00:00",
+      "current_actual_lane": "LIVE",
+      "current_actual_status": "pending",
+      "current_actual_attempts": 0,
+      "actualAI_score": null,
+      "actual_editorial_gate72_evaluated": false,
+      "pure_current_materiality_preanalysis_result": true,
+      "body_based_classification": "judicial_bus_accident_with_repeated_case_management",
+      "independent_triage_reason": "El gate actual permite análisis porque el cuerpo detalla hospital/derivaciones, aunque el núcleo es ampliación de detención. El balance12recibidos/5altas/4mutual/3internados repiteLIVE3; no inversión, cambio de cobertura, interrupción de red ni presión general de capacidad demostrada. Si se procesa, explicar baja materialidad o eventual agrupación contra3 únicamente tras comparar resultados reales; no forzar score o status.",
+      "supporting_verbatim_quotes": [
+        {
+          "text": "el tribunal resolvió ampliar la detención del imputado a solicitud del Ministerio Público",
+          "start": 508,
+          "end": 597,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "de los 12 pacientes ingresados, cinco ya fueron dados de alta, cuatro fueron derivados a una mutual en Santiago y tres permanecen hospitalizados",
+          "start": 1335,
+          "end": 1479,
+          "source": "full_retained_primary_article_body"
+        }
+      ],
+      "demonstrated_material_requiring_ordinary_FAST": false,
+      "fullbody_reader_AI_calls": 0,
+      "proposed_publication": false,
+      "state_mutations": 0,
+      "corroboration_verified": false,
+      "whole_article_duplicate_verified": false
+    },
+    {
+      "index": 3,
+      "url": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+      "queue_fingerprint": "cab108224d311493028b294814e4e971ec29e91168face4427bc9ebf8b58f9e1",
+      "actual_queue_entry_sha256": "9ede4ea6e1dd52557e9db720ab47013ff3ff64e14bbcc5dd402efd25fe92abd2",
+      "publication_date": "2026-10-11",
+      "publication_timestamp": "2026-10-11T13:35:20.471Z",
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "calendar_agreement",
+      "original_publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T13:35:20.471Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T13:35:20.471Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        }
+      ],
+      "section": "nacional",
+      "source_topics": [
+        "providers"
+      ],
+      "original_body_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+      "original_html_sha256": "7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3",
+      "body_characters": 2787,
+      "full_body_read": true,
+      "original_primary_body_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/cab108224d311493028b294814e4e971ec29e91168face4427bc9ebf8b58f9e1/raw/metadata/page_text"
+      },
+      "actual_primary_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "captured_at": "2026-10-11T15:07:03.754247+00:00",
+      "current_actual_lane": "LIVE",
+      "current_actual_status": "pending",
+      "current_actual_attempts": 0,
+      "actualAI_score": null,
+      "actual_editorial_gate72_evaluated": false,
+      "pure_current_materiality_preanalysis_result": true,
+      "body_based_classification": "specific_human_case_management_low_demonstrated_sector_materiality",
+      "independent_triage_reason": "Atención humana real y balance de12pacientes, derivación a mutual y cirugía individual. El gate actual permite análisis; no se puede etiquetar como ausencia de salud. La fuente no acredita expansión de red, cierre o saturación, gasto material, nuevo contrato, cambio de aseguramiento o mandato sanitario. Valoración editorial ordinaria requerida, sin inferir rechazo numérico ni obligación de publicar.",
+      "supporting_verbatim_quotes": [
+        {
+          "text": "el hospital recibió a 12 pacientes producto del accidente.",
+          "start": 283,
+          "end": 341,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "otros cuatro pacientes fueron derivados a una mutual en Santiago",
+          "start": 533,
+          "end": 597,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "lo harán por razones relacionadas con su domicilio y no por cuestionamientos a la atención recibida",
+          "start": 1749,
+          "end": 1848,
+          "source": "full_retained_primary_article_body"
+        }
+      ],
+      "demonstrated_material_requiring_ordinary_FAST": false,
+      "fullbody_reader_AI_calls": 0,
+      "proposed_publication": false,
+      "state_mutations": 0,
+      "corroboration_verified": false,
+      "whole_article_duplicate_verified": false
+    },
+    {
+      "index": 4,
+      "url": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
+      "queue_fingerprint": "163e2e80aec2d66306c976c8de5b8aaf03eda3e0438ae9c8a6a67c6fe490396a",
+      "actual_queue_entry_sha256": "0925aecf10e22fc7560bde6c4da6b30c5dae45f90cde86cfa203ac3e621053ac",
+      "publication_date": "2026-10-11",
+      "publication_timestamp": "2026-10-11T13:28:14.526Z",
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "calendar_agreement",
+      "original_publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T13:28:14.526Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T13:28:14.526Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        }
+      ],
+      "section": "nacional",
+      "source_topics": [
+        "providers",
+        "regulation",
+        "public_health"
+      ],
+      "original_body_sha256": "461828182f49ea460d59055783ff4d88c413c6720f55fcb25e35b3fc133546eb",
+      "original_html_sha256": "298e026ace0051f53e23f58b2904026a9a40293726660e0c1cc9a5ae9b8d9105",
+      "body_characters": 2666,
+      "full_body_read": true,
+      "original_primary_body_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/163e2e80aec2d66306c976c8de5b8aaf03eda3e0438ae9c8a6a67c6fe490396a/raw/metadata/page_text"
+      },
+      "actual_primary_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "captured_at": "2026-10-11T15:07:03.754467+00:00",
+      "current_actual_lane": "LIVE",
+      "current_actual_status": "pending",
+      "current_actual_attempts": 0,
+      "actualAI_score": null,
+      "actual_editorial_gate72_evaluated": false,
+      "pure_current_materiality_preanalysis_result": false,
+      "body_based_classification": "individual_prisoner_death_and_clemency_no_health_sector_change",
+      "independent_triage_reason": "Rechazo preliminar defendible: cáncer terminal/hospitalización y protocolo ante muerte individual; solicitud de indulto penal no resuelta, sin nuevo régimen de prestación, financiamiento o política clínica. No demuestra negligencia criminal ni cambio general de cobertura sanitaria.",
+      "supporting_verbatim_quotes": [
+        {
+          "text": "padecía un cáncer terminal en etapa cuatro",
+          "start": 225,
+          "end": 267,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "no hay decisiones adoptadas",
+          "start": 2011,
+          "end": 2038,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "Gendarmería activó los protocolos correspondientes",
+          "start": 2511,
+          "end": 2561,
+          "source": "full_retained_primary_article_body"
+        }
+      ],
+      "demonstrated_material_requiring_ordinary_FAST": false,
+      "fullbody_reader_AI_calls": 0,
+      "proposed_publication": false,
+      "state_mutations": 0,
+      "corroboration_verified": false,
+      "whole_article_duplicate_verified": false
+    },
+    {
+      "index": 5,
+      "url": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+      "queue_fingerprint": "48c017ec9f9ca492c3f0ae7bebe9684c98225101a2e128aeee60d4895b7b0657",
+      "actual_queue_entry_sha256": "88b5dfb867c80537eae5f9132e00ecb51c3f41b614fe4416475d3596c64b1d52",
+      "publication_date": "2026-10-11",
+      "publication_timestamp": "2026-10-11T16:02:51.913Z",
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "calendar_agreement",
+      "original_publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T16:02:51.913Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T16:02:51.913Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        }
+      ],
+      "section": "nacional",
+      "source_topics": [
+        "providers"
+      ],
+      "original_body_sha256": "6ec4e6d5db14ab4c9f3f2f3e369bcebb67ae997977ad9a6a00b5e08ac76f5885",
+      "original_html_sha256": "5b772d61fa3df4799765d58d05a009075f591f5d8492bfc74ba3ea56af05716b",
+      "body_characters": 3189,
+      "full_body_read": true,
+      "original_primary_body_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/48c017ec9f9ca492c3f0ae7bebe9684c98225101a2e128aeee60d4895b7b0657/raw/metadata/page_text"
+      },
+      "actual_primary_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "captured_at": "2026-10-11T17:20:11.504060+00:00",
+      "current_actual_lane": "LIVE",
+      "current_actual_status": "pending",
+      "current_actual_attempts": 0,
+      "actualAI_score": null,
+      "actual_editorial_gate72_evaluated": false,
+      "pure_current_materiality_preanalysis_result": false,
+      "body_based_classification": "cultural_condolence_with_repeated_accident_case_balance",
+      "independent_triage_reason": "Rechazo preliminar defendible: condolencias/biografía de músico; balance clínico del mismo accidente repetido deLIVE3/2. La menciónUniversidadCatólica no es prestaciónUCCChristus ni nueva capacidad sanitaria; no resultado médico institucional adicional.",
+      "supporting_verbatim_quotes": [
+        {
+          "text": "manifestó su pesar por el fallecimiento de Penélope Knuth",
+          "start": 101,
+          "end": 158,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "cinco personas ya habían sido dadas de alta, cuatro habían sido derivadas a una mutual en Santiago y tres permanecían internadas",
+          "start": 2203,
+          "end": 2331,
+          "source": "full_retained_primary_article_body"
+        }
+      ],
+      "demonstrated_material_requiring_ordinary_FAST": false,
+      "fullbody_reader_AI_calls": 0,
+      "proposed_publication": false,
+      "state_mutations": 0,
+      "corroboration_verified": false,
+      "whole_article_duplicate_verified": false
+    },
+    {
+      "index": 6,
+      "url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+      "queue_fingerprint": "1f3c9b4fdad8a36de23c44b6e8ca57b9870177e1fb6dd52bb5cde1e095441392",
+      "actual_queue_entry_sha256": "de7af89ebb9169cc89d63768a7e872d72a4ba83ff0288d06a6cbab90b2bef86e",
+      "publication_date": "2026-10-11",
+      "publication_timestamp": "2026-10-11T15:16:25.081Z",
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "calendar_agreement",
+      "original_publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T15:16:25.081Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T15:16:25.081Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        }
+      ],
+      "section": "nacional",
+      "source_topics": [
+        "investment_ma",
+        "financing",
+        "public_health"
+      ],
+      "original_body_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+      "original_html_sha256": "1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25",
+      "body_characters": 4866,
+      "full_body_read": true,
+      "original_primary_body_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/1f3c9b4fdad8a36de23c44b6e8ca57b9870177e1fb6dd52bb5cde1e095441392/raw/metadata/page_text"
+      },
+      "actual_primary_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "captured_at": "2026-10-11T17:20:11.753494+00:00",
+      "current_actual_lane": "LIVE",
+      "current_actual_status": "pending",
+      "current_actual_attempts": 0,
+      "actualAI_score": null,
+      "actual_editorial_gate72_evaluated": false,
+      "pure_current_materiality_preanalysis_result": true,
+      "body_based_classification": "demonstrated_new_material_human_vaccination_response_requires_ordinary_FAST",
+      "independent_triage_reason": "Incremento sanitario operacional cuantificado, ya descubierto pero excluido de procesamiento113: campaña municipal conSSMetropolitanoOriente, móvil desplegado el sábado,883personas atendidas ese día,933atenciones acumuladas y aproximadamente1000dosis entregadas. Nuevo resultado frente a campaña inicialmente descritaOct9sin estas métricas; distintaacción del traslado/cierreUCCOct10. Requiere ordinaryFAST/gate72, no aprobación ni cuota. Mitigacióncivil es contexto: contrato5Oct776,7millones/90días no iniciado y500millonesadjudicación, sin infraestructura terminada.",
+      "supporting_verbatim_quotes": [
+        {
+          "text": "el municipio desplegó una campaña preventiva de vacunación en coordinación con el Servicio de Salud Metropolitano Oriente",
+          "start": 655,
+          "end": 776,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "al que se sumó un vacunatorio móvil durante la jornada del sábado.",
+          "start": 992,
+          "end": 1058,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "Solo ese día se atendió a 883 personas, alcanzando un total acumulado de 933 atenciones desde el inicio de la campaña.",
+          "start": 1059,
+          "end": 1177,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "la entrega de cerca de mil dosis de vacunas.",
+          "start": 1211,
+          "end": 1255,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "las obras todavía no habían comenzado cuando ocurrió la emergencia.",
+          "start": 4247,
+          "end": 4314,
+          "source": "full_retained_primary_article_body"
+        }
+      ],
+      "demonstrated_material_requiring_ordinary_FAST": true,
+      "fullbody_reader_AI_calls": 0,
+      "proposed_publication": false,
+      "state_mutations": 0,
+      "corroboration_verified": false,
+      "whole_article_duplicate_verified": false
+    },
+    {
+      "index": 7,
+      "url": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+      "queue_fingerprint": "d3f50bfb73fb868ff68b8a68d9997de170ce61234b1a344b782f7d1508fcc676",
+      "actual_queue_entry_sha256": "4061d360800c490030f91b917873203065990a3c37a58db90e35e6519a9c5e87",
+      "publication_date": "2026-10-11",
+      "publication_timestamp": "2026-10-11T19:50:58.129Z",
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "calendar_agreement",
+      "original_publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T19:50:58.129Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T19:50:58.129Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        }
+      ],
+      "section": "nacional",
+      "source_topics": [
+        "providers",
+        "public_health"
+      ],
+      "original_body_sha256": "bc1b361e5a23f3225e35d27dd4e42d1488a8408deb93ebbbd6952657e009ee9b",
+      "original_html_sha256": "c80e39904f0edea2f0abbd94c81d5c979361d9c6aadc17d21c50bf336f098a95",
+      "body_characters": 2761,
+      "full_body_read": true,
+      "original_primary_body_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/d3f50bfb73fb868ff68b8a68d9997de170ce61234b1a344b782f7d1508fcc676/raw/metadata/page_text"
+      },
+      "actual_primary_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "captured_at": "2026-10-11T20:34:02.855719+00:00",
+      "current_actual_lane": "LIVE",
+      "current_actual_status": "pending",
+      "current_actual_attempts": 0,
+      "actualAI_score": null,
+      "actual_editorial_gate72_evaluated": false,
+      "pure_current_materiality_preanalysis_result": false,
+      "body_based_classification": "specific_alleged_individual_care_failure_without_filed_legal_or_systemic_action",
+      "independent_triage_reason": "Mención clínica específica, no ruido por título: abogado alega demoras/medicación/silla de ruedas y evalúa demanda contraEstado. Fuente no informa acciónjudicial presentada, hallazgojudicial, nueva regulación, contrato, capacidad o patrón cuantificado de falla. Gate actualFalse defendible por materialidad sectorial no demostrada; conservar atribución y carácter no probado, no declarar causalidad de muerte.",
+      "supporting_verbatim_quotes": [
+        {
+          "text": "evaluarán eventuales acciones judiciales contra el Estado",
+          "start": 94,
+          "end": 151,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "por ahora la prioridad es acompañar a los familiares y esperar la entrega del cuerpo antes de definir los próximos pasos",
+          "start": 950,
+          "end": 1070,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "medicamentos generales, evitando un diagnóstico y tratamiento a tiempo",
+          "start": 2276,
+          "end": 2346,
+          "source": "full_retained_primary_article_body"
+        }
+      ],
+      "demonstrated_material_requiring_ordinary_FAST": false,
+      "fullbody_reader_AI_calls": 0,
+      "proposed_publication": false,
+      "state_mutations": 0,
+      "corroboration_verified": false,
+      "whole_article_duplicate_verified": false
+    },
+    {
+      "index": 8,
+      "url": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+      "queue_fingerprint": "e7b3ca96c457220c2864feae3f174889348b408fd6496ffd51e24bd53e6132c6",
+      "actual_queue_entry_sha256": "1a199641a4b705e7fd0d8ecd13355ebe307136e331ddbf33ee3e9d029210cb59",
+      "publication_date": "2026-10-11",
+      "publication_timestamp": "2026-10-11T19:10:33.088Z",
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "calendar_agreement",
+      "original_publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T19:10:33.088Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T19:10:33.088Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        }
+      ],
+      "section": "politica",
+      "source_topics": [
+        "providers",
+        "public_health"
+      ],
+      "original_body_sha256": "46827634e3ce478bc5df6c182322871810c0a4c4e543f25ed859f67b995688b2",
+      "original_html_sha256": "9bd23f2f884108a559433654f0614fcce2af6a725dacf2693f2968c260772ce3",
+      "body_characters": 4824,
+      "full_body_read": true,
+      "original_primary_body_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/e7b3ca96c457220c2864feae3f174889348b408fd6496ffd51e24bd53e6132c6/raw/metadata/page_text"
+      },
+      "actual_primary_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": true
+      },
+      "captured_at": "2026-10-11T20:35:47.948345+00:00",
+      "current_actual_lane": "LIVE",
+      "current_actual_status": "pending",
+      "current_actual_attempts": 0,
+      "actualAI_score": null,
+      "actual_editorial_gate72_evaluated": false,
+      "pure_current_materiality_preanalysis_result": false,
+      "body_based_classification": "penal_humanitarian_clemency_commentary_no_specific_health_policy_step",
+      "independent_triage_reason": "Reacciones políticas a indulto individual por enfermedad terminal; no proyecto clínico, regulación sanitaria, financiamiento, cobertura o cambio de red ejecutado/formalmente iniciado. Las opiniones sobre potestadpenal no equivalen a propuesta verificable de prestaciónpaliativa. Gate actualFalse defendible con razón específica.",
+      "supporting_verbatim_quotes": [
+        {
+          "text": "reacciones políticas que volvieron a instalar el debate sobre los indultos humanitarios",
+          "start": 165,
+          "end": 252,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "La petición, ingresada el 5 de octubre, no alcanzó a resolverse antes de su fallecimiento.",
+          "start": 1116,
+          "end": 1206,
+          "source": "full_retained_primary_article_body"
+        }
+      ],
+      "demonstrated_material_requiring_ordinary_FAST": false,
+      "fullbody_reader_AI_calls": 0,
+      "proposed_publication": false,
+      "state_mutations": 0,
+      "corroboration_verified": false,
+      "whole_article_duplicate_verified": false
+    },
+    {
+      "index": 9,
+      "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+      "queue_fingerprint": "a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280",
+      "actual_queue_entry_sha256": "e8492b2c4da90fcd507c376f40bbcfe48d53ba0d872b87efca81dc9112ec350e",
+      "publication_date": "2026-10-11",
+      "publication_timestamp": "2026-10-11T22:47:49.888Z",
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "calendar_agreement",
+      "original_publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T22:47:49.888Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T22:47:49.888Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        }
+      ],
+      "section": "culto",
+      "source_topics": [
+        "providers",
+        "public_health"
+      ],
+      "original_body_sha256": "94e66cb5eac914c75172013ca91b92d2c568cd2f1ebcffe0cda9e70e29e4dfc3",
+      "original_html_sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
+      "body_characters": 2645,
+      "full_body_read": true,
+      "original_primary_body_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280/raw/metadata/page_text"
+      },
+      "actual_primary_flags": {
+        "article_verified": true,
+        "publication_date_verified": true,
+        "primary_identity_verified": true,
+        "article_body_complete": null
+      },
+      "captured_at": "2026-10-11T22:52:15.073859+00:00",
+      "current_actual_lane": "LIVE",
+      "current_actual_status": "pending",
+      "current_actual_attempts": 0,
+      "actualAI_score": null,
+      "actual_editorial_gate72_evaluated": false,
+      "pure_current_materiality_preanalysis_result": false,
+      "body_based_classification": "cultural_obituary_prior_2022_2023_clinical_history",
+      "independent_triage_reason": "Rechazo preliminar defendible: fallecimiento de actor, causaactual no especificada y antecedentesCOVID2022/hospitalización/alta2023/rehabilitación. No reporta nuevos resultados de tratamiento, capacidad delHospitalLuisTisné, enfermedadpoblacional, política o inversión2026. No rejuvenecer esos períodos como noticia clínica actual. Campoarticle_body_complete ausente; se conserva, no se inventaTrue.",
+      "supporting_verbatim_quotes": [
+        {
+          "text": "no se detallaron las causas puntuales de su muerte",
+          "start": 378,
+          "end": 428,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "Covid-19 en septiembre de 2022",
+          "start": 492,
+          "end": 522,
+          "source": "full_retained_primary_article_body"
+        },
+        {
+          "text": "Tras recibir el alta médica en 2023",
+          "start": 909,
+          "end": 944,
+          "source": "full_retained_primary_article_body"
+        }
+      ],
+      "demonstrated_material_requiring_ordinary_FAST": false,
+      "fullbody_reader_AI_calls": 0,
+      "proposed_publication": false,
+      "state_mutations": 0,
+      "corroboration_verified": false,
+      "whole_article_duplicate_verified": false
+    }
+  ],
+  "comparators": [
+    {
+      "comparison_live_index": 6,
+      "previous_cohort_index": 77,
+      "url": "https://www.latercera.com/nacional/noticia/salud-garantiza-seguridad-de-agua-potable-en-la-rm-y-anuncia-vacunacion-contra-la-hepatitis-y-tetanos-en-las-condes/",
+      "publication_date": "2026-10-09",
+      "original_body_sha256": "bbfc3435a41bb234e6316fe9bb80ae2bf85ac00a8fcd09d9f488359c21c19bcd",
+      "original_full_body_read": true,
+      "exact_current_primary_reference": {
+        "commit": "123bf2550536030a077c03ad4d56572df24ab418",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105",
+        "json_pointer": "/aa199c65e4c86ca90459050809d00825b70793b0cb86637405032f9dda7ab5fe/raw/metadata/page_text"
+      },
+      "actual_current_status": "rejected",
+      "actual_current_score": 70,
+      "comparison": "Same disaster/campaign family; Oct11 adds actual mobile-vaccinator deployment,883people/933attentions/~1000delivered doses absent inOct9 source. Prior70 rejection is not a duplicate of this measured response.",
+      "source_role": "incremental_family_context_not_duplicate",
+      "corroboration": false
+    }
+  ],
+  "within_live_case_family": {
+    "indices": [
+      2,
+      3,
+      5
+    ],
+    "fact": "12hospitalreceived/5discharged/4mutualtransfers/3remaining; same victim/accident",
+    "relation": "fullbody_verified_shared_case_balance",
+    "entire_article_duplicate": false,
+    "actual_grouping_decision": null,
+    "clinical_source_representative_if_needed": 3
+  },
+  "summary": {
+    "full_bodies_read": 9,
+    "full_body_characters_read": 28243,
+    "actual_pending": 9,
+    "ordinary_preanalysis_true": 3,
+    "ordinary_preanalysis_false": 6,
+    "demonstrated_material_requiring_ordinaryFAST": 1,
+    "all_current_scores": null,
+    "editorial_gate_decisions_actual": null,
+    "publication_approval": false
+  },
+  "recommended_genuine_processing_scope": "All9 existingURLs in a distinctLIVE9 selection namespace; ordinary preanalysis accepts2/3/6 and rejects six if unchanged, with no statusreset/no injected candidate/no frozen113 denominator changes. Genuine paid scores decide the three eligible outcomes; no quota.",
+  "AI_calls": 0,
+  "newHTTP_calls": 0,
+  "discovery_calls": 0,
+  "state_writes": 0,
+  "global_source_acceptance": false,
+  "limitations": [
+    "Preanalysis was replayed read-only through currentsourcegate; these pending rows have not been operationally rejected or editorially analyzed.",
+    "Eight nonpriorityrows are not assigned invented numeric scores or terminalstatuses.",
+    "No claim of publisher-wide exhaustiveness from this9-row check.",
+    "Currentarticle_body_complete field is absent forCulto row9; its absence is preserved."
+  ]
+}
