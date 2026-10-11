@@ -36,12 +36,20 @@ jobs:
           path: work/previous-df-runtime
       - name: Restore first paid checkpoint without duplicate model calls
         run: python scripts/restore_df_runtime_artifact.py work/previous-df-runtime
+      - uses: actions/download-artifact@v4
+        with:
+          name: df-originals-8b1ee4b6806af21584f403114e689b5236bf85c2
+          run-id: 38113493822
+          github-token: ${{ github.token }}
+          path: work/latest-df-runtime
+      - name: Reuse latest hashed originals without replaying state or paid decisions
+        run: python -c "import shutil; shutil.copytree('work/latest-df-runtime/work/df-originals', 'work/df-originals', dirs_exist_ok=True)"
       - name: Assert exclusive isolated branch
         run: test "$GITHUB_REF" = refs/heads/codex/df-end-to-end-20261011
       - name: DF regressions
         run: python -m pytest -q tests/test_df_recovery.py tests/test_press_pipeline.py tests/test_autopilot.py tests/test_live_evidence_replay.py tests/test_source_health_facets.py tests/test_state_persistence.py
       - name: Reconcile live originals and actual Daily DF processing
-        run: timeout --signal=TERM 18m python scripts/reconcile_df.py --live --reuse-originals --capture-fixtures --repair-contaminated-bodies --minutes 12 --process-limit 30
+        run: timeout --signal=TERM 18m python scripts/reconcile_df.py --live --reuse-originals --capture-fixtures --repair-contaminated-bodies --minutes 12 --process-limit 250 --max-pages 24 --max-details 400
       - name: Rebuild candidate feed offline
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline
       - name: Preserve isolated checkpoint and issue evidence
@@ -64,7 +72,7 @@ jobs:
                     runtime_counts=report.get('queue_counts'),next_action=report.get('next_action','Inspect failed workflow before declaring runtime evidence.'))
           path.write_text(json.dumps(queue,ensure_ascii=False,indent=2)+'\n')
           Path('work').mkdir(exist_ok=True)
-          body=f"Codex A · checkpoint runtime DF aislado: {url}\n\nOriginales OK: {report.get('originals_ok','unavailable')}; fallos: {report.get('originals_failed','unavailable')}; registros con recuperación: {report.get('recovered_records','unavailable')}. Cola: {report.get('queue_counts','unavailable')}. Artefacto: {df.get('runtime_artifact')}.\n\nEl runtime usa el engine/scout/processor reales y los guardrails existentes. No declarar PASS por workflow verde: reconciliación 30/90 e independencia editorial siguen abiertas hasta revisar originales y cada omisión. Sólo se escribe la rama aislada; main/staging/producción no se actualizan. Siguiente acción: {df['next_action']}"
+          body=f"Codex A · checkpoint runtime DF aislado: {url}\n\nOriginales OK: {report.get('originals_ok','unavailable')}; fallos: {report.get('originals_failed','unavailable')}; registros con recuperación: {report.get('recovered_records','unavailable')}. Cola: {report.get('queue_counts','unavailable')}. Artefacto: {df.get('runtime_artifact')}.\n\nEngine ejecutado: {report.get('processing',{}).get('engine_executed',False)}. Captura: {report.get('mode')}; un replay no acredita nuevo polling. Se mantienen los guardrails existentes. No declarar PASS por workflow verde: reconciliación 30/90 e independencia editorial siguen abiertas hasta revisar originales y cada omisión. Sólo se escribe la rama aislada; main/staging/producción no se actualizan. Siguiente acción: {df['next_action']}"
           Path('work/df-runtime-comment.md').write_text(body)
           PY
           git config user.name alicanto-salud-bot
