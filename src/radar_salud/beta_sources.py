@@ -507,6 +507,18 @@ def _material(role, title, body):
     return False
 
 
+def _attribute_pulso_what(what):
+    """Attribute a dated generic note at its start, preserving the Model copy."""
+    if not what:
+        return what
+    publisher = r"pulso|la tercera"
+    generic_note_intro = re.match(r"^seg[uú]n\s+la\s+nota\b", what, re.I)
+    named_intro = re.search(publisher, what.split(",", 1)[0], re.I)
+    if re.search(publisher, what, re.I) and (not generic_note_intro or named_intro):
+        return what
+    return f"Según Pulso / La Tercera, {what}"
+
+
 def process_curated_beta_source(raw, cfg):
     from .llm_analysis import analyze_news, news_analysis_input
     from .pipeline import build_signal
@@ -1000,8 +1012,8 @@ def process_curated_beta_source(raw, cfg):
             return reject("editorial_relevance_below_threshold", relevance_score=score, threshold=threshold, analysis_reason=analysis_reason)
         if len(what) < 45 or len(why) < 35:
             return reject("incomplete_editorial_analysis", relevance_score=score, threshold=threshold, analysis_reason=analysis_reason)
-        if role == "media" and not re.search(r"pulso|la tercera", what, re.I):
-            what = f"Según Pulso / La Tercera, {what}"
+        if role == "media":
+            what = _attribute_pulso_what(what)
     elif scoped:
         if score < threshold or len(what) < 45 or len(why) < 35:
             raw.metadata["publication_rejection_reason"] = "editorial_score_or_summary_below_threshold"

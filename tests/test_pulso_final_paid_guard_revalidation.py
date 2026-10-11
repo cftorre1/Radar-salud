@@ -146,6 +146,9 @@ def test_exact_two_current_paid_models_normal_media_pipeline_no_http_or_ai(tmp_p
         assert signal is not None and signal["evidence_maturity"] == "media_reported"
         assert signal["source_type"] == "press_high_trust"
         assert signal["editorial_relevance"] == original["analysis_model_output"]["relevance_score"] >= 72
+        original_what = original["analysis_model_output"]["what_happened"]
+        assert original_what.startswith("Según la nota del ")
+        assert signal["what_happened"] == "Según Pulso / La Tercera, " + original_what
         assert raw.metadata["analysis_model_output"] == original["analysis_model_output"]
         for field in final.PRIOR_FIELDS:
             assert raw.metadata.get(field) == original.get(field)
@@ -157,6 +160,16 @@ def test_exact_two_current_paid_models_normal_media_pipeline_no_http_or_ai(tmp_p
         assert receipt["previous_validation"]["decision"] == "deferred"
         assert receipt["new_validation"]["decision"] == "ready" and receipt["publication_approved"] is False
         final.verified_processing_mode(raw)
+
+
+@pytest.mark.parametrize("what", [
+    "Según Pulso / La Tercera, la nota informó una medida sanitaria.",
+    "Según la nota de La Tercera del 5 de octubre, el Ministerio informó una medida sanitaria.",
+    "Según la nota de Pulso, el Ministerio informó una medida sanitaria.",
+    "La Tercera reportó una medida sanitaria atribuida a su fuente.",
+])
+def test_explicit_publisher_intro_never_receives_duplicate_attribution(what):
+    assert beta_sources._attribute_pulso_what(what) == what
 
 
 def test_rehashed_forged_validation_cannot_become_a_receipt(tmp_path, actual):
