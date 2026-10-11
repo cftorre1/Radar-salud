@@ -313,10 +313,14 @@ def _material(role, title, body):
         mapped_multi_provider_flood = (bool(re.search(r"cl[ií]nicas inundadas", text))
             and "recintos asistenciales afectados" in text and "carabineros" in text
             and bool(re.search(r"dron|monitoreo", text)))
+        reproductive_legislative_progress = (bool(re.search(r"comisi[oó]n de salud", text))
+            and bool(re.search(r"inici[oó] la discusi[oó]n del proyecto de ley", text))
+            and "gestación subrogada" in text)
         return (care_obligation or ges_coverage or care_legislation
                 or proposed_clinical_condition or provider_flood_response
                 or authorized_care_registry or clinical_service_suspension
-                or quantified_health_power_impact or modular_care_deployment or mapped_multi_provider_flood)
+                or quantified_health_power_impact or modular_care_deployment or mapped_multi_provider_flood
+                or reproductive_legislative_progress)
     return False
 
 
