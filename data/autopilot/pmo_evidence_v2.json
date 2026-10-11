@@ -1,16 +1,16 @@
 {
   "authority": {
-    "infra_sha": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+    "infra_sha": "720af52a7e652adcd34afabb43dd609d154f5ca2",
     "learning_ledger_blob_sha": "42ca1e9b9004616448a54d993c1dae68c7fc5e69",
     "learning_ledger_sha256": "5e215fedd45da15b6d5a018de75b171bad03bb4ef1c03187540524ae8ca90b1f",
     "queue_blob_sha": "cb2074db1c68cdd16118eb1f94e61942b0a6b4aa",
     "queue_sha256": "bf1acdfd40f21fa0856087b4007c14b94ca0a96d480d6c8eda5f6d191bde0e27",
     "staging_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
-    "state_control_sha256": "36507c5207f391ca538d4e4230bd73d59c2021d9b014e51f23eaa4c28830e158",
-    "state_sha": "8e16596bd4b1075fa2787acf7b3c5d5678e9a041"
+    "state_control_sha256": "5956065395e575aa0fd5d81fe1f74931a7f4af4756c5be652a0a9946b1dfebfd",
+    "state_sha": "6ba8a53bb4e72800f61855d46eb6b3b8981b73a9"
   },
   "canonical_pmo_updated": false,
-  "corrected_material_event_count": 7,
+  "corrected_material_event_count": 8,
   "correction_is_material_progress": false,
   "criteria": {
     "autonomous_pickup": {
@@ -43,18 +43,18 @@
     "legacy_stage_a": {
       "metrics": {
         "autonomous_pickups": 26,
-        "material_event_count": 26,
-        "max_material_gap_seconds": 4044.346657,
+        "material_event_count": 25,
+        "max_material_gap_seconds": 7669.250408,
         "mode": "live",
-        "observed_seconds": 10015.775238,
+        "observed_seconds": 13443.570821,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 10015.775238,
+        "total_elapsed_seconds": 13443.570821,
         "window_started_at": "2026-10-11T05:29:46.231497Z"
       },
-      "observed_until": "2026-10-11T08:16:42.006735Z",
+      "observed_until": "2026-10-11T09:13:49.802318Z",
       "reasons": [
         "four_real_wall_hours_not_observed",
         "owner_intervention_observation_not_verified",
@@ -73,25 +73,25 @@
       "is_live_proof": false,
       "metrics": {
         "autonomous_pickups": 26,
-        "material_event_count": 26,
-        "max_material_gap_seconds": 4044.346657,
+        "material_event_count": 25,
+        "max_material_gap_seconds": 7669.250408,
         "mode": "live",
-        "observed_seconds": 10015.775238,
+        "observed_seconds": 13443.570821,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 10015.775238,
+        "total_elapsed_seconds": 13443.570821,
         "window_started_at": "2026-10-11T05:29:46.231497Z"
       }
     }
   },
-  "effective_material_event_count": 56,
+  "effective_material_event_count": 55,
   "kind": "autonomy_pmo_evidence",
-  "last_material_progress_at": "2026-10-11T08:13:24.898567Z",
+  "last_material_progress_at": "2026-10-11T07:06:00.551910Z",
   "legacy_stage_a_status": "NOT_PROVEN",
-  "material_event_correction_count": 7,
-  "material_event_correction_signature": "d4f5bd561ec9b07d4613727815a4c7f46f3921f076e8040bd9ae45a4d2c6867f",
+  "material_event_correction_count": 8,
+  "material_event_correction_signature": "14cbca971a3efea245f05e6d7fdd2c121166557d1e33476e8a1396c7251c746e",
   "material_event_corrections": [
     {
       "at": "2026-10-11T06:25:47.641878Z",
@@ -404,15 +404,81 @@
       "retained_event_id": "925d0100631445e1a44175810614a5befcdf121779b029ae9f46c4fe4a455e0e",
       "retained_event_sha256": "8c39d5289f76091aad6036ea40de069298ca33dabc492ceb56dddf1b6b4ec1ae",
       "source_problem_signature": "1216e2ccbd7861a35ca0fe8790933f268db58d7d81a36424ff5564c29f48de60"
+    },
+    {
+      "at": "2026-10-11T09:13:22.246797Z",
+      "binding": {
+        "destination": {
+          "declared_repair_inputs": {},
+          "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+          "failure": {
+            "conclusion": "failure",
+            "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+            "head_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+            "run_id": 38123952091,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38123952091"
+          },
+          "family": "staging_qa",
+          "input_fingerprint": "b4bf579f780e291cef38328053a2795414830b7441956b8d66ac98ef7bc734db",
+          "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+          "task_id": "staging_qa_failed_run_38123952091"
+        },
+        "event_sha256": "498547d4f63204877ac391abfc5129eaa598ffc890ad42f3c18b34832b451828",
+        "prior": {
+          "attempts": 1,
+          "completed_at": "2026-10-11T07:06:30.278098Z",
+          "declared_repair_inputs": {},
+          "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+          "failure": {
+            "conclusion": "failure",
+            "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+            "head_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+            "run_id": 38116961282,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282"
+          },
+          "family": "staging_qa",
+          "history_key": "22b3658760134cf4791788a496e133b1a2a445f95743fb542d808f709ad50cad",
+          "input_fingerprint": "b4bf579f780e291cef38328053a2795414830b7441956b8d66ac98ef7bc734db",
+          "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+          "task_id": "staging_qa_failed_run_38116961282"
+        },
+        "proof": {
+          "before_control_sha256": "eaed3d08caa81761d53d96f7f515fa4368a2ec5c05d1c0846927973af6057992",
+          "before_state_commit": "bf8e94288ed48baf3b52607ec19309385b9d37e9",
+          "claim_control_sha256": "d3e0564243198ac458abcb50ccb64f50baba87aa14eec08bf7e4b1a89b4e04c3",
+          "claim_state_commit": "5a10bac3620a22dddffdf9981d33f37f33da4a61",
+          "evidence": {
+            "path": "data/autopilot/evidence/alias-transition-binding-52149826685173f5132d40b1b1e65905d25756645c0068b99a7b78ddec8d18db.json",
+            "sha256": "08b72a33aa4059383dc7cbde63494e7aa2452d46fcaebeaeca54c919181701e6"
+          },
+          "prior_worker_result": {
+            "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+            "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453"
+          }
+        },
+        "schema_version": 1,
+        "terminal_event_id": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+        "terminal_event_sha256": "2ed9d38034f7a28cb43693792f1013a279c04b1cd51de5dad4a9db2039469f4a",
+        "verified": true
+      },
+      "binding_sha256": "efa4b32876a9219dbeb112c9c190285be5634e5bf3a852cb50a939ac55cae849",
+      "canonical_signature": "23a449c7d100e30ed0021b4b1d6cf69ae9e78906a9181a59489f566d3ddcd5b3",
+      "event_id": "007b67424c875e2c69e2d229bfe23f834ac0c89c26a3c5bff2b3b01a192c5c17",
+      "event_sha256": "498547d4f63204877ac391abfc5129eaa598ffc890ad42f3c18b34832b451828",
+      "id": "55f50b230cb7c77074a0acf2e9cb7af50b203336d3b72becf2b7808e2cfc49e8",
+      "kind": "duplicate_alias_transition",
+      "reason": "A previously attempted unchanged QA failure under a new run ID is a pickup, not new work.",
+      "terminal_event_id": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+      "terminal_event_sha256": "2ed9d38034f7a28cb43693792f1013a279c04b1cd51de5dad4a9db2039469f4a"
     }
   ],
-  "material_event_count": 56,
-  "material_signature": "41c5ba245eb4eb8d8b25a443cd422be61704b192d32902d1eb3d60fa10c2cfd2",
+  "material_event_count": 55,
+  "material_signature": "39347935351dbe516573817cd1dba0d64254daa930297e9a93826af5af021947",
   "observation": {
-    "path": "data/autopilot/evidence/observation-f6ee63e6beea4742b83672e0cf1d336e.json",
-    "sha256": "9f282930a4cf76a07e070ce567b9461ccee378676b0cc0c5d125dc38022af001",
+    "path": "data/autopilot/evidence/observation-b49faaa0352d46189ffb0f2c9ad9e235.json",
+    "sha256": "c54f7bd72cc3cecadbb354c1ffe168ee9970ba12e10c567ee3901791cba7cb7b",
     "staging_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
-    "state_sha": "8e16596bd4b1075fa2787acf7b3c5d5678e9a041"
+    "state_sha": "6ba8a53bb4e72800f61855d46eb6b3b8981b73a9"
   },
   "owner_followup_count": null,
   "owner_followups": "UNKNOWN",

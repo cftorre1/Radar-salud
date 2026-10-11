@@ -2965,5 +2965,30 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "staging_qa_failed_run_38123952091"
+  },
+  {
+    "blocker_fingerprint": "6405665650a49a3e21510c0920470210a3fc79bdb3b1a51f83080112248229ed",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-b49faaa0352d46189ffb0f2c9ad9e235.json",
+        "sha256": "c54f7bd72cc3cecadbb354c1ffe168ee9970ba12e10c567ee3901791cba7cb7b",
+        "staging_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+        "state_sha": "6ba8a53bb4e72800f61855d46eb6b3b8981b73a9"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: staging_qa_failed_run_38123952091",
+    "id": "autonomy_observed_ceae41498ff57b9841f781fbb38ed502a6c5aba888813e1f3463d6558eac97fb",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "staging_qa_failed_run_38123952091"
   }
 ]
