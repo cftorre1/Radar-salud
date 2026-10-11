@@ -1,0 +1,578 @@
+"""Execute independent staging diagnostics, safe repairs and fail-closed acceptance.
+
+This script never pushes. The controller owns leases, commits and continuation.
+Successful diagnostics are observations, not publication or task closure evidence.
+"""
+from __future__ import annotations
+
+import argparse
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+import tempfile
+import xml.etree.ElementTree as ET
+
+SCRIPT_ROOT = Path(__file__).resolve().parents[1]
+FAMILIES = {
+    "media": ("diario_financiero", "pulso_latercera"),
+    "public_data": ("fonasa", "fonasa_datos_abiertos", "isp_anamed", "isp_surveillance", "deis"),
+    "fiscalization": ("superintendencia_fiscalizacion", "suseso_fiscalizacion"),
+    "mutualities": ("clinicas_achs_salud", "achs_seguro_laboral", "mutual_seguridad", "ist"),
+    "editorial": (),
+    "staging_qa": (),
+}
+TESTS = {
+    "media": ("test_press_pipeline.py", "test_live_evidence_replay.py", "test_beta_source_package.py"),
+    "public_data": ("test_fonasa_source.py", "test_isp_anamed_source.py", "test_deis_source.py"),
+    "fiscalization": ("test_superintendencia_pipeline.py", "test_suseso_pipeline.py", "test_source_health_facets.py"),
+    "mutualities": ("test_beta_source_package.py", "test_corporate_newsrooms.py"),
+    "editorial": ("test_weekly_freshness.py", "test_editorial_audit_90d.py", "test_editorial_rules_v2.py", "test_quality_editorial.py"),
+    "staging_qa": (),
+}
+VOLATILE_KEYS = {
+    "generated_at", "updated_at", "checked_at", "reviewed_at", "started_at", "finished_at",
+    "heartbeat_at", "last_heartbeat_at", "duration", "duration_seconds", "elapsed_seconds",
+    "run_id", "log_path", "log_sha256", "response_sha256", "response_bytes",
+}
+SOURCE_ACCEPTANCE = {
+    "external_reconciliation_30d", "external_reconciliation_90d", "publication_trace",
+    "source_health", "qa_pass", "independent_review_pass",
+}
+EDITORIAL_ACCEPTANCE = {"freshness", "top3_audited", "editorial_business_review_pass", "qa_pass", "independent_review_pass"}
+
+
+def digest(value):
+    if isinstance(value, str):
+        value = value.encode("utf-8")
+    return hashlib.sha256(value).hexdigest()
+
+
+def semantic(value):
+    if isinstance(value, dict):
+        return {key: semantic(item) for key, item in sorted(value.items()) if key not in VOLATILE_KEYS}
+    if isinstance(value, list):
+        return [semantic(item) for item in value]
+    if isinstance(value, str):
+        if value.startswith("--junitxml="):
+            return "--junitxml=<artifact>"
+        value = re.sub(r"\b\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})\b", "<timestamp>", value)
+        return re.sub(r"\bin \d+(?:\.\d+)?s\b", "in <duration>", value)
+    return value
+
+
+def semantic_hash(value):
+    return digest(json.dumps(semantic(value), sort_keys=True, ensure_ascii=False, separators=(",", ":")))
+
+
+def atomic_json(path, value):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle, name = tempfile.mkstemp(prefix=path.name + ".", dir=path.parent)
+    try:
+        with os.fdopen(handle, "w", encoding="utf-8") as file:
+            json.dump(value, file, ensure_ascii=False, indent=2)
+            file.write("\n")
+        os.replace(name, path)
+    finally:
+        if os.path.exists(name):
+            os.unlink(name)
+
+
+def read_json(path, fallback=None):
+    try:
+        return json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return fallback
+
+
+def run_command(command, workspace, timeout=180, env=None):
+    environment = dict(os.environ)
+    environment.update({"RADAR_ROOT": str(workspace), "PYTHONPATH": str(workspace / "src") + os.pathsep + str(workspace)})
+    if env:
+        environment.update(env)
+    try:
+        process = subprocess.run(command, cwd=workspace, env=environment, capture_output=True, text=True, timeout=timeout)
+        return {"command": command, "returncode": process.returncode, "stdout": process.stdout, "stderr": process.stderr}
+    except subprocess.TimeoutExpired as error:
+        def decode(value):
+            return value.decode(errors="replace") if isinstance(value, bytes) else (value or "")
+        return {"command": command, "returncode": 124, "stdout": decode(error.stdout), "stderr": decode(error.stderr) + "\nBounded command timeout"}
+    except OSError as error:
+        return {"command": command, "returncode": 127, "stdout": "", "stderr": f"{type(error).__name__}: {error}"}
+
+
+def pytest_counts(xml_path):
+    try:
+        cases = list(ET.parse(xml_path).getroot().iter("testcase"))
+    except (OSError, ET.ParseError):
+        return {"collected": 0, "passed": 0, "skipped": 0, "failed": 0, "cases": [], "proof": False}
+    outcomes = []
+    for case in cases:
+        failed = case.find("failure")
+        error = case.find("error")
+        skipped = case.find("skipped")
+        status = "FAIL" if failed is not None or error is not None else ("SKIP" if skipped is not None else "PASS")
+        detail = failed if failed is not None else (error if error is not None else skipped)
+        outcomes.append({"name": case.get("classname", "") + "::" + case.get("name", ""), "status": status,
+                         "reason": (detail.get("message", "") if detail is not None else "")})
+    return {"collected": len(cases), "passed": sum(x["status"] == "PASS" for x in outcomes),
+            "skipped": sum(x["status"] == "SKIP" for x in outcomes), "failed": sum(x["status"] == "FAIL" for x in outcomes),
+            "cases": outcomes, "proof": bool(cases) and all(x["status"] == "PASS" for x in outcomes)}
+
+
+def tracked_hashes(workspace):
+    result = run_command(["git", "ls-files", "-z"], workspace)
+    hashes = {}
+    for relative in result["stdout"].split("\0"):
+        if not relative or relative.startswith((".github/", "artifacts/", "work/", "docs/", "tests/")):
+            continue
+        path = workspace / relative
+        hashes[relative] = digest(path.read_bytes()) if path.is_file() else None
+    return hashes
+
+
+def blocker(reason, evidence, *, kind="technical", urls=()):
+    identity = {"kind": kind, "reason": reason, "evidence": evidence, "source_urls": sorted(set(urls))}
+    return {**identity, "fingerprint": semantic_hash(identity), "human_required": kind == "policy"}
+
+
+def save_command_evidence(result, directory, name, counts=None):
+    log = result["stdout"] + result["stderr"]
+    path = directory / (name + ".log")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(log, encoding="utf-8")
+    # Raw log retained for reproduction; durations and log paths do not define progress.
+    evidence = {"command": result["command"], "returncode": result["returncode"],
+                "status": "PASS" if result["returncode"] == 0 else "FAIL", "log_path": str(path), "log_sha256": digest(log)}
+    if counts is not None:
+        evidence["pytest"] = counts
+        if not counts["proof"] and result["returncode"] == 0:
+            evidence["status"] = "SKIP" if counts["skipped"] else "UNVERIFIED"
+    evidence["failure_hash"] = semantic_hash({"command": result["command"], "returncode": result["returncode"],
+                                              "cases": (counts or {}).get("cases"),
+                                              "reason": re.sub(r"in \d+(?:\.\d+)?s", "in <duration>", log[-12000:])}) if evidence["status"] == "FAIL" else None
+    return evidence
+
+
+def recovery_module():
+    path = SCRIPT_ROOT / "scripts/autonomy_recovery.py"
+    if not path.is_file():
+        return None
+    spec = importlib.util.spec_from_file_location("autonomy_recovery_lane", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def preserve_partial_proof(report, recovery, logs, label):
+    """Retain directed repair proof while keeping global integration failures open."""
+    if not (recovery.get("partial_candidate") and recovery.get("targeted_validated") and recovery.get("no_new_failures")):
+        return
+    def convert(raw, name):
+        result = {"command": raw.get("command", []), "returncode": raw.get("returncode", 127),
+                  "stdout": raw.get("output", raw.get("stdout", "")), "stderr": raw.get("stderr", "")}
+        return save_command_evidence(result, logs, label + "-" + name)
+    comparison = recovery.get("non_regression", {})
+    report.update(partial_candidate=True, candidate_scope="isolated", no_new_failures=True,
+                  targeted_validated=True, directed_gates=[convert(raw, "directed-" + str(index))
+                    for index, raw in enumerate(recovery.get("directed_gates", []))],
+                  non_regression={**comparison,
+                    "baseline_gate": convert(comparison.get("baseline_gate", {}), "baseline-full"),
+                    "candidate_gate": convert(comparison.get("candidate_gate", {}), "candidate-full")})
+    if recovery.get("live_validated") and recovery.get("live_gate"):
+        report.update(live_validated=True, live_gate=convert(recovery["live_gate"], "live-after-repair"),
+                      live_scope=[recovery["source_slug"]])
+
+
+def source_worker(slug):
+    """Call the current product scout, recording hidden HTTP exceptions as evidence."""
+    from radar_salud import source_scouts, scouts, beta_sources, beta_sources_fast, superintendencia_fiscalizacion
+    constructors = {
+        "diario_financiero": source_scouts.DfHealthScout,
+        "pulso_latercera": lambda: beta_sources_fast.FastCuratedBetaSourceScout("pulso_latercera"),
+        "fonasa": source_scouts.FonasaNewsScout,
+        "fonasa_datos_abiertos": source_scouts.FonasaDataHubScout,
+        "isp_anamed": source_scouts.IspAnamedAlertScout,
+        "isp_surveillance": source_scouts.IspSurveillanceScout,
+        "deis": source_scouts.DeisResourceScout,
+        "superintendencia_fiscalizacion": superintendencia_fiscalizacion.SuperintendenciaFiscalizacionScout,
+        "suseso_fiscalizacion": source_scouts.SusesoFiscalizacionScout,
+    }
+    if slug in FAMILIES["mutualities"]:
+        constructors[slug] = lambda: beta_sources_fast.FastCuratedBetaSourceScout(slug)
+    requests = []
+    original = scouts.fetch_html
+    def fetch(url, *args, **kwargs):
+        entry = {"url": str(url)}
+        requests.append(entry)
+        if len(requests) > 24:
+            entry.update(status="UNVERIFIED", error="bounded_probe_budget: 24 requests per source")
+            raise RuntimeError(entry["error"])
+        try:
+            response = original(url, *args, **kwargs)
+            entry.update(status="PASS", response_sha256=digest(response), response_bytes=len(response.encode()))
+            return response
+        except Exception as error:
+            entry.update(status="FAIL", error=f"{type(error).__name__}: {error}")
+            raise
+    for module in (source_scouts, scouts, beta_sources, beta_sources_fast, superintendencia_fiscalizacion):
+        module.fetch_html = fetch
+    error = None
+    try:
+        items = constructors[slug]().discover()
+    except Exception as exception:
+        items = []
+        error = f"{type(exception).__name__}: {exception}"
+    rows = sorted(({"source_url": item.url, "title": item.title, "event_date": item.event_date,
+                    "content_hash": digest(str(getattr(item, "raw_text", "") or ""))} for item in items),
+                  key=lambda item: (item["event_date"] or "", item["source_url"]), reverse=True)
+    failures = [request for request in requests if request.get("status") != "PASS"]
+    result = {"slug": slug, "technical_status": "error" if error or failures else "ok", "error": error,
+              "discovered": len(rows), "dated": sum(bool(row["event_date"]) for row in rows),
+              "newest_event_date": max((row["event_date"] for row in rows if row["event_date"]), default=None),
+              "samples": rows[:12], "inventory_hash": semantic_hash(rows), "requests": requests,
+              "publication_verified": False, "scope": "discovery_only"}
+    print("AUTONOMY_SOURCE_JSON=" + json.dumps(result, ensure_ascii=False))
+    return 1 if error or failures else 0
+
+
+def source_urls(workspace, task, family):
+    urls = set()
+    def visit(value):
+        if isinstance(value, str):
+            urls.update(re.findall(r"https?://[^\s\"'<>]+", value))
+        elif isinstance(value, dict):
+            for item in value.values():
+                visit(item)
+        elif isinstance(value, list):
+            for item in value:
+                visit(item)
+    visit(task.get("source_urls", []))
+    visit(task.get("sources", []))
+    for filename in ("sources.json", "beta_source_configs.json"):
+        catalog = read_json(workspace / "config" / filename, [])
+        if isinstance(catalog, list):
+            for row in catalog:
+                if row.get("slug") in FAMILIES[family]:
+                    visit(row)
+    return sorted(urls)
+
+
+def verify_acceptance(workspace, task, family, input_sha):
+    """Only a task- and revision-bound explicit acceptance manifest can close work."""
+    manifest = task.get("acceptance_artifact")
+    if not isinstance(manifest, dict) or not manifest.get("path") or not manifest.get("sha256"):
+        return [], "Missing revision-bound acceptance_artifact with path and sha256"
+    path = (workspace / manifest["path"]).resolve()
+    if not path.is_relative_to(workspace.resolve()) or not path.is_file():
+        return [], "Acceptance artifact is missing or outside the candidate workspace"
+    if digest(path.read_bytes()) != manifest["sha256"]:
+        return [], "Acceptance artifact hash does not match its explicit task reference"
+    payload = read_json(path, {})
+    if payload.get("task_id") != task.get("id") or payload.get("candidate_sha") != input_sha or payload.get("verdict") != "PASS":
+        return [], "Acceptance artifact does not bind PASS to this task and candidate revision"
+    required = SOURCE_ACCEPTANCE if FAMILIES[family] else (EDITORIAL_ACCEPTANCE if family == "editorial" else {"qa_pass", "browser_desktop_pass", "browser_mobile_pass", "independent_review_pass"})
+    checks = payload.get("checks", {})
+    if any(checks.get(name) is not True for name in required):
+        return [], "Acceptance artifact lacks explicit PASS checks: " + ", ".join(sorted(name for name in required if checks.get(name) is not True))
+    references = payload.get("evidence", [])
+    if not isinstance(references, list) or not references:
+        return [], "Acceptance artifact has no verifiable evidence references"
+    verified = []
+    for reference in references:
+        if not isinstance(reference, dict) or not reference.get("path") or not reference.get("sha256"):
+            return [], "Every acceptance evidence item needs an artifact path and sha256"
+        target = (workspace / reference["path"]).resolve()
+        if not target.is_relative_to(workspace.resolve()) or not target.is_file() or digest(target.read_bytes()) != reference["sha256"]:
+            return [], "Acceptance evidence missing or changed: " + str(reference.get("path"))
+        verified.append(reference)
+    if FAMILIES[family]:
+        if not set(FAMILIES[family]) <= set(payload.get("sources", [])):
+            return [], "Acceptance manifest does not cover every source in this independent family"
+    return [{"path": manifest["path"], "sha256": manifest["sha256"], "checks": checks, "evidence": verified,
+             "verified": True, "task_id": task["id"], "candidate_sha": input_sha, "verdict": "PASS"}], None
+
+
+def sync_reviewed_editorial(workspace):
+    """Restore/expire only the existing human-reviewed weekly item, never draft copy."""
+    sys.path.insert(0, str(workspace / "src"))
+    from radar_salud.weekly_freshness import reviewed_weekly
+    approved = read_json(workspace / "data/weekly_insight/editorial_approved.json", {})
+    current = reviewed_weekly(approved)
+    changed = []
+    for relative in ("data/weekly_insight/latest.json", "web/data/free_value.json"):
+        path = workspace / relative
+        payload = read_json(path)
+        if not isinstance(payload, dict):
+            continue
+        if semantic_hash(payload.get("weekly_insight")) == semantic_hash(current):
+            continue
+        payload["weekly_insight"] = current
+        if relative.startswith("web/"):
+            payload.setdefault("selection_policy", {})["weekly_insight_status"] = "published_deep_intelligence" if current else "editorial_review_required"
+        else:
+            payload["status"] = "pass" if current else "editorial_review_required"
+            if current:
+                payload["audit"] = approved["audit"]
+        atomic_json(path, payload)
+        changed.append(relative)
+    return {"operation": "sync_existing_reviewed_weekly", "changed_paths": changed,
+            "reviewed_item_available": bool(current), "acceptance": False,
+            "reason": "Existing reviewed freshness gate; task closure requires independent editorial acceptance"}
+
+
+def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeout=180, command_runner=run_command, input_sha=None):
+    workspace = Path(workspace).resolve()
+    report_path = Path(report_path).resolve()
+    logs = report_path.parent / (report_path.stem + "-logs")
+    logs.mkdir(parents=True, exist_ok=True)
+    branch_result = command_runner(["git", "symbolic-ref", "--quiet", "--short", "HEAD"], workspace, timeout=10)
+    branch = branch_result["stdout"].strip()
+    sha_result = command_runner(["git", "rev-parse", "HEAD"], workspace, timeout=10)
+    actual_sha = sha_result["stdout"].strip()
+    input_sha = input_sha or actual_sha
+    report = {"version": 1, "generated_at": datetime.now(timezone.utc).isoformat(), "task_id": task.get("id"),
+              "family": family, "input_sha": input_sha, "status": "BLOCKED", "evidence": [], "blockers": [],
+              "gates": [], "acceptance_proof": [], "changed_paths": [], "validated": False,
+              "workflow_success_is_progress": False, "source_results": []}
+    if branch in {"main", "master", "production", "production-stable"} or sha_result["returncode"] or input_sha != actual_sha:
+        report["blockers"].append(blocker("Runner requires an isolated staging candidate at the declared input SHA", [branch_result, sha_result], kind="policy"))
+        report["semantic_hash"] = semantic_hash(report["blockers"])
+        atomic_json(report_path, report)
+        return report
+    before = tracked_hashes(workspace)
+    report["before_hash"] = semantic_hash(before)
+    supplied_failure = ""
+    if task.get("failure_log_path"):
+        failure_path = (workspace / task["failure_log_path"]).resolve()
+        if failure_path.is_relative_to(workspace) and failure_path.is_file() and failure_path.stat().st_size <= 512000:
+            supplied_failure = failure_path.read_text(errors="replace")
+            report["evidence"].append({"failed_workflow_log": str(failure_path), "sha256": digest(failure_path.read_bytes()),
+                                       "source_run_id": task.get("source_run_id") or task.get("failure", {}).get("run_id"),
+                                       "source_run_url": task.get("source_run_url") or task.get("failure", {}).get("run_url")})
+        else:
+            report["blockers"].append(blocker("Failed workflow log is missing, unsafe or exceeds bounded input size", [{"failure_log_path": task["failure_log_path"]}]))
+    tests = ["tests/" + name for name in TESTS[family] if (workspace / "tests" / name).is_file()]
+    if family == "staging_qa":
+        tests = ["tests"]
+    if not tests:
+        report["blockers"].append(blocker("No targeted deterministic gate is installed for this family", [{"expected_tests": list(TESTS[family])}]))
+    else:
+        xml = logs / "targeted-pytest.xml"
+        command = [sys.executable, "-m", "pytest", "-q", "-rs", "--junitxml=" + str(xml)]
+        if family == "staging_qa":
+            command.extend(["-m", "not integration"])
+        result = command_runner([*command, *tests], workspace, timeout=timeout)
+        gate = save_command_evidence(result, logs, "targeted-pytest", pytest_counts(xml))
+        gate["name"] = "targeted_deterministic_tests"
+        report["gates"].append(gate)
+        report["evidence"].append(gate)
+        if gate["status"] == "FAIL" or (family == "staging_qa" and supplied_failure):
+            module = recovery_module()
+            if module is not None:
+                try:
+                    recovery = module.recover(workspace, task, supplied_failure or (result["stdout"] + result["stderr"]),
+                                              patch=task.get("repair_patch"), allow_model=allow_llm and bool(os.environ.get("OPENAI_API_KEY")), stage=False)
+                except Exception as error:
+                    recovery = {"status": "BLOCKED", "reason": f"{type(error).__name__}: {error}"}
+                report["recovery"] = recovery
+                report["evidence"].append({"recovery_attempt": recovery})
+                if recovery.get("validated") or recovery.get("partial_candidate"):
+                    result = command_runner(gate["command"], workspace, timeout=timeout)
+                    gate = save_command_evidence(result, logs, "targeted-pytest-after-recovery", pytest_counts(xml))
+                    gate["name"] = "targeted_deterministic_tests"
+                    report["gates"][0] = gate
+                    report["evidence"].append(gate)
+                    if gate["status"] == "PASS":
+                        preserve_partial_proof(report, recovery, logs, "test-recovery")
+            if gate["status"] != "PASS":
+                report["blockers"].append(blocker("Targeted deterministic gate failed; no validated repair candidate", [gate, report.get("recovery", {"attempted": False, "reason": "Recovery module unavailable"})]))
+        elif gate["status"] != "PASS":
+            report["blockers"].append(blocker("Targeted test run lacks executed PASS evidence; pytest skips do not prove a live path", [gate]))
+
+    if FAMILIES[family]:
+        def diagnose(slug, phase=""):
+            command = [sys.executable, str(Path(__file__).resolve()), "--diagnose-source", slug]
+            result = command_runner(command, workspace, timeout=timeout)
+            evidence = save_command_evidence(result, logs, "source-" + slug + phase)
+            lines = [line.partition("=")[2] for line in result["stdout"].splitlines() if line.startswith("AUTONOMY_SOURCE_JSON=")]
+            row = read_json_string(lines[-1]) if lines else None
+            if not row:
+                row = {"slug": slug, "technical_status": "error", "error": "No completed scoped discovery evidence", "requests": [], "publication_verified": False}
+            urls = [entry["url"] for entry in row.get("requests", [])] or source_urls(workspace, task, family)
+            evidence["source_urls"] = urls
+            return row, evidence
+        with ThreadPoolExecutor(max_workers=min(3, len(FAMILIES[family]))) as pool:
+            diagnoses = list(pool.map(diagnose, FAMILIES[family]))
+        for row, evidence in diagnoses:
+            report["source_results"].append(row)
+            report["evidence"].append(evidence)
+            if row["technical_status"] != "ok" or not row.get("dated"):
+                recovery = None
+                if row["technical_status"] != "ok":
+                    failed_urls = [entry["url"] for entry in row.get("requests", []) if entry.get("status") == "FAIL"]
+                    source_url = (failed_urls or evidence["source_urls"] or [None])[0]
+                    report["real_failure"] = {"kind": "source_runtime", "source_url": source_url,
+                                              "failure_signature": semantic_hash({"slug": row["slug"], "error": row.get("error"),
+                                                                                   "requests": [x for x in row.get("requests", []) if x.get("status") != "PASS"]}),
+                                              "trace_path": evidence["log_path"], "trace_sha256": evidence["log_sha256"],
+                                              "observed_at": datetime.now(timezone.utc).isoformat(), "verified": bool(source_url and (row.get("error") or failed_urls))}
+                    module = recovery_module()
+                    if module is not None:
+                        try:
+                            recovery = module.recover(workspace, task, Path(evidence["log_path"]).read_text(),
+                                                      source_slug=row["slug"], patch=task.get("repair_patch"),
+                                                      allow_model=allow_llm and bool(os.environ.get("OPENAI_API_KEY")), stage=False)
+                        except Exception as error:
+                            recovery = {"status": "BLOCKED", "validated": False, "blocker": f"{type(error).__name__}: {error}"}
+                        report.setdefault("source_recovery", []).append({"slug": row["slug"], "attempt": recovery})
+                        report["evidence"].append({"source_recovery_attempt": recovery, "source": row["slug"]})
+                    if recovery and (recovery.get("validated") or recovery.get("partial_candidate")):
+                        updated, updated_evidence = diagnose(row["slug"], "-after-recovery")
+                        report["evidence"].append(updated_evidence)
+                        if updated["technical_status"] == "ok" and updated.get("dated"):
+                            report["source_results"][-1] = updated
+                            report["failure_action"] = "repaired"
+                            preserve_partial_proof(report, recovery, logs, "source-recovery-" + row["slug"])
+                            continue
+                    report["failure_action"] = "blocked"
+                reason = "Scoped live discovery failed: " + row["slug"] if row["technical_status"] != "ok" else "No dated discovery proves current coverage: " + row["slug"]
+                report["blockers"].append(blocker(reason, [evidence, row, {"automated_recovery": recovery or {"attempted": False, "reason": "No test failure or source recovery module installed"}}], urls=evidence["source_urls"]))
+
+    if family == "editorial" and report["gates"] and all(gate["status"] == "PASS" for gate in report["gates"]):
+        try:
+            report["evidence"].append(sync_reviewed_editorial(workspace))
+        except (ImportError, OSError, KeyError, ValueError, TypeError) as error:
+            report["blockers"].append(blocker("Existing reviewed weekly sync could not be proven", [{"error": f"{type(error).__name__}: {error}"}]))
+
+    after = tracked_hashes(workspace)
+    changed = sorted(path for path in set(before) | set(after) if before.get(path) != after.get(path))
+    if changed:
+        xml = logs / "full-pytest.xml"
+        result = command_runner([sys.executable, "-m", "pytest", "-q", "-rs", "-m", "not integration", "--junitxml=" + str(xml)], workspace, timeout=max(timeout, 300))
+        gate = save_command_evidence(result, logs, "full-pytest", pytest_counts(xml))
+        gate["name"] = "full_deterministic_tests_before_candidate"
+        report["gates"].append(gate)
+        report["evidence"].append(gate)
+        if gate["status"] != "PASS":
+            report["blockers"].append(blocker("Full acceptance gate rejects the candidate; preserve demonstrated failures without lowering gates", [gate]))
+        if (workspace / "tests/web.test.cjs").is_file():
+            result = command_runner(["npm", "test"], workspace, timeout=timeout)
+            gate = save_command_evidence(result, logs, "web-tests")
+            gate["name"] = "web_deterministic_tests"
+            report["gates"].append(gate)
+            report["evidence"].append(gate)
+            if gate["status"] != "PASS":
+                report["blockers"].append(blocker("Web regression gate rejects repair candidate", [gate]))
+    # Product candidates and the staging QA lane retain independent reviewer and
+    # browser contracts. Missing tools are explicit technical blockers, not PASS.
+    if changed or family == "staging_qa":
+        commands = [
+            ("independent_reviewer", [sys.executable, "scripts/review_candidate.py", "--web", "web", "--sha", input_sha,
+                                       "--output", str(logs / "reviewer.json")]),
+            ("browser_desktop_and_mobile", ["npm", "run", "test:browser"]),
+        ]
+        for name, command in commands:
+            proof_path = logs / "reviewer.json" if name == "independent_reviewer" else workspace / "artifacts/browser.json"
+            if proof_path.is_file() and not proof_path.is_symlink():
+                proof_path.unlink()
+            result = command_runner(command, workspace, timeout=max(timeout, 300))
+            gate = save_command_evidence(result, logs, name)
+            gate["name"] = name
+            if name == "independent_reviewer":
+                review = read_json(logs / "reviewer.json", {})
+                gate["reviewer_proof"] = review
+                if result["returncode"] == 0 and (review.get("candidate_sha") != input_sha or
+                        not review.get("checks") or not all(value is True for value in review["checks"].values()) or
+                        any(item.get("severity") == "critical" for item in review.get("findings", []))):
+                    gate["status"] = "UNVERIFIED"
+            else:
+                browser = read_json(workspace / "artifacts/browser.json", {})
+                stats = browser.get("stats", {})
+                projects = {item.get("name") for item in browser.get("config", {}).get("projects", [])}
+                gate["browser_proof"] = {"stats": stats, "projects": sorted(projects)}
+                if result["returncode"] == 0 and (not stats.get("expected") or stats.get("unexpected", 0) or
+                        stats.get("skipped", 0) or not {"desktop", "mobile"} <= projects):
+                    gate["status"] = "UNVERIFIED"
+            report["gates"].append(gate)
+            report["evidence"].append(gate)
+            if gate["status"] != "PASS":
+                report["blockers"].append(blocker("Independent candidate gate rejected or could not execute: " + name, [gate]))
+    report["changed_paths"] = changed
+    report["after_hash"] = semantic_hash(after)
+    report["targeted_validated"] = bool(report["gates"]) and report["gates"][0]["status"] == "PASS"
+    report["family_live_validated"] = bool(report["source_results"]) and all(row["technical_status"] == "ok" and row.get("dated") for row in report["source_results"])
+    if not report.get("live_scope"):
+        report["live_validated"] = report["family_live_validated"]
+    report["validated"] = bool(report["gates"]) and all(gate["status"] == "PASS" for gate in report["gates"]) and (not FAMILIES[family] or report["family_live_validated"])
+    proof, missing = verify_acceptance(workspace, task, family, input_sha)
+    if proof and report["validated"] and not report["blockers"] and not changed:
+        report["status"] = "PASS"
+        report["acceptance_proof"] = proof
+    else:
+        if missing:
+            report["blockers"].append(blocker("Explicit task acceptance is still open: " + missing,
+                                              [{"family": family, "task_id": task.get("id"), "diagnostics_are_acceptance": False}], kind="acceptance"))
+        if changed and (report["validated"] or report.get("partial_candidate")):
+            report["status"] = "REPAIRED"
+    report["blocker"] = report["blockers"][0] if report["blockers"] else None
+    report["audit_fingerprint"] = semantic_hash({"blockers": report["blockers"], "source_results": report["source_results"],
+                                                  "gates": [{"name": gate["name"], "status": gate["status"], "pytest": gate.get("pytest")} for gate in report["gates"]]})
+    report["semantic_hash"] = semantic_hash({"status": report["status"], "audit_fingerprint": report["audit_fingerprint"],
+                                              "changed_paths": changed, "after_hash": report["after_hash"], "acceptance_proof": report["acceptance_proof"]})
+    definition_keys = ("id", "objective", "instructions", "constraints", "evidence_required", "approved_at", "sources", "source_urls",
+                       "repair_patch", "acceptance_artifact", "independent_review")
+    # A new lease, owner/run or pickup commit cannot license another identical audit.
+    report["evidence_revision"] = semantic_hash({"task": {key: task[key] for key in definition_keys if key in task}, "acceptance": proof})
+    report["material_progress"] = {"mutation_candidate": bool(changed and (report["validated"] or report.get("partial_candidate"))), "blocker_candidate": bool(report["blockers"]),
+                                   "verified_closure": report["status"] == "PASS", "requires_durable_comparison": True,
+                                   "workflow_success": False}
+    atomic_json(report_path, report)
+    return report
+
+
+def read_json_string(value):
+    try:
+        return json.loads(value)
+    except (ValueError, TypeError):
+        return None
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--family", choices=FAMILIES)
+    parser.add_argument("--workspace", type=Path)
+    parser.add_argument("--task-json", type=Path)
+    parser.add_argument("--report", type=Path)
+    parser.add_argument("--input-sha")
+    parser.add_argument("--timeout", type=int, default=180)
+    parser.add_argument("--allow-llm", action="store_true")
+    parser.add_argument("--no-llm", action="store_true", help="Default: use deterministic diagnosis and approved existing editorial evidence")
+    parser.add_argument("--diagnose-source", choices=sorted({slug for slugs in FAMILIES.values() for slug in slugs}), help=argparse.SUPPRESS)
+    args = parser.parse_args(argv)
+    if args.diagnose_source:
+        return source_worker(args.diagnose_source)
+    if not all((args.family, args.workspace, args.task_json, args.report)):
+        parser.error("--family, --workspace, --task-json and --report are required")
+    if args.timeout <= 0:
+        parser.error("--timeout must be positive")
+    task = read_json(args.task_json)
+    if not isinstance(task, dict) or not task.get("id"):
+        parser.error("--task-json must contain a task object with id")
+    report = execute_lane(args.family, args.workspace, task, args.report, allow_llm=args.allow_llm and not args.no_llm,
+                          timeout=args.timeout, input_sha=args.input_sha)
+    print(json.dumps({"task_id": report["task_id"], "family": report["family"], "status": report["status"],
+                      "validated": report["validated"], "changed_paths": report["changed_paths"], "semantic_hash": report["semantic_hash"]}))
+    # A faithfully recorded blocker is a successful worker completion, never a task PASS.
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

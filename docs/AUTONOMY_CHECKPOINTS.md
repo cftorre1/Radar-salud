@@ -55,7 +55,7 @@ revocation and relevant input changes fence old tokens. Unrelated staging commit
 do not cancel a live worker.
 
 Directed validation: `python -m unittest discover -s tests -p test_autonomy_engine.py -v`.
-35 tests passed, covering independent claims, lost tokens, expiry, STALLED while
+36 tests passed, covering independent claims, lost tokens, expiry, STALLED while
 heartbeats continue, repeated/reordered blockers, globally repeated failures,
 explicit acceptance proof, scoped non-regression and real-clock Stage A checks.
 The four-hour evaluator test injects a clock; it is not live Stage A evidence.
@@ -67,3 +67,21 @@ at three; unchanged blocked tasks remain open without synthetic progress.
 Next hypothesis: hosted Actions can use the same lease/CAS contract and continue
 another family immediately after a PASS or blocker, with independent candidate
 review and explicit unresolved-task evidence.
+
+## 4. Family workers and honest LIVE evidence
+
+Decision: media, public data, fiscalization, mutualities, editorial and staging QA
+have separate workers. Source probes run concurrently and call scoped recovery
+even when fixtures pass. Pytest skips never constitute LIVE proof. Blockers retain
+commands, URLs and log hashes; semantic identities exclude observation clocks.
+
+Directed validation: `python -m unittest discover -s tests -p test_autonomy_lane_runner.py -v`.
+13 tests passed. A real local staging media run executed 13 directed tests; DF and
+Pulso returned proxy HTTP 403. Recovery reproduced both failures and recorded
+external technical blockers without model calls. This is local network evidence,
+not hosted source repair or coverage acceptance. Those source hosts are not in
+the managed cloud network allowlist; no network bypass was attempted.
+
+Next hypothesis: hosted workers can exercise their scoped public-source paths,
+save a useful isolated candidate despite unrelated staging failures, and route it
+to an independent reviewer rather than restart from the old tree.
