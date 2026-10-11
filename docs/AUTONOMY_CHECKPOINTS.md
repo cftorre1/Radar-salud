@@ -158,3 +158,37 @@ Those are local fixtures, not hosted Stage A evidence.
 Next hypothesis: pinned repair candidates that are later safely integrated into
 staging can continue into genuine post-merge runtime acceptance without a false
 closure on the isolated branch or loss of the durable candidate.
+
+## 9. Source closure after staging integration and actual runtime
+
+Decision: the `source_recovery_reconciliation_gate_2026_10_11` added to staging
+in `24d4c1a8d6a70d73324207b33985378aeff36142` applies to all source families.
+An isolated commit or PR remains candidate evidence. Source closure requires the
+existing reviewed acceptance manifest, `staging_merge_sha` matching the actual
+input SHA, and that SHA incorporated into the recorded current `origin/staging`.
+Missing staging references fail closed. The runner does not fetch, merge or
+promote any product change while checking acceptance.
+
+The manifest additionally requires `runtime_after_merge_pass` and a hashed
+evidence reference with `kind=runtime_after_merge`. Its JSON declares the same
+`staging_sha`, `execution_after_merge=true`, and a trace covering every source in
+the family. Each entry records the matching source/SHA, an operational outcome
+(`published`, `rejected` or `genuine_absence`), source URL, substantive runtime
+evidence, execution command and an exact hashed source log. The log must bind
+the source, URL, outcome and SHA. Exit-zero metadata alone cannot close a source.
+The prior 30/90-day reconciliation, publication trace, health, QA and independent
+review checks remain required.
+
+Directed validation: `python -m unittest discover -s tests -p test_autonomy_lane_runner.py -v`.
+18 tests passed. Real local Git ancestry tests reject an unincorporated candidate
+despite a complete manifest and accept the matching incorporated SHA only with
+complete post-merge runtime evidence. Negative cases cover unavailable staging,
+wrong merge/runtime SHA, missing after-merge execution, incomplete family traces,
+metadata-only traces and mismatched logs. Controlled test source artifacts do
+not constitute hosted LIVE evidence or source-repair acceptance.
+Source recovery also binds its actual hashed LIVE gate and directed tests to the
+specific failed source, so a repaired claim cannot rely on unrelated PASS logs.
+
+Next hypothesis: hosted source executors can record this post-merge provenance
+and independently reviewed operational outcome for each source; until then
+candidate commits remain useful work and source tasks remain open.

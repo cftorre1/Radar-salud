@@ -3,6 +3,7 @@ import importlib.util
 import json
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -58,17 +59,69 @@ class RunnerTests(unittest.TestCase):
         with patch.object(runner, "tracked_hashes", return_value={"src/product.py": "same"}):
             return runner.execute_lane(family, self.root, self.task, self.report, command_runner=self.fake_commands(**kwargs))
 
+    def git(self, *args):
+        return subprocess.run(["git", *args], cwd=self.root, check=True, capture_output=True, text=True).stdout.strip()
+
+    def staging_reference(self, *, incorporated=True):
+        """Use real Git ancestry; the fixture records a fetched staging reference."""
+        if (self.root / ".git").exists():
+            return
+        self.git("init", "-b", "autonomy/media/test")
+        self.git("config", "user.name", "Runner test")
+        self.git("config", "user.email", "runner-test@example.invalid")
+        product = self.root / "product.json"
+        product.write_text('{"base":true}\n')
+        self.git("add", "product.json")
+        self.git("commit", "-m", "staging baseline")
+        base = self.git("rev-parse", "HEAD")
+        self.git("update-ref", "refs/remotes/origin/staging", base)
+        product.write_text('{"candidate":true}\n')
+        self.git("add", "product.json")
+        self.git("commit", "-m", "isolated source candidate")
+        self.sha = self.git("rev-parse", "HEAD")
+        if incorporated:
+            self.git("update-ref", "refs/remotes/origin/staging", self.sha)
+
     def acceptance(self, family="media", **overrides):
+        if runner.FAMILIES[family]:
+            self.staging_reference()
         evidence = self.root / "acceptance-evidence.json"
         evidence.write_text(json.dumps({"source_url": "https://source.example/item", "event_date": "2026-10-10"}))
         checks = runner.SOURCE_ACCEPTANCE if runner.FAMILIES[family] else runner.EDITORIAL_ACCEPTANCE
         payload = {"task_id": self.task["id"], "candidate_sha": self.sha, "verdict": "PASS", "sources": list(runner.FAMILIES[family]),
                    "checks": {name: True for name in checks}, "evidence": [{"path": evidence.name, "sha256": runner.digest(evidence.read_bytes())}]}
+        if runner.FAMILIES[family]:
+            trace = []
+            for slug in runner.FAMILIES[family]:
+                record = {"source": slug, "staging_sha": self.sha, "source_url": "https://source.example/" + slug,
+                          "outcome": "rejected", "runtime_evidence": {"rejected": [{"reason": "Controlled source fixture is outside editorial scope"}]}}
+                command = [sys.executable, "-c", "import json; print(json.dumps(" + repr(record) + "))"]
+                executed = subprocess.run(command, cwd=self.root, check=True, capture_output=True, text=True)
+                log = self.root / (slug + "-runtime.log")
+                log.write_text(executed.stdout)
+                trace.append({**record, "command": command, "returncode": executed.returncode,
+                              "log_path": log.name, "log_sha256": runner.digest(log.read_bytes())})
+            runtime = self.root / "runtime-after-merge.json"
+            runtime.write_text(json.dumps({"staging_sha": self.sha, "execution_after_merge": True, "trace": trace}))
+            payload["staging_merge_sha"] = self.sha
+            payload["evidence"].append({"path": runtime.name, "sha256": runner.digest(runtime.read_bytes()), "kind": "runtime_after_merge"})
         payload.update(overrides)
         path = self.root / "acceptance.json"
         path.write_text(json.dumps(payload))
         self.task["acceptance_artifact"] = {"path": path.name, "sha256": runner.digest(path.read_bytes())}
         return path, evidence
+
+    def rewrite_acceptance_runtime(self, modify):
+        path = self.root / "acceptance.json"
+        manifest = json.loads(path.read_text())
+        reference = next(item for item in manifest["evidence"] if item.get("kind") == "runtime_after_merge")
+        runtime_path = self.root / reference["path"]
+        runtime = json.loads(runtime_path.read_text())
+        modify(runtime)
+        runtime_path.write_text(json.dumps(runtime))
+        reference["sha256"] = runner.digest(runtime_path.read_bytes())
+        path.write_text(json.dumps(manifest))
+        self.task["acceptance_artifact"]["sha256"] = runner.digest(path.read_bytes())
 
     def test_semantic_hash_ignores_heartbeat_and_report_location_not_source_date(self):
         first = {"generated_at": "2026-10-11T02:00:00Z", "checked_at": "old", "event_date": "2026-10-10",
@@ -110,7 +163,67 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(report["status"], "PASS")
         self.assertTrue(report["acceptance_proof"][0]["verified"])
         self.assertEqual(report["acceptance_proof"][0]["candidate_sha"], self.sha)
+        self.assertEqual(report["acceptance_proof"][0]["staging_merge_sha"], self.sha)
+        self.assertEqual(report["acceptance_proof"][0]["origin_staging_sha"], self.sha)
         self.assertFalse(report["blockers"])
+
+    def test_isolated_candidate_cannot_close_sources_despite_complete_manifest(self):
+        self.staging_reference(incorporated=False)
+        self.acceptance()
+        report = self.execute()
+        self.assertEqual(report["status"], "BLOCKED")
+        self.assertFalse(report["acceptance_proof"])
+        self.assertTrue(any("not incorporated" in item["reason"] for item in report["blockers"]))
+
+    def test_source_closure_requires_available_staging_reference_and_merge_sha(self):
+        self.acceptance()
+        self.git("update-ref", "-d", "refs/remotes/origin/staging")
+        proof, reason = runner.verify_acceptance(self.root, self.task, "media", self.sha)
+        self.assertFalse(proof)
+        self.assertIn("unavailable", reason)
+        self.git("update-ref", "refs/remotes/origin/staging", self.sha)
+        self.acceptance(staging_merge_sha="b" * 40)
+        proof, reason = runner.verify_acceptance(self.root, self.task, "media", self.sha)
+        self.assertFalse(proof)
+        self.assertIn("staging_merge_sha", reason)
+        self.acceptance(checks={name: True for name in runner.SOURCE_ACCEPTANCE if name != "runtime_after_merge_pass"})
+        proof, reason = runner.verify_acceptance(self.root, self.task, "media", self.sha)
+        self.assertFalse(proof)
+        self.assertIn("runtime_after_merge_pass", reason)
+
+    def test_source_closure_rejects_missing_after_merge_execution_or_incomplete_trace(self):
+        cases = [
+            lambda runtime: runtime.update(execution_after_merge=False),
+            lambda runtime: runtime.update(staging_sha="b" * 40),
+            lambda runtime: runtime.update(trace=[]),
+            lambda runtime: runtime.update(trace=runtime["trace"][:1]),
+            lambda runtime: runtime["trace"][0].update(runtime_evidence={}),
+            lambda runtime: runtime["trace"][0].update(staging_sha="b" * 40),
+            lambda runtime: runtime["trace"][0].update(returncode=1),
+            lambda runtime: runtime["trace"][0].update(log_sha256="b" * 64),
+        ]
+        for index, modify in enumerate(cases):
+            with self.subTest(case=index):
+                self.acceptance()
+                self.rewrite_acceptance_runtime(modify)
+                proof, reason = runner.verify_acceptance(self.root, self.task, "media", self.sha)
+                self.assertFalse(proof)
+                self.assertTrue(reason)
+
+    def test_source_closure_rejects_only_command_metadata_or_unbound_runtime_log(self):
+        self.acceptance()
+        self.rewrite_acceptance_runtime(lambda runtime: runtime.update(trace=[{"command": ["echo", "PASS"], "returncode": 0}]))
+        proof, reason = runner.verify_acceptance(self.root, self.task, "media", self.sha)
+        self.assertFalse(proof)
+        self.assertIn("substantive", reason)
+        self.acceptance()
+        runtime = json.loads((self.root / "runtime-after-merge.json").read_text())
+        log_path = self.root / runtime["trace"][0]["log_path"]
+        log_path.write_text("Successful command, no source or staging identity\n")
+        self.rewrite_acceptance_runtime(lambda value: value["trace"][0].update(log_sha256=runner.digest(log_path.read_bytes())))
+        proof, reason = runner.verify_acceptance(self.root, self.task, "media", self.sha)
+        self.assertFalse(proof)
+        self.assertIn("bind actual source execution", reason)
 
     def test_acceptance_rejects_changed_artifact_missing_family_or_wrong_revision(self):
         for overrides in ({"candidate_sha": "b" * 40}, {"sources": ["diario_financiero"]}, {"checks": {"qa_pass": True}}, {"task_id": "another-task"}):
@@ -187,10 +300,37 @@ class RunnerTests(unittest.TestCase):
         self.assertTrue(proof["verified"])
         self.assertEqual(proof["trace_sha256"], runner.digest(Path(proof["trace_path"]).read_bytes()))
         self.assertEqual(report["failure_action"], "blocked")
+        self.assertIn(proof["source_slug"], runner.FAMILIES["media"])
         technical = next(item for item in report["blockers"] if item["kind"] == "technical")
         self.assertIn("log_sha256", technical["evidence"][0])
         self.assertIn("source_urls", technical["evidence"][0])
         self.assertFalse(technical["human_required"])
+
+    def test_full_recovered_source_binds_actual_live_gate_to_failure_slug(self):
+        self.install_gate("media")
+        first = self.fake_commands(source_failure=True)
+        passed = self.fake_commands()
+        probes = {}
+        def command(command, workspace, timeout=180, **kwargs):
+            if "--diagnose-source" in command:
+                slug = command[-1]
+                probes[slug] = probes.get(slug, 0) + 1
+                return (first if probes[slug] == 1 else passed)(command, workspace, timeout=timeout)
+            return passed(command, workspace, timeout=timeout)
+        recovery = Mock(return_value={"status": "REPAIRED", "validated": True, "changed_paths": ["src/radar_salud/source_scouts.py"]})
+        with patch.object(runner, "recovery_module", return_value=SimpleNamespace(recover=recovery)), \
+             patch.object(runner, "tracked_hashes", return_value={"src/radar_salud/source_scouts.py": "same"}):
+            report = runner.execute_lane("media", self.root, self.task, self.report, command_runner=command)
+        self.assertEqual(report["failure_action"], "repaired")
+        self.assertTrue(report["live_validated"])
+        self.assertEqual(report["live_scope"], [report["real_failure"]["source_slug"]])
+        self.assertEqual(report["live_gate"]["status"], "PASS")
+        self.assertEqual(report["live_gate"]["returncode"], 0)
+        self.assertEqual(report["live_gate"]["command"][-1], report["real_failure"]["source_slug"])
+        self.assertTrue(report["directed_gates"])
+        self.assertTrue(all(gate["status"] == "PASS" for gate in report["directed_gates"]))
+        live = report["live_gate"]
+        self.assertEqual(live["log_sha256"], runner.digest(Path(live["log_path"]).read_bytes()))
 
     def test_partial_directed_repair_keeps_failed_full_gates_and_hashed_proof(self):
         report = {"family": "media", "validated": False}

@@ -18,6 +18,7 @@ import subprocess
 import sys
 import tempfile
 import xml.etree.ElementTree as ET
+from urllib.parse import urlparse
 
 SCRIPT_ROOT = Path(__file__).resolve().parents[1]
 FAMILIES = {
@@ -43,7 +44,7 @@ VOLATILE_KEYS = {
 }
 SOURCE_ACCEPTANCE = {
     "external_reconciliation_30d", "external_reconciliation_90d", "publication_trace",
-    "source_health", "qa_pass", "independent_review_pass",
+    "source_health", "qa_pass", "independent_review_pass", "runtime_after_merge_pass",
 }
 EDITORIAL_ACCEPTANCE = {"freshness", "top3_audited", "editorial_business_review_pass", "qa_pass", "independent_review_pass"}
 
@@ -276,10 +277,14 @@ def verify_acceptance(workspace, task, family, input_sha):
     if digest(path.read_bytes()) != manifest["sha256"]:
         return [], "Acceptance artifact hash does not match its explicit task reference"
     payload = read_json(path, {})
+    if not isinstance(payload, dict):
+        return [], "Acceptance artifact must contain a manifest object"
     if payload.get("task_id") != task.get("id") or payload.get("candidate_sha") != input_sha or payload.get("verdict") != "PASS":
         return [], "Acceptance artifact does not bind PASS to this task and candidate revision"
     required = SOURCE_ACCEPTANCE if FAMILIES[family] else (EDITORIAL_ACCEPTANCE if family == "editorial" else {"qa_pass", "browser_desktop_pass", "browser_mobile_pass", "independent_review_pass"})
     checks = payload.get("checks", {})
+    if not isinstance(checks, dict):
+        return [], "Acceptance artifact checks must contain explicit named PASS decisions"
     if any(checks.get(name) is not True for name in required):
         return [], "Acceptance artifact lacks explicit PASS checks: " + ", ".join(sorted(name for name in required if checks.get(name) is not True))
     references = payload.get("evidence", [])
@@ -296,8 +301,66 @@ def verify_acceptance(workspace, task, family, input_sha):
     if FAMILIES[family]:
         if not set(FAMILIES[family]) <= set(payload.get("sources", [])):
             return [], "Acceptance manifest does not cover every source in this independent family"
+        source_proof, reason = verify_source_staging_acceptance(workspace, payload, verified, family, input_sha)
+        if reason:
+            return [], reason
+    else:
+        source_proof = {}
     return [{"path": manifest["path"], "sha256": manifest["sha256"], "checks": checks, "evidence": verified,
-             "verified": True, "task_id": task["id"], "candidate_sha": input_sha, "verdict": "PASS"}], None
+             "verified": True, "task_id": task["id"], "candidate_sha": input_sha, "verdict": "PASS", **source_proof}], None
+
+
+def verify_source_staging_acceptance(workspace, payload, references, family, input_sha):
+    """An isolated candidate is never source implementation or source closure."""
+    if not re.fullmatch(r"[0-9a-f]{40}", str(input_sha)) or payload.get("staging_merge_sha") != input_sha:
+        return {}, "Source acceptance must bind staging_merge_sha to the actual input SHA"
+    reference = run_command(["git", "rev-parse", "--verify", "refs/remotes/origin/staging^{commit}"], workspace, timeout=10)
+    staging_sha = reference["stdout"].strip()
+    if reference["returncode"] != 0 or not re.fullmatch(r"[0-9a-f]{40}", staging_sha):
+        return {}, "Source acceptance requires the recorded current origin/staging reference; it is unavailable"
+    ancestry = run_command(["git", "merge-base", "--is-ancestor", input_sha, staging_sha], workspace, timeout=10)
+    if ancestry["returncode"] != 0:
+        return {}, "Source candidate input SHA is not incorporated into recorded origin/staging"
+    runtime_refs = [item for item in references if item.get("kind") == "runtime_after_merge"]
+    if not runtime_refs:
+        return {}, "Source acceptance needs hashed runtime_after_merge evidence after staging integration"
+    covered = set()
+    outcomes = {"published", "rejected", "genuine_absence"}
+    for item in runtime_refs:
+        runtime = read_json(workspace / item["path"], {})
+        if not isinstance(runtime, dict) or runtime.get("staging_sha") != input_sha or runtime.get("execution_after_merge") is not True:
+            return {}, "Source runtime artifact must prove execution_after_merge bound to staging SHA"
+        trace = runtime.get("trace")
+        if not isinstance(trace, list) or not trace:
+            return {}, "Source runtime artifact has no actual source execution trace"
+        for entry in trace:
+            if not isinstance(entry, dict):
+                return {}, "Source runtime trace must contain evidence objects"
+            slug = entry.get("source")
+            url = str(entry.get("source_url") or "")
+            parsed_url = urlparse(url)
+            detail = entry.get("runtime_evidence")
+            if (slug not in FAMILIES[family] or entry.get("staging_sha") != input_sha or
+                    entry.get("outcome") not in outcomes or parsed_url.scheme not in {"http", "https"} or not parsed_url.netloc or
+                    not isinstance(detail, (dict, list)) or not semantic(detail)):
+                return {}, "Source runtime trace lacks a matching source/SHA and substantive operational outcome"
+            command = entry.get("command")
+            if not isinstance(command, list) or not command or not all(isinstance(arg, str) and arg for arg in command) or entry.get("returncode") != 0:
+                return {}, "Source runtime trace lacks successful actual execution evidence"
+            log_path = entry.get("log_path")
+            log_hash = entry.get("log_sha256")
+            if not isinstance(log_path, str) or not re.fullmatch(r"[0-9a-f]{64}", str(log_hash)):
+                return {}, "Source runtime trace lacks its exact execution log and hash"
+            log = (workspace / log_path).resolve()
+            if not log.is_relative_to(workspace.resolve()) or not log.is_file() or digest(log.read_bytes()) != log_hash:
+                return {}, "Source runtime execution log is missing or changed"
+            content = log.read_text(errors="replace")
+            if not all(value in content for value in (input_sha, slug, url, entry["outcome"])):
+                return {}, "Source runtime log does not bind actual source execution and outcome to the staging SHA"
+            covered.add(slug)
+    if covered != set(FAMILIES[family]):
+        return {}, "Post-merge runtime evidence does not cover every source in this independent family"
+    return {"staging_merge_sha": input_sha, "origin_staging_sha": staging_sha, "runtime_after_merge": runtime_refs}, None
 
 
 def sync_reviewed_editorial(workspace):
@@ -420,6 +483,7 @@ def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeo
                     failed_urls = [entry["url"] for entry in row.get("requests", []) if entry.get("status") == "FAIL"]
                     source_url = (failed_urls or evidence["source_urls"] or [None])[0]
                     report["real_failure"] = {"kind": "source_runtime", "source_url": source_url,
+                                              "source_slug": row["slug"],
                                               "failure_signature": semantic_hash({"slug": row["slug"], "error": row.get("error"),
                                                                                    "requests": [x for x in row.get("requests", []) if x.get("status") != "PASS"]}),
                                               "trace_path": evidence["log_path"], "trace_sha256": evidence["log_sha256"],
@@ -440,6 +504,8 @@ def execute_lane(family, workspace, task, report_path, *, allow_llm=False, timeo
                         if updated["technical_status"] == "ok" and updated.get("dated"):
                             report["source_results"][-1] = updated
                             report["failure_action"] = "repaired"
+                            report.update(live_gate=updated_evidence, live_scope=[row["slug"]], live_validated=True,
+                                          directed_gates=[gate for gate in report["gates"] if gate["status"] == "PASS"])
                             preserve_partial_proof(report, recovery, logs, "source-recovery-" + row["slug"])
                             continue
                     report["failure_action"] = "blocked"
