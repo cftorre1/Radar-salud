@@ -75,6 +75,9 @@ class PendingQueue:
         # URL identity is scoped to fiscalization. Legacy hashes remain evidence,
         # and a verified rediscovery can repair stock without consuming AI twice.
         from .superintendencia_fiscalizacion import canonical_url
+        from collections import Counter
+        items=list(items)
+        asset_uses=Counter(alias for raw in items for alias in raw.metadata.get('listing_asset_aliases',[]))
         fiscal_index = {}
         for old_key, item in self.items.items():
             if item.get("source") in FISCALIZATION_SOURCES:
@@ -83,10 +86,14 @@ class PendingQueue:
             key = fingerprint(raw)
             identity = raw.metadata.get('source_record_id')
             aliases = fiscal_index.get((source, canonical_url(raw.url), identity), []) if source in FISCALIZATION_SOURCES else []
+            if source in FISCALIZATION_SOURCES:
+                aliases=list(dict.fromkeys(aliases+[key for asset in raw.metadata.get('listing_asset_aliases',[]) if asset_uses[asset]==1
+                    for key in fiscal_index.get((source,canonical_url(asset),identity),[])]))
             if aliases:
                 records = [(old_key, self.items.pop(old_key)) for old_key in aliases]
                 rank = {"published": 5, "rejected": 4, "processing": 3, "retry": 2, "pending": 1, "archived": 0}
                 old_key, item = max(records, key=lambda pair: rank.get(pair[1].get("status"), 0))
+                item['detected_at']=min(record['detected_at'] for _,record in records)
                 legacy_keys = set(item.get("legacy_keys", [])) | {alias for alias, _ in records if alias != key}
                 if legacy_keys:
                     item["legacy_keys"] = sorted(legacy_keys)

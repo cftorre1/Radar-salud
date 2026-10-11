@@ -119,3 +119,18 @@ def test_history_canonical_url_alias_is_one_act_but_offices_remain_distinct():
     b={**a,'source_url':'https://www.superdesalud.gob.cl/normativa/acto','title':'Acto corregido'}
     assert len(merge_history([a],[b]))==1
     assert len(merge_history([{**a,'source_record_id':'Oficio 1'}],[{**b,'source_record_id':'Oficio 2'}]))==2
+
+
+def test_unique_listing_image_alias_recovers_original_detection_without_merging_shared_images(tmp_path):
+    from radar_salud.models import RawItem
+    old=RawItem('superintendencia_fiscalizacion','Informe','https://www.superdesalud.gob.cl/old.jpg','SIS','official','2022-12-31',metadata={'event_date_basis':'publication'})
+    q=PendingQueue(tmp_path/'queue.json');detected=datetime(2026,9,1,tzinfo=timezone.utc);q.discover(old.source_slug,[old],now=detected)
+    current=RawItem(old.source_slug,'Informe corregido','https://www.superdesalud.gob.cl/observatorio/informe','SIS','official','2022-12-31',metadata={'event_date_basis':'publication','listing_asset_aliases':[old.url]})
+    q.discover(old.source_slug,[current],now=datetime(2026,10,11,tzinfo=timezone.utc))
+    assert len(q.items)==1
+    item=q.items[fingerprint(current)];assert item['detected_at']==detected.isoformat()
+    assert item['raw']['url']==current.url and item['rediscovery_repairs'][0]['previous_raw']['url']==old.url
+    q=PendingQueue(tmp_path/'shared.json');q.discover(old.source_slug,[old],now=detected)
+    other=RawItem(**{**current.__dict__,'url':current.url+'-different'})
+    q.discover(old.source_slug,[current,other],now=datetime(2026,10,11,tzinfo=timezone.utc))
+    assert len(q.items)==3

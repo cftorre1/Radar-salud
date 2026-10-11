@@ -136,6 +136,8 @@ def parse_listing(html, page_name, page_url, scope, kind):
                 "publication_date": publication_date, "emission_date": emission_date,
                 "event_date_basis": "emission" if emission_date else "publication", "date_conflicts": conflicts,
                 "attachments": [{"url": pdf, "label": "PDF"}] if pdf else [],
+                "listing_asset_aliases": [canonical_url(urljoin(page_url,href)) for href,_ in title_cell.get('links',[])
+                    if re.search(r'\.(?:jpg|jpeg|png)(?:\?|$)',href,re.I)],
             }))
     return out
 
