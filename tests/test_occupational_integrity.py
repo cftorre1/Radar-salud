@@ -8,7 +8,7 @@ import pytest
 
 from radar_salud.occupational_sources import (
     Article, SourceDiscoveryError, discover_items, fetch_listing, market_role,
-    materiality, valid_date,
+    materiality, valid_date, classify_content_kind,
 )
 
 TODAY = date(2026, 10, 11)
@@ -400,4 +400,37 @@ def test_real_available_reporting_tool_and_generic_grc_manual_remain_rejected():
 ])
 def test_generic_negated_or_unquantified_updates_stay_closed(title, body):
     assert not materiality("mutuality", title, body)[0]
+
+
+@pytest.mark.parametrize("fragment,mutual,expected", [
+    ("a-dos-anos-de-la-ley-karin", False, "study"),
+    ("renovado-centro-de-entrenamiento", False, "news"),
+    ("achs-pone-a-disposicion-guia", False, "prevention"),
+    ("conoce-las-actualizaciones", False, "news"),
+    ("licitacion-publica-convenio-marco", True, "commercial"),
+    ("gran-americas-se-incorpora", True, "commercial"),
+    ("manual-grc", True, "prevention"),
+])
+def test_live_content_kind_describes_article_without_changing_its_gate(fragment, mutual, expected):
+    raw = live_material_fixture(fragment, mutual=mutual)
+    body = raw["metadata"]["page_text"]
+    before = materiality("mutuality", raw["title"], body)
+    assert classify_content_kind(before[1], raw["title"], body) == expected
+    assert materiality("mutuality", raw["title"], body) == before
+    assert raw["event_date"] == raw["metadata"]["publication_date"]
+
+
+def test_study_landing_classification_does_not_promote_an_unassessed_report():
+    title = "Reporte de Sostenibilidad IST 2025"
+    body = "El reporte correspondiente al año2025 incluye60 indicadores GRI y SASB que documentan desempeño."
+    accepted, reason = materiality("mutuality", title, body)
+    assert not accepted
+    assert classify_content_kind(reason, title, body) == "study"
+
+
+def test_content_kind_labels_cannot_override_missing_date_or_generic_promotion():
+    assert classify_content_kind("missing_publication_date", "Nueva clínica amplía servicios") == "news"
+    assert classify_content_kind("no_verifiable_material_change", "Descuentos en atenciones") == "commercial"
+    assert classify_content_kind("campaign_event_testimonial_or_recognition", "Campaña rutinaria de prevención") == "prevention"
+    assert not materiality("mutuality", "Descuentos en atenciones", "Una promoción comercial ofrece precios especiales.")[0]
 

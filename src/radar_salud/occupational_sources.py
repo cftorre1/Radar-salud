@@ -346,6 +346,35 @@ def materiality(role, title, body):
     return False, "no_verifiable_material_change"
 
 
+def classify_content_kind(materiality_reason, title="", body=""):
+    """Describe source content without changing date, role or editorial gates.
+
+    A dated study can lack material evidence in its short landing page. Its
+    type remains ``study`` while the linked document awaits assessment.
+    These four labels are inventory descriptors, not relevance scores.
+    """
+    headline, text = fold(title), fold(f"{title} {body}")
+    if (materiality_reason == "quantified_occupational_data"
+            or re.search(r"\b(?:estudio|informe|reporte|analisis|boletin estadistico)\b", headline)):
+        return "study"
+    if materiality_reason in {"quantified_coverage_change", "capacity_procurement_call"}:
+        return "commercial"
+    if materiality_reason in {"capacity_or_investment_change", "public_private_coverage_change",
+                              "quantified_operational_process_change"}:
+        return "news"
+    if materiality_reason == "new_operational_tool_or_protocol":
+        return "prevention" if re.search(r"\b(?:guia|manual|protocolo)\b", headline) else "news"
+    if re.search(r"\b(?:licitacion|tarifas?|descuentos?|promocion comercial|venta|cotiza)\b", headline):
+        return "commercial"
+    if re.search(r"\b(?:guia|manual|protocolo|recomendaciones|prevencion|preventiva|preventivas|"
+                 r"consejos|autocuidado|campana)\b", headline):
+        return "prevention"
+    if (materiality_reason == "campaign_event_testimonial_or_recognition"
+            and re.search(r"\b(?:campana|prevencion|preventiv\w*|bienestar)\b", text)):
+        return "prevention"
+    return "news"
+
+
 def discover_items(scout, html, detail_loader, *, as_of=None, max_items=None):
     from .beta_sources import _Links
     from urllib.parse import urljoin, urlparse, urlunparse
