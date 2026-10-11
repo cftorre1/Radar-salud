@@ -5,6 +5,9 @@ on:
     paths:
       - 'scripts/provider_recurrent_checkpoint.py'
       - '.github/workflows/provider-recurrent-checkpoint.yml'
+      - 'src/radar_salud/public_source_pipeline.py'
+      - 'data/state/pending_queue.json'
+      - 'data/source_health.json'
 permissions:
   contents: read
 concurrency:
