@@ -602,6 +602,21 @@ def test_proven_publisher_exceptions_pass_only_enumeration_with_explicit_incompl
     assert proof["article_content_verified"] is (kind != "video")
 
 
+def test_explicit_unresolved_primary_date_label_preserves_conflict_instead_of_claiming_verified_date(evidence):
+    row, metadata, trace = append_publisher_exception(evidence, "date_conflict")
+    row["publication_date_evidence"] = "unresolved_primary_publisher_date_conflict"
+    result = qa.evaluate(**evidence)
+    assert result["findings"] == []
+    assert result["checks"]["coverage_dimensions"]["publication_dates_complete"] is False
+    assert result["checks"]["original_publisher_exception_validation"][0]["publication_date"] is None
+    assert row["publication_date_verified"] is False
+    row["publication_date_verified"] = True
+    assert "publisher_exception_original_not_verified" in codes(evidence)
+    row["publication_date_verified"] = False
+    row["publication_date_evidence"] = "current_verified_detail"
+    assert "publisher_conflict_falsely_labeled_verified_date" in codes(evidence)
+
+
 @pytest.mark.parametrize("tamper", ["missing_bytes", "wrong_original_hash", "adopted_date", "invalid_visible_byline", "invented_old_days", "verified_article", "adopted_timestamp", "borrowed_timestamp", "body_hash"])
 def test_conflict_exception_cannot_hide_missing_originals_or_invent_a_convenient_date(evidence, tamper):
     row, metadata, trace = append_publisher_exception(evidence, "date_conflict")
