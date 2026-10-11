@@ -1,8 +1,8 @@
 {
   "source": "deis",
   "outcome": "OPERATIVE_DEGRADED",
-  "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115202557",
-  "runtime_commit": "ca3d22a7fde6b5dd82c4e16a37c0ffd62547d766",
+  "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117181348",
+  "runtime_commit": "3d3a272218fd49a67c585fc901fb1950fb14d4b5",
   "verified_primary_html_sha256": "799dbf08981dc768a636edac5b8769f864b2d1718d0eb0170cf28ab2e70ce58e",
   "repair": "Literal-space and Unicode official document links encoded once; Ninja Tables row cells unwrapped from captured response; catalog periods remain undated non-feed resources.",
   "dated_documents_discovered": 12,
@@ -13,7 +13,7 @@
     "scope": "Centro FIC dated PDF notices only; not entire DEIS release coverage",
     "material_30_days": 0,
     "material_90_days": 0,
-    "other_dated_references_in_90_days": "ENO 31-08 editorial-only update; GES mapping 23-07 reference spreadsheet without substantiated editorial change; outside the PDF publication lane"
+    "other_dated_references_in_90_days": "ENO and GES are XLS/XLSX references outside the dated-PDF lane; no material publication is asserted from an update label. See URL-level reference evidence."
   },
   "alicanto": {
     "detected": 12,
@@ -23,6 +23,12 @@
     "archive_reason": "outside_90_day_backfill",
     "queue_scope": "Only actual GitHub native queue replay rows for DEIS appended; all other queue rows preserved"
   },
-  "catalog_phase": "330 statistical resource rows captured and parser replay PASS; five-catalog full live replay in progress",
-  "next_action": "Read the full five-catalog replay; ingest non-feed catalog state; verify statistical dataset samples without inventing publication dates."
+  "catalog_phase": "All five live catalogs captured and parsed through native discovery, 572 resources; five publisher-verified national datasets captured; no catalog surface error",
+  "next_action": "After safe merge to staging, replay the core capture with preserved queue state and verify catalog/reference changes; do not publish an undated dataset as news. Historical over-limit PDF references retain exact degradation.",
+  "catalog_resources": 572,
+  "national_datasets": 5,
+  "catalog_state": "data/state/deis_catalog.json",
+  "excluded_document_evidence": "deis-excluded-documents.json",
+  "codex_evidence": "codex-final-transport.json",
+  "dataset_sample_evidence": "runs/38117463026/dataset_samples.json"
 }

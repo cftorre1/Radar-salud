@@ -135,7 +135,7 @@
     },
     "fonasa": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-10-11T05:46:01.082805+00:00",
+      "checked_at": "2026-10-11T06:15:07.614563+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -192,16 +192,17 @@
       "poll_mode": "discovery_and_document_verification_only",
       "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
       "runtime_environment": "github_actions",
-      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115490854",
-      "runtime_commit": "52acee50dceff03dc3c26a66ec44588ccc84ac79",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117181348",
+      "runtime_commit": "3d3a272218fd49a67c585fc901fb1950fb14d4b5",
+      "coverage_complete": false,
       "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json",
       "blocking_component": "Frontal público HTTP AWS ALB (Server awselb/2.0), tras TLS verificado, responde403 sin challenge WAF identificado. La regla causante y su dueño interno no son observables.",
       "minimum_human_step": "Administrador web de FONASA: revisar el rechazo HTTP403 del frontal AWS ALB para GET público desde GitHub hospedado, habilitar acceso autorizado de monitoreo o entregar export oficial accesible y confirmar rutas canónicas de noticias; luego repetir esta Action.",
-      "coverage_complete": false
+      "runtime_error_stage": "http403_after_verified_tls"
     },
     "isp_anamed": {
       "name": "ISP / ANAMED",
-      "checked_at": "2026-10-11T05:46:52.627005+00:00",
+      "checked_at": "2026-10-11T06:17:39.603089+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -248,6 +249,20 @@
             "status": "blocked",
             "error_type": "URLError",
             "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "ANAMED",
+            "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "ANAMED",
+            "url": "https://ispch.gob.cl/categorias-alertas/anamed/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
           }
         ],
         "partial_failure": true,
@@ -259,16 +274,17 @@
       "poll_mode": "discovery_and_document_verification_only",
       "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
       "runtime_environment": "github_actions",
-      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115490854",
-      "runtime_commit": "52acee50dceff03dc3c26a66ec44588ccc84ac79",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117181348",
+      "runtime_commit": "3d3a272218fd49a67c585fc901fb1950fb14d4b5",
+      "coverage_complete": false,
       "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json",
       "blocking_component": "Destino/ruta TCP443 no responde; no existe respuesta HTTP ni handshake TLS. No es posible atribuir el silencio a un firewall, hosting o regla concreta desde estos síntomas.",
       "minimum_human_step": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action.",
-      "coverage_complete": false
+      "runtime_error_stage": "tcp443_timeout_before_tls"
     },
     "deis": {
       "name": "DEIS",
-      "checked_at": "2026-10-11T05:38:00.741627+00:00",
+      "checked_at": "2026-10-11T06:23:13.761127+00:00",
       "last_signal_at": null,
       "discovered": 12,
       "new": 0,
@@ -295,7 +311,165 @@
         "rejected_editorial_only": 0,
         "rejected_unproven_update": 2,
         "document_verification": "pending_pipeline",
+        "excluded_documents": [
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/cmd_vigente.pdf",
+            "title": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+            "listing_sha256": "ad4ee0c71bd1ab2c7d98454d0a000bea96f63bf5a48289da9a28fe7c9c7d6ed9",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/decreto-460-de-1970.pdf",
+            "title": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+            "listing_sha256": "ad4ee0c71bd1ab2c7d98454d0a000bea96f63bf5a48289da9a28fe7c9c7d6ed9",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Volume-1-CIE-10-2016-cha.pdf",
+            "title": "Volumen 1 CIE-10 2016-cha",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "update_without_proven_material_change",
+            "publication_date": null,
+            "listing_notice": "Volumen 1 CIE-10 2016-cha ¡Actualizado 15/12/2017!",
+            "listing_sha256": "ad4ee0c71bd1ab2c7d98454d0a000bea96f63bf5a48289da9a28fe7c9c7d6ed9",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/CIE10-2015-Vol-2.pdf",
+            "title": "Volumen 2 Manual de Instrucciones",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Volumen 2 Manual de Instrucciones ¡Agregado el 07/08/2015!",
+            "listing_sha256": "ad4ee0c71bd1ab2c7d98454d0a000bea96f63bf5a48289da9a28fe7c9c7d6ed9",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/PAHO-CIE-10_Vol.-3.pdf",
+            "title": "Volumen 3 Índice Alfabético",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "update_without_proven_material_change",
+            "publication_date": null,
+            "listing_notice": "Volumen 3 Índice Alfabético Nota: ¡Actualizado el 01/03/2018!",
+            "listing_sha256": "ad4ee0c71bd1ab2c7d98454d0a000bea96f63bf5a48289da9a28fe7c9c7d6ed9",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2015/03/ActualizacionCatalogoDiagnosticos1.pdf",
+            "title": "Actualización Catalogo Diagnosticos.pdf",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Actualización Catalogo Diagnosticos.pdf ¡Agregado 26/03/2015!",
+            "listing_sha256": "ad4ee0c71bd1ab2c7d98454d0a000bea96f63bf5a48289da9a28fe7c9c7d6ed9",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/deis/rem2008/100408/NormatecnicaCIE10.pdf",
+            "title": "Decreto Norma Técnica sobre Uso de CIE 10",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Decreto Norma Técnica sobre Uso de CIE 10",
+            "listing_sha256": "ad4ee0c71bd1ab2c7d98454d0a000bea96f63bf5a48289da9a28fe7c9c7d6ed9",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Decreto-356-Complementa-Decreto-Uso-de-la-CIE-10.pdf",
+            "title": "Decreto 356 Complementa Decreto Uso de la CIE-10",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Decreto 356 Complementa Decreto Uso de la CIE-10 ¡Agregado 15/12/2017!",
+            "listing_sha256": "ad4ee0c71bd1ab2c7d98454d0a000bea96f63bf5a48289da9a28fe7c9c7d6ed9",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2012/12/DEIS-Centro-FIC.pdf",
+            "title": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+            "listing_sha256": "ad4ee0c71bd1ab2c7d98454d0a000bea96f63bf5a48289da9a28fe7c9c7d6ed9",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          }
+        ],
+        "reference_only_resources": [
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20tabular%20CIE-10%20-%20agosto%202026.xlsx",
+            "title": "Lista Tabular CIE-10",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Lista Tabular CIE-10 Nota: no contiene las inclusiones de las subcategorías. ¡Actualizado agosto/2026! Actualización editorial: revisión de redacción y ortografía, sin cambios en el contenido de la tabla."
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Topografia_Morfologia_200525.xlsx",
+            "title": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición . ¡Publicado 20/05/2025!"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/DEIS-EPI-ENO-Decreto%207%202019%20actualizaci%C3%B3n%20agosto%202026.xlsx",
+            "title": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019– Elaborada por DEIS y Epidemiología",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019 – Elaborada por DEIS y Epidemiología . ¡Actualización 31/08/2026! Actualización editorial: ajuste en la presentación de los códigos CIE-10, sin cambios en el contenido de la lista."
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20Becker-adaptada%20a%20Chile.xlsx",
+            "title": "Lista de Becker adaptada a Chile Diciembre 2025",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Lista de Becker adaptada a Chile Diciembre 2025 . La Lista de Becker et al., adaptada a Chile, es una estructura derivada de la CIE-10 que organiza las causas de muerte en grupos epidemiológicamente consistentes y comparables. El DEIS la utiliza para realizar el análisis de la mortalidad, identificar tendencias y apoyar la toma de decisiones en salud pública"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/ICDTRANScorresp9-10.xls",
+            "title": "Homologación CIE-9 – CIE-10",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Homologación CIE-9 – CIE-10"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/DatosAbiertos/LRS/Patologias%20Ley%20Ricarte%20Soto.xlsx",
+            "title": "Patologías Ley Ricarte Soto",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Patologías Ley Ricarte Soto"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/GES%2090%20CIE-10%20v1_4.xlsx",
+            "title": "GES – 90 Problemas de Salud",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "GES – 90 Problemas de Salud Actualizada 23-07-2026"
+          }
+        ],
         "coverage_status": "dated_documents_found",
+        "catalog_summary": {
+          "catalogs": 5,
+          "resources": 572,
+          "national_datasets": 5,
+          "partial_failure": false,
+          "errors": [],
+          "feed_eligible": false
+        },
         "verified_publications": 12,
         "latest_verified_publication_date": "2026-06-25",
         "poll_mode": "discovery_and_document_verification_only",
@@ -309,7 +483,7 @@
             "sha256": "b0991012d8100f8d34ad2ed9812577d274173229baec3ae846824e649c9a58fe",
             "bytes": 740491,
             "content_type": "application/pdf",
-            "captured_at": "2026-10-11T05:37:39.109139+00:00"
+            "captured_at": "2026-10-11T06:22:51.959771+00:00"
           },
           {
             "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual%20Cap%C3%ADtulo%20XV%20Embarazo%20Parto%20y%20Puerperio%20180825.pdf",
@@ -319,7 +493,7 @@
             "sha256": "2360136b3e34c84607ee244c159b1cd746e0c2928b2ad26580c55795dd16edb0",
             "bytes": 565507,
             "content_type": "application/pdf",
-            "captured_at": "2026-10-11T05:37:40.843471+00:00"
+            "captured_at": "2026-10-11T06:22:53.728106+00:00"
           },
           {
             "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XVIII%20de%20la%20CIE-10.pdf",
@@ -329,7 +503,7 @@
             "sha256": "5e18ac4be8dbc9831472128e27e937945e4d98778de3487f696c5caecd62e277",
             "bytes": 320765,
             "content_type": "application/pdf",
-            "captured_at": "2026-10-11T05:37:42.315386+00:00"
+            "captured_at": "2026-10-11T06:22:55.133642+00:00"
           },
           {
             "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/C%C3%B3digos%20Post%20COVID-19%20Efecto%20adverso%20Vacuna.pdf",
@@ -339,7 +513,7 @@
             "sha256": "dbc4db8c668e6c9a576d3795555108ef4340028257af1d515a8a8846e315d006",
             "bytes": 150654,
             "content_type": "application/pdf",
-            "captured_at": "2026-10-11T05:37:43.601001+00:00"
+            "captured_at": "2026-10-11T06:22:56.531293+00:00"
           },
           {
             "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL1.pdf",
@@ -360,7 +534,7 @@
             "sha256": "0012341842f985dc67fb39609c6cc591a76cc27b7dc1796eb07ad3fb48f5a2bf",
             "bytes": 6186363,
             "content_type": "application/pdf",
-            "captured_at": "2026-10-11T05:37:48.719939+00:00"
+            "captured_at": "2026-10-11T06:23:01.965752+00:00"
           },
           {
             "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL3.pdf",
@@ -381,7 +555,7 @@
             "sha256": "87b092dd8d62026f00801b266941b626e3fac56494b32ea3451a7ad7a6f2c3fc",
             "bytes": 983571,
             "content_type": "application/pdf",
-            "captured_at": "2026-10-11T05:37:53.481784+00:00"
+            "captured_at": "2026-10-11T06:23:06.929564+00:00"
           },
           {
             "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
@@ -391,7 +565,7 @@
             "sha256": "3078a003dc028e838581c2ae6093f1a7b288c7772c0968486a8dc024e5668061",
             "bytes": 604477,
             "content_type": "application/pdf",
-            "captured_at": "2026-10-11T05:37:55.324269+00:00"
+            "captured_at": "2026-10-11T06:23:08.450601+00:00"
           },
           {
             "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
@@ -401,7 +575,7 @@
             "sha256": "393fb72ea20f6dcee2be746fe6d2515f29727ee4cbdcbc53644f40a8e9e9ce91",
             "bytes": 780682,
             "content_type": "application/pdf",
-            "captured_at": "2026-10-11T05:37:56.992978+00:00"
+            "captured_at": "2026-10-11T06:23:10.205177+00:00"
           },
           {
             "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
@@ -411,7 +585,7 @@
             "sha256": "f19b11f6cf58b7ec4633dce660f95c5c526fb38319969dffc85871fec7d13287",
             "bytes": 1039787,
             "content_type": "application/pdf",
-            "captured_at": "2026-10-11T05:37:58.819334+00:00"
+            "captured_at": "2026-10-11T06:23:12.108370+00:00"
           },
           {
             "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
@@ -421,7 +595,7 @@
             "sha256": "7ae8c085cb8fc65460ef1b1b07637f4449879c355e648c304b5488c7b542fd13",
             "bytes": 605604,
             "content_type": "application/pdf",
-            "captured_at": "2026-10-11T05:38:00.547847+00:00"
+            "captured_at": "2026-10-11T06:23:13.554366+00:00"
           }
         ],
         "evidence_status": "capture_pending"
@@ -431,10 +605,18 @@
       "latest_verified_publication_at": "2026-06-25",
       "runtime_outcome": "OPERATIVE_DEGRADED",
       "runtime_environment": "github_actions",
-      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115202557",
-      "runtime_commit": "ca3d22a7fde6b5dd82c4e16a37c0ffd62547d766",
-      "runtime_limitation": "Dated reference-document lane verified; 10 readable PDFs, 2 historical volumes exceed 20 MiB; no material release in 30/90 days on Centro FIC. Full statistical catalog recovery is still being verified.",
-      "coverage_complete": false
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117181348",
+      "runtime_commit": "3d3a272218fd49a67c585fc901fb1950fb14d4b5",
+      "coverage_complete": false,
+      "archived": 12,
+      "catalog_resources": 572,
+      "national_datasets": 5,
+      "runtime_limitations": [
+        "2 historical CIE-10 volumes exceed native 20 MiB PDF ceiling",
+        "Catalog resource dates remain unknown; updates and statistical periods are not editorial publication",
+        "Only structural dataset samples checked; indicators not calculated",
+        "No dated Centro FIC PDF publications within 30/90 days; no complete all-surface editorial inventory claimed"
+      ]
     },
     "redsalud": {
       "name": "Redsalud",
@@ -514,7 +696,7 @@
     },
     "fonasa_datos_abiertos": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-10-11T05:46:02.408506+00:00",
+      "checked_at": "2026-10-11T06:15:08.611026+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -604,12 +786,13 @@
       "poll_mode": "discovery_and_document_verification_only",
       "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
       "runtime_environment": "github_actions",
-      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115490854",
-      "runtime_commit": "52acee50dceff03dc3c26a66ec44588ccc84ac79",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117181348",
+      "runtime_commit": "3d3a272218fd49a67c585fc901fb1950fb14d4b5",
+      "coverage_complete": false,
       "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/fonasa_datos_abiertos-checkpoint.json",
       "blocking_component": "Frontal público HTTP AWS ALB (Server awselb/2.0), tras TLS verificado, responde403 sin challenge WAF identificado. La regla causante y su dueño interno no son observables.",
       "minimum_human_step": "Administrador web FONASA: habilitar acceso HTTPS autorizado desde GitHub al hub datosabiertos.fonasa.cl y documentos fonasaweb.fonasa.cl, o proporcionar export oficial actual con fecha editorial/publicación y enlaces de recurso verificables; confirmar rutas vigentes de Noticias, Biblioteca/Cuenta Pública, Boletines y Análisis. El catálogo nacional disponible es histórico.",
-      "coverage_complete": false
+      "runtime_error_stage": "http403_after_verified_tls"
     },
     "suseso_news": {
       "name": "Suseso News",
@@ -803,7 +986,7 @@
     },
     "isp_surveillance": {
       "name": "Instituto de Salud Pública de Chile (ISP)",
-      "checked_at": "2026-10-11T05:48:33.035825+00:00",
+      "checked_at": "2026-10-11T06:22:41.921491+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -853,6 +1036,20 @@
           },
           {
             "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://www.ispch.gob.cl/boletin/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://ispch.gob.cl/boletin/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
             "url": "https://www.ispch.cl/boletin/",
             "status": "blocked",
             "items": 0
@@ -873,6 +1070,20 @@
           },
           {
             "channel": "Vigilancia de virus respiratorios",
+            "url": "https://www.ispch.gob.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://ispch.gob.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
             "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
             "status": "blocked",
             "items": 0
@@ -887,12 +1098,13 @@
       "poll_mode": "discovery_and_document_verification_only",
       "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
       "runtime_environment": "github_actions",
-      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115490854",
-      "runtime_commit": "52acee50dceff03dc3c26a66ec44588ccc84ac79",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117181348",
+      "runtime_commit": "3d3a272218fd49a67c585fc901fb1950fb14d4b5",
+      "coverage_complete": false,
       "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/isp_surveillance-checkpoint.json",
       "blocking_component": "Destino/ruta TCP443 no responde; no existe respuesta HTTP ni handshake TLS. No es posible atribuir el silencio a un firewall, hosting o regla concreta desde estos síntomas.",
       "minimum_human_step": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action.",
-      "coverage_complete": false
+      "runtime_error_stage": "tcp443_timeout_before_tls"
     },
     "clinicas_chile": {
       "name": "Clinicas Chile",
@@ -914,6 +1126,6 @@
       "editorial_outcome": "pending"
     }
   },
-  "generated_at": "2026-10-11T04:35:24.137233+00:00",
+  "generated_at": "2026-10-11T06:23:13.761133+00:00",
   "public_data_sources_checked_at": "2026-10-11T05:38:00.741627+00:00"
 }
