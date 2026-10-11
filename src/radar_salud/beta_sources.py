@@ -124,6 +124,7 @@ class CuratedBetaSourceScout:
         parser = _Links()
         parser.feed(html)
         out = []
+        self.discovery_errors = []
         seen = set()
         for href, listing_title in parser.links:
             if not href:
@@ -142,14 +143,24 @@ class CuratedBetaSourceScout:
                 meta = _Meta()
                 meta.feed(detail)
                 body = " ".join(meta.text)
-                published = _date(meta.published) or _date(body[:6500]) or _date(listing_title)
+                provenance = "legacy_detail_date"
+                if self.cfg['role'].startswith('provider'):
+                    from .public_source_pipeline import _VisibleArticle
+                    article=_VisibleArticle();article.feed(detail)
+                    body=' '.join(article.text)
+                    stamp = _ProviderPublication(url);stamp.feed(detail)
+                    published, provenance = stamp.publication()
+                else:
+                    published = _date(meta.published) or _date(body[:6500]) or _date(listing_title)
                 if not published or date.fromisoformat(published) > date.today():
+                    self.discovery_errors.append(f"{url}: publication_date_unverified")
                     continue
                 title = meta.ogtitle or listing_title
                 title = re.sub(r"\s+", " ", title).strip()
                 if len(title) < 18:
                     continue
-            except Exception:
+            except Exception as exc:
+                self.discovery_errors.append(f"{url}: {type(exc).__name__}")
                 continue
             out.append(RawItem(
                 self.slug,
@@ -164,10 +175,11 @@ class CuratedBetaSourceScout:
                     "page_text": body[:18000],
                     "market_role": self.cfg["role"],
                     "source_quality_gate": "passed",
+                    "publication_date_source": provenance,
                 },
             ))
         if not out:
-            raise RuntimeError(f"{self.cfg['name']} has no dated, verified detail items")
+            raise RuntimeError(f"{self.cfg['name']} has no dated, verified detail items: "+"; ".join(self.discovery_errors))
         out.sort(key=lambda x: x.event_date or "", reverse=True)
         return out[:30]
 
@@ -196,7 +208,112 @@ class CuratedBetaSourceScout:
                 exc.diagnostics = errors
                 raise exc
             return rows
-        return self.discover_from_html(fetch_html(self.cfg["page"]))
+        if self.slug!='andes_salud':return self.discover_from_html(fetch_html(self.cfg["page"]))
+        # The official post API exposes the full published 90-day archive,
+        # including Frutillar, which is absent from the nine-card landing page.
+        # Each candidate still resolves to its own H1/publication header.
+        import json
+        from datetime import timedelta
+        from html import escape
+        cached={}
+        def detail(url):
+            if url not in cached:cached[url]=fetch_html(url)
+            return cached[url]
+        all_items={};errors=[]
+        try:
+            for raw in self.discover_from_html(fetch_html(self.cfg['page']),detail):all_items[raw.url.rstrip('/')]=raw
+            errors.extend(self.discovery_errors)
+        except Exception as exc:errors.append('landing: '+type(exc).__name__)
+        cutoff=date.today()-timedelta(days=90)
+        for number in range(1,6):
+            api=f'https://www.andessalud.cl/wp-json/wp/v2/posts?after={cutoff}T00:00:00&before={date.today()+timedelta(days=1)}T00:00:00&per_page=100&page={number}'
+            try:
+                posts=json.loads(fetch_html(api))
+                if not isinstance(posts,list):raise ValueError('published posts array missing')
+                by_url={post['link'].rstrip('/'):post for post in posts if post.get('status')=='publish' and post.get('link')}
+                markup=''.join(f'<a href="{escape(url,quote=True)}">{escape(re.sub("<[^>]+>"," ",post.get("title",{}).get("rendered", "")))}</a>' for url,post in by_url.items())
+                if markup:
+                    raws=self.discover_from_html(markup,detail);errors.extend(self.discovery_errors)
+                    for raw in raws:
+                        post=by_url[raw.url.rstrip('/')]
+                        if str(post.get('date') or '')[:10]!=raw.event_date:
+                            errors.append(raw.url+': cms/header publication mismatch');continue
+                        raw.metadata.update(discovered_from_api=api,cms_post_id=post.get('id'),
+                                            cms_publication_date=str(post['date'])[:10])
+                        all_items[raw.url.rstrip('/')]=raw
+                    # These two public campaign pages were inspected in the
+                    # original 90-day audit. They add no independent signal.
+                    # Match the exact URL, title and release date: changed or
+                    # unknown CMS paths still retain partial-discovery errors.
+                    reviewed_campaigns={
+                        'https://www.andessalud.cl/destacamos/campana-me-chequeare':('Campaña: Me Chequearé','2026-10-05'),
+                        'https://www.andessalud.cl/destacamos/campana-clinica-andes-salud-talca':('Campaña: Clínica Andes Salud Talca','2026-09-09'),
+                    }
+                    excluded={url for url,post in by_url.items() if url in reviewed_campaigns
+                        and (post.get('title',{}).get('rendered'),str(post.get('date') or '')[:10])==reviewed_campaigns[url]}
+                    skipped=set(by_url)-{raw.url.rstrip('/') for raw in raws}-excluded
+                    if skipped:errors.extend(url+': CMS item outside reviewed path or detail verification failed' for url in sorted(skipped))
+                if len(posts)<100:break
+                if number==5:errors.append('CMS archive page bound reached')
+            except Exception as exc:
+                errors.append(api+': '+type(exc).__name__);break
+        self.discovery_errors=errors
+        if not all_items:raise RuntimeError('Andes Salud original discovery failed: '+'; '.join(errors))
+        return sorted(all_items.values(),key=lambda raw:raw.event_date or '',reverse=True)
+
+
+class _ProviderPublication(HTMLParser):
+    """Only explicit publication metadata or the isolated article-header stamp.
+
+    Dávila places 'Novedades dd/mm/yyyy' before H1. Andes and Achs place a
+    standalone stamp immediately after H1. Body and related-item dates cannot
+    supply a missing publication date.
+    """
+    def __init__(self,url=None):
+        super().__init__();self.meta=None;self.header=None;self._before=[];self._h1=False;self._after=False;self._seen_title=False
+        self.url=url
+        from .public_source_pipeline import _RedSaludArticle
+        self._article=_RedSaludArticle(url) if url else None
+    def feed(self,data):
+        super().feed(data)
+        if self._article:self._article.feed(data)
+    def handle_starttag(self, tag, attrs):
+        attrs=dict(attrs);tag=tag.lower()
+        if tag=='meta' and (attrs.get('property') or attrs.get('name') or '').lower() in ('article:published_time','datepublished'):
+            self.meta=attrs.get('content')
+        elif tag=='h1' and not self._seen_title:
+            from .public_source_pipeline import _date
+            match=re.search(r'(?:Novedades|Operativos Médicos)\s+(\d{1,2}/\d{1,2}/20\d{2})\s*$', ' '.join(self._before)[-180:])
+            if match:self.header=_date(match.group(1))
+            self._h1=True;self._seen_title=True
+        elif self._after and tag in ('p','h2','h3','nav','footer','aside'):
+            self._after=False
+    def handle_endtag(self, tag):
+        if tag.lower()=='h1' and self._h1:self._h1=False;self._after=True
+    def handle_data(self, data):
+        text=' '.join(data.split())
+        if not text:return
+        if self._after:
+            from .public_source_pipeline import _date
+            if re.fullmatch(r'(?:\d{1,2}/\d{1,2}/20\d{2}|[A-Za-zÁÉÍÓÚáéíóúñÑ]+ \d{1,2}, 20\d{2})',text):
+                self.header=_date(text)
+            self._after=False
+        elif not self._h1:self._before.append(text)
+    def publication(self):
+        from .public_source_pipeline import _date
+        meta=_date(self.meta)
+        if self._article:
+            self._article.finish()
+            def identity(item):
+                value=item.get('url') or item.get('mainEntityOfPage') or item.get('@id')
+                if isinstance(value,dict):value=value.get('@id') or value.get('url')
+                return urljoin(self.url,str(value)).split('#')[0].rstrip('/') if value else None
+            own=any(identity(item)==self.url.split('#')[0].rstrip('/') for item in self._article.schemas)
+            schema=_date(self._article.published) if own else None
+            if schema and ((meta and meta!=schema) or (self.header and self.header!=schema)):return None,'conflicting_stamps'
+            if schema and not meta and not self.header:return schema,'url_associated_jsonld_datePublished'
+        if meta and self.header and meta!=self.header:return None,'conflicting_stamps'
+        return (meta,'article:published_time') if meta else (self.header,'verified_article_header' if self.header else 'unverified')
 
 
 class PrestadoresDataScout:
@@ -317,8 +434,37 @@ def process_curated_beta_source(raw, cfg):
             raise DeferredProcessing("occupational explicit publication evidence unverified")
         from .occupational_evidence import verify_capture
         verify_capture(raw, hosts)
+    role = raw.metadata.get("market_role") or "provider"
+    from .provider_assessment import assessed, prefilter_rejected
     if not scoped:
-        raw = enrich(raw)
+        if role.startswith('provider'):
+            gate=raw.metadata.get('source_quality_gate')
+            if gate and gate!='passed':
+                raise DeferredProcessing(f'Provider source quality gate not passed: {gate}')
+            if (not raw.event_date or raw.metadata.get('publication_date_source')
+                    not in ('article:published_time','verified_article_header','url_associated_jsonld_datePublished')):
+                raise DeferredProcessing('Provider publication date unverified')
+            from .processing import OutsideBackfillHorizon
+            published=date.fromisoformat(raw.event_date)
+            if published>date.today():raise DeferredProcessing('Provider future publication date')
+            if (date.today()-published).days>90:raise OutsideBackfillHorizon(raw.event_date)
+        if role.startswith('provider'):
+            from .public_source_pipeline import _VisibleArticle
+            try:
+                from .provider_original_reader import read_provider_detail
+                detail=read_provider_detail(raw.url,fetch_html)
+            except Exception as exc:raise DeferredProcessing(f'Provider detail unavailable: {raw.url}: {type(exc).__name__}') from exc
+            stamp=_ProviderPublication(raw.url);stamp.feed(detail)
+            verified,_=stamp.publication()
+            if verified!=raw.event_date:raise DeferredProcessing(f'Provider listing/detail publication date mismatch: {raw.url}')
+            article=_VisibleArticle();article.feed(detail)
+            if not article.title or (raw.title.casefold() not in article.title.casefold() and article.title.casefold() not in raw.title.casefold()):
+                raise DeferredProcessing(f'Provider listing/detail headline mismatch: {raw.url}')
+            raw.metadata['page_text']=' '.join(article.text)[:18000]
+            raw.raw_text=raw.metadata['page_text'][:1800]
+        else:raw = enrich(raw)
+        if raw.metadata.get("fetch_error"):
+            raise DeferredProcessing(f"Provider detail unavailable: {raw.url}: {raw.metadata['fetch_error']}")
     primary_body = raw.metadata.get("page_text") or raw.raw_text or ""
     body, document_facts = primary_body, ""
     if scoped:
@@ -340,7 +486,34 @@ def process_curated_beta_source(raw, cfg):
     if not raw.event_date or len(body) < 160 or not accepted:
         if scoped:
             raw.metadata["publication_rejection_reason"] = material_reason
+        else:
+            prefilter_rejected(raw,"publication_date_missing" if not raw.event_date else "insufficient_readable_body" if len(body)<160 else "no_material_change_under_provider_prefilter")
         return None
+    supporting=[]
+    for evidence in (raw.metadata.get('supporting_official_sources') or [])[:1]:
+        target=urlparse(evidence.get('url') or '')
+        source=CuratedBetaSourceScout.SOURCES.get(raw.source_slug,{})
+        if (target.scheme!='https' or target.netloc not in source.get('hosts',())
+                or not re.fullmatch(source.get('path',r'(?!)'),target.path)
+                or evidence.get('relationship')!='programme_announcement_before_execution'):
+            raise DeferredProcessing('Supporting provider evidence identity unverified')
+        try:
+            page=fetch_html(evidence['url']);stamp=_ProviderPublication(evidence['url']);stamp.feed(page)
+            article=_VisibleArticle();article.feed(page)
+        except Exception as exc:raise DeferredProcessing('Supporting provider original unavailable') from exc
+        verified,_=stamp.publication()
+        if (verified!=evidence.get('publication_date') or not verified or verified>raw.event_date
+                or article.title!=evidence.get('title') or not re.search(r'\bEnlace\b',body)
+                or not re.search(r'\bEnlace\b',' '.join(article.text))):
+            raise DeferredProcessing('Supporting provider publication/programme mismatch')
+        from hashlib import sha256
+        supporting_text=' '.join(article.text)
+        supporting.append({**evidence,'body_sha256':sha256(supporting_text.encode()).hexdigest()})
+        # Same publication gate, richer original evidence: announced commitment
+        # and observed execution are explicitly attributed and never summed.
+        body=(f'Fuente principal; ejecución publicada {raw.event_date}:\n{body[:3200]}\n'
+              f'Fuente oficial relacionada; compromiso anunciado {verified}, {evidence["url"]}:\n{supporting_text[:1800]}')
+    if supporting:raw.metadata['supporting_evidence_capture']=supporting
     kind = {
         "media": "prensa económica de alta confianza; señal temprana, atribuir y no convertir reporte de prensa en hecho oficial",
         "mutuality": "publicación institucional de mutualidad; filtrar marketing y priorizar cambios operacionales o de salud laboral",
@@ -368,12 +541,19 @@ def process_curated_beta_source(raw, cfg):
     threshold = 72 if role == "media" else 75
     what = (ai.get("what_happened") or "").strip()
     why = (ai.get("why_it_matters") or "").strip()
-    if score < threshold or len(what) < 45 or len(why) < 35:
+    if (score < threshold or len(what) < 45 or len(why) < 35) if scoped else not assessed(raw,ai,threshold):
         if scoped:
             raw.metadata["publication_rejection_reason"] = "editorial_score_or_summary_below_threshold"
         return None
     scopes = ["Salud laboral"] if role == "mutuality" else (["Isapres", "Prestadores"] if role == "media" else ["Prestadores"])
-    inferred = _scopes(f"{raw.title} {body[:2500]}")
+    scope_text=f"{raw.title} {body[:2500]}"
+    named_pharma=(re.search(r'\b(?:pfizer|roche|sanofi|merck|novartis|astrazeneca|bayer|gsk|abbott)\b',scope_text,re.I)
+        or re.search(r'\b(?:[Ll]aboratorios?|[Ff]armacias?)\s+(?!(?:[Cc]l[ií]nic[oa]s?|[Cc]entral|[Dd]e|[Dd]el)\b)[A-ZÁÉÍÓÚ][\wÁÉÍÓÚáéíóúñÑ-]+',scope_text))
+    if role.startswith('provider') and not named_pharma:
+        # A hospital's pharmacy and diagnostic laboratory are clinical capacity.
+        # Keep original industry inference for named labs/pharmacy companies.
+        scope_text=re.sub(r'\b(?:farmacias?|laboratorios?)\b','servicios clínicos',scope_text,flags=re.I)
+    inferred = _scopes(scope_text)
     for scope in inferred:
         if scope != "Sistema de salud" and scope not in scopes:
             scopes.append(scope)
@@ -395,6 +575,7 @@ def process_curated_beta_source(raw, cfg):
     row["signal_types"] = ["Noticias"]
     row["scopes"] = scopes
     row["editorial_relevance"] = score
+    row['editorial_assessment']=raw.metadata['editorial_assessment']
     row["source_quality_gate"] = "passed"
     if scoped:
         row.update(source_slug=raw.source_slug, market_role=role,
@@ -407,6 +588,7 @@ def process_curated_beta_source(raw, cfg):
                    content_kind=raw.metadata["content_kind"],
                    supporting_documents=raw.metadata.get("supporting_documents", []),
                    source_quality_gate=raw.metadata["source_quality_gate"])
+    if supporting:row['supporting_sources']=supporting
     if role == "media":
         row["evidence_maturity"] = "media_reported"
         row["confirmation_policy"] = "upgrade_same_signal_when_company_or_official_source_confirms"

@@ -5289,6 +5289,58 @@
       "next_action": "Ampliar superficies y paginación, luego reconciliar contra set externo reciente antes de considerar PR #10 integrable."
     },
     {
+      "id": "codex_f_providers_gremio_pharma_recovery_2026_10_11",
+      "status": "blocked",
+      "priority": "high",
+      "owner": "Codex F / Provider Intelligence + Source Engineering",
+      "source": "Direct user instruction Codex F 2026-10-11; issue #5 recovery scope",
+      "objective": "Reconcile existing providers, gremio and Pfizer original 30/90-day surfaces with Alicanto, without reducing gates or duplicating institutions.",
+      "constraints": [
+        "isolated branch based on staging",
+        "no main/production promotion",
+        "no gate reductions",
+        "Preserve published terminal outcomes; only one documented false-negative reevaluation with materially additional official evidence, no score fishing."
+      ],
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/pull/14",
+        "data/audits/provider_reconciliation_2026_10_11.json",
+        "data/audits/providers_2026_10_11",
+        "data/audits/provider_qa_2026_10_11/summary.json",
+        "data/audits/provider_inventory_2026_10_11",
+        "data/audits/provider_inventory_capture_2026_10_11",
+        "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
+        "data/audits/provider_followup_checkpoint_2026_10_11.json",
+        "data/audits/provider_piece_reconciliation_2026_10_11.json",
+        "data/audits/provider_editorial_decisions_2026_10_11.json",
+        "data/audits/provider_recovered_outputs_2026_10_11.json",
+        "data/audits/provider_davila_cached_originals_2026_10_11.json",
+        "docs/PROVIDER_RECONCILIATION_HANDOFF_2026_10_11.md"
+      ],
+      "blocked_by": [
+        "Bupa original root articles do not expose publication dates after official sitemap/feed/CMS/publicmetadata checks",
+        "INDISA original publisher maintenance/HTTP403 and pending90sourcegate",
+        "Gremio33PDF release versions, Pfizer currentchronology/wronglinks, Red2originals, AchsLaSerena datedannouncement dependencies explicitlydegraded",
+        "Inherited normative/statistics global QA; no authorized staging integration/scheduler proof"
+      ],
+      "progress": "1066URLrecords reconciled piece-by-piece;6actualoutputs verified;738priorhistory/59publishedqueue preserved. Dávila639datednews/13recent90 reconciled after640HTTP+228ordinaryChrome+191cachedoriginalheaders; current191archive403 explicitly degraded. Andes26CMScomplete. Bupa/INDISA external publication-date/maintenance dependencies proven.12newfastcalls,deep0;fast51. Real persisted runtime38120086028 bothpolls0new,history/AI/unrelatedqueue unchanged.75focalPASS1skip; providerbrowser4/4, global inherited QA remainsfailed.",
+      "next_action": "IntegrationCommander review PR14draft with exactpublisherdependencies and unchanged sharedgates; normative/dataowners fix inheritedQA before DailyRadar integration. SourceEngineering recheck only materially changed/dated official evidence; never replay unchanged paidterminals.",
+      "current_subfront": "closed_internal_recovery_external_dependencies_proven",
+      "last_progress_at": "2026-10-11",
+      "closure_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "ready_for_integration": false,
+      "merged_staging_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+      "source_outcomes": {
+        "redsalud": "OPERATIVE_DEGRADED",
+        "bupa_chile": "EXTERNAL_BLOCKER_PROVEN",
+        "indisa": "EXTERNAL_BLOCKER_PROVEN",
+        "red_davila": "OPERATIVE_DEGRADED",
+        "andes_salud": "OPERATIVE_VALIDATED",
+        "clinicas_chile": "OPERATIVE_DEGRADED",
+        "pfizer_chile": "OPERATIVE_DEGRADED",
+        "clinicas_achs_salud": "OPERATIVE_DEGRADED"
+      }
+    },
+    {
       "id": "staging_qa_gatekeeper_2026_10_11",
       "status": "READY_FOR_INTEGRATION",
       "priority": "critical",

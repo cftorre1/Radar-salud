@@ -1,0 +1,44 @@
+name: Provider exhaustive official archive
+on:
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'scripts/provider_inventory.py'
+      - '.github/workflows/provider-exhaustive-archive.yml'
+permissions:
+  contents: read
+concurrency:
+  group: provider-exhaustive-${{ github.event.pull_request.number }}
+  # No AI or mutations: replace obsolete read-only captures with the newest
+  # parser and resumable bounded collector on this same isolated PR.
+  cancel-in-progress: true
+jobs:
+  inventory:
+    if: startsWith(github.head_ref, 'codex/f-prestadores-gremio-') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - run: python -m pytest -q tests/test_provider_inventory.py tests/test_provider_newsroom_repairs.py
+      - name: Read complete Davila official URL archive
+        if: hashFiles('data/audits/provider_exhaustive_davila_receipt_2026_10_11.json') == ''
+        run: timeout --signal=TERM 19m python scripts/provider_inventory.py --source red_davila --request-limit 800 --exhaustive
+      - name: Verify RedSalud canonical publication metadata
+        if: hashFiles('data/audits/provider_exhaustive_receipt_2026_10_11.json') == ''
+        run: timeout --signal=TERM 5m python scripts/provider_inventory.py --source redsalud --request-limit 240
+      - name: Verify Pfizer component publication metadata
+        if: hashFiles('data/audits/provider_exhaustive_receipt_2026_10_11.json') == ''
+        run: timeout --signal=TERM 3m python scripts/provider_inventory.py --source pfizer_chile --request-limit 120
+      - name: Preserve full archive evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: provider-exhaustive-${{ github.event.pull_request.head.sha }}
+          path: data/audits/provider_inventory_2026_10_11
+          retention-days: 30

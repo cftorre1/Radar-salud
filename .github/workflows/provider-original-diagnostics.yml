@@ -1,0 +1,35 @@
+name: Provider official metadata diagnostics
+on:
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'scripts/provider_original_diagnostics.py'
+      - '.github/workflows/provider-original-diagnostics.yml'
+permissions:
+  contents: read
+concurrency:
+  group: provider-original-diagnostics-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  diagnostic:
+    if: startsWith(github.head_ref, 'codex/f-prestadores-gremio-') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - name: Check original publication surfaces and public frontend metadata
+        if: hashFiles('data/audits/provider_diagnostics_receipt_2026_10_11.json') == ''
+        run: timeout --signal=TERM 12m python scripts/provider_original_diagnostics.py
+      - name: Preserve metadata evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: provider-diagnostics-${{ github.event.pull_request.head.sha }}
+          path: data/audits/provider_original_diagnostics_2026_10_11.json
+          retention-days: 30

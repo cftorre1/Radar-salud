@@ -1,0 +1,84 @@
+{
+  "at": "2026-10-11T06:58:15.105590+00:00",
+  "attempted": 1,
+  "results": [
+    {
+      "source": "red_davila",
+      "url": "https://www.davila.cl/novedades/medicina-deportiva-llega-a-red-davila",
+      "outcome": "rejected",
+      "signal": null,
+      "editorial_assessment": {
+        "assessed_at": "2026-10-11T06:58:21.838319+00:00",
+        "relevance_score": 58,
+        "minimum_relevance": 75,
+        "editorial_reason": "Es un lanzamiento de servicio y una ampliación local de prestaciones, sin evidencia de impacto sectorial, expansión significativa, inversión material o movimiento competitivo de alcance amplio.",
+        "what_characters": 398,
+        "why_characters": 330,
+        "gate_failures": [
+          "relevance_below_source_gate"
+        ],
+        "outcome": "rejected",
+        "publication_date": "2026-08-01",
+        "publication_date_source": "verified_article_header"
+      }
+    }
+  ],
+  "promotion": "none",
+  "checkout_head": "2d71a7fcb9e702cf40550e1bf8eb6b4dbc67415e",
+  "recovered_queue": {
+    "fd1aa1d4356773933bfbde188959c301b4e8222c8f232641ba78ef38070f31cc": {
+      "raw": {
+        "source_slug": "red_davila",
+        "title": "Medicina Deportiva llega a Red Dávila",
+        "url": "https://www.davila.cl/novedades/medicina-deportiva-llega-a-red-davila",
+        "source_name": "Red Dávila",
+        "source_type": "corporate",
+        "event_date": "2026-08-01",
+        "raw_text": "",
+        "metadata": {
+          "discovered_from": "https://www.davila.cl/novedades",
+          "publication_date_source": "verified_article_header",
+          "recovery_audit": "data/audits/providers_2026_10_11/red_davila.json",
+          "source_quality_gate": "passed",
+          "market_role": "provider",
+          "editorial_assessment": {
+            "assessed_at": "2026-10-11T06:58:21.838319+00:00",
+            "relevance_score": 58,
+            "minimum_relevance": 75,
+            "editorial_reason": "Es un lanzamiento de servicio y una ampliación local de prestaciones, sin evidencia de impacto sectorial, expansión significativa, inversión material o movimiento competitivo de alcance amplio.",
+            "what_characters": 398,
+            "why_characters": 330,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-08-01",
+            "publication_date_source": "verified_article_header"
+          }
+        }
+      },
+      "source": "red_davila",
+      "lane": "BACKFILL",
+      "status": "rejected",
+      "detected_at": "2026-10-11T06:58:15.105590+00:00",
+      "attempts": 1,
+      "reason": "relevance_below_source_gate",
+      "updated_at": "2026-10-11T06:58:21.838399+00:00",
+      "retry_at": null
+    }
+  },
+  "prior_terminal_unchanged": true,
+  "usage_ledger": {
+    "deep": {
+      "attempted": 14,
+      "successful": 14,
+      "failed": 0
+    },
+    "fast": {
+      "attempted": 51,
+      "successful": 51,
+      "failed": 0
+    }
+  },
+  "original_discovery_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38119508799"
+}
