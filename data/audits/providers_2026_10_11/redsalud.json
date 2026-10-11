@@ -1,12 +1,48 @@
 {
-  "version": 1,
+  "version": 3,
   "slug": "redsalud",
   "as_of": "2026-10-11",
   "timezone": "America/Santiago",
   "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
   "audit_path": "data/audits/providers_2026_10_11/redsalud.json",
-  "status": "reconciled_with_exact_blockers",
-  "coverage": "partial_30_and_90_inventory",
+  "status": "OPERATIVE_DEGRADED",
+  "coverage": {
+    "outcome": "OPERATIVE_DEGRADED",
+    "coverage_complete": false,
+    "coverage_reason": "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately.",
+    "archive_depth": {
+      "newsroom_pages": 9,
+      "alternate_observatorio": true,
+      "sitemap_checked": true
+    },
+    "owner": "Publisher RedSalud / Source Engineering",
+    "next_action": "Require accessible original publication/content for two denied sitemap articles; retain canonical+dedicated-header+ownJSONLD fail-closed date resolution. TMO84 is recovered; unavailable historical model diagnostics remain explicit, not reconstructed.",
+    "pages_checked": 116,
+    "latest_original_publication": "2026-10-07",
+    "discovered": 94,
+    "unique": 93,
+    "recent_30d": 8,
+    "recent_90d": 30,
+    "publication_date_unknown": 2,
+    "material_30d": 2,
+    "material_90d": 9,
+    "material_date_unknown": 0,
+    "material": 9,
+    "material_unknown": 2,
+    "published": 2,
+    "rejected": 7,
+    "deferred": 0,
+    "detected_material": 9,
+    "omitted_material": 0,
+    "parse_errors": 1,
+    "access_errors": 7,
+    "inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json",
+    "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+    "relevant_30d_total": null,
+    "relevant_90d_total": null,
+    "publicable_confirmed": 2,
+    "publicable_total": null
+  },
   "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "surfaces": [
@@ -20,78 +56,862 @@
     }
   ],
   "blockers": [
-    "90_day_inventory_dates_not_fully_persisted_after_five_page_probe",
-    "listing_detail_publication_date_conflict_2026_08_27_vs_2026_09_04"
+    "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately."
   ],
   "original_items": [
     {
-      "title": "Nueva Unidad de Trasplante de Médula Ósea: Alta Complejidad y Nueva Vida",
       "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
-      "publication_date": "2026-08-27",
-      "date_evidence": "verified_article_header",
-      "materiality": "candidate",
-      "recover": true,
-      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
-      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
-    },
-    {
-      "title": "RedSalud y Nueva Masvida refuerzan su convenio",
-      "url": "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio",
-      "publication_date": "2026-09-21",
-      "date_evidence": "verified_article_header",
+      "title": "Nueva Unidad de Trasplante de Médula Ósea: Alta Complejidad y Nueva Vida",
+      "publication_date": "2026-09-04",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "canonical_identity_jsonld_and_visible_header_agree",
       "materiality": "candidate",
       "recover": false,
-      "evidence": "Ya registrado en Alicanto; comparar URL, no crear otra entidad ni republicar."
+      "queue_admission_completed": true,
+      "current_reason": "Es un cambio de capacidad asistencial relevante, con una capacidad anual declarada y cobertura para ambos tipos de aseguramiento. Sin embargo, el comunicado no informa inversión, número de pacientes efectivamente atendidos, convenios de financiamiento ni resultados clínicos; por eso no alcanza el nivel de un cambio estructural nacional comprobado.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Es un cambio de capacidad asistencial relevante, con una capacidad anual declarada y cobertura para ambos tipos de aseguramiento. Sin embargo, el comunicado no informa inversión, número de pacientes efectivamente atendidos, convenios de financiamiento ni resultados clínicos; por eso no alcanza el nivel de un cambio estructural nacional comprobado.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T06:17:31.689143+00:00",
+          "relevance_score": 84,
+          "minimum_relevance": 78,
+          "editorial_reason": "Es un cambio de capacidad asistencial relevante, con una capacidad anual declarada y cobertura para ambos tipos de aseguramiento. Sin embargo, el comunicado no informa inversión, número de pacientes efectivamente atendidos, convenios de financiamiento ni resultados clínicos; por eso no alcanza el nivel de un cambio estructural nacional comprobado.",
+          "what_characters": 404,
+          "why_characters": 512,
+          "gate_failures": [],
+          "outcome": "passed",
+          "publication_date": "2026-09-04",
+          "publication_date_source": "canonical_article_publication"
+        },
+        "detected": true,
+        "queue": [
+          {
+            "key": "b8c86555901f6f1da45b2f36d63ce5b13b53d72b1f7cf096ac258085557fe70a",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": "RedSalud listing and article dates disagree",
+            "assessment": {
+              "assessed_at": "2026-10-11T06:17:31.689143+00:00",
+              "relevance_score": 84,
+              "minimum_relevance": 78,
+              "editorial_reason": "Es un cambio de capacidad asistencial relevante, con una capacidad anual declarada y cobertura para ambos tipos de aseguramiento. Sin embargo, el comunicado no informa inversión, número de pacientes efectivamente atendidos, convenios de financiamiento ni resultados clínicos; por eso no alcanza el nivel de un cambio estructural nacional comprobado.",
+              "what_characters": 404,
+              "why_characters": 512,
+              "gate_failures": [],
+              "outcome": "passed",
+              "publication_date": "2026-09-04",
+              "publication_date_source": "canonical_article_publication"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 1,
+        "feed_count": 1,
+        "related_published_signals": [],
+        "alicanto_status": "published",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:32:44.983134+00:00",
+          "body_sha256": "a18fe74e9732e0ddb275594c8c515fcc1f9fe44856e408e18680b136780202b8",
+          "date_stamps": [
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-27",
+              "value": "2026-08-27"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-04T13:14:32-0400",
+              "date": "2026-09-04"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-09-04",
+              "date": "2026-09-04"
+            }
+          ],
+          "date_reason": "canonical_identity_jsonld_and_visible_header_agree",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
     },
     {
-      "title": "Clínica RedSalud Santiago realiza las primeras cirugías de arritmia con campo pulsado en el continente",
-      "url": "https://www.redsalud.cl/noticias/fibrilacion-auricular-varipulse-pro",
-      "publication_date": "2026-08-28",
-      "date_evidence": "verified_article_header",
+      "url": "https://www.redsalud.cl/noticias/clinica-redsalud-vitacura-alcanza-50-cirugias-roboticas",
+      "title": "Clínica RedSalud Vitacura alcanza las 50 cirugías robóticas: Alta complejidad y precisión al servicio de los pacientes",
+      "publication_date": "2026-10-07",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
       "materiality": "candidate",
-      "recover": true,
-      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
-      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Accumulated operational milestone of50 procedures; no new investment, incremental volume or capacity plan announced. Historical model score/reason unavailable; current Reviewer qualitative exclusion is separate.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Accumulated operational milestone of50 procedures; no new investment, incremental volume or capacity plan announced. Historical model score/reason unavailable; current Reviewer qualitative exclusion is separate.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "f66d1d23634dc855871c33e1767e8bafff1d0a65b7b8d35025164370fdcc5ccc",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "LIVE",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:32:44.983160+00:00",
+          "body_sha256": "04226b8ca5b97be727a4ae1b5a556e7e0c48ce679d9b354064efceb67f1f0ce7",
+          "date_stamps": [
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-10-07",
+              "value": "2026-10-07"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-10-07",
+              "value": "2026-10-07"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-10-07T12:16:37-0300",
+              "date": "2026-10-07"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-10-07",
+              "date": "2026-10-07"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+    },
+    {
+      "url": "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio",
+      "title": "RedSalud y Nueva Masvida potencian convenio nacional para una atención médica integral y accesible",
+      "publication_date": "2026-09-21",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "decf12cac54c8934b979229db11cfc158f4349c43c4db10e052a96d13c01f7dc",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 1,
+        "feed_count": 1,
+        "related_published_signals": [],
+        "alicanto_status": "published",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:32:44.983254+00:00",
+          "body_sha256": "fa9982cf699034ef731f00e6e6fe8c38501e2c5b5f170bfec0d50828b04d6e42",
+          "date_stamps": [
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-09-21",
+              "value": "2026-09-21"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-09-21",
+              "value": "2026-09-21"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-21T09:44:24-0300",
+              "date": "2026-09-21"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-09-21",
+              "date": "2026-09-21"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+    },
+    {
+      "url": "https://www.redsalud.cl/noticias/nuevo-microscopio-neuroquirurgico-santiago",
+      "title": "Conoce el nuevo microscopio neuroquirúrgico de alta precisión de Clínica RedSalud Santiago",
+      "publication_date": "2026-09-10",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "KINEVO900 is an actual operational technology incorporation, not pure marketing. Historical rejection has no persisted score/reason. Current Reviewer: institution equipment change without quantified investment, throughput or network expansion; secondary operational context; no repeat paid evaluation without materially new evidence.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "KINEVO900 is an actual operational technology incorporation, not pure marketing. Historical rejection has no persisted score/reason. Current Reviewer: institution equipment change without quantified investment, throughput or network expansion; secondary operational context; no repeat paid evaluation without materially new evidence.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "1ad56b0580c8041a670ee45e375df4a35e9854ff8e7ba19d3de1cad7e6f468a3",
+            "status": "rejected",
+            "reason": "processor_rejected",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:32:44.983282+00:00",
+          "body_sha256": "c786a7681d7e649279d782297bab4df0979f4b650cd18d216753d6fffe44abc0",
+          "date_stamps": [
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-09-10",
+              "value": "2026-09-10"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-09-10",
+              "value": "2026-09-10"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-10T14:10:18-0300",
+              "date": "2026-09-10"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-09-10",
+              "date": "2026-09-10"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+    },
+    {
+      "url": "https://www.redsalud.cl/noticias/fibrilacion-auricular-varipulse-pro",
+      "title": "Clínica RedSalud Santiago realiza las primeras cirugías de arritmia con campo pulsado en el continente",
+      "publication_date": "2026-09-04",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "canonical_identity_jsonld_and_visible_header_agree",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Merece seguimiento como señal de adopción tecnológica y competencia en cardiología de alta complejidad por parte de un actor relevante. Sin embargo, el alcance actual es acotado a dos procedimientos y la información proviene exclusivamente de un comunicado corporativo, con afirmaciones promocionales sobre seguridad, recuperación y acceso que no están corroboradas en el material entregado.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Merece seguimiento como señal de adopción tecnológica y competencia en cardiología de alta complejidad por parte de un actor relevante. Sin embargo, el alcance actual es acotado a dos procedimientos y la información proviene exclusivamente de un comunicado corporativo, con afirmaciones promocionales sobre seguridad, recuperación y acceso que no están corroboradas en el material entregado.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T06:17:43.365337+00:00",
+          "relevance_score": 76,
+          "minimum_relevance": 78,
+          "editorial_reason": "Merece seguimiento como señal de adopción tecnológica y competencia en cardiología de alta complejidad por parte de un actor relevante. Sin embargo, el alcance actual es acotado a dos procedimientos y la información proviene exclusivamente de un comunicado corporativo, con afirmaciones promocionales sobre seguridad, recuperación y acceso que no están corroboradas en el material entregado.",
+          "what_characters": 422,
+          "why_characters": 507,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-04",
+          "publication_date_source": "canonical_article_publication"
+        },
+        "detected": true,
+        "queue": [
+          {
+            "key": "a48617343c570dfcb1ec86f62a6ef60c2059bf6313ee320a739876e4a716f365",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": {
+              "assessed_at": "2026-10-11T06:17:43.365337+00:00",
+              "relevance_score": 76,
+              "minimum_relevance": 78,
+              "editorial_reason": "Merece seguimiento como señal de adopción tecnológica y competencia en cardiología de alta complejidad por parte de un actor relevante. Sin embargo, el alcance actual es acotado a dos procedimientos y la información proviene exclusivamente de un comunicado corporativo, con afirmaciones promocionales sobre seguridad, recuperación y acceso que no están corroboradas en el material entregado.",
+              "what_characters": 422,
+              "why_characters": 507,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-09-04",
+              "publication_date_source": "canonical_article_publication"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:32:48.234694+00:00",
+          "body_sha256": "0249b10a9f033c2f5d764540287dd5693a08a6a9b2e767f06a23bd3ae579d186",
+          "date_stamps": [
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-28",
+              "value": "2026-08-28"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-28",
+              "value": "2026-08-28"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-04T16:51:13-0400",
+              "date": "2026-09-04"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-09-04",
+              "date": "2026-09-04"
+            }
+          ],
+          "date_reason": "canonical_identity_jsonld_and_visible_header_agree",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
     },
     {
       "url": "https://www.redsalud.cl/noticias/nuevo-servicio-de-urgencia-elqui",
       "title": "Conoce el nuevo Servicio de Urgencia Clínica RedSalud Elqui: Alta complejidad en un solo lugar",
       "publication_date": "2026-08-17",
-      "date_evidence": "verified_article_header",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
       "materiality": "candidate",
-      "recover": true,
-      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
-      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Merece seguimiento como inversión de capacidad asistencial con impacto regional, pero su alcance es principalmente local y el comunicado no entrega montos de inversión, volúmenes de atención, resultados operativos ni evidencia independiente sobre la reducción efectiva de derivaciones o tiempos de espera. Por eso corresponde a un contexto estratégico secundario, no a un cambio sectorial nacional.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Merece seguimiento como inversión de capacidad asistencial con impacto regional, pero su alcance es principalmente local y el comunicado no entrega montos de inversión, volúmenes de atención, resultados operativos ni evidencia independiente sobre la reducción efectiva de derivaciones o tiempos de espera. Por eso corresponde a un contexto estratégico secundario, no a un cambio sectorial nacional.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T06:17:56.623454+00:00",
+          "relevance_score": 72,
+          "minimum_relevance": 78,
+          "editorial_reason": "Merece seguimiento como inversión de capacidad asistencial con impacto regional, pero su alcance es principalmente local y el comunicado no entrega montos de inversión, volúmenes de atención, resultados operativos ni evidencia independiente sobre la reducción efectiva de derivaciones o tiempos de espera. Por eso corresponde a un contexto estratégico secundario, no a un cambio sectorial nacional.",
+          "what_characters": 402,
+          "why_characters": 406,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-08-17",
+          "publication_date_source": "verified_article_header"
+        },
+        "detected": true,
+        "queue": [
+          {
+            "key": "38756c9794bcb9ff96bc5842ec5167e3c26340be6a8117bfff51910cce8ccb49",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": {
+              "assessed_at": "2026-10-11T06:17:56.623454+00:00",
+              "relevance_score": 72,
+              "minimum_relevance": 78,
+              "editorial_reason": "Merece seguimiento como inversión de capacidad asistencial con impacto regional, pero su alcance es principalmente local y el comunicado no entrega montos de inversión, volúmenes de atención, resultados operativos ni evidencia independiente sobre la reducción efectiva de derivaciones o tiempos de espera. Por eso corresponde a un contexto estratégico secundario, no a un cambio sectorial nacional.",
+              "what_characters": 402,
+              "why_characters": 406,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-08-17",
+              "publication_date_source": "verified_article_header"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:32:48.234773+00:00",
+          "body_sha256": "91a94be9e6055ffffaea8458532397d186ff203e98d569157573eb2bd868765d",
+          "date_stamps": [
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-17",
+              "value": "2026-08-17"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-17",
+              "value": "2026-08-17"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-08-17T17:32:20-0400",
+              "date": "2026-08-17"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-08-17",
+              "date": "2026-08-17"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
     },
     {
       "url": "https://www.redsalud.cl/noticias/el-exitoso-primer-tavi-en-temuco",
       "title": "El exitoso primer implante valvular aórtico transcatéter (TAVI) en Clínica RedSalud Mayor Temuco",
-      "publication_date": "2026-08-11",
-      "date_evidence": "verified_article_header",
+      "publication_date": "2026-09-04",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "canonical_identity_jsonld_and_visible_header_agree",
       "materiality": "candidate",
-      "recover": true,
-      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
-      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Es una expansión concreta de capacidad clínica especializada en una región, pero corresponde al primer procedimiento de un prestador específico y no entrega evidencia de escala, resultados clínicos ni cambios en acceso a nivel nacional. Por eso merece seguimiento como señal secundaria de descentralización de la cardiología intervencional, no como un cambio sectorial mayor.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Es una expansión concreta de capacidad clínica especializada en una región, pero corresponde al primer procedimiento de un prestador específico y no entrega evidencia de escala, resultados clínicos ni cambios en acceso a nivel nacional. Por eso merece seguimiento como señal secundaria de descentralización de la cardiología intervencional, no como un cambio sectorial mayor.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T06:18:08.932940+00:00",
+          "relevance_score": 72,
+          "minimum_relevance": 78,
+          "editorial_reason": "Es una expansión concreta de capacidad clínica especializada en una región, pero corresponde al primer procedimiento de un prestador específico y no entrega evidencia de escala, resultados clínicos ni cambios en acceso a nivel nacional. Por eso merece seguimiento como señal secundaria de descentralización de la cardiología intervencional, no como un cambio sectorial mayor.",
+          "what_characters": 402,
+          "why_characters": 421,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-04",
+          "publication_date_source": "verified_article_header"
+        },
+        "detected": true,
+        "queue": [
+          {
+            "key": "d6c8431c5d9a4a062c43134aef58de9e9be9a158a4f621384d3f5fe8d27c7dbc",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": {
+              "assessed_at": "2026-10-11T06:18:08.932940+00:00",
+              "relevance_score": 72,
+              "minimum_relevance": 78,
+              "editorial_reason": "Es una expansión concreta de capacidad clínica especializada en una región, pero corresponde al primer procedimiento de un prestador específico y no entrega evidencia de escala, resultados clínicos ni cambios en acceso a nivel nacional. Por eso merece seguimiento como señal secundaria de descentralización de la cardiología intervencional, no como un cambio sectorial mayor.",
+              "what_characters": 402,
+              "why_characters": 421,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-09-04",
+              "publication_date_source": "verified_article_header"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:32:51.480687+00:00",
+          "body_sha256": "b505a9ac6e093b273409f94879ff3e2cfb935ef599c4880a6deb05e2d2767262",
+          "date_stamps": [
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-11",
+              "value": "2026-08-11"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-11",
+              "value": "2026-08-11"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-04T13:11:45-0400",
+              "date": "2026-09-04"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-09-04",
+              "date": "2026-09-04"
+            }
+          ],
+          "date_reason": "canonical_identity_jsonld_and_visible_header_agree",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
     },
     {
       "url": "https://www.redsalud.cl/noticias/cirugia-robotica-mars-en-chile",
       "title": "Cirugía Robótica MARS en Chile: Precisión y Seguridad en Procedimientos Bariátricos y Digestivos",
-      "publication_date": "2026-08-05",
-      "date_evidence": "verified_article_header",
+      "publication_date": "2026-09-04",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "canonical_identity_jsonld_and_visible_header_agree",
       "materiality": "candidate",
-      "recover": true,
-      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
-      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Es un avance de capacidad tecnológica y acceso dentro de un prestador relevante, pero su impacto sectorial todavía es acotado y no se informa una expansión ya materializada más allá de la manga gástrica en una clínica. Además, los beneficios clínicos y económicos se presentan en tono corporativo, sin datos comparativos ni resultados verificables; por eso corresponde a un contexto relevante, pero secundario, y no a un cambio sectorial mayor.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Es un avance de capacidad tecnológica y acceso dentro de un prestador relevante, pero su impacto sectorial todavía es acotado y no se informa una expansión ya materializada más allá de la manga gástrica en una clínica. Además, los beneficios clínicos y económicos se presentan en tono corporativo, sin datos comparativos ni resultados verificables; por eso corresponde a un contexto relevante, pero secundario, y no a un cambio sectorial mayor.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T06:18:18.889290+00:00",
+          "relevance_score": 72,
+          "minimum_relevance": 78,
+          "editorial_reason": "Es un avance de capacidad tecnológica y acceso dentro de un prestador relevante, pero su impacto sectorial todavía es acotado y no se informa una expansión ya materializada más allá de la manga gástrica en una clínica. Además, los beneficios clínicos y económicos se presentan en tono corporativo, sin datos comparativos ni resultados verificables; por eso corresponde a un contexto relevante, pero secundario, y no a un cambio sectorial mayor.",
+          "what_characters": 431,
+          "why_characters": 447,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-09-04",
+          "publication_date_source": "verified_article_header"
+        },
+        "detected": true,
+        "queue": [
+          {
+            "key": "b738fbc7ef637368bf8fff56e90ea0ddb64afa3db84f2f8918c859713f6f55ef",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": {
+              "assessed_at": "2026-10-11T06:18:18.889290+00:00",
+              "relevance_score": 72,
+              "minimum_relevance": 78,
+              "editorial_reason": "Es un avance de capacidad tecnológica y acceso dentro de un prestador relevante, pero su impacto sectorial todavía es acotado y no se informa una expansión ya materializada más allá de la manga gástrica en una clínica. Además, los beneficios clínicos y económicos se presentan en tono corporativo, sin datos comparativos ni resultados verificables; por eso corresponde a un contexto relevante, pero secundario, y no a un cambio sectorial mayor.",
+              "what_characters": 431,
+              "why_characters": 447,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-09-04",
+              "publication_date_source": "verified_article_header"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:32:51.480734+00:00",
+          "body_sha256": "81ecc2cb76f2814dc0fe2bd01bb81ad3643717c5e556358c32c1cddf07c544e9",
+          "date_stamps": [
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-05",
+              "value": "2026-08-05"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-08-05",
+              "value": "2026-08-05"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-09-04T13:01:53-0400",
+              "date": "2026-09-04"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-09-04",
+              "date": "2026-09-04"
+            }
+          ],
+          "date_reason": "canonical_identity_jsonld_and_visible_header_agree",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
     },
     {
       "url": "https://www.redsalud.cl/noticias/redsalud-y-facultadla-universidad-de-chile",
       "title": "RedSalud y Facultad de Medicina de la Universidad de Chile firman convenio docente-asistencial",
       "publication_date": "2026-07-23",
-      "date_evidence": "verified_article_header",
+      "event_date": "2026-07-20",
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
       "materiality": "candidate",
-      "recover": true,
-      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
-      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Es un cambio relevante para la estrategia de capacidad médica de RedSalud y para la formación de especialistas, pero su alcance sectorial inmediato es acotado: se trata de un convenio institucional con número de plazas, financiamiento y efectos sobre la oferta nacional aún no especificados.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Es un cambio relevante para la estrategia de capacidad médica de RedSalud y para la formación de especialistas, pero su alcance sectorial inmediato es acotado: se trata de un convenio institucional con número de plazas, financiamiento y efectos sobre la oferta nacional aún no especificados.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "processor_assessment": {
+          "assessed_at": "2026-10-11T06:18:28.912516+00:00",
+          "relevance_score": 70,
+          "minimum_relevance": 78,
+          "editorial_reason": "Es un cambio relevante para la estrategia de capacidad médica de RedSalud y para la formación de especialistas, pero su alcance sectorial inmediato es acotado: se trata de un convenio institucional con número de plazas, financiamiento y efectos sobre la oferta nacional aún no especificados.",
+          "what_characters": 416,
+          "why_characters": 385,
+          "gate_failures": [
+            "relevance_below_source_gate"
+          ],
+          "outcome": "rejected",
+          "publication_date": "2026-07-23",
+          "publication_date_source": "verified_article_header"
+        },
+        "event_date": "2026-07-20",
+        "detected": true,
+        "queue": [
+          {
+            "key": "6216dc278f0300bec815c82d01502ecbbf50604259d7883d14940cce34e37ca1",
+            "status": "rejected",
+            "reason": "relevance_below_source_gate",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": {
+              "assessed_at": "2026-10-11T06:18:28.912516+00:00",
+              "relevance_score": 70,
+              "minimum_relevance": 78,
+              "editorial_reason": "Es un cambio relevante para la estrategia de capacidad médica de RedSalud y para la formación de especialistas, pero su alcance sectorial inmediato es acotado: se trata de un convenio institucional con número de plazas, financiamiento y efectos sobre la oferta nacional aún no especificados.",
+              "what_characters": 416,
+              "why_characters": 385,
+              "gate_failures": [
+                "relevance_below_source_gate"
+              ],
+              "outcome": "rejected",
+              "publication_date": "2026-07-23",
+              "publication_date_source": "verified_article_header"
+            },
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:32:54.680023+00:00",
+          "body_sha256": "7c073806bfcb419d0af8283f89cf9989906e9fd5c9916f0b3ab7c933cd88acb9",
+          "date_stamps": [
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-07-23",
+              "value": "2026-07-23"
+            },
+            {
+              "kind": "dated_news_listing",
+              "date": "2026-07-23",
+              "value": "2026-07-23"
+            },
+            {
+              "kind": "url_associated_jsonld_datePublished",
+              "value": "2026-07-23T14:30:09-0400",
+              "date": "2026-07-23"
+            },
+            {
+              "kind": "verified_article_header",
+              "value": "2026-07-23",
+              "date": "2026-07-23"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
     }
   ],
   "notes": [
@@ -109,67 +929,898 @@
     ]
   },
   "reconciliation": {
-    "scope": "verified original items; lower bound where inventory is blocked",
-    "material_candidates_30_days": 1,
-    "material_candidates_90_days": 2,
-    "publication_date_unknown": 0,
-    "queue_counts": {
-      "live_pending": 0,
-      "backfill_pending": 2,
-      "rejected": 12,
-      "published": 1
+    "scope": "full original inventory with unknown totals explicit",
+    "summary": {
+      "outcome": "OPERATIVE_DEGRADED",
+      "coverage_complete": false,
+      "coverage_reason": "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately.",
+      "archive_depth": {
+        "newsroom_pages": 9,
+        "alternate_observatorio": true,
+        "sitemap_checked": true
+      },
+      "owner": "Publisher RedSalud / Source Engineering",
+      "next_action": "Require accessible original publication/content for two denied sitemap articles; retain canonical+dedicated-header+ownJSONLD fail-closed date resolution. TMO84 is recovered; unavailable historical model diagnostics remain explicit, not reconstructed.",
+      "pages_checked": 116,
+      "latest_original_publication": "2026-10-07",
+      "discovered": 94,
+      "unique": 93,
+      "recent_30d": 8,
+      "recent_90d": 30,
+      "publication_date_unknown": 2,
+      "material_30d": 2,
+      "material_90d": 9,
+      "material_date_unknown": 0,
+      "material": 9,
+      "material_unknown": 2,
+      "published": 2,
+      "rejected": 7,
+      "deferred": 0,
+      "detected_material": 9,
+      "omitted_material": 0,
+      "parse_errors": 1,
+      "access_errors": 7,
+      "inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json",
+      "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+      "relevant_30d_total": null,
+      "relevant_90d_total": null,
+      "publicable_confirmed": 2,
+      "publicable_total": null
     },
     "items": [
       {
         "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
-        "publication_date": "2026-08-27",
-        "in_30_days": false,
-        "in_90_days": true,
+        "title": "Nueva Unidad de Trasplante de Médula Ósea: Alta Complejidad y Nueva Vida",
+        "publication_date": "2026-09-04",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "canonical_identity_jsonld_and_visible_header_agree",
         "materiality": "candidate",
-        "queue": [
-          {
-            "key": "b8c86555901f6f1da45b2f36d63ce5b13b53d72b1f7cf096ac258085557fe70a",
-            "status": "retry",
-            "reason": "budget_or_analysis_deferred",
-            "lane": "BACKFILL"
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Es un cambio de capacidad asistencial relevante, con una capacidad anual declarada y cobertura para ambos tipos de aseguramiento. Sin embargo, el comunicado no informa inversión, número de pacientes efectivamente atendidos, convenios de financiamiento ni resultados clínicos; por eso no alcanza el nivel de un cambio estructural nacional comprobado.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Es un cambio de capacidad asistencial relevante, con una capacidad anual declarada y cobertura para ambos tipos de aseguramiento. Sin embargo, el comunicado no informa inversión, número de pacientes efectivamente atendidos, convenios de financiamiento ni resultados clínicos; por eso no alcanza el nivel de un cambio estructural nacional comprobado.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T06:17:31.689143+00:00",
+            "relevance_score": 84,
+            "minimum_relevance": 78,
+            "editorial_reason": "Es un cambio de capacidad asistencial relevante, con una capacidad anual declarada y cobertura para ambos tipos de aseguramiento. Sin embargo, el comunicado no informa inversión, número de pacientes efectivamente atendidos, convenios de financiamiento ni resultados clínicos; por eso no alcanza el nivel de un cambio estructural nacional comprobado.",
+            "what_characters": 404,
+            "why_characters": 512,
+            "gate_failures": [],
+            "outcome": "passed",
+            "publication_date": "2026-09-04",
+            "publication_date_source": "canonical_article_publication"
+          },
+          "detected": true,
+          "queue": [
+            {
+              "key": "b8c86555901f6f1da45b2f36d63ce5b13b53d72b1f7cf096ac258085557fe70a",
+              "status": "published",
+              "reason": null,
+              "lane": "BACKFILL",
+              "deferred_detail": "RedSalud listing and article dates disagree",
+              "assessment": {
+                "assessed_at": "2026-10-11T06:17:31.689143+00:00",
+                "relevance_score": 84,
+                "minimum_relevance": 78,
+                "editorial_reason": "Es un cambio de capacidad asistencial relevante, con una capacidad anual declarada y cobertura para ambos tipos de aseguramiento. Sin embargo, el comunicado no informa inversión, número de pacientes efectivamente atendidos, convenios de financiamiento ni resultados clínicos; por eso no alcanza el nivel de un cambio estructural nacional comprobado.",
+                "what_characters": 404,
+                "why_characters": 512,
+                "gate_failures": [],
+                "outcome": "passed",
+                "publication_date": "2026-09-04",
+                "publication_date_source": "canonical_article_publication"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 1,
+          "feed_count": 1,
+          "related_published_signals": [],
+          "alicanto_status": "published",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:32:44.983134+00:00",
+            "body_sha256": "a18fe74e9732e0ddb275594c8c515fcc1f9fe44856e408e18680b136780202b8",
+            "date_stamps": [
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-27",
+                "value": "2026-08-27"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-04T13:14:32-0400",
+                "date": "2026-09-04"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-09-04",
+                "date": "2026-09-04"
+              }
+            ],
+            "date_reason": "canonical_identity_jsonld_and_visible_header_agree",
+            "access_error": null
           }
-        ],
-        "history_count": 0,
-        "visible_count": 0
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      },
+      {
+        "url": "https://www.redsalud.cl/noticias/clinica-redsalud-vitacura-alcanza-50-cirugias-roboticas",
+        "title": "Clínica RedSalud Vitacura alcanza las 50 cirugías robóticas: Alta complejidad y precisión al servicio de los pacientes",
+        "publication_date": "2026-10-07",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Accumulated operational milestone of50 procedures; no new investment, incremental volume or capacity plan announced. Historical model score/reason unavailable; current Reviewer qualitative exclusion is separate.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Accumulated operational milestone of50 procedures; no new investment, incremental volume or capacity plan announced. Historical model score/reason unavailable; current Reviewer qualitative exclusion is separate.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+          "detected": true,
+          "queue": [
+            {
+              "key": "f66d1d23634dc855871c33e1767e8bafff1d0a65b7b8d35025164370fdcc5ccc",
+              "status": "rejected",
+              "reason": "processor_rejected",
+              "lane": "LIVE",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:32:44.983160+00:00",
+            "body_sha256": "04226b8ca5b97be727a4ae1b5a556e7e0c48ce679d9b354064efceb67f1f0ce7",
+            "date_stamps": [
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-10-07",
+                "value": "2026-10-07"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-10-07",
+                "value": "2026-10-07"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-10-07T12:16:37-0300",
+                "date": "2026-10-07"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-10-07",
+                "date": "2026-10-07"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
       },
       {
         "url": "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio",
+        "title": "RedSalud y Nueva Masvida potencian convenio nacional para una atención médica integral y accesible",
         "publication_date": "2026-09-21",
-        "in_30_days": true,
-        "in_90_days": true,
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
         "materiality": "candidate",
-        "queue": [
-          {
-            "key": "decf12cac54c8934b979229db11cfc158f4349c43c4db10e052a96d13c01f7dc",
-            "status": "published",
-            "reason": null,
-            "lane": "BACKFILL"
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Original capacity, investment, technology, agreement or insurance-service change; admission requires original publication evidence and unchanged registered processor threshold.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": true,
+          "queue": [
+            {
+              "key": "decf12cac54c8934b979229db11cfc158f4349c43c4db10e052a96d13c01f7dc",
+              "status": "published",
+              "reason": null,
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 1,
+          "feed_count": 1,
+          "related_published_signals": [],
+          "alicanto_status": "published",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:32:44.983254+00:00",
+            "body_sha256": "fa9982cf699034ef731f00e6e6fe8c38501e2c5b5f170bfec0d50828b04d6e42",
+            "date_stamps": [
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-09-21",
+                "value": "2026-09-21"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-09-21",
+                "value": "2026-09-21"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-21T09:44:24-0300",
+                "date": "2026-09-21"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-09-21",
+                "date": "2026-09-21"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
           }
-        ],
-        "history_count": 1,
-        "visible_count": 1
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      },
+      {
+        "url": "https://www.redsalud.cl/noticias/nuevo-microscopio-neuroquirurgico-santiago",
+        "title": "Conoce el nuevo microscopio neuroquirúrgico de alta precisión de Clínica RedSalud Santiago",
+        "publication_date": "2026-09-10",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "KINEVO900 is an actual operational technology incorporation, not pure marketing. Historical rejection has no persisted score/reason. Current Reviewer: institution equipment change without quantified investment, throughput or network expansion; secondary operational context; no repeat paid evaluation without materially new evidence.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "KINEVO900 is an actual operational technology incorporation, not pure marketing. Historical rejection has no persisted score/reason. Current Reviewer: institution equipment change without quantified investment, throughput or network expansion; secondary operational context; no repeat paid evaluation without materially new evidence.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+          "detected": true,
+          "queue": [
+            {
+              "key": "1ad56b0580c8041a670ee45e375df4a35e9854ff8e7ba19d3de1cad7e6f468a3",
+              "status": "rejected",
+              "reason": "processor_rejected",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:32:44.983282+00:00",
+            "body_sha256": "c786a7681d7e649279d782297bab4df0979f4b650cd18d216753d6fffe44abc0",
+            "date_stamps": [
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-09-10",
+                "value": "2026-09-10"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-09-10",
+                "value": "2026-09-10"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-10T14:10:18-0300",
+                "date": "2026-09-10"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-09-10",
+                "date": "2026-09-10"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
       },
       {
         "url": "https://www.redsalud.cl/noticias/fibrilacion-auricular-varipulse-pro",
-        "publication_date": "2026-08-28",
-        "in_30_days": false,
-        "in_90_days": true,
-        "materiality": "clinical_review",
-        "queue": [
-          {
-            "key": "a48617343c570dfcb1ec86f62a6ef60c2059bf6313ee320a739876e4a716f365",
-            "status": "retry",
-            "reason": "budget_or_analysis_deferred",
-            "lane": "BACKFILL"
+        "title": "Clínica RedSalud Santiago realiza las primeras cirugías de arritmia con campo pulsado en el continente",
+        "publication_date": "2026-09-04",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "canonical_identity_jsonld_and_visible_header_agree",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Merece seguimiento como señal de adopción tecnológica y competencia en cardiología de alta complejidad por parte de un actor relevante. Sin embargo, el alcance actual es acotado a dos procedimientos y la información proviene exclusivamente de un comunicado corporativo, con afirmaciones promocionales sobre seguridad, recuperación y acceso que no están corroboradas en el material entregado.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Merece seguimiento como señal de adopción tecnológica y competencia en cardiología de alta complejidad por parte de un actor relevante. Sin embargo, el alcance actual es acotado a dos procedimientos y la información proviene exclusivamente de un comunicado corporativo, con afirmaciones promocionales sobre seguridad, recuperación y acceso que no están corroboradas en el material entregado.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T06:17:43.365337+00:00",
+            "relevance_score": 76,
+            "minimum_relevance": 78,
+            "editorial_reason": "Merece seguimiento como señal de adopción tecnológica y competencia en cardiología de alta complejidad por parte de un actor relevante. Sin embargo, el alcance actual es acotado a dos procedimientos y la información proviene exclusivamente de un comunicado corporativo, con afirmaciones promocionales sobre seguridad, recuperación y acceso que no están corroboradas en el material entregado.",
+            "what_characters": 422,
+            "why_characters": 507,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-09-04",
+            "publication_date_source": "canonical_article_publication"
+          },
+          "detected": true,
+          "queue": [
+            {
+              "key": "a48617343c570dfcb1ec86f62a6ef60c2059bf6313ee320a739876e4a716f365",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": {
+                "assessed_at": "2026-10-11T06:17:43.365337+00:00",
+                "relevance_score": 76,
+                "minimum_relevance": 78,
+                "editorial_reason": "Merece seguimiento como señal de adopción tecnológica y competencia en cardiología de alta complejidad por parte de un actor relevante. Sin embargo, el alcance actual es acotado a dos procedimientos y la información proviene exclusivamente de un comunicado corporativo, con afirmaciones promocionales sobre seguridad, recuperación y acceso que no están corroboradas en el material entregado.",
+                "what_characters": 422,
+                "why_characters": 507,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-09-04",
+                "publication_date_source": "canonical_article_publication"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:32:48.234694+00:00",
+            "body_sha256": "0249b10a9f033c2f5d764540287dd5693a08a6a9b2e767f06a23bd3ae579d186",
+            "date_stamps": [
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-28",
+                "value": "2026-08-28"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-28",
+                "value": "2026-08-28"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-04T16:51:13-0400",
+                "date": "2026-09-04"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-09-04",
+                "date": "2026-09-04"
+              }
+            ],
+            "date_reason": "canonical_identity_jsonld_and_visible_header_agree",
+            "access_error": null
           }
-        ],
-        "history_count": 0,
-        "visible_count": 0
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      },
+      {
+        "url": "https://www.redsalud.cl/noticias/nuevo-servicio-de-urgencia-elqui",
+        "title": "Conoce el nuevo Servicio de Urgencia Clínica RedSalud Elqui: Alta complejidad en un solo lugar",
+        "publication_date": "2026-08-17",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Merece seguimiento como inversión de capacidad asistencial con impacto regional, pero su alcance es principalmente local y el comunicado no entrega montos de inversión, volúmenes de atención, resultados operativos ni evidencia independiente sobre la reducción efectiva de derivaciones o tiempos de espera. Por eso corresponde a un contexto estratégico secundario, no a un cambio sectorial nacional.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Merece seguimiento como inversión de capacidad asistencial con impacto regional, pero su alcance es principalmente local y el comunicado no entrega montos de inversión, volúmenes de atención, resultados operativos ni evidencia independiente sobre la reducción efectiva de derivaciones o tiempos de espera. Por eso corresponde a un contexto estratégico secundario, no a un cambio sectorial nacional.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T06:17:56.623454+00:00",
+            "relevance_score": 72,
+            "minimum_relevance": 78,
+            "editorial_reason": "Merece seguimiento como inversión de capacidad asistencial con impacto regional, pero su alcance es principalmente local y el comunicado no entrega montos de inversión, volúmenes de atención, resultados operativos ni evidencia independiente sobre la reducción efectiva de derivaciones o tiempos de espera. Por eso corresponde a un contexto estratégico secundario, no a un cambio sectorial nacional.",
+            "what_characters": 402,
+            "why_characters": 406,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-08-17",
+            "publication_date_source": "verified_article_header"
+          },
+          "detected": true,
+          "queue": [
+            {
+              "key": "38756c9794bcb9ff96bc5842ec5167e3c26340be6a8117bfff51910cce8ccb49",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": {
+                "assessed_at": "2026-10-11T06:17:56.623454+00:00",
+                "relevance_score": 72,
+                "minimum_relevance": 78,
+                "editorial_reason": "Merece seguimiento como inversión de capacidad asistencial con impacto regional, pero su alcance es principalmente local y el comunicado no entrega montos de inversión, volúmenes de atención, resultados operativos ni evidencia independiente sobre la reducción efectiva de derivaciones o tiempos de espera. Por eso corresponde a un contexto estratégico secundario, no a un cambio sectorial nacional.",
+                "what_characters": 402,
+                "why_characters": 406,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-08-17",
+                "publication_date_source": "verified_article_header"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:32:48.234773+00:00",
+            "body_sha256": "91a94be9e6055ffffaea8458532397d186ff203e98d569157573eb2bd868765d",
+            "date_stamps": [
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-17",
+                "value": "2026-08-17"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-17",
+                "value": "2026-08-17"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-08-17T17:32:20-0400",
+                "date": "2026-08-17"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-08-17",
+                "date": "2026-08-17"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      },
+      {
+        "url": "https://www.redsalud.cl/noticias/el-exitoso-primer-tavi-en-temuco",
+        "title": "El exitoso primer implante valvular aórtico transcatéter (TAVI) en Clínica RedSalud Mayor Temuco",
+        "publication_date": "2026-09-04",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "canonical_identity_jsonld_and_visible_header_agree",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Es una expansión concreta de capacidad clínica especializada en una región, pero corresponde al primer procedimiento de un prestador específico y no entrega evidencia de escala, resultados clínicos ni cambios en acceso a nivel nacional. Por eso merece seguimiento como señal secundaria de descentralización de la cardiología intervencional, no como un cambio sectorial mayor.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Es una expansión concreta de capacidad clínica especializada en una región, pero corresponde al primer procedimiento de un prestador específico y no entrega evidencia de escala, resultados clínicos ni cambios en acceso a nivel nacional. Por eso merece seguimiento como señal secundaria de descentralización de la cardiología intervencional, no como un cambio sectorial mayor.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T06:18:08.932940+00:00",
+            "relevance_score": 72,
+            "minimum_relevance": 78,
+            "editorial_reason": "Es una expansión concreta de capacidad clínica especializada en una región, pero corresponde al primer procedimiento de un prestador específico y no entrega evidencia de escala, resultados clínicos ni cambios en acceso a nivel nacional. Por eso merece seguimiento como señal secundaria de descentralización de la cardiología intervencional, no como un cambio sectorial mayor.",
+            "what_characters": 402,
+            "why_characters": 421,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-09-04",
+            "publication_date_source": "verified_article_header"
+          },
+          "detected": true,
+          "queue": [
+            {
+              "key": "d6c8431c5d9a4a062c43134aef58de9e9be9a158a4f621384d3f5fe8d27c7dbc",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": {
+                "assessed_at": "2026-10-11T06:18:08.932940+00:00",
+                "relevance_score": 72,
+                "minimum_relevance": 78,
+                "editorial_reason": "Es una expansión concreta de capacidad clínica especializada en una región, pero corresponde al primer procedimiento de un prestador específico y no entrega evidencia de escala, resultados clínicos ni cambios en acceso a nivel nacional. Por eso merece seguimiento como señal secundaria de descentralización de la cardiología intervencional, no como un cambio sectorial mayor.",
+                "what_characters": 402,
+                "why_characters": 421,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-09-04",
+                "publication_date_source": "verified_article_header"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:32:51.480687+00:00",
+            "body_sha256": "b505a9ac6e093b273409f94879ff3e2cfb935ef599c4880a6deb05e2d2767262",
+            "date_stamps": [
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-11",
+                "value": "2026-08-11"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-11",
+                "value": "2026-08-11"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-04T13:11:45-0400",
+                "date": "2026-09-04"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-09-04",
+                "date": "2026-09-04"
+              }
+            ],
+            "date_reason": "canonical_identity_jsonld_and_visible_header_agree",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      },
+      {
+        "url": "https://www.redsalud.cl/noticias/cirugia-robotica-mars-en-chile",
+        "title": "Cirugía Robótica MARS en Chile: Precisión y Seguridad en Procedimientos Bariátricos y Digestivos",
+        "publication_date": "2026-09-04",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "canonical_identity_jsonld_and_visible_header_agree",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Es un avance de capacidad tecnológica y acceso dentro de un prestador relevante, pero su impacto sectorial todavía es acotado y no se informa una expansión ya materializada más allá de la manga gástrica en una clínica. Además, los beneficios clínicos y económicos se presentan en tono corporativo, sin datos comparativos ni resultados verificables; por eso corresponde a un contexto relevante, pero secundario, y no a un cambio sectorial mayor.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Es un avance de capacidad tecnológica y acceso dentro de un prestador relevante, pero su impacto sectorial todavía es acotado y no se informa una expansión ya materializada más allá de la manga gástrica en una clínica. Además, los beneficios clínicos y económicos se presentan en tono corporativo, sin datos comparativos ni resultados verificables; por eso corresponde a un contexto relevante, pero secundario, y no a un cambio sectorial mayor.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T06:18:18.889290+00:00",
+            "relevance_score": 72,
+            "minimum_relevance": 78,
+            "editorial_reason": "Es un avance de capacidad tecnológica y acceso dentro de un prestador relevante, pero su impacto sectorial todavía es acotado y no se informa una expansión ya materializada más allá de la manga gástrica en una clínica. Además, los beneficios clínicos y económicos se presentan en tono corporativo, sin datos comparativos ni resultados verificables; por eso corresponde a un contexto relevante, pero secundario, y no a un cambio sectorial mayor.",
+            "what_characters": 431,
+            "why_characters": 447,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-09-04",
+            "publication_date_source": "verified_article_header"
+          },
+          "detected": true,
+          "queue": [
+            {
+              "key": "b738fbc7ef637368bf8fff56e90ea0ddb64afa3db84f2f8918c859713f6f55ef",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": {
+                "assessed_at": "2026-10-11T06:18:18.889290+00:00",
+                "relevance_score": 72,
+                "minimum_relevance": 78,
+                "editorial_reason": "Es un avance de capacidad tecnológica y acceso dentro de un prestador relevante, pero su impacto sectorial todavía es acotado y no se informa una expansión ya materializada más allá de la manga gástrica en una clínica. Además, los beneficios clínicos y económicos se presentan en tono corporativo, sin datos comparativos ni resultados verificables; por eso corresponde a un contexto relevante, pero secundario, y no a un cambio sectorial mayor.",
+                "what_characters": 431,
+                "why_characters": 447,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-09-04",
+                "publication_date_source": "verified_article_header"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:32:51.480734+00:00",
+            "body_sha256": "81ecc2cb76f2814dc0fe2bd01bb81ad3643717c5e556358c32c1cddf07c544e9",
+            "date_stamps": [
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-05",
+                "value": "2026-08-05"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-08-05",
+                "value": "2026-08-05"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-09-04T13:01:53-0400",
+                "date": "2026-09-04"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-09-04",
+                "date": "2026-09-04"
+              }
+            ],
+            "date_reason": "canonical_identity_jsonld_and_visible_header_agree",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+      },
+      {
+        "url": "https://www.redsalud.cl/noticias/redsalud-y-facultadla-universidad-de-chile",
+        "title": "RedSalud y Facultad de Medicina de la Universidad de Chile firman convenio docente-asistencial",
+        "publication_date": "2026-07-23",
+        "event_date": "2026-07-20",
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Es un cambio relevante para la estrategia de capacidad médica de RedSalud y para la formación de especialistas, pero su alcance sectorial inmediato es acotado: se trata de un convenio institucional con número de plazas, financiamiento y efectos sobre la oferta nacional aún no especificados.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Es un cambio relevante para la estrategia de capacidad médica de RedSalud y para la formación de especialistas, pero su alcance sectorial inmediato es acotado: se trata de un convenio institucional con número de plazas, financiamiento y efectos sobre la oferta nacional aún no especificados.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "processor_assessment": {
+            "assessed_at": "2026-10-11T06:18:28.912516+00:00",
+            "relevance_score": 70,
+            "minimum_relevance": 78,
+            "editorial_reason": "Es un cambio relevante para la estrategia de capacidad médica de RedSalud y para la formación de especialistas, pero su alcance sectorial inmediato es acotado: se trata de un convenio institucional con número de plazas, financiamiento y efectos sobre la oferta nacional aún no especificados.",
+            "what_characters": 416,
+            "why_characters": 385,
+            "gate_failures": [
+              "relevance_below_source_gate"
+            ],
+            "outcome": "rejected",
+            "publication_date": "2026-07-23",
+            "publication_date_source": "verified_article_header"
+          },
+          "event_date": "2026-07-20",
+          "detected": true,
+          "queue": [
+            {
+              "key": "6216dc278f0300bec815c82d01502ecbbf50604259d7883d14940cce34e37ca1",
+              "status": "rejected",
+              "reason": "relevance_below_source_gate",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": {
+                "assessed_at": "2026-10-11T06:18:28.912516+00:00",
+                "relevance_score": 70,
+                "minimum_relevance": 78,
+                "editorial_reason": "Es un cambio relevante para la estrategia de capacidad médica de RedSalud y para la formación de especialistas, pero su alcance sectorial inmediato es acotado: se trata de un convenio institucional con número de plazas, financiamiento y efectos sobre la oferta nacional aún no especificados.",
+                "what_characters": 416,
+                "why_characters": 385,
+                "gate_failures": [
+                  "relevance_below_source_gate"
+                ],
+                "outcome": "rejected",
+                "publication_date": "2026-07-23",
+                "publication_date_source": "verified_article_header"
+              },
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:32:54.680023+00:00",
+            "body_sha256": "7c073806bfcb419d0af8283f89cf9989906e9fd5c9916f0b3ab7c933cd88acb9",
+            "date_stamps": [
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-07-23",
+                "value": "2026-07-23"
+              },
+              {
+                "kind": "dated_news_listing",
+                "date": "2026-07-23",
+                "value": "2026-07-23"
+              },
+              {
+                "kind": "url_associated_jsonld_datePublished",
+                "value": "2026-07-23T14:30:09-0400",
+                "date": "2026-07-23"
+              },
+              {
+                "kind": "verified_article_header",
+                "value": "2026-07-23",
+                "date": "2026-07-23"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/redsalud.json"
       }
     ]
   },
@@ -210,7 +1861,7 @@
     "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
     "repeated_paid_calls": 0
   },
-  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null",
+  "coverage_claim": "Paginated news/archive/sitemap checked; four conflicting teaser dates resolved with own canonical/header/JSON-LD. TMO84published; other operational candidates explained. Two sitemap originals deny access; teletrombolysis alternative also403. Historical microscopio/50roboticas model diagnostics absent, current Reviewer rationale recorded separately.",
   "baseline": {
     "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
     "queue_states": {
@@ -441,5 +2092,155 @@
         }
       }
     ]
-  }
+  },
+  "initial_checkpoint_status": "reconciled_with_exact_blockers",
+  "initial_original_items": [
+    {
+      "title": "Nueva Unidad de Trasplante de Médula Ósea: Alta Complejidad y Nueva Vida",
+      "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
+      "publication_date": "2026-08-27",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
+      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+    },
+    {
+      "title": "RedSalud y Nueva Masvida refuerzan su convenio",
+      "url": "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio",
+      "publication_date": "2026-09-21",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": false,
+      "evidence": "Ya registrado en Alicanto; comparar URL, no crear otra entidad ni republicar."
+    },
+    {
+      "title": "Clínica RedSalud Santiago realiza las primeras cirugías de arritmia con campo pulsado en el continente",
+      "url": "https://www.redsalud.cl/noticias/fibrilacion-auricular-varipulse-pro",
+      "publication_date": "2026-08-28",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
+      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+    },
+    {
+      "url": "https://www.redsalud.cl/noticias/nuevo-servicio-de-urgencia-elqui",
+      "title": "Conoce el nuevo Servicio de Urgencia Clínica RedSalud Elqui: Alta complejidad en un solo lugar",
+      "publication_date": "2026-08-17",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
+      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+    },
+    {
+      "url": "https://www.redsalud.cl/noticias/el-exitoso-primer-tavi-en-temuco",
+      "title": "El exitoso primer implante valvular aórtico transcatéter (TAVI) en Clínica RedSalud Mayor Temuco",
+      "publication_date": "2026-08-11",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
+      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+    },
+    {
+      "url": "https://www.redsalud.cl/noticias/cirugia-robotica-mars-en-chile",
+      "title": "Cirugía Robótica MARS en Chile: Precisión y Seguridad en Procedimientos Bariátricos y Digestivos",
+      "publication_date": "2026-08-05",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
+      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+    },
+    {
+      "url": "https://www.redsalud.cl/noticias/redsalud-y-facultadla-universidad-de-chile",
+      "title": "RedSalud y Facultad de Medicina de la Universidad de Chile firman convenio docente-asistencial",
+      "publication_date": "2026-07-23",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Original article H1/body and publication provenance in full inventory; operational capacity/technology/agreement requires unchanged gate assessment.",
+      "original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json"
+    }
+  ],
+  "blockers_before_exhaustive_audit": [
+    "90_day_inventory_dates_not_fully_persisted_after_five_page_probe",
+    "listing_detail_publication_date_conflict_2026_08_27_vs_2026_09_04"
+  ],
+  "initial_reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 1,
+    "material_candidates_90_days": 2,
+    "publication_date_unknown": 0,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 2,
+      "rejected": 12,
+      "published": 1
+    },
+    "items": [
+      {
+        "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
+        "publication_date": "2026-08-27",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "b8c86555901f6f1da45b2f36d63ce5b13b53d72b1f7cf096ac258085557fe70a",
+            "status": "retry",
+            "reason": "budget_or_analysis_deferred",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio",
+        "publication_date": "2026-09-21",
+        "in_30_days": true,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "decf12cac54c8934b979229db11cfc158f4349c43c4db10e052a96d13c01f7dc",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 1,
+        "visible_count": 1
+      },
+      {
+        "url": "https://www.redsalud.cl/noticias/fibrilacion-auricular-varipulse-pro",
+        "publication_date": "2026-08-28",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "clinical_review",
+        "queue": [
+          {
+            "key": "a48617343c570dfcb1ec86f62a6ef60c2059bf6313ee320a739876e4a716f365",
+            "status": "retry",
+            "reason": "budget_or_analysis_deferred",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      }
+    ]
+  },
+  "outcome": "OPERATIVE_DEGRADED",
+  "original_items_role": "Current candidate reconciliation. Initial evidence is preserved separately; terminal results are not replayed.",
+  "latest_original_inventory": "data/audits/provider_inventory_2026_10_11/redsalud.json",
+  "piece_decisions": "data/audits/provider_editorial_decisions_2026_10_11.json",
+  "last_runtime_evidence": "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
+  "next_action": "Require accessible original publication/content for two denied sitemap articles; retain canonical+dedicated-header+ownJSONLD fail-closed date resolution. TMO84 is recovered; unavailable historical model diagnostics remain explicit, not reconstructed.",
+  "blocker_owner": "Publisher RedSalud / Source Engineering",
+  "current_checkpoint_test": "55 passed, 1 skipped; provider/beta/publication/gremio/source-health focal suite on 2026-10-11",
+  "merged_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104"
 }
