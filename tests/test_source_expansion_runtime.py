@@ -52,7 +52,7 @@ def test_shareholder_control_keeps_original_reporting_period(captures):
     assert ilc['ownership_pct']==100 and ilc['reported_period']=='2025-12'
 
 
-def test_partial_budget_poll_retains_valid_stock_and_does_not_claim_absence(captures,tmp_path):
+def test_partial_budget_poll_retains_valid_stock_and_does_not_claim_absence(captures,tmp_path,monkeypatch):
     path=tmp_path/'data/market';path.mkdir(parents=True)
     original=json.loads((ROOT/'data/market/dipres_health_budget.json').read_text())
     (path/'dipres_health_budget.json').write_text(json.dumps(original))
@@ -64,6 +64,13 @@ def test_partial_budget_poll_retains_valid_stock_and_does_not_claim_absence(capt
     assert retained['material_variations']==original['material_variations']
     assert retained['document_ledger']==original['document_ledger']
     assert health['items_recent'] is None and not health['coverage_complete']
+    partial.receipts=[next(r for r in captures.receipts if r['package']=='dipres' and '.pdf' in r['url'] and 'Proyecto de Ley' in r['kind'])]
+    monkeypatch.setattr('radar_salud.dipres_sources.pdf_text',lambda content:'Unexpected official document schema')
+    failed=collect_dipres(partial,tmp_path)
+    after=json.loads((path/'dipres_health_budget.json').read_text())
+    assert failed['parse_errors']==1 and failed['technical_status']=='error'
+    assert after['records']==original['records'] and after['document_ledger']==original['document_ledger']
+    assert after['poll_document_ledger'][0]['disposition']=='deferred'
 
 
 def test_periodic_queries_cross_year_without_freezing_2026():

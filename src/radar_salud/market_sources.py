@@ -247,12 +247,18 @@ def collect_dipres(captures, root):
                 continue
         merged[key]=row
     candidates=list({(c['source_url'],c['source_sha256']):c for c in previous_stock.get('material_variations',[])+material_variations(rows)}.values())
-    retained_ledger=list({(d['source_url'],d['source_sha256']):d for d in previous_stock.get('document_ledger',[])+ledger}.values())
+    ledger_stock={(d['source_url'],d['source_sha256']):d for d in previous_stock.get('document_ledger',[])}
+    for entry in ledger:
+        key=entry['source_url'],entry['source_sha256']
+        if entry['disposition']=='deferred' and ledger_stock.get(key,{}).get('disposition')=='data_snapshot':continue
+        ledger_stock[key]=entry
+    retained_ledger=list(ledger_stock.values())
     payload={'schema_version':1,'records':list(merged.values()),'document_ledger':retained_ledger,'poll_document_ledger':ledger,'material_variations':candidates,
              'aggregation_rule':'Do not sum nested fiscal levels or transfer-financed programs. Execution is accumulated, not monthly flow.',
              'coverage_complete':False,'coverage_reason':'Declared Salud project/execution perimeter parsed; source publication dates, complete fiscal version stock and separated-cadence recurrence remain unverified'}
     atomic_json(stock_path,payload)
     evidence=health(captures,'dipres',discovered=len(ledger),unique=len(seen),recent=None,material=len(material_variations(rows)),
+        errors=sum(d['disposition']=='deferred' for d in ledger),
         deferred=sum(d['disposition']=='deferred' for d in ledger)+len(candidates),
         reason=payload['coverage_reason'])
     evidence.update(outcome='OPERATIVE_DEGRADED',data_documents=sum(d['disposition']=='data_snapshot' for d in ledger),
