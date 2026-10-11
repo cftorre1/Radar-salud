@@ -59,7 +59,7 @@ def test_archive_reads_every_detail_and_health_in_body_with_generic_title(tmp_pa
             return f'<urlset xmlns="{NS}" />'
         return html_article(url, health=url.endswith('gobierno-99/'))
     audit = []
-    items = discover_pulso(loader, audit, cache_path=tmp_path / 'cache.json', today=TODAY, include_listings=False)
+    items = discover_pulso(loader, audit, cache_path=tmp_path / 'cache.json', today=TODAY, include_listings=False, include_public_feeds=False)
     assert len([url for url in calls if '/noticia/' in url]) == 100
     assert [item.url for item in items] == ['https://www.latercera.com/nacional/noticia/gobierno-99/']
     summary = next(entry for entry in audit if entry['status'] == 'archive_coverage')
@@ -224,8 +224,8 @@ def test_real_rss_has_full_primary_story_bodies_not_search_snippets():
     assert all(item['rss_inventory_day'] for item in items.values())
 
 
-@pytest.mark.parametrize('health,short,opens_detail', [(True, False, True), (False, False, False), (False, True, True)])
-def test_rss_body_prescreen_never_uses_title_alone_or_truncated_body(tmp_path, health, short, opens_detail):
+@pytest.mark.parametrize('health,short,opens_detail', [(True, False, True), (False, False, True), (False, True, True)])
+def test_rss_body_never_excludes_cold_urls_from_unmarked_truncated_excerpt(tmp_path, health, short, opens_detail):
     calls = []
     url = 'https://www.latercera.com/nacional/noticia/gobierno-0/'
     def loader(value):
@@ -299,3 +299,120 @@ def test_opinion_under_news_path_is_traced_editorial_exclusion_not_detail_error(
     assert not any(e['status'] == 'detail_error' for e in audit)
     cached = json.loads((tmp_path / 'cache.json').read_text())['articles']
     assert next(iter(cached.values()))['exclusion_reason'] == 'excluded_opinion_content'
+
+
+def ans_feed(offset=0, *, count=10000, day='2026-10-09', size=24, next_cursor=None):
+    entries = []
+    for i in range(size):
+        entries.append(dict(_id=f'publisher-{offset+i}', headlines={'basic': 'Gobierno anuncia un nuevo plan para las regiones'},
+                            websites={'la-tercera': {'website_url': f'/nacional/noticia/gobierno-{offset+i}/'}},
+                            first_publish_date=day+'T15:00:00Z', publish_date=day+'T15:00:00Z',
+                            last_updated_date='2026-10-09T15:00:00Z', taxonomy={'primary_section': {'path': '/nacional'}}))
+    return json.dumps(dict(content_elements=entries, count=count, next=offset+size if next_cursor is None else next_cursor))
+
+
+def test_public_frontend_url_matches_observed_button_and_parses_complete_inventory():
+    from urllib.parse import parse_qs, urlparse
+    from radar_salud.pulso_source import _public_feed_url, parse_public_feed
+    url = _public_feed_url('tag', 'salud', 24, '1284')
+    parsed = urlparse(url)
+    query = parse_qs(parsed.query)
+    assert parsed.path.endswith('/story-feed-tag-fetch')
+    assert json.loads(query['query'][0]) == dict(feedOffset=24, feedSize=24, fromComponent='result-list', tagSlug='salud')
+    assert set(query) == {'query', '_website', 'd'}
+    entries, count, next_cursor = parse_public_feed(ans_feed())
+    assert len(entries) == 24 and count == 10000 and next_cursor == 24
+    assert all(entry['url'].startswith('https://www.latercera.com/nacional/noticia/') for entry in entries)
+
+
+def test_public_feed_traverses_next_to_verified_90_day_boundary_without_title_gate(tmp_path):
+    from urllib.parse import parse_qs, urlparse
+    from radar_salud.pulso_source import discover_public_feeds
+    offsets, opened = [], []
+    def loader(value):
+        if '/canal/' in value:
+            return 'Fusion.deployment="1284";'
+        if '/pf/api/' in value:
+            query = json.loads(parse_qs(urlparse(value).query)['query'][0])
+            offset = query['feedOffset']
+            offsets.append(offset)
+            return ans_feed(offset, day='2026-10-09' if offset == 0 else '2026-07-01')
+        opened.append(value)
+        number = int(value.rstrip('/').rsplit('-', 1)[1])
+        return html_article(value, day='2026-10-09' if number < 24 else '2026-07-01')
+    audit = []
+    items, summary = discover_public_feeds(loader, audit, tmp_path/'cache.json', today=TODAY, feeds=[('section','nacional')])
+    assert offsets == [0,24,48,72]
+    assert len(opened) == 96 and len(items) == 24
+    assert summary['coverage_complete']
+    assert next(e for e in audit if e['status']=='public_feed_coverage')['termination'] == 'three_publication_ordered_detail_verified_old_pages'
+
+
+def test_public_feed_count_short_scope_can_be_exhaustive_and_empty_capped_scope_cannot(tmp_path):
+    from radar_salud.pulso_source import discover_public_feeds
+    def loader(value):
+        if '/canal/' in value:
+            return ''
+        if '/pf/api/' in value:
+            return ans_feed(count=1, size=1)
+        return html_article(value)
+    items, summary = discover_public_feeds(loader, [], tmp_path/'cache.json', today=TODAY, feeds=[('tag','salud')])
+    assert len(items) == 1 and summary['coverage_complete']
+    def capped(value):
+        if '/canal/' in value:
+            return ''
+        return ans_feed(count=10000, size=0)
+    audit = []
+    _, summary = discover_public_feeds(capped, audit, tmp_path/'cache2.json', today=TODAY, feeds=[('tag','salud')])
+    assert not summary['coverage_complete']
+    assert next(e for e in audit if e['status']=='public_feed_coverage')['termination'] == 'feed_exhausted_without_verified_window'
+
+
+def test_public_feed_repeated_page_nonadvancing_cursor_and_cap_are_finite(tmp_path):
+    from radar_salud.pulso_source import discover_public_feeds
+    for mode in ('repeat','cursor','cap'):
+        calls = []
+        def loader(value):
+            if '/canal/' in value:
+                return ''
+            if '/pf/api/' in value:
+                calls.append(value)
+                return ans_feed(0 if mode=='repeat' else len(calls)*24, next_cursor=0 if mode=='cursor' else None)
+            return html_article(value)
+        audit = []
+        _, summary = discover_public_feeds(loader, audit, tmp_path/f'{mode}.json', today=TODAY,
+                                          feeds=[('section','pulso')], max_feed_pages=2)
+        assert len(calls) <= 2 and not summary['coverage_complete']
+        assert any(e['status']=='listing_error' for e in audit)
+
+
+def test_public_api_date_is_not_used_as_final_or_sufficient_boundary(tmp_path):
+    from radar_salud.pulso_source import discover_public_feeds
+    calls = []
+    def loader(value):
+        if '/canal/' in value:
+            return ''
+        if '/pf/api/' in value:
+            calls.append(value)
+            return ans_feed((len(calls)-1)*24, day='2026-07-01')
+        return html_article(value, day='2026-10-09')
+    audit = []
+    items, summary = discover_public_feeds(loader, audit, tmp_path/'cache.json', today=TODAY,
+                                          feeds=[('section','pulso')], max_feed_pages=4)
+    assert len(calls) == 4 and not summary['coverage_complete']
+    assert len(items) == 96 and all(item.event_date=='2026-10-09' for item in items)
+
+
+def test_default_discovery_cache_is_in_durable_daily_state(tmp_path, monkeypatch):
+    from radar_salud import paths
+    monkeypatch.setattr(paths, 'project_root', lambda: tmp_path)
+    def loader(value):
+        if value == SITEMAP_INDEX:
+            return xml_index()
+        if value == SITEMAP_PAGE:
+            return xml_page(0, count=1)
+        if '/arc/outboundfeeds/' in value:
+            return f'<urlset xmlns="{NS}" />'
+        return html_article(value)
+    discover_pulso(loader, [], today=TODAY, include_listings=False, include_public_feeds=False)
+    assert (tmp_path/'data/state/pulso_discovery_cache.json').exists()

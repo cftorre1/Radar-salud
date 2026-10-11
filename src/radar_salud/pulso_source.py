@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from email.utils import parsedate_to_datetime
 from html.parser import HTMLParser
-from urllib.parse import parse_qs, urljoin, urlparse
+from urllib.parse import parse_qs, urlencode, urljoin, urlparse
 from zoneinfo import ZoneInfo
 
 from .models import RawItem
@@ -440,7 +440,8 @@ def _verified_detail(entry, loader, cached):
         relevant = health_anchor(combined)
         metadata.update(discovered_from=entry["listing"], page_text=body[:18000] if relevant else "",
                         market_role="media", source_quality_gate="passed", captured_at=now,
-                        html_sha256=digest, publisher_lastmod=entry.get("lastmod", ""),
+                        html_sha256=digest, article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                        publisher_lastmod=entry.get("lastmod", ""),
                         topics=health_topics(combined) if relevant else [])
         return dict(url=url, title=title, body=body[:1800] if relevant else "", metadata=metadata,
                     relevant=relevant, lastmod=entry.get("lastmod", ""), cache_hit=False)
@@ -554,21 +555,9 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
                 entry.update({key: feed_item[key] for key in ("rss_publication_timestamp", "rss_inventory_day", "rss_fulltext_sha256")})
                 if feed_item["rss_inventory_day"]:
                     rss_inventory_days.append(feed_item["rss_inventory_day"])
-            if feed_item and feed_item["fulltext_complete"] and not feed_item["relevant"]:
-                rss_exclusions += 1
-                # Deliberately no final publication_date: no health topic was
-                # found anywhere in the original full story, and the detail
-                # has not been opened. Inventory dates cannot masquerade as
-                # verified bylines in the reconciled health article ledger.
-                audit.append(dict(url=canonical, listing=url, status="excluded", reason="fulltext_rss_no_health_anchor",
-                                  title=feed_item["title"], section=canonical.split('/')[3], topics=[],
-                                  publication_date=None, publication_date_source="not_detail_verified",
-                                  rss_publication_timestamp=feed_item["rss_publication_timestamp"],
-                                  rss_inventory_day=feed_item["rss_inventory_day"],
-                                  rss_fulltext_sha256=feed_item["rss_fulltext_sha256"],
-                                  publisher_lastmod=entry.get("lastmod", ""), article_verified=False,
-                                  captured_at=datetime.now(ZoneInfo("UTC")).isoformat(), rss_url=rss_url))
-                continue
+            # Fulltext RSS is corroboration, never sufficient to exclude a
+            # cold URL: a publisher may emit an unmarked truncated excerpt.
+            # Verified primary details/exclusions can be reused by change token.
             candidates.append(entry)
         dates = []
         with ThreadPoolExecutor(max_workers=worker_count) as pool:
@@ -649,16 +638,247 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
     return out, visited, summary
 
 
+PUBLIC_FEEDS = tuple(("section", name) for name in (
+    "pulso", "nacional", "politica", "tendencias", "que-pasa", "paula", "sustentabilidad",
+    "lt-board", "sociales", "servicios", "tecnologia", "la-tercera-pm",
+)) + tuple(("tag", name) for name in (
+    "salud", "isapres", "fonasa", "clinicas", "hospitales", "listas-de-espera", "banmedica",
+))
+
+
+def _public_feed_url(kind, name, offset, deployment=None):
+    """Same unauthenticated request made by the publisher's visible Ver más."""
+    source = "story-feed-sections-fetch" if kind == "section" else "story-feed-tag-fetch"
+    query = dict(feedOffset=offset, feedSize=24, fromComponent="result-list")
+    query["includeSections" if kind == "section" else "tagSlug"] = "/" + name if kind == "section" else name
+    params = dict(query=json.dumps(query, separators=(",", ":")), _website="la-tercera")
+    if deployment:
+        params["d"] = deployment
+    return "https://www.latercera.com/pf/api/v3/content/fetch/" + source + "?" + urlencode(params)
+
+
+def parse_public_feed(value):
+    """Parse the publicly rendered ANS inventory without a title/topic gate."""
+    value = json.loads(value) if isinstance(value, str) else value
+    if not isinstance(value, dict) or not isinstance(value.get("content_elements"), list):
+        raise ValueError("unexpected_public_feed_document")
+    entries = []
+    for node in value["content_elements"]:
+        if not isinstance(node, dict):
+            raise ValueError("invalid_public_feed_article")
+        site = node.get("websites", {}).get("la-tercera", {})
+        candidate = site.get("website_url") or node.get("website_url") or node.get("canonical_url")
+        url = article_url(candidate) if candidate else None
+        entries.append(dict(url=url, publisher_url=urljoin(LISTINGS[0], candidate or ""),
+                            lastmod=node.get("last_updated_date", ""),
+                            first_publish_date=node.get("first_publish_date"),
+                            publish_date=node.get("publish_date"),
+                            title=node.get("headlines", {}).get("basic", ""),
+                            section=node.get("taxonomy", {}).get("primary_section", {}),
+                            publisher_id=node.get("_id")))
+    return entries, value.get("count"), value.get("next")
+
+
+def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None,
+                          workers=4, feeds=None, max_feed_pages=250):
+    """Recover the 90-day horizon through ordinary public frontend pagination.
+
+    All new factual URLs are opened in detail. API first_publish_date is only
+    chronology corroboration; final publication remains the primary byline.
+    """
+    from .pending_queue import atomic_json
+    today = today or datetime.now(ZoneInfo("America/Santiago")).date()
+    cutoff = today - timedelta(days=90)
+    cache = _load_cache(cache_path)
+    articles = cache["articles"]
+    visited = visited if visited is not None else set()
+    out, summaries = [], []
+    feeds = PUBLIC_FEEDS if feeds is None else feeds
+    worker_count = max(1, min(int(workers), 4))
+    deployment = None
+    try:
+        page_html = loader(LISTINGS[0])
+        match = re.search(r'Fusion\.deployment="([a-zA-Z0-9_-]+)"', page_html)
+        deployment = match[1] if match else None
+    except Exception as exc:
+        audit.append(dict(listing=LISTINGS[0], status="surface_error", reason=str(exc), fallback="public_feed_without_deployment_cache_key"))
+    for kind, name in feeds:
+        offset, old_pages, page_count, errors = 0, 0, 0, 0
+        growth, identities, observed_dates, publisher_ids = set(), set(), [], set()
+        no_growth_pages = 0
+        complete, termination = False, "unproven"
+        total = None
+        while page_count < max_feed_pages:
+            url = _public_feed_url(kind, name, offset, deployment)
+            page_count += 1
+            try:
+                payload = loader(url)
+                entries, total, next_cursor = parse_public_feed(payload)
+            except Exception as exc:
+                errors += 1
+                termination = "public_feed_error"
+                audit.append(dict(listing=url, status="listing_error", reason=str(exc), error_type=type(exc).__name__, feed=kind + ":" + name))
+                break
+            identity = tuple(entry.get("publisher_id") or entry["publisher_url"] for entry in entries)
+            if entries and identity in identities:
+                errors += 1
+                termination = "public_feed_repeated_page"
+                audit.append(dict(listing=url, status="listing_error", reason=termination, feed=kind + ":" + name))
+                break
+            identities.add(identity)
+            new_ids = set(identity) - publisher_ids
+            publisher_ids.update(identity)
+            no_growth_pages = no_growth_pages + 1 if entries and not new_ids else 0
+            if no_growth_pages >= 2:
+                errors += 1
+                termination = "public_feed_nonadvancing_inventory"
+                audit.append(dict(listing=url, status="listing_error", reason=termination, feed=kind + ":" + name))
+                break
+            primary_dates, page_results, candidates = [], [], []
+            for entry in entries:
+                if entry.get("first_publish_date"):
+                    try:
+                        day = _publisher_day(entry["first_publish_date"])
+                        if day:
+                            primary_dates.append(date.fromisoformat(day))
+                    except (ValueError, TypeError):
+                        pass
+                canonical = entry["url"]
+                if not canonical:
+                    audit.append(dict(url=entry["publisher_url"], listing=url, status="excluded_path", reason="nonfactual_or_unsupported_article_path"))
+                    continue
+                growth.add(canonical)
+                entry["listing"] = url
+                cached = articles.get(canonical)
+                # The archive already verified/prescreened this URL. Details
+                # are still required for old-page boundary corroboration.
+                is_boundary_page = bool(primary_dates and max(primary_dates) < cutoff - timedelta(days=2))
+                if canonical in visited and not is_boundary_page:
+                    if cached and cached.get("metadata", {}).get("article_verified"):
+                        page_results.append((entry, dict(cached, cache_hit=True)))
+                    continue
+                candidates.append(entry)
+            with ThreadPoolExecutor(max_workers=worker_count) as pool:
+                verified = list(pool.map(lambda entry: _verified_detail(entry, loader, articles.get(entry["url"])), candidates))
+            page_results.extend(zip(candidates, verified))
+            detail_dates = []
+            page_errors = 0
+            for entry, result in page_results:
+                if result.get("status") == "detail_error":
+                    errors += 1
+                    page_errors += 1
+                    audit.append(dict(result, feed=kind + ":" + name))
+                    continue
+                metadata = result["metadata"]
+                day = date.fromisoformat(metadata["publication_date"])
+                detail_dates.append(day)
+                observed_dates.append(day)
+                articles[result["url"]] = {key: val for key, val in result.items() if key != "cache_hit"}
+                was_seen = result["url"] in visited
+                visited.add(result["url"])
+                status = "discovered" if result["relevant"] and cutoff <= day <= today else "excluded"
+                reason = None if status == "discovered" else result.get("exclusion_reason", "no_health_anchor") if not result["relevant"] else "outside_90_day_window"
+                audit.append(dict(url=result["url"], listing=url, feed=kind + ":" + name, status=status, reason=reason,
+                                  title=result["title"], section=metadata["section"], topics=metadata.get("topics", []),
+                                  publication_date=metadata["publication_date"], publication_timestamp=metadata["publication_timestamp"],
+                                  publication_date_source=metadata["publication_date_source"], html_sha256=metadata["html_sha256"],
+                                  captured_at=metadata["captured_at"], cache_hit=result["cache_hit"],
+                                  first_publish_date=entry.get("first_publish_date"), duplicate_inventory_url=was_seen,
+                                  in_complete_30_days=today - timedelta(days=30) <= day < today,
+                                  in_complete_90_days=cutoff <= day < today, current_day_slice=day == today))
+                if status == "discovered" and not was_seen:
+                    out.append(RawItem("pulso_latercera", result["title"], result["url"], "Pulso / La Tercera", "press_high_trust",
+                                       event_date=metadata["publication_date"], raw_text=result["body"], metadata=metadata))
+            # Stop only on a sustained publisher first-publication boundary,
+            # corroborated against final dates of all factual URLs on each
+            # boundary page. Excluded opinion paths remain inventoried.
+            factual_count = sum(bool(entry["url"]) for entry in entries)
+            old = (len(entries) == 24 and len(primary_dates) == len(entries)
+                   and max(primary_dates) < cutoff - timedelta(days=2)
+                   and len(detail_dates) == factual_count and not page_errors
+                   and (not detail_dates or max(detail_dates) < cutoff - timedelta(days=2)))
+            old_pages = old_pages + 1 if old else 0
+            audit.append(dict(listing=url, status="public_feed_page", feed=kind + ":" + name, offset=offset,
+                              count=total, next=next_cursor, primary_entries=len(entries), unique_urls=len(growth),
+                              json_sha256=hashlib.sha256(payload.encode("utf-8")).hexdigest(),
+                              inventory_day_min=min(primary_dates).isoformat() if primary_dates else None,
+                              inventory_day_max=max(primary_dates).isoformat() if primary_dates else None,
+                              verified_details=len(detail_dates), boundary_pages=old_pages))
+            cache["updated_at"] = datetime.now(ZoneInfo("UTC")).isoformat()
+            atomic_json(cache_path, cache)
+            if old_pages >= 3:
+                complete, termination = not errors, "three_publication_ordered_detail_verified_old_pages"
+                break
+            # A complete, count-delimited feed can be shorter than the window;
+            # unlike a publisher's capped global sitemap, its explicit total
+            # identifies the scope whose entire history has been traversed.
+            at_count = isinstance(total, int) and offset + len(entries) >= total and total < 10000
+            if at_count:
+                complete, termination = not errors, "all_feed_count_delimited_articles"
+                break
+            if not entries:
+                termination = "feed_exhausted_without_verified_window"
+                break
+            if not isinstance(next_cursor, int) or next_cursor <= offset or next_cursor > offset + 24:
+                errors += 1
+                termination = "nonadvancing_public_feed_cursor"
+                audit.append(dict(listing=url, status="listing_error", reason=termination, feed=kind + ":" + name))
+                break
+            offset = next_cursor
+        if page_count >= max_feed_pages and not complete:
+            termination = "explicit_public_feed_page_limit"
+        summary = dict(status="public_feed_coverage", feed=kind + ":" + name, coverage_complete=complete,
+                       pages_attempted=page_count, unique_urls=len(growth), publisher_count=total, errors=errors,
+                       termination=termination, verified_publication_day_min=min(observed_dates).isoformat() if observed_dates else None)
+        summaries.append(summary)
+        audit.append(summary)
+        if not complete:
+            audit.append(dict(listing=_public_feed_url(kind, name, offset, deployment), status="listing_error",
+                              reason="public_feed_coverage_incomplete", feed=kind + ":" + name, termination=termination))
+    complete = bool(summaries and all(item["coverage_complete"] for item in summaries))
+    summary = dict(status="runtime_coverage", mechanism="normal_public_frontend_pagination_and_official_rss",
+                   coverage_complete=complete, required_feeds=[kind + ":" + name for kind, name in feeds],
+                   complete_30_days=dict(start=(today - timedelta(days=30)).isoformat(), end=(today - timedelta(days=1)).isoformat()),
+                   complete_90_days=dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()),
+                   current_day_slice=today.isoformat(), new_health_urls=len(out))
+    audit.append(summary)
+    return out, summary
+
+
 def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=None, workers=4,
-                   max_pages=250, include_listings=True):
+                   max_pages=3, include_listings=True, include_public_feeds=True, feeds=None, max_feed_pages=250):
     """Normal daily source hook: historical inventory first, live surfaces second."""
     from pathlib import Path
     from .paths import project_root
     detail_loader = detail_loader or fetch_html
     audit = audit if audit is not None else []
-    cache_path = Path(cache_path) if cache_path is not None else project_root() / "data/cache/pulso_discovery.json"
-    out, visited, coverage = discover_archive(detail_loader, audit, cache_path, today=today,
-                                             workers=workers, max_pages=max_pages)
+    cache_path = Path(cache_path) if cache_path is not None else project_root() / "data/state/pulso_discovery_cache.json"
+    visited, out = set(), []
+    public_coverage = dict(coverage_complete=False)
+    if include_public_feeds:
+        out, public_coverage = discover_public_feeds(detail_loader, audit, cache_path, visited=visited,
+                                                     today=today, workers=workers, feeds=feeds, max_feed_pages=max_feed_pages)
+    # The historical section/taxonomy traversal is primary. A bounded global
+    # RSS/sitemap slice supplies current cross-section discoveries without
+    # delaying the 90-day recovery behind unrelated historical sports/culture.
+    extra, archive_visited, coverage = discover_archive(detail_loader, audit, cache_path, today=today,
+                                                        workers=workers, max_pages=max_pages)
+    out.extend(extra)
+    visited.update(archive_visited)
+    if include_public_feeds:
+        # The global index's hard cap is a documented surface limitation. A
+        # complete normal frontend inventory can independently satisfy 90 days.
+        if public_coverage["coverage_complete"]:
+            max_advertised_offset = max(0, (coverage.get("advertised_pages", 0) - 1) * 100)
+            for entry in audit:
+                if entry.get("status") != "listing_error":
+                    continue
+                listing = entry.get("listing", "")
+                offset = int(parse_qs(urlparse(listing).query).get("from", [0])[0])
+                if entry.get("reason") == "archive_coverage_incomplete" or (
+                        "/arc/outboundfeeds/sitemap/" in listing and offset > max_advertised_offset):
+                    entry["status"] = "surface_limit"
+                    entry["covered_by"] = "normal_public_frontend_pagination"
     if include_listings:
         for listing in LISTINGS:
             try:
@@ -669,4 +889,7 @@ def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=Non
             out.extend(discover_listing(html, listing, detail_loader, audit, visited))
     if not out:
         raise RuntimeError("Pulso / La Tercera has no verified, dated health articles")
-    return sorted(out, key=lambda item: item.event_date, reverse=True)
+    unique = {}
+    for item in out:
+        unique.setdefault(item.url, item)
+    return sorted(unique.values(), key=lambda item: item.event_date, reverse=True)
