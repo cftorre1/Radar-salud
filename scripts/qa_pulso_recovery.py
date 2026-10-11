@@ -131,7 +131,8 @@ class PrimaryDates(HTMLParser):
         if tag not in {"meta", "link", "br", "hr", "img", "input", "source", "area", "base", "wbr", "embed", "param", "track", "col"}:
             self.contexts.append((tag, blocked_context))
             parent_body = self.body_contexts[-1][1] if self.body_contexts else False
-            body = parent_body or tag == "article" or attr.get("itemprop") == "articleBody" or any(
+            body = parent_body or tag == "article" or attr.get("itemprop") == "articleBody" or (
+                tag == "p" and "article-body__paragraph" in classes) or any(
                 term in attr.get("class", "") for term in ("article-body__raw-html", "article-body__content", "body-chain", "article__body"))
             self.body_contexts.append((tag, body))
             if tag == "p" and body and not blocked_context:
@@ -181,7 +182,10 @@ class PrimaryDates(HTMLParser):
             self.bylines.append(dict(timestamp=self.byline["timestamp"], text=" ".join(self.byline["text"])))
             self.byline = None
         if tag == "p" and self.paragraph is not None:
-            self.primary_paragraphs.append(" ".join(" ".join(self.paragraph).split()))
+            # Inline emphasis/links split HTMLParser data callbacks. Preserve
+            # the rendered text before normalizing spaces; joining callbacks
+            # with spaces would invent "M inisterio" or "Pizarro ,".
+            self.primary_paragraphs.append(" ".join("".join(self.paragraph).split()))
             self.paragraph = None
         for index in range(len(self.contexts) - 1, -1, -1):
             if self.contexts[index][0] == tag:

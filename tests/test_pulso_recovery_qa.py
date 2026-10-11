@@ -367,6 +367,14 @@ def test_navigation_dates_cannot_supply_the_primary_visible_calendar(context):
     assert parser.bylines == []
 
 
+def test_primary_publisher_paragraphs_preserve_inline_text_and_exclude_navigation_wrappers():
+    parser = qa.PrimaryDates()
+    parser.feed('<p class="article-body__paragraph">El M<strong>inisterio</strong>, según Salud, anunció capacidad.</p>'
+                '<nav><p class="article-body__paragraph">Recomendación ajena</p></nav>'
+                '<aside><p class="article-body__paragraph">Comparte esta nota</p></aside>')
+    assert parser.primary_paragraphs == ["El Ministerio, según Salud, anunció capacidad."]
+
+
 def test_byline_cannot_mix_calendar_conventions_or_borrow_an_unrelated_calendar():
     parser = qa.PrimaryDates()
     # Each field individually could be mapped to Oct 1, but there is no single
