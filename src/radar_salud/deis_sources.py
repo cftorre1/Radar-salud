@@ -326,7 +326,9 @@ class DeisCatalogScout:
         excluded = []
         for row in rows:
             if (row.get('organization', {}).get('name') != 'ministerio_de_salud'
-                    or not any(t.get('name', '').casefold() == 'deis' for t in row.get('tags', []))):
+                    or not (any(t.get('name', '').casefold() == 'deis' for t in row.get('tags', []))
+                            or row.get('author_email') == 'deis@minsal.cl'
+                            or 'Departamento de Estadísticas e Información de Salud (DEIS)' in row.get('notes', ''))):
                 excluded.append({'id': row.get('id'), 'reason': 'publisher_or_DEIS_tag_not_verified'})
                 continue
             resources = []

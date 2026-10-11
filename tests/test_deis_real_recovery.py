@@ -116,8 +116,8 @@ def test_real_national_catalog_keeps_resource_updates_out_of_editorial_dates():
     body = p.read_bytes()
     assert hashlib.sha256(body).hexdigest() == p.stem
     catalog = DeisCatalogScout.national_catalog_from_json(json.loads(body))
-    assert len(catalog['datasets']) == 4
-    assert len(catalog['excluded']) == 3
+    assert len(catalog['datasets']) == 5
+    assert len(catalog['excluded']) == 2
     hospital = next(x for x in catalog['datasets'] if 'hospitalización' in x['title'])
     assert hospital['resources'][0]['resource_updated_at'].startswith('2026-09-25')
     assert all(x['publication_date'] is None and not x['feed_eligible'] for x in catalog['datasets'])
