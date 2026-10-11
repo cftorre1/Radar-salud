@@ -80,7 +80,7 @@ class NativeHTML(HTMLParser):
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         classes = set(attrs.get("class", "").split())
-        if any(token == "pager" or token.startswith(("pager__", "js-pager__", "pager-nav")) for token in classes):
+        if any(token in {"pager", "pagination"} or token.startswith(("pager__", "js-pager__", "pager-nav")) for token in classes):
             self.pager_elements.append({"tag": tag, "attrs": attrs})
         for frame in self.stack:
             if frame.get("news_view"):
@@ -363,7 +363,7 @@ def native_empty_end_checks(ordered, page_readers, page_rows, single_page=False,
         if view is None:
             return []
         return [node for node in view["descendants"]
-                if any(token == "pager" or token.startswith(("pager__", "js-pager__")) for token in node["attrs"].get("class", "").split())
+                if any(token in {"pager", "pagination"} or token.startswith(("pager__", "js-pager__", "pager-nav")) for token in node["attrs"].get("class", "").split())
                 or node["tag"] == "a" and set(node["attrs"].get("rel", "").split()) & {"next", "last", "prev", "previous", "first"}]
 
     def links_with_rel(view, rel):
@@ -693,6 +693,11 @@ def audit(captures, inventory_path, output):
         health = inventory["source_health"][source]
         counts = {str(days): sum(bool(item.get("detail_verified") and in_window(item.get("published_at"), as_of, days)) for item in source_items) for days in (30, 90)}
         check(health["counts"] == counts and health["recent_items"] == counts["30"] and health["unique_items"] == counts["90"], "verified_health_counts", source)
+        check(health["material_items"] == sum(bool(item.get("detail_verified") and item.get("published_at")
+              and item["classification"]["materiality"] == "candidate") for item in source_items)
+              and health["rejected"] == sum(item["status"] == "rejected" for item in source_items)
+              and health["deferred"] == sum(item["status"] == "pending" for item in source_items),
+              "metadata_materiality_and_disposition_health_counts", source)
         recall = health["discovery_recall_90"]
         check(recall.get("inventory_url_count", recall.get("inventory_90_url_count")) == len(native_90[source]) and recall["detected"] == len(native_90[source] & detected[source])
               and recall["omitted_urls"] == sorted(native_90[source] - detected[source]), "native_recall_health", source)
@@ -722,7 +727,10 @@ def audit(captures, inventory_path, output):
                                   "recurrent_operation_proven": health["recurrent_operation_proven"]}
     reuters = inventory["source_health"]["reuters"]
     check(reuters["checked_at"] is None and reuters["counts"] == {"30": None, "90": None}
-          and reuters["technical_status"] == "not_polled_license_hold" and reuters["pages_checked"] == 0,
+          and all(reuters[field] is None for field in ("recent_items", "unique_items", "material_items"))
+          and reuters["technical_status"] == "not_polled_license_hold" and reuters["pages_checked"] == 0
+          and reuters["published"] == 0 and reuters["publication_activation"] is False
+          and reuters["recurrent_operation_proven"] is False,
           "reuters_license_hold", "reuters")
     check(inventory["paid_ai_calls"] == 0 and inventory["publication_count"] == 0 and inventory["default_window_days"] == 30
           and inventory["maximum_editorial_topics"] == 10 and inventory["content_use"] == "metadata_and_link_only",

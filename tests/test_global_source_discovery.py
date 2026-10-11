@@ -605,3 +605,50 @@ def test_native_pager_backward_controls_must_bind_first_zero_and_previous_page(m
     pager=re.sub('<li class="pager__item pager__item--'+modifier+'">.*?</li>',broken,pager)
     result=collect_route(FakeClient([news_view(date_card(0)+numbered_pager(0)),news_view(date_card(1)+pager),news_view('')]),terminal_date_route(),AS_OF,10)
     assert not result['archive_complete']
+
+def translated_pair(en_title='CARICOM endorses new Action Plan on Health and Climate Change developed with PAHO/WHO support',es_title='CARICOM adopta nuevo Plan de Acción sobre Salud y Cambio Climático desarrollado con el apoyo de la OPS/OMS'):
+    en=parse_paho_index(CARD,'regional_news',AS_OF,ROUTE['url'])[0][0];en.update(title=en_title,index_evidence=[])
+    es=dict(en,url=en['url'].replace('/en/','/es/'),section='regional_news_es',title=es_title)
+    a=verify_item(FakeClient([f'<h1>{en_title}</h1><a class="language-link" hreflang="es" href="{es["url"]}">ES</a>']),en,AS_OF)
+    b=verify_item(FakeClient([f'<h1>{es_title}</h1><a class="language-link" hreflang="en" href="{en["url"]}">EN</a>']),es,AS_OF)
+    return a,b
+
+def test_material_official_translation_is_preserved_when_english_title_is_undetermined():
+    a,b=translated_pair();assert a['classification']['materiality']=='undetermined'
+    got=deduplicate_translations([a,b])[0]
+    assert got['classification']['materiality']=='candidate' and got['classification']['priority']==90
+    assert got['classification_basis']['selected_urls']==[b['url']]
+    assert len(got['classification_evidence'])==2 and got['title']==a['title']
+    assert got['status']=='pending' and not got['publication_ready']
+
+def test_translation_materiality_noise_disagreement_requires_editorial_review():
+    a,b=translated_pair('Webinar training session','Nuevas directrices de salud')
+    got=deduplicate_translations([a,b])[0]
+    assert got['classification']['materiality']=='undetermined' and got['classification']['priority']==0
+    assert got['status']=='pending' and got['reason']=='translation_materiality_conflict'
+
+def test_unverified_or_conflicting_dated_translation_cannot_raise_discovery_priority():
+    a,b=translated_pair();b['detail_verified']=False
+    assert deduplicate_translations([a,b])[0]['classification']['materiality']=='undetermined'
+    b['detail_verified']=True;b['published_at']='2026-10-08'
+    got=deduplicate_translations([a,b])[0]
+    assert got['published_at'] is None and got['classification']['priority']==0
+    assert got['reason']=='translation_publication_date_conflict'
+
+def test_highest_verified_translation_priority_wins_without_duplicate_topic_identity():
+    a,b=translated_pair('New epidemiological surveillance update','Nuevas directrices de salud')
+    got=deduplicate_translations([a,b])[0]
+    assert len(got['source_aliases'])==2 and got['classification']['priority']==90
+    assert got['classification_basis']['selected_urls']==[b['url']]
+
+@pytest.mark.parametrize('outside',[False,True])
+def test_empty_native_pager_nav_inside_or_outside_view_cannot_close_archive(outside):
+    nav='<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"></nav>'
+    empty=news_view('')+nav if outside else news_view(nav)
+    result=collect_route(FakeClient([news_view(date_card(0)),empty]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete']
+
+def test_initial_native_pager_nav_cannot_be_treated_as_single_page_without_a_pager():
+    nav='<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"></nav>'
+    result=collect_route(FakeClient([news_view(date_card(0)+nav),news_view('')]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete']

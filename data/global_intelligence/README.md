@@ -45,7 +45,7 @@ Restore the matching Actions artifact's `work/global-runtime-captures` directory
 The inventory and bytes must have the same run ID. Then:
 
 ```sh
-python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py tests/test_global_capture_audit.py
+python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py tests/test_global_capture_audit.py tests/test_global_metadata_projection.py
 python scripts/replay_global_sources.py
 python scripts/audit_global_captures.py --captures work/global-runtime-captures --inventory data/global_intelligence/discovery.json --output work/independent_capture_audit.json
 python scripts/discover_global_sources.py --project-inventory-csv
@@ -65,6 +65,13 @@ entitlement and commercial-use scope are documented. Do not fetch Reuters titles
 metadata, articles or sitemaps. An editor may supply a link without fetching Reuters
 and an original description supported by independent primary evidence, subject to
 rights/editorial review. Keep credentials out of code, evidence and logs.
+
+An isolated metadata requalification may use the same bytes to reconcile verified
+bilingual titles. It preserves the fresh inventory, original QA, ledger, dates and
+receipts; current mode becomes projection_replay. Metadata and CSV go to a separate
+metadata_requalification/<QA-run> receipt with before/after classifications. The
+projection cannot establish another fresh capture or cadence. Candidate/routine
+translation disagreements stay pending and unverified titles cannot raise priority.
 
 Qualification outcomes and operational holds are documented in
 `docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md` and the three `data/audits/w4_*` reports.

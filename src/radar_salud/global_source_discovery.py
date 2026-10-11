@@ -157,14 +157,14 @@ def verified_news_view(document, route, bounds, *, empty, allow_pager=False):
     inputs=[n for n in form.nodes('input') if n.attrs.get('name') in {'date[min]','date[max]'}]
     if len(inputs)!=2 or {n.attrs.get('name'):n.attrs.get('value') for n in inputs}!={'date[min]':bounds['query_from'],'date[max]':bounds['query_to']}:
         return False
-    forbidden=({'pager'} if not allow_pager else set())|({'views-row','view-content','views-field-title','views-field-created','field--name-created'} if empty else set())
+    forbidden=({'pager','pager-nav','pagination'} if not allow_pager else set())|({'views-row','view-content','views-field-title','views-field-created','field--name-created'} if empty else set())
     if any(forbidden&set(n.attrs.get('class','').split()) or not allow_pager and any(c.startswith(('pager__','js-pager__')) for c in n.attrs.get('class','').split()) for n in view.nodes()):
         return False
     if not empty:
         for cls in ('views-field-title','views-field-created'):
             inside={id(n) for n in view.nodes() if n.has_class(cls)}
             if not inside or inside!={id(n) for n in document.nodes() if n.has_class(cls)}:return False
-    return (not empty or view.text()==form.text()) and (allow_pager or not any({'next','last','prev','previous','first'}&set(n.attrs.get('rel','').split()) for n in document.nodes('a')))
+    return (not empty or view.text()==form.text()) and (allow_pager or not any(any(c in {'pager','pager-nav','pagination'} or c.startswith(('pager__','js-pager__')) for c in n.attrs.get('class','').split()) for n in document.nodes())) and (allow_pager or not any({'next','last','prev','previous','first'}&set(n.attrs.get('rel','').split()) for n in document.nodes('a')))
 
 def verified_empty_news_view(document, route, bounds):
     return verified_news_view(document,route,bounds,empty=True)
@@ -434,6 +434,25 @@ def discover(config, client, as_of):
         verified = list(pool.map(lambda row: verify_item(client, row, as_of), indexed.values()))
     return routes, verified, failures
 
+def translation_materiality(group):
+    """Use verified official translations while retaining noise/date disagreements."""
+    evidence=[{'url':m['url'],'title':m['title'],'section':m['section'],
+               'classification':m['classification'],'detail_verified':m['detail_verified'],
+               'published_at':m['published_at']} for m in group]
+    eligible=[m for m in group if m['detail_verified'] and m['published_at']]
+    hold={'materiality':'undetermined','priority':0,'category':'context'}
+    if not eligible or len({m['published_at'] for m in group})!=1:
+        return dict(hold,reason='translation_date_or_detail_hold'),evidence,[]
+    kinds={m['classification']['materiality'] for m in eligible}
+    if {'candidate','routine'}<=kinds:
+        return dict(hold,reason='translation_materiality_conflict'),evidence,[]
+    if 'candidate' in kinds:
+        best=max(m['classification']['priority'] for m in eligible if m['classification']['materiality']=='candidate')
+        chosen=[m for m in eligible if m['classification']['materiality']=='candidate' and m['classification']['priority']==best]
+        return dict(chosen[0]['classification']),evidence,[m['url'] for m in chosen]
+    if kinds=={'routine'}:return dict(eligible[0]['classification']),evidence,[m['url'] for m in eligible]
+    return dict(hold,reason='metadata_insufficient_to_establish_business_materiality'),evidence,[]
+
 def deduplicate_translations(items):
     """Merge only publisher-declared language aliases; retain conflicting dates."""
     urls={row["url"]:row for row in items};parents={url:url for url in urls}
@@ -456,7 +475,13 @@ def deduplicate_translations(items):
         row["sections"]=sorted({section for member in group for section in member["sections"]})
         row["entities"] = list({json.dumps(entity,sort_keys=True):entity for member in group for entity in member["entities"]}.values())
         if len(group)>1:
-            row["translation_members"]=[{"url":member["url"],"title":member["title"],"published_at":member["published_at"],"index_published_at":member["index_published_at"],"index_evidence":member["index_evidence"],"detail_verified":member["detail_verified"],"technical_error":member.get("technical_error"),"detail_evidence":member.get("detail_evidence")} for member in group]
+            row["translation_members"]=[{"url":member["url"],"title":member["title"],"section":member["section"],"classification":member["classification"],"published_at":member["published_at"],"index_published_at":member["index_published_at"],"index_evidence":member["index_evidence"],"detail_verified":member["detail_verified"],"technical_error":member.get("technical_error"),"detail_evidence":member.get("detail_evidence")} for member in group]
+            classification,receipts,selected=translation_materiality(group)
+            row['classification']=classification;row['classification_evidence']=receipts
+            row['classification_basis']={'method':'verified_official_translation_metadata','selected_urls':selected,'editorial_score':False}
+            if row['detail_verified'] and row['published_at'] and not row.get('technical_error'):
+                material=classification['materiality']
+                row.update(status='rejected' if material=='routine' else 'pending',reason='awaiting_editorial_corroboration_and_rights_review' if material=='candidate' else classification['reason'])
         if len({member["published_at"] for member in group})>1:
             row.update(published_at=None,status="pending",reason="translation_publication_date_conflict")
         result.append(row)

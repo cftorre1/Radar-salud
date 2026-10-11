@@ -64,6 +64,8 @@ class EndProof(unittest.TestCase):
    'error_inside_view':html(content='<div>Unable to load news</div>'),
    'empty_view_content':html(content='<div class="view-content"></div>'),
    'current_pager':html(content='<nav class="pager"></nav>'),
+   'current_empty_native_nav':html(content='<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"></nav>'),
+   'current_empty_native_list':html(content='<ul class="pagination"></ul>'),
    'outside_native_next':html(extra='<a rel="next" href="'+url(3)+'">Next</a>'),
    'current_news_card':html(content=CARD),
   }

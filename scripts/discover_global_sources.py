@@ -21,7 +21,8 @@ def health_counts(items, as_of):
     return {str(days): sum(row.get("detail_verified", False) and in_window(row["published_at"], as_of, days) for row in items) for days in (30,90)}
 
 def project_inventory_csv(root, payload):
-    destination=root/'data/audits/global_source_recovery_2026_10_11/runs'/payload['run_id']/'inventory.csv'
+    destination=root/(payload['metadata_projection']['inventory_csv_ref'] if payload.get('metadata_projection') else 'data/audits/global_source_recovery_2026_10_11/runs/'+payload['run_id']+'/inventory.csv')
+    destination.parent.mkdir(parents=True,exist_ok=True)
     fields=['source','section','url','title','index_published_at','published_at','status','reason','detail_verified',
             'materiality','discovery_priority','classification_reason','source_aliases','sections','entities','document_links','index_capture_sha256','detail_capture_sha256']
     with destination.open('w') as handle:
