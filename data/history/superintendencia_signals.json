@@ -59359,8 +59359,15 @@
       ],
       "editorial_decision": "reject",
       "feed_visibility": false,
-      "df_body_reaudit_reason": "df_primary_body_reassessment_required",
-      "df_body_reaudit_status": "pending"
+      "df_body_reaudit_reason": "media_score_below_72",
+      "df_body_reaudit_status": "rejected_after_primary_body_reassessment",
+      "df_body_reaudit_latest_assessment": {
+        "score": 62,
+        "reason": "Es una emergencia local con afectación puntual de instalaciones de salud y una investigación aún en curso. No constituye, con la información entregada, un cambio material o nacional para el sistema sanitario ni una modificación confirmada de política pública.",
+        "gate": "Media Early Signal Gate",
+        "gate_version": "1.0.0",
+        "threshold": 72
+      }
     },
     {
       "title": "Aluvión en Las Condes obliga a cerrar por semanas la Clínica San Carlos",
@@ -59773,8 +59780,9 @@
       ],
       "editorial_decision": "reject",
       "feed_visibility": false,
-      "df_body_reaudit_reason": "df_primary_body_reassessment_required",
-      "df_body_reaudit_status": "pending"
+      "df_body_reaudit_reason": "df_insufficient_article_evidence",
+      "df_body_reaudit_status": "retry_after_primary_body_reassessment",
+      "df_body_reaudit_latest_assessment": null
     },
     {
       "title": "Clínica MEDS y Universidad Diego Portales sellan alianza que creará Centro Académico de Salud",
@@ -61202,8 +61210,15 @@
       ],
       "editorial_decision": "reject",
       "feed_visibility": false,
-      "df_body_reaudit_reason": "df_primary_body_reassessment_required",
-      "df_body_reaudit_status": "pending"
+      "df_body_reaudit_reason": "media_score_below_72",
+      "df_body_reaudit_status": "rejected_after_primary_body_reassessment",
+      "df_body_reaudit_latest_assessment": {
+        "score": 45,
+        "reason": "No merece un radar estratégico de salud en esta instancia: es una definición general de política tecnológica y autorregulación en Estados Unidos, sin consecuencia sanitaria explícita ni cambio material para actores del sistema de salud. Además, lo reportado corresponde a un compromiso voluntario cuyo cumplimiento todavía no está definido, no a una regulación oficial confirmada.",
+        "gate": "Media Early Signal Gate",
+        "gate_version": "1.0.0",
+        "threshold": 72
+      }
     },
     {
       "title": "Quiroz ratifica que el gasto fiscal crecerá más de 1% en 2027 y plantea que el actual Presupuesto &#34;está lleno de errores que hemos debido corregir”",
@@ -61608,8 +61623,9 @@
       ],
       "editorial_decision": "reject",
       "feed_visibility": false,
-      "df_body_reaudit_reason": "df_primary_body_reassessment_required",
-      "df_body_reaudit_status": "pending"
+      "df_body_reaudit_reason": "df_insufficient_article_evidence",
+      "df_body_reaudit_status": "retry_after_primary_body_reassessment",
+      "df_body_reaudit_latest_assessment": null
     },
     {
       "title": "Ya es un hecho: ley crea nuevo tribunal laboral en Santiago y suma 96 cargos",
@@ -63910,7 +63926,122 @@
       "article_content_source": "df_primary_body",
       "original_sha256": "c836361c5f07b313c414ec6d4c8f28f685cebbf7d187552c6c8e5693fe7ad739",
       "original_captured_at": "2026-10-11T05:10:42.026537+00:00",
-      "ingestion_mode": "BACKFILL"
+      "ingestion_mode": "BACKFILL",
+      "df_media_gate_observations": [
+        {
+          "at": "2026-10-11T05:25:22.916697+00:00",
+          "before": {
+            "title": "Pese a turnos extensos y trabajo en faenas aisladas, los mineros sacan mejor nota en salud mental que trabajadores de otros rubros",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "source_url": "https://www.df.cl/economia-y-politica/laboral-personas/pese-a-turnos-extensos-y-trabajo-en-faenas-aisladas-los-mineros-sacan",
+            "category": "Mercado",
+            "subcategory": "General",
+            "system_domain": "HEALTH",
+            "what_happened": "Diario Financiero informó sobre un estudio de Cochilco que compara la salud mental minera con la de otros sectores. Según el reporte, en 2025 la minería registró una tasa de enfermedades profesionales de salud mental de 0,03%, frente a 0,13% para el conjunto de actividades medidas; sin embargo, los casos mineros aumentaron de 5 en 2019 a 24 en 2025. El documento propone integrar la salud mental a los sistemas de seguridad y crear un instrumento sectorial específico para evaluar riesgos psicosociales en faenas mineras.",
+            "event_date": "2026-08-10",
+            "detected_at": "2026-10-11T05:09:10.713959+00:00",
+            "primary_source_url": null,
+            "event_type": "OTHER",
+            "strategic_theme": [],
+            "institution_types": [],
+            "entity_refs": [],
+            "country": "CL",
+            "topics": [],
+            "entities": [],
+            "people": [],
+            "geography": [],
+            "key_facts": [],
+            "key_numbers": [],
+            "why_it_matters": "Las empresas mineras y los responsables de seguridad y salud ocupacional enfrentan una presión creciente para medir y prevenir riesgos psicosociales asociados a turnos, aislamiento y jornadas excepcionales. La propuesta podría orientar futuras herramientas sectoriales y la implementación de la Política Nacional Minera 2050, aunque el artículo no informa una nueva regulación ni una decisión oficial adoptada.",
+            "who_cares": [],
+            "possible_implications": [],
+            "watch_tags": [
+              "df",
+              "noticias",
+              "sistema de salud"
+            ],
+            "connection_keys": [],
+            "trend_keys": [],
+            "prospective_evidence": false,
+            "economic_impact_score": 72,
+            "regulatory_impact_score": 30,
+            "scope_score": 70,
+            "novelty_score": 72,
+            "actionability_score": 70,
+            "source_quality_score": 93,
+            "radar_score": 65,
+            "confidence_score": 93,
+            "distribution": "archive",
+            "validation_status": "automatic",
+            "corroboration_status": "unknown",
+            "additional_sources": [],
+            "source_documents": [],
+            "key_points": [],
+            "risk_notes": [],
+            "data_insights": [],
+            "data_insight_meta": {},
+            "validity_text": null,
+            "related_reference_ids": [],
+            "original_language": "es",
+            "display_language": "es",
+            "translation_status": "not_required",
+            "original_title": null,
+            "original_what_happened": null,
+            "original_why_it_matters": null,
+            "signal_types": [
+              "Noticias"
+            ],
+            "scopes": [
+              "Sistema de salud"
+            ],
+            "editorial_relevance": 72,
+            "evidence_maturity": "media_reported",
+            "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+            "editorial_assessment": {
+              "score": 72,
+              "reason": "Es un hallazgo relevante sobre salud ocupacional y una propuesta de gestión para una industria importante, pero todavía corresponde a un informe y no a un cambio regulatorio, financiero o de capacidad sanitaria implementado. Por eso funciona como contexto estratégico secundario, no como una señal material de alcance nacional.",
+              "gate": "Media Early Signal Gate",
+              "gate_version": "1.0.0",
+              "threshold": 72
+            },
+            "publication_date_source": "visible:published_label",
+            "publication_timestamp": null,
+            "publication_label": "Lunes 10 de agosto de 2026 a las 04:00 hrs.",
+            "publication_date_candidates": [
+              {
+                "source": "cxenseparse:recs:publishtime",
+                "value": "2026-08-07T22:22:52Z",
+                "day": "2026-08-07"
+              },
+              {
+                "source": "jsonld:datePublished",
+                "value": "2026-08-07T22:22:52Z",
+                "day": "2026-08-07"
+              },
+              {
+                "source": "visible:published_label",
+                "value": "Lunes 10 de agosto de 2026 a las 04:00 hrs.",
+                "day": "2026-08-10"
+              }
+            ],
+            "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+            "publication_date_conflict": true,
+            "publication_date_conflict_resolution": {
+              "rule": "primary_header_explicit_publication_label",
+              "selected_visible_day": "2026-08-10",
+              "basis": "DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary CUERPO verified. Metadata timestamps retained; discrepancy cause unknown."
+            },
+            "article_content_source": "df_primary_body",
+            "original_sha256": "c836361c5f07b313c414ec6d4c8f28f685cebbf7d187552c6c8e5693fe7ad739",
+            "original_captured_at": "2026-10-11T05:10:42.026537+00:00",
+            "ingestion_mode": "BACKFILL"
+          }
+        }
+      ],
+      "editorial_decision": "reject",
+      "feed_visibility": false,
+      "df_media_gate_reason": "media_assessment_no_material_event"
     },
     {
       "title": "Fondo de capital privado Australis Partners pone a la venta el laboratorio clínico chileno Galénica, uno de los líderes en toma de muestras biológicas in vitro",
