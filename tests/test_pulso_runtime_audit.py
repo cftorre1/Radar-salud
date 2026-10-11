@@ -117,6 +117,51 @@ def test_discovery_exclusion_and_date_conflict_remain_explicit():
     assert report["windows"]["30"]["date_conflicts"] == [BASE + "conflict/"]
 
 
+def test_verified_video_identity_is_enumerated_without_inflating_health_recall():
+    video = trace("video", status="discovered_metadata_only", article_verified=False,
+                  article_body_complete=False, publication_date_verified=True,
+                  source_content_unavailable_reason="publisher_video_text_unavailable",
+                  publisher_document_type="video", html_sha256="a" * 64)
+    held = item("video", "retry", "publisher_video_text_unavailable",
+                {"decision": "pending", "reason": "publisher_video_text_unavailable"})
+    report = audit.join_report(discovery([video]), {"video": held}, [], [], control([original("video")]))
+    row = report["matrix"][0]
+    assert row["current_core_detected"] and row["metadata_only_candidate"]
+    assert not row["current_core_verified_health"]
+    assert row["publication_date_verified"] and row["article_body_complete"] is False
+    assert row["passed_gate"] is None and row["editorial_outcome"] == "deferred"
+    assert row["exact_reason"] == "publisher_video_text_unavailable"
+    assert row["primary_detail_sha256"] == "a" * 64
+    assert row["omission"] is None
+    assert report["windows"]["90"]["recall"] == 0
+    assert report["windows"]["90"]["current_verified_health_urls"] == 0
+    assert report["windows"]["90"]["metadata_only_candidates_with_verified_dates"] == 1
+    assert report["counts"]["current_core_discovered_urls"] == 1
+    assert report["counts"]["current_core_verified_health_urls"] == 0
+
+
+def test_original_date_conflict_identity_never_acquires_an_invented_publication_date():
+    conflict = trace("ambiguous", day=None, status="discovered_metadata_only",
+                     publication_date_verified=False, article_verified=False,
+                     publisher_date_conflict={"visible_day": "2026-07-31", "metadata_day": "2026-07-28"},
+                     html_sha256="b" * 64,
+                     publication_evidence=[{"timestamp": "2026-07-28T19:48:35.118Z"}])
+    held = item("ambiguous", "retry", "publisher_conflicting_publication_dates",
+                {"decision": "pending", "reason": "publisher_conflicting_publication_dates"})
+    held["raw"]["event_date"] = None
+    report = audit.join_report(discovery([conflict]), {"ambiguous": held}, [], [], control([]))
+    row = report["matrix"][0]
+    assert row["current_core_detected"] and row["metadata_only_candidate"]
+    assert row["publication_date"] is None and not row["publication_date_verified"]
+    assert row["publication_date_source"] is None and row["publication_date_evidence"] == "unverified"
+    assert row["publisher_date_conflict"] == conflict["publisher_date_conflict"]
+    assert row["publication_evidence"] == conflict["publication_evidence"]
+    assert row["primary_detail_sha256"] == "b" * 64
+    assert row["passed_gate"] is None and not row["history_present"] and not row["feed_present"]
+    assert report["windows"]["90"]["current_verified_health_urls"] == 0
+    assert report["windows"]["90"]["metadata_only_candidates_with_verified_dates"] == 0
+
+
 def test_reused_primary_detail_keeps_original_capture_time_and_hash_without_fresh_html_claim():
     cached = trace("reused", cache_hit=True, captured_at="2026-10-11T05:00:00Z",
                    html_sha256="a" * 64, publisher_lastmod="2026-10-10T18:00:00Z")

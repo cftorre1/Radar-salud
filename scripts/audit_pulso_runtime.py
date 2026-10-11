@@ -222,6 +222,9 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         if url:
             traces.setdefault(url, []).append(detail)
     current = {url for url, rows in traces.items() if any(row.get("status") == "discovered" for row in rows)}
+    metadata_only = {url for url, rows in traces.items() if any(
+        row.get("status") == "discovered_metadata_only" for row in rows)} - current
+    enumerated = current | metadata_only
     queued = {}
     for fingerprint, item in queue.items():
         if item.get("source") != SOURCE:
@@ -238,7 +241,10 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
                 "publication_date_source": raw.get("metadata", {}).get("publication_date_source"),
                 "assessment": raw.get("metadata", {}).get("editorial_assessment"),
                 "rejection_reason": raw.get("metadata", {}).get("rejection_reason"),
-                "editorial_hold": raw.get("metadata", {}).get("editorial_hold")})
+                "editorial_hold": raw.get("metadata", {}).get("editorial_hold"),
+                "article_body_complete": raw.get("metadata", {}).get("article_body_complete"),
+                "source_content_unavailable_reason": raw.get("metadata", {}).get("source_content_unavailable_reason"),
+                "publication_date_verified": raw.get("metadata", {}).get("publication_date_verified")})
     history_by_url = {url: row for row in history if (url := normalized_url(row.get("source_url")))}
     feed_urls = {url for row in feed if (url := normalized_url(row.get("source_url")))}
     controls = {url: row for row in control.get("articles", []) if (url := normalized_url(row.get("url")))}
@@ -260,9 +266,13 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         primary_coverage = next((row for row in reversed(coverage) if row.get("status") == "archive_coverage"), None)
     source_error = discovery.get("audit_discovery_error") or discovery.get("sources", {}).get(SOURCE, {}).get("error_type")
     matrix = []
-    for url in sorted(current | set(queued) | set(controls) | set(history_by_url)):
+    for url in sorted(enumerated | set(queued) | set(controls) | set(history_by_url)):
         observed = traces.get(url, [])
-        verified = next((row for row in observed if row.get("publication_date") and row.get("status") in {"discovered", "excluded"}), {})
+        primary = next((row for row in observed if row.get("status") in {
+            "discovered", "discovered_metadata_only", "excluded"}), {})
+        verified = next((row for row in observed if row.get("publication_date")
+            and row.get("publication_date_verified") is not False
+            and row.get("status") in {"discovered", "discovered_metadata_only", "excluded"}), {})
         rows = queued.get(url, [])
         original = controls.get(url, {})
         historical = history_by_url.get(url)
@@ -293,7 +303,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         else:
             disposition, reason = "not_detected", "not_in_queue_or_history; no_editorial_verdict"
         omission = None
-        if url not in current:
+        if url not in enumerated:
             precise = next((row for row in observed if row.get("status") in {"detail_error", "excluded", "excluded_path"}), None)
             if precise:
                 omission = {"status": precise["status"], "reason": precise.get("reason") or "reason_not_emitted",
@@ -309,22 +319,31 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         runtime_day = verified.get("publication_date")
         comparison = "match" if runtime_day and original.get("publication_date") == runtime_day else (
             "conflict" if runtime_day and original.get("publication_date") else "runtime_original_date_unverified" if original else "no_external_date_control")
-        title = verified.get("title") or original.get("title") or (historical or {}).get("title") or next((row["title"] for row in rows if row.get("title")), None)
+        title = primary.get("title") or original.get("title") or (historical or {}).get("title") or next((row["title"] for row in rows if row.get("title")), None)
         historical_day = (historical or {}).get("publication_date") or (historical or {}).get("event_date")
         matrix.append({"url": url, "title": title,
             "publication_date": runtime_day or original.get("publication_date") or historical_day,
             "publication_date_evidence": ("reused_verified_primary_byline_unchanged_publisher_lastmod" if verified.get("cache_hit") else "current_verified_detail") if runtime_day else original.get("verification_method") or (
                 "recorded_history_date_requires_current_original_verification" if historical_day else "unverified"),
-            "primary_detail_captured_at": verified.get("captured_at"),
-            "primary_detail_cache_hit": verified.get("cache_hit", False),
-            "primary_detail_sha256": verified.get("content_sha256") or verified.get("html_sha256"),
-            "publisher_lastmod": verified.get("publisher_lastmod"),
+            "primary_detail_captured_at": primary.get("captured_at"),
+            "primary_detail_cache_hit": primary.get("cache_hit", False),
+            "primary_detail_sha256": primary.get("content_sha256") or primary.get("html_sha256"),
+            "publisher_lastmod": primary.get("publisher_lastmod"),
             "publication_timestamp": verified.get("publication_timestamp"),
             "publication_date_source": verified.get("publication_date_source"),
-            "section": verified.get("section") or original.get("section") or urlsplit(url).path.split("/")[1],
-            "topics": verified.get("topics") or ([original["topic"]] if original.get("topic") else []) or next((row["topics"] for row in rows if row.get("topics")), []),
-            "current_core_detected": url in current, "baseline_queue_present": url in baseline_urls,
-            "legacy_queue_only": url in baseline_urls and url not in current,
+            "section": primary.get("section") or original.get("section") or urlsplit(url).path.split("/")[1],
+            "topics": primary.get("topics") or ([original["topic"]] if original.get("topic") else []) or next((row["topics"] for row in rows if row.get("topics")), []),
+            "current_core_detected": url in enumerated,
+            "current_core_verified_health": url in current,
+            "metadata_only_candidate": url in metadata_only,
+            "publication_date_verified": bool(runtime_day),
+            "article_body_complete": primary.get("article_body_complete") if primary else None,
+            "source_content_unavailable_reason": primary.get("source_content_unavailable_reason"),
+            "publisher_document_type": primary.get("publisher_document_type"),
+            "publication_evidence": primary.get("publication_evidence", []),
+            "publisher_date_conflict": primary.get("publisher_date_conflict"),
+            "baseline_queue_present": url in baseline_urls,
+            "legacy_queue_only": url in baseline_urls and url not in enumerated,
             "queue_present": bool(rows), "queue": rows, "passed_gate": passed,
             "editorial_outcome": disposition, "exact_reason": reason,
             "history_present": bool(historical), "feed_present": url in feed_urls,
@@ -349,13 +368,17 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         detected = [url for url in eligible if url in current]
         missed = [url for url in eligible if url not in current]
         declared = control.get("counts", {}).get("primary_recall_expected_" + str(days))
-        dated_health = [row for row in matrix if row["current_core_detected"] and start and end
+        dated_health = [row for row in matrix if row["current_core_verified_health"] and start and end
                         and start <= (row["publication_date"] or "") <= end]
+        dated_metadata = [row for row in matrix if row["metadata_only_candidate"] and start and end
+                          and start <= (row["publication_date"] or "") <= end]
         windows[str(days)] = {**window, "control_expected": len(eligible), "control_declared_expected": declared,
             "control_denominator_consistent": declared is None or declared == len(eligible),
             "control_detected_by_current_core": len(detected), "recall": len(detected) / len(eligible) if eligible else None,
             "missed": [{"url": url, "omission": index[url]["omission"], "legacy_queue_only": index[url]["legacy_queue_only"]} for url in missed],
             "current_verified_health_urls": len(dated_health),
+            "metadata_only_candidates_with_verified_dates": len(dated_metadata),
+            "metadata_only_candidate_urls": [row["url"] for row in dated_metadata],
             "editorial_outcomes": dict(Counter(row["editorial_outcome"] for row in dated_health)),
             "date_conflicts": [row["url"] for row in matrix if row["external_control"]["date_comparison"] == "conflict"
                                and row["url"] in eligible]}
@@ -376,10 +399,13 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         "baseline_queue": list(baseline), "windows": windows, "matrix": matrix,
         "source_attribution_findings": attribution_findings,
         "unresolved_recent_feed_exclusions": unresolved_feed,
-        "counts": {"current_core_discovered_urls": len(current), "source_queue_urls": len(queued),
+        "counts": {"current_core_discovered_urls": len(enumerated),
+                   "current_core_verified_health_urls": len(current),
+                   "metadata_only_candidates": len(metadata_only), "source_queue_urls": len(queued),
                    "external_control_urls": len(controls), "history_urls": len(history_by_url),
                    "published_in_feed": sum(row["history_present"] and row["feed_present"] for row in matrix)},
-        "method": "Current source_details discovered records establish recall; queue/history/control are separate evidence joins. Control dates define frozen complete calendar windows. No search snippet supplies a date."}
+        "publisher_editorial_exceptions": [row for row in matrix if row["metadata_only_candidate"]],
+        "method": "Current source_details discovered records establish verified health recall; discovered_metadata_only records establish enumerated identities without verified article content and never inflate health recall. Queue/history/control are separate evidence joins. Control dates define frozen complete calendar windows. No search snippet supplies a date."}
 
 
 def curate_history(history):
