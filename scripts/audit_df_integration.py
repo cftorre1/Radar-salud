@@ -33,6 +33,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--capture-controls', action='store_true')
     parser.add_argument('--resolve', action='store_true')
+    parser.add_argument('--capture-publications',action='store_true')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     branch = subprocess.check_output(['git','branch','--show-current'],cwd=root,text=True).strip()
@@ -60,6 +61,17 @@ def main():
                     row['df_duplicate_of']=review['url']
         save_history(root/'data/history/superintendencia_signals.json',history)
     capture = {}; new_raw = []
+    if args.capture_publications:
+        for item in queue.items.values():
+            if item.get('source')!='diario_financiero' or item['status']!='published':continue
+            url=item['raw']['url']
+            if url in originals:continue
+            html=fetch_html(url);payload=html.encode();digest=hashlib.sha256(payload).hexdigest()
+            (cache_dir/(digest+'.html')).write_bytes(payload);parsed=parse_df_article(html,url)
+            originals[url]=dict(sha256=digest,fetch='ok',captured_at=datetime.now(timezone.utc).isoformat(),
+                event_date=parsed['event_date'],evidence={k:v for k,v in parsed['metadata'].items() if k!='page_text'},
+                readable_characters=len(parsed['metadata']['page_text']),article_excerpt=parsed['metadata']['page_text'][:1200])
+        audit['originals']=originals;atomic_json(audit_path,audit)
 
     def read_original(url):
         original = originals.get(url, {})
@@ -160,6 +172,18 @@ def main():
             equivalent_official_text=controls.get('equivalents',{}).get(url),
             next_action=item.get('df_resolution',{}).get('next_action')))
     queue.save()
+    if args.resolve:
+        for url,repair in controls.get('reprocess_capture_defects',{}).items():
+            for item in queue.items.values():
+                if item.get('source')!='diario_financiero' or item['raw']['url']!=url:continue
+                metadata=item['raw'].get('metadata',{})
+                if (item['status']=='rejected' and item.get('reason')==repair['old_reason'] and
+                        item['raw'].get('event_date') and material(metadata.get('article_title',''),metadata.get('page_text',''))
+                        and not metadata.get('df_integration_reprocess_version')):
+                    _remember(item,now,'verified_health_taxonomy_capture_defect')
+                    metadata['df_integration_reprocess_version']=1
+                    item.update(status='pending',reason=repair['basis'],retry_at=None,updated_at=now.isoformat())
+        queue.save()
     atomic_json(resolution_path,dict(at=now.isoformat(),branch=branch,model_calls=0,
         original_40_fingerprints=target_keys,counts=dict(Counter(r['resolution'] for r in remaining)),items=remaining))
     undated_urls=prior.get('original_13_undated_urls') or [r['url'] for r in audit['matrix'] if not r['publication_day']]
