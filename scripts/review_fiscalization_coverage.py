@@ -82,6 +82,13 @@ def run(runtime,root=Path('.')):
                 if day and link:
                     d=day[1];official_news[urljoin(url,link[1])]=f'{d[:4]}-{d[4:6]}-{d[6:]}'
     published_news={url:review['publication_date'] for url,review in reviews['enforcement_news_reviews'].items() if review['decision']=='publish_fiscalization'}
+    receipts_by_url={r['url']:r for r in manifest['receipts']}
+    news_primary_reviews_verified=0
+    for url,review in reviews['enforcement_news_reviews'].items():
+        if recent(review['event_date'],90):
+            if receipts_by_url.get(url,{}).get('sha256')!=review['primary_html_sha256']:
+                failures.append('news_primary_review_receipt_mismatch:'+url)
+            else:news_primary_reviews_verified+=1
     for url,day in published_news.items():
         if official_news.get(url)!=day:failures.append('official_news_date_unverified:'+url)
     history=json.loads((root/'data/history/superintendencia_signals.json').read_text())['signals'];feed=json.loads((root/'web/data/radar_today.json').read_text())['signals']
@@ -116,7 +123,7 @@ def run(runtime,root=Path('.')):
     for days,values in exact.items():
         for slug,label in (('superintendencia_fiscalizacion','sis'),('suseso_fiscalizacion','suseso')):
             if reconciliation['exact_calendar_windows'][slug][days]['official_confirmed']!=values[label]:failures.append('exact_calendar_count_mismatch')
-    return dict(historical_listing_inventory_differences=sorted(expected_stock-set(sis)),reviewer='independent_read_only_official_html_reconciliation',verdict='PASS' if not failures else 'FAIL',failures=failures,counts=counts,sis_unique_listing_urls=len(sis),professional_offices=len(professional),current_historical_stock=len(old_current),exact_calendar_windows=exact,official_news_inventory=len(official_news),date_uncertain_reports=len(undated),coverage_complete=False,limits=['Bounded dated coverage; daily publication dates of ten reports remain unknown.','Primary legal readings are explicit editorial reviews with matching native PDF hashes; this script does not certify legal interpretation.','Global QA and existing product Reviewer remain independent release gates.'])
+    return dict(historical_listing_inventory_differences=sorted(expected_stock-set(sis)),reviewer='independent_read_only_official_html_reconciliation',verdict='PASS' if not failures else 'FAIL',failures=failures,counts=counts,sis_unique_listing_urls=len(sis),professional_offices=len(professional),current_historical_stock=len(old_current),exact_calendar_windows=exact,official_news_inventory=len(official_news),news_primary_reviews_verified=news_primary_reviews_verified,date_uncertain_reports=len(undated),coverage_complete=False,limits=['Bounded dated coverage; daily publication dates of ten reports remain unknown.','Primary legal readings are explicit editorial reviews with matching native PDF hashes; this script does not certify legal interpretation.','Global QA and existing product Reviewer remain independent release gates.'])
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--runtime',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();result=run(a.runtime);a.output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(json.dumps(result,ensure_ascii=False));raise SystemExit(bool(result['failures']))
