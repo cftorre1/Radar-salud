@@ -652,6 +652,22 @@ def has_current_paid_claim(metadata):
                    for row in metadata.get("evidence_revisions", [])))
 
 
+def requires_current_paid_authority(item, origin):
+    """A processed member of the frozen12 cannot erase its newer authority."""
+    metadata = item.get("raw", {}).get("metadata", {})
+    if has_current_paid_claim(metadata):
+        return True
+    row = (origin or {}).get("rows", {}).get(item.get("raw", {}).get("url"))
+    if row is None:
+        return False
+    original = origin["originals"][row["queue_fingerprint"]]
+    old = original["raw"]["metadata"]
+    return (item.get("attempts") != original.get("attempts")
+            or item.get("status") not in {"pending", "retry"}
+            or any(metadata.get(field) != old.get(field) for field in (
+                "analysis_model_output", "pulso_editorial_proof_validation", "paid_guard_new_fast_attempt_receipts")))
+
+
 def current_paid_pin(key, entry):
     raw, meta = entry["raw"], entry["raw"]["metadata"]
     model = meta["analysis_model_output"]; response = model["_pulso_analysis_meta"]
@@ -768,7 +784,11 @@ def current_paid_origin(root, *, previous_origin=None):
 def verify_current_paid_revalidation(item, root, *, execution, telemetry, origin=None, archived_execution=False):
     """Bind the new verdict to its actual paid908 answer or a new FAST call."""
     raw, meta = item.get("raw", {}), item.get("raw", {}).get("metadata", {})
+    if origin is None and local_capture_path(root, CURRENT_PAID_PATH).exists():
+        origin = current_paid_origin(root)
     if not has_current_paid_claim(meta):
+        if requires_current_paid_authority(item, origin):
+            raise ValueError("current_paid_required_authority_missing")
         return None
     origin = origin or current_paid_origin(root)
     row = origin["rows"].get(raw.get("url"))
@@ -2864,7 +2884,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                         if str(error) == "code_repair_new_genuine_v5_validation_deferred"
                         else "code_repair_old_or_new_paid_evidence_unverified")
                 fail("processing", code, url=url, error=str(error))
-            if has_current_paid_claim(item.get("raw", {}).get("metadata", {})):
+            if requires_current_paid_authority(item, current_origin):
                 try:
                     if current_origin is None:
                         raise ValueError("current_paid_origin_unavailable")

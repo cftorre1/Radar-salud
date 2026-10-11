@@ -105,6 +105,34 @@ def test_missing_stamp_never_hides_surviving_current_claim(case, claim):
         inspect(value)
 
 
+def test_processed_frozen12_cannot_erase_all_current_claims_and_fall_back_to_legacy(case):
+    value = deepcopy(case); metadata = value['item']['raw']['metadata']
+    for field in (qa.CURRENT_PAID_STAMP, qa.CURRENT_PAID_RECEIPT, qa.CURRENT_PAID_ATTEMPTS):
+        metadata.pop(field, None)
+    metadata['evidence_revisions'] = [revision for revision in metadata['evidence_revisions']
+                                      if revision.get('reason') != qa.CURRENT_PAID_REVISION]
+    assert not qa.has_current_paid_claim(metadata)
+    if value['origin']['rows'][value['item']['raw']['url']]['runtime_route'] == 'assess_contract_or_semantic_defect':
+        # The older49 authority genuinely passes; it cannot replace the exact908
+        # archive/admission required for this already-processed member of12.
+        assert qa.verify_paid_guard_revalidation(value['item'], ROOT, execution=value['execution'],
+                    telemetry=value['telemetry'])['disposition'] == 'assess_contract_or_semantic_defect'
+    assert qa.requires_current_paid_authority(value['item'], value['origin'])
+    with pytest.raises(ValueError, match='current_paid_required_authority_missing'):
+        inspect(value)
+    with pytest.raises(ValueError, match='current_paid_required_authority_missing'):
+        qa.verify_current_paid_revalidation(value['item'], ROOT, execution=value['execution'], telemetry=value['telemetry'])
+
+
+def test_unprocessed_immutable908_remains_historical_evidence_not_new_authority(actual_origin):
+    for original in actual_origin['originals'].values():
+        assert not qa.requires_current_paid_authority(original, actual_origin)
+        assert qa.verify_current_paid_revalidation(original, ROOT, execution=actual_origin['execution'],
+                    telemetry=actual_origin['telemetry'], origin=actual_origin) is None
+        processed = deepcopy(original); processed['attempts'] += 1
+        assert qa.requires_current_paid_authority(processed, actual_origin)
+
+
 @pytest.mark.parametrize('attack', ['body', 'html', 'role', 'day', 'attempt', 'prior_model', 'old_receipt', 'old_revision'])
 def test_rehashed_local_metadata_cannot_change_primary_or_either_original_chain(case, attack):
     value = deepcopy(case); item = value['item']; meta = item['raw']['metadata']
