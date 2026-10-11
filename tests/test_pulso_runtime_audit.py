@@ -240,3 +240,19 @@ def test_explicit_required_fast_deferral_is_reported_before_any_queue_attempt():
     assert row["passed_gate"] is None
     assert row["exact_reason"] == "processing_not_attempted:fast_analysis_capacity_exhausted"
     assert not report["unresolved_pending_operational_reasons"]
+
+
+def test_retained_editorial_hold_precedes_generic_source_budget_cause():
+    pending = item("held", "pending", assessment={"decision": "pending", "reason": "require_incremental_value_review"})
+    pending["raw"]["metadata"]["editorial_hold"] = "require_incremental_value_review"
+    run = discovery([trace("held")])
+    run["processing_deferrals"] = {SOURCE: {"reason": "fast_analysis_capacity_exhausted",
+        "required_tier": "fast", "before_queue_start": True}}
+    report = audit.join_report(run, {"held": pending}, [], [], control([]))
+    audit.annotate_pending(report, {"mode": "real_core_processing", "engine_completed": True,
+        "engine_called": True, "model_capacity_after": {"fast": False, "deep": True}})
+    row = report["matrix"][0]
+    assert row["exact_reason"] == "require_incremental_value_review"
+    assert row["queue"][0]["assessment"] == pending["raw"]["metadata"]["editorial_assessment"]
+    assert report["processing_deferrals"][SOURCE]["reason"] == "fast_analysis_capacity_exhausted"
+    assert row["passed_gate"] is None

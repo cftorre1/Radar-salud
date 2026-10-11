@@ -285,7 +285,10 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
             disposition, reason = "published_queue_history_missing", "queue_history_consistency_failure"
         elif rows:
             disposition = "archived" if all(row["status"] == "archived" for row in rows) else "pending"
-            reason = next((row.get("reason") for row in rows if row.get("reason")), None) or "not_processed; run_limit_budget_or_discovery_only; no_editorial_verdict"
+            reason = (next((row.get("reason") for row in rows if row.get("reason")), None)
+                      or next((row.get("editorial_hold") for row in rows if row.get("editorial_hold")), None)
+                      or next((assessment.get("reason") for assessment in assessments if assessment.get("reason")), None)
+                      or "not_processed; run_limit_budget_or_discovery_only; no_editorial_verdict")
         else:
             disposition, reason = "not_detected", "not_in_queue_or_history; no_editorial_verdict"
         omission = None
