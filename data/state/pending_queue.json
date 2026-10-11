@@ -85168,11 +85168,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-09-24T10:55:49.416444+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -85587,15 +85587,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Milei ante la ONU cataloga a las Islas Malvinas como “causa nacional” y presiona al Reino Unido para retomar negociaciones",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-milei-ante-la-onu-cataloga-a-las-islas-malvinas-como-causa",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-23",
+            "raw_text": "El presidente de Argentina, Javier Milei, dijo que las autoridades han actuado con las herramientas disponibles para defender su soberanía sobre Las Malvinas, en lo que ha definido como una \"defensa pacífica, práctica y efectiva\".",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Milei ante la ONU cataloga a las Islas Malvinas como “causa nacional” y presiona al Reino Unido para retomar negociaciones",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-23T18:35:12Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-23T18:35:12Z",
+                  "day": "2026-09-23"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-23T18:35:12Z",
+                  "day": "2026-09-23"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 23 de septiembre de 2026 a las 15:32 hrs.",
+                  "day": "2026-09-23"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "c8aa75da1ee17aa085dd34930170361f504d22610496b2ff5f4785f6457a71f8",
+              "original_captured_at": "2026-10-11T04:32:03.246245+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "María C. Arvelo",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/GNi-ACAvcLU?si=l1Gjja8iOgfTKiI4"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-milei-ante-la-onu-cataloga-a-las-islas-malvinas-como-causa",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-milei-ante-la-onu-cataloga-a-las-islas-malvinas-como-causa",
+              "primary_header_title": "Ahora en DF | Milei ante la ONU cataloga a las Islas Malvinas como “causa nacional” y presiona al Reino Unido para retomar negociaciones"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-24T10:55:49.416444+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "c8aa75da1ee17aa085dd34930170361f504d22610496b2ff5f4785f6457a71f8",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "c8aa75da1ee17aa085dd34930170361f504d22610496b2ff5f4785f6457a71f8",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "c8aa75da1ee17aa085dd34930170361f504d22610496b2ff5f4785f6457a71f8"
     }
   },
   "bcc479b620d50dc1b138632ef237bb05f4d3dc3bf1fce766eaf1d0e21ce7318d": {
@@ -87018,11 +87090,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-09-24T15:15:03.457444+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -87437,15 +87509,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Kast espera restablecer relaciones diplomáticas con Venezuela “en los próximos meses”",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-kast-espera-restablecer-relaciones-diplomaticas-con-venezuela",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-24",
+            "raw_text": "El Presidente abordó el avance de los vínculos con Venezuela y señaló que el primer paso será fortalecer las relaciones consulares. Además, destacó el retorno de unos 35 mil venezolanos a su país y se refirió al proceso de recuperación institucional, judicial y democrática planteado por las autoridades venezolanas.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Kast espera restablecer relaciones diplomáticas con Venezuela “en los próximos meses”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-24T14:55:25Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-24T14:55:25Z",
+                  "day": "2026-09-24"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-24T14:55:25Z",
+                  "day": "2026-09-24"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 24 de septiembre de 2026 a las 11:53 hrs.",
+                  "day": "2026-09-24"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "41685dd3fb662c00f5b325c8d059f15e03f2480cb7ccf6894ddadb36572daed1",
+              "original_captured_at": "2026-10-11T04:32:14.434092+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Raimundo Döll",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/UM186-f56Xs?feature=share"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-kast-espera-restablecer-relaciones-diplomaticas-con-venezuela",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-kast-espera-restablecer-relaciones-diplomaticas-con-venezuela",
+              "primary_header_title": "Ahora en DF | Kast espera restablecer relaciones diplomáticas con Venezuela “en los próximos meses”"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-24T15:15:03.457444+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-09-24T15:15:03.457444+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "41685dd3fb662c00f5b325c8d059f15e03f2480cb7ccf6894ddadb36572daed1",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-09-24T15:15:03.457444+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "41685dd3fb662c00f5b325c8d059f15e03f2480cb7ccf6894ddadb36572daed1",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "41685dd3fb662c00f5b325c8d059f15e03f2480cb7ccf6894ddadb36572daed1"
     }
   },
   "dfb48ae238a848360b359c787b8f5c0302ba866785083efd36f1ff4c607e706a": {
@@ -87501,11 +87645,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-09-24T15:15:03.457444+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -87920,15 +88064,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Xi aboga por una relación estable con EEUU a su llegada a Washington para reunirse con Trump",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-xi-aboga-por-una-relacion-estable-con-eeuu-a-su-llegada-a",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-24",
+            "raw_text": "El presiente chino, Xi Jinping, defendió a su llegada a Estados Unidos la necesidad de que Washington y Pekín mantengan una relación basada en la cooperación y el diálogo, momentos antes de su encuentro con el presidente estadounidense, Donald Trump.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Xi aboga por una relación estable con EEUU a su llegada a Washington para reunirse con Trump",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-24T14:40:45Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-24T14:40:45Z",
+                  "day": "2026-09-24"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-24T14:40:45Z",
+                  "day": "2026-09-24"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 24 de septiembre de 2026 a las 11:38 hrs.",
+                  "day": "2026-09-24"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "46768795967ce2737bc0b02f54a0379dd22c0f89c784b50320a2385fe567400a",
+              "original_captured_at": "2026-10-11T04:32:15.453636+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "María C. Arvelo",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/KNoXyZn6IZE?si=E_awkWSm_q_u8HQK"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-xi-aboga-por-una-relacion-estable-con-eeuu-a-su-llegada-a",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-xi-aboga-por-una-relacion-estable-con-eeuu-a-su-llegada-a",
+              "primary_header_title": "Ahora en DF | Xi aboga por una relación estable con EEUU a su llegada a Washington para reunirse con Trump"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-24T15:15:03.457444+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-09-24T15:15:03.457444+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "46768795967ce2737bc0b02f54a0379dd22c0f89c784b50320a2385fe567400a",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-09-24T15:15:03.457444+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "46768795967ce2737bc0b02f54a0379dd22c0f89c784b50320a2385fe567400a",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "46768795967ce2737bc0b02f54a0379dd22c0f89c784b50320a2385fe567400a"
     }
   },
   "68c7ada9750164a5fd599d5a5fc304664e74341883f6ea9ee73a0a505410ad22": {
@@ -90152,11 +90368,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-09-25T14:41:02.935189+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -90571,15 +90787,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Primer Click | El petróleo retrocede y devuelve la calma al mercado",
+            "url": "https://www.df.cl/df-stream/podcast/primer-click-el-petroleo-retrocede-y-devuelve-la-calma-al-mercado",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-25",
+            "raw_text": "El precio del petróleo vuelve a caer ante reportes de que Estados Unidos e Irán negocian un acuerdo por fases para reabrir el estrecho de Ormuz, dando un respiro a los mercados globales. El Brent retrocede hacia US$105, mientras bajan el dólar y las tasas de los bonos, aunque los rendimientos de los Treasuries siguen cerca de máximos de dos décadas. Reuters confirma que las conversaciones buscan resolver el problema de quién da el primer paso: Irán reabriendo Ormuz o Washington levantando su bloqueo.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Primer Click | El petróleo retrocede y devuelve la calma al mercado",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-25T12:56:55Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-25T12:56:55Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-25T12:56:55Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 25 de septiembre de 2026 a las 09:49 hrs.",
+                  "day": "2026-09-25"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "ad7aec3169f46f263d03f83a31e77fe569aa1087c4ecbda1ce9d42df01d04aea",
+              "original_captured_at": "2026-10-11T04:32:24.152924+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Marcela Vélez-Plickert",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://www.youtube.com/embed/i5TurI7ItpM?si=zHVbaFkeAkQXNsQI"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/podcast/primer-click-el-petroleo-retrocede-y-devuelve-la-calma-al-mercado",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/podcast/primer-click-el-petroleo-retrocede-y-devuelve-la-calma-al-mercado",
+              "primary_header_title": "Primer Click | El petróleo retrocede y devuelve la calma al mercado"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-25T14:41:02.935189+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "ad7aec3169f46f263d03f83a31e77fe569aa1087c4ecbda1ce9d42df01d04aea",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "ad7aec3169f46f263d03f83a31e77fe569aa1087c4ecbda1ce9d42df01d04aea",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "ad7aec3169f46f263d03f83a31e77fe569aa1087c4ecbda1ce9d42df01d04aea"
     }
   },
   "fe20118d081e64ad3f393d9e7ecb830e4171ca3bf13ceae086af9c1ae2a79812": {
@@ -90635,11 +90923,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-09-25T14:41:02.935189+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -91054,15 +91342,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Trump y Xi apuestan desde la Casa Blanca por cooperar frente a la \"confrontación\"",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-trump-y-xi-apuestan-desde-la-casa-blanca-por-cooperar-frente",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-25",
+            "raw_text": "El presidente de Estados Unidos, Donald Trump, calificó de \"estupendo\" su encuentro de este jueves con su homólogo chino, Xi Jinping, en el marco de una visita de estado que continuará hasta este viernes y que se produce más de una década de la última visita del mandatario del gigante asiático a la Casa Blanca. Durante la jornada, ambos dirigentes han apostado por cooperar frente a la \"confrontación\".",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Trump y Xi apuestan desde la Casa Blanca por cooperar frente a la &#34;confrontación&#34;",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-25T14:22:09Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-25T14:22:09Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-25T14:22:09Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 25 de septiembre de 2026 a las 11:16 hrs.",
+                  "day": "2026-09-25"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "c5956069a0dc9537feb8006ecf6004182c8a071a48bd1f15a1331feb8e272fb6",
+              "original_captured_at": "2026-10-11T04:32:25.073799+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "María C. Arvelo",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/Hgsdj4dgoDU?si=AK_hco6ToUEHRn0O"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-trump-y-xi-apuestan-desde-la-casa-blanca-por-cooperar-frente",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-trump-y-xi-apuestan-desde-la-casa-blanca-por-cooperar-frente",
+              "primary_header_title": "Ahora en DF | Trump y Xi apuestan desde la Casa Blanca por cooperar frente a la \"confrontación\""
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-25T14:41:02.935189+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "c5956069a0dc9537feb8006ecf6004182c8a071a48bd1f15a1331feb8e272fb6",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "c5956069a0dc9537feb8006ecf6004182c8a071a48bd1f15a1331feb8e272fb6",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "c5956069a0dc9537feb8006ecf6004182c8a071a48bd1f15a1331feb8e272fb6"
     }
   },
   "1d1c40baebb754b2212358dd559b43a394ac5df82adf98c7ec49aebfc2d42351": {
@@ -92963,11 +93323,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-09-28T17:45:28.879065+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -93382,15 +93742,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | China y EEUU acuerdan recortes arancelarios en productos por un valor de US$ 60.000 millones",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-china-y-eeuu-acuerdan-recortes-arancelarios-en-productos-por",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-28",
+            "raw_text": "Estados Unidos y China avanzan hacia una posible rebaja de sus aranceles. El acuerdo llega poco después de la visita del presidente chino, Xi Jinping, a Estados Unidos, y supone un nuevo paso en el intento de las dos potencias por encauzar su relación comercial. Ambos países han acordado crear un marco para estudiar reducciones arancelarias recíprocas sobre productos por valor de unos US$ 60.000 millones.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | China y EEUU acuerdan recortes arancelarios en productos por un valor de US$ 60.000 millones",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-28T12:41:24Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-28T12:41:24Z",
+                  "day": "2026-09-28"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-28T12:41:24Z",
+                  "day": "2026-09-28"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Lunes 28 de septiembre de 2026 a las 09:40 hrs.",
+                  "day": "2026-09-28"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "edd945dfcf16044dba97fb232ca661689643f67833ffb659afed6b30065a8f3c",
+              "original_captured_at": "2026-10-11T04:32:36.050433+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "María C. Arvelo",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/cML8kfrY13k?si=v_01mg79665qZgUs"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-china-y-eeuu-acuerdan-recortes-arancelarios-en-productos-por",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-china-y-eeuu-acuerdan-recortes-arancelarios-en-productos-por",
+              "primary_header_title": "Ahora en DF | China y EEUU acuerdan recortes arancelarios en productos por un valor de US$ 60.000 millones"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-28T17:45:28.879065+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "edd945dfcf16044dba97fb232ca661689643f67833ffb659afed6b30065a8f3c",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "edd945dfcf16044dba97fb232ca661689643f67833ffb659afed6b30065a8f3c",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "edd945dfcf16044dba97fb232ca661689643f67833ffb659afed6b30065a8f3c"
     }
   },
   "7c7f710533e599e23c491cf33a7d5653f5ed866210b3603d73349904f2d6cd6f": {
@@ -93446,11 +93878,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-09-28T17:45:28.879065+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -93865,15 +94297,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Asunto de familia | La familia Sanz, dueños del Pinpilinpausha: la historia, lo aprendido y los planes futuros",
+            "url": "https://www.df.cl/df-stream/podcast/asunto-de-familia-la-familia-sanz-duenos-del-pinpilinpausha-la",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-25",
+            "raw_text": "El famoso restaurante español tiene 86 años. Nació en el centro de Santiago, de la mano de un inmigrante vasco. Lo continuó su hijo, Mauricio Sanz Jáuregui; y hoy -ubicado en Isidora Goyenechea- está a cargo de la tercera generación. ¿Cuáles son los principales episodios de su historia? ¿cómo se coordina con el hotel Bidasoa, el otro gran negocio familiar? ¿cuál es el desafío futuro? Carola Sanz y su madre María Elena Raab dan pistas en el podcast Asunto de familia.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Asunto de familia | La familia Sanz, dueños del Pinpilinpausha: la historia, lo aprendido y los planes futuros",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-25T22:39:05Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-25T22:39:05Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-25T22:39:05Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 25 de septiembre de 2026 a las 21:00 hrs.",
+                  "day": "2026-09-25"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "264d3cae24537b9a804540324f1719dfddcd37dcf484fc90ee01f21ba994d408",
+              "original_captured_at": "2026-10-11T04:32:36.944246+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Entrevista: Patricio de la Paz / Podcast: Dayanne González",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://www.youtube.com/embed/H0u7Mcdaa8M?si=zQo2M16HfNJZv8Gm"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/podcast/asunto-de-familia-la-familia-sanz-duenos-del-pinpilinpausha-la",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/podcast/asunto-de-familia-la-familia-sanz-duenos-del-pinpilinpausha-la",
+              "primary_header_title": "Asunto de familia | La familia Sanz, dueños del Pinpilinpausha: la historia, lo aprendido y los planes futuros"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-28T17:45:28.879065+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "264d3cae24537b9a804540324f1719dfddcd37dcf484fc90ee01f21ba994d408",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "264d3cae24537b9a804540324f1719dfddcd37dcf484fc90ee01f21ba994d408",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "264d3cae24537b9a804540324f1719dfddcd37dcf484fc90ee01f21ba994d408"
     }
   },
   "e0ffecf8ea1c3928e1261aab1d570b2248368bbf7712df46b3d851e683f5c471": {
@@ -99649,11 +100153,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-09-29T16:02:10.249575+00:00",
     "attempts": 2,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:38:40.687194+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -100087,13 +100591,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF Live | TRABAJO 3 X 3 SOFOFA",
+            "url": "https://www.df.cl/df-stream/videos/df-live-trabajo-3-x-3-sofofa",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-29",
+            "raw_text": "Regulación Pro Empleo",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF Live | TRABAJO 3 X 3 SOFOFA",
+              "article_section": "DF STREAM",
+              "publication_date_source": "visible:published_label",
+              "publication_timestamp": null,
+              "publication_label": "Martes 29 de septiembre de 2026 a las 07:50 hrs.",
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-22T13:42:36Z",
+                  "day": "2026-09-22"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-22T13:42:36Z",
+                  "day": "2026-09-22"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Martes 29 de septiembre de 2026 a las 07:50 hrs.",
+                  "day": "2026-09-29"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": {
+                "rule": "primary_header_explicit_publication_label",
+                "selected_visible_day": "2026-09-29",
+                "basis": "DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary body or embedded media container verified. Metadata timestamps retained; discrepancy cause unknown."
+              },
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "0252cc92ae0987e24ea9601c5745046d62665453c44fd4a3796ee7b011133886",
+              "original_captured_at": "2026-10-11T04:33:08.013513+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Equipo DF",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://www.youtube.com/embed/FqdOlRyKEpQ?si=5k6oIcACEe27-6Xy"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/df-live-trabajo-3-x-3-sofofa",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/df-live-trabajo-3-x-3-sofofa",
+              "primary_header_title": "DF Live | TRABAJO 3 X 3 SOFOFA"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-29T16:02:10.249575+00:00",
+          "attempts": 2,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:38:40.687194+00:00",
+          "retry_at": null,
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "0252cc92ae0987e24ea9601c5745046d62665453c44fd4a3796ee7b011133886",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "0252cc92ae0987e24ea9601c5745046d62665453c44fd4a3796ee7b011133886",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "0252cc92ae0987e24ea9601c5745046d62665453c44fd4a3796ee7b011133886"
     }
   },
   "633e852292e856f056b2208bca52d9cdba89564b6e40d8baea2aa8a9b0bd67cf": {
@@ -103352,11 +103930,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-09-30T16:20:22.173281+00:00",
     "attempts": 2,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:38:40.687194+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -103790,13 +104368,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "IA LAB | Transparencia y ética en la inteligencia artificial",
+            "url": "https://www.df.cl/df-stream/podcast/ia-lab-transparencia-y-etica-en-la-inteligencia-artificial",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-30",
+            "raw_text": "La directora de la Asociación de Ética Empresarial y Organizacional de Chile, Macarena McKay, y la investigadora principal del Centro Nacional de Inteligencia Artificial, Claudia López, abordaron la falta de control y mecanismos de rendición de cuentas de las empresas desarrolladoras frente a agentes de IA que han logrado eludir entornos de prueba, la concentración del poder en unos pocos actores y el rol de Chile y el Sur Global en el escenario geopolítico de esta tecnología.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "IA LAB | Transparencia y ética en la inteligencia artificial",
+              "article_section": "DF STREAM",
+              "publication_date_source": "visible:published_label",
+              "publication_timestamp": null,
+              "publication_label": "Miércoles 30 de septiembre de 2026 a las 09:00 hrs.",
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-29T12:47:29Z",
+                  "day": "2026-09-29"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-29T12:47:29Z",
+                  "day": "2026-09-29"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 30 de septiembre de 2026 a las 09:00 hrs.",
+                  "day": "2026-09-30"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": {
+                "rule": "primary_header_explicit_publication_label",
+                "selected_visible_day": "2026-09-30",
+                "basis": "DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary body or embedded media container verified. Metadata timestamps retained; discrepancy cause unknown."
+              },
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "9666a3cc1e88f4d96ff86abc1c69ac0839231a98ca19c4a6e66fd066e289b74b",
+              "original_captured_at": "2026-10-11T04:33:32.260210+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Equipo DF",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://mdstrm.com/embed/6abbb58554537e0e88d38d11"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/podcast/ia-lab-transparencia-y-etica-en-la-inteligencia-artificial",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/podcast/ia-lab-transparencia-y-etica-en-la-inteligencia-artificial",
+              "primary_header_title": "IA LAB | Transparencia y ética en la inteligencia artificial"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-30T16:20:22.173281+00:00",
+          "attempts": 2,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:38:40.687194+00:00",
+          "retry_at": null,
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "9666a3cc1e88f4d96ff86abc1c69ac0839231a98ca19c4a6e66fd066e289b74b",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "9666a3cc1e88f4d96ff86abc1c69ac0839231a98ca19c4a6e66fd066e289b74b",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "9666a3cc1e88f4d96ff86abc1c69ac0839231a98ca19c4a6e66fd066e289b74b"
     }
   },
   "ca064cf8611962432f92ea7f6303769da5d9f200b577096c927b3d329c58c0b6": {
@@ -104852,11 +105504,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "superseded",
     "detected_at": "2026-09-30T16:20:22.173281+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "duplicate_verified_df_event",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -105418,16 +106070,90 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Proyecto del PDG que compensa la compra de medicamentos y pañales pasa al Senado",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-proyecto-del-pdg-que-compensa-la-compra-de-medicamentos-y",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-30",
+            "raw_text": "Al beneficio podrán postular quienes pertenezcan al 80% de los hogares más vulnerables, según el Registro Social de Hogares, y cumplan con una serie de otros requisitos.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Proyecto del PDG que compensa la compra de medicamentos y pañales pasa al Senado",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-30T13:26:01Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-30T13:26:01Z",
+                  "day": "2026-09-30"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-30T13:26:01Z",
+                  "day": "2026-09-30"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 30 de septiembre de 2026 a las 10:25 hrs.",
+                  "day": "2026-09-30"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "4f3dd1fdb88a99a33bddc35ae733317d16570c4fb00f26769cccdb65dfa4f98f",
+              "original_captured_at": "2026-10-11T04:33:39.355897+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Claudia Rivas / Video: María C. Arvelo",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/HIZ9qGc-AQI?si=_uq9vUdcuZNnJ2G4"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-proyecto-del-pdg-que-compensa-la-compra-de-medicamentos-y",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-proyecto-del-pdg-que-compensa-la-compra-de-medicamentos-y",
+              "primary_header_title": "Ahora en DF | Proyecto del PDG que compensa la compra de medicamentos y pañales pasa al Senado"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-30T16:20:22.173281+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-09-30T16:20:22.173281+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "4f3dd1fdb88a99a33bddc35ae733317d16570c4fb00f26769cccdb65dfa4f98f",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-09-30T16:20:22.173281+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "4f3dd1fdb88a99a33bddc35ae733317d16570c4fb00f26769cccdb65dfa4f98f",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
-    }
+      "state": "RESOLVED_DUPLICATE",
+      "duplicate_of": "https://www.df.cl/economia-y-politica/congreso/camara-baja-despacha-al-senado-proyecto-del-pdg-que-compensa-la-compra-de",
+      "basis": "Same legislative dispatch; separate primary text requires real editorial gate; verified primary title/date/description identify same event. Transcript not invented; additional undisclosed content remains unknown.",
+      "next_action": "Retain media URL as corroborating original; canonical textual signal remains subject to existing gate",
+      "original_sha256": "4f3dd1fdb88a99a33bddc35ae733317d16570c4fb00f26769cccdb65dfa4f98f"
+    },
+    "duplicate_of": "https://www.df.cl/economia-y-politica/congreso/camara-baja-despacha-al-senado-proyecto-del-pdg-que-compensa-la-compra-de"
   },
   "0485294a06a9ff40222b66e5ba420a28aab5af14059f51ae3dabe6d64e49fee1": {
     "raw": {
@@ -106758,11 +107484,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-09-30T19:08:15.331898+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -107177,15 +107903,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Gremios del transporte se reúnen con el gobierno: \"Podríamos resolver la incertidumbre\" tras anuncios de EEUU sobre frenar exportaciones de diésel",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-gremios-del-transporte-se-reunen-con-el-gobierno-podriamos",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-30",
+            "raw_text": "El presidente de la Confederación Nacional de Transporte de Carga Terrestre de Chile (CNTC), Sergio Pérez, junto al presidente de la Confederación Nacional de Dueños de Camiones de Chile (CNDC), Juan Araya, se refiere a lo abordado en la reunión con el Ministerio de Economía por el alza de los combustibles.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Gremios del transporte se reúnen con el gobierno: &#34;Podríamos resolver la incertidumbre&#34; tras anuncios de EEUU sobre frenar exportaciones de diésel",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-30T17:06:55Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-30T17:06:55Z",
+                  "day": "2026-09-30"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-30T17:06:55Z",
+                  "day": "2026-09-30"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 30 de septiembre de 2026 a las 14:03 hrs.",
+                  "day": "2026-09-30"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "1ad076d9c70f1fd18ffcb9166a742c1a7e1d1b3bd6484361e71dcc3eea830f12",
+              "original_captured_at": "2026-10-11T04:33:49.408345+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "María C. Arvelo",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/vy_M4uW6l4Q?si=8qLJmeyQFUhzxMuW"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-gremios-del-transporte-se-reunen-con-el-gobierno-podriamos",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-gremios-del-transporte-se-reunen-con-el-gobierno-podriamos",
+              "primary_header_title": "Ahora en DF | Gremios del transporte se reúnen con el gobierno: \"Podríamos resolver la incertidumbre\" tras anuncios de EEUU sobre frenar exportaciones de diésel"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-09-30T19:08:15.331898+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-09-30T19:08:15.331898+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "1ad076d9c70f1fd18ffcb9166a742c1a7e1d1b3bd6484361e71dcc3eea830f12",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-09-30T19:08:15.331898+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "1ad076d9c70f1fd18ffcb9166a742c1a7e1d1b3bd6484361e71dcc3eea830f12",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "1ad076d9c70f1fd18ffcb9166a742c1a7e1d1b3bd6484361e71dcc3eea830f12"
     }
   },
   "c296b1d76f03faed98d41670bfe433f38b00a759aef71ee3fed1c3ff9bce65ac": {
@@ -111219,11 +112017,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "superseded",
     "detected_at": "2026-10-08T08:45:10.638681+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "duplicate_verified_df_event",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -111638,16 +112436,90 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | Mariela Formas critica posible reducción de 14,5% a Ley Ricarte Soto: “Es un ahorro mal entendido”",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-mariela-formas-critica-posible-reduccion-de-14-5-a-ley",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-07",
+            "raw_text": "",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF al Cierre | Mariela Formas critica posible reducción de 14,5% a Ley Ricarte Soto: “Es un ahorro mal entendido”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-07T21:14:58Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-07T21:14:58Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-07T21:14:58Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 7 de octubre de 2026 a las 18:14 hrs.",
+                  "day": "2026-10-07"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "6a623d8bbefa219371908a5e452b62f47cbb348f6d9f318f76abceb6aa9cd7ab",
+              "original_captured_at": "2026-10-11T04:33:56.186569+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Equipo DF",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://www.youtube.com/embed/2fgfRcktq0E?si=ye4VDdo2zq2cZp0n"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/podcast/df-al-cierre-mariela-formas-critica-posible-reduccion-de-14-5-a-ley",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/podcast/df-al-cierre-mariela-formas-critica-posible-reduccion-de-14-5-a-ley",
+              "primary_header_title": "DF al Cierre | Mariela Formas critica posible reducción de 14,5% a Ley Ricarte Soto: “Es un ahorro mal entendido”"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-10-08T08:45:10.638681+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "6a623d8bbefa219371908a5e452b62f47cbb348f6d9f318f76abceb6aa9cd7ab",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "6a623d8bbefa219371908a5e452b62f47cbb348f6d9f318f76abceb6aa9cd7ab",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
-    }
+      "state": "RESOLVED_DUPLICATE",
+      "duplicate_of": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+      "basis": "Same CIF interview/14.5% proposed funding cut; text accepted82, audio not treated as transcribed; verified primary title/date/description identify same event. Transcript not invented; additional undisclosed content remains unknown.",
+      "next_action": "Retain media URL as corroborating original; canonical textual signal remains subject to existing gate",
+      "original_sha256": "6a623d8bbefa219371908a5e452b62f47cbb348f6d9f318f76abceb6aa9cd7ab"
+    },
+    "duplicate_of": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
   },
   "ecba2c72575116602ea7194ece44f87339f4d5a26b3cad110c26b80877d831ad": {
     "raw": {
@@ -111706,11 +112578,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-10-08T08:45:10.638681+00:00",
     "attempts": 2,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:38:40.687194+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -112144,13 +113016,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "IA LAB | Mito o realidad: ¿Nos reemplazarán los agentes autónomos?",
+            "url": "https://www.df.cl/df-stream/podcast/ia-lab-mito-o-realidad-nos-reemplazaran-los-agentes-autonomos",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-07",
+            "raw_text": "La directora de empresas y experta en IA, María Francisca Yáñez, y la fundadora y CEO de The People Future, Denisse Goldfarb, conversaron sobre cómo los agentes de inteligencia artificial están redefiniendo el tamaño y la estructura de las empresas, el avance de equipos híbridos entre personas y sistemas autónomos, y las nuevas habilidades que deberán desarrollar los trabajadores. También analizaron el impacto en los cargos de entrada, la formación de talento y los desafíos de gobernanza que plantea este escenario.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "IA LAB | Mito o realidad: ¿Nos reemplazarán los agentes autónomos?",
+              "article_section": "DF STREAM",
+              "publication_date_source": "visible:published_label",
+              "publication_timestamp": null,
+              "publication_label": "Miércoles 7 de octubre de 2026 a las 09:00 hrs.",
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-06T13:00:21Z",
+                  "day": "2026-10-06"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-06T13:00:21Z",
+                  "day": "2026-10-06"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 7 de octubre de 2026 a las 09:00 hrs.",
+                  "day": "2026-10-07"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": {
+                "rule": "primary_header_explicit_publication_label",
+                "selected_visible_day": "2026-10-07",
+                "basis": "DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary body or embedded media container verified. Metadata timestamps retained; discrepancy cause unknown."
+              },
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "157c6544a3fe688c3a8c63a6f261400730fa970da5d38201d4c76d13bda7ca66",
+              "original_captured_at": "2026-10-11T04:33:57.199239+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Equipo DF",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://mdstrm.com/embed/6ac4c856ef0542592a3f6c6c"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/podcast/ia-lab-mito-o-realidad-nos-reemplazaran-los-agentes-autonomos",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/podcast/ia-lab-mito-o-realidad-nos-reemplazaran-los-agentes-autonomos",
+              "primary_header_title": "IA LAB | Mito o realidad: ¿Nos reemplazarán los agentes autónomos?"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-10-08T08:45:10.638681+00:00",
+          "attempts": 2,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:38:40.687194+00:00",
+          "retry_at": null,
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "157c6544a3fe688c3a8c63a6f261400730fa970da5d38201d4c76d13bda7ca66",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "157c6544a3fe688c3a8c63a6f261400730fa970da5d38201d4c76d13bda7ca66",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "157c6544a3fe688c3a8c63a6f261400730fa970da5d38201d4c76d13bda7ca66"
     }
   },
   "f4abfbac23c8cd84c4b9e7640c0a3e5fd997a3e46467df263c7bb9aa23473c46": {
@@ -114061,11 +115007,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-10-08T08:45:10.638681+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -114480,15 +115426,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Walker por eventual candidatura de Bachelet: “El gobierno perdió una oportunidad de hacer política de Estado”",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-walker-por-eventual-candidatura-de-bachelet-el-gobierno",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-07",
+            "raw_text": "El senador Matías Walker vinculó una eventual nueva candidatura presidencial de Michelle Bachelet con la decisión del Gobierno de no respaldar su postulación a la Secretaría General de Naciones Unidas. “Esta es la consecuencia: alimentar una nueva candidata presidencial”, afirmó.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Walker por eventual candidatura de Bachelet: “El gobierno perdió una oportunidad de hacer política de Estado”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-07T19:21:56Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-07T19:21:56Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-07T19:21:56Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 7 de octubre de 2026 a las 16:20 hrs.",
+                  "day": "2026-10-07"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "85af775e5b26903cd5a95c7bf3d97063affa862b5ca863af6d1239bc48c5274b",
+              "original_captured_at": "2026-10-11T04:34:22.248233+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Raimundo Döll",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/m5sU_G8wIdk?feature=share"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-walker-por-eventual-candidatura-de-bachelet-el-gobierno",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-walker-por-eventual-candidatura-de-bachelet-el-gobierno",
+              "primary_header_title": "Ahora en DF | Walker por eventual candidatura de Bachelet: “El gobierno perdió una oportunidad de hacer política de Estado”"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-10-08T08:45:10.638681+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "85af775e5b26903cd5a95c7bf3d97063affa862b5ca863af6d1239bc48c5274b",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "85af775e5b26903cd5a95c7bf3d97063affa862b5ca863af6d1239bc48c5274b",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "85af775e5b26903cd5a95c7bf3d97063affa862b5ca863af6d1239bc48c5274b"
     }
   },
   "02674ba54f81eb52d8ceaf0f5eff8bf8676433e2f706d67d15ae3d2f471aaf1b": {
@@ -114544,11 +115562,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-10-08T08:45:10.638681+00:00",
     "attempts": 3,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -114963,15 +115981,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Bachelet aborda eventual tercera candidatura presidencial: “Yo creo que sí”",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-bachelet-aborda-eventual-tercera-candidatura-presidencial",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-07",
+            "raw_text": "La expresidenta Michelle Bachelet abordó la posibilidad de competir por tercera vez por la Presidencia y, ante la pregunta, respondió: “Yo creo que sí”. Además, aseguró que hará “todo lo posible” para buscar la unidad de las fuerzas progresistas y manifestó su preocupación por eventuales retrocesos en derechos alcanzados durante los últimos años.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Bachelet aborda eventual tercera candidatura presidencial: “Yo creo que sí”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-07T16:49:29Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-07T16:49:29Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-07T16:49:29Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 7 de octubre de 2026 a las 13:47 hrs.",
+                  "day": "2026-10-07"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "b7857000b94d337274c6c9f4d166bc1da40d0815af4bed7af6315d183bb00729",
+              "original_captured_at": "2026-10-11T04:34:23.183967+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Raimundo Döll",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://www.youtube.com/embed/QxNjGEuf-jU"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-bachelet-aborda-eventual-tercera-candidatura-presidencial",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-bachelet-aborda-eventual-tercera-candidatura-presidencial",
+              "primary_header_title": "Ahora en DF | Bachelet aborda eventual tercera candidatura presidencial: “Yo creo que sí”"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-10-08T08:45:10.638681+00:00",
+          "attempts": 3,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "b7857000b94d337274c6c9f4d166bc1da40d0815af4bed7af6315d183bb00729",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
     "classification_basis": "original_detection_day_conservative",
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "b7857000b94d337274c6c9f4d166bc1da40d0815af4bed7af6315d183bb00729",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "b7857000b94d337274c6c9f4d166bc1da40d0815af4bed7af6315d183bb00729"
     }
   },
   "00d79335722f0524ff21c95f2b4c367973eb2e26c31f4154968be0aa944f9987": {
@@ -119662,10 +120752,10 @@
     },
     "source": "diario_financiero",
     "lane": "LIVE",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-10-08T16:46:16.111589+00:00",
     "attempts": 2,
-    "reason": "df_media_transcript_unavailable",
+    "reason": "df_unrelated_primary_multimedia_topic",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -120076,17 +121166,89 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Donald Trump vuelve a reclamar el Premio Nobel de la Paz y asegura que ha detenido ocho guerras",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-donald-trump-vuelve-a-reclamar-el-premio-nobel-de-la-paz-y",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-08",
+            "raw_text": "El Presidente de Estados Unidos, Donald Trump, volvió a reivindicar su papel en la resolución de conflictos internacionales y aseguró haber detenido ocho guerras desde su regreso a la Casa Blanca. En ese contexto, insistió en que sus gestiones diplomáticas deberían ser reconocidas con el Premio Nobel de la Paz.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Donald Trump vuelve a reclamar el Premio Nobel de la Paz y asegura que ha detenido ocho guerras",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-08T15:49:13Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-08T15:49:13Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-08T15:49:13Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 8 de octubre de 2026 a las 12:47 hrs.",
+                  "day": "2026-10-08"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "b6cf6bd1bcbfdc2bbcc4e44359a38bc957ecba1454cf36add64064ae8993f00d",
+              "original_captured_at": "2026-10-11T04:34:32.441003+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Raimundo Döll",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/7RmZQiXyUwM?feature=share"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-donald-trump-vuelve-a-reclamar-el-premio-nobel-de-la-paz-y",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-donald-trump-vuelve-a-reclamar-el-premio-nobel-de-la-paz-y",
+              "primary_header_title": "Ahora en DF | Donald Trump vuelve a reclamar el Premio Nobel de la Paz y asegura que ha detenido ocho guerras"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "LIVE",
+          "status": "deferred",
+          "detected_at": "2026-10-08T16:46:16.111589+00:00",
+          "attempts": 2,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "classification_watermark": "2026-10-08T16:46:16.111589+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": null,
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "b6cf6bd1bcbfdc2bbcc4e44359a38bc957ecba1454cf36add64064ae8993f00d",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "classification_watermark": "2026-10-08T16:46:16.111589+00:00",
     "classification_basis": "original_detection_day_conservative",
     "retry_at": null,
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "b6cf6bd1bcbfdc2bbcc4e44359a38bc957ecba1454cf36add64064ae8993f00d",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "b6cf6bd1bcbfdc2bbcc4e44359a38bc957ecba1454cf36add64064ae8993f00d"
     }
   },
   "b37e8f4c67ce08c01b58406f20638fa99aeaf2e4ff94bce2f80c93afb28f665c": {
@@ -120142,10 +121304,10 @@
     },
     "source": "diario_financiero",
     "lane": "LIVE",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-10-08T16:46:16.111589+00:00",
     "attempts": 2,
-    "reason": "df_media_transcript_unavailable",
+    "reason": "df_unrelated_primary_multimedia_topic",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -120556,17 +121718,89 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Quiroz aborda alza del IPC y llama a tomar medidas monetarias para mantener la inflación a raya",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-quiroz-aborda-alza-del-ipc-y-llama-a-tomar-medidas-monetarias",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-08",
+            "raw_text": "El ministro de Hacienda, Jorge Quiroz, abordó la reciente alza del Índice de Precios al Consumidor (IPC) y reconoció que el escenario inflacionario sigue siendo desafiante. En ese contexto, sostuvo que es necesario adoptar las medidas monetarias que correspondan para mantener la inflación a raya, aunque manifestó su expectativa de que se produzca una desaceleración en el aumento de los precios.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Quiroz aborda alza del IPC y llama a tomar medidas monetarias para mantener la inflación a raya",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-08T15:19:00Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-08T15:19:00Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-08T15:19:00Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 8 de octubre de 2026 a las 12:17 hrs.",
+                  "day": "2026-10-08"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "1ca87096265d079c4d4335d68ed57010928333f2b6adbb4dd38dded9af0faac9",
+              "original_captured_at": "2026-10-11T04:34:33.342349+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Raimundo Döll",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/3kvMgETh9Io?feature=share"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-quiroz-aborda-alza-del-ipc-y-llama-a-tomar-medidas-monetarias",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-quiroz-aborda-alza-del-ipc-y-llama-a-tomar-medidas-monetarias",
+              "primary_header_title": "Ahora en DF | Quiroz aborda alza del IPC y llama a tomar medidas monetarias para mantener la inflación a raya"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "LIVE",
+          "status": "deferred",
+          "detected_at": "2026-10-08T16:46:16.111589+00:00",
+          "attempts": 2,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "classification_watermark": "2026-10-08T16:46:16.111589+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": null,
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "1ca87096265d079c4d4335d68ed57010928333f2b6adbb4dd38dded9af0faac9",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "classification_watermark": "2026-10-08T16:46:16.111589+00:00",
     "classification_basis": "original_detection_day_conservative",
     "retry_at": null,
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "1ca87096265d079c4d4335d68ed57010928333f2b6adbb4dd38dded9af0faac9",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "1ca87096265d079c4d4335d68ed57010928333f2b6adbb4dd38dded9af0faac9"
     }
   },
   "c2d0d6e280f1d4b98f10d3eca5eb67e0add06ba7c67a0d3c42fe0f2c39cf5ad0": {
@@ -124120,10 +125354,10 @@
     },
     "source": "diario_financiero",
     "lane": "LIVE",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-10-09T16:30:14.631735+00:00",
     "attempts": 2,
-    "reason": "df_media_transcript_unavailable",
+    "reason": "df_unrelated_primary_multimedia_topic",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -124534,17 +125768,89 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Navi Pillay, Nobel de la Paz 2026 por su labor en favor del derecho internacional y la paz",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-navi-pillay-nobel-de-la-paz-2026-por-su-labor-en-favor-del",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-09",
+            "raw_text": "El Comité Noruego del Nobel reconoció este viernes con el premio Nobel de la Paz a la jurista sudafricana y antigua Alta Comisionada de Naciones Unidas para los Derechos Humanos Navanethem Pillay, conocida como Navi Pillay, quien fuera además jueza del Tribunal Penal Internacional (TPI).",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Navi Pillay, Nobel de la Paz 2026 por su labor en favor del derecho internacional y la paz",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-09T16:16:34Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-09T16:16:34Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-09T16:16:34Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 13:15 hrs.",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "f9c3d8e690e686b03586987cafb1c7a0534df14d398237641d0182b615180a1e",
+              "original_captured_at": "2026-10-11T04:34:51.701415+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "María C. Arvelo",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/uSw5e-HxVMg?si=SBMih0n2rGtr-Pfz"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-navi-pillay-nobel-de-la-paz-2026-por-su-labor-en-favor-del",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-navi-pillay-nobel-de-la-paz-2026-por-su-labor-en-favor-del",
+              "primary_header_title": "Ahora en DF | Navi Pillay, Nobel de la Paz 2026 por su labor en favor del derecho internacional y la paz"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "LIVE",
+          "status": "deferred",
+          "detected_at": "2026-10-09T16:30:14.631735+00:00",
+          "attempts": 2,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": null,
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "f9c3d8e690e686b03586987cafb1c7a0534df14d398237641d0182b615180a1e",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
     "classification_basis": "original_detection_day_conservative",
     "retry_at": null,
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "f9c3d8e690e686b03586987cafb1c7a0534df14d398237641d0182b615180a1e",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "f9c3d8e690e686b03586987cafb1c7a0534df14d398237641d0182b615180a1e"
     }
   },
   "b338f3146d1cc12649083bf43bed64a5c9658283eb0b26db4bc875b2babec584": {
@@ -124600,10 +125906,10 @@
     },
     "source": "diario_financiero",
     "lane": "LIVE",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-10-09T16:30:14.631735+00:00",
     "attempts": 2,
-    "reason": "df_media_transcript_unavailable",
+    "reason": "df_unrelated_primary_multimedia_topic",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -125014,17 +126320,89 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Especial: Diversificar fuentes de retorno",
+            "url": "https://www.df.cl/podcast/primer-click/especial-diversificar-fuentes-de-retorno",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-09",
+            "raw_text": "OpenAI vuelve a concentrar la atención de los inversionistas, mientras crecen las preguntas sobre el retorno de las enormes inversiones en IA. En el especial de viernes de Primer Click, René Peragallo, de Scotia Wealth Management, nos ayuda a entender qué riesgos enfrenta el rally tecnológico, qué ocurre con las tasas de interés y dónde pueden aparecer oportunidades para diversificar las inversiones. 🎧 Mira la entrevista en el canal de YouTube de Diario Financiero. #PrimerClick #OpenAI #InteligenciaArtificial #Inversiones",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Especial: Diversificar fuentes de retorno",
+              "article_section": "Podcast",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-09T07:41:22Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-09T07:41:22Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-09T07:41:22Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 04:40 hrs.",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "913656d3d655bfd7129f59adf95e429b38e1662113a8da09a4d14321dea4c6e2",
+              "original_captured_at": "2026-10-11T04:34:52.664653+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "diario financiero",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://open.spotify.com/embed/episode/1WWRjmwhVkpyjzdhq4SKlb?utm_source=generator&si=0320040e9d014949"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/podcast/primer-click/especial-diversificar-fuentes-de-retorno",
+              "publisher_jsonld_identity": "https://www.df.cl/podcast/primer-click/especial-diversificar-fuentes-de-retorno",
+              "primary_header_title": "Especial: Diversificar fuentes de retorno"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "LIVE",
+          "status": "deferred",
+          "detected_at": "2026-10-09T16:30:14.631735+00:00",
+          "attempts": 2,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": null,
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "913656d3d655bfd7129f59adf95e429b38e1662113a8da09a4d14321dea4c6e2",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
     "classification_basis": "original_detection_day_conservative",
     "retry_at": null,
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "913656d3d655bfd7129f59adf95e429b38e1662113a8da09a4d14321dea4c6e2",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "913656d3d655bfd7129f59adf95e429b38e1662113a8da09a4d14321dea4c6e2"
     }
   },
   "f1cb45a41343a9e5205eb40431a2e38cc880cef117954b220ad18916f3772274": {
@@ -127112,11 +128490,11 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "rejected",
     "detected_at": "2026-10-10T22:23:12.862520+00:00",
     "attempts": 2,
-    "reason": "df_media_transcript_unavailable",
-    "updated_at": "2026-10-11T06:38:40.687194+00:00",
+    "reason": "df_unrelated_primary_multimedia_topic",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -127574,13 +128952,87 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Asunto de familia | Armin y Alejandro Kunstmann: La sucesión familiar, el pacto con CCU y los próximos pasos",
+            "url": "https://www.df.cl/df-stream/podcast/asunto-de-familia-armin-y-alejandro-kunstmann-la-sucesion-familiar-el",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-09",
+            "raw_text": "El fundador de la cervecería valdiviana traspasó, hace seis años, el control diario a la segunda generación, encabezada por su hijo Alejandro Kunstmann en la gerencia general. Aquí, en un nuevo capítulo del podcast Asunto de familia, ambos cuentan por qué la sucesión no se improvisa y qué hicieron ellos. También cómo trabajan con CCU -sus socios-, sin perder su ADN regional. Y la razón de su apuesta por los productos premium.",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/empresas/dfsalud",
+              "page_text": "",
+              "article_title": "Asunto de familia | Armin y Alejandro Kunstmann: La sucesión familiar, el pacto con CCU y los próximos pasos",
+              "article_section": "DF STREAM",
+              "publication_date_source": "visible:published_label",
+              "publication_timestamp": null,
+              "publication_label": "Viernes 9 de octubre de 2026 a las 21:00 hrs.",
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-10T14:08:17Z",
+                  "day": "2026-10-10"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-10T14:08:17Z",
+                  "day": "2026-10-10"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 21:00 hrs.",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": {
+                "rule": "primary_header_explicit_publication_label",
+                "selected_visible_day": "2026-10-09",
+                "basis": "DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary body or embedded media container verified. Metadata timestamps retained; discrepancy cause unknown."
+              },
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "original_sha256": "23fe314ed5936a5153a6c11079139c495ef908729c2689206c2fddf38b945d3c",
+              "original_captured_at": "2026-10-11T04:30:48.375113+00:00",
+              "df_body_reaudit_version": 1,
+              "article_author": "Entrevista: Patricio de la Paz / Podcast: Dayanne González",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://www.youtube.com/embed/xMmQRVsNrl0?si=uDkdowZHCCX82s7P"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/podcast/asunto-de-familia-armin-y-alejandro-kunstmann-la-sucesion-familiar-el",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/podcast/asunto-de-familia-armin-y-alejandro-kunstmann-la-sucesion-familiar-el",
+              "primary_header_title": "Asunto de familia | Armin y Alejandro Kunstmann: La sucesión familiar, el pacto con CCU y los próximos pasos"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-10-10T22:23:12.862520+00:00",
+          "attempts": 2,
+          "reason": "df_media_transcript_unavailable",
+          "updated_at": "2026-10-11T06:38:40.687194+00:00",
+          "retry_at": null,
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "23fe314ed5936a5153a6c11079139c495ef908729c2689206c2fddf38b945d3c",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "23fe314ed5936a5153a6c11079139c495ef908729c2689206c2fddf38b945d3c",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+      "state": "RESOLVED_IRRELEVANT",
+      "basis": "Official primary publisher headline and description identify a non-health political, macroeconomic or other-industry topic; no material healthcare event asserted. Scope disposition, not a claim to have transcribed audio.",
+      "next_action": "Reconsider only if publisher supplies new attributable healthcare event evidence",
+      "original_sha256": "23fe314ed5936a5153a6c11079139c495ef908729c2689206c2fddf38b945d3c"
     }
   },
   "6cd419c372684a3c26ca41a3a995de54a4a3d99aa56a33fbfca3c70f2cfaf905": {
@@ -138286,12 +139738,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "deferred",
+    "status": "superseded",
     "detected_at": "2026-10-11T05:09:10.713959+00:00",
     "attempts": 1,
-    "reason": "df_media_transcript_unavailable",
+    "reason": "duplicate_verified_df_event",
     "classification_watermark": "2026-10-11T05:05:08.728740+00:00",
-    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "updated_at": "2026-10-11T06:53:42.246360+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -138615,14 +140067,86 @@
             "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
           }
         }
+      },
+      {
+        "at": "2026-10-11T06:53:42.246360+00:00",
+        "action": "individual_publisher_scope_or_event_duplicate_review",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Kast anuncia convenio entre Minsal, Fonasa y Caja Los Andes para reducir las listas de espera",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-kast-anuncia-convenio-entre-minsal-fonasa-y-caja-los-andes",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-08-14",
+            "raw_text": "El Presidente José Antonio Kast, junto a la ministra de Salud, May Chomali, anunció un convenio entre el Minsal, Fonasa y Caja de los Andes para atender a pacientes en lista de espera",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Kast anuncia convenio entre Minsal, Fonasa y Caja Los Andes para reducir las listas de espera",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-08-14T16:30:39Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-08-14T16:30:39Z",
+                  "day": "2026-08-14"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-08-14T16:30:39Z",
+                  "day": "2026-08-14"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 14 de agosto de 2026 a las 12:28 hrs.",
+                  "day": "2026-08-14"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "55aff031c96320b285eeb5b283430ea9682fee0290399116a121d3e2fd687784",
+              "original_captured_at": "2026-10-11T05:10:19.780884+00:00",
+              "article_author": "María C. Arvelo",
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://youtube.com/embed/dTCJrCn2TZo?si=YiCvg91kiLwl1406"
+              ],
+              "publisher_canonical_url": "https://www.df.cl/df-stream/videos/ahora-en-df-kast-anuncia-convenio-entre-minsal-fonasa-y-caja-los-andes",
+              "publisher_jsonld_identity": "https://www.df.cl/df-stream/videos/ahora-en-df-kast-anuncia-convenio-entre-minsal-fonasa-y-caja-los-andes",
+              "primary_header_title": "Ahora en DF | Kast anuncia convenio entre Minsal, Fonasa y Caja Los Andes para reducir las listas de espera"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "deferred",
+          "detected_at": "2026-10-11T05:09:10.713959+00:00",
+          "attempts": 1,
+          "reason": "df_media_transcript_unavailable",
+          "classification_watermark": "2026-10-11T05:05:08.728740+00:00",
+          "updated_at": "2026-10-11T06:32:45.904329+00:00",
+          "retry_at": null,
+          "df_resolution": {
+            "state": "DEFERRED_MULTIMEDIA",
+            "reason": "df_media_transcript_unavailable",
+            "original_sha256": "55aff031c96320b285eeb5b283430ea9682fee0290399116a121d3e2fd687784",
+            "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+          }
+        }
       }
     ],
     "df_resolution": {
-      "state": "DEFERRED_MULTIMEDIA",
-      "reason": "df_media_transcript_unavailable",
-      "original_sha256": "55aff031c96320b285eeb5b283430ea9682fee0290399116a121d3e2fd687784",
-      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
-    }
+      "state": "RESOLVED_DUPLICATE",
+      "duplicate_of": "https://www.df.cl/senal-df/senales-financieras/kast-anuncia-convenio-entre-minsal-fonasa-y-caja-los-andes-para-reducir",
+      "basis": "Same agreement; associated text accepted92; verified primary title/date/description identify same event. Transcript not invented; additional undisclosed content remains unknown.",
+      "next_action": "Retain media URL as corroborating original; canonical textual signal remains subject to existing gate",
+      "original_sha256": "55aff031c96320b285eeb5b283430ea9682fee0290399116a121d3e2fd687784"
+    },
+    "duplicate_of": "https://www.df.cl/senal-df/senales-financieras/kast-anuncia-convenio-entre-minsal-fonasa-y-caja-los-andes-para-reducir"
   },
   "79d5a71626e0190648ff88d05a835f05e1ec0b2ead3448f09bd782c639766052": {
     "raw": {

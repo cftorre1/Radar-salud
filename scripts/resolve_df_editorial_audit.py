@@ -48,8 +48,13 @@ def main():
     SeenStore(root/'data/state/diario_financiero_seen.json').add_many(terminal)
     health_path=root/'data/source_health.json';health=json.loads(health_path.read_text());df=health['sources']['diario_financiero']
     counts=queue.counts('diario_financiero')
+    deferred=sum(i.get('source')=='diario_financiero' and i['status']=='deferred' for i in queue.items.values())
     df.update(rejected=counts['rejected'],live_pending=counts['live_pending'],backfill_pending=counts['backfill_pending'],
               pending=counts['live_pending']+counts['backfill_pending'],editorial_reviewed_at=now.isoformat(),
+              deferred=deferred,deferred_multimedia=sum(i.get('source')=='diario_financiero' and i['status']=='deferred'
+                  and i.get('df_resolution',{}).get('state')=='DEFERRED_MULTIMEDIA' for i in queue.items.values()),
+              unverifiable_date_dispositions=sum(i.get('source')=='diario_financiero' and i['status']=='deferred'
+                  and i.get('df_resolution',{}).get('state')=='RESOLVED_NO_VERIFIABLE_DATE' for i in queue.items.values()),
               accepted_queue_publications=counts['published'],review_withdrawn=len(decisions),
               last_signal_at=max([r['event_date'] for r in history if r.get('source_name')=='Diario Financiero'
                                   and r.get('event_date') and r.get('editorial_decision')!='reject'],default=None))

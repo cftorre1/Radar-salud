@@ -29,6 +29,20 @@ def baseline_json(root, path):
     return json.loads(subprocess.check_output(['git', 'show', 'origin/staging:'+path], cwd=root))
 
 
+def retain_original_review(entry, previous):
+    """An offline state review cannot erase or falsely renew a hashed HTML review."""
+    if (not entry['original_reparsed'] and previous.get('original_reparsed')
+            and entry['original_sha256']==previous.get('original_sha256')
+            and entry['primary_body_sha256']==previous.get('primary_body_sha256')
+            and entry['date']==previous.get('date') and entry['title']==previous.get('title')):
+        for key in ('original_reparsed','primary_header_title','publisher_jsonld_identity',
+                    'publisher_canonical_url','title_matches_primary_header','date_matches_original'):
+            entry[key]=previous.get(key)
+        entry['reused_verified_original_review_at']=previous.get('reused_verified_original_review_at') or previous.get('original_review_at')
+        entry['original_review_at']=entry['reused_verified_original_review_at']
+    return entry
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--capture-controls', action='store_true')
@@ -205,8 +219,11 @@ def main():
     undated=[]
     for url in undated_urls:
         html,original=read_original(url);parsed=parse_df_article(html,url) if html else None
-        meta=parsed['metadata'] if parsed else original.get('evidence',{})
-        date=parsed['event_date'] if parsed else original.get('event_date')
+        retained=next((i['raw'] for i in queue.items.values() if i.get('source')=='diario_financiero'
+            and article_url(i['raw']['url'])==article_url(url) and i['raw'].get('event_date')
+            and i['raw'].get('metadata',{}).get('publication_date_source')),None)
+        meta=parsed['metadata'] if parsed else retained['metadata'] if retained else original.get('evidence',{})
+        date=parsed['event_date'] if parsed else retained['event_date'] if retained else original.get('event_date')
         undated.append(dict(url=url,publication_day=date,
             resolution='RESOLVED_VERIFIED_DATE' if date else 'RESOLVED_IRRELEVANT' if url.endswith('.pdf') or re.search(r'/p/\d+$',url) else 'RESOLVED_NO_VERIFIABLE_DATE',
             evidence=meta,original_sha256=original.get('sha256'),
@@ -218,6 +235,9 @@ def main():
     prior['original_13_undated_urls']=undated_urls
     resolution=json.loads(resolution_path.read_text());resolution['original_13_undated_urls']=undated_urls;atomic_json(resolution_path,resolution)
     publications=[]
+    pub_path=root/'data/audits/df_publications_review_2026_10_11.json'
+    pub_prior=json.loads(pub_path.read_text()) if pub_path.exists() else {}
+    previous_publications={r['url']:{**r,'original_review_at':r.get('original_review_at') or pub_prior.get('at')} for r in pub_prior.get('items',[])}
     for key,item in queue.items.items():
         if item.get('source')!='diario_financiero' or item['status']!='published':continue
         raw=item['raw'];url=raw['url'];meta=raw.get('metadata',{});html,original=read_original(url)
@@ -228,7 +248,7 @@ def main():
         parsed_metadata=parsed['metadata'] if parsed else meta
         header_title=parsed_metadata.get('primary_header_title')
         other_exact=[r['source_url'] for r in history if r.get('source_name')!='Diario Financiero' and r.get('editorial_decision')!='reject' and (article_url(r.get('source_url',''))==article_url(url) or (r.get('title','').casefold()==meta.get('article_title','').casefold() and r.get('event_date')==raw.get('event_date')))]
-        publications.append(dict(fingerprint=key,url=url,date=raw.get('event_date'),title=meta.get('article_title'),lane=item['lane'],
+        entry=dict(fingerprint=key,original_recovery_batch=key in controls.get('original_21_fingerprints',[]),url=url,date=raw.get('event_date'),title=meta.get('article_title'),lane=item['lane'],
             score=assessment.get('score'),category=rows[0].get('category') if rows else None,materiality=assessment.get('reason'),
             publication_reason=assessment,original_sha256=original.get('sha256'),captured_at=original.get('captured_at'),
             original_reparsed=parsed is not None,primary_body_matches=body==meta.get('page_text'),
@@ -243,8 +263,11 @@ def main():
             cross_source_exact_duplicates=other_exact,
             cross_source_review=controls.get('publication_reviews',{}).get(url,'Reviewed primary story/decision; no identical other-source event in retained history'),
             canonical_event=controls.get('publication_duplicate_pairs',{}).get(url),
-            primary_body_sha256=hashlib.sha256(body.encode()).hexdigest(),primary_excerpt=body[:400]))
+            original_review_at=now.isoformat() if parsed else None,
+            primary_body_sha256=hashlib.sha256(body.encode()).hexdigest(),primary_excerpt=body[:400])
+        publications.append(retain_original_review(entry,previous_publications.get(url,{})))
     atomic_json(root/'data/audits/df_publications_review_2026_10_11.json',dict(at=now.isoformat(),count=len(publications),items=publications,
+        original_21_fingerprints=controls.get('original_21_fingerprints',[]),
         semantic_dedupe_limitation='Explicit event review plus exact identity checks, not a global semantic dedupe guarantee'))
     if args.capture_controls:
         atomic_json(root/'data/audits/df_independent_controls_2026_10_11.json',dict(at=now.isoformat(),controls=capture,surfaces=surfaces,
