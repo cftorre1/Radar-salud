@@ -9,29 +9,11 @@ concurrency:
   group: integration-commander-source-runtime
   cancel-in-progress: false
 jobs:
-  targets:
-    if: github.ref == 'refs/heads/staging'
-    runs-on: ubuntu-latest
-    outputs:
-      sources: ${{ steps.targets.outputs.sources }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-      - id: targets
-        run: python -c 'import json, os; print("sources=" + json.dumps(json.load(open("config/integration_runtime_targets.json"))["sources"]), file=open(os.environ["GITHUB_OUTPUT"], "a"))'
   runtime:
-    needs: targets
-    strategy:
-      fail-fast: false
-      matrix:
-        source: ${{ fromJSON(needs.targets.outputs.sources) }}
     if: github.ref == 'refs/heads/staging'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
     env:
-      INTEGRATION_SOURCE: ${{ matrix.source }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       RADAR_FAST_MODEL: gpt-5.6-luna
       RADAR_DEEP_MODEL: gpt-5.6-terra
@@ -53,7 +35,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: integration-source-runtime-${{ github.sha }}-${{ matrix.source }}
+          name: integration-source-runtime-${{ github.sha }}
           retention-days: 14
           path: |
             work/integration-runtime/
