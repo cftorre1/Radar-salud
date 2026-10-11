@@ -252,6 +252,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
                 "title": raw.get("title"), "topics": raw.get("metadata", {}).get("topics", []),
                 "publication_date_source": raw.get("metadata", {}).get("publication_date_source"),
                 "assessment": raw.get("metadata", {}).get("editorial_assessment"),
+                "editorial_review": raw.get("metadata", {}).get("editorial_review"),
                 "rejection_reason": raw.get("metadata", {}).get("rejection_reason"),
                 "editorial_hold": raw.get("metadata", {}).get("editorial_hold"),
                 "article_body_complete": raw.get("metadata", {}).get("article_body_complete"),
@@ -292,9 +293,19 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         rejected = next((row for row in rows if row["status"] == "rejected"), None)
         retry = next((row for row in rows if row["status"] in {"retry", "processing"}), None)
         published = next((row for row in rows if row["status"] == "published"), None)
+        review = (historical or {}).get("editorial_review") or {}
+        review_joined = bool(review.get("schema_version") == "pulso_editorial_review_v1"
+                            and review.get("review_sha256") and review.get("record_sha256")
+                            and len(rows) == 1 and rows[0].get("editorial_review") == review)
+        reviewed_withdrawal = bool(review_joined and review.get("decision") in {"reject", "group"}
+                                   and rejected and (rejected.get("assessment") or {}).get("review_sha256") == review["review_sha256"])
         passed = True if any(a.get("decision") == "published" for a in assessments) else (
             False if rejected or any(a.get("decision") in {"reject", "rejected"} for a in assessments) else None)
-        if historical:
+        if reviewed_withdrawal:
+            disposition = "grouped_with_published_signal" if review["decision"] == "group" else "rejected_after_independent_editorial_review"
+            reason = (rejected.get("assessment") or {}).get("reason") or "editorial_review_rejection_reason_missing"
+            passed = False
+        elif historical:
             disposition = "published_in_history_and_feed" if url in feed_urls else "published_in_history_feed_excluded"
             reason = "history_and_feed_present" if url in feed_urls else "feed_curator_excluded; specific exclusion is not emitted by curate"
             if url in feed_urls:
@@ -373,14 +384,24 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
             "baseline_queue_present": url in baseline_urls,
             "legacy_queue_only": url in baseline_urls and url not in enumerated,
             "queue_present": bool(rows), "queue": rows, "passed_gate": passed,
+            "editorial_relevance_score": (historical or {}).get("editorial_relevance", next((a.get("relevance_score") for a in assessments if a.get("relevance_score") is not None), None)),
+            "media_gate_threshold": next((a.get("threshold") for a in assessments if a.get("threshold") is not None), None),
+            "original_model_gate_passed": bool(historical and int(historical.get("editorial_relevance") or 0) >= 72),
+            "editorial_review_evidence": review if review_joined else None,
+            "duplicate_of": review.get("duplicate_of") if review_joined else None,
+            "corroboration": {"status": (historical or {}).get("corroboration_status", "not_assessed"),
+                              "additional_sources": (historical or {}).get("additional_sources", []),
+                              "policy": "Related publisher articles do not independently confirm a media report."},
             "editorial_outcome": disposition, "exact_reason": reason,
             "history_present": bool(historical), "feed_present": url in feed_urls,
-            "traceability_unresolved": bool(historical and url not in feed_urls),
+            "history_publication_withdrawn": reviewed_withdrawal,
+            "traceability_unresolved": bool(historical and url not in feed_urls and not reviewed_withdrawal),
             "source_attribution": {"evidence_maturity": (historical or {}).get("evidence_maturity"),
                 "attribution_present": bool(re.search(r"pulso|la tercera", (historical or {}).get("what_happened", ""), re.I)),
                 "confirmation_policy": (historical or {}).get("confirmation_policy")},
             "consistency_findings": (["published_queue_history_missing"] if published and not historical else []) +
-                (["history_present_with_terminal_queue_rejection"] if historical and rejected else []),
+                (["history_present_with_terminal_queue_rejection"] if historical and rejected and not reviewed_withdrawal else []) +
+                (["withdrawn_publication_still_in_feed"] if reviewed_withdrawal and url in feed_urls else []),
             "current_discovery_trace": observed, "original_http_captures": captures_by_url.get(url, []),
             "omission": omission, "external_control": {"present": bool(original),
                 "recall_expected": original.get("recall_expected", False), "cohort": original.get("recall_cohort"),
