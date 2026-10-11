@@ -713,19 +713,22 @@
     "autonomy_runtime_v2_2026_10_11": {
       "kind": "autonomy_infrastructure_hosted_observation",
       "date": "2026-10-11",
-      "sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+      "sha": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
       "paths": [
-        "data/pmo/autonomy_acceptance_2026_10_11.json"
+        "data/pmo/autonomy_acceptance_2026_10_11.json",
+        "data/pmo/autonomy_acceptance_2026_10_11_final.json"
       ],
       "result": "implemented_pending_live_acceptance",
       "acceptance": "NOT_PROVEN",
-      "scope": "Local tests and hosted infrastructure behavior; does not certify source/editorial closure, full QA, release or four-hour autonomy.",
+      "scope": "Infrastructure implementation and scoped evidence reconciliation only; NOT_PROVEN source closure, Stage A, full QA, release and four-hour autonomy.",
       "validated_requirements": [],
       "validated_blocks": [],
       "run_urls": [
         "https://github.com/cftorre1/Radar-salud/actions/runs/38114913138",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398"
-      ]
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38123500601"
+      ],
+      "proof_status": "VERIFIED"
     },
     "work3_followup_20261011T072159245Z": {
       "reviewer": "Work 3",
@@ -1716,7 +1719,8 @@
       "id": "autonomy_runtime_v2_2026_10_11",
       "change": "Autonomy infrastructure authorized and published to main. Hosted leases, heartbeats, concurrent blockers, automatic transitions and isolated STALLED fault injection observed; real transport defect fixed. Four-hour acceptance NOT_PROVEN; product and historical evidence anchors unchanged.",
       "evidence": [
-        "data/pmo/autonomy_acceptance_2026_10_11.json"
+        "data/pmo/autonomy_acceptance_2026_10_11.json",
+        "data/pmo/autonomy_acceptance_2026_10_11_final.json"
       ]
     },
     {
@@ -2282,7 +2286,8 @@
       "evidence": [
         "data/pmo/autonomy_acceptance_2026_10_11.json",
         "https://github.com/cftorre1/Radar-salud/actions/runs/38114913138",
-        "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398"
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38115967398",
+        "data/pmo/autonomy_acceptance_2026_10_11_final.json"
       ],
       "constraints": [
         "No product promotion",
@@ -3249,7 +3254,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T07:21:59.245Z",
+  "updated_at": "2026-10-11T08:11:43.423338+00:00",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",

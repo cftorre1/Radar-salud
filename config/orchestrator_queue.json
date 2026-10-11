@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T07:21:59.245Z",
+  "updated_at": "2026-10-11T08:11:43.423338+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -2879,9 +2879,9 @@
         "Stage A 4h PASS"
       ],
       "approved_at": "2026-10-07",
-      "progress": "Arquitecto creado; se activa executor real y kickoff automático.\nInfraestructura publicada y corregida en main; seis familias y 12 pickups reales, heartbeats, seis transiciones independientes, CAS y canary STALLED observados. Recovery de transporte SUSESO reparado y verificado hosted. Acceptance 4h NOT_PROVEN; no cierre editorial/fuente ni promoción de producto.",
-      "current_subfront": "hosted_runtime_v2_implemented_acceptance_not_proven",
-      "next_action": "Habilitar Autonomous Executor, lanzar kickoff y auditar primer pickup.\nContinuación de arquitectura: Approved bounded repair/acceptance inputs can resume only the affected family without controller SUCCESS loops, then a complete useful four-hour window with trusted owner telemetry can be evaluated.",
+      "progress": "Arquitecto creado; se activa executor real y kickoff automático.\nInfraestructura publicada y corregida en main; seis familias y 12 pickups reales, heartbeats, seis transiciones independientes, CAS y canary STALLED observados. Recovery de transporte SUSESO reparado y verificado hosted. Acceptance 4h NOT_PROVEN; no cierre editorial/fuente ni promoción de producto.\nInfraestructura 15416d1: 338 tests locales PASS; 1.7.7 PASS, five workflows; estrategia determinística URI ACHS sin pago implementada. Acceptance NOT_PROVEN; resultados hosted finales VERIFIED; sin mutation durable de producto, cierre fuente, Stage A ni 4h probadas.",
+      "current_subfront": "final_infrastructure_implemented_acceptance_not_proven",
+      "next_action": "Habilitar Autonomous Executor, lanzar kickoff y auditar primer pickup.\nContinuación de arquitectura: Existing approved reversible source tasks need no additional repair-plan approval. Use the nonpaid deterministic ACHS URI strategy automatically only for its exact recognized failure and approved scope; unsupported repairs remain executor_capability_missing, an internal executor limitation, with human_required=false. The SUSESO 24-item probe cap is an internal coverage limit, not a publisher failure or complete coverage. Relevant committed strategy/input changes resume affected families independently; identical audits or internal reclassifications earn no progress. Retain full QA/Reviewer/editorial/security gates, the actual 11 >= 12 failure and 14 concrete QA failure cases, NOT_PROVEN four-hour acceptance and unverified owner-event coverage. Scheduled controller delivery every ten minutes has not been observed; use only evidenced push/completion pickups and diagnose delivery from actual metadata without inferring a disabled workflow or missing approval.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -2901,14 +2901,15 @@
         ],
         "supplement_finding_ids": []
       },
-      "last_progress_at": "2026-10-11T06:01:59.671306+00:00",
+      "last_progress_at": "2026-10-11T08:11:43.423338+00:00",
       "runtime_v2_evidence": {
-        "artifact": "data/pmo/autonomy_acceptance_2026_10_11.json",
+        "artifact": "data/pmo/autonomy_acceptance_2026_10_11_final.json",
         "status": "NOT_PROVEN",
-        "main_infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
-        "canonical_state_sha": "6412b829e669eae298d40693b3d153fd2fa50904",
+        "main_infrastructure_sha": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+        "canonical_state_sha": "bf8e94288ed48baf3b52607ec19309385b9d37e9",
         "owner_infrastructure_main_exception": true,
-        "production_promotion_authorized": false
+        "production_promotion_authorized": false,
+        "proof_status": "VERIFIED"
       },
       "independent_review_cuts": [
         {
@@ -3302,9 +3303,9 @@
       ],
       "approved_at": "2026-10-10",
       "started_at": "2026-10-10",
-      "last_progress_at": "2026-10-11T06:01:59.671306+00:00",
-      "current_subfront": "hosted_runtime_v2_implemented_acceptance_not_proven",
-      "next_action": "Completar cuatro horas útiles con mutación/closure real; conservar NOT_PROVEN con cero mutaciones/cierres. Añadir run/job productor del canary al artefacto y resolver QA staging. Ver último independent_review_cuts.",
+      "last_progress_at": "2026-10-11T08:11:43.423338+00:00",
+      "current_subfront": "final_infrastructure_implemented_acceptance_not_proven",
+      "next_action": "Completar cuatro horas útiles con mutación/closure real; conservar NOT_PROVEN con cero mutaciones/cierres. Añadir run/job productor del canary al artefacto y resolver QA staging. Ver último independent_review_cuts.\nContinuación de arquitectura: Existing approved reversible source tasks need no additional repair-plan approval. Use the nonpaid deterministic ACHS URI strategy automatically only for its exact recognized failure and approved scope; unsupported repairs remain executor_capability_missing, an internal executor limitation, with human_required=false. The SUSESO 24-item probe cap is an internal coverage limit, not a publisher failure or complete coverage. Relevant committed strategy/input changes resume affected families independently; identical audits or internal reclassifications earn no progress. Retain full QA/Reviewer/editorial/security gates, the actual 11 >= 12 failure and 14 concrete QA failure cases, NOT_PROVEN four-hour acceptance and unverified owner-event coverage. Scheduled controller delivery every ten minutes has not been observed; use only evidenced push/completion pickups and diagnose delivery from actual metadata without inferring a disabled workflow or missing approval.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3381,14 +3382,15 @@
           ]
         }
       ],
-      "progress": "Infraestructura publicada y corregida en main; seis familias y 12 pickups reales, heartbeats, seis transiciones independientes, CAS y canary STALLED observados. Recovery de transporte SUSESO reparado y verificado hosted. Acceptance 4h NOT_PROVEN; no cierre editorial/fuente ni promoción de producto.",
+      "progress": "Infraestructura publicada y corregida en main; seis familias y 12 pickups reales, heartbeats, seis transiciones independientes, CAS y canary STALLED observados. Recovery de transporte SUSESO reparado y verificado hosted. Acceptance 4h NOT_PROVEN; no cierre editorial/fuente ni promoción de producto.\nInfraestructura 15416d1: 338 tests locales PASS; 1.7.7 PASS, five workflows; estrategia determinística URI ACHS sin pago implementada. Acceptance NOT_PROVEN; resultados hosted finales VERIFIED; sin mutation durable de producto, cierre fuente, Stage A ni 4h probadas.",
       "runtime_v2_evidence": {
-        "artifact": "data/pmo/autonomy_acceptance_2026_10_11.json",
+        "artifact": "data/pmo/autonomy_acceptance_2026_10_11_final.json",
         "status": "NOT_PROVEN",
-        "main_infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
-        "canonical_state_sha": "6412b829e669eae298d40693b3d153fd2fa50904",
+        "main_infrastructure_sha": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+        "canonical_state_sha": "bf8e94288ed48baf3b52607ec19309385b9d37e9",
         "owner_infrastructure_main_exception": true,
-        "production_promotion_authorized": false
+        "production_promotion_authorized": false,
+        "proof_status": "VERIFIED"
       }
     },
     {
