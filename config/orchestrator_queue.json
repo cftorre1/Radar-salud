@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11",
+  "updated_at": "2026-10-11T05:17:44.512012+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -4180,7 +4180,7 @@
       "id": "pulso_latercera_exhaustive_discovery_2026_10_11",
       "status": "in_progress",
       "priority": "critical",
-      "owner": "Codex B + Media Source Worker + Reviewer",
+      "owner": "Codex B / Senior Source Recovery Engineer",
       "source": "Dirección / external reconciliation",
       "objective": "Rediseñar discovery de Pulso/La Tercera para cobertura exhaustiva razonable 30/90 días; la muestra actual de 11 candidatos es insuficiente y omite artículos sanitarios recientes verificables.",
       "depends_on": [],
@@ -4204,9 +4204,12 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11",
-      "current_subfront": "expand_discovery_beyond_11_sample",
-      "next_action": "Ampliar superficies y paginación, luego reconciliar contra set externo reciente antes de considerar PR #10 integrable."
+      "last_progress_at": "2026-10-11T05:17:44.512012+00:00",
+      "current_subfront": "original_surface_capture_and_independent_control",
+      "next_action": "Capture publisher surfaces, implement historical traversal, reconcile independent control, then real source-scoped core.",
+      "branch": "codex/b-pulso-runtime-20261011",
+      "baseline_sha": "73aff5c",
+      "current_hypothesis": "First-page/title-only discovery is disproved; obtain actual publisher pagination/API and primary HTML using authorized Actions."
     }
   ],
   "execution_policy": {
