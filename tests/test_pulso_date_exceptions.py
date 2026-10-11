@@ -63,8 +63,29 @@ def test_publisher_conflict_cannot_hide_missing_identity_body_or_byline():
     for change in ({'publication_date_verified': True}, {'publication_date': '2026-07-30'},
                    {'publication_timestamp': '2026-07-30T12:00:00Z'}, {'article_verified': True},
                    {'primary_identity_verified': False}, {'page_text': 'Missing original body'},
-                   {'visible_publication_date': '2026-08-06'}):
+                   {'visible_publication_date': '2026-08-06'}, {'visible_publication_date': 'not-a-date'},
+                   {'possible_publication_days': ['2020-01-01']}):
         assert not verified_publication_date_conflict(dict(valid, **change))
+
+
+def test_corrupt_cached_possible_days_cannot_turn_a_current_publisher_conflict_into_old_exclusion():
+    calls = []
+    def loader(url):
+        calls.append(url)
+        return article()
+    entry = dict(url=URL, listing='public-feed', lastmod='unchanged')
+    cold = _verified_detail(entry, loader, None)
+    corrupted = copy.deepcopy(cold)
+    corrupted['metadata']['possible_publication_days'] = ['2020-01-01']
+    warm = _verified_detail(entry, loader, corrupted)
+    assert calls == [URL, URL] and not warm['cache_hit']
+    assert warm['metadata']['possible_publication_days'] == ['2026-07-30', '2026-08-06']
+    assert verified_publication_date_conflict(warm['metadata'])
+    for field, value in (('publisher_day', '2026-07-30'), ('timestamp_calendar_day', '2020-01-01'),
+                         ('america_santiago_day', '2020-01-01')):
+        corrupted = copy.deepcopy(warm['metadata'])
+        corrupted['publication_evidence'][0][field] = value
+        assert not verified_publication_date_conflict(corrupted)
 
 
 def test_ambiguous_date_cannot_verify_old_boundary_and_requires_three_later_independent_pages(tmp_path):

@@ -303,6 +303,7 @@ class ConflictingPublicationArticle(ValueError):
 def verified_publication_date_conflict(metadata):
     """Verify the exception proof without adopting any publication date."""
     canonical = metadata.get("canonical_url")
+    visible = metadata.get("visible_publication_date")
     if not (canonical and article_url(canonical) == canonical
             and metadata.get("primary_identity_verified") is True
             and metadata.get("publication_date_verified") is False
@@ -310,14 +311,24 @@ def verified_publication_date_conflict(metadata):
             and metadata.get("publication_timestamp") is None
             and metadata.get("article_verified") is False
             and metadata.get("publisher_exception_reason") == "publisher_conflicting_publication_dates"
-            and complete_article_body(metadata) and metadata.get("visible_publication_date")):
+            and complete_article_body(metadata) and isinstance(visible, str)
+            and len(visible) == 10 and publication_day(visible) == visible):
         return False
     try:
         rows = metadata["publication_evidence"]
         dates = [(row["source"], row["timestamp"], publication_day(row["timestamp"])) for row in rows]
         if not dates or any(not day for _, _, day in dates):
             return False
-        _reconcile_publication_dates(dates, metadata["visible_publication_date"])
+        possible = {visible}
+        for row, (_, value, day) in zip(rows, dates):
+            chile_day = _publisher_day(value)
+            if (row.get("publisher_day") is not None or row.get("timestamp_calendar_day") != day
+                    or row.get("america_santiago_day") != chile_day):
+                return False
+            possible.update((day, chile_day))
+        if metadata.get("possible_publication_days") != sorted(possible):
+            return False
+        _reconcile_publication_dates(dates, visible)
     except ValueError as exc:
         return str(exc) == "conflicting_publication_dates"
     except (KeyError, TypeError):
