@@ -52,6 +52,8 @@ jobs:
         run: timeout --signal=TERM 18m python scripts/reconcile_df.py --live --reuse-originals --refresh-listings --capture-fixtures --repair-contaminated-bodies --capture-only --minutes 12 --process-limit 250 --max-pages 24 --max-details 400
       - name: Align recorded editorial outcomes without new model calls
         run: python scripts/resolve_df_editorial_audit.py
+      - name: Refresh matrix after editorial review, preserving runtime provenance
+        run: python scripts/reconcile_df.py --update-matrix-only
       - name: Rebuild candidate feed offline
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline
       - name: Preserve isolated checkpoint and issue evidence

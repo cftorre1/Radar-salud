@@ -46,6 +46,7 @@ def main():
     ap.add_argument("--refresh-listings",action="store_true",help="Poll current DF listings while reusing hashed detail originals")
     ap.add_argument("--capture-fixtures", action="store_true",help="Save publisher markup samples for date/body regressions")
     ap.add_argument("--capture-only",action="store_true",help="Reconcile/capture without consuming an AI processing slot")
+    ap.add_argument('--update-matrix-only',action='store_true',help='Refresh outcomes after editorial review; retain original runtime/capture provenance')
     ap.add_argument("--repair-contaminated-bodies",action="store_true",help="Trace and re-evaluate old decisions based on unrelated recommendation text")
     args = ap.parse_args()
     root = Path(__file__).resolve().parents[1]
@@ -56,7 +57,7 @@ def main():
     now = datetime.now(timezone.utc)
     today = now.astimezone(ZoneInfo("America/Santiago")).date()
     out = root / f"data/audits/df_reconciliation_{today.isoformat().replace('-', '_')}.json"
-    prior=json.loads(out.read_text()) if args.reuse_originals and out.exists() else {}
+    prior=json.loads(out.read_text()) if (args.reuse_originals or args.update_matrix_only) and out.exists() else {}
     artifacts = root / "work/df-originals"
     artifacts.mkdir(parents=True, exist_ok=True)
     report = {"at": now.isoformat(), "branch": branch,
@@ -65,12 +66,15 @@ def main():
               "status": "in_progress", "originals": {}, "listing_pages": [], "processing": {},
               "coverage": {"complete_30_days": False, "complete_90_days": False,
                            "limitation": "Bounded DF health/tag/Señal DF inventory plus all retained DF queue/history URLs; unenumerated originals remain unverified."}}
+    if args.update_matrix_only:
+        report=prior
+        report.update(matrix_updated_at=now.isoformat(),matrix_code_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip())
     queue = PendingQueue(root / "data/state/pending_queue.json")
     history = load_history(root / "data/history/superintendencia_signals.json")
     titles = {item["raw"]["url"]: item["raw"]["title"] for item in queue.items.values() if item["source"] == "diario_financiero"}
     titles.update({row["source_url"]: row["title"] for row in history if "df.cl/" in row.get("source_url", "")})
     cache = {}
-    for url,original in prior.get("originals",{}).items():
+    for url,original in ({} if args.update_matrix_only else prior.get("originals",{})).items():
         digest=original.get("sha256");path=artifacts/(str(digest)+".html")
         if original.get("fetch")=="ok" and path.exists():
             html=read_captured_html(path,digest)
@@ -142,6 +146,8 @@ def main():
         public_source_pipeline.fetch_html = capture
         try:
             raw_items = DfHealthScout().discover()
+            report['discovery_sample']={'discovered':len(raw_items),'dated':sum(bool(r.event_date) for r in raw_items),
+                'undated':sum(not r.event_date for r in raw_items),'insufficient_evidence':sum(len(r.metadata.get('page_text',''))<160 for r in raw_items)}
             titles.update({raw.url: raw.title for raw in raw_items})
         except Exception as exc:
             report["discovery_blocker"] = {"error_type": type(exc).__name__, "error": str(exc)}
@@ -251,6 +257,10 @@ def main():
                          original_listing_capture_times={url:report['originals'].get(url,{}).get('captured_at') for url in DfHealthScout.PAGES},
                          coverage_complete_30_days=False,coverage_complete_90_days=False)
             if polls:facet['checked_at']=max(polls)
+            if args.capture_only:
+                facet.update(last_processing_published=facet.get('published'),published=0,
+                             processing_executed_this_run=False,editorial_outcome='not_evaluated_this_run',
+                             **report.get('discovery_sample',{}))
             atomic_json(health_path,health)
             watermark_path=root/'data/state/discovery_watermarks.json'
             after=json.loads(watermark_path.read_text())
@@ -282,6 +292,7 @@ def main():
         if reviewed.get("df_body_reaudit_status") and reviewed.get("editorial_decision")=="reject":
             disposition="withdrawn_capture_defect:"+str(reviewed.get("df_body_reaudit_reason"))
         elif normalized in feed_urls: disposition = "published_in_history_and_feed"
+        elif reviewed.get('df_media_gate_reason') and reviewed.get('editorial_decision')=='reject':disposition='editorial_rejected:'+reviewed['df_media_gate_reason']
         elif normalized in history_by_url: disposition = "history_present_feed_curator_excluded"
         elif terminal_reject == 'df_not_article': disposition = 'capture_noise_excluded:df_not_article'
         elif terminal_reject: disposition = "editorial_rejected:" + terminal_reject
