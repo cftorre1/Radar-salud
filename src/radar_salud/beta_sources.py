@@ -108,6 +108,9 @@ class CuratedBetaSourceScout:
         self.cfg = self.SOURCES[slug]
 
     def discover_from_html(self, html, detail_loader=fetch_html):
+        from .occupational_sources import SOURCES, discover_items
+        if self.slug in SOURCES:
+            return discover_items(self, html, detail_loader)
         from .public_source_pipeline import _Meta, _date
 
         parser = _Links()
@@ -252,10 +255,16 @@ def process_curated_beta_source(raw, cfg):
     from .processing import DeferredProcessing
     from .public_source_pipeline import enrich, _scopes
 
-    raw = enrich(raw)
+    from .occupational_sources import SOURCES, materiality
+    scoped = raw.source_slug in SOURCES
+    if scoped and raw.metadata.get("article_extraction") != "occupational_v1":
+        raise DeferredProcessing("occupational detail requires verified article extraction")
+    if not scoped:
+        raw = enrich(raw)
     body = raw.metadata.get("page_text") or raw.raw_text or ""
     role = raw.metadata.get("market_role") or "provider"
-    if not raw.event_date or len(body) < 160 or not _material(role, raw.title, body):
+    accepted = materiality(role, raw.title, body)[0] if scoped else _material(role, raw.title, body)
+    if not raw.event_date or len(body) < 160 or not accepted:
         return None
     kind = {
         "media": "prensa económica de alta confianza; señal temprana, atribuir y no convertir reporte de prensa en hecho oficial",
@@ -296,6 +305,10 @@ def process_curated_beta_source(raw, cfg):
     row["scopes"] = scopes
     row["editorial_relevance"] = score
     row["source_quality_gate"] = "passed"
+    if scoped:
+        row.update(market_role=role, publication_date=raw.event_date,
+                   date_evidence=raw.metadata["date_evidence"],
+                   materiality_reason=raw.metadata["materiality_reason"])
     if role == "media":
         row["evidence_maturity"] = "media_reported"
         row["confirmation_policy"] = "upgrade_same_signal_when_company_or_official_source_confirms"
