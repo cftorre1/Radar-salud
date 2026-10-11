@@ -1,14 +1,16 @@
 """Read genuine core observations to prove a selected processing replay is inert.
 
-No engine, model, discovery, queue or editorial mutation is invoked here. A
-baseline requires independently passing paid processing; a later real core run
-must expose zero attempts and zero new response events, not mocked analysis.
+No engine, model, discovery, queue or editorial mutation is invoked here. The
+original baseline requires passing paid processing. The explicit revalidated
+mode keeps a failed paid producer separate from later passing, actual zero-AI
+processing. Either baseline needs a later real core with zero attempts/events.
 """
 from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import re
@@ -47,6 +49,10 @@ INCREMENTAL_REVIEW = "data/audits/pulso_incremental_review_2026_10_11.json"
 INCREMENTAL_REVIEW_SHA256 = "e5cee8d34839a905e391e85d6187db8bcdae09c0dde7f688cc71a9f04f093ddd"
 INCREMENTAL_ADDENDUM = "data/audits/pulso_oct5_incremental_addendum_2026_10_11.json"
 INCREMENTAL_ADDENDUM_SHA256 = "589ba50032521924803ef8ce94f40e3854930edcadddf7fc1223d9df81714160"
+REVALIDATED_MODE = "genuine_revalidated_processing_baseline"
+FINAL_PAID_PRODUCER = "323b73ef5fb0ec39410024c21d70e6fd99b065e2"
+FINAL_PAID_CODE = "c2db17141fd55cbacbcda5b53805341aa4dfa86f"
+FINAL_PAID_FINGERPRINT = "c960999eea01aed6e578d0ca1354cb5f45b8720ae8832993d609d0db540b0406"
 
 
 def digest(value):
@@ -338,10 +344,13 @@ def paid_revalidation_proof_files(root):
         MANIFEST_REF as CURRENT_REF, MANIFEST_SHA256 as CURRENT_SHA)
     from radar_salud.pulso_followup_paid_revalidation import (
         MANIFEST_REF as FOLLOWUP_REF, MANIFEST_SHA256 as FOLLOWUP_SHA)
+    from radar_salud.pulso_final_paid_revalidation import (
+        MANIFEST_REF as FINAL_REF, MANIFEST_SHA256 as FINAL_SHA)
     authorities = (
         (MANIFEST_REF, MANIFEST_SHA256, "pulso_v5_paid_guard_revalidation_manifest_v1"),
         (CURRENT_REF, CURRENT_SHA, "pulso_current_paid_guard_revalidation_manifest_v1"),
         (FOLLOWUP_REF, FOLLOWUP_SHA, "pulso_followup_paid_guard_revalidation_manifest_v1"),
+        (FINAL_REF, FINAL_SHA, "pulso_final_paid_guard_revalidation_manifest_v1"),
     )
     references = set()
     for manifest_ref, expected_sha, schema in authorities:
@@ -520,6 +529,178 @@ def semantic_snapshot(context):
                 actual_response_ids=[event.get("response_id") for event in context["events"] if event.get("success") is True])
 
 
+def native_queue(queue):
+    # Retain whole records. The compact source snapshot's cache exclusions are
+    # deliberately unavailable for proving that other connectors were inert.
+    return {key: digest(item) for key, item in queue.items() if item.get("source") != SOURCE}
+
+
+def revalidated_snapshot(context):
+    result = semantic_snapshot(context)
+    result["native_queue"] = native_queue(context["queue"])
+    return result
+
+
+def final_paid_reader(root):
+    path = root / "scripts/qa_pulso_recovery.py"
+    spec = importlib.util.spec_from_file_location("pulso_revalidated_idempotence_reader", path)
+    reader = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(reader)
+    require(callable(getattr(reader, "final_paid_origin", None))
+            and callable(getattr(reader, "verify_final_paid_revalidation", None)),
+            "independent_final_paid_reader_unavailable")
+    return reader
+
+
+def revalidated_paid_lineage(context, execution, *, root):
+    """Recompute the independent composite proof without relabelling paid323."""
+    reader = final_paid_reader(root)
+    require(callable(getattr(reader, "verify_final_revalidated_execution", None)),
+            "independent_final_revalidated_execution_reader_unavailable")
+    history = context["history"]
+    history = history["signals"] if isinstance(history, dict) else history
+    result = reader.verify_final_revalidated_execution(root, report=context["report"],
+        queue=context["queue"], history=history, telemetry=context["events"], execution=execution)
+    require(isinstance(result, dict) and result.get("evaluation_execution") == execution
+            and result.get("actual_budget_delta") == budget_delta(execution)
+            and result.get("publication_approved") is False,
+            "independent_final_revalidated_execution_binding_missing")
+    return result["paid_model_lineage"], result["launch_stock"], result["current_revalidation_receipts"]
+
+
+def capture_revalidated_baseline(context, *, root=ROOT, now=None):
+    now = now or datetime.now(timezone.utc)
+    qa = context["processing_qa"]
+    require(qa.get("phase") == "real_core_processing" and qa.get("requested_phase") == "processing"
+            and qa.get("verdict") == "PASS_AUTOMATED_PROCESSING_REQUIRES_INDEPENDENT_REVIEW"
+            and qa.get("discovery_qa") == qa.get("processing_qa") == "PASS"
+            and qa.get("acceptance") == "PENDING_INDEPENDENT_EDITORIAL_AND_FINAL_SHA_REVIEW"
+            and not qa.get("findings"), "revalidated_processing_qa_pass_required")
+    execution, urls, delta, events = core_proof(context)
+    require(all(value == 0 for tier in delta.values() for value in tier.values()) and not events,
+            "revalidated_baseline_must_use_zero_new_ai")
+    require(execution.get("processing_attempts_increased") == context["discovery"].get("processing_attempts") == 2,
+            "genuine_two_revalidation_processing_attempts_required")
+    require(qa.get("checks", {}).get("actual_ai_budget_delta") == delta
+            and qa["checks"].get("actual_fast_response_events") == 0
+            and qa["checks"].get("processing_selection", {}).get("sha256") == context["observed_files"][DEFAULT_SELECTION]
+            and qa["checks"]["processing_selection"].get("selected_urls") == 113,
+            "passing_revalidation_qa_not_bound_to_actual_observations")
+    snapshot = revalidated_snapshot(context)
+    partition = selected_partition(snapshot["source_queue"], urls, now)
+    require(len(partition["terminal_urls"]) == 113 and not partition["held_not_due_urls"]
+            and all(snapshot["source_queue"][url]["status"] in {"published", "rejected"} for url in urls),
+            "revalidated_baseline_requires_all113_terminal")
+    lineage, stock, receipts = revalidated_paid_lineage(context, execution, root=root)
+    recorded = execution["processing_selection"]
+    require(set(recorded.get("ready_selected_urls", [])) == set(lineage["models"])
+            and sorted(recorded.get("skipped_terminal_urls", [])) == sorted(stock["preserved_terminal_urls"])
+            and not recorded.get("skipped_not_due_urls") and not recorded.get("skipped_in_progress_urls"),
+            "actual_two_reuse_and111_terminal_skip_unverified")
+    bundle = dict(schema_version=SCHEMA, mode=REVALIDATED_MODE, at=now.isoformat(), read_only=True,
+        baseline_execution=execution, revalidated_budget_delta=delta, revalidated_successful_response_ids=[],
+        paid_model_lineage=lineage, launch_stock=stock, current_revalidation_receipts=receipts,
+        selection=dict(path=DEFAULT_SELECTION, sha256=context["observed_files"][DEFAULT_SELECTION], urls=urls,
+                       count=113, current_partition=partition), observed_files=context["observed_files"],
+        runtime_fingerprint=context["runtime_fingerprint"],
+        cohort_declared_reference_provenance=context.get("cohort_declared_reference_provenance", {}),
+        processing_qa=dict(verdict=qa["verdict"], discovery_qa="PASS", processing_qa="PASS",
+            requested_phase=qa["requested_phase"], acceptance=qa["acceptance"], phase=qa["phase"],
+            sha256=context["observed_files"][DEFAULT_QA], checks=qa.get("checks", {})), semantic=snapshot,
+        acceptance_note="Original paid323 QA remains FAIL. Actual repaired zero-AI processing passes; independent editorial/final staging acceptance remains separate.")
+    bundle["payload_sha256"] = digest(bundle)
+    validate_revalidated_baseline(bundle)
+    return bundle
+
+
+def validate_revalidated_baseline(bundle):
+    require(bundle.get("schema_version") == SCHEMA and bundle.get("mode") == REVALIDATED_MODE
+            and bundle.get("read_only") is True, "invalid_revalidated_idempotence_baseline")
+    require(bundle.get("payload_sha256") == digest({key: value for key, value in bundle.items() if key != "payload_sha256"}),
+            "baseline_payload_sha256_mismatch")
+    quality = bundle["processing_qa"]
+    require(quality.get("phase") == "real_core_processing" and quality.get("requested_phase") == "processing"
+            and quality.get("verdict") == "PASS_AUTOMATED_PROCESSING_REQUIRES_INDEPENDENT_REVIEW"
+            and quality.get("discovery_qa") == quality.get("processing_qa") == "PASS"
+            and quality.get("acceptance") == "PENDING_INDEPENDENT_EDITORIAL_AND_FINAL_SHA_REVIEW",
+            "baseline_revalidated_processing_qa_missing")
+    execution, lineage, stock = bundle["baseline_execution"], bundle["paid_model_lineage"], bundle["launch_stock"]
+    delta = budget_delta(execution)
+    require(delta == bundle["revalidated_budget_delta"]
+            and all(value == 0 for tier in delta.values() for value in tier.values())
+            and bundle["revalidated_successful_response_ids"] == [] and execution.get("processing_attempts_increased") == 2
+            and quality["checks"].get("actual_ai_budget_delta") == delta
+            and quality["checks"].get("actual_fast_response_events") == 0,
+            "baseline_zero_ai_two_revalidation_proof_missing")
+    require(execution.get("mode") == "real_core_processing" and execution.get("engine_called") is True
+            and execution.get("engine_completed") is True and execution.get("ai_guardrails_modified") is False
+            and stamp(execution.get("started_at")) and stamp(execution.get("finished_at"))
+            and stamp(execution["started_at"]) <= stamp(execution["finished_at"]),
+            "baseline_revalidated_execution_not_genuine")
+    require("paid_budget_delta" not in bundle and "paid_successful_response_ids" not in bundle
+            and lineage.get("schema_version") == "pulso_genuine_paid_model_lineage_v1"
+            and lineage.get("producer_state_commit") == FINAL_PAID_PRODUCER
+            and lineage.get("producer_core_checkout") == FINAL_PAID_CODE
+            and lineage.get("original_paid_qa_promoted") is False
+            and lineage.get("same_runtime_fingerprint_as_baseline") is False
+            and lineage["original_processing_qa"].get("verdict") == lineage["original_processing_qa"].get("processing_qa") == "FAIL"
+            and lineage["original_processing_qa"].get("findings"), "baseline_original_paid_failure_erased_or_promoted")
+    original, fingerprint = lineage["original_execution"], lineage["original_runtime_fingerprint"]
+    original_delta = budget_delta(original)
+    ids = lineage["original_successful_response_ids"]
+    require(original_delta == lineage["original_budget_delta"] == {
+                "fast": dict(attempted=2, successful=2, failed=0), "deep": dict(attempted=0, successful=0, failed=0)}
+            and original.get("code_sha") == FINAL_PAID_CODE and original.get("runtime_fingerprint") == fingerprint
+            and fingerprint.get("sha256") == FINAL_PAID_FINGERPRINT
+            and digest(fingerprint.get("files")) == FINAL_PAID_FINGERPRINT
+            and fingerprint != bundle["runtime_fingerprint"] and len(ids) == len(set(ids)) == 2
+            and set(ids) <= set(bundle["semantic"]["actual_response_ids"])
+            and len(lineage["models"]) == 2
+            and {row["original_response_id"] for row in lineage["models"].values()} == set(ids)
+            and all(row["receipt"].get("original_model_output_sha256") == row["original_model_output_sha256"]
+                    and row["receipt"].get("original_response_id") == row["original_response_id"]
+                    and row["receipt"].get("original_model_output_unchanged") is True
+                    and row["receipt"].get("new_model_request") is False
+                    and row["receipt"].get("publication_approved") is False
+                    and type(row["admission"].get("original_attempts")) is int
+                    and row["admission"].get("original_attempts") + 1 == bundle["semantic"]["source_queue"][url]["attempts"]
+                    for url, row in lineage["models"].items()), "baseline_original_paid_model_lineage_invalid")
+    require(original.get("mode") == "real_core_processing" and original.get("engine_called") is True
+            and original.get("engine_completed") is True and original.get("ai_guardrails_modified") is False
+            and lineage["original_processing_qa"].get("acceptance") == "NOT_ACCEPTED"
+            and lineage["original_processing_qa"].get("checks", {}).get("actual_ai_budget_delta") == original_delta,
+            "baseline_original_paid_failure_not_genuine")
+    require(execution.get("runtime_fingerprint") == bundle["runtime_fingerprint"]
+            and re.fullmatch(r"[0-9a-f]{40}", str(execution.get("code_sha", "")))
+            and stock.get("commit") == execution["code_sha"]
+            and stamp(original.get("finished_at")) < stamp(execution.get("started_at")),
+            "baseline_original_and_revalidated_execution_binding_invalid")
+    selection, partition = bundle["selection"], bundle["selection"]["current_partition"]
+    require(selection.get("count") == len(set(selection["urls"])) == 113
+            and partition == dict(terminal_urls=sorted(selection["urls"]), held_not_due_urls=[])
+            and all(bundle["semantic"]["source_queue"][url]["status"] in {"published", "rejected"}
+                    for url in selection["urls"])
+            and len(stock["preserved_terminal_urls"]) == 111
+            and set(stock["preserved_terminal_urls"]) == set(selection["urls"]) - set(lineage["models"])
+            and stock.get("native_queue_count") == len(bundle["semantic"]["native_queue"]) == 5293
+            and stock.get("native_history_count") == 897
+            and re.fullmatch(r"[0-9a-f]{64}", str(stock.get("native_queue_sha256", "")))
+            and re.fullmatch(r"[0-9a-f]{64}", str(stock.get("native_history_sha256", ""))),
+            "baseline_full113_terminal_and_native_stock_proof_missing")
+    require(execution.get("processing_selection", {}).get("selected_urls") == selection["urls"]
+            and execution["processing_selection"].get("sha256") == selection["sha256"]
+            and quality["checks"].get("processing_selection", {}).get("sha256") == selection["sha256"]
+            and quality["checks"]["processing_selection"].get("selected_urls") == 113
+            and set(bundle["current_revalidation_receipts"]) == set(lineage["models"])
+            and all(receipt.get("original_response_id") == lineage["models"][url]["original_response_id"]
+                    == receipt.get("current_response_id") and receipt.get("old_paid_output_reused") is True
+                    and receipt.get("publication_approved") is False
+                    and receipt.get("current_evaluation_code") == execution["code_sha"]
+                    and receipt.get("current_receipt_sha256") == digest(lineage["models"][url]["receipt"])
+                    for url, receipt in bundle["current_revalidation_receipts"].items()),
+            "baseline_full_selection_or_two_current_receipts_missing")
+
+
 def capture_baseline(context, *, now=None):
     now = now or datetime.now(timezone.utc)
     qa = context["processing_qa"]
@@ -561,6 +742,9 @@ def capture_baseline(context, *, now=None):
 
 
 def validate_baseline(bundle):
+    if bundle.get("mode") == REVALIDATED_MODE:
+        validate_revalidated_baseline(bundle)
+        return
     require(bundle.get("schema_version") == SCHEMA and bundle.get("mode") == "genuine_processing_baseline"
             and bundle.get("read_only") is True, "invalid_idempotence_baseline")
     require(bundle.get("payload_sha256") == digest({key: value for key, value in bundle.items() if key != "payload_sha256"}),
@@ -581,14 +765,24 @@ def validate_baseline(bundle):
             "baseline_original_core_implementation_proof_missing")
 
 
-def preflight(bundle, context, *, now=None):
+def verify_revalidated_baseline_lineage(bundle, context, *, root):
+    lineage, stock, receipts = revalidated_paid_lineage(context, bundle["baseline_execution"], root=root)
+    require(lineage == bundle["paid_model_lineage"] and stock == bundle["launch_stock"]
+            and receipts == bundle["current_revalidation_receipts"],
+            "immutable_original_paid_or_revalidated_execution_lineage_changed")
+
+
+def preflight(bundle, context, *, now=None, root=ROOT):
     """Fail before engine/model activity if the genuine baseline cannot replay."""
     validate_baseline(bundle)
     now = now or datetime.now(timezone.utc)
     require(bundle["runtime_fingerprint"] == context["runtime_fingerprint"], "runtime_implementation_or_policy_changed")
     require(bundle["selection"]["sha256"] == context["observed_files"][DEFAULT_SELECTION]
             and bundle["selection"]["urls"] == context["selection"]["urls"], "immutable_113_selection_changed")
-    snapshot = semantic_snapshot(context)
+    revalidated = bundle["mode"] == REVALIDATED_MODE
+    if revalidated:
+        verify_revalidated_baseline_lineage(bundle, context, root=root)
+    snapshot = revalidated_snapshot(context) if revalidated else semantic_snapshot(context)
     require(snapshot == bundle["semantic"], "runtime_state_changed_since_passing_baseline")
     partition = selected_partition(snapshot["source_queue"], bundle["selection"]["urls"], now,
                                    reviewed_holds=snapshot["reviewed_hold_bindings"])
@@ -598,7 +792,7 @@ def preflight(bundle, context, *, now=None):
                 ai_calls=0, fingerprint_uses_git_sha=False)
 
 
-def compare(bundle, context, *, now=None):
+def compare(bundle, context, *, now=None, root=ROOT):
     validate_baseline(bundle)
     now = now or datetime.now(timezone.utc)
     findings = []
@@ -608,6 +802,12 @@ def compare(bundle, context, *, now=None):
     check(bundle["runtime_fingerprint"] == context["runtime_fingerprint"], "runtime_implementation_or_policy_changed")
     check(context.get("recorded_core_runtime_fingerprint") == context["runtime_fingerprint"],
           "actual_second_core_implementation_not_bound")
+    revalidated = bundle["mode"] == REVALIDATED_MODE
+    if revalidated:
+        try:
+            verify_revalidated_baseline_lineage(bundle, context, root=root)
+        except (OSError, KeyError, TypeError, ValueError) as error:
+            findings.append(dict(code="original_paid_or_revalidated_execution_lineage_invalid", reason=str(error)))
     try:
         execution, urls, delta, events = core_proof(context)
         check(stamp(execution["started_at"]) > stamp(bundle["baseline_execution"]["finished_at"]), "second_actual_core_not_fresh")
@@ -627,10 +827,13 @@ def compare(bundle, context, *, now=None):
     except (KeyError, TypeError, ValueError) as error:
         findings.append(dict(code="genuine_second_core_proof_invalid", reason=str(error)))
         delta, partition = {}, {}
-    after, before = semantic_snapshot(context), bundle["semantic"]
+    after = revalidated_snapshot(context) if revalidated else semantic_snapshot(context)
+    before = bundle["semantic"]
     for key in ("history", "feed", "referenced_proof_files", "reviewed_hold_bindings", "ledgers",
                 "response_event_sha256s", "actual_response_ids"):
         check(after[key] == before[key], "changed_" + key)
+    if revalidated:
+        check(after["native_queue"] == before["native_queue"], "changed_native_queue")
     added = {}
     for key in ("source_queue", "source_primary"):
         missing = sorted(set(before[key]) - set(after[key]))
@@ -648,7 +851,8 @@ def compare(bundle, context, *, now=None):
                 runtime_fingerprint=context["runtime_fingerprint"], actual_budget_delta=delta,
                 selected_partition=partition, new_unselected_discovery=added,
                 history_signal_count=len(after["history"]), feed_signal_count=len(after["feed"]),
-                findings=findings, method="Actual selected core execution, paid baseline and immutable semantic identities; no mocked model or injected discovery.")
+                findings=findings, method=("Actual selected core execution after separately bound original paid lineage and genuine repaired processing; no original paid QA relabelling."
+                    if revalidated else "Actual selected core execution, paid baseline and immutable semantic identities; no mocked model or injected discovery."))
 
 
 def write_result(root, path, result):
@@ -664,7 +868,7 @@ def write_result(root, path, result):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("capture", "preflight", "compare"))
+    parser.add_argument("mode", choices=("capture", "capture-revalidated", "preflight", "compare"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--baseline", type=Path, default=Path(DEFAULT_BASELINE))
     parser.add_argument("--output", type=Path)
@@ -672,19 +876,23 @@ def main():
     try:
         context = read_context(args.root)
         baseline_path = args.baseline if args.baseline.is_absolute() else args.root / args.baseline
-        if args.mode == "capture":
+        if args.mode in {"capture", "capture-revalidated"}:
             output = args.output or args.baseline
             destination = output if output.is_absolute() else args.root / output
             if destination.exists():
                 result = json.loads(destination.read_bytes())
-                preflight(result, context)
+                expected_mode = REVALIDATED_MODE if args.mode == "capture-revalidated" else "genuine_processing_baseline"
+                require(result.get("mode") == expected_mode, "refusing_to_replace_different_processing_baseline_mode")
+                preflight(result, context, root=args.root)
                 require(result["baseline_execution"] == (context["report"].get("last_core_execution") or context["report"].get("execution")),
                         "refusing_to_replace_genuine_processing_baseline")
             else:
-                result = capture_baseline(context)
+                result = (capture_revalidated_baseline(context, root=args.root) if args.mode == "capture-revalidated"
+                          else capture_baseline(context))
         else:
             baseline = json.loads(baseline_path.read_bytes())
-            result = preflight(baseline, context) if args.mode == "preflight" else compare(baseline, context)
+            result = (preflight(baseline, context, root=args.root) if args.mode == "preflight"
+                      else compare(baseline, context, root=args.root))
             output = args.output or (Path(DEFAULT_RESULT) if args.mode == "compare" else None)
         if output is not None:
             write_result(args.root, output, result)
