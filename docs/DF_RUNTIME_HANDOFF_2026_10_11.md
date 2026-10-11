@@ -6,7 +6,7 @@
 
 - Rama: `codex/df-end-to-end-20261011`; [PR #11](https://github.com/cftorre1/Radar-salud/pull/11), base `staging`.
 - Base revisada: `fe3a4f779f43edfdea8edc9df2f2641dd96056c2`.
-- Implementación y estados completos: `f3ad5f08a23360ab2df131d0ce80d55b5e9bf2f6`; el commit posterior de handoff sólo añade documentación/queue/PMO/evidencia.
+- Implementación y estados completos: `f3ad5f08a23360ab2df131d0ce80d55b5e9bf2f6`; regresión final/normalización de fixtures en `a3cb75c`, más los commits de handoff con documentación/queue/PMO/evidencia.
 - **Integrar el PR completo hasta su HEAD final**, incluida la implementación anterior y el handoff. No seleccionar cherry-picks aislados: código, fixtures, rehidratación, decisiones retiradas, dedupe, history/seen/cola y evidencia deben permanecer coherentes. El rango es `fe3a4f779f43edfdea8edc9df2f2641dd96056c2..HEAD` de esta rama. Si staging avanzó, Commander debe contrastar sus nuevos estados y resolver conflictos sin reemplazar registros ajenos a DF.
 - Historia no reescrita. Pruebas de diff: registros no DF de queue/history/health/feed idénticos a staging; sólo plumbing compartido necesario para `--source`, motivos de defer y publicación durable.
 - Se redujeron más de 31 mil líneas de template en fixtures, preservando exactamente cuerpo/fechas/cards y hashes de los originales. Matrices referencian una única copia de evidencia por URL. `work/` no se versiona. Estados voluminosos conservan los snapshots requeridos para explicar/retirar decisiones contaminadas; no son snapshots accidentales de otras fuentes.
@@ -50,7 +50,7 @@ Los 19 diferidos son **18 audio/video sin transcripción oficial verificable en 
 - [x] 40 retries, 13 URLs sin fecha y multimedia clasificados individualmente.
 - [x] Dedupe por evento revisado; registros de fuentes conservados.
 - [x] Sin regresión DF; mínimo 72 y presupuestos intactos.
-- [x] Rango/commits exactos a integrar: implementación `f3ad5f08a23360ab2df131d0ce80d55b5e9bf2f6` + commit final de handoff, mediante merge del PR completo.
+- [x] Rango/commits exactos a integrar: implementación `f3ad5f08a23360ab2df131d0ce80d55b5e9bf2f6` + regresión/fixtures `a3cb75c` + handoff final, mediante merge del PR completo.
 - [x] Blockers heredados separados: normativa `11 >= 12` y 8 hallazgos SIS.
 - [ ] Runtime **posterior al merge** y candidate global QA/Reviewer/browser todavía requeridos.
 

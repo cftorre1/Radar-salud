@@ -45,7 +45,8 @@
     "generic_retries": 0,
     "dedupe": "PASS:3 multimedia duplicates; DF IF534 yields to official SIS event; MELI-CruzVerde follow-up yields to launch report; both source records retained in history",
     "editorial_false_positive_removed": "Exploratory42-person ageing analysis72 withdrawn by recorded explicit nonmaterial business verdict; threshold72 unchanged",
-    "regression": "No new failure versus staging; nonDF queue/history/health/feed records equal staging"
+    "regression": "No new failure versus staging; nonDF queue/history/health/feed records equal staging",
+    "diff_check": "PASS: git diff --check origin/staging...HEAD"
   },
   "coverage": {
     "30_days": {
@@ -246,5 +247,6 @@
     "freshness_honest": true
   },
   "runtime_provenance_note": "New runtime receipt is this artifact/run logs. The reconciliation retains earlier inventory capture timestamps and does not renew them during matrix-only review. Later changes only scope reviewed dispositions, compact evidence, preserve offline proof and expose derived health facets; validated locally with58tests.",
-  "next_action": "Integration Commander review current staging diff, merge PR11 to staging only, run global QA/Reviewer/browser and fresh Daily runtime after merge; verify LIVE/new eligible publication, counts/format deferrals/idempotence before issue5/6 closure."
+  "next_action": "Integration Commander review current staging diff, merge PR11 to staging only, run global QA/Reviewer/browser and fresh Daily runtime after merge; verify LIVE/new eligible publication, counts/format deferrals/idempotence before issue5/6 closure.",
+  "verification_test_sha": "a3cb75c36c943aa1538f9f20e0be68b2fa97d479"
 }

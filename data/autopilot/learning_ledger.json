@@ -410,5 +410,40 @@
       "Runtime38114333430 pending review"
     ],
     "status": "implemented_runtime_review_open"
+  },
+  {
+    "id": "df_primary_care_taxonomy_gap_2026_10_11",
+    "source": "Codex A independent coverage control",
+    "class": "editorial_processing_defect",
+    "finding": "A material CESFAM investment/retender was absent from bounded inventory and rejected by the health/materiality conjunction because CESFAM was missing from healthcare terms.",
+    "root_cause": "Tests used clinic/hospital vocabulary; materiality review did not exercise primary-care facility acronyms.",
+    "specific_fix": "Include CESFAM/CESCOSF healthcare identity, retain unchanged business gate72, reopen only the exact verified affected rejection for real assessment.",
+    "preventive_controls": [
+      "deterministic_test",
+      "independent_original_control"
+    ],
+    "evidence": [
+      "test_cesfam_investment_title_reaches_gate_without_macro_health_contamination",
+      "Runtime38119095016:CESFAM72 BACKFILL published",
+      "data/audits/df_independent_controls_2026_10_11.json"
+    ],
+    "status": "validated_isolated_runtime_pending_integration"
+  },
+  {
+    "id": "df_offline_proof_retention_2026_10_11",
+    "source": "Codex A integration state review",
+    "class": "evidence_preservation_defect",
+    "finding": "Offline audit without local HTML replaced stronger stored original header verification with empty fallback metadata.",
+    "root_cause": "Audit assumed every review had the full cache; previous tests verified primary extraction but not offline review after runtime.",
+    "specific_fix": "Restore exact Actions original-review receipt and retain it offline only when original hash, body hash, date and title match; keep original verification timestamp.",
+    "preventive_controls": [
+      "deterministic_test",
+      "data_validation_rule"
+    ],
+    "evidence": [
+      "test_offline_publication_review_retains_original_proof_only_for_same_body_date_and_identity",
+      "26/26 original body/date/header verified,58testsPASS"
+    ],
+    "status": "validated_pending_integration"
   }
 ]
