@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "scope": "Read-only monitor of native critical QA; no product/data edits, no model calls, no runtime rerun.",
+  "repository": "cftorre1/Radar-salud",
+  "run_id": 38159042621,
+  "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38159042621",
+  "requested_source_sha": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+  "actual_checkout_sha": "e5bc084bd9015ba9cd2e70c617c7b1aae08db7b9",
+  "pull_request": 10,
+  "actual_merge_parents_from_checkout_message": {
+    "source": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+    "staging": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af"
+  },
+  "observed_at_utc": "2026-10-11 17:23:22 UTC",
+  "observed_first_in_progress_at_utc": "2026-10-11 17:20:41 UTC",
+  "observed_completed_at_utc": "2026-10-11 17:21:52 UTC",
+  "job_log_started_at_utc": "2026-10-11T17:17:52.8185020Z",
+  "pytest_start_utc": "2026-10-11T17:18:40.5410787Z",
+  "pytest_summary_utc": "2026-10-11T17:21:10.4014667Z",
+  "job_log_cleanup_completed_at_utc": "2026-10-11T17:21:11.1761344Z",
+  "jobs": [
+    {
+      "id": 114527910957,
+      "name": "tests",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_id": 38159042621,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run pip install -e . pytest",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Run python -m pytest -q",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 5
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6
+        },
+        {
+          "name": "Run npm ci && npm test",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 13
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        }
+      ]
+    },
+    {
+      "id": 114528624951,
+      "name": "staging",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 38159042621,
+      "logs_url": null,
+      "steps": null
+    },
+    {
+      "id": 114528625509,
+      "name": "reviewer",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 38159042621,
+      "logs_url": null,
+      "steps": null
+    }
+  ],
+  "pytest": {
+    "status": "failed",
+    "passed": 2665,
+    "skipped": 1,
+    "warnings": 1,
+    "errors": 41,
+    "failed_assertions": 0,
+    "duration_seconds": 148.89,
+    "summary": "2026-10-11T17:21:10.4014667Z 2665 passed, 1 skipped, 1 warning, 41 errors in 148.89s (0:02:28)"
+  },
+  "npm": {
+    "status": "skipped",
+    "passed": null,
+    "failed": null,
+    "reason": "Previous python -m pytest -q step failed."
+  },
+  "acceptance": {
+    "native_tests": "FAIL",
+    "staging": "SKIPPED",
+    "reviewer": "SKIPPED"
+  },
+  "classification": {
+    "verdict": "INTRODUCED_CI_TEST_HISTORY_DEPENDENCY",
+    "basis": [
+      "All 41 errors are setup errors in newly added tests/test_pulso_additional_editorial_review_qa.py; no assertion failures reported in this run.",
+      "Actions logs explicitly fetch only the PR merge commit with --depth=1.",
+      "real_originals fixture invokes git show of immutable producer 0713ca9a327b4c09932345aff1353c5d87662332; the native job cannot read that historical producer path.",
+      "git cat-file -e staging bc723e08:tests/test_pulso_additional_editorial_review_qa.py exits128: test file absent on actual staging base.",
+      "git diff --name-status staging bc723e08..source 03bf998a shows only A tests/test_pulso_additional_editorial_review_qa.py for that test and .github/workflows/qa.yml; QA workflow unchanged.",
+      "Test introduced by 61d2890a4ec4d86e5c51923a730ce1a247b4e99b; expanded by f62e359e36659df35a9e0d8af93af0997eceaeff.",
+      "Producer queue blob exists in full local repository: git rev-parse 0713ca9a...:data/state/pending_queue.json = 5ae20f9150e029e92f501cbc24c2b85215eb029f."
+    ],
+    "inherited_context": "Default shallow QA workflow is inherited, but this test dependency is new. No inherited failing test demonstrated.",
+    "limits": "No baseline full test rerun and no behavioral product PASS inferred from skipped npm/staging/reviewer.",
+    "possible_repairs": "Make the new tests hermetic using exact producer byte fixtures plus immutable SHA checks, or explicitly fetch sufficient immutable producer evidence in read-only QA before test execution. Preserve genuine producer/hash verification."
+  },
+  "raw_checkout_snippets": [
+    "2026-10-11T17:17:53.9567167Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e5bc084bd9015ba9cd2e70c617c7b1aae08db7b9:refs/remotes/pull/10/merge",
+    "2026-10-11T17:18:27.4168867Z HEAD is now at e5bc084 Merge 03bf998a4bb5840c84da6473666e932fbc5cedd9 into bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+    "2026-10-11T17:18:27.4343533Z e5bc084bd9015ba9cd2e70c617c7b1aae08db7b9"
+  ],
+  "raw_failure_snippets": [
+    "2026-10-11T17:21:10.1594121Z     def real_originals(tmp_path):",
+    "2026-10-11T17:21:10.1597815Z         for audit_path, (_, reader_path, _) in qa.FOLLOWUP_REVIEW_PINS.items():",
+    "2026-10-11T17:21:10.1603813Z >       queue = {key: item for key, item in json.loads(producer(\"data/state/pending_queue.json\")).items()",
+    "2026-10-11T17:21:10.1606214Z tests/test_pulso_additional_editorial_review_qa.py:48: ",
+    "2026-10-11T17:21:10.1607545Z tests/test_pulso_additional_editorial_review_qa.py:31: in producer",
+    "2026-10-11T17:21:10.1608430Z     return subprocess.check_output([\"git\", \"show\", qa.FOCUS_PRODUCER + \":\" + path], cwd=ROOT)",
+    "2026-10-11T17:21:10.1679655Z E               subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.1683352Z fatal: path 'data/state/pending_queue.json' exists on disk, but not in '0713ca9a327b4c09932345aff1353c5d87662332'",
+    "2026-10-11T17:21:10.1686860Z     def real_originals(tmp_path):"
+  ],
+  "raw_test_summary": [
+    "2026-10-11T17:21:10.2688612Z =========================== short test summary info ============================",
+    "2026-10-11T17:21:10.2689969Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_all_five_paid_originals_and_exact_plan_predecessor_chain - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2691474Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[queue_provenance] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2692532Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[history_provenance] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2693553Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[model] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2694535Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[body] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2695510Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[score] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2696471Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[date] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2697438Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[media] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2698435Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[attempt_reset] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2699611Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[feed_lost] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2700602Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[feed_copy] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2701921Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[predecessor] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2703121Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[source_flag] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2704134Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_current_claims_cannot_replace_paid_original_or_exact_effective_state[scalar_proof] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2705121Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_registered_future_pair_requires_same_genuine_paid_producer_without_code_changes - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2706175Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[no_registration] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2707213Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[wrong_registration] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2708252Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[missing_producer] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2709279Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[mutable_head] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2710339Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[producer_hash] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2711704Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[duplicate_reader] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2712907Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[fabricated_signal] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2713964Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[fabricated_assessment] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2714978Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[reader_copy] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2716121Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[empty_quotes] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2717146Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[raised_score] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2718204Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[extra_correction_field] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2719224Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[wrong_body] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2720253Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[wrong_response] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2721628Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_even_rehashed_dual_audits_cannot_self_authorize_or_fabricate_paid_publication[unacknowledged_record] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.2722655Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_real_paid_retry_cannot_be_turned_into_publication_by_synchronized_flags_and_dual_audit - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.3999663Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_same_audit_survivor_uses_original_paid_hash_and_reconstructs_final_acceptance_without_circular_hash - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.4002251Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_group_target_must_remain_unique_actual_paid_and_eligible_even_with_declared_current_hashes[target_retry] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.4004063Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_group_target_must_remain_unique_actual_paid_and_eligible_even_with_declared_current_hashes[pending_assessment] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.4005741Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_group_target_must_remain_unique_actual_paid_and_eligible_even_with_declared_current_hashes[withdrawn] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.4007462Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_group_target_must_remain_unique_actual_paid_and_eligible_even_with_declared_current_hashes[wrong_score] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.4008815Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_group_target_must_remain_unique_actual_paid_and_eligible_even_with_declared_current_hashes[target_model] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.4010213Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_group_target_must_remain_unique_actual_paid_and_eligible_even_with_declared_current_hashes[wrong_original_hash] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.4011723Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_group_target_must_remain_unique_actual_paid_and_eligible_even_with_declared_current_hashes[wrong_day] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.4013106Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_group_target_must_remain_unique_actual_paid_and_eligible_even_with_declared_current_hashes[duplicate_history] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.4014454Z ERROR tests/test_pulso_additional_editorial_review_qa.py::test_group_target_must_remain_unique_actual_paid_and_eligible_even_with_declared_current_hashes[missing_feed] - subprocess.CalledProcessError: Command '['git', 'show', '0713ca9a327b4c09932345aff1353c5d87662332:data/state/pending_queue.json']' returned non-zero exit status 128.",
+    "2026-10-11T17:21:10.4014667Z 2665 passed, 1 skipped, 1 warning, 41 errors in 148.89s (0:02:28)",
+    "2026-10-11T17:21:10.9095252Z ##[error]Process completed with exit code 1."
+  ],
+  "initial_logs_unavailability": {
+    "status": 404,
+    "classification": "Normal while job in progress",
+    "observed_utc": "2026-10-11T17:20:59.5248314Z"
+  },
+  "local_evidence_checks": [
+    {
+      "index": 0,
+      "exit_code": 128,
+      "output": "fatal: path 'tests/test_pulso_additional_editorial_review_qa.py' exists on disk, but not in 'bc723e08200ada1cfb0146c6ce6da0d6f1ad11af'\n"
+    },
+    {
+      "index": 1,
+      "exit_code": 0,
+      "output": "name: Alicanto critical QA\non:\n  pull_request:\n    branches: [main, staging]\n  workflow_call:\npermissions:\n  contents: read\njobs:\n  tests:\n    runs-on: ubuntu-latest\n    timeout-minutes: 15\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: '3.11'\n      - run: pip install -e . pytest\n      - run: python -m pytest -q\n      - uses: actions/setup-node@v4\n        with:\n          node-version: '22'\n          cache: npm\n      - run: npm ci && npm test\n  staging:\n    needs: tests\n    environment: staging\n    runs-on: ubuntu-latest\n    timeout-minutes: 15\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: '3.11'\n      - run: pip install -e .\n      - name: Load durable iteration ledger\n        run: |\n          mkdir -p data/autopilot\n          if git ls-remote --exit-code --heads origin autopilot-state >/dev/null; then\n            git fetch origin autopilot-state\n            if git cat-file -e FETCH_HEAD:data/autopilot/ledger.json 2>/dev/null; then\n              git show FETCH_HEAD:data/autopilot/ledger.json > data/autopilot/ledger.json\n            fi\n          fi\n      - name: Build priority statistical deep analysis\n        run: python scripts/build_statistics_deep_analysis.py\n      - name: Build fresh material epidemiology signal\n        run: python scripts/build_epidemiology_snapshot.py\n      - name: Recurate current history without external lookups\n        run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline\n      - name: Validate and export the canonical Global Intelligence sample\n        run: python scripts/export_global_intelligence.py\n      - run: python scripts/product_report.py\n      - uses: actions/setup-node@v4\n        with:\n          node-version: '22'\n          cache: npm\n      - run: npm ci && npx playwright install --with-deps chromium\n      - run: npm run test:browser\n      - uses: actions/upload-artifact@v4\n        if: always()\n        with:\n          name: staging-evidence-${{ github.sha }}\n          path: |\n            artifacts/\n            test-results/\n            web/\n  reviewer:\n    needs: staging\n    runs-on: ubuntu-latest\n    timeout-minutes: 10\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: '3.11'\n      - run: pip install -e .\n      - uses: actions/download-artifact@v4\n        with:\n          name: staging-evidence-${{ github.sha }}\n          path: reviewed\n      - run: python scripts/review_candidate.py --web reviewed/web --sha \"$GITHUB_SHA\"\n      - uses: actions/upload-artifact@v4\n        if: always()\n        with:\n          name: reviewer-${{ github.sha }}\n          path: artifacts/review.json\n"
+    },
+    {
+      "index": 2,
+      "exit_code": 0,
+      "output": "A\ttests/test_pulso_additional_editorial_review_qa.py\n"
+    },
+    {
+      "index": 3,
+      "exit_code": 0,
+      "output": "5ae20f9150e029e92f501cbc24c2b85215eb029f\n"
+    }
+  ]
+}
+
