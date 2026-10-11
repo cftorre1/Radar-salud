@@ -62,7 +62,7 @@ class PendingQueue:
         if source == "pulso_latercera":
             from .pulso_source import (article_url, complete_article_body,
                                        verified_publication_date_conflict, verified_sponsored_content,
-                                       verified_video_without_text)
+                                       verified_video_without_text, verified_liveblog_temporal_evidence)
             pulso_urls = {article_url(item["raw"]["url"]): key for key,item in self.items.items()
                           if item["source"] == source and article_url(item["raw"]["url"])}
         for raw in items:
@@ -81,12 +81,15 @@ class PendingQueue:
                                         and metadata.get("primary_identity_verified") is True
                                         and metadata.get("publication_date_verified") is True
                                         and raw.event_date == metadata.get("publication_date")
-                                        and complete_article_body(metadata))
+                                        and complete_article_body(metadata)
+                                        and (metadata.get("publisher_document_type") != "liveblog"
+                                             or verified_liveblog_temporal_evidence(metadata)))
                     if previous["status"] in ("pending", "retry", "processing") and (factual_verified or publisher_exception):
                         old = previous["raw"]
                         old_meta = old.get("metadata", {})
                         publisher_holds = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
-                                           "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy"}
+                                           "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy",
+                                           "publisher_liveblog_entry_dates_unverified"}
                         resolved_publisher_hold = (factual_verified and not metadata.get("editorial_hold")
                                                    and old_meta.get("editorial_hold") in publisher_holds)
                         proof_fields = ("article_verified", "primary_identity_verified", "publication_date_verified",
@@ -96,7 +99,8 @@ class PendingQueue:
                                         "source_content_unavailable_reason", "video_identity_verified", "video_evidence",
                                         "publication_date_source", "publication_timestamp", "publication_evidence",
                                         "publisher_date_convention", "visible_publication_date", "possible_publication_days",
-                                        "html_sha256", "publisher_lastmod")
+                                        "html_sha256", "publisher_lastmod", "publisher_document_type",
+                                        "liveblog_temporal_evidence", "liveblog_temporal_evidence_verified")
                         changed = (old.get("event_date") != raw.event_date
                                    or old.get("title") != raw.title or old_meta.get("page_text") != metadata.get("page_text")
                                    or resolved_publisher_hold
