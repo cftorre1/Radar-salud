@@ -106,7 +106,15 @@ class PendingQueue:
                                 verified_publisher_exception_reason=metadata.get("publisher_exception_reason"),
                                 lane_preserved=previous["lane"])]
                             previous["raw"] = asdict(raw)
+                            publisher_holds = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
+                                               "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy"}
                             for field in ("editorial_hold", "event_equivalence_review"):
+                                # A newly proven factual primary article can resolve a
+                                # publisher limitation. Incremental/duplicate reviews
+                                # are independent editorial decisions and remain.
+                                if (field == "editorial_hold" and factual_verified
+                                        and old_meta.get(field) in publisher_holds):
+                                    continue
                                 if field in old_meta and field not in previous["raw"]["metadata"]:
                                     previous["raw"]["metadata"][field] = old_meta[field]
                             previous["raw"]["metadata"]["evidence_revisions"] = revisions
