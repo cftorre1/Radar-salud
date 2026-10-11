@@ -1303,8 +1303,8 @@
     "work4_p0_implementation_2026_10_11": {
       "kind": "native_source_qualification",
       "status": "OPERATIVE_DEGRADED",
-      "sha": "a1a3a9caf8815d24f696376e242ffb478d9d6ce6",
-      "integration_base_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "sha": "82c50e521b4d33a31c6513ab7e502a6a4488de37",
+      "integration_base_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c",
       "date": "2026-10-11",
       "paths": [
         "docs/SOURCE_EXPANSION_IMPLEMENTATION_2026_10_11.md",
@@ -1317,19 +1317,22 @@
       "runtime_runs": [
         38144418936,
         38145221551,
-        38146456406
+        38146456406,
+        38148318253
       ],
       "checks": [
-        "31 directed tests PASS",
-        "Native adapters/stock replay/independent coverage Reviewer PASS on a1a3a9c",
-        "980 Python PASS/1 SKIP; 42 Node PASS",
-        "56 desktop/mobile browser tests PASS; global Reviewer findings=[] on a1a3a9c"
+        "32 directed tests PASS",
+        "Native adapters/stock replay/independent coverage Reviewer PASS on 82c50e5",
+        "1039 Python PASS/1 SKIP; 42 Node PASS",
+        "60 desktop/mobile browser tests PASS; global Reviewer findings=[] on PR merge 0de65d2",
+        "Parser failures replace canonical health and retain prior validated stock without masking the failed poll"
       ],
       "result": "real_initial_inventory_qualified_recurring_activation_pending",
       "scope": "Three executable P0 data packages and retained editorial candidates; no full ecosystem coverage, recurrence, activation, deploy or release claim",
       "validated_requirements": [],
       "validated_blocks": [],
-      "qa_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38146456378"
+      "qa_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38148318249",
+      "qa_merge_sha": "0de65d29b200f79b567387bdb10962f742286a0f"
     }
   },
   "blocks": [
@@ -2355,6 +2358,11 @@
       "evidence": [
         "work4_p0_implementation_2026_10_11"
       ]
+    },
+    {
+      "date": "2026-10-11",
+      "source": "Work 4 P0 / PR #16",
+      "change": "Final source-code qualification on 82c50e5: native adapters/replay/independent Reviewer and global QA PASS; preserve three OPERATIVE_DEGRADED outcomes and exact unresolved scope/cadence/publication gaps"
     }
   ],
   "scope_deviations": [],

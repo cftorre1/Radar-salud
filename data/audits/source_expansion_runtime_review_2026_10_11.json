@@ -24,8 +24,8 @@
     "baseline_qa": "Separate mandatory global workflow; qualification does not override its gates",
     "recurrence_validated": false
   },
-  "final_code_native_run": 38146456406,
-  "final_code_head_sha": "a1a3a9caf8815d24f696376e242ffb478d9d6ce6",
+  "final_code_native_run": 38148318253,
+  "final_code_head_sha": "82c50e521b4d33a31c6513ab7e502a6a4488de37",
   "final_code_review": {
     "status": "PASS",
     "checks": 302,
@@ -39,13 +39,52 @@
     "recurrence_validated": false
   },
   "global_qa": {
-    "run_id": 38146456378,
-    "head_sha": "a1a3a9caf8815d24f696376e242ffb478d9d6ce6",
-    "python_passed": 980,
+    "run_id": 38148318249,
+    "head_sha": "82c50e521b4d33a31c6513ab7e502a6a4488de37",
+    "merge_sha": "0de65d29b200f79b567387bdb10962f742286a0f",
+    "python_passed": 1039,
     "python_skipped": 1,
     "node_passed": 42,
-    "browser_passed": 56,
+    "browser_passed": 60,
     "reviewer_findings": [],
     "introduced_failures": 0
-  }
+  },
+  "previous_code_qualification": {
+    "final_code_native_run": 38146456406,
+    "final_code_head_sha": "a1a3a9caf8815d24f696376e242ffb478d9d6ce6",
+    "final_code_review": {
+      "status": "PASS",
+      "checks": 302,
+      "failures": [],
+      "cmf_official_disclosures": 9,
+      "cmf_captured": 9,
+      "scope": "Independent parser/checks for captured declared surfaces; no exhaustive universe or cadence certification",
+      "replay_idempotent": true,
+      "replay_differences": [],
+      "baseline_qa": "Separate mandatory global workflow; qualification does not override its gates",
+      "recurrence_validated": false
+    },
+    "global_qa": {
+      "run_id": 38146456378,
+      "head_sha": "a1a3a9caf8815d24f696376e242ffb478d9d6ce6",
+      "python_passed": 980,
+      "python_skipped": 1,
+      "node_passed": 42,
+      "browser_passed": 56,
+      "reviewer_findings": [],
+      "introduced_failures": 0
+    }
+  },
+  "directed_tests_passed": 32,
+  "final_runtime_artifact_sha256": "2d05f9d259c8cdf1179ec0f5544f814760bb9da9f7572fe23e2d4e9a68a4f358",
+  "final_indexes_artifact_sha256": "f9d37ae521b19e2bb966e60f693284a5d11d23b5d9df42fea3361c6d45241285",
+  "final_native_artifacts": [
+    "data/audits/source_expansion/native_final_runtime.zip",
+    "data/audits/source_expansion/native_final_indexes.zip"
+  ],
+  "health_failure_verification": [
+    "Canonical health replaced on parser failure; unmeasured discovery/recency remain null",
+    "DIPRES parser error is counted and current failure retained separately from last validated stock"
+  ],
+  "recorded_at": "2026-10-11T11:51:45.993389-03:00"
 }

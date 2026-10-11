@@ -191,7 +191,7 @@ El [preview #115](https://github.com/cftorre1/Radar-salud/actions/runs/360453386
 
 ### Work 4 P0 · Isapres, CMF y DIPRES · 11 octubre 2026
 
-**Implementado · OPERATIVE_DEGRADED** para los tres paquetes. PR #16 aislado desde staging, sincronizado con las integraciones posteriores. Hay universo canónico de 10 Isapres y 320 observaciones; 6 identidades CMF (4 emisores vigentes), 9 hechos esenciales/5 eventos materiales, 24 EEFF y 42 celdas financieras; 116 documentos DIPRES/408 observaciones y 5 candidatos de variación material. Los candidatos quedan diferidos con razón, sin cuota de publicación ni BACKFILL convertido a LIVE.
+**Implementado · OPERATIVE_DEGRADED** para los tres paquetes. PR #16 aislado desde staging, sincronizado con las integraciones posteriores. Hay universo canónico de 10 Isapres y 320 observaciones; 6 identidades CMF (4 emisores vigentes), 9 hechos esenciales/5 eventos materiales, 24 documentos contables (8 EEFF, 8 análisis razonados y 8 hechos relevantes) y 42 celdas financieras; 116 documentos DIPRES/408 observaciones y 5 candidatos de variación material. Los candidatos quedan diferidos con razón, sin cuota de publicación ni BACKFILL convertido a LIVE.
 
 Los runtimes [#38144418936](https://github.com/cftorre1/Radar-salud/actions/runs/38144418936) y [#38145221551](https://github.com/cftorre1/Radar-salud/actions/runs/38145221551) ejecutaron adapters, replay idempotente y Reviewer independiente automatizado. [QA global #38144418999](https://github.com/cftorre1/Radar-salud/actions/runs/38144418999) pasó tests, desktop/mobile y Reviewer después de sincronizar los fixes del baseline, sin rebajar gates. La evidencia por SHA final se registra en el catálogo `work4_p0_implementation_2026_10_11`.
 
