@@ -3,6 +3,7 @@ import copy
 import gzip
 import hashlib
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -12,6 +13,8 @@ from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue, fingerprint
 from radar_salud.pulso_source import (_verified_detail, verified_publication_date_conflict,
                                     verified_sponsored_content, verified_video_without_text)
+from pulso_fixture_witnesses import (COLD_RECORDS, assert_cold_witnesses,
+                                     expected_original_hold_urls)
 
 FIXTURES = Path(__file__).parent/'fixtures/pulso_editorial_exception_real'
 MANIFEST = json.loads((FIXTURES/'manifest.json').read_text())
@@ -31,6 +34,10 @@ def fresh_original(row):
 
 
 def test_all_original_publisher_holds_replace_stale_pending_proof_without_resetting_queue(tmp_path):
+    assert_cold_witnesses(MANIFEST['requests'])
+    expected = expected_original_hold_urls(MANIFEST['requests'])
+    cold_holds = expected_original_hold_urls(list(COLD_RECORDS.values()))
+    assert len(cold_holds) == 27 and cold_holds.issubset(expected)
     migrated = []
     for row in MANIFEST['requests']:
         fresh = fresh_original(row)
@@ -69,7 +76,24 @@ def test_all_original_publisher_holds_replace_stale_pending_proof_without_resett
             queue.discover('pulso_latercera', [fresh], now=NOW)
             assert queue.items[key] == terminal
         migrated.append(row['url'])
-    assert len(migrated) == 27
+    assert set(migrated) == expected
+
+
+def test_a_real_additional_original_expands_hold_migration_without_a_fixed_inventory_count(tmp_path, monkeypatch):
+    # Inventory expansion is synthetic; the extra original is an unchanged,
+    # hash-verified publisher response retained by the separate thin collector.
+    thin = FIXTURES.parent / 'pulso_thin_primary_real'
+    records = json.loads((thin / 'manifest.json').read_text())['requests']
+    existing = {row['url'] for row in MANIFEST['requests']}
+    extra = copy.deepcopy(next(row for row in records
+                               if '/videos/' in row['url'] and row['url'] not in existing))
+    extra['gzip_file'] = str(Path('../pulso_thin_primary_real') / extra['gzip_file'])
+    extra['retention_categories'] = ['url_bound_primary_video_object']
+    expanded = dict(MANIFEST, requests=MANIFEST['requests'] + [extra])
+    old_expected = expected_original_hold_urls(MANIFEST['requests'])
+    assert expected_original_hold_urls(expanded['requests']) == old_expected | {extra['url']}
+    monkeypatch.setattr(sys.modules[__name__], 'MANIFEST', expanded)
+    test_all_original_publisher_holds_replace_stale_pending_proof_without_resetting_queue(tmp_path)
 
 
 @pytest.mark.parametrize('bad_proof', ['primary_identity_verified', 'publication_date_verified', 'canonical_url'])

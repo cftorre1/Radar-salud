@@ -11,6 +11,7 @@ from radar_salud import beta_sources, llm_analysis
 from radar_salud.models import RawItem
 from radar_salud.processing import DeferredProcessing
 from radar_salud.pulso_source import _verified_detail, verified_publication_date_conflict
+from pulso_fixture_witnesses import cold_urls
 
 
 URL = 'https://www.latercera.com/nacional/noticia/unit-primary-conflicting-dates/'
@@ -61,8 +62,8 @@ def test_bound_synthetic_conflict_is_pending_before_fetch_materiality_or_ai(monk
 
 
 @pytest.mark.parametrize('entry', CONFLICTS, ids=lambda row: row['url'].split('/')[-2])
-def test_all_four_original_conflicts_preserve_body_and_both_days_before_analysis(entry, monkeypatch):
-    assert len(CONFLICTS) == 4
+def test_all_original_conflicts_preserve_body_and_both_days_before_analysis(entry, monkeypatch):
+    assert cold_urls('observed_primary_publication_date_conflict').issubset(row['url'] for row in CONFLICTS)
     assert entry['original_bytes_verified'] is True
     compressed = (REAL / entry['gzip_file']).read_bytes()
     assert hashlib.sha256(compressed).hexdigest() == entry['gzip_sha256']

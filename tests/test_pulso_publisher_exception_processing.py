@@ -13,6 +13,7 @@ from radar_salud.processing import DeferredProcessing
 from radar_salud.pulso_source import (_verified_detail, article_body_evidence,
                                     publisher_taxonomy_requires_revalidation,
                                     verified_sponsored_content)
+from pulso_fixture_witnesses import cold_urls
 
 
 REAL = Path(__file__).parent / 'fixtures/pulso_editorial_exception_real'
@@ -44,8 +45,8 @@ def raw_from_source(entry):
 
 
 @pytest.mark.parametrize('entry', SPONSORS, ids=lambda row: row['url'].split('/')[-2])
-def test_all_four_original_commercial_pages_hold_without_ai_and_date_conflict_has_priority(entry, monkeypatch):
-    assert len(SPONSORS) == 4
+def test_all_original_commercial_pages_hold_without_ai_and_date_conflict_has_priority(entry, monkeypatch):
+    assert cold_urls('explicit_commercial_publisher_section').issubset(row['url'] for row in SPONSORS)
     raw = raw_from_source(entry)
     before = deepcopy(raw.metadata)
     conflict = 'observed_primary_publication_date_conflict' in entry['retention_categories']
@@ -68,8 +69,9 @@ def test_all_four_original_commercial_pages_hold_without_ai_and_date_conflict_ha
 
 
 @pytest.mark.parametrize('entry', SPONSORS + OPINIONS, ids=lambda row: row['url'].split('/')[-2])
-def test_all_twelve_legacy_nonfactual_records_revalidate_original_and_preserve_exact_disposition(entry, monkeypatch):
-    assert len(SPONSORS) == 4 and len(OPINIONS) == 8
+def test_all_legacy_nonfactual_records_revalidate_original_and_preserve_exact_disposition(entry, monkeypatch):
+    assert cold_urls('explicit_commercial_publisher_section').issubset(row['url'] for row in SPONSORS)
+    assert cold_urls('explicit_opinion_or_column_keyword_under_article_path').issubset(row['url'] for row in OPINIONS)
     metadata = dict(article_verified=True, market_role='media', canonical_url=entry['url'],
                     publication_date=entry['visible_byline_day'], section=entry['section'],
                     keywords=entry['keywords'], source_quality_gate='passed',

@@ -11,6 +11,7 @@ from radar_salud.pulso_source import (ConflictingPublicationArticle, TextUnavail
                                     verified_publication_date_conflict, verified_video_without_text,
                                     ExcludedArticle, SponsoredArticle, verified_sponsored_content,
                                     publisher_taxonomy_requires_revalidation)
+from pulso_fixture_witnesses import COLD_RECORDS, assert_cold_witnesses, cold_urls
 
 REAL = Path(__file__).parent / 'fixtures/pulso_editorial_exception_real'
 MANIFEST = json.loads((REAL / 'manifest.json').read_text())
@@ -33,10 +34,16 @@ def original(row):
     return payload.decode(row['charset'])
 
 
-def test_all_four_actual_date_conflicts_and_all_forty_four_video_objects_are_retained():
-    assert len(CONFLICTS) == 4 and len(VIDEO_OBJECTS) == 44
-    assert len(OPINIONS) == 8 and len(COMMERCIAL) == 4
-    assert sum('/videos/' in row['url'] for row in VIDEO_OBJECTS) == 21
+def test_all_cold_original_witnesses_remain_in_the_expanding_retained_inventory():
+    assert_cold_witnesses(MANIFEST['requests'])
+    assert len(COLD_RECORDS) == 58
+    for category, expected_count in (
+            ('observed_primary_publication_date_conflict', 4),
+            ('url_bound_primary_video_object', 44),
+            ('explicit_opinion_or_column_keyword_under_article_path', 8),
+            ('explicit_commercial_publisher_section', 4)):
+        assert len(cold_urls(category)) == expected_count
+    assert sum('/videos/' in url for url in cold_urls('url_bound_primary_video_object')) == 21
 
 
 @pytest.mark.parametrize('row', CONFLICTS, ids=lambda row: row['url'].split('/')[-2])
@@ -70,13 +77,14 @@ def test_every_original_video_object_distinguishes_embedded_video_from_missing_t
     if row['visible_byline_day']:
         assert metadata['publication_date'] == row['visible_byline_day']
     else:
-        # The retained live blog has no visible time byline or bound Article
-        # node; canonical-page publication metadata dates its primary HTML.
-        assert row['sha256'] == '561db69a4bbe9aed501ebd64167d98251fa396ec54e303b7ec301687b779a96c'
-        assert metadata['publication_date'] == '2026-07-21'
+        # Retained live blogs have no visible time byline or bound Article
+        # node; their own canonical-page publication metadata dates the HTML.
+        assert row['url_bound_article_nodes'] == 0
+        assert metadata['publication_date'] == row['publication_evidence'][0]['timestamp'][:10]
         assert metadata['publication_date_source'] == 'article_published_time'
-    substantive_video = '/aluvion-' in row['url']
-    if '/videos/' in row['url'] and not substantive_video:
+    missing_transcript = (row['primary_body_chars'] < 160
+                          or row['primary_body_source'] != 'url_bound_json_ld_articleBody')
+    if '/videos/' in row['url'] and missing_transcript:
         assert result['deferred_reason'] == 'publisher_video_text_unavailable'
         assert verified_video_without_text(metadata)
         assert not metadata['article_verified'] and not metadata['article_body_complete']
@@ -87,12 +95,14 @@ def test_every_original_video_object_distinguishes_embedded_video_from_missing_t
             assert verified_sponsored_content(metadata)
         else:
             assert not result.get('deferred_reason')
-        assert metadata['article_verified'] and len(metadata['page_text']) >= 160
+        assert metadata['article_verified'] and metadata['article_body_characters'] >= 160
+        assert metadata['article_body_sha256'] == row['primary_body_sha256']
+        if result['relevant']:
+            assert len(metadata['page_text']) >= 160
 
 
 def test_actual_alzheimer_original_does_not_upgrade_eighty_four_characters_with_metadata_wrapper():
-    row = next(row for row in VIDEO_OBJECTS if row['sha256'] ==
-               '6c310d175c41f476e2d54622122d63e370f5c916c4b8408587dccb2952082967')
+    row = next(row for row in VIDEO_OBJECTS if '/radar-lt-descubren-doble-avance-' in row['url'])
     assert row['primary_body_chars'] == 84
     with pytest.raises(TextUnavailableArticle) as raised:
         extract_article(original(row), row['url'])
@@ -206,7 +216,7 @@ def test_real_taxonomy_inventory_excludes_opinions_and_holds_commercial_pages_wi
     audit = []
     candidates, coverage = discover_public_feeds(loader, audit, tmp_path/'cache.json',
                                                 today=date(2026, 10, 11), feeds=[('tag', 'salud')])
-    assert len(opened) == len(set(opened)) == 12
+    assert len(opened) == len(set(opened)) == len(by_url)
     assert len(candidates) == coverage['new_inventory_urls'] == 4 and coverage['new_health_urls'] == 0
     assert coverage['metadata_only_sponsored_candidates'] == 3
     assert coverage['metadata_only_date_conflict_candidates'] == 1
@@ -232,7 +242,7 @@ def test_real_taxonomy_inventory_excludes_opinions_and_holds_commercial_pages_wi
 
 LISTING_CASES = [
     next(row for row in VIDEO_OBJECTS if '/horizontes/' in row['url']),
-    next(row for row in VIDEO_OBJECTS if row['sha256'] == '6c310d175c41f476e2d54622122d63e370f5c916c4b8408587dccb2952082967'),
+    next(row for row in VIDEO_OBJECTS if '/radar-lt-descubren-doble-avance-' in row['url']),
     next(row for row in COMMERCIAL if '/publirreportajes/' in row['url']),
     next(row for row in CONFLICTS if '/el-trabajo-tambien-' in row['url']),
     next(row for row in OPINIONS if '/lo-dijimos/' in row['url']),
