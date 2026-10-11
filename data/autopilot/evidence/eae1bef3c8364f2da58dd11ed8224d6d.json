@@ -1,0 +1,563 @@
+{
+  "at": "2026-10-11T14:15:43.307508+00:00",
+  "kind": "worker_result",
+  "operation_id": "eae1bef3c8364f2da58dd11ed8224d6d",
+  "report": {
+    "acceptance_proof": [],
+    "after_hash": "4879a3a23688200f6059268c55cdde6e41d00f56006a75945597d9988c9857ce",
+    "audit_fingerprint": "882588b00a87619388d65633d4625b6591da98b039a8bf2934e775927ce01d6f",
+    "before_hash": "4879a3a23688200f6059268c55cdde6e41d00f56006a75945597d9988c9857ce",
+    "blocker": {
+      "evidence": [
+        {
+          "diagnostics_are_acceptance": false,
+          "family": "fiscalization",
+          "task_id": "source_repair_fiscalization_lane_2026_10_11"
+        }
+      ],
+      "fingerprint": "6e2508067a2b63cc8208c8b5b90f331dbbd7215e754fae71db422565a04652e3",
+      "human_required": false,
+      "kind": "acceptance",
+      "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+      "source_urls": []
+    },
+    "blockers": [
+      {
+        "evidence": [
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "fiscalization",
+            "task_id": "source_repair_fiscalization_lane_2026_10_11"
+          }
+        ],
+        "fingerprint": "6e2508067a2b63cc8208c8b5b90f331dbbd7215e754fae71db422565a04652e3",
+        "human_required": false,
+        "kind": "acceptance",
+        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+        "source_urls": []
+      }
+    ],
+    "changed_paths": [],
+    "evidence": [
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+          "tests/test_superintendencia_pipeline.py",
+          "tests/test_suseso_pipeline.py",
+          "tests/test_source_health_facets.py"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+        "log_sha256": "038e25cf049e1bc86dc4aafd373555d4b9530a592a475af805d676dacbc067ea",
+        "name": "targeted_deterministic_tests",
+        "pytest": {
+          "cases": [
+            {
+              "name": "tests.test_superintendencia_pipeline::test_detail_extractor_gets_core_evidence",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_superintendencia_pipeline::test_official_validator_is_high_confidence",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_superintendencia_pipeline::test_full_pipeline_builds_signal",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_suseso_pipeline::test_suseso_scout_ignores_restricted_systems",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_suseso_pipeline::test_suseso_extractor_gets_date_and_attachment",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_suseso_pipeline::test_suseso_pipeline_builds_regulatory_signal",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_source_health_distinguishes_poll_freshness_and_editorial_result",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_source_health_marks_zero_discovery_unknown_freshness_as_coverage_gap",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_df_all_undated_is_partial_not_healthy_or_fresh",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_df_cumulative_rejections_do_not_claim_rejection_in_an_empty_poll",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_fiscalization_counts_do_not_certify_coverage_and_history_repairs_last_signal",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_fiscalization_windows_use_office_identity_and_never_suspension_dates",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_current_rejections_and_cumulative_stock_have_distinct_outcomes",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_fiscalization_partial_receipt_and_observation_are_separate_from_publication",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_fiscalization_undated_documents_cannot_be_real_absence",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_parsed_dated_historical_tables_do_not_mark_fiscalization_operational",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_history_cannot_mask_current_unverified_publications",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_partial_document_capture_is_degraded_not_healthy",
+              "reason": "",
+              "status": "PASS"
+            }
+          ],
+          "collected": 18,
+          "failed": 0,
+          "passed": 18,
+          "proof": true,
+          "skipped": 0
+        },
+        "returncode": 0,
+        "status": "PASS"
+      },
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+          "--diagnose-source",
+          "superintendencia_fiscalizacion"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-superintendencia_fiscalizacion.log",
+        "log_sha256": "d825c8ebad892d16fe1d1eeb9c9222b61b6dbae9233edaeb25ca035e9aa14ab3",
+        "returncode": 0,
+        "source_urls": [
+          "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/informes-de-fiscalizacion-5126/",
+          "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-isapres-6248/",
+          "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-prestadores-6249/",
+          "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/informes-de-fiscalizacion-3218/",
+          "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-entidades-acreditadoras-7059/",
+          "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-agentes-de-ventas-7441/",
+          "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/sanciones-aplicadas-5113/"
+        ],
+        "status": "PASS"
+      },
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+          "--diagnose-source",
+          "suseso_fiscalizacion"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-suseso_fiscalizacion.log",
+        "log_sha256": "aa17de744ac0ddb6368ebacc62f48f3fd20b49ef326f1a1562f2a0006d83f898",
+        "returncode": 0,
+        "source_urls": [],
+        "status": "PASS"
+      }
+    ],
+    "evidence_revision": "7cf36a07e3962cd8603aaf5542e581e629f7d52decfc9e5584cb3a9b22f873d0",
+    "family": "fiscalization",
+    "family_live_validated": true,
+    "gates": [
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+          "tests/test_superintendencia_pipeline.py",
+          "tests/test_suseso_pipeline.py",
+          "tests/test_source_health_facets.py"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+        "log_sha256": "038e25cf049e1bc86dc4aafd373555d4b9530a592a475af805d676dacbc067ea",
+        "name": "targeted_deterministic_tests",
+        "pytest": {
+          "cases": [
+            {
+              "name": "tests.test_superintendencia_pipeline::test_detail_extractor_gets_core_evidence",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_superintendencia_pipeline::test_official_validator_is_high_confidence",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_superintendencia_pipeline::test_full_pipeline_builds_signal",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_suseso_pipeline::test_suseso_scout_ignores_restricted_systems",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_suseso_pipeline::test_suseso_extractor_gets_date_and_attachment",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_suseso_pipeline::test_suseso_pipeline_builds_regulatory_signal",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_source_health_distinguishes_poll_freshness_and_editorial_result",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_source_health_marks_zero_discovery_unknown_freshness_as_coverage_gap",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_df_all_undated_is_partial_not_healthy_or_fresh",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_df_cumulative_rejections_do_not_claim_rejection_in_an_empty_poll",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_fiscalization_counts_do_not_certify_coverage_and_history_repairs_last_signal",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_fiscalization_windows_use_office_identity_and_never_suspension_dates",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_current_rejections_and_cumulative_stock_have_distinct_outcomes",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_fiscalization_partial_receipt_and_observation_are_separate_from_publication",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_fiscalization_undated_documents_cannot_be_real_absence",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_parsed_dated_historical_tables_do_not_mark_fiscalization_operational",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_history_cannot_mask_current_unverified_publications",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_source_health_facets::test_partial_document_capture_is_degraded_not_healthy",
+              "reason": "",
+              "status": "PASS"
+            }
+          ],
+          "collected": 18,
+          "failed": 0,
+          "passed": 18,
+          "proof": true,
+          "skipped": 0
+        },
+        "returncode": 0,
+        "status": "PASS"
+      }
+    ],
+    "generated_at": "2026-10-11T14:15:11.983091+00:00",
+    "ignored_observation_paths": [],
+    "input_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+    "live_validated": true,
+    "material_progress": {
+      "blocker_candidate": true,
+      "mutation_candidate": false,
+      "requires_durable_comparison": true,
+      "verified_closure": false,
+      "workflow_success": false
+    },
+    "raw_after_hash": "3a6915f665196798c4f22ca5a9cb970757d03917e988b8e907afd3837ff13a4b",
+    "raw_before_hash": "3a6915f665196798c4f22ca5a9cb970757d03917e988b8e907afd3837ff13a4b",
+    "raw_changed_paths": [],
+    "run_id": "38146254755-1-fiscalization",
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38146254755",
+    "semantic_hash": "13ff6dacf6132a1caaff7c06d292d6338138e5d013b6cd17772778661a7aa14b",
+    "semantic_noop": false,
+    "semantic_unknown_paths": [],
+    "source_results": [
+      {
+        "dated": 3343,
+        "discovered": 3343,
+        "error": null,
+        "inventory_hash": "c4d700796d200f11ce9ce22f4b335cca2cac30bb488f04e96b2111312b41a35d",
+        "newest_event_date": "2026-09-28",
+        "publication_verified": false,
+        "requests": [
+          {
+            "response_bytes": 332978,
+            "response_sha256": "b7116a2cb5c75534b86b701a268f9786e18f5e7c853c2be1ab6b539a9349da00",
+            "status": "PASS",
+            "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/informes-de-fiscalizacion-5126/"
+          },
+          {
+            "response_bytes": 711216,
+            "response_sha256": "1af6526a95fffb700696c356e46070826893c1ada3f507dbb739b8e395ffebff",
+            "status": "PASS",
+            "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-isapres-6248/"
+          },
+          {
+            "response_bytes": 2195296,
+            "response_sha256": "4e2cdd27a8cbaf2ac26b980f2048ceab14bf997cb95d8fda5c0000aa4166a742",
+            "status": "PASS",
+            "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-prestadores-6249/"
+          },
+          {
+            "response_bytes": 416704,
+            "response_sha256": "2b7c2cbb41231df2a4b1c42c8d3fafe778376f5771c185b2ba9ff8ea77bcf721",
+            "status": "PASS",
+            "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/informes-de-fiscalizacion-3218/"
+          },
+          {
+            "response_bytes": 163964,
+            "response_sha256": "bf055a87a990a814301d6c44f25feb52401c84fddb35816426424fbd49f8a753",
+            "status": "PASS",
+            "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-entidades-acreditadoras-7059/"
+          },
+          {
+            "response_bytes": 526515,
+            "response_sha256": "e4358f417691d71cd68fdee33ce384d3ac42353a5fc57de9bdbe3273dafcefb5",
+            "status": "PASS",
+            "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-agentes-de-ventas-7441/"
+          },
+          {
+            "response_bytes": 2643958,
+            "response_sha256": "2929c6a08f87055dc0bca01d6fe5936ab3a823ec167786da9fecc87ded0e5dc2",
+            "status": "PASS",
+            "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/sanciones-aplicadas-5113/"
+          }
+        ],
+        "samples": [
+          {
+            "content_hash": "3986f0b6de7ac891b6fd6d91ee685f8c1669e42ef5d10a1b394becea8f0381b5",
+            "event_date": "2026-09-28",
+            "source_url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n11387-emision-28-09-2026",
+            "title": "Resolución Exenta IF/N°11387- Emisión: 28/09/2026"
+          },
+          {
+            "content_hash": "d5e2e95db411e4a8cfbe32684983a9b0eef35b0c852196a92d3d5df934321c0a",
+            "event_date": "2026-09-28",
+            "source_url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n11386-emision-28-09-2026",
+            "title": "Resolución Exenta IF/N°11386- Emisión: 28/09/2026"
+          },
+          {
+            "content_hash": "4f26b41a3d105fad53ed03306275cc2e83804f57346f6706e50c8fe1442c0444",
+            "event_date": "2026-09-28",
+            "source_url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n11385-emision-28-09-2026",
+            "title": "Resolución Exenta IF/N°11385- Emisión: 28/09/2026"
+          },
+          {
+            "content_hash": "42cf337d96dfef3650be629d3d533b3aa99ec65e5d02308248dc59688f4c90aa",
+            "event_date": "2026-09-24",
+            "source_url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n11179-emision-24-09-2026",
+            "title": "Resolución Exenta IF/N°11179- Emisión: 24/09/2026"
+          },
+          {
+            "content_hash": "2825831c0eaf4c4490ff4b36d6b36305c57a938fb3abcc0e122cf52ff9144dd3",
+            "event_date": "2026-09-23",
+            "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n-7462-emision-23-09-2026",
+            "title": "Resolución Exenta IP/N° 7462 - Emisión: 23/09/2026"
+          },
+          {
+            "content_hash": "3e0f896b796e9e54cfd36977ad0f8ed25949e068cc04a679a31ed267ce0b7995",
+            "event_date": "2026-09-22",
+            "source_url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n11076-emision-22-09-2026",
+            "title": "Resolución Exenta IF/N°11076- Emisión: 22/09/2026"
+          },
+          {
+            "content_hash": "9dae78ce0883f15ae1d23a10d97ff87cf14bbb0171ef92e9512cf042f89a75fe",
+            "event_date": "2026-09-21",
+            "source_url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n11027-emision-21-09-2026",
+            "title": "Resolución Exenta IF/N°11027- Emisión: 21/09/2026"
+          },
+          {
+            "content_hash": "f13c3838164c95d3e4207065858fe71a7cfa7a4c095f434c849d3e8553d7ce80",
+            "event_date": "2026-09-21",
+            "source_url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n11023-emision-21-09-2026",
+            "title": "Resolución Exenta IF/N°11023- Emisión: 21/09/2026"
+          },
+          {
+            "content_hash": "7e472e86c63288be0997aaf53eaf32d22962bec7114818816cc5810fcdf283a8",
+            "event_date": "2026-09-21",
+            "source_url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n11021-emision-21-09-2026",
+            "title": "Resolución Exenta IF/N°11021- Emisión: 21/09/2026"
+          },
+          {
+            "content_hash": "6c36ff261edb56abbda8c03741d7a4827c1ae11f2c9011f8f63803173890cf55",
+            "event_date": "2026-09-21",
+            "source_url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n11020-emision-21-09-2026",
+            "title": "Resolución Exenta IF/N°11020- Emisión: 21/09/2026"
+          },
+          {
+            "content_hash": "ebbb18204a14735e2a9af45845839ee9b44583928c79720dfc4d2a951a0c4a31",
+            "event_date": "2026-09-21",
+            "source_url": "https://www.superdesalud.gob.cl/fiscalizacion/resolucion-exenta-if-n11019-emision-21-09-2026",
+            "title": "Resolución Exenta IF/N°11019- Emisión: 21/09/2026"
+          },
+          {
+            "content_hash": "75eb1200826f518cf5c2cdf1771dfc38f0dcfd9c71357fcdeb516cb22da8b23f",
+            "event_date": "2026-09-08",
+            "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n6836-emision-08-09-2026",
+            "title": "Resolución Exenta IP/N°6836 - Emisión: 08/09/2026"
+          }
+        ],
+        "scope": "discovery_only",
+        "slug": "superintendencia_fiscalizacion",
+        "technical_status": "ok"
+      },
+      {
+        "dated": 824,
+        "discovered": 1273,
+        "error": null,
+        "inventory_hash": "3223e89cb819b57c002e07169fd67c5db286017c0359e602276345be7a2fe7ee",
+        "newest_event_date": "2026-10-09",
+        "publication_verified": false,
+        "requests": [],
+        "samples": [
+          {
+            "content_hash": "d688760a023cc387a827727537277f5fc5cf72743bd8b4b78e5f0a868dc5e3c6",
+            "event_date": "2026-10-09",
+            "source_url": "https://www.suseso.gob.cl/605/w3-article-791541.html",
+            "title": "Desde el postnatal hasta la Asignación Familiar: conoce los beneficios de seguridad social para familias de acogida"
+          },
+          {
+            "content_hash": "b09e892e2418644aca2e7c7cab4e7a1bee8402053649b02926d7cc644ac2566b",
+            "event_date": "2026-10-06",
+            "source_url": "https://www.suseso.gob.cl/605/w3-article-791477.html",
+            "title": "Superintendenta (s) Patricia Soto participa en jornada sobre innovación y futuro de la seguridad laboral"
+          },
+          {
+            "content_hash": "fffe8e78e93ee85f0041a7d41ef663ecad53b3a4b1614731b527dea2ec2dd60b",
+            "event_date": "2026-10-05",
+            "source_url": "https://www.suseso.gob.cl/605/w3-article-791372.html",
+            "title": "Salud mental en educación: Suseso publica estudio sobre procedimientos estandarizados para calificar enfermedades profesionales"
+          },
+          {
+            "content_hash": "a261195191d47169bd98c7af7fb786faf445c545a398b436624b9b6e7bd195e2",
+            "event_date": "2026-10-02",
+            "source_url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+            "title": "Oficio O-02-S-03209-2026 · sanción a emisor de licencias"
+          },
+          {
+            "content_hash": "95f4104028a59c1b6e537349e5746f65e66c58f6c86fbff830c153c9b19786f7",
+            "event_date": "2026-10-02",
+            "source_url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+            "title": "Oficio O-02-S-03210-2026 · sanción a emisor de licencias"
+          },
+          {
+            "content_hash": "7bcd1e8cee1cb32299abf51fd2af03f0911c286ee1202ea6e82b12e26bb23915",
+            "event_date": "2026-10-02",
+            "source_url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+            "title": "Oficio O-02-S-03211-2026 · sanción a emisor de licencias"
+          },
+          {
+            "content_hash": "c5bc2aef764a8dfb210e88216b65fe984e394fabc0884ded4369ace78b200f9a",
+            "event_date": "2026-10-02",
+            "source_url": "https://www.suseso.gob.cl/605/w3-article-791308.html",
+            "title": "Suseso regula la implementación del nuevo Sistema de Subsidio Unificado de Empleo"
+          },
+          {
+            "content_hash": "6ca0264fab4621f1d137029ba066d10ba60e841096ba0f148203ac9a071a7a86",
+            "event_date": "2026-10-01",
+            "source_url": "https://www.suseso.gob.cl/605/w3-article-791202.html",
+            "title": "Licencias médicas, salud mental y riesgos laborales: revisa las capacitaciones gratuitas de la Suseso en octubre"
+          },
+          {
+            "content_hash": "06c49469fd01d98237f32c84c194658cef8c81c138ca51522885eaff02a84ca7",
+            "event_date": "2026-09-30",
+            "source_url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+            "title": "Oficio O-02-S-03164-2026 · sanción a emisor de licencias"
+          },
+          {
+            "content_hash": "754da007978e415ae8a65769790c0e4befde682922ca5815c2406a34a7669442",
+            "event_date": "2026-09-30",
+            "source_url": "https://www.suseso.gob.cl/605/w3-article-791071.html",
+            "title": "Suseso presenta evolución de las licencias médicas ante Mesa de modernización de la salud en Chile"
+          },
+          {
+            "content_hash": "8c5929908ef24e9dfc1b5d3ca0c3088a128c255d7674e76f3052d10a18755eb4",
+            "event_date": "2026-09-29",
+            "source_url": "https://www.suseso.gob.cl/612/w3-article-791293.html",
+            "title": "Dictamen O-02-S-03153-2026"
+          },
+          {
+            "content_hash": "9b8f87c7efd0651fd9150aa1bfb7b9ddb16bf58bfa2758dd4badb60f334bbe8e",
+            "event_date": "2026-09-29",
+            "source_url": "https://www.suseso.gob.cl/605/w3-article-790976.html",
+            "title": "Suseso participa en inauguración de Congreso internacional de seguridad vial Traffic 2026"
+          }
+        ],
+        "scope": "discovery_only",
+        "slug": "suseso_fiscalizacion",
+        "technical_status": "ok"
+      }
+    ],
+    "status": "BLOCKED",
+    "targeted_validated": true,
+    "task_id": "source_repair_fiscalization_lane_2026_10_11",
+    "validated": true,
+    "version": 1,
+    "workflow_success_is_progress": false
+  }
+}
