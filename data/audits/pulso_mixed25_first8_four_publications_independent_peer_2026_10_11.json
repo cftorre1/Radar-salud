@@ -1,0 +1,1111 @@
+{
+  "schema_version": "pulso_mixed25_publisher4_independent_peer_v1",
+  "source_id": "pulso_latercera",
+  "reviewer": "/root/historical_discovery",
+  "recorded_at": "2026-10-11T19:46:15.166686+00:00",
+  "producer_commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "producer_run": 38166157093,
+  "execution_code_sha": "29731f04d998659e5892c109871f54ef0c7f8eef",
+  "inputs": {
+    "history": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "bd7e32dd341348f44cfacdb0140247c5f957c417f6bed625fdcf9762a4d0f4ca"
+    },
+    "queue": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202"
+    },
+    "runtime_report": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "eb420d6e3b74b9a2274598adc5b2ae7f2f5f7e9635e1fc34f60968c896a95bd3"
+    },
+    "telemetry": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d421299b6f6fbe440c166bb13ad686ba0896ccfc0cbfeda400f49932c9781037"
+    }
+  },
+  "first_reader": {
+    "path": "data/audits/pulso_mixed25_first8_actual_semantic_review_2026_10_11.json",
+    "file_sha256": "c7e3b65a6ad9389e7232a6073069ce0ddf225f572fcb4f415b23e1005dd74761",
+    "immutable_completion_commit": "31361543"
+  },
+  "scope": "All four actual paid publications reviewed; second reader only. No parallel correction template or state edits.",
+  "all_signals": [
+    {
+      "cohort_index": 16,
+      "sorted_assess25_index": 3,
+      "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+      "publication_date": "2026-09-04",
+      "queue_fingerprint": "427b7c13dabdc9c484eab3c5a196190dc0c187da84e9f33fa60d3b2c1de73eb6",
+      "actual_status": "published",
+      "actual_score": 84,
+      "decision": "accept",
+      "exact_reason": "El incremento no es la reiteración de 17 condenas y $26 mil millones: la nota del 4 de septiembre añade nueve médicos emisores en prisión preventiva y más de 340 funcionarios formalizados en la investigación derivada. La copia conserva esos estados a esa fecha, las cifras de 95 mil licencias/$48 mil millones como alcance de la investigación iniciada en 2022, y el juicio Quilodrán como futuro. El importe extraño de $5.600 mil millones se atribuye literalmente a la nota; no se presenta como monto oficial verificado ni se reconcilia con otras cifras.",
+      "full_original_body_read": true,
+      "full_model_output_read": true,
+      "full_signal_read": true,
+      "original_full_primary_body": "Fue en 2022 cuando a la Fiscalía Nacional llegó un reporte de Fonasa y de la Superintendencia de Seguridad Social (Suseso) en que se denunciaba la existencia de médicos que eran grandes emisores de licencias médicas. El reporte generó una alerta inmediata ya que la sospecha, en un inicio, apuntaba a que detrás de esos médicos se escondía un fraude que podía remecer al sistema. La investigación -apodada megafraude Fonasa- rápidamente se asignó a la Fiscalía Oriente que dirige la fiscal regional Lorena Parra. Ese fue el origen, hace ya cuatro años atrás, de una exitosa investigación que, en tiempo récord, logró desbaratar una organización criminal que provocó un fraude de más de $ 48 mil millones. El caso, que esta semana llegó a su fin luego de un juicio oral de 11 meses, se cerró con un rotundo triunfo para el Ministerio Público. El tribunal dictó condenas para 17 personas, la mayoría colombianos y nueve de ellos, médicos: Samir Rivaldo a 21 años de presidio, Yesica Donado a 21 años de presidio, Lizney de La Hoz a 13 años de presidio, José Gnecco Cervantes a 13 años de presidio, Ana Toncel Peña a 16 años de presidio, Karen Mejía a 13 años de presidio, Obed Urrea a 16 años de presidio, Yainer Olivero Álvarez a 15 años de presidio y Jorge González Guerrero a 12 años de presidio. También el tribunal condenó a captadores: Álvaro Gnecco a 13 años de presidio, Rodrigo Campos a 17 años de presidio y Nancy Verdejo y Javiera Verdejo a tres años y un día por fraude de subvenciones y 300 días por asociación ilícita. Además de pagar con la privación de libertad, a algunos de ellos el tribunal los condenó a pagar un total de $ 26 mil millones. Lo primero que hizo la fiscal Parra fue tomar la decisión de asignarle el caso al fiscal Álvaro Pérez y la fiscal Constanza Encina del equipo de Alta Complejidad Oriente. Luego Parra tomó otra determinación clave: armar un equipo multidisciplinario que fuera capaz de procesar rápidamente las bases de datos de las más de 95 mil licencias emitidas. Así fue como se constituyó un equipo que, a lo largo de estos años, estuvo integrado por al menos 10 profesionales. A Parra, Pérez y Encina se sumó el abogado asesor Lucas Vargas. A todos ellos se sumaron la abogada asistente Daniela Fregonara y la analista Graciela Osorio. También se añadió la participación de la gestora Javiera Bocaz, la analista Tatiana Alfaro, la abogada asistente Nicole Olcay y la gestora Alison Zúñiga. Los fiscales Pérez y Encina generaron una pronta articulación con distintas instituciones vinculadas al mundo de las licencias médicas que, tras varias reuniones de coordinación, se fijaron los primeros filtros y criterios técnicos. Así pudieron comprender la complejidad del fenómeno y con esa información enfocaron la investigación para armar un caso en que los delitos a investigar fueran de aquellos que se vinculan con el crimen organizado. Sin embargo, en vez de tener delitos de sangre o narcotráfico, el asunto incluía una estructura criminal y grandes flujos de dinero para defraudar el sistema de las licencias médicas. De esa forma el equipo de la Fiscalía Oriente pudo detectar que el caso no se trataba de médicos aislados, sino que estaban agrupados en tres grandes centros que eran una fachada: Dr. Mitite, Prevenir y los de Rodrigo Campos, el único chileno del grupo. Con ese mapa se determinó que cada centro tenía una estructura y roles definidos: líderes que podían o no ser médicos que eran los dueños de los centros, facultativos que emitían estas licencias y secretarias que hacían las veces de captadoras. Incluso se usaban publicaciones en redes sociales con los precios de las licencias por cantidad de días. El 8 de diciembre de 2022, en una jornada maratónica que duró 16 horas, se dio el primer golpe a la organización criminal. Previamente se había logrado la orden de detención de al menos 50 imputados, pero solo se logró capturar a 27. El resto estaba fuera de Chile o alcanzaron a escapar del país. El equipo trabajó codo a codo, en un primer momento, con la Brigada Investigadora de Delitos Económicos (Bridec) de la PDI. Luego se sumó la Brigada Investigadora de Lavado de Activos (Brilac) y también el Laboratorio de Criminalística (Lacrim) de la policía civil. Así se pudo procesar con éxito todo el flujo de dinero que se trazó luego del alzamiento bancario de más de 30 cuentas. Una trazabilidad que incluso llegó tras la pista del envío de más de US$ 600 mil en remesas al extranjero y más de $ 200 millones en empresas de envío de dinero fuera de Chile. La acción de la Bridec fue fundamental ya que el equipo de la Fiscalía Oriente innovó con técnicas que no son comunes en la investigación de delitos económicos. Tanto así, que se usaron agentes encubiertos que se hicieron pasar por pacientes para solicitar las licencias falsas. Los peritos de la Brilac aportaron con análisis cuantitativos para demostrar la anomalía en las grandes emisiones de los sospechosos. En esa labor también se sumó un perito de la Suseso y un perito contable de Lacrim para sistematizar el monto defraudado. “Con la participación de todos ellos se logró determinar que la estructura y la investigación en su conjunto, con todos los médicos y centros involucrados, generó una defraudación que asciende a más de $ 48 mil millones”, explica el fiscal Pérez quien estuvo involucrado, junto con Fregonara, desde el inicio hasta el final en el caso. La fiscal Parra, por su parte, destaca los tipos penales que se lograron acreditar. “Esto se pensó como crimen organizado. Aquí la Fiscalía pensó que estos médicos se organizaban a través de clínicas fachadas y por eso se pensó en una estructura como la de la asociación ilícita o la asociación delictiva. Junto con eso también logramos convencer al tribunal de que el delito de fraude de subvención no solo lo comete el paciente, sino que también lo comete el médico y ese es un acierto de esta investigación. Con eso logramos instaurar una nueva forma de ver estos hechos delictivos”, explica la líder de la Fiscalía Oriente. “Otro aspecto destacable es que aquí la Fiscalía actuó con rapidez. Este caso empezó en 2022. Estamos en 2026 y tenemos a 17 personas condenadas en juicio oral a los que tenemos que sumar todos los abreviados y las suspensiones condicionales. Todo eso en cuatro años”, afirma Parra. Dentro de este grupo hay más de 90 compradores de licencias -clientes o falsos pacientes- los que tuvieron que reintegrar el perjuicio generado para evitar llegar a juicio. El fiscal Pérez añade otro elemento. “Aquí se presentó acusación al año y medio de investigación. Si esto se atrasó no fue resorte de la Fiscalía, fue porque se dilató la audiencia de preparación de juicio oral, que se tuvo que repetir ocho veces, por todos los cambios de defensas que hubo. La Fiscalía cumplió con eficiencia y celeridad”, dice Pérez. El éxito del equipo que ahora lidera el fiscal Pérez ha sido tan grande que ha recibido más encargos para aprovechar la especialidad que adquirieron en la investigación de fraudes con licencias médicas. Por eso cayó en manos del mismo persecutor la investigación derivada de las circulares de Contraloría por mal uso de permisos médicos en funcionarios públicos. El persecutor a la fecha tiene nueve médicos emisores en prisión preventiva y ha formalizado a más de 340 funcionarios públicos. A su vez, Pérez está pronto a partir el juicio contra Los Quilodrán, la asociación que montó una falsa red para defraudar al Fisco en más de $ 5.600 mil millones mediante licencias médicas falsas. La especialización adquirida por el equipo de Pérez permitió que, recibidas las circulares de Contraloría, junto a los analistas y la PDI, en cuatro meses estuviera en condiciones de formalizar. Algo impensado para un equipo que tuviera que partir de cero para interiorizarse en el mundo de las licencias médicas. El último elemento que valora Parra es que las condenas obtenidas serán un disuasivo para quienes quieran usar mal el sistema. En este punto resulta relevante la condena de cuatro años recibida por los falsos pacientes. “Es una señal fuerte. Ahora cuando un trabajador o funcionario público quiera presentar una licencia falsa, debería pensarlo dos veces”, remata Parra.",
+      "original_body_sha256": "30d8b8f701b0cde06ea6670423804452f43d4b4ee6ab6bb0efe4bc59d25f545f",
+      "original_html_sha256": "d35a148f569f4d52639eac9cb9f5b734c122d871d678feff5dd69a68c6c34255",
+      "raw_fixture": {
+        "path": "tests/fixtures/pulso_runtime_real/d35a148f569f4d52639eac9cb9f5b734c122d871d678feff5dd69a68c6c34255.html.gz",
+        "gzip_sha256": "b214ae6e1bf3f2846da6a56cbd462610ba5b21f70cb049359895b29ce3b5a05a",
+        "original_html_sha256": "d35a148f569f4d52639eac9cb9f5b734c122d871d678feff5dd69a68c6c34255",
+        "independently_reparsed": true,
+        "visible_publication_date": "2026-09-04",
+        "publication_evidence": [
+          {
+            "source": "json_ld_datePublished",
+            "timestamp": "2026-09-04T01:06:33.914Z",
+            "publisher_day": "2026-09-04",
+            "timestamp_calendar_day": "2026-09-04",
+            "america_santiago_day": "2026-09-03"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-09-04T01:06:33.914Z",
+            "publisher_day": "2026-09-04",
+            "timestamp_calendar_day": "2026-09-04",
+            "america_santiago_day": "2026-09-03"
+          }
+        ]
+      },
+      "original_full_model_output": {
+        "relevance_score": 84,
+        "what_happened": "Según la nota del 4 de septiembre de 2026, al cierre de ese reporte la Fiscalía Oriente ya había obtenido condenas para 17 personas y condenas de pago por un total de $ 26 mil millones, hecho ya cubierto en el contexto incremental. La investigación iniciada en 2022 había abarcado más de 95 mil licencias y una defraudación reportada de más de $ 48 mil millones. Como incremento material reportado a esa fecha, el persecutor tenía nueve médicos emisores en prisión preventiva y había formalizado a más de 340 funcionarios públicos. El artículo también informó como futuro, no como resultado ocurrido, que Pérez estaba pronto a iniciar el juicio contra Los Quilodrán, por una defraudación al Fisco que la nota cifra en más de $ 5.600 mil millones.",
+        "why_it_matters": "Según la nota del 4 de septiembre de 2026, para la Fiscalía Oriente y el Ministerio Público, la especialización del equipo permitió abordar nuevas investigaciones vinculadas con licencias médicas: el reporte atribuye al persecutor nueve médicos emisores en prisión preventiva y más de 340 funcionarios públicos formalizados. Esto señala una ampliación de la persecución penal sobre emisores y funcionarios, pero no acredita por sí solo un cambio regulatorio ni continuidad de esos estados al 11 de octubre de 2026. El juicio contra Los Quilodrán era entonces próximo, por lo que su eventual resultado no estaba acreditado en la publicación.",
+        "reason": "Merece radar por el incremento explícito respecto del contexto previo: además de repetir las condenas de 17 personas y los $ 26 mil millones, la nota reporta una investigación derivada con nueve médicos emisores en prisión preventiva y más de 340 funcionarios públicos formalizados. También anuncia un juicio futuro contra Los Quilodrán, que debe mantenerse separado de los resultados ya ocurridos. Las cifras de 95 mil licencias y más de $ 48 mil millones corresponden a la investigación iniciada en 2022 y no deben tratarse como una nueva sentencia.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El artículo aborda directamente el uso fraudulento de licencias médicas humanas, con efectos sobre el financiamiento y la integridad del sistema de aseguramiento público de salud.",
+          "human_health_scope_quote": "se denunciaba la existencia de médicos que eran grandes emisores de licencias médicas",
+          "actor": "El persecutor",
+          "action": "ha formalizado a más de 340 funcionarios públicos",
+          "consequence": "nueve médicos emisores en prisión preventiva",
+          "actor_quote": "El persecutor a la fecha tiene nueve médicos emisores en prisión preventiva y ha formalizado a más de 340 funcionarios públicos.",
+          "action_quote": "El persecutor a la fecha tiene nueve médicos emisores en prisión preventiva y ha formalizado a más de 340 funcionarios públicos.",
+          "consequence_quote": "El persecutor a la fecha tiene nueve médicos emisores en prisión preventiva y ha formalizado a más de 340 funcionarios públicos.",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "A su vez, Pérez está pronto a partir el juicio contra Los Quilodrán",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "Aunque la nota repite las condenas de 17 personas y el pago total de $ 26 mil millones ya consignados en el contexto previo, agrega resultados de una investigación derivada: nueve médicos emisores en prisión preventiva y más de 340 funcionarios públicos formalizados. También informa un juicio futuro contra Los Quilodrán, sin presentar su resultado como ocurrido.",
+          "novelty_quote": "El persecutor a la fecha tiene nueve médicos emisores en prisión preventiva y ha formalizado a más de 340 funcionarios públicos.",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota del 4 de septiembre de 2026, al cierre de ese reporte la Fiscalía Oriente ya había obtenido condenas para 17 personas y condenas de pago por un total de $ 26 mil millones, hecho ya cubierto en el contexto incremental. La investigación iniciada en 2022 había abarcado más de 95 mil licencias y una defraudación reportada de más de $ 48 mil millones. Como incremento material reportado a esa fecha, el persecutor tenía nueve médicos emisores en prisión preventiva y había formalizado a más de 340 funcionarios públicos. El artículo también informó como futuro, no como resultado ocurrido, que Pérez estaba pronto a iniciar el juicio contra Los Quilodrán, por una defraudación al Fisco que la nota cifra en más de $ 5.600 mil millones.",
+              "source_quote": "A su vez, Pérez está pronto a partir el juicio contra Los Quilodrán, la asociación que montó una falsa red para defraudar al Fisco en más de $ 5.600 mil millones mediante licencias médicas falsas."
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Según la nota del 4 de septiembre de 2026, para la Fiscalía Oriente y el Ministerio Público, la especialización del equipo permitió abordar nuevas investigaciones vinculadas con licencias médicas: el reporte atribuye al persecutor nueve médicos emisores en prisión preventiva y más de 340 funcionarios públicos formalizados. Esto señala una ampliación de la persecución penal sobre emisores y funcionarios, pero no acredita por sí solo un cambio regulatorio ni continuidad de esos estados al 11 de octubre de 2026. El juicio contra Los Quilodrán era entonces próximo, por lo que su eventual resultado no estaba acreditado en la publicación.",
+              "source_quote": "A su vez, Pérez está pronto a partir el juicio contra Los Quilodrán, la asociación que montó una falsa red para defraudar al Fisco en más de $ 5.600 mil millones mediante licencias médicas falsas."
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0665fe2cd2fcbacc006acbdfc6e11c87d1820b715d2e4a65a1",
+          "analysis_text_sha256": "30d8b8f701b0cde06ea6670423804452f43d4b4ee6ab6bb0efe4bc59d25f545f",
+          "request_input_sha256": "6c5075491c145edc1356b1a0217df93eed1d5d81168529f80595f2516bc96f0c",
+          "raw_model_output_sha256": "06bd8526448744db6e49927a43bc8dea13768f3bfa10ceb2bf9ea994c68608f9"
+        }
+      },
+      "original_model_output_semantic_sha256": "cdac4d255da71cdd68d4052b19a12864d7b2059cc1f5e53659eba3e6ad258136",
+      "original_model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0665fe2cd2fcbacc006acbdfc6e11c87d1820b715d2e4a65a1",
+        "analysis_text_sha256": "30d8b8f701b0cde06ea6670423804452f43d4b4ee6ab6bb0efe4bc59d25f545f",
+        "request_input_sha256": "6c5075491c145edc1356b1a0217df93eed1d5d81168529f80595f2516bc96f0c",
+        "raw_model_output_sha256": "06bd8526448744db6e49927a43bc8dea13768f3bfa10ceb2bf9ea994c68608f9"
+      },
+      "original_full_signal": {
+        "title": "Cómo fue que la Fiscalía Oriente logró detener el fraude más grande contra Fonasa por emisión de licencias médicas falsas",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+        "category": "Aseguramiento",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Según Pulso / La Tercera, Según la nota del 4 de septiembre de 2026, al cierre de ese reporte la Fiscalía Oriente ya había obtenido condenas para 17 personas y condenas de pago por un total de $ 26 mil millones, hecho ya cubierto en el contexto incremental. La investigación iniciada en 2022 había abarcado más de 95 mil licencias y una defraudación reportada de más de $ 48 mil millones. Como incremento material reportado a esa fecha, el persecutor tenía nueve médicos emisores en prisión preventiva y había formalizado a más de 340 funcionarios públicos. El artículo también informó como futuro, no como resultado ocurrido, que Pérez estaba pronto a iniciar el juicio contra Los Quilodrán, por una defraudación al Fisco que la nota cifra en más de $ 5.600 mil millones.",
+        "event_date": "2026-09-04",
+        "detected_at": "2026-10-11T07:52:34.224551+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "insurance",
+          "providers",
+          "investment_ma",
+          "regulation"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Según la nota del 4 de septiembre de 2026, para la Fiscalía Oriente y el Ministerio Público, la especialización del equipo permitió abordar nuevas investigaciones vinculadas con licencias médicas: el reporte atribuye al persecutor nueve médicos emisores en prisión preventiva y más de 340 funcionarios públicos formalizados. Esto señala una ampliación de la persecución penal sobre emisores y funcionarios, pero no acredita por sí solo un cambio regulatorio ni continuidad de esos estados al 11 de octubre de 2026. El juicio contra Los Quilodrán era entonces próximo, por lo que su eventual resultado no estaba acreditado en la publicación.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "fonasa"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": true,
+        "economic_impact_score": 84,
+        "regulatory_impact_score": 55,
+        "scope_score": 84,
+        "novelty_score": 84,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 78,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Fonasa"
+        ],
+        "editorial_relevance": 84,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-09-04",
+        "publication_timestamp": "2026-09-04T01:06:33.914Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 84,
+          "threshold": 72,
+          "analysis_reason": "Merece radar por el incremento explícito respecto del contexto previo: además de repetir las condenas de 17 personas y los $ 26 mil millones, la nota reporta una investigación derivada con nueve médicos emisores en prisión preventiva y más de 340 funcionarios públicos formalizados. También anuncia un juicio futuro contra Los Quilodrán, que debe mantenerse separado de los resultados ya ocurridos. Las cifras de 95 mil licencias y más de $ 48 mil millones corresponden a la investigación iniciada en 2022 y no deben tratarse como una nueva sentencia."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "0fa8a68747667862f2eee7f4de83f7f9dd451873e4eeef4a3e8627aa44bfced0",
+      "original_published_what_happened": "Según Pulso / La Tercera, Según la nota del 4 de septiembre de 2026, al cierre de ese reporte la Fiscalía Oriente ya había obtenido condenas para 17 personas y condenas de pago por un total de $ 26 mil millones, hecho ya cubierto en el contexto incremental. La investigación iniciada en 2022 había abarcado más de 95 mil licencias y una defraudación reportada de más de $ 48 mil millones. Como incremento material reportado a esa fecha, el persecutor tenía nueve médicos emisores en prisión preventiva y había formalizado a más de 340 funcionarios públicos. El artículo también informó como futuro, no como resultado ocurrido, que Pérez estaba pronto a iniciar el juicio contra Los Quilodrán, por una defraudación al Fisco que la nota cifra en más de $ 5.600 mil millones.",
+      "original_published_why_it_matters": "Según la nota del 4 de septiembre de 2026, para la Fiscalía Oriente y el Ministerio Público, la especialización del equipo permitió abordar nuevas investigaciones vinculadas con licencias médicas: el reporte atribuye al persecutor nueve médicos emisores en prisión preventiva y más de 340 funcionarios públicos formalizados. Esto señala una ampliación de la persecución penal sobre emisores y funcionarios, pero no acredita por sí solo un cambio regulatorio ni continuidad de esos estados al 11 de octubre de 2026. El juicio contra Los Quilodrán era entonces próximo, por lo que su eventual resultado no estaba acreditado en la publicación.",
+      "actual_paid_event": {
+        "line_1_based": 520,
+        "response_id": "resp_0665fe2cd2fcbacc006acbdfc6e11c87d1820b715d2e4a65a1",
+        "event": {
+          "at": "2026-10-11T19:13:36.313569+00:00",
+          "kind": "fast",
+          "model": "gpt-5.6-luna",
+          "requested_model": "gpt-5.6-luna",
+          "response_id": "resp_0665fe2cd2fcbacc006acbdfc6e11c87d1820b715d2e4a65a1",
+          "success": true,
+          "error_type": null,
+          "input_tokens": 4774,
+          "cached_input_tokens": 0,
+          "output_tokens": 2910,
+          "total_tokens": 7684,
+          "cost_usd": null,
+          "cost_status": "pricing_not_configured",
+          "feature": null,
+          "output_id": null,
+          "run_id": null,
+          "publishable": null,
+          "incremental_quality_points": null
+        },
+        "event_sha256": "1ef1e8c8cc92d1062a9c2da5f5ba5c54fca27b0b1e3d29e49af0cb7a7aff25fb"
+      },
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "El persecutor a la fecha tiene nueve médicos emisores en prisión preventiva y ha formalizado a más de 340 funcionarios públicos."
+        },
+        {
+          "origin": "original",
+          "text": "A su vez, Pérez está pronto a partir el juicio contra Los Quilodrán"
+        }
+      ],
+      "scores_changed": false,
+      "actual_state_mutated": false,
+      "AI_calls": 0,
+      "review_index": 1
+    },
+    {
+      "cohort_index": 19,
+      "sorted_assess25_index": 4,
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-investigara-alcances-de-la-alerta-oncologica-del-minsal-por-solicitud-de-diputada-radical/",
+      "publication_date": "2026-09-02",
+      "queue_fingerprint": "915fcc637868dafe3256e2274c4377cf43347d7c9b7ce275946c3c51ef1183b8",
+      "actual_status": "published",
+      "actual_score": 86,
+      "decision": "accept",
+      "exact_reason": "El documento citado acredita inicio de una investigación especial de Contraloría en la Subsecretaría de Salud Pública, con resultados por informar; no es una auditoría concluida ni acredita fraude o ineficacia clínica. La copia distingue 33.702 atenciones iniciales, 29.997 registros a resolver y 99,9% contactado, sin convertir contacto en tratamiento completo. La pregunta por depuración versus resolución clínica conserva la controversia y la fecha 2 de septiembre, sin afirmar un estado actual al 11 de octubre.",
+      "full_original_body_read": true,
+      "full_model_output_read": true,
+      "full_signal_read": true,
+      "original_full_primary_body": "Una de las primeras decisiones que tomó tras asumir el cargo la ministra de Salud, May Chomali, fue decretar una alerta sanitaria para enfrentar las listas de espera oncológicas. Esa medida, a ojos del Minsal, dio frutos rápidamente: dos meses después las autoridades sanitarias afirmaron que se había cumplido con el objetivo al contactar al 99,9% de los pacientes que aguardaban una atención. El hito fue celebrado en el mundo de la salud, pero para algunos generó dudas. Una de ellas fue la diputada del Partido Radical, Marcela Hernando, quien solicitó a la Contraloría revisar y emitir un pronunciamiento sobre los antecedentes y resultados informados por el Ministerio de Salud respecto de la alerta oncológica. El organismo le confirmó que lo hará. “La División de Fiscalización de esta Entidad de Control inició una Investigación Especial en la Subsecretaría de Salud Pública, con el objeto de revisar y analizar los antecedentes expuestos, cuyos resultados le serán informados oportunamente”, establece el documento firmado por el subcontralor nacional, Víctor Hugo Merino. Vale recordar que el organismo está mandatado a atender este tipo de denuncias parlamentarias. De acuerdo con los antecedentes del Minsal, al 31 de enero existían 33.702 atenciones oncológicas en espera, aunque los registros que efectivamente requerían una resolución descendieron a 29.997 atenciones. De ese universo, el 99,9% de los pacientes ya fue contactado según expuso el ministerio y pudo acceder a la prestación que tenía retrasada, dando inicio o continuidad a su tratamiento. La diputada Hernando, que además integra la Comisión de Salud, explica en su solicitud que queda la duda de cuántos de esos registros iniciales fueron cerrados o retirados de la lista producto de causales como fallecimiento o duplicidad de registros, o porque la atención ya había sido entregada. Además, justifica que lo anterior deja algunas dudas respecto a lo comunicado públicamente por el Ministerio de Salud, “particularmente respecto a la forma en la que éste ha difundido la disminución de las listas; por tanto, es del todo procedente consultar si lo que ha informado el Ministerio de Salud significa una disminución real de la lista de espera oncológica o bien sólo son gestiones administrativas, tendientes a depurar el número de pacientes oncológicos”, detalla el documento enviado a Contraloría. En ese sentido, la parlamentaria solicitó una auditoría a los criterios de egreso, destinada a fiscalizar la metodología empleada para dar por cerrada la espera de pacientes que únicamente fueron derivados o contactados, pero que no cuentan con un cierre clínico definitivo ni con la resolución integral de sus casos. También el oficio parlamentario pide evaluar la rigurosidad y precisión de los conceptos utilizados en los reportes oficiales del Ministerio de Salud, con el fin de verificar que reflejen la realidad sanitaria y no generen falsas expectativas en la ciudadanía sobre la resolución efectiva de las patologías oncológicas. “El denominado ´fin´ o ´eliminación´ de la lista de espera oncológica no necesariamente implica que todos los pacientes hayan recibido efectivamente su tratamiento, consulta o examen correspondiente. En muchos casos, la condición de paciente gestionado o vinculado únicamente significa que fue contactado e incorporado a una ruta de atención, que se le asignó una prestación futura, sin que ello suponga la resolución integral de su problema de salud”, concluye la solicitud. Al respecto, la diputada afirma que “la Contraloría me ha confirmado que van a hacer una investigación especial en la Subsecretaría de Salud Pública a propósito de la controversia por el plan oncológico del Ministerio de Salud, en el cual se decía que el 95% estaba resuelto cuando hablábamos solamente de que se había contactado a los pacientes que estaban en la lista de espera. Me parece bien que la Contraloría haga esa investigación y esperamos tener respuesta pronto”.",
+      "original_body_sha256": "ab7f054c1eb220e2a114d4cbf1ca476c5c8e324e9adcdfd4137674ea63ae07d8",
+      "original_html_sha256": "7cade3f27e6e39d5702fd9e69072f4a1f6e2485de0d9051f2fabf2f15df3e4fd",
+      "raw_fixture": {
+        "path": "tests/fixtures/pulso_runtime_real/7cade3f27e6e39d5702fd9e69072f4a1f6e2485de0d9051f2fabf2f15df3e4fd.html.gz",
+        "gzip_sha256": "2f52eb3f99e845a06eb9472f7ac974708ae02d00d7a7ca69fc84100e89aa833a",
+        "original_html_sha256": "7cade3f27e6e39d5702fd9e69072f4a1f6e2485de0d9051f2fabf2f15df3e4fd",
+        "independently_reparsed": true,
+        "visible_publication_date": "2026-09-02",
+        "publication_evidence": [
+          {
+            "source": "json_ld_datePublished",
+            "timestamp": "2026-09-02T20:00:00Z",
+            "publisher_day": "2026-09-02",
+            "timestamp_calendar_day": "2026-09-02",
+            "america_santiago_day": "2026-09-02"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-09-02T20:00:00Z",
+            "publisher_day": "2026-09-02",
+            "timestamp_calendar_day": "2026-09-02",
+            "america_santiago_day": "2026-09-02"
+          }
+        ]
+      },
+      "original_full_model_output": {
+        "relevance_score": 86,
+        "what_happened": "Según la nota del 2 de septiembre de 2026, la División de Fiscalización de la Contraloría inició una investigación especial en la Subsecretaría de Salud Pública para revisar los antecedentes y resultados informados por el Ministerio de Salud sobre la alerta sanitaria por listas de espera oncológicas. Al 31 de enero, el Minsal reportaba 33.702 atenciones oncológicas en espera y 29.997 registros que requerían resolución; afirmó que había contactado al 99,9% de los pacientes. Según la misma nota, los resultados de la investigación serían informados oportunamente; no se acredita su resultado a la fecha de revisión del 11 de octubre de 2026.",
+        "why_it_matters": "Al 2 de septiembre de 2026, según la nota, la Contraloría examinaba si la disminución comunicada por el Minsal reflejaba una resolución clínica efectiva o principalmente gestiones administrativas como depuración, contacto o derivación de pacientes. La revisión podía afectar la credibilidad de los reportes oficiales sobre listas de espera oncológicas y la interpretación pública del acceso efectivo a tratamientos, consultas y exámenes; sus conclusiones seguían pendientes en la publicación y no se verifica aquí un resultado posterior al 2 de septiembre.",
+        "reason": "Es una señal material de fiscalización sobre la metodología usada para reportar resultados de una alerta sanitaria oncológica y sobre la diferencia entre pacientes contactados o gestionados y casos clínicamente resueltos. Ingresa por BACKFILL: la investigación estaba iniciada al 2 de septiembre de 2026, pero el contenido no permite afirmar su estado ni sus resultados al 11 de octubre.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido vincula directamente una investigación de Contraloría con listas de espera oncológicas, pacientes y la eventual resolución de tratamientos, consultas y exámenes humanos.",
+          "human_health_scope_quote": "listas de espera oncológicas",
+          "actor": "La División de Fiscalización de esta Entidad de Control",
+          "action": "inició una Investigación Especial en la Subsecretaría de Salud Pública",
+          "consequence": "cuyos resultados le serán informados oportunamente",
+          "actor_quote": "La División de Fiscalización de esta Entidad de Control inició una Investigación Especial en la Subsecretaría de Salud Pública",
+          "action_quote": "inició una Investigación Especial en la Subsecretaría de Salud Pública",
+          "consequence_quote": "cuyos resultados le serán informados oportunamente",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "La División de Fiscalización de esta Entidad de Control inició una Investigación Especial en la Subsecretaría de Salud Pública, con el objeto de revisar y analizar los antecedentes expuestos, cuyos resultados le serán informados oportunamente",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nota reporta el inicio de una investigación especial de Contraloría sobre los resultados y criterios de egreso de la alerta oncológica, además de consignar las métricas del Minsal que motivaron la revisión.",
+          "novelty_quote": "La División de Fiscalización de esta Entidad de Control inició una Investigación Especial en la Subsecretaría de Salud Pública",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota del 2 de septiembre de 2026, la División de Fiscalización de la Contraloría inició una investigación especial en la Subsecretaría de Salud Pública para revisar los antecedentes y resultados informados por el Ministerio de Salud sobre la alerta sanitaria por listas de espera oncológicas. Al 31 de enero, el Minsal reportaba 33.702 atenciones oncológicas en espera y 29.997 registros que requerían resolución; afirmó que había contactado al 99,9% de los pacientes. Según la misma nota, los resultados de la investigación serían informados oportunamente; no se acredita su resultado a la fecha de revisión del 11 de octubre de 2026.",
+              "source_quote": "cuyos resultados le serán informados oportunamente"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 2 de septiembre de 2026, según la nota, la Contraloría examinaba si la disminución comunicada por el Minsal reflejaba una resolución clínica efectiva o principalmente gestiones administrativas como depuración, contacto o derivación de pacientes. La revisión podía afectar la credibilidad de los reportes oficiales sobre listas de espera oncológicas y la interpretación pública del acceso efectivo a tratamientos, consultas y exámenes; sus conclusiones seguían pendientes en la publicación y no se verifica aquí un resultado posterior al 2 de septiembre.",
+              "source_quote": "con el fin de verificar que reflejen la realidad sanitaria y no generen falsas expectativas en la ciudadanía sobre la resolución efectiva de las patologías oncológicas"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_03fd95122515a0a1006acbdffbe4a087d1b372946736ca9f74",
+          "analysis_text_sha256": "ab7f054c1eb220e2a114d4cbf1ca476c5c8e324e9adcdfd4137674ea63ae07d8",
+          "request_input_sha256": "d9c4f04caa17d81f3eb48c8d5cc344050d1236be16bae4a9c4915786a6cf8901",
+          "raw_model_output_sha256": "05f2f6f3c96ae6d3d008801df678c36846da4923a31546e2d28141a7fe672a8b"
+        }
+      },
+      "original_model_output_semantic_sha256": "b46cbfb537f002a35bf926f655f7088d9c6215d68eb281e819348cd7355df6bc",
+      "original_model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_03fd95122515a0a1006acbdffbe4a087d1b372946736ca9f74",
+        "analysis_text_sha256": "ab7f054c1eb220e2a114d4cbf1ca476c5c8e324e9adcdfd4137674ea63ae07d8",
+        "request_input_sha256": "d9c4f04caa17d81f3eb48c8d5cc344050d1236be16bae4a9c4915786a6cf8901",
+        "raw_model_output_sha256": "05f2f6f3c96ae6d3d008801df678c36846da4923a31546e2d28141a7fe672a8b"
+      },
+      "original_full_signal": {
+        "title": "Contraloría investigará alcances de la alerta oncológica del Minsal por solicitud de diputada radical",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/nacional/noticia/contraloria-investigara-alcances-de-la-alerta-oncologica-del-minsal-por-solicitud-de-diputada-radical/",
+        "category": "Regulación & Legal",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Según Pulso / La Tercera, Según la nota del 2 de septiembre de 2026, la División de Fiscalización de la Contraloría inició una investigación especial en la Subsecretaría de Salud Pública para revisar los antecedentes y resultados informados por el Ministerio de Salud sobre la alerta sanitaria por listas de espera oncológicas. Al 31 de enero, el Minsal reportaba 33.702 atenciones oncológicas en espera y 29.997 registros que requerían resolución; afirmó que había contactado al 99,9% de los pacientes. Según la misma nota, los resultados de la investigación serían informados oportunamente; no se acredita su resultado a la fecha de revisión del 11 de octubre de 2026.",
+        "event_date": "2026-09-02",
+        "detected_at": "2026-10-11T06:23:48.863044+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "waiting_lists",
+          "public_health"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Al 2 de septiembre de 2026, según la nota, la Contraloría examinaba si la disminución comunicada por el Minsal reflejaba una resolución clínica efectiva o principalmente gestiones administrativas como depuración, contacto o derivación de pacientes. La revisión podía afectar la credibilidad de los reportes oficiales sobre listas de espera oncológicas y la interpretación pública del acceso efectivo a tratamientos, consultas y exámenes; sus conclusiones seguían pendientes en la publicación y no se verifica aquí un resultado posterior al 2 de septiembre.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "sistema de salud"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": true,
+        "economic_impact_score": 86,
+        "regulatory_impact_score": 55,
+        "scope_score": 86,
+        "novelty_score": 86,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 79,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Sistema de salud"
+        ],
+        "editorial_relevance": 86,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-09-02",
+        "publication_timestamp": "2026-09-02T20:00:00Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 86,
+          "threshold": 72,
+          "analysis_reason": "Es una señal material de fiscalización sobre la metodología usada para reportar resultados de una alerta sanitaria oncológica y sobre la diferencia entre pacientes contactados o gestionados y casos clínicamente resueltos. Ingresa por BACKFILL: la investigación estaba iniciada al 2 de septiembre de 2026, pero el contenido no permite afirmar su estado ni sus resultados al 11 de octubre."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "a01b602fc3db70a3567216e0113bb2bf61100b71318c609c6c7854146fe7bedd",
+      "original_published_what_happened": "Según Pulso / La Tercera, Según la nota del 2 de septiembre de 2026, la División de Fiscalización de la Contraloría inició una investigación especial en la Subsecretaría de Salud Pública para revisar los antecedentes y resultados informados por el Ministerio de Salud sobre la alerta sanitaria por listas de espera oncológicas. Al 31 de enero, el Minsal reportaba 33.702 atenciones oncológicas en espera y 29.997 registros que requerían resolución; afirmó que había contactado al 99,9% de los pacientes. Según la misma nota, los resultados de la investigación serían informados oportunamente; no se acredita su resultado a la fecha de revisión del 11 de octubre de 2026.",
+      "original_published_why_it_matters": "Al 2 de septiembre de 2026, según la nota, la Contraloría examinaba si la disminución comunicada por el Minsal reflejaba una resolución clínica efectiva o principalmente gestiones administrativas como depuración, contacto o derivación de pacientes. La revisión podía afectar la credibilidad de los reportes oficiales sobre listas de espera oncológicas y la interpretación pública del acceso efectivo a tratamientos, consultas y exámenes; sus conclusiones seguían pendientes en la publicación y no se verifica aquí un resultado posterior al 2 de septiembre.",
+      "actual_paid_event": {
+        "line_1_based": 522,
+        "response_id": "resp_03fd95122515a0a1006acbdffbe4a087d1b372946736ca9f74",
+        "event": {
+          "at": "2026-10-11T19:14:25.894634+00:00",
+          "kind": "fast",
+          "model": "gpt-5.6-luna",
+          "requested_model": "gpt-5.6-luna",
+          "response_id": "resp_03fd95122515a0a1006acbdffbe4a087d1b372946736ca9f74",
+          "success": true,
+          "error_type": null,
+          "input_tokens": 3444,
+          "cached_input_tokens": 0,
+          "output_tokens": 2216,
+          "total_tokens": 5660,
+          "cost_usd": null,
+          "cost_status": "pricing_not_configured",
+          "feature": null,
+          "output_id": null,
+          "run_id": null,
+          "publishable": null,
+          "incremental_quality_points": null
+        },
+        "event_sha256": "6c941072332673115ebbd6975d6594a2dc31e03d6055b1d639eae1dd28cb9a5f"
+      },
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "La División de Fiscalización de esta Entidad de Control inició una Investigación Especial en la Subsecretaría de Salud Pública"
+        },
+        {
+          "origin": "original",
+          "text": "cuyos resultados le serán informados oportunamente"
+        },
+        {
+          "origin": "original",
+          "text": "sin que ello suponga la resolución integral de su problema de salud"
+        }
+      ],
+      "scores_changed": false,
+      "actual_state_mutated": false,
+      "AI_calls": 0,
+      "review_index": 2
+    },
+    {
+      "cohort_index": 25,
+      "sorted_assess25_index": 5,
+      "url": "https://www.latercera.com/nacional/noticia/diez-servicios-de-salud-concentran-el-62-de-la-oferta-publica-para-resolver-el-cancer/",
+      "publication_date": "2026-10-01",
+      "queue_fingerprint": "23b226e5d66287ac1f78b768350e36ad164104d54cbe369661e796eed11b49e2",
+      "actual_status": "published",
+      "actual_score": 86,
+      "decision": "accept",
+      "exact_reason": "La copia conserva el numerador y denominador correctos: casi dos tercios del financiamiento GES-Cáncer de 2024 en 10 de 29 servicios, y evolución 2018–2024. No afirma que 62% sea porcentaje de camas, pacientes o capacidad instalada, ni nuevo financiamiento ejecutado en 2026. La explicación territorial se atribuye a Paula Daza y conserva la posibilidad de traslado; es interpretación del estudio y expertos, no causalidad oficial verificada.",
+      "full_original_body_read": true,
+      "full_model_output_read": true,
+      "full_signal_read": true,
+      "original_full_primary_body": "El cáncer se ha convertido en una de las principales preocupaciones del sistema sanitario. En 2019 se transformó en la primera causa de fallecimientos en Chile y las proyecciones no ofrecen un respiro: según expertos y estudios recientes, las cifras seguirán en aumento, empeorando un escenario ya crítico. En ese contexto, el Centro de Políticas Públicas e Innovación en Salud (CIPS-UDD) realizó un estudio para revisar las brechas que existen en el sistema. Uno de los puntos que revisa el Estudio de la Oferta Pública en la Resolución del Cáncer en Chile es el financiamiento. En simple, el informe establece que la oferta sigue concentrada y una parte importante de la plata destinada a las atenciones de cáncer GES recae en pocos servicios de salud. En 2024, casi dos tercios del financiamiento destinado a las atenciones GES por cáncer se concentraron en 10 de los 29 servicios de salud del país, que son quienes tienen a su cargo los hospitales. Los mayores montos correspondieron al Metropolitano Suroriente, con $ 27.109 millones (7,7% del total); Metropolitano Occidente, con $ 24.471 millones (7,0%); Concepción, con $ 22.027 millones (6,3%); Araucanía Sur, con $ 21.108 millones (6,0%) y el Maule, con $ 20.498 millones (5,8%). A ellos se suman Valparaíso-San Antonio, con $ 20.384 millones (5,8%); Metropolitano Norte, con $ 20.057 millones (5,7%); Metropolitano Sur, con $ 19.343 millones (5,5%); Metropolitano Oriente, con $ 18.410 millones (5,2%); y Los Ríos, con $ 17.748 millones (5,1%). En conjunto, estos 10 servicios de salud concentraron cerca del 62% del financiamiento GES-Cáncer a nivel nacional, que en 2024 alcanzó los $ 350.778 millones. En este escenario, la directora ejecutiva del CIPS- UDD y exsubsecretaria de Salud Pública en Piñera II, Paula Daza, señala que estos datos son una demostración de que en el gasto en prestaciones GES de cáncer hay una desigualdad territorial importante. “Cuando uno mira eso, hay que analizar por qué está ocurriendo. Y probablemente hay varias cosas que están pasando. Una puede ser que haya servicios o regiones donde no se cuenta con la infraestructura ni con los especialistas para atender a las personas, y esas personas se trasladan a otros servicios donde sí se cuenta con el recurso humano y con la infraestructura”, detalla la especialista. Además, añade que “sabemos que en regiones es donde se concentra la mayor deuda desde el punto de vista de las atenciones en cáncer, particularmente en regiones del sur. Sabemos que en cáncer de mama las mayores brechas están en el Biobío y en La Araucanía”. Pero la investigación no solo cuantifica cuánto dinero recibe cada servicio de salud, sino también cuánto ha aumentado ese financiamiento con el paso de los años. Y al comparar 2018 con 2024 aparece una diferencia importante: algunos de los mayores incrementos se registran fuera de la Región Metropolitana. Por ejemplo, Valparaíso-San Antonio pasó de recibir $ 7.038 millones a $ 20.384 millones, un aumento de casi un 190%. Algo similar ocurrió en Chiloé, donde los recursos crecieron de $ 284 millones a $ 820 millones, y en Atacama, que pasó de $ 958 millones a $ 2.700 millones. Talcahuano y Antofagasta también registraron aumentos superiores al 160%. En cambio, varios servicios metropolitanos tuvieron un crecimiento bastante menor. El Metropolitano Sur aumentó sus recursos en un 52,2%; el Metropolitano Norte, en un 48,8%; y el Metropolitano Oriente, en un 26,9%. Sin embargo, esto no significa necesariamente que reciban menos dinero: varios de ellos ya partían en 2018 con presupuestos mucho más altos y todavía concentran montos importantes. Así, los datos muestran que algunos servicios de regiones que partían con una base de financiamiento más baja son precisamente los que más han aumentado sus recursos en términos porcentuales. El informe plantea que este comportamiento es consistente con una descentralización de la oferta oncológica, aunque las diferencias en los montos destinados a cada territorio siguen siendo importantes. Vesna Mandakovic, académica de la Facultad de Economía y Negocios UDD, asegura que “siempre va a haber crecimiento. Siempre se está gastando más, se están financiando más prestaciones de salud. O la otra explicación es que los tratamientos sean más caros, no sabemos. Pero lo que sí uno ve es cómo es el gasto en salud por servicio en cada una de las regiones, hay un aumento. Eso es bueno”. Mandakovic, quien también es miembro comité ejecutivo de CIPS- UDD, también afirma que estos datos abren varios cuestionamientos como si se está gastando más o bien los recursos. “Pero lo único que estamos diciendo acá es que, con este dato de análisis territorial, lo que estamos viendo es que hay algunos que crecen más que otros. Y eso te habla, yo creo que la conclusión que uno puede sacar, de un proceso de descentralización de la oferta oncológica. Antes la gente tenía que venir a atenderse a Santiago. Ahora también hay recursos y están creciendo fuertemente los tratamientos en Valparaíso, Chiloé y Talcahuano”, concluye.",
+      "original_body_sha256": "d5e8897cc1159b24c458efacfe2ab582ae70bb5442029d522c15d81a3c8ea690",
+      "original_html_sha256": "4ba41ef9e7ca5567a5710b051bcb59e2519731935cbff1dbe5d457f9a274eedb",
+      "raw_fixture": {
+        "path": "tests/fixtures/pulso_runtime_real/4ba41ef9e7ca5567a5710b051bcb59e2519731935cbff1dbe5d457f9a274eedb.html.gz",
+        "gzip_sha256": "6e69f9975489f01061d954a5eab2f90cbae7e6f2258ba9bc18cfa2ed043e2f87",
+        "original_html_sha256": "4ba41ef9e7ca5567a5710b051bcb59e2519731935cbff1dbe5d457f9a274eedb",
+        "independently_reparsed": true,
+        "visible_publication_date": "2026-10-01",
+        "publication_evidence": [
+          {
+            "source": "json_ld_datePublished",
+            "timestamp": "2026-10-01T23:51:16.324Z",
+            "publisher_day": "2026-10-01",
+            "timestamp_calendar_day": "2026-10-01",
+            "america_santiago_day": "2026-10-01"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-10-01T23:51:16.324Z",
+            "publisher_day": "2026-10-01",
+            "timestamp_calendar_day": "2026-10-01",
+            "america_santiago_day": "2026-10-01"
+          }
+        ]
+      },
+      "original_full_model_output": {
+        "relevance_score": 86,
+        "what_happened": "Según la nota del 1 de octubre de 2026, un estudio del CIPS-UDD reportó que, durante 2024, casi dos tercios del financiamiento destinado a las atenciones GES por cáncer se concentraron en 10 de los 29 servicios de salud del país. La nota también informó aumentos del financiamiento entre 2018 y 2024, especialmente en Valparaíso-San Antonio, Chiloé y Atacama, y describió diferencias territoriales persistentes en la oferta oncológica.",
+        "why_it_matters": "Según la nota del 1 de octubre de 2026, los servicios de salud enfrentan una distribución territorial desigual del financiamiento y de la capacidad oncológica pública. Paula Daza atribuyó parte de las brechas a la falta de infraestructura y especialistas en algunas regiones, lo que puede trasladar pacientes hacia servicios con mayores recursos; el informe interpretó el crecimiento regional como consistente con una descentralización de la oferta, sin que la concentración de recursos desapareciera.",
+        "reason": "Es una señal nacional y cuantificada sobre financiamiento GES-Cáncer, concentración territorial de la capacidad pública y evolución de la oferta oncológica. Merece radar porque afecta la planificación de prestadores públicos, la asignación territorial de recursos y el acceso a atención especializada, aunque corresponde a resultados de un estudio reportados por prensa y no a una decisión oficial nueva.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota aborda explícitamente el financiamiento y la oferta pública para resolver el cáncer, con datos de atenciones GES, servicios de salud e infraestructura y especialistas para pacientes.",
+          "human_health_scope_quote": "En 2024, casi dos tercios del financiamiento destinado a las atenciones GES por cáncer se concentraron en 10 de los 29 servicios de salud del país",
+          "actor": "Centro de Políticas Públicas e Innovación en Salud (CIPS-UDD)",
+          "action": "realizó un estudio para revisar las brechas que existen en el sistema",
+          "consequence": "casi dos tercios del financiamiento destinado a las atenciones GES por cáncer se concentraron en 10 de los 29 servicios de salud del país",
+          "actor_quote": "el Centro de Políticas Públicas e Innovación en Salud (CIPS-UDD) realizó un estudio para revisar las brechas que existen en el sistema.",
+          "action_quote": "el Centro de Políticas Públicas e Innovación en Salud (CIPS-UDD) realizó un estudio para revisar las brechas que existen en el sistema.",
+          "consequence_quote": "En 2024, casi dos tercios del financiamiento destinado a las atenciones GES por cáncer se concentraron en 10 de los 29 servicios de salud del país, que son quienes tienen a su cargo los hospitales.",
+          "event_status": "actual",
+          "event_status_quote": "En 2024, casi dos tercios del financiamiento destinado a las atenciones GES por cáncer se concentraron en 10 de los 29 servicios de salud del país",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nota aporta una cuantificación nacional de la concentración del financiamiento GES-Cáncer en 2024 y una comparación territorial de su evolución entre 2018 y 2024, información material para evaluar capacidad y acceso oncológico público.",
+          "novelty_quote": "En conjunto, estos 10 servicios de salud concentraron cerca del 62% del financiamiento GES-Cáncer a nivel nacional, que en 2024 alcanzó los $ 350.778 millones.",
+          "future_claims": []
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_00108c8796a85d24006acbdef0623887d199e6ddeae15dc167",
+          "analysis_text_sha256": "d5e8897cc1159b24c458efacfe2ab582ae70bb5442029d522c15d81a3c8ea690",
+          "request_input_sha256": "ee186bff0f54adfde2e4d3b4c589af2689fd6a9f4d7e8c335997543b0927f61d",
+          "raw_model_output_sha256": "f26299b4db248fc139ca16aef694ab66b876ee8725d005ee71767042371a86e8"
+        }
+      },
+      "original_model_output_semantic_sha256": "76e9a477d689e3051d42ed1e7d003710a5ebf90c0c7e7d71478c5ea76c8f5566",
+      "original_model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_00108c8796a85d24006acbdef0623887d199e6ddeae15dc167",
+        "analysis_text_sha256": "d5e8897cc1159b24c458efacfe2ab582ae70bb5442029d522c15d81a3c8ea690",
+        "request_input_sha256": "ee186bff0f54adfde2e4d3b4c589af2689fd6a9f4d7e8c335997543b0927f61d",
+        "raw_model_output_sha256": "f26299b4db248fc139ca16aef694ab66b876ee8725d005ee71767042371a86e8"
+      },
+      "original_full_signal": {
+        "title": "Diez servicios de salud concentran el 62% de la oferta pública para resolver el cáncer",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/nacional/noticia/diez-servicios-de-salud-concentran-el-62-de-la-oferta-publica-para-resolver-el-cancer/",
+        "category": "Prestadores",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Según Pulso / La Tercera, Según la nota del 1 de octubre de 2026, un estudio del CIPS-UDD reportó que, durante 2024, casi dos tercios del financiamiento destinado a las atenciones GES por cáncer se concentraron en 10 de los 29 servicios de salud del país. La nota también informó aumentos del financiamiento entre 2018 y 2024, especialmente en Valparaíso-San Antonio, Chiloé y Atacama, y describió diferencias territoriales persistentes en la oferta oncológica.",
+        "event_date": "2026-10-01",
+        "detected_at": "2026-10-11T06:23:48.863044+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "providers",
+          "financing",
+          "public_health"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Según la nota del 1 de octubre de 2026, los servicios de salud enfrentan una distribución territorial desigual del financiamiento y de la capacidad oncológica pública. Paula Daza atribuyó parte de las brechas a la falta de infraestructura y especialistas en algunas regiones, lo que puede trasladar pacientes hacia servicios con mayores recursos; el informe interpretó el crecimiento regional como consistente con una descentralización de la oferta, sin que la concentración de recursos desapareciera.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "prestadores"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": false,
+        "economic_impact_score": 86,
+        "regulatory_impact_score": 55,
+        "scope_score": 86,
+        "novelty_score": 86,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 79,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Prestadores"
+        ],
+        "editorial_relevance": 86,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-10-01",
+        "publication_timestamp": "2026-10-01T23:51:16.324Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 86,
+          "threshold": 72,
+          "analysis_reason": "Es una señal nacional y cuantificada sobre financiamiento GES-Cáncer, concentración territorial de la capacidad pública y evolución de la oferta oncológica. Merece radar porque afecta la planificación de prestadores públicos, la asignación territorial de recursos y el acceso a atención especializada, aunque corresponde a resultados de un estudio reportados por prensa y no a una decisión oficial nueva."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "0182f144b408bc3e8bbb7a619b0d8b40e986ba67e3d652971d41d7858d223454",
+      "original_published_what_happened": "Según Pulso / La Tercera, Según la nota del 1 de octubre de 2026, un estudio del CIPS-UDD reportó que, durante 2024, casi dos tercios del financiamiento destinado a las atenciones GES por cáncer se concentraron en 10 de los 29 servicios de salud del país. La nota también informó aumentos del financiamiento entre 2018 y 2024, especialmente en Valparaíso-San Antonio, Chiloé y Atacama, y describió diferencias territoriales persistentes en la oferta oncológica.",
+      "original_published_why_it_matters": "Según la nota del 1 de octubre de 2026, los servicios de salud enfrentan una distribución territorial desigual del financiamiento y de la capacidad oncológica pública. Paula Daza atribuyó parte de las brechas a la falta de infraestructura y especialistas en algunas regiones, lo que puede trasladar pacientes hacia servicios con mayores recursos; el informe interpretó el crecimiento regional como consistente con una descentralización de la oferta, sin que la concentración de recursos desapareciera.",
+      "actual_paid_event": {
+        "line_1_based": 512,
+        "response_id": "resp_00108c8796a85d24006acbdef0623887d199e6ddeae15dc167",
+        "event": {
+          "at": "2026-10-11T19:09:55.681817+00:00",
+          "kind": "fast",
+          "model": "gpt-5.6-luna",
+          "requested_model": "gpt-5.6-luna",
+          "response_id": "resp_00108c8796a85d24006acbdef0623887d199e6ddeae15dc167",
+          "success": true,
+          "error_type": null,
+          "input_tokens": 3814,
+          "cached_input_tokens": 0,
+          "output_tokens": 1805,
+          "total_tokens": 5619,
+          "cost_usd": null,
+          "cost_status": "pricing_not_configured",
+          "feature": null,
+          "output_id": null,
+          "run_id": null,
+          "publishable": null,
+          "incremental_quality_points": null
+        },
+        "event_sha256": "ffb13755eaf25bd3e9de9b1176e378d9a5ae08f6074a728fcfaf52a53e2dc19c"
+      },
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "En 2024, casi dos tercios del financiamiento destinado a las atenciones GES por cáncer se concentraron en 10 de los 29 servicios de salud del país"
+        },
+        {
+          "origin": "original",
+          "text": "Una puede ser que haya servicios o regiones donde no se cuenta con la infraestructura ni con los especialistas"
+        },
+        {
+          "origin": "original",
+          "text": "consistente con una descentralización de la oferta oncológica"
+        }
+      ],
+      "scores_changed": false,
+      "actual_state_mutated": false,
+      "AI_calls": 0,
+      "review_index": 3
+    },
+    {
+      "cohort_index": 39,
+      "sorted_assess25_index": 8,
+      "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+      "publication_date": "2026-10-01",
+      "queue_fingerprint": "075c8ca95314362f3b878d2d0dbd55cc738ecde04a63d56f934423f79f074a54",
+      "actual_status": "published",
+      "actual_score": 93,
+      "decision": "group",
+      "exact_reason": "La copia es fiel al anuncio prospectivo y a 4,7% Salud/1,5% gasto general, pero no aporta incremento material respecto de la señal de Presupuesto del 1 de octubre ya publicada en el mismo productor. Ambos originales y ambas señales contienen compras a clínicas, inversión hospitalaria, aporte por inscrito APS, canasta esencial, ficha compartida, IA para pacientes graves y mejores compras Fonasa. No hay nuevo contrato, fecha de implementación, monto adicional, capacidad o aprobación. El proof nuevo declara ausencia de contexto previo; eso no acredita novedad. Se recomienda agrupar como contexto del presupuesto existente, preservando el modelo/score/estado original en la trazabilidad.",
+      "full_original_body_read": true,
+      "full_model_output_read": true,
+      "full_signal_read": true,
+      "original_full_primary_body": "El Presidente José Antonio Kast anunció este miércoles el uso de inteligencia artificial (IA) para priorizar la atención de los pacientes de mayor gravedad, como parte de las medidas contempladas en materia de Salud en el proyecto de Ley de Presupuestos 2027. Durante la cadena nacional en la que presentó su primer erario fiscal, que contempla un aumento general del gasto público de 1,5%, el Mandatario señaló que se implementará “una ficha clínica compartida entre la red pública y la privada; y el uso de inteligencia artificial para que el paciente más grave sea atendido primero”. “Porque nadie debería enfermarse más mientras espera en una lista”, agregó. El anuncio se enmarca en un aumento de 4,7% de los recursos destinados a Salud durante el próximo año. “No se trata solo de poner más recursos, sino de que esos recursos se conviertan en atención a tiempo”, afirmó Kast. En ese marco, el Presidente informó que aumentará el financiamiento para reducir las listas de espera, mediante la compra de atenciones a clínicas y la inversión en hospitales de mayor complejidad. Consultorios, Cesfam y postas también recibirán más recursos, con un mayor aporte por cada persona inscrita. Asimismo, Kast anunció una canasta esencial de medicamentos para reducir el gasto de bolsillo de las familias y aseguró que Fonasa buscará mejorar las condiciones bajo las cuales adquiere prestaciones. “Fonasa va a comprar mejor, exigiendo calidad, rapidez y buen precio”, sostuvo.",
+      "original_body_sha256": "9ebcde885d7d2e49ff545494d589d91aa4308eb5281b4de97ba3354ed1d4f7af",
+      "original_html_sha256": "0a5f821b373a5ff14b130f25ea528749fb9558f35caf8e0aa2466688d644ccea",
+      "raw_fixture": {
+        "path": "tests/fixtures/pulso_runtime_real/0a5f821b373a5ff14b130f25ea528749fb9558f35caf8e0aa2466688d644ccea.html.gz",
+        "gzip_sha256": "2b03c74eba67cb6654b90b0c5009d8163629964d97a12b3715b048650cce187b",
+        "original_html_sha256": "0a5f821b373a5ff14b130f25ea528749fb9558f35caf8e0aa2466688d644ccea",
+        "independently_reparsed": true,
+        "visible_publication_date": "2026-10-01",
+        "publication_evidence": [
+          {
+            "source": "json_ld_datePublished",
+            "timestamp": "2026-10-01T00:46:24.224Z",
+            "publisher_day": "2026-10-01",
+            "timestamp_calendar_day": "2026-10-01",
+            "america_santiago_day": "2026-09-30"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-10-01T00:46:24.224Z",
+            "publisher_day": "2026-10-01",
+            "timestamp_calendar_day": "2026-10-01",
+            "america_santiago_day": "2026-09-30"
+          }
+        ]
+      },
+      "original_full_model_output": {
+        "relevance_score": 93,
+        "what_happened": "Al 2026-10-01, según la nota, el Presidente José Antonio Kast anunció, dentro de las medidas de Salud del proyecto de Ley de Presupuestos 2027, que se implementará una ficha clínica compartida entre la red pública y privada y el uso de IA para priorizar al paciente más grave; también reportó para 2027 un aumento de 4,7% de los recursos de Salud, compras de atenciones a clínicas, inversión en hospitales de mayor complejidad, más aportes por persona inscrita en atención primaria y una canasta esencial de medicamentos. Al 2026-10-01, esas medidas estaban anunciadas o previstas, no acreditadas como implementadas; el gasto público general informado para el proyecto era 1,5%.",
+        "why_it_matters": "Al 2026-10-01, según la nota, el anuncio comprometía la priorización futura de pacientes más graves y una ficha compartida entre redes, mientras que el financiamiento anunciado buscaba reducir listas de espera y el gasto de bolsillo mediante compras a clínicas, inversión hospitalaria, mayor aporte a atención primaria y medicamentos; Fonasa además buscaría mejorar las condiciones de compra. Para el radar, la relevancia es potencial y dependía de la aprobación y ejecución del Presupuesto 2027: la nota no acredita todavía esos efectos operativos.",
+        "reason": "Es una señal nacional y material para prestadores, Fonasa, atención primaria y pacientes: combina una propuesta de interoperabilidad clínica y priorización mediante IA con recursos presupuestarios, compras de prestaciones, inversión hospitalaria y medidas sobre medicamentos. Ingresa como anuncio de prensa y no como política ya implementada.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido vincula explícitamente la IA, la ficha clínica compartida y la priorización con la atención de pacientes de mayor gravedad, además de informar medidas sobre listas de espera, medicamentos y Fonasa.",
+          "human_health_scope_quote": "El Presidente José Antonio Kast anunció este miércoles el uso de inteligencia artificial (IA) para priorizar la atención de los pacientes de mayor gravedad, como parte de las medidas contempladas en materia de Salud en el proyecto de Ley de Presupuestos 2027.",
+          "actor": "Presidente José Antonio Kast",
+          "action": "anunció este miércoles el uso de inteligencia artificial (IA) para priorizar la atención de los pacientes de mayor gravedad",
+          "consequence": "para que el paciente más grave sea atendido primero",
+          "actor_quote": "El Presidente José Antonio Kast anunció este miércoles el uso de inteligencia artificial (IA) para priorizar la atención de los pacientes de mayor gravedad",
+          "action_quote": "El Presidente José Antonio Kast anunció este miércoles el uso de inteligencia artificial (IA) para priorizar la atención de los pacientes de mayor gravedad",
+          "consequence_quote": "una ficha clínica compartida entre la red pública y la privada; y el uso de inteligencia artificial para que el paciente más grave sea atendido primero",
+          "event_status": "plan",
+          "event_status_quote": "se implementará “una ficha clínica compartida entre la red pública y la privada",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nota reporta un paquete anunciado para el Presupuesto 2027 que combina IA para priorización clínica, ficha compartida entre redes, aumento de recursos de Salud, compras de atenciones, inversión hospitalaria y una canasta esencial de medicamentos. No se entregó contexto previo que permita clasificarlo como repetición.",
+          "novelty_quote": "Asimismo, Kast anunció una canasta esencial de medicamentos para reducir el gasto de bolsillo de las familias y aseguró que Fonasa buscará mejorar las condiciones bajo las cuales adquiere prestaciones.",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Al 2026-10-01, según la nota, el Presidente José Antonio Kast anunció, dentro de las medidas de Salud del proyecto de Ley de Presupuestos 2027, que se implementará una ficha clínica compartida entre la red pública y privada y el uso de IA para priorizar al paciente más grave; también reportó para 2027 un aumento de 4,7% de los recursos de Salud, compras de atenciones a clínicas, inversión en hospitales de mayor complejidad, más aportes por persona inscrita en atención primaria y una canasta esencial de medicamentos. Al 2026-10-01, esas medidas estaban anunciadas o previstas, no acreditadas como implementadas; el gasto público general informado para el proyecto era 1,5%.",
+              "source_quote": "se implementará “una ficha clínica compartida entre la red pública y la privada; y el uso de inteligencia artificial para que el paciente más grave sea atendido primero”"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 2026-10-01, según la nota, el anuncio comprometía la priorización futura de pacientes más graves y una ficha compartida entre redes, mientras que el financiamiento anunciado buscaba reducir listas de espera y el gasto de bolsillo mediante compras a clínicas, inversión hospitalaria, mayor aporte a atención primaria y medicamentos; Fonasa además buscaría mejorar las condiciones de compra. Para el radar, la relevancia es potencial y dependía de la aprobación y ejecución del Presupuesto 2027: la nota no acredita todavía esos efectos operativos.",
+              "source_quote": "En ese marco, el Presidente informó que aumentará el financiamiento para reducir las listas de espera, mediante la compra de atenciones a clínicas y la inversión en hospitales de mayor complejidad."
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_06710bf093af8dfb006acbdf222ffc87d1b85b2a6e9781b64a",
+          "analysis_text_sha256": "9ebcde885d7d2e49ff545494d589d91aa4308eb5281b4de97ba3354ed1d4f7af",
+          "request_input_sha256": "f8f15ba947562802f4912098a95ac532e97e1cff94b3152015c1eb10cff33c39",
+          "raw_model_output_sha256": "5db6c8c81540bac960c2a0940d1372d934174845396affa54226441aea789336"
+        }
+      },
+      "original_model_output_semantic_sha256": "b35a5ef9149b7b4e48cac436a7d2a3b1adf5396ca23e1ac5ced934a97c5db9b8",
+      "original_model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_06710bf093af8dfb006acbdf222ffc87d1b85b2a6e9781b64a",
+        "analysis_text_sha256": "9ebcde885d7d2e49ff545494d589d91aa4308eb5281b4de97ba3354ed1d4f7af",
+        "request_input_sha256": "f8f15ba947562802f4912098a95ac532e97e1cff94b3152015c1eb10cff33c39",
+        "raw_model_output_sha256": "5db6c8c81540bac960c2a0940d1372d934174845396affa54226441aea789336"
+      },
+      "original_full_signal": {
+        "title": "Kast anuncia uso de inteligencia artificial en Salud para priorizar atención de pacientes de mayor gravedad",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+        "category": "Prestadores",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Según Pulso / La Tercera, Al 2026-10-01, según la nota, el Presidente José Antonio Kast anunció, dentro de las medidas de Salud del proyecto de Ley de Presupuestos 2027, que se implementará una ficha clínica compartida entre la red pública y privada y el uso de IA para priorizar al paciente más grave; también reportó para 2027 un aumento de 4,7% de los recursos de Salud, compras de atenciones a clínicas, inversión en hospitales de mayor complejidad, más aportes por persona inscrita en atención primaria y una canasta esencial de medicamentos. Al 2026-10-01, esas medidas estaban anunciadas o previstas, no acreditadas como implementadas; el gasto público general informado para el proyecto era 1,5%.",
+        "event_date": "2026-10-01",
+        "detected_at": "2026-10-11T07:52:34.224551+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "insurance",
+          "providers",
+          "investment_ma",
+          "financing",
+          "regulation",
+          "waiting_lists",
+          "public_health"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Al 2026-10-01, según la nota, el anuncio comprometía la priorización futura de pacientes más graves y una ficha compartida entre redes, mientras que el financiamiento anunciado buscaba reducir listas de espera y el gasto de bolsillo mediante compras a clínicas, inversión hospitalaria, mayor aporte a atención primaria y medicamentos; Fonasa además buscaría mejorar las condiciones de compra. Para el radar, la relevancia es potencial y dependía de la aprobación y ejecución del Presupuesto 2027: la nota no acredita todavía esos efectos operativos.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "fonasa",
+          "prestadores",
+          "farma / medicamentos"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": true,
+        "economic_impact_score": 93,
+        "regulatory_impact_score": 55,
+        "scope_score": 93,
+        "novelty_score": 93,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 83,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Fonasa",
+          "Prestadores",
+          "Farma / medicamentos"
+        ],
+        "editorial_relevance": 93,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-10-01",
+        "publication_timestamp": "2026-10-01T00:46:24.224Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 93,
+          "threshold": 72,
+          "analysis_reason": "Es una señal nacional y material para prestadores, Fonasa, atención primaria y pacientes: combina una propuesta de interoperabilidad clínica y priorización mediante IA con recursos presupuestarios, compras de prestaciones, inversión hospitalaria y medidas sobre medicamentos. Ingresa como anuncio de prensa y no como política ya implementada."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "e5a62d7d570c6908d89a5b07fa11919dfb6edfbdefcdf2b7bac175b52f6dba9e",
+      "original_published_what_happened": "Según Pulso / La Tercera, Al 2026-10-01, según la nota, el Presidente José Antonio Kast anunció, dentro de las medidas de Salud del proyecto de Ley de Presupuestos 2027, que se implementará una ficha clínica compartida entre la red pública y privada y el uso de IA para priorizar al paciente más grave; también reportó para 2027 un aumento de 4,7% de los recursos de Salud, compras de atenciones a clínicas, inversión en hospitales de mayor complejidad, más aportes por persona inscrita en atención primaria y una canasta esencial de medicamentos. Al 2026-10-01, esas medidas estaban anunciadas o previstas, no acreditadas como implementadas; el gasto público general informado para el proyecto era 1,5%.",
+      "original_published_why_it_matters": "Al 2026-10-01, según la nota, el anuncio comprometía la priorización futura de pacientes más graves y una ficha compartida entre redes, mientras que el financiamiento anunciado buscaba reducir listas de espera y el gasto de bolsillo mediante compras a clínicas, inversión hospitalaria, mayor aporte a atención primaria y medicamentos; Fonasa además buscaría mejorar las condiciones de compra. Para el radar, la relevancia es potencial y dependía de la aprobación y ejecución del Presupuesto 2027: la nota no acredita todavía esos efectos operativos.",
+      "actual_paid_event": {
+        "line_1_based": 514,
+        "response_id": "resp_06710bf093af8dfb006acbdf222ffc87d1b85b2a6e9781b64a",
+        "event": {
+          "at": "2026-10-11T19:10:57.674952+00:00",
+          "kind": "fast",
+          "model": "gpt-5.6-luna",
+          "requested_model": "gpt-5.6-luna",
+          "response_id": "resp_06710bf093af8dfb006acbdf222ffc87d1b85b2a6e9781b64a",
+          "success": true,
+          "error_type": null,
+          "input_tokens": 2925,
+          "cached_input_tokens": 2578,
+          "output_tokens": 3006,
+          "total_tokens": 5931,
+          "cost_usd": null,
+          "cost_status": "pricing_not_configured",
+          "feature": null,
+          "output_id": null,
+          "run_id": null,
+          "publishable": null,
+          "incremental_quality_points": null
+        },
+        "event_sha256": "f559cb902485bb52d28aa27538fb929243356ae310a24b0332045e2b66e7c230"
+      },
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "como parte de las medidas contempladas en materia de Salud en el proyecto de Ley de Presupuestos 2027"
+        },
+        {
+          "origin": "original",
+          "text": "una ficha clínica compartida entre la red pública y la privada; y el uso de inteligencia artificial para que el paciente más grave sea atendido primero"
+        },
+        {
+          "origin": "original",
+          "text": "Fonasa va a comprar mejor, exigiendo calidad, rapidez y buen precio"
+        }
+      ],
+      "scores_changed": false,
+      "actual_state_mutated": false,
+      "AI_calls": 0,
+      "review_index": 4,
+      "group_target_url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+      "group_target_publication_date": "2026-10-01",
+      "duplicate_contrast": [
+        {
+          "claim": "health_increase_2027",
+          "new_original_verbatim": "El anuncio se enmarca en un aumento de 4,7% de los recursos destinados a Salud durante el próximo año.",
+          "existing_original_verbatim": "Para Salud se aumenta el presupuesto en 4,7%.",
+          "material_increment": false
+        },
+        {
+          "claim": "private_purchases_and_hospitals",
+          "new_original_verbatim": "mediante la compra de atenciones a clínicas y la inversión en hospitales de mayor complejidad",
+          "existing_original_verbatim": "Se comprará atenciones a clínicas, invertir en hospitales de mayor complejidad",
+          "material_increment": false
+        },
+        {
+          "claim": "aps_per_enrolled_patient",
+          "new_original_verbatim": "con un mayor aporte por cada persona inscrita",
+          "existing_original_verbatim": "con un mayor aporte por cada persona inscrita",
+          "material_increment": false
+        },
+        {
+          "claim": "essential_medicines",
+          "new_original_verbatim": "una canasta esencial de medicamentos para reducir el gasto de bolsillo de las familias",
+          "existing_original_verbatim": "una canasta esencial de medicamentos, para que las familias gasten menos de su bolsillo",
+          "material_increment": false
+        },
+        {
+          "claim": "shared_record_and_ai",
+          "new_original_verbatim": "una ficha clínica compartida entre la red pública y la privada; y el uso de inteligencia artificial para que el paciente más grave sea atendido primero",
+          "existing_original_verbatim": "una ficha clínica compartida entre la red pública y la privada; y el uso de inteligencia artificial para que el paciente más grave sea atendido primero",
+          "material_increment": false
+        },
+        {
+          "claim": "fonasa_purchasing",
+          "new_original_verbatim": "Fonasa va a comprar mejor, exigiendo calidad, rapidez y buen precio",
+          "existing_original_verbatim": "Fonasa va a comprar mejor, exigiendo calidad, rapidez y buen precio",
+          "material_increment": false
+        }
+      ],
+      "new_content_increment": null,
+      "first_reader_disagreement": "accept_without_material_increment_context",
+      "copy_factual_temporal_findings": 0,
+      "novelty_finding_open": true
+    }
+  ],
+  "duplicate_target_context": {
+    "url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+    "publication_date": "2026-10-01",
+    "original_body_sha256": "d6e9ec6b2f7552d48069ad442e3a6623d020be5f032339d67b0b5c8de6a9f6dd",
+    "full_original_primary_body": "Es el primer Presupuesto que elabora el gobierno de José Antonio Kast. Y por lo mismo sus mensajes marcaron el sello que quiere imponer y las áreas donde priorizará el gasto público. “Un presupuesto no es solo una planilla de números. Es una decisión sobre qué va primero, qué se posterga y cómo se organizan los recursos de la nación, dentro de las posibilidades que tiene un gobierno”, señaló el Presidente Kast en su discurso en cadena nacional. Kast afirmó que dentro del erario fiscal “hay cosas que tienen que ir primero y nosotros hemos decidido poner primero a los chilenos. A la madre que lleva meses buscando trabajo. A la pyme que quiere superar los obstáculos, hacer crecer su emprendimiento y contratar a más trabajadores”. Así detalló que abordará las urgencias que “los chilenos necesitan para vivir mejor”. Y mencionó, la urgencia por el crecimiento, el trabajo, la reconstrucción y “por un Chile más seguro”. También incluyó como urgencia proteger a los niños más vulnerables y proteger los beneficios sociales que son correctamente entregados. Kast indicó que el Presupuesto 2027 crece un 1,5% respecto a la ejecución de este año. Con esto, el gasto fiscal de 2027 superaría los $90 billones (lo que con el tipo de cambio actual, sería del orden de US$93 mil millones). “Este esfuerzo está financiado y cumple la meta de déficit fiscal”, dijo y enfatizó que “cada peso, donde más se necesita. Hoy de cada $1.000 que gasta el Estado, más de 600 van a pensiones, salud y educación. Esa es la parte que este Presupuesto protege”. Resaltó que se esperaba que el gasto creciera entre 0% y 1%, “pero decidimos hacer un esfuerzo adicional de medio punto para acelerar la reactivación, la inversión y el empleo. El problema nunca fue invertir. El problema fue gastar sin saber cómo pagarlo”. “Para este Presupuesto, cada ministerio tuvo que proyectar su gasto no solamente para el próximo año, sino para los próximos cinco años”, agregó el mandatario. El Presupuesto tiene cuatro prioridades, según detalló Kast. La primera es volver a crecer, crear trabajo y reconstruir. “Hoy hay 980 mil personas buscando trabajo sin encontrarlo. Llevamos más de tres años y medio con la desocupación sobre el 8%. Muchas son mujeres, muchos son jóvenes que todavía esperan su primer contrato”, expresó. Y aseveró que para este 2027 se destinarán 9,5 billones de pesos a crecimiento, trabajo y reconstrucción lo que se traduce en un 8,1% más que este año. “Esta noche quiero anunciarles que impulsaremos una cartera extraordinaria de 241 obras públicas, en todas las regiones de Chile, pensadas para crear trabajo y avanzar hacia el desarrollo. Son obras de conservación que se construyen con mano de obra de la zona. No vamos a esperar a mitad de año: vamos a adelantar su inicio a enero, con seguimiento obra por obra”, mencionó. La segunda prioridad es la seguridad. “En agosto les presenté nuestra agenda contra el crimen organizado y para ello se destinarán 7 billones de pesos a seguridad, un 9,1% más que este año, reasignando recursos hacia quienes están en la calle, en las fronteras y resguardando las cárceles”. La tercera urgencia son “nuestros niños”, indicó. “Llegar antes y proteger mejor”, dijo el mandatario en su discurso. Luego detalló que, en total, se destinarán $2,5 billones, un 4,1% más que este año para este ítem y que el fondo que apoya el desarrollo de niños con mayores riesgos crece un 165%. “Las ayudas técnicas para niños con discapacidad, como sillas de ruedas, andadores y otros, se duplican”, puntualizó. También dijo que se avanzará en proteger mejor es llegar a tiempo cuando el daño ya ocurrió. “Hoy más de 13 mil niños que fueron víctimas de maltrato grave o de abuso, y que están esperando que alguien los atienda. Un Estado que deja a un niño abusado en una lista de espera no está cumpliendo su tarea más básica”, comentó. Por eso, en este erario fiscal, los programas de reparación crecen un 19,3% y “el trabajo con sus familias, para que el daño no se repita, crece un 24,1%”. La cuarta prioridad es proteger los beneficios sociales. “Durante meses se dijo que poner orden en las cuentas significaría quitarles beneficios a las familias. Este Presupuesto demuestra lo contrario”, recalcó Kast. Y detalló que la Pensión Garantizada Universal tendrá $7 billones para más de 2,2 millones de personas mayores. “Son hombres y mujeres que levantaron este país con su trabajo, que criaron a sus hijos y que hoy merecen algo muy simple: saber que a fin de mes su pensión va a estar ahí. Sin letra chica”. Por otra parte, subrayó que “la educación es una de las mayores inversiones de este Presupuesto: $17,3 billones, el segundo presupuesto más grande en el Estado y solo superado por Salud. Con estos recursos aseguramos, cada mes, la educación de más de 3,5 millones de estudiantes, reforzamos el apoyo a los 2,2 millones de niños y jóvenes que más lo necesitan, y mantenemos la alimentación escolar para 1,8 millones de niños”. También se mencionó que la carrera docente crece un 2,9% y llega a más de 215 mil profesores y se asegura que se mantiene la gratuidad para más de 600 mil estudiantes, y aumentamos las becas para los jóvenes que quieren seguir estudiando después del colegio. “Ninguno de los beneficios que la ley garantiza se toca. Lo que sí va a cambiar, y comenzó a cambiar desde el día en que asumimos, es que el Estado va a verificar cada peso del gasto social, cruzando la información de sus registros para que los recursos lleguen a quien corresponde. No cambian los requisitos. No cambian los montos. Cambia el cuidado de los recursos de todos los chilenos”, afirmó el Presidente. Para Salud se aumenta el presupuesto en 4,7%. “No se trata solo de poner más recursos, sino de que esos recursos se conviertan en atención a tiempo”, dijo. En el desglose de ese aumento de los recursos, indicó que crecerá el financiamiento para acortar las esperas: “Se comprará atenciones a clínicas, invertir en hospitales de mayor complejidad, así como los consultorios, los Cesfam y las postas también reciben más, con un mayor aporte por cada persona inscrita”. Otro punto que destaca es que “Fonasa va a comprar mejor, exigiendo calidad, rapidez y buen precio”. Para ello, se impulsará “una canasta esencial de medicamentos, para que las familias gasten menos de su bolsillo; una ficha clínica compartida entre la red pública y la privada; y el uso de inteligencia artificial para que el paciente más grave sea atendido primero. Porque nadie debería enfermarse más mientras espera en una lista”. También expresó que el foco estará puesto “en dejar de gastar mal. El Estado pagó más de 8 mil millones de pesos por sobre el precio de mercado en compras por convenio marco. Solo ajustando los arriendos de oficinas públicas a lo que vale el mercado, podemos ahorrar hasta 5 mil millones al año. Por eso, desde ahora, vamos a medir cuánto paga cada servicio por lo que compra, cuánto paga por arriendo, entre otras mejoras de gestión.”. Como mensaje final, Kast dijo que “esta noche, en muchas casas de Chile, alguien se va a sentar a la mesa a sacar las cuentas del mes: primero, lo urgente; después, lo demás; y nunca gastar lo que no se tiene. Eso mismo es lo que hoy está haciendo nuestro Gobierno”. Todo esto con el objetivo de “que el que busca trabajo lo encuentre, y el que perdió su casa vuelva a tener un hogar. Que el que sale de noche vuelva tranquilo. Que el niño que espera no espere más. Que el que trabajó toda su vida reciba lo que es suyo cada mes”. Respecto a la discusión que se viene en el Congreso, Kast hizo un llamado a los parlamentarios: “Les pido que el debate sea exigente, pero que no sea desde una trinchera”. Más temprano, el ministro de Hacienda, Jorge Quiroz, junto al director de Presupuestos, José Pablo Gómez, entregaron el erario fiscal a la vicepresidente de la Cámara de Diputados, Ximena Ossandón (RN) “Tenemos la expectativa que esto vaya avanzando razonablemente. Es una expansión moderada del gasto, es un presupuesto responsable que tiene mucho énfasis en reactivación de empleo, obras públicas, viviendas, también las cosas que ha pedido la ciudadanía como seguridad, están consagrando íntegramente los beneficios sociales que están consagrando las leyes”, señaló Quiroz. El secretario de Estado apuntó con respecto al gasto público de 1,5% que “lo importante implica más bien un crecimiento moderado y, desde luego, los ministerios más importantes están todos subiendo”.",
+    "full_original_body_read": true,
+    "original_full_signal": {
+      "title": "Kast anuncia su primer Presupuesto con alza del gasto de 1,5% y con foco en empleo, seguridad y salud",
+      "source_name": "Pulso / La Tercera",
+      "source_type": "press_high_trust",
+      "source_url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+      "category": "Aseguramiento",
+      "subcategory": "General",
+      "system_domain": "HEALTH",
+      "what_happened": "Según Pulso / La Tercera, Según la nota del 1 de octubre de 2026, el gobierno de José Antonio Kast presentó al Congreso su propuesta de Presupuesto 2027, con un aumento reportado de 4,7% para Salud. La propuesta contempla aumentar el financiamiento para reducir listas de espera mediante compra de atenciones a clínicas, inversión en hospitales de mayor complejidad y mayores aportes a consultorios, Cesfam y postas. También anunció medidas futuras como una canasta esencial de medicamentos, una ficha clínica compartida y uso de inteligencia artificial para priorizar a pacientes graves; al 1 de octubre, el proyecto aún debía discutirse en el Congreso.",
+      "event_date": "2026-10-01",
+      "detected_at": "2026-10-11T07:52:34.224551+00:00",
+      "primary_source_url": null,
+      "event_type": "OTHER",
+      "strategic_theme": [],
+      "institution_types": [],
+      "entity_refs": [],
+      "country": "CL",
+      "topics": [
+        "insurance",
+        "providers",
+        "investment_ma",
+        "financing",
+        "regulation",
+        "waiting_lists",
+        "competition",
+        "public_health"
+      ],
+      "entities": [],
+      "people": [],
+      "geography": [],
+      "key_facts": [],
+      "key_numbers": [],
+      "why_it_matters": "Al 1 de octubre de 2026, según la nota, Fonasa se preparaba para modificar su compra de prestaciones y el gobierno proponía orientar recursos adicionales a atención oportuna, medicamentos y gestión de listas de espera. La eventual aprobación podría afectar el financiamiento y la relación de compra entre Fonasa, clínicas privadas, hospitales y la atención primaria, pero las medidas descritas seguían siendo parte de un presupuesto en discusión y no acreditan implementación vigente al 11 de octubre.",
+      "who_cares": [],
+      "possible_implications": [],
+      "watch_tags": [
+        "pulso_latercera",
+        "media",
+        "sistema de salud"
+      ],
+      "connection_keys": [],
+      "trend_keys": [],
+      "prospective_evidence": true,
+      "economic_impact_score": 92,
+      "regulatory_impact_score": 55,
+      "scope_score": 92,
+      "novelty_score": 92,
+      "actionability_score": 76,
+      "source_quality_score": 92,
+      "radar_score": 82,
+      "confidence_score": 92,
+      "distribution": "archive",
+      "validation_status": "automatic",
+      "corroboration_status": "unknown",
+      "additional_sources": [],
+      "source_documents": [],
+      "key_points": [],
+      "risk_notes": [],
+      "data_insights": [],
+      "data_insight_meta": {},
+      "validity_text": null,
+      "related_reference_ids": [],
+      "original_language": "es",
+      "display_language": "es",
+      "translation_status": "not_required",
+      "original_title": null,
+      "original_what_happened": null,
+      "original_why_it_matters": null,
+      "signal_types": [
+        "Noticias"
+      ],
+      "scopes": [
+        "Sistema de salud"
+      ],
+      "editorial_relevance": 92,
+      "source_quality_gate": "passed",
+      "evidence_maturity": "media_reported",
+      "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+      "publication_date": "2026-10-01",
+      "publication_timestamp": "2026-10-01T00:17:15.187Z",
+      "publication_date_source": "visible_article_byline",
+      "editorial_assessment": {
+        "decision": "published",
+        "relevance_score": 92,
+        "threshold": 72,
+        "analysis_reason": "Es una señal nacional y material para el sector salud: el primer presupuesto del gobierno propone un aumento específico para Salud y cambios potenciales en compra de prestaciones, medicamentos, interoperabilidad clínica y priorización de pacientes. Se mantiene la atribución de prensa y se distingue el anuncio presupuestario de su aprobación o ejecución."
+      },
+      "ingestion_mode": "BACKFILL",
+      "editorial_review": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso-v5-paid-three-independent-primary-copy-review-2026-10-11",
+        "review_file": "data/audits/pulso_v5_three_paid_editorial_corrections_2026_10_11.json",
+        "review_sha256": "c801b96464edbe5d179ca72b6d7ca63c746d53e55d6c18ee64bf70d3343923df",
+        "record_sha256": "b17ac12f505216e0851e9e7aa4c602f85de787bac920c14131d24dc2dd0f8029",
+        "original_signal_sha256": "9fd7df56f0362820955c5bf73e2c05ede6049f4d5647e726d0965f51bb1ea914",
+        "original_body_sha256": "d6e9ec6b2f7552d48069ad442e3a6623d020be5f032339d67b0b5c8de6a9f6dd",
+        "publication_date": "2026-10-01",
+        "decision": "accept",
+        "reason": "Copia preserva propuestaPresupuesto2027+4,7%Salud y discusiónCongreso, comprafuturaFonasa/privados, APS, canastamedicamentos/fichacompartida/IA como anuncios. No afirma recursos aprobados ni implementación al11octubre, ni trata4,7 como aumento2026. Coincidencia con otros artículos presupuestarios no basta para corroboración o duplicado factual completo.",
+        "evidence_quotes": [
+          "Para Salud se aumenta el presupuesto en 4,7%.",
+          "Fonasa va a comprar mejor, exigiendo calidad, rapidez y buen precio",
+          "se impulsará “una canasta esencial de medicamentos, para que las familias gasten menos de su bolsillo; una ficha clínica compartida entre la red pública y la privada; y el uso de inteligencia artificial para que el paciente más grave sea atendido primero."
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 92,
+          "threshold": 72,
+          "analysis_reason": "Es una señal nacional y material para el sector salud: el primer presupuesto del gobierno propone un aumento específico para Salud y cambios potenciales en compra de prestaciones, medicamentos, interoperabilidad clínica y priorización de pacientes. Se mantiene la atribución de prensa y se distingue el anuncio presupuestario de su aprobación o ejecución."
+        },
+        "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 1 de octubre de 2026, el gobierno de José Antonio Kast presentó al Congreso su propuesta de Presupuesto 2027, con un aumento reportado de 4,7% para Salud. La propuesta contempla aumentar el financiamiento para reducir listas de espera mediante compra de atenciones a clínicas, inversión en hospitales de mayor complejidad y mayores aportes a consultorios, Cesfam y postas. También anunció medidas futuras como una canasta esencial de medicamentos, una ficha clínica compartida y uso de inteligencia artificial para priorizar a pacientes graves; al 1 de octubre, el proyecto aún debía discutirse en el Congreso.",
+        "original_model_why_it_matters": "Al 1 de octubre de 2026, según la nota, Fonasa se preparaba para modificar su compra de prestaciones y el gobierno proponía orientar recursos adicionales a atención oportuna, medicamentos y gestión de listas de espera. La eventual aprobación podría afectar el financiamiento y la relación de compra entre Fonasa, clínicas privadas, hospitales y la atención primaria, pero las medidas descritas seguían siendo parte de un presupuesto en discusión y no acreditan implementación vigente al 11 de octubre."
+      },
+      "editorial_decision": "accept",
+      "editorial_review_reason": "Copia preserva propuestaPresupuesto2027+4,7%Salud y discusiónCongreso, comprafuturaFonasa/privados, APS, canastamedicamentos/fichacompartida/IA como anuncios. No afirma recursos aprobados ni implementación al11octubre, ni trata4,7 como aumento2026. Coincidencia con otros artículos presupuestarios no basta para corroboración o duplicado factual completo.",
+      "feed_visibility": true
+    },
+    "original_signal_sha256": "4d47e94bf29e4ad2a7524f70656044eec3a1a190cd41ee7c36ab33368f39d0cd",
+    "full_signal_read": true
+  },
+  "summary": {
+    "reviewed": 4,
+    "full_primary_bodies_read": 5,
+    "accept": 3,
+    "group_recommended": 1,
+    "score_changes": 0,
+    "AI_calls": 0,
+    "state_writes": 0
+  },
+  "acceptance_pass": false,
+  "verdict": "SCOPED_SECOND_REVIEW_WITH_ONE_NOVELTY_FINDING_PENDING_ACTUAL_GROUPING",
+  "limitations": [
+    "The actual publication and AI assessment remain retained exactly; grouping is a recommendation to parent-owned editorial workflow.",
+    "This file does not assert global source acceptance or change the materiality gate.",
+    "The unusual Quilodrán amount is quoted as reported by the publisher rather than independently certified."
+  ]
+}
