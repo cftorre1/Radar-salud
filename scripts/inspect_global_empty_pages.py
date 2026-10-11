@@ -35,7 +35,7 @@ for row in rows:
     prior=urlunsplit((*parts[:3],urlencode([(k,v) for k,v in query if k!='page']+([('page',str(current-1))] if current>1 else [])),''))
     if current>0 and prior in page_documents:
         doc=page_documents[prior]
-        row['preceding_page']={'url':prior,'pager_nodes':[{'tag':n.tag,'attrs':n.attrs,'text':n.text()[:500]} for n in doc.nodes() if any(c.startswith(('pager','js-pager')) for c in n.attrs.get('class','').split())],
+        row['preceding_page']={'url':prior,'pager_nodes':[{'tag':n.tag,'attrs':n.attrs,'closed':n.closed,'text':n.text()[:500],'links':[{'attrs':a.attrs,'text':a.text(),'closed':a.closed} for a in n.nodes('a')]} for n in doc.nodes() if any(c.startswith(('pager','js-pager')) for c in n.attrs.get('class','').split())],
             'pagination_links':[{'attrs':n.attrs,'text':n.text()} for n in doc.nodes('a') if {'next','last','prev','previous','first'}&set(n.attrs.get('rel','').split())]}
 path=root/'data/audits/global_source_recovery_2026_10_11/runs'/inventory['run_id']/'empty_listing_diagnostic.json'
 path.write_text(json.dumps({'run_id':inventory['run_id'],'network_requests':0,'empty_pages':rows},ensure_ascii=False,indent=2)+'\n')
