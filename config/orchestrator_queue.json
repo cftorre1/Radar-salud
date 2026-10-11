@@ -4138,6 +4138,75 @@
       "last_progress_at": "2026-10-11T04:45:00Z",
       "current_subfront": "reconcile_work_findings_and_codex_prs",
       "next_action": "Conciliar PRs #10-#13 con issues #5-#9 y queue; no cerrar ninguna fuente hasta merge + QA + runtime."
+    },
+    {
+      "id": "beta_gate5_test_ops_golive_2026_10_11",
+      "status": "approved",
+      "priority": "critical",
+      "owner": "Dirección + Paolo + Pato + Legal/Privacy + Growth Ops",
+      "source": "Dirección",
+      "objective": "Cerrar testeo operacional, cumplimiento y go-live después del beta atractivo, incluyendo analytics, newsletter, correo, source suggestions, evidencia LIVE y promoción explícita.",
+      "depends_on": [
+        "source_recovery_reconciliation_gate_2026_10_11"
+      ],
+      "instructions": [
+        "Analytics: aprobar tratamiento/aviso de privacidad, definir eventos permitidos, retención y metadatos; habilitar captura sólo después de aprobación y validar dashboard/telemetría end-to-end.",
+        "Newsletter/MailerLite: crear/habilitar cuenta y grupos, aportar IDs/API key vía secreto, confirmar plan/API, configurar doble opt-in, activar captura/envío sólo tras privacidad aprobada y ejecutar prueba end-to-end.",
+        "Source Suggestions: definir hosting/backend durable, almacenamiento y destinatario interno; implementar API real y prueba de persistencia/entrega.",
+        "Correo: completar MX, SPF, DKIM, DMARC, alias operativo y verificar Authentication-Results reales.",
+        "LIVE Evidence: mantener gate abierto hasta observar evento LIVE externo genuino; no simular ni degradar gates.",
+        "Legal: aprobar Privacidad y Términos antes de activación pública de captura/analytics/newsletter.",
+        "Credenciales/API: registrar por fuente cualquier necesidad de cuenta/API/secret; escalar sólo cuando sea imprescindible y con propósito claro.",
+        "Gasto externo: toda nueva contratación/proveedor requiere decisión explícita de Dirección.",
+        "Producción/main: promoción sólo por autorización explícita de Dirección después de staging PASS, reviewer PASS, smoke desktop/mobile y rollback preparado.",
+        "No considerar beta comercial cerrada hasta completar o aceptar explícitamente los blockers humanos de esta puerta."
+      ],
+      "evidence_required": [
+        "analytics real con consentimiento/política y eventos validados",
+        "newsletter double opt-in end-to-end",
+        "source suggestions backend durable operativo",
+        "SPF/DKIM/DMARC PASS y alias operativo",
+        "evidencia LIVE genuina o dependencia externa explícita",
+        "Privacidad y Términos aprobados",
+        "inventario de credenciales/APIs y blockers",
+        "registro de decisiones de gasto externo",
+        "release checklist completo",
+        "autorización explícita Dirección para main/producción"
+      ],
+      "approved_at": "2026-10-11",
+      "next_action": "Después de beta atractivo en staging, ejecutar checklist humano/operacional y preparar promoción explícita."
+    },
+    {
+      "id": "pulso_latercera_exhaustive_discovery_2026_10_11",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Codex B + Media Source Worker + Reviewer",
+      "source": "Dirección / external reconciliation",
+      "objective": "Rediseñar discovery de Pulso/La Tercera para cobertura exhaustiva razonable 30/90 días; la muestra actual de 11 candidatos es insuficiente y omite artículos sanitarios recientes verificables.",
+      "depends_on": [],
+      "instructions": [
+        "No aceptar los 11 candidatos actuales como universo; tratarlos sólo como muestra.",
+        "Inventariar todas las superficies relevantes de latercera.com: Pulso, Nacional, etiquetas, archivo/paginación, búsqueda/sitemap/feed si existe, y otras secciones que publiquen salud material.",
+        "Eliminar dependencia exclusiva de links visibles en primera página y de un prefiltro de título que pueda impedir abrir artículos cuyo valor sanitario aparece en cuerpo/subtítulo.",
+        "Implementar paginación/archivo o superficie equivalente para cubrir 30 y 90 días.",
+        "Comparar inventario contra búsquedas externas independientes y sitio original; documentar omisiones y causas.",
+        "Mantener exclusión de Opinión y contenido no factual salvo decisión editorial explícita.",
+        "No publicar por cuota; después del discovery aplicar gate editorial vigente.",
+        "Cierre sólo con recall auditado sobre muestra externa, runtime real, QA y Reviewer."
+      ],
+      "evidence_required": [
+        "inventario 30/90 con URLs y fechas verificadas",
+        "superficies/paginación documentadas",
+        "muestra externa independiente con recall explicado",
+        "omisión cero o justificada en set de control reciente",
+        "runtime core real",
+        "QA + Reviewer PASS"
+      ],
+      "approved_at": "2026-10-11",
+      "started_at": "2026-10-11",
+      "last_progress_at": "2026-10-11",
+      "current_subfront": "expand_discovery_beyond_11_sample",
+      "next_action": "Ampliar superficies y paginación, luego reconciliar contra set externo reciente antes de considerar PR #10 integrable."
     }
   ],
   "execution_policy": {
