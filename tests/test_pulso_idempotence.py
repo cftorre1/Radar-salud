@@ -153,6 +153,19 @@ def test_real_cohort_historical_observation_references_are_not_live_immutable_pr
         assert context["referenced_proof_files"][reference["path"]] == reference["sha256"]
 
 
+def test_real_editorial_approval_registry_is_bound_even_before_future_reviews():
+    registry = ROOT / audit.EDITORIAL_REVIEW_REGISTRY
+    assert registry.is_file(), "The actual review registry must exist before the next paid core"
+    context = audit.read_context(ROOT)
+    expected = audit.digest(registry.read_bytes())
+    assert context["referenced_proof_files"][audit.EDITORIAL_REVIEW_REGISTRY] == expected
+    assert context["observed_files"][audit.EDITORIAL_REVIEW_REGISTRY] == expected
+    for pair in json.loads(registry.read_bytes())["reviews"]:
+        for field, sha_field in (("review_file", "review_sha256"),
+                                 ("independent_review_file", "independent_review_sha256")):
+            assert context["referenced_proof_files"][pair[field]] == pair[sha_field]
+
+
 def test_contract_capture_keeps_pending_final_acceptance_and_paid_observation_proofs():
     context = unit_context()
     baseline = audit.capture_baseline(context, now=NOW)

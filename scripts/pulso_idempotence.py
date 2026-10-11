@@ -23,6 +23,7 @@ DEFAULT_REPORT = "data/audits/pulso_runtime_2026_10_11.json"
 DEFAULT_QA = "data/audits/pulso_directed_processing_qa_2026_10_11.json"
 DEFAULT_BASELINE = "data/audits/pulso_idempotence_baseline_2026_10_11.json"
 DEFAULT_RESULT = "data/audits/pulso_idempotence_2026_10_11.json"
+EDITORIAL_REVIEW_REGISTRY = "data/audits/pulso_editorial_review_registry_2026_10_11.json"
 RUNTIME_HELPERS = (
     "scripts/audit_pulso_runtime.py", "scripts/qa_pulso_recovery.py",
     "scripts/retain_pulso_runtime_fixtures.py", "scripts/export_web_snapshot.py",
@@ -361,6 +362,26 @@ def read_context(root, *, selection=DEFAULT_SELECTION, report=DEFAULT_REPORT, qa
     reviewed = [row.get("editorial_review", {}) for row in history]
     reviewed.extend(item.get("raw", {}).get("metadata", {}).get("editorial_review", {}) for item in values["queue"].values())
     references.update(review["review_file"] for review in reviewed if isinstance(review, dict) and isinstance(review.get("review_file"), str))
+    if (root / EDITORIAL_REVIEW_REGISTRY).is_file():
+        # Authorizing a future independent audit is a data mutation. Preserve
+        # the whole approval registry, including an initially empty registry,
+        # so it cannot change silently between the paid run and its replay.
+        references.add(EDITORIAL_REVIEW_REGISTRY)
+        registry = json.loads((root / EDITORIAL_REVIEW_REGISTRY).read_bytes())
+        require(registry.get("schema_version") == "pulso_paid_editorial_review_registry_v1"
+                and registry.get("source_id") == SOURCE and isinstance(registry.get("reviews"), list),
+                "editorial_review_registry_invalid")
+        for pair in registry["reviews"]:
+            require(isinstance(pair, dict), "editorial_review_registry_pair_invalid")
+            for field, sha_field in (("review_file", "review_sha256"),
+                                     ("independent_review_file", "independent_review_sha256")):
+                relative = pair.get(field)
+                require(isinstance(relative, str), "editorial_review_registry_path_invalid")
+                path = (root / relative).resolve()
+                require(path.is_relative_to((root / "data/audits").resolve()) and path.is_file()
+                        and digest(path.read_bytes()) == pair.get(sha_field),
+                        "editorial_review_registry_pair_hash_changed")
+                references.add(relative)
     incremental_review_files = incremental_proof_files(root, values["queue"])
     references.update(incremental_review_files)
     proof_files = {}
