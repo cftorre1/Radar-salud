@@ -67878,24 +67878,10 @@
       "audit_counts": {},
       "blocked_revision": [
         "c4819844e413d31ede792521a2c137392c4ae104",
-        "c288e3229e4b1d167bf05cc01e2ab31777dd869ce2882498b53c9b92a46b6794"
+        "2e6e2de74f7ab074a36c2453dc534f58b6f34199d15500ff0a3a774df58b617d"
       ],
       "blocker": {
         "blockers": [
-          {
-            "evidence": [
-              {
-                "diagnostics_are_acceptance": false,
-                "family": "media",
-                "task_id": "source_repair_media_lane_2026_10_11"
-              }
-            ],
-            "fingerprint": "bb6cda3dce6ddfb1dbd29390b3a943faa6a28bf6332eb5f3e1df6e4bd0c3a889",
-            "human_required": false,
-            "kind": "acceptance",
-            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
-            "source_urls": []
-          },
           {
             "evidence": [
               {
@@ -67905,9 +67891,9 @@
                   "--diagnose-source",
                   "diario_financiero"
                 ],
-                "failure_hash": "48b3cb4b52387c3adb532d08d50350dbbb9c60522740dd7ca1bb7fcd1b797ff0",
+                "failure_hash": "54bb64e7ea4692d865008896153b576ed651f0bb1621852236a059d5ab5c5d7f",
                 "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-diario_financiero.log",
-                "log_sha256": "202bf63cb0e6e4ca3ba86d8dd57bb51253d1991b022d3442e2f3d8e110e5daf9",
+                "log_sha256": "a3468e33eef49653028da84223f9e516c54f0bfc3473a764f197c24e16e592d0",
                 "returncode": 1,
                 "source_urls": [
                   "https://www.df.cl/empresas/dfsalud",
@@ -67983,43 +67969,50 @@
                 "dated": 0,
                 "discovered": 64,
                 "error": null,
+                "failure_origin": "instrumentation_limit",
                 "inventory_hash": "c010d09a8b909d9d6c385efc18e80e81c5ea5c6c0ecf32f3c3f5b35f7b92e516",
                 "newest_event_date": null,
+                "probe_budget": {
+                  "executed_requests": 24,
+                  "max_requests": 24,
+                  "unexecuted_requests": 42
+                },
+                "probe_complete": false,
                 "publication_verified": false,
                 "requests": [
                   {
                     "response_bytes": 375820,
-                    "response_sha256": "9f1b19605b138c57256f5bdcb6be57edd9a3f76312efdd3b9849414e9d6127a2",
+                    "response_sha256": "f818af0f23e0a0feec0b0c47d0293f0666cae94a95a4cb2411736f134ac01d49",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/dfsalud"
                   },
                   {
                     "response_bytes": 402799,
-                    "response_sha256": "931f7b62e5dd4fb79bac984a3dcf9ad539bbaf2a036974ea29433f74581e78ce",
+                    "response_sha256": "497d7913b65256c841f3e6e57d7705ce7d4318ad0664fcd540b2a59a8b8adff7",
                     "status": "PASS",
                     "url": "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion"
                   },
                   {
                     "response_bytes": 415704,
-                    "response_sha256": "617415dce14f5e2398adc0dc7f15e9a5d7520af800d26b540ea44219774d2d68",
+                    "response_sha256": "32e3d0d477012b10c505f4deaf99561aab74b03b1a93c06932c7e67df9b45572",
                     "status": "PASS",
                     "url": "https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla"
                   },
                   {
                     "response_bytes": 404797,
-                    "response_sha256": "67d38984c50d9b22691969ae90a2d2c23c2b396fa7772f716d057cf0d2f099a8",
+                    "response_sha256": "d21145ab7acdbe040e287563112fbf321b5ab1a92dce592a727a785865ed7e66",
                     "status": "PASS",
                     "url": "https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e"
                   },
                   {
                     "response_bytes": 384148,
-                    "response_sha256": "a5c4094f4952df2143ae5eb9fcaf946ef4a437ae8b2acf32626cd75894df20e9",
+                    "response_sha256": "77dfae9284d31c43416a19b2d9a2ec3b06c7ee3da0b31919e564ca30bfec5d65",
                     "status": "PASS",
                     "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
                   },
                   {
                     "response_bytes": 396776,
-                    "response_sha256": "223d2000bd1d42d0ba40ae24b22e65470456818e5550417ede7f38a8832fbcab",
+                    "response_sha256": "25eb30e15d4bed439c45ba995897cb93a015d1ad27e0423dc4a433f6d6b5955f",
                     "status": "PASS",
                     "url": "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian"
                   },
@@ -68043,91 +68036,91 @@
                   },
                   {
                     "response_bytes": 388165,
-                    "response_sha256": "470f73315b231817421f998cd2fc6ceba1a892cde6f3c45dcdb6c0bfeff28782",
+                    "response_sha256": "c90dc818b998bb235152dd70ecf39d75b0f04d2f9503c0957260ce84318e02a4",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
                   },
                   {
                     "response_bytes": 384048,
-                    "response_sha256": "9339f60aeb1ab72955e9bac4b0bf111b8be66186614fdc992292a2d30738a3f5",
+                    "response_sha256": "f540b635434bec8508f5336be2920d364955620fe933cd992df17dd2b2f92aa5",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion"
                   },
                   {
                     "response_bytes": 383570,
-                    "response_sha256": "8681ad4056a904d12a003f4f221156194e6a30c78e95999d0bd1b6a9bad1600f",
+                    "response_sha256": "68f8bad40a26251d4e75b48f7a796659137158e0cba9d2739d79305b8933ad1f",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"
                   },
                   {
                     "response_bytes": 383462,
-                    "response_sha256": "8ad75f69575ff3a6ee5866e75403a4bd921bc811eb92a83ea6ce7d79696ca983",
+                    "response_sha256": "ac28ee68add08c3238401e45b77a95e11a4677732bc1dda33c2744763582af93",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no"
                   },
                   {
                     "response_bytes": 388805,
-                    "response_sha256": "c2482f934d79e5246a57d96f156bfa4907e7ab7fbf6a8a7a54e965409ca23270",
+                    "response_sha256": "c7a17c59515fc1b153560964a1f3ec49477ac33d88dfd3e3cb74a7d7c8652b08",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
                   },
                   {
                     "response_bytes": 391972,
-                    "response_sha256": "5749849bc7257968cdb7f5c4cef3f93db77baa5bbe7eaba6a7464d6f995174ae",
+                    "response_sha256": "aafe0a2526969195e4a9cc05fe4dc5c93a8c0f74eb369dabc0115fd09f0043a5",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion"
                   },
                   {
                     "response_bytes": 396443,
-                    "response_sha256": "b1c520d10156466c3f25a0e662e60a8ce96762f908b839df3cfb655fcffdf328",
+                    "response_sha256": "a0c7c7af5fef3ff01a53e69d29e3e9dcb13224053915c32fdb441d009d382a2f",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras"
                   },
                   {
                     "response_bytes": 394989,
-                    "response_sha256": "ab5461a2f9cff7ece1c995f3672c915c0147abe9101ed1093ff461d46b566a03",
+                    "response_sha256": "aad14e17c80cafb23e952d90fe792d4da4e7e3535e8d625697498f57d71ab4fc",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes"
                   },
                   {
                     "response_bytes": 370868,
-                    "response_sha256": "eefaf3ef90d938dc5541604902a5de1ac8c673449f2588aa2496fc062d7bd85e",
+                    "response_sha256": "a7fb3ff5d0fbe1df4806bb6439fe9350f89e31e55a22820394081cbf3a984ec2",
                     "status": "PASS",
                     "url": "https://www.df.cl/regiones/maule/empresas/p/1"
                   },
                   {
                     "response_bytes": 385892,
-                    "response_sha256": "2a7d7539ee6e183ebbef11963a803124d55c8367bf1cebe09da8a4db617d4e85",
+                    "response_sha256": "ed05bcfc6f321dd1ea7f4a87e77720dca23bb36e1730fd32e546151983fdffa0",
                     "status": "PASS",
                     "url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de"
                   },
                   {
                     "response_bytes": 389315,
-                    "response_sha256": "535dd71402abad0e4c1373d252ff6d5730be8488963dd1dffdc25655b3d63b8b",
+                    "response_sha256": "1d7b4c21de59afb8300ad256f35d6910874ed35ed539fc6c2b6026b5bfcf19e2",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa"
                   },
                   {
                     "response_bytes": 391805,
-                    "response_sha256": "e9f07d96d7c110ed32ca028c00e10419ad4a33e77cf0baa4181298db65f4c482",
+                    "response_sha256": "74160a964948e95d88004700625ee9f31ee1284e428f919875742f79295f0674",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro"
                   },
                   {
                     "response_bytes": 371718,
-                    "response_sha256": "ae2f62c3041f337fb0008c7f6021469d1f308420e75ad53c62679e1c49318690",
+                    "response_sha256": "a5a848aa65732ae47be0b4f6b5f2eaa4d13268386717d8dfd30c06e396856550",
                     "status": "PASS",
                     "url": "https://www.df.cl/regiones/valparaiso/empresas/p/1"
                   },
                   {
                     "response_bytes": 395500,
-                    "response_sha256": "39ab827357d5a15a3c02edc37b762fe8d19ac80e11830ca438e705a13a67c0c7",
+                    "response_sha256": "083a49ed68957afaa23e6896cb219aa3bc986878562623c24b325feb3a137389",
                     "status": "PASS",
                     "url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza"
                   },
                   {
                     "response_bytes": 388716,
-                    "response_sha256": "17122a0a2914bb47cd057ae662cf7c422c01848444f457df179d6ac271c38e19",
+                    "response_sha256": "dd18097c4bd23eafa2ffec16d9fd6972b0ebd6b5b8124b4beed539cbb1ae950a",
                     "status": "PASS",
                     "url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el"
                   },
@@ -68418,923 +68411,19 @@
                 ],
                 "scope": "discovery_only",
                 "slug": "diario_financiero",
-                "technical_status": "error"
+                "technical_status": "incomplete"
               },
               {
                 "automated_recovery": {
-                  "blocker": "Unsupported live repair: source has empty/undated inventory without a demonstrated parser exception",
-                  "changed_paths": [],
-                  "evidence": [
-                    {
-                      "captured_stdout_bytes": 18080,
-                      "captured_stdout_sha256": "202bf63cb0e6e4ca3ba86d8dd57bb51253d1991b022d3442e2f3d8e110e5daf9",
-                      "command": [
-                        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                        "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                        "--diagnose-source",
-                        "diario_financiero"
-                      ],
-                      "output": "DF fetch: bounded_probe_budget: 24 requests per source\nDF discovered=64\nAUTONOMY_SOURCE_JSON={\"slug\": \"diario_financiero\", \"technical_status\": \"error\", \"error\": null, \"discovered\": 64, \"dated\": 0, \"newest_event_date\": null, \"samples\": [{\"source_url\": \"https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian\", \"title\": \"Los grupos económicos favoritos de las AFP\", \"event_date\": null, \"content_hash\": \"5bca3471be119f5fdd6d3345c5666ed92a63fff917c6abcf6fab1143c4a4cd6d\"}, {\"source_url\": \"https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion\", \"title\": \"Latam a un escalón del grado de inversión\", \"event_date\": null, \"content_hash\": \"2d1d058a2a09e2c3cc4a662b8bf32fc6a8b5f6eb361b804cda28f1899f09a57f\"}, {\"source_url\": \"https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e\", \"title\": \"Crisis de rentabilidad del fondo E\", \"event_date\": null, \"content_hash\": \"8651c8ddca876974a3e2b219a1488935a887bd52f30ad1761861b2527c3345cb\"}, {\"source_url\": \"https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla\", \"title\": \"Hermann González advierte riesgo de recesión\", \"event_date\": null, \"content_hash\": \"432738617b1461922bf4b9d1e6e14538347b3df3129bcaf7b64933cc214fab48\"}, {\"source_url\": \"https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se\", \"title\": \"El primer Presupuesto de Kast\", \"event_date\": null, \"content_hash\": \"5d9301eb44d3d4350de677fd3854b0023fffa72eb32eeaa465a5bbdc893a7399\"}, {\"source_url\": \"https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza\", \"title\": \"Sudmédica anuncia marcha blanca de la primera fase de su hospital privado en Quillota y aplaza emisión de acciones para noviembre\", \"event_date\": null, \"content_hash\": \"d52bfe9fb08cbec4e6785b67e85cc8d2e1b909e2df7c9f42c4591917c173f348\"}, {\"source_url\": \"https://www.df.cl/regiones/valparaiso/empresas/p/1\", \"title\": \"Empresas | 31/08/2026\", \"event_date\": null, \"content_hash\": \"cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7\"}, {\"source_url\": \"https://www.df.cl/regiones/maule/empresas/p/1\", \"title\": \"Empresas | 08/09/2026\", \"event_date\": null, \"content_hash\": \"cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7\"}, {\"source_url\": \"https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de\", \"title\": \"Andes Salud inaugura clínica de alta complejidad en Talca con US$ 45 millones de inversión y más de 1.000 empleos\", \"event_date\": null, \"content_hash\": \"1b2fdd88ee90d4a93415ed8070722f064d68f4dff5f9e796940b611330fde1a8\"}, {\"source_url\": \"https://www.df.cl/regiones/loslagos/empresas/p/1\", \"title\": \"Empresas | 24/08/2026\", \"event_date\": null, \"content_hash\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"}, {\"source_url\": \"https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con\", \"title\": \"Andes Salud impulsa inversiones en Los Lagos por $10 mil millones con apertura de centro de atenciones en Puerto Varas\", \"event_date\": null, \"content_hash\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"}, {\"source_url\": \"https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf\", \"title\": \"Tarifas electorales\", \"event_date\": null, \"content_hash\": \"37e580c982218501611f81d75af977ac702d7cbb64811fe584c1567b51c4127a\"}], \"inventory_hash\": \"c010d09a8b909d9d6c385efc18e80e81c5ea5c6c0ecf32f3c3f5b35f7b92e516\", \"requests\": [{\"url\": \"https://www.df.cl/empresas/dfsalud\", \"status\": \"PASS\", \"response_sha256\": \"9f1b19605b138c57256f5bdcb6be57edd9a3f76312efdd3b9849414e9d6127a2\", \"response_bytes\": 375820}, {\"url\": \"https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion\", \"status\": \"PASS\", \"response_sha256\": \"931f7b62e5dd4fb79bac984a3dcf9ad539bbaf2a036974ea29433f74581e78ce\", \"response_bytes\": 402799}, {\"url\": \"https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla\", \"status\": \"PASS\", \"response_sha256\": \"617415dce14f5e2398adc0dc7f15e9a5d7520af800d26b540ea44219774d2d68\", \"response_bytes\": 415704}, {\"url\": \"https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e\", \"status\": \"PASS\", \"response_sha256\": \"67d38984c50d9b22691969ae90a2d2c23c2b396fa7772f716d057cf0d2f099a8\", \"response_bytes\": 404797}, {\"url\": \"https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se\", \"status\": \"PASS\", \"response_sha256\": \"a5c4094f4952df2143ae5eb9fcaf946ef4a437ae8b2acf32626cd75894df20e9\", \"response_bytes\": 384148}, {\"url\": \"https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian\", \"status\": \"PASS\", \"response_sha256\": \"223d2000bd1d42d0ba40ae24b22e65470456818e5550417ede7f38a8832fbcab\", \"response_bytes\": 396776}, {\"url\": \"https://www.df.cl/noticias/site/docs/20250116/20250116114706/guia_etica_df_actualizacion_abril_2026_web.pdf\", \"status\": \"PASS\", \"response_sha256\": \"7974761a2895e3e18e1bafd6013646625bfb2dbfb63d2181b00d8f10e23276e6\", \"response_bytes\": 1211246}, {\"url\": \"https://www.df.cl/noticias/site/docs/20230105/20230105124926/ppt_tarifas_df_2025.pdf\", \"status\": \"PASS\", \"response_sha256\": \"2dd798a798e4effa49f1fa23e5f774de44af27f0c4d787b02871e268603d5d57\", \"response_bytes\": 779027}, {\"url\": \"https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf\", \"status\": \"PASS\", \"response_sha256\": \"164a98434191c23f2090c417e0873f72301a382a0695e2d0e50314afde4eff15\", \"response_bytes\": 639563}, {\"url\": \"https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido\", \"status\": \"PASS\", \"response_sha256\": \"470f73315b231817421f998cd2fc6ceba1a892cde6f3c45dcdb6c0bfeff28782\", \"response_bytes\": 388165}, {\"url\": \"https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion\", \"status\": \"PASS\", \"response_sha256\": \"9339f60aeb1ab72955e9bac4b0bf111b8be66186614fdc992292a2d30738a3f5\", \"response_bytes\": 384048}, {\"url\": \"https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera\", \"status\": \"PASS\", \"response_sha256\": \"8681ad4056a904d12a003f4f221156194e6a30c78e95999d0bd1b6a9bad1600f\", \"response_bytes\": 383570}, {\"url\": \"https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no\", \"status\": \"PASS\", \"response_sha256\": \"8ad75f69575ff3a6ee5866e75403a4bd921bc811eb92a83ea6ce7d79696ca983\", \"response_bytes\": 383462}, {\"url\": \"https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos\", \"status\": \"PASS\", \"response_sha256\": \"c2482f934d79e5246a57d96f156bfa4907e7ab7fbf6a8a7a54e965409ca23270\", \"response_bytes\": 388805}, {\"url\": \"https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion\", \"status\": \"PASS\", \"response_sha256\": \"5749849bc7257968cdb7f5c4cef3f93db77baa5bbe7eaba6a7464d6f995174ae\", \"response_bytes\": 391972}, {\"url\": \"https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras\", \"status\": \"PASS\", \"response_sha256\": \"b1c520d10156466c3f25a0e662e60a8ce96762f908b839df3cfb655fcffdf328\", \"response_bytes\": 396443}, {\"url\": \"https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes\", \"status\": \"PASS\", \"response_sha256\": \"ab5461a2f9cff7ece1c995f3672c915c0147abe9101ed1093ff461d46b566a03\", \"response_bytes\": 394989}, {\"url\": \"https://www.df.cl/regiones/maule/empresas/p/1\", \"status\": \"PASS\", \"response_sha256\": \"eefaf3ef90d938dc5541604902a5de1ac8c673449f2588aa2496fc062d7bd85e\", \"response_bytes\": 370868}, {\"url\": \"https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de\", \"status\": \"PASS\", \"response_sha256\": \"2a7d7539ee6e183ebbef11963a803124d55c8367bf1cebe09da8a4db617d4e85\", \"response_bytes\": 385892}, {\"url\": \"https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa\", \"status\": \"PASS\", \"response_sha256\": \"535dd71402abad0e4c1373d252ff6d5730be8488963dd1dffdc25655b3d63b8b\", \"response_bytes\": 389315}, {\"url\": \"https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro\", \"status\": \"PASS\", \"response_sha256\": \"e9f07d96d7c110ed32ca028c00e10419ad4a33e77cf0baa4181298db65f4c482\", \"response_bytes\": 391805}, {\"url\": \"https://www.df.cl/regiones/valparaiso/empresas/p/1\", \"status\": \"PASS\", \"response_sha256\": \"ae2f62c3041f337fb0008c7f6021469d1f308420e75ad53c62679e1c49318690\", \"response_bytes\": 371718}, {\"url\": \"https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza\", \"status\": \"PASS\", \"response_sha256\": \"39ab827357d5a15a3c02edc37b762fe8d19ac80e11830ca438e705a13a67c0c7\", \"response_bytes\": 395500}, {\"url\": \"https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el\", \"status\": \"PASS\", \"response_sha256\": \"17122a0a2914bb47cd057ae662cf7c422c01848444f457df179d6ac271c38e19\", \"response_bytes\": 388716}, {\"url\": \"https://www.df.cl/regiones/loslagos/empresas/p/1\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-stream/podcast/asunto-de-familia-armin-y-alejandro-kunstmann-la-sucesion-familiar-el\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-stream/podcast/df-al-cierre-las-claves-de-la-jornada-de-este-viernes-09-de-octubre\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/punto-de-partida/el-ingeniero-uc-de-25-anos-que-recibio-us-50-millones-para-formar-gente-en\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/por-dentro/inmobiliaria-de-gabriela-luksic-se-fusiona-con-patagonland\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/por-dentro/la-ofensiva-que-alista-luis-hermosilla-y-los-demas-acusados-del-caso\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/por-dentro/despues-de-rotter-krauss-los-negocios-que-buscan-los-yarur-para-empresas\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/coffee-break/hermanos-schupper-reclaman-en-la-justicia-deudas-a-multitienda-corona-de\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/por-dentro/la-primavera-de-eduardo-fernandez-leon\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/coffee-break/la-cruzada-de-juan-gabriel-valdes-para-traer-a-obama-a-valdivia\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/coffee-break/quien-era-klaus-michael-kuhne-el-socio-aleman-de-los-luksic-en-hapag-lloyd\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/coffee-break/el-homenaje-de-sodimac-a-juan-pablo-del-rio\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-stream/podcast/df-al-cierre-juan-ortiz-por-ipc-de-septiembre-esta-inflacion-llego-para\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-stream/videos/ahora-en-df-terremoto-de-magnitud-7-7-sacude-panama\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-stream/videos/ahora-en-df-las-imagenes-que-dejo-el-aluvion-en-las-condes\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/entre-codigos/grupo-evans-lanza-el-area-de-derecho-publico-y-mercados-regulados-y-ficha-a\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/entre-codigos/planificar-valorizar-los-bienes-y-evitar-conflictos-entre-familias-las\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/entre-codigos/idealis-legal-recruitment-y-diario-financiero-lanzan-leading-lawyers-2026\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/entre-codigos/estudio-colombara-y-consultora-data-compliance-sellan-alianza-ante-entrada\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/entre-codigos/sclb-abogados-exmorales-besa-fortalece-su-practica-de-m-a-con\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-lab/innovacion-y-startups/la-mayoria-de-las-pyme-y-startups-de-chile-y-la-region-gobiernan-su-ia-de\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-lab/innovacion-y-startups/startup-de-empleo-universitario-tasky-levanta-capital-para-acelerar\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-lab/innovacion-y-startups/futuro-del-trabajo-como-los-agentes-de-ia-estan-redefiniendo-roles\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-lab/innovacion-y-startups/flama-hub-startup-tecnologica-que-quiere-ser-el-gerente-de-delivery-en\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/mercados/fondos-de-inversion/andres-trivelli-ceo-de-larrainvial-y-la-oportunidad-que-representa-el\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/mercados/fondos-de-inversion/fondo-ligado-a-rama-de-los-luksic-y-carlos-eugenio-lavin-vende-50-de\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/mercados/fondos-de-inversion/gestora-global-de-fondos-nuveen-adquiere-a-schroders\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/mercados/fondos-de-inversion/cambios-en-fintual-exportfolio-manager-asume-como-gerente-general-de-agf-y\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/mercados/fondos-de-inversion/liquidador-de-matriz-de-sartor-opta-por-proceso-conjunto-con-landmark-y\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/construccion/inmobiliarias-comienzan-a-mover-sus-fichas-tras-cambios-a-la-oguc-preparan\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/construccion/mop-define-proyecto-para-nuevo-sistema-de-controversias-en-obras-publicas-y\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/construccion/contructora-prepara-proyecto-inmobiliario-de-us-46-millones-en-antofagasta\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/construccion/industria-inmobiliaria-preve-nuevo-impulso-a-la-inversion-tras-toma-de\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/construccion/contraloria-visa-cambios-a-la-ordenanza-de-construcciones-con-los-que-el\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/economia-y-politica/laboral-personas/la-flexibilidad-laboral-mejora-la-conciliacion-familiar-pero-su-uso-es\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/economia-y-politica/congreso/el-congreso-despacha-a-ley-el-proyecto-que-extiende-las-ayudas-a\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/economia-y-politica/laboral-personas/el-critico-analisis-de-nodo-xxi-al-presupuesto-del-ministerio-del-trabajo\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/economia-y-politica/laboral-personas/remuneraciones-y-costos-laborales-extienden-sus-alzas-en-medio-de-una-alta\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/economia-y-politica/laboral-personas/aumento-en-gasto-de-la-pgu-y-plan-pro-empleo-destacan-en-la-partida-del\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                      "returncode": 1,
-                      "source_evidence": {
-                        "dated": 0,
-                        "discovered": 64,
-                        "error": null,
-                        "inventory_hash": "c010d09a8b909d9d6c385efc18e80e81c5ea5c6c0ecf32f3c3f5b35f7b92e516",
-                        "newest_event_date": null,
-                        "publication_verified": false,
-                        "requests": [
-                          {
-                            "response_bytes": 375820,
-                            "response_sha256": "9f1b19605b138c57256f5bdcb6be57edd9a3f76312efdd3b9849414e9d6127a2",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/dfsalud"
-                          },
-                          {
-                            "response_bytes": 402799,
-                            "response_sha256": "931f7b62e5dd4fb79bac984a3dcf9ad539bbaf2a036974ea29433f74581e78ce",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion"
-                          },
-                          {
-                            "response_bytes": 415704,
-                            "response_sha256": "617415dce14f5e2398adc0dc7f15e9a5d7520af800d26b540ea44219774d2d68",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla"
-                          },
-                          {
-                            "response_bytes": 404797,
-                            "response_sha256": "67d38984c50d9b22691969ae90a2d2c23c2b396fa7772f716d057cf0d2f099a8",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e"
-                          },
-                          {
-                            "response_bytes": 384148,
-                            "response_sha256": "a5c4094f4952df2143ae5eb9fcaf946ef4a437ae8b2acf32626cd75894df20e9",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
-                          },
-                          {
-                            "response_bytes": 396776,
-                            "response_sha256": "223d2000bd1d42d0ba40ae24b22e65470456818e5550417ede7f38a8832fbcab",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian"
-                          },
-                          {
-                            "response_bytes": 1211246,
-                            "response_sha256": "7974761a2895e3e18e1bafd6013646625bfb2dbfb63d2181b00d8f10e23276e6",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/noticias/site/docs/20250116/20250116114706/guia_etica_df_actualizacion_abril_2026_web.pdf"
-                          },
-                          {
-                            "response_bytes": 779027,
-                            "response_sha256": "2dd798a798e4effa49f1fa23e5f774de44af27f0c4d787b02871e268603d5d57",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/noticias/site/docs/20230105/20230105124926/ppt_tarifas_df_2025.pdf"
-                          },
-                          {
-                            "response_bytes": 639563,
-                            "response_sha256": "164a98434191c23f2090c417e0873f72301a382a0695e2d0e50314afde4eff15",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf"
-                          },
-                          {
-                            "response_bytes": 388165,
-                            "response_sha256": "470f73315b231817421f998cd2fc6ceba1a892cde6f3c45dcdb6c0bfeff28782",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
-                          },
-                          {
-                            "response_bytes": 384048,
-                            "response_sha256": "9339f60aeb1ab72955e9bac4b0bf111b8be66186614fdc992292a2d30738a3f5",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion"
-                          },
-                          {
-                            "response_bytes": 383570,
-                            "response_sha256": "8681ad4056a904d12a003f4f221156194e6a30c78e95999d0bd1b6a9bad1600f",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"
-                          },
-                          {
-                            "response_bytes": 383462,
-                            "response_sha256": "8ad75f69575ff3a6ee5866e75403a4bd921bc811eb92a83ea6ce7d79696ca983",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no"
-                          },
-                          {
-                            "response_bytes": 388805,
-                            "response_sha256": "c2482f934d79e5246a57d96f156bfa4907e7ab7fbf6a8a7a54e965409ca23270",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
-                          },
-                          {
-                            "response_bytes": 391972,
-                            "response_sha256": "5749849bc7257968cdb7f5c4cef3f93db77baa5bbe7eaba6a7464d6f995174ae",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion"
-                          },
-                          {
-                            "response_bytes": 396443,
-                            "response_sha256": "b1c520d10156466c3f25a0e662e60a8ce96762f908b839df3cfb655fcffdf328",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras"
-                          },
-                          {
-                            "response_bytes": 394989,
-                            "response_sha256": "ab5461a2f9cff7ece1c995f3672c915c0147abe9101ed1093ff461d46b566a03",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes"
-                          },
-                          {
-                            "response_bytes": 370868,
-                            "response_sha256": "eefaf3ef90d938dc5541604902a5de1ac8c673449f2588aa2496fc062d7bd85e",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/regiones/maule/empresas/p/1"
-                          },
-                          {
-                            "response_bytes": 385892,
-                            "response_sha256": "2a7d7539ee6e183ebbef11963a803124d55c8367bf1cebe09da8a4db617d4e85",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de"
-                          },
-                          {
-                            "response_bytes": 389315,
-                            "response_sha256": "535dd71402abad0e4c1373d252ff6d5730be8488963dd1dffdc25655b3d63b8b",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa"
-                          },
-                          {
-                            "response_bytes": 391805,
-                            "response_sha256": "e9f07d96d7c110ed32ca028c00e10419ad4a33e77cf0baa4181298db65f4c482",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro"
-                          },
-                          {
-                            "response_bytes": 371718,
-                            "response_sha256": "ae2f62c3041f337fb0008c7f6021469d1f308420e75ad53c62679e1c49318690",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/regiones/valparaiso/empresas/p/1"
-                          },
-                          {
-                            "response_bytes": 395500,
-                            "response_sha256": "39ab827357d5a15a3c02edc37b762fe8d19ac80e11830ca438e705a13a67c0c7",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza"
-                          },
-                          {
-                            "response_bytes": 388716,
-                            "response_sha256": "17122a0a2914bb47cd057ae662cf7c422c01848444f457df179d6ac271c38e19",
-                            "status": "PASS",
-                            "url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/regiones/loslagos/empresas/p/1"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-stream/podcast/asunto-de-familia-armin-y-alejandro-kunstmann-la-sucesion-familiar-el"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-las-claves-de-la-jornada-de-este-viernes-09-de-octubre"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-mas/punto-de-partida/el-ingeniero-uc-de-25-anos-que-recibio-us-50-millones-para-formar-gente-en"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-mas/por-dentro/inmobiliaria-de-gabriela-luksic-se-fusiona-con-patagonland"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-mas/por-dentro/la-ofensiva-que-alista-luis-hermosilla-y-los-demas-acusados-del-caso"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-mas/por-dentro/despues-de-rotter-krauss-los-negocios-que-buscan-los-yarur-para-empresas"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-mas/coffee-break/hermanos-schupper-reclaman-en-la-justicia-deudas-a-multitienda-corona-de"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-mas/por-dentro/la-primavera-de-eduardo-fernandez-leon"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-mas/coffee-break/la-cruzada-de-juan-gabriel-valdes-para-traer-a-obama-a-valdivia"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-mas/coffee-break/quien-era-klaus-michael-kuhne-el-socio-aleman-de-los-luksic-en-hapag-lloyd"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-mas/coffee-break/el-homenaje-de-sodimac-a-juan-pablo-del-rio"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-juan-ortiz-por-ipc-de-septiembre-esta-inflacion-llego-para"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-terremoto-de-magnitud-7-7-sacude-panama"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-las-imagenes-que-dejo-el-aluvion-en-las-condes"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/entre-codigos/grupo-evans-lanza-el-area-de-derecho-publico-y-mercados-regulados-y-ficha-a"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/entre-codigos/planificar-valorizar-los-bienes-y-evitar-conflictos-entre-familias-las"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/entre-codigos/idealis-legal-recruitment-y-diario-financiero-lanzan-leading-lawyers-2026"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/entre-codigos/estudio-colombara-y-consultora-data-compliance-sellan-alianza-ante-entrada"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/entre-codigos/sclb-abogados-exmorales-besa-fortalece-su-practica-de-m-a-con"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-lab/innovacion-y-startups/la-mayoria-de-las-pyme-y-startups-de-chile-y-la-region-gobiernan-su-ia-de"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-lab/innovacion-y-startups/startup-de-empleo-universitario-tasky-levanta-capital-para-acelerar"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-lab/innovacion-y-startups/futuro-del-trabajo-como-los-agentes-de-ia-estan-redefiniendo-roles"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/df-lab/innovacion-y-startups/flama-hub-startup-tecnologica-que-quiere-ser-el-gerente-de-delivery-en"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/mercados/fondos-de-inversion/andres-trivelli-ceo-de-larrainvial-y-la-oportunidad-que-representa-el"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/mercados/fondos-de-inversion/fondo-ligado-a-rama-de-los-luksic-y-carlos-eugenio-lavin-vende-50-de"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/mercados/fondos-de-inversion/gestora-global-de-fondos-nuveen-adquiere-a-schroders"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/mercados/fondos-de-inversion/cambios-en-fintual-exportfolio-manager-asume-como-gerente-general-de-agf-y"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/mercados/fondos-de-inversion/liquidador-de-matriz-de-sartor-opta-por-proceso-conjunto-con-landmark-y"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/construccion/inmobiliarias-comienzan-a-mover-sus-fichas-tras-cambios-a-la-oguc-preparan"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/construccion/mop-define-proyecto-para-nuevo-sistema-de-controversias-en-obras-publicas-y"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/construccion/contructora-prepara-proyecto-inmobiliario-de-us-46-millones-en-antofagasta"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/construccion/industria-inmobiliaria-preve-nuevo-impulso-a-la-inversion-tras-toma-de"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/empresas/construccion/contraloria-visa-cambios-a-la-ordenanza-de-construcciones-con-los-que-el"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/economia-y-politica/laboral-personas/la-flexibilidad-laboral-mejora-la-conciliacion-familiar-pero-su-uso-es"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/economia-y-politica/congreso/el-congreso-despacha-a-ley-el-proyecto-que-extiende-las-ayudas-a"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/economia-y-politica/laboral-personas/el-critico-analisis-de-nodo-xxi-al-presupuesto-del-ministerio-del-trabajo"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/economia-y-politica/laboral-personas/remuneraciones-y-costos-laborales-extienden-sus-alzas-en-medio-de-una-alta"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/economia-y-politica/laboral-personas/aumento-en-gasto-de-la-pgu-y-plan-pro-empleo-destacan-en-la-partida-del"
-                          },
-                          {
-                            "error": "bounded_probe_budget: 24 requests per source",
-                            "status": "UNVERIFIED",
-                            "url": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html"
-                          }
-                        ],
-                        "samples": [
-                          {
-                            "content_hash": "5bca3471be119f5fdd6d3345c5666ed92a63fff917c6abcf6fab1143c4a4cd6d",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian",
-                            "title": "Los grupos económicos favoritos de las AFP"
-                          },
-                          {
-                            "content_hash": "2d1d058a2a09e2c3cc4a662b8bf32fc6a8b5f6eb361b804cda28f1899f09a57f",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion",
-                            "title": "Latam a un escalón del grado de inversión"
-                          },
-                          {
-                            "content_hash": "8651c8ddca876974a3e2b219a1488935a887bd52f30ad1761861b2527c3345cb",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e",
-                            "title": "Crisis de rentabilidad del fondo E"
-                          },
-                          {
-                            "content_hash": "432738617b1461922bf4b9d1e6e14538347b3df3129bcaf7b64933cc214fab48",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla",
-                            "title": "Hermann González advierte riesgo de recesión"
-                          },
-                          {
-                            "content_hash": "5d9301eb44d3d4350de677fd3854b0023fffa72eb32eeaa465a5bbdc893a7399",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
-                            "title": "El primer Presupuesto de Kast"
-                          },
-                          {
-                            "content_hash": "d52bfe9fb08cbec4e6785b67e85cc8d2e1b909e2df7c9f42c4591917c173f348",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza",
-                            "title": "Sudmédica anuncia marcha blanca de la primera fase de su hospital privado en Quillota y aplaza emisión de acciones para noviembre"
-                          },
-                          {
-                            "content_hash": "cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/regiones/valparaiso/empresas/p/1",
-                            "title": "Empresas | 31/08/2026"
-                          },
-                          {
-                            "content_hash": "cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/regiones/maule/empresas/p/1",
-                            "title": "Empresas | 08/09/2026"
-                          },
-                          {
-                            "content_hash": "1b2fdd88ee90d4a93415ed8070722f064d68f4dff5f9e796940b611330fde1a8",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de",
-                            "title": "Andes Salud inaugura clínica de alta complejidad en Talca con US$ 45 millones de inversión y más de 1.000 empleos"
-                          },
-                          {
-                            "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/regiones/loslagos/empresas/p/1",
-                            "title": "Empresas | 24/08/2026"
-                          },
-                          {
-                            "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con",
-                            "title": "Andes Salud impulsa inversiones en Los Lagos por $10 mil millones con apertura de centro de atenciones en Puerto Varas"
-                          },
-                          {
-                            "content_hash": "37e580c982218501611f81d75af977ac702d7cbb64811fe584c1567b51c4127a",
-                            "event_date": null,
-                            "source_url": "https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf",
-                            "title": "Tarifas electorales"
-                          }
-                        ],
-                        "scope": "discovery_only",
-                        "slug": "diario_financiero",
-                        "technical_status": "error"
-                      },
-                      "source_evidence_sha256": "c4376c5d86011c05d5f232bd9034b253a8db3b9660d851edaeb46511153db721"
-                    }
-                  ],
-                  "failure_sha256": "202bf63cb0e6e4ca3ba86d8dd57bb51253d1991b022d3442e2f3d8e110e5daf9",
-                  "live_baseline": {
-                    "dated": 0,
-                    "discovered": 64,
-                    "error": null,
-                    "inventory_hash": "c010d09a8b909d9d6c385efc18e80e81c5ea5c6c0ecf32f3c3f5b35f7b92e516",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "response_bytes": 375820,
-                        "response_sha256": "9f1b19605b138c57256f5bdcb6be57edd9a3f76312efdd3b9849414e9d6127a2",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/dfsalud"
-                      },
-                      {
-                        "response_bytes": 402799,
-                        "response_sha256": "931f7b62e5dd4fb79bac984a3dcf9ad539bbaf2a036974ea29433f74581e78ce",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion"
-                      },
-                      {
-                        "response_bytes": 415704,
-                        "response_sha256": "617415dce14f5e2398adc0dc7f15e9a5d7520af800d26b540ea44219774d2d68",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla"
-                      },
-                      {
-                        "response_bytes": 404797,
-                        "response_sha256": "67d38984c50d9b22691969ae90a2d2c23c2b396fa7772f716d057cf0d2f099a8",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e"
-                      },
-                      {
-                        "response_bytes": 384148,
-                        "response_sha256": "a5c4094f4952df2143ae5eb9fcaf946ef4a437ae8b2acf32626cd75894df20e9",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
-                      },
-                      {
-                        "response_bytes": 396776,
-                        "response_sha256": "223d2000bd1d42d0ba40ae24b22e65470456818e5550417ede7f38a8832fbcab",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian"
-                      },
-                      {
-                        "response_bytes": 1211246,
-                        "response_sha256": "7974761a2895e3e18e1bafd6013646625bfb2dbfb63d2181b00d8f10e23276e6",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/noticias/site/docs/20250116/20250116114706/guia_etica_df_actualizacion_abril_2026_web.pdf"
-                      },
-                      {
-                        "response_bytes": 779027,
-                        "response_sha256": "2dd798a798e4effa49f1fa23e5f774de44af27f0c4d787b02871e268603d5d57",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/noticias/site/docs/20230105/20230105124926/ppt_tarifas_df_2025.pdf"
-                      },
-                      {
-                        "response_bytes": 639563,
-                        "response_sha256": "164a98434191c23f2090c417e0873f72301a382a0695e2d0e50314afde4eff15",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf"
-                      },
-                      {
-                        "response_bytes": 388165,
-                        "response_sha256": "470f73315b231817421f998cd2fc6ceba1a892cde6f3c45dcdb6c0bfeff28782",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
-                      },
-                      {
-                        "response_bytes": 384048,
-                        "response_sha256": "9339f60aeb1ab72955e9bac4b0bf111b8be66186614fdc992292a2d30738a3f5",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion"
-                      },
-                      {
-                        "response_bytes": 383570,
-                        "response_sha256": "8681ad4056a904d12a003f4f221156194e6a30c78e95999d0bd1b6a9bad1600f",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"
-                      },
-                      {
-                        "response_bytes": 383462,
-                        "response_sha256": "8ad75f69575ff3a6ee5866e75403a4bd921bc811eb92a83ea6ce7d79696ca983",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no"
-                      },
-                      {
-                        "response_bytes": 388805,
-                        "response_sha256": "c2482f934d79e5246a57d96f156bfa4907e7ab7fbf6a8a7a54e965409ca23270",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
-                      },
-                      {
-                        "response_bytes": 391972,
-                        "response_sha256": "5749849bc7257968cdb7f5c4cef3f93db77baa5bbe7eaba6a7464d6f995174ae",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion"
-                      },
-                      {
-                        "response_bytes": 396443,
-                        "response_sha256": "b1c520d10156466c3f25a0e662e60a8ce96762f908b839df3cfb655fcffdf328",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras"
-                      },
-                      {
-                        "response_bytes": 394989,
-                        "response_sha256": "ab5461a2f9cff7ece1c995f3672c915c0147abe9101ed1093ff461d46b566a03",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes"
-                      },
-                      {
-                        "response_bytes": 370868,
-                        "response_sha256": "eefaf3ef90d938dc5541604902a5de1ac8c673449f2588aa2496fc062d7bd85e",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/regiones/maule/empresas/p/1"
-                      },
-                      {
-                        "response_bytes": 385892,
-                        "response_sha256": "2a7d7539ee6e183ebbef11963a803124d55c8367bf1cebe09da8a4db617d4e85",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de"
-                      },
-                      {
-                        "response_bytes": 389315,
-                        "response_sha256": "535dd71402abad0e4c1373d252ff6d5730be8488963dd1dffdc25655b3d63b8b",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa"
-                      },
-                      {
-                        "response_bytes": 391805,
-                        "response_sha256": "e9f07d96d7c110ed32ca028c00e10419ad4a33e77cf0baa4181298db65f4c482",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro"
-                      },
-                      {
-                        "response_bytes": 371718,
-                        "response_sha256": "ae2f62c3041f337fb0008c7f6021469d1f308420e75ad53c62679e1c49318690",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/regiones/valparaiso/empresas/p/1"
-                      },
-                      {
-                        "response_bytes": 395500,
-                        "response_sha256": "39ab827357d5a15a3c02edc37b762fe8d19ac80e11830ca438e705a13a67c0c7",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza"
-                      },
-                      {
-                        "response_bytes": 388716,
-                        "response_sha256": "17122a0a2914bb47cd057ae662cf7c422c01848444f457df179d6ac271c38e19",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/regiones/loslagos/empresas/p/1"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-stream/podcast/asunto-de-familia-armin-y-alejandro-kunstmann-la-sucesion-familiar-el"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-las-claves-de-la-jornada-de-este-viernes-09-de-octubre"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/punto-de-partida/el-ingeniero-uc-de-25-anos-que-recibio-us-50-millones-para-formar-gente-en"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/por-dentro/inmobiliaria-de-gabriela-luksic-se-fusiona-con-patagonland"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/por-dentro/la-ofensiva-que-alista-luis-hermosilla-y-los-demas-acusados-del-caso"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/por-dentro/despues-de-rotter-krauss-los-negocios-que-buscan-los-yarur-para-empresas"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/coffee-break/hermanos-schupper-reclaman-en-la-justicia-deudas-a-multitienda-corona-de"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/por-dentro/la-primavera-de-eduardo-fernandez-leon"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/coffee-break/la-cruzada-de-juan-gabriel-valdes-para-traer-a-obama-a-valdivia"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/coffee-break/quien-era-klaus-michael-kuhne-el-socio-aleman-de-los-luksic-en-hapag-lloyd"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/coffee-break/el-homenaje-de-sodimac-a-juan-pablo-del-rio"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-juan-ortiz-por-ipc-de-septiembre-esta-inflacion-llego-para"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-stream/videos/ahora-en-df-terremoto-de-magnitud-7-7-sacude-panama"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-stream/videos/ahora-en-df-las-imagenes-que-dejo-el-aluvion-en-las-condes"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/entre-codigos/grupo-evans-lanza-el-area-de-derecho-publico-y-mercados-regulados-y-ficha-a"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/entre-codigos/planificar-valorizar-los-bienes-y-evitar-conflictos-entre-familias-las"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/entre-codigos/idealis-legal-recruitment-y-diario-financiero-lanzan-leading-lawyers-2026"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/entre-codigos/estudio-colombara-y-consultora-data-compliance-sellan-alianza-ante-entrada"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/entre-codigos/sclb-abogados-exmorales-besa-fortalece-su-practica-de-m-a-con"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-lab/innovacion-y-startups/la-mayoria-de-las-pyme-y-startups-de-chile-y-la-region-gobiernan-su-ia-de"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-lab/innovacion-y-startups/startup-de-empleo-universitario-tasky-levanta-capital-para-acelerar"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-lab/innovacion-y-startups/futuro-del-trabajo-como-los-agentes-de-ia-estan-redefiniendo-roles"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-lab/innovacion-y-startups/flama-hub-startup-tecnologica-que-quiere-ser-el-gerente-de-delivery-en"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/mercados/fondos-de-inversion/andres-trivelli-ceo-de-larrainvial-y-la-oportunidad-que-representa-el"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/mercados/fondos-de-inversion/fondo-ligado-a-rama-de-los-luksic-y-carlos-eugenio-lavin-vende-50-de"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/mercados/fondos-de-inversion/gestora-global-de-fondos-nuveen-adquiere-a-schroders"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/mercados/fondos-de-inversion/cambios-en-fintual-exportfolio-manager-asume-como-gerente-general-de-agf-y"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/mercados/fondos-de-inversion/liquidador-de-matriz-de-sartor-opta-por-proceso-conjunto-con-landmark-y"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/construccion/inmobiliarias-comienzan-a-mover-sus-fichas-tras-cambios-a-la-oguc-preparan"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/construccion/mop-define-proyecto-para-nuevo-sistema-de-controversias-en-obras-publicas-y"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/construccion/contructora-prepara-proyecto-inmobiliario-de-us-46-millones-en-antofagasta"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/construccion/industria-inmobiliaria-preve-nuevo-impulso-a-la-inversion-tras-toma-de"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/construccion/contraloria-visa-cambios-a-la-ordenanza-de-construcciones-con-los-que-el"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/economia-y-politica/laboral-personas/la-flexibilidad-laboral-mejora-la-conciliacion-familiar-pero-su-uso-es"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/economia-y-politica/congreso/el-congreso-despacha-a-ley-el-proyecto-que-extiende-las-ayudas-a"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/economia-y-politica/laboral-personas/el-critico-analisis-de-nodo-xxi-al-presupuesto-del-ministerio-del-trabajo"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/economia-y-politica/laboral-personas/remuneraciones-y-costos-laborales-extienden-sus-alzas-en-medio-de-una-alta"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/economia-y-politica/laboral-personas/aumento-en-gasto-de-la-pgu-y-plan-pro-empleo-destacan-en-la-partida-del"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html"
-                      }
-                    ],
-                    "samples": [
-                      {
-                        "content_hash": "5bca3471be119f5fdd6d3345c5666ed92a63fff917c6abcf6fab1143c4a4cd6d",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian",
-                        "title": "Los grupos económicos favoritos de las AFP"
-                      },
-                      {
-                        "content_hash": "2d1d058a2a09e2c3cc4a662b8bf32fc6a8b5f6eb361b804cda28f1899f09a57f",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion",
-                        "title": "Latam a un escalón del grado de inversión"
-                      },
-                      {
-                        "content_hash": "8651c8ddca876974a3e2b219a1488935a887bd52f30ad1761861b2527c3345cb",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e",
-                        "title": "Crisis de rentabilidad del fondo E"
-                      },
-                      {
-                        "content_hash": "432738617b1461922bf4b9d1e6e14538347b3df3129bcaf7b64933cc214fab48",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla",
-                        "title": "Hermann González advierte riesgo de recesión"
-                      },
-                      {
-                        "content_hash": "5d9301eb44d3d4350de677fd3854b0023fffa72eb32eeaa465a5bbdc893a7399",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
-                        "title": "El primer Presupuesto de Kast"
-                      },
-                      {
-                        "content_hash": "d52bfe9fb08cbec4e6785b67e85cc8d2e1b909e2df7c9f42c4591917c173f348",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza",
-                        "title": "Sudmédica anuncia marcha blanca de la primera fase de su hospital privado en Quillota y aplaza emisión de acciones para noviembre"
-                      },
-                      {
-                        "content_hash": "cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/valparaiso/empresas/p/1",
-                        "title": "Empresas | 31/08/2026"
-                      },
-                      {
-                        "content_hash": "cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/maule/empresas/p/1",
-                        "title": "Empresas | 08/09/2026"
-                      },
-                      {
-                        "content_hash": "1b2fdd88ee90d4a93415ed8070722f064d68f4dff5f9e796940b611330fde1a8",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de",
-                        "title": "Andes Salud inaugura clínica de alta complejidad en Talca con US$ 45 millones de inversión y más de 1.000 empleos"
-                      },
-                      {
-                        "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/loslagos/empresas/p/1",
-                        "title": "Empresas | 24/08/2026"
-                      },
-                      {
-                        "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con",
-                        "title": "Andes Salud impulsa inversiones en Los Lagos por $10 mil millones con apertura de centro de atenciones en Puerto Varas"
-                      },
-                      {
-                        "content_hash": "37e580c982218501611f81d75af977ac702d7cbb64811fe584c1567b51c4127a",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf",
-                        "title": "Tarifas electorales"
-                      }
-                    ],
-                    "scope": "discovery_only",
-                    "slug": "diario_financiero",
-                    "technical_status": "error"
-                  },
-                  "material_progress": false,
-                  "signature": null,
-                  "source_run_id": null,
-                  "source_slug": "diario_financiero",
-                  "status": "BLOCKED",
-                  "validated": false
+                  "attempted": false,
+                  "reason": "Instrumentation limit is not a demonstrated source failure"
                 }
               }
             ],
-            "fingerprint": "8f04338443edb51062158962b0ea7f06542612331443ff5f807d8bbe89f3ecde",
+            "fingerprint": "d730ac16e0687d3f26768a8954141d02166b38a074a3324100789c89a88c6305",
             "human_required": false,
-            "kind": "technical",
-            "reason": "Scoped live discovery failed: diario_financiero",
+            "kind": "instrumentation",
+            "reason": "Scoped coverage INCOMPLETE: internal request budget reached: diario_financiero",
             "source_urls": [
               "https://www.df.cl/df-lab/innovacion-y-startups/flama-hub-startup-tecnologica-que-quiere-ser-el-gerente-de-delivery-en",
               "https://www.df.cl/df-lab/innovacion-y-startups/futuro-del-trabajo-como-los-agentes-de-ia-estan-redefiniendo-roles",
@@ -69403,14 +68492,23 @@
               "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion",
               "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian"
             ]
+          },
+          {
+            "evidence": [
+              {
+                "diagnostics_are_acceptance": false,
+                "family": "media",
+                "task_id": "source_repair_media_lane_2026_10_11"
+              }
+            ],
+            "fingerprint": "bb6cda3dce6ddfb1dbd29390b3a943faa6a28bf6332eb5f3e1df6e4bd0c3a889",
+            "human_required": false,
+            "kind": "acceptance",
+            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+            "source_urls": []
           }
         ],
         "evidence": [
-          {
-            "diagnostics_are_acceptance": false,
-            "family": "media",
-            "task_id": "source_repair_media_lane_2026_10_11"
-          },
           {
             "command": [
               "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
@@ -69418,9 +68516,9 @@
               "--diagnose-source",
               "diario_financiero"
             ],
-            "failure_hash": "48b3cb4b52387c3adb532d08d50350dbbb9c60522740dd7ca1bb7fcd1b797ff0",
+            "failure_hash": "54bb64e7ea4692d865008896153b576ed651f0bb1621852236a059d5ab5c5d7f",
             "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-diario_financiero.log",
-            "log_sha256": "202bf63cb0e6e4ca3ba86d8dd57bb51253d1991b022d3442e2f3d8e110e5daf9",
+            "log_sha256": "a3468e33eef49653028da84223f9e516c54f0bfc3473a764f197c24e16e592d0",
             "returncode": 1,
             "source_urls": [
               "https://www.df.cl/empresas/dfsalud",
@@ -69496,43 +68594,50 @@
             "dated": 0,
             "discovered": 64,
             "error": null,
+            "failure_origin": "instrumentation_limit",
             "inventory_hash": "c010d09a8b909d9d6c385efc18e80e81c5ea5c6c0ecf32f3c3f5b35f7b92e516",
             "newest_event_date": null,
+            "probe_budget": {
+              "executed_requests": 24,
+              "max_requests": 24,
+              "unexecuted_requests": 42
+            },
+            "probe_complete": false,
             "publication_verified": false,
             "requests": [
               {
                 "response_bytes": 375820,
-                "response_sha256": "9f1b19605b138c57256f5bdcb6be57edd9a3f76312efdd3b9849414e9d6127a2",
+                "response_sha256": "f818af0f23e0a0feec0b0c47d0293f0666cae94a95a4cb2411736f134ac01d49",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/dfsalud"
               },
               {
                 "response_bytes": 402799,
-                "response_sha256": "931f7b62e5dd4fb79bac984a3dcf9ad539bbaf2a036974ea29433f74581e78ce",
+                "response_sha256": "497d7913b65256c841f3e6e57d7705ce7d4318ad0664fcd540b2a59a8b8adff7",
                 "status": "PASS",
                 "url": "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion"
               },
               {
                 "response_bytes": 415704,
-                "response_sha256": "617415dce14f5e2398adc0dc7f15e9a5d7520af800d26b540ea44219774d2d68",
+                "response_sha256": "32e3d0d477012b10c505f4deaf99561aab74b03b1a93c06932c7e67df9b45572",
                 "status": "PASS",
                 "url": "https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla"
               },
               {
                 "response_bytes": 404797,
-                "response_sha256": "67d38984c50d9b22691969ae90a2d2c23c2b396fa7772f716d057cf0d2f099a8",
+                "response_sha256": "d21145ab7acdbe040e287563112fbf321b5ab1a92dce592a727a785865ed7e66",
                 "status": "PASS",
                 "url": "https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e"
               },
               {
                 "response_bytes": 384148,
-                "response_sha256": "a5c4094f4952df2143ae5eb9fcaf946ef4a437ae8b2acf32626cd75894df20e9",
+                "response_sha256": "77dfae9284d31c43416a19b2d9a2ec3b06c7ee3da0b31919e564ca30bfec5d65",
                 "status": "PASS",
                 "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
               },
               {
                 "response_bytes": 396776,
-                "response_sha256": "223d2000bd1d42d0ba40ae24b22e65470456818e5550417ede7f38a8832fbcab",
+                "response_sha256": "25eb30e15d4bed439c45ba995897cb93a015d1ad27e0423dc4a433f6d6b5955f",
                 "status": "PASS",
                 "url": "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian"
               },
@@ -69556,91 +68661,91 @@
               },
               {
                 "response_bytes": 388165,
-                "response_sha256": "470f73315b231817421f998cd2fc6ceba1a892cde6f3c45dcdb6c0bfeff28782",
+                "response_sha256": "c90dc818b998bb235152dd70ecf39d75b0f04d2f9503c0957260ce84318e02a4",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
               },
               {
                 "response_bytes": 384048,
-                "response_sha256": "9339f60aeb1ab72955e9bac4b0bf111b8be66186614fdc992292a2d30738a3f5",
+                "response_sha256": "f540b635434bec8508f5336be2920d364955620fe933cd992df17dd2b2f92aa5",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion"
               },
               {
                 "response_bytes": 383570,
-                "response_sha256": "8681ad4056a904d12a003f4f221156194e6a30c78e95999d0bd1b6a9bad1600f",
+                "response_sha256": "68f8bad40a26251d4e75b48f7a796659137158e0cba9d2739d79305b8933ad1f",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"
               },
               {
                 "response_bytes": 383462,
-                "response_sha256": "8ad75f69575ff3a6ee5866e75403a4bd921bc811eb92a83ea6ce7d79696ca983",
+                "response_sha256": "ac28ee68add08c3238401e45b77a95e11a4677732bc1dda33c2744763582af93",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no"
               },
               {
                 "response_bytes": 388805,
-                "response_sha256": "c2482f934d79e5246a57d96f156bfa4907e7ab7fbf6a8a7a54e965409ca23270",
+                "response_sha256": "c7a17c59515fc1b153560964a1f3ec49477ac33d88dfd3e3cb74a7d7c8652b08",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
               },
               {
                 "response_bytes": 391972,
-                "response_sha256": "5749849bc7257968cdb7f5c4cef3f93db77baa5bbe7eaba6a7464d6f995174ae",
+                "response_sha256": "aafe0a2526969195e4a9cc05fe4dc5c93a8c0f74eb369dabc0115fd09f0043a5",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion"
               },
               {
                 "response_bytes": 396443,
-                "response_sha256": "b1c520d10156466c3f25a0e662e60a8ce96762f908b839df3cfb655fcffdf328",
+                "response_sha256": "a0c7c7af5fef3ff01a53e69d29e3e9dcb13224053915c32fdb441d009d382a2f",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras"
               },
               {
                 "response_bytes": 394989,
-                "response_sha256": "ab5461a2f9cff7ece1c995f3672c915c0147abe9101ed1093ff461d46b566a03",
+                "response_sha256": "aad14e17c80cafb23e952d90fe792d4da4e7e3535e8d625697498f57d71ab4fc",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes"
               },
               {
                 "response_bytes": 370868,
-                "response_sha256": "eefaf3ef90d938dc5541604902a5de1ac8c673449f2588aa2496fc062d7bd85e",
+                "response_sha256": "a7fb3ff5d0fbe1df4806bb6439fe9350f89e31e55a22820394081cbf3a984ec2",
                 "status": "PASS",
                 "url": "https://www.df.cl/regiones/maule/empresas/p/1"
               },
               {
                 "response_bytes": 385892,
-                "response_sha256": "2a7d7539ee6e183ebbef11963a803124d55c8367bf1cebe09da8a4db617d4e85",
+                "response_sha256": "ed05bcfc6f321dd1ea7f4a87e77720dca23bb36e1730fd32e546151983fdffa0",
                 "status": "PASS",
                 "url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de"
               },
               {
                 "response_bytes": 389315,
-                "response_sha256": "535dd71402abad0e4c1373d252ff6d5730be8488963dd1dffdc25655b3d63b8b",
+                "response_sha256": "1d7b4c21de59afb8300ad256f35d6910874ed35ed539fc6c2b6026b5bfcf19e2",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa"
               },
               {
                 "response_bytes": 391805,
-                "response_sha256": "e9f07d96d7c110ed32ca028c00e10419ad4a33e77cf0baa4181298db65f4c482",
+                "response_sha256": "74160a964948e95d88004700625ee9f31ee1284e428f919875742f79295f0674",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro"
               },
               {
                 "response_bytes": 371718,
-                "response_sha256": "ae2f62c3041f337fb0008c7f6021469d1f308420e75ad53c62679e1c49318690",
+                "response_sha256": "a5a848aa65732ae47be0b4f6b5f2eaa4d13268386717d8dfd30c06e396856550",
                 "status": "PASS",
                 "url": "https://www.df.cl/regiones/valparaiso/empresas/p/1"
               },
               {
                 "response_bytes": 395500,
-                "response_sha256": "39ab827357d5a15a3c02edc37b762fe8d19ac80e11830ca438e705a13a67c0c7",
+                "response_sha256": "083a49ed68957afaa23e6896cb219aa3bc986878562623c24b325feb3a137389",
                 "status": "PASS",
                 "url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza"
               },
               {
                 "response_bytes": 388716,
-                "response_sha256": "17122a0a2914bb47cd057ae662cf7c422c01848444f457df179d6ac271c38e19",
+                "response_sha256": "dd18097c4bd23eafa2ffec16d9fd6972b0ebd6b5b8124b4beed539cbb1ae950a",
                 "status": "PASS",
                 "url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el"
               },
@@ -69931,921 +69036,23 @@
             ],
             "scope": "discovery_only",
             "slug": "diario_financiero",
-            "technical_status": "error"
+            "technical_status": "incomplete"
           },
           {
             "automated_recovery": {
-              "blocker": "Unsupported live repair: source has empty/undated inventory without a demonstrated parser exception",
-              "changed_paths": [],
-              "evidence": [
-                {
-                  "captured_stdout_bytes": 18080,
-                  "captured_stdout_sha256": "202bf63cb0e6e4ca3ba86d8dd57bb51253d1991b022d3442e2f3d8e110e5daf9",
-                  "command": [
-                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
-                    "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
-                    "--diagnose-source",
-                    "diario_financiero"
-                  ],
-                  "output": "DF fetch: bounded_probe_budget: 24 requests per source\nDF discovered=64\nAUTONOMY_SOURCE_JSON={\"slug\": \"diario_financiero\", \"technical_status\": \"error\", \"error\": null, \"discovered\": 64, \"dated\": 0, \"newest_event_date\": null, \"samples\": [{\"source_url\": \"https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian\", \"title\": \"Los grupos económicos favoritos de las AFP\", \"event_date\": null, \"content_hash\": \"5bca3471be119f5fdd6d3345c5666ed92a63fff917c6abcf6fab1143c4a4cd6d\"}, {\"source_url\": \"https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion\", \"title\": \"Latam a un escalón del grado de inversión\", \"event_date\": null, \"content_hash\": \"2d1d058a2a09e2c3cc4a662b8bf32fc6a8b5f6eb361b804cda28f1899f09a57f\"}, {\"source_url\": \"https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e\", \"title\": \"Crisis de rentabilidad del fondo E\", \"event_date\": null, \"content_hash\": \"8651c8ddca876974a3e2b219a1488935a887bd52f30ad1761861b2527c3345cb\"}, {\"source_url\": \"https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla\", \"title\": \"Hermann González advierte riesgo de recesión\", \"event_date\": null, \"content_hash\": \"432738617b1461922bf4b9d1e6e14538347b3df3129bcaf7b64933cc214fab48\"}, {\"source_url\": \"https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se\", \"title\": \"El primer Presupuesto de Kast\", \"event_date\": null, \"content_hash\": \"5d9301eb44d3d4350de677fd3854b0023fffa72eb32eeaa465a5bbdc893a7399\"}, {\"source_url\": \"https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza\", \"title\": \"Sudmédica anuncia marcha blanca de la primera fase de su hospital privado en Quillota y aplaza emisión de acciones para noviembre\", \"event_date\": null, \"content_hash\": \"d52bfe9fb08cbec4e6785b67e85cc8d2e1b909e2df7c9f42c4591917c173f348\"}, {\"source_url\": \"https://www.df.cl/regiones/valparaiso/empresas/p/1\", \"title\": \"Empresas | 31/08/2026\", \"event_date\": null, \"content_hash\": \"cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7\"}, {\"source_url\": \"https://www.df.cl/regiones/maule/empresas/p/1\", \"title\": \"Empresas | 08/09/2026\", \"event_date\": null, \"content_hash\": \"cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7\"}, {\"source_url\": \"https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de\", \"title\": \"Andes Salud inaugura clínica de alta complejidad en Talca con US$ 45 millones de inversión y más de 1.000 empleos\", \"event_date\": null, \"content_hash\": \"1b2fdd88ee90d4a93415ed8070722f064d68f4dff5f9e796940b611330fde1a8\"}, {\"source_url\": \"https://www.df.cl/regiones/loslagos/empresas/p/1\", \"title\": \"Empresas | 24/08/2026\", \"event_date\": null, \"content_hash\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"}, {\"source_url\": \"https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con\", \"title\": \"Andes Salud impulsa inversiones en Los Lagos por $10 mil millones con apertura de centro de atenciones en Puerto Varas\", \"event_date\": null, \"content_hash\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"}, {\"source_url\": \"https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf\", \"title\": \"Tarifas electorales\", \"event_date\": null, \"content_hash\": \"37e580c982218501611f81d75af977ac702d7cbb64811fe584c1567b51c4127a\"}], \"inventory_hash\": \"c010d09a8b909d9d6c385efc18e80e81c5ea5c6c0ecf32f3c3f5b35f7b92e516\", \"requests\": [{\"url\": \"https://www.df.cl/empresas/dfsalud\", \"status\": \"PASS\", \"response_sha256\": \"9f1b19605b138c57256f5bdcb6be57edd9a3f76312efdd3b9849414e9d6127a2\", \"response_bytes\": 375820}, {\"url\": \"https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion\", \"status\": \"PASS\", \"response_sha256\": \"931f7b62e5dd4fb79bac984a3dcf9ad539bbaf2a036974ea29433f74581e78ce\", \"response_bytes\": 402799}, {\"url\": \"https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla\", \"status\": \"PASS\", \"response_sha256\": \"617415dce14f5e2398adc0dc7f15e9a5d7520af800d26b540ea44219774d2d68\", \"response_bytes\": 415704}, {\"url\": \"https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e\", \"status\": \"PASS\", \"response_sha256\": \"67d38984c50d9b22691969ae90a2d2c23c2b396fa7772f716d057cf0d2f099a8\", \"response_bytes\": 404797}, {\"url\": \"https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se\", \"status\": \"PASS\", \"response_sha256\": \"a5c4094f4952df2143ae5eb9fcaf946ef4a437ae8b2acf32626cd75894df20e9\", \"response_bytes\": 384148}, {\"url\": \"https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian\", \"status\": \"PASS\", \"response_sha256\": \"223d2000bd1d42d0ba40ae24b22e65470456818e5550417ede7f38a8832fbcab\", \"response_bytes\": 396776}, {\"url\": \"https://www.df.cl/noticias/site/docs/20250116/20250116114706/guia_etica_df_actualizacion_abril_2026_web.pdf\", \"status\": \"PASS\", \"response_sha256\": \"7974761a2895e3e18e1bafd6013646625bfb2dbfb63d2181b00d8f10e23276e6\", \"response_bytes\": 1211246}, {\"url\": \"https://www.df.cl/noticias/site/docs/20230105/20230105124926/ppt_tarifas_df_2025.pdf\", \"status\": \"PASS\", \"response_sha256\": \"2dd798a798e4effa49f1fa23e5f774de44af27f0c4d787b02871e268603d5d57\", \"response_bytes\": 779027}, {\"url\": \"https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf\", \"status\": \"PASS\", \"response_sha256\": \"164a98434191c23f2090c417e0873f72301a382a0695e2d0e50314afde4eff15\", \"response_bytes\": 639563}, {\"url\": \"https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido\", \"status\": \"PASS\", \"response_sha256\": \"470f73315b231817421f998cd2fc6ceba1a892cde6f3c45dcdb6c0bfeff28782\", \"response_bytes\": 388165}, {\"url\": \"https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion\", \"status\": \"PASS\", \"response_sha256\": \"9339f60aeb1ab72955e9bac4b0bf111b8be66186614fdc992292a2d30738a3f5\", \"response_bytes\": 384048}, {\"url\": \"https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera\", \"status\": \"PASS\", \"response_sha256\": \"8681ad4056a904d12a003f4f221156194e6a30c78e95999d0bd1b6a9bad1600f\", \"response_bytes\": 383570}, {\"url\": \"https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no\", \"status\": \"PASS\", \"response_sha256\": \"8ad75f69575ff3a6ee5866e75403a4bd921bc811eb92a83ea6ce7d79696ca983\", \"response_bytes\": 383462}, {\"url\": \"https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos\", \"status\": \"PASS\", \"response_sha256\": \"c2482f934d79e5246a57d96f156bfa4907e7ab7fbf6a8a7a54e965409ca23270\", \"response_bytes\": 388805}, {\"url\": \"https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion\", \"status\": \"PASS\", \"response_sha256\": \"5749849bc7257968cdb7f5c4cef3f93db77baa5bbe7eaba6a7464d6f995174ae\", \"response_bytes\": 391972}, {\"url\": \"https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras\", \"status\": \"PASS\", \"response_sha256\": \"b1c520d10156466c3f25a0e662e60a8ce96762f908b839df3cfb655fcffdf328\", \"response_bytes\": 396443}, {\"url\": \"https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes\", \"status\": \"PASS\", \"response_sha256\": \"ab5461a2f9cff7ece1c995f3672c915c0147abe9101ed1093ff461d46b566a03\", \"response_bytes\": 394989}, {\"url\": \"https://www.df.cl/regiones/maule/empresas/p/1\", \"status\": \"PASS\", \"response_sha256\": \"eefaf3ef90d938dc5541604902a5de1ac8c673449f2588aa2496fc062d7bd85e\", \"response_bytes\": 370868}, {\"url\": \"https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de\", \"status\": \"PASS\", \"response_sha256\": \"2a7d7539ee6e183ebbef11963a803124d55c8367bf1cebe09da8a4db617d4e85\", \"response_bytes\": 385892}, {\"url\": \"https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa\", \"status\": \"PASS\", \"response_sha256\": \"535dd71402abad0e4c1373d252ff6d5730be8488963dd1dffdc25655b3d63b8b\", \"response_bytes\": 389315}, {\"url\": \"https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro\", \"status\": \"PASS\", \"response_sha256\": \"e9f07d96d7c110ed32ca028c00e10419ad4a33e77cf0baa4181298db65f4c482\", \"response_bytes\": 391805}, {\"url\": \"https://www.df.cl/regiones/valparaiso/empresas/p/1\", \"status\": \"PASS\", \"response_sha256\": \"ae2f62c3041f337fb0008c7f6021469d1f308420e75ad53c62679e1c49318690\", \"response_bytes\": 371718}, {\"url\": \"https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza\", \"status\": \"PASS\", \"response_sha256\": \"39ab827357d5a15a3c02edc37b762fe8d19ac80e11830ca438e705a13a67c0c7\", \"response_bytes\": 395500}, {\"url\": \"https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el\", \"status\": \"PASS\", \"response_sha256\": \"17122a0a2914bb47cd057ae662cf7c422c01848444f457df179d6ac271c38e19\", \"response_bytes\": 388716}, {\"url\": \"https://www.df.cl/regiones/loslagos/empresas/p/1\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-stream/podcast/asunto-de-familia-armin-y-alejandro-kunstmann-la-sucesion-familiar-el\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-stream/podcast/df-al-cierre-las-claves-de-la-jornada-de-este-viernes-09-de-octubre\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/punto-de-partida/el-ingeniero-uc-de-25-anos-que-recibio-us-50-millones-para-formar-gente-en\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/por-dentro/inmobiliaria-de-gabriela-luksic-se-fusiona-con-patagonland\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/por-dentro/la-ofensiva-que-alista-luis-hermosilla-y-los-demas-acusados-del-caso\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/por-dentro/despues-de-rotter-krauss-los-negocios-que-buscan-los-yarur-para-empresas\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/coffee-break/hermanos-schupper-reclaman-en-la-justicia-deudas-a-multitienda-corona-de\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/por-dentro/la-primavera-de-eduardo-fernandez-leon\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/coffee-break/la-cruzada-de-juan-gabriel-valdes-para-traer-a-obama-a-valdivia\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/coffee-break/quien-era-klaus-michael-kuhne-el-socio-aleman-de-los-luksic-en-hapag-lloyd\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-mas/coffee-break/el-homenaje-de-sodimac-a-juan-pablo-del-rio\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-stream/podcast/df-al-cierre-juan-ortiz-por-ipc-de-septiembre-esta-inflacion-llego-para\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-stream/videos/ahora-en-df-terremoto-de-magnitud-7-7-sacude-panama\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-stream/videos/ahora-en-df-las-imagenes-que-dejo-el-aluvion-en-las-condes\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/entre-codigos/grupo-evans-lanza-el-area-de-derecho-publico-y-mercados-regulados-y-ficha-a\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/entre-codigos/planificar-valorizar-los-bienes-y-evitar-conflictos-entre-familias-las\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/entre-codigos/idealis-legal-recruitment-y-diario-financiero-lanzan-leading-lawyers-2026\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/entre-codigos/estudio-colombara-y-consultora-data-compliance-sellan-alianza-ante-entrada\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/entre-codigos/sclb-abogados-exmorales-besa-fortalece-su-practica-de-m-a-con\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-lab/innovacion-y-startups/la-mayoria-de-las-pyme-y-startups-de-chile-y-la-region-gobiernan-su-ia-de\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-lab/innovacion-y-startups/startup-de-empleo-universitario-tasky-levanta-capital-para-acelerar\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-lab/innovacion-y-startups/futuro-del-trabajo-como-los-agentes-de-ia-estan-redefiniendo-roles\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/df-lab/innovacion-y-startups/flama-hub-startup-tecnologica-que-quiere-ser-el-gerente-de-delivery-en\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/mercados/fondos-de-inversion/andres-trivelli-ceo-de-larrainvial-y-la-oportunidad-que-representa-el\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/mercados/fondos-de-inversion/fondo-ligado-a-rama-de-los-luksic-y-carlos-eugenio-lavin-vende-50-de\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/mercados/fondos-de-inversion/gestora-global-de-fondos-nuveen-adquiere-a-schroders\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/mercados/fondos-de-inversion/cambios-en-fintual-exportfolio-manager-asume-como-gerente-general-de-agf-y\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/mercados/fondos-de-inversion/liquidador-de-matriz-de-sartor-opta-por-proceso-conjunto-con-landmark-y\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/construccion/inmobiliarias-comienzan-a-mover-sus-fichas-tras-cambios-a-la-oguc-preparan\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/construccion/mop-define-proyecto-para-nuevo-sistema-de-controversias-en-obras-publicas-y\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/construccion/contructora-prepara-proyecto-inmobiliario-de-us-46-millones-en-antofagasta\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/construccion/industria-inmobiliaria-preve-nuevo-impulso-a-la-inversion-tras-toma-de\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/empresas/construccion/contraloria-visa-cambios-a-la-ordenanza-de-construcciones-con-los-que-el\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/economia-y-politica/laboral-personas/la-flexibilidad-laboral-mejora-la-conciliacion-familiar-pero-su-uso-es\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/economia-y-politica/congreso/el-congreso-despacha-a-ley-el-proyecto-que-extiende-las-ayudas-a\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/economia-y-politica/laboral-personas/el-critico-analisis-de-nodo-xxi-al-presupuesto-del-ministerio-del-trabajo\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/economia-y-politica/laboral-personas/remuneraciones-y-costos-laborales-extienden-sus-alzas-en-medio-de-una-alta\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/economia-y-politica/laboral-personas/aumento-en-gasto-de-la-pgu-y-plan-pro-empleo-destacan-en-la-partida-del\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}, {\"url\": \"https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html\", \"status\": \"UNVERIFIED\", \"error\": \"bounded_probe_budget: 24 requests per source\"}], \"publication_verified\": false, \"scope\": \"discovery_only\"}\n",
-                  "returncode": 1,
-                  "source_evidence": {
-                    "dated": 0,
-                    "discovered": 64,
-                    "error": null,
-                    "inventory_hash": "c010d09a8b909d9d6c385efc18e80e81c5ea5c6c0ecf32f3c3f5b35f7b92e516",
-                    "newest_event_date": null,
-                    "publication_verified": false,
-                    "requests": [
-                      {
-                        "response_bytes": 375820,
-                        "response_sha256": "9f1b19605b138c57256f5bdcb6be57edd9a3f76312efdd3b9849414e9d6127a2",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/dfsalud"
-                      },
-                      {
-                        "response_bytes": 402799,
-                        "response_sha256": "931f7b62e5dd4fb79bac984a3dcf9ad539bbaf2a036974ea29433f74581e78ce",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion"
-                      },
-                      {
-                        "response_bytes": 415704,
-                        "response_sha256": "617415dce14f5e2398adc0dc7f15e9a5d7520af800d26b540ea44219774d2d68",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla"
-                      },
-                      {
-                        "response_bytes": 404797,
-                        "response_sha256": "67d38984c50d9b22691969ae90a2d2c23c2b396fa7772f716d057cf0d2f099a8",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e"
-                      },
-                      {
-                        "response_bytes": 384148,
-                        "response_sha256": "a5c4094f4952df2143ae5eb9fcaf946ef4a437ae8b2acf32626cd75894df20e9",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
-                      },
-                      {
-                        "response_bytes": 396776,
-                        "response_sha256": "223d2000bd1d42d0ba40ae24b22e65470456818e5550417ede7f38a8832fbcab",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian"
-                      },
-                      {
-                        "response_bytes": 1211246,
-                        "response_sha256": "7974761a2895e3e18e1bafd6013646625bfb2dbfb63d2181b00d8f10e23276e6",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/noticias/site/docs/20250116/20250116114706/guia_etica_df_actualizacion_abril_2026_web.pdf"
-                      },
-                      {
-                        "response_bytes": 779027,
-                        "response_sha256": "2dd798a798e4effa49f1fa23e5f774de44af27f0c4d787b02871e268603d5d57",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/noticias/site/docs/20230105/20230105124926/ppt_tarifas_df_2025.pdf"
-                      },
-                      {
-                        "response_bytes": 639563,
-                        "response_sha256": "164a98434191c23f2090c417e0873f72301a382a0695e2d0e50314afde4eff15",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf"
-                      },
-                      {
-                        "response_bytes": 388165,
-                        "response_sha256": "470f73315b231817421f998cd2fc6ceba1a892cde6f3c45dcdb6c0bfeff28782",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
-                      },
-                      {
-                        "response_bytes": 384048,
-                        "response_sha256": "9339f60aeb1ab72955e9bac4b0bf111b8be66186614fdc992292a2d30738a3f5",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion"
-                      },
-                      {
-                        "response_bytes": 383570,
-                        "response_sha256": "8681ad4056a904d12a003f4f221156194e6a30c78e95999d0bd1b6a9bad1600f",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"
-                      },
-                      {
-                        "response_bytes": 383462,
-                        "response_sha256": "8ad75f69575ff3a6ee5866e75403a4bd921bc811eb92a83ea6ce7d79696ca983",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no"
-                      },
-                      {
-                        "response_bytes": 388805,
-                        "response_sha256": "c2482f934d79e5246a57d96f156bfa4907e7ab7fbf6a8a7a54e965409ca23270",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
-                      },
-                      {
-                        "response_bytes": 391972,
-                        "response_sha256": "5749849bc7257968cdb7f5c4cef3f93db77baa5bbe7eaba6a7464d6f995174ae",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion"
-                      },
-                      {
-                        "response_bytes": 396443,
-                        "response_sha256": "b1c520d10156466c3f25a0e662e60a8ce96762f908b839df3cfb655fcffdf328",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras"
-                      },
-                      {
-                        "response_bytes": 394989,
-                        "response_sha256": "ab5461a2f9cff7ece1c995f3672c915c0147abe9101ed1093ff461d46b566a03",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes"
-                      },
-                      {
-                        "response_bytes": 370868,
-                        "response_sha256": "eefaf3ef90d938dc5541604902a5de1ac8c673449f2588aa2496fc062d7bd85e",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/regiones/maule/empresas/p/1"
-                      },
-                      {
-                        "response_bytes": 385892,
-                        "response_sha256": "2a7d7539ee6e183ebbef11963a803124d55c8367bf1cebe09da8a4db617d4e85",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de"
-                      },
-                      {
-                        "response_bytes": 389315,
-                        "response_sha256": "535dd71402abad0e4c1373d252ff6d5730be8488963dd1dffdc25655b3d63b8b",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa"
-                      },
-                      {
-                        "response_bytes": 391805,
-                        "response_sha256": "e9f07d96d7c110ed32ca028c00e10419ad4a33e77cf0baa4181298db65f4c482",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro"
-                      },
-                      {
-                        "response_bytes": 371718,
-                        "response_sha256": "ae2f62c3041f337fb0008c7f6021469d1f308420e75ad53c62679e1c49318690",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/regiones/valparaiso/empresas/p/1"
-                      },
-                      {
-                        "response_bytes": 395500,
-                        "response_sha256": "39ab827357d5a15a3c02edc37b762fe8d19ac80e11830ca438e705a13a67c0c7",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza"
-                      },
-                      {
-                        "response_bytes": 388716,
-                        "response_sha256": "17122a0a2914bb47cd057ae662cf7c422c01848444f457df179d6ac271c38e19",
-                        "status": "PASS",
-                        "url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/regiones/loslagos/empresas/p/1"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-stream/podcast/asunto-de-familia-armin-y-alejandro-kunstmann-la-sucesion-familiar-el"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-las-claves-de-la-jornada-de-este-viernes-09-de-octubre"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/punto-de-partida/el-ingeniero-uc-de-25-anos-que-recibio-us-50-millones-para-formar-gente-en"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/por-dentro/inmobiliaria-de-gabriela-luksic-se-fusiona-con-patagonland"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/por-dentro/la-ofensiva-que-alista-luis-hermosilla-y-los-demas-acusados-del-caso"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/por-dentro/despues-de-rotter-krauss-los-negocios-que-buscan-los-yarur-para-empresas"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/coffee-break/hermanos-schupper-reclaman-en-la-justicia-deudas-a-multitienda-corona-de"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/por-dentro/la-primavera-de-eduardo-fernandez-leon"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/coffee-break/la-cruzada-de-juan-gabriel-valdes-para-traer-a-obama-a-valdivia"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/coffee-break/quien-era-klaus-michael-kuhne-el-socio-aleman-de-los-luksic-en-hapag-lloyd"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-mas/coffee-break/el-homenaje-de-sodimac-a-juan-pablo-del-rio"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-juan-ortiz-por-ipc-de-septiembre-esta-inflacion-llego-para"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-stream/videos/ahora-en-df-terremoto-de-magnitud-7-7-sacude-panama"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-stream/videos/ahora-en-df-las-imagenes-que-dejo-el-aluvion-en-las-condes"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/entre-codigos/grupo-evans-lanza-el-area-de-derecho-publico-y-mercados-regulados-y-ficha-a"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/entre-codigos/planificar-valorizar-los-bienes-y-evitar-conflictos-entre-familias-las"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/entre-codigos/idealis-legal-recruitment-y-diario-financiero-lanzan-leading-lawyers-2026"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/entre-codigos/estudio-colombara-y-consultora-data-compliance-sellan-alianza-ante-entrada"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/entre-codigos/sclb-abogados-exmorales-besa-fortalece-su-practica-de-m-a-con"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-lab/innovacion-y-startups/la-mayoria-de-las-pyme-y-startups-de-chile-y-la-region-gobiernan-su-ia-de"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-lab/innovacion-y-startups/startup-de-empleo-universitario-tasky-levanta-capital-para-acelerar"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-lab/innovacion-y-startups/futuro-del-trabajo-como-los-agentes-de-ia-estan-redefiniendo-roles"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/df-lab/innovacion-y-startups/flama-hub-startup-tecnologica-que-quiere-ser-el-gerente-de-delivery-en"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/mercados/fondos-de-inversion/andres-trivelli-ceo-de-larrainvial-y-la-oportunidad-que-representa-el"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/mercados/fondos-de-inversion/fondo-ligado-a-rama-de-los-luksic-y-carlos-eugenio-lavin-vende-50-de"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/mercados/fondos-de-inversion/gestora-global-de-fondos-nuveen-adquiere-a-schroders"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/mercados/fondos-de-inversion/cambios-en-fintual-exportfolio-manager-asume-como-gerente-general-de-agf-y"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/mercados/fondos-de-inversion/liquidador-de-matriz-de-sartor-opta-por-proceso-conjunto-con-landmark-y"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/construccion/inmobiliarias-comienzan-a-mover-sus-fichas-tras-cambios-a-la-oguc-preparan"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/construccion/mop-define-proyecto-para-nuevo-sistema-de-controversias-en-obras-publicas-y"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/construccion/contructora-prepara-proyecto-inmobiliario-de-us-46-millones-en-antofagasta"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/construccion/industria-inmobiliaria-preve-nuevo-impulso-a-la-inversion-tras-toma-de"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/empresas/construccion/contraloria-visa-cambios-a-la-ordenanza-de-construcciones-con-los-que-el"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/economia-y-politica/laboral-personas/la-flexibilidad-laboral-mejora-la-conciliacion-familiar-pero-su-uso-es"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/economia-y-politica/congreso/el-congreso-despacha-a-ley-el-proyecto-que-extiende-las-ayudas-a"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/economia-y-politica/laboral-personas/el-critico-analisis-de-nodo-xxi-al-presupuesto-del-ministerio-del-trabajo"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/economia-y-politica/laboral-personas/remuneraciones-y-costos-laborales-extienden-sus-alzas-en-medio-de-una-alta"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/economia-y-politica/laboral-personas/aumento-en-gasto-de-la-pgu-y-plan-pro-empleo-destacan-en-la-partida-del"
-                      },
-                      {
-                        "error": "bounded_probe_budget: 24 requests per source",
-                        "status": "UNVERIFIED",
-                        "url": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html"
-                      }
-                    ],
-                    "samples": [
-                      {
-                        "content_hash": "5bca3471be119f5fdd6d3345c5666ed92a63fff917c6abcf6fab1143c4a4cd6d",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian",
-                        "title": "Los grupos económicos favoritos de las AFP"
-                      },
-                      {
-                        "content_hash": "2d1d058a2a09e2c3cc4a662b8bf32fc6a8b5f6eb361b804cda28f1899f09a57f",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion",
-                        "title": "Latam a un escalón del grado de inversión"
-                      },
-                      {
-                        "content_hash": "8651c8ddca876974a3e2b219a1488935a887bd52f30ad1761861b2527c3345cb",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e",
-                        "title": "Crisis de rentabilidad del fondo E"
-                      },
-                      {
-                        "content_hash": "432738617b1461922bf4b9d1e6e14538347b3df3129bcaf7b64933cc214fab48",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla",
-                        "title": "Hermann González advierte riesgo de recesión"
-                      },
-                      {
-                        "content_hash": "5d9301eb44d3d4350de677fd3854b0023fffa72eb32eeaa465a5bbdc893a7399",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
-                        "title": "El primer Presupuesto de Kast"
-                      },
-                      {
-                        "content_hash": "d52bfe9fb08cbec4e6785b67e85cc8d2e1b909e2df7c9f42c4591917c173f348",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza",
-                        "title": "Sudmédica anuncia marcha blanca de la primera fase de su hospital privado en Quillota y aplaza emisión de acciones para noviembre"
-                      },
-                      {
-                        "content_hash": "cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/valparaiso/empresas/p/1",
-                        "title": "Empresas | 31/08/2026"
-                      },
-                      {
-                        "content_hash": "cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/maule/empresas/p/1",
-                        "title": "Empresas | 08/09/2026"
-                      },
-                      {
-                        "content_hash": "1b2fdd88ee90d4a93415ed8070722f064d68f4dff5f9e796940b611330fde1a8",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de",
-                        "title": "Andes Salud inaugura clínica de alta complejidad en Talca con US$ 45 millones de inversión y más de 1.000 empleos"
-                      },
-                      {
-                        "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/loslagos/empresas/p/1",
-                        "title": "Empresas | 24/08/2026"
-                      },
-                      {
-                        "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con",
-                        "title": "Andes Salud impulsa inversiones en Los Lagos por $10 mil millones con apertura de centro de atenciones en Puerto Varas"
-                      },
-                      {
-                        "content_hash": "37e580c982218501611f81d75af977ac702d7cbb64811fe584c1567b51c4127a",
-                        "event_date": null,
-                        "source_url": "https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf",
-                        "title": "Tarifas electorales"
-                      }
-                    ],
-                    "scope": "discovery_only",
-                    "slug": "diario_financiero",
-                    "technical_status": "error"
-                  },
-                  "source_evidence_sha256": "c4376c5d86011c05d5f232bd9034b253a8db3b9660d851edaeb46511153db721"
-                }
-              ],
-              "failure_sha256": "202bf63cb0e6e4ca3ba86d8dd57bb51253d1991b022d3442e2f3d8e110e5daf9",
-              "live_baseline": {
-                "dated": 0,
-                "discovered": 64,
-                "error": null,
-                "inventory_hash": "c010d09a8b909d9d6c385efc18e80e81c5ea5c6c0ecf32f3c3f5b35f7b92e516",
-                "newest_event_date": null,
-                "publication_verified": false,
-                "requests": [
-                  {
-                    "response_bytes": 375820,
-                    "response_sha256": "9f1b19605b138c57256f5bdcb6be57edd9a3f76312efdd3b9849414e9d6127a2",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/dfsalud"
-                  },
-                  {
-                    "response_bytes": 402799,
-                    "response_sha256": "931f7b62e5dd4fb79bac984a3dcf9ad539bbaf2a036974ea29433f74581e78ce",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion"
-                  },
-                  {
-                    "response_bytes": 415704,
-                    "response_sha256": "617415dce14f5e2398adc0dc7f15e9a5d7520af800d26b540ea44219774d2d68",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla"
-                  },
-                  {
-                    "response_bytes": 404797,
-                    "response_sha256": "67d38984c50d9b22691969ae90a2d2c23c2b396fa7772f716d057cf0d2f099a8",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e"
-                  },
-                  {
-                    "response_bytes": 384148,
-                    "response_sha256": "a5c4094f4952df2143ae5eb9fcaf946ef4a437ae8b2acf32626cd75894df20e9",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
-                  },
-                  {
-                    "response_bytes": 396776,
-                    "response_sha256": "223d2000bd1d42d0ba40ae24b22e65470456818e5550417ede7f38a8832fbcab",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian"
-                  },
-                  {
-                    "response_bytes": 1211246,
-                    "response_sha256": "7974761a2895e3e18e1bafd6013646625bfb2dbfb63d2181b00d8f10e23276e6",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/noticias/site/docs/20250116/20250116114706/guia_etica_df_actualizacion_abril_2026_web.pdf"
-                  },
-                  {
-                    "response_bytes": 779027,
-                    "response_sha256": "2dd798a798e4effa49f1fa23e5f774de44af27f0c4d787b02871e268603d5d57",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/noticias/site/docs/20230105/20230105124926/ppt_tarifas_df_2025.pdf"
-                  },
-                  {
-                    "response_bytes": 639563,
-                    "response_sha256": "164a98434191c23f2090c417e0873f72301a382a0695e2d0e50314afde4eff15",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf"
-                  },
-                  {
-                    "response_bytes": 388165,
-                    "response_sha256": "470f73315b231817421f998cd2fc6ceba1a892cde6f3c45dcdb6c0bfeff28782",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
-                  },
-                  {
-                    "response_bytes": 384048,
-                    "response_sha256": "9339f60aeb1ab72955e9bac4b0bf111b8be66186614fdc992292a2d30738a3f5",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion"
-                  },
-                  {
-                    "response_bytes": 383570,
-                    "response_sha256": "8681ad4056a904d12a003f4f221156194e6a30c78e95999d0bd1b6a9bad1600f",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"
-                  },
-                  {
-                    "response_bytes": 383462,
-                    "response_sha256": "8ad75f69575ff3a6ee5866e75403a4bd921bc811eb92a83ea6ce7d79696ca983",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no"
-                  },
-                  {
-                    "response_bytes": 388805,
-                    "response_sha256": "c2482f934d79e5246a57d96f156bfa4907e7ab7fbf6a8a7a54e965409ca23270",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
-                  },
-                  {
-                    "response_bytes": 391972,
-                    "response_sha256": "5749849bc7257968cdb7f5c4cef3f93db77baa5bbe7eaba6a7464d6f995174ae",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion"
-                  },
-                  {
-                    "response_bytes": 396443,
-                    "response_sha256": "b1c520d10156466c3f25a0e662e60a8ce96762f908b839df3cfb655fcffdf328",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras"
-                  },
-                  {
-                    "response_bytes": 394989,
-                    "response_sha256": "ab5461a2f9cff7ece1c995f3672c915c0147abe9101ed1093ff461d46b566a03",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes"
-                  },
-                  {
-                    "response_bytes": 370868,
-                    "response_sha256": "eefaf3ef90d938dc5541604902a5de1ac8c673449f2588aa2496fc062d7bd85e",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/regiones/maule/empresas/p/1"
-                  },
-                  {
-                    "response_bytes": 385892,
-                    "response_sha256": "2a7d7539ee6e183ebbef11963a803124d55c8367bf1cebe09da8a4db617d4e85",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de"
-                  },
-                  {
-                    "response_bytes": 389315,
-                    "response_sha256": "535dd71402abad0e4c1373d252ff6d5730be8488963dd1dffdc25655b3d63b8b",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa"
-                  },
-                  {
-                    "response_bytes": 391805,
-                    "response_sha256": "e9f07d96d7c110ed32ca028c00e10419ad4a33e77cf0baa4181298db65f4c482",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro"
-                  },
-                  {
-                    "response_bytes": 371718,
-                    "response_sha256": "ae2f62c3041f337fb0008c7f6021469d1f308420e75ad53c62679e1c49318690",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/regiones/valparaiso/empresas/p/1"
-                  },
-                  {
-                    "response_bytes": 395500,
-                    "response_sha256": "39ab827357d5a15a3c02edc37b762fe8d19ac80e11830ca438e705a13a67c0c7",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza"
-                  },
-                  {
-                    "response_bytes": 388716,
-                    "response_sha256": "17122a0a2914bb47cd057ae662cf7c422c01848444f457df179d6ac271c38e19",
-                    "status": "PASS",
-                    "url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/regiones/loslagos/empresas/p/1"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-stream/podcast/asunto-de-familia-armin-y-alejandro-kunstmann-la-sucesion-familiar-el"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-las-claves-de-la-jornada-de-este-viernes-09-de-octubre"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-mas/punto-de-partida/el-ingeniero-uc-de-25-anos-que-recibio-us-50-millones-para-formar-gente-en"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-mas/por-dentro/inmobiliaria-de-gabriela-luksic-se-fusiona-con-patagonland"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-mas/por-dentro/la-ofensiva-que-alista-luis-hermosilla-y-los-demas-acusados-del-caso"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-mas/por-dentro/despues-de-rotter-krauss-los-negocios-que-buscan-los-yarur-para-empresas"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-mas/coffee-break/hermanos-schupper-reclaman-en-la-justicia-deudas-a-multitienda-corona-de"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-mas/por-dentro/la-primavera-de-eduardo-fernandez-leon"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-mas/coffee-break/la-cruzada-de-juan-gabriel-valdes-para-traer-a-obama-a-valdivia"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-mas/coffee-break/quien-era-klaus-michael-kuhne-el-socio-aleman-de-los-luksic-en-hapag-lloyd"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-mas/coffee-break/el-homenaje-de-sodimac-a-juan-pablo-del-rio"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-juan-ortiz-por-ipc-de-septiembre-esta-inflacion-llego-para"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-stream/videos/ahora-en-df-terremoto-de-magnitud-7-7-sacude-panama"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-stream/videos/ahora-en-df-las-imagenes-que-dejo-el-aluvion-en-las-condes"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/entre-codigos/grupo-evans-lanza-el-area-de-derecho-publico-y-mercados-regulados-y-ficha-a"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/entre-codigos/planificar-valorizar-los-bienes-y-evitar-conflictos-entre-familias-las"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/entre-codigos/idealis-legal-recruitment-y-diario-financiero-lanzan-leading-lawyers-2026"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/entre-codigos/estudio-colombara-y-consultora-data-compliance-sellan-alianza-ante-entrada"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/entre-codigos/sclb-abogados-exmorales-besa-fortalece-su-practica-de-m-a-con"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-lab/innovacion-y-startups/la-mayoria-de-las-pyme-y-startups-de-chile-y-la-region-gobiernan-su-ia-de"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-lab/innovacion-y-startups/startup-de-empleo-universitario-tasky-levanta-capital-para-acelerar"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-lab/innovacion-y-startups/futuro-del-trabajo-como-los-agentes-de-ia-estan-redefiniendo-roles"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/df-lab/innovacion-y-startups/flama-hub-startup-tecnologica-que-quiere-ser-el-gerente-de-delivery-en"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/mercados/fondos-de-inversion/andres-trivelli-ceo-de-larrainvial-y-la-oportunidad-que-representa-el"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/mercados/fondos-de-inversion/fondo-ligado-a-rama-de-los-luksic-y-carlos-eugenio-lavin-vende-50-de"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/mercados/fondos-de-inversion/gestora-global-de-fondos-nuveen-adquiere-a-schroders"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/mercados/fondos-de-inversion/cambios-en-fintual-exportfolio-manager-asume-como-gerente-general-de-agf-y"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/mercados/fondos-de-inversion/liquidador-de-matriz-de-sartor-opta-por-proceso-conjunto-con-landmark-y"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/construccion/inmobiliarias-comienzan-a-mover-sus-fichas-tras-cambios-a-la-oguc-preparan"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/construccion/mop-define-proyecto-para-nuevo-sistema-de-controversias-en-obras-publicas-y"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/construccion/contructora-prepara-proyecto-inmobiliario-de-us-46-millones-en-antofagasta"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/construccion/industria-inmobiliaria-preve-nuevo-impulso-a-la-inversion-tras-toma-de"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/empresas/construccion/contraloria-visa-cambios-a-la-ordenanza-de-construcciones-con-los-que-el"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/economia-y-politica/laboral-personas/la-flexibilidad-laboral-mejora-la-conciliacion-familiar-pero-su-uso-es"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/economia-y-politica/congreso/el-congreso-despacha-a-ley-el-proyecto-que-extiende-las-ayudas-a"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/economia-y-politica/laboral-personas/el-critico-analisis-de-nodo-xxi-al-presupuesto-del-ministerio-del-trabajo"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/economia-y-politica/laboral-personas/remuneraciones-y-costos-laborales-extienden-sus-alzas-en-medio-de-una-alta"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/economia-y-politica/laboral-personas/aumento-en-gasto-de-la-pgu-y-plan-pro-empleo-destacan-en-la-partida-del"
-                  },
-                  {
-                    "error": "bounded_probe_budget: 24 requests per source",
-                    "status": "UNVERIFIED",
-                    "url": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html"
-                  }
-                ],
-                "samples": [
-                  {
-                    "content_hash": "5bca3471be119f5fdd6d3345c5666ed92a63fff917c6abcf6fab1143c4a4cd6d",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/senal-df/senales-financieras/los-grupos-economicos-favoritos-de-las-afp-y-como-los-financian",
-                    "title": "Los grupos económicos favoritos de las AFP"
-                  },
-                  {
-                    "content_hash": "2d1d058a2a09e2c3cc4a662b8bf32fc6a8b5f6eb361b804cda28f1899f09a57f",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/senal-df/senales-financieras/latam-retoma-el-vuelo-y-queda-a-un-escalon-del-grado-de-inversion",
-                    "title": "Latam a un escalón del grado de inversión"
-                  },
-                  {
-                    "content_hash": "8651c8ddca876974a3e2b219a1488935a887bd52f30ad1761861b2527c3345cb",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/senal-df/senales-financieras/la-apuesta-de-las-afp-que-gatillo-la-crisis-de-rentabilidad-del-fondo-e",
-                    "title": "Crisis de rentabilidad del fondo E"
-                  },
-                  {
-                    "content_hash": "432738617b1461922bf4b9d1e6e14538347b3df3129bcaf7b64933cc214fab48",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/senal-df/factor-economico/hermann-gonzalez-cumplir-la-meta-es-necesario-pero-sobrecumplirla",
-                    "title": "Hermann González advierte riesgo de recesión"
-                  },
-                  {
-                    "content_hash": "5d9301eb44d3d4350de677fd3854b0023fffa72eb32eeaa465a5bbdc893a7399",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
-                    "title": "El primer Presupuesto de Kast"
-                  },
-                  {
-                    "content_hash": "d52bfe9fb08cbec4e6785b67e85cc8d2e1b909e2df7c9f42c4591917c173f348",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza",
-                    "title": "Sudmédica anuncia marcha blanca de la primera fase de su hospital privado en Quillota y aplaza emisión de acciones para noviembre"
-                  },
-                  {
-                    "content_hash": "cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/regiones/valparaiso/empresas/p/1",
-                    "title": "Empresas | 31/08/2026"
-                  },
-                  {
-                    "content_hash": "cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/regiones/maule/empresas/p/1",
-                    "title": "Empresas | 08/09/2026"
-                  },
-                  {
-                    "content_hash": "1b2fdd88ee90d4a93415ed8070722f064d68f4dff5f9e796940b611330fde1a8",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de",
-                    "title": "Andes Salud inaugura clínica de alta complejidad en Talca con US$ 45 millones de inversión y más de 1.000 empleos"
-                  },
-                  {
-                    "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/regiones/loslagos/empresas/p/1",
-                    "title": "Empresas | 24/08/2026"
-                  },
-                  {
-                    "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con",
-                    "title": "Andes Salud impulsa inversiones en Los Lagos por $10 mil millones con apertura de centro de atenciones en Puerto Varas"
-                  },
-                  {
-                    "content_hash": "37e580c982218501611f81d75af977ac702d7cbb64811fe584c1567b51c4127a",
-                    "event_date": null,
-                    "source_url": "https://www.df.cl/noticias/site/docs/20251112/20251112094002/tarifas_electorales_papel_2025__1_.pdf",
-                    "title": "Tarifas electorales"
-                  }
-                ],
-                "scope": "discovery_only",
-                "slug": "diario_financiero",
-                "technical_status": "error"
-              },
-              "material_progress": false,
-              "signature": null,
-              "source_run_id": null,
-              "source_slug": "diario_financiero",
-              "status": "BLOCKED",
-              "validated": false
+              "attempted": false,
+              "reason": "Instrumentation limit is not a demonstrated source failure"
             }
+          },
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "media",
+            "task_id": "source_repair_media_lane_2026_10_11"
           }
         ],
-        "fingerprint": "139762a29e92c14aa48ea33bdf7e806ef0796c465cb586e5c878fe7c78e59e86",
-        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256; Scoped live discovery failed: diario_financiero"
+        "fingerprint": "1b25c133efaaf486138744e45870663d02158a3ba6bd806c37a8bd59d9c47d67",
+        "product_input_fingerprint": "db22389ac0ea0b7aa91b4e267f4252cb1f2fb41e48c498ca99639b54d3c17b77",
+        "reason": "Scoped coverage INCOMPLETE: internal request budget reached: diario_financiero; Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256"
       },
       "blocker_signatures": [
         "77e893d9c159c6c866731dd0a6f4fd629e931049b3cf3c4e1c58936c3330956d",
@@ -70863,15 +69070,7 @@
       "input_fingerprint": "7354e00ca263da10d601f510f52b0b047e8bd3d6e7fccbd1a6f169dd7226bc4a",
       "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "last_ready_at": "2026-10-11T07:04:08.198661Z",
-      "lease": {
-        "claimed_at": "2026-10-11T07:04:55.876488Z",
-        "expires_at": "2026-10-11T07:14:55.876488Z",
-        "fence": 9,
-        "heartbeat_at": "2026-10-11T07:05:29.403161Z",
-        "owner": "38120110728-1-media",
-        "recovery_deadline_at": "2026-10-11T07:14:55.876488Z",
-        "token": "dfa758c62652116d30816027235327431487765eb45aea429695d020a508fec2"
-      },
+      "lease": null,
       "material_progress_at": "2026-10-11T06:26:38.718338Z",
       "material_watch_started_at": "2026-10-11T06:26:38.718338Z",
       "objective": "Repair Diario Financiero and Pulso/La Tercera end-to-end in parallel with other P0 lanes.",
@@ -70882,8 +69081,8 @@
       "reason": "no_material_progress_30m",
       "recovery_episode": "0017e57e0e30827958cdff70f89549369ea7e33493e5f480813e56caff4414c9",
       "recovery_reclaims": 1,
-      "state_changed_at": "2026-10-11T07:04:55.876488Z",
-      "status": "RUNNING"
+      "state_changed_at": "2026-10-11T07:05:32.133985Z",
+      "status": "BLOCKED"
     },
     "source_repair_mutualities_lane_2026_10_11": {
       "approved": true,
