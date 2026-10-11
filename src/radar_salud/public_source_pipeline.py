@@ -180,6 +180,9 @@ def process_suseso_fiscalizacion(raw,cfg):
     from .processing import RejectedProcessing
     if raw.metadata.get("document_class") == "related_normative" or re.match(r"(?:Circular|Dictamen)\b", raw.title, re.I):
         raise RejectedProcessing("related_normative_not_enforcement")
+    if raw.metadata.get('document_class') == 'enforcement_sanction':
+        from .suseso_fiscalizacion import process_professional_sanction
+        return process_professional_sanction(raw, cfg)
     raise DeferredProcessing("SUSESO enforcement candidate requires document/actor/materiality review")
 
 def _scopes(text):

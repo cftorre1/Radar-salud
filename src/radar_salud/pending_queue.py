@@ -22,7 +22,9 @@ def legacy_fingerprint(raw):
 def fingerprint(raw):
     if raw.source_slug in FISCALIZATION_SOURCES:
         from .superintendencia_fiscalizacion import canonical_url
-        return hashlib.sha256(f"{raw.source_slug}|{canonical_url(raw.url)}".encode()).hexdigest()
+        identity = raw.metadata.get('source_record_id')
+        suffix = f'|record:{identity}' if identity else ''
+        return hashlib.sha256(f"{raw.source_slug}|{canonical_url(raw.url)}{suffix}".encode()).hexdigest()
     return legacy_fingerprint(raw)
 
 def atomic_json(path, value):
@@ -72,10 +74,11 @@ class PendingQueue:
         fiscal_index = {}
         for old_key, item in self.items.items():
             if item.get("source") in FISCALIZATION_SOURCES:
-                fiscal_index.setdefault((item["source"], canonical_url(item["raw"]["url"])), []).append(old_key)
+                fiscal_index.setdefault((item["source"], canonical_url(item["raw"]["url"]), item['raw'].get('metadata', {}).get('source_record_id')), []).append(old_key)
         for raw in items:
             key = fingerprint(raw)
-            aliases = fiscal_index.get((source, canonical_url(raw.url)), []) if source in FISCALIZATION_SOURCES else []
+            identity = raw.metadata.get('source_record_id')
+            aliases = fiscal_index.get((source, canonical_url(raw.url), identity), []) if source in FISCALIZATION_SOURCES else []
             if aliases:
                 records = [(old_key, self.items.pop(old_key)) for old_key in aliases]
                 rank = {"published": 5, "rejected": 4, "processing": 3, "retry": 2, "pending": 1, "archived": 0}
@@ -87,7 +90,7 @@ class PendingQueue:
                 if duplicates:
                     item.setdefault("superseded_records", []).extend(duplicates)
                 self.items[key] = item
-                fiscal_index[(source, canonical_url(raw.url))] = [key]
+                fiscal_index[(source, canonical_url(raw.url), identity)] = [key]
                 verified_date = raw.event_date and raw.metadata.get("event_date_basis")
                 if verified_date and asdict(raw) != item["raw"]:
                     item.setdefault("rediscovery_repairs", []).append({
@@ -109,7 +112,7 @@ class PendingQueue:
                 status="archived" if archived else "pending", detected_at=now.isoformat(),
                 attempts=0, reason="outside_90_day_backfill" if archived else None)
             if source in FISCALIZATION_SOURCES:
-                fiscal_index[(source, canonical_url(raw.url))] = [key]
+                fiscal_index[(source, canonical_url(raw.url), identity)] = [key]
             added += 1
         self.save()
         return added

@@ -226,7 +226,8 @@ def _normative_contract(s):
 def _doc_key(s):
     if "Fiscalización" in (s.get("signal_types") or []) and s.get("source_url"):
         from radar_salud.superintendencia_fiscalizacion import canonical_url
-        return "fiscalization:"+canonical_url(s["source_url"])
+        identity = s.get('source_record_id')
+        return "fiscalization:"+canonical_url(s["source_url"])+(f'|record:{identity}' if identity else '')
     title=s.get("title","") or ""
     m=re.search(r"resoluci[oó]n(?:\s+exenta)?\s+(?:n[uú]mero\s+)?(?:if|ip)?\s*[/\-]?\s*n?[°º]?\s*([\d\.]+)",title,re.I)
     if m:return "res-"+re.sub(r"\D","",m.group(1))

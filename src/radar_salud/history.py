@@ -14,7 +14,10 @@ def load_history(path: Path) -> list[dict]:
 
 
 def _key(signal: dict) -> str:
-    return str(signal.get('source_url') or signal.get('signal_id') or signal.get('title'))
+    key = str(signal.get('source_url') or signal.get('signal_id') or signal.get('title'))
+    if 'Fiscalización' in (signal.get('signal_types') or []) and signal.get('source_record_id'):
+        key += '|record:' + signal['source_record_id']
+    return key
 
 
 def merge_history(existing: Iterable[dict], new_signals: Iterable[dict]) -> list[dict]:

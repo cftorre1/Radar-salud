@@ -16,7 +16,7 @@ from urllib.parse import urljoin, urlsplit
 from radar_salud.pending_queue import atomic_json
 from radar_salud.scouts import _AnchorParser
 from radar_salud.superintendencia_fiscalizacion import PAGES as SIS, parse_listing, canonical_url
-from radar_salud.suseso_fiscalizacion import PAGES as SUSESO, parse_actor_listing
+from radar_salud.suseso_fiscalizacion import PAGES as SUSESO, ENFORCEMENT_PAGES, parse_actor_listing, parse_enforcement_listing
 
 HOSTS = {'www.superdesalud.gob.cl', 'superdesalud.gob.cl', 'www.suseso.gob.cl', 'suseso.gob.cl'}
 
@@ -116,6 +116,11 @@ def probe(output, as_of):
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-715129.html'),
     ]]
     seeds = list({seed['url']: seed for seed in reversed(seeds)}.values())[::-1]
+    enforcement = {url:(name,kind) for name,url,kind in ENFORCEMENT_PAGES}
+    for seed in seeds:
+        if seed['url'] in enforcement:
+            seed['name'], kind = enforcement[seed['url']]
+            seed['kind'] = 'enforcement_' + kind
     receipts=[]; inventory=[]; navigation=[]
     with ThreadPoolExecutor(max_workers=3) as pool:
         results=list(pool.map(lambda seed: fetch(seed['url'],captures), seeds))
@@ -128,6 +133,8 @@ def probe(output, as_of):
                     found=parse_listing(html,seed['name'],seed['url'],seed['scope'],seed['kind'])
                 elif seed['kind']=='related_actor_taxonomy':
                     found=parse_actor_listing(html,seed['scope'],seed['url'])
+                elif seed['kind'].startswith('enforcement_'):
+                    found=parse_enforcement_listing(html,seed['name'],seed['url'],seed['kind'].removeprefix('enforcement_'))
                 receipt.update(parsed_items=len(found),parse_error=None if found or seed['kind']=='navigation' else 'no_identifiable_rows')
             except Exception as exc:
                 receipt.update(parsed_items=0,parse_error=type(exc).__name__)
@@ -137,9 +144,9 @@ def probe(output, as_of):
             receipt.update(parsed_items=0,parse_error='transport_failure')
         receipts.append(receipt)
         inventory.extend(asdict(raw) for raw in found)
-    recent = {raw['url']:raw for raw in inventory if any(within(raw['metadata'].get(k) or raw.get('event_date'),as_of,90)
+    recent = {(raw['url'],raw['metadata'].get('source_record_id')):raw for raw in inventory if any(within(raw['metadata'].get(k) or raw.get('event_date'),as_of,90)
         for k in ('publication_date','emission_date'))}
-    targets=set(recent)
+    targets={raw['url'] for raw in recent.values()}
     targets.update(attachment['url'] for raw in recent.values() for attachment in raw['metadata'].get('attachments',[]))
     # Inspect detail and primary documents for every recent candidate, including held dates.
     with ThreadPoolExecutor(max_workers=3) as pool:
@@ -152,7 +159,7 @@ def probe(output, as_of):
         started_from_sha=sha,completed_at=utcnow(),github_run_id=os.environ.get('GITHUB_RUN_ID'),
         github_run_url=f"https://github.com/cftorre1/Radar-salud/actions/runs/{os.environ.get('GITHUB_RUN_ID')}" if os.environ.get('GITHUB_RUN_ID') else None,
         receipts=receipts,inventory_file=str(output/'inventory.json'),navigation_file=str(output/'navigation.json'),
-        surfaces_checked=len(seeds),rows_discovered=len(inventory),unique_items=len({canonical_url(r['url']) for r in inventory}),
+        surfaces_checked=len(seeds),rows_discovered=len(inventory),unique_items=len({(canonical_url(r['url']),r['metadata'].get('source_record_id')) for r in inventory}),
         recent_unique_items=len(recent),coverage_complete=False,
         coverage_reason='Initial native seed probe; pagination/dynamic surfaces and enforcement-specific taxonomy require subsequent reconciliation.',
         writes_to_source_state=False,writes_to_staging_or_main=False)

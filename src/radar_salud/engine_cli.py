@@ -75,14 +75,18 @@ def main():
     for name,_,discover,_ in specs:
         try:
             items=discover()
-            observed[name]=[dict(event_date=raw.event_date,metadata=raw.metadata) for raw in items]
+            observed[name]=[dict(url=raw.url,event_date=raw.event_date,metadata=raw.metadata) for raw in items]
             surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
             from .superintendencia_fiscalizacion import canonical_url
             published_urls={canonical_url(row.get("source_url", "")) for row in history
-                if name in FISCALIZATION_SOURCES and "Fiscalización" in (row.get("signal_types") or [])}
+                if name in FISCALIZATION_SOURCES and "Fiscalización" in (row.get("signal_types") or []) and not row.get('source_record_id')}
+            published_records={(canonical_url(row.get('source_url','')), row['source_record_id']) for row in history
+                if name in FISCALIZATION_SOURCES and 'Fiscalización' in (row.get('signal_types') or []) and row.get('source_record_id')}
             seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw)) or
-                (name in FISCALIZATION_SOURCES and (store.is_seen(legacy_fingerprint(raw)) or canonical_url(raw.url) in published_urls))}
+                (name in FISCALIZATION_SOURCES and (store.is_seen(legacy_fingerprint(raw)) or
+                    (not raw.metadata.get('source_record_id') and canonical_url(raw.url) in published_urls) or
+                    (canonical_url(raw.url), raw.metadata.get('source_record_id')) in published_records))}
             checked_at=datetime.now(timezone.utc).isoformat()
             added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name))
             if name=="suseso_fiscalizacion":
