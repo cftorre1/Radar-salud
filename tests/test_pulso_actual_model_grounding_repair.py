@@ -84,6 +84,20 @@ def test_actual_ovalle_coordination_does_not_prove_installed_or_available_capaci
     assert verdict["decision"] == "deferred" and verdict["reason"] == "pulso_editorial_future_status_mismatch"
 
 
+def test_actual_sar_inauguration_does_not_prove_estimated_yearly_attentions_achieved():
+    row = next(r for r in ROWS if "recinto-podra-realizar-65-mil" in r["url"])
+    assert row["body_sha256"] == "b19cf891c76d50a414054e4819e3dc943134c6d5329b5cc1430e7bd4813f3b6b"
+    assert validate_pulso_editorial_proof(row["ai"], row["body"])["prospective_evidence"] is True
+    bad = copy.deepcopy(row["ai"])
+    bad["what_happened"] = "Según La Tercera, el SAR ya realizó 65.000 atenciones anuales."
+    bad["why_it_matters"] = "El SAR ya descongestionó los hospitales con esas 65.000 atenciones."
+    bad["pulso_editorial_proof"].update(event_status="actual", future_claims=[],
+        consequence="tendrá una capacidad para realizar 65 mil atenciones al año",
+        consequence_quote="se estima que tendrá una capacidad para realizar 65 mil atenciones al año.")
+    verdict = validate_pulso_editorial_proof(bad, row["body"])
+    assert verdict["decision"] == "deferred" and verdict["reason"] == "pulso_editorial_future_status_mismatch"
+
+
 def test_actual_scope_lexical_repairs_leave_seven_insufficient_quotes_held():
     rows = [r for r in ROWS if r["reason"] == "pulso_editorial_scope_not_grounded"]
     assert len(rows) == 20
