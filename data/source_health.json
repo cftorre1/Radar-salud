@@ -256,9 +256,9 @@
     },
     "deis": {
       "name": "DEIS",
-      "checked_at": "2026-10-11T04:35:24.137226+00:00",
+      "checked_at": "2026-10-11T05:38:00.741627+00:00",
       "last_signal_at": null,
-      "discovered": 0,
+      "discovered": 12,
       "new": 0,
       "published": 0,
       "live_pending": 0,
@@ -266,37 +266,163 @@
       "pending": 0,
       "deferred": 0,
       "rejected": 0,
-      "status": "error",
-      "error": "URLError",
-      "technical_status": "error",
-      "coverage_status": "unverified",
+      "status": "warning",
+      "error": null,
+      "technical_status": "degraded",
+      "coverage_status": "partial",
       "content_freshness": "unknown",
       "editorial_outcome": "not_evaluated",
-      "error_details": {
-        "exception_chain": [
-          {
-            "type": "URLError",
-            "reason": "Tunnel connection failed: 403 Forbidden"
-          },
-          {
-            "type": "OSError"
-          }
-        ],
-        "failure_signature": "URLError:Tunnel connection failed: 403 Forbidden > OSError",
-        "transport_stage": "proxy_connect_rejected",
-        "origin_tls_observed": false
-      },
       "discovery_diagnostics": {
         "listing_url": "https://deis.minsal.cl/centrofic/",
-        "listing_recognized": false,
-        "fetch_error": "URLError",
-        "fetch_error_detail": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+        "listing_recognized": true,
+        "document_blocks": 21,
+        "dated_documents": 12,
+        "rejected_missing_date": 7,
+        "rejected_invalid_date": 0,
+        "rejected_ambiguous_date": 0,
+        "rejected_editorial_only": 0,
+        "rejected_unproven_update": 2,
+        "document_verification": "pending_pipeline",
+        "coverage_status": "dated_documents_found",
+        "verified_publications": 12,
+        "latest_verified_publication_date": "2026-06-25",
         "poll_mode": "discovery_and_document_verification_only",
-        "document_checks": [],
+        "partial_failure": true,
+        "document_checks": [
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XXI%20junio2026.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XXI%20junio2026.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XXI%20junio2026.pdf",
+            "sha256": "b0991012d8100f8d34ad2ed9812577d274173229baec3ae846824e649c9a58fe",
+            "bytes": 740491,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:37:39.109139+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual%20Cap%C3%ADtulo%20XV%20Embarazo%20Parto%20y%20Puerperio%20180825.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual%20Cap%C3%ADtulo%20XV%20Embarazo%20Parto%20y%20Puerperio%20180825.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual%20Cap%C3%ADtulo%20XV%20Embarazo%20Parto%20y%20Puerperio%20180825.pdf",
+            "sha256": "2360136b3e34c84607ee244c159b1cd746e0c2928b2ad26580c55795dd16edb0",
+            "bytes": 565507,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:37:40.843471+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XVIII%20de%20la%20CIE-10.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XVIII%20de%20la%20CIE-10.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XVIII%20de%20la%20CIE-10.pdf",
+            "sha256": "5e18ac4be8dbc9831472128e27e937945e4d98778de3487f696c5caecd62e277",
+            "bytes": 320765,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:37:42.315386+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/C%C3%B3digos%20Post%20COVID-19%20Efecto%20adverso%20Vacuna.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/C%C3%B3digos%20Post%20COVID-19%20Efecto%20adverso%20Vacuna.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/C%C3%B3digos%20Post%20COVID-19%20Efecto%20adverso%20Vacuna.pdf",
+            "sha256": "dbc4db8c668e6c9a576d3795555108ef4340028257af1d515a8a8846e315d006",
+            "bytes": 150654,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:37:43.601001+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL1.pdf",
+            "status": "blocked",
+            "exception_chain": [
+              {
+                "type": "ValueError",
+                "reason": "Public-source capture exceeds the byte limit"
+              }
+            ],
+            "failure_signature": "ValueError:Public-source capture exceeds the byte limit"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+            "sha256": "0012341842f985dc67fb39609c6cc591a76cc27b7dc1796eb07ad3fb48f5a2bf",
+            "bytes": 6186363,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:37:48.719939+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL3.pdf",
+            "status": "blocked",
+            "exception_chain": [
+              {
+                "type": "ValueError",
+                "reason": "Public-source capture exceeds the byte limit"
+              }
+            ],
+            "failure_signature": "ValueError:Public-source capture exceeds the byte limit"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+            "sha256": "87b092dd8d62026f00801b266941b626e3fac56494b32ea3451a7ad7a6f2c3fc",
+            "bytes": 983571,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:37:53.481784+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+            "sha256": "3078a003dc028e838581c2ae6093f1a7b288c7772c0968486a8dc024e5668061",
+            "bytes": 604477,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:37:55.324269+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+            "sha256": "393fb72ea20f6dcee2be746fe6d2515f29727ee4cbdcbc53644f40a8e9e9ce91",
+            "bytes": 780682,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:37:56.992978+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+            "sha256": "f19b11f6cf58b7ec4633dce660f95c5c526fb38319969dffc85871fec7d13287",
+            "bytes": 1039787,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:37:58.819334+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+            "sha256": "7ae8c085cb8fc65460ef1b1b07637f4449879c355e648c304b5488c7b542fd13",
+            "bytes": 605604,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:38:00.547847+00:00"
+          }
+        ],
         "evidence_status": "capture_pending"
       },
       "engine_checked_at": "2026-10-11T04:31:45.272247+00:00",
-      "poll_mode": "discovery_and_document_verification_only"
+      "poll_mode": "discovery_and_document_verification_only",
+      "latest_verified_publication_at": "2026-06-25",
+      "runtime_outcome": "OPERATIVE_DEGRADED",
+      "runtime_environment": "github_actions",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115202557",
+      "runtime_commit": "ca3d22a7fde6b5dd82c4e16a37c0ffd62547d766",
+      "runtime_limitation": "Dated reference-document lane verified; 10 readable PDFs, 2 historical volumes exceed 20 MiB; no material release in 30/90 days on Centro FIC. Full statistical catalog recovery is still being verified.",
+      "coverage_complete": false
     },
     "redsalud": {
       "name": "Redsalud",
@@ -763,5 +889,6 @@
       "editorial_outcome": "pending"
     }
   },
-  "generated_at": "2026-10-11T04:35:24.137233+00:00"
+  "generated_at": "2026-10-11T04:35:24.137233+00:00",
+  "public_data_sources_checked_at": "2026-10-11T05:38:00.741627+00:00"
 }
