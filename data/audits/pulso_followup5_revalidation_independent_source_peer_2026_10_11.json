@@ -1,0 +1,1137 @@
+{
+  "schema_version": "pulso_followup5_independent_source_peer_v1",
+  "reviewed_head": "57a0ea077c617c0cc96a02271e5612762ce80039",
+  "generated_at": "2026-10-11T21:22:43.615045+00:00",
+  "source_fix_commit": "e5f5ba2125c1ce7d46f984ebc71f10c068ad4ca3",
+  "status": "SCOPED_SOURCE_CODE_PASS",
+  "inputs": {
+    "src/radar_salud/pulso_followup_paid_revalidation.py": "cf498c6d38327b6c1633f1536444e14486405fee8b6a763f183bbb98a5d03a06",
+    "src/radar_salud/beta_sources.py": "b6457d6d697f7183c1570e942d267276322ac6db8465963223a81fc5e7c3e9c9",
+    "src/radar_salud/pending_queue.py": "4cb4a8a91d9bff32e5f9a8a62a0ae03de0ec0315be2a49277fe326357dc4472b",
+    "src/radar_salud/pulso_editorial_proof.py": "e524dec57d62daa9559ba21e792422d350635b7a65f0eb78a277e36b800c231e",
+    "tests/test_pulso_followup_paid_guard_revalidation.py": "0a2bf68fe7d76d80975ad5bb78663021e4aec9a2aebcf4326f458c9ee810d96d",
+    "data/audits/pulso_followup5_paid_guard_revalidation_manifest_2026_10_11.json": "1c7389906e3855d2e622e4bc4aab91addcf1e8615e8251f03def15b447f922fa",
+    "data/audits/pulso_current5_guard_independent_diagnosis_2026_10_11.json": "b57156432b9f669fba9147bf215312b0067c501ba4cd385dc699f3d714765eab",
+    "data/audits/pulso_current12_remaining5_second_semantic_diagnosis_2026_10_11.json": "d5234ffd225f5cc45fe57ca7c7d6377539ec0f46b19a18696e89b204ed896c13"
+  },
+  "producer_state": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+  "producer_code": "de51496ca0bfbe656c96551743e52024b9b6608e",
+  "producer_fingerprint": "7f5da999f7df70bb15ef775bba83ab2ff2697f1065b99d0e48b73ec8e987efed",
+  "actual_original_unique_successful_fast_responses": 10,
+  "gate": 72,
+  "checks": [
+    {
+      "check": "all5_once_admission_original_models_and_three_archives_intact_no_retry_reset",
+      "records": 5,
+      "result": "PASS"
+    },
+    {
+      "check": "entire_original_queue_only5_changed_native_and_terminal_entries_intact",
+      "total_entries": 7049,
+      "untouched": 7044,
+      "result": "PASS"
+    },
+    {
+      "check": "two_new_routes_full_input_bound_context_and_two_retry_erasure_attacks_each_denied",
+      "cases": 4,
+      "result": "PASS"
+    },
+    {
+      "check": "three_reuse_paid_answers_no_publisher_or_model_calls_and_unchanged_gate72",
+      "records": 3,
+      "result": "PASS"
+    }
+  ],
+  "rows": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "publication_date": "2026-10-05",
+      "route": "assess_contract_or_semantic_defect",
+      "full_body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+      "original_response_id": "resp_06b321eec0a4c07f006acbf3f38d0c87d0be4b0433bf3d71cb",
+      "original_score": 88,
+      "genuine_new_paid_response": false,
+      "result": "PASS_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "publication_date": "2026-09-01",
+      "route": "reuse_code_fn",
+      "full_body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+      "original_response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+      "original_score": 82,
+      "genuine_new_paid_response": false,
+      "result": "PASS_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "publication_date": "2026-09-01",
+      "route": "reuse_code_fn",
+      "full_body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+      "original_response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+      "original_score": 86,
+      "genuine_new_paid_response": false,
+      "result": "PASS_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "publication_date": "2026-07-29",
+      "route": "assess_contract_or_semantic_defect",
+      "full_body_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+      "original_response_id": "resp_067ece23e848c255006acbf4ecaf6487d09d7334c588812e6b",
+      "original_score": 90,
+      "genuine_new_paid_response": false,
+      "result": "PASS_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "route": "reuse_code_fn",
+      "full_body_sha256": "9113e0fd67a716d5a03a5f50bd0dba68dcb391278e16be3e3a900bbc0eebd982",
+      "original_response_id": "resp_0198a8fdf4ba8f19006acbf42fb5dc87d0b54472ac2e9408f1",
+      "original_score": 84,
+      "genuine_new_paid_response": false,
+      "result": "PASS_TEMP_UNIT_ONLY",
+      "external_calls": 0,
+      "publication_approved": false
+    }
+  ],
+  "admission_and_processing_mutations": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "once_admission",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "once_admission",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "once_admission",
+      "attack": "type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "once_admission",
+      "attack": "role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "once_admission",
+      "attack": "attempt_bool",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "once_admission",
+      "attack": "attempt5",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "once_admission",
+      "attack": "terminal",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "once_admission",
+      "attack": "old_model",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "once_admission",
+      "attack": "old_id",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "once_admission",
+      "attack": "old_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing_authority",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing_authority",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing_authority",
+      "attack": "official_type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing_authority",
+      "attack": "official_role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing_authority",
+      "attack": "stamp",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing_authority",
+      "attack": "original66_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing_authority",
+      "attack": "old49_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing_authority",
+      "attack": "old12_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "once_admission",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "once_admission",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "once_admission",
+      "attack": "type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "once_admission",
+      "attack": "role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "once_admission",
+      "attack": "attempt_bool",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "once_admission",
+      "attack": "attempt5",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "once_admission",
+      "attack": "terminal",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "once_admission",
+      "attack": "old_model",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "once_admission",
+      "attack": "old_id",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "once_admission",
+      "attack": "old_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "processing_authority",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "processing_authority",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "processing_authority",
+      "attack": "official_type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "processing_authority",
+      "attack": "official_role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "processing_authority",
+      "attack": "stamp",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "processing_authority",
+      "attack": "original66_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "processing_authority",
+      "attack": "old49_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "stage": "processing_authority",
+      "attack": "old12_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "once_admission",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "once_admission",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "once_admission",
+      "attack": "type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "once_admission",
+      "attack": "role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "once_admission",
+      "attack": "attempt_bool",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "once_admission",
+      "attack": "attempt5",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "once_admission",
+      "attack": "terminal",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "once_admission",
+      "attack": "old_model",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "once_admission",
+      "attack": "old_id",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "once_admission",
+      "attack": "old_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "processing_authority",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "processing_authority",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "processing_authority",
+      "attack": "official_type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "processing_authority",
+      "attack": "official_role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "processing_authority",
+      "attack": "stamp",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "processing_authority",
+      "attack": "original66_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "processing_authority",
+      "attack": "old49_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "stage": "processing_authority",
+      "attack": "old12_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "once_admission",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "once_admission",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "once_admission",
+      "attack": "type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "once_admission",
+      "attack": "role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "once_admission",
+      "attack": "attempt_bool",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "once_admission",
+      "attack": "attempt5",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "once_admission",
+      "attack": "terminal",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "once_admission",
+      "attack": "old_model",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "once_admission",
+      "attack": "old_id",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "once_admission",
+      "attack": "old_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing_authority",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing_authority",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing_authority",
+      "attack": "official_type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing_authority",
+      "attack": "official_role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing_authority",
+      "attack": "stamp",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing_authority",
+      "attack": "original66_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing_authority",
+      "attack": "old49_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing_authority",
+      "attack": "old12_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "once_admission",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "once_admission",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "once_admission",
+      "attack": "type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "once_admission",
+      "attack": "role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "once_admission",
+      "attack": "attempt_bool",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "once_admission",
+      "attack": "attempt5",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "once_admission",
+      "attack": "terminal",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "once_admission",
+      "attack": "old_model",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "once_admission",
+      "attack": "old_id",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "once_admission",
+      "attack": "old_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "processing_authority",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "processing_authority",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "processing_authority",
+      "attack": "official_type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "processing_authority",
+      "attack": "official_role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "processing_authority",
+      "attack": "stamp",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "processing_authority",
+      "attack": "original66_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "processing_authority",
+      "attack": "old49_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "stage": "processing_authority",
+      "attack": "old12_receipt",
+      "result": "DENY"
+    }
+  ],
+  "resolved_erasure_cases": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "completed_synthetic_attempts": 1,
+      "all_followup_claims_removed": true,
+      "older_composite_modes_genuinely_pass": true,
+      "known_five_primary_authority": true,
+      "result": "DENY_BEFORE_API",
+      "spy_calls": 0,
+      "genuine_external_calls": 0,
+      "new_model_response_is_synthetic": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "completed_synthetic_attempts": 2,
+      "all_followup_claims_removed": true,
+      "older_composite_modes_genuinely_pass": true,
+      "known_five_primary_authority": true,
+      "result": "DENY_BEFORE_API",
+      "spy_calls": 0,
+      "genuine_external_calls": 0,
+      "new_model_response_is_synthetic": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "completed_synthetic_attempts": 1,
+      "all_followup_claims_removed": true,
+      "older_composite_modes_genuinely_pass": true,
+      "known_five_primary_authority": true,
+      "result": "DENY_BEFORE_API",
+      "spy_calls": 0,
+      "genuine_external_calls": 0,
+      "new_model_response_is_synthetic": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "completed_synthetic_attempts": 2,
+      "all_followup_claims_removed": true,
+      "older_composite_modes_genuinely_pass": true,
+      "known_five_primary_authority": true,
+      "result": "DENY_BEFORE_API",
+      "spy_calls": 0,
+      "genuine_external_calls": 0,
+      "new_model_response_is_synthetic": true
+    }
+  ],
+  "original_finding": {
+    "code_commit": "7e6af5cea879137e537bc82b5e1608adfaaa459c",
+    "proof_sha256": "51ebe70c5886ac10a15b258ee37f1591c7ad19bd218557fa3ffb41425f3ea894",
+    "results": [
+      {
+        "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+        "known_original_candidate": false,
+        "all_followup_claims_removed": true,
+        "older_composite_modes_pass": true,
+        "dispatch": "legacy_current12_fallback_request_observed",
+        "spy_calls": 1,
+        "correct_followup_context_used": false,
+        "genuine_external_calls": 0,
+        "synthetic_unit_response": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+        "known_original_candidate": false,
+        "all_followup_claims_removed": true,
+        "older_composite_modes_pass": true,
+        "dispatch": "legacy_current12_fallback_request_observed",
+        "spy_calls": 1,
+        "correct_followup_context_used": false,
+        "genuine_external_calls": 0,
+        "synthetic_unit_response": true
+      }
+    ],
+    "resolved_by": "e5f5ba21"
+  },
+  "publisher_semantic_route_is_approval": false,
+  "publication_approved": false,
+  "source_state_edits": false,
+  "actual_followup_core_approved": false,
+  "actual_zero_ai_replay_approved": false,
+  "final_native_reviewer_ui_approved": false,
+  "limitations": [
+    "All newly generated model IDs and outputs are explicit temporary synthetic unit responses; no actual provider call, publication or ledger write occurred.",
+    "Original paid outputs/body/date/ledger and semantic references are immutable real evidence; three reuses and two fresh routes remain mandatory.",
+    "Scope approves authority, archival continuity and bounded processing only. Actual next core, genuine zero-AI replay, fullbody date/novelty review, final Reviewer and UI are pending.",
+    "Literal/structural guard readiness is not global semantic approval; historical events falsely framed as current still require independent fullbody/date review."
+  ],
+  "bounded_guard_independent_peer": {
+    "schema_version": "pulso_current5_guard_bounded_independent_peer_v1",
+    "guard_commit": "19f072a03a14bad6ab5c50596d0f49a5cc016403",
+    "guard_sha256": "e524dec57d62daa9559ba21e792422d350635b7a65f0eb78a277e36b800c231e",
+    "fixture_sha256": "edb921df6c0f08d1e186f19ee3ef8245ccda2ae8debacec7fc21ad06e8341580",
+    "status": "SCOPED_STRUCTURAL_PASS_NOT_SEMANTIC_APPROVAL",
+    "baseline": [
+      {
+        "row": 2,
+        "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+        "publication_date": "2026-10-05",
+        "original_response_id": "resp_06b321eec0a4c07f006acbf3f38d0c87d0be4b0433bf3d71cb",
+        "score": 88,
+        "old_status": "retry",
+        "technical_current_guard": {
+          "version": "pulso_editorial_proof_v5",
+          "source": "pulso_latercera",
+          "analysis_text_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+          "quote_validation_is_semantic_approval": false,
+          "publication_approved": false,
+          "model_output_sha256": "19dfb41e43fa65b708d1decac3ee579e3b0df721a8b6f495f848548bc78327ba",
+          "proof": {
+            "scope_decision": "human_health_specific",
+            "scope_reason": "El contenido describe acceso a mamografía, detección precoz y diagnóstico de cáncer de mama en mujeres, además de garantías sanitarias y una orientación anunciada para la Atención Primaria de Salud.",
+            "human_health_scope_quote": "la mamografía para mujeres de entre 50 y 69 años es gratuita, no requiere orden médica y existe un permiso laboral de medio día al año para realizarse el examen.",
+            "actor": "el Ministerio",
+            "action": "tomó la decisión de enfocar la Atención Primaria de Salud",
+            "consequence": "hacia una pesquisa universal",
+            "actor_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+            "action_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+            "consequence_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+            "event_status": "mixed_actual_and_future",
+            "event_status_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+            "novelty_decision": "new_material_information",
+            "novelty_reason": "La nota reporta una decisión ministerial específica sobre el enfoque de la APS y actualiza cifras nacionales de garantías y diagnósticos correspondientes a enero-julio de 2026; la implementación futura de la pesquisa universal no queda acreditada como ya ejecutada.",
+            "novelty_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+            "future_claims": [
+              {
+                "summary_field": "what_happened",
+                "summary_quote": "Según la nota de Pulso/La Tercera del 5 de octubre de 2026, el Minsal reportó que entre enero y julio de 2026 se activaron 14.301 garantías por sospecha de cáncer de mama, con una confirmación algo superior al 30%, y que se diagnosticaron 4.400 nuevos casos, 7,6% más que el año anterior; también informó 30.805 garantías cerradas, 9,6% más que en 2025. En la misma fecha, el Ministerio anunció que decidió enfocar la Atención Primaria de Salud hacia una pesquisa universal. En La Florida, la municipalidad reportó más de 7.000 mamografías realizadas en 2026 y el alcalde estimó cerrar el año con más de 10.000 mamografías y 14 casos de examen genético; esa estimación seguía siendo futura al momento de la publicación y no acredita resultados ya alcanzados.",
+                "source_quote": "estimamos cerrar el 2026 con más de 10.000 y 14 casos de examen genético"
+              },
+              {
+                "summary_field": "why_it_matters",
+                "summary_quote": "Según la nota del 5 de octubre de 2026, el anuncio del Minsal importa para la Atención Primaria, los prestadores y las mujeres que acceden a pesquisa de cáncer de mama porque plantea orientar la APS hacia una pesquisa universal, mientras las cifras reportadas para enero-julio mostraban un aumento de garantías activadas, diagnósticos y garantías cerradas. La proyección municipal de cerrar 2026 con más de 10.000 mamografías y 14 casos de examen genético era una meta futura a esa fecha, por lo que no demuestra todavía una ampliación universal de cobertura ni una capacidad desplegada en todo Chile.",
+                "source_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal"
+              }
+            ]
+          },
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "prospective_evidence": true
+        },
+        "independent_semantic_route": "assess_contract_or_semantic_defect"
+      },
+      {
+        "row": 5,
+        "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+        "publication_date": "2026-09-01",
+        "original_response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+        "score": 82,
+        "old_status": "retry",
+        "technical_current_guard": {
+          "version": "pulso_editorial_proof_v5",
+          "source": "pulso_latercera",
+          "analysis_text_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+          "quote_validation_is_semantic_approval": false,
+          "publication_approved": false,
+          "model_output_sha256": "08bc7c7fdffea478aba999ee3ddea36e76aa6e4bb12d7db64611712342d18ea4",
+          "proof": {
+            "scope_decision": "human_health_specific",
+            "scope_reason": "El contenido vincula directamente el resultado de RedSalud con la complejidad de sus prestaciones y la incorporación de un sanatorio, además de reportar resultados de Consalud y afiliados suscritos. Es una señal financiera de actores de prestación y aseguramiento de salud humana en Chile.",
+            "human_health_scope_quote": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones",
+            "actor": "RedSalud",
+            "action": "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones",
+            "consequence": "una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán",
+            "actor_quote": "mejor desempeño de RedSalud, que registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones, explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones",
+            "action_quote": "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones",
+            "consequence_quote": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán",
+            "event_status": "mixed_actual_and_future",
+            "event_status_quote": "seguir invirtiendo en proyectos que generan valor social y económico de largo plazo",
+            "novelty_decision": "new_material_information",
+            "novelty_reason": "La nota reporta resultados cuantificados del primer semestre y desglosa por primera vez dentro de este contenido el aporte de RedSalud, Sanatorio Alemán y Consalud; no se limita a una descripción corporativa general.",
+            "novelty_quote": "las subsidiarias del sector salud obtuvieron una utilidad de $36.783 millones",
+            "future_claims": [
+              {
+                "summary_field": "what_happened",
+                "summary_quote": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, Inversiones La Construcción (ILC) reportó ganancias por $165 mil millones en el primer semestre de 2026, un 45% más que en igual período anterior. La nota atribuyó $36.783 millones a las subsidiarias del sector salud; dentro de ese resultado, RedSalud registró una utilidad superior en $4.380 millones frente al primer semestre de 2025, asociada a una mayor complejidad de sus prestaciones y a la incorporación del Sanatorio Alemán, que aportó $1.412 millones en el semestre. Consalud también registró un mayor resultado por $2.506 millones, aunque con una disminución de 3,6% de sus afiliados suscritos. Como proyección informada en esa misma fecha, el gerente general de ILC señaló que el crecimiento respaldaba a la compañía para seguir invirtiendo en proyectos de largo plazo.",
+                "source_quote": "ese crecimiento transversal nos respalda para seguir invirtiendo en proyectos que generan valor social y económico de largo plazo para nuestros beneficiarios, clientes y accionistas"
+              },
+              {
+                "summary_field": "why_it_matters",
+                "summary_quote": "Al 1 de septiembre de 2026, según la nota, los resultados de RedSalud y Consalud constituían parte del desempeño financiero del principal grupo propietario de prestadores y aseguramiento privado mencionado en el artículo. La señal es relevante para el radar porque cuantifica el desempeño semestral de negocios de salud, incluyendo la contribución del Sanatorio Alemán y el resultado de Consalud, pero no acredita por sí sola una mejora actual de cobertura, capacidad clínica o afiliación. En esa fecha, ILC también expresó su intención de seguir invirtiendo en proyectos de largo plazo; se trataba de una proyección declarada, no de inversiones ya ejecutadas ni de capacidad sanitaria adicional verificada.",
+                "source_quote": "ese crecimiento transversal nos respalda para seguir invirtiendo en proyectos que generan valor social y económico de largo plazo para nuestros beneficiarios, clientes y accionistas"
+              }
+            ]
+          },
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "prospective_evidence": true
+        },
+        "independent_semantic_route": "reuse_code_fn"
+      },
+      {
+        "row": 6,
+        "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+        "publication_date": "2026-09-01",
+        "original_response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+        "score": 86,
+        "old_status": "retry",
+        "technical_current_guard": {
+          "version": "pulso_editorial_proof_v5",
+          "source": "pulso_latercera",
+          "analysis_text_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+          "quote_validation_is_semantic_approval": false,
+          "publication_approved": false,
+          "model_output_sha256": "727de0a669fc995610e4f1769f8fd410f92b16d03f73268b75ab3540f9b8539a",
+          "proof": {
+            "scope_decision": "human_health_specific",
+            "scope_reason": "La nota describe una obligación sanitaria aplicada directamente a espacios de atención humana —urgencias, diálisis y oncohematología— para proteger a pacientes y equipos de salud frente a virus respiratorios.",
+            "human_health_scope_quote": "uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología",
+            "actor": "el Ministerio de Salud",
+            "action": "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla",
+            "consequence": "reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios",
+            "actor_quote": "el Ministerio de Salud anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país",
+            "action_quote": "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país",
+            "consequence_quote": "el objetivo es reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios",
+            "event_status": "mixed_actual_and_future",
+            "event_status_quote": "anunció esta jornada extender hasta el 30 de septiembre",
+            "novelty_decision": "new_material_information",
+            "novelty_reason": "El cuerpo reporta una extensión nacional concreta de una obligación sanitaria, con fecha de término anunciada y datos epidemiológicos de la semana 33; esos elementos constituyen una señal material para prestadores y equipos de salud.",
+            "novelty_quote": "Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada.",
+            "future_claims": [
+              {
+                "summary_field": "what_happened",
+                "summary_quote": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, el Ministerio de Salud anunció extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país. La obligación estaba vigente desde el 1 de abril y la nota reportó una positividad de 56,1% en las muestras de la semana epidemiológica 33, correspondiente al 16 y al 22 de agosto. La extensión se anunciaba para ese período y este contenido no acredita que la medida siguiera vigente al 11 de octubre de 2026.",
+                "source_quote": "Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada."
+              },
+              {
+                "summary_field": "why_it_matters",
+                "summary_quote": "Al 1 de septiembre de 2026, según la nota, la medida del Ministerio de Salud afectaba a prestadores públicos y privados de todo Chile y buscaba reforzar la protección de pacientes, personas en tratamiento médico y equipos de salud en espacios asistenciales con mayor exposición a virus respiratorios. La señal merecía atención por su alcance nacional y por basarse en una positividad de 56,1% registrada en la semana epidemiológica 33; la nota no acredita que esa obligación permaneciera vigente al 11 de octubre.",
+                "source_quote": "En estos espacios necesitamos reducir las posibilidades de contagio y proteger tanto a los pacientes como a los equipos de salud"
+              }
+            ]
+          },
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "prospective_evidence": true
+        },
+        "independent_semantic_route": "reuse_code_fn"
+      },
+      {
+        "row": 9,
+        "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+        "publication_date": "2026-07-29",
+        "original_response_id": "resp_067ece23e848c255006acbf4ecaf6487d09d7334c588812e6b",
+        "score": 90,
+        "old_status": "retry",
+        "technical_current_guard": {
+          "version": "pulso_editorial_proof_v5",
+          "source": "pulso_latercera",
+          "analysis_text_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+          "quote_validation_is_semantic_approval": false,
+          "publication_approved": false,
+          "model_output_sha256": "f5987c5929a514c01e2036bdf4a70b8fb779ae70a35afeb7233d6b20706085c4",
+          "proof": {
+            "scope_decision": "human_health_specific",
+            "scope_reason": "El artículo describe una enfermedad humana, casos y fallecimientos, una alerta sanitaria decretada por el Ministerio de Salud y sus implicancias para la prevención y la respuesta del sistema de salud.",
+            "human_health_scope_quote": "Durante la jornada del martes el Ministerio de Salud decretó una nueva alerta sanitaria, esta vez, por hantavirus.",
+            "actor": "Ministerio de Salud",
+            "action": "decretó una nueva alerta sanitaria, esta vez, por hantavirus",
+            "consequence": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+            "actor_quote": "Durante la jornada del martes el Ministerio de Salud decretó una nueva alerta sanitaria, esta vez, por hantavirus.",
+            "action_quote": "Durante la jornada del martes el Ministerio de Salud decretó una nueva alerta sanitaria, esta vez, por hantavirus.",
+            "consequence_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+            "event_status": "mixed_actual_and_future",
+            "event_status_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+            "novelty_decision": "new_material_information",
+            "novelty_reason": "La nota reporta un cambio regulatorio sanitario nacional presentado como inédito: el primer decreto de alerta sanitaria por hantavirus en Chile, junto con datos de casos y fallecimientos de 2026. La información se evalúa como novedad reportada al 29 de julio de 2026, no como confirmación de vigencia posterior.",
+            "novelty_quote": "La medida adoptada es inédita: es la primera vez que se decreta una alerta sanitaria por hantavirus en el país.",
+            "future_claims": [
+              {
+                "summary_field": "what_happened",
+                "summary_quote": "Según Pulso/La Tercera, en la nota publicada el 29 de julio de 2026, el Ministerio de Salud decretó una alerta sanitaria nacional por hantavirus. La nota reportó que, hasta la semana previa a su publicación, el Minsal registraba 46 contagios y 18 fallecidos en 2026, con una letalidad informada de 39%; esa métrica corresponde al período reportado entonces y no se presenta como vigente al 11 de octubre. Según lo anunciado en la nota, la resolución regiría desde Atacama hasta Magallanes y estaría vigente hasta el 31 de julio de 2027.",
+                "source_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027."
+              },
+              {
+                "summary_field": "why_it_matters",
+                "summary_quote": "Según la nota del 29 de julio de 2026, la medida involucraba a la autoridad sanitaria, a los prestadores y a la población expuesta en zonas rurales, agrícolas, forestales o recreativas, al establecer una alerta por una enfermedad humana y orientar la prevención y la respuesta sanitaria a escala nacional. La extensión territorial y la vigencia hasta julio de 2027 eran condiciones anunciadas en esa fecha; el artículo no acredita que continuaran vigentes ni que se hubieran implementado nuevas capacidades al 11 de octubre.",
+                "source_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027."
+              }
+            ]
+          },
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "prospective_evidence": true
+        },
+        "independent_semantic_route": "assess_contract_or_semantic_defect"
+      },
+      {
+        "row": 11,
+        "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+        "publication_date": "2026-09-21",
+        "original_response_id": "resp_0198a8fdf4ba8f19006acbf42fb5dc87d0b54472ac2e9408f1",
+        "score": 84,
+        "old_status": "retry",
+        "technical_current_guard": {
+          "version": "pulso_editorial_proof_v5",
+          "source": "pulso_latercera",
+          "analysis_text_sha256": "9113e0fd67a716d5a03a5f50bd0dba68dcb391278e16be3e3a900bbc0eebd982",
+          "quote_validation_is_semantic_approval": false,
+          "publication_approved": false,
+          "model_output_sha256": "3b1088974596c9db29cdc765cfbb3b64dcf16e418b26ed53cbbc6f888badcb24",
+          "proof": {
+            "scope_decision": "human_health_specific",
+            "scope_reason": "La nota vincula el hallazgo financiero con Servicios de Salud concretos y con sus asignaciones presupuestarias; por tanto, aunque el análisis sea de compras públicas generales, existe un vínculo directo con el financiamiento sanitario público.",
+            "human_health_scope_quote": "El Servicio de Salud del Maule compró en 2022 un total de 886 computadores marca HP por unos $595 millones.",
+            "actor": "la Dirección de Presupuestos (Dipres)",
+            "action": "analizar miles de compras públicas durante el pasado gobierno de Gabriel Boric en los años 2022 y 2023",
+            "consequence": "se detectaron $10.615 millones en sobregasto en las compras de convenio marco",
+            "actor_quote": "Así lo determinó la Dirección de Presupuestos (Dipres) al analizar miles de compras públicas durante el pasado gobierno de Gabriel Boric en los años 2022 y 2023.",
+            "action_quote": "Así lo determinó la Dirección de Presupuestos (Dipres) al analizar miles de compras públicas durante el pasado gobierno de Gabriel Boric en los años 2022 y 2023.",
+            "consequence_quote": "La entidad dependiente del Ministerio de Hacienda de Jorge Quiroz dio a conocer en su segundo Informe de Finanzas Públicas del segundo trimestre de 2026 que durante el periodo analizado se detectaron $10.615 millones en sobregasto en las compras de convenio marco, que es el catálogo de proveedores disponibles a fin de agilizar una compra y evitar levantar una licitación.",
+            "event_status": "mixed_actual_and_future",
+            "event_status_quote": "se recomienda reforzar los incentivos para evitar la ejecución innecesaria de recursos",
+            "novelty_decision": "new_material_information",
+            "novelty_reason": "La nota aporta un desglose obtenido por Ley de Transparencia sobre los $10 mil millones de sobregasto y cuantifica la concentración en 28 entidades públicas, incluidos Servicios de Salud. La evidencia entregada no indica que este desglose sea una repetición de una señal ya cubierta.",
+            "novelty_quote": "La Tercera accedió vía Ley de Transparencia al desglose de esos $10 mil millones de sobregasto.",
+            "future_claims": [
+              {
+                "summary_field": "what_happened",
+                "summary_quote": "Según la nota del 21 de septiembre de 2026, la Dirección de Presupuestos (Dipres) revisó compras de convenio marco realizadas durante 2022 y 2023 y reportó $10.615 millones de sobregasto. La Tercera obtuvo vía Ley de Transparencia el desglose, según el cual 28 entidades públicas concentraron el 91,2% del monto; entre ellas aparecen varios Servicios de Salud. La base general del estudio correspondía a abril de 2025. Según la nota, sus resultados fueron contemplados para reajustar las asignaciones de esas entidades en la Ley de Presupuesto 2026, pero esto no acredita que el reajuste se haya ejecutado. La nota también reportó recomendaciones de revisión focalizada y de refuerzo de incentivos, sin acreditar su implementación al 21 de septiembre de 2026.",
+                "source_quote": "Los datos generales de este estudio son de abril de 2025 y sus resultados fueron contemplados para reajustar las respectivas asignaciones de los 28 servicios involucrados en la Ley de Presupuesto 2026."
+              },
+              {
+                "summary_field": "why_it_matters",
+                "summary_quote": "Según la nota del 21 de septiembre de 2026, el hallazgo afecta la gestión del financiamiento de los Servicios de Salud mencionados, que forman parte de las entidades públicas incluidas en el desglose del sobregasto. La información puede orientar eventuales medidas correctivas y decisiones presupuestarias sobre compras sanitarias, pero la nota no acredita una reasignación ya ejecutada ni un efecto operativo actual en esos servicios. Para el radar, importa separar los datos de compras de 2022-2023, la base de abril de 2025, las asignaciones 2026 contempladas y las recomendaciones futuras reportadas por Pulso/La Tercera.",
+                "source_quote": "se recomienda reforzar los incentivos para evitar la ejecución innecesaria de recursos hacia el cierre del ejercicio presupuestario"
+              }
+            ]
+          },
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "prospective_evidence": true
+        },
+        "independent_semantic_route": "reuse_code_fn"
+      }
+    ],
+    "mutations": [
+      {
+        "row": 2,
+        "attack": "Además, ya ejecutó la ampliación.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 2,
+        "attack": "Además, ya tiene capacidad disponible.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 2,
+        "attack": "Además, la capacidad ya está instalada.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 2,
+        "attack": "Además, el hospital ya fue inaugurado.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 5,
+        "attack": "Además, ya ejecutó la ampliación.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 5,
+        "attack": "Además, ya tiene capacidad disponible.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 5,
+        "attack": "Además, la capacidad ya está instalada.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 5,
+        "attack": "Además, el hospital ya fue inaugurado.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 6,
+        "attack": "Además, ya ejecutó la ampliación.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 6,
+        "attack": "Además, ya tiene capacidad disponible.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 6,
+        "attack": "Además, la capacidad ya está instalada.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 6,
+        "attack": "Además, el hospital ya fue inaugurado.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 9,
+        "attack": "Además, ya ejecutó la ampliación.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 9,
+        "attack": "Además, ya tiene capacidad disponible.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 9,
+        "attack": "Además, la capacidad ya está instalada.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 9,
+        "attack": "Además, el hospital ya fue inaugurado.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 11,
+        "attack": "Además, ya ejecutó la ampliación.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 11,
+        "attack": "Además, ya tiene capacidad disponible.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 11,
+        "attack": "Además, la capacidad ya está instalada.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 11,
+        "attack": "Además, el hospital ya fue inaugurado.",
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      {
+        "row": 5,
+        "synthetic_scope_modifier": "Sanatorio Alemán veterinario",
+        "decision": "deferred",
+        "reason": "pulso_editorial_human_scope_conflicts_with_non_human_quote"
+      },
+      {
+        "row": 5,
+        "synthetic_scope_modifier": "sanatorio veterinario Alemán",
+        "decision": "deferred",
+        "reason": "pulso_editorial_human_scope_conflicts_with_non_human_quote"
+      }
+    ],
+    "actual_model_publication_approval": false,
+    "scope_limit": "All5 technicallyready does not approve Mama period/growth or Hanta novelty against Aug8 comparator; both require fresh model via pinned followup5. The other3 require immutable admission and full-body semantic references, not bare lexical ready. Synthetic statement/scope mutations only run pure validator and cannot claim actual source/model evidence."
+  },
+  "bounded_guard_work_record_sha256": "4b342555090524888ab9b508ee9aeaf17052fca3a1bf4aba255a26138726e676",
+  "validation": [
+    {
+      "command": "PYTHONPATH=src /workspace/work/venv/bin/python -m pytest -q tests/test_pulso_followup_paid_guard_revalidation.py",
+      "passed": 45,
+      "failed": 0,
+      "seconds": 15.84
+    },
+    {
+      "command": "PYTHONPATH=src /workspace/work/venv/bin/python -m pytest -q tests/test_pulso_current5_guard_repair.py tests/test_pulso_actual_mixed12_guard_repair.py",
+      "passed": 68,
+      "failed": 0,
+      "seconds": 0.36
+    }
+  ],
+  "independent_qa_peer": "Separate final QA authority audit pending committed script pin; this audit does not approve QA global/runtime."
+}
