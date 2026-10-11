@@ -668,6 +668,15 @@
       "ready_since": "2026-10-11T13:42:05.434685Z",
       "reason": "no_material_progress_30m",
       "task_id": "editorial_repair_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T13:42:57.942214Z",
+      "autonomous": true,
+      "family": "media",
+      "fence": 14,
+      "kind": "pickup",
+      "owner": "38144199503-1-media",
+      "task_id": "source_repair_media_lane_2026_10_11"
     }
   ],
   "material_event_corrections": [
@@ -76622,15 +76631,22 @@
       "id": "295031c85fa305ccf0a2c9bccc93dee6cc42b2d82ff7e6fbf650e4526ca58e79",
       "kind": "blocker",
       "task_id": "source_repair_public_data_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T13:42:57.942214Z",
+      "details": {
+        "from_family": "fiscalization",
+        "from_task_id": "source_repair_fiscalization_lane_2026_10_11",
+        "independent": true,
+        "terminal_event_id": "a328e750006dac2c35c42e19faba10e980d7fd766163edbc2e84b446c6525e40"
+      },
+      "family": "media",
+      "id": "618ff5c9cb93e090c6447bbabc484247faa24cda7fddb0b08dd926ab5cdd795b",
+      "kind": "transition",
+      "task_id": "source_repair_media_lane_2026_10_11"
     }
   ],
   "pending_transitions": [
-    {
-      "at": "2026-10-11T13:21:53.413067Z",
-      "event_id": "a328e750006dac2c35c42e19faba10e980d7fd766163edbc2e84b446c6525e40",
-      "family": "fiscalization",
-      "task_id": "source_repair_fiscalization_lane_2026_10_11"
-    },
     {
       "at": "2026-10-11T13:21:56.017181Z",
       "event_id": "d3423a9632e37a3b0a90f6826d72b772f9cd6b745effc605d3d65476c106e7ee",
@@ -76736,7 +76752,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c61a38ee84cfbed29f3c01e9645a539738f9cc6fed776c2f3884961d85c485fe",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "autonomy_continuity_hardening_v1_1_2026_09_29": {
@@ -76807,7 +76823,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "3b8b4a9552edfcad0f7ccc3724701de0d806fb28ced8805456ae4099b18cd82f",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "beta_gate5_test_ops_golive_2026_10_11": {
@@ -76877,7 +76893,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a987a3e8e0275d38970e7987c3adff36f44be1a8b2577aa16ab80da6f538e18d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "beta_sources_completion_today_2026_09_29": {
@@ -76972,7 +76988,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "d2afc5bf9239ebd3911906cfeb680b60eb0aedf6e94d2aeaa4263abdb91204d2",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "coverage_balance_sources_epidemiology_v1_2026_09_28": {
@@ -77067,7 +77083,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "235d32233451d3ca0205c9482095425d51c99916839569eb3a840d4e97545e70",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "editorial_repair_lane_2026_10_11": {
@@ -77230,7 +77246,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "6318e081496dbd7ba074f2e97b5af621c29a2ead2f34bff30b7e901bb812b88c",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "pele_work_activation_2026_09_27": {
@@ -77294,7 +77310,7 @@
       "queue_status": "in_progress",
       "recovery_episode": "31239ddfcabb5d5c9f20d52fcdf327161d700857e43631de9c6ec04104b6fb22",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "pulso_latercera_exhaustive_discovery_2026_10_11": {
@@ -77360,7 +77376,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "97acc9e8faa4d2f339b1449aa975e05a62d4ebf3fc3e32c62393f929b5318803",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration1_recovery_2026_10_09": {
@@ -77446,7 +77462,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "9cba6c8204976e15c36b69d578e121a89db6fc6a67c8ba098bbde0b0aac910ea",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration2_balance_2026_10_09": {
@@ -77531,7 +77547,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "5aba57a7f8aa859dc131c182aa0788e655832a4ce02844d3bcbd7982ae470f27",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration3_editorial_2026_10_09": {
@@ -77666,7 +77682,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "e6f8a091a339da27663dd924412994424a07128518baafcb1fb103579f3c87b6",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_iteration5_expansion_2026_10_09": {
@@ -77730,7 +77746,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a5062237250f020a1cc78759c343e03042e43ea9f610ff65896f6b3b9edad678",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "source_audit_issue5_master_2026_10_09": {
@@ -77813,7 +77829,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "cf942b0661750d6bcbb1988985499466007e6c247524a9cd82af8ddb304c7f2e",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "source_recovery_reconciliation_gate_2026_10_11": {
@@ -77879,7 +77895,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c8440ecfcb1660f8bf14708fe8ca26771fe76be97aaf50476cf3cea797292ac6",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "source_repair_fiscalization_lane_2026_10_11": {
@@ -82920,7 +82936,7 @@
     },
     "source_repair_media_lane_2026_10_11": {
       "approved": true,
-      "attempts": 5,
+      "attempts": 6,
       "audit_counts": {},
       "blocked_revision": [
         "916fe2d4684466577ef86374cff2f4d58c377ef0",
@@ -83632,24 +83648,31 @@
       "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
       "failure": null,
       "family": "media",
-      "fence": 13,
+      "fence": 14,
       "id": "source_repair_media_lane_2026_10_11",
       "input_fingerprint": "9dd47e3cfb4d62b23bb2760d49945d559f8b81ad6d9cb312b9f715a92dc8ab1c",
       "input_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
       "last_ready_at": "2026-10-11T13:42:05.434685Z",
-      "lease": null,
-      "material_progress_at": "2026-10-11T13:21:56.017181Z",
-      "material_watch_started_at": "2026-10-11T13:21:56.017181Z",
+      "lease": {
+        "claimed_at": "2026-10-11T13:42:57.942214Z",
+        "expires_at": "2026-10-11T13:52:57.942214Z",
+        "fence": 14,
+        "heartbeat_at": "2026-10-11T13:42:57.942214Z",
+        "owner": "38144199503-1-media",
+        "token": "2d9f74821c88b8de3233af85d444f38756bbf35fe0e25eb43fa9c2e73f30b916"
+      },
+      "material_progress_at": "2026-10-11T13:42:57.942214Z",
+      "material_watch_started_at": "2026-10-11T13:42:57.942214Z",
       "objective": "Repair Diario Financiero and Pulso/La Tercera end-to-end in parallel with other P0 lanes.",
       "pickup_ready_since": "2026-10-11T13:42:05.434685Z",
       "priority": "critical",
       "product_input_fingerprint": "cb784722cb43203ec6e7b557379e81f723e65329265d850dd97603623c151695",
       "queue_status": "in_progress",
       "reason": "input_or_evidence_changed",
-      "recovery_episode": "d3423a9632e37a3b0a90f6826d72b772f9cd6b745effc605d3d65476c106e7ee",
+      "recovery_episode": "618ff5c9cb93e090c6447bbabc484247faa24cda7fddb0b08dd926ab5cdd795b",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
-      "status": "READY"
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
+      "status": "RUNNING"
     },
     "source_repair_mutualities_lane_2026_10_11": {
       "approved": true,
@@ -88774,7 +88797,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "b59c31a8e8a6b2198d7fe806538c1c25ffb02035d378bc7223d92b7c3d1c13ea",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "staging_qa_failed_run_38113830124": {
@@ -103784,7 +103807,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "c5295fc453e484870ce34bf6d21bb1e1fc6445ee576af78478dcf3f3f5c8cee1",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_cmf_2026_10_11": {
@@ -103853,7 +103876,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "0463f5519e61c2a70c91e3835381d2459badb9bc611e9cdf7031a4d29083ea3d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_dipres_2026_10_11": {
@@ -103922,7 +103945,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "3d52752d3912d2158b859a5f6d9032d9252427728814d38a5db7de1784b27c6d",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_fne_2026_10_11": {
@@ -103991,7 +104014,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "68af68accca1b35c7085744e16ceec5e734566b0bdd1ee17eef0f8f92d948272",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_innovation_2026_10_11": {
@@ -104062,7 +104085,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "e847e78d051b0097e00f9fe93ecb8b8cad1318214feeb8077e171c66f81b66bf",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_isapres_2026_10_11": {
@@ -104131,7 +104154,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "9829f867c40d17863cf83c0460f0f79ab13ef16645d4ff42687637b394670a42",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_legal_2026_10_11": {
@@ -104200,7 +104223,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "4343ece0dc2180b75aa2462f7d0053848b6355f84c064c495f0e6878992d35cd",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_occupational_2026_10_11": {
@@ -104269,7 +104292,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "42395920685debe39cc6ee457a06ba424929e5691a1bc1b5394fad7d7c204a26",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_paho_2026_10_11": {
@@ -104338,7 +104361,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "eab01e76913e7dac7572a08788d9f7da2d94ef51aafcb4236cdf247c7e69ae0b",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_procurement_2026_10_11": {
@@ -104407,7 +104430,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "a5c013f42eb4035c137fb77738a455455d40a2a3bc590f44179f6cc972399e9b",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_provider_data_2026_10_11": {
@@ -104478,7 +104501,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "eabdaed28307ab96f1a2d2dfc3a4c1fa89e73ba635813f86c01992e507688103",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_providers_2026_10_11": {
@@ -104547,7 +104570,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "2ecb9c9fa89bc9efa7f5b0af6e7fdab5fc9d9a370fc08e80e07a41c415daa1f8",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_reuters_2026_10_11": {
@@ -104616,7 +104639,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "7cdbbf9a9b5d29d58e4606ec1d2fba620a94e74cb1feae5c5ef9679f4c094ed8",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_socioeconomic_2026_10_11": {
@@ -104685,7 +104708,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "4780ada0e4e927769d2d0a770ddcda3176d2f09ee88f597928c481023fa49829",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     },
     "w4_who_2026_10_11": {
@@ -104754,7 +104777,7 @@
       "reason": "input_or_evidence_changed",
       "recovery_episode": "f3f06489347d3384ca04c7f6a54de4912f0d5e43bb1f7ac58fa198fb8f17af6f",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-11T13:42:05.434685Z",
+      "state_changed_at": "2026-10-11T13:42:57.942214Z",
       "status": "BLOCKED"
     }
   }
