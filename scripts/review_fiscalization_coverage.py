@@ -52,7 +52,7 @@ def run(runtime,root=Path('.')):
             for cells in parser.rows:
                 if not cells or not iso(cells[0]['text']):continue
                 published=iso(cells[0]['text'])
-                target=next(((urljoin(url,link).rstrip('/'),c['text']) for c in cells for link in c['links'] if re.search(r'/(?:normativa|fiscalizacion)/',urljoin(url,link)) and not link.endswith('.pdf')),None)
+                target=next(((urljoin(url,link).rstrip('/'),c['text']) for c in cells for link in c['links'] if re.search(r'/(?:normativa|fiscalizacion|observatorio)/',urljoin(url,link)) and not link.endswith('.pdf')),None)
                 if not target:
                     target=next(((urljoin(url,link).rstrip('/'),c['text']) for c in cells for link in c['links'] if '.pdf' in link.lower() and re.search(r'informe|instrucci[oó]n|resoluci[oó]n',c['text'],re.I)),None)
                 if not target or target[1].startswith('Decreto'):continue
@@ -102,7 +102,9 @@ def run(runtime,root=Path('.')):
     if len(professional)!=101:failures.append('professional_register_inventory_incomplete')
     for row in history:
         if row.get('source_record_id') in professional and row.get('publication_date') is not None:failures.append('invented_register_publication:'+row['source_record_id'])
-    return dict(reviewer='independent_read_only_official_html_reconciliation',verdict='PASS' if not failures else 'FAIL',failures=failures,counts=counts,sis_unique_listing_urls=len(sis),professional_offices=len(professional),official_news_inventory=len(official_news),date_uncertain_reports=len(undated),coverage_complete=False,limits=['Bounded dated coverage; daily publication dates of ten reports remain unknown.','Primary legal readings are explicit editorial reviews with matching native PDF hashes; this script does not certify legal interpretation.','Global QA and existing product Reviewer remain independent release gates.'])
+    expected_stock={r['url'].rstrip('/') for r in json.loads((runtime/'isolated-replay/collector_inventory.json').read_text()) if r['source_slug']=='superintendencia_fiscalizacion'}
+    if expected_stock-set(sis):failures.append('historical_listing_inventory_mismatch')
+    return dict(historical_listing_inventory_differences=sorted(expected_stock-set(sis)),reviewer='independent_read_only_official_html_reconciliation',verdict='PASS' if not failures else 'FAIL',failures=failures,counts=counts,sis_unique_listing_urls=len(sis),professional_offices=len(professional),official_news_inventory=len(official_news),date_uncertain_reports=len(undated),coverage_complete=False,limits=['Bounded dated coverage; daily publication dates of ten reports remain unknown.','Primary legal readings are explicit editorial reviews with matching native PDF hashes; this script does not certify legal interpretation.','Global QA and existing product Reviewer remain independent release gates.'])
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--runtime',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();result=run(a.runtime);a.output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(json.dumps(result,ensure_ascii=False));raise SystemExit(bool(result['failures']))

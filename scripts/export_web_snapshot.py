@@ -558,7 +558,8 @@ def _sanction_pulses(signals, today=None):
         if brief_topic:brief_parts.append(brief_topic)
         brief_material=" · ".join(x for x in brief_parts if x)
         period='últimos 30 días' if window==30 else 'días 31 a 90'
-        pulse=dict(latest,title=f"Pulso de sanciones a {sector} · {period}",
+        title=f"Pulso de sanciones a {sector} · {period}" if window==30 else f"Sanciones a {sector} · {period}"
+        pulse=dict(latest,title=title,
             what_happened=f"{len(items)} {'resolución sancionadora publicada' if len(items)==1 else 'resoluciones sancionadoras publicadas'} en {period}. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico."+(f" Entre ellas: {lead}." if lead else ""),
             why_it_matters="Permite observar focos recientes de fiscalización y revisar cada resolución en su fuente original.",
             source_alternatives=resolutions,
