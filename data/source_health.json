@@ -458,8 +458,8 @@
       "new": 0,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 0,
-      "pending": 0,
+      "backfill_pending": 1,
+      "pending": 1,
       "deferred": 0,
       "rejected": 0,
       "status": "error",
@@ -467,7 +467,18 @@
       "technical_status": "error",
       "coverage_status": "unverified",
       "content_freshness": "unknown",
-      "editorial_outcome": "not_evaluated"
+      "editorial_outcome": "not_evaluated",
+      "provider_audit": {
+        "as_of": "2026-10-11",
+        "path": "data/audits/providers_2026_10_11/clinicas_achs_salud.json",
+        "blockers": [
+          "runtime_original_http_CONNECT_403",
+          "older_listing_90_day_boundary_unverified",
+          "assessment_pending_existing_gates"
+        ],
+        "latest_verified_original_at": "2026-08-28",
+        "recovered_pending": 1
+      }
     },
     "achs_seguro_laboral": {
       "name": "Achs Seguro Laboral",

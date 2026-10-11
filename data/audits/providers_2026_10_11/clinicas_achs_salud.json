@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "slug": "clinicas_achs_salud",
+  "as_of": "2026-10-11",
+  "timezone": "America/Santiago",
+  "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
+  "audit_path": "data/audits/providers_2026_10_11/clinicas_achs_salud.json",
+  "status": "reconciled_with_exact_blockers",
+  "coverage": "partial_90_inventory_visible_30_reviewed",
+  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "source_quality_gate": "passed",
+  "market_role": "provider_achs",
+  "surfaces": [
+    {
+      "url": "https://www.achs.cl/centro-de-noticias",
+      "result": "20 dated first-page cards through 2026-08-04; mostly Seguro Laboral. SAFED original names Clínica Atacama Achs Salud explicitly."
+    }
+  ],
+  "blockers": [
+    "runtime_original_http_CONNECT_403",
+    "older_listing_90_day_boundary_unverified",
+    "assessment_pending_existing_gates"
+  ],
+  "original_items": [
+    {
+      "title": "Achs se une a iniciativa público-privada para entregar servicios gratuitos a afectados en Atacama y Coquimbo por las lluvias",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+      "publication_date": "2026-08-28",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Detalle identifica filial Clínicas Achs Salud y Clínica Atacama en SAFED/Fonasa. Más de 4.200 horas/prestaciones corresponde al esfuerzo conjunto, no exclusivamente a Achs."
+    },
+    {
+      "title": "Master Plan Achs Salud: modernización de centros",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+      "publication_date": "2026-08-19",
+      "date_evidence": "verified_article_header",
+      "materiality": "identity_not_verified_for_clinics",
+      "recover": false,
+      "evidence": "Inversión en centros ambulatorios Linares/San Javier/La Florida. Sin identificación explícita de filial Clínicas Achs Salud, no reasignar la mutual al prestador."
+    }
+  ],
+  "notes": [
+    "Mantiene market_role provider_achs y condición explícita de marca Clínicas Achs Salud; se filtra marketing/prevención laboral.",
+    "La omisión SAFED valida el rol con texto original. Una entidad visible por institución; no crear Clínica Atacama como fuente paralela."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:26.880224+00:00",
+    "changes": [
+      {
+        "key": "8b518dbe40b2741bf3ed1454464f0a9072b99f8bb681e4132ca9e24f462a83f0",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "action": "admit_backfill"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 0,
+    "material_candidates_90_days": 1,
+    "publication_date_unknown": 0,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 1,
+      "rejected": 0,
+      "published": 0
+    },
+    "items": [
+      {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "publication_date": "2026-08-28",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "8b518dbe40b2741bf3ed1454464f0a9072b99f8bb681e4132ca9e24f462a83f0",
+            "status": "pending",
+            "reason": "audited_recovery_pending_assessment",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+        "publication_date": "2026-08-19",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "identity_not_verified_for_clinics",
+        "queue": [],
+        "history_count": 0,
+        "visible_count": 0
+      }
+    ]
+  }
+}
