@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T05:53:27.108455+00:00",
+  "updated_at": "2026-10-11T06:43:08.231032+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3326,16 +3326,23 @@
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
       "last_progress_at": "2026-10-11T05:53:27.108445+00:00",
-      "current_subfront": "live_origin_inventory_and_saved_evidence_guard",
-      "next_action": "Capture origins in isolated Actions, paginate dated 30/90 inventory and reconcile every candidate through durable queue; no closure from executor CONNECT403 or seven samples.",
+      "current_subfront": "native_inventory_dates_and_materiality_reconciliation",
+      "next_action": "Run corrected extractors against current Actions captures; inspect native Mutual browser/search and bound official PDFs; assess revised material candidates; replay and independent Reviewer before PR closure",
       "branch": "codex/e-salud-laboral-20261011",
       "pull_request": "https://github.com/cftorre1/Radar-salud/pull/12",
       "progress": "Actions38115788047 confirms real Mutual/ACHS details; scoped capture+BACKFILL runtime pushed00ec95b. Separate clinical portal accessible in public web fetch service although ActionsTCPtimeout. No source external blocker inferred from Codexproxy.",
       "evidence": [
         "data/audits/source_e_recovery/actions/38115788047/report.json",
         "data/audits/source_e_recovery/reviewer_incremental.json",
-        "data/audits/source_e_recovery/runtime_integration_tests.txt"
-      ]
+        "data/audits/source_e_recovery/runtime_integration_tests.txt",
+        "Run38116209530:actual5successfulAIcalls,0publishedscores70–73below75",
+        "Run38117675962:allnineclinicalroutesandcentralportal200;Mutual14nativearchivecontinuationsrepeatfirstpage",
+        "Run38118030643:cache/reconciliationidempotent,0AIcalls;notacceptanceofoldparser",
+        "Python589PASS+1inheritednormativeFAIL+1SKIP;Node41PASS;scopeddesktop/mobile2PASS",
+        "659a48c,bcdb9e2,bb6ee65,347b0dc:strictCMSdates,nativeclinicalDOM,7materialfalsenegatives,andfailclosedmergeddateconflicts"
+      ],
+      "last_checkpoint_at": "2026-10-11T06:43:08.231032+00:00",
+      "blocker": "No external source blocker proven. Remaining technical work is native inventory reconciliation and publisher-date conflicts."
     },
     {
       "id": "w4_isapres_2026_10_11",

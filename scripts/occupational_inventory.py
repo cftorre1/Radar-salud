@@ -170,7 +170,7 @@ def save_health(root, reports):
         state = report["reconciliation"]["states"]
         complete = report.get("coverage_complete", False)
         error_count = len(report.get("errors", []))
-        outcome = "OPERATIVE_VALIDATED" if complete and not error_count and not state.get("deferred") else "OPERATIVE_DEGRADED"
+        outcome = "OPERATIVE_VALIDATED" if complete and not error_count and not any(state.get(k) for k in ("deferred", "pending", "pending_reassessment", "discovered", "processing", "retry")) else "OPERATIVE_DEGRADED"
         if not report["rows"] and error_count:
             outcome = "VALIDATION_PENDING"
         row = dict(existing, name=CuratedBetaSourceScout.SOURCES[slug]["name"], checked_at=report.get("capture_checked_at") or datetime.now(timezone.utc).isoformat(),
@@ -179,7 +179,7 @@ def save_health(root, reports):
                    coverage_window=report["window"], pages_checked=len(report["pages"]),
                    recent_items=metrics, unique_items=metrics.get("90", {}).get("expected_role", 0), material_items=sum(r.get("status") == "candidate" for r in report["rows"]),
                    published=state.get("published", 0), rejected=state.get("rejected", 0), deferred=state.get("deferred", 0),
-                   pending=state.get("pending", 0), technical_failures=report.get("errors", []), coverage_completeness=complete,
+                   pending=sum(state.get(k, 0) for k in ("pending", "pending_reassessment", "discovered", "processing", "retry")), technical_failures=report.get("errors", []), coverage_completeness=complete,
                    capture_environment="github_actions", capture_run_id=os.getenv("GITHUB_RUN_ID"),
                    oldest_capture_at=report.get("oldest_capture_at"), latest_capture_at=report.get("capture_checked_at"),
                    discovered=len(report.get("raw_items", [])), new=report.get("newly_discovered", 0),
@@ -221,7 +221,7 @@ def commit_source_checkpoint(root, output, slug):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output")
-    parser.add_argument("--sync-budget", help="Read-only staging ledger; preserve the larger counter per metric")
+    parser.add_argument("--sync-budget", help="Read-only staging ledger plus this isolated branch's separately tracked usage")
     parser.add_argument("--replay", help="Previous inventory directory: hashes and parser replay, no network")
     parser.add_argument("--capture-cache-latest", action="store_true", help="Reuse hashed detail captures; current origin probes override cached listings")
     parser.add_argument("--as-of", help="Fixed Chile calendar date for deterministic read-only replay")

@@ -676,7 +676,7 @@
       "status": "in_progress",
       "branch": "codex/e-salud-laboral-20261011",
       "pull_request": "https://github.com/cftorre1/Radar-salud/pull/12",
-      "candidate_sha": "adabaa3",
+      "candidate_sha": "44b3e5e",
       "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116209530",
       "checks": [
         "216 scoped regression tests PASS",
@@ -695,7 +695,25 @@
         "data/audits/source_e_recovery/python_full_current.txt",
         "data/audits/source_e_recovery/recovery_regression_tests.txt"
       ],
-      "next_action": "Complete Actions inventories and per-item reconciliation before final Reviewer/UIQA; retain draft PR"
+      "next_action": "Corrected live native inventories + revised editorial candidates + Mutual public browser/search + exact linked document capture; no acceptance until reconciliation/reviewer",
+      "updated_at": "2026-10-11T06:43:08.231032+00:00",
+      "latest_live_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38118030643",
+      "qa_current": {
+        "python": {
+          "passed": 589,
+          "inherited_failure": "normative snapshot has11visible acts vs12required",
+          "skipped": 1
+        },
+        "node": {
+          "passed": 41
+        },
+        "browser_scoped": {
+          "desktop": "PASS",
+          "mobile": "PASS"
+        },
+        "reviewer": "incremental PASS; final live reconciliation pending"
+      },
+      "public_origin_blocker_proven": false
     }
   },
   "blocks": [
