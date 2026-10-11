@@ -1,0 +1,77 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 1,
+      "material_event_count": 0,
+      "max_material_gap_seconds": 14400.0,
+      "mode": "live",
+      "observed_seconds": 14400.0,
+      "original_started_at": "2026-10-11T05:29:46.231497Z",
+      "owner_observation_verified": false,
+      "owner_prompts": 0,
+      "owner_restarts": 0,
+      "total_elapsed_seconds": 28238.474294,
+      "window_started_at": "2026-10-11T09:20:24.705791Z"
+    },
+    "observed_until": "2026-10-11T13:20:24.705791Z",
+    "reasons": [
+      "owner_intervention_observation_not_verified",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed",
+      "automatic_independent_transition_not_observed",
+      "material_progress_gap_exceeded_30m"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {
+    "fiscalization": {
+      "evidence_revision": "c4bb689e4fbde22e6d87d378a26a36f094bf6410b9a5cf6cb2893ce211dcef2c",
+      "failure": null,
+      "family": "fiscalization",
+      "input_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    "media": {
+      "evidence_revision": "4d176ab3fcf72b1b7707361575c18d2f0894ef6295183e4709674b6a9fd2d1ad",
+      "failure": null,
+      "family": "media",
+      "input_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    "public_data": {
+      "evidence_revision": "75c0fc2b1d6607e816df53ad535098b6555bc6d587824b559c86370851a0be10",
+      "failure": null,
+      "family": "public_data",
+      "input_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    }
+  },
+  "generated_at": "2026-10-11T13:20:24.705791+00:00",
+  "input_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+  "kind": "controller_observation",
+  "operation_id": "7635e40aaf8a4ff585a3728ddfd63240",
+  "stalled_tasks": [
+    {
+      "family": "fiscalization",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    {
+      "family": "media",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 1,
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    {
+      "family": "public_data",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    }
+  ]
+}
