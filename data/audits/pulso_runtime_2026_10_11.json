@@ -1,7 +1,7 @@
 {
   "source": "pulso_latercera",
   "verdict": "EVIDENCE_REQUIRES_COVERAGE_AND_EDITORIAL_REVIEW",
-  "discovery_run_at": "2026-10-11T21:55:09.853236+00:00",
+  "discovery_run_at": "2026-10-11T22:52:40.046151+00:00",
   "runtime": "daily_core",
   "selected_sources": [
     "pulso_latercera"
@@ -9,11 +9,11 @@
   "core_source_present": true,
   "audit_discovery_error": null,
   "core_source": {
-    "discovered": 1743,
-    "new": 0,
+    "discovered": 1744,
+    "new": 1,
     "technical_status": "ok",
     "error_type": null,
-    "checked_at": "2026-10-11T21:55:09.835606+00:00"
+    "checked_at": "2026-10-11T22:52:40.027318+00:00"
   },
   "coverage": [
     {
@@ -22,7 +22,7 @@
       "coverage_complete": true,
       "pages_attempted": 80,
       "unique_urls": 1822,
-      "publisher_count": 12620,
+      "publisher_count": 10000,
       "errors": 0,
       "publisher_exceptions": 3,
       "enumerated_with_editorial_exceptions": true,
@@ -97,7 +97,7 @@
       "coverage_complete": true,
       "pages_attempted": 8,
       "unique_urls": 192,
-      "publisher_count": 13284,
+      "publisher_count": 10000,
       "errors": 0,
       "publisher_exceptions": 2,
       "enumerated_with_editorial_exceptions": true,
@@ -247,7 +247,7 @@
       "coverage_complete": true,
       "pages_attempted": 4,
       "unique_urls": 73,
-      "publisher_count": 631,
+      "publisher_count": 755,
       "errors": 0,
       "publisher_exceptions": 0,
       "enumerated_with_editorial_exceptions": false,
@@ -277,7 +277,7 @@
       "coverage_complete": true,
       "pages_attempted": 5,
       "unique_urls": 87,
-      "publisher_count": 218,
+      "publisher_count": 333,
       "errors": 0,
       "publisher_exceptions": 1,
       "enumerated_with_editorial_exceptions": true,
@@ -370,11 +370,11 @@
       "advertised_pages": 100,
       "pages_read": 3,
       "pages_attempted": 3,
-      "primary_urls": 258,
-      "excluded_paths": 40,
+      "primary_urls": 256,
+      "excluded_paths": 44,
       "errors": 0,
       "cache_path": "/home/runner/work/Radar-salud/Radar-salud/data/state/pulso_discovery_cache.json",
-      "cache_entries": 12153,
+      "cache_entries": 12155,
       "workers": 4,
       "max_pages": 3,
       "termination": "explicit_page_limit",
@@ -452,11 +452,11 @@
       "advertised_pages": 100,
       "pages_read": 3,
       "pages_attempted": 3,
-      "primary_urls": 258,
-      "excluded_paths": 40,
+      "primary_urls": 256,
+      "excluded_paths": 44,
       "errors": 0,
       "cache_path": "/home/runner/work/Radar-salud/Radar-salud/data/state/pulso_discovery_cache.json",
-      "cache_entries": 12153,
+      "cache_entries": 12155,
       "workers": 4,
       "max_pages": 3,
       "termination": "explicit_page_limit",
@@ -1622,7 +1622,7 @@
       "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
       "status": "retry",
       "reason": "pulso_editorial_future_copy_not_grounded",
-      "attempts": 4,
+      "attempts": 5,
       "lane": "BACKFILL",
       "detected_at": "2026-10-11T06:23:48.863044+00:00",
       "publication_date": "2026-10-05"
@@ -4560,9 +4560,9 @@
     {
       "fingerprint": "852ddd50090ff6545524605d36658ae4751aebbd46d7796f728c9a6793485846",
       "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
-      "status": "retry",
-      "reason": "pulso_editorial_scope_not_grounded",
-      "attempts": 4,
+      "status": "published",
+      "reason": null,
+      "attempts": 5,
       "lane": "BACKFILL",
       "detected_at": "2026-10-11T06:23:48.863044+00:00",
       "publication_date": "2026-09-01"
@@ -4610,9 +4610,9 @@
     {
       "fingerprint": "b2ad52c4b0bc300bba9d63b86165a18e56f551fcc8fa9b4990611a68772f7114",
       "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
-      "status": "retry",
-      "reason": "pulso_editorial_future_copy_not_grounded",
-      "attempts": 4,
+      "status": "published",
+      "reason": null,
+      "attempts": 5,
       "lane": "BACKFILL",
       "detected_at": "2026-10-11T06:23:48.863044+00:00",
       "publication_date": "2026-09-01"
@@ -6971,8 +6971,8 @@
       "fingerprint": "3fb0666a8febe4a5ba0c2b78ebe13a7666fccb6e9f30170808c915dc5a80047c",
       "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
       "status": "retry",
-      "reason": "pulso_editorial_future_copy_not_grounded",
-      "attempts": 4,
+      "reason": "pulso_editorial_scope_not_grounded",
+      "attempts": 5,
       "lane": "BACKFILL",
       "detected_at": "2026-10-11T06:23:48.863044+00:00",
       "publication_date": "2026-07-29"
@@ -9470,9 +9470,9 @@
     {
       "fingerprint": "1ef20f88fc50555a857cd4c1bf77773958da7fd5f6323b7d044e95805db02c0f",
       "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
-      "status": "retry",
-      "reason": "pulso_editorial_future_copy_not_grounded",
-      "attempts": 4,
+      "status": "published",
+      "reason": null,
+      "attempts": 5,
       "lane": "BACKFILL",
       "detected_at": "2026-10-11T07:52:34.224551+00:00",
       "publication_date": "2026-09-21"
@@ -18075,9 +18075,8 @@
         "rejected": 96,
         "pending": 386,
         "rejected_after_independent_editorial_review": 11,
-        "published_in_history_and_feed": 23,
-        "grouped_with_published_signal": 10,
-        "deferred": 1
+        "published_in_history_and_feed": 24,
+        "grouped_with_published_signal": 10
       },
       "date_conflicts": []
     },
@@ -18131,9 +18130,8 @@
         "rejected": 130,
         "pending": 1458,
         "rejected_after_independent_editorial_review": 11,
-        "published_in_history_and_feed": 68,
-        "grouped_with_published_signal": 12,
-        "deferred": 2
+        "published_in_history_and_feed": 70,
+        "grouped_with_published_signal": 12
       },
       "date_conflicts": []
     }
@@ -18396,9 +18394,9 @@
       "title": "Cardenal Chomali, presidenta de SOFOFA y rector de INACAP dialogan sobre el rol de las empresas en la sociedad",
       "publication_date": "2026-09-30",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:56.888649+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:27.686247+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "94ca2f5b97a0ef369a04721471ff472d5f5115225a0c78798d1663f8a699b0e3",
+      "primary_detail_sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-09-30T21:22:01.23Z",
       "publication_date_source": "visible_article_byline",
@@ -18545,8 +18543,8 @@
           "publisher_content_classification": "sponsored",
           "possible_publication_days": null,
           "video_evidence": null,
-          "html_sha256": "94ca2f5b97a0ef369a04721471ff472d5f5115225a0c78798d1663f8a699b0e3",
-          "captured_at": "2026-10-11T21:54:56.888649+00:00",
+          "html_sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
+          "captured_at": "2026-10-11T22:52:27.686247+00:00",
           "article_body_characters": 1124,
           "article_body_sha256": "400415afdde3497347fc1391a07eeb204dd4d5703f2d42e6e297fd0994027830",
           "source_quality_gate": "deferred_sponsored_content_review",
@@ -18575,17 +18573,34 @@
         {
           "url": "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:56.820931+00:00",
-          "sha256": "94ca2f5b97a0ef369a04721471ff472d5f5115225a0c78798d1663f8a699b0e3",
-          "returned_text_utf8_sha256": "94ca2f5b97a0ef369a04721471ff472d5f5115225a0c78798d1663f8a699b0e3",
-          "gzip_file": "responses/94ca2f5b97a0ef369a04721471ff472d5f5115225a0c78798d1663f8a699b0e3.gz",
-          "gzip_sha256": "da0efc214599b8ce19cdb2b0716257d4805dba2a8f56ed79af0c5cec3d3c545b",
+          "captured_at": "2026-10-11T22:52:27.616936+00:00",
+          "sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
+          "returned_text_utf8_sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
+          "gzip_file": "responses/1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb.gz",
+          "gzip_sha256": "53bdab9947f6f51c77714196f071e861eb0f5fa3b7993d300445f6ec359cb4bd",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "SponsoredArticle",
             "reason": "publisher_sponsored_content_review_required"
           }
+        },
+        {
+          "url": "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:27.616936+00:00",
+          "sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
+          "returned_text_utf8_sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb.html.gz",
+          "gzip_sha256": "53bdab9947f6f51c77714196f071e861eb0f5fa3b7993d300445f6ec359cb4bd",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "SponsoredArticle",
+            "reason": "publisher_sponsored_content_review_required"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/",
@@ -18960,9 +18975,9 @@
       "title": "Revive el primer capítulo de “Empresas en acción”: los desafíos para conectar la educación técnico-profesional con el empleo",
       "publication_date": "2026-10-06",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:54.119782+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:26.489479+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "7e7e670ec259c322cb0236070a77d42cc3addc4c7fdf130af39f30708b008600",
+      "primary_detail_sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-10-06T12:36:45.576Z",
       "publication_date_source": "visible_article_byline",
@@ -19113,8 +19128,8 @@
           "publisher_content_classification": "sponsored",
           "possible_publication_days": null,
           "video_evidence": null,
-          "html_sha256": "7e7e670ec259c322cb0236070a77d42cc3addc4c7fdf130af39f30708b008600",
-          "captured_at": "2026-10-11T21:54:54.119782+00:00",
+          "html_sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
+          "captured_at": "2026-10-11T22:52:26.489479+00:00",
           "article_body_characters": 1857,
           "article_body_sha256": "59d88f46a0084d88d65ace856eb44c2da84f72b961e30ca8b7ac844bdf8e9b36",
           "source_quality_gate": "deferred_sponsored_content_review",
@@ -19143,17 +19158,34 @@
         {
           "url": "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:54.051384+00:00",
-          "sha256": "7e7e670ec259c322cb0236070a77d42cc3addc4c7fdf130af39f30708b008600",
-          "returned_text_utf8_sha256": "7e7e670ec259c322cb0236070a77d42cc3addc4c7fdf130af39f30708b008600",
-          "gzip_file": "responses/7e7e670ec259c322cb0236070a77d42cc3addc4c7fdf130af39f30708b008600.gz",
-          "gzip_sha256": "ddd7011304751103576d48ba42d88dcd7bd295c2ff552a5165f0d3451bee668e",
+          "captured_at": "2026-10-11T22:52:26.419241+00:00",
+          "sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
+          "returned_text_utf8_sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
+          "gzip_file": "responses/0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc.gz",
+          "gzip_sha256": "3fff81e3c93d01218aaa644349d242498445dc71ac711932c2d777cc4e855aed",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "SponsoredArticle",
             "reason": "publisher_sponsored_content_review_required"
           }
+        },
+        {
+          "url": "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:26.419241+00:00",
+          "sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
+          "returned_text_utf8_sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc.html.gz",
+          "gzip_sha256": "3fff81e3c93d01218aaa644349d242498445dc71ac711932c2d777cc4e855aed",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "SponsoredArticle",
+            "reason": "publisher_sponsored_content_review_required"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/",
@@ -20256,7 +20288,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-10-11T01:14:19.64Z",
           "url": "https://www.latercera.com/culto/noticia/emmanuel-carrere-espero-que-a-partir-de-esta-vida-particular-que-es-la-mia-pueda-decir-algo-que-conmueva-a-otras-personas/",
-          "listing": "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml",
+          "listing": "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml&from=100",
           "status": "discovered",
           "reason": null,
           "title": "Emmanuel Carrère: “Espero que a partir de esta vida particular que es la mía pueda decir algo que conmueva a otras personas”",
@@ -20534,6 +20566,237 @@
         "independence": null
       },
       "in_memory_curate_eligible": false
+    },
+    {
+      "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+      "title": "Renocido actor Gabriel Prieto fallece a los 65 años",
+      "publication_date": "2026-10-11",
+      "publication_date_evidence": "current_verified_detail",
+      "primary_detail_captured_at": "2026-10-11T22:52:15.073859+00:00",
+      "primary_detail_cache_hit": false,
+      "primary_detail_sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
+      "publisher_lastmod": "2026-10-11T22:47:50.004Z",
+      "publication_timestamp": "2026-10-11T22:47:49.888Z",
+      "publication_date_source": "visible_article_byline",
+      "section": "Culto",
+      "topics": [
+        "providers",
+        "public_health"
+      ],
+      "current_core_detected": true,
+      "source_inventory_candidate": true,
+      "current_core_verified_health": true,
+      "metadata_only_candidate": false,
+      "publication_date_verified": true,
+      "article_body_complete": true,
+      "source_content_unavailable_reason": null,
+      "publisher_exception_reason": null,
+      "publisher_document_type": "article",
+      "publisher_content_classification": "factual",
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+        "article_type": "NewsArticle",
+        "section": "Culto",
+        "labels": [
+          "Gabriel Prieto",
+          "Fallecimiento",
+          "Actor",
+          "Covid-19",
+          "Culto",
+          "ChileActores"
+        ],
+        "matched_opinion_labels": [],
+        "classification": "factual"
+      },
+      "publisher_exclusion_reason": null,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T22:47:49.888Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T22:47:49.888Z",
+          "publisher_day": "2026-10-11",
+          "timestamp_calendar_day": "2026-10-11",
+          "america_santiago_day": "2026-10-11"
+        }
+      ],
+      "visible_publication_date": "2026-10-11",
+      "possible_publication_days": null,
+      "publisher_date_conflict": null,
+      "baseline_queue_present": false,
+      "legacy_queue_only": false,
+      "queue_present": true,
+      "queue": [
+        {
+          "fingerprint": "a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280",
+          "status": "pending",
+          "lane": "LIVE",
+          "attempts": 0,
+          "reason": null,
+          "detected_at": "2026-10-11T22:52:31.388142+00:00",
+          "updated_at": null,
+          "retry_at": null,
+          "publication_date": "2026-10-11",
+          "article_verified": true,
+          "title": "Renocido actor Gabriel Prieto fallece a los 65 años",
+          "topics": [
+            "providers",
+            "public_health"
+          ],
+          "publication_date_source": "visible_article_byline",
+          "assessment": null,
+          "editorial_review": null,
+          "rejection_reason": null,
+          "editorial_hold": null,
+          "article_body_complete": null,
+          "source_content_unavailable_reason": null,
+          "publication_date_verified": true
+        }
+      ],
+      "passed_gate": null,
+      "editorial_relevance_score": null,
+      "media_gate_threshold": null,
+      "original_model_gate_passed": false,
+      "editorial_review_evidence": null,
+      "duplicate_of": null,
+      "corroboration": {
+        "status": "not_assessed",
+        "additional_sources": [],
+        "policy": "Related publisher articles do not independently confirm a media report."
+      },
+      "editorial_outcome": "pending",
+      "exact_reason": "processing_not_attempted:explicit_queue_selection_excluded",
+      "history_present": false,
+      "feed_present": false,
+      "history_publication_withdrawn": false,
+      "traceability_unresolved": false,
+      "source_attribution": {
+        "evidence_maturity": null,
+        "attribution_present": false,
+        "confirmation_policy": null
+      },
+      "consistency_findings": [],
+      "current_discovery_trace": [
+        {
+          "canonical_url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+          "section": "Culto",
+          "body_source": "url_bound_json_ld_articleBody",
+          "publication_date": "2026-10-11",
+          "publication_timestamp": "2026-10-11T22:47:49.888Z",
+          "publication_date_source": "visible_article_byline",
+          "visible_publication_date": "2026-10-11",
+          "publisher_date_convention": "calendar_agreement",
+          "publication_evidence": [
+            {
+              "source": "json_ld_datePublished",
+              "timestamp": "2026-10-11T22:47:49.888Z",
+              "publisher_day": "2026-10-11",
+              "timestamp_calendar_day": "2026-10-11",
+              "america_santiago_day": "2026-10-11"
+            },
+            {
+              "source": "article_published_time",
+              "timestamp": "2026-10-11T22:47:49.888Z",
+              "publisher_day": "2026-10-11",
+              "timestamp_calendar_day": "2026-10-11",
+              "america_santiago_day": "2026-10-11"
+            }
+          ],
+          "source_content_unavailable_reason": null,
+          "publisher_exception_reason": null,
+          "publisher_exclusion_reason": null,
+          "publisher_taxonomy": {
+            "source": "url_bound_json_ld",
+            "canonical_url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+            "article_type": "NewsArticle",
+            "section": "Culto",
+            "labels": [
+              "Gabriel Prieto",
+              "Fallecimiento",
+              "Actor",
+              "Covid-19",
+              "Culto",
+              "ChileActores"
+            ],
+            "matched_opinion_labels": [],
+            "classification": "factual"
+          },
+          "publisher_content_classification": "factual",
+          "possible_publication_days": null,
+          "video_evidence": null,
+          "html_sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
+          "captured_at": "2026-10-11T22:52:15.073859+00:00",
+          "article_body_characters": 2645,
+          "article_body_sha256": "94e66cb5eac914c75172013ca91b92d2c568cd2f1ebcffe0cda9e70e29e4dfc3",
+          "source_quality_gate": "passed",
+          "liveblog_temporal_evidence": null,
+          "liveblog_temporal_evidence_verified": null,
+          "sponsored_text_evidence": null,
+          "topics": [
+            "providers",
+            "public_health"
+          ],
+          "primary_identity_verified": true,
+          "publication_date_verified": true,
+          "article_verified": true,
+          "article_body_complete": true,
+          "publisher_document_type": "article",
+          "publisher_lastmod": "2026-10-11T22:47:50.004Z",
+          "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+          "listing": "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml",
+          "status": "discovered",
+          "reason": null,
+          "title": "Renocido actor Gabriel Prieto fallece a los 65 años",
+          "cache_hit": false,
+          "in_complete_30_days": false,
+          "in_complete_90_days": false,
+          "current_day_slice": true,
+          "duplicate_inventory_url": false
+        }
+      ],
+      "original_http_captures": [
+        {
+          "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:15.605326+00:00",
+          "sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
+          "returned_text_utf8_sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
+          "gzip_file": "responses/4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414.gz",
+          "gzip_sha256": "83462db35e4d8b69e259ccb688c947955ed59e909ae75fe68972fad17e18cb45",
+          "charset": "utf-8",
+          "retention_reason": "verified_primary_health_article",
+          "primary_article": {
+            "title": "Renocido actor Gabriel Prieto fallece a los 65 años",
+            "publication_date": "2026-10-11",
+            "publication_timestamp": "2026-10-11T22:47:49.888Z",
+            "publication_date_source": "visible_article_byline",
+            "section": "Culto",
+            "health_relevant": true
+          }
+        }
+      ],
+      "omission": null,
+      "external_control": {
+        "present": false,
+        "recall_expected": false,
+        "cohort": null,
+        "publication_date": null,
+        "date_comparison": "no_external_date_control",
+        "independence": null
+      },
+      "in_memory_curate_eligible": false,
+      "processing_selection_evidence": {
+        "sha256": "8ed358f0cd37ecc4b554ab96cd4366048b8e6180ad1c0ee0044fc5d5f6976514",
+        "selected": false,
+        "source": "pulso_latercera"
+      },
+      "operational_reason_evidence": "execution flags, real attempt deltas and read-only budget state; no editorial rejection inferred"
     },
     {
       "url": "https://www.latercera.com/editorial/noticia/agenda-de-reformas-en-la-salud-publica/",
@@ -46723,7 +46986,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-08-30T20:11:29.031Z",
           "url": "https://www.latercera.com/nacional/noticia/aumento-de-las-infecciones-de-transmision-sexual-en-adultos-mayores-activa-al-minsal/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1560%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1536%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
           "feed": "section:nacional",
           "status": "discovered",
           "reason": null,
@@ -63844,7 +64107,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-07-22T22:22:31.906Z",
           "url": "https://www.latercera.com/nacional/noticia/cocinaron-comida-y-muestras-de-arrepentimiento-detalles-del-rescate-de-los-tres-jovenes-en-el-cajon-del-maipo/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A2928%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A2952%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
           "feed": "section:nacional",
           "status": "discovered",
           "reason": null,
@@ -92070,13 +92333,13 @@
       "queue": [
         {
           "fingerprint": "3fb0666a8febe4a5ba0c2b78ebe13a7666fccb6e9f30170808c915dc5a80047c",
-          "status": "retry",
+          "status": "published",
           "lane": "BACKFILL",
-          "attempts": 5,
-          "reason": "pulso_editorial_scope_not_grounded",
+          "attempts": 6,
+          "reason": null,
           "detected_at": "2026-10-11T06:23:48.863044+00:00",
-          "updated_at": "2026-10-11T21:56:08.030403+00:00",
-          "retry_at": "2026-10-12T21:56:08.030409+00:00",
+          "updated_at": "2026-10-11T22:52:45.645347+00:00",
+          "retry_at": null,
           "publication_date": "2026-07-29",
           "article_verified": true,
           "title": "El mapa del hanta: residentes rurales de Los Lagos, Ñuble y Biobío enfrentan la mayor amenaza",
@@ -92086,10 +92349,10 @@
           ],
           "publication_date_source": "visible_article_byline",
           "assessment": {
-            "decision": "pending",
-            "reason": "pulso_editorial_scope_not_grounded",
+            "decision": "published",
+            "relevance_score": 78,
             "threshold": 72,
-            "proof_version": "pulso_editorial_proof_v5"
+            "analysis_reason": "Merece radar como señal temprana de salud poblacional por el aumento reportado de casos y fallecimientos, el alcance nacional-regional anunciado de la alerta y la identificación de factores de exposición. Sin embargo, la alerta como hecho central ya aparece en la publicación comparadora del 8 de agosto de 2026; la novedad material adicional está en el corte epidemiológico, la distribución regional y la cuantificación de exposiciones, no en un nuevo decreto ni en resultados de implementación."
           },
           "editorial_review": null,
           "rejection_reason": null,
@@ -92099,27 +92362,27 @@
           "publication_date_verified": true
         }
       ],
-      "passed_gate": null,
-      "editorial_relevance_score": null,
+      "passed_gate": true,
+      "editorial_relevance_score": 78,
       "media_gate_threshold": 72,
-      "original_model_gate_passed": false,
+      "original_model_gate_passed": true,
       "editorial_review_evidence": null,
       "duplicate_of": null,
       "corroboration": {
-        "status": "not_assessed",
+        "status": "unknown",
         "additional_sources": [],
         "policy": "Related publisher articles do not independently confirm a media report."
       },
-      "editorial_outcome": "deferred",
-      "exact_reason": "pulso_editorial_scope_not_grounded",
-      "history_present": false,
-      "feed_present": false,
+      "editorial_outcome": "published_in_history_and_feed",
+      "exact_reason": "history_and_feed_present",
+      "history_present": true,
+      "feed_present": true,
       "history_publication_withdrawn": false,
       "traceability_unresolved": false,
       "source_attribution": {
-        "evidence_maturity": null,
-        "attribution_present": false,
-        "confirmation_policy": null
+        "evidence_maturity": "media_reported",
+        "attribution_present": true,
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms"
       },
       "consistency_findings": [],
       "current_discovery_trace": [
@@ -92282,7 +92545,7 @@
         "date_comparison": "match",
         "independence": "External search control independent of production discovery results."
       },
-      "in_memory_curate_eligible": false
+      "in_memory_curate_eligible": true
     },
     {
       "url": "https://www.latercera.com/nacional/noticia/el-mensaje-de-esperanza-del-presidente-kast-previo-a-fiestas-patrias-frente-a-complejo-escenario-economico-y-de-baja-aprobacion/",
@@ -131150,7 +131413,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-09-04T19:38:43.551Z",
           "url": "https://www.latercera.com/nacional/noticia/la-vida-despues-de-una-rectoria-los-nuevos-pasos-de-rosa-deves-e-ignacio-sanchez-y-su-postura-sobre-el-fondecyt/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1344%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1320%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
           "feed": "section:nacional",
           "status": "discovered",
           "reason": null,
@@ -136881,7 +137144,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-09-21T16:30:00.795Z",
           "url": "https://www.latercera.com/nacional/noticia/magdalena-browne-presidenta-de-comunidadmujer-los-cuidados-son-un-tema-de-politica-publica-no-un-asunto-domestico/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A744%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A720%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
           "feed": "section:nacional",
           "status": "discovered",
           "reason": null,
@@ -174454,7 +174717,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-07-22T20:00:03.143Z",
           "url": "https://www.latercera.com/nacional/noticia/que-implica-la-alerta-sanitaria-declarada-por-el-temporal-autoridad-no-descarta-ampliarla-a-mas-regiones/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A2952%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A2928%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
           "feed": "section:nacional",
           "status": "discovered",
           "reason": null,
@@ -197535,13 +197798,13 @@
       "queue": [
         {
           "fingerprint": "c670f94578b33beee724ab15570f664702be673272547ae7bf8d144658c47fb9",
-          "status": "retry",
+          "status": "published",
           "lane": "BACKFILL",
-          "attempts": 5,
-          "reason": "pulso_editorial_future_copy_not_grounded",
+          "attempts": 6,
+          "reason": null,
           "detected_at": "2026-10-11T06:23:48.863044+00:00",
-          "updated_at": "2026-10-11T21:55:33.594566+00:00",
-          "retry_at": "2026-10-12T21:55:33.594572+00:00",
+          "updated_at": "2026-10-11T22:52:42.816877+00:00",
+          "retry_at": null,
           "publication_date": "2026-10-05",
           "article_verified": true,
           "title": "“Todas somos vulnerables”: Minsal refuerza el llamado a la detección precoz del cáncer de mama para un tratamiento oportuno",
@@ -197551,10 +197814,10 @@
           ],
           "publication_date_source": "visible_article_byline",
           "assessment": {
-            "decision": "pending",
-            "reason": "pulso_editorial_future_copy_not_grounded",
+            "decision": "published",
+            "relevance_score": 80,
             "threshold": 72,
-            "proof_version": "pulso_editorial_proof_v5"
+            "analysis_reason": "La nota combina datos nacionales recientes de garantías y diagnósticos de cáncer de mama con una orientación ministerial reportada para la APS. Es una señal relevante para prestadores, municipios y autoridades sanitarias, pero su materialidad está limitada porque la pesquisa universal aparece como una decisión anunciada y no como una implementación verificada; además, parte del contenido es un balance local y una estimación futura."
           },
           "editorial_review": null,
           "rejection_reason": null,
@@ -197564,27 +197827,27 @@
           "publication_date_verified": true
         }
       ],
-      "passed_gate": null,
-      "editorial_relevance_score": null,
+      "passed_gate": true,
+      "editorial_relevance_score": 80,
       "media_gate_threshold": 72,
-      "original_model_gate_passed": false,
+      "original_model_gate_passed": true,
       "editorial_review_evidence": null,
       "duplicate_of": null,
       "corroboration": {
-        "status": "not_assessed",
+        "status": "unknown",
         "additional_sources": [],
         "policy": "Related publisher articles do not independently confirm a media report."
       },
-      "editorial_outcome": "deferred",
-      "exact_reason": "pulso_editorial_future_copy_not_grounded",
-      "history_present": false,
-      "feed_present": false,
+      "editorial_outcome": "published_in_history_and_feed",
+      "exact_reason": "history_and_feed_present",
+      "history_present": true,
+      "feed_present": true,
       "history_publication_withdrawn": false,
       "traceability_unresolved": false,
       "source_attribution": {
-        "evidence_maturity": null,
-        "attribution_present": false,
-        "confirmation_policy": null
+        "evidence_maturity": "media_reported",
+        "attribution_present": true,
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms"
       },
       "consistency_findings": [],
       "current_discovery_trace": [
@@ -197747,7 +198010,7 @@
         "date_comparison": "match",
         "independence": "External search control independent of production discovery results."
       },
-      "in_memory_curate_eligible": false
+      "in_memory_curate_eligible": true
     },
     {
       "url": "https://www.latercera.com/nacional/noticia/tormentas-de-arena-lluvias-y-fuertes-vientos-marcan-inicio-de-fiestas-patrias-en-el-norte/",
@@ -222425,7 +222688,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-09-01T17:30:00.443Z",
           "url": "https://www.latercera.com/politica/noticia/arrau-se-desmarca-de-registro-de-vandalos-y-la-moneda-intenta-salvar-iniciativa-excluida-de-la-agenda-de-seguridad/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A816%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpolitica%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A792%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpolitica%22%7D&_website=la-tercera&d=1284",
           "feed": "section:politica",
           "status": "discovered",
           "reason": null,
@@ -274172,68 +274435,6 @@
           "in_complete_30_days": true,
           "in_complete_90_days": true,
           "current_day_slice": false
-        },
-        {
-          "canonical_url": "https://www.latercera.com/pulso/noticia/aluvion-en-las-condes-balance-preliminar-estima-danos-en-mas-de-us-170-millones/",
-          "section": "Pulso",
-          "body_source": "url_bound_json_ld_articleBody",
-          "publication_date": "2026-10-09",
-          "publication_timestamp": "2026-10-09T18:22:46.897Z",
-          "publication_date_source": "visible_article_byline",
-          "visible_publication_date": "2026-10-09",
-          "publisher_date_convention": "calendar_agreement",
-          "publication_evidence": [
-            {
-              "source": "json_ld_datePublished",
-              "timestamp": "2026-10-09T18:22:46.897Z",
-              "publisher_day": "2026-10-09",
-              "timestamp_calendar_day": "2026-10-09",
-              "america_santiago_day": "2026-10-09"
-            },
-            {
-              "source": "article_published_time",
-              "timestamp": "2026-10-09T18:22:46.897Z",
-              "publisher_day": "2026-10-09",
-              "timestamp_calendar_day": "2026-10-09",
-              "america_santiago_day": "2026-10-09"
-            }
-          ],
-          "source_content_unavailable_reason": null,
-          "publisher_exception_reason": null,
-          "publisher_exclusion_reason": null,
-          "publisher_taxonomy": null,
-          "publisher_content_classification": null,
-          "possible_publication_days": null,
-          "video_evidence": null,
-          "html_sha256": "847e66d7c3198b95b6e78465fdc5a62592d2ba1aab41c768ff48cec159b26656",
-          "captured_at": "2026-10-11T05:48:47.249856+00:00",
-          "article_body_characters": 3799,
-          "article_body_sha256": "4da88add1f98ae5774897588bc559619677765d0f39dea626e0a49358137d41b",
-          "source_quality_gate": "passed",
-          "liveblog_temporal_evidence": null,
-          "liveblog_temporal_evidence_verified": null,
-          "sponsored_text_evidence": null,
-          "topics": [
-            "providers",
-            "financing",
-            "competition"
-          ],
-          "primary_identity_verified": true,
-          "publication_date_verified": true,
-          "article_verified": true,
-          "article_body_complete": true,
-          "publisher_document_type": "article",
-          "publisher_lastmod": "2026-10-09T18:56:52.966Z",
-          "url": "https://www.latercera.com/pulso/noticia/aluvion-en-las-condes-balance-preliminar-estima-danos-en-mas-de-us-170-millones/",
-          "listing": "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml&from=200",
-          "status": "discovered",
-          "reason": null,
-          "title": "Aluvión en Las Condes: balance preliminar estima daños en más de US$ 170 millones",
-          "cache_hit": true,
-          "in_complete_30_days": true,
-          "in_complete_90_days": true,
-          "current_day_slice": false,
-          "duplicate_inventory_url": true
         }
       ],
       "original_http_captures": [],
@@ -278800,7 +279001,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-08-05T00:40:00.395Z",
           "url": "https://www.latercera.com/pulso/noticia/caso-sartor-querellante-afirma-que-los-hermanos-larrain-y-michael-clark-arriesgan-hasta-40-anos-de-carcel/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1320%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1344%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
           "feed": "section:pulso",
           "status": "discovered",
           "reason": null,
@@ -295078,7 +295279,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-08-08T11:00:03.748Z",
           "url": "https://www.latercera.com/pulso/noticia/encuesta-descifra-gran-mayoria-siente-que-no-tiene-control-sobre-lo-que-empresas-y-apps-hacen-con-sus-datos-personales/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1248%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1272%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
           "feed": "section:pulso",
           "status": "discovered",
           "reason": null,
@@ -323144,7 +323345,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-07-17T12:22:33.994Z",
           "url": "https://www.latercera.com/pulso/noticia/oracle-sobre-el-uso-de-ia-en-chile-estamos-saliendo-de-procesos-exploratorios-a-procesos-mas-productivos/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1704%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1728%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
           "feed": "section:pulso",
           "status": "discovered",
           "reason": null,
@@ -325002,7 +325203,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-08-08T11:00:06.701Z",
           "url": "https://www.latercera.com/pulso/noticia/por-que-los-malls-chilenos-van-a-colombia/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1248%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1272%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
           "feed": "section:pulso",
           "status": "discovered",
           "reason": null,
@@ -334930,7 +335131,7 @@
           "publisher_document_type": "article",
           "publisher_lastmod": "2026-08-08T11:00:05.369Z",
           "url": "https://www.latercera.com/pulso/noticia/universidad-de-chile-lidera-ranking-de-reputacion-digital-y-retail-es-el-sector-mejor-evaluado/",
-          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1272%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A1248%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
           "feed": "section:pulso",
           "status": "discovered",
           "reason": null,
@@ -392022,9 +392223,9 @@
       "title": "Bernardo Larraín Matte: “No basta con la gestión, se requieren reformas claves”",
       "publication_date": "2026-10-06",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:52.282106+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:25.720778+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "9d19e42987c0a2ca16bd746ca06623610905ff9de8635f3d651215585b575b80",
+      "primary_detail_sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-10-06T21:25:38.97Z",
       "publication_date_source": "visible_article_byline",
@@ -392189,8 +392390,8 @@
             "embed_url": "https://mdstrm.com/embed/6ac56561b159261acb72dd5a",
             "upload_date": "2026-10-06T21:25:38.970Z"
           },
-          "html_sha256": "9d19e42987c0a2ca16bd746ca06623610905ff9de8635f3d651215585b575b80",
-          "captured_at": "2026-10-11T21:54:52.282106+00:00",
+          "html_sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
+          "captured_at": "2026-10-11T22:52:25.720778+00:00",
           "article_body_characters": 0,
           "article_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "source_quality_gate": "deferred_video_text",
@@ -392220,17 +392421,34 @@
         {
           "url": "https://www.latercera.com/videos/noticia/bernardo-larrain-matte-no-basta-con-la-gestion-se-requieren-reformas-claves/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:52.234142+00:00",
-          "sha256": "9d19e42987c0a2ca16bd746ca06623610905ff9de8635f3d651215585b575b80",
-          "returned_text_utf8_sha256": "9d19e42987c0a2ca16bd746ca06623610905ff9de8635f3d651215585b575b80",
-          "gzip_file": "responses/9d19e42987c0a2ca16bd746ca06623610905ff9de8635f3d651215585b575b80.gz",
-          "gzip_sha256": "1e7b2ef82f5e34e3cff641058569da454fd409b5fefc5feaf0171361b47a31a7",
+          "captured_at": "2026-10-11T22:52:25.672210+00:00",
+          "sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
+          "returned_text_utf8_sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
+          "gzip_file": "responses/7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2.gz",
+          "gzip_sha256": "80833c373fcbebb425c358714841e4e159b1683e6fbcbc422625a0a5778116b4",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "TextUnavailableArticle",
             "reason": "publisher_video_text_unavailable"
           }
+        },
+        {
+          "url": "https://www.latercera.com/videos/noticia/bernardo-larrain-matte-no-basta-con-la-gestion-se-requieren-reformas-claves/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:25.672210+00:00",
+          "sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
+          "returned_text_utf8_sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2.html.gz",
+          "gzip_sha256": "80833c373fcbebb425c358714841e4e159b1683e6fbcbc422625a0a5778116b4",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "TextUnavailableArticle",
+            "reason": "publisher_video_text_unavailable"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/videos/noticia/bernardo-larrain-matte-no-basta-con-la-gestion-se-requieren-reformas-claves/",
@@ -392442,9 +392660,9 @@
       "title": "Claves de la nueva estrategia eléctrica de Porsche",
       "publication_date": "2026-10-05",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:52.809614+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:25.987348+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "fa271b7f75b1b347ae140cb0f84db9350e2464ed4d966578e93b75b5af25369a",
+      "primary_detail_sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-10-05T20:26:57.812Z",
       "publication_date_source": "visible_article_byline",
@@ -392605,8 +392823,8 @@
             "embed_url": "https://mdstrm.com/embed/6ac3f78c9d5168ff8c36b0ae",
             "upload_date": "2026-10-05T20:26:57.812Z"
           },
-          "html_sha256": "fa271b7f75b1b347ae140cb0f84db9350e2464ed4d966578e93b75b5af25369a",
-          "captured_at": "2026-10-11T21:54:52.809614+00:00",
+          "html_sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
+          "captured_at": "2026-10-11T22:52:25.987348+00:00",
           "article_body_characters": 0,
           "article_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "source_quality_gate": "deferred_video_text",
@@ -392635,17 +392853,34 @@
         {
           "url": "https://www.latercera.com/videos/noticia/claves-de-la-nueva-estrategia-electrica-de-porsche/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:52.761438+00:00",
-          "sha256": "fa271b7f75b1b347ae140cb0f84db9350e2464ed4d966578e93b75b5af25369a",
-          "returned_text_utf8_sha256": "fa271b7f75b1b347ae140cb0f84db9350e2464ed4d966578e93b75b5af25369a",
-          "gzip_file": "responses/fa271b7f75b1b347ae140cb0f84db9350e2464ed4d966578e93b75b5af25369a.gz",
-          "gzip_sha256": "222be15cd7db246e667a5ef444616530c37ea557fe0aef2ca0e2ce59404c577b",
+          "captured_at": "2026-10-11T22:52:25.939391+00:00",
+          "sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
+          "returned_text_utf8_sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
+          "gzip_file": "responses/01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4.gz",
+          "gzip_sha256": "ab89ac5b66506cd2e2912372221e18be0af63bfe8967da991ba8a1675d57df6b",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "TextUnavailableArticle",
             "reason": "publisher_video_text_unavailable"
           }
+        },
+        {
+          "url": "https://www.latercera.com/videos/noticia/claves-de-la-nueva-estrategia-electrica-de-porsche/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:25.939391+00:00",
+          "sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
+          "returned_text_utf8_sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4.html.gz",
+          "gzip_sha256": "ab89ac5b66506cd2e2912372221e18be0af63bfe8967da991ba8a1675d57df6b",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "TextUnavailableArticle",
+            "reason": "publisher_video_text_unavailable"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/videos/noticia/claves-de-la-nueva-estrategia-electrica-de-porsche/",
@@ -392887,9 +393122,9 @@
       "title": "El crudo documental de la última expedición de JP Mohr",
       "publication_date": "2026-10-07",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:51.738823+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:25.481151+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "91ff76c99cf6167c29b8763852d548a3ee39298d3b3b898ec0d0ea76448403dc",
+      "primary_detail_sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-10-07T20:55:32.956Z",
       "publication_date_source": "visible_article_byline",
@@ -393050,8 +393285,8 @@
             "embed_url": "https://mdstrm.com/embed/6ac6aed7d2df3218a8a96494",
             "upload_date": "2026-10-07T20:55:32.956Z"
           },
-          "html_sha256": "91ff76c99cf6167c29b8763852d548a3ee39298d3b3b898ec0d0ea76448403dc",
-          "captured_at": "2026-10-11T21:54:51.738823+00:00",
+          "html_sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
+          "captured_at": "2026-10-11T22:52:25.481151+00:00",
           "article_body_characters": 0,
           "article_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "source_quality_gate": "deferred_video_text",
@@ -393080,17 +393315,34 @@
         {
           "url": "https://www.latercera.com/videos/noticia/el-crudo-documental-de-la-ultima-expedicion-de-jp-mohr/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:51.690249+00:00",
-          "sha256": "91ff76c99cf6167c29b8763852d548a3ee39298d3b3b898ec0d0ea76448403dc",
-          "returned_text_utf8_sha256": "91ff76c99cf6167c29b8763852d548a3ee39298d3b3b898ec0d0ea76448403dc",
-          "gzip_file": "responses/91ff76c99cf6167c29b8763852d548a3ee39298d3b3b898ec0d0ea76448403dc.gz",
-          "gzip_sha256": "91485d55480183a510df060bec4753a821526cad2809c35efdddc2436b182d27",
+          "captured_at": "2026-10-11T22:52:25.434396+00:00",
+          "sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
+          "returned_text_utf8_sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
+          "gzip_file": "responses/6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c.gz",
+          "gzip_sha256": "54b6244aa959c50b018846e6406c37b72b1257423a3ee352ee7d490d36e24cd5",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "TextUnavailableArticle",
             "reason": "publisher_video_text_unavailable"
           }
+        },
+        {
+          "url": "https://www.latercera.com/videos/noticia/el-crudo-documental-de-la-ultima-expedicion-de-jp-mohr/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:25.434396+00:00",
+          "sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
+          "returned_text_utf8_sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c.html.gz",
+          "gzip_sha256": "54b6244aa959c50b018846e6406c37b72b1257423a3ee352ee7d490d36e24cd5",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "TextUnavailableArticle",
+            "reason": "publisher_video_text_unavailable"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/videos/noticia/el-crudo-documental-de-la-ultima-expedicion-de-jp-mohr/",
@@ -393426,9 +393678,9 @@
       "title": "José Miguel Correa: “Está entrando mucha inversión al mercado chileno”",
       "publication_date": "2026-10-08",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:51.304463+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:25.038910+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "3edd6708a63b0ff2e0c4744ce717291007a01792707a0e804adf4431cd7d170f",
+      "primary_detail_sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-10-08T20:18:29.779Z",
       "publication_date_source": "visible_article_byline",
@@ -393595,8 +393847,8 @@
             "embed_url": "https://mdstrm.com/embed/6ac7f48232a3f9e9f287654b",
             "upload_date": "2026-10-08T20:18:29.779Z"
           },
-          "html_sha256": "3edd6708a63b0ff2e0c4744ce717291007a01792707a0e804adf4431cd7d170f",
-          "captured_at": "2026-10-11T21:54:51.304463+00:00",
+          "html_sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
+          "captured_at": "2026-10-11T22:52:25.038910+00:00",
           "article_body_characters": 0,
           "article_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "source_quality_gate": "deferred_video_text",
@@ -393626,17 +393878,34 @@
         {
           "url": "https://www.latercera.com/videos/noticia/jose-miguel-correa-esta-entrando-mucha-inversion-al-mercado-chileno/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:51.256299+00:00",
-          "sha256": "3edd6708a63b0ff2e0c4744ce717291007a01792707a0e804adf4431cd7d170f",
-          "returned_text_utf8_sha256": "3edd6708a63b0ff2e0c4744ce717291007a01792707a0e804adf4431cd7d170f",
-          "gzip_file": "responses/3edd6708a63b0ff2e0c4744ce717291007a01792707a0e804adf4431cd7d170f.gz",
-          "gzip_sha256": "7871ecb23317e7b065fc9fd2a31abc28f5e25477ffba77c8c1550b9ccfdc60fc",
+          "captured_at": "2026-10-11T22:52:24.990971+00:00",
+          "sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
+          "returned_text_utf8_sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
+          "gzip_file": "responses/3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d.gz",
+          "gzip_sha256": "3f17cc3ae567132ee3534dc56014b786679c4d82f9661f203ac4121038fcc7c5",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "TextUnavailableArticle",
             "reason": "publisher_video_text_unavailable"
           }
+        },
+        {
+          "url": "https://www.latercera.com/videos/noticia/jose-miguel-correa-esta-entrando-mucha-inversion-al-mercado-chileno/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:24.990971+00:00",
+          "sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
+          "returned_text_utf8_sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d.html.gz",
+          "gzip_sha256": "3f17cc3ae567132ee3534dc56014b786679c4d82f9661f203ac4121038fcc7c5",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "TextUnavailableArticle",
+            "reason": "publisher_video_text_unavailable"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/videos/noticia/jose-miguel-correa-esta-entrando-mucha-inversion-al-mercado-chileno/",
@@ -393972,9 +394241,9 @@
       "title": "Marisol Peña, expresidenta del TC: “Esta reforma constitucional aborda temas que perfectamente podrían ser acometidos por reformas legales”",
       "publication_date": "2026-08-26",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:51:54.494526+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:49:36.404174+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "6435a1893c0958bc803e9af81a008ca865b10b5c535f1a360f0115dcb4a85ce1",
+      "primary_detail_sha256": "54fb6dd1f03a2ff4705d94531c6668d1e3b062759573d05bc1cb97775f8d84aa",
       "publisher_lastmod": "2026-08-26T01:30:00.419Z",
       "publication_timestamp": "2026-08-26T01:30:00Z",
       "publication_date_source": "visible_article_byline",
@@ -394130,8 +394399,8 @@
           "publisher_content_classification": "factual",
           "possible_publication_days": null,
           "video_evidence": null,
-          "html_sha256": "6435a1893c0958bc803e9af81a008ca865b10b5c535f1a360f0115dcb4a85ce1",
-          "captured_at": "2026-10-11T21:51:54.494526+00:00",
+          "html_sha256": "54fb6dd1f03a2ff4705d94531c6668d1e3b062759573d05bc1cb97775f8d84aa",
+          "captured_at": "2026-10-11T22:49:36.404174+00:00",
           "article_body_characters": 6008,
           "article_body_sha256": "ec35fd11e59ede7cf5a521e1bd68ee89e4d19f5ff1fde79692a3292904f1df00",
           "source_quality_gate": "passed",
@@ -394167,11 +394436,11 @@
         {
           "url": "https://www.latercera.com/videos/noticia/marisol-pena-expresidenta-del-tc-esta-reforma-constitucional-aborda-temas-que-perfectamente-podrian-ser-acometidos-por-reformas-legales/",
           "status": 200,
-          "captured_at": "2026-10-11T21:51:55.627147+00:00",
-          "sha256": "6435a1893c0958bc803e9af81a008ca865b10b5c535f1a360f0115dcb4a85ce1",
-          "returned_text_utf8_sha256": "6435a1893c0958bc803e9af81a008ca865b10b5c535f1a360f0115dcb4a85ce1",
-          "gzip_file": "responses/6435a1893c0958bc803e9af81a008ca865b10b5c535f1a360f0115dcb4a85ce1.gz",
-          "gzip_sha256": "6a1926aed7e50769bc78c9cf60028c9039c320ad0b0bc26bebc296dd08ad11aa",
+          "captured_at": "2026-10-11T22:49:37.042738+00:00",
+          "sha256": "54fb6dd1f03a2ff4705d94531c6668d1e3b062759573d05bc1cb97775f8d84aa",
+          "returned_text_utf8_sha256": "54fb6dd1f03a2ff4705d94531c6668d1e3b062759573d05bc1cb97775f8d84aa",
+          "gzip_file": "responses/54fb6dd1f03a2ff4705d94531c6668d1e3b062759573d05bc1cb97775f8d84aa.gz",
+          "gzip_sha256": "5b78afc1493eb4489fa5c38b3c3e27dbbd4ff92b7eb6e88a6f2aefe8069679f2",
           "charset": "utf-8",
           "retention_reason": "verified_primary_health_article",
           "primary_article": {
@@ -398721,15 +398990,15 @@
   "source_attribution_findings": [],
   "unresolved_recent_feed_exclusions": [],
   "counts": {
-    "current_core_discovered_urls": 1743,
-    "current_core_verified_health_urls": 1700,
-    "source_trace_candidate_urls": 1743,
+    "current_core_discovered_urls": 1744,
+    "current_core_verified_health_urls": 1701,
+    "source_trace_candidate_urls": 1744,
     "metadata_only_candidates": 43,
-    "source_queue_urls": 1756,
+    "source_queue_urls": 1757,
     "publisher_factuality_exclusions": 21,
     "external_control_urls": 200,
-    "history_urls": 93,
-    "published_in_feed": 68
+    "history_urls": 95,
+    "published_in_feed": 70
   },
   "publisher_editorial_exceptions": [
     {
@@ -398989,9 +399258,9 @@
       "title": "Cardenal Chomali, presidenta de SOFOFA y rector de INACAP dialogan sobre el rol de las empresas en la sociedad",
       "publication_date": "2026-09-30",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:56.888649+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:27.686247+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "94ca2f5b97a0ef369a04721471ff472d5f5115225a0c78798d1663f8a699b0e3",
+      "primary_detail_sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-09-30T21:22:01.23Z",
       "publication_date_source": "visible_article_byline",
@@ -399138,8 +399407,8 @@
           "publisher_content_classification": "sponsored",
           "possible_publication_days": null,
           "video_evidence": null,
-          "html_sha256": "94ca2f5b97a0ef369a04721471ff472d5f5115225a0c78798d1663f8a699b0e3",
-          "captured_at": "2026-10-11T21:54:56.888649+00:00",
+          "html_sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
+          "captured_at": "2026-10-11T22:52:27.686247+00:00",
           "article_body_characters": 1124,
           "article_body_sha256": "400415afdde3497347fc1391a07eeb204dd4d5703f2d42e6e297fd0994027830",
           "source_quality_gate": "deferred_sponsored_content_review",
@@ -399168,17 +399437,34 @@
         {
           "url": "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:56.820931+00:00",
-          "sha256": "94ca2f5b97a0ef369a04721471ff472d5f5115225a0c78798d1663f8a699b0e3",
-          "returned_text_utf8_sha256": "94ca2f5b97a0ef369a04721471ff472d5f5115225a0c78798d1663f8a699b0e3",
-          "gzip_file": "responses/94ca2f5b97a0ef369a04721471ff472d5f5115225a0c78798d1663f8a699b0e3.gz",
-          "gzip_sha256": "da0efc214599b8ce19cdb2b0716257d4805dba2a8f56ed79af0c5cec3d3c545b",
+          "captured_at": "2026-10-11T22:52:27.616936+00:00",
+          "sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
+          "returned_text_utf8_sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
+          "gzip_file": "responses/1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb.gz",
+          "gzip_sha256": "53bdab9947f6f51c77714196f071e861eb0f5fa3b7993d300445f6ec359cb4bd",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "SponsoredArticle",
             "reason": "publisher_sponsored_content_review_required"
           }
+        },
+        {
+          "url": "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:27.616936+00:00",
+          "sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
+          "returned_text_utf8_sha256": "1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/1b86113e66124ba27b76a6654633bcd834502d0d82c3d6de31e03edf8b0c89cb.html.gz",
+          "gzip_sha256": "53bdab9947f6f51c77714196f071e861eb0f5fa3b7993d300445f6ec359cb4bd",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "SponsoredArticle",
+            "reason": "publisher_sponsored_content_review_required"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/",
@@ -399553,9 +399839,9 @@
       "title": "Revive el primer capítulo de “Empresas en acción”: los desafíos para conectar la educación técnico-profesional con el empleo",
       "publication_date": "2026-10-06",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:54.119782+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:26.489479+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "7e7e670ec259c322cb0236070a77d42cc3addc4c7fdf130af39f30708b008600",
+      "primary_detail_sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-10-06T12:36:45.576Z",
       "publication_date_source": "visible_article_byline",
@@ -399706,8 +399992,8 @@
           "publisher_content_classification": "sponsored",
           "possible_publication_days": null,
           "video_evidence": null,
-          "html_sha256": "7e7e670ec259c322cb0236070a77d42cc3addc4c7fdf130af39f30708b008600",
-          "captured_at": "2026-10-11T21:54:54.119782+00:00",
+          "html_sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
+          "captured_at": "2026-10-11T22:52:26.489479+00:00",
           "article_body_characters": 1857,
           "article_body_sha256": "59d88f46a0084d88d65ace856eb44c2da84f72b961e30ca8b7ac844bdf8e9b36",
           "source_quality_gate": "deferred_sponsored_content_review",
@@ -399736,17 +400022,34 @@
         {
           "url": "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:54.051384+00:00",
-          "sha256": "7e7e670ec259c322cb0236070a77d42cc3addc4c7fdf130af39f30708b008600",
-          "returned_text_utf8_sha256": "7e7e670ec259c322cb0236070a77d42cc3addc4c7fdf130af39f30708b008600",
-          "gzip_file": "responses/7e7e670ec259c322cb0236070a77d42cc3addc4c7fdf130af39f30708b008600.gz",
-          "gzip_sha256": "ddd7011304751103576d48ba42d88dcd7bd295c2ff552a5165f0d3451bee668e",
+          "captured_at": "2026-10-11T22:52:26.419241+00:00",
+          "sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
+          "returned_text_utf8_sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
+          "gzip_file": "responses/0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc.gz",
+          "gzip_sha256": "3fff81e3c93d01218aaa644349d242498445dc71ac711932c2d777cc4e855aed",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "SponsoredArticle",
             "reason": "publisher_sponsored_content_review_required"
           }
+        },
+        {
+          "url": "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:26.419241+00:00",
+          "sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
+          "returned_text_utf8_sha256": "0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/0eaffe2a6f45937e45b6b64ca1e352c6f27c2720d14a788edf0f05a3cf1b5bfc.html.gz",
+          "gzip_sha256": "3fff81e3c93d01218aaa644349d242498445dc71ac711932c2d777cc4e855aed",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "SponsoredArticle",
+            "reason": "publisher_sponsored_content_review_required"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/",
@@ -402599,9 +402902,9 @@
       "title": "Bernardo Larraín Matte: “No basta con la gestión, se requieren reformas claves”",
       "publication_date": "2026-10-06",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:52.282106+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:25.720778+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "9d19e42987c0a2ca16bd746ca06623610905ff9de8635f3d651215585b575b80",
+      "primary_detail_sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-10-06T21:25:38.97Z",
       "publication_date_source": "visible_article_byline",
@@ -402766,8 +403069,8 @@
             "embed_url": "https://mdstrm.com/embed/6ac56561b159261acb72dd5a",
             "upload_date": "2026-10-06T21:25:38.970Z"
           },
-          "html_sha256": "9d19e42987c0a2ca16bd746ca06623610905ff9de8635f3d651215585b575b80",
-          "captured_at": "2026-10-11T21:54:52.282106+00:00",
+          "html_sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
+          "captured_at": "2026-10-11T22:52:25.720778+00:00",
           "article_body_characters": 0,
           "article_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "source_quality_gate": "deferred_video_text",
@@ -402797,17 +403100,34 @@
         {
           "url": "https://www.latercera.com/videos/noticia/bernardo-larrain-matte-no-basta-con-la-gestion-se-requieren-reformas-claves/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:52.234142+00:00",
-          "sha256": "9d19e42987c0a2ca16bd746ca06623610905ff9de8635f3d651215585b575b80",
-          "returned_text_utf8_sha256": "9d19e42987c0a2ca16bd746ca06623610905ff9de8635f3d651215585b575b80",
-          "gzip_file": "responses/9d19e42987c0a2ca16bd746ca06623610905ff9de8635f3d651215585b575b80.gz",
-          "gzip_sha256": "1e7b2ef82f5e34e3cff641058569da454fd409b5fefc5feaf0171361b47a31a7",
+          "captured_at": "2026-10-11T22:52:25.672210+00:00",
+          "sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
+          "returned_text_utf8_sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
+          "gzip_file": "responses/7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2.gz",
+          "gzip_sha256": "80833c373fcbebb425c358714841e4e159b1683e6fbcbc422625a0a5778116b4",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "TextUnavailableArticle",
             "reason": "publisher_video_text_unavailable"
           }
+        },
+        {
+          "url": "https://www.latercera.com/videos/noticia/bernardo-larrain-matte-no-basta-con-la-gestion-se-requieren-reformas-claves/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:25.672210+00:00",
+          "sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
+          "returned_text_utf8_sha256": "7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/7349cd1fd456d8f1d87f3bc508e2f4dda2f132a5547dbb9825bbe7a2f435cdd2.html.gz",
+          "gzip_sha256": "80833c373fcbebb425c358714841e4e159b1683e6fbcbc422625a0a5778116b4",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "TextUnavailableArticle",
+            "reason": "publisher_video_text_unavailable"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/videos/noticia/bernardo-larrain-matte-no-basta-con-la-gestion-se-requieren-reformas-claves/",
@@ -402944,9 +403264,9 @@
       "title": "Claves de la nueva estrategia eléctrica de Porsche",
       "publication_date": "2026-10-05",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:52.809614+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:25.987348+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "fa271b7f75b1b347ae140cb0f84db9350e2464ed4d966578e93b75b5af25369a",
+      "primary_detail_sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-10-05T20:26:57.812Z",
       "publication_date_source": "visible_article_byline",
@@ -403107,8 +403427,8 @@
             "embed_url": "https://mdstrm.com/embed/6ac3f78c9d5168ff8c36b0ae",
             "upload_date": "2026-10-05T20:26:57.812Z"
           },
-          "html_sha256": "fa271b7f75b1b347ae140cb0f84db9350e2464ed4d966578e93b75b5af25369a",
-          "captured_at": "2026-10-11T21:54:52.809614+00:00",
+          "html_sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
+          "captured_at": "2026-10-11T22:52:25.987348+00:00",
           "article_body_characters": 0,
           "article_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "source_quality_gate": "deferred_video_text",
@@ -403137,17 +403457,34 @@
         {
           "url": "https://www.latercera.com/videos/noticia/claves-de-la-nueva-estrategia-electrica-de-porsche/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:52.761438+00:00",
-          "sha256": "fa271b7f75b1b347ae140cb0f84db9350e2464ed4d966578e93b75b5af25369a",
-          "returned_text_utf8_sha256": "fa271b7f75b1b347ae140cb0f84db9350e2464ed4d966578e93b75b5af25369a",
-          "gzip_file": "responses/fa271b7f75b1b347ae140cb0f84db9350e2464ed4d966578e93b75b5af25369a.gz",
-          "gzip_sha256": "222be15cd7db246e667a5ef444616530c37ea557fe0aef2ca0e2ce59404c577b",
+          "captured_at": "2026-10-11T22:52:25.939391+00:00",
+          "sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
+          "returned_text_utf8_sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
+          "gzip_file": "responses/01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4.gz",
+          "gzip_sha256": "ab89ac5b66506cd2e2912372221e18be0af63bfe8967da991ba8a1675d57df6b",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "TextUnavailableArticle",
             "reason": "publisher_video_text_unavailable"
           }
+        },
+        {
+          "url": "https://www.latercera.com/videos/noticia/claves-de-la-nueva-estrategia-electrica-de-porsche/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:25.939391+00:00",
+          "sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
+          "returned_text_utf8_sha256": "01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/01eccd32634a59a74c665617ae826186863cb947bc930324bd4f8c50432d86e4.html.gz",
+          "gzip_sha256": "ab89ac5b66506cd2e2912372221e18be0af63bfe8967da991ba8a1675d57df6b",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "TextUnavailableArticle",
+            "reason": "publisher_video_text_unavailable"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/videos/noticia/claves-de-la-nueva-estrategia-electrica-de-porsche/",
@@ -403284,9 +403621,9 @@
       "title": "El crudo documental de la última expedición de JP Mohr",
       "publication_date": "2026-10-07",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:51.738823+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:25.481151+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "91ff76c99cf6167c29b8763852d548a3ee39298d3b3b898ec0d0ea76448403dc",
+      "primary_detail_sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-10-07T20:55:32.956Z",
       "publication_date_source": "visible_article_byline",
@@ -403447,8 +403784,8 @@
             "embed_url": "https://mdstrm.com/embed/6ac6aed7d2df3218a8a96494",
             "upload_date": "2026-10-07T20:55:32.956Z"
           },
-          "html_sha256": "91ff76c99cf6167c29b8763852d548a3ee39298d3b3b898ec0d0ea76448403dc",
-          "captured_at": "2026-10-11T21:54:51.738823+00:00",
+          "html_sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
+          "captured_at": "2026-10-11T22:52:25.481151+00:00",
           "article_body_characters": 0,
           "article_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "source_quality_gate": "deferred_video_text",
@@ -403477,17 +403814,34 @@
         {
           "url": "https://www.latercera.com/videos/noticia/el-crudo-documental-de-la-ultima-expedicion-de-jp-mohr/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:51.690249+00:00",
-          "sha256": "91ff76c99cf6167c29b8763852d548a3ee39298d3b3b898ec0d0ea76448403dc",
-          "returned_text_utf8_sha256": "91ff76c99cf6167c29b8763852d548a3ee39298d3b3b898ec0d0ea76448403dc",
-          "gzip_file": "responses/91ff76c99cf6167c29b8763852d548a3ee39298d3b3b898ec0d0ea76448403dc.gz",
-          "gzip_sha256": "91485d55480183a510df060bec4753a821526cad2809c35efdddc2436b182d27",
+          "captured_at": "2026-10-11T22:52:25.434396+00:00",
+          "sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
+          "returned_text_utf8_sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
+          "gzip_file": "responses/6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c.gz",
+          "gzip_sha256": "54b6244aa959c50b018846e6406c37b72b1257423a3ee352ee7d490d36e24cd5",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "TextUnavailableArticle",
             "reason": "publisher_video_text_unavailable"
           }
+        },
+        {
+          "url": "https://www.latercera.com/videos/noticia/el-crudo-documental-de-la-ultima-expedicion-de-jp-mohr/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:25.434396+00:00",
+          "sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
+          "returned_text_utf8_sha256": "6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/6798d0f905f05ec1f7be526790697a4468cbf31a57a52fe86a98b60b021a2f6c.html.gz",
+          "gzip_sha256": "54b6244aa959c50b018846e6406c37b72b1257423a3ee352ee7d490d36e24cd5",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "TextUnavailableArticle",
+            "reason": "publisher_video_text_unavailable"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/videos/noticia/el-crudo-documental-de-la-ultima-expedicion-de-jp-mohr/",
@@ -403823,9 +404177,9 @@
       "title": "José Miguel Correa: “Está entrando mucha inversión al mercado chileno”",
       "publication_date": "2026-10-08",
       "publication_date_evidence": "current_verified_detail",
-      "primary_detail_captured_at": "2026-10-11T21:54:51.304463+00:00",
+      "primary_detail_captured_at": "2026-10-11T22:52:25.038910+00:00",
       "primary_detail_cache_hit": false,
-      "primary_detail_sha256": "3edd6708a63b0ff2e0c4744ce717291007a01792707a0e804adf4431cd7d170f",
+      "primary_detail_sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
       "publisher_lastmod": "",
       "publication_timestamp": "2026-10-08T20:18:29.779Z",
       "publication_date_source": "visible_article_byline",
@@ -403992,8 +404346,8 @@
             "embed_url": "https://mdstrm.com/embed/6ac7f48232a3f9e9f287654b",
             "upload_date": "2026-10-08T20:18:29.779Z"
           },
-          "html_sha256": "3edd6708a63b0ff2e0c4744ce717291007a01792707a0e804adf4431cd7d170f",
-          "captured_at": "2026-10-11T21:54:51.304463+00:00",
+          "html_sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
+          "captured_at": "2026-10-11T22:52:25.038910+00:00",
           "article_body_characters": 0,
           "article_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "source_quality_gate": "deferred_video_text",
@@ -404023,17 +404377,34 @@
         {
           "url": "https://www.latercera.com/videos/noticia/jose-miguel-correa-esta-entrando-mucha-inversion-al-mercado-chileno/",
           "status": 200,
-          "captured_at": "2026-10-11T21:54:51.256299+00:00",
-          "sha256": "3edd6708a63b0ff2e0c4744ce717291007a01792707a0e804adf4431cd7d170f",
-          "returned_text_utf8_sha256": "3edd6708a63b0ff2e0c4744ce717291007a01792707a0e804adf4431cd7d170f",
-          "gzip_file": "responses/3edd6708a63b0ff2e0c4744ce717291007a01792707a0e804adf4431cd7d170f.gz",
-          "gzip_sha256": "7871ecb23317e7b065fc9fd2a31abc28f5e25477ffba77c8c1550b9ccfdc60fc",
+          "captured_at": "2026-10-11T22:52:24.990971+00:00",
+          "sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
+          "returned_text_utf8_sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
+          "gzip_file": "responses/3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d.gz",
+          "gzip_sha256": "3f17cc3ae567132ee3534dc56014b786679c4d82f9661f203ac4121038fcc7c5",
           "charset": "utf-8",
           "retention_reason": "primary_article_verification_error",
           "primary_article_error": {
             "error_type": "TextUnavailableArticle",
             "reason": "publisher_video_text_unavailable"
           }
+        },
+        {
+          "url": "https://www.latercera.com/videos/noticia/jose-miguel-correa-esta-entrando-mucha-inversion-al-mercado-chileno/",
+          "status": 200,
+          "captured_at": "2026-10-11T22:52:24.990971+00:00",
+          "sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
+          "returned_text_utf8_sha256": "3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d",
+          "gzip_file": "tests/fixtures/pulso_runtime_real/3172fb8a14943f786b5228920635b8fa4a75eaf8728dfd4746034cf0b17a2a7d.html.gz",
+          "gzip_sha256": "3f17cc3ae567132ee3534dc56014b786679c4d82f9661f203ac4121038fcc7c5",
+          "charset": "utf-8",
+          "retention_reason": "primary_article_verification_error",
+          "primary_article_error": {
+            "error_type": "TextUnavailableArticle",
+            "reason": "publisher_video_text_unavailable"
+          },
+          "capture_provenance": "preserved_original_http_response",
+          "original_capture_manifest_sha256": "0a9e5affcdbead82c03d0719a02e824016dab8890b140ea407c5b50e846fed2f"
         },
         {
           "url": "https://www.latercera.com/videos/noticia/jose-miguel-correa-esta-entrando-mucha-inversion-al-mercado-chileno/",
@@ -408882,46 +409253,46 @@
     }
   ],
   "method": "Current source_details discovered records establish verified health recall; discovered_metadata_only records establish enumerated identities without verified article content and never inflate health recall. Queue/history/control are separate evidence joins. Control dates define frozen complete calendar windows. No search snippet supplies a date.",
-  "at": "2026-10-11T22:19:43.668481+00:00",
+  "at": "2026-10-11T22:53:06.826737+00:00",
   "branch": "codex/b-pulso-runtime-20261011",
-  "code_sha": "aea4644c235d29f13b038fb513a00e1b4ab729ae",
+  "code_sha": "46a3683c6760f0e61031a7dc7d5961c105cacb36",
   "execution": {
     "mode": "report_only_rejoin",
     "engine_called": false,
     "engine_completed": false,
-    "started_at": "2026-10-11T22:19:42.182925+00:00",
+    "started_at": "2026-10-11T22:53:05.334724+00:00",
     "processing_limit": 250,
-    "ai_credentials_present": false,
+    "ai_credentials_present": true,
     "ai_guardrails_modified": false
   },
   "prior_execution": {
     "mode": "report_only_rejoin",
     "engine_called": false,
     "engine_completed": false,
-    "started_at": "2026-10-11T21:56:27.357720+00:00",
+    "started_at": "2026-10-11T22:53:00.096293+00:00",
     "processing_limit": 250,
     "ai_credentials_present": true,
     "ai_guardrails_modified": false
   },
   "discovery_persisted_by_current_execution": true,
-  "persisted_discovery_record_at": "2026-10-11T21:55:09.853236+00:00",
+  "persisted_discovery_record_at": "2026-10-11T22:52:40.046151+00:00",
   "fresh_publisher_poll_claimed": false,
   "capture_status_counts": {
-    "200": 504
+    "200": 500
   },
   "last_core_execution": {
     "mode": "real_core_processing",
     "engine_called": true,
     "engine_completed": true,
-    "started_at": "2026-10-11T21:48:39.036347+00:00",
+    "started_at": "2026-10-11T22:45:57.456068+00:00",
     "processing_limit": 250,
     "ai_credentials_present": true,
     "ai_guardrails_modified": false,
-    "code_sha": "c2db17141fd55cbacbcda5b53805341aa4dfa86f",
+    "code_sha": "46a3683c6760f0e61031a7dc7d5961c105cacb36",
     "runtime_fingerprint": {
       "files": {
-        ".github/workflows/daily-radar.yml": "f53363188e7d25ca5de39edf7bfec9d16febd42b90e265dfa42dd5370ad5d1d4",
-        ".github/workflows/pulso-runtime-recovery.yml": "408e97df4ca4141927610f1f0e959a568cfd37a00e3b7ee20a9b17dc4768c496",
+        ".github/workflows/daily-radar.yml": "44c8fda045ff44261e0a06438e5dddcbe75461bb77e54686b2b8efb19c06030f",
+        ".github/workflows/pulso-runtime-recovery.yml": "0cebd763b648aa42fba0fa80f17aaa9c90752147268d414691aafa3065b152f1",
         "config/beta_source_configs.json": "17d7a85e289ebfce4b9515119f2377f7e20555baa23f5d32c1a6e080a0551064",
         "config/editorial_copy_overrides_v1.json": "7404617f2192f6ccc3d1d34a351d2d1b7a9398aaa636b758f26dc4c91204f802",
         "config/editorial_intelligence_committee_v1.json": "6130ea404523f00278fad872e999e0a1dc8f1961f85f41ca40ea0ea6a8f12d3d",
@@ -408938,9 +409309,9 @@
         "scripts/audit_pulso_runtime.py": "e4cc508d1aa9a7a2c3fcf3c5ef51cb2a802a75a6c05aa00dfaa2cb548741691e",
         "scripts/export_web_snapshot.py": "e91c5b247fa855e16b6cf82057608880181f6568ae77aae3e5d6b08aeb157f96",
         "scripts/product_report.py": "653f78d1950685897e7988afae4144bd8d2c803fa8e00c5418817af43e04f848",
-        "scripts/pulso_idempotence.py": "206b6b7a2b0a33ec19d4a2c5567e432c1c92619c939c94c3c2e0b39df98edf61",
-        "scripts/pulso_recovery_command.py": "876248d1e724a7a54e1c25a138545222b6620d612f7da71843d729f08f499708",
-        "scripts/qa_pulso_recovery.py": "3810b277f8299ffdeefc0c6e5440e209c6dcf8fd2eb46a0d1d2b17c47e0c578b",
+        "scripts/pulso_idempotence.py": "bc767f711f702052ec6ac814e659f644df1f1caf0b32e06154e3003845baf4e0",
+        "scripts/pulso_recovery_command.py": "705ca5501914ae7becb9fe25c835dd3c3889eb3392ea31431c79e3309bae6138",
+        "scripts/qa_pulso_recovery.py": "c11b825305bce670758ab3d22cbb65af2c9584942e4b16906c5be8b769201eed",
         "scripts/retain_pulso_runtime_fixtures.py": "e474f8d3a23254a47d8300eef94a85d262aa35eebc0c2a0b0f669cc43f6b5c99",
         "src/radar_salud/__init__.py": "75ad4f4c2943325f88064ad2beae890b59674be2bf0404b30afc5584dc4de4bb",
         "src/radar_salud/achs_blog.py": "0d9e48b75ee0d90169fde8235966dcccb4f36597a185d994b098379ea58f3377",
@@ -408953,7 +409324,7 @@
         "src/radar_salud/beta_core_handoff.py": "33e9f10dae93f13267924382f262d1f6aad02ca6fe600547807bf8503f9b20fb",
         "src/radar_salud/beta_source_engine.py": "cd4bf1712f231e9d9cd395ea31b3280d7ca9a493fbf639902d87184bb3686e13",
         "src/radar_salud/beta_source_engine_fast.py": "bf41467a8f8ee2c7a7cf81f51f483646bfb4335964f98e72e209bf8ed4044c37",
-        "src/radar_salud/beta_sources.py": "b6457d6d697f7183c1570e942d267276322ac6db8465963223a81fc5e7c3e9c9",
+        "src/radar_salud/beta_sources.py": "506e6648c5aa4ef5dcb514226aebc274f7d5f8642ff5d16ca396863d15fb76d8",
         "src/radar_salud/beta_sources_fast.py": "ee761c8c9be08ca05d0638555541c655a9a79b5bcc2248d1436351d6508503c5",
         "src/radar_salud/cli.py": "4b16ecd02ddde3702be8f33c9ccd65bed1c74655e16dce0bc6fe94156d01fe00",
         "src/radar_salud/connect.py": "8c5e0e94835f7ff5c0aaf5accb85c8db846ed688ab634be5531e0419722ce3f8",
@@ -409002,7 +409373,7 @@
         "src/radar_salud/occupational_sources.py": "ad039c502e9f7282f5f60aeda6e765e3440f8ff67e5ab698dcb97e9cb80dbf8b",
         "src/radar_salud/openai_runtime.py": "cabd701e5f6d7fc1227694c076f1f4b89e51089b69f02108185e18fcb73ff29b",
         "src/radar_salud/paths.py": "1635188d4086ed8f08dbf6195b4b5bb679e1cf6e0e7447f10f2562cbe704a0da",
-        "src/radar_salud/pending_queue.py": "4cb4a8a91d9bff32e5f9a8a62a0ae03de0ec0315be2a49277fe326357dc4472b",
+        "src/radar_salud/pending_queue.py": "dcb6e6069620b832564a4a2d3556447190e8516228535211ddd0c667afab01ca",
         "src/radar_salud/personal_digest.py": "09838565154995c5483b4c9b5600a8b0e524f15004c73e712036126e294f2bc4",
         "src/radar_salud/personalization.py": "db0ec9029921f9906ec9010b0b6f73c8da67a6702bf8fa058820ca10d33636d2",
         "src/radar_salud/pipeline.py": "d8beaa6a935a397ec38de57498696b259a5172b69b24495c36280ff44ea98280",
@@ -409015,8 +409386,9 @@
         "src/radar_salud/public_source_pipeline.py": "5f8ed35ff991bce320e97c167fce7b9257fea29770776f9b4a61fe9ad79056d6",
         "src/radar_salud/public_source_transport.py": "b99d326a4c5800f893c491c0ffe3e94317f307677fbf26d9ea5a4e1513310210",
         "src/radar_salud/pulso_current_paid_revalidation.py": "fb4741d618b756cdc10e50354ab7a5a872d430ada77e66243663606129603945",
-        "src/radar_salud/pulso_editorial_proof.py": "e524dec57d62daa9559ba21e792422d350635b7a65f0eb78a277e36b800c231e",
+        "src/radar_salud/pulso_editorial_proof.py": "cfdfc0914a1e6d145d932ffe29063eae3be0cf72a977a522dd7e454772cb241b",
         "src/radar_salud/pulso_editorial_review.py": "a0c7d78d8665fa962fd849ebe83e3ebbb6924f3027d81bf0d666fbcffb68f417",
+        "src/radar_salud/pulso_final_paid_revalidation.py": "770c8e912644333cafe8fa38c3345eb3512390e23be9c06f5d0930e2ffdd6086",
         "src/radar_salud/pulso_followup_paid_revalidation.py": "cf498c6d38327b6c1633f1536444e14486405fee8b6a763f183bbb98a5d03a06",
         "src/radar_salud/pulso_incremental_review.py": "7839ae3542484c27f7473267df22bd662839a441028532f805347823cdb3f697",
         "src/radar_salud/pulso_paid_revalidation.py": "57c838db696cf5e8d5f9b9b3763bc33a84ce021636fc5af7567ad1f6f8263e18",
@@ -409046,7 +409418,7 @@
         "src/radar_salud/weekly_freshness.py": "b4f59256205b2b82baca35999c99cc3e4feba1be6f359c53c2da066cf5456362",
         "src/radar_salud/weekly_insight_v2.py": "bb267b4c6e7d34713cac94d899172d3a7ee57028074420b2b9647b2a7da105ad"
       },
-      "sha256": "c960999eea01aed6e578d0ca1354cb5f45b8720ae8832993d609d0db540b0406",
+      "sha256": "8f50110e88b79f0832e86957a0f14d3a461a52faf6f65fd2b1fab8299df831fa",
       "git_or_marker_sha_used": false
     },
     "budget_before": {
@@ -409069,8 +409441,8 @@
           "failed": 0
         },
         "fast": {
-          "attempted": 514,
-          "successful": 514,
+          "attempted": 516,
+          "successful": 516,
           "failed": 0
         }
       }
@@ -409083,8 +409455,8 @@
           "failed": 0
         },
         "fast": {
-          "attempted": 2,
-          "successful": 2,
+          "attempted": 0,
+          "successful": 0,
           "failed": 0
         }
       },
@@ -409105,7 +409477,7 @@
       "fast": true,
       "deep": true
     },
-    "finished_at": "2026-10-11T21:56:11.210788+00:00",
+    "finished_at": "2026-10-11T22:52:48.535353+00:00",
     "processing_selection": {
       "source": "pulso_latercera",
       "path": "/home/runner/work/Radar-salud/Radar-salud/data/audits/pulso_material_recovery_cohort_2026_10_11.json",
@@ -409230,9 +409602,6 @@
       "matched_existing_url_count": 113,
       "ready_selected_urls": [
         "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
-        "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
-        "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
-        "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
         "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/"
       ],
       "skipped_terminal_urls": [
@@ -409294,6 +409663,7 @@
         "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
         "https://www.latercera.com/nacional/noticia/minsal-designa-a-fernanda-robles-como-la-nueva-seremi-de-la-region-de-los-lagos/",
         "https://www.latercera.com/nacional/noticia/minsal-entrega-balance-final-del-plan-de-alerta-oncologica-y-adelanta-medidas-para-evitar-el-incumplimiento-de-garantias/",
+        "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
         "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
         "https://www.latercera.com/nacional/noticia/minsal-informa-de-afectaciones-leves-en-recintos-de-salud-por-el-sistema-frontal-pero-afirma-que-red-esta-completamente-operativa/",
         "https://www.latercera.com/nacional/noticia/minsal-presenta-el-plan-de-inversiones-oncologicas-2026-2030-estrategia-enfocada-en-fortalecer-la-atencion-en-todo-el-territorio-nacional/",
@@ -409303,6 +409673,7 @@
         "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
         "https://www.latercera.com/nacional/noticia/otra-jueza-mas-recurre-al-tc-para-congelar-en-la-suprema-su-cuaderno-de-remocion-por-viajar-fuera-de-chile-con-licencia/",
         "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+        "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
         "https://www.latercera.com/nacional/noticia/por-emanaciones-toxicas-informan-suspension-de-clases-en-quilicura-tras-gigantesco-incendio-en-empresa-de-productos-quimicos/",
         "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
         "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
@@ -409328,6 +409699,7 @@
         "https://www.latercera.com/pulso/noticia/corte-suprema-revoca-decreto-del-minsal-que-obligaba-a-exhibir-evita-su-consumo-en-publicidad-de-alimentos-con-sellos/",
         "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
         "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+        "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
         "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
         "https://www.latercera.com/pulso/noticia/gobierno-nombra-a-lorena-herrera-como-nueva-directora-general-de-concesiones-de-obras-publicas/",
         "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
@@ -409347,21 +409719,21 @@
       ],
       "skipped_not_due_urls": [],
       "skipped_in_progress_urls": [],
-      "outside_selection_pending_url_count": 1515,
+      "outside_selection_pending_url_count": 1516,
       "outside_selection_pending_reason": "processing_not_attempted:explicit_queue_selection_excluded",
       "reason": "explicit_queue_selection"
     },
-    "processing_attempts_increased": 5
+    "processing_attempts_increased": 2
   },
   "external_control_path": "data/audits/pulso_external_control_2026_10_11.json",
   "external_control_sha256": "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374",
-  "capture_manifest": "/workspace/Radar-salud/data/audits/pulso_runtime_capture/manifest.json",
-  "preserved_original_fixture_manifest": "/workspace/Radar-salud/tests/fixtures/pulso_runtime_real/manifest.json",
+  "capture_manifest": "/home/runner/work/Radar-salud/Radar-salud/data/audits/pulso_runtime_capture/manifest.json",
+  "preserved_original_fixture_manifest": "/home/runner/work/Radar-salud/Radar-salud/tests/fixtures/pulso_runtime_real/manifest.json",
   "preserved_original_fixture_status": "ORIGINAL_FIXTURES_AVAILABLE_NOT_SOURCE_ACCEPTANCE",
   "preserved_original_fixture_manifests": [
     {
       "path": "tests/fixtures/pulso_runtime_real/manifest.json",
-      "sha256": "d22e27a325e5729d91486acf183c479fa7f0d9f78dd151c96de878cf25c29d1e",
+      "sha256": "cb9afee05ed79155d0af10ca7f506a16ec076f209e8834e14e87a45340cd4ea3",
       "status": "ORIGINAL_FIXTURES_AVAILABLE_NOT_SOURCE_ACCEPTANCE"
     },
     {
@@ -409380,10 +409752,10 @@
   "feed_evidence": {
     "mode": "actual_serialized_candidate_snapshot",
     "serialized_feed_verified": true,
-    "generated_at": "2026-10-11T22:19:39.377272+00:00",
+    "generated_at": "2026-10-11T22:53:02.272617+00:00",
     "generated_after_current_history": true,
-    "path": "/workspace/Radar-salud/web/data/radar_today.json",
-    "sha256": "375ec9e73ed34156d98698fb019e6c483a0eec0a9abe724db3bc1644dad00a34"
+    "path": "/home/runner/work/Radar-salud/Radar-salud/web/data/radar_today.json",
+    "sha256": "6c7bd5a3b7dda1fbb6fe032d43c4927adc1393111716852835dfd495ce1e53dc"
   },
   "unresolved_pending_operational_reasons": []
 }
