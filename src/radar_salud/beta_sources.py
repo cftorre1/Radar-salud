@@ -537,6 +537,34 @@ def process_curated_beta_source(raw, cfg):
             }
             raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": reason}
             raise DeferredProcessing(reason)
+        flags = {name: raw.metadata.get(name) for name in (
+            "primary_identity_verified", "publication_date_verified")}
+        if any(value is not True for value in flags.values()):
+            reason = "pulso_primary_verification_flags_missing_or_false"
+            raw.metadata["primary_item_binding"] = {
+                "verified": False, "reason": reason,
+                "raw_url": raw.url, "primary_canonical_url": raw.metadata.get("canonical_url"),
+                "raw_event_date": raw.event_date,
+                "primary_publication_date": raw.metadata.get("publication_date"),
+                "primary_verification_flags": flags, "model_calls_permitted": False,
+            }
+            raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": reason}
+            raise DeferredProcessing(reason)
+        previous_binding = raw.metadata.get("primary_item_binding")
+        if isinstance(previous_binding, dict) and previous_binding.get("verified") is False:
+            from copy import deepcopy
+            prior = raw.metadata.setdefault("primary_item_binding_prior_deferrals", [])
+            if previous_binding not in prior:
+                prior.append(deepcopy(previous_binding))
+        raw.metadata["primary_item_binding"] = {
+            "verified": True, "reason": "pulso_primary_item_identity_and_date_verified",
+            "raw_url": raw.url, "primary_canonical_url": raw.metadata["canonical_url"],
+            "raw_event_date": raw.event_date,
+            "primary_publication_date": raw.metadata["publication_date"],
+            "primary_verification_flags": flags,
+            "model_calls_permitted": True, "other_editorial_and_budget_gates_still_apply": True,
+            "publication_approved": False,
+        }
         from .pulso_incremental_review import apply_incremental_review
         apply_incremental_review(raw)
     elif not scoped:

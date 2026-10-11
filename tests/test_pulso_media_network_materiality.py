@@ -49,6 +49,12 @@ def test_original_network_report_reaches_analysis_with_full_primary_evidence_and
     assert entry['original_http_capture']['status'] == 200
     assert entry['original_http_capture']['url'] == entry['url']
     assert entry['original_http_capture']['sha256'] == metadata['html_sha256']
+    assert metadata['publication_date_source'] == 'visible_article_byline'
+    assert metadata['visible_publication_date'] == entry['publication_date']
+    # These older body projections omitted the verifier's explicit flags. The
+    # unit supplies the verified contract after checking their captured URL,
+    # day and full-body binding; it makes no new live-verification claim.
+    metadata.update(primary_identity_verified=True, publication_date_verified=True)
     assert beta_sources._material('media', entry['title'], body)
     calls = []
     def assess(**kwargs):

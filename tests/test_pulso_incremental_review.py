@@ -32,6 +32,7 @@ def candidate(day="2026-10-07"):
         entry["source_url"], "Pulso / La Tercera", "press_high_trust", day,
         raw_text=body[:100], metadata={
             "article_verified": True, "source_quality_gate": "passed", "market_role": "media",
+            "primary_identity_verified": True, "publication_date_verified": True,
             "canonical_url": entry["source_url"], "publication_date": day,
             "publication_date_source": "visible_article_byline", "visible_publication_date": day,
             "publication_timestamp": day + "T12:00:00-03:00",

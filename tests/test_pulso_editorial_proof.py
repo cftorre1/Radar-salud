@@ -279,6 +279,49 @@ def test_real_primary_metadata_cannot_be_reused_for_another_queue_url_or_day(mon
     assert "analysis_model_output" not in raw.metadata
 
 
+@pytest.mark.parametrize("flag", ["primary_identity_verified", "publication_date_verified"])
+@pytest.mark.parametrize("value", [False, None, "missing"])
+def test_real_complete_body_does_not_replace_explicit_primary_verification_flags(monkeypatch, flag, value):
+    raw = original_clinical_raw()
+    assert raw.metadata[flag] is True and raw.metadata["article_verified"] is True
+    if value == "missing":
+        raw.metadata.pop(flag)
+    else:
+        raw.metadata[flag] = value
+    monkeypatch.setattr(llm_analysis, "analyze_news", lambda **request: pytest.fail("Unverified primary flags cannot spend an AI call"))
+    monkeypatch.setattr(beta_sources, "fetch_html", lambda url: pytest.fail("Do not silently replace explicit primary verification flags"))
+    with pytest.raises(DeferredProcessing, match="pulso_primary_verification_flags_missing_or_false"):
+        beta_sources.process_curated_beta_source(raw, {})
+    assert raw.metadata["primary_item_binding"]["primary_verification_flags"][flag] is (None if value == "missing" else value)
+    assert raw.metadata["primary_item_binding"]["model_calls_permitted"] is False
+    assert raw.metadata["editorial_assessment"]["decision"] == "pending"
+    assert "analysis_model_output" not in raw.metadata
+
+
+def test_original_primary_reverification_replaces_current_failure_binding_and_preserves_prior_deferral(monkeypatch):
+    raw = original_clinical_raw()
+    raw.metadata["publication_date_verified"] = False
+    monkeypatch.setattr(llm_analysis, "analyze_news", lambda **request: pytest.fail("Unverified day cannot spend an AI call"))
+    with pytest.raises(DeferredProcessing, match="pulso_primary_verification_flags_missing_or_false"):
+        beta_sources.process_curated_beta_source(raw, {})
+    previous = copy.deepcopy(raw.metadata["primary_item_binding"])
+    # Restore only the captured original verifier's flag, without inventing a
+    # date or changing the original URL/body; the same strict checks run again.
+    raw.metadata["publication_date_verified"] = original_clinical_raw().metadata["publication_date_verified"]
+    _, ai = clinical_assessment()
+    calls = []
+    def assess(**request):
+        calls.append(request)
+        return bind(ai, request)
+    monkeypatch.setattr(llm_analysis, "analyze_news", assess)
+    row = beta_sources.process_curated_beta_source(raw, {})
+    assert len(calls) == 1 and row["evidence_maturity"] == "media_reported"
+    assert raw.metadata["primary_item_binding"]["verified"] is True
+    assert raw.metadata["primary_item_binding"]["publication_approved"] is False
+    assert raw.metadata["primary_item_binding_prior_deferrals"] == [previous]
+    assert raw.metadata["editorial_assessment"]["threshold"] == 72
+
+
 @pytest.mark.parametrize("strict", [False, True])
 def test_llm_adds_only_opt_in_schema_to_the_same_single_fast_call(monkeypatch, strict):
     body, ai = clinical_assessment(); calls = []; budget = []; results = []; traces = []
