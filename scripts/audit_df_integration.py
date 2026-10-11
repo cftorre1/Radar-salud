@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import re
+from html import unescape
 import subprocess
 from collections import Counter
 from datetime import datetime, timezone
@@ -170,6 +171,7 @@ def main():
         undated.append(dict(url=url,publication_day=date,
             resolution='RESOLVED_VERIFIED_DATE' if date else 'RESOLVED_IRRELEVANT' if url.endswith('.pdf') or re.search(r'/p/\d+$',url) else 'RESOLVED_NO_VERIFIABLE_DATE',
             evidence=meta,original_sha256=original.get('sha256'),
+            canonical=meta.get('publisher_canonical_url'),jsonld_identity=meta.get('publisher_jsonld_identity'),
             investigation_order=['matching JSON-LD','article:published_time','cXense','primary visible header','canonical','publisher archive/listings','advertised sitemaps'],
             reason='Excluded PDF/commercial document/listing, no news publication identity' if not date and not meta.get('publication_date_candidates') else 'Original conflicting observations retained; primary label used only with matching story identity and primary body/media',
             sitemap_matches=[e for s in surfaces for e in s.get('entries',[]) if article_url(e.get('url') or '')==article_url(url)]))
@@ -184,11 +186,16 @@ def main():
         body=parsed['metadata']['page_text'] if parsed else meta.get('page_text','')
         rows=[r for r in history if article_url(r.get('source_url',''))==article_url(url) and r.get('editorial_decision')!='reject']
         assessment=meta.get('editorial_assessment',{})
+        parsed_metadata=parsed['metadata'] if parsed else meta
+        header_title=parsed_metadata.get('primary_header_title')
         other_exact=[r['source_url'] for r in history if r.get('source_name')!='Diario Financiero' and r.get('editorial_decision')!='reject' and (article_url(r.get('source_url',''))==article_url(url) or (r.get('title','').casefold()==meta.get('article_title','').casefold() and r.get('event_date')==raw.get('event_date')))]
         publications.append(dict(fingerprint=key,url=url,date=raw.get('event_date'),title=meta.get('article_title'),lane=item['lane'],
             score=assessment.get('score'),category=rows[0].get('category') if rows else None,materiality=assessment.get('reason'),
             publication_reason=assessment,original_sha256=original.get('sha256'),captured_at=original.get('captured_at'),
             original_reparsed=parsed is not None,primary_body_matches=body==meta.get('page_text'),
+            primary_header_title=header_title,publisher_jsonld_identity=parsed_metadata.get('publisher_jsonld_identity'),
+            publisher_canonical_url=parsed_metadata.get('publisher_canonical_url'),
+            title_matches_primary_header=bool(header_title) and unescape(header_title).casefold()==unescape(meta.get('article_title','')).casefold(),
             verified_primary_characters=len(body),material_gate=material(meta.get('article_title',''),body),
             date_matches_original=not parsed or parsed['event_date']==raw.get('event_date'),
             history_rows=len(rows),already_in_staging_history=any(article_url(r.get('source_url',''))==article_url(url) for r in baseline),

@@ -44,10 +44,13 @@ class _Article(HTMLParser):
         self.primary_found = False
         self.images = []
         self.media = []
+        self.canonical = None
+        self.primary_headline = []
 
     def handle_starttag(self, tag, attrs):
         tag = tag.lower()
         attrs = dict(attrs)
+        if tag=='link' and attrs.get('rel','').lower()=='canonical':self.canonical=attrs.get('href')
         if tag=='img' and attrs.get('src') and any(e[1] for e in self.stack):self.images.append(attrs['src'])
         if tag=='iframe' and attrs.get('src') and any(e[4] for e in self.stack):self.media.append(attrs['src'])
         if tag == "meta":
@@ -89,6 +92,7 @@ class _Article(HTMLParser):
         if not value:
             return
         self.visible.append(value)
+        if 'h1' in tags and any(entry[4] for entry in self.stack):self.primary_headline.append(value)
         if any(entry[4] for entry in self.stack) and any(entry[5] for entry in self.stack):
             self.publication_label.append(value)
         if any(entry[3] for entry in self.stack):
@@ -186,6 +190,9 @@ def parse_df_article(html, url):
             "page_text": body,
             "article_title": node.get("headline") or p.meta.get("og:title") or "",
             "article_section": node.get("articleSection") or p.meta.get("article:section") or "",
+            "publisher_canonical_url": urljoin(url,p.canonical) if p.canonical else None,
+            "publisher_jsonld_identity": _node_identity(node),
+            "primary_header_title": ' '.join(p.primary_headline),
             "article_author": (node.get('author', {}).get('name', '') if isinstance(node.get('author'), dict)
                                else node.get('author') if isinstance(node.get('author'), str) else p.meta.get('author', '')),
             "primary_image_urls":[urljoin(url,src) for src in p.images],
