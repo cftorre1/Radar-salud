@@ -11,11 +11,11 @@ def utcnow():
     return datetime.now(timezone.utc).isoformat()
 
 
-def fetch(url, output):
+def fetch(url, output, post=None):
     """Persist body, response chain and verified TLS diagnostics without credentials."""
     if urlsplit(url).scheme != 'https' or urlsplit(url).hostname not in HOSTS:
         raise ValueError('Probe requires an official HTTPS URL')
-    key = hashlib.sha256(url.encode()).hexdigest()[:20]
+    key = hashlib.sha256((url + (post or '')).encode()).hexdigest()[:20]
     output.mkdir(parents=True, exist_ok=True)
     body, headers, trace = (output / (key + suffix) for suffix in ('.body', '.headers', '.tls.txt'))
     started = utcnow()
@@ -24,6 +24,7 @@ def fetch(url, output):
         '--user-agent', 'RadarSaludBot/0.1 (+public-source-monitor)',
         '--dump-header', str(headers), '--output', str(body), '--write-out', '%{json}',
         '--verbose', url]
+    if post: command[1:1] = ['--data', post]
     try:
         result = subprocess.run(command, capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=70)
     except subprocess.TimeoutExpired as exc:
@@ -49,7 +50,8 @@ def fetch(url, output):
     text = content.decode('utf-8', errors='replace')
     waf = [term for term in ['access denied', 'captcha', 'cloudflare', 'request rejected', 'proxy error'] if term in text.lower()]
     status = int(network.get('http_code') or 0)
-    receipt = dict(url=url, started_at=started, completed_at=utcnow(), curl_returncode=result.returncode,
+    receipt = dict(url=url, request_method='POST' if post else 'GET', request_body=post,
+        started_at=started, completed_at=utcnow(), curl_returncode=result.returncode,
         network=network, body_file=str(body.relative_to(output.parent)), header_file=str(headers.relative_to(output.parent)), tls_trace_file=str(trace.relative_to(output.parent)),
         bytes=len(content), sha256=hashlib.sha256(content).hexdigest(), waf_hints=waf,
         transport_ok=result.returncode == 0 and 200 <= status < 300 and network.get('ssl_verify_result') == 0,
@@ -63,7 +65,7 @@ class Links(HTMLParser):
     def handle_starttag(self,tag,attrs):
         d=dict(attrs)
         if tag=='a': self.href=d.get('href'); self.label=[]
-        if tag=='script' and d.get('src'): self.links.append((d['src'],'script'))
+        if tag=='link' and 'appendix' in d.get('rel',''): self.links.append((d.get('href'),d.get('rel')))
     def handle_data(self,text):
         if self.href is not None: self.label.append(text)
     def handle_endtag(self,tag):
@@ -74,9 +76,10 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--seeds',type=Path,default=Path('config/source_expansion_runtime.json'));args=p.parse_args()
     seeds=json.loads(args.seeds.read_text())['seeds']; receipts=[];seen=set();todo=seeds
     for depth in range(3):
-        batch=[s for s in todo if s['url'] not in seen][:180];todo=[];seen.update(s['url'] for s in batch)
+        batch=list({(s['url'],s.get('post')):s for s in todo if (s['url'],s.get('post')) not in seen}.values())[:180]
+        todo=[];seen.update((s['url'],s.get('post')) for s in batch)
         with ThreadPoolExecutor(max_workers=3) as pool:
-            results=list(pool.map(lambda seed:fetch(seed['url'],args.output/'captures'),batch))
+            results=list(pool.map(lambda seed:fetch(seed['url'],args.output/'captures',seed.get('post')),batch))
         for seed,(receipt,html) in zip(batch,results):
             receipt.update(package=seed['package'],kind=seed.get('kind','discovered'),depth=depth)
             parser=Links();parser.feed(html);receipt['links']=[{'url':urljoin(seed['url'],h),'label':t} for h,t in parser.links if urlsplit(urljoin(seed['url'],h)).hostname in HOSTS]
@@ -87,8 +90,8 @@ def main():
                 u=link['url']; label=link['label']; host=urlsplit(u).hostname
                 relevant=False
                 if seed['package']=='isapres': relevant=bool(re.search(r'\.xlsx?(?:$|\?)|/(?:biblioteca-digital|publicaciones)/.*(?:cartera|financ|beneficiar|isapre)',u,re.I))
-                if seed['package']=='cmf': relevant=bool(re.search(r'hechos|verarchivo|hes_|\.pdf',u,re.I)) and 'financiera' not in u or ('verarchivo' in u and re.search('Estados financieros|An.lisis Razonado|Hechos Relevantes',label,re.I))
-                if seed['package']=='dipres': relevant=bool(re.search(r'\.js(?:$|\?)|articles-.*(?:pdf|xlsx|csv)|multipropertyvalues-(?:14632|1467[189])-38403',u))
+                if seed['package']=='cmf': relevant=bool(re.search(r'hechos_esenciales|hechos.*archivo|hes_|safec_ifrs_verarchivo',u,re.I)) or bool(re.search(r'\.pdf$',u,re.I))
+                if seed['package']=='dipres': relevant=bool(re.search(r'articles-.*(?:pdf|xlsx|csv)|/(?:alt|aux)-multipropertyvalues-',u))
                 if relevant and host in HOSTS:todo.append({'url':u,'package':seed['package'],'kind':label[:100]})
     args.output.mkdir(parents=True,exist_ok=True)
     (args.output/'receipts.json').write_text(json.dumps({'captured_at':utcnow(),'bounded_depth':2,'page_cap_per_depth':180,'coverage_complete':False,'receipts':receipts},ensure_ascii=False,indent=2)+'\n')
