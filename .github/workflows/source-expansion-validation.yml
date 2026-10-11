@@ -1,0 +1,38 @@
+name: Source expansion isolated native validation
+on:
+  push:
+    branches: [codex/w4-market-intelligence-expansion-20261011]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    if: github.ref == 'refs/heads/codex/w4-market-intelligence-expansion-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - name: Capture official public surfaces with verified TLS
+        run: python scripts/probe_source_expansion.py --output artifacts/expansion
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: expansion-native-indexes
+          path: |
+            artifacts/expansion/receipts.json
+            artifacts/expansion/captures/*.body
+            artifacts/expansion/captures/*.headers
+            artifacts/expansion/captures/*.tls.txt
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: expansion-documents
+          path: artifacts/expansion/captures/documents
+          retention-days: 14
