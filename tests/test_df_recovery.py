@@ -41,6 +41,22 @@ def test_publisher_branded_byline_is_rejected_even_when_url_has_no_brand_prefix(
     assert exclusion(raw) is None
 
 
+def test_reviewed_df_corroboration_yields_only_when_official_event_is_in_feed():
+    import importlib.util
+    from pathlib import Path
+    from radar_salud.history import load_history
+    root=Path(__file__).resolve().parents[1]
+    spec=importlib.util.spec_from_file_location('df_duplicate_feed',root/'scripts/export_web_snapshot.py')
+    exporter=importlib.util.module_from_spec(spec);spec.loader.exec_module(exporter)
+    history=load_history(root/'data/history/superintendencia_signals.json')
+    official=next(r for r in history if r.get('source_url')=='https://www.superdesalud.gob.cl/normativa/circular-if-n534/')
+    df=next(r for r in history if r.get('source_url')=='https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera')
+    df={**df,'df_duplicate_of':official['source_url']}
+    feed=exporter.curate([df,official],resolve_external=False)
+    assert [r['source_url'] for r in feed]==[official['source_url']]
+    assert exporter.curate([df],resolve_external=False)[0]['source_url']==df['source_url']
+
+
 def test_recorded_real_publisher_metadata_samples():
     # Recorded Work3 metadata, NOT freshly fetched full original HTML.
     from pathlib import Path

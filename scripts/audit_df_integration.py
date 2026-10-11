@@ -18,7 +18,7 @@ from radar_salud.df_article import article_url, parse_df_article
 from radar_salud.df_media_gate import material
 from radar_salud.df_recovery import _remember
 from radar_salud.df_resolution import defer_format
-from radar_salud.history import load_history
+from radar_salud.history import load_history, save_history
 from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue, atomic_json, lane
 from radar_salud.scouts import fetch_html
@@ -49,6 +49,15 @@ def main():
     cache_dir = root/'work/df-originals'
     cache_dir.mkdir(parents=True, exist_ok=True)
     controls = json.loads((root/'config/df_integration_controls.json').read_text())
+    if args.resolve:
+        for url,review in controls.get('publication_duplicate_pairs',{}).items():
+            counterpart=next((r for r in history if r.get('source_url')==review['url'] and r.get('editorial_decision')!='reject'),None)
+            if not counterpart:continue
+            for row in history:
+                if row.get('source_url')==url and row.get('df_duplicate_of')!=review['url']:
+                    row['df_duplicate_review']=dict(at=now.isoformat(),basis=review['basis'],before_feed_visibility=row.get('feed_visibility'))
+                    row['df_duplicate_of']=review['url']
+        save_history(root/'data/history/superintendencia_signals.json',history)
     capture = {}; new_raw = []
 
     def read_original(url):
@@ -187,6 +196,7 @@ def main():
             previous_defects=[o['action'] for o in item.get('recovery_observations',[])],
             cross_source_exact_duplicates=other_exact,
             cross_source_review=controls.get('publication_reviews',{}).get(url,'Reviewed primary story/decision; no identical other-source event in retained history'),
+            canonical_event=controls.get('publication_duplicate_pairs',{}).get(url),
             primary_body_sha256=hashlib.sha256(body.encode()).hexdigest(),primary_excerpt=body[:400]))
     atomic_json(root/'data/audits/df_publications_review_2026_10_11.json',dict(at=now.isoformat(),count=len(publications),items=publications,
         semantic_dedupe_limitation='Explicit event review plus exact identity checks, not a global semantic dedupe guarantee'))
