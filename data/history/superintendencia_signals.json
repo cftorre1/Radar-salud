@@ -62035,7 +62035,13 @@
         }
       ],
       "df_body_reaudit_status": "published_after_primary_body_reassessment",
-      "editorial_decision": "accept"
+      "editorial_decision": "accept",
+      "df_duplicate_review": {
+        "at": "2026-10-11T06:51:23.341413+00:00",
+        "basis": "Identical IF534 requirement: biometric and auxiliary validation fail, issue bono with ID; effective1December. DF1Oct corroborates already retained SIS14Sep official event. Preserve DF history, official event leads feed.",
+        "before_feed_visibility": null
+      },
+      "df_duplicate_of": "https://www.superdesalud.gob.cl/normativa/circular-if-n534/"
     },
     {
       "title": "Segunda clínica privada de Antofagasta cierra su unidad de maternidad desde 2025 por fuerte caída de natalidad",
@@ -64564,7 +64570,118 @@
       "article_content_source": "df_primary_body",
       "original_sha256": null,
       "original_captured_at": null,
-      "ingestion_mode": "BACKFILL"
+      "ingestion_mode": "BACKFILL",
+      "df_media_gate_observations": [
+        {
+          "at": "2026-10-11T06:52:30.527519+00:00",
+          "before": {
+            "title": "Fármaco descubierto con IA revierte signos biológicos de envejecimiento en estudio, según biotech",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "source_url": "https://www.df.cl/df-lab/mundo/farmaco-descubierto-con-ia-revierte-signos-biologicos-de-envejecimiento-en",
+            "category": "Innovación & Startups",
+            "subcategory": "General",
+            "system_domain": "HEALTH",
+            "what_happened": "Diario Financiero informó que Rentosertib, fármaco experimental de Insilico Medicine desarrollado con herramientas de inteligencia artificial, redujo hasta seis años la edad biológica promedio de pacientes con enfermedad pulmonar crónica en un análisis de fase 2 con 42 participantes. El resultado se midió mediante seis relojes de envejecimiento y fue comunicado por la compañía; el estudio también evaluó su eficacia contra la fibrosis pulmonar idiopática. Rentosertib avanza además hacia un ensayo clínico de fase avanzada en China, aunque sus efectos de largo plazo siguen sin conocerse.",
+            "event_date": "2026-09-07",
+            "detected_at": "2026-10-11T06:39:55.622569+00:00",
+            "primary_source_url": null,
+            "event_type": "OTHER",
+            "strategic_theme": [],
+            "institution_types": [],
+            "entity_refs": [],
+            "country": "CL",
+            "topics": [],
+            "entities": [],
+            "people": [],
+            "geography": [],
+            "key_facts": [],
+            "key_numbers": [],
+            "why_it_matters": "El resultado aporta una señal relevante para Insilico y para el desarrollo de fármacos asistido por IA, al vincular una terapia para una enfermedad pulmonar con potenciales aplicaciones en patologías relacionadas con la edad. También podría reforzar el interés de la industria farmacéutica en terapias de doble uso. Sin embargo, todavía no implica aprobación para tratar el envejecimiento ni confirma un beneficio clínico de mayor supervivencia.",
+            "who_cares": [],
+            "possible_implications": [],
+            "watch_tags": [
+              "df",
+              "noticias",
+              "sistema de salud"
+            ],
+            "connection_keys": [],
+            "trend_keys": [],
+            "prospective_evidence": false,
+            "economic_impact_score": 72,
+            "regulatory_impact_score": 30,
+            "scope_score": 70,
+            "novelty_score": 72,
+            "actionability_score": 70,
+            "source_quality_score": 93,
+            "radar_score": 65,
+            "confidence_score": 93,
+            "distribution": "archive",
+            "validation_status": "automatic",
+            "corroboration_status": "unknown",
+            "additional_sources": [],
+            "source_documents": [],
+            "key_points": [],
+            "risk_notes": [],
+            "data_insights": [],
+            "data_insight_meta": {},
+            "validity_text": null,
+            "related_reference_ids": [],
+            "original_language": "es",
+            "display_language": "es",
+            "translation_status": "not_required",
+            "original_title": null,
+            "original_what_happened": null,
+            "original_why_it_matters": null,
+            "signal_types": [
+              "Noticias"
+            ],
+            "scopes": [
+              "Sistema de salud"
+            ],
+            "editorial_relevance": 72,
+            "evidence_maturity": "media_reported",
+            "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+            "editorial_assessment": {
+              "score": 72,
+              "reason": "La noticia presenta un avance de investigación y una posible ampliación estratégica del uso de un fármaco en desarrollo, pero se basa en una muestra pequeña, resultados preliminares y afirmaciones del desarrollador. No hay aún un cambio regulatorio, de cobertura o de capacidad asistencial; por eso corresponde a una señal sectorial útil, aunque secundaria.",
+              "gate": "Media Early Signal Gate",
+              "gate_version": "1.0.0",
+              "threshold": 72
+            },
+            "publication_date_source": "cxenseparse:recs:publishtime",
+            "publication_timestamp": "2026-09-07T11:17:35Z",
+            "publication_label": null,
+            "publication_date_candidates": [
+              {
+                "source": "cxenseparse:recs:publishtime",
+                "value": "2026-09-07T11:17:35Z",
+                "day": "2026-09-07"
+              },
+              {
+                "source": "jsonld:datePublished",
+                "value": "2026-09-07T11:17:35Z",
+                "day": "2026-09-07"
+              },
+              {
+                "source": "visible:published_label",
+                "value": "Lunes 7 de septiembre de 2026 a las 08:16 hrs.",
+                "day": "2026-09-07"
+              }
+            ],
+            "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+            "publication_date_conflict": false,
+            "publication_date_conflict_resolution": null,
+            "article_content_source": "df_primary_body",
+            "original_sha256": null,
+            "original_captured_at": null,
+            "ingestion_mode": "BACKFILL"
+          }
+        }
+      ],
+      "editorial_decision": "reject",
+      "feed_visibility": false,
+      "df_media_gate_reason": "media_research_without_material_business_event"
     },
     {
       "title": "Los impactos de la alianza MELI-Cruz Verde y el creciente debate por la venta digital de medicamentos",
@@ -64667,7 +64784,13 @@
       "article_content_source": "df_primary_body",
       "original_sha256": null,
       "original_captured_at": null,
-      "ingestion_mode": "BACKFILL"
+      "ingestion_mode": "BACKFILL",
+      "df_duplicate_review": {
+        "at": "2026-10-11T06:51:23.341413+00:00",
+        "basis": "Same28August MELI-CruzVerde launch/ISP13locales authorization and statements. Follow-up commentary contains no new authorization; keep primary report and retain contextual source in history.",
+        "before_feed_visibility": null
+      },
+      "df_duplicate_of": "https://www.df.cl/senal-df/el-deal/mercado-libre-y-cruz-verde-dan-el-vamos-a-un-acuerdo-que-marca-un-hito-en"
     },
     {
       "title": "Mercado Libre y Cruz Verde dan el vamos a un acuerdo que marca un hito en la venta electrónica de medicamentos",
@@ -64770,6 +64893,109 @@
       "article_content_source": "df_primary_body",
       "original_sha256": null,
       "original_captured_at": null,
+      "ingestion_mode": "BACKFILL"
+    },
+    {
+      "title": "Tras casi seis años de espera y con más del doble de inversión, Iquique vuelve a licitar su quinto Cesfam: 13 empresas participaron en visita a terreno",
+      "source_name": "Diario Financiero",
+      "source_type": "press_high_trust",
+      "source_url": "https://www.df.cl/regiones/tarapaca/trece-empresas-se-interesan-por-obra-de-12-782-millones-para-el-quinto",
+      "category": "Mercado",
+      "subcategory": "General",
+      "system_domain": "HEALTH",
+      "what_happened": "Diario Financiero reporta que el proyecto del quinto Cesfam de Iquique volvió a licitarse tras casi seis años de espera. La contratación, estimada en $12.782 millones —más del doble del presupuesto de 2020—, recibió la visita obligatoria de 13 empresas. El financiamiento considera $11.056 millones del Ministerio de Salud y $1.725 millones del FNDR de Tarapacá; las ofertas se recibirán hasta el 5 de octubre y la adjudicación quedó prevista para el 3 de abril de 2027.",
+      "event_date": "2026-08-24",
+      "detected_at": "2026-10-11T06:38:40.687194+00:00",
+      "primary_source_url": null,
+      "event_type": "OTHER",
+      "strategic_theme": [],
+      "institution_types": [],
+      "entity_refs": [],
+      "country": "CL",
+      "topics": [],
+      "entities": [],
+      "people": [],
+      "geography": [],
+      "key_facts": [],
+      "key_numbers": [],
+      "why_it_matters": "El Servicio de Salud Tarapacá y la red de atención primaria regional podrían sumar un recinto de 2.786 m² para cerca de 30 mil usuarios, aliviando la demanda del sector surponiente de Iquique. El caso merece atención por el aumento sustantivo de la inversión pública, la reactivación de una obra largamente postergada y el interés de 13 constructoras, aunque su impacto es principalmente local.",
+      "who_cares": [],
+      "possible_implications": [],
+      "watch_tags": [
+        "df",
+        "noticias",
+        "sistema de salud"
+      ],
+      "connection_keys": [],
+      "trend_keys": [],
+      "prospective_evidence": false,
+      "economic_impact_score": 72,
+      "regulatory_impact_score": 30,
+      "scope_score": 70,
+      "novelty_score": 72,
+      "actionability_score": 70,
+      "source_quality_score": 93,
+      "radar_score": 65,
+      "confidence_score": 93,
+      "distribution": "archive",
+      "validation_status": "automatic",
+      "corroboration_status": "unknown",
+      "additional_sources": [],
+      "source_documents": [],
+      "key_points": [],
+      "risk_notes": [],
+      "data_insights": [],
+      "data_insight_meta": {},
+      "validity_text": null,
+      "related_reference_ids": [],
+      "original_language": "es",
+      "display_language": "es",
+      "translation_status": "not_required",
+      "original_title": null,
+      "original_what_happened": null,
+      "original_why_it_matters": null,
+      "signal_types": [
+        "Noticias"
+      ],
+      "scopes": [
+        "Sistema de salud"
+      ],
+      "editorial_relevance": 72,
+      "evidence_maturity": "media_reported",
+      "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+      "editorial_assessment": {
+        "score": 72,
+        "reason": "Es una señal concreta de expansión de capacidad y financiamiento de APS, con participación directa del Minsal y del Gobierno Regional. Sin embargo, corresponde a un proyecto localizado y aún no adjudicado, por lo que su relevancia estratégica es secundaria frente a cambios sectoriales de alcance nacional.",
+        "gate": "Media Early Signal Gate",
+        "gate_version": "1.0.0",
+        "threshold": 72
+      },
+      "publication_date_source": "cxenseparse:recs:publishtime",
+      "publication_timestamp": "2026-08-24T14:30:52Z",
+      "publication_label": null,
+      "publication_date_candidates": [
+        {
+          "source": "cxenseparse:recs:publishtime",
+          "value": "2026-08-24T14:30:52Z",
+          "day": "2026-08-24"
+        },
+        {
+          "source": "jsonld:datePublished",
+          "value": "2026-08-24T14:30:52Z",
+          "day": "2026-08-24"
+        },
+        {
+          "source": "visible:published_label",
+          "value": "Lunes 24 de agosto de 2026 a las 12:40 hrs.",
+          "day": "2026-08-24"
+        }
+      ],
+      "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+      "publication_date_conflict": false,
+      "publication_date_conflict_resolution": null,
+      "article_content_source": "df_primary_body",
+      "original_sha256": "e4b57f25e3f5fff55704913b399425ff6a7c7eb7de43fef0b5db2497da944a4a",
+      "original_captured_at": "2026-10-11T06:38:46.689698+00:00",
       "ingestion_mode": "BACKFILL"
     }
   ]
