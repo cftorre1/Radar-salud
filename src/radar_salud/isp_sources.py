@@ -1,6 +1,7 @@
 """ISP public sources with publication dates bound to official evidence.
 
-The current public website uses ispch.cl.  Upload directories, report periods,
+The publisher serves indexed official pages under ispch.gob.cl and ispch.cl.
+Both exact HTTPS authorities are supported. Upload directories, report periods,
 and dates mentioned in document titles are never publication dates.
 """
 from __future__ import annotations
@@ -14,7 +15,7 @@ from .models import RawItem
 from .public_source_evidence import chile_today
 from .public_source_transport import fetch_official_html
 
-ISP_HOSTS = frozenset({"www.ispch.cl", "ispch.cl"})
+ISP_HOSTS = frozenset({"www.ispch.cl", "ispch.cl", "www.ispch.gob.cl", "ispch.gob.cl"})
 
 
 def fetch_html(url: str, source_slug: str = "isp_surveillance") -> str:
@@ -125,7 +126,9 @@ class IspAnamedAlertScout:
     SOURCE_NAME = "ISP / ANAMED"
     SOURCE_TYPE = "official"
     PAGE = "https://www.ispch.cl/categorias-alertas/anamed/"
-    PAGES = (PAGE, "https://ispch.cl/categorias-alertas/anamed/")
+    PAGES = (PAGE, "https://ispch.cl/categorias-alertas/anamed/",
+             "https://www.ispch.gob.cl/categorias-alertas/anamed/",
+             "https://ispch.gob.cl/categorias-alertas/anamed/")
     ATTACHMENT_LABELS = {"publicación isp", "alerta", "nota informativa"}
 
     def __init__(self):
@@ -348,7 +351,10 @@ class IspSurveillanceScout:
         pages = [self.PAGES[0], (self.PAGES[1][0], self.PAGES[1][1] + f"?y={chile_today().year}")]
         for channel, primary in pages:
             candidates = []
-            for page in (primary, primary.replace("https://www.ispch.cl/", "https://ispch.cl/")):
+            for page in (primary,
+                         primary.replace("https://www.ispch.cl/", "https://ispch.cl/"),
+                         primary.replace("https://www.ispch.cl/", "https://www.ispch.gob.cl/"),
+                         primary.replace("https://www.ispch.cl/", "https://ispch.gob.cl/")):
                 try:
                     candidates = self.discover_from_html(fetch_html(page, self.SOURCE_SLUG), page, channel)
                 except Exception as exc:

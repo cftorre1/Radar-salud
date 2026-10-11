@@ -30,7 +30,7 @@ def test_anamed_preserves_two_independently_readable_official_attachments():
 
 
 @pytest.mark.parametrize("href", ["http://www.ispch.cl/test.pdf", "https://ispch.cl.evil.test/test.pdf",
-                                 "https://www.ispch.gob.cl/test.pdf", "https://u@ispch.cl/test.pdf",
+                                 "https://www.ispch.gob.cl.evil.test/test.pdf", "https://u@ispch.cl/test.pdf",
                                  "https://ispch.cl:8443/test.pdf", "https://example.org/test.pdf"])
 def test_anamed_rejects_unverified_attachment_host(href):
     with pytest.raises(RuntimeError, match="verified publication rows"):
@@ -144,7 +144,7 @@ def test_surveillance_continues_respiratory_when_laboratory_is_blocked(monkeypat
     items = scout.discover()
     assert len(items) == 1 and items[0].event_date == "2026-10-07"
     assert scout.partial_failure is True
-    assert len([row for row in scout.diagnostics if row.get("error_type")]) == 2
+    assert len([row for row in scout.diagnostics if row.get("error_type")]) == 4
     assert any(row["channel"] == scout.PAGES[0][0] and row["status"] == "blocked" for row in scout.diagnostics)
 
 
@@ -158,3 +158,26 @@ def test_surveillance_continues_laboratory_when_respiratory_is_blocked(monkeypat
     items = scout.discover()
     assert len(items) == 1 and items[0].event_date == "2026-06-17"
     assert scout.partial_failure is True
+
+
+def test_anamed_official_government_alias_is_a_valid_fallback(monkeypatch):
+    def fetch(url, source_slug=None):
+        if '.gob.cl/' not in url:
+            raise TimeoutError('legacy authority timed out')
+        return _anamed_row()
+    monkeypatch.setattr('radar_salud.isp_sources.fetch_html', fetch)
+    scout = IspAnamedAlertScout()
+    item = scout.discover()[0]
+    assert item.url == 'https://www.ispch.gob.cl/wp-content/uploads/alerta.pdf'
+    assert item.metadata['publication_date_evidence']['url'] == scout.PAGES[2]
+    assert scout.partial_failure is True
+
+
+def test_surveillance_government_detail_keeps_publication_distinct_from_filename():
+    scout = IspSurveillanceScout()
+    base = scout.PAGES[1][1].replace('ispch.cl', 'ispch.gob.cl')
+    item = scout.discover_from_html(RESPIRATORY, base, scout.PAGES[1][0])[0]
+    item = scout.document_from_html(item, DOCUMENT)
+    assert item.event_date == '2026-10-07'
+    assert item.url.startswith('https://www.ispch.gob.cl/')
+    assert item.url.endswith('SE39-06-10-2026.pdf')
