@@ -1,0 +1,1297 @@
+{
+  "schema_version": "pulso_financial_three_native_checks_v1",
+  "reader": "/root/historical_discovery/native_waiting_provider_peer",
+  "created_at": "2026-10-11T21:31:38.476305+00:00",
+  "scope": "Tres registros nativos exactos contra dos artículos Pulso. Comparación semántica diagnóstica, sin AI, HTTP nuevo, cambios de Source/estado, agrupación ni aprobación de publicación.",
+  "inputs": [
+    {
+      "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "path": "data/state/pending_queue.json",
+      "sha256": "03f998df22ec3410078c0f53dec6332e139799bd8febc92c547eba617f886fe0"
+    },
+    {
+      "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "path": "data/state/pending_queue.json",
+      "sha256": "6dcab92748d759058c6eabb7df78bda5d364a03f8bcbcf9201ed3f73de8fa2e8"
+    },
+    {
+      "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "path": "data/history/superintendencia_signals.json",
+      "sha256": "b3ccf5c31b217c724c80e83c086c32f96841bd449bd42866e29459453cca802c"
+    }
+  ],
+  "observations": {
+    "pulso_reorganization_sep29": {
+      "source_url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+      "source_slug": "pulso_latercera",
+      "source_name": "Pulso / La Tercera",
+      "source_type": "press_high_trust",
+      "queue_fingerprint": "9d3dfcc1f530d1a63e7a27133c3b0fd19c12d2fcf9d518282a955b98d84c5834",
+      "original_queue_commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "curated_history_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "queue_status": "published",
+      "queue_reason": null,
+      "lane": "BACKFILL",
+      "queue_raw_publication_date": "2026-09-29",
+      "history_event_dates": [
+        "2026-09-29"
+      ],
+      "retained_page_text": "Cambios en su estructura organizacional está ejecutando Empresas Banmédica, mientras su controlador estadounidense, UnitedHealth, avanza en la venta de su negocio al grupo brasileño Patria, junto al fondo chileno Linzor Capital. El country manager Chile de Empresas Banmédica, Nicolás Cabello, la semana pasada envió una comunicación interna a los trabajadores de la compañía, donde informó “algunos cambios en nuestra estructura organizacional, que buscan adecuar la forma en que gestionamos el área prestadora de Empresas Banmédica, a los desafíos de esta nueva etapa”. Allí explicó que desde este jueves 1 de octubre “se eliminará la posición de gerente general de prestadores, pasando los gerentes generales de Clínica Santa María, Clínica Dávila, Omesa e Inverclinsa a reportarme directamente”. En este contexto, anunció que en la misma fecha llegará un nuevo gerente general a Clínica Santa María: José Ignacio Valenzuela, quien desde 2024 y hasta la actualidad se ha desempeñado como gerente general de prestadores de Empresas Banmédica. En este nuevo cargo, “continuará aportando su experiencia y conocimiento del negocio, con el desafío para liderar una de nuestras principales instituciones y seguir impulsando su desarrollo”, sostuvo Cabello. Al mismo tiempo, comunicó que Gustavo Ross, quien hasta hoy ocupa el cargo de gerente general de Clínica Santa María, ahora asumirá la gerencia general de Inverclinsa, “con responsabilidad sobre Clínica Ciudad del Mar, Clínica Biobío, y Home Medical Clinic. Desde esta posición tendrá como principal reto potenciar el crecimiento de estas filiales, permitiéndonos seguir contando con su experiencia y liderazgo dentro del grupo”. Cabello argumentó que “estos cambios buscan simplificar nuestra estructura, acercar la toma de decisiones a cada negocio y, al mismo tiempo, mantener una mirada coordinada y colaborativa entre nuestros distintos prestadores”. Además, finalizó señalando: “Agradezco desde ya su apoyo y disposición para acompañar este proceso de transición. Estoy convencido de que esta nueva estructura, junto con los nuevos desafíos que asumirán José Ignacio y Gustavo, nos permitirá seguir fortaleciendo nuestros equipos y avanzar con foco y energía en los objetivos que tenemos por delante”.",
+      "retained_raw_text": "Cambios en su estructura organizacional está ejecutando Empresas Banmédica, mientras su controlador estadounidense, UnitedHealth, avanza en la venta de su negocio al grupo brasileño Patria, junto al fondo chileno Linzor Capital. El country manager Chile de Empresas Banmédica, Nicolás Cabello, la semana pasada envió una comunicación interna a los trabajadores de la compañía, donde informó “algunos cambios en nuestra estructura organizacional, que buscan adecuar la forma en que gestionamos el área prestadora de Empresas Banmédica, a los desafíos de esta nueva etapa”. Allí explicó que desde este jueves 1 de octubre “se eliminará la posición de gerente general de prestadores, pasando los gerentes generales de Clínica Santa María, Clínica Dávila, Omesa e Inverclinsa a reportarme directamente”. En este contexto, anunció que en la misma fecha llegará un nuevo gerente general a Clínica Santa María: José Ignacio Valenzuela, quien desde 2024 y hasta la actualidad se ha desempeñado como gerente general de prestadores de Empresas Banmédica. En este nuevo cargo, “continuará aportando su experiencia y conocimiento del negocio, con el desafío para liderar una de nuestras principales instituciones y seguir impulsando su desarrollo”, sostuvo Cabello. Al mismo tiempo, comunicó que Gustavo Ross, quien hasta hoy ocupa el cargo de gerente general de Clínica Santa María, ahora asumirá la gerencia general de Inverclinsa, “con responsabilidad sobre Clínica Ciudad del Mar, Clínica Biobío, y Home Medical Clinic. Desde esta posición tendrá como principal reto potenciar el crecimiento de estas filiales, permitiéndonos seguir contando con su experiencia y liderazgo dentro del grupo”. Cabello argumentó que “estos cambios buscan simplificar nuestra estructura, acercar la toma de decisiones a cada neg",
+      "retained_page_text_sha256": "328e72605ee42fc840f0aacfc636a0589da7088885780c95174a70642441ee35",
+      "retained_raw_text_sha256": "d2c26803353376fb1df2171742657f68685479155db54baa0bc7b30f5e7cd471",
+      "publisher_body_sha256": "328e72605ee42fc840f0aacfc636a0589da7088885780c95174a70642441ee35",
+      "publisher_html_sha256": "0e7d9c3cebdd35c591c55174ef85a26b76b3a92f33fcde90a2da43b73b441fd5",
+      "native_recorded_original_sha256": null,
+      "source_document_urls": [],
+      "date_evidence": {
+        "publication_date_source": "visible_article_byline",
+        "publication_timestamp": "2026-09-29T14:45:04.192Z",
+        "visible_publication_date": "2026-09-29",
+        "publication_label": null
+      },
+      "body_refs": [
+        {
+          "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+          "path": "data/state/pending_queue.json",
+          "json_pointer": "/9d3dfcc1f530d1a63e7a27133c3b0fd19c12d2fcf9d518282a955b98d84c5834/raw/metadata/page_text"
+        },
+        {
+          "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+          "path": "data/state/pending_queue.json",
+          "json_pointer": "/9d3dfcc1f530d1a63e7a27133c3b0fd19c12d2fcf9d518282a955b98d84c5834/raw/raw_text"
+        }
+      ],
+      "full_original_history_signals": [
+        {
+          "title": "Empresas Banmédica ejecuta cambio en su estructura organizacional y designa nuevo gerente general de Clínica Santa María",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+          "category": "Prestadores",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "Según Pulso / La Tercera, Según la nota del 29 de septiembre de 2026, Empresas Banmédica reportó una reestructuración de su área prestadora que, desde el 1 de octubre de 2026, eliminaría la posición de gerente general de prestadores y haría que los gerentes generales de Clínica Santa María, Clínica Dávila, Omesa e Inverclinsa reportaran directamente al country manager Chile. La nota también informó que José Ignacio Valenzuela asumiría desde esa fecha la gerencia general de Clínica Santa María. Estos eran cambios anunciados y con vigencia futura a la fecha de publicación; la nota no acredita su ejecución ni su vigencia al 11 de octubre de 2026.",
+          "event_date": "2026-09-29",
+          "detected_at": "2026-10-11T04:36:44.044688+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [
+            "insurance",
+            "providers",
+            "investment_ma"
+          ],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "Según la nota del 29 de septiembre de 2026, el cambio podía modificar las líneas de reporte y acercar la toma de decisiones a cada negocio dentro de la red prestadora de Empresas Banmédica, incluyendo Clínica Santa María y otras clínicas. Para estos prestadores, el efecto anunciado era una simplificación organizacional y una coordinación directa entre sus gerencias, no un cambio acreditado en cobertura, capacidad clínica o resultados asistenciales al 11 de octubre de 2026.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "pulso_latercera",
+            "media",
+            "prestadores"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": true,
+          "economic_impact_score": 72,
+          "regulatory_impact_score": 55,
+          "scope_score": 72,
+          "novelty_score": 72,
+          "actionability_score": 76,
+          "source_quality_score": 92,
+          "radar_score": 71,
+          "confidence_score": 92,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Prestadores"
+          ],
+          "editorial_relevance": 72,
+          "source_quality_gate": "passed",
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "publication_date": "2026-09-29",
+          "publication_timestamp": "2026-09-29T14:45:04.192Z",
+          "publication_date_source": "visible_article_byline",
+          "editorial_assessment": {
+            "decision": "published",
+            "relevance_score": 72,
+            "threshold": 72,
+            "analysis_reason": "Es una señal relevante para un actor importante de la prestación privada en Chile porque combina una reorganización de las líneas de reporte con un cambio de liderazgo en Clínica Santa María, en el contexto de la venta anunciada del controlador de Empresas Banmédica. Su impacto sectorial concreto todavía no está demostrado en la nota, por lo que corresponde tratarla como contexto estratégico secundario y no como una expansión o mejora asistencial ya ejecutada."
+          },
+          "ingestion_mode": "BACKFILL",
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_mixed_reused18_independent_semantic_2026_10_11",
+            "review_file": "data/audits/pulso_mixed_reused18_editorial_corrections_2026_10_11.json",
+            "review_sha256": "35b584e4b29212a3b84b61ed1b1dc1bdedd0e5eebca8051ed6528edf45f5a1fa",
+            "record_sha256": "27be08f5771456a4fee8cbab9f69be92e6031d8e28ae290991adc63ff6300ee2",
+            "original_signal_sha256": "4cb44cdaf83a0a4559fbae59208a528b525f6fe1e3ae64cc860785c82058d05e",
+            "original_body_sha256": "328e72605ee42fc840f0aacfc636a0589da7088885780c95174a70642441ee35",
+            "publication_date": "2026-09-29",
+            "decision": "accept",
+            "reason": "La reorganización del área prestadora de Banmédica y gerente de Clínica Santa María es gobierno corporativo clínico. La copia distingue anuncio de 29 de septiembre y cambios previstos para 1 de octubre, sin acreditar ejecución posterior ni cierre de venta/M&A; score72 se conserva.",
+            "evidence_quotes": [
+              "Cambios en su estructura organizacional está ejecutando Empresas Banmédica, mientras su controlador estadounidense, UnitedHealth, avanza en la venta de su negocio al grupo brasileño Patria, junto al fondo chileno Linzor Capital. El country manager Chile de Empresas Banmédica, Nicolás Cabello, la semana pasada envió una comunicación interna a los trabajadores de la compañía, donde informó “algunos cambios en nuestra estructura organizacional, que buscan adecuar la forma en que gestionamos el área prestadora de Empresas Banmédica, a los desafíos de esta nueva etapa”. Allí explicó que desde este jueves 1 de octubre “se eliminará la posición de gerente general de prestadores, pasando los gerente"
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 72,
+              "threshold": 72,
+              "analysis_reason": "Es una señal relevante para un actor importante de la prestación privada en Chile porque combina una reorganización de las líneas de reporte con un cambio de liderazgo en Clínica Santa María, en el contexto de la venta anunciada del controlador de Empresas Banmédica. Su impacto sectorial concreto todavía no está demostrado en la nota, por lo que corresponde tratarla como contexto estratégico secundario y no como una expansión o mejora asistencial ya ejecutada."
+            },
+            "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 29 de septiembre de 2026, Empresas Banmédica reportó una reestructuración de su área prestadora que, desde el 1 de octubre de 2026, eliminaría la posición de gerente general de prestadores y haría que los gerentes generales de Clínica Santa María, Clínica Dávila, Omesa e Inverclinsa reportaran directamente al country manager Chile. La nota también informó que José Ignacio Valenzuela asumiría desde esa fecha la gerencia general de Clínica Santa María. Estos eran cambios anunciados y con vigencia futura a la fecha de publicación; la nota no acredita su ejecución ni su vigencia al 11 de octubre de 2026.",
+            "original_model_why_it_matters": "Según la nota del 29 de septiembre de 2026, el cambio podía modificar las líneas de reporte y acercar la toma de decisiones a cada negocio dentro de la red prestadora de Empresas Banmédica, incluyendo Clínica Santa María y otras clínicas. Para estos prestadores, el efecto anunciado era una simplificación organizacional y una coordinación directa entre sus gerencias, no un cambio acreditado en cobertura, capacidad clínica o resultados asistenciales al 11 de octubre de 2026."
+          },
+          "editorial_decision": "accept",
+          "editorial_review_reason": "La reorganización del área prestadora de Banmédica y gerente de Clínica Santa María es gobierno corporativo clínico. La copia distingue anuncio de 29 de septiembre y cambios previstos para 1 de octubre, sin acreditar ejecución posterior ni cierre de venta/M&A; score72 se conserva.",
+          "feed_visibility": true
+        }
+      ],
+      "original_history_signals_sha256": [
+        "ecac5a7dc014d9412befa626cdd4acd830517625aa59d094d590b9dd9ca6642e"
+      ],
+      "full_effective_history_signals": [
+        {
+          "title": "Empresas Banmédica ejecuta cambio en su estructura organizacional y designa nuevo gerente general de Clínica Santa María",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+          "category": "Prestadores",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "Según Pulso / La Tercera, Según la nota del 29 de septiembre de 2026, Empresas Banmédica reportó una reestructuración de su área prestadora que, desde el 1 de octubre de 2026, eliminaría la posición de gerente general de prestadores y haría que los gerentes generales de Clínica Santa María, Clínica Dávila, Omesa e Inverclinsa reportaran directamente al country manager Chile. La nota también informó que José Ignacio Valenzuela asumiría desde esa fecha la gerencia general de Clínica Santa María. Estos eran cambios anunciados y con vigencia futura a la fecha de publicación; la nota no acredita su ejecución ni su vigencia al 11 de octubre de 2026.",
+          "event_date": "2026-09-29",
+          "detected_at": "2026-10-11T04:36:44.044688+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [
+            "insurance",
+            "providers",
+            "investment_ma"
+          ],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "Según la nota del 29 de septiembre de 2026, el cambio podía modificar las líneas de reporte y acercar la toma de decisiones a cada negocio dentro de la red prestadora de Empresas Banmédica, incluyendo Clínica Santa María y otras clínicas. Para estos prestadores, el efecto anunciado era una simplificación organizacional y una coordinación directa entre sus gerencias, no un cambio acreditado en cobertura, capacidad clínica o resultados asistenciales al 11 de octubre de 2026.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "pulso_latercera",
+            "media",
+            "prestadores"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": true,
+          "economic_impact_score": 72,
+          "regulatory_impact_score": 55,
+          "scope_score": 72,
+          "novelty_score": 72,
+          "actionability_score": 76,
+          "source_quality_score": 92,
+          "radar_score": 71,
+          "confidence_score": 92,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Prestadores"
+          ],
+          "editorial_relevance": 72,
+          "source_quality_gate": "passed",
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "publication_date": "2026-09-29",
+          "publication_timestamp": "2026-09-29T14:45:04.192Z",
+          "publication_date_source": "visible_article_byline",
+          "editorial_assessment": {
+            "decision": "published",
+            "relevance_score": 72,
+            "threshold": 72,
+            "analysis_reason": "Es una señal relevante para un actor importante de la prestación privada en Chile porque combina una reorganización de las líneas de reporte con un cambio de liderazgo en Clínica Santa María, en el contexto de la venta anunciada del controlador de Empresas Banmédica. Su impacto sectorial concreto todavía no está demostrado en la nota, por lo que corresponde tratarla como contexto estratégico secundario y no como una expansión o mejora asistencial ya ejecutada."
+          },
+          "ingestion_mode": "BACKFILL",
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_mixed_reused18_independent_semantic_2026_10_11",
+            "review_file": "data/audits/pulso_mixed_reused18_editorial_corrections_2026_10_11.json",
+            "review_sha256": "35b584e4b29212a3b84b61ed1b1dc1bdedd0e5eebca8051ed6528edf45f5a1fa",
+            "record_sha256": "27be08f5771456a4fee8cbab9f69be92e6031d8e28ae290991adc63ff6300ee2",
+            "original_signal_sha256": "4cb44cdaf83a0a4559fbae59208a528b525f6fe1e3ae64cc860785c82058d05e",
+            "original_body_sha256": "328e72605ee42fc840f0aacfc636a0589da7088885780c95174a70642441ee35",
+            "publication_date": "2026-09-29",
+            "decision": "accept",
+            "reason": "La reorganización del área prestadora de Banmédica y gerente de Clínica Santa María es gobierno corporativo clínico. La copia distingue anuncio de 29 de septiembre y cambios previstos para 1 de octubre, sin acreditar ejecución posterior ni cierre de venta/M&A; score72 se conserva.",
+            "evidence_quotes": [
+              "Cambios en su estructura organizacional está ejecutando Empresas Banmédica, mientras su controlador estadounidense, UnitedHealth, avanza en la venta de su negocio al grupo brasileño Patria, junto al fondo chileno Linzor Capital. El country manager Chile de Empresas Banmédica, Nicolás Cabello, la semana pasada envió una comunicación interna a los trabajadores de la compañía, donde informó “algunos cambios en nuestra estructura organizacional, que buscan adecuar la forma en que gestionamos el área prestadora de Empresas Banmédica, a los desafíos de esta nueva etapa”. Allí explicó que desde este jueves 1 de octubre “se eliminará la posición de gerente general de prestadores, pasando los gerente"
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 72,
+              "threshold": 72,
+              "analysis_reason": "Es una señal relevante para un actor importante de la prestación privada en Chile porque combina una reorganización de las líneas de reporte con un cambio de liderazgo en Clínica Santa María, en el contexto de la venta anunciada del controlador de Empresas Banmédica. Su impacto sectorial concreto todavía no está demostrado en la nota, por lo que corresponde tratarla como contexto estratégico secundario y no como una expansión o mejora asistencial ya ejecutada."
+            },
+            "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 29 de septiembre de 2026, Empresas Banmédica reportó una reestructuración de su área prestadora que, desde el 1 de octubre de 2026, eliminaría la posición de gerente general de prestadores y haría que los gerentes generales de Clínica Santa María, Clínica Dávila, Omesa e Inverclinsa reportaran directamente al country manager Chile. La nota también informó que José Ignacio Valenzuela asumiría desde esa fecha la gerencia general de Clínica Santa María. Estos eran cambios anunciados y con vigencia futura a la fecha de publicación; la nota no acredita su ejecución ni su vigencia al 11 de octubre de 2026.",
+            "original_model_why_it_matters": "Según la nota del 29 de septiembre de 2026, el cambio podía modificar las líneas de reporte y acercar la toma de decisiones a cada negocio dentro de la red prestadora de Empresas Banmédica, incluyendo Clínica Santa María y otras clínicas. Para estos prestadores, el efecto anunciado era una simplificación organizacional y una coordinación directa entre sus gerencias, no un cambio acreditado en cobertura, capacidad clínica o resultados asistenciales al 11 de octubre de 2026."
+          },
+          "editorial_decision": "accept",
+          "editorial_review_reason": "La reorganización del área prestadora de Banmédica y gerente de Clínica Santa María es gobierno corporativo clínico. La copia distingue anuncio de 29 de septiembre y cambios previstos para 1 de octubre, sin acreditar ejecución posterior ni cierre de venta/M&A; score72 se conserva.",
+          "feed_visibility": true
+        }
+      ],
+      "effective_history_signals_sha256": [
+        "ecac5a7dc014d9412befa626cdd4acd830517625aa59d094d590b9dd9ca6642e"
+      ],
+      "queue_effective_copy": {
+        "what_happened": "Según Pulso / La Tercera, Según la nota del 29 de septiembre de 2026, Empresas Banmédica reportó una reestructuración de su área prestadora que, desde el 1 de octubre de 2026, eliminaría la posición de gerente general de prestadores y haría que los gerentes generales de Clínica Santa María, Clínica Dávila, Omesa e Inverclinsa reportaran directamente al country manager Chile. La nota también informó que José Ignacio Valenzuela asumiría desde esa fecha la gerencia general de Clínica Santa María. Estos eran cambios anunciados y con vigencia futura a la fecha de publicación; la nota no acredita su ejecución ni su vigencia al 11 de octubre de 2026.",
+        "why_it_matters": "Según la nota del 29 de septiembre de 2026, el cambio podía modificar las líneas de reporte y acercar la toma de decisiones a cada negocio dentro de la red prestadora de Empresas Banmédica, incluyendo Clínica Santa María y otras clínicas. Para estos prestadores, el efecto anunciado era una simplificación organizacional y una coordinación directa entre sus gerencias, no un cambio acreditado en cobertura, capacidad clínica o resultados asistenciales al 11 de octubre de 2026."
+      },
+      "full_retained_content_read": true,
+      "full_primary_article_body_read": true,
+      "full_primary_instrument_body_read": false,
+      "new_http_capture": false
+    },
+    "pulso_ges_claims_aug10": {
+      "source_url": "https://www.latercera.com/pulso/noticia/banmedica-y-vida-tres-demandan-al-fisco-por-desfase-en-el-cobro-del-ges-y-exigen-casi-9000-millones/",
+      "source_slug": "pulso_latercera",
+      "source_name": "Pulso / La Tercera",
+      "source_type": "press_high_trust",
+      "queue_fingerprint": "5af2b9cee6d18a213d387ab1d23676beb4e26e69e3f45391f3dcd940e84971d2",
+      "original_queue_commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "curated_history_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "queue_status": "published",
+      "queue_reason": null,
+      "lane": "BACKFILL",
+      "queue_raw_publication_date": "2026-08-10",
+      "history_event_dates": [
+        "2026-08-10"
+      ],
+      "retained_page_text": "Banmédica y Vida Tres interpusieron dos demandas por daño emergente en la que exigen el pago de casi $9.000 millones en contra del Fisco de Chile por perjuicios patrimoniales generados durante la implementación del nuevo decreto de Garantías Explícitas en Salud (GES). En las acciones legales, a las que tuvo acceso Pulso, las aseguradoras acusan una inconsistencia regulatoria que, a su juicio, vulnera directamente sus derechos fundamentales y la sostenibilidad del sistema privado. El 1 de diciembre de 2025, UnitedHealth Group (UHG) anunció la venta de la totalidad de su participación en Empresas Banmédica (a través de su sociedad controladora Bordeaux Holding SpA) al consorcio comprador conformado por el grupo brasileño de inversión Patria Investments (operando a través de la sociedad Healthcare MX Holdings S.L.) y el fondo de inversión chileno Linzor Capital. Pero el proceso de venta aún no concluye y los estadounidenses siguen siendo los controladores. Según explican en sus respectivos libelos, el Decreto GES 29/2025 dictado por el Ministerio de Salud entró en vigencia el 1 de diciembre de 2025, lo que obligó a las isapres a otorgar de inmediato la nueva cobertura de 90 problemas de salud a sus afiliados. Sin embargo, acusan que, a través de la Circular IF/N° 520, la Superintendencia de Salud instruyó que el nuevo precio (Prima GES 2025) recién podría comenzar a cobrarse a partir de la cotización pagada en febrero de 2026. De acuerdo al escrito, este desfase de plazos provocó un forado financiero para las compañías. Durante los meses de diciembre de 2025 y enero de 2026, ambas isapres tuvieron que financiar las nuevas garantías médicas cobrando únicamente el valor de la prima del trienio anterior, viéndose obligadas a asumir un costo que califican de ilegal e indebido. En el detalle de las demandas, patrocinadas en ambos casos por el abogado Germán Concha Zavala, Isapre Banmédica exige una indemnización bajo la figura de daño emergente por un total de 199.514,656 UF, equivalentes a $7.949.007.060 al momento de la presentación de la acción judicial. Por su parte, Isapre Vida Tres solicita el pago de 23.106,452 UF, cifra que se traduce en $920.600.791. En sus escritos, las empresas argumentan que la decisión de la autoridad de no hacer coincidir el inicio de los beneficios con el inicio del cobro representa una “conducta arbitraria” que carece de toda base racional. En esa línea, denuncian que se ha vulnerado su derecho a desarrollar libremente actividades económicas, el derecho a la igual repartición de las cargas públicas y la garantía del derecho de propiedad, ya que el Estado las forzó a dejar de percibir una parte del precio al que tenían derecho por ley. Las aseguradoras acusan que esta intervención del Estado no solo perjudica a las empresas demandantes, sino que “ha afectado la sostenibilidad del sistema privado de salud desde el momento que todos los cálculos realizados para determinar [...] el precio que se va a cobrar por la cobertura GES [...] tuvieron presente un horizonte de cobro de 36 meses y no uno de una extensión inferior ocasionada por una intervención indebida de los demandados”. Ambas demandas son patrocinadas por el litigante Germán Concha, socio de Concha Zavala Abogados.",
+      "retained_raw_text": "Banmédica y Vida Tres interpusieron dos demandas por daño emergente en la que exigen el pago de casi $9.000 millones en contra del Fisco de Chile por perjuicios patrimoniales generados durante la implementación del nuevo decreto de Garantías Explícitas en Salud (GES). En las acciones legales, a las que tuvo acceso Pulso, las aseguradoras acusan una inconsistencia regulatoria que, a su juicio, vulnera directamente sus derechos fundamentales y la sostenibilidad del sistema privado. El 1 de diciembre de 2025, UnitedHealth Group (UHG) anunció la venta de la totalidad de su participación en Empresas Banmédica (a través de su sociedad controladora Bordeaux Holding SpA) al consorcio comprador conformado por el grupo brasileño de inversión Patria Investments (operando a través de la sociedad Healthcare MX Holdings S.L.) y el fondo de inversión chileno Linzor Capital. Pero el proceso de venta aún no concluye y los estadounidenses siguen siendo los controladores. Según explican en sus respectivos libelos, el Decreto GES 29/2025 dictado por el Ministerio de Salud entró en vigencia el 1 de diciembre de 2025, lo que obligó a las isapres a otorgar de inmediato la nueva cobertura de 90 problemas de salud a sus afiliados. Sin embargo, acusan que, a través de la Circular IF/N° 520, la Superintendencia de Salud instruyó que el nuevo precio (Prima GES 2025) recién podría comenzar a cobrarse a partir de la cotización pagada en febrero de 2026. De acuerdo al escrito, este desfase de plazos provocó un forado financiero para las compañías. Durante los meses de diciembre de 2025 y enero de 2026, ambas isapres tuvieron que financiar las nuevas garantías médicas cobrando únicamente el valor de la prima del trienio anterior, viéndose obligadas a asumir un costo que califican de ilegal e indebido.",
+      "retained_page_text_sha256": "5f38c200250c12c9469d0399d456bdba4cbf792bf9687b00d6a885ff8665b8a1",
+      "retained_raw_text_sha256": "657c02926b06295099ea4a507568b573db25b741d50cd0f6e42e080f7f2af2c6",
+      "publisher_body_sha256": "5f38c200250c12c9469d0399d456bdba4cbf792bf9687b00d6a885ff8665b8a1",
+      "publisher_html_sha256": "96e52472f54764b2c9cfc0da36b7e7f458a16a655f336f4c621b6ee908b9c549",
+      "native_recorded_original_sha256": null,
+      "source_document_urls": [],
+      "date_evidence": {
+        "publication_date_source": "visible_article_byline",
+        "publication_timestamp": "2026-08-10T15:50:00Z",
+        "visible_publication_date": "2026-08-10",
+        "publication_label": null
+      },
+      "body_refs": [
+        {
+          "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+          "path": "data/state/pending_queue.json",
+          "json_pointer": "/5af2b9cee6d18a213d387ab1d23676beb4e26e69e3f45391f3dcd940e84971d2/raw/metadata/page_text"
+        },
+        {
+          "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+          "path": "data/state/pending_queue.json",
+          "json_pointer": "/5af2b9cee6d18a213d387ab1d23676beb4e26e69e3f45391f3dcd940e84971d2/raw/raw_text"
+        }
+      ],
+      "full_original_history_signals": [
+        {
+          "title": "Banmédica y Vida Tres demandan al Fisco por desfase en el cobro del GES y exigen casi $9.000 millones",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.latercera.com/pulso/noticia/banmedica-y-vida-tres-demandan-al-fisco-por-desfase-en-el-cobro-del-ges-y-exigen-casi-9000-millones/",
+          "category": "Aseguramiento",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "Pulso reporta que Banmédica y Vida Tres presentaron demandas contra el Fisco por casi $9.000 millones, alegando que el Decreto GES 29/2025 activó nuevas coberturas el 1 de diciembre de 2025, mientras la Circular IF/N° 520 permitió cobrar la nueva prima recién desde febrero de 2026. Las aseguradoras sostienen que financiaron las garantías durante diciembre de 2025 y enero de 2026 con la prima anterior; la existencia y el mérito de sus reclamos deberán resolverse judicialmente.",
+          "event_date": "2026-08-10",
+          "detected_at": "2026-10-11T06:23:48.863044+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [
+            "insurance",
+            "investment_ma",
+            "financing",
+            "regulation",
+            "competition"
+          ],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "El caso pone en disputa el diseño regulatorio que sincroniza la entrada en vigor de nuevas garantías GES con el cobro a afiliados y expone un eventual costo financiero para las isapres. Merece atención ahora porque Banmédica y Vida Tres cuantifican el perjuicio en cerca de $9.000 millones y vinculan el desfase con la sostenibilidad del sistema privado, aunque no existe en el contenido una decisión judicial ni una determinación oficial que valide sus acusaciones.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "pulso_latercera",
+            "media",
+            "isapres"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 87,
+          "regulatory_impact_score": 55,
+          "scope_score": 87,
+          "novelty_score": 87,
+          "actionability_score": 76,
+          "source_quality_score": 92,
+          "radar_score": 79,
+          "confidence_score": 92,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Isapres"
+          ],
+          "editorial_relevance": 87,
+          "source_quality_gate": "passed",
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "publication_date": "2026-08-10",
+          "publication_timestamp": "2026-08-10T15:50:00Z",
+          "publication_date_source": "visible_article_byline",
+          "editorial_assessment": {
+            "decision": "published",
+            "relevance_score": 87,
+            "threshold": 72,
+            "analysis_reason": "Es una señal material para el financiamiento y la regulación del aseguramiento privado de salud: dos isapres demandan al Estado por el desfase entre la obligación de otorgar cobertura GES y la autorización para cobrar la prima correspondiente. La noticia informa una acción judicial y alegaciones empresariales, no una resolución definitiva."
+          },
+          "ingestion_mode": "BACKFILL",
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_focus_38149773071_backfill_time_binding",
+            "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
+            "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
+            "record_sha256": "c5ea4a44ebd8ed6df2cf3c0d9af25b04e3e7a32060488ac3cd14d46a0ccba59e",
+            "original_signal_sha256": "5dc15c3cb4fb403076831f9c4a4d97c9f9d196107364c42265c7cbd098b82e3f",
+            "original_body_sha256": "5f38c200250c12c9469d0399d456bdba4cbf792bf9687b00d6a885ff8665b8a1",
+            "publication_date": "2026-08-10",
+            "decision": "accept",
+            "reason": "Son dos demandas y alegaciones de Banmédica/VidaTres sobre el desfase de prima GES; $7.949.007.060+$920.600.791≈$8.869,6millones respalda casi$9.000millones. No existe fallo ni validación oficial en el original; la copia mantiene esa distinción y los períodosdic2025/ene2026.",
+            "evidence_quotes": [
+              "En las acciones legales, a las que tuvo acceso Pulso, las aseguradoras acusan una inconsistencia regulatoria",
+              "Durante los meses de diciembre de 2025 y enero de 2026, ambas isapres tuvieron que financiar las nuevas garantías médicas cobrando únicamente el valor de la prima del trienio anterior"
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 87,
+              "threshold": 72,
+              "analysis_reason": "Es una señal material para el financiamiento y la regulación del aseguramiento privado de salud: dos isapres demandan al Estado por el desfase entre la obligación de otorgar cobertura GES y la autorización para cobrar la prima correspondiente. La noticia informa una acción judicial y alegaciones empresariales, no una resolución definitiva."
+            },
+            "original_model_what_happened": "Pulso reporta que Banmédica y Vida Tres presentaron demandas contra el Fisco por casi $9.000 millones, alegando que el Decreto GES 29/2025 activó nuevas coberturas el 1 de diciembre de 2025, mientras la Circular IF/N° 520 permitió cobrar la nueva prima recién desde febrero de 2026. Las aseguradoras sostienen que financiaron las garantías durante diciembre de 2025 y enero de 2026 con la prima anterior; la existencia y el mérito de sus reclamos deberán resolverse judicialmente.",
+            "original_model_why_it_matters": "El caso pone en disputa el diseño regulatorio que sincroniza la entrada en vigor de nuevas garantías GES con el cobro a afiliados y expone un eventual costo financiero para las isapres. Merece atención ahora porque Banmédica y Vida Tres cuantifican el perjuicio en cerca de $9.000 millones y vinculan el desfase con la sostenibilidad del sistema privado, aunque no existe en el contenido una decisión judicial ni una determinación oficial que valide sus acusaciones."
+          },
+          "editorial_decision": "accept",
+          "editorial_review_reason": "Son dos demandas y alegaciones de Banmédica/VidaTres sobre el desfase de prima GES; $7.949.007.060+$920.600.791≈$8.869,6millones respalda casi$9.000millones. No existe fallo ni validación oficial en el original; la copia mantiene esa distinción y los períodosdic2025/ene2026.",
+          "feed_visibility": true
+        }
+      ],
+      "original_history_signals_sha256": [
+        "969f627502594d7ab7dc7ec5bd55f0068cc4c615c6d01e6cdb017d2d3c4bf836"
+      ],
+      "full_effective_history_signals": [
+        {
+          "title": "Banmédica y Vida Tres demandan al Fisco por desfase en el cobro del GES y exigen casi $9.000 millones",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.latercera.com/pulso/noticia/banmedica-y-vida-tres-demandan-al-fisco-por-desfase-en-el-cobro-del-ges-y-exigen-casi-9000-millones/",
+          "category": "Aseguramiento",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "Pulso reporta que Banmédica y Vida Tres presentaron demandas contra el Fisco por casi $9.000 millones, alegando que el Decreto GES 29/2025 activó nuevas coberturas el 1 de diciembre de 2025, mientras la Circular IF/N° 520 permitió cobrar la nueva prima recién desde febrero de 2026. Las aseguradoras sostienen que financiaron las garantías durante diciembre de 2025 y enero de 2026 con la prima anterior; la existencia y el mérito de sus reclamos deberán resolverse judicialmente.",
+          "event_date": "2026-08-10",
+          "detected_at": "2026-10-11T06:23:48.863044+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [
+            "insurance",
+            "investment_ma",
+            "financing",
+            "regulation",
+            "competition"
+          ],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "El caso pone en disputa el diseño regulatorio que sincroniza la entrada en vigor de nuevas garantías GES con el cobro a afiliados y expone un eventual costo financiero para las isapres. Merece atención ahora porque Banmédica y Vida Tres cuantifican el perjuicio en cerca de $9.000 millones y vinculan el desfase con la sostenibilidad del sistema privado, aunque no existe en el contenido una decisión judicial ni una determinación oficial que valide sus acusaciones.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "pulso_latercera",
+            "media",
+            "isapres"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 87,
+          "regulatory_impact_score": 55,
+          "scope_score": 87,
+          "novelty_score": 87,
+          "actionability_score": 76,
+          "source_quality_score": 92,
+          "radar_score": 79,
+          "confidence_score": 92,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Isapres"
+          ],
+          "editorial_relevance": 87,
+          "source_quality_gate": "passed",
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "publication_date": "2026-08-10",
+          "publication_timestamp": "2026-08-10T15:50:00Z",
+          "publication_date_source": "visible_article_byline",
+          "editorial_assessment": {
+            "decision": "published",
+            "relevance_score": 87,
+            "threshold": 72,
+            "analysis_reason": "Es una señal material para el financiamiento y la regulación del aseguramiento privado de salud: dos isapres demandan al Estado por el desfase entre la obligación de otorgar cobertura GES y la autorización para cobrar la prima correspondiente. La noticia informa una acción judicial y alegaciones empresariales, no una resolución definitiva."
+          },
+          "ingestion_mode": "BACKFILL",
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_focus_38149773071_backfill_time_binding",
+            "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
+            "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
+            "record_sha256": "c5ea4a44ebd8ed6df2cf3c0d9af25b04e3e7a32060488ac3cd14d46a0ccba59e",
+            "original_signal_sha256": "5dc15c3cb4fb403076831f9c4a4d97c9f9d196107364c42265c7cbd098b82e3f",
+            "original_body_sha256": "5f38c200250c12c9469d0399d456bdba4cbf792bf9687b00d6a885ff8665b8a1",
+            "publication_date": "2026-08-10",
+            "decision": "accept",
+            "reason": "Son dos demandas y alegaciones de Banmédica/VidaTres sobre el desfase de prima GES; $7.949.007.060+$920.600.791≈$8.869,6millones respalda casi$9.000millones. No existe fallo ni validación oficial en el original; la copia mantiene esa distinción y los períodosdic2025/ene2026.",
+            "evidence_quotes": [
+              "En las acciones legales, a las que tuvo acceso Pulso, las aseguradoras acusan una inconsistencia regulatoria",
+              "Durante los meses de diciembre de 2025 y enero de 2026, ambas isapres tuvieron que financiar las nuevas garantías médicas cobrando únicamente el valor de la prima del trienio anterior"
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 87,
+              "threshold": 72,
+              "analysis_reason": "Es una señal material para el financiamiento y la regulación del aseguramiento privado de salud: dos isapres demandan al Estado por el desfase entre la obligación de otorgar cobertura GES y la autorización para cobrar la prima correspondiente. La noticia informa una acción judicial y alegaciones empresariales, no una resolución definitiva."
+            },
+            "original_model_what_happened": "Pulso reporta que Banmédica y Vida Tres presentaron demandas contra el Fisco por casi $9.000 millones, alegando que el Decreto GES 29/2025 activó nuevas coberturas el 1 de diciembre de 2025, mientras la Circular IF/N° 520 permitió cobrar la nueva prima recién desde febrero de 2026. Las aseguradoras sostienen que financiaron las garantías durante diciembre de 2025 y enero de 2026 con la prima anterior; la existencia y el mérito de sus reclamos deberán resolverse judicialmente.",
+            "original_model_why_it_matters": "El caso pone en disputa el diseño regulatorio que sincroniza la entrada en vigor de nuevas garantías GES con el cobro a afiliados y expone un eventual costo financiero para las isapres. Merece atención ahora porque Banmédica y Vida Tres cuantifican el perjuicio en cerca de $9.000 millones y vinculan el desfase con la sostenibilidad del sistema privado, aunque no existe en el contenido una decisión judicial ni una determinación oficial que valide sus acusaciones."
+          },
+          "editorial_decision": "accept",
+          "editorial_review_reason": "Son dos demandas y alegaciones de Banmédica/VidaTres sobre el desfase de prima GES; $7.949.007.060+$920.600.791≈$8.869,6millones respalda casi$9.000millones. No existe fallo ni validación oficial en el original; la copia mantiene esa distinción y los períodosdic2025/ene2026.",
+          "feed_visibility": true
+        }
+      ],
+      "effective_history_signals_sha256": [
+        "969f627502594d7ab7dc7ec5bd55f0068cc4c615c6d01e6cdb017d2d3c4bf836"
+      ],
+      "queue_effective_copy": {
+        "what_happened": "Pulso reporta que Banmédica y Vida Tres presentaron demandas contra el Fisco por casi $9.000 millones, alegando que el Decreto GES 29/2025 activó nuevas coberturas el 1 de diciembre de 2025, mientras la Circular IF/N° 520 permitió cobrar la nueva prima recién desde febrero de 2026. Las aseguradoras sostienen que financiaron las garantías durante diciembre de 2025 y enero de 2026 con la prima anterior; la existencia y el mérito de sus reclamos deberán resolverse judicialmente.",
+        "why_it_matters": "El caso pone en disputa el diseño regulatorio que sincroniza la entrada en vigor de nuevas garantías GES con el cobro a afiliados y expone un eventual costo financiero para las isapres. Merece atención ahora porque Banmédica y Vida Tres cuantifican el perjuicio en cerca de $9.000 millones y vinculan el desfase con la sostenibilidad del sistema privado, aunque no existe en el contenido una decisión judicial ni una determinación oficial que valide sus acusaciones."
+      },
+      "full_retained_content_read": true,
+      "full_primary_article_body_read": true,
+      "full_primary_instrument_body_read": false,
+      "new_http_capture": false
+    },
+    "native_supersalud_if11156": {
+      "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+      "source_slug": "superintendencia_normativa",
+      "source_name": "Superintendencia de Salud",
+      "source_type": "official",
+      "queue_fingerprint": "f93dc14c8571842dc85f5e1e76378cf79ada1b6a069252557cb98d7e450dd7b4",
+      "original_queue_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "curated_history_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "queue_status": "published",
+      "queue_reason": null,
+      "lane": "BACKFILL",
+      "queue_raw_publication_date": "2026-09-23",
+      "history_event_dates": [
+        "2026-09-23"
+      ],
+      "retained_page_text": "",
+      "retained_raw_text": "Acoge parcialmente los recursos de reposición interpuestos por las ISAPRES Banmédica S.A., Vida Tres S.A., Colmena Golden Cross S.A., Cruz Blanca S.A., Nueva Masvida S.A., y Esencial S.A., en contra de la Circular IF/Nº528, de 26 de mayo de 2026.",
+      "retained_page_text_sha256": null,
+      "retained_raw_text_sha256": "c0214c5d3d12ad5fc33f88f7efa529e92d04492105ae29b539aa5ee3314881f4",
+      "publisher_body_sha256": null,
+      "publisher_html_sha256": null,
+      "native_recorded_original_sha256": null,
+      "source_document_urls": [
+        "https://www.superdesalud.gob.cl/app/uploads/2026/09/res-exenta-if-n11156-2026.pdf"
+      ],
+      "date_evidence": {
+        "publication_date_source": null,
+        "publication_timestamp": null,
+        "visible_publication_date": null,
+        "publication_label": null
+      },
+      "body_refs": [
+        {
+          "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+          "path": "data/state/pending_queue.json",
+          "json_pointer": "/f93dc14c8571842dc85f5e1e76378cf79ada1b6a069252557cb98d7e450dd7b4/raw/metadata/page_text"
+        },
+        {
+          "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+          "path": "data/state/pending_queue.json",
+          "json_pointer": "/f93dc14c8571842dc85f5e1e76378cf79ada1b6a069252557cb98d7e450dd7b4/raw/raw_text"
+        }
+      ],
+      "full_original_history_signals": [
+        {
+          "title": "Resolución Exenta IF/N°11156",
+          "source_name": "Superintendencia de Salud",
+          "source_type": "official",
+          "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+          "category": "Regulación & Legal",
+          "subcategory": "Acto regulatorio",
+          "system_domain": "HEALTH",
+          "what_happened": "La Superintendencia acogió parcialmente las reposiciones de seis isapres y modificó la Circular IF/Nº528, que regulaba la cobertura de prestaciones para tratamiento de TEA y eliminaba el tope anual de bonificación por beneficiario en psiquiatría, psicología, kinesiología, terapia ocupacional y fonoaudiología. Confirmó la eliminación de esos topes, rechazó suspender la Circular y la postergación general de seis meses, e incorporó requisitos diagnósticos y un mecanismo de registro para acceder a la cobertura.",
+          "event_date": "2026-09-23",
+          "detected_at": "2026-09-24T15:14:45.582277+00:00",
+          "primary_source_url": null,
+          "event_type": "REGULATION",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [
+            "La Superintendencia acogió parcialmente las reposiciones de seis isapres y modificó la Circular IF/Nº528, que regulaba la cobertura de prestaciones para tratamiento de TEA y eliminaba el tope anual de bonificación por beneficiario en psiquiatría, psicología, kinesiología, terapia ocupacional y fonoaudiología. Confirmó la eliminación de esos topes, rechazó suspender la Circular y la postergación general de seis meses, e incorporó requisitos diagnósticos y un mecanismo de registro para acceder a la cobertura."
+          ],
+          "key_numbers": [],
+          "why_it_matters": "Las isapres deben mantener la bonificación sin tope anual para las cinco prestaciones señaladas cuando se cumplan los nuevos requisitos de acreditación, sin modificar porcentajes de cobertura, aranceles, copagos ni modalidades contractuales. Además, deben habilitar un flujo presencial y digital de registro, emitir comprobantes, resolver cada requerimiento en hasta 15 días hábiles y adecuar sus sistemas para la compra directa de bonos sin tope anual.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "normativa",
+            "isapres",
+            "superintendencia de salud"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 55,
+          "regulatory_impact_score": 95,
+          "scope_score": 82,
+          "novelty_score": 85,
+          "actionability_score": 90,
+          "source_quality_score": 100,
+          "radar_score": 82,
+          "confidence_score": 100,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [
+            {
+              "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/res-exenta-if-n11156-2026.pdf",
+              "label": "PDF"
+            }
+          ],
+          "key_points": [
+            "El acceso exige informe o certificado de un médico especialista en neurología, psiquiatría o con formación en trastornos del neurodesarrollo, más un instrumento de evaluación diagnóstica estructurada o tamizaje; basta uno de los instrumentos admitidos o equivalente conforme a la lex artis médica.",
+            "No se puede exigir inscripción en el Registro Nacional de Discapacidad, renovación periódica del certificado ni repetición de consultas, evaluaciones, exámenes o prestaciones a pacientes ya acreditados conforme a la normativa.",
+            "Las isapres deben implementar el mecanismo de registro a más tardar el 1 de noviembre de 2026; quienes ya acreditaron TEA ante su isapre conservan la cobertura sin tope anual y no deben ingresar nuevamente la documentación."
+          ],
+          "risk_notes": [
+            "Implementar en la Sucursal Virtual un vínculo de fácil acceso y un procedimiento presencial equivalente, incluyendo comprobante de recepción con fecha y hora.",
+            "Ajustar los criterios de validación documental y los flujos de bonificación para aplicar el nuevo estándar diagnóstico, sin requerir RND, renovaciones ni evaluaciones repetidas.",
+            "Configurar la habilitación de bonos sin tope anual y la notificación escrita de aprobación o rechazo dentro de 15 días hábiles, informando el derecho a reclamar ante la Superintendencia en caso de negativa."
+          ],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [
+            "Circular IF/Nº528",
+            "Ley Nº21.545",
+            "DFL Nº1, de 2005, del Ministerio de Salud",
+            "Ley Nº20.422",
+            "Ley Nº19.880"
+          ],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Normativa"
+          ],
+          "scopes": [
+            "Isapres"
+          ],
+          "affected_processes": [
+            "Beneficios / Cobertura",
+            "Tecnología / Canales",
+            "Operaciones"
+          ],
+          "related_reference_contexts": [
+            {
+              "id": "Circular IF/Nº528",
+              "relationship": "Acto modificado; instruía a las isapres eliminar el tope anual de bonificación para cinco prestaciones asociadas al tratamiento de TEA."
+            },
+            {
+              "id": "Ley Nº21.545",
+              "relationship": "Base legal invocada para la cobertura y continuidad de atención de personas con TEA."
+            },
+            {
+              "id": "DFL Nº1, de 2005, del Ministerio de Salud",
+              "relationship": "Marco que contiene las facultades de instrucción y fiscalización de la Superintendencia y reglas generales aplicables a los contratos de salud previsional."
+            },
+            {
+              "id": "Ley Nº20.422",
+              "relationship": "Regula el Registro Nacional de Discapacidad, cuya inscripción no puede exigirse para acceder a esta bonificación."
+            },
+            {
+              "id": "Ley Nº19.880",
+              "relationship": "Marco procedimental citado para rechazar la suspensión de los efectos de la Circular."
+            }
+          ],
+          "ingestion_mode": "BACKFILL"
+        }
+      ],
+      "original_history_signals_sha256": [
+        "6c63366302253cda440922d95e9db0c7976fd94812d51becb554c513dc2414c3"
+      ],
+      "full_effective_history_signals": [
+        {
+          "title": "Resolución Exenta IF/N°11156",
+          "source_name": "Superintendencia de Salud",
+          "source_type": "official",
+          "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+          "category": "Regulación & Legal",
+          "subcategory": "Acto regulatorio",
+          "system_domain": "HEALTH",
+          "what_happened": "La Superintendencia acogió parcialmente las reposiciones de seis isapres y modificó la Circular IF/Nº528, que regulaba la cobertura de prestaciones para tratamiento de TEA y eliminaba el tope anual de bonificación por beneficiario en psiquiatría, psicología, kinesiología, terapia ocupacional y fonoaudiología. Confirmó la eliminación de esos topes, rechazó suspender la Circular y la postergación general de seis meses, e incorporó requisitos diagnósticos y un mecanismo de registro para acceder a la cobertura.",
+          "event_date": "2026-09-23",
+          "detected_at": "2026-09-24T15:14:45.582277+00:00",
+          "primary_source_url": null,
+          "event_type": "REGULATION",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [
+            "La Superintendencia acogió parcialmente las reposiciones de seis isapres y modificó la Circular IF/Nº528, que regulaba la cobertura de prestaciones para tratamiento de TEA y eliminaba el tope anual de bonificación por beneficiario en psiquiatría, psicología, kinesiología, terapia ocupacional y fonoaudiología. Confirmó la eliminación de esos topes, rechazó suspender la Circular y la postergación general de seis meses, e incorporó requisitos diagnósticos y un mecanismo de registro para acceder a la cobertura."
+          ],
+          "key_numbers": [],
+          "why_it_matters": "Las isapres deben mantener la bonificación sin tope anual para las cinco prestaciones señaladas cuando se cumplan los nuevos requisitos de acreditación, sin modificar porcentajes de cobertura, aranceles, copagos ni modalidades contractuales. Además, deben habilitar un flujo presencial y digital de registro, emitir comprobantes, resolver cada requerimiento en hasta 15 días hábiles y adecuar sus sistemas para la compra directa de bonos sin tope anual.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "normativa",
+            "isapres",
+            "superintendencia de salud"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 55,
+          "regulatory_impact_score": 95,
+          "scope_score": 82,
+          "novelty_score": 85,
+          "actionability_score": 90,
+          "source_quality_score": 100,
+          "radar_score": 82,
+          "confidence_score": 100,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [
+            {
+              "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/res-exenta-if-n11156-2026.pdf",
+              "label": "PDF"
+            }
+          ],
+          "key_points": [
+            "El acceso exige informe o certificado de un médico especialista en neurología, psiquiatría o con formación en trastornos del neurodesarrollo, más un instrumento de evaluación diagnóstica estructurada o tamizaje; basta uno de los instrumentos admitidos o equivalente conforme a la lex artis médica.",
+            "No se puede exigir inscripción en el Registro Nacional de Discapacidad, renovación periódica del certificado ni repetición de consultas, evaluaciones, exámenes o prestaciones a pacientes ya acreditados conforme a la normativa.",
+            "Las isapres deben implementar el mecanismo de registro a más tardar el 1 de noviembre de 2026; quienes ya acreditaron TEA ante su isapre conservan la cobertura sin tope anual y no deben ingresar nuevamente la documentación."
+          ],
+          "risk_notes": [
+            "Implementar en la Sucursal Virtual un vínculo de fácil acceso y un procedimiento presencial equivalente, incluyendo comprobante de recepción con fecha y hora.",
+            "Ajustar los criterios de validación documental y los flujos de bonificación para aplicar el nuevo estándar diagnóstico, sin requerir RND, renovaciones ni evaluaciones repetidas.",
+            "Configurar la habilitación de bonos sin tope anual y la notificación escrita de aprobación o rechazo dentro de 15 días hábiles, informando el derecho a reclamar ante la Superintendencia en caso de negativa."
+          ],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [
+            "Circular IF/Nº528",
+            "Ley Nº21.545",
+            "DFL Nº1, de 2005, del Ministerio de Salud",
+            "Ley Nº20.422",
+            "Ley Nº19.880"
+          ],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Normativa"
+          ],
+          "scopes": [
+            "Isapres"
+          ],
+          "affected_processes": [
+            "Beneficios / Cobertura",
+            "Tecnología / Canales",
+            "Operaciones"
+          ],
+          "related_reference_contexts": [
+            {
+              "id": "Circular IF/Nº528",
+              "relationship": "Acto modificado; instruía a las isapres eliminar el tope anual de bonificación para cinco prestaciones asociadas al tratamiento de TEA."
+            },
+            {
+              "id": "Ley Nº21.545",
+              "relationship": "Base legal invocada para la cobertura y continuidad de atención de personas con TEA."
+            },
+            {
+              "id": "DFL Nº1, de 2005, del Ministerio de Salud",
+              "relationship": "Marco que contiene las facultades de instrucción y fiscalización de la Superintendencia y reglas generales aplicables a los contratos de salud previsional."
+            },
+            {
+              "id": "Ley Nº20.422",
+              "relationship": "Regula el Registro Nacional de Discapacidad, cuya inscripción no puede exigirse para acceder a esta bonificación."
+            },
+            {
+              "id": "Ley Nº19.880",
+              "relationship": "Marco procedimental citado para rechazar la suspensión de los efectos de la Circular."
+            }
+          ],
+          "ingestion_mode": "BACKFILL"
+        }
+      ],
+      "effective_history_signals_sha256": [
+        "6c63366302253cda440922d95e9db0c7976fd94812d51becb554c513dc2414c3"
+      ],
+      "queue_effective_copy": {
+        "what_happened": "La Superintendencia acogió parcialmente las reposiciones de seis isapres y modificó la Circular IF/Nº528, que regulaba la cobertura de prestaciones para tratamiento de TEA y eliminaba el tope anual de bonificación por beneficiario en psiquiatría, psicología, kinesiología, terapia ocupacional y fonoaudiología. Confirmó la eliminación de esos topes, rechazó suspender la Circular y la postergación general de seis meses, e incorporó requisitos diagnósticos y un mecanismo de registro para acceder a la cobertura.",
+        "why_it_matters": "Las isapres deben mantener la bonificación sin tope anual para las cinco prestaciones señaladas cuando se cumplan los nuevos requisitos de acreditación, sin modificar porcentajes de cobertura, aranceles, copagos ni modalidades contractuales. Además, deben habilitar un flujo presencial y digital de registro, emitir comprobantes, resolver cada requerimiento en hasta 15 días hábiles y adecuar sus sistemas para la compra directa de bonos sin tope anual."
+      },
+      "full_retained_content_read": true,
+      "full_primary_article_body_read": false,
+      "full_primary_instrument_body_read": false,
+      "new_http_capture": false,
+      "content_type_and_limit": "Sólo resumen/listing de 246 caracteres, page_text vacío y enlace PDF. No se leyó la resolución íntegra. La señal editorial detallada sobre TEA no constituye el original ni certifica el litigio GES."
+    },
+    "native_suseso_circular3926": {
+      "source_url": "https://www.suseso.gob.cl/612/w3-article-790656.html",
+      "source_slug": "suseso",
+      "source_name": "Superintendencia de Seguridad Social (SUSESO)",
+      "source_type": "official",
+      "queue_fingerprint": "ab96179657e4dbc1e3fdb5c5235543a21946d69b44d2bce22e146bb754c3859e",
+      "original_queue_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "curated_history_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "queue_status": "published",
+      "queue_reason": null,
+      "lane": "BACKFILL",
+      "queue_raw_publication_date": null,
+      "history_event_dates": [
+        "2026-09-23"
+      ],
+      "retained_page_text": "SUSESO: Normativa y jurisprudencia - Circular 3926 <!-- var __aid = '790656'; var __cid = '512'; var __iid = '612'; var __pnid = Array('500', '501', '519', '521', '523', '527', '529', '533', '535', '540', '545', '550', '551', '556', '566', '567', '620', '649', '805'); var __pvid = Array('510', '629', '923', '993', '10371', '30981', '30982', '31040', '31081', '31494', '37092', '37355', '63008', '73802', '73877', '154320', '154323', '196102', '196300', '210512', '210525', '614959', '774960', '843138', '901085', '901086', '901087'); var ntg_properties = { \"500\": \"Tipo de contenido\", \"501\": \"Guía de la Seguridad Social\", \"519\": \"nj:Carga Masiva\", \"521\": \"n2:Circular Relacionada\", \"523\": \"Destinatario\", \"527\": \"Materia\", \"529\": \"nj:Tipo Contenido Normativo\", \"533\": \"nj:Fuentes legales\", \"535\": \"Entidades Fiscalizadas\", \"540\": \"Normativa y jurisprudencia\", \"545\": \"Período\", \"550\": \"Departamento\", \"551\": \"nj:Circular\", \"556\": \"Código normativa\", \"566\": \"Regímenes\", \"567\": \"Autores\", \"620\": \"Temas\", \"649\": \"Articulado\", \"805\": \"Compendio de Normas sobre Licencias Médicas, Subsidios por Incapacidad Laboral y Seguro SANNA\" }; var ntg_propertyvalues = { \"510\": { \"name\":\"Circulares SUSESO\", \"pnid\":500 }, \"629\": { \"name\":\"Salud común\", \"pnid\":501 }, \"923\": { \"name\":\"Ficha Circular SUSESO\", \"pnid\":529 }, \"993\": { \"name\":\"LICENCIAS MÉDICAS\", \"pnid\":527 }, \"10371\": { \"name\":\"Circulares de SUSESO\", \"pnid\":540 }, \"30981\": { \"name\":\"Isapres\", \"pnid\":535 }, \"30982\": { \"name\":\"COMPIN\", \"pnid\":535 }, \"31040\": { \"name\":\"Régimen de Licencias médicas y Subsidios por incapacidad laboral (SIL)\", \"pnid\":566 }, \"31081\": { \"name\":\"GOP\", \"pnid\":567 }, \"31494\": { \"name\":\"HRS\", \"pnid\":567 }, \"37092\": { \"name\":\"Normativa-20170306\", \"pnid\":519 }, \"37355\": { \"name\":\"D.L. N° 869, de 1975, del Ministerio del Trabajo y Previsión Social.\", \"pnid\":533 }, \"63008\": { \"name\":\"Licencias médicas\", \"pnid\":620 }, \"73802\": { \"name\":\"Ley 16.395, artículo 2\", \"pnid\":649 }, \"73877\": { \"name\":\"Ley 16.395, artículo 27\", \"pnid\":649 }, \"154320\": { \"name\":\"Cajas de Previsión\", \"pnid\":523 }, \"154323\": { \"name\":\"Instituto de Normalización Previsional (INP)\", \"pnid\":523 }, \"196102\": { \"name\":\"DS 3 de 1984 Minsal\", \"pnid\":649 }, \"196300\": { \"name\":\"DS 3 de 1984 Minsal, artículo 55\", \"pnid\":649 }, \"210512\": { \"name\":\"NORMATIVO\", \"pnid\":550 }, \"210525\": { \"name\":\"INTENDENCIA DE BENEFICIOS SOCIALES\", \"pnid\":550 }, \"614959\": { \"name\":\"LDS\", \"pnid\":567 }, \"774960\": { \"name\":\"TÍTULO IV. RECURSOS POR RECHAZO O REDUCCIÓN DE LICENCIA MÉDICA\", \"pnid\":805 }, \"843138\": { \"name\":\"Septiembre\", \"pnid\":545 }, \"901085\": { \"name\":\"Circular 3926\", \"pnid\":551 }, \"901086\": { \"name\":\"O-78117-2026\", \"pnid\":556 }, \"901087\": { \"name\":\"Circular 3926\", \"pnid\":521 } }; --> <!-- // GTAB init window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-C9KC1CJ3T6'); --> Ir al contenido principal Mi portal Toggle navigation Superintendencia de Seguridad Social (SUSESO) - Gobierno de Chile Inicio La Suseso Atención usuarios/as Normativa y jurisprudencia Fiscalización Publicaciones Estadísticas Noticias Mi Portal Buscar Buscar buscar Compartir icono compartir Inicio Normativa y Jurisprudencia Circulares de SUSESO Fiscalización por materias específicas COMPIN Fiscalización por materias específicas Isapres Cajas de Previsión Instituto de Normalización Previsional (INP) DS 3 de 1984 Minsal DS 3 de 1984 Minsal DS 3 de 1984 Minsal, artículo 55 Ley 16.395 Ley 16.395, artículo 2 Ley 16.395 Ley 16.395, artículo 27 <!-- function doLoadi__n2_ar_barra_posicion_articulo_1() { var pvid_anterior = '10371'; var count_pvals = 9; if('undefined' != typeof(document.referrer) && count_pvals > 1 ){ var refer_portadilla = document.referrer; if(refer_portadilla.match(/multipropertyvalues/) != null){// multivalor var pvid1,pvid2,m = refer_portadilla.match(/multipropertyvalues-(\\d+)-(\\d+)/); if(m == null){ m = refer_portadilla.match(/pvid=(\\d+).*pvid=(\\d+)/); } pvid1 = m[1]; pvid2 = m[2]; if( document.getElementById('i__n2_ar_barra_posicion_articulo_1_'+pvid1) != null ){ pvid_anterior = pvid1; }else if ( document.getElementById('i__n2_ar_barra_posicion_articulo_1_'+pvid2) != null ){ pvid_anterior = pvid2; } }else if( refer_portadilla.match(/pvid=(\\d+)/) != null || refer_portadilla.match(/propertyvalue-(\\d+).html/) != null){ var pvid, m = refer_portadilla.match(/propertyvalue-(\\d+).html/); if(m == null){ m = refer_portadilla.match(/pvid=(\\d+)/); } pvid = m[1]; if ( document.getElementById('i__n2_ar_barra_posicion_articulo_1_'+pvid) != null){ pvid_anterior = pvid; } } } var barra = document.getElementById('i__n2_ar_barra_posicion_articulo_1_'+pvid_anterior); if (barra != null) barra.style.display =''; } if ( window.addEventListener ) { window.addEventListener( \"load\", doLoadi__n2_ar_barra_posicion_articulo_1, false ); } else if ( window.attachEvent ) { window.attachEvent( \"onload\", doLoadi__n2_ar_barra_posicion_articulo_1 ); } else if ( window.onLoad ) { window.onload = doLoadi__n2_ar_barra_posicion_articulo_1; } --> Circular 3926 IMPARTE INSTRUCCIONES SOBRE EL PROCEDIMIENTO APLICABLE PARA EL CUMPLIMIENTO DEL ARTÍCULO N°30 DEL DECRETO SUPREMO N°3, DE 1984, DEL MINISTERIO DE SALUD MODIFICA TÍTULO VI, DEL LIBRO II, DEL COMPENDIO DE NORMAS SOBRE LICENCIAS MÉDICAS, SUBSIDIOS POR INCAPACIDAD LABORAL Y SEGURO SANNA Imprimir . Fecha: 23 de septiembre de 2026 Materia: IMPARTE INSTRUCCIONES SOBRE LA APLICACIÓN DEL INCISO TERCERO DEL ARTÍCULO 3° DE LA LEY N° 20.585 Y SU COORDINACIÓN CON LOS RECLAMOS REGULADOS EN LOS ARTÍCULOS 39 Y SIGUIENTES DEL D.S. N° 3, DE 1984, DEL MINISTERIO DE SALUD. MODIFICA EL LIBRO II, TÍTULO IV, DEL COMPENDIO DE NORMAS SOBRE LICENCIAS MÉDICAS, SUBSIDIOS POR INCAPACIDAD LABORAL Y SEGURO SANNA. Tema: LICENCIAS MÉDICAS Destinatario: COMPIN REGIÓN DE ARICA Y PARINACOTA; COMPIN REGIÓN DE TARAPACÁ; COMPIN REGIÓN DE ANTOFAGASTA; COMPIN REGIÓN DE ATACAMA; COMPIN REGIÓN DE COQUIMBO; SUBCOMISIÓN VALPARAÍSO - COMPIN REGIÓN DE VALPARAÍSO; SUBCOMISIÓN VIÑA DEL MAR - QUILLOTA - COMPIN REGIÓN DE VALPARAÍSO; SUBCOMISIÓN ACONCAGUA - COMPIN REGIÓN DE VALPARAÍSO; COMPIN REGIÓN DE O'HIGGINS; COMPIN REGIÓN DE ÑUBLE; SUBCOMISION CONCEPCIÓN - COMPIN REGIÓN DEL BÍO BÍO; SUBCOMISIÓN ARAUCO - COMPIN REGIÓN DEL BÍO BIO; SUBCOMISIÓN BÍO BÍO - COMPIN REGIÓN DEL BÍO BÍO; SUBCOMISIÓN TALCA - COMPIN REGIÓN DEL MAULE; SUBCOMISIÓN CAUTÍN - COMPIN REGIÓN DE LA ARAUCANÍA; SUBCOMISIÓN MALLECO - COMPIN REGIÓN DE LA ARAUCANÍA; COMPIN REGIÓN DE LOS RÍOS; SUBCOMISIÓN LLANQUIHUE Y PALENA - COMPIN REGIÓN DE LOS LAGOS; COMPIN REGIÓN DE AYSEN DEL GENERAL CARLOS IBAÑEZ DEL CAMPO; SUBCOMISIÓN OSORNO - COMPIN REGIÓN DE LOS LAGOS; SUBCOMISIÓN CHILOE - COMPIN REGIÓN DE LOS LAGOS; COMPIN REGIÓN DE MAGALLANES Y DE LA ANTÁRTICA CHILENA; COMPIN REGIÓN METROPOLITANA; SUBCOMISIÓN SUR ORIENTE - COMPIN REGIÓN METROPOLITANA; SUBCOMISIÓN SUR - COMPIN REGIÓN METROPOLITANA; SUBCOMISIÓN ORIENTE - COMPIN REGIÓN METROPOLITANA; SUBCOMISIÓN NORTE - COMPIN REGIÓN METROPOLITANA; SUBCOMISIÓN PONIENTE - COMPIN REGIÓN METROPOLITANA; DEPARTAMENTO COMPIN NACIONAL; ISAPRE BANMÉDICA S.A.; ISAPRE COLMENA GOLDEN CROSS S.A.; ISAPRE CRUZ BLANCA S.A.; ISAPRE CONSALUD S.A.; ISAPRE NUEVA MASVIDA S.A.; ISAPRE VIDA TRES S.A.; ISAPRE ESENCIAL S.A. Observación: Vigencia 4 de enero de 2027 Fuentes: Ley N° 16.395, artículo 2 y 27; D.F.L. N°1, de 2005 y D.S. N°3, de 1984, del Ministerio de Salud; D.L. N° 3.500, de 1980, del Ministerio del Trabajo y Previsión Social Departamento(s): INTENDENCIA DE BENEFICIOS SOCIALES - NORMATIVO Concordancia con Circulares: Compendio de Normas sobre Licencias Médicas, Subsidios por Incapacidad Laboral y Seguro SANNA Circular 3926 Circulares relacionadas Dictámenes relacionados Boletines Relacionados Circulares relacionadas Dictámenes relacionados Legislación relacionada Título Detalle Decreto 3 de 1984 del Ministerio de Salud DS 3 de 1984 Minsal Artículo 2 Ley 16.395, artículo 2 Artículo 27 Ley 16.395, artículo 27 Artículo 55 DS 3 de 1984 Minsal, artículo 55 Temas Licencias médicas Legislación citada DS 3 de 1984 Minsal DS 3 de 1984 Minsal, artículo 55 Ley 16.395, artículo 2 Ley 16.395, artículo 27 Circulares citadas Circular 3926 Fiscalizados COMPIN Isapres Compendio de Normas sobre Licencias Médicas, Subsidios por Incapacidad Laboral y Seguro SANNA LIBRO II. LICENCIAS MÉDICAS : TÍTULO IV. RECURSOS POR RECHAZO O REDUCCIÓN DE LICENCIA MÉDICA Vea además: Salud común COMPIN Isapres Régimen de Licencias médicas y Subsidios por incapacidad laboral (SIL) Circulares de SUSESO Subir Preguntas frecuentes Mapa del sitio ¿Dónde estamos? oficinadepartes@suseso.cl Verifica tu documento Condiciones de uso RSS Síguenos en redes sociales Instagram/susesochile Linkedin/Superintendencia de Seguridad Social Sitios relacionados Chileatiende MiLicencia.cl <!-- $(function(){ $('.link_youtube a, a.link_youtube').ntg_link_video({ \"youtubeTemplate\": '<div class=\"ratio ratio-16x9\">' + ' <iframe title=\"video player youtube\" class=\"\" ' + ' src=\"https://www.youtube.com/embed/{{videoid}}?enablejsapi=1&origin=https://www.suseso.gob.cl/\" frameborder=\"0\" allowfullscreen>No iframes'+ ' </iframe>' + '</div>' }); $(\".link_youtube a[href^='https://soundcloud.com']\").each(function(i,a){ var href= $(a).attr(\"href\"); var jqXHR = $.ajax({ type: \"POST\", url: \"https://soundcloud.com/oembed\", data: { \"format\":\"json\", \"url\":href }, dataType: \"json\", success: function(data,textStatus, jqXHR){ console.log(data); if(textStatus == \"success\"){ $(jqXHR.data.a).replaceWith(data.html); } } }); jqXHR.data = { a:a}; }); }); --> <!-- $(document).ready(function(){$('.externo>a:not([class]),.social-tools>a:not([class])').click(function(){window.open(this.href,'_blank','resizable=1,menubar=1,location=1,status=1,scrollbars=1,toolbar=1,width=,height=');return false});}); --> <!-- $(document).ready(function(){$('a.facebook,a.twitter,a.googleplus').click(function(){window.open(this.href,'_blank','resizable=1,menubar=1,location=1,status=1,scrollbars=1,toolbar=1,width=,height=');return false});}); --> <!-- /** * Similar to the Date (dd/mm/YY) data sorting plug-in, this plug-in offers * additional flexibility with support for spaces between the values and * either . or / notation for the separators. * * Please note that this plug-in is **deprecated*. The * [datetime](//datatables.net/blog/2014-12-18) plug-in provides enhanced * functionality and flexibility. * * @name Date (dd . mm[ . YYYY]) * @summary Sort dates in the format `dd/mm/YY[YY]` (with optional spaces) * @author [Robert Sedovšek](http://galjot.si/) * @deprecated * * @example * $('#example').dataTable( { * columnDefs: [ * { type: 'date-eu', targets: 0 } * ] * } ); */ jQuery.extend( jQuery.fn.dataTableExt.oSort, { \"date-eu-pre\": function ( date ) { date = date.replace(\" \", \"\"); if ( ! date ) { return 0; } var year; var eu_date = date.split(/[\\.\\-\\/]/); /*year (optional)*/ if ( eu_date[2] ) { year = eu_date[2]; } else { year = 0; } /*month*/ var month = eu_date[1]; if ( month.length == 1 ) { month = 0+month; } /*day*/ var day = eu_date[0]; if ( day.length == 1 ) { day = 0+day; } return (year + month + day) * 1; }, \"date-eu-asc\": function ( a, b ) { return ((a < b) ? -1 : ((a > b) ? 1 : 0)); }, \"date-eu-desc\": function ( a, b ) { return ((a < b) ? 1 : ((a > b) ? -1 : 0)); } } ); --> +a Agrandar texto -a Achicar texto <!-- $(function(){ $(\"#main .panel-articulo,#main .articulo\").ntg_hlsearch({ \"wordCookieName\": 'hl_words', \"phraseCookieName\": 'hl_phrase', debug:false }); }); --> <!-- $(function(){ $(\"#main .panel-articulo,#main .articulo\").ntg_hlsearch({ \"wordCookieName\": 'hl_words', \"phraseCookieName\": 'hl_phrase', debug:false }); }); --> <!-- $(function(){ $(\"#main .panel-articulo,#main .articulo\").ntg_hlsearch({ \"wordCookieName\": 'hl_words', \"phraseCookieName\": 'hl_phrase', debug:false }); }); --> <!-- $(function(){ $(\"#main .panel-articulo,#main .articulo\").ntg_hlsearch({ \"wordCookieName\": 'hl_words', \"phraseCookieName\": 'hl_phrase', debug:false }); }); -->",
+      "retained_raw_text": "",
+      "retained_page_text_sha256": "0ff207ab17309e9c18c0592570e478d5651182902bcad2287203a130ac31c00d",
+      "retained_raw_text_sha256": null,
+      "publisher_body_sha256": null,
+      "publisher_html_sha256": null,
+      "native_recorded_original_sha256": null,
+      "source_document_urls": [],
+      "date_evidence": {
+        "publication_date_source": null,
+        "publication_timestamp": null,
+        "visible_publication_date": null,
+        "publication_label": null
+      },
+      "body_refs": [
+        {
+          "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+          "path": "data/state/pending_queue.json",
+          "json_pointer": "/ab96179657e4dbc1e3fdb5c5235543a21946d69b44d2bce22e146bb754c3859e/raw/metadata/page_text"
+        },
+        {
+          "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+          "path": "data/state/pending_queue.json",
+          "json_pointer": "/ab96179657e4dbc1e3fdb5c5235543a21946d69b44d2bce22e146bb754c3859e/raw/raw_text"
+        }
+      ],
+      "full_original_history_signals": [
+        {
+          "title": "Circular 3926",
+          "source_name": "Superintendencia de Seguridad Social (SUSESO)",
+          "source_type": "official",
+          "source_url": "https://www.suseso.gob.cl/612/w3-article-790656.html",
+          "category": "Salud Laboral & Seguridad Social",
+          "subcategory": "General",
+          "system_domain": "OCCUPATIONAL_HEALTH",
+          "what_happened": "Circular 3926 IMPARTE INSTRUCCIONES SOBRE EL PROCEDIMIENTO APLICABLE PARA EL CUMPLIMIENTO DEL ARTÍCULO N°30 DEL DECRETO SUPREMO N°3, DE 1984, DEL MINISTERIO DE SALUD MODIFICA TÍTULO VI, DEL LIBRO II, DEL COMPENDIO DE NORMAS SOBRE LICENCIAS MÉDICAS, SUBSIDIOS POR INCAPACIDAD LABORAL Y SEGURO SANNA",
+          "event_date": "2026-09-23",
+          "detected_at": "2026-09-30T16:14:07.876325+00:00",
+          "primary_source_url": null,
+          "event_type": "REGULATION",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "La instrucción modifica o precisa criterios aplicables a salud laboral, organismos administradores o empleadores y puede exigir cambios de cumplimiento u operación.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "suseso",
+            "salud laboral",
+            "normativa"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 50,
+          "regulatory_impact_score": 90,
+          "scope_score": 75,
+          "novelty_score": 75,
+          "actionability_score": 82,
+          "source_quality_score": 100,
+          "radar_score": 75,
+          "confidence_score": 100,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": "4 de enero de 2027",
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Normativa"
+          ],
+          "scopes": [
+            "Salud laboral"
+          ],
+          "ingestion_mode": "BACKFILL"
+        }
+      ],
+      "original_history_signals_sha256": [
+        "bb2aca13c2713cfb7150183936e4cdbcfcae0f7fc4c32b3743970add67055028"
+      ],
+      "full_effective_history_signals": [
+        {
+          "title": "Circular 3926",
+          "source_name": "Superintendencia de Seguridad Social (SUSESO)",
+          "source_type": "official",
+          "source_url": "https://www.suseso.gob.cl/612/w3-article-790656.html",
+          "category": "Salud Laboral & Seguridad Social",
+          "subcategory": "General",
+          "system_domain": "OCCUPATIONAL_HEALTH",
+          "what_happened": "Circular 3926 IMPARTE INSTRUCCIONES SOBRE EL PROCEDIMIENTO APLICABLE PARA EL CUMPLIMIENTO DEL ARTÍCULO N°30 DEL DECRETO SUPREMO N°3, DE 1984, DEL MINISTERIO DE SALUD MODIFICA TÍTULO VI, DEL LIBRO II, DEL COMPENDIO DE NORMAS SOBRE LICENCIAS MÉDICAS, SUBSIDIOS POR INCAPACIDAD LABORAL Y SEGURO SANNA",
+          "event_date": "2026-09-23",
+          "detected_at": "2026-09-30T16:14:07.876325+00:00",
+          "primary_source_url": null,
+          "event_type": "REGULATION",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "La instrucción modifica o precisa criterios aplicables a salud laboral, organismos administradores o empleadores y puede exigir cambios de cumplimiento u operación.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "suseso",
+            "salud laboral",
+            "normativa"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 50,
+          "regulatory_impact_score": 90,
+          "scope_score": 75,
+          "novelty_score": 75,
+          "actionability_score": 82,
+          "source_quality_score": 100,
+          "radar_score": 75,
+          "confidence_score": 100,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": "4 de enero de 2027",
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Normativa"
+          ],
+          "scopes": [
+            "Salud laboral"
+          ],
+          "ingestion_mode": "BACKFILL"
+        }
+      ],
+      "effective_history_signals_sha256": [
+        "bb2aca13c2713cfb7150183936e4cdbcfcae0f7fc4c32b3743970add67055028"
+      ],
+      "queue_effective_copy": {
+        "what_happened": "Circular 3926 IMPARTE INSTRUCCIONES SOBRE EL PROCEDIMIENTO APLICABLE PARA EL CUMPLIMIENTO DEL ARTÍCULO N°30 DEL DECRETO SUPREMO N°3, DE 1984, DEL MINISTERIO DE SALUD MODIFICA TÍTULO VI, DEL LIBRO II, DEL COMPENDIO DE NORMAS SOBRE LICENCIAS MÉDICAS, SUBSIDIOS POR INCAPACIDAD LABORAL Y SEGURO SANNA",
+        "why_it_matters": "La instrucción modifica o precisa criterios aplicables a salud laboral, organismos administradores o empleadores y puede exigir cambios de cumplimiento u operación."
+      },
+      "full_retained_content_read": true,
+      "full_primary_article_body_read": false,
+      "full_primary_instrument_body_read": false,
+      "new_http_capture": false,
+      "content_type_and_limit": "Ficha normativa completa retenida, con navegación/scripts. No es el texto íntegro de la circular. El encabezado de la ficha menciona artículo 30 / Título VI y el campo Materia menciona artículo 3 Ley 20.585 / Título IV; no se resuelve esa inconsistencia ni se infiere contenido no leído.",
+      "native_ficha_date_evidence": {
+        "literal": "Fecha: 23 de septiembre de 2026",
+        "semantic_role": "Fecha mostrada en ficha normativa; publicación raw desconocida permanece null",
+        "normative_effective_date_literal": "Observación: Vigencia 4 de enero de 2027"
+      }
+    },
+    "native_df_ross_jul2025": {
+      "source_url": "https://www.df.cl/empresas/salud/tras-un-ano-de-busqueda-clinica-santa-maria-ficha-a-gustavo-ross-como",
+      "source_slug": "diario_financiero",
+      "source_name": "Diario Financiero",
+      "source_type": "press_high_trust",
+      "queue_fingerprint": "e19f7ec42be37c386828bc2546591b82586f90b39d1c232c17f42aca3837fbb7",
+      "original_queue_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "curated_history_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "queue_status": "archived",
+      "queue_reason": "outside_90_day_backfill",
+      "lane": "BACKFILL",
+      "queue_raw_publication_date": "2025-07-21",
+      "history_event_dates": [],
+      "retained_page_text": "Hace ya casi un año, Clínica Santa María - ligada a Empresas Banmédica - anunció que su gerente general, Martín Manterola Vince, abandonaba su cargo tras cinco años y medio, para comandar la Clínica Indisa. Y luego de varios meses de búsqueda, el recinto hospitalario ya fichó a su nuevo ejecutivo. Se trata de Gustavo Ross, ingeniero comercial con trayectoria en la industria de la salud. En el pasado, Ross fue subgerente de finanzas de Empresas Banmédica, y gerente de planificación del mismo conglomerado. Además, fue CFO de Colmédica, filial colombiana del holding . “Trabajaré buscando siempre una gestión transparente, humana y orientada a mejorar la vida de nuestros pacientes, continuando el legado de excelencia y la estrategia de expansión geográfica de la clínica”, enfatizó Ross. Según indicó Clínica Santa María a través de LinkedIn, el ingeniero comercial llega a la entidad a “liderar un período de desafíos y crecimiento para nuestra red de atención”, en un contexto donde se encuentran realizando nuevas aperturas. Hace un año, la institución de salud inauguró un centro médico de 3.300 m2 en avenida Vitacura, y ahora espera abrir las puertas de uno más grande, de alrededor de 5 mil m2, en la comuna de Las Condes.",
+      "retained_raw_text": "En su pasado, fue subgerente de finanzas en Empresas Banmédica, y gerente de planificación del mismo conglomerado. Además, fue CFO de Colmédica, filial colombiana del holding.",
+      "retained_page_text_sha256": "e82bc3ab95506c246b8f726d0fe8b73932de801cdfba7e1b3eca7a124729f2e3",
+      "retained_raw_text_sha256": "6430d23306e1a2afe5e42336c79ad012d9a853c6a38c439782bf7dc810e695cc",
+      "publisher_body_sha256": null,
+      "publisher_html_sha256": null,
+      "native_recorded_original_sha256": "4851d0d25aa3b1d96cbf7e2808e143a17920cee2caf271cf5be81586f2323e75",
+      "source_document_urls": [],
+      "date_evidence": {
+        "publication_date_source": "cxenseparse:recs:publishtime",
+        "publication_timestamp": "2025-07-21T15:45:10Z",
+        "visible_publication_date": null,
+        "publication_label": null
+      },
+      "body_refs": [
+        {
+          "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+          "path": "data/state/pending_queue.json",
+          "json_pointer": "/e19f7ec42be37c386828bc2546591b82586f90b39d1c232c17f42aca3837fbb7/raw/metadata/page_text"
+        },
+        {
+          "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+          "path": "data/state/pending_queue.json",
+          "json_pointer": "/e19f7ec42be37c386828bc2546591b82586f90b39d1c232c17f42aca3837fbb7/raw/raw_text"
+        }
+      ],
+      "full_original_history_signals": [],
+      "original_history_signals_sha256": [],
+      "full_effective_history_signals": [],
+      "effective_history_signals_sha256": [],
+      "queue_effective_copy": {
+        "what_happened": null,
+        "why_it_matters": null
+      },
+      "full_retained_content_read": true,
+      "full_primary_article_body_read": true,
+      "full_primary_instrument_body_read": false,
+      "new_http_capture": false,
+      "content_type_and_limit": "Artículo DF completo del 21 de julio de 2025, archive fuera de 90 días; sin señal actual en history. Es nombramiento previo de Gustavo Ross, no sucesión José Ignacio Valenzuela / reorganización 2026."
+    }
+  },
+  "comparisons": [
+    {
+      "native_observation_id": "native_supersalud_if11156",
+      "pulso_observation_id": "pulso_ges_claims_aug10",
+      "classification": "different_circular_and_regulatory_subject_listing_only",
+      "proposed_decision": "keep_pulso_distinct_event",
+      "reason": "El listing oficial refiere reposiciones contra Circular IF 528 del 26 de mayo de 2026. Pulso reporta dos demandas por casi $9.000 millones relativas a Decreto GES 29/2025 y Circular IF 520, cobranzas diciembre 2025 / enero 2026 versus febrero 2026. No es mismo acto, controversia, período ni desenlace; compartir Banmédica y Vida Tres no basta para dedupe.",
+      "literal_quotes": [
+        {
+          "observation_id": "native_supersalud_if11156",
+          "quote": "en contra de la Circular IF/Nº528, de 26 de mayo de 2026."
+        },
+        {
+          "observation_id": "pulso_ges_claims_aug10",
+          "quote": "Circular IF/N° 520"
+        },
+        {
+          "observation_id": "pulso_ges_claims_aug10",
+          "quote": "Banmédica y Vida Tres interpusieron dos demandas por daño emergente"
+        }
+      ],
+      "official_corroboration_of_pulso": false,
+      "duplicate_proven": false,
+      "limitation": "Resolución íntegra ausente: no validar los detalles TEA de la señal nativa ni alegaciones GES con este resumen. Pulso conserva atribución de demandas/acusaciones y ausencia de decisión judicial.",
+      "application_status": "Diagnóstico read-only; sin publicación, group o cambio de estado."
+    },
+    {
+      "native_observation_id": "native_supersalud_if11156",
+      "pulso_observation_id": "pulso_reorganization_sep29",
+      "classification": "different_regulatory_versus_corporate_event_listing_only",
+      "proposed_decision": "keep_pulso_distinct_event",
+      "reason": "El registro nativo del 23 de septiembre se refiere a reposiciones de isapres ante una circular; Pulso del 29 de septiembre describe líneas de reporte del área prestadora, eliminación de gerencia y designaciones desde el 1 de octubre. Son entidades y procesos relacionados al mismo grupo, con actos, actores operativos y madurez distintos.",
+      "literal_quotes": [
+        {
+          "observation_id": "native_supersalud_if11156",
+          "quote": "Acoge parcialmente los recursos de reposición interpuestos por las ISAPRES"
+        },
+        {
+          "observation_id": "pulso_reorganization_sep29",
+          "quote": "se eliminará la posición de gerente general de prestadores"
+        }
+      ],
+      "official_corroboration_of_pulso": false,
+      "duplicate_proven": false,
+      "limitation": "Sin original íntegro de resolución; ninguna corroboración oficial de reorganización, ejecución ni cargos al 11 de octubre.",
+      "application_status": "Diagnóstico read-only; sin publicación, group o cambio de estado."
+    },
+    {
+      "native_observation_id": "native_suseso_circular3926",
+      "pulso_observation_id": "pulso_ges_claims_aug10",
+      "classification": "different_licence_procedure_versus_ges_civil_claim",
+      "proposed_decision": "keep_pulso_distinct_event",
+      "reason": "La ficha Circular 3926 trata procedimientos/reclamos de licencias médicas y SIL/SANNA. La nota Pulso trata daño emergente por desfase de prima GES 2025. No hay evidencia de la demanda, del Decreto GES 29/2025 ni Circular IF 520 en el original retenido de la ficha, y no son el mismo procedimiento.",
+      "literal_quotes": [
+        {
+          "observation_id": "native_suseso_circular3926",
+          "quote": "Tema: LICENCIAS MÉDICAS"
+        },
+        {
+          "observation_id": "native_suseso_circular3926",
+          "quote": "RECURSOS POR RECHAZO O REDUCCIÓN DE LICENCIA MÉDICA"
+        },
+        {
+          "observation_id": "pulso_ges_claims_aug10",
+          "quote": "Decreto GES 29/2025"
+        }
+      ],
+      "official_corroboration_of_pulso": false,
+      "duplicate_proven": false,
+      "limitation": "La fecha raw nativa sigue null; ficha del 23 de septiembre distinta de publicación verificada, vigencia del 4 de enero de 2027 futura. Se leyó ficha, no circular íntegra. No certificar alegación GES como hecho oficial.",
+      "application_status": "Diagnóstico read-only; sin publicación, group o cambio de estado."
+    },
+    {
+      "native_observation_id": "native_suseso_circular3926",
+      "pulso_observation_id": "pulso_reorganization_sep29",
+      "classification": "different_licence_norm_versus_provider_governance",
+      "proposed_decision": "keep_pulso_distinct_event",
+      "reason": "Circular 3926 / ficha de licencias médicas destinataria COMPIN / isapres no designa gerentes ni modifica estructura del área prestadora. La mención Banmédica y Vida Tres entre destinatarios no convierte la norma en el evento de sucesión Santa María.",
+      "literal_quotes": [
+        {
+          "observation_id": "native_suseso_circular3926",
+          "quote": "ISAPRE BANMÉDICA S.A."
+        },
+        {
+          "observation_id": "native_suseso_circular3926",
+          "quote": "ISAPRE VIDA TRES S.A."
+        },
+        {
+          "observation_id": "pulso_reorganization_sep29",
+          "quote": "José Ignacio Valenzuela"
+        }
+      ],
+      "official_corroboration_of_pulso": false,
+      "duplicate_proven": false,
+      "limitation": "No original íntegro de circular; sin corroboración oficial de ejecución del cambio organizacional ni fecha publicación raw nativa.",
+      "application_status": "Diagnóstico read-only; sin publicación, group o cambio de estado."
+    },
+    {
+      "native_observation_id": "native_df_ross_jul2025",
+      "pulso_observation_id": "pulso_reorganization_sep29",
+      "classification": "same_entity_distinct_person_role_period_and_governance_event",
+      "proposed_decision": "keep_pulso_distinct_event",
+      "reason": "DF del 21 de julio de 2025 informa llegada de Gustavo Ross como gerente de Santa María. Pulso del 29 de septiembre de 2026 informa que Valenzuela asumiría Santa María y Ross pasaría a Inverclinsa, junto a eliminar gerencia general de prestadores y reportar al country manager. Es sucesión posterior más reorganización, no repetición de contratación 2025. El cuerpo 2026 explica el cambio de rol de Ross; su ejecución desde el 1 de octubre continúa anunciada, no certificada al 11 de octubre.",
+      "literal_quotes": [
+        {
+          "observation_id": "native_df_ross_jul2025",
+          "quote": "Se trata de Gustavo Ross, ingeniero comercial con trayectoria en la industria de la salud."
+        },
+        {
+          "observation_id": "pulso_reorganization_sep29",
+          "quote": "José Ignacio Valenzuela"
+        },
+        {
+          "observation_id": "pulso_reorganization_sep29",
+          "quote": "ahora asumirá la gerencia general de Inverclinsa"
+        }
+      ],
+      "official_corroboration_of_pulso": false,
+      "duplicate_proven": false,
+      "limitation": "DF es prensa antigua fuera de 90 días y archivada, no fuente oficial ni confirmación de ejecución 2026. La señal Pulso no afirma capacidad clínica nueva ni cierre de venta UHG.",
+      "application_status": "Diagnóstico read-only; sin publicación, group o cambio de estado."
+    },
+    {
+      "native_observation_id": "native_df_ross_jul2025",
+      "pulso_observation_id": "pulso_ges_claims_aug10",
+      "classification": "same_group_unrelated_provider_appointment_and_insurer_court_claim",
+      "proposed_decision": "keep_pulso_distinct_event",
+      "reason": "DF 2025 trata gerente de un prestador Clínica Santa María, mientras Pulso de agosto 2026 trata reclamo de dos isapres contra Fisco por prima GES. No coinciden actor operativo, instrumento, cuantía, período o acción.",
+      "literal_quotes": [
+        {
+          "observation_id": "native_df_ross_jul2025",
+          "quote": "Clínica Santa María"
+        },
+        {
+          "observation_id": "pulso_ges_claims_aug10",
+          "quote": "en contra del Fisco de Chile por perjuicios patrimoniales"
+        }
+      ],
+      "official_corroboration_of_pulso": false,
+      "duplicate_proven": false,
+      "limitation": "No duplicado ni corroboración jurídica: artículo DF fuera de 90 días, sin señal actual; Pulso mantiene media_reported por acciones alegadas, no mérito validado.",
+      "application_status": "Diagnóstico read-only; sin publicación, group o cambio de estado."
+    }
+  ],
+  "validation": {
+    "all_six_pairs_compared": true,
+    "literal_quotes_match_retained_content": true,
+    "content_and_signal_hashes_reproduce": true,
+    "unknown_raw_native_publication_date_preserved": true,
+    "missing_full_official_instruments_explicit": true,
+    "archived_df_without_history_preserved": true,
+    "official_corroboration_claimed": false,
+    "duplicate_groups_proposed": 0,
+    "source_acceptance_pass": false
+  },
+  "summary": "No se demostró duplicado ni corroboración oficial de los dos eventos Pulso entre estos tres registros. IF11156 tiene el original íntegro ausente; Circular 3926 conserva una ficha, con discrepancia interna entre encabezado y materia y fecha raw null; Ross 2025 es un antecedente distinto y archivado. No se amplían alegaciones GES ni la madurez de la reorganización de 2026."
+}
