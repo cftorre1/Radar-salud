@@ -41,7 +41,7 @@ test('fiscalization reconciliation preserves act dates and separates reviewed no
  expect(errors).toEqual([]);
 });
 
-test('recovered registers retain offices, actors, effects and issuance dates in grouped details',async({page})=>{
+test('recovered registers retain offices, actors, effects and issuance dates in grouped details',async({page},testInfo)=>{
  const errors=[];page.on('pageerror',error=>errors.push(error.message));await page.goto('/');
  await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
@@ -52,11 +52,16 @@ test('recovered registers retain offices, actors, effects and issuance dates in 
  await expect(card).toContainText('20 oficios');await expect(card.locator('.card-meta')).toContainText('Emitido');
  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');
  await card.locator('[data-detail]').click();
- await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(75);
- await page.locator('#detailBody .sourceverify summary').click();
+ await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(75);
+ expect(register.historical_sanction_context).toHaveLength(17);
+ expect(register.historical_sanction_context.every(s=>s.emission_date<'2026-07-13'&&s.publication_date===null)).toBe(true);
+ await expect(page.locator('#detailBody .historical-sanctions .related-item')).toHaveCount(17);
+ await expect(page.locator('#detailBody .historical-sanctions summary')).toContainText('anteriores a 90 días');
+ await page.locator('#detailBody .sourceverify:not(.historical-sanctions) summary').click();
  await expect(page.locator('#detailBody')).toContainText('O-02-S-03209-2026');
  await expect(page.locator('#detailBody')).toContainText('2027-01-04');
  expect(await page.locator('#detailBody').evaluate(e=>e.scrollWidth<=e.clientWidth+2)).toBe(true);
+ await page.screenshot({path:`data/audits/fiscalizacion/native-register-${testInfo.project.name}.png`});
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
  const agents=radar.signals.find(s=>s.source_record_id==='sis_agentes:rolling90');
  expect(agents.counts).toEqual({'30':10,'90':18});

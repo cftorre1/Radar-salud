@@ -97,9 +97,9 @@
     },
     "superintendencia_fiscalizacion": {
       "name": "Superintendencia Fiscalizacion",
-      "checked_at": "2026-10-11T06:14:14.770048+00:00",
+      "checked_at": "2026-10-11T07:12:36.829530+00:00",
       "last_signal_at": "2026-09-28",
-      "discovered": 3344,
+      "discovered": 3343,
       "new": 0,
       "published": 0,
       "live_pending": 0,
@@ -112,7 +112,7 @@
       "technical_status": "ok",
       "coverage_status": "listed_surface_parsed",
       "content_freshness": "older",
-      "editorial_outcome": "no_new_publications_existing_history",
+      "editorial_outcome": "rejected",
       "last_observed_event_at": "2026-09-28",
       "last_observed_publication_at": "2026-09-28",
       "surfaces": [
@@ -154,14 +154,14 @@
       ],
       "undated_observations": 0,
       "coverage_complete": false,
-      "archived": 3156,
+      "archived": 3143,
       "rejection_reasons": {
         "administrative_subrogation_not_enforcement": 1
       },
       "published_total": 200,
       "final_state": "OPERATIVE_DEGRADED",
-      "pages_checked": 46,
-      "items_discovered": 3344,
+      "pages_checked": 49,
+      "items_discovered": 3343,
       "unique_items": 3343,
       "surface_rows_discovered": 6509,
       "items_recent": 32,
@@ -197,7 +197,7 @@
           "deferred": 0
         }
       },
-      "coverage_reason": "All dated rows reconciled in enumerated official surfaces. Ten medical reports lack daily publication/emission dates. Historical SIS document identity only verified where primary attachments permit; unique URLs do not certify unique legal acts.",
+      "coverage_reason": "Seven official results indexes fully reconciled in 30/90-day dated windows; coverage outside these indexes and all historical legal-act identities not certified.",
       "counter_semantics": {
         "discovered": "documents in this discovery run, including historical",
         "new": "queue additions this run",
@@ -208,14 +208,45 @@
         "archived": "queue stock beyond backfill horizon"
       },
       "zero_published_reason": "idempotent replay; all confirmed recent material acts already persisted",
-      "documents_checked": 34,
-      "http_receipts_checked": 80,
+      "window_semantics": {
+        "primary": "inclusive elapsed date age: 0..30 and 0..90; matches the existing application filter",
+        "30_start": "2026-09-11",
+        "90_start": "2026-07-13",
+        "exact_calendar_30_start": "2026-09-12",
+        "exact_calendar_90_start": "2026-07-14"
+      },
+      "exact_calendar_windows": {
+        "30": {
+          "official_confirmed": 14,
+          "detected": 14,
+          "omitted": 0,
+          "material": 14,
+          "published": 14,
+          "rejected": 0,
+          "deferred": 0,
+          "boundary_records_excluded": 0
+        },
+        "90": {
+          "official_confirmed": 28,
+          "detected": 28,
+          "omitted": 0,
+          "material": 28,
+          "published": 28,
+          "rejected": 0,
+          "deferred": 0,
+          "boundary_records_excluded": 4
+        }
+      },
+      "documents_checked": 37,
+      "http_receipts_checked": 86,
+      "publication_date_uncertain_reports": 0,
+      "bounded_dated_coverage_complete": true,
       "deferred_date_uncertain": 0,
       "reconciliation": {
-        "at": "2026-10-11T06:14:41.647738+00:00",
+        "at": "2026-10-11T07:13:07.559976+00:00",
         "native_live_validated": true,
-        "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38117344816",
-        "runtime_sha": "3d2cf3255f81873b24dd193c019602429477d4da",
+        "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120557232",
+        "runtime_sha": "8f57ee545737987be5f0c66f32e3d832cc7453eb",
         "stock_preserves_detected_at": true,
         "backfill_only": true
       }
@@ -412,7 +443,7 @@
     },
     "suseso_fiscalizacion": {
       "name": "Suseso Fiscalizacion",
-      "checked_at": "2026-10-11T06:14:41.408309+00:00",
+      "checked_at": "2026-10-11T07:13:07.320187+00:00",
       "last_signal_at": "2026-10-02",
       "discovered": 1273,
       "new": 0,
@@ -487,7 +518,7 @@
       ],
       "undated_observations": 449,
       "coverage_complete": false,
-      "archived": 1116,
+      "archived": 1061,
       "rejection_reasons": {
         "related_normative_not_enforcement": 53,
         "Beneficio, convenio o información de seguridad social; el detalle no acredita sanción ni resultado fiscalizador nuevo.": 19,
@@ -495,9 +526,9 @@
         "Estadística, estudio o evolución de licencias/seguro laboral; no aporta un acto de fiscalización individual nuevo.": 7,
         "Normativa, guía o consulta pública; no identifica una fiscalización concluida ni sanción nueva.": 13
       },
-      "published_total": 77,
+      "published_total": 94,
       "final_state": "OPERATIVE_DEGRADED",
-      "pages_checked": 102,
+      "pages_checked": 106,
       "items_discovered": 1273,
       "unique_items": 1273,
       "surface_rows_discovered": 1612,
@@ -534,7 +565,7 @@
           "deferred": 0
         }
       },
-      "coverage_reason": "All dated rows reconciled in enumerated official surfaces. Ten medical reports lack daily publication/emission dates. Historical SIS document identity only verified where primary attachments permit; unique URLs do not certify unique legal acts.",
+      "coverage_reason": "Dated sanctions and official news fully reconciled. Publication dates remain unknown for 439 historical-execution programme rows and ten medical result reports; no site-wide absence claim.",
       "counter_semantics": {
         "discovered": "documents in this discovery run, including historical",
         "new": "queue additions this run",
@@ -545,17 +576,50 @@
         "archived": "queue stock beyond backfill horizon"
       },
       "zero_published_reason": "idempotent replay; all confirmed recent material acts already persisted",
+      "window_semantics": {
+        "primary": "inclusive elapsed date age: 0..30 and 0..90; matches the existing application filter",
+        "30_start": "2026-09-11",
+        "90_start": "2026-07-13",
+        "exact_calendar_30_start": "2026-09-12",
+        "exact_calendar_90_start": "2026-07-14"
+      },
+      "exact_calendar_windows": {
+        "30": {
+          "official_confirmed": 20,
+          "detected": 20,
+          "omitted": 0,
+          "material": 20,
+          "published": 20,
+          "rejected": 0,
+          "deferred": 0,
+          "boundary_records_excluded": 0
+        },
+        "90": {
+          "official_confirmed": 74,
+          "detected": 74,
+          "omitted": 0,
+          "material": 74,
+          "published": 74,
+          "rejected": 0,
+          "deferred": 0,
+          "boundary_records_excluded": 3
+        }
+      },
       "documents_checked": 10,
-      "http_receipts_checked": 112,
+      "http_receipts_checked": 116,
+      "publication_date_uncertain_reports": 449,
+      "bounded_dated_coverage_complete": true,
       "deferred_date_uncertain": 10,
       "reconciliation": {
-        "at": "2026-10-11T06:14:41.647738+00:00",
+        "at": "2026-10-11T07:13:07.559976+00:00",
         "native_live_validated": true,
-        "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38117344816",
-        "runtime_sha": "3d2cf3255f81873b24dd193c019602429477d4da",
+        "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120557232",
+        "runtime_sha": "8f57ee545737987be5f0c66f32e3d832cc7453eb",
         "stock_preserves_detected_at": true,
         "backfill_only": true
-      }
+      },
+      "historical_sanctions_with_current_suspension": 17,
+      "historical_current_stock_published": 17
     },
     "prestadores_data": {
       "name": "Superintendencia de Salud · Intendencia de Prestadores",
@@ -748,5 +812,5 @@
       "editorial_outcome": "pending"
     }
   },
-  "generated_at": "2026-10-11T06:14:41.647738+00:00"
+  "generated_at": "2026-10-11T07:13:07.559976+00:00"
 }
