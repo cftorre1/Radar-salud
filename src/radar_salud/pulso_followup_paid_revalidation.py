@@ -44,14 +44,11 @@ def has_claim(metadata):
 
 
 def known_original_candidate(raw):
-    """Removing all claim fields cannot route a known paid answer around proof."""
+    """A known primary URL needs this authority even after its response changes."""
     if raw.source_slug != "pulso_latercera":
         return False
     origin = producer(str(ROOT))
-    return any(raw.url == entry["raw"]["url"]
-               and raw.metadata.get("analysis_model_output", {}).get("_pulso_analysis_meta", {}).get("response_id")
-                   == entry["raw"]["metadata"]["analysis_model_output"]["_pulso_analysis_meta"]["response_id"]
-               for entry in origin["held"].values())
+    return any(raw.url == entry["raw"]["url"] for entry in origin["held"].values())
 
 
 def _stamp(value):

@@ -275,3 +275,53 @@ def test_hanta_context_is_full_published_august8_proof_and_never_an_editorial_de
     changed["published_comparison_targets"][0]["target_full_primary_raw"]["metadata"]["page_text"] += " unit altered context"
     with pytest.raises(ValueError, match="not_published_and_bound"):
         current._verify_context(changed, origin["held"][hanta["queue_fingerprint"]]["raw"], origin)
+
+
+@pytest.mark.parametrize("cohort", [0, 1])
+@pytest.mark.parametrize("generation", ["original981", "original908", "original66", "new_attempt1", "new_attempt2"])
+def test_all_five_generations_require_followup_authority_even_after_response_id_changes(
+        tmp_path, actual, monkeypatch, cohort, generation):
+    """New IDs are explicit unit outputs; no publisher/model requests occur."""
+    pin = [row for row in actual[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect"][cohort]
+    key = pin["queue_fingerprint"]
+    queue = admitted(tmp_path, actual)
+    if generation == "original981":
+        raw = RawItem(**deepcopy(previous._producer(str(ROOT))[key]["raw"]))
+    elif generation == "original908":
+        raw = RawItem(**deepcopy(prior_current.producer(str(ROOT))["held"][key]["raw"]))
+    elif generation == "original66":
+        raw = RawItem(**deepcopy(actual[1]["held"][key]["raw"]))
+    else:
+        original_model = deepcopy(queue.items[key]["raw"]["metadata"]["analysis_model_output"])
+        calls = []
+        def unit_model(**request):
+            calls.append(request)
+            answer = deepcopy(original_model)
+            answer["pulso_editorial_proof"]["actor"] = "explicit unit actor absent from actual source quote"
+            answer["_pulso_analysis_meta"]["response_id"] = "explicit-unit-erasure-" + str(len(calls))
+            answer["_pulso_analysis_meta"]["raw_model_output_sha256"] = current.digest({
+                field:value for field,value in answer.items() if field != "_pulso_analysis_meta"})
+            return answer
+        monkeypatch.setattr(llm_analysis, "analyze_news", unit_model)
+        for _ in range(int(generation[-1])):
+            queue.start(key)
+            raw = RawItem(**deepcopy(queue.items[key]["raw"]))
+            with pytest.raises(DeferredProcessing, match="actor_not_grounded"):
+                beta_sources.process_curated_beta_source(raw, {})
+            queue.items[key]["raw"] = asdict(raw)
+            queue.finish(key, "retry", "pulso_editorial_actor_not_grounded", now=NOW)
+        for field in (current.STAMP, current.RECEIPT, current.NEW_FAST_RECEIPTS):
+            raw.metadata.pop(field, None)
+        raw.metadata["evidence_revisions"] = [revision for revision in raw.metadata["evidence_revisions"]
+                                             if revision.get("reason") != current.REVISION]
+        assert previous.verified_paid_processing_mode(raw)[0]["new_model_request"] is True
+        assert prior_current.verified_processing_mode(raw)[0]["new_model_request"] is True
+    assert not current.has_claim(raw.metadata)
+    assert current.known_original_candidate(raw)
+    old_model = deepcopy(raw.metadata["analysis_model_output"])
+    def forbidden(**kwargs):
+        pytest.fail("Erased authority must defer before another API request or legacy context fallback")
+    monkeypatch.setattr(llm_analysis, "analyze_news", forbidden)
+    with pytest.raises(DeferredProcessing, match="evidence_unverified"):
+        beta_sources.process_curated_beta_source(raw, {})
+    assert raw.metadata["analysis_model_output"] == old_model

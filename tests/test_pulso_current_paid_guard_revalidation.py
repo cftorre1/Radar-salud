@@ -11,6 +11,7 @@ import pytest
 from radar_salud import beta_sources, llm_analysis
 from radar_salud import pulso_current_paid_revalidation as current
 from radar_salud import pulso_paid_revalidation as previous
+from radar_salud import pulso_followup_paid_revalidation as followup
 from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue
 from radar_salud.processing import DeferredProcessing
@@ -173,6 +174,15 @@ def test_real10_new_fast_receive_bound_context_and_unchanged_full_input(tmp_path
     for pin in rows:
         raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
         old = deepcopy(raw.metadata["analysis_model_output"])
+        if followup.known_original_candidate(raw):
+            # The current authority supersedes these five earlier paid
+            # fixtures. Running today's processor must not reuse old context.
+            before_calls = len(calls)
+            with pytest.raises(DeferredProcessing, match="evidence_unverified"):
+                beta_sources.process_curated_beta_source(raw, {})
+            assert len(calls) == before_calls
+            assert raw.metadata["analysis_model_output"] == old
+            continue
         with pytest.raises(RequestObserved):
             beta_sources.process_curated_beta_source(raw, {})
         assert raw.metadata["analysis_model_output"] == old
@@ -180,13 +190,15 @@ def test_real10_new_fast_receive_bound_context_and_unchanged_full_input(tmp_path
         assert calls[-1]["full_text"] is True and calls[-1]["pulso_editorial_proof"] is True
         assert pin["reassessment_context"]["context_text"] in calls[-1]["kind"]
         assert current.digest(calls[-1]["text"].encode()) == pin["body_sha256"]
-    assert len(calls) == 10
+    assert len(calls) == 5
 
 
 def test_current_new_fast_deferral_keeps_both_paid_chains_and_later_due_retry(tmp_path, actual, monkeypatch):
     """Actual article/model, explicitly synthetic unit API IDs, no paid events."""
     queue = admitted(tmp_path, actual)
-    pin = next(row for row in actual[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect")
+    superseded = {entry["raw"]["url"] for entry in followup.producer(str(ROOT))["held"].values()}
+    pin = next(row for row in actual[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect"
+               and row["url"] not in superseded)
     key = pin["queue_fingerprint"]
     before = deepcopy(queue.items[key])
     model = deepcopy(before["raw"]["metadata"]["analysis_model_output"])

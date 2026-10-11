@@ -11,6 +11,7 @@ import subprocess
 import pytest
 
 from radar_salud import beta_sources, llm_analysis, pulso_paid_revalidation as paid
+from radar_salud import pulso_followup_paid_revalidation as followup
 from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue
 from radar_salud.processing import DeferredProcessing
@@ -169,13 +170,20 @@ def test_real25_contract_defects_reach_new_full_input_fast_branch_only(tmp_path,
     for pin in selected:
         raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
         original_ai = deepcopy(raw.metadata["analysis_model_output"])
+        if followup.known_original_candidate(raw):
+            before_calls = len(calls)
+            with pytest.raises(DeferredProcessing, match="evidence_unverified"):
+                beta_sources.process_curated_beta_source(raw, {})
+            assert len(calls) == before_calls
+            assert raw.metadata["analysis_model_output"] == original_ai
+            continue
         with pytest.raises(ObservedNewFastBranch):
             beta_sources.process_curated_beta_source(raw, {})
         assert raw.metadata["analysis_model_output"] == original_ai
         assert paid.RECEIPT not in raw.metadata
         assert calls[-1]["full_text"] is True and calls[-1]["pulso_editorial_proof"] is True
         assert paid.digest(calls[-1]["text"].encode()) == pin["body_sha256"]
-    assert len(calls) == 25
+    assert len(calls) == 20
 
 
 def test_bound_fonasa_comparison_enters_kind_without_changing_complete_primary_request(tmp_path, original, monkeypatch):
