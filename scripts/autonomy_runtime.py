@@ -37,7 +37,8 @@ FAMILY_INPUTS = {
         "config/media_early_signal_gate.json", "config/taxonomy_v2.json",
     ],
 }
-EXECUTOR_INPUTS = ["scripts/autonomy_lane_runner.py", "scripts/autonomy_recovery.py"]
+EXECUTOR_INPUTS = ["scripts/autonomy_lane_runner.py", "scripts/autonomy_recovery.py",
+                   "scripts/autonomy_repair_planner.py"]
 
 
 class CandidateNeedsRevalidation(RuntimeError):
