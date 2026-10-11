@@ -6,11 +6,10 @@ from pathlib import Path
 import pytest
 
 from radar_salud.editorial_gate import publication_ready
-from radar_salud.pulso_editorial_review import apply_review, canonical_sha
+from radar_salud.pulso_editorial_review import apply_review, canonical_sha, validate_independent_binding
 
 ROOT = Path(__file__).parents[1]
 FIXTURE = ROOT / "tests/fixtures/pulso_editorial_real/first_paid_outputs.json"
-SEMANTIC_REVIEW = Path("/workspace/work/pulso-first-real-processing-all32-semantic-review.json")
 
 
 @pytest.fixture
@@ -133,6 +132,40 @@ def test_changed_effective_assessment_or_prose_cannot_hide_behind_same_review_ha
         apply((history, queue, inputs[2]))
 
 
+@pytest.mark.parametrize("field, value", [("decision", "accept"), ("original_body_sha256", "0" * 64),
+                                         ("original_model_what_happened", "A forged original model claim.")])
+def test_provenance_is_reconstructed_from_immutable_record_on_replay(inputs, field, value):
+    history, queue, _ = apply(inputs)
+    withdrawn = next(row for row in history if row["editorial_review"]["decision"] == "reject")
+    withdrawn["editorial_review"][field] = value
+    item = next(v for v in queue.values() if v["raw"]["url"] == withdrawn["source_url"])
+    item["raw"]["metadata"]["editorial_review"] = deepcopy(withdrawn["editorial_review"])
+    with pytest.raises(ValueError, match="conflicting_existing_editorial_review"):
+        apply((history, queue, inputs[2]))
+
+
+def test_initial_queue_model_prose_must_match_observed_history(inputs):
+    inputs[1]["0"]["raw"]["metadata"]["what_happened"] = "A different model output in the queue."
+    with pytest.raises(ValueError, match="observed_original_queue_model_prose_mismatch"):
+        apply(inputs)
+
+
+@pytest.mark.parametrize("mutation", ["hidden", "rejected", "low_score", "unverified_media", "queue_rejected"])
+def test_group_survivor_must_really_remain_eligible_and_published(inputs, mutation):
+    target_record = next(r for r in inputs[2]["records"] if r["decision"] == "group")["duplicate_of"]
+    survivor = next(s for s in inputs[0] if s["source_url"] == target_record["url"])
+    item = next(v for v in inputs[1].values() if v["raw"]["url"] == target_record["url"])
+    # Put the target outside the review: survival cannot rely only on review membership.
+    inputs[2]["records"] = [r for r in inputs[2]["records"] if r["url"] != target_record["url"]]
+    if mutation == "hidden": survivor["feed_visibility"] = False
+    if mutation == "rejected": survivor["editorial_decision"] = "reject"
+    if mutation == "low_score": survivor["editorial_relevance"] = 0
+    if mutation == "unverified_media": survivor["evidence_maturity"] = "unverified"
+    if mutation == "queue_rejected": item["status"] = "rejected"
+    with pytest.raises(ValueError, match="group_surviving_signal_not_"):
+        apply(inputs)
+
+
 def test_other_source_terminal_state_is_unchanged(inputs):
     foreign = deepcopy(inputs[1]["0"])
     foreign["source"] = "minsal"
@@ -140,3 +173,36 @@ def test_other_source_terminal_state_is_unchanged(inputs):
     inputs[1]["other-source"] = foreign
     _, queue, _ = apply(inputs)
     assert queue["other-source"] == foreign
+
+
+def independent_inputs():
+    import hashlib
+    path = ROOT / "data/audits/pulso_first_real_all32_semantic_review_2026_10_11.json"
+    original = path.read_bytes()
+    audit = json.loads((ROOT / "data/audits/pulso_first_paid_editorial_corrections_2026_10_11.json").read_bytes())
+    return audit, json.loads(original), hashlib.sha256(original).hexdigest()
+
+
+def test_actual_all32_corrections_match_every_independent_reader_decision_and_quote():
+    audit, original, sha = independent_inputs()
+    validate_independent_binding(audit, original, independent_sha256=sha)
+    assert len(audit["records"]) == 32
+    assert len({r["url"] for r in audit["records"]}) == 32
+
+
+@pytest.mark.parametrize("change", ["coverage", "decision", "reason", "body", "summary", "quote", "copy", "group_target", "reader_sha", "partial_read"])
+def test_editor_cannot_override_independent_reader_or_hide_findings(change):
+    audit, original, sha = independent_inputs()
+    first = audit["records"][0]
+    if change == "coverage": audit["records"].pop()
+    if change == "decision": first["decision"] = "accept"
+    if change == "reason": first["reason"] = "Generic acceptance substituted for the actual scope finding."
+    if change == "body": first["original_body_sha256"] = "0" * 64
+    if change == "summary": first["original_signal"]["what_happened"] = "A fabricated summary."
+    if change == "quote": first["evidence_quotes"] = ["A different quote never approved by the independent reader."]
+    if change == "copy": next(r for r in audit["records"] if r["decision"] == "correct")["proposed"]["what_happened"] = "The future expansion has already occurred."
+    if change == "group_target": next(r for r in audit["records"] if r["decision"] == "group")["duplicate_of"]["url"] = first["url"]
+    if change == "reader_sha": audit["independent_review"]["sha256"] = "0" * 64
+    if change == "partial_read": original["all_signals"][0]["full_original_body_read"] = False
+    with pytest.raises(ValueError):
+        validate_independent_binding(audit, original, independent_sha256=sha)
