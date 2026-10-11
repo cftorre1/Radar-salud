@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+from urllib.parse import urlparse
 
 SOURCE = "pulso_latercera"
 SCHEMA = "pulso_idempotence_v1"
@@ -110,7 +111,17 @@ def signal_index(signals):
     require(isinstance(signals, list), "invalid_signal_snapshot")
     indexed = {}
     for signal in signals:
-        identity = json.dumps([signal.get("source_url"), signal.get("event_date")], ensure_ascii=False)
+        fields = [signal.get("source_url"), signal.get("event_date")]
+        # Distinct official offices share their publisher's stock listing.
+        # Preserve their native record identity instead of treating the listing
+        # as a news-article identity. La Tercera articles retain URL/date dedupe.
+        record_id = signal.get("source_record_id")
+        host = urlparse(str(signal.get("source_url") or "")).hostname
+        if (host not in {"latercera.com", "www.latercera.com"}
+                and signal.get("source_type") == "official"
+                and isinstance(record_id, str) and record_id.strip()):
+            fields.append(record_id.strip())
+        identity = json.dumps(fields, ensure_ascii=False)
         require(identity not in indexed, "duplicate_effective_signal_identity")
         indexed[identity] = digest(signal)
     return indexed

@@ -86,6 +86,24 @@ def test_second_application_is_identical_without_queue_or_paid_replay(inputs):
     assert replay["applied_count"] == 0 and replay["unchanged_on_replay"] == 5
 
 
+def test_unrelated_native_offices_keep_distinct_records_and_exact_bytes(inputs):
+    native = json.loads((ROOT / "tests/fixtures/pulso_native_offices_shared_listing.json").read_bytes())["signals"]
+    history, queue, review = inputs
+    corrected, updated_queue, report = apply((deepcopy(native) + history, queue, review))
+    assert corrected[:len(native)] == native
+    assert len(corrected) == len(native) + len(history)
+    assert report["applied_count"] == 5
+    repeated, repeated_queue, replay = apply((corrected, updated_queue, review))
+    assert repeated == corrected and repeated_queue == updated_queue
+    assert replay["applied_count"] == 0
+
+
+def test_duplicate_reviewed_publication_still_fails_with_native_offices(inputs):
+    history, queue, review = inputs
+    with pytest.raises(ValueError, match="duplicate_history_identity"):
+        apply((history + [deepcopy(history[0])], queue, review))
+
+
 def test_crash_after_history_write_resumes_only_exact_original_queue_acknowledgements(inputs):
     corrected_history, corrected_queue, _ = apply(inputs)
     resumed_history, resumed_queue, report = apply((corrected_history, inputs[1], inputs[2]))

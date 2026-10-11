@@ -232,6 +232,23 @@ def test_model_requests_attempt_resets_missing_skips_and_duplicate_signals_fail(
         audit.compare(baseline, after, now=NOW.replace(minute=5))
 
 
+def test_native_offices_share_listing_but_keep_distinct_office_identities():
+    offices = json.loads((ROOT / "tests/fixtures/pulso_native_offices_shared_listing.json").read_bytes())["signals"]
+    indexed = audit.signal_index(offices)
+    assert len(indexed) == 3
+    assert set(indexed.values()) == {audit.digest(office) for office in offices}
+    with pytest.raises(ValueError, match="duplicate_effective_signal_identity"):
+        audit.signal_index(offices + [deepcopy(offices[0])])
+
+
+def test_press_cannot_bypass_url_date_dedupe_with_native_record_ids():
+    first = dict(source_url="https://www.latercera.com/pulso/noticia/same-article/",
+                 event_date="2026-10-02", source_type="official", source_record_id="fake-office-1")
+    second = dict(first, source_record_id="fake-office-2")
+    with pytest.raises(ValueError, match="duplicate_effective_signal_identity"):
+        audit.signal_index([first, second])
+
+
 def test_unselected_truthful_discovery_is_disclosed_without_analysis_or_publication():
     context = unit_context()
     baseline = audit.capture_baseline(context, now=NOW)

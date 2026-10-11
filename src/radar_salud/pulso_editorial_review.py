@@ -71,18 +71,29 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
         raise ValueError("empty_editorial_review")
     output = deepcopy(history)
     updated_queue = deepcopy(queue)
-    indexed = {}
-    for signal in output:
-        key = (signal.get("source_url"), signal.get("event_date"))
-        if key in indexed:
-            raise ValueError("duplicate_history_identity")
-        indexed[key] = signal
     reviewed = {}
     for record in records:
         key = (record.get("url"), record.get("publication_date"))
         if key in reviewed:
             raise ValueError("duplicate_editorial_review_identity")
         reviewed[key] = record
+    # Native official sources can publish several distinct offices at one
+    # listing URL on the same day. Their unrelated identities must remain
+    # untouched by a publisher-specific correction. Reviewed publications and
+    # explicitly named group survivors must still identify exactly one row.
+    required_identities = set(reviewed)
+    required_identities.update(
+        (record["duplicate_of"].get("url"), record["duplicate_of"].get("event_date"))
+        for record in records if record.get("decision") == "group"
+        and isinstance(record.get("duplicate_of"), dict))
+    indexed = {}
+    for signal in output:
+        key = (signal.get("source_url"), signal.get("event_date"))
+        if key not in required_identities and not article_url(str(key[0] or "")):
+            continue
+        if key in indexed:
+            raise ValueError("duplicate_history_identity")
+        indexed[key] = signal
     plans = []
     for key, record in reviewed.items():
         url, day = key
