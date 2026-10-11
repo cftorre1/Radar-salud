@@ -3694,9 +3694,9 @@
       "id": "source_repair_fiscalization_lane_2026_10_11",
       "status": "in_progress",
       "priority": "critical",
-      "owner": "Pele + Regulatory Worker",
+      "owner": "Codex D · Regulatory Source Recovery",
       "source": "Issue #5 autonomy split",
-      "objective": "Repair Superintendencia Fiscalización and SUSESO Fiscalización freshness/publication semantics.",
+      "objective": "Demonstrate original-source SIS/SUSESO fiscalization coverage and recover historical stock without fictitious recency.",
       "depends_on": [],
       "instructions": [
         "Reconcile discovered inventory with 2026 dated material.",
@@ -3711,9 +3711,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11",
-      "current_subfront": "sis_suseso_fiscalization",
-      "next_action": "Integrar y ejecutar en staging el registro SUSESO /609/799701; reconciliar 20 oficios en 30 fechas y 72 en 90 fechas por número de oficio, con fecha de oficio y outcome específico/agrupado. Ver último independent_review_cuts.",
+      "last_progress_at": "2026-10-11T07:39:26.902569+00:00",
+      "current_subfront": "bounded_coverage_validated_global_gates_and_dates_pending",
+      "next_action": "Resolve source date uncertainty and inherited global QA/Reviewer gates; integrate PR #15 safely to staging only after gates, rerun core and close Work 3 SUSESO omission with exact 20/72 office reconciliation. No staging/main state was changed.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -3733,7 +3733,72 @@
             8
           ]
         }
-      ]
+      ],
+      "progress": "Native official access and actual engine 2x replay validated. Exact 30/90-date windows: SIS 14/28; SUSESO 20/74 (72 offices + 2 result publications in 90). Existing inclusive application filter: SIS 14/32, SUSESO 20/77; seven July13 boundary records are explicit. All dated material records persisted, 17 older active suspensions recovered as separate BACKFILL context. 305 Python PASS/1 SKIP, 42 Node PASS, scoped browser4 PASS, independent coverage Reviewer PASS; global QA/Reviewer still baseline-blocked.",
+      "evidence": [
+        "data/audits/fiscalizacion/checkpoint.json",
+        "data/audits/fiscalizacion/validation_native_2026_10_11.json",
+        "data/audits/fiscalizacion/native_reconciliation_2026_10_11.json",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+        "https://github.com/cftorre1/Radar-salud/pull/15",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38122064329"
+      ],
+      "source_states": {
+        "sis": "OPERATIVE_DEGRADED",
+        "suseso": "OPERATIVE_DEGRADED"
+      },
+      "coverage_complete": false,
+      "exact_calendar_windows": {
+        "superintendencia_fiscalizacion": {
+          "30": {
+            "official_confirmed": 14,
+            "detected": 14,
+            "omitted": 0,
+            "material": 14,
+            "published": 14,
+            "rejected": 0,
+            "deferred": 0,
+            "boundary_records_excluded": 0
+          },
+          "90": {
+            "official_confirmed": 28,
+            "detected": 28,
+            "omitted": 0,
+            "material": 28,
+            "published": 28,
+            "rejected": 0,
+            "deferred": 0,
+            "boundary_records_excluded": 4
+          }
+        },
+        "suseso_fiscalizacion": {
+          "30": {
+            "official_confirmed": 20,
+            "detected": 20,
+            "omitted": 0,
+            "material": 20,
+            "published": 20,
+            "rejected": 0,
+            "deferred": 0,
+            "boundary_records_excluded": 0
+          },
+          "90": {
+            "official_confirmed": 74,
+            "detected": 74,
+            "omitted": 0,
+            "material": 74,
+            "published": 74,
+            "rejected": 0,
+            "deferred": 0,
+            "boundary_records_excluded": 3
+          }
+        }
+      },
+      "historical_active_stock": {
+        "suseso": 17,
+        "published_backfill": 17,
+        "counted_as_recent": false
+      }
     },
     {
       "id": "source_repair_mutualities_lane_2026_10_11",

@@ -4,7 +4,7 @@ function currentRelease(radar,needle){
  const signal=radar.signals.find(x=>(x.title||'').includes(needle));
  if(signal)return signal;
  const history=JSON.parse(fs.readFileSync('data/history/superintendencia_signals.json','utf8')).signals;
- const original=history.find(x=>(x.title||'').includes(needle));
+ const original=history.filter(x=>(x.title||'').includes(needle)).sort((a,b)=>String(b.event_date).localeCompare(String(a.event_date)))[0];
  expect(original,needle+' must remain in durable history').toBeTruthy();
  const anchor=Math.max(...radar.signals.map(x=>Date.parse(x.event_date||'')).filter(Number.isFinite));
  expect((anchor-Date.parse(original.event_date))/86400000,needle+' eligible release omitted').toBeGreaterThan(90);

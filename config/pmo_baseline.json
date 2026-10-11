@@ -769,6 +769,81 @@
       ],
       "staging_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38123952091",
       "production_touched": false
+    },
+    "fiscalization_native_recovery_2026_10_11": {
+      "kind": "source_reconciliation",
+      "result": "OPERATIVE_DEGRADED",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+      "sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
+      "stock_commit_sha": "9fe964cfd7733f9eac6a1717bf2a40a9b9a18f01",
+      "scope": "Isolated PR #15. Dated source windows and current historical suspension stock reconciled; site-wide completeness, staging integration and global release readiness remain unvalidated.",
+      "checks": [
+        "official HTTPS/TLS native receipts",
+        "real collectors and engine twice",
+        "idempotent replay",
+        "other queue lanes preserved",
+        "305 Python PASS, 1 explicit unrelated SKIP",
+        "42 Node PASS",
+        "4 scoped desktop/mobile PASS",
+        "independent read-only coverage Reviewer PASS"
+      ],
+      "global_gates": "FAIL: inherited local browser14 / CI6 and statistical Reviewer8; no gate lowered",
+      "artifact": "data/audits/fiscalizacion/validation_native_2026_10_11.json",
+      "latest_independent_native_gate": {
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122064329",
+        "sha": "8798bfc5abe48c7485208ca7058c519d949acd18",
+        "result": "PASS; 59 primary news bodies match reviewed hashes"
+      }
+    },
+    "integration_commander_df_20261011": {
+      "issue": [
+        5,
+        6
+      ],
+      "task": "source_repair_media_lane_2026_10_11",
+      "pr": 11,
+      "source": "diario_financiero",
+      "origin_head_sha": "50cef26c4d829f18b3619d41710fffdf50534e91",
+      "integrated_commit": "7fc33c9f6bfae2d65a29e0c733f56b5edfe163ba",
+      "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "qa": {
+        "run_id": 38142344995,
+        "sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+        "python_passed": 309,
+        "python_skipped": 1,
+        "node_passed": 41,
+        "browser_passed": 46,
+        "failed": 0,
+        "reviewer": "PASS, zero findings"
+      },
+      "postmerge_runtime": {
+        "run_id": 38142527704,
+        "artifact_id": 11703507513,
+        "artifact_sha256": "27c88b9b8db5aa0452d76fce37dfc370ee97b460b0e9ccdead4328838e3f7dc9",
+        "two_actual_engine_polls": true,
+        "discovered_each": 41,
+        "dated_each": 41,
+        "detail_errors": 0,
+        "new_each": 0,
+        "published_each": 0,
+        "idempotence": true,
+        "unrelated_stock_preserved": true,
+        "history_rows": 771,
+        "feed_rows": 73,
+        "reviewer": "PASS"
+      },
+      "editorial_outcome": {
+        "published_stock": 26,
+        "deferred_multimedia": 19,
+        "current_poll": "no_new_signals",
+        "LIVE_recent_stock_preserved": true,
+        "new_paid_calls": 0,
+        "queue_history_feed_seen_dedupe": "PASS",
+        "materiality_threshold": 72
+      },
+      "final_outcome": "INTEGRATED_DEGRADED",
+      "reason": "Repaired text discovery, publisher dates and stock integration validated; 19 multimedia items and partial site coverage retain warning. No full multimedia/absolute site coverage claim.",
+      "next_action": "Fix cumulative rejection interpretation in the shared health producer, then integrate PR15; retain the 19 publisher text/OCR holds. Pulso remains NOT_READY."
     }
   },
   "blocks": [
@@ -2003,7 +2078,21 @@
         "Key identity by oficio (not the shared page URL) while deduplicating repeats and keeping date-oficio distinct from suspension dates.",
         "Publish aggregates or material groupings without exposing personal identifiers; record explicit rejection/grouping reasons rather than creating cards by quota.",
         "Keep health partial/error until the omitted surface has a real post-merge outcome; QA and independent Reviewer must pass."
-      ]
+      ],
+      "candidate_repair": {
+        "pr": 15,
+        "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
+        "sha": "9fe964cfd7733f9eac6a1717bf2a40a9b9a18f01",
+        "native_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+        "exact_calendar_oficios": {
+          "30": 20,
+          "90": 72
+        },
+        "inclusive_boundary_oficios": 3,
+        "historical_active_stock": 17,
+        "closure_status": "OPEN: isolated candidate repair; staging merge, post-merge core and global gates outstanding",
+        "artifact": "data/audits/fiscalizacion/native_reconciliation_2026_10_11.json"
+      }
     }
   ],
   "approved_addenda": [
@@ -3319,7 +3408,7 @@
   ],
   "updated_at": "2026-10-11T09:36:35.151546+00:00",
   "closed_beta": {
-    "status": "ready",
+    "status": "pending_validation",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
     "audience": "10–30 usuarios invitados del ecosistema salud",
     "evidence": "closed_beta_read_only_qa",
@@ -3339,10 +3428,11 @@
     ],
     "independent_review": {
       "status": "not_validated_current_candidate",
-      "reviewed_at": "2026-10-11T04:00:00Z",
-      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
-      "artifact": "data/audits/work3_adversarial_2026_10_11.json",
-      "reason": "Historical readiness does not close current QA/source/editorial failures."
-    }
+      "reviewed_at": "2026-10-11T07:39:26.902569+00:00",
+      "reviewed_sha": "8798bfc5abe48c7485208ca7058c519d949acd18",
+      "artifact": "data/audits/fiscalizacion/validation_native_2026_10_11.json",
+      "reason": "Current source coverage is bounded and degraded; global browser/statistical Reviewer gates fail. Historical beta proof does not qualify this isolated candidate."
+    },
+    "historical_status": "ready"
   }
 }
