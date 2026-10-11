@@ -1,0 +1,88 @@
+{
+  "schema_version": "pulso_sourcehealth_previous_maximum_causal_addendum_v1",
+  "source_id": "pulso_latercera",
+  "execution_run_id": "38149773071",
+  "captured_snapshot_git_revision": "0713ca9",
+  "changes_applied": false,
+  "acceptance_pass": false,
+  "interpretation_addendum_to": [
+    {
+      "path": "data/audits/pulso_focus113_prefilter_sourcehealth_review_2026_10_11.json",
+      "sha256": "41a8b40d8541dc5fc05d662be29ec70460653bbba021dcb8f5d73ba2d7f239af"
+    },
+    {
+      "path": "data/audits/pulso_focus113_outcome_matrix_2026_10_11.json",
+      "sha256": "ec86e582c3a1543f9fc82bfab863f7450c6e9c002554c1859535ff491cf3c3f3"
+    }
+  ],
+  "clarification": "The preceding audit described the October 11 value as processing-day freshness. The producer actually retains a previous maximum event date. The two previously visible October 11 signals were independently rejected/grouped and removed from the current feed; retaining their maximum does not describe current visible publisher freshness. Original audit bytes and hashes remain preserved.",
+  "inputs": {
+    "first_actual32_health": {
+      "git_revision": "90e99ad30e6eeaf470480e7847a7a814334a2b7b",
+      "repository_path": "web/data/source_health.json",
+      "sha256": "f18a159672468e646ec3f06651fa2cf3b92809884b97b8f88c83e64ae07ef781",
+      "git_blob": "261a5a065e1c36deefef49868f67ec322556ca91"
+    },
+    "first_actual32_feed": {
+      "git_revision": "90e99ad30e6eeaf470480e7847a7a814334a2b7b",
+      "repository_path": "web/data/radar_today.json",
+      "sha256": "37c381e588f66e8e8dd0530965dd9fd1abc0e925e1dc10421ca3fa5b128e71aa",
+      "git_blob": "1b24bf4467c84008295d99edefe16fd5c6ec4114"
+    },
+    "focus_current_health": {
+      "git_revision": "0713ca9",
+      "repository_path": "web/data/source_health.json",
+      "sha256": "6cc5fb99b1f7cf9e4e8ea8f8defacc192b51312b4826af3b47b7c1583fd9d3a4",
+      "git_blob": "f7dbb89d8310d07d69002bb18c1789603a29cea9"
+    },
+    "focus_current_feed": {
+      "git_revision": "0713ca9",
+      "repository_path": "web/data/radar_today.json",
+      "sha256": "ddb890ab234f75ba13d7a16a4fcadeb78308089ee0d8fc22e56ffafae773b11c",
+      "git_blob": "6b4d9f67d7376cd169076cc6a11f2d3fc71c011b"
+    },
+    "exact_focus_sourcehealth_producer": {
+      "git_revision": "0713ca9",
+      "repository_path": "src/radar_salud/source_health.py",
+      "sha256": "2bd3b597c05ec9a60980d0471914f59c46faa06dfbdfdc31169ae01cf87d92cd",
+      "git_blob": "bc50ad46c0e0ea4a7cf677e9a42d2eedd497a830"
+    },
+    "independent_all32_review": {
+      "repository_path": "data/audits/pulso_first_real_all32_semantic_review_2026_10_11.json",
+      "sha256": "a6ddc143c4cedb1bdc77bb1eb07ce80f25630a36bdde9ac68d49e2e2fe44d48f"
+    }
+  },
+  "producer_exact_code_line": "last_signal=max(dates+[prev.get(\"last_signal_at\") or \"\"]) if dates else prev.get(\"last_signal_at\")",
+  "previous_visible_signal_maximum": "2026-10-11",
+  "current_record_last_signal_at": "2026-10-11",
+  "current_visible_publisher_date_maximum": "2026-10-10",
+  "current_visible_event_date_maximum": "2026-10-10",
+  "current_visible_pulso_count": 17,
+  "removed_old_maximum_signals": [
+    {
+      "url": "https://www.latercera.com/pulso/noticia/la-bateria-de-proyectos-laborales-que-prepara-el-gobierno-para-combatir-la-crisis-de-empleo/",
+      "publication_date": "2026-10-11",
+      "original_model_score": 78,
+      "independent_review_decision": "reject",
+      "independent_review_reason": "Proyectos laborales nacionales en preparación, diez medidas y segunda etapa2027 correctamente resumidos; el cuerpo no identifica cambio sanitario concreto.",
+      "current_visible_feed_present": false
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/may-chomali-el-impensado-ascenso-de-la-discola-del-gabinete/",
+      "publication_date": "2026-10-11",
+      "original_model_score": 74,
+      "independent_review_decision": "group",
+      "independent_review_reason": "Perfil político con presupuesto2027, aumento4.7%, caída real14.6% de partida Ricarte Soto y garantía ministerial de medicamentos fieles al original; pendiente demostrar novedad y preservar propuesta explícita. Same underlying health-event family; preserve original URL/history and any additional figures as related evidence. Prefer the fuller material article; do not suppress genuinely new later operational update7. This is event equivalence, not a claim that every absolutebudgetfigure equals previousMINSALoriginal; aggregate829bn can remain in relatedfinancialcontext.",
+      "current_visible_feed_present": false
+    }
+  ],
+  "latest_discovered_original_date": "2026-10-11",
+  "latest_original_at_can_legitimately_differ_from_current_published_maximum": true,
+  "finding": {
+    "code": "source_health_retains_date_of_editorially_removed_legacy_signals",
+    "status": "OPEN_AT_CAPTURED_SNAPSHOT",
+    "required_behavior": "When this field represents currently published freshness, recompute it from currently visible published source history after audited editorial corrections, preserving discovered-original freshness separately.",
+    "publication_or_score_change_required": false,
+    "queue_reset_required": false
+  }
+}
