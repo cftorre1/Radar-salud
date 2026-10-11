@@ -5,7 +5,9 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
+from html import unescape
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
@@ -63,6 +65,24 @@ def run(output: Path) -> dict:
               "run_id": os.environ.get("GITHUB_RUN_ID"), "head_sha": os.environ.get("GITHUB_SHA"),
               "reuters_journalism_requested": False, "records": records}
     (output / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    durable = Path("data/audits/global_source_recovery_2026_10_11/probes") / str(report["run_id"] or "local")
+    durable.mkdir(parents=True, exist_ok=True)
+    (durable / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    for record in records:
+        body = output / record["body_file"]
+        if not body.exists():
+            continue
+        if record["key"].startswith("reuters") and not record["key"].endswith("robots"):
+            # Only policy/service discovery metadata, never archive Reuters HTML.
+            text = unescape(re.sub(r"<[^>]+>", " ", body.read_text(errors="replace")))
+            text = " ".join(text.split())
+            policy = [text[max(0, m.start()-120):m.end()+500]
+                      for m in re.finditer(r"(?i)automat|licens|reproduc|syndicat|terms of use|Reuters Connect|API|copyright", text)]
+            links = re.findall(r'''(?i)href=["']([^"']+)["']''', body.read_text(errors="replace"))
+            links = sorted({url for url in links if any(term in url.lower() for term in ("terms", "license", "licens", "connect", "api", "copyright", "platform"))})
+            (durable / (record["key"] + ".metadata.json")).write_text(json.dumps({"policy_fragments":policy[:20], "service_policy_links":links}, ensure_ascii=False, indent=2)+"\n")
+        else:
+            (durable / record["body_file"]).write_bytes(body.read_bytes())
     print(json.dumps({"run_id": report["run_id"], "results": [{"key": x["key"], "http": x["http_status"], "exit": x["returncode"]} for x in records]}))
     return report
 

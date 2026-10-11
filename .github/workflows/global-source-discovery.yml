@@ -5,7 +5,7 @@ on:
     paths: ['.github/run-global-discovery-now']
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: global-source-discovery-${{ github.ref }}
   cancel-in-progress: false
@@ -21,6 +21,14 @@ jobs:
           python-version: '3.11'
       - name: Bounded official surface and licensing probes
         run: python scripts/probe_global_sources.py
+      - name: Persist only official listing and policy evidence to the isolated branch
+        if: always()
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/audits/global_source_recovery_2026_10_11/probes
+          git diff --cached --quiet || git commit -m "audit(global): preserve official surface and Reuters policy probes"
+          git push origin HEAD:codex/global-intelligence-recurrent-20261011
       - uses: actions/upload-artifact@v4
         if: always()
         with:
