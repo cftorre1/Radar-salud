@@ -19,18 +19,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Bounded official surface and licensing probes
-        run: python scripts/probe_global_sources.py --extended
-      - name: Persist only official listing and policy evidence to the isolated branch
+      - name: Install and check discovery contracts
+        run: |
+          pip install -e . pytest
+          python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py
+      - name: Inventory the official archives and verify publication details
+        run: python scripts/discover_global_sources.py
+      - name: Persist metadata inventory and health to the isolated branch
         if: always()
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"
-          git add data/audits/global_source_recovery_2026_10_11/probes
-          git diff --cached --quiet || git commit -m "audit(global): preserve official surface and Reuters policy probes"
+          git add data/audits/global_source_recovery_2026_10_11/runs data/global_intelligence data/source_health.json web/data/source_health.json web/data/product.json
+          git diff --cached --quiet || git commit -m "audit(global): checkpoint live WHO PAHO inventory and honest Reuters hold"
           git push origin HEAD:codex/global-intelligence-recurrent-20261011
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: global-discovery-${{ github.run_id }}
-          path: work/global-surface-probes/
+          path: |
+            work/global-runtime-captures/
+            data/audits/global_source_recovery_2026_10_11/runs/
+            data/global_intelligence/

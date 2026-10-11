@@ -100,6 +100,8 @@ class CaptureClient:
         url = canonical_url(url)
         if url in self.records:
             record = self.records[url]
+            if record["http_status"] != 200:
+                raise ValueError("http_" + str(record["http_status"]))
             return (self.directory / record["body_file"]).read_bytes(), record
         key = hashlib.sha256(url.encode()).hexdigest()[:24]
         if self.replay:
@@ -107,6 +109,9 @@ class CaptureClient:
             data = (self.replay / record["body_file"]).read_bytes()
             if record["requested_url"] != url or hashlib.sha256(data).hexdigest() != record["body_sha256"]:
                 raise ValueError("capture identity/hash mismatch")
+            if record.get("tls_verified") is not True:
+                raise ValueError("capture TLS not verified")
+            canonical_url(record["final_url"])
         else:
             if not robots:
                 origin = urlunsplit((*urlsplit(url)[:2], "", "", ""))
