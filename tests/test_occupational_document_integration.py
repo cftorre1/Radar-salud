@@ -72,3 +72,40 @@ def test_required_document_pending_remains_dated_study_in_honest_inventory(captu
     assert result["rows"][0]["status"] == "pending" and result["rows"][0]["content_kind"] == "study"
     assert result["metrics"]["90"]["pending"] == 1 and not result["coverage_complete"]
     assert result["technical_status"] == "partial" and result["document_diagnostics"]
+
+
+def test_legacy_required_report_cannot_bypass_document_pending_flag(captured_documents, monkeypatch):
+    raw, _, _ = prepared(captured_documents)
+    assert "supporting_documents_required" not in raw.metadata
+    monkeypatch.setattr("radar_salud.llm_analysis.analyze_news", lambda **kw: pytest.fail("legacy report reached AI"))
+    with pytest.raises(DeferredProcessing, match="required_supporting_document_pending"):
+        process_curated_beta_source(raw, {})
+
+
+def test_optional_missing_doc_keeps_primary_materiality_and_editorial_input(captured_documents, monkeypatch):
+    raw, loader, _ = prepared(captured_documents, ist=False)
+    del loader.records[DOCUMENTS[raw.url][2]]
+    original = raw.metadata["page_text"]
+    attach_documents(raw, loader)
+    calls = []
+    monkeypatch.setattr("radar_salud.llm_analysis.analyze_news", lambda **kw: calls.append(kw) or {"relevance_score": 74})
+    assert process_curated_beta_source(raw, {}) is None
+    assert calls[0]["text"] == original
+    assert raw.metadata["materiality_accepted"] and raw.metadata["page_text"] == original
+
+
+def test_editorial_hash_changes_for_actual_verified_new_facts_only(captured_documents):
+    from copy import deepcopy
+    from scripts.occupational_inventory import editorial_input
+    raw, loader, _ = prepared(captured_documents, content=pdf_bytes("En 2025 protegimos 496 mil trabajadores."))
+    original = editorial_input(raw)
+    attach_documents(raw, loader)
+    enriched = editorial_input(raw)
+    assert enriched != original
+    before = deepcopy(raw.metadata)
+    raw.metadata["capture_checked_at"] = "2026-10-11T10:00:00Z"
+    raw.metadata["editorial_assessment"] = {"score": 74}
+    assert editorial_input(raw) == enriched
+    raw.metadata = before
+    raw.metadata["supporting_documents"][0]["extracted_text"] += " forged workers"
+    assert editorial_input(raw) == original
